@@ -132,9 +132,163 @@
     const DEFAULT_ERROR_MESSAGE = _lt("Invalid expression");
     const FORBIDDEN_SHEET_CHARS = ["'", "*", "?", "/", "\\", "[", "]"];
     const FORBIDDEN_IN_EXCEL_REGEX = /'|\*|\?|\/|\\|\[|\]/;
+    const DEFAULT_GAUGE_LOWER_COLOR = "#cc0000";
+    const DEFAULT_GAUGE_MIDDLE_COLOR = "#f1c232";
+    const DEFAULT_GAUGE_UPPER_COLOR = "#6aa84f";
     // Cells
     const NULL_FORMAT = undefined;
     const FORMULA_REF_IDENTIFIER = "|";
+
+    /**
+     * Registry
+     *
+     * The Registry class is basically just a mapping from a string key to an object.
+     * It is really not much more than an object. It is however useful for the
+     * following reasons:
+     *
+     * 1. it let us react and execute code when someone add something to the registry
+     *   (for example, the FunctionRegistry subclass this for this purpose)
+     * 2. it throws an error when the get operation fails
+     * 3. it provides a chained API to add items to the registry.
+     */
+    class Registry {
+        constructor() {
+            this.content = {};
+        }
+        /**
+         * Add an item to the registry
+         *
+         * Note that this also returns the registry, so another add method call can
+         * be chained
+         */
+        add(key, value) {
+            this.content[key] = value;
+            return this;
+        }
+        /**
+         * Get an item from the registry
+         */
+        get(key) {
+            /**
+             * Note: key in {} is ~12 times slower than {}[key].
+             * So, we check the absence of key only when the direct access returns
+             * a falsy value. It's done to ensure that the registry can contains falsy values
+             */
+            const content = this.content[key];
+            if (!content) {
+                if (!(key in this.content)) {
+                    throw new Error(`Cannot find ${key} in this registry!`);
+                }
+            }
+            return content;
+        }
+        /**
+         * Get a list of all elements in the registry
+         */
+        getAll() {
+            return Object.values(this.content);
+        }
+        /**
+         * Get a list of all keys in the registry
+         */
+        getKeys() {
+            return Object.keys(this.content);
+        }
+        /**
+         * Remove an item from the registry
+         */
+        remove(key) {
+            delete this.content[key];
+        }
+    }
+
+    /**
+     * This registry is intended to map a cell content (raw string) to
+     * an instance of a cell.
+     */
+    const chartRegistry = new Registry();
+    const chartComponentRegistry = new Registry();
+
+    class ChartJsComponent extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.canvas = owl.useRef("graphContainer");
+        }
+        get background() {
+            const definition = this.env.model.getters.getChartDefinition(this.props.figureId);
+            return (definition && definition.background) || BACKGROUND_CHART_COLOR;
+        }
+        get canvasStyle() {
+            return `background-color: ${this.background}`;
+        }
+        get chartRuntime() {
+            const runtime = this.env.model.getters.getChartRuntime(this.props.figureId);
+            if (!("type" in runtime)) {
+                throw new Error("Unsupported chart runtime");
+            }
+            return runtime;
+        }
+        setup() {
+            owl.onMounted(() => {
+                const runtime = this.chartRuntime;
+                this.createChart(runtime);
+            });
+            owl.onPatched(() => {
+                var _a, _b, _c, _d;
+                const chartData = this.chartRuntime;
+                if (chartData.data && chartData.data.datasets) {
+                    this.chart.data = chartData.data;
+                    if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
+                        this.chart.config.options.title = chartData.options.title;
+                    }
+                    if (chartData.options && "valueLabel" in chartData.options) {
+                        if ((_b = chartData.options) === null || _b === void 0 ? void 0 : _b.valueLabel) {
+                            this.chart.config.options.valueLabel =
+                                chartData.options.valueLabel;
+                        }
+                    }
+                }
+                else {
+                    this.chart.data.datasets = undefined;
+                }
+                this.chart.config.options.legend = (_c = chartData.options) === null || _c === void 0 ? void 0 : _c.legend;
+                this.chart.config.options.scales = (_d = chartData.options) === null || _d === void 0 ? void 0 : _d.scales;
+                this.chart.update({ duration: 0 });
+            });
+        }
+        createChart(chartData) {
+            const canvas = this.canvas.el;
+            const ctx = canvas.getContext("2d");
+            this.chart = new window.Chart(ctx, chartData);
+        }
+    }
+    ChartJsComponent.template = "o-spreadsheet.ChartJsComponent";
+    chartComponentRegistry.add("line", ChartJsComponent);
+    chartComponentRegistry.add("bar", ChartJsComponent);
+    chartComponentRegistry.add("pie", ChartJsComponent);
+    chartComponentRegistry.add("gauge", ChartJsComponent);
+
+    const fontSizes = [
+        { pt: 7.5, px: 10 },
+        { pt: 8, px: 11 },
+        { pt: 9, px: 12 },
+        { pt: 10, px: 13 },
+        { pt: 10.5, px: 14 },
+        { pt: 11, px: 15 },
+        { pt: 12, px: 16 },
+        { pt: 14, px: 18.7 },
+        { pt: 15, px: 20 },
+        { pt: 16, px: 21.3 },
+        { pt: 18, px: 24 },
+        { pt: 22, px: 29.3 },
+        { pt: 24, px: 32 },
+        { pt: 26, px: 34.7 },
+        { pt: 36, px: 48 },
+    ];
+    const fontSizeMap = {};
+    for (let font of fontSizes) {
+        fontSizeMap[font.pt] = font.px;
+    }
 
     // -----------------------------------------------------------------------------
     // Date Type
@@ -295,840 +449,6 @@
         return date;
     }
 
-    /**
-     *  Constant used to indicate the maximum of digits that is possible to display
-     *  in a cell with standard size.
-     */
-    const MAX_DECIMAL_PLACES = 20;
-    //from https://stackoverflow.com/questions/721304/insert-commas-into-number-string @Thomas/Alan Moore
-    const thousandsGroupsRegexp = /(\d+?)(?=(\d{3})+(?!\d)|$)/g;
-    const zeroRegexp = /0/g;
-    // -----------------------------------------------------------------------------
-    // FORMAT REPRESENTATION CACHE
-    // -----------------------------------------------------------------------------
-    const internalFormatByFormatString = {};
-    function parseFormat(formatString) {
-        let internalFormat = internalFormatByFormatString[formatString];
-        if (internalFormat === undefined) {
-            internalFormat = convertFormatToInternalFormat(formatString);
-            internalFormatByFormatString[formatString] = internalFormat;
-        }
-        return internalFormat;
-    }
-    // -----------------------------------------------------------------------------
-    // APPLY FORMAT
-    // -----------------------------------------------------------------------------
-    /**
-     * Formats a cell value with its format.
-     */
-    function formatValue(value, format) {
-        switch (typeof value) {
-            case "string":
-                return value;
-            case "boolean":
-                return value ? "TRUE" : "FALSE";
-            case "number":
-                // transform to internalNumberFormat
-                if (!format) {
-                    format = createDefaultFormat(value);
-                }
-                const internalFormat = parseFormat(format);
-                return applyInternalFormat(value, internalFormat);
-            case "object":
-                return "0";
-        }
-    }
-    function applyInternalFormat(value, internalFormat) {
-        if (internalFormat[0].type === "DATE") {
-            return applyDateTimeFormat(value, internalFormat[0].format);
-        }
-        let formattedValue = value < 0 ? "-" : "";
-        for (let part of internalFormat) {
-            switch (part.type) {
-                case "NUMBER":
-                    formattedValue += applyInternalNumberFormat(Math.abs(value), part.format);
-                    break;
-                case "CURRENCY":
-                    formattedValue += part.format;
-                    break;
-            }
-        }
-        return formattedValue;
-    }
-    function applyInternalNumberFormat(value, format) {
-        if (format.isPercent) {
-            value = value * 100;
-        }
-        let maxDecimals = 0;
-        if (format.decimalPart !== undefined) {
-            maxDecimals = format.decimalPart.length;
-        }
-        const { integerDigits, decimalDigits } = splitNumber(value, maxDecimals);
-        let formattedValue = applyIntegerFormat(integerDigits, format.integerPart, format.thousandsSeparator);
-        if (format.decimalPart !== undefined) {
-            formattedValue += "." + applyDecimalFormat(decimalDigits || "", format.decimalPart);
-        }
-        if (format.isPercent) {
-            formattedValue += "%";
-        }
-        return formattedValue;
-    }
-    function applyIntegerFormat(integerDigits, integerFormat, hasSeparator) {
-        var _a;
-        const _integerDigits = integerDigits === "0" ? "" : integerDigits;
-        let formattedInteger = _integerDigits;
-        const delta = integerFormat.length - _integerDigits.length;
-        if (delta > 0) {
-            // ex: format = "0#000000" and integerDigit: "123"
-            const restIntegerFormat = integerFormat.substring(0, delta); // restIntegerFormat = "0#00"
-            const countZero = (restIntegerFormat.match(zeroRegexp) || []).length; // countZero = 3
-            formattedInteger = "0".repeat(countZero) + formattedInteger; // return "000123"
-        }
-        if (hasSeparator) {
-            formattedInteger = ((_a = formattedInteger.match(thousandsGroupsRegexp)) === null || _a === void 0 ? void 0 : _a.join(",")) || formattedInteger;
-        }
-        return formattedInteger;
-    }
-    function applyDecimalFormat(decimalDigits, decimalFormat) {
-        // assume the format is valid (no commas)
-        let formattedDecimals = decimalDigits;
-        if (decimalFormat.length - decimalDigits.length > 0) {
-            const restDecimalFormat = decimalFormat.substring(decimalDigits.length, decimalFormat.length + 1);
-            const countZero = (restDecimalFormat.match(zeroRegexp) || []).length;
-            formattedDecimals = formattedDecimals + "0".repeat(countZero);
-        }
-        return formattedDecimals;
-    }
-    /**
-     * this is a cache that can contains number representation formats
-     * from 0 (minimum) to 20 (maximum) digits after the decimal point
-     */
-    const numberRepresentation = [];
-    /** split a number into two strings that contain respectively:
-     * - all digit stored in the integer part of the number
-     * - all digit stored in the decimal part of the number
-     *
-     * The 'maxDecimal' parameter allows to indicate the number of digits to not
-     * exceed in the decimal part, in which case digits are rounded
-     *
-     * Intl.Numberformat is used to properly handle all the roundings.
-     * e.g. 1234.7  with format ### (<> maxDecimals=0) should become 1235, not 1234
-     **/
-    function splitNumber(value, maxDecimals = MAX_DECIMAL_PLACES) {
-        let formatter = numberRepresentation[maxDecimals];
-        if (!formatter) {
-            formatter = new Intl.NumberFormat("en-US", {
-                maximumFractionDigits: maxDecimals,
-                useGrouping: false,
-            });
-            numberRepresentation[maxDecimals] = formatter;
-        }
-        const [integerDigits, decimalDigits] = formatter.format(value).split(".");
-        return { integerDigits, decimalDigits };
-    }
-    /**
-     * Check if the given format is a time, date or date time format.
-     */
-    function isDateTimeFormat(format) {
-        try {
-            applyDateTimeFormat(1, format);
-            return true;
-        }
-        catch (error) {
-            return false;
-        }
-    }
-    function applyDateTimeFormat(value, format) {
-        // TODO: unify the format functions for date and datetime
-        // This requires some code to 'parse' or 'tokenize' the format, keep it in a
-        // cache, and use it in a single mapping, that recognizes the special list
-        // of tokens dd,d,m,y,h, ... and preserves the rest
-        const jsDate = numberToJsDate(value);
-        const indexH = format.indexOf("h");
-        let strDate = "";
-        let strTime = "";
-        if (indexH > 0) {
-            strDate = formatJSDate(jsDate, format.substring(0, indexH - 1));
-            strTime = formatJSTime(jsDate, format.substring(indexH));
-        }
-        else if (indexH === 0) {
-            strTime = formatJSTime(jsDate, format);
-        }
-        else if (indexH < 0) {
-            strDate = formatJSDate(jsDate, format);
-        }
-        return strDate + (strDate && strTime ? " " : "") + strTime;
-    }
-    function formatJSDate(jsDate, format) {
-        const sep = format.match(/\/|-|\s/)[0];
-        const parts = format.split(sep);
-        return parts
-            .map((p) => {
-            switch (p) {
-                case "d":
-                    return jsDate.getDate();
-                case "dd":
-                    return jsDate.getDate().toString().padStart(2, "0");
-                case "m":
-                    return jsDate.getMonth() + 1;
-                case "mm":
-                    return String(jsDate.getMonth() + 1).padStart(2, "0");
-                case "yyyy":
-                    return jsDate.getFullYear();
-                default:
-                    throw new Error(`invalid format: ${format}`);
-            }
-        })
-            .join(sep);
-    }
-    function formatJSTime(jsDate, format) {
-        let parts = format.split(/:|\s/);
-        const dateHours = jsDate.getHours();
-        const isMeridian = parts[parts.length - 1] === "a";
-        let hours = dateHours;
-        let meridian = "";
-        if (isMeridian) {
-            hours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-            meridian = dateHours >= 12 ? " PM" : " AM";
-            parts.pop();
-        }
-        return (parts
-            .map((p) => {
-            switch (p) {
-                case "hhhh":
-                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY$1) / (60 * 60 * 1000));
-                    return helapsedHours.toString();
-                case "hh":
-                    return hours.toString().padStart(2, "0");
-                case "mm":
-                    return jsDate.getMinutes().toString().padStart(2, "0");
-                case "ss":
-                    return jsDate.getSeconds().toString().padStart(2, "0");
-                default:
-                    throw new Error(`invalid format: ${format}`);
-            }
-        })
-            .join(":") + meridian);
-    }
-    // -----------------------------------------------------------------------------
-    // CREATE / MODIFY FORMAT
-    // -----------------------------------------------------------------------------
-    function createDefaultFormat(value) {
-        let { decimalDigits } = splitNumber(value, 10);
-        return decimalDigits ? "0." + "0".repeat(decimalDigits.length) : "0";
-    }
-    function changeDecimalPlaces(format, step) {
-        const internalFormat = parseFormat(format);
-        const newInternalFormat = internalFormat.map((intFmt) => {
-            if (intFmt.type === "NUMBER") {
-                return { ...intFmt, format: changeInternalNumberFormatDecimalPlaces(intFmt.format, step) };
-            }
-            else {
-                return intFmt;
-            }
-        });
-        const newFormat = convertInternalFormatToFormat(newInternalFormat);
-        internalFormatByFormatString[newFormat] = newInternalFormat;
-        return newFormat;
-    }
-    function changeInternalNumberFormatDecimalPlaces(format, step) {
-        var _a;
-        const _format = { ...format };
-        const sign = Math.sign(step);
-        const decimalLength = ((_a = _format.decimalPart) === null || _a === void 0 ? void 0 : _a.length) || 0;
-        const countZero = Math.min(Math.max(0, decimalLength + sign), MAX_DECIMAL_PLACES);
-        _format.decimalPart = "0".repeat(countZero);
-        if (_format.decimalPart === "") {
-            delete _format.decimalPart;
-        }
-        return _format;
-    }
-    // -----------------------------------------------------------------------------
-    // MANAGING FORMAT
-    // -----------------------------------------------------------------------------
-    /**
-     * Validates the provided format string and returns an InternalFormat Object.
-     */
-    function convertFormatToInternalFormat(format) {
-        if (format === "") {
-            throw new Error("A format cannot be empty");
-        }
-        let currentIndex = 0;
-        let result = [];
-        while (currentIndex < format.length) {
-            let closingIndex;
-            if (format.charAt(currentIndex) === "[") {
-                if (format.charAt(currentIndex + 1) !== "$") {
-                    throw new Error(`Currency formats have to be prefixed by a $: ${format}`);
-                }
-                // manage brackets/customStrings
-                closingIndex = format.substring(currentIndex).lastIndexOf("]") + currentIndex + 1;
-                if (closingIndex === 0) {
-                    throw new Error(`Invalid currency brackets format: ${format}`);
-                }
-                result.push({
-                    type: "CURRENCY",
-                    format: format.substring(currentIndex + 2, closingIndex - 1),
-                }); // remove leading "[$"" and ending "]".
-            }
-            else {
-                // rest of the time
-                const nextPartIndex = format.substring(currentIndex).indexOf("[");
-                closingIndex = nextPartIndex > -1 ? nextPartIndex + currentIndex : format.length;
-                const subFormat = format.substring(currentIndex, closingIndex);
-                if (subFormat.match(DATETIME_FORMAT)) {
-                    result.push({ type: "DATE", format: subFormat });
-                }
-                else {
-                    result.push({
-                        type: "NUMBER",
-                        format: convertToInternalNumberFormat(subFormat),
-                    });
-                }
-            }
-            currentIndex = closingIndex;
-        }
-        return result;
-    }
-    /**
-     * @param format a formatString that is only applicable to numbers. I.e. composed of characters 0 # , . %
-     */
-    function convertToInternalNumberFormat(format) {
-        const isPercent = format.includes("%");
-        const thousandsSeparator = format.includes(",");
-        if (format.match(/\..*,/)) {
-            throw new Error("A format can't contain ',' symbol in the decimal part");
-        }
-        const _format = format.replace("%", "").replace(",", "");
-        const extraSigns = _format.match(/[\%|,]/);
-        if (extraSigns) {
-            throw new Error(`A format can only contain a single '${extraSigns[0]}' symbol`);
-        }
-        const [integerPart, decimalPart] = _format.split(".");
-        if (decimalPart && decimalPart.length > 20) {
-            throw new Error("A format can't contain more than 20 decimal places");
-        }
-        if (decimalPart !== undefined) {
-            return {
-                integerPart,
-                isPercent,
-                thousandsSeparator,
-                decimalPart,
-            };
-        }
-        else {
-            return {
-                integerPart,
-                isPercent,
-                thousandsSeparator,
-            };
-        }
-    }
-    function convertInternalFormatToFormat(internalFormat) {
-        let format = "";
-        for (let part of internalFormat) {
-            let currentFormat;
-            switch (part.type) {
-                case "NUMBER":
-                    const fmt = part.format;
-                    currentFormat = fmt.integerPart;
-                    if (fmt.thousandsSeparator) {
-                        currentFormat = currentFormat.slice(0, -3) + "," + currentFormat.slice(-3);
-                    }
-                    if (fmt.decimalPart !== undefined) {
-                        currentFormat += "." + fmt.decimalPart;
-                    }
-                    if (fmt.isPercent) {
-                        currentFormat += "%";
-                    }
-                    break;
-                case "CURRENCY":
-                    currentFormat = `[$${part.format}]`;
-                    break;
-                case "DATE":
-                    currentFormat = part.format;
-                    break;
-            }
-            format += currentFormat;
-        }
-        return format;
-    }
-
-    /**
-     * Registry
-     *
-     * The Registry class is basically just a mapping from a string key to an object.
-     * It is really not much more than an object. It is however useful for the
-     * following reasons:
-     *
-     * 1. it let us react and execute code when someone add something to the registry
-     *   (for example, the FunctionRegistry subclass this for this purpose)
-     * 2. it throws an error when the get operation fails
-     * 3. it provides a chained API to add items to the registry.
-     */
-    class Registry {
-        constructor() {
-            this.content = {};
-        }
-        /**
-         * Add an item to the registry
-         *
-         * Note that this also returns the registry, so another add method call can
-         * be chained
-         */
-        add(key, value) {
-            this.content[key] = value;
-            return this;
-        }
-        /**
-         * Get an item from the registry
-         */
-        get(key) {
-            /**
-             * Note: key in {} is ~12 times slower than {}[key].
-             * So, we check the absence of key only when the direct access returns
-             * a falsy value. It's done to ensure that the registry can contains falsy values
-             */
-            const content = this.content[key];
-            if (!content) {
-                if (!(key in this.content)) {
-                    throw new Error(`Cannot find ${key} in this registry!`);
-                }
-            }
-            return content;
-        }
-        /**
-         * Get a list of all elements in the registry
-         */
-        getAll() {
-            return Object.values(this.content);
-        }
-        /**
-         * Get a list of all keys in the registry
-         */
-        getKeys() {
-            return Object.keys(this.content);
-        }
-        /**
-         * Remove an item from the registry
-         */
-        remove(key) {
-            delete this.content[key];
-        }
-    }
-
-    /**
-     * An AutofillModifierImplementation is used to describe how to handle a
-     * AutofillModifier.
-     */
-    const autofillModifiersRegistry = new Registry();
-    autofillModifiersRegistry
-        .add("INCREMENT_MODIFIER", {
-        apply: (rule, data) => {
-            var _a;
-            rule.current += rule.increment;
-            const content = rule.current.toString();
-            const tooltipValue = formatValue(rule.current, (_a = data.cell) === null || _a === void 0 ? void 0 : _a.format);
-            return {
-                cellData: {
-                    border: data.border,
-                    style: data.cell && data.cell.style,
-                    format: data.cell && data.cell.format,
-                    content,
-                },
-                tooltip: content ? { props: { content: tooltipValue } } : undefined,
-            };
-        },
-    })
-        .add("COPY_MODIFIER", {
-        apply: (rule, data, getters) => {
-            var _a, _b;
-            const content = ((_a = data.cell) === null || _a === void 0 ? void 0 : _a.content) || "";
-            return {
-                cellData: {
-                    border: data.border,
-                    style: data.cell && data.cell.style,
-                    format: data.cell && data.cell.format,
-                    content,
-                },
-                tooltip: content ? { props: { content: (_b = data.cell) === null || _b === void 0 ? void 0 : _b.formattedValue } } : undefined,
-            };
-        },
-    })
-        .add("FORMULA_MODIFIER", {
-        apply: (rule, data, getters, direction) => {
-            rule.current += rule.increment;
-            let x = 0;
-            let y = 0;
-            switch (direction) {
-                case 0 /* UP */:
-                    x = 0;
-                    y = -rule.current;
-                    break;
-                case 1 /* DOWN */:
-                    x = 0;
-                    y = rule.current;
-                    break;
-                case 2 /* LEFT */:
-                    x = -rule.current;
-                    y = 0;
-                    break;
-                case 3 /* RIGHT */:
-                    x = rule.current;
-                    y = 0;
-                    break;
-            }
-            if (!data.cell || !data.cell.isFormula()) {
-                return { cellData: {} };
-            }
-            const sheetId = data.sheetId;
-            const ranges = getters.createAdaptedRanges(data.cell.dependencies, x, y, sheetId);
-            const content = getters.buildFormulaContent(sheetId, data.cell, ranges);
-            return {
-                cellData: {
-                    border: data.border,
-                    style: data.cell.style,
-                    format: data.cell.format,
-                    content,
-                },
-                tooltip: content ? { props: { content } } : undefined,
-            };
-        },
-    });
-
-    var CellValueType;
-    (function (CellValueType) {
-        CellValueType["boolean"] = "boolean";
-        CellValueType["number"] = "number";
-        CellValueType["text"] = "text";
-        CellValueType["empty"] = "empty";
-        CellValueType["error"] = "error";
-    })(CellValueType || (CellValueType = {}));
-
-    function isSheetDependent(cmd) {
-        return "sheetId" in cmd;
-    }
-    function isGridDependent(cmd) {
-        return "dimension" in cmd;
-    }
-    function isTargetDependent(cmd) {
-        return "target" in cmd;
-    }
-    function isPositionDependent(cmd) {
-        return "col" in cmd && "row" in cmd;
-    }
-    const invalidateEvaluationCommands = new Set([
-        "RENAME_SHEET",
-        "DELETE_SHEET",
-        "CREATE_SHEET",
-        "ADD_COLUMNS_ROWS",
-        "REMOVE_COLUMNS_ROWS",
-        "DELETE_CELL",
-        "INSERT_CELL",
-        "UNDO",
-        "REDO",
-    ]);
-    const readonlyAllowedCommands = new Set([
-        "START",
-        "ACTIVATE_SHEET",
-        "COPY",
-        "PREPARE_SELECTION_INPUT_EXPANSION",
-        "STOP_SELECTION_INPUT",
-        "RESIZE_VIEWPORT",
-        "SET_VIEWPORT_OFFSET",
-        "SELECT_SEARCH_NEXT_MATCH",
-        "SELECT_SEARCH_PREVIOUS_MATCH",
-        "REFRESH_SEARCH",
-        "UPDATE_SEARCH",
-        "CLEAR_SEARCH",
-        "EVALUATE_CELLS",
-        "SET_CURRENT_CONTENT",
-        "SET_FORMULA_VISIBILITY",
-    ]);
-    const coreTypes = new Set([
-        /** CELLS */
-        "UPDATE_CELL",
-        "UPDATE_CELL_POSITION",
-        "CLEAR_CELL",
-        "DELETE_CONTENT",
-        /** GRID SHAPE */
-        "ADD_COLUMNS_ROWS",
-        "REMOVE_COLUMNS_ROWS",
-        "RESIZE_COLUMNS_ROWS",
-        "HIDE_COLUMNS_ROWS",
-        "UNHIDE_COLUMNS_ROWS",
-        "SET_GRID_LINES_VISIBILITY",
-        /** MERGE */
-        "ADD_MERGE",
-        "REMOVE_MERGE",
-        /** SHEETS MANIPULATION */
-        "CREATE_SHEET",
-        "DELETE_SHEET",
-        "DUPLICATE_SHEET",
-        "MOVE_SHEET",
-        "RENAME_SHEET",
-        "HIDE_SHEET",
-        "SHOW_SHEET",
-        /** RANGES MANIPULATION */
-        "MOVE_RANGES",
-        /** CONDITIONAL FORMAT */
-        "ADD_CONDITIONAL_FORMAT",
-        "REMOVE_CONDITIONAL_FORMAT",
-        "MOVE_CONDITIONAL_FORMAT",
-        /** FIGURES */
-        "CREATE_FIGURE",
-        "DELETE_FIGURE",
-        "UPDATE_FIGURE",
-        /** FORMATTING */
-        "SET_FORMATTING",
-        "CLEAR_FORMATTING",
-        "SET_BORDER",
-        "SET_DECIMAL",
-        /** CHART */
-        "CREATE_CHART",
-        "UPDATE_CHART",
-    ]);
-    function isCoreCommand(cmd) {
-        return coreTypes.has(cmd.type);
-    }
-    function canExecuteInReadonly(cmd) {
-        return readonlyAllowedCommands.has(cmd.type);
-    }
-    /**
-     * Holds the result of a command dispatch.
-     * The command may have been successfully dispatched or cancelled
-     * for one or more reasons.
-     */
-    class DispatchResult {
-        constructor(results = []) {
-            if (!Array.isArray(results)) {
-                results = [results];
-            }
-            results = [...new Set(results)];
-            this.reasons = results.filter((result) => result !== 0 /* Success */);
-        }
-        /**
-         * Static helper which returns a successful DispatchResult
-         */
-        static get Success() {
-            return new DispatchResult();
-        }
-        get isSuccessful() {
-            return this.reasons.length === 0;
-        }
-        /**
-         * Check if the dispatch has been cancelled because of
-         * the given reason.
-         */
-        isCancelledBecause(reason) {
-            return this.reasons.includes(reason);
-        }
-    }
-    exports.CommandResult = void 0;
-    (function (CommandResult) {
-        CommandResult[CommandResult["Success"] = 0] = "Success";
-        CommandResult[CommandResult["CancelledForUnknownReason"] = 1] = "CancelledForUnknownReason";
-        CommandResult[CommandResult["WillRemoveExistingMerge"] = 2] = "WillRemoveExistingMerge";
-        CommandResult[CommandResult["MergeIsDestructive"] = 3] = "MergeIsDestructive";
-        CommandResult[CommandResult["CellIsMerged"] = 4] = "CellIsMerged";
-        CommandResult[CommandResult["EmptyUndoStack"] = 5] = "EmptyUndoStack";
-        CommandResult[CommandResult["EmptyRedoStack"] = 6] = "EmptyRedoStack";
-        CommandResult[CommandResult["NotEnoughElements"] = 7] = "NotEnoughElements";
-        CommandResult[CommandResult["NotEnoughSheets"] = 8] = "NotEnoughSheets";
-        CommandResult[CommandResult["MissingSheetName"] = 9] = "MissingSheetName";
-        CommandResult[CommandResult["DuplicatedSheetName"] = 10] = "DuplicatedSheetName";
-        CommandResult[CommandResult["ForbiddenCharactersInSheetName"] = 11] = "ForbiddenCharactersInSheetName";
-        CommandResult[CommandResult["WrongSheetMove"] = 12] = "WrongSheetMove";
-        CommandResult[CommandResult["WrongSheetPosition"] = 13] = "WrongSheetPosition";
-        CommandResult[CommandResult["InvalidAnchorZone"] = 14] = "InvalidAnchorZone";
-        CommandResult[CommandResult["SelectionOutOfBound"] = 15] = "SelectionOutOfBound";
-        CommandResult[CommandResult["TargetOutOfSheet"] = 16] = "TargetOutOfSheet";
-        CommandResult[CommandResult["WrongCutSelection"] = 17] = "WrongCutSelection";
-        CommandResult[CommandResult["WrongPasteSelection"] = 18] = "WrongPasteSelection";
-        CommandResult[CommandResult["WrongPasteOption"] = 19] = "WrongPasteOption";
-        CommandResult[CommandResult["EmptyClipboard"] = 20] = "EmptyClipboard";
-        CommandResult[CommandResult["EmptyRange"] = 21] = "EmptyRange";
-        CommandResult[CommandResult["InvalidRange"] = 22] = "InvalidRange";
-        CommandResult[CommandResult["InvalidZones"] = 23] = "InvalidZones";
-        CommandResult[CommandResult["InvalidSheetId"] = 24] = "InvalidSheetId";
-        CommandResult[CommandResult["InputAlreadyFocused"] = 25] = "InputAlreadyFocused";
-        CommandResult[CommandResult["MaximumRangesReached"] = 26] = "MaximumRangesReached";
-        CommandResult[CommandResult["InvalidChartDefinition"] = 27] = "InvalidChartDefinition";
-        CommandResult[CommandResult["EmptyDataSet"] = 28] = "EmptyDataSet";
-        CommandResult[CommandResult["InvalidDataSet"] = 29] = "InvalidDataSet";
-        CommandResult[CommandResult["InvalidLabelRange"] = 30] = "InvalidLabelRange";
-        CommandResult[CommandResult["InvalidAutofillSelection"] = 31] = "InvalidAutofillSelection";
-        CommandResult[CommandResult["WrongComposerSelection"] = 32] = "WrongComposerSelection";
-        CommandResult[CommandResult["MinBiggerThanMax"] = 33] = "MinBiggerThanMax";
-        CommandResult[CommandResult["LowerBiggerThanUpper"] = 34] = "LowerBiggerThanUpper";
-        CommandResult[CommandResult["MidBiggerThanMax"] = 35] = "MidBiggerThanMax";
-        CommandResult[CommandResult["MinBiggerThanMid"] = 36] = "MinBiggerThanMid";
-        CommandResult[CommandResult["FirstArgMissing"] = 37] = "FirstArgMissing";
-        CommandResult[CommandResult["SecondArgMissing"] = 38] = "SecondArgMissing";
-        CommandResult[CommandResult["MinNaN"] = 39] = "MinNaN";
-        CommandResult[CommandResult["MidNaN"] = 40] = "MidNaN";
-        CommandResult[CommandResult["MaxNaN"] = 41] = "MaxNaN";
-        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 42] = "ValueUpperInflectionNaN";
-        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 43] = "ValueLowerInflectionNaN";
-        CommandResult[CommandResult["MinInvalidFormula"] = 44] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 45] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 46] = "MaxInvalidFormula";
-        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 47] = "ValueUpperInvalidFormula";
-        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 48] = "ValueLowerInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 49] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 50] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 51] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 52] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 53] = "Readonly";
-        CommandResult[CommandResult["InvalidOffset"] = 54] = "InvalidOffset";
-        CommandResult[CommandResult["InvalidViewportSize"] = 55] = "InvalidViewportSize";
-        CommandResult[CommandResult["FigureDoesNotExist"] = 56] = "FigureDoesNotExist";
-        CommandResult[CommandResult["InvalidConditionalFormatId"] = 57] = "InvalidConditionalFormatId";
-    })(exports.CommandResult || (exports.CommandResult = {}));
-
-    var ReturnFormatType;
-    (function (ReturnFormatType) {
-        ReturnFormatType["FormatFromArgument"] = "FormatFromArgument";
-    })(ReturnFormatType || (ReturnFormatType = {}));
-
-    var DIRECTION;
-    (function (DIRECTION) {
-        DIRECTION[DIRECTION["UP"] = 0] = "UP";
-        DIRECTION[DIRECTION["DOWN"] = 1] = "DOWN";
-        DIRECTION[DIRECTION["LEFT"] = 2] = "LEFT";
-        DIRECTION[DIRECTION["RIGHT"] = 3] = "RIGHT";
-    })(DIRECTION || (DIRECTION = {}));
-
-    var LAYERS;
-    (function (LAYERS) {
-        LAYERS[LAYERS["Background"] = 0] = "Background";
-        LAYERS[LAYERS["Highlights"] = 1] = "Highlights";
-        LAYERS[LAYERS["Clipboard"] = 2] = "Clipboard";
-        LAYERS[LAYERS["Search"] = 3] = "Search";
-        LAYERS[LAYERS["Chart"] = 4] = "Chart";
-        LAYERS[LAYERS["Selection"] = 5] = "Selection";
-        LAYERS[LAYERS["Autofill"] = 6] = "Autofill";
-        LAYERS[LAYERS["Headers"] = 7] = "Headers";
-    })(LAYERS || (LAYERS = {}));
-
-    const autofillRulesRegistry = new Registry();
-    /**
-     * Get the consecutive xc that are of type "number" or "date".
-     * Return the one which contains the given cell
-     */
-    function getGroup(cell, cells) {
-        let group = [];
-        let found = false;
-        for (let x of cells) {
-            if (x === cell) {
-                found = true;
-            }
-            if ((x === null || x === void 0 ? void 0 : x.evaluated.type) === CellValueType.number) {
-                group.push(x.evaluated.value);
-            }
-            else {
-                if (found) {
-                    return group;
-                }
-                group = [];
-            }
-        }
-        return group;
-    }
-    /**
-     * Get the average steps between numbers
-     */
-    function getAverageIncrement(group) {
-        const averages = [];
-        let last = group[0];
-        for (let i = 1; i < group.length; i++) {
-            const current = group[i];
-            averages.push(current - last);
-            last = current;
-        }
-        return averages.reduce((a, b) => a + b, 0) / averages.length;
-    }
-    autofillRulesRegistry
-        .add("simple_value_copy", {
-        condition: (cell, cells) => {
-            var _a;
-            return cells.length === 1 && !cell.isFormula() && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
-        },
-        generateRule: () => {
-            return { type: "COPY_MODIFIER" };
-        },
-        sequence: 10,
-    })
-        .add("copy_text", {
-        condition: (cell) => !cell.isFormula() && cell.evaluated.type === CellValueType.text,
-        generateRule: () => {
-            return { type: "COPY_MODIFIER" };
-        },
-        sequence: 20,
-    })
-        .add("update_formula", {
-        condition: (cell) => cell.isFormula(),
-        generateRule: (_, cells) => {
-            return { type: "FORMULA_MODIFIER", increment: cells.length, current: 0 };
-        },
-        sequence: 30,
-    })
-        .add("increment_number", {
-        condition: (cell) => cell.evaluated.type === CellValueType.number,
-        generateRule: (cell, cells) => {
-            const group = getGroup(cell, cells);
-            let increment = 1;
-            if (group.length == 2) {
-                increment = (group[1] - group[0]) * 2;
-            }
-            else if (group.length > 2) {
-                increment = getAverageIncrement(group) * group.length;
-            }
-            return {
-                type: "INCREMENT_MODIFIER",
-                increment,
-                current: cell.evaluated.type === CellValueType.number ? cell.evaluated.value : 0,
-            };
-        },
-        sequence: 40,
-    });
-
-    /**
-     * This registry is intended to map a cell content (raw string) to
-     * an instance of a cell.
-     */
-    const cellRegistry = new Registry();
-
-    /**
-     * Registry intended to support usual currencies. It is mainly used to create
-     * currency formats that can be selected or modified when customizing formats.
-     */
-    const currenciesRegistry = new Registry();
-
-    const figureRegistry = new Registry();
-
-    const fontSizes = [
-        { pt: 7.5, px: 10 },
-        { pt: 8, px: 11 },
-        { pt: 9, px: 12 },
-        { pt: 10, px: 13 },
-        { pt: 10.5, px: 14 },
-        { pt: 11, px: 15 },
-        { pt: 12, px: 16 },
-        { pt: 14, px: 18.7 },
-        { pt: 15, px: 20 },
-        { pt: 16, px: 21.3 },
-        { pt: 18, px: 24 },
-        { pt: 22, px: 29.3 },
-        { pt: 24, px: 32 },
-        { pt: 26, px: 34.7 },
-        { pt: 36, px: 48 },
-    ];
-    const fontSizeMap = {};
-    for (let font of fontSizes) {
-        fontSizeMap[font.pt] = font.px;
-    }
-
     //------------------------------------------------------------------------------
     /**
      * Stringify an object, like JSON.stringify, except that the first level of keys
@@ -1218,6 +538,36 @@
         const size = fontSizeMap[sizeInPt];
         context.font = `${italic}${weight} ${size}px ${DEFAULT_FONT}`;
         return context.measureText(text).width;
+    }
+    /**
+     * Return the font size that makes the width of a text match the given line width.
+     * Minimum font size is 1.
+     *
+     * @param getTextWidth function that takes a fontSize as argument, and return the width of the text with this font size.
+     */
+    function getFontSizeMatchingWidth(lineWidth, maxFontSize, getTextWidth, precision = 0.25) {
+        let minFontSize = 1;
+        if (getTextWidth(minFontSize) > lineWidth)
+            return minFontSize;
+        if (getTextWidth(maxFontSize) < lineWidth)
+            return maxFontSize;
+        // Dichotomic search
+        let fontSize = (minFontSize + maxFontSize) / 2;
+        let currentTextWidth = getTextWidth(fontSize);
+        // Use a maximum number of iterations to be safe, because measuring text isn't 100% precise
+        let iterations = 0;
+        while (Math.abs(currentTextWidth - lineWidth) > precision && iterations < 20) {
+            if (currentTextWidth >= lineWidth) {
+                maxFontSize = (minFontSize + maxFontSize) / 2;
+            }
+            else {
+                minFontSize = (minFontSize + maxFontSize) / 2;
+            }
+            fontSize = (minFontSize + maxFontSize) / 2;
+            currentTextWidth = getTextWidth(fontSize);
+            iterations++;
+        }
+        return fontSize;
     }
     function computeIconWidth(context, style) {
         const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
@@ -1642,6 +992,365 @@
     }
 
     /**
+     *  Constant used to indicate the maximum of digits that is possible to display
+     *  in a cell with standard size.
+     */
+    const MAX_DECIMAL_PLACES = 20;
+    //from https://stackoverflow.com/questions/721304/insert-commas-into-number-string @Thomas/Alan Moore
+    const thousandsGroupsRegexp = /(\d+?)(?=(\d{3})+(?!\d)|$)/g;
+    const zeroRegexp = /0/g;
+    // -----------------------------------------------------------------------------
+    // FORMAT REPRESENTATION CACHE
+    // -----------------------------------------------------------------------------
+    const internalFormatByFormatString = {};
+    function parseFormat(formatString) {
+        let internalFormat = internalFormatByFormatString[formatString];
+        if (internalFormat === undefined) {
+            internalFormat = convertFormatToInternalFormat(formatString);
+            internalFormatByFormatString[formatString] = internalFormat;
+        }
+        return internalFormat;
+    }
+    // -----------------------------------------------------------------------------
+    // APPLY FORMAT
+    // -----------------------------------------------------------------------------
+    /**
+     * Formats a cell value with its format.
+     */
+    function formatValue(value, format) {
+        switch (typeof value) {
+            case "string":
+                return value;
+            case "boolean":
+                return value ? "TRUE" : "FALSE";
+            case "number":
+                // transform to internalNumberFormat
+                if (!format) {
+                    format = createDefaultFormat(value);
+                }
+                const internalFormat = parseFormat(format);
+                return applyInternalFormat(value, internalFormat);
+            case "object":
+                return "0";
+        }
+    }
+    function applyInternalFormat(value, internalFormat) {
+        if (internalFormat[0].type === "DATE") {
+            return applyDateTimeFormat(value, internalFormat[0].format);
+        }
+        let formattedValue = value < 0 ? "-" : "";
+        for (let part of internalFormat) {
+            switch (part.type) {
+                case "NUMBER":
+                    formattedValue += applyInternalNumberFormat(Math.abs(value), part.format);
+                    break;
+                case "CURRENCY":
+                    formattedValue += part.format;
+                    break;
+            }
+        }
+        return formattedValue;
+    }
+    function applyInternalNumberFormat(value, format) {
+        if (format.isPercent) {
+            value = value * 100;
+        }
+        let maxDecimals = 0;
+        if (format.decimalPart !== undefined) {
+            maxDecimals = format.decimalPart.length;
+        }
+        const { integerDigits, decimalDigits } = splitNumber(value, maxDecimals);
+        let formattedValue = applyIntegerFormat(integerDigits, format.integerPart, format.thousandsSeparator);
+        if (format.decimalPart !== undefined) {
+            formattedValue += "." + applyDecimalFormat(decimalDigits || "", format.decimalPart);
+        }
+        if (format.isPercent) {
+            formattedValue += "%";
+        }
+        return formattedValue;
+    }
+    function applyIntegerFormat(integerDigits, integerFormat, hasSeparator) {
+        var _a;
+        const _integerDigits = integerDigits === "0" ? "" : integerDigits;
+        let formattedInteger = _integerDigits;
+        const delta = integerFormat.length - _integerDigits.length;
+        if (delta > 0) {
+            // ex: format = "0#000000" and integerDigit: "123"
+            const restIntegerFormat = integerFormat.substring(0, delta); // restIntegerFormat = "0#00"
+            const countZero = (restIntegerFormat.match(zeroRegexp) || []).length; // countZero = 3
+            formattedInteger = "0".repeat(countZero) + formattedInteger; // return "000123"
+        }
+        if (hasSeparator) {
+            formattedInteger = ((_a = formattedInteger.match(thousandsGroupsRegexp)) === null || _a === void 0 ? void 0 : _a.join(",")) || formattedInteger;
+        }
+        return formattedInteger;
+    }
+    function applyDecimalFormat(decimalDigits, decimalFormat) {
+        // assume the format is valid (no commas)
+        let formattedDecimals = decimalDigits;
+        if (decimalFormat.length - decimalDigits.length > 0) {
+            const restDecimalFormat = decimalFormat.substring(decimalDigits.length, decimalFormat.length + 1);
+            const countZero = (restDecimalFormat.match(zeroRegexp) || []).length;
+            formattedDecimals = formattedDecimals + "0".repeat(countZero);
+        }
+        return formattedDecimals;
+    }
+    /**
+     * this is a cache that can contains number representation formats
+     * from 0 (minimum) to 20 (maximum) digits after the decimal point
+     */
+    const numberRepresentation = [];
+    /** split a number into two strings that contain respectively:
+     * - all digit stored in the integer part of the number
+     * - all digit stored in the decimal part of the number
+     *
+     * The 'maxDecimal' parameter allows to indicate the number of digits to not
+     * exceed in the decimal part, in which case digits are rounded
+     *
+     * Intl.Numberformat is used to properly handle all the roundings.
+     * e.g. 1234.7  with format ### (<> maxDecimals=0) should become 1235, not 1234
+     **/
+    function splitNumber(value, maxDecimals = MAX_DECIMAL_PLACES) {
+        let formatter = numberRepresentation[maxDecimals];
+        if (!formatter) {
+            formatter = new Intl.NumberFormat("en-US", {
+                maximumFractionDigits: maxDecimals,
+                useGrouping: false,
+            });
+            numberRepresentation[maxDecimals] = formatter;
+        }
+        const [integerDigits, decimalDigits] = formatter.format(value).split(".");
+        return { integerDigits, decimalDigits };
+    }
+    /**
+     * Check if the given format is a time, date or date time format.
+     */
+    function isDateTimeFormat(format) {
+        try {
+            applyDateTimeFormat(1, format);
+            return true;
+        }
+        catch (error) {
+            return false;
+        }
+    }
+    function applyDateTimeFormat(value, format) {
+        // TODO: unify the format functions for date and datetime
+        // This requires some code to 'parse' or 'tokenize' the format, keep it in a
+        // cache, and use it in a single mapping, that recognizes the special list
+        // of tokens dd,d,m,y,h, ... and preserves the rest
+        const jsDate = numberToJsDate(value);
+        const indexH = format.indexOf("h");
+        let strDate = "";
+        let strTime = "";
+        if (indexH > 0) {
+            strDate = formatJSDate(jsDate, format.substring(0, indexH - 1));
+            strTime = formatJSTime(jsDate, format.substring(indexH));
+        }
+        else if (indexH === 0) {
+            strTime = formatJSTime(jsDate, format);
+        }
+        else if (indexH < 0) {
+            strDate = formatJSDate(jsDate, format);
+        }
+        return strDate + (strDate && strTime ? " " : "") + strTime;
+    }
+    function formatJSDate(jsDate, format) {
+        const sep = format.match(/\/|-|\s/)[0];
+        const parts = format.split(sep);
+        return parts
+            .map((p) => {
+            switch (p) {
+                case "d":
+                    return jsDate.getDate();
+                case "dd":
+                    return jsDate.getDate().toString().padStart(2, "0");
+                case "m":
+                    return jsDate.getMonth() + 1;
+                case "mm":
+                    return String(jsDate.getMonth() + 1).padStart(2, "0");
+                case "yyyy":
+                    return jsDate.getFullYear();
+                default:
+                    throw new Error(`invalid format: ${format}`);
+            }
+        })
+            .join(sep);
+    }
+    function formatJSTime(jsDate, format) {
+        let parts = format.split(/:|\s/);
+        const dateHours = jsDate.getHours();
+        const isMeridian = parts[parts.length - 1] === "a";
+        let hours = dateHours;
+        let meridian = "";
+        if (isMeridian) {
+            hours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+            meridian = dateHours >= 12 ? " PM" : " AM";
+            parts.pop();
+        }
+        return (parts
+            .map((p) => {
+            switch (p) {
+                case "hhhh":
+                    const helapsedHours = Math.floor((jsDate.getTime() - INITIAL_1900_DAY$1) / (60 * 60 * 1000));
+                    return helapsedHours.toString();
+                case "hh":
+                    return hours.toString().padStart(2, "0");
+                case "mm":
+                    return jsDate.getMinutes().toString().padStart(2, "0");
+                case "ss":
+                    return jsDate.getSeconds().toString().padStart(2, "0");
+                default:
+                    throw new Error(`invalid format: ${format}`);
+            }
+        })
+            .join(":") + meridian);
+    }
+    // -----------------------------------------------------------------------------
+    // CREATE / MODIFY FORMAT
+    // -----------------------------------------------------------------------------
+    function createDefaultFormat(value) {
+        let { decimalDigits } = splitNumber(value, 10);
+        return decimalDigits ? "0." + "0".repeat(decimalDigits.length) : "0";
+    }
+    function changeDecimalPlaces(format, step) {
+        const internalFormat = parseFormat(format);
+        const newInternalFormat = internalFormat.map((intFmt) => {
+            if (intFmt.type === "NUMBER") {
+                return { ...intFmt, format: changeInternalNumberFormatDecimalPlaces(intFmt.format, step) };
+            }
+            else {
+                return intFmt;
+            }
+        });
+        const newFormat = convertInternalFormatToFormat(newInternalFormat);
+        internalFormatByFormatString[newFormat] = newInternalFormat;
+        return newFormat;
+    }
+    function changeInternalNumberFormatDecimalPlaces(format, step) {
+        var _a;
+        const _format = { ...format };
+        const sign = Math.sign(step);
+        const decimalLength = ((_a = _format.decimalPart) === null || _a === void 0 ? void 0 : _a.length) || 0;
+        const countZero = Math.min(Math.max(0, decimalLength + sign), MAX_DECIMAL_PLACES);
+        _format.decimalPart = "0".repeat(countZero);
+        if (_format.decimalPart === "") {
+            delete _format.decimalPart;
+        }
+        return _format;
+    }
+    // -----------------------------------------------------------------------------
+    // MANAGING FORMAT
+    // -----------------------------------------------------------------------------
+    /**
+     * Validates the provided format string and returns an InternalFormat Object.
+     */
+    function convertFormatToInternalFormat(format) {
+        if (format === "") {
+            throw new Error("A format cannot be empty");
+        }
+        let currentIndex = 0;
+        let result = [];
+        while (currentIndex < format.length) {
+            let closingIndex;
+            if (format.charAt(currentIndex) === "[") {
+                if (format.charAt(currentIndex + 1) !== "$") {
+                    throw new Error(`Currency formats have to be prefixed by a $: ${format}`);
+                }
+                // manage brackets/customStrings
+                closingIndex = format.substring(currentIndex).lastIndexOf("]") + currentIndex + 1;
+                if (closingIndex === 0) {
+                    throw new Error(`Invalid currency brackets format: ${format}`);
+                }
+                result.push({
+                    type: "CURRENCY",
+                    format: format.substring(currentIndex + 2, closingIndex - 1),
+                }); // remove leading "[$"" and ending "]".
+            }
+            else {
+                // rest of the time
+                const nextPartIndex = format.substring(currentIndex).indexOf("[");
+                closingIndex = nextPartIndex > -1 ? nextPartIndex + currentIndex : format.length;
+                const subFormat = format.substring(currentIndex, closingIndex);
+                if (subFormat.match(DATETIME_FORMAT)) {
+                    result.push({ type: "DATE", format: subFormat });
+                }
+                else {
+                    result.push({
+                        type: "NUMBER",
+                        format: convertToInternalNumberFormat(subFormat),
+                    });
+                }
+            }
+            currentIndex = closingIndex;
+        }
+        return result;
+    }
+    /**
+     * @param format a formatString that is only applicable to numbers. I.e. composed of characters 0 # , . %
+     */
+    function convertToInternalNumberFormat(format) {
+        const isPercent = format.includes("%");
+        const thousandsSeparator = format.includes(",");
+        if (format.match(/\..*,/)) {
+            throw new Error("A format can't contain ',' symbol in the decimal part");
+        }
+        const _format = format.replace("%", "").replace(",", "");
+        const extraSigns = _format.match(/[\%|,]/);
+        if (extraSigns) {
+            throw new Error(`A format can only contain a single '${extraSigns[0]}' symbol`);
+        }
+        const [integerPart, decimalPart] = _format.split(".");
+        if (decimalPart && decimalPart.length > 20) {
+            throw new Error("A format can't contain more than 20 decimal places");
+        }
+        if (decimalPart !== undefined) {
+            return {
+                integerPart,
+                isPercent,
+                thousandsSeparator,
+                decimalPart,
+            };
+        }
+        else {
+            return {
+                integerPart,
+                isPercent,
+                thousandsSeparator,
+            };
+        }
+    }
+    function convertInternalFormatToFormat(internalFormat) {
+        let format = "";
+        for (let part of internalFormat) {
+            let currentFormat;
+            switch (part.type) {
+                case "NUMBER":
+                    const fmt = part.format;
+                    currentFormat = fmt.integerPart;
+                    if (fmt.thousandsSeparator) {
+                        currentFormat = currentFormat.slice(0, -3) + "," + currentFormat.slice(-3);
+                    }
+                    if (fmt.decimalPart !== undefined) {
+                        currentFormat += "." + fmt.decimalPart;
+                    }
+                    if (fmt.isPercent) {
+                        currentFormat += "%";
+                    }
+                    break;
+                case "CURRENCY":
+                    currentFormat = `[$${part.format}]`;
+                    break;
+                case "DATE":
+                    currentFormat = part.format;
+                    break;
+            }
+            format += currentFormat;
+        }
+        return format;
+    }
+
+    /**
      * This regexp is supposed to be as close as possible as the numberRegexp, but
      * its purpose is to be used by the tokenizer.
      *
@@ -1670,6 +1379,8 @@
      * Note that "" (empty string) does not count as a number string
      */
     function isNumber(value) {
+        if (!value)
+            return false;
         // TO DO: add regexp for DATE string format (ex match: "28 02 2020")
         return numberRegexp.test(value.trim());
     }
@@ -2305,6 +2016,409 @@
         return { left: position.col, right: position.col, top: position.row, bottom: position.row };
     }
 
+    /**
+     * An AutofillModifierImplementation is used to describe how to handle a
+     * AutofillModifier.
+     */
+    const autofillModifiersRegistry = new Registry();
+    autofillModifiersRegistry
+        .add("INCREMENT_MODIFIER", {
+        apply: (rule, data) => {
+            var _a;
+            rule.current += rule.increment;
+            const content = rule.current.toString();
+            const tooltipValue = formatValue(rule.current, (_a = data.cell) === null || _a === void 0 ? void 0 : _a.format);
+            return {
+                cellData: {
+                    border: data.border,
+                    style: data.cell && data.cell.style,
+                    format: data.cell && data.cell.format,
+                    content,
+                },
+                tooltip: content ? { props: { content: tooltipValue } } : undefined,
+            };
+        },
+    })
+        .add("COPY_MODIFIER", {
+        apply: (rule, data, getters) => {
+            var _a, _b;
+            const content = ((_a = data.cell) === null || _a === void 0 ? void 0 : _a.content) || "";
+            return {
+                cellData: {
+                    border: data.border,
+                    style: data.cell && data.cell.style,
+                    format: data.cell && data.cell.format,
+                    content,
+                },
+                tooltip: content ? { props: { content: (_b = data.cell) === null || _b === void 0 ? void 0 : _b.formattedValue } } : undefined,
+            };
+        },
+    })
+        .add("FORMULA_MODIFIER", {
+        apply: (rule, data, getters, direction) => {
+            rule.current += rule.increment;
+            let x = 0;
+            let y = 0;
+            switch (direction) {
+                case 0 /* UP */:
+                    x = 0;
+                    y = -rule.current;
+                    break;
+                case 1 /* DOWN */:
+                    x = 0;
+                    y = rule.current;
+                    break;
+                case 2 /* LEFT */:
+                    x = -rule.current;
+                    y = 0;
+                    break;
+                case 3 /* RIGHT */:
+                    x = rule.current;
+                    y = 0;
+                    break;
+            }
+            if (!data.cell || !data.cell.isFormula()) {
+                return { cellData: {} };
+            }
+            const sheetId = data.sheetId;
+            const ranges = getters.createAdaptedRanges(data.cell.dependencies, x, y, sheetId);
+            const content = getters.buildFormulaContent(sheetId, data.cell, ranges);
+            return {
+                cellData: {
+                    border: data.border,
+                    style: data.cell.style,
+                    format: data.cell.format,
+                    content,
+                },
+                tooltip: content ? { props: { content } } : undefined,
+            };
+        },
+    });
+
+    var CellValueType;
+    (function (CellValueType) {
+        CellValueType["boolean"] = "boolean";
+        CellValueType["number"] = "number";
+        CellValueType["text"] = "text";
+        CellValueType["empty"] = "empty";
+        CellValueType["error"] = "error";
+    })(CellValueType || (CellValueType = {}));
+
+    function isSheetDependent(cmd) {
+        return "sheetId" in cmd;
+    }
+    function isGridDependent(cmd) {
+        return "dimension" in cmd;
+    }
+    function isTargetDependent(cmd) {
+        return "target" in cmd;
+    }
+    function isPositionDependent(cmd) {
+        return "col" in cmd && "row" in cmd;
+    }
+    const invalidateEvaluationCommands = new Set([
+        "RENAME_SHEET",
+        "DELETE_SHEET",
+        "CREATE_SHEET",
+        "ADD_COLUMNS_ROWS",
+        "REMOVE_COLUMNS_ROWS",
+        "DELETE_CELL",
+        "INSERT_CELL",
+        "UNDO",
+        "REDO",
+    ]);
+    const readonlyAllowedCommands = new Set([
+        "START",
+        "ACTIVATE_SHEET",
+        "COPY",
+        "PREPARE_SELECTION_INPUT_EXPANSION",
+        "STOP_SELECTION_INPUT",
+        "RESIZE_VIEWPORT",
+        "SET_VIEWPORT_OFFSET",
+        "SELECT_SEARCH_NEXT_MATCH",
+        "SELECT_SEARCH_PREVIOUS_MATCH",
+        "REFRESH_SEARCH",
+        "UPDATE_SEARCH",
+        "CLEAR_SEARCH",
+        "EVALUATE_CELLS",
+        "SET_CURRENT_CONTENT",
+        "SET_FORMULA_VISIBILITY",
+    ]);
+    const coreTypes = new Set([
+        /** CELLS */
+        "UPDATE_CELL",
+        "UPDATE_CELL_POSITION",
+        "CLEAR_CELL",
+        "DELETE_CONTENT",
+        /** GRID SHAPE */
+        "ADD_COLUMNS_ROWS",
+        "REMOVE_COLUMNS_ROWS",
+        "RESIZE_COLUMNS_ROWS",
+        "HIDE_COLUMNS_ROWS",
+        "UNHIDE_COLUMNS_ROWS",
+        "SET_GRID_LINES_VISIBILITY",
+        /** MERGE */
+        "ADD_MERGE",
+        "REMOVE_MERGE",
+        /** SHEETS MANIPULATION */
+        "CREATE_SHEET",
+        "DELETE_SHEET",
+        "DUPLICATE_SHEET",
+        "MOVE_SHEET",
+        "RENAME_SHEET",
+        "HIDE_SHEET",
+        "SHOW_SHEET",
+        /** RANGES MANIPULATION */
+        "MOVE_RANGES",
+        /** CONDITIONAL FORMAT */
+        "ADD_CONDITIONAL_FORMAT",
+        "REMOVE_CONDITIONAL_FORMAT",
+        "MOVE_CONDITIONAL_FORMAT",
+        /** FIGURES */
+        "CREATE_FIGURE",
+        "DELETE_FIGURE",
+        "UPDATE_FIGURE",
+        /** FORMATTING */
+        "SET_FORMATTING",
+        "CLEAR_FORMATTING",
+        "SET_BORDER",
+        "SET_DECIMAL",
+        /** CHART */
+        "CREATE_CHART",
+        "UPDATE_CHART",
+    ]);
+    function isCoreCommand(cmd) {
+        return coreTypes.has(cmd.type);
+    }
+    function canExecuteInReadonly(cmd) {
+        return readonlyAllowedCommands.has(cmd.type);
+    }
+    /**
+     * Holds the result of a command dispatch.
+     * The command may have been successfully dispatched or cancelled
+     * for one or more reasons.
+     */
+    class DispatchResult {
+        constructor(results = []) {
+            if (!Array.isArray(results)) {
+                results = [results];
+            }
+            results = [...new Set(results)];
+            this.reasons = results.filter((result) => result !== 0 /* Success */);
+        }
+        /**
+         * Static helper which returns a successful DispatchResult
+         */
+        static get Success() {
+            return new DispatchResult();
+        }
+        get isSuccessful() {
+            return this.reasons.length === 0;
+        }
+        /**
+         * Check if the dispatch has been cancelled because of
+         * the given reason.
+         */
+        isCancelledBecause(reason) {
+            return this.reasons.includes(reason);
+        }
+    }
+    exports.CommandResult = void 0;
+    (function (CommandResult) {
+        CommandResult[CommandResult["Success"] = 0] = "Success";
+        CommandResult[CommandResult["CancelledForUnknownReason"] = 1] = "CancelledForUnknownReason";
+        CommandResult[CommandResult["WillRemoveExistingMerge"] = 2] = "WillRemoveExistingMerge";
+        CommandResult[CommandResult["MergeIsDestructive"] = 3] = "MergeIsDestructive";
+        CommandResult[CommandResult["CellIsMerged"] = 4] = "CellIsMerged";
+        CommandResult[CommandResult["EmptyUndoStack"] = 5] = "EmptyUndoStack";
+        CommandResult[CommandResult["EmptyRedoStack"] = 6] = "EmptyRedoStack";
+        CommandResult[CommandResult["NotEnoughElements"] = 7] = "NotEnoughElements";
+        CommandResult[CommandResult["NotEnoughSheets"] = 8] = "NotEnoughSheets";
+        CommandResult[CommandResult["MissingSheetName"] = 9] = "MissingSheetName";
+        CommandResult[CommandResult["DuplicatedSheetName"] = 10] = "DuplicatedSheetName";
+        CommandResult[CommandResult["ForbiddenCharactersInSheetName"] = 11] = "ForbiddenCharactersInSheetName";
+        CommandResult[CommandResult["WrongSheetMove"] = 12] = "WrongSheetMove";
+        CommandResult[CommandResult["WrongSheetPosition"] = 13] = "WrongSheetPosition";
+        CommandResult[CommandResult["InvalidAnchorZone"] = 14] = "InvalidAnchorZone";
+        CommandResult[CommandResult["SelectionOutOfBound"] = 15] = "SelectionOutOfBound";
+        CommandResult[CommandResult["TargetOutOfSheet"] = 16] = "TargetOutOfSheet";
+        CommandResult[CommandResult["WrongCutSelection"] = 17] = "WrongCutSelection";
+        CommandResult[CommandResult["WrongPasteSelection"] = 18] = "WrongPasteSelection";
+        CommandResult[CommandResult["WrongPasteOption"] = 19] = "WrongPasteOption";
+        CommandResult[CommandResult["EmptyClipboard"] = 20] = "EmptyClipboard";
+        CommandResult[CommandResult["EmptyRange"] = 21] = "EmptyRange";
+        CommandResult[CommandResult["InvalidRange"] = 22] = "InvalidRange";
+        CommandResult[CommandResult["InvalidZones"] = 23] = "InvalidZones";
+        CommandResult[CommandResult["InvalidSheetId"] = 24] = "InvalidSheetId";
+        CommandResult[CommandResult["InputAlreadyFocused"] = 25] = "InputAlreadyFocused";
+        CommandResult[CommandResult["MaximumRangesReached"] = 26] = "MaximumRangesReached";
+        CommandResult[CommandResult["InvalidChartDefinition"] = 27] = "InvalidChartDefinition";
+        CommandResult[CommandResult["EmptyDataSet"] = 28] = "EmptyDataSet";
+        CommandResult[CommandResult["InvalidDataSet"] = 29] = "InvalidDataSet";
+        CommandResult[CommandResult["EmptyScorecardKeyValue"] = 30] = "EmptyScorecardKeyValue";
+        CommandResult[CommandResult["InvalidLabelRange"] = 31] = "InvalidLabelRange";
+        CommandResult[CommandResult["InvalidScorecardKeyValue"] = 32] = "InvalidScorecardKeyValue";
+        CommandResult[CommandResult["InvalidScorecardBaseline"] = 33] = "InvalidScorecardBaseline";
+        CommandResult[CommandResult["EmptyGaugeDataRange"] = 34] = "EmptyGaugeDataRange";
+        CommandResult[CommandResult["InvalidGaugeDataRange"] = 35] = "InvalidGaugeDataRange";
+        CommandResult[CommandResult["EmptyGaugeRangeMin"] = 36] = "EmptyGaugeRangeMin";
+        CommandResult[CommandResult["GaugeRangeMinNaN"] = 37] = "GaugeRangeMinNaN";
+        CommandResult[CommandResult["EmptyGaugeRangeMax"] = 38] = "EmptyGaugeRangeMax";
+        CommandResult[CommandResult["GaugeRangeMaxNaN"] = 39] = "GaugeRangeMaxNaN";
+        CommandResult[CommandResult["GaugeRangeMinBiggerThanRangeMax"] = 40] = "GaugeRangeMinBiggerThanRangeMax";
+        CommandResult[CommandResult["GaugeLowerInflectionPointNaN"] = 41] = "GaugeLowerInflectionPointNaN";
+        CommandResult[CommandResult["GaugeUpperInflectionPointNaN"] = 42] = "GaugeUpperInflectionPointNaN";
+        CommandResult[CommandResult["GaugeLowerBiggerThanUpper"] = 43] = "GaugeLowerBiggerThanUpper";
+        CommandResult[CommandResult["InvalidAutofillSelection"] = 44] = "InvalidAutofillSelection";
+        CommandResult[CommandResult["WrongComposerSelection"] = 45] = "WrongComposerSelection";
+        CommandResult[CommandResult["MinBiggerThanMax"] = 46] = "MinBiggerThanMax";
+        CommandResult[CommandResult["LowerBiggerThanUpper"] = 47] = "LowerBiggerThanUpper";
+        CommandResult[CommandResult["MidBiggerThanMax"] = 48] = "MidBiggerThanMax";
+        CommandResult[CommandResult["MinBiggerThanMid"] = 49] = "MinBiggerThanMid";
+        CommandResult[CommandResult["FirstArgMissing"] = 50] = "FirstArgMissing";
+        CommandResult[CommandResult["SecondArgMissing"] = 51] = "SecondArgMissing";
+        CommandResult[CommandResult["MinNaN"] = 52] = "MinNaN";
+        CommandResult[CommandResult["MidNaN"] = 53] = "MidNaN";
+        CommandResult[CommandResult["MaxNaN"] = 54] = "MaxNaN";
+        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 55] = "ValueUpperInflectionNaN";
+        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 56] = "ValueLowerInflectionNaN";
+        CommandResult[CommandResult["MinInvalidFormula"] = 57] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 58] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 59] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 60] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 61] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 62] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 63] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 64] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 65] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 66] = "Readonly";
+        CommandResult[CommandResult["InvalidOffset"] = 67] = "InvalidOffset";
+        CommandResult[CommandResult["InvalidViewportSize"] = 68] = "InvalidViewportSize";
+        CommandResult[CommandResult["FigureDoesNotExist"] = 69] = "FigureDoesNotExist";
+        CommandResult[CommandResult["InvalidConditionalFormatId"] = 70] = "InvalidConditionalFormatId";
+    })(exports.CommandResult || (exports.CommandResult = {}));
+
+    var ReturnFormatType;
+    (function (ReturnFormatType) {
+        ReturnFormatType["FormatFromArgument"] = "FormatFromArgument";
+    })(ReturnFormatType || (ReturnFormatType = {}));
+
+    var DIRECTION;
+    (function (DIRECTION) {
+        DIRECTION[DIRECTION["UP"] = 0] = "UP";
+        DIRECTION[DIRECTION["DOWN"] = 1] = "DOWN";
+        DIRECTION[DIRECTION["LEFT"] = 2] = "LEFT";
+        DIRECTION[DIRECTION["RIGHT"] = 3] = "RIGHT";
+    })(DIRECTION || (DIRECTION = {}));
+
+    var LAYERS;
+    (function (LAYERS) {
+        LAYERS[LAYERS["Background"] = 0] = "Background";
+        LAYERS[LAYERS["Highlights"] = 1] = "Highlights";
+        LAYERS[LAYERS["Clipboard"] = 2] = "Clipboard";
+        LAYERS[LAYERS["Search"] = 3] = "Search";
+        LAYERS[LAYERS["Chart"] = 4] = "Chart";
+        LAYERS[LAYERS["Selection"] = 5] = "Selection";
+        LAYERS[LAYERS["Autofill"] = 6] = "Autofill";
+        LAYERS[LAYERS["Headers"] = 7] = "Headers";
+    })(LAYERS || (LAYERS = {}));
+
+    const autofillRulesRegistry = new Registry();
+    /**
+     * Get the consecutive xc that are of type "number" or "date".
+     * Return the one which contains the given cell
+     */
+    function getGroup(cell, cells) {
+        let group = [];
+        let found = false;
+        for (let x of cells) {
+            if (x === cell) {
+                found = true;
+            }
+            if ((x === null || x === void 0 ? void 0 : x.evaluated.type) === CellValueType.number) {
+                group.push(x.evaluated.value);
+            }
+            else {
+                if (found) {
+                    return group;
+                }
+                group = [];
+            }
+        }
+        return group;
+    }
+    /**
+     * Get the average steps between numbers
+     */
+    function getAverageIncrement(group) {
+        const averages = [];
+        let last = group[0];
+        for (let i = 1; i < group.length; i++) {
+            const current = group[i];
+            averages.push(current - last);
+            last = current;
+        }
+        return averages.reduce((a, b) => a + b, 0) / averages.length;
+    }
+    autofillRulesRegistry
+        .add("simple_value_copy", {
+        condition: (cell, cells) => {
+            var _a;
+            return cells.length === 1 && !cell.isFormula() && !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT));
+        },
+        generateRule: () => {
+            return { type: "COPY_MODIFIER" };
+        },
+        sequence: 10,
+    })
+        .add("copy_text", {
+        condition: (cell) => !cell.isFormula() && cell.evaluated.type === CellValueType.text,
+        generateRule: () => {
+            return { type: "COPY_MODIFIER" };
+        },
+        sequence: 20,
+    })
+        .add("update_formula", {
+        condition: (cell) => cell.isFormula(),
+        generateRule: (_, cells) => {
+            return { type: "FORMULA_MODIFIER", increment: cells.length, current: 0 };
+        },
+        sequence: 30,
+    })
+        .add("increment_number", {
+        condition: (cell) => cell.evaluated.type === CellValueType.number,
+        generateRule: (cell, cells) => {
+            const group = getGroup(cell, cells);
+            let increment = 1;
+            if (group.length == 2) {
+                increment = (group[1] - group[0]) * 2;
+            }
+            else if (group.length > 2) {
+                increment = getAverageIncrement(group) * group.length;
+            }
+            return {
+                type: "INCREMENT_MODIFIER",
+                increment,
+                current: cell.evaluated.type === CellValueType.number ? cell.evaluated.value : 0,
+            };
+        },
+        sequence: 40,
+    });
+
+    /**
+     * This registry is intended to map a cell content (raw string) to
+     * an instance of a cell.
+     */
+    const cellRegistry = new Registry();
+
+    /**
+     * Registry intended to support usual currencies. It is mainly used to create
+     * currency formats that can be selected or modified when customizing formats.
+     */
+    const currenciesRegistry = new Registry();
+
+    const figureRegistry = new Registry();
+
     const inverseCommandRegistry = new Registry()
         .add("ADD_COLUMNS_ROWS", inverseAddColumnsRows)
         .add("REMOVE_COLUMNS_ROWS", inverseRemoveColumnsRows)
@@ -2571,7 +2685,7 @@
                 });
             }
         }
-        if (result.isCancelledBecause(49 /* InvalidSortZone */)) {
+        if (result.isCancelledBecause(62 /* InvalidSortZone */)) {
             const { col, row } = anchor;
             env.model.selection.selectZone({ cell: { col, row }, zone });
             env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
@@ -3126,11 +3240,9 @@
                 background: BACKGROUND_CHART_COLOR,
                 verticalAxisPosition: "left",
                 legendPosition: "top",
-                labelsAsText: false,
             },
         });
-        const figure = env.model.getters.getFigure(sheetId, id);
-        env.openSidePanel("ChartPanel", { figure });
+        env.openSidePanel("ChartPanel", { figureId: id });
     };
     //------------------------------------------------------------------------------
     // Style/Format
@@ -3628,22 +3740,22 @@
     const CfTerms = {
         Errors: {
             [22 /* InvalidRange */]: _lt("The range is invalid"),
-            [37 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
-            [38 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
-            [39 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [40 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [41 /* MaxNaN */]: _lt("The maxpoint must be a number"),
-            [42 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
-            [43 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
-            [33 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [36 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [35 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [34 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller then upper inflection point"),
-            [44 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [46 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [45 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [47 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
-            [48 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
+            [50 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
+            [51 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
+            [52 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [53 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [54 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [55 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [56 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
+            [46 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [49 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [48 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [47 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller than upper inflection point"),
+            [57 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [59 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [58 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [60 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
+            [61 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
             [21 /* EmptyRange */]: _lt("A range needs to be defined"),
             Unexpected: _lt("The rule is invalid for an unknown reason"),
         },
@@ -3669,10 +3781,25 @@
     const ChartTerms = {
         Series: _lt("Series"),
         Errors: {
+            Unexpected: _lt("The chart definition is invalid for an unknown reason"),
+            // BASIC CHART ERRORS (LINE | BAR | PIE)
             [28 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
             [29 /* InvalidDataSet */]: _lt("The dataset is invalid"),
-            [30 /* InvalidLabelRange */]: _lt("Labels are invalid"),
-            Unexpected: _lt("The chart definition is invalid for an unknown reason"),
+            [31 /* InvalidLabelRange */]: _lt("Labels are invalid"),
+            // SCORECARD CHART ERRORS
+            [30 /* EmptyScorecardKeyValue */]: _lt("A key value must be defined"),
+            [32 /* InvalidScorecardKeyValue */]: _lt("The key value is invalid"),
+            [33 /* InvalidScorecardBaseline */]: _lt("The baseline value is invalid"),
+            // GAUGE CHART ERRORS
+            [34 /* EmptyGaugeDataRange */]: _lt("A data range must be defined"),
+            [35 /* InvalidGaugeDataRange */]: _lt("The data range is invalid"),
+            [36 /* EmptyGaugeRangeMin */]: _lt("A minimum range limit value is needed"),
+            [37 /* GaugeRangeMinNaN */]: _lt("The minimum range limit value must be a number"),
+            [38 /* EmptyGaugeRangeMax */]: _lt("A maximum range limit value is needed"),
+            [39 /* GaugeRangeMaxNaN */]: _lt("The maximum range limit value must be a number"),
+            [40 /* GaugeRangeMinBiggerThanRangeMax */]: _lt("Minimum range limit must be smaller than maximum range limit"),
+            [41 /* GaugeLowerInflectionPointNaN */]: _lt("The lower inflection point value must be a number"),
+            [42 /* GaugeUpperInflectionPointNaN */]: _lt("The upper inflection point value must be a number"),
         },
     };
     const NumberFormatTerms = {
@@ -4098,165 +4225,6 @@
         document.head.appendChild(sheet);
     }
 
-    const COLORS = [
-        [
-            "#000000",
-            "#434343",
-            "#666666",
-            "#999999",
-            "#b7b7b7",
-            "#cccccc",
-            "#d9d9d9",
-            "#efefef",
-            "#f3f3f3",
-            "#ffffff",
-        ],
-        [
-            "#980000",
-            "#ff0000",
-            "#ff9900",
-            "#ffff00",
-            "#00ff00",
-            "#00ffff",
-            "#4a86e8",
-            "#0000ff",
-            "#9900ff",
-            "#ff00ff",
-        ],
-        [
-            "#e6b8af",
-            "#f4cccc",
-            "#fce5cd",
-            "#fff2cc",
-            "#d9ead3",
-            "#d0e0e3",
-            "#c9daf8",
-            "#cfe2f3",
-            "#d9d2e9",
-            "#ead1dc",
-        ],
-        [
-            "#dd7e6b",
-            "#ea9999",
-            "#f9cb9c",
-            "#ffe599",
-            "#b6d7a8",
-            "#a2c4c9",
-            "#a4c2f4",
-            "#9fc5e8",
-            "#b4a7d6",
-            "#d5a6bd",
-        ],
-        [
-            "#cc4125",
-            "#e06666",
-            "#f6b26b",
-            "#ffd966",
-            "#93c47d",
-            "#76a5af",
-            "#6d9eeb",
-            "#6fa8dc",
-            "#8e7cc3",
-            "#c27ba0",
-        ],
-        [
-            "#a61c00",
-            "#cc0000",
-            "#e69138",
-            "#f1c232",
-            "#6aa84f",
-            "#45818e",
-            "#3c78d8",
-            "#3d85c6",
-            "#674ea7",
-            "#a64d79",
-        ],
-        [
-            "#85200c",
-            "#990000",
-            "#b45f06",
-            "#bf9000",
-            "#38761d",
-            "#134f5c",
-            "#1155cc",
-            "#0b5394",
-            "#351c75",
-            "#741b47",
-        ],
-        [
-            "#5b0f00",
-            "#660000",
-            "#783f04",
-            "#7f6000",
-            "#274e13",
-            "#0c343d",
-            "#1c4587",
-            "#073763",
-            "#20124d",
-            "#4c1130",
-        ],
-    ];
-    const PICKER_VERTICAL_PADDING = 6;
-    const LINE_VERTICAL_PADDING = 3;
-    const LINE_HORIZONTAL_PADDING = 6;
-    const ITEM_HORIZONTAL_MARGIN = 2;
-    const ITEM_EDGE_LENGTH = 18;
-    const ITEM_BORDER_WIDTH = 1;
-    const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
-    const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
-        2 * LINE_HORIZONTAL_PADDING;
-    css /* scss */ `
-  .o-color-picker {
-    position: absolute;
-    top: calc(100% + 5px);
-    z-index: 10;
-    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-    background-color: white;
-    padding: ${PICKER_VERTICAL_PADDING}px 0px;
-
-    .o-color-picker-line {
-      display: flex;
-      padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
-      .o-color-picker-line-item {
-        width: ${ITEM_EDGE_LENGTH}px;
-        height: ${ITEM_EDGE_LENGTH}px;
-        margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
-        border-radius: 50px;
-        border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
-        &:hover {
-          cursor: pointer;
-          background-color: rgba(0, 0, 0, 0.08);
-          outline: 1px solid gray;
-        }
-      }
-    }
-
-    &.right {
-      left: 0;
-    }
-
-    &.left {
-      right: 0;
-    }
-    &.center {
-      left: calc(50% - ${PICKER_WIDTH / 2}px);
-    }
-  }
-`;
-    class ColorPicker extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.COLORS = COLORS;
-        }
-        onColorClick(ev) {
-            const color = ev.target.dataset.color;
-            if (color) {
-                this.props.onColorPicked(color);
-            }
-        }
-    }
-    ColorPicker.template = "o-spreadsheet.ColorPicker";
-
     const uuidGenerator$1 = new UuidGenerator();
     css /* scss */ `
   .o-selection {
@@ -4423,56 +4391,18 @@
     }
     SelectionInput.template = "o-spreadsheet.SelectionInput";
 
-    css /* scss */ `
-  .o-chart {
-    .o-panel {
-      display: flex;
-      .o-panel-element {
-        flex: 1 0 auto;
-        padding: 8px 0px;
-        text-align: center;
-        cursor: pointer;
-        border-right: 1px solid darkgray;
-        &.inactive {
-          background-color: ${BACKGROUND_HEADER_COLOR};
-          border-bottom: 1px solid darkgray;
-        }
-        .fa {
-          margin-right: 4px;
-        }
-      }
-      .o-panel-element:last-child {
-        border-right: none;
-      }
-    }
-
-    .o-with-color-picker {
-      position: relative;
-    }
-    .o-with-color-picker > span {
-      border-bottom: 4px solid;
-    }
-  }
-`;
-    class ChartPanel extends owl.Component {
+    class LineBarPieConfigPanel extends owl.Component {
         constructor() {
             super(...arguments);
-            this.state = owl.useState(this.initialState(this.props.figure));
+            this.state = owl.useState({
+                datasetDispatchResult: undefined,
+                labelsDispatchResult: undefined,
+            });
+            this.dataSeriesRanges = [];
         }
         setup() {
-            owl.onWillUpdateProps((nextProps) => {
-                if (!this.env.model.getters.getChartDefinition(nextProps.figure.id)) {
-                    this.props.onCloseSidePanel();
-                    return;
-                }
-                if (nextProps.figure.id !== this.props.figure.id) {
-                    this.state.panel = "configuration";
-                    this.state.fillColorTool = false;
-                    this.state.datasetDispatchResult = undefined;
-                    this.state.labelsDispatchResult = undefined;
-                    this.state.chart = this.env.model.getters.getChartDefinitionUI(this.env.model.getters.getActiveSheetId(), nextProps.figure.id);
-                }
-            });
+            this.dataSeriesRanges = this.props.definition.dataSets;
+            this.labelRange = this.props.definition.labelRange;
         }
         get errorMessages() {
             var _a, _b;
@@ -4489,777 +4419,395 @@
         }
         get isLabelInvalid() {
             var _a;
-            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(30 /* InvalidLabelRange */));
+            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(31 /* InvalidLabelRange */));
         }
-        onSeriesChanged(ranges) {
-            this.state.chart.dataSets = ranges;
-        }
-        updateDataSet() {
-            this.state.datasetDispatchResult = this.updateChart({
-                dataSets: this.state.chart.dataSets,
-                dataSetsHaveTitle: this.state.chart.dataSetsHaveTitle,
+        onUpdateDataSetsHaveTitle(ev) {
+            this.props.updateChart({
+                dataSetsHaveTitle: ev.target.checked,
             });
         }
-        updateStacked() {
-            this.updateChart({ stackedBar: this.state.chart.stackedBar });
+        /**
+         * Change the local dataSeriesRanges. The model should be updated when the
+         * button "confirm" is clicked
+         */
+        onDataSeriesRangesChanged(ranges) {
+            this.dataSeriesRanges = ranges;
         }
-        updateLabelsAsText() {
-            this.updateChart({ labelsAsText: this.state.chart.labelsAsText });
-        }
-        updateTitle() {
-            this.updateChart({ title: this.state.chart.title });
-        }
-        updateSelect(attr, ev) {
-            this.state.chart[attr] = ev.target.value;
-            this.updateChart({ [attr]: ev.target.value });
-        }
-        updateLabelRange() {
-            this.state.labelsDispatchResult = this.updateChart({
-                labelRange: this.state.chart.labelRange || null,
+        onDataSeriesConfirmed() {
+            this.state.datasetDispatchResult = this.props.updateChart({
+                dataSets: this.dataSeriesRanges,
             });
         }
-        updateChart(definition) {
-            return this.env.model.dispatch("UPDATE_CHART", {
-                id: this.props.figure.id,
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                definition,
-            });
-        }
+        /**
+         * Change the local labelRange. The model should be updated when the
+         * button "confirm" is clicked
+         */
         onLabelRangeChanged(ranges) {
-            this.state.chart.labelRange = ranges[0];
+            this.labelRange = ranges[0];
         }
-        getKey(label) {
-            return label + this.props.figure.id;
+        onLabelRangeConfirmed() {
+            this.state.labelsDispatchResult = this.props.updateChart({
+                labelRange: this.labelRange,
+            });
+        }
+    }
+    LineBarPieConfigPanel.template = "o-spreadsheet.LineBarPieConfigPanel";
+    LineBarPieConfigPanel.components = { SelectionInput };
+
+    class BarConfigPanel extends LineBarPieConfigPanel {
+        onUpdateStacked(ev) {
+            this.props.updateChart({
+                stackedBar: ev.target.checked,
+            });
+        }
+    }
+    BarConfigPanel.template = "o-spreadsheet.BarConfigPanel";
+
+    const COLORS = [
+        [
+            "#000000",
+            "#434343",
+            "#666666",
+            "#999999",
+            "#b7b7b7",
+            "#cccccc",
+            "#d9d9d9",
+            "#efefef",
+            "#f3f3f3",
+            "#ffffff",
+        ],
+        [
+            "#980000",
+            "#ff0000",
+            "#ff9900",
+            "#ffff00",
+            "#00ff00",
+            "#00ffff",
+            "#4a86e8",
+            "#0000ff",
+            "#9900ff",
+            "#ff00ff",
+        ],
+        [
+            "#e6b8af",
+            "#f4cccc",
+            "#fce5cd",
+            "#fff2cc",
+            "#d9ead3",
+            "#d0e0e3",
+            "#c9daf8",
+            "#cfe2f3",
+            "#d9d2e9",
+            "#ead1dc",
+        ],
+        [
+            "#dd7e6b",
+            "#ea9999",
+            "#f9cb9c",
+            "#ffe599",
+            "#b6d7a8",
+            "#a2c4c9",
+            "#a4c2f4",
+            "#9fc5e8",
+            "#b4a7d6",
+            "#d5a6bd",
+        ],
+        [
+            "#cc4125",
+            "#e06666",
+            "#f6b26b",
+            "#ffd966",
+            "#93c47d",
+            "#76a5af",
+            "#6d9eeb",
+            "#6fa8dc",
+            "#8e7cc3",
+            "#c27ba0",
+        ],
+        [
+            "#a61c00",
+            "#cc0000",
+            "#e69138",
+            "#f1c232",
+            "#6aa84f",
+            "#45818e",
+            "#3c78d8",
+            "#3d85c6",
+            "#674ea7",
+            "#a64d79",
+        ],
+        [
+            "#85200c",
+            "#990000",
+            "#b45f06",
+            "#bf9000",
+            "#38761d",
+            "#134f5c",
+            "#1155cc",
+            "#0b5394",
+            "#351c75",
+            "#741b47",
+        ],
+        [
+            "#5b0f00",
+            "#660000",
+            "#783f04",
+            "#7f6000",
+            "#274e13",
+            "#0c343d",
+            "#1c4587",
+            "#073763",
+            "#20124d",
+            "#4c1130",
+        ],
+    ];
+    const PICKER_VERTICAL_PADDING = 6;
+    const LINE_VERTICAL_PADDING = 3;
+    const LINE_HORIZONTAL_PADDING = 6;
+    const ITEM_HORIZONTAL_MARGIN = 2;
+    const ITEM_EDGE_LENGTH = 18;
+    const ITEM_BORDER_WIDTH = 1;
+    const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
+    const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
+        2 * LINE_HORIZONTAL_PADDING;
+    css /* scss */ `
+  .o-color-picker {
+    position: absolute;
+    top: calc(100% + 5px);
+    z-index: 10;
+    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+    background-color: white;
+    padding: ${PICKER_VERTICAL_PADDING}px 0px;
+
+    .o-color-picker-line {
+      display: flex;
+      padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
+      .o-color-picker-line-item {
+        width: ${ITEM_EDGE_LENGTH}px;
+        height: ${ITEM_EDGE_LENGTH}px;
+        margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
+        border-radius: 50px;
+        border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
+        &:hover {
+          cursor: pointer;
+          background-color: rgba(0, 0, 0, 0.08);
+          outline: 1px solid gray;
+        }
+      }
+    }
+
+    &.right {
+      left: 0;
+    }
+
+    &.left {
+      right: 0;
+    }
+    &.center {
+      left: calc(50% - ${PICKER_WIDTH / 2}px);
+    }
+  }
+`;
+    class ColorPicker extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.COLORS = COLORS;
+        }
+        onColorClick(ev) {
+            const color = ev.target.dataset.color;
+            if (color) {
+                this.props.onColorPicked(color);
+            }
+        }
+    }
+    ColorPicker.template = "o-spreadsheet.ColorPicker";
+
+    class LineBarPieDesignPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                fillColorTool: false,
+            });
         }
         toggleColorPicker() {
             this.state.fillColorTool = !this.state.fillColorTool;
         }
-        setColor(color) {
-            this.state.chart.background = color;
+        updateBackgroundColor(color) {
             this.state.fillColorTool = false;
-            this.updateChart({ background: this.state.chart.background });
+            this.props.updateChart({
+                background: color,
+            });
         }
-        activate(panel) {
-            this.state.panel = panel;
+        updateTitle(ev) {
+            this.props.updateChart({
+                title: ev.target.value,
+            });
         }
-        canTreatLabelsAsText() {
-            return this.env.model.getters.canChartParseLabels(this.props.figure.id);
-        }
-        initialState(figure) {
-            return {
-                chart: this.env.model.getters.getChartDefinitionUI(this.env.model.getters.getActiveSheetId(), figure.id),
-                panel: "configuration",
-                fillColorTool: false,
-            };
+        updateSelect(attr, ev) {
+            this.props.updateChart({
+                [attr]: ev.target.value,
+            });
         }
     }
-    ChartPanel.template = "o-spreadsheet.ChartPanel";
-    ChartPanel.components = { SelectionInput, ColorPicker };
+    LineBarPieDesignPanel.template = "o-spreadsheet.LineBarPieDesignPanel";
+    LineBarPieDesignPanel.components = { ColorPicker };
 
-    /**
-     * Return true if the event was triggered from
-     * a child element.
-     */
-    function isChildEvent(parent, ev) {
-        return !!ev.target && parent.contains(ev.target);
+    class BarChartDesignPanel extends LineBarPieDesignPanel {
     }
-    function getTextDecoration({ strikethrough, underline, }) {
-        if (!strikethrough && !underline) {
-            return "none";
-        }
-        return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
-    }
+    BarChartDesignPanel.template = "o-spreadsheet.BarChartDesignPanel";
 
-    // -----------------------------------------------------------------------------
-    // We need here the svg of the icons that we need to convert to images for the renderer
-    // -----------------------------------------------------------------------------
-    const ARROW_DOWN = '<svg class="o-cf-icon arrow-down" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
-    const ARROW_UP = '<svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
-    const ARROW_RIGHT = '<svg class="o-cf-icon arrow-right" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
-    const SMILE = '<svg class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
-    const MEH = '<svg class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
-    const FROWN = '<svg class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
-    const GREEN_DOT = '<svg class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    const YELLOW_DOT = '<svg class="o-cf-icon yellow-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    const RED_DOT = '<svg class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
-    function loadIconImage(svg) {
-        /** We have to add xmlns, as it's not added by owl in the canvas */
-        svg = `<svg xmlns="http://www.w3.org/2000/svg" ${svg.slice(4)}`;
-        const image = new Image();
-        image.src = "data:image/svg+xml; charset=utf8, " + encodeURIComponent(svg);
-        return image;
-    }
-    const ICONS = {
-        arrowGood: {
-            template: "ARROW_UP",
-            img: loadIconImage(ARROW_UP),
-        },
-        arrowNeutral: {
-            template: "ARROW_RIGHT",
-            img: loadIconImage(ARROW_RIGHT),
-        },
-        arrowBad: {
-            template: "ARROW_DOWN",
-            img: loadIconImage(ARROW_DOWN),
-        },
-        smileyGood: {
-            template: "SMILE",
-            img: loadIconImage(SMILE),
-        },
-        smileyNeutral: {
-            template: "MEH",
-            img: loadIconImage(MEH),
-        },
-        smileyBad: {
-            template: "FROWN",
-            img: loadIconImage(FROWN),
-        },
-        dotGood: {
-            template: "GREEN_DOT",
-            img: loadIconImage(GREEN_DOT),
-        },
-        dotNeutral: {
-            template: "YELLOW_DOT",
-            img: loadIconImage(YELLOW_DOT),
-        },
-        dotBad: {
-            template: "RED_DOT",
-            img: loadIconImage(RED_DOT),
-        },
-    };
-    const ICON_SETS = {
-        arrows: {
-            good: "arrowGood",
-            neutral: "arrowNeutral",
-            bad: "arrowBad",
-        },
-        smiley: {
-            good: "smileyGood",
-            neutral: "smileyNeutral",
-            bad: "smileyBad",
-        },
-        dots: {
-            good: "dotGood",
-            neutral: "dotNeutral",
-            bad: "dotBad",
-        },
-    };
-
-    css /* scss */ `
-  .o-icon-picker {
-    position: absolute;
-    z-index: 10;
-    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-    background-color: white;
-    padding: 2px 1px;
-  }
-  .o-cf-icon-line {
-    display: flex;
-    padding: 3px 6px;
-  }
-  .o-icon-picker-item {
-    margin: 0px 2px;
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.08);
-      outline: 1px solid gray;
-    }
-  }
-`;
-    class IconPicker extends owl.Component {
+    class GaugeChartConfigPanel extends owl.Component {
         constructor() {
             super(...arguments);
-            this.icons = ICONS;
-            this.iconSets = ICON_SETS;
-        }
-        onIconClick(icon) {
-            if (icon) {
-                this.props.onIconPicked(icon);
-            }
-        }
-    }
-    IconPicker.template = "o-spreadsheet.IconPicker";
-
-    // TODO vsc: add ordering of rules
-    css /* scss */ `
-  label {
-    vertical-align: middle;
-  }
-  .o_cf_radio_item {
-    margin-right: 10%;
-  }
-  .radio input:checked {
-    color: #e9ecef;
-    border-color: #00a09d;
-    background-color: #00a09d;
-  }
-  .o-cf-editor {
-    border-bottom: solid;
-    border-color: lightgrey;
-  }
-  .o-cf {
-    .o-cf-type-selector {
-      *,
-      ::after,
-      ::before {
-        box-sizing: border-box;
-      }
-      margin-top: 10px;
-      display: flex;
-    }
-    .o-section-subtitle:first-child {
-      margin-top: 0px;
-    }
-    .o-cf-cursor-ptr {
-      cursor: pointer;
-    }
-    .o-cf-preview {
-      background-color: #fff;
-      border-bottom: 1px solid #ccc;
-      display: flex;
-      height: 60px;
-      padding: 10px;
-      position: relative;
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-      &:not(:hover) .o-cf-delete-button {
-        display: none;
-      }
-      .o-cf-preview-image {
-        border: 1px solid lightgrey;
-        height: 50px;
-        line-height: 50px;
-        margin-right: 15px;
-        margin-top: 3px;
-        position: absolute;
-        text-align: center;
-        width: 50px;
-      }
-      .o-cf-preview-icon {
-        border: 1px solid lightgrey;
-        position: absolute;
-        height: 50px;
-        line-height: 50px;
-        margin-right: 15px;
-        margin-top: 3px;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-      }
-      .o-cf-preview-description {
-        left: 65px;
-        margin-bottom: auto;
-        margin-right: 8px;
-        margin-top: auto;
-        position: relative;
-        width: 142px;
-        .o-cf-preview-description-rule {
-          margin-bottom: 4px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          font-weight: 600;
-          color: #303030;
-          max-height: 2.8em;
-          line-height: 1.4em;
-        }
-        .o-cf-preview-range {
-          text-overflow: ellipsis;
-          font-size: 12px;
-          overflow: hidden;
-        }
-      }
-      .o-cf-delete {
-        color: dimgrey;
-        left: 90%;
-        top: 39%;
-        position: absolute;
-      }
-      .o-cf-reorder {
-        color: gray;
-        left: 90%;
-        position: absolute;
-        height: 100%;
-        width: 10%;
-      }
-      .o-cf-reorder-button:hover {
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-      .o-cf-reorder-button-up {
-        width: 15px;
-        height: 20px;
-        padding: 5px;
-        padding-top: 0px;
-      }
-      .o-cf-reorder-button-down {
-        width: 15px;
-        height: 20px;
-        bottom: 20px;
-        padding: 5px;
-        padding-top: 0px;
-        position: absolute;
-      }
-    }
-    .o-cf-ruleEditor {
-      font-size: 12px;
-      line-height: 1.5;
-      .o-selection-cf {
-        margin-bottom: 3%;
-      }
-      .o-dropdown {
-        position: relative;
-        .o-dropdown-content {
-          position: absolute;
-          top: calc(100% + 5px);
-          left: 0;
-          z-index: 10;
-          box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-          background-color: #f6f6f6;
-
-          .o-dropdown-item {
-            padding: 7px 10px;
-          }
-          .o-dropdown-item:hover {
-            background-color: rgba(0, 0, 0, 0.08);
-          }
-          .o-dropdown-line {
-            display: flex;
-            padding: 3px 6px;
-            .o-line-item {
-              width: 16px;
-              height: 16px;
-              margin: 1px 3px;
-              &:hover {
-                background-color: rgba(0, 0, 0, 0.08);
-              }
-            }
-          }
-        }
-      }
-
-      .o-tools {
-        color: #333;
-        font-size: 13px;
-        cursor: default;
-        display: flex;
-
-        .o-tool {
-          display: flex;
-          align-items: center;
-          margin: 2px;
-          padding: 0 3px;
-          border-radius: 2px;
-        }
-
-        .o-tool.active,
-        .o-tool:not(.o-disabled):hover {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-
-        .o-with-color > span {
-          border-bottom: 4px solid;
-          height: 16px;
-          margin-top: 2px;
-        }
-        .o-with-color {
-          .o-line-item:hover {
-            outline: 1px solid gray;
-          }
-        }
-        .o-border {
-          .o-line-item {
-            padding: 4px;
-            margin: 1px;
-          }
-        }
-      }
-      .o-cell-content {
-        font-size: 12px;
-        font-weight: 500;
-        padding: 0 12px;
-        margin: 0;
-        line-height: 35px;
-      }
-    }
-    .o-cf-btn-link {
-      font-size: 14px;
-      padding: 20px 24px 11px 24px;
-      height: 44px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .o-cf-btn-link:hover {
-      color: #003a39;
-      text-decoration: none;
-    }
-    .o-cf-error {
-      color: red;
-      margin-top: 10px;
-    }
-  }
-  .o-cf-cell-is-rule {
-    .o-cf-preview-line {
-      border: 1px solid darkgrey;
-      padding: 10px;
-    }
-    .o-cell-is-operator {
-      margin-bottom: 5px;
-      width: 96%;
-    }
-    .o-cell-is-value {
-      margin-bottom: 5px;
-      width: 96%;
-    }
-    .o-color-picker {
-      pointer-events: all;
-    }
-  }
-  .o-cf-color-scale-editor {
-    .o-threshold {
-      display: flex;
-      flex-direction: horizontal;
-      select {
-        width: 100%;
-      }
-      .o-threshold-value {
-        margin-left: 2%;
-        width: 20%;
-        min-width: 0px; // input overflows in Firefox otherwise
-      }
-      .o-threshold-value:disabled {
-        background-color: #edebed;
-      }
-    }
-    .o-cf-preview-gradient {
-      border: 1px solid darkgrey;
-      padding: 10px;
-      border-radius: 4px;
-    }
-  }
-  .o-cf-iconset-rule {
-    font-size: 12;
-    .o-cf-iconsets {
-      display: flex;
-      justify-content: space-between;
-      .o-cf-iconset {
-        border: 1px solid #dadce0;
-        border-radius: 4px;
-        display: inline-flex;
-        padding: 5px 8px;
-        width: 25%;
-        cursor: pointer;
-        justify-content: space-between;
-        .o-cf-icon {
-          display: inline;
-          margin-left: 1%;
-          margin-right: 1%;
-        }
-        svg {
-          vertical-align: baseline;
-        }
-      }
-      .o-cf-iconset:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-    }
-    .o-inflection {
-      .o-cf-icon-button {
-        display: inline-block;
-        border: 1px solid #dadce0;
-        border-radius: 4px;
-        cursor: pointer;
-        padding: 1px 2px;
-      }
-      .o-cf-icon-button:hover {
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-      table {
-        table-layout: fixed;
-        margin-top: 2%;
-        display: table;
-        text-align: left;
-        font-size: 12px;
-        line-height: 18px;
-        width: 100%;
-      }
-      th.o-cf-iconset-icons {
-        width: 8%;
-      }
-      th.o-cf-iconset-text {
-        width: 28%;
-      }
-      th.o-cf-iconset-operator {
-        width: 14%;
-      }
-      th.o-cf-iconset-type {
-        width: 28%;
-      }
-      th.o-cf-iconset-value {
-        width: 26%;
-      }
-      input,
-      select {
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-      }
-    }
-    .o-cf-iconset-reverse {
-      margin-bottom: 2%;
-      margin-top: 2%;
-      .o-cf-label {
-        display: inline-block;
-        vertical-align: bottom;
-        margin-bottom: 2px;
-      }
-    }
-  }
-`;
-    class ConditionalFormattingPanel extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.icons = ICONS;
-            this.cellIsOperators = CellIsOperators;
-            this.iconSets = ICON_SETS;
-            this.getTextDecoration = getTextDecoration;
-            this.colorNumberString = colorNumberString;
-        }
-        setup() {
-            this.activeSheetId = this.env.model.getters.getActiveSheetId();
             this.state = owl.useState({
-                mode: "list",
-                errors: [],
-                rules: this.getDefaultRules(),
+                dataRangeDispatchResult: undefined,
             });
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const rules = this.env.model.getters.getRulesSelection(sheetId, this.props.selection || []);
-            if (rules.length === 1) {
-                const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
-                if (cf) {
-                    this.editConditionalFormat(cf);
-                }
-            }
-            owl.onWillUpdateProps((nextProps) => {
-                const newActiveSheetId = this.env.model.getters.getActiveSheetId();
-                if (newActiveSheetId !== this.activeSheetId) {
-                    this.activeSheetId = newActiveSheetId;
-                    this.switchToList();
-                }
-                else if (nextProps.selection !== this.props.selection) {
-                    const sheetId = this.env.model.getters.getActiveSheetId();
-                    const rules = this.env.model.getters.getRulesSelection(sheetId, nextProps.selection || []);
-                    if (rules.length === 1) {
-                        const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
-                        if (cf) {
-                            this.editConditionalFormat(cf);
-                        }
-                    }
-                    else {
-                        this.switchToList();
-                    }
-                }
+            this.dataRange = this.props.definition.dataRange;
+        }
+        get configurationErrorMessages() {
+            var _a;
+            const cancelledReasons = [...(((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || [])];
+            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
+        }
+        get isDataRangeInvalid() {
+            var _a, _b;
+            return !!(((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(34 /* EmptyGaugeDataRange */)) ||
+                ((_b = this.state.dataRangeDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(35 /* InvalidGaugeDataRange */)));
+        }
+        onDataRangeChanged(ranges) {
+            this.dataRange = ranges[0];
+        }
+        updateDataRange() {
+            this.state.dataRangeDispatchResult = this.props.updateChart({
+                dataRange: this.dataRange,
             });
-            owl.useExternalListener(window, "click", this.closeMenus);
         }
-        get conditionalFormats() {
-            return this.env.model.getters.getConditionalFormats(this.env.model.getters.getActiveSheetId());
+    }
+    GaugeChartConfigPanel.template = "o-spreadsheet.GaugeChartConfigPanel";
+    GaugeChartConfigPanel.components = { SelectionInput };
+
+    css /* scss */ `
+  .o-gauge-color-set {
+    .o-gauge-color-set-color-button {
+      display: inline-block;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 1px 2px;
+    }
+    .o-gauge-color-set-color-button:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+    table {
+      table-layout: fixed;
+      margin-top: 2%;
+      display: table;
+      text-align: left;
+      font-size: 12px;
+      line-height: 18px;
+      width: 100%;
+    }
+    th.o-gauge-color-set-colorPicker {
+      width: 8%;
+    }
+    th.o-gauge-color-set-text {
+      width: 40%;
+    }
+    th.o-gauge-color-set-value {
+      width: 22%;
+    }
+    th.o-gauge-color-set-type {
+      width: 30%;
+    }
+    input,
+    select {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+  }
+`;
+    class GaugeChartDesignPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                openedMenu: undefined,
+                sectionRuleDispatchResult: undefined,
+            });
         }
-        get isRangeValid() {
-            return this.state.errors.includes(21 /* EmptyRange */);
+        get designErrorMessages() {
+            var _a;
+            const cancelledReasons = [...(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || [])];
+            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
         }
-        errorMessage(error) {
-            return CfTerms.Errors[error] || CfTerms.Errors.Unexpected;
+        updateBackgroundColor(color) {
+            this.state.openedMenu = undefined;
+            this.props.updateChart({
+                background: color,
+            });
         }
-        /**
-         * Switch to the list view
-         */
-        switchToList() {
-            this.state.mode = "list";
-            this.state.currentCF = undefined;
-            this.state.currentCFType = undefined;
-            this.state.errors = [];
-            this.state.rules = this.getDefaultRules();
+        updateTitle(ev) {
+            this.props.updateChart({
+                title: ev.target.value,
+            });
         }
-        getStyle(rule) {
-            if (rule.type === "CellIsRule") {
-                const fontWeight = rule.style.bold ? "bold" : "normal";
-                const fontDecoration = getTextDecoration(rule.style);
-                const fontStyle = rule.style.italic ? "italic" : "normal";
-                const color = rule.style.textColor || "none";
-                const backgroundColor = rule.style.fillColor || "none";
-                return `font-weight:${fontWeight};
-               text-decoration:${fontDecoration};
-               font-style:${fontStyle};
-               color:${color};
-               background-color:${backgroundColor};`;
-            }
-            else if (rule.type === "ColorScaleRule") {
-                const minColor = colorNumberString(rule.minimum.color);
-                const midColor = rule.midpoint ? colorNumberString(rule.midpoint.color) : null;
-                const maxColor = colorNumberString(rule.maximum.color);
-                const baseString = "background-image: linear-gradient(to right, #";
-                return midColor
-                    ? baseString + minColor + ", #" + midColor + ", #" + maxColor + ")"
-                    : baseString + minColor + ", #" + maxColor + ")";
-            }
-            return "";
+        isRangeMinInvalid() {
+            var _a, _b, _c;
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(36 /* EmptyGaugeRangeMin */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(37 /* GaugeRangeMinNaN */)) ||
+                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(40 /* GaugeRangeMinBiggerThanRangeMax */)));
         }
-        getDescription(cf) {
-            switch (cf.rule.type) {
-                case "CellIsRule":
-                    return CellIsOperators[cf.rule.operator];
-                case "ColorScaleRule":
-                    return CfTerms.ColorScale;
-                case "IconSetRule":
-                    return CfTerms.IconSet;
-                default:
-                    return "";
-            }
+        isRangeMaxInvalid() {
+            var _a, _b, _c;
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(38 /* EmptyGaugeRangeMax */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(39 /* GaugeRangeMaxNaN */)) ||
+                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(40 /* GaugeRangeMinBiggerThanRangeMax */)));
         }
-        saveConditionalFormat() {
-            if (this.state.currentCF) {
-                const invalidRanges = this.state.currentCF.ranges.some((xc) => !xc.match(rangeReference));
-                if (invalidRanges) {
-                    this.state.errors = [22 /* InvalidRange */];
-                    return;
-                }
-                const result = this.env.model.dispatch("ADD_CONDITIONAL_FORMAT", {
-                    cf: {
-                        rule: this.getEditorRule(),
-                        id: this.state.mode === "edit"
-                            ? this.state.currentCF.id
-                            : this.env.model.uuidGenerator.uuidv4(),
-                    },
-                    target: this.state.currentCF.ranges.map(toZone),
-                    sheetId: this.env.model.getters.getActiveSheetId(),
-                });
-                if (!result.isSuccessful) {
-                    this.state.errors = result.reasons;
-                }
-                else {
-                    this.switchToList();
-                }
-            }
+        // ---------------------------------------------------------------------------
+        // COLOR_SECTION_TEMPLATE
+        // ---------------------------------------------------------------------------
+        get isLowerInflectionPointInvalid() {
+            var _a, _b;
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(41 /* GaugeLowerInflectionPointNaN */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(43 /* GaugeLowerBiggerThanUpper */)));
         }
-        /**
-         * Get the rule currently edited with the editor
-         */
-        getEditorRule() {
-            switch (this.state.currentCFType) {
-                case "CellIsRule":
-                    return this.state.rules.cellIs;
-                case "ColorScaleRule":
-                    return this.state.rules.colorScale;
-                case "IconSetRule":
-                    return this.state.rules.iconSet;
-            }
-            throw new Error(`Invalid cf type: ${this.state.currentCFType}`);
+        get isUpperInflectionPointInvalid() {
+            var _a, _b;
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(42 /* GaugeUpperInflectionPointNaN */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(43 /* GaugeLowerBiggerThanUpper */)));
         }
-        getDefaultRules() {
-            return {
-                cellIs: {
-                    type: "CellIsRule",
-                    operator: "IsNotEmpty",
-                    values: [],
-                    style: { fillColor: "#b6d7a8" },
-                },
-                colorScale: {
-                    type: "ColorScaleRule",
-                    minimum: { type: "value", color: 0xffffff },
-                    midpoint: undefined,
-                    maximum: { type: "value", color: 0x6aa84f },
-                },
-                iconSet: {
-                    type: "IconSetRule",
-                    icons: {
-                        upper: "arrowGood",
-                        middle: "arrowNeutral",
-                        lower: "arrowBad",
-                    },
-                    upperInflectionPoint: {
-                        type: "percentage",
-                        value: "66",
-                        operator: "gt",
-                    },
-                    lowerInflectionPoint: {
-                        type: "percentage",
-                        value: "33",
-                        operator: "gt",
-                    },
-                },
+        updateInflectionPointValue(attr, ev) {
+            const sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule[attr].value = ev.target.value;
+            this.updateSectionRule(sectionRule);
+        }
+        updateInflectionPointType(attr, ev) {
+            const sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule[attr].type = ev.target.value;
+            this.updateSectionRule(sectionRule);
+        }
+        updateSectionColor(target, color) {
+            const sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule.colors[target] = color;
+            this.updateSectionRule(sectionRule);
+            this.closeMenus();
+        }
+        updateRangeMin(ev) {
+            let sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule = {
+                ...sectionRule,
+                rangeMin: ev.target.value,
             };
+            this.updateSectionRule(sectionRule);
         }
-        /**
-         * Create a new CF, a CellIsRule by default
-         */
-        addConditionalFormat() {
-            this.state.mode = "add";
-            this.state.currentCFType = "CellIsRule";
-            this.state.currentCF = {
-                id: this.env.model.uuidGenerator.uuidv4(),
-                ranges: this.env.model.getters
-                    .getSelectedZones()
-                    .map((zone) => this.env.model.getters.zoneToXC(this.env.model.getters.getActiveSheetId(), zone)),
+        updateRangeMax(ev) {
+            let sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule = {
+                ...sectionRule,
+                rangeMax: ev.target.value,
             };
+            this.updateSectionRule(sectionRule);
         }
-        /**
-         * Delete a CF
-         */
-        deleteConditionalFormat(cf) {
-            this.env.model.dispatch("REMOVE_CONDITIONAL_FORMAT", {
-                id: cf.id,
-                sheetId: this.env.model.getters.getActiveSheetId(),
-            });
-        }
-        /**
-         * Edit an existing CF. Return without doing anything in reorder mode.
-         */
-        editConditionalFormat(cf) {
-            if (this.state.mode === "reorder")
-                return;
-            this.state.mode = "edit";
-            this.state.currentCF = cf;
-            this.state.currentCFType = cf.rule.type;
-            switch (cf.rule.type) {
-                case "CellIsRule":
-                    this.state.rules.cellIs = cf.rule;
-                    break;
-                case "ColorScaleRule":
-                    this.state.rules.colorScale = cf.rule;
-                    break;
-                case "IconSetRule":
-                    this.state.rules.iconSet = cf.rule;
-                    break;
-            }
-        }
-        /**
-         * Reorder existing CFs
-         */
-        reorderConditionalFormats() {
-            this.state.mode = "reorder";
-        }
-        reorderRule(cf, direction) {
-            this.env.model.dispatch("MOVE_CONDITIONAL_FORMAT", {
-                cfId: cf.id,
-                direction: direction,
-                sheetId: this.env.model.getters.getActiveSheetId(),
-            });
-        }
-        changeRuleType(ruleType) {
-            if (this.state.currentCFType === ruleType || !this.state.rules) {
-                return;
-            }
-            this.state.errors = [];
-            this.state.currentCFType = ruleType;
-        }
-        onRangesChanged(ranges) {
-            if (this.state.currentCF) {
-                this.state.currentCF.ranges = ranges;
-            }
-        }
-        /*****************************************************************************
-         * Common
-         ****************************************************************************/
         toggleMenu(menu) {
             const isSelected = this.state.openedMenu === menu;
             this.closeMenus();
@@ -5267,874 +4815,89 @@
                 this.state.openedMenu = menu;
             }
         }
+        updateSectionRule(sectionRule) {
+            this.state.sectionRuleDispatchResult = this.props.updateChart({
+                sectionRule,
+            });
+        }
         closeMenus() {
             this.state.openedMenu = undefined;
         }
-        /*****************************************************************************
-         * Cell Is Rule
-         ****************************************************************************/
-        get isValue1Invalid() {
-            var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(37 /* FirstArgMissing */));
-        }
-        get isValue2Invalid() {
-            var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(38 /* SecondArgMissing */));
-        }
-        toggleStyle(tool) {
-            const style = this.state.rules.cellIs.style;
-            style[tool] = !style[tool];
-            this.closeMenus();
-        }
-        setColor(target, color) {
-            this.state.rules.cellIs.style[target] = color;
-            this.closeMenus();
-        }
-        /*****************************************************************************
-         * Color Scale Rule
-         ****************************************************************************/
-        isValueInvalid(threshold) {
-            switch (threshold) {
-                case "minimum":
-                    return (this.state.errors.includes(44 /* MinInvalidFormula */) ||
-                        this.state.errors.includes(36 /* MinBiggerThanMid */) ||
-                        this.state.errors.includes(33 /* MinBiggerThanMax */) ||
-                        this.state.errors.includes(39 /* MinNaN */));
-                case "midpoint":
-                    return (this.state.errors.includes(45 /* MidInvalidFormula */) ||
-                        this.state.errors.includes(40 /* MidNaN */) ||
-                        this.state.errors.includes(35 /* MidBiggerThanMax */));
-                case "maximum":
-                    return (this.state.errors.includes(46 /* MaxInvalidFormula */) ||
-                        this.state.errors.includes(41 /* MaxNaN */));
-                default:
-                    return false;
-            }
-        }
-        setColorScaleColor(target, color) {
-            const point = this.state.rules.colorScale[target];
-            if (point) {
-                point.color = Number.parseInt(color.substr(1), 16);
-            }
-            this.closeMenus();
-        }
-        getPreviewGradient() {
-            var _a;
-            const rule = this.state.rules.colorScale;
-            const minColor = colorNumberString(rule.minimum.color);
-            const midColor = colorNumberString(((_a = rule.midpoint) === null || _a === void 0 ? void 0 : _a.color) || DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
-            const maxColor = colorNumberString(rule.maximum.color);
-            const baseString = "background-image: linear-gradient(to right, #";
-            return rule.midpoint === undefined
-                ? baseString + minColor + ", #" + maxColor + ")"
-                : baseString + minColor + ", #" + midColor + ", #" + maxColor + ")";
-        }
-        getThresholdColor(threshold) {
-            return threshold
-                ? colorNumberString(threshold.color)
-                : colorNumberString(DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
-        }
-        onMidpointChange(ev) {
-            const type = ev.target.value;
-            const rule = this.state.rules.colorScale;
-            if (type === "none") {
-                rule.midpoint = undefined;
-            }
-            else {
-                rule.midpoint = {
-                    color: DEFAULT_COLOR_SCALE_MIDPOINT_COLOR,
-                    value: "",
-                    ...rule.midpoint,
-                    type,
-                };
-            }
-        }
-        /*****************************************************************************
-         * Icon Set
-         ****************************************************************************/
-        isInflectionPointInvalid(inflectionPoint) {
-            switch (inflectionPoint) {
-                case "lowerInflectionPoint":
-                    return (this.state.errors.includes(43 /* ValueLowerInflectionNaN */) ||
-                        this.state.errors.includes(48 /* ValueLowerInvalidFormula */) ||
-                        this.state.errors.includes(34 /* LowerBiggerThanUpper */));
-                case "upperInflectionPoint":
-                    return (this.state.errors.includes(42 /* ValueUpperInflectionNaN */) ||
-                        this.state.errors.includes(47 /* ValueUpperInvalidFormula */) ||
-                        this.state.errors.includes(34 /* LowerBiggerThanUpper */));
-                default:
-                    return true;
-            }
-        }
-        reverseIcons() {
-            const icons = this.state.rules.iconSet.icons;
-            const upper = icons.upper;
-            icons.upper = icons.lower;
-            icons.lower = upper;
-        }
-        setIconSet(iconSet) {
-            const icons = this.state.rules.iconSet.icons;
-            icons.upper = this.iconSets[iconSet].good;
-            icons.middle = this.iconSets[iconSet].neutral;
-            icons.lower = this.iconSets[iconSet].bad;
-        }
-        setIcon(target, icon) {
-            this.state.rules.iconSet.icons[target] = icon;
-        }
     }
-    ConditionalFormattingPanel.template = "o-spreadsheet.ConditionalFormattingPanel";
-    ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
-
-    css /* scss */ `
-  .o-custom-currency {
-    .o-format-proposals {
-      color: black;
-    }
-  }
-`;
-    class CustomCurrencyPanel extends owl.Component {
-        setup() {
-            this.availableCurrencies = [];
-            this.state = owl.useState({
-                selectedCurrencyIndex: 0,
-                currencyCode: "",
-                currencySymbol: "",
-                selectedFormatIndex: 0,
-            });
-            owl.onWillStart(() => this.updateAvailableCurrencies());
-        }
-        get formatProposals() {
-            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
-            const proposalBases = this.initProposalBases(currency.decimalPlaces);
-            const firstPosition = currency.position;
-            const secondPosition = currency.position === "before" ? "after" : "before";
-            const symbol = this.state.currencySymbol.trim() ? this.state.currencySymbol : "";
-            const code = this.state.currencyCode.trim() ? this.state.currencyCode : "";
-            return code || symbol
-                ? [
-                    ...this.createFormatProposals(proposalBases, symbol, code, firstPosition),
-                    ...this.createFormatProposals(proposalBases, symbol, code, secondPosition),
-                ]
-                : [];
-        }
-        get isSameFormat() {
-            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
-            return selectedFormat ? selectedFormat.format === this.getCommonFormat() : false;
-        }
-        async updateAvailableCurrencies() {
-            var _a, _b;
-            if (currenciesRegistry.getAll().length === 0) {
-                const currencies = (await ((_b = (_a = this.env).loadCurrencies) === null || _b === void 0 ? void 0 : _b.call(_a))) || [];
-                currencies.forEach((currency, index) => {
-                    currenciesRegistry.add(index.toString(), currency);
-                });
-            }
-            const emptyCurrency = {
-                name: this.env._t(CustomCurrencyTerms.Custom),
-                code: "",
-                symbol: "",
-                decimalPlaces: 2,
-                position: "after",
-            };
-            this.availableCurrencies = [emptyCurrency, ...currenciesRegistry.getAll()];
-        }
-        updateSelectCurrency(ev) {
-            this.state.selectedCurrencyIndex = ev.target.value;
-            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
-            this.state.currencyCode = currency.code;
-            this.state.currencySymbol = currency.symbol;
-        }
-        updateCode(ev) {
-            this.state.currencyCode = ev.target.value;
-            this.initAvailableCurrencies();
-        }
-        updateSymbol(ev) {
-            this.state.currencySymbol = ev.target.value;
-            this.initAvailableCurrencies();
-        }
-        updateSelectFormat(ev) {
-            this.state.selectedFormatIndex = ev.target.value;
-        }
-        apply() {
-            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
-            this.env.model.dispatch("SET_FORMATTING", {
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                target: this.env.model.getters.getSelectedZones(),
-                format: selectedFormat.format,
-            });
-        }
-        // ---------------------------------------------------------------------------
-        // Private
-        // ---------------------------------------------------------------------------
-        initAvailableCurrencies() {
-            this.state.selectedCurrencyIndex = 0;
-        }
-        initProposalBases(decimalPlaces) {
-            const result = [{ format: "#,##0", example: "1,000" }];
-            const decimalRepresentation = decimalPlaces ? "." + "0".repeat(decimalPlaces) : "";
-            if (decimalRepresentation) {
-                result.push({
-                    format: "#,##0" + decimalRepresentation,
-                    example: "1,000" + decimalRepresentation,
-                });
-            }
-            return result;
-        }
-        createFormatProposals(proposalBases, symbol, code, position) {
-            let formatProposals = [];
-            // 1 - add proposal with symbol and without code
-            if (symbol) {
-                for (let base of proposalBases) {
-                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, symbol));
-                }
-            }
-            // 2 - if code exist --> add more proposal with symbol and with code
-            if (code) {
-                for (let base of proposalBases) {
-                    const expression = (position === "after" ? " " : "") + code + " " + symbol;
-                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, expression));
-                }
-            }
-            return formatProposals;
-        }
-        createFormatProposal(position, baseExample, formatBase, expression) {
-            const formatExpression = "[$" + expression + "]";
-            return {
-                example: position === "before" ? expression + baseExample : baseExample + expression,
-                format: position === "before" ? formatExpression + formatBase : formatBase + formatExpression,
-            };
-        }
-        getCommonFormat() {
-            var _a;
-            const selectedZones = this.env.model.getters.getSelectedZones();
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const cells = selectedZones
-                .map((zone) => this.env.model.getters.getCellsInZone(sheetId, zone))
-                .flat();
-            const firstFormat = (_a = cells[0]) === null || _a === void 0 ? void 0 : _a.format;
-            return cells.every((cell) => (cell === null || cell === void 0 ? void 0 : cell.format) === firstFormat) ? firstFormat : undefined;
-        }
-        currencyDisplayName(currency) {
-            return currency.name + (currency.code ? ` (${currency.code})` : "");
-        }
-    }
-    CustomCurrencyPanel.template = "o-spreadsheet.CustomCurrencyPanel";
-
-    css /* scss */ `
-  .o-find-and-replace {
-    .o-far-item {
-      display: block;
-      .o-far-checkbox {
-        display: inline-block;
-        .o-far-input {
-          vertical-align: middle;
-        }
-        .o-far-label {
-          position: relative;
-          top: 1.5px;
-          padding-left: 4px;
-        }
-      }
-    }
-    outline: none;
-    height: 100%;
-    .o-input-search-container {
-      display: flex;
-      .o-input-with-count {
-        flex-grow: 1;
-        width: auto;
-      }
-      .o-input-without-count {
-        width: 100%;
-      }
-      .o-input-count {
-        width: fit-content;
-        padding: 4 0 4 4;
-      }
-    }
-  }
-`;
-    class FindAndReplacePanel extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState(this.initialState());
-            this.findAndReplaceRef = owl.useRef("findAndReplace");
-        }
-        get hasSearchResult() {
-            return this.env.model.getters.getCurrentSelectedMatchIndex() !== null;
-        }
-        setup() {
-            owl.onMounted(() => this.focusInput());
-            owl.onWillUnmount(() => this.env.model.dispatch("CLEAR_SEARCH"));
-        }
-        onInput(ev) {
-            this.state.toSearch = ev.target.value;
-            this.debouncedUpdateSearch();
-        }
-        onKeydownSearch(ev) {
-            if (ev.key === "Enter") {
-                ev.preventDefault();
-                this.onSelectNextCell();
-            }
-        }
-        onKeydownReplace(ev) {
-            if (ev.key === "Enter") {
-                ev.preventDefault();
-                this.replace();
-            }
-        }
-        onFocusSidePanel() {
-            this.state.searchOptions.searchFormulas = this.env.model.getters.shouldShowFormulas();
-            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas
-                ? this.state.searchOptions.searchFormulas
-                : this.state.replaceOptions.modifyFormulas;
-            this.env.model.dispatch("REFRESH_SEARCH");
-        }
-        searchFormulas() {
-            this.env.model.dispatch("SET_FORMULA_VISIBILITY", {
-                show: this.state.searchOptions.searchFormulas,
-            });
-            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas;
-            this.updateSearch();
-        }
-        onSelectPreviousCell() {
-            this.env.model.dispatch("SELECT_SEARCH_PREVIOUS_MATCH");
-        }
-        onSelectNextCell() {
-            this.env.model.dispatch("SELECT_SEARCH_NEXT_MATCH");
-        }
-        updateSearch() {
-            if (this.state.toSearch) {
-                this.env.model.dispatch("UPDATE_SEARCH", {
-                    toSearch: this.state.toSearch,
-                    searchOptions: this.state.searchOptions,
-                });
-            }
-        }
-        debouncedUpdateSearch() {
-            clearTimeout(this.inDebounce);
-            this.inDebounce = setTimeout(() => this.updateSearch.call(this), 400);
-        }
-        replace() {
-            this.env.model.dispatch("REPLACE_SEARCH", {
-                replaceWith: this.state.replaceWith,
-                replaceOptions: this.state.replaceOptions,
-            });
-        }
-        replaceAll() {
-            this.env.model.dispatch("REPLACE_ALL_SEARCH", {
-                replaceWith: this.state.replaceWith,
-                replaceOptions: this.state.replaceOptions,
-            });
-        }
-        // ---------------------------------------------------------------------------
-        // Private
-        // ---------------------------------------------------------------------------
-        focusInput() {
-            const el = this.findAndReplaceRef.el;
-            const input = el.querySelector(`input`);
-            if (input) {
-                input.focus();
-            }
-        }
-        initialState() {
-            return {
-                toSearch: "",
-                replaceWith: "",
-                searchOptions: {
-                    matchCase: false,
-                    exactMatch: false,
-                    searchFormulas: false,
-                },
-                replaceOptions: {
-                    modifyFormulas: false,
-                },
-            };
-        }
-    }
-    FindAndReplacePanel.template = "o-spreadsheet.FindAndReplacePanel";
-
-    const sidePanelRegistry = new Registry();
-    sidePanelRegistry.add("ConditionalFormatting", {
-        title: _lt("Conditional formatting"),
-        Body: ConditionalFormattingPanel,
-    });
-    sidePanelRegistry.add("ChartPanel", {
-        title: _lt("Chart"),
-        Body: ChartPanel,
-    });
-    sidePanelRegistry.add("FindAndReplace", {
-        title: _lt("Find and Replace"),
-        Body: FindAndReplacePanel,
-    });
-    sidePanelRegistry.add("CustomCurrency", {
-        title: _lt("Custom currency format"),
-        Body: CustomCurrencyPanel,
-    });
-
-    class TopBarComponentRegistry extends Registry {
-        constructor() {
-            super(...arguments);
-            this.mapping = {};
-            this.uuidGenerator = new UuidGenerator();
-        }
-        add(name, value) {
-            const component = { ...value, id: this.uuidGenerator.uuidv4() };
-            return super.add(name, component);
-        }
-    }
-    const topbarComponentRegistry = new TopBarComponentRegistry();
+    GaugeChartDesignPanel.template = "o-spreadsheet.GaugeChartDesignPanel";
+    GaugeChartDesignPanel.components = { ColorPicker };
 
     /**
-     * Return the o-spreadsheet element position relative
-     * to the browser viewport.
+     * AbstractChart is the class from which every Chart should inherit.
+     * The role of this class is to maintain the state of each chart.
      */
-    function useSpreadsheetPosition() {
-        const position = owl.useState({ x: 0, y: 0 });
-        let spreadsheetElement = document.querySelector(".o-spreadsheet");
-        updatePosition();
-        function updatePosition() {
-            if (!spreadsheetElement) {
-                spreadsheetElement = document.querySelector(".o-spreadsheet");
-            }
-            if (spreadsheetElement) {
-                const { top, left } = spreadsheetElement.getBoundingClientRect();
-                position.x = left;
-                position.y = top;
-            }
+    class AbstractChart {
+        constructor(id, definition, sheetId, getters) {
+            this.id = id;
+            this.title = definition.title;
+            this.sheetId = sheetId;
+            this.getters = getters;
         }
-        owl.onMounted(updatePosition);
-        owl.onPatched(updatePosition);
-        return position;
+        /**
+         * Validate the chart definition given as arguments. This function will be
+         * called from allowDispatch function
+         */
+        static validateChartDefinition(validator, definition) {
+            throw new Error("This method should be implemented by sub class");
+        }
+        /**
+         * Get a new chart definition transformed with the executed command. This
+         * functions will be called during operational transform process
+         */
+        static transformDefinition(definition, executed) {
+            throw new Error("This method should be implemented by sub class");
+        }
+        /**
+         * Get an empty definition based on the given context
+         */
+        static getDefinitionFromContextCreation(context) {
+            throw new Error("This method should be implemented by sub class");
+        }
+    }
+
+    /**
+     * Convert a color string to an excel compatible hexadecimal format.
+     */
+    function toXlsxHexColor(color) {
+        color = toHex(color).replace("#", "");
+        // alpha channel goes first
+        if (color.length === 8) {
+            return color.slice(6) + color.slice(0, 6);
+        }
+        return color;
+    }
+
+    /**
+     * Copy a range. If the range is on the sheetIdFrom, the range will target
+     * sheetIdTo.
+     */
+    function copyRangeWithNewSheetId(sheetIdFrom, sheetIdTo, range) {
+        return {
+            ...range,
+            sheetId: range.sheetId === sheetIdFrom ? sheetIdTo : range.sheetId,
+        };
     }
     /**
-     * Return the component (or ref's component) top left position (in pixels) relative
-     * to the upper left corner of the screen (<body> element).
-     *
-     * Note: when used with a <Portal/> component, it will
-     * return the portal position, not the teleported position.
+     * Create a range from a xc. If the xc is empty, this function returns undefined.
      */
-    function useAbsolutePosition(ref) {
-        const position = owl.useState({ x: 0, y: 0 });
-        function updateElPosition() {
-            const el = ref.el;
-            if (el === null) {
-                return;
-            }
-            const { top, left } = el.getBoundingClientRect();
-            if (left !== position.x || top !== position.y) {
-                position.x = left;
-                position.y = top;
-            }
-        }
-        owl.onMounted(updateElPosition);
-        owl.onPatched(updateElPosition);
-        return position;
+    function createRange(getters, sheetId, range) {
+        return range ? getters.getRangeFromSheetXC(sheetId, range) : undefined;
     }
 
-    class Popover extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.spreadsheetPosition = useSpreadsheetPosition();
+    function transformZone(zone, executed) {
+        if (executed.type === "REMOVE_COLUMNS_ROWS") {
+            return reduceZoneOnDeletion(zone, executed.dimension === "COL" ? "left" : "top", executed.elements);
         }
-        get style() {
-            // the props's position is expressed relative to the "body" element
-            // but we teleport the element in ".o-spreadsheet" to keep everything
-            // within our control and to avoid leaking into external DOM
-            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetPosition.x}`;
-            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetPosition.y}`;
-            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
-            return `
-      position: absolute;
-      z-index: 5;
-      ${verticalPosition}px;
-      ${horizontalPosition}px;
-      ${height}px;
-      width:${this.props.childWidth}px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
-    `;
+        if (executed.type === "ADD_COLUMNS_ROWS") {
+            return expandZoneOnInsertion(zone, executed.dimension === "COL" ? "left" : "top", executed.base, executed.position, executed.quantity);
         }
-        get viewportDimension() {
-            return this.env.model.getters.getViewportDimensionWithHeaders();
-        }
-        get shouldRenderRight() {
-            const { x } = this.props.position;
-            return x + this.props.childWidth < this.viewportDimension.width;
-        }
-        get shouldRenderBottom() {
-            const { y } = this.props.position;
-            return (y + this.props.childHeight <
-                this.viewportDimension.height + (this.env.isDashboard() ? 0 : TOPBAR_HEIGHT));
-        }
-        horizontalPosition() {
-            const { x } = this.props.position;
-            if (this.shouldRenderRight) {
-                return x;
-            }
-            return x - this.props.childWidth - this.props.flipHorizontalOffset;
-        }
-        verticalPosition() {
-            const { y } = this.props.position;
-            if (this.shouldRenderBottom) {
-                return y;
-            }
-            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
-        }
+        return { ...zone };
     }
-    Popover.template = "o-spreadsheet.Popover";
-    Popover.defaultProps = {
-        flipHorizontalOffset: 0,
-        flipVerticalOffset: 0,
-        verticalOffset: 0,
-        marginTop: 0,
-    };
-
-    //------------------------------------------------------------------------------
-    // Context Menu Component
-    //------------------------------------------------------------------------------
-    css /* scss */ `
-  .o-menu {
-    background-color: white;
-    padding: 8px 0px;
-    .o-menu-item {
-      display: flex;
-      justify-content: space-between;
-      box-sizing: border-box;
-      height: ${MENU_ITEM_HEIGHT}px;
-      padding: 4px 16px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      cursor: pointer;
-      user-select: none;
-
-      &.o-menu-root {
-        display: flex;
-        justify-content: space-between;
-      }
-      .o-menu-item-icon {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-      .o-icon {
-        width: 10px;
-      }
-
-      &:not(.disabled) {
-        &:hover {
-          background-color: #ebebeb;
-        }
-        .o-menu-item-shortcut {
-          color: grey;
-        }
-      }
-      &.disabled {
-        color: ${MENU_ITEM_DISABLED_COLOR};
-        cursor: not-allowed;
-      }
-    }
-
-    .o-separator {
-      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
-      margin-top: ${MENU_SEPARATOR_PADDING}px;
-      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
-    }
-  }
-`;
-    class Menu extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.MENU_WIDTH = MENU_WIDTH;
-            this.subMenu = owl.useState({
-                isOpen: false,
-                position: null,
-                scrollOffset: 0,
-                menuItems: [],
-            });
-            this.menuRef = owl.useRef("menu");
-            this.position = useAbsolutePosition(this.menuRef);
-        }
-        setup() {
-            owl.useExternalListener(window, "click", this.onClick);
-            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
-            owl.onWillUpdateProps((nextProps) => {
-                if (nextProps.menuItems !== this.props.menuItems) {
-                    this.subMenu.isOpen = false;
-                }
-            });
-        }
-        get subMenuPosition() {
-            const position = Object.assign({}, this.subMenu.position);
-            position.y -= this.subMenu.scrollOffset || 0;
-            return position;
-        }
-        get menuHeight() {
-            return this.menuComponentHeight(this.props.menuItems);
-        }
-        get subMenuHeight() {
-            return this.menuComponentHeight(this.subMenu.menuItems);
-        }
-        get popover() {
-            const isRoot = this.props.depth === 1;
-            let marginTop = 6;
-            if (!this.env.isDashboard()) {
-                marginTop += TOPBAR_HEIGHT + HEADER_HEIGHT;
-            }
-            return {
-                // some margin between the header and the component
-                marginTop,
-                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
-                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
-            };
-        }
-        getColor(menu) {
-            return menu.textColor ? `color: ${menu.textColor}` : undefined;
-        }
-        async activateMenu(menu) {
-            var _a, _b;
-            const result = await menu.action(this.env);
-            this.close();
-            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
-        }
-        close() {
-            this.subMenu.isOpen = false;
-            this.props.onClose();
-        }
-        /**
-         * Return the number of pixels between the top of the menu
-         * and the menu item at a given index.
-         */
-        subMenuVerticalPosition(position) {
-            const menusAbove = this.props.menuItems.slice(0, position);
-            return this.menuComponentHeight(menusAbove) + this.position.y;
-        }
-        onClick(ev) {
-            // Don't close a root menu when clicked to open the submenus.
-            const el = this.menuRef.el;
-            if (el && isChildEvent(el, ev)) {
-                return;
-            }
-            this.close();
-        }
-        onContextMenu(ev) {
-            // Don't close a root menu when clicked to open the submenus.
-            const el = this.menuRef.el;
-            if (el && isChildEvent(el, ev)) {
-                return;
-            }
-            this.subMenu.isOpen = false;
-        }
-        /**
-         * Return the total height (in pixels) needed for some
-         * menu items
-         */
-        menuComponentHeight(menuItems) {
-            const separators = menuItems.filter((m) => m.separator);
-            const others = menuItems;
-            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
-        }
-        getName(menu) {
-            return cellMenuRegistry.getName(menu, this.env);
-        }
-        getShortCut(menu) {
-            return cellMenuRegistry.getShortCut(menu);
-        }
-        isRoot(menu) {
-            return !menu.action;
-        }
-        isEnabled(menu) {
-            if (menu.isEnabled(this.env)) {
-                return this.env.model.getters.isReadonly() ? menu.isReadonlyAllowed : true;
-            }
-            return false;
-        }
-        onScroll(ev) {
-            this.subMenu.scrollOffset = ev.target.scrollTop;
-        }
-        /**
-         * If the given menu is not disabled, open it's submenu at the
-         * correct position according to available surrounding space.
-         */
-        openSubMenu(menu, position) {
-            const y = this.subMenuVerticalPosition(position);
-            this.subMenu.position = {
-                x: this.position.x + MENU_WIDTH,
-                y: y - (this.subMenu.scrollOffset || 0),
-            };
-            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
-            this.subMenu.isOpen = true;
-        }
-        onClickMenu(menu, position) {
-            if (this.isEnabled(menu)) {
-                if (this.isRoot(menu)) {
-                    this.openSubMenu(menu, position);
-                }
-                else {
-                    this.activateMenu(menu);
-                }
-            }
-        }
-        onMouseOver(menu, position) {
-            if (menu.isEnabled(this.env)) {
-                if (this.isRoot(menu)) {
-                    this.openSubMenu(menu, position);
-                }
-                else {
-                    this.subMenu.isOpen = false;
-                }
-            }
-        }
-    }
-    Menu.template = "o-spreadsheet.Menu";
-    Menu.components = { Menu, Popover };
-    Menu.defaultProps = {
-        depth: 1,
-    };
-
-    // -----------------------------------------------------------------------------
-    // STYLE
-    // -----------------------------------------------------------------------------
-    css /* scss */ `
-  .o-chart-container {
-    width: 100%;
-    height: 100%;
-    position: relative;
-
-    .o-chart-menu {
-      right: 0px;
-      display: none;
-      position: absolute;
-      padding: 5px;
-    }
-
-    .o-chart-menu-item {
-      cursor: pointer;
-    }
-  }
-  .o-figure.active:focus,
-  .o-figure:hover {
-    .o-chart-container {
-      .o-chart-menu {
-        display: flex;
-      }
-    }
-  }
-`;
-    class ChartFigure extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
-            this.canvas = owl.useRef("graphContainer");
-            this.chartContainerRef = owl.useRef("chartContainer");
-            this.menuButtonRef = owl.useRef("menuButton");
-            this.menuButtonPosition = useAbsolutePosition(this.menuButtonRef);
-            this.position = useAbsolutePosition(this.chartContainerRef);
-        }
-        get canvasStyle() {
-            const chart = this.env.model.getters.getChartDefinition(this.props.figure.id);
-            return `background-color: ${chart ? chart.background : BACKGROUND_CHART_COLOR}`;
-        }
-        setup() {
-            owl.onMounted(() => {
-                const figure = this.props.figure;
-                const chartData = this.env.model.getters.getChartRuntime(figure.id);
-                if (chartData) {
-                    this.createChart(chartData);
-                }
-            });
-            owl.onPatched(() => {
-                var _a, _b, _c;
-                const figure = this.props.figure;
-                const chartData = this.env.model.getters.getChartRuntime(figure.id);
-                if (chartData) {
-                    if (chartData.type !== this.chart.config.type) {
-                        // Updating a chart type requires to update its options accordingly, if feasible at all.
-                        // Since we trust Chart.js to generate most of its options, it is safer to just start from scratch.
-                        // See https://www.chartjs.org/docs/latest/developers/updates.html
-                        // and https://stackoverflow.com/questions/36949343/chart-js-dynamic-changing-of-chart-type-line-to-bar-as-example
-                        this.chart && this.chart.destroy();
-                        this.createChart(chartData);
-                    }
-                    else if (chartData.data && chartData.data.datasets) {
-                        this.chart.data = chartData.data;
-                        if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
-                            this.chart.config.options.title = chartData.options.title;
-                        }
-                    }
-                    else {
-                        this.chart.data.datasets = undefined;
-                    }
-                    this.chart.config.options.legend = (_b = chartData.options) === null || _b === void 0 ? void 0 : _b.legend;
-                    this.chart.config.options.scales = (_c = chartData.options) === null || _c === void 0 ? void 0 : _c.scales;
-                    this.chart.update({ duration: 0 });
-                }
-                else {
-                    this.chart && this.chart.destroy();
-                }
-            });
-        }
-        createChart(chartData) {
-            const canvas = this.canvas.el;
-            const ctx = canvas.getContext("2d");
-            this.chart = new window.Chart(ctx, chartData);
-        }
-        getMenuItemRegistry() {
-            const registry = new MenuItemRegistry();
-            registry.add("edit", {
-                name: _lt("Edit"),
-                sequence: 1,
-                action: () => this.env.openSidePanel("ChartPanel", { figure: this.props.figure }),
-            });
-            registry.add("delete", {
-                name: _lt("Delete"),
-                sequence: 10,
-                action: () => {
-                    this.env.model.dispatch("DELETE_FIGURE", {
-                        sheetId: this.env.model.getters.getActiveSheetId(),
-                        id: this.props.figure.id,
-                    });
-                    if (this.props.sidePanelIsOpen) {
-                        this.env.toggleSidePanel("ChartPanel", { figure: this.props.figure });
-                    }
-                    this.props.onFigureDeleted();
-                },
-            });
-            registry.add("refresh", {
-                name: _lt("Refresh"),
-                sequence: 11,
-                action: () => {
-                    this.env.model.dispatch("REFRESH_CHART", {
-                        id: this.props.figure.id,
-                    });
-                },
-            });
-            return registry;
-        }
-        onContextMenu(ev) {
-            const position = {
-                x: this.position.x + ev.offsetX,
-                y: this.position.y + ev.offsetY,
-            };
-            this.openContextMenu(position);
-        }
-        showMenu() {
-            const position = {
-                x: this.menuButtonPosition.x - MENU_WIDTH,
-                y: this.menuButtonPosition.y,
-            };
-            this.openContextMenu(position);
-        }
-        openContextMenu(position) {
-            const registry = this.getMenuItemRegistry();
-            this.menuState.isOpen = true;
-            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
-            this.menuState.position = position;
-        }
-    }
-    ChartFigure.template = "o-spreadsheet.ChartFigure";
-    ChartFigure.components = { Menu };
 
     // HELPERS
     function assert(condition, message) {
@@ -6631,6 +5394,3532 @@
         // note that valMaxIndex could be 0
         return valMaxIndex !== undefined ? valMaxIndex : -1;
     }
+
+    /**
+     * This file contains helpers that are common to different charts (mainly
+     * line, bar and pie charts)
+     */
+    /**
+     * Adapt ranges of a chart which support DataSet (dataSets and LabelRange).
+     */
+    function updateChartRangesWithDataSets(getters, applyChange, chartDataSets, chartLabelRange) {
+        let isStale = false;
+        const dataSetsWithUndefined = [];
+        for (let index in chartDataSets) {
+            let ds = chartDataSets[index];
+            if (ds.labelCell) {
+                const labelCell = adaptChartRange(ds.labelCell, applyChange);
+                if (ds.labelCell !== labelCell) {
+                    isStale = true;
+                    ds = {
+                        ...ds,
+                        labelCell: labelCell,
+                    };
+                }
+            }
+            const dataRange = adaptChartRange(ds.dataRange, applyChange);
+            if (dataRange === undefined ||
+                getters.getRangeString(dataRange, dataRange.sheetId) === INCORRECT_RANGE_STRING) {
+                isStale = true;
+                ds = undefined;
+            }
+            else if (dataRange !== ds.dataRange) {
+                isStale = true;
+                ds = {
+                    ...ds,
+                    dataRange,
+                };
+            }
+            dataSetsWithUndefined[index] = ds;
+        }
+        let labelRange = chartLabelRange;
+        const range = adaptChartRange(labelRange, applyChange);
+        if (range !== labelRange) {
+            isStale = true;
+            labelRange = range;
+        }
+        const dataSets = dataSetsWithUndefined.filter(isDefined$1);
+        return {
+            isStale,
+            dataSets,
+            labelRange,
+        };
+    }
+    /**
+     * Copy the dataSets given. All the ranges which are on sheetIdFrom will target
+     * sheetIdTo.
+     */
+    function copyDataSetsWithNewSheetId(sheetIdFrom, sheetIdTo, dataSets) {
+        return dataSets.map((ds) => {
+            return {
+                dataRange: copyRangeWithNewSheetId(sheetIdFrom, sheetIdTo, ds.dataRange),
+                labelCell: ds.labelCell
+                    ? copyRangeWithNewSheetId(sheetIdFrom, sheetIdTo, ds.labelCell)
+                    : undefined,
+            };
+        });
+    }
+    /**
+     * Copy a range. If the range is on the sheetIdFrom, the range will target
+     * sheetIdTo.
+     */
+    function copyLabelRangeWithNewSheetId(sheetIdFrom, sheetIdTo, range) {
+        return range ? copyRangeWithNewSheetId(sheetIdFrom, sheetIdTo, range) : undefined;
+    }
+    /**
+     * Adapt a single range of a chart
+     */
+    function adaptChartRange(range, applyChange) {
+        if (!range) {
+            return undefined;
+        }
+        const change = applyChange(range);
+        switch (change.changeType) {
+            case "NONE":
+                return range;
+            case "REMOVE":
+                return undefined;
+            default:
+                return change.range;
+        }
+    }
+    /**
+     * Create the dataSet objects from xcs
+     */
+    function createDataSets(getters, dataSetsString, sheetId, dataSetsHaveTitle) {
+        const dataSets = [];
+        for (const sheetXC of dataSetsString) {
+            const dataRange = getters.getRangeFromSheetXC(sheetId, sheetXC);
+            const { zone, sheetId: dataSetSheetId, invalidSheetName } = dataRange;
+            if (invalidSheetName) {
+                continue;
+            }
+            if (zone.left !== zone.right && zone.top !== zone.bottom) {
+                // It's a rectangle. We treat all columns (arbitrary) as different data series.
+                for (let column = zone.left; column <= zone.right; column++) {
+                    const columnZone = {
+                        left: column,
+                        right: column,
+                        top: zone.top,
+                        bottom: zone.bottom,
+                    };
+                    dataSets.push(createDataSet(getters, dataSetSheetId, columnZone, dataSetsHaveTitle
+                        ? {
+                            top: columnZone.top,
+                            bottom: columnZone.top,
+                            left: columnZone.left,
+                            right: columnZone.left,
+                        }
+                        : undefined));
+                }
+            }
+            else if (zone.left === zone.right && zone.top === zone.bottom) {
+                // A single cell. If it's only the title, the dataset is not added.
+                if (!dataSetsHaveTitle) {
+                    dataSets.push(createDataSet(getters, dataSetSheetId, zone, undefined));
+                }
+            }
+            else {
+                /* 1 row or 1 column */
+                dataSets.push(createDataSet(getters, dataSetSheetId, zone, dataSetsHaveTitle
+                    ? {
+                        top: zone.top,
+                        bottom: zone.top,
+                        left: zone.left,
+                        right: zone.left,
+                    }
+                    : undefined));
+            }
+        }
+        return dataSets;
+    }
+    function createDataSet(getters, sheetId, fullZone, titleZone) {
+        if (fullZone.left !== fullZone.right && fullZone.top !== fullZone.bottom) {
+            throw new Error(`Zone should be a single column or row: ${zoneToXc(fullZone)}`);
+        }
+        if (titleZone) {
+            const dataXC = zoneToXc(fullZone);
+            const labelCellXC = zoneToXc(titleZone);
+            return {
+                labelCell: getters.getRangeFromSheetXC(sheetId, labelCellXC),
+                dataRange: getters.getRangeFromSheetXC(sheetId, dataXC),
+            };
+        }
+        else {
+            return {
+                labelCell: undefined,
+                dataRange: getters.getRangeFromSheetXC(sheetId, zoneToXc(fullZone)),
+            };
+        }
+    }
+    /**
+     * Transform a dataSet to a ExcelDataSet
+     */
+    function toExcelDataset(getters, ds) {
+        var _a;
+        const labelZone = (_a = ds.labelCell) === null || _a === void 0 ? void 0 : _a.zone;
+        let dataZone = ds.dataRange.zone;
+        if (labelZone) {
+            const { height, width } = zoneToDimension(dataZone);
+            if (height === 1) {
+                dataZone = { ...dataZone, left: dataZone.left + 1 };
+            }
+            else if (width === 1) {
+                dataZone = { ...dataZone, top: dataZone.top + 1 };
+            }
+        }
+        const dataRange = {
+            ...ds.dataRange,
+            zone: dataZone,
+        };
+        return {
+            label: ds.labelCell ? getters.getRangeString(ds.labelCell, "forceSheetReference") : undefined,
+            range: getters.getRangeString(dataRange, "forceSheetReference"),
+        };
+    }
+    /**
+     * Transform a chart definition which supports dataSets (dataSets and LabelRange)
+     * with an executed command
+     */
+    function transformChartDefinitionWithDataSetsWithZone(definition, executed) {
+        let labelZone;
+        if (definition.labelRange) {
+            labelZone = transformZone(toZone(definition.labelRange), executed);
+        }
+        const dataSets = definition.dataSets
+            .map(toZone)
+            .map((zone) => transformZone(zone, executed))
+            .filter(isDefined$1)
+            .map(zoneToXc);
+        return {
+            ...definition,
+            labelRange: labelZone ? zoneToXc(labelZone) : undefined,
+            dataSets,
+        };
+    }
+    const GraphColors = [
+        // the same colors as those used in odoo reporting
+        "rgb(31,119,180)",
+        "rgb(255,127,14)",
+        "rgb(174,199,232)",
+        "rgb(255,187,120)",
+        "rgb(44,160,44)",
+        "rgb(152,223,138)",
+        "rgb(214,39,40)",
+        "rgb(255,152,150)",
+        "rgb(148,103,189)",
+        "rgb(197,176,213)",
+        "rgb(140,86,75)",
+        "rgb(196,156,148)",
+        "rgb(227,119,194)",
+        "rgb(247,182,210)",
+        "rgb(127,127,127)",
+        "rgb(199,199,199)",
+        "rgb(188,189,34)",
+        "rgb(219,219,141)",
+        "rgb(23,190,207)",
+        "rgb(158,218,229)",
+    ];
+    class ChartColors {
+        constructor() {
+            this.graphColorIndex = 0;
+        }
+        next() {
+            return GraphColors[this.graphColorIndex++ % GraphColors.length];
+        }
+    }
+    /**
+     * Choose a font color based on a background color.
+     * The font is white with a dark background.
+     */
+    function chartFontColor(backgroundColor) {
+        if (!backgroundColor) {
+            return "#000000";
+        }
+        return relativeLuminance(backgroundColor) < 0.3 ? "#FFFFFF" : "#000000";
+    }
+    function checkDatasetNotEmpty(definition) {
+        return definition.dataSets && definition.dataSets.length === 0
+            ? 28 /* EmptyDataSet */
+            : 0 /* Success */;
+    }
+    function checkDataset(definition) {
+        if (definition.dataSets) {
+            const invalidRanges = definition.dataSets.find((range) => !rangeReference.test(range)) !== undefined;
+            if (invalidRanges) {
+                return 29 /* InvalidDataSet */;
+            }
+        }
+        return 0 /* Success */;
+    }
+    function checkLabelRange(definition) {
+        if (definition.labelRange) {
+            const invalidLabels = !rangeReference.test(definition.labelRange || "");
+            if (invalidLabels) {
+                return 31 /* InvalidLabelRange */;
+            }
+        }
+        return 0 /* Success */;
+    }
+    // ---------------------------------------------------------------------------
+    // Scorecard
+    // ---------------------------------------------------------------------------
+    function getBaselineText(baseline, keyValue, baselineMode) {
+        if (!baseline) {
+            return "";
+        }
+        else if (!isNumber(baseline) || !isNumber(keyValue)) {
+            return baseline.toString();
+        }
+        else {
+            let diff = toNumber(keyValue) - toNumber(baseline);
+            if (baselineMode === "percentage") {
+                diff = (diff / toNumber(baseline)) * 100;
+            }
+            let baselineValue = Math.abs(parseFloat(diff.toFixed(2))).toLocaleString();
+            if (baselineMode === "percentage") {
+                baselineValue += "%";
+            }
+            return baselineValue;
+        }
+    }
+    function getBaselineColor(baseline, keyValue, colorUp, colorDown) {
+        if (!isNumber(baseline) || !isNumber(keyValue)) {
+            return undefined;
+        }
+        const diff = toNumber(keyValue) - toNumber(baseline);
+        if (diff > 0) {
+            return colorUp;
+        }
+        else if (diff < 0) {
+            return colorDown;
+        }
+        return undefined;
+    }
+    function getBaselineArrowDirection(baseline, keyValue) {
+        if (!isNumber(baseline) || !isNumber(keyValue)) {
+            return "neutral";
+        }
+        const diff = toNumber(keyValue) - toNumber(baseline);
+        if (diff > 0) {
+            return "up";
+        }
+        else if (diff < 0) {
+            return "down";
+        }
+        return "neutral";
+    }
+
+    /**
+     * This file contains helpers that are common to different runtime charts (mainly
+     * line, bar and pie charts)
+     */
+    /**
+     * Get the data from a dataSet
+     */
+    function getData(getters, ds) {
+        if (ds.dataRange) {
+            const labelCellZone = ds.labelCell ? [zoneToXc(ds.labelCell.zone)] : [];
+            const dataXC = recomputeZones([zoneToXc(ds.dataRange.zone)], labelCellZone)[0];
+            if (dataXC === undefined) {
+                return [];
+            }
+            const dataRange = getters.getRangeFromSheetXC(ds.dataRange.sheetId, dataXC);
+            return getters.getRangeValues(dataRange);
+        }
+        return [];
+    }
+    function filterEmptyDataPoints(labels, datasets) {
+        const numberOfDataPoints = Math.max(labels.length, ...datasets.map((dataset) => { var _a; return ((_a = dataset.data) === null || _a === void 0 ? void 0 : _a.length) || 0; }));
+        const dataPointsIndexes = range(0, numberOfDataPoints).filter((dataPointIndex) => {
+            const label = labels[dataPointIndex];
+            const values = datasets.map((dataset) => { var _a; return (_a = dataset.data) === null || _a === void 0 ? void 0 : _a[dataPointIndex]; });
+            return label || values.some((value) => value === 0 || Boolean(value));
+        });
+        return {
+            labels: dataPointsIndexes.map((i) => labels[i] || ""),
+            dataSetsValues: datasets.map((dataset) => ({
+                ...dataset,
+                data: dataPointsIndexes.map((i) => dataset.data[i]),
+            })),
+        };
+    }
+    function truncateLabel(label) {
+        if (!label) {
+            return "";
+        }
+        if (label.length > MAX_CHAR_LABEL) {
+            return label.substring(0, MAX_CHAR_LABEL) + "…";
+        }
+        return label;
+    }
+    /**
+     * Get a default chart js configuration
+     */
+    function getDefaultChartJsRuntime(chart, labels, fontColor) {
+        return {
+            type: chart.type,
+            options: {
+                // https://www.chartjs.org/docs/latest/general/responsive.html
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { left: 20, right: 20, top: chart.title ? 10 : 25, bottom: 10 },
+                },
+                elements: {
+                    line: {
+                        fill: false, // do not fill the area under line charts
+                    },
+                    point: {
+                        hitRadius: 15, // increased hit radius to display point tooltip when hovering nearby
+                    },
+                },
+                animation: {
+                    duration: 0, // general animation time
+                },
+                hover: {
+                    animationDuration: 10, // duration of animations when hovering an item
+                },
+                responsiveAnimationDuration: 0,
+                title: {
+                    display: !!chart.title,
+                    fontSize: 22,
+                    fontStyle: "normal",
+                    text: chart.title,
+                    fontColor,
+                },
+            },
+            data: {
+                labels: labels.map(truncateLabel),
+                datasets: [],
+            },
+        };
+    }
+    function getLabelFormat(getters, range) {
+        var _a;
+        if (!range)
+            return undefined;
+        return (_a = getters.getCell(range.sheetId, range.zone.left, range.zone.top)) === null || _a === void 0 ? void 0 : _a.format;
+    }
+    function getChartLabelValues(getters, dataSets, labelRange) {
+        let labels = { values: [], formattedValues: [] };
+        if (labelRange) {
+            if (!labelRange.invalidXc && !labelRange.invalidSheetName) {
+                labels = {
+                    formattedValues: getters.getRangeFormattedValues(labelRange),
+                    values: getters.getRangeValues(labelRange).map((val) => (val ? String(val) : "")),
+                };
+            }
+        }
+        else if (dataSets.length === 1) {
+            for (let i = 0; i < getData(getters, dataSets[0]).length; i++) {
+                labels.formattedValues.push("");
+                labels.values.push("");
+            }
+        }
+        else {
+            if (dataSets[0]) {
+                const ranges = getData(getters, dataSets[0]);
+                labels = {
+                    formattedValues: range(0, ranges.length).map((r) => r.toString()),
+                    values: labels.formattedValues,
+                };
+            }
+        }
+        return labels;
+    }
+    function getChartDatasetValues(getters, dataSets) {
+        const datasetValues = [];
+        for (const [dsIndex, ds] of Object.entries(dataSets)) {
+            let label;
+            if (ds.labelCell) {
+                const labelRange = ds.labelCell;
+                const cell = labelRange
+                    ? getters.getCell(labelRange.sheetId, labelRange.zone.left, labelRange.zone.top)
+                    : undefined;
+                label =
+                    cell && labelRange
+                        ? truncateLabel(cell.formattedValue)
+                        : (label = `${ChartTerms.Series} ${parseInt(dsIndex) + 1}`);
+            }
+            else {
+                label = label = `${ChartTerms.Series} ${parseInt(dsIndex) + 1}`;
+            }
+            let data = ds.dataRange ? getData(getters, ds) : [];
+            datasetValues.push({ data, label });
+        }
+        return datasetValues;
+    }
+
+    chartRegistry.add("bar", {
+        match: (type) => type === "bar",
+        createChart: (id, definition, sheetId, getters) => new BarChart(id, definition, sheetId, getters),
+        getChartRuntime: createBarChartRuntime,
+        validateChartDefinition: (validator, definition) => BarChart.validateChartDefinition(validator, definition),
+        transformDefinition: (definition, executed) => BarChart.transformDefinition(definition, executed),
+        getChartDefinitionFromContextCreation: (context) => BarChart.getDefinitionFromContextCreation(context),
+        name: "Bar",
+    });
+    class BarChart extends AbstractChart {
+        constructor(id, definition, sheetId, getters) {
+            super(id, definition, sheetId, getters);
+            this.type = "bar";
+            this.dataSets = createDataSets(getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
+            this.labelRange = createRange(getters, sheetId, definition.labelRange);
+            this.background = definition.background;
+            this.verticalAxisPosition = definition.verticalAxisPosition;
+            this.legendPosition = definition.legendPosition;
+            this.stackedBar = definition.stackedBar;
+        }
+        static transformDefinition(definition, executed) {
+            return transformChartDefinitionWithDataSetsWithZone(definition, executed);
+        }
+        static validateChartDefinition(validator, definition) {
+            return validator.checkValidations(definition, validator.chainValidations(checkDatasetNotEmpty, checkDataset), checkLabelRange);
+        }
+        static getDefinitionFromContextCreation(context) {
+            return {
+                background: context.background || BACKGROUND_CHART_COLOR,
+                dataSets: context.range ? [context.range] : [],
+                dataSetsHaveTitle: false,
+                stackedBar: false,
+                legendPosition: "top",
+                title: context.title || "",
+                type: "bar",
+                verticalAxisPosition: "left",
+                labelRange: undefined,
+            };
+        }
+        getContextCreation() {
+            return {
+                background: this.background,
+                title: this.title,
+                range: this.dataSets.length > 0
+                    ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
+                    : undefined,
+            };
+        }
+        copyForSheetId(sheetId) {
+            const dataSets = copyDataSetsWithNewSheetId(this.sheetId, sheetId, this.dataSets);
+            const labelRange = copyLabelRangeWithNewSheetId(this.sheetId, sheetId, this.labelRange);
+            const definition = this.getDefinitionWithSpecificDataSets(dataSets, labelRange);
+            return new BarChart(this.id, definition, sheetId, this.getters);
+        }
+        getDefinition() {
+            return this.getDefinitionWithSpecificDataSets(this.dataSets, this.labelRange);
+        }
+        getDefinitionWithSpecificDataSets(dataSets, labelRange) {
+            return {
+                type: "bar",
+                dataSetsHaveTitle: dataSets.length ? Boolean(dataSets[0].labelCell) : false,
+                background: this.background,
+                dataSets: dataSets.map((ds) => this.getters.getRangeString(ds.dataRange, this.sheetId)),
+                legendPosition: this.legendPosition,
+                verticalAxisPosition: this.verticalAxisPosition,
+                labelRange: labelRange ? this.getters.getRangeString(labelRange, this.sheetId) : undefined,
+                title: this.title,
+                stackedBar: this.stackedBar,
+            };
+        }
+        getDefinitionForExcel() {
+            const dataSets = this.dataSets
+                .map((ds) => toExcelDataset(this.getters, ds))
+                .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
+            return {
+                ...this.getDefinition(),
+                backgroundColor: toXlsxHexColor(this.background),
+                fontColor: toXlsxHexColor(chartFontColor(this.background)),
+                dataSets,
+                stackedBar: this.stackedBar,
+            };
+        }
+        getSheetIdsUsedInChartRanges() {
+            const sheetIds = new Set();
+            const ranges = [];
+            this.dataSets.map((ds) => ds.dataRange).map((range) => ranges.push(range));
+            this.dataSets
+                .map((ds) => ds.labelCell)
+                .filter(isDefined$1)
+                .map((range) => ranges.push(range));
+            if (this.labelRange) {
+                ranges.push(this.labelRange);
+            }
+            for (const range of ranges) {
+                sheetIds.add(range.sheetId);
+            }
+            return Array.from(sheetIds);
+        }
+        updateRanges(applyChange) {
+            const { dataSets, labelRange, isStale } = updateChartRangesWithDataSets(this.getters, applyChange, this.dataSets, this.labelRange);
+            if (!isStale) {
+                return this;
+            }
+            const definition = this.getDefinitionWithSpecificDataSets(dataSets, labelRange);
+            return new BarChart(this.id, definition, this.sheetId, this.getters);
+        }
+    }
+    function getBarConfiguration(chart, labels) {
+        const fontColor = chartFontColor(chart.background);
+        const config = getDefaultChartJsRuntime(chart, labels, fontColor);
+        const legend = {
+            labels: { fontColor },
+        };
+        if (!chart.labelRange && chart.dataSets.length === 1) {
+            legend.display = false;
+        }
+        else {
+            legend.position = chart.legendPosition;
+        }
+        config.options.legend = legend;
+        config.options.layout = {
+            padding: { left: 20, right: 20, top: chart.title ? 10 : 25, bottom: 10 },
+        };
+        config.options.scales = {
+            xAxes: [
+                {
+                    ticks: {
+                        // x axis configuration
+                        maxRotation: 60,
+                        minRotation: 15,
+                        padding: 5,
+                        labelOffset: 2,
+                        fontColor,
+                    },
+                },
+            ],
+            yAxes: [
+                {
+                    position: chart.verticalAxisPosition,
+                    ticks: {
+                        fontColor,
+                        // y axis configuration
+                        beginAtZero: true, // the origin of the y axis is always zero
+                    },
+                },
+            ],
+        };
+        if (chart.stackedBar) {
+            config.options.scales.xAxes[0].stacked = true;
+            config.options.scales.yAxes[0].stacked = true;
+        }
+        return config;
+    }
+    function createBarChartRuntime(chart, getters) {
+        const labelValues = getChartLabelValues(getters, chart.dataSets, chart.labelRange);
+        let labels = labelValues.formattedValues;
+        let dataSetsValues = getChartDatasetValues(getters, chart.dataSets);
+        ({ labels, dataSetsValues } = filterEmptyDataPoints(labels, dataSetsValues));
+        const runtime = getBarConfiguration(chart, labels);
+        const colors = new ChartColors();
+        for (let { label, data } of dataSetsValues) {
+            const color = colors.next();
+            const dataset = {
+                label,
+                data,
+                borderColor: color,
+                backgroundColor: color,
+            };
+            runtime.data.datasets.push(dataset);
+        }
+        return runtime;
+    }
+
+    /**
+     * Create a function used to create a Chart based on the definition
+     */
+    function chartFactory(getters) {
+        const builders = chartRegistry.getAll();
+        function createChart(id, definition, sheetId) {
+            const builder = builders.find((builder) => builder.match(definition.type));
+            if (!builder) {
+                throw new Error(`No builder for this chart: ${definition.type}`);
+            }
+            return builder.createChart(id, definition, sheetId, getters);
+        }
+        return createChart;
+    }
+    /**
+     * Create a function used to create a Chart Runtime based on the chart class
+     * instance
+     */
+    function chartRuntimeFactory(getters) {
+        const builders = chartRegistry.getAll();
+        function createRuntimeChart(chart) {
+            const builder = builders.find((builder) => builder.match(chart.type));
+            if (!builder) {
+                throw new Error("No runtime builder for this chart.");
+            }
+            return builder.getChartRuntime(chart, getters);
+        }
+        return createRuntimeChart;
+    }
+    /**
+     * Validate the chart definition given in arguments
+     */
+    function validateChartDefinition(validator, definition) {
+        const validators = chartRegistry.getAll().find((validator) => validator.match(definition.type));
+        if (!validators) {
+            throw new Error("Unknown chart type.");
+        }
+        return validators.validateChartDefinition(validator, definition);
+    }
+    /**
+     * Get a new chart definition transformed with the executed command. This
+     * functions will be called during operational transform process
+     */
+    function transformDefinition(definition, executed) {
+        const transformation = chartRegistry.getAll().find((factory) => factory.match(definition.type));
+        if (!transformation) {
+            throw new Error("Unknown chart type.");
+        }
+        return transformation.transformDefinition(definition, executed);
+    }
+    /**
+     * Get an empty definition based on the given context and the given type
+     */
+    function getChartDefinitionFromContextCreation(context, type) {
+        const chartClass = chartRegistry.get(type);
+        return chartClass.getChartDefinitionFromContextCreation(context);
+    }
+    function getChartTypes() {
+        const result = {};
+        for (const key of chartRegistry.getKeys()) {
+            result[key] = chartRegistry.get(key).name;
+        }
+        return result;
+    }
+
+    chartRegistry.add("gauge", {
+        match: (type) => type === "gauge",
+        createChart: (id, definition, sheetId, getters) => new GaugeChart(id, definition, sheetId, getters),
+        getChartRuntime: createGaugeChartRuntime,
+        validateChartDefinition: (validator, definition) => GaugeChart.validateChartDefinition(validator, definition),
+        transformDefinition: (definition, executed) => GaugeChart.transformDefinition(definition, executed),
+        getChartDefinitionFromContextCreation: (context) => GaugeChart.getDefinitionFromContextCreation(context),
+        name: "Gauge",
+    });
+    function checkEmptyDataRange(definition) {
+        return !definition.dataRange ? 34 /* EmptyGaugeDataRange */ : 0 /* Success */;
+    }
+    function isDataRangeValid(definition) {
+        return definition.dataRange && !rangeReference.test(definition.dataRange)
+            ? 35 /* InvalidGaugeDataRange */
+            : 0 /* Success */;
+    }
+    function checkRangeLimits(check, batchValidations) {
+        return batchValidations((definition) => {
+            if (definition.sectionRule) {
+                return check(definition.sectionRule.rangeMin, "rangeMin");
+            }
+            return 0 /* Success */;
+        }, (definition) => {
+            if (definition.sectionRule) {
+                return check(definition.sectionRule.rangeMax, "rangeMax");
+            }
+            return 0 /* Success */;
+        });
+    }
+    function checkInflectionPointsValue(check, batchValidations) {
+        return batchValidations((definition) => {
+            if (definition.sectionRule) {
+                return check(definition.sectionRule.lowerInflectionPoint.value, "lowerInflectionPointValue");
+            }
+            return 0 /* Success */;
+        }, (definition) => {
+            if (definition.sectionRule) {
+                return check(definition.sectionRule.upperInflectionPoint.value, "upperInflectionPointValue");
+            }
+            return 0 /* Success */;
+        });
+    }
+    function checkRangeMinBiggerThanRangeMax(definition) {
+        if (definition.sectionRule) {
+            if (Number(definition.sectionRule.rangeMin) >= Number(definition.sectionRule.rangeMax)) {
+                return 40 /* GaugeRangeMinBiggerThanRangeMax */;
+            }
+        }
+        return 0 /* Success */;
+    }
+    function checkEmpty(value, valueName) {
+        if (value === "") {
+            switch (valueName) {
+                case "rangeMin":
+                    return 36 /* EmptyGaugeRangeMin */;
+                case "rangeMax":
+                    return 38 /* EmptyGaugeRangeMax */;
+            }
+        }
+        return 0 /* Success */;
+    }
+    function checkNaN(value, valueName) {
+        if (isNaN(value)) {
+            switch (valueName) {
+                case "rangeMin":
+                    return 37 /* GaugeRangeMinNaN */;
+                case "rangeMax":
+                    return 39 /* GaugeRangeMaxNaN */;
+                case "lowerInflectionPointValue":
+                    return 41 /* GaugeLowerInflectionPointNaN */;
+                case "upperInflectionPointValue":
+                    return 42 /* GaugeUpperInflectionPointNaN */;
+            }
+        }
+        return 0 /* Success */;
+    }
+    class GaugeChart extends AbstractChart {
+        constructor(id, definition, sheetId, getters) {
+            super(id, definition, sheetId, getters);
+            this.type = "gauge";
+            this.dataRange = createRange(this.getters, this.sheetId, definition.dataRange);
+            this.sectionRule = definition.sectionRule;
+            this.background = definition.background;
+        }
+        static validateChartDefinition(validator, definition) {
+            return validator.checkValidations(definition, validator.chainValidations(checkEmptyDataRange, isDataRangeValid), validator.chainValidations(checkRangeLimits(checkEmpty, validator.batchValidations), checkRangeLimits(checkNaN, validator.batchValidations), checkRangeMinBiggerThanRangeMax), validator.chainValidations(checkInflectionPointsValue(checkNaN, validator.batchValidations)));
+        }
+        static transformDefinition(definition, executed) {
+            let dataRangeZone;
+            if (definition.dataRange) {
+                dataRangeZone = transformZone(toZone(definition.dataRange), executed);
+            }
+            return {
+                ...definition,
+                dataRange: dataRangeZone ? zoneToXc(dataRangeZone) : undefined,
+            };
+        }
+        static getDefinitionFromContextCreation(context) {
+            return {
+                background: context.background || BACKGROUND_CHART_COLOR,
+                title: context.title || "",
+                type: "gauge",
+                dataRange: context.range,
+                sectionRule: {
+                    colors: {
+                        lowerColor: DEFAULT_GAUGE_LOWER_COLOR,
+                        middleColor: DEFAULT_GAUGE_MIDDLE_COLOR,
+                        upperColor: DEFAULT_GAUGE_UPPER_COLOR,
+                    },
+                    rangeMin: "0",
+                    rangeMax: "100",
+                    lowerInflectionPoint: {
+                        type: "percentage",
+                        value: "15",
+                    },
+                    upperInflectionPoint: {
+                        type: "percentage",
+                        value: "40",
+                    },
+                },
+            };
+        }
+        copyForSheetId(sheetId) {
+            const dataRange = copyLabelRangeWithNewSheetId(this.sheetId, sheetId, this.dataRange);
+            const definition = this.getDefinitionWithSpecificRanges(dataRange);
+            return new GaugeChart(this.id, definition, sheetId, this.getters);
+        }
+        getSheetIdsUsedInChartRanges() {
+            return this.dataRange ? [this.dataRange.sheetId] : [];
+        }
+        getDefinition() {
+            return this.getDefinitionWithSpecificRanges(this.dataRange);
+        }
+        getDefinitionWithSpecificRanges(dataRange) {
+            return {
+                background: this.background,
+                sectionRule: this.sectionRule,
+                title: this.title,
+                type: "gauge",
+                dataRange: dataRange ? this.getters.getRangeString(dataRange, this.sheetId) : undefined,
+            };
+        }
+        getDefinitionForExcel() {
+            // This kind of graph is not exportable in Excel
+            return undefined;
+        }
+        getContextCreation() {
+            return {
+                background: this.background,
+                title: this.title,
+                range: this.dataRange ? this.getters.getRangeString(this.dataRange, this.sheetId) : undefined,
+            };
+        }
+        updateRanges(applyChange) {
+            const range = adaptChartRange(this.dataRange, applyChange);
+            if (this.dataRange === range) {
+                return this;
+            }
+            const definition = this.getDefinitionWithSpecificRanges(range);
+            return new GaugeChart(this.id, definition, this.sheetId, this.getters);
+        }
+    }
+    function getGaugeConfiguration(chart) {
+        const fontColor = chartFontColor(chart.background);
+        const config = getDefaultChartJsRuntime(chart, [], fontColor);
+        config.options.hover = undefined;
+        config.options.events = [];
+        config.options.layout = {
+            padding: { left: 30, right: 30, top: chart.title ? 10 : 25, bottom: 25 },
+        };
+        config.options.needle = {
+            radiusPercentage: 2,
+            widthPercentage: 3.2,
+            lengthPercentage: 80,
+            color: "#000000",
+        };
+        config.options.valueLabel = {
+            display: false,
+            formatter: null,
+            color: "#FFFFFF",
+            backgroundColor: "#000000",
+            fontSize: 30,
+            borderRadius: 5,
+            padding: {
+                top: 5,
+                right: 5,
+                bottom: 5,
+                left: 5,
+            },
+            bottomMarginPercentage: 5,
+        };
+        return config;
+    }
+    function createGaugeChartRuntime(chart, getters) {
+        const runtime = getGaugeConfiguration(chart);
+        const colors = chart.sectionRule.colors;
+        const lowerPoint = chart.sectionRule.lowerInflectionPoint;
+        const upperPoint = chart.sectionRule.upperInflectionPoint;
+        const lowerPointValue = Number(lowerPoint.value);
+        const upperPointValue = Number(upperPoint.value);
+        const minNeedleValue = Number(chart.sectionRule.rangeMin);
+        const maxNeedleValue = Number(chart.sectionRule.rangeMax);
+        const needleCoverage = maxNeedleValue - minNeedleValue;
+        const needleInflectionPoint = [];
+        if (lowerPoint.value !== "") {
+            const lowerPointNeedleValue = lowerPoint.type === "number"
+                ? lowerPointValue
+                : minNeedleValue + (needleCoverage * lowerPointValue) / 100;
+            needleInflectionPoint.push({
+                value: clip(lowerPointNeedleValue, minNeedleValue, maxNeedleValue),
+                color: colors.lowerColor,
+            });
+        }
+        if (upperPoint.value !== "") {
+            const upperPointNeedleValue = upperPoint.type === "number"
+                ? upperPointValue
+                : minNeedleValue + (needleCoverage * upperPointValue) / 100;
+            needleInflectionPoint.push({
+                value: clip(upperPointNeedleValue, minNeedleValue, maxNeedleValue),
+                color: colors.middleColor,
+            });
+        }
+        const data = [];
+        const backgroundColor = [];
+        needleInflectionPoint
+            .sort((a, b) => a.value - b.value)
+            .map((point) => {
+            data.push(point.value);
+            backgroundColor.push(point.color);
+        });
+        // There's a bug in gauge lib when the last element in `data` is 0 (i.e. when the range maximum is 0).
+        // The value wrongly fallbacks to 1 because 0 is falsy
+        // See https://github.com/haiiaaa/chartjs-gauge/pull/33
+        // https://github.com/haiiaaa/chartjs-gauge/blob/2ea50541d754d710cb30c2502fa690ac5dc27afd/src/controllers/controller.gauge.js#L52
+        data.push(maxNeedleValue);
+        backgroundColor.push(colors.upperColor);
+        const dataRange = chart.dataRange;
+        const deltaBeyondRangeLimit = needleCoverage / 30;
+        let needleValue = minNeedleValue - deltaBeyondRangeLimit; // make needle value always at the minimum by default
+        let cellFormatter = null;
+        let displayValue = false;
+        if (dataRange !== undefined) {
+            const cell = getters.getCell(dataRange.sheetId, dataRange.zone.left, dataRange.zone.top);
+            if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number) {
+                // in gauge graph "datasets.value" is used to calculate the angle of the
+                // needle in the graph. To prevent the needle from making 360° turns, we
+                // clip the value between a min and a max. This min and this max are slightly
+                // smaller and slightly larger than minRange and maxRange to mark the fact
+                // that the needle is out of the range limits
+                needleValue = clip(cell === null || cell === void 0 ? void 0 : cell.evaluated.value, minNeedleValue - deltaBeyondRangeLimit, maxNeedleValue + deltaBeyondRangeLimit);
+                cellFormatter = () => getters.getRangeFormattedValues(dataRange)[0];
+                displayValue = true;
+            }
+        }
+        runtime.options.valueLabel.display = displayValue;
+        runtime.options.valueLabel.formatter = cellFormatter;
+        runtime.data.datasets.push({
+            data,
+            minValue: Number(chart.sectionRule.rangeMin),
+            value: needleValue,
+            backgroundColor,
+        });
+        return runtime;
+    }
+
+    const UNIT_LENGTH = {
+        second: 1000,
+        minute: 1000 * 60,
+        hour: 1000 * 3600,
+        day: 1000 * 3600 * 24,
+        month: 1000 * 3600 * 24 * 30,
+        year: 1000 * 3600 * 24 * 365,
+    };
+    const Milliseconds = {
+        inSeconds: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.second);
+        },
+        inMinutes: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.minute);
+        },
+        inHours: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.hour);
+        },
+        inDays: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.day);
+        },
+        inMonths: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.month);
+        },
+        inYears: function (milliseconds) {
+            return Math.floor(milliseconds / UNIT_LENGTH.year);
+        },
+    };
+    /**
+     * Regex to test if a format string is a date format that can be translated into a moment time format
+     */
+    const timeFormatMomentCompatible = /^((d|dd|m|mm|yyyy|yy|hh|h|ss|a)(-|:|\s|\/))*(d|dd|m|mm|yyyy|yy|hh|h|ss|a)$/i;
+    /** Get the time options for the XAxis of ChartJS */
+    function getChartTimeOptions(labels, labelFormat) {
+        const momentFormat = convertDateFormatForMoment(labelFormat);
+        const timeUnit = getBestTimeUnitForScale(labels, momentFormat);
+        const displayFormats = {};
+        if (timeUnit) {
+            displayFormats[timeUnit] = momentFormat;
+        }
+        return {
+            parser: momentFormat,
+            displayFormats,
+            unit: timeUnit,
+        };
+    }
+    /**
+     * Convert the given date format into a format that moment.js understands.
+     *
+     * https://momentjs.com/docs/#/parsing/string-format/
+     */
+    function convertDateFormatForMoment(format) {
+        format = format.replace(/y/g, "Y");
+        format = format.replace(/d/g, "D");
+        // "m" before "h" == month, "m" after "h" == minute
+        const indexH = format.indexOf("h");
+        if (indexH >= 0) {
+            format = format.slice(0, indexH).replace(/m/g, "M") + format.slice(indexH);
+        }
+        else {
+            format = format.replace(/m/g, "M");
+        }
+        // If we have an "a", we should display hours as AM/PM (h), otherwise display 24 hours format (H)
+        if (!format.includes("a")) {
+            format = format.replace(/h/g, "H");
+        }
+        return format;
+    }
+    /** Get the minimum time unit that the format is able to display */
+    function getFormatMinDisplayUnit(format) {
+        if (format.includes("s")) {
+            return "second";
+        }
+        else if (format.includes("m")) {
+            return "minute";
+        }
+        else if (format.includes("h") || format.includes("H")) {
+            return "hour";
+        }
+        else if (format.includes("D")) {
+            return "day";
+        }
+        else if (format.includes("M")) {
+            return "month";
+        }
+        return "year";
+    }
+    /**
+     * Returns the best time unit that should be used for the X axis of a chart in order to display all
+     * the labels correctly.
+     *
+     * There is two conditions :
+     *  - the format of the labels should be able to display the unit. For example if the format is "DD/MM/YYYY"
+     *    it makes no sense to try to use minutes in the X axis
+     *  - we want the "best fit" unit. For example if the labels span a period of several days, we want to use days
+     *    as a unit, but if they span 200 days, we'd like to use months instead
+     *
+     */
+    function getBestTimeUnitForScale(labels, format) {
+        const labelDates = labels.map((label) => { var _a; return (_a = parseDateTime(label)) === null || _a === void 0 ? void 0 : _a.jsDate; });
+        if (labelDates.some((date) => date === undefined) || labels.length < 2) {
+            return undefined;
+        }
+        const labelsTimestamps = labelDates.map((date) => date.getTime());
+        const period = Math.max(...labelsTimestamps) - Math.min(...labelsTimestamps);
+        const minUnit = getFormatMinDisplayUnit(format);
+        if (UNIT_LENGTH.second >= UNIT_LENGTH[minUnit] && Milliseconds.inSeconds(period) < 180) {
+            return "second";
+        }
+        else if (UNIT_LENGTH.minute >= UNIT_LENGTH[minUnit] && Milliseconds.inMinutes(period) < 180) {
+            return "minute";
+        }
+        else if (UNIT_LENGTH.hour >= UNIT_LENGTH[minUnit] && Milliseconds.inHours(period) < 96) {
+            return "hour";
+        }
+        else if (UNIT_LENGTH.day >= UNIT_LENGTH[minUnit] && Milliseconds.inDays(period) < 90) {
+            return "day";
+        }
+        else if (UNIT_LENGTH.month >= UNIT_LENGTH[minUnit] && Milliseconds.inMonths(period) < 36) {
+            return "month";
+        }
+        return "year";
+    }
+
+    chartRegistry.add("line", {
+        match: (type) => type === "line",
+        createChart: (id, definition, sheetId, getters) => new LineChart(id, definition, sheetId, getters),
+        getChartRuntime: createLineChartRuntime,
+        validateChartDefinition: (validator, definition) => LineChart.validateChartDefinition(validator, definition),
+        transformDefinition: (definition, executed) => LineChart.transformDefinition(definition, executed),
+        getChartDefinitionFromContextCreation: (context) => LineChart.getDefinitionFromContextCreation(context),
+        name: "Line",
+    });
+    class LineChart extends AbstractChart {
+        constructor(id, definition, sheetId, getters) {
+            super(id, definition, sheetId, getters);
+            this.type = "line";
+            this.dataSets = createDataSets(this.getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
+            this.labelRange = createRange(this.getters, sheetId, definition.labelRange);
+            this.background = definition.background;
+            this.verticalAxisPosition = definition.verticalAxisPosition;
+            this.legendPosition = definition.legendPosition;
+            this.labelsAsText = definition.labelsAsText;
+        }
+        static validateChartDefinition(validator, definition) {
+            return validator.checkValidations(definition, validator.chainValidations(checkDatasetNotEmpty, checkDataset), checkLabelRange);
+        }
+        static transformDefinition(definition, executed) {
+            return transformChartDefinitionWithDataSetsWithZone(definition, executed);
+        }
+        static getDefinitionFromContextCreation(context) {
+            return {
+                background: context.background || BACKGROUND_CHART_COLOR,
+                dataSets: context.range ? [context.range] : [],
+                dataSetsHaveTitle: false,
+                labelsAsText: false,
+                legendPosition: "top",
+                title: context.title || "",
+                type: "line",
+                verticalAxisPosition: "left",
+                labelRange: undefined,
+            };
+        }
+        getDefinition() {
+            return this.getDefinitionWithSpecificDataSets(this.dataSets, this.labelRange);
+        }
+        getDefinitionWithSpecificDataSets(dataSets, labelRange) {
+            return {
+                type: "line",
+                dataSetsHaveTitle: dataSets.length ? Boolean(dataSets[0].labelCell) : false,
+                background: this.background,
+                dataSets: dataSets.map((ds) => this.getters.getRangeString(ds.dataRange, this.sheetId)),
+                legendPosition: this.legendPosition,
+                verticalAxisPosition: this.verticalAxisPosition,
+                labelRange: labelRange ? this.getters.getRangeString(labelRange, this.sheetId) : undefined,
+                title: this.title,
+                labelsAsText: this.labelsAsText,
+            };
+        }
+        getContextCreation() {
+            return {
+                background: this.background,
+                title: this.title,
+                range: this.dataSets.length > 0
+                    ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
+                    : undefined,
+            };
+        }
+        updateRanges(applyChange) {
+            const { dataSets, labelRange, isStale } = updateChartRangesWithDataSets(this.getters, applyChange, this.dataSets, this.labelRange);
+            if (!isStale) {
+                return this;
+            }
+            const definition = this.getDefinitionWithSpecificDataSets(dataSets, labelRange);
+            return new LineChart(this.id, definition, this.sheetId, this.getters);
+        }
+        getDefinitionForExcel() {
+            const dataSets = this.dataSets
+                .map((ds) => toExcelDataset(this.getters, ds))
+                .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
+            return {
+                ...this.getDefinition(),
+                backgroundColor: toXlsxHexColor(this.background),
+                fontColor: toXlsxHexColor(chartFontColor(this.background)),
+                dataSets,
+            };
+        }
+        copyForSheetId(sheetId) {
+            const dataSets = copyDataSetsWithNewSheetId(this.sheetId, sheetId, this.dataSets);
+            const labelRange = copyLabelRangeWithNewSheetId(this.sheetId, sheetId, this.labelRange);
+            const definition = this.getDefinitionWithSpecificDataSets(dataSets, labelRange);
+            return new LineChart(this.id, definition, sheetId, this.getters);
+        }
+        getSheetIdsUsedInChartRanges() {
+            const sheetIds = new Set();
+            const ranges = [];
+            this.dataSets.map((ds) => ds.dataRange).map((range) => ranges.push(range));
+            this.dataSets
+                .map((ds) => ds.labelCell)
+                .filter(isDefined$1)
+                .map((range) => ranges.push(range));
+            if (this.labelRange) {
+                ranges.push(this.labelRange);
+            }
+            for (const range of ranges) {
+                sheetIds.add(range.sheetId);
+            }
+            return Array.from(sheetIds);
+        }
+    }
+    function fixEmptyLabelsForDateCharts(labels, dataSetsValues) {
+        if (labels.length === 0 || labels.every((label) => !label)) {
+            return { labels, dataSetsValues };
+        }
+        const newLabels = [...labels];
+        const newDatasets = deepCopy(dataSetsValues);
+        for (let i = 0; i < newLabels.length; i++) {
+            if (!newLabels[i]) {
+                newLabels[i] = findNextDefinedValue(newLabels, i);
+                for (let ds of newDatasets) {
+                    ds.data[i] = undefined;
+                }
+            }
+        }
+        return { labels: newLabels, dataSetsValues: newDatasets };
+    }
+    function canChartParseLabels(chart, getters) {
+        return canBeDateChart(chart, getters) || canBeLinearChart(chart, getters);
+    }
+    function getChartAxisType(chart, getters) {
+        if (isDateChart(chart, getters)) {
+            return "time";
+        }
+        if (isLinearChart(chart, getters)) {
+            return "linear";
+        }
+        return "category";
+    }
+    function isDateChart(chart, getters) {
+        return !chart.labelsAsText && canBeDateChart(chart, getters);
+    }
+    function isLinearChart(chart, getters) {
+        return !chart.labelsAsText && canBeLinearChart(chart, getters);
+    }
+    function canBeDateChart(chart, getters) {
+        var _a;
+        if (!chart.labelRange || !chart.dataSets || !canBeLinearChart(chart, getters)) {
+            return false;
+        }
+        const labelFormat = (_a = getters.getCell(chart.labelRange.sheetId, chart.labelRange.zone.left, chart.labelRange.zone.top)) === null || _a === void 0 ? void 0 : _a.format;
+        return Boolean(labelFormat && timeFormatMomentCompatible.test(labelFormat));
+    }
+    function canBeLinearChart(chart, getters) {
+        if (!chart.labelRange || !chart.dataSets) {
+            return false;
+        }
+        const labels = getters.getRangeValues(chart.labelRange);
+        if (labels.some((label) => isNaN(Number(label)) && label)) {
+            return false;
+        }
+        if (labels.every((label) => !label)) {
+            return false;
+        }
+        return true;
+    }
+    function getLineConfiguration(chart, labels) {
+        const fontColor = chartFontColor(chart.background);
+        const config = getDefaultChartJsRuntime(chart, labels, fontColor);
+        const legend = {
+            labels: { fontColor },
+        };
+        if (!chart.labelRange && chart.dataSets.length === 1) {
+            legend.display = false;
+        }
+        else {
+            legend.position = chart.legendPosition;
+        }
+        config.options.legend = legend;
+        config.options.layout = {
+            padding: { left: 20, right: 20, top: chart.title ? 10 : 25, bottom: 10 },
+        };
+        config.options.scales = {
+            xAxes: [
+                {
+                    ticks: {
+                        // x axis configuration
+                        maxRotation: 60,
+                        minRotation: 15,
+                        padding: 5,
+                        labelOffset: 2,
+                        fontColor,
+                    },
+                },
+            ],
+            yAxes: [
+                {
+                    position: chart.verticalAxisPosition,
+                    ticks: {
+                        fontColor,
+                        // y axis configuration
+                        beginAtZero: true, // the origin of the y axis is always zero
+                    },
+                },
+            ],
+        };
+        return config;
+    }
+    function createLineChartRuntime(chart, getters) {
+        const axisType = getChartAxisType(chart, getters);
+        const labelValues = getChartLabelValues(getters, chart.dataSets, chart.labelRange);
+        let labels = axisType === "linear" ? labelValues.values : labelValues.formattedValues;
+        let dataSetsValues = getChartDatasetValues(getters, chart.dataSets);
+        ({ labels, dataSetsValues } = filterEmptyDataPoints(labels, dataSetsValues));
+        if (axisType === "time") {
+            ({ labels, dataSetsValues } = fixEmptyLabelsForDateCharts(labels, dataSetsValues));
+        }
+        const runtime = getLineConfiguration(chart, labels);
+        const labelFormat = getLabelFormat(getters, chart.labelRange);
+        if (axisType === "time") {
+            runtime.options.scales.xAxes[0].type = "time";
+            runtime.options.scales.xAxes[0].time = getChartTimeOptions(labels, labelFormat);
+            runtime.options.scales.xAxes[0].ticks.maxTicksLimit = 15;
+        }
+        else if (axisType === "linear") {
+            runtime.options.scales.xAxes[0].type = "linear";
+            runtime.options.scales.xAxes[0].ticks.callback = (value) => formatValue(value, labelFormat);
+        }
+        const colors = new ChartColors();
+        for (let { label, data } of dataSetsValues) {
+            if (["linear", "time"].includes(axisType)) {
+                // Replace empty string labels by undefined to make sure chartJS doesn't decide that "" is the same as 0
+                data = data.map((y, index) => ({ x: labels[index] || undefined, y }));
+            }
+            const color = colors.next();
+            const dataset = {
+                label,
+                data,
+                lineTension: 0,
+                borderColor: color,
+                backgroundColor: color,
+            };
+            runtime.data.datasets.push(dataset);
+        }
+        return runtime;
+    }
+
+    chartRegistry.add("pie", {
+        match: (type) => type === "pie",
+        createChart: (id, definition, sheetId, getters) => new PieChart(id, definition, sheetId, getters),
+        getChartRuntime: createPieChartRuntime,
+        validateChartDefinition: (validator, definition) => PieChart.validateChartDefinition(validator, definition),
+        transformDefinition: (definition, executed) => PieChart.transformDefinition(definition, executed),
+        getChartDefinitionFromContextCreation: (context) => PieChart.getDefinitionFromContextCreation(context),
+        name: "Pie",
+    });
+    class PieChart extends AbstractChart {
+        constructor(id, definition, sheetId, getters) {
+            super(id, definition, sheetId, getters);
+            this.type = "pie";
+            this.dataSets = createDataSets(getters, definition.dataSets, sheetId, definition.dataSetsHaveTitle);
+            this.labelRange = createRange(getters, sheetId, definition.labelRange);
+            this.background = definition.background;
+            this.legendPosition = definition.legendPosition;
+        }
+        static transformDefinition(definition, executed) {
+            return transformChartDefinitionWithDataSetsWithZone(definition, executed);
+        }
+        static validateChartDefinition(validator, definition) {
+            return validator.checkValidations(definition, validator.chainValidations(checkDatasetNotEmpty, checkDataset), checkLabelRange);
+        }
+        static getDefinitionFromContextCreation(context) {
+            return {
+                background: context.background || BACKGROUND_CHART_COLOR,
+                dataSets: context.range ? [context.range] : [],
+                dataSetsHaveTitle: false,
+                legendPosition: "top",
+                title: context.title || "",
+                type: "pie",
+                labelRange: undefined,
+            };
+        }
+        getDefinition() {
+            return this.getDefinitionWithSpecificDataSets(this.dataSets, this.labelRange);
+        }
+        getContextCreation() {
+            return {
+                background: this.background,
+                title: this.title,
+                range: this.dataSets.length > 0
+                    ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
+                    : undefined,
+            };
+        }
+        getDefinitionWithSpecificDataSets(dataSets, labelRange) {
+            return {
+                type: "pie",
+                dataSetsHaveTitle: dataSets.length ? Boolean(dataSets[0].labelCell) : false,
+                background: this.background,
+                dataSets: dataSets.map((ds) => this.getters.getRangeString(ds.dataRange, this.sheetId)),
+                legendPosition: this.legendPosition,
+                labelRange: labelRange ? this.getters.getRangeString(labelRange, this.sheetId) : undefined,
+                title: this.title,
+            };
+        }
+        copyForSheetId(sheetId) {
+            const dataSets = copyDataSetsWithNewSheetId(this.sheetId, sheetId, this.dataSets);
+            const labelRange = copyLabelRangeWithNewSheetId(this.sheetId, sheetId, this.labelRange);
+            const definition = this.getDefinitionWithSpecificDataSets(dataSets, labelRange);
+            return new PieChart(this.id, definition, sheetId, this.getters);
+        }
+        getDefinitionForExcel() {
+            const dataSets = this.dataSets
+                .map((ds) => toExcelDataset(this.getters, ds))
+                .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
+            return {
+                ...this.getDefinition(),
+                backgroundColor: toXlsxHexColor(this.background),
+                fontColor: toXlsxHexColor(chartFontColor(this.background)),
+                verticalAxisPosition: "left",
+                dataSets,
+            };
+        }
+        getSheetIdsUsedInChartRanges() {
+            const sheetIds = new Set();
+            const ranges = [];
+            this.dataSets.map((ds) => ds.dataRange).map((range) => ranges.push(range));
+            this.dataSets
+                .map((ds) => ds.labelCell)
+                .filter(isDefined$1)
+                .map((range) => ranges.push(range));
+            if (this.labelRange) {
+                ranges.push(this.labelRange);
+            }
+            for (const range of ranges) {
+                sheetIds.add(range.sheetId);
+            }
+            return Array.from(sheetIds);
+        }
+        updateRanges(applyChange) {
+            const { dataSets, labelRange, isStale } = updateChartRangesWithDataSets(this.getters, applyChange, this.dataSets, this.labelRange);
+            if (!isStale) {
+                return this;
+            }
+            const definition = this.getDefinitionWithSpecificDataSets(dataSets, labelRange);
+            return new PieChart(this.id, definition, this.sheetId, this.getters);
+        }
+    }
+    function getPieConfiguration(chart, labels) {
+        const fontColor = chartFontColor(chart.background);
+        const config = getDefaultChartJsRuntime(chart, labels, fontColor);
+        const legend = {
+            labels: { fontColor },
+        };
+        if (!chart.labelRange && chart.dataSets.length === 1) {
+            legend.display = false;
+        }
+        else {
+            legend.position = chart.legendPosition;
+        }
+        config.options.legend = legend;
+        config.options.layout = {
+            padding: { left: 20, right: 20, top: chart.title ? 10 : 25, bottom: 10 },
+        };
+        config.options.tooltips = {
+            callbacks: {
+                title: function (tooltipItems, data) {
+                    return data.datasets[tooltipItems[0].datasetIndex].label;
+                },
+            },
+        };
+        return config;
+    }
+    function getPieColors(colors, dataSetsValues) {
+        const pieColors = [];
+        const maxLength = Math.max(...dataSetsValues.map((ds) => ds.data.length));
+        for (let i = 0; i <= maxLength; i++) {
+            pieColors.push(colors.next());
+        }
+        return pieColors;
+    }
+    function createPieChartRuntime(chart, getters) {
+        const labelValues = getChartLabelValues(getters, chart.dataSets, chart.labelRange);
+        let labels = labelValues.formattedValues;
+        let dataSetsValues = getChartDatasetValues(getters, chart.dataSets);
+        ({ labels, dataSetsValues } = filterEmptyDataPoints(labels, dataSetsValues));
+        const runtime = getPieConfiguration(chart, labels);
+        const colors = new ChartColors();
+        for (let { label, data } of dataSetsValues) {
+            const backgroundColor = getPieColors(colors, dataSetsValues);
+            const dataset = {
+                label,
+                data,
+                borderColor: "#FFFFFF",
+                backgroundColor,
+            };
+            runtime.data.datasets.push(dataset);
+        }
+        return runtime;
+    }
+
+    chartRegistry.add("scorecard", {
+        match: (type) => type === "scorecard",
+        createChart: (id, definition, sheetId, getters) => new ScorecardChart$1(id, definition, sheetId, getters),
+        getChartRuntime: createScorecardChartRuntime,
+        validateChartDefinition: (validator, definition) => ScorecardChart$1.validateChartDefinition(validator, definition),
+        transformDefinition: (definition, executed) => ScorecardChart$1.transformDefinition(definition, executed),
+        getChartDefinitionFromContextCreation: (context) => ScorecardChart$1.getDefinitionFromContextCreation(context),
+        name: "Scorecard",
+    });
+    function checkEmptyKeyValue(definition) {
+        return !definition.keyValue ? 30 /* EmptyScorecardKeyValue */ : 0 /* Success */;
+    }
+    function checkKeyValue(definition) {
+        return definition.keyValue && !rangeReference.test(definition.keyValue)
+            ? 32 /* InvalidScorecardKeyValue */
+            : 0 /* Success */;
+    }
+    function checkBaseline(definition) {
+        return definition.baseline && !rangeReference.test(definition.baseline)
+            ? 33 /* InvalidScorecardBaseline */
+            : 0 /* Success */;
+    }
+    class ScorecardChart$1 extends AbstractChart {
+        constructor(id, definition, sheetId, getters) {
+            super(id, definition, sheetId, getters);
+            this.type = "scorecard";
+            this.keyValue = createRange(getters, sheetId, definition.keyValue);
+            this.baseline = createRange(getters, sheetId, definition.baseline);
+            this.baselineMode = definition.baselineMode;
+            this.baselineDescr = definition.baselineDescr;
+            this.background = definition.background;
+            this.baselineColorUp = definition.baselineColorUp;
+            this.baselineColorDown = definition.baselineColorDown;
+            this.fontColor = definition.fontColor;
+        }
+        static validateChartDefinition(validator, definition) {
+            return validator.checkValidations(definition, validator.chainValidations(checkEmptyKeyValue, checkKeyValue), checkBaseline);
+        }
+        static getDefinitionFromContextCreation(context) {
+            return {
+                background: context.background || BACKGROUND_CHART_COLOR,
+                type: "scorecard",
+                keyValue: context.range,
+                title: context.title || "",
+                baselineMode: "absolute",
+                baselineColorUp: "#00A04A",
+                baselineColorDown: "#DC6965",
+            };
+        }
+        static transformDefinition(definition, executed) {
+            let baselineZone;
+            let keyValueZone;
+            if (definition.baseline) {
+                baselineZone = transformZone(toZone(definition.baseline), executed);
+            }
+            if (definition.keyValue) {
+                keyValueZone = transformZone(toZone(definition.keyValue), executed);
+            }
+            return {
+                ...definition,
+                baseline: baselineZone ? zoneToXc(baselineZone) : undefined,
+                keyValue: keyValueZone ? zoneToXc(keyValueZone) : undefined,
+            };
+        }
+        copyForSheetId(sheetId) {
+            const baseline = copyLabelRangeWithNewSheetId(this.sheetId, sheetId, this.baseline);
+            const keyValue = copyLabelRangeWithNewSheetId(this.sheetId, sheetId, this.keyValue);
+            const definition = this.getDefinitionWithSpecificRanges(baseline, keyValue);
+            return new ScorecardChart$1(this.id, definition, sheetId, this.getters);
+        }
+        getDefinition() {
+            return this.getDefinitionWithSpecificRanges(this.baseline, this.keyValue);
+        }
+        getContextCreation() {
+            return {
+                background: this.background,
+                title: this.title,
+                range: this.keyValue ? this.getters.getRangeString(this.keyValue, this.sheetId) : undefined,
+            };
+        }
+        getSheetIdsUsedInChartRanges() {
+            const sheetIds = new Set();
+            if (this.baseline) {
+                sheetIds.add(this.baseline.sheetId);
+            }
+            if (this.keyValue) {
+                sheetIds.add(this.keyValue.sheetId);
+            }
+            return Array.from(sheetIds);
+        }
+        getDefinitionWithSpecificRanges(baseline, keyValue) {
+            return {
+                baselineColorDown: this.baselineColorDown,
+                baselineColorUp: this.baselineColorUp,
+                baselineMode: this.baselineMode,
+                title: this.title,
+                type: "scorecard",
+                background: this.background,
+                baseline: baseline ? this.getters.getRangeString(baseline, this.sheetId) : undefined,
+                baselineDescr: this.baselineDescr,
+                fontColor: this.fontColor,
+                keyValue: keyValue ? this.getters.getRangeString(keyValue, this.sheetId) : undefined,
+            };
+        }
+        getDefinitionForExcel() {
+            // This kind of graph is not exportable in Excel
+            return undefined;
+        }
+        updateRanges(applyChange) {
+            const baseline = adaptChartRange(this.baseline, applyChange);
+            const keyValue = adaptChartRange(this.keyValue, applyChange);
+            if (this.baseline === baseline && this.keyValue === keyValue) {
+                return this;
+            }
+            const definition = this.getDefinitionWithSpecificRanges(baseline, keyValue);
+            return new ScorecardChart$1(this.id, definition, this.sheetId, this.getters);
+        }
+    }
+    function createScorecardChartRuntime(chart, getters) {
+        let keyValue = "";
+        let formattedKeyValue = "";
+        if (chart.keyValue) {
+            const keyValueCell = getters.getCellsInZone(chart.keyValue.sheetId, chart.keyValue.zone)[0];
+            keyValue = (keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.evaluated.value) ? String(keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.evaluated.value) : "";
+            formattedKeyValue = (keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.formattedValue) || "";
+        }
+        const baseline = chart.baseline ? getters.getRangeValues(chart.baseline)[0] : undefined;
+        const baselineStr = baseline !== undefined ? String(baseline) : "";
+        return {
+            title: chart.title,
+            keyValue: formattedKeyValue || keyValue,
+            baselineDisplay: getBaselineText(baselineStr, keyValue, chart.baselineMode),
+            baselineArrow: getBaselineArrowDirection(baselineStr, keyValue),
+            baselineColor: getBaselineColor(baselineStr, keyValue, chart.baselineColorUp, chart.baselineColorDown),
+            baselineDescr: chart.baselineDescr,
+            background: chart.background,
+            fontColor: chartFontColor(chart.background),
+        };
+    }
+
+    class LineConfigPanel extends LineBarPieConfigPanel {
+        get canTreatLabelsAsText() {
+            const chart = this.env.model.getters.getChart(this.props.figureId);
+            if (chart && chart instanceof LineChart) {
+                return canChartParseLabels(chart, this.env.model.getters);
+            }
+            return false;
+        }
+        onUpdateLabelsAsText(ev) {
+            this.props.updateChart({
+                labelsAsText: ev.target.checked,
+            });
+        }
+    }
+    LineConfigPanel.template = "o-spreadsheet.LineConfigPanel";
+
+    class LineChartDesignPanel extends LineBarPieDesignPanel {
+    }
+    LineChartDesignPanel.template = "o-spreadsheet.LineChartDesignPanel";
+
+    class ScorecardChartConfigPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                keyValueDispatchResult: undefined,
+                baselineDispatchResult: undefined,
+            });
+            this.keyValue = this.props.definition.keyValue;
+            this.baseline = this.props.definition.baseline;
+        }
+        get errorMessages() {
+            var _a, _b;
+            const cancelledReasons = [
+                ...(((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || []),
+                ...(((_b = this.state.baselineDispatchResult) === null || _b === void 0 ? void 0 : _b.reasons) || []),
+            ];
+            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
+        }
+        get isKeyValueInvalid() {
+            var _a, _b;
+            return !!(((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(30 /* EmptyScorecardKeyValue */)) ||
+                ((_b = this.state.keyValueDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(32 /* InvalidScorecardKeyValue */)));
+        }
+        get isBaselineInvalid() {
+            var _a;
+            return !!((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(33 /* InvalidScorecardBaseline */));
+        }
+        onKeyValueRangeChanged(ranges) {
+            this.keyValue = ranges[0];
+        }
+        updateKeyValueRange() {
+            this.state.keyValueDispatchResult = this.props.updateChart({
+                keyValue: this.keyValue,
+            });
+        }
+        onBaselineRangeChanged(ranges) {
+            this.baseline = ranges[0];
+        }
+        updateBaselineRange() {
+            this.state.baselineDispatchResult = this.props.updateChart({
+                baseline: this.baseline,
+            });
+        }
+    }
+    ScorecardChartConfigPanel.template = "o-spreadsheet.ScorecardChartConfigPanel";
+    ScorecardChartConfigPanel.components = { SelectionInput };
+
+    class ScorecardChartDesignPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                openedColorPicker: undefined,
+            });
+        }
+        updateTitle(ev) {
+            this.props.updateChart({
+                title: ev.target.value,
+            });
+        }
+        updateBaselineDescr(ev) {
+            this.props.updateChart({ baselineDescr: ev.target.value });
+        }
+        updateBaselineMode(ev) {
+            this.props.updateChart({ baselineMode: ev.target.value });
+        }
+        openColorPicker(colorPickerId) {
+            this.state.openedColorPicker = colorPickerId;
+        }
+        setColor(color, colorPickerId) {
+            switch (colorPickerId) {
+                case "backgroundColor":
+                    this.props.updateChart({ background: color });
+                    break;
+                case "baselineColorDown":
+                    this.props.updateChart({ baselineColorDown: color });
+                    break;
+                case "baselineColorUp":
+                    this.props.updateChart({ baselineColorUp: color });
+                    break;
+            }
+            this.state.openedColorPicker = undefined;
+        }
+    }
+    ScorecardChartDesignPanel.template = "o-spreadsheet.ScorecardChartDesignPanel";
+    ScorecardChartDesignPanel.components = { ColorPicker };
+
+    const chartSidePanelComponentRegistry = new Registry();
+    chartSidePanelComponentRegistry
+        .add("line", {
+        configuration: LineConfigPanel,
+        design: LineChartDesignPanel,
+    })
+        .add("bar", {
+        configuration: BarConfigPanel,
+        design: BarChartDesignPanel,
+    })
+        .add("pie", {
+        configuration: LineBarPieConfigPanel,
+        design: LineBarPieDesignPanel,
+    })
+        .add("gauge", {
+        configuration: GaugeChartConfigPanel,
+        design: GaugeChartDesignPanel,
+    })
+        .add("scorecard", {
+        configuration: ScorecardChartConfigPanel,
+        design: ScorecardChartDesignPanel,
+    });
+
+    css /* scss */ `
+  .o-chart {
+    .o-panel {
+      display: flex;
+      .o-panel-element {
+        flex: 1 0 auto;
+        padding: 8px 0px;
+        text-align: center;
+        cursor: pointer;
+        border-right: 1px solid darkgray;
+        &.inactive {
+          background-color: ${BACKGROUND_HEADER_COLOR};
+          border-bottom: 1px solid darkgray;
+        }
+        .fa {
+          margin-right: 4px;
+        }
+      }
+      .o-panel-element:last-child {
+        border-right: none;
+      }
+    }
+
+    .o-with-color-picker {
+      position: relative;
+    }
+    .o-with-color-picker > span {
+      border-bottom: 4px solid;
+    }
+  }
+`;
+    class ChartPanel extends owl.Component {
+        get figureId() {
+            return this.props.figureId;
+        }
+        setup() {
+            this.state = owl.useState({
+                type: this.getChartDefinition().type,
+                panel: "configuration",
+            });
+            owl.onWillUpdateProps((nextProps) => {
+                if (!this.env.model.getters.isChartDefined(nextProps.figureId)) {
+                    this.props.onCloseSidePanel();
+                    return;
+                }
+                if (nextProps.figureId !== this.figureId) {
+                    this.state.type = this.getChartDefinition(nextProps.figureId).type;
+                }
+            });
+        }
+        updateChart(updateDefinition) {
+            const definition = {
+                ...this.getChartDefinition(),
+                ...updateDefinition,
+            };
+            return this.env.model.dispatch("UPDATE_CHART", {
+                definition,
+                id: this.figureId,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+            });
+        }
+        onTypeChange(type) {
+            const context = this.env.model.getters.getContextCreationChart(this.figureId);
+            if (!context) {
+                throw new Error("Chart not defined.");
+            }
+            const definition = getChartDefinitionFromContextCreation(context, type);
+            this.env.model.dispatch("UPDATE_CHART", {
+                definition,
+                id: this.figureId,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+            });
+            this.state.type = type;
+        }
+        get chartPanel() {
+            const type = this.env.model.getters.getChartType(this.figureId);
+            if (!type) {
+                throw new Error("Chart not defined.");
+            }
+            const chartPanel = chartSidePanelComponentRegistry.get(type);
+            if (!chartPanel) {
+                throw new Error(`Component is not defined for type ${type}`);
+            }
+            return chartPanel;
+        }
+        getChartDefinition(figureId = this.figureId) {
+            return this.env.model.getters.getChartDefinition(figureId);
+        }
+        get chartTypes() {
+            return getChartTypes();
+        }
+        activatePanel(panel) {
+            this.state.panel = panel;
+        }
+    }
+    ChartPanel.template = "o-spreadsheet.ChartPanel";
+
+    /**
+     * Return true if the event was triggered from
+     * a child element.
+     */
+    function isChildEvent(parent, ev) {
+        return !!ev.target && parent.contains(ev.target);
+    }
+    function getTextDecoration({ strikethrough, underline, }) {
+        if (!strikethrough && !underline) {
+            return "none";
+        }
+        return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
+    }
+
+    // -----------------------------------------------------------------------------
+    // We need here the svg of the icons that we need to convert to images for the renderer
+    // -----------------------------------------------------------------------------
+    const ARROW_DOWN = '<svg class="o-cf-icon arrow-down" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#DC6965" d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"></path></svg>';
+    const ARROW_UP = '<svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#00A04A" d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"></path></svg>';
+    const ARROW_RIGHT = '<svg class="o-cf-icon arrow-right" width="10" height="10" focusable="false" viewBox="0 0 448 512"><path fill="#F0AD4E" d="M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z"></path></svg>';
+    const SMILE = '<svg class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#00A04A" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160 0c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm4 72.6c-20.8 25-51.5 39.4-84 39.4s-63.2-14.3-84-39.4c-8.5-10.2-23.7-11.5-33.8-3.1-10.2 8.5-11.5 23.6-3.1 33.8 30 36 74.1 56.6 120.9 56.6s90.9-20.6 120.9-56.6c8.5-10.2 7.1-25.3-3.1-33.8-10.1-8.4-25.3-7.1-33.8 3.1z"></path></svg>';
+    const MEH = '<svg class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#F0AD4E" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm8 144H160c-13.2 0-24 10.8-24 24s10.8 24 24 24h176c13.2 0 24-10.8 24-24s-10.8-24-24-24z"></path></svg>';
+    const FROWN = '<svg class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512"><path fill="#DC6965" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-110.3 0-200-89.7-200-200S137.7 56 248 56s200 89.7 200 200-89.7 200-200 200zm-80-216c17.7 0 32-14.3 32-32s-14.3-32-32-32-32 14.3-32 32 14.3 32 32 32zm160-64c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm-80 128c-40.2 0-78 17.7-103.8 48.6-8.5 10.2-7.1 25.3 3.1 33.8 10.2 8.4 25.3 7.1 33.8-3.1 16.6-19.9 41-31.4 66.9-31.4s50.3 11.4 66.9 31.4c8.1 9.7 23.1 11.9 33.8 3.1 10.2-8.5 11.5-23.6 3.1-33.8C326 321.7 288.2 304 248 304z"></path></svg>';
+    const GREEN_DOT = '<svg class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#00A04A" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const YELLOW_DOT = '<svg class="o-cf-icon yellow-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#F0AD4E" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    const RED_DOT = '<svg class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512"><path fill="#DC6965" d="M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z"></path></svg>';
+    function loadIconImage(svg) {
+        /** We have to add xmlns, as it's not added by owl in the canvas */
+        svg = `<svg xmlns="http://www.w3.org/2000/svg" ${svg.slice(4)}`;
+        const image = new Image();
+        image.src = "data:image/svg+xml; charset=utf8, " + encodeURIComponent(svg);
+        return image;
+    }
+    const ICONS = {
+        arrowGood: {
+            template: "ARROW_UP",
+            img: loadIconImage(ARROW_UP),
+        },
+        arrowNeutral: {
+            template: "ARROW_RIGHT",
+            img: loadIconImage(ARROW_RIGHT),
+        },
+        arrowBad: {
+            template: "ARROW_DOWN",
+            img: loadIconImage(ARROW_DOWN),
+        },
+        smileyGood: {
+            template: "SMILE",
+            img: loadIconImage(SMILE),
+        },
+        smileyNeutral: {
+            template: "MEH",
+            img: loadIconImage(MEH),
+        },
+        smileyBad: {
+            template: "FROWN",
+            img: loadIconImage(FROWN),
+        },
+        dotGood: {
+            template: "GREEN_DOT",
+            img: loadIconImage(GREEN_DOT),
+        },
+        dotNeutral: {
+            template: "YELLOW_DOT",
+            img: loadIconImage(YELLOW_DOT),
+        },
+        dotBad: {
+            template: "RED_DOT",
+            img: loadIconImage(RED_DOT),
+        },
+    };
+    const ICON_SETS = {
+        arrows: {
+            good: "arrowGood",
+            neutral: "arrowNeutral",
+            bad: "arrowBad",
+        },
+        smiley: {
+            good: "smileyGood",
+            neutral: "smileyNeutral",
+            bad: "smileyBad",
+        },
+        dots: {
+            good: "dotGood",
+            neutral: "dotNeutral",
+            bad: "dotBad",
+        },
+    };
+
+    css /* scss */ `
+  .o-icon-picker {
+    position: absolute;
+    z-index: 10;
+    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+    background-color: white;
+    padding: 2px 1px;
+  }
+  .o-cf-icon-line {
+    display: flex;
+    padding: 3px 6px;
+  }
+  .o-icon-picker-item {
+    margin: 0px 2px;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+      outline: 1px solid gray;
+    }
+  }
+`;
+    class IconPicker extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.icons = ICONS;
+            this.iconSets = ICON_SETS;
+        }
+        onIconClick(icon) {
+            if (icon) {
+                this.props.onIconPicked(icon);
+            }
+        }
+    }
+    IconPicker.template = "o-spreadsheet.IconPicker";
+
+    // TODO vsc: add ordering of rules
+    css /* scss */ `
+  label {
+    vertical-align: middle;
+  }
+  .o_cf_radio_item {
+    margin-right: 10%;
+  }
+  .radio input:checked {
+    color: #e9ecef;
+    border-color: #00a09d;
+    background-color: #00a09d;
+  }
+  .o-cf-editor {
+    border-bottom: solid;
+    border-color: lightgrey;
+  }
+  .o-cf {
+    .o-cf-type-selector {
+      *,
+      ::after,
+      ::before {
+        box-sizing: border-box;
+      }
+      margin-top: 10px;
+      display: flex;
+    }
+    .o-section-subtitle:first-child {
+      margin-top: 0px;
+    }
+    .o-cf-cursor-ptr {
+      cursor: pointer;
+    }
+    .o-cf-preview {
+      background-color: #fff;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      height: 60px;
+      padding: 10px;
+      position: relative;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      &:not(:hover) .o-cf-delete-button {
+        display: none;
+      }
+      .o-cf-preview-image {
+        border: 1px solid lightgrey;
+        height: 50px;
+        line-height: 50px;
+        margin-right: 15px;
+        margin-top: 3px;
+        position: absolute;
+        text-align: center;
+        width: 50px;
+      }
+      .o-cf-preview-icon {
+        border: 1px solid lightgrey;
+        position: absolute;
+        height: 50px;
+        line-height: 50px;
+        margin-right: 15px;
+        margin-top: 3px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      .o-cf-preview-description {
+        left: 65px;
+        margin-bottom: auto;
+        margin-right: 8px;
+        margin-top: auto;
+        position: relative;
+        width: 142px;
+        .o-cf-preview-description-rule {
+          margin-bottom: 4px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-weight: 600;
+          color: #303030;
+          max-height: 2.8em;
+          line-height: 1.4em;
+        }
+        .o-cf-preview-range {
+          text-overflow: ellipsis;
+          font-size: 12px;
+          overflow: hidden;
+        }
+      }
+      .o-cf-delete {
+        color: dimgrey;
+        left: 90%;
+        top: 39%;
+        position: absolute;
+      }
+      .o-cf-reorder {
+        color: gray;
+        left: 90%;
+        position: absolute;
+        height: 100%;
+        width: 10%;
+      }
+      .o-cf-reorder-button:hover {
+        cursor: pointer;
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      .o-cf-reorder-button-up {
+        width: 15px;
+        height: 20px;
+        padding: 5px;
+        padding-top: 0px;
+      }
+      .o-cf-reorder-button-down {
+        width: 15px;
+        height: 20px;
+        bottom: 20px;
+        padding: 5px;
+        padding-top: 0px;
+        position: absolute;
+      }
+    }
+    .o-cf-ruleEditor {
+      font-size: 12px;
+      line-height: 1.5;
+      .o-selection-cf {
+        margin-bottom: 3%;
+      }
+      .o-cell-content {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 0 12px;
+        margin: 0;
+        line-height: 35px;
+      }
+    }
+    .o-cf-btn-link {
+      font-size: 14px;
+      padding: 20px 24px 11px 24px;
+      height: 44px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .o-cf-btn-link:hover {
+      color: #003a39;
+      text-decoration: none;
+    }
+    .o-cf-error {
+      color: red;
+      margin-top: 10px;
+    }
+  }
+  .o-cf-cell-is-rule {
+    .o-cf-preview-line {
+      border: 1px solid darkgrey;
+      padding: 10px;
+    }
+    .o-cell-is-operator {
+      margin-bottom: 5px;
+      width: 96%;
+    }
+    .o-cell-is-value {
+      margin-bottom: 5px;
+      width: 96%;
+    }
+    .o-color-picker {
+      pointer-events: all;
+    }
+  }
+  .o-cf-color-scale-editor {
+    .o-threshold {
+      display: flex;
+      flex-direction: horizontal;
+      select {
+        width: 100%;
+      }
+      .o-threshold-value {
+        margin-left: 2%;
+        width: 20%;
+        min-width: 0px; // input overflows in Firefox otherwise
+      }
+      .o-threshold-value:disabled {
+        background-color: #edebed;
+      }
+    }
+    .o-cf-preview-gradient {
+      border: 1px solid darkgrey;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  }
+  .o-cf-iconset-rule {
+    font-size: 12;
+    .o-cf-iconsets {
+      display: flex;
+      justify-content: space-between;
+      .o-cf-iconset {
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        display: inline-flex;
+        padding: 5px 8px;
+        width: 25%;
+        cursor: pointer;
+        justify-content: space-between;
+        .o-cf-icon {
+          display: inline;
+          margin-left: 1%;
+          margin-right: 1%;
+        }
+        svg {
+          vertical-align: baseline;
+        }
+      }
+      .o-cf-iconset:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+    .o-inflection {
+      .o-cf-icon-button {
+        display: inline-block;
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 1px 2px;
+      }
+      .o-cf-icon-button:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      table {
+        table-layout: fixed;
+        margin-top: 2%;
+        display: table;
+        text-align: left;
+        font-size: 12px;
+        line-height: 18px;
+        width: 100%;
+      }
+      th.o-cf-iconset-icons {
+        width: 8%;
+      }
+      th.o-cf-iconset-text {
+        width: 28%;
+      }
+      th.o-cf-iconset-operator {
+        width: 14%;
+      }
+      th.o-cf-iconset-type {
+        width: 28%;
+      }
+      th.o-cf-iconset-value {
+        width: 26%;
+      }
+      input,
+      select {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+    .o-cf-iconset-reverse {
+      margin-bottom: 2%;
+      margin-top: 2%;
+      .o-cf-label {
+        display: inline-block;
+        vertical-align: bottom;
+        margin-bottom: 2px;
+      }
+    }
+  }
+`;
+    class ConditionalFormattingPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.icons = ICONS;
+            this.cellIsOperators = CellIsOperators;
+            this.iconSets = ICON_SETS;
+            this.getTextDecoration = getTextDecoration;
+            this.colorNumberString = colorNumberString;
+        }
+        setup() {
+            this.activeSheetId = this.env.model.getters.getActiveSheetId();
+            this.state = owl.useState({
+                mode: "list",
+                errors: [],
+                rules: this.getDefaultRules(),
+            });
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const rules = this.env.model.getters.getRulesSelection(sheetId, this.props.selection || []);
+            if (rules.length === 1) {
+                const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
+                if (cf) {
+                    this.editConditionalFormat(cf);
+                }
+            }
+            owl.onWillUpdateProps((nextProps) => {
+                const newActiveSheetId = this.env.model.getters.getActiveSheetId();
+                if (newActiveSheetId !== this.activeSheetId) {
+                    this.activeSheetId = newActiveSheetId;
+                    this.switchToList();
+                }
+                else if (nextProps.selection !== this.props.selection) {
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const rules = this.env.model.getters.getRulesSelection(sheetId, nextProps.selection || []);
+                    if (rules.length === 1) {
+                        const cf = this.conditionalFormats.find((c) => c.id === rules[0]);
+                        if (cf) {
+                            this.editConditionalFormat(cf);
+                        }
+                    }
+                    else {
+                        this.switchToList();
+                    }
+                }
+            });
+            owl.useExternalListener(window, "click", this.closeMenus);
+        }
+        get conditionalFormats() {
+            return this.env.model.getters.getConditionalFormats(this.env.model.getters.getActiveSheetId());
+        }
+        get isRangeValid() {
+            return this.state.errors.includes(21 /* EmptyRange */);
+        }
+        errorMessage(error) {
+            return CfTerms.Errors[error] || CfTerms.Errors.Unexpected;
+        }
+        /**
+         * Switch to the list view
+         */
+        switchToList() {
+            this.state.mode = "list";
+            this.state.currentCF = undefined;
+            this.state.currentCFType = undefined;
+            this.state.errors = [];
+            this.state.rules = this.getDefaultRules();
+        }
+        getStyle(rule) {
+            if (rule.type === "CellIsRule") {
+                const fontWeight = rule.style.bold ? "bold" : "normal";
+                const fontDecoration = getTextDecoration(rule.style);
+                const fontStyle = rule.style.italic ? "italic" : "normal";
+                const color = rule.style.textColor || "none";
+                const backgroundColor = rule.style.fillColor || "none";
+                return `font-weight:${fontWeight};
+               text-decoration:${fontDecoration};
+               font-style:${fontStyle};
+               color:${color};
+               background-color:${backgroundColor};`;
+            }
+            else if (rule.type === "ColorScaleRule") {
+                const minColor = colorNumberString(rule.minimum.color);
+                const midColor = rule.midpoint ? colorNumberString(rule.midpoint.color) : null;
+                const maxColor = colorNumberString(rule.maximum.color);
+                const baseString = "background-image: linear-gradient(to right, #";
+                return midColor
+                    ? baseString + minColor + ", #" + midColor + ", #" + maxColor + ")"
+                    : baseString + minColor + ", #" + maxColor + ")";
+            }
+            return "";
+        }
+        getDescription(cf) {
+            switch (cf.rule.type) {
+                case "CellIsRule":
+                    return CellIsOperators[cf.rule.operator];
+                case "ColorScaleRule":
+                    return CfTerms.ColorScale;
+                case "IconSetRule":
+                    return CfTerms.IconSet;
+                default:
+                    return "";
+            }
+        }
+        saveConditionalFormat() {
+            if (this.state.currentCF) {
+                const invalidRanges = this.state.currentCF.ranges.some((xc) => !xc.match(rangeReference));
+                if (invalidRanges) {
+                    this.state.errors = [22 /* InvalidRange */];
+                    return;
+                }
+                const result = this.env.model.dispatch("ADD_CONDITIONAL_FORMAT", {
+                    cf: {
+                        rule: this.getEditorRule(),
+                        id: this.state.mode === "edit"
+                            ? this.state.currentCF.id
+                            : this.env.model.uuidGenerator.uuidv4(),
+                    },
+                    target: this.state.currentCF.ranges.map(toZone),
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                });
+                if (!result.isSuccessful) {
+                    this.state.errors = result.reasons;
+                }
+                else {
+                    this.switchToList();
+                }
+            }
+        }
+        /**
+         * Get the rule currently edited with the editor
+         */
+        getEditorRule() {
+            switch (this.state.currentCFType) {
+                case "CellIsRule":
+                    return this.state.rules.cellIs;
+                case "ColorScaleRule":
+                    return this.state.rules.colorScale;
+                case "IconSetRule":
+                    return this.state.rules.iconSet;
+            }
+            throw new Error(`Invalid cf type: ${this.state.currentCFType}`);
+        }
+        getDefaultRules() {
+            return {
+                cellIs: {
+                    type: "CellIsRule",
+                    operator: "IsNotEmpty",
+                    values: [],
+                    style: { fillColor: "#b6d7a8" },
+                },
+                colorScale: {
+                    type: "ColorScaleRule",
+                    minimum: { type: "value", color: 0xffffff },
+                    midpoint: undefined,
+                    maximum: { type: "value", color: 0x6aa84f },
+                },
+                iconSet: {
+                    type: "IconSetRule",
+                    icons: {
+                        upper: "arrowGood",
+                        middle: "arrowNeutral",
+                        lower: "arrowBad",
+                    },
+                    upperInflectionPoint: {
+                        type: "percentage",
+                        value: "66",
+                        operator: "gt",
+                    },
+                    lowerInflectionPoint: {
+                        type: "percentage",
+                        value: "33",
+                        operator: "gt",
+                    },
+                },
+            };
+        }
+        /**
+         * Create a new CF, a CellIsRule by default
+         */
+        addConditionalFormat() {
+            this.state.mode = "add";
+            this.state.currentCFType = "CellIsRule";
+            this.state.currentCF = {
+                id: this.env.model.uuidGenerator.uuidv4(),
+                ranges: this.env.model.getters
+                    .getSelectedZones()
+                    .map((zone) => this.env.model.getters.zoneToXC(this.env.model.getters.getActiveSheetId(), zone)),
+            };
+        }
+        /**
+         * Delete a CF
+         */
+        deleteConditionalFormat(cf) {
+            this.env.model.dispatch("REMOVE_CONDITIONAL_FORMAT", {
+                id: cf.id,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+            });
+        }
+        /**
+         * Edit an existing CF. Return without doing anything in reorder mode.
+         */
+        editConditionalFormat(cf) {
+            if (this.state.mode === "reorder")
+                return;
+            this.state.mode = "edit";
+            this.state.currentCF = cf;
+            this.state.currentCFType = cf.rule.type;
+            switch (cf.rule.type) {
+                case "CellIsRule":
+                    this.state.rules.cellIs = cf.rule;
+                    break;
+                case "ColorScaleRule":
+                    this.state.rules.colorScale = cf.rule;
+                    break;
+                case "IconSetRule":
+                    this.state.rules.iconSet = cf.rule;
+                    break;
+            }
+        }
+        /**
+         * Reorder existing CFs
+         */
+        reorderConditionalFormats() {
+            this.state.mode = "reorder";
+        }
+        reorderRule(cf, direction) {
+            this.env.model.dispatch("MOVE_CONDITIONAL_FORMAT", {
+                cfId: cf.id,
+                direction: direction,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+            });
+        }
+        changeRuleType(ruleType) {
+            if (this.state.currentCFType === ruleType || !this.state.rules) {
+                return;
+            }
+            this.state.errors = [];
+            this.state.currentCFType = ruleType;
+        }
+        onRangesChanged(ranges) {
+            if (this.state.currentCF) {
+                this.state.currentCF.ranges = ranges;
+            }
+        }
+        /*****************************************************************************
+         * Common
+         ****************************************************************************/
+        toggleMenu(menu) {
+            const isSelected = this.state.openedMenu === menu;
+            this.closeMenus();
+            if (!isSelected) {
+                this.state.openedMenu = menu;
+            }
+        }
+        closeMenus() {
+            this.state.openedMenu = undefined;
+        }
+        /*****************************************************************************
+         * Cell Is Rule
+         ****************************************************************************/
+        get isValue1Invalid() {
+            var _a;
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(50 /* FirstArgMissing */));
+        }
+        get isValue2Invalid() {
+            var _a;
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(51 /* SecondArgMissing */));
+        }
+        toggleStyle(tool) {
+            const style = this.state.rules.cellIs.style;
+            style[tool] = !style[tool];
+            this.closeMenus();
+        }
+        setColor(target, color) {
+            this.state.rules.cellIs.style[target] = color;
+            this.closeMenus();
+        }
+        /*****************************************************************************
+         * Color Scale Rule
+         ****************************************************************************/
+        isValueInvalid(threshold) {
+            switch (threshold) {
+                case "minimum":
+                    return (this.state.errors.includes(57 /* MinInvalidFormula */) ||
+                        this.state.errors.includes(49 /* MinBiggerThanMid */) ||
+                        this.state.errors.includes(46 /* MinBiggerThanMax */) ||
+                        this.state.errors.includes(52 /* MinNaN */));
+                case "midpoint":
+                    return (this.state.errors.includes(58 /* MidInvalidFormula */) ||
+                        this.state.errors.includes(53 /* MidNaN */) ||
+                        this.state.errors.includes(48 /* MidBiggerThanMax */));
+                case "maximum":
+                    return (this.state.errors.includes(59 /* MaxInvalidFormula */) ||
+                        this.state.errors.includes(54 /* MaxNaN */));
+                default:
+                    return false;
+            }
+        }
+        setColorScaleColor(target, color) {
+            const point = this.state.rules.colorScale[target];
+            if (point) {
+                point.color = Number.parseInt(color.substr(1), 16);
+            }
+            this.closeMenus();
+        }
+        getPreviewGradient() {
+            var _a;
+            const rule = this.state.rules.colorScale;
+            const minColor = colorNumberString(rule.minimum.color);
+            const midColor = colorNumberString(((_a = rule.midpoint) === null || _a === void 0 ? void 0 : _a.color) || DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
+            const maxColor = colorNumberString(rule.maximum.color);
+            const baseString = "background-image: linear-gradient(to right, #";
+            return rule.midpoint === undefined
+                ? baseString + minColor + ", #" + maxColor + ")"
+                : baseString + minColor + ", #" + midColor + ", #" + maxColor + ")";
+        }
+        getThresholdColor(threshold) {
+            return threshold
+                ? colorNumberString(threshold.color)
+                : colorNumberString(DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
+        }
+        onMidpointChange(ev) {
+            const type = ev.target.value;
+            const rule = this.state.rules.colorScale;
+            if (type === "none") {
+                rule.midpoint = undefined;
+            }
+            else {
+                rule.midpoint = {
+                    color: DEFAULT_COLOR_SCALE_MIDPOINT_COLOR,
+                    value: "",
+                    ...rule.midpoint,
+                    type,
+                };
+            }
+        }
+        /*****************************************************************************
+         * Icon Set
+         ****************************************************************************/
+        isInflectionPointInvalid(inflectionPoint) {
+            switch (inflectionPoint) {
+                case "lowerInflectionPoint":
+                    return (this.state.errors.includes(56 /* ValueLowerInflectionNaN */) ||
+                        this.state.errors.includes(61 /* ValueLowerInvalidFormula */) ||
+                        this.state.errors.includes(47 /* LowerBiggerThanUpper */));
+                case "upperInflectionPoint":
+                    return (this.state.errors.includes(55 /* ValueUpperInflectionNaN */) ||
+                        this.state.errors.includes(60 /* ValueUpperInvalidFormula */) ||
+                        this.state.errors.includes(47 /* LowerBiggerThanUpper */));
+                default:
+                    return true;
+            }
+        }
+        reverseIcons() {
+            const icons = this.state.rules.iconSet.icons;
+            const upper = icons.upper;
+            icons.upper = icons.lower;
+            icons.lower = upper;
+        }
+        setIconSet(iconSet) {
+            const icons = this.state.rules.iconSet.icons;
+            icons.upper = this.iconSets[iconSet].good;
+            icons.middle = this.iconSets[iconSet].neutral;
+            icons.lower = this.iconSets[iconSet].bad;
+        }
+        setIcon(target, icon) {
+            this.state.rules.iconSet.icons[target] = icon;
+        }
+    }
+    ConditionalFormattingPanel.template = "o-spreadsheet.ConditionalFormattingPanel";
+    ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
+
+    css /* scss */ `
+  .o-custom-currency {
+    .o-format-proposals {
+      color: black;
+    }
+  }
+`;
+    class CustomCurrencyPanel extends owl.Component {
+        setup() {
+            this.availableCurrencies = [];
+            this.state = owl.useState({
+                selectedCurrencyIndex: 0,
+                currencyCode: "",
+                currencySymbol: "",
+                selectedFormatIndex: 0,
+            });
+            owl.onWillStart(() => this.updateAvailableCurrencies());
+        }
+        get formatProposals() {
+            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
+            const proposalBases = this.initProposalBases(currency.decimalPlaces);
+            const firstPosition = currency.position;
+            const secondPosition = currency.position === "before" ? "after" : "before";
+            const symbol = this.state.currencySymbol.trim() ? this.state.currencySymbol : "";
+            const code = this.state.currencyCode.trim() ? this.state.currencyCode : "";
+            return code || symbol
+                ? [
+                    ...this.createFormatProposals(proposalBases, symbol, code, firstPosition),
+                    ...this.createFormatProposals(proposalBases, symbol, code, secondPosition),
+                ]
+                : [];
+        }
+        get isSameFormat() {
+            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
+            return selectedFormat ? selectedFormat.format === this.getCommonFormat() : false;
+        }
+        async updateAvailableCurrencies() {
+            var _a, _b;
+            if (currenciesRegistry.getAll().length === 0) {
+                const currencies = (await ((_b = (_a = this.env).loadCurrencies) === null || _b === void 0 ? void 0 : _b.call(_a))) || [];
+                currencies.forEach((currency, index) => {
+                    currenciesRegistry.add(index.toString(), currency);
+                });
+            }
+            const emptyCurrency = {
+                name: this.env._t(CustomCurrencyTerms.Custom),
+                code: "",
+                symbol: "",
+                decimalPlaces: 2,
+                position: "after",
+            };
+            this.availableCurrencies = [emptyCurrency, ...currenciesRegistry.getAll()];
+        }
+        updateSelectCurrency(ev) {
+            this.state.selectedCurrencyIndex = ev.target.value;
+            const currency = this.availableCurrencies[this.state.selectedCurrencyIndex];
+            this.state.currencyCode = currency.code;
+            this.state.currencySymbol = currency.symbol;
+        }
+        updateCode(ev) {
+            this.state.currencyCode = ev.target.value;
+            this.initAvailableCurrencies();
+        }
+        updateSymbol(ev) {
+            this.state.currencySymbol = ev.target.value;
+            this.initAvailableCurrencies();
+        }
+        updateSelectFormat(ev) {
+            this.state.selectedFormatIndex = ev.target.value;
+        }
+        apply() {
+            const selectedFormat = this.formatProposals[this.state.selectedFormatIndex];
+            this.env.model.dispatch("SET_FORMATTING", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                target: this.env.model.getters.getSelectedZones(),
+                format: selectedFormat.format,
+            });
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        initAvailableCurrencies() {
+            this.state.selectedCurrencyIndex = 0;
+        }
+        initProposalBases(decimalPlaces) {
+            const result = [{ format: "#,##0", example: "1,000" }];
+            const decimalRepresentation = decimalPlaces ? "." + "0".repeat(decimalPlaces) : "";
+            if (decimalRepresentation) {
+                result.push({
+                    format: "#,##0" + decimalRepresentation,
+                    example: "1,000" + decimalRepresentation,
+                });
+            }
+            return result;
+        }
+        createFormatProposals(proposalBases, symbol, code, position) {
+            let formatProposals = [];
+            // 1 - add proposal with symbol and without code
+            if (symbol) {
+                for (let base of proposalBases) {
+                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, symbol));
+                }
+            }
+            // 2 - if code exist --> add more proposal with symbol and with code
+            if (code) {
+                for (let base of proposalBases) {
+                    const expression = (position === "after" ? " " : "") + code + " " + symbol;
+                    formatProposals.push(this.createFormatProposal(position, base.example, base.format, expression));
+                }
+            }
+            return formatProposals;
+        }
+        createFormatProposal(position, baseExample, formatBase, expression) {
+            const formatExpression = "[$" + expression + "]";
+            return {
+                example: position === "before" ? expression + baseExample : baseExample + expression,
+                format: position === "before" ? formatExpression + formatBase : formatBase + formatExpression,
+            };
+        }
+        getCommonFormat() {
+            var _a;
+            const selectedZones = this.env.model.getters.getSelectedZones();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cells = selectedZones
+                .map((zone) => this.env.model.getters.getCellsInZone(sheetId, zone))
+                .flat();
+            const firstFormat = (_a = cells[0]) === null || _a === void 0 ? void 0 : _a.format;
+            return cells.every((cell) => (cell === null || cell === void 0 ? void 0 : cell.format) === firstFormat) ? firstFormat : undefined;
+        }
+        currencyDisplayName(currency) {
+            return currency.name + (currency.code ? ` (${currency.code})` : "");
+        }
+    }
+    CustomCurrencyPanel.template = "o-spreadsheet.CustomCurrencyPanel";
+
+    css /* scss */ `
+  .o-find-and-replace {
+    .o-far-item {
+      display: block;
+      .o-far-checkbox {
+        display: inline-block;
+        .o-far-input {
+          vertical-align: middle;
+        }
+        .o-far-label {
+          position: relative;
+          top: 1.5px;
+          padding-left: 4px;
+        }
+      }
+    }
+    outline: none;
+    height: 100%;
+    .o-input-search-container {
+      display: flex;
+      .o-input-with-count {
+        flex-grow: 1;
+        width: auto;
+      }
+      .o-input-without-count {
+        width: 100%;
+      }
+      .o-input-count {
+        width: fit-content;
+        padding: 4 0 4 4;
+      }
+    }
+  }
+`;
+    class FindAndReplacePanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState(this.initialState());
+            this.findAndReplaceRef = owl.useRef("findAndReplace");
+        }
+        get hasSearchResult() {
+            return this.env.model.getters.getCurrentSelectedMatchIndex() !== null;
+        }
+        setup() {
+            owl.onMounted(() => this.focusInput());
+            owl.onWillUnmount(() => this.env.model.dispatch("CLEAR_SEARCH"));
+        }
+        onInput(ev) {
+            this.state.toSearch = ev.target.value;
+            this.debouncedUpdateSearch();
+        }
+        onKeydownSearch(ev) {
+            if (ev.key === "Enter") {
+                ev.preventDefault();
+                this.onSelectNextCell();
+            }
+        }
+        onKeydownReplace(ev) {
+            if (ev.key === "Enter") {
+                ev.preventDefault();
+                this.replace();
+            }
+        }
+        onFocusSidePanel() {
+            this.state.searchOptions.searchFormulas = this.env.model.getters.shouldShowFormulas();
+            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas
+                ? this.state.searchOptions.searchFormulas
+                : this.state.replaceOptions.modifyFormulas;
+            this.env.model.dispatch("REFRESH_SEARCH");
+        }
+        searchFormulas() {
+            this.env.model.dispatch("SET_FORMULA_VISIBILITY", {
+                show: this.state.searchOptions.searchFormulas,
+            });
+            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas;
+            this.updateSearch();
+        }
+        onSelectPreviousCell() {
+            this.env.model.dispatch("SELECT_SEARCH_PREVIOUS_MATCH");
+        }
+        onSelectNextCell() {
+            this.env.model.dispatch("SELECT_SEARCH_NEXT_MATCH");
+        }
+        updateSearch() {
+            if (this.state.toSearch) {
+                this.env.model.dispatch("UPDATE_SEARCH", {
+                    toSearch: this.state.toSearch,
+                    searchOptions: this.state.searchOptions,
+                });
+            }
+        }
+        debouncedUpdateSearch() {
+            clearTimeout(this.inDebounce);
+            this.inDebounce = setTimeout(() => this.updateSearch.call(this), 400);
+        }
+        replace() {
+            this.env.model.dispatch("REPLACE_SEARCH", {
+                replaceWith: this.state.replaceWith,
+                replaceOptions: this.state.replaceOptions,
+            });
+        }
+        replaceAll() {
+            this.env.model.dispatch("REPLACE_ALL_SEARCH", {
+                replaceWith: this.state.replaceWith,
+                replaceOptions: this.state.replaceOptions,
+            });
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        focusInput() {
+            const el = this.findAndReplaceRef.el;
+            const input = el.querySelector(`input`);
+            if (input) {
+                input.focus();
+            }
+        }
+        initialState() {
+            return {
+                toSearch: "",
+                replaceWith: "",
+                searchOptions: {
+                    matchCase: false,
+                    exactMatch: false,
+                    searchFormulas: false,
+                },
+                replaceOptions: {
+                    modifyFormulas: false,
+                },
+            };
+        }
+    }
+    FindAndReplacePanel.template = "o-spreadsheet.FindAndReplacePanel";
+
+    const sidePanelRegistry = new Registry();
+    sidePanelRegistry.add("ConditionalFormatting", {
+        title: _lt("Conditional formatting"),
+        Body: ConditionalFormattingPanel,
+    });
+    sidePanelRegistry.add("ChartPanel", {
+        title: _lt("Chart"),
+        Body: ChartPanel,
+    });
+    sidePanelRegistry.add("FindAndReplace", {
+        title: _lt("Find and Replace"),
+        Body: FindAndReplacePanel,
+    });
+    sidePanelRegistry.add("CustomCurrency", {
+        title: _lt("Custom currency format"),
+        Body: CustomCurrencyPanel,
+    });
+
+    class TopBarComponentRegistry extends Registry {
+        constructor() {
+            super(...arguments);
+            this.mapping = {};
+            this.uuidGenerator = new UuidGenerator();
+        }
+        add(name, value) {
+            const component = { ...value, id: this.uuidGenerator.uuidv4() };
+            return super.add(name, component);
+        }
+    }
+    const topbarComponentRegistry = new TopBarComponentRegistry();
+
+    /* Sizes of boxes containing the texts, in percentage of the Chart size */
+    const TITLE_FONT_SIZE = 18;
+    const BASELINE_BOX_HEIGHT_RATIO = 0.35;
+    const KEY_BOX_HEIGHT_RATIO = 0.65;
+    /** Baseline description should have a smaller font than the baseline */
+    const BASELINE_DESCR_FONT_RATIO = 0.9;
+    /* Paddings, in percentage of the element they are inside */
+    const CHART_VERTICAL_PADDING_RATIO = 0.04;
+    const CHART_HORIZONTAL_PADDING_RATIO = 0.05;
+    const VERTICAL_PADDING_TITLE_KEY_RATIO = 0.06;
+    css /* scss */ `
+  div.o-scorecard {
+    user-select: none;
+    background-color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+
+    .o-title-text {
+      color: #757575;
+      text-align: left;
+      height: 1em;
+      line-height: 1em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .o-key-text {
+      line-height: 1em;
+    }
+
+    .o-cf-icon {
+      display: inline-block;
+      width: 0.65em;
+      height: 1em;
+      line-height: 1em;
+      padding-bottom: 0.07em;
+      padding-right: 3px;
+    }
+
+    .o-baseline-text {
+      color: #757575;
+      line-height: 1em;
+    }
+  }
+`;
+    class ScorecardChart extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.ctx = document.createElement("canvas").getContext("2d");
+        }
+        get runtime() {
+            return this.env.model.getters.getChartRuntime(this.props.figureId);
+        }
+        get title() {
+            var _a;
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.title) || "";
+        }
+        get keyValue() {
+            var _a;
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.keyValue) || "";
+        }
+        get baseline() {
+            var _a;
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.baselineDisplay) || "";
+        }
+        get baselineDescr() {
+            var _a;
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.baselineDescr) ? " " + this.runtime.baselineDescr : "";
+        }
+        get baselineArrowDirection() {
+            var _a;
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.baselineArrow) || "neutral";
+        }
+        get backgroundColor() {
+            var _a;
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.background) || "white";
+        }
+        get fontColor() {
+            var _a;
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.fontColor) || "black";
+        }
+        get figure() {
+            const figure = this.env.model.getters.getFigure(this.env.model.getters.getActiveSheetId(), this.props.figureId);
+            if (!figure) {
+                throw new Error("No figure found");
+            }
+            return figure;
+        }
+        get chartStyle() {
+            return `
+      height:${this.figure.height}px;
+      width:${this.figure.width}px;
+      padding-top:${this.figure.height * CHART_VERTICAL_PADDING_RATIO}px;
+      padding-bottom:${this.figure.height * CHART_VERTICAL_PADDING_RATIO}px;
+      padding-left:${this.figure.width * CHART_HORIZONTAL_PADDING_RATIO}px;
+      padding-right:${this.figure.width * CHART_HORIZONTAL_PADDING_RATIO}px;
+      background:${this.backgroundColor};
+      color:${this.fontColor};
+    `;
+        }
+        get baselineColorStyle() {
+            var _a;
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.baselineColor) ? `color:${this.runtime.baselineColor}` : "";
+        }
+        getTextStyles() {
+            // If the widest text overflows horizontally, scale it down, and apply the same scaling factors to all the other fonts.
+            const maxLineWidth = this.figure.width * (1 - 2 * CHART_HORIZONTAL_PADDING_RATIO);
+            const widestElement = this.getWidestElement();
+            const baseFontSize = widestElement.getElementMaxFontSize(this.getDrawableHeight(), this.runtime);
+            const fontSizeMatchingWidth = getFontSizeMatchingWidth(maxLineWidth, baseFontSize, (fontSize) => widestElement.getElementWidth(fontSize, this.ctx, this.runtime));
+            let scalingFactor = fontSizeMatchingWidth / baseFontSize;
+            // Fonts sizes in px
+            const keyFontSize = new KeyValueElement().getElementMaxFontSize(this.getDrawableHeight(), this.runtime) *
+                scalingFactor;
+            const baselineFontSize = new BaselineElement().getElementMaxFontSize(this.getDrawableHeight(), this.runtime) *
+                scalingFactor;
+            return {
+                titleStyle: this.getTextStyle({
+                    fontSize: TITLE_FONT_SIZE,
+                    paddingBottom: VERTICAL_PADDING_TITLE_KEY_RATIO * this.figure.height,
+                }),
+                keyStyle: this.getTextStyle({
+                    fontSize: keyFontSize,
+                }),
+                baselineStyle: this.getTextStyle({
+                    fontSize: baselineFontSize,
+                    paddingTop: 0,
+                }),
+                baselineDescrStyle: this.getTextStyle({
+                    fontSize: baselineFontSize * BASELINE_DESCR_FONT_RATIO,
+                }),
+            };
+        }
+        /** Return an CSS style string corresponding to the given arguments */
+        getTextStyle(args) {
+            return `
+    padding-top:${args.paddingTop || 0}px;
+    padding-bottom:${args.paddingBottom || 0}px;
+    font-size:${args.fontSize}px;
+  `;
+        }
+        /** Get the height of the chart minus all the vertical paddings */
+        getDrawableHeight() {
+            let totalPaddingRatio = 2 * CHART_VERTICAL_PADDING_RATIO;
+            totalPaddingRatio += this.title ? VERTICAL_PADDING_TITLE_KEY_RATIO : 0;
+            let availableHeight = this.figure.height * (1 - totalPaddingRatio);
+            availableHeight -= this.title ? TITLE_FONT_SIZE : 0;
+            return availableHeight;
+        }
+        /** Return the element with he widest text in the chart */
+        getWidestElement() {
+            const baseline = new BaselineElement();
+            const keyValue = new KeyValueElement();
+            return baseline.getElementWidth(BASELINE_BOX_HEIGHT_RATIO, this.ctx, this.runtime) >
+                keyValue.getElementWidth(KEY_BOX_HEIGHT_RATIO, this.ctx, this.runtime)
+                ? baseline
+                : keyValue;
+        }
+    }
+    ScorecardChart.template = "o-spreadsheet.ScorecardChart";
+    class BaselineElement {
+        getElementWidth(fontSize, ctx, runtime) {
+            if (!runtime)
+                return 0;
+            const baselineStr = runtime.baselineDisplay;
+            // Put mock text to simulate the width of the up/down arrow
+            const largeText = runtime.baselineArrow !== "neutral" ? "A " + baselineStr : baselineStr;
+            ctx.font = `${fontSize}px ${DEFAULT_FONT}`;
+            let textWidth = ctx.measureText(largeText).width;
+            // Baseline descr font size should be smaller than baseline font size
+            ctx.font = `${fontSize * BASELINE_DESCR_FONT_RATIO}px ${DEFAULT_FONT}`;
+            textWidth += ctx.measureText(runtime.baselineDescr || "").width;
+            return textWidth;
+        }
+        getElementMaxFontSize(availableHeight, runtime) {
+            if (!runtime)
+                return 0;
+            const haveBaseline = runtime.baselineDisplay !== "" || runtime.baselineDescr;
+            return haveBaseline ? BASELINE_BOX_HEIGHT_RATIO * availableHeight : 0;
+        }
+    }
+    class KeyValueElement {
+        getElementWidth(fontSize, ctx, runtime) {
+            if (!runtime)
+                return 0;
+            const str = runtime.keyValue || "";
+            ctx.font = `${fontSize}px ${DEFAULT_FONT}`;
+            return ctx.measureText(str).width;
+        }
+        getElementMaxFontSize(availableHeight, runtime) {
+            if (!runtime)
+                return 0;
+            const haveBaseline = runtime.baselineDisplay !== "" || runtime.baselineDescr;
+            return haveBaseline ? KEY_BOX_HEIGHT_RATIO * availableHeight : availableHeight;
+        }
+    }
+    chartComponentRegistry.add("scorecard", ScorecardChart);
+
+    /**
+     * Return the o-spreadsheet element position relative
+     * to the browser viewport.
+     */
+    function useSpreadsheetPosition() {
+        const position = owl.useState({ x: 0, y: 0 });
+        let spreadsheetElement = document.querySelector(".o-spreadsheet");
+        updatePosition();
+        function updatePosition() {
+            if (!spreadsheetElement) {
+                spreadsheetElement = document.querySelector(".o-spreadsheet");
+            }
+            if (spreadsheetElement) {
+                const { top, left } = spreadsheetElement.getBoundingClientRect();
+                position.x = left;
+                position.y = top;
+            }
+        }
+        owl.onMounted(updatePosition);
+        owl.onPatched(updatePosition);
+        return position;
+    }
+    /**
+     * Return the component (or ref's component) top left position (in pixels) relative
+     * to the upper left corner of the screen (<body> element).
+     *
+     * Note: when used with a <Portal/> component, it will
+     * return the portal position, not the teleported position.
+     */
+    function useAbsolutePosition(ref) {
+        const position = owl.useState({ x: 0, y: 0 });
+        function updateElPosition() {
+            const el = ref.el;
+            if (el === null) {
+                return;
+            }
+            const { top, left } = el.getBoundingClientRect();
+            if (left !== position.x || top !== position.y) {
+                position.x = left;
+                position.y = top;
+            }
+        }
+        owl.onMounted(updateElPosition);
+        owl.onPatched(updateElPosition);
+        return position;
+    }
+
+    class Popover extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.spreadsheetPosition = useSpreadsheetPosition();
+        }
+        get style() {
+            // the props's position is expressed relative to the "body" element
+            // but we teleport the element in ".o-spreadsheet" to keep everything
+            // within our control and to avoid leaking into external DOM
+            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetPosition.x}`;
+            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetPosition.y}`;
+            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
+            return `
+      position: absolute;
+      z-index: 5;
+      ${verticalPosition}px;
+      ${horizontalPosition}px;
+      ${height}px;
+      width:${this.props.childWidth}px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
+    `;
+        }
+        get viewportDimension() {
+            return this.env.model.getters.getViewportDimensionWithHeaders();
+        }
+        get shouldRenderRight() {
+            const { x } = this.props.position;
+            return x + this.props.childWidth < this.viewportDimension.width;
+        }
+        get shouldRenderBottom() {
+            const { y } = this.props.position;
+            return (y + this.props.childHeight <
+                this.viewportDimension.height + (this.env.isDashboard() ? 0 : TOPBAR_HEIGHT));
+        }
+        horizontalPosition() {
+            const { x } = this.props.position;
+            if (this.shouldRenderRight) {
+                return x;
+            }
+            return x - this.props.childWidth - this.props.flipHorizontalOffset;
+        }
+        verticalPosition() {
+            const { y } = this.props.position;
+            if (this.shouldRenderBottom) {
+                return y;
+            }
+            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
+        }
+    }
+    Popover.template = "o-spreadsheet.Popover";
+    Popover.defaultProps = {
+        flipHorizontalOffset: 0,
+        flipVerticalOffset: 0,
+        verticalOffset: 0,
+        marginTop: 0,
+    };
+
+    //------------------------------------------------------------------------------
+    // Context Menu Component
+    //------------------------------------------------------------------------------
+    css /* scss */ `
+  .o-menu {
+    background-color: white;
+    padding: 8px 0px;
+    .o-menu-item {
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+      height: ${MENU_ITEM_HEIGHT}px;
+      padding: 4px 16px;
+      cursor: pointer;
+      user-select: none;
+
+      .o-menu-item-name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &.o-menu-root {
+        display: flex;
+        justify-content: space-between;
+      }
+      .o-menu-item-icon {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+      .o-icon {
+        width: 10px;
+      }
+
+      &:not(.disabled) {
+        &:hover {
+          background-color: #ebebeb;
+        }
+        .o-menu-item-shortcut {
+          color: grey;
+        }
+      }
+      &.disabled {
+        color: ${MENU_ITEM_DISABLED_COLOR};
+        cursor: not-allowed;
+      }
+    }
+
+    .o-separator {
+      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
+      margin-top: ${MENU_SEPARATOR_PADDING}px;
+      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
+    }
+  }
+`;
+    class Menu extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.MENU_WIDTH = MENU_WIDTH;
+            this.subMenu = owl.useState({
+                isOpen: false,
+                position: null,
+                scrollOffset: 0,
+                menuItems: [],
+            });
+            this.menuRef = owl.useRef("menu");
+            this.position = useAbsolutePosition(this.menuRef);
+        }
+        setup() {
+            owl.useExternalListener(window, "click", this.onClick);
+            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
+            owl.onWillUpdateProps((nextProps) => {
+                if (nextProps.menuItems !== this.props.menuItems) {
+                    this.subMenu.isOpen = false;
+                }
+            });
+        }
+        get subMenuPosition() {
+            const position = Object.assign({}, this.subMenu.position);
+            position.y -= this.subMenu.scrollOffset || 0;
+            return position;
+        }
+        get menuHeight() {
+            return this.menuComponentHeight(this.props.menuItems);
+        }
+        get subMenuHeight() {
+            return this.menuComponentHeight(this.subMenu.menuItems);
+        }
+        get popover() {
+            const isRoot = this.props.depth === 1;
+            let marginTop = 6;
+            if (!this.env.isDashboard()) {
+                marginTop += TOPBAR_HEIGHT + HEADER_HEIGHT;
+            }
+            return {
+                // some margin between the header and the component
+                marginTop,
+                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
+                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
+            };
+        }
+        getColor(menu) {
+            return menu.textColor ? `color: ${menu.textColor}` : undefined;
+        }
+        async activateMenu(menu) {
+            var _a, _b;
+            const result = await menu.action(this.env);
+            this.close();
+            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
+        }
+        close() {
+            this.subMenu.isOpen = false;
+            this.props.onClose();
+        }
+        /**
+         * Return the number of pixels between the top of the menu
+         * and the menu item at a given index.
+         */
+        subMenuVerticalPosition(position) {
+            const menusAbove = this.props.menuItems.slice(0, position);
+            return this.menuComponentHeight(menusAbove) + this.position.y;
+        }
+        onClick(ev) {
+            // Don't close a root menu when clicked to open the submenus.
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
+                return;
+            }
+            this.close();
+        }
+        onContextMenu(ev) {
+            // Don't close a root menu when clicked to open the submenus.
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
+                return;
+            }
+            this.subMenu.isOpen = false;
+        }
+        /**
+         * Return the total height (in pixels) needed for some
+         * menu items
+         */
+        menuComponentHeight(menuItems) {
+            const separators = menuItems.filter((m) => m.separator);
+            const others = menuItems;
+            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
+        }
+        getName(menu) {
+            return cellMenuRegistry.getName(menu, this.env);
+        }
+        getShortCut(menu) {
+            return cellMenuRegistry.getShortCut(menu);
+        }
+        isRoot(menu) {
+            return !menu.action;
+        }
+        isEnabled(menu) {
+            if (menu.isEnabled(this.env)) {
+                return this.env.model.getters.isReadonly() ? menu.isReadonlyAllowed : true;
+            }
+            return false;
+        }
+        onScroll(ev) {
+            this.subMenu.scrollOffset = ev.target.scrollTop;
+        }
+        /**
+         * If the given menu is not disabled, open it's submenu at the
+         * correct position according to available surrounding space.
+         */
+        openSubMenu(menu, position) {
+            const y = this.subMenuVerticalPosition(position);
+            this.subMenu.position = {
+                x: this.position.x + MENU_WIDTH,
+                y: y - (this.subMenu.scrollOffset || 0),
+            };
+            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
+            this.subMenu.isOpen = true;
+        }
+        onClickMenu(menu, position) {
+            if (this.isEnabled(menu)) {
+                if (this.isRoot(menu)) {
+                    this.openSubMenu(menu, position);
+                }
+                else {
+                    this.activateMenu(menu);
+                }
+            }
+        }
+        onMouseOver(menu, position) {
+            if (menu.isEnabled(this.env)) {
+                if (this.isRoot(menu)) {
+                    this.openSubMenu(menu, position);
+                }
+                else {
+                    this.subMenu.isOpen = false;
+                }
+            }
+        }
+    }
+    Menu.template = "o-spreadsheet.Menu";
+    Menu.components = { Menu, Popover };
+    Menu.defaultProps = {
+        depth: 1,
+    };
+
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-chart-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+
+    .o-chart-menu {
+      right: 0px;
+      display: none;
+      position: absolute;
+      padding: 5px;
+    }
+
+    .o-chart-menu-item {
+      cursor: pointer;
+    }
+  }
+  .o-figure.active:focus,
+  .o-figure:hover {
+    .o-chart-container {
+      .o-chart-menu {
+        display: flex;
+      }
+    }
+  }
+`;
+    class ChartFigure extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.menuState = owl.useState({ isOpen: false, position: null, menuItems: [] });
+            this.chartContainerRef = owl.useRef("chartContainer");
+            this.menuButtonRef = owl.useRef("menuButton");
+            this.menuButtonPosition = useAbsolutePosition(this.menuButtonRef);
+            this.position = useAbsolutePosition(this.chartContainerRef);
+        }
+        getMenuItemRegistry() {
+            const registry = new MenuItemRegistry();
+            registry.add("edit", {
+                name: _lt("Edit"),
+                sequence: 1,
+                action: () => this.env.openSidePanel("ChartPanel", { figureId: this.props.figureId }),
+            });
+            registry.add("delete", {
+                name: _lt("Delete"),
+                sequence: 10,
+                action: () => {
+                    this.env.model.dispatch("DELETE_FIGURE", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        id: this.props.figureId,
+                    });
+                    if (this.props.sidePanelIsOpen) {
+                        this.env.toggleSidePanel("ChartPanel", { figureId: this.props.figureId });
+                    }
+                    this.props.onFigureDeleted();
+                },
+            });
+            registry.add("refresh", {
+                name: _lt("Refresh"),
+                sequence: 11,
+                action: () => {
+                    this.env.model.dispatch("REFRESH_CHART", {
+                        id: this.props.figureId,
+                    });
+                },
+            });
+            return registry;
+        }
+        get chartType() {
+            return this.env.model.getters.getChartType(this.props.figureId);
+        }
+        onContextMenu(ev) {
+            const position = {
+                x: this.position.x + ev.offsetX,
+                y: this.position.y + ev.offsetY,
+            };
+            this.openContextMenu(position);
+        }
+        showMenu() {
+            const position = {
+                x: this.menuButtonPosition.x - MENU_WIDTH,
+                y: this.menuButtonPosition.y,
+            };
+            this.openContextMenu(position);
+        }
+        openContextMenu(position) {
+            const registry = this.getMenuItemRegistry();
+            this.menuState.isOpen = true;
+            this.menuState.menuItems = registry.getAll().filter((x) => x.isVisible(this.env));
+            this.menuState.position = position;
+        }
+        get chartComponent() {
+            const type = this.chartType;
+            const component = chartComponentRegistry.get(type);
+            if (!component) {
+                throw new Error(`Component is not defined for type ${type}`);
+            }
+            return component;
+        }
+    }
+    ChartFigure.template = "o-spreadsheet.ChartFigure";
+    ChartFigure.components = { Menu };
 
     //------------------------------------------------------------------------------
     // Arg description DSL
@@ -12018,7 +14307,6 @@
                 `return ${compiledAST.id};`,
             ]).join("\n");
             let baseFunction = new Function("deps", // the dependencies in the current formula
-            "sheetId", // the sheet the formula is currently evaluating
             "ref", // a function to access a certain dependency at a given index
             "range", // same as above, but guarantee that the result is in the form of a range
             "ctx", code);
@@ -12138,10 +14426,10 @@
                         const referenceIndex = dependencies.indexOf(ast.value);
                         id = nextId++;
                         if (hasRange) {
-                            statement = `range(${referenceIndex}, deps, sheetId)`;
+                            statement = `range(deps[${referenceIndex}])`;
                         }
                         else {
-                            statement = `ref(${referenceIndex}, deps, sheetId, ${isMeta ? "true" : "false"}, "${referenceVerification.functionName || OPERATOR_MAP["="]}",  ${referenceVerification.paramIndex})`;
+                            statement = `ref(deps[${referenceIndex}], ${isMeta ? "true" : "false"}, "${referenceVerification.functionName || OPERATOR_MAP["="]}",  ${referenceVerification.paramIndex})`;
                         }
                         break;
                     case "FUNCALL":
@@ -14213,152 +16501,40 @@
         "getCellById",
     ];
 
-    const GraphColors = [
-        // the same colors as those used in odoo reporting
-        "rgb(31,119,180)",
-        "rgb(255,127,14)",
-        "rgb(174,199,232)",
-        "rgb(255,187,120)",
-        "rgb(44,160,44)",
-        "rgb(152,223,138)",
-        "rgb(214,39,40)",
-        "rgb(255,152,150)",
-        "rgb(148,103,189)",
-        "rgb(197,176,213)",
-        "rgb(140,86,75)",
-        "rgb(196,156,148)",
-        "rgb(227,119,194)",
-        "rgb(247,182,210)",
-        "rgb(127,127,127)",
-        "rgb(199,199,199)",
-        "rgb(188,189,34)",
-        "rgb(219,219,141)",
-        "rgb(23,190,207)",
-        "rgb(158,218,229)",
-    ];
-    class ChartColors {
-        constructor() {
-            this.graphColorIndex = 0;
-        }
-        next() {
-            return GraphColors[this.graphColorIndex++ % GraphColors.length];
-        }
-    }
-    /**
-     * Choose a font color based on a background color.
-     * The font is white with a dark background.
-     */
-    function chartFontColor(backgroundColor) {
-        return relativeLuminance(backgroundColor) < 0.3 ? "#FFFFFF" : "#000000";
-    }
-
-    /**
-     * Convert a color string to an excel compatible hexadecimal format.
-     */
-    function toXlsxHexColor(color) {
-        color = toHex(color).replace("#", "");
-        // alpha channel goes first
-        if (color.length === 8) {
-            return color.slice(6) + color.slice(0, 6);
-        }
-        return color;
-    }
-
     class ChartPlugin extends CorePlugin {
         constructor() {
             super(...arguments);
-            this.chartFigures = {};
+            this.charts = {};
             this.nextId = 1;
+            this.createChart = chartFactory(this.getters);
+            this.validateChartDefinition = (definition) => validateChartDefinition(this, definition);
         }
         adaptRanges(applyChange) {
-            for (let [chartId, chart] of Object.entries(this.chartFigures)) {
-                if (chart) {
-                    this.adaptDataSetRanges(chart, chartId, applyChange);
-                    this.adaptLabelRanges(chart, chartId, applyChange);
-                }
-            }
-        }
-        adaptDataSetRanges(chart, chartId, applyChange) {
-            for (let ds of chart.dataSets) {
-                if (ds.labelCell) {
-                    const labelCellChange = applyChange(ds.labelCell);
-                    switch (labelCellChange.changeType) {
-                        case "REMOVE":
-                            this.history.update("chartFigures", chartId, "dataSets", chart.dataSets.indexOf(ds), "labelCell", undefined);
-                            break;
-                        case "RESIZE":
-                        case "MOVE":
-                        case "CHANGE":
-                            this.history.update("chartFigures", chartId, "dataSets", chart.dataSets.indexOf(ds), "labelCell", labelCellChange.range);
-                    }
-                }
-                const dataRangeChange = applyChange(ds.dataRange);
-                switch (dataRangeChange.changeType) {
-                    case "REMOVE":
-                        const newDataSets = chart.dataSets.filter((dataset) => dataset !== ds);
-                        this.history.update("chartFigures", chartId, "dataSets", newDataSets);
-                        break;
-                    case "RESIZE":
-                    case "MOVE":
-                    case "CHANGE":
-                        // We have to remove the ranges that are #REF
-                        if (this.getters.getRangeString(dataRangeChange.range, dataRangeChange.range.sheetId) !==
-                            INCORRECT_RANGE_STRING) {
-                            this.history.update("chartFigures", chartId, "dataSets", chart.dataSets.indexOf(ds), "dataRange", dataRangeChange.range);
-                        }
-                        else {
-                            const newDataSets = chart.dataSets.filter((dataset) => dataset !== ds);
-                            this.history.update("chartFigures", chartId, "dataSets", newDataSets);
-                        }
-                        break;
-                }
-            }
-        }
-        adaptLabelRanges(chart, chartId, applyChange) {
-            if (chart.labelRange) {
-                const labelRangeChange = applyChange(chart.labelRange);
-                switch (labelRangeChange.changeType) {
-                    case "REMOVE":
-                        this.history.update("chartFigures", chartId, "labelRange", undefined);
-                        break;
-                    case "RESIZE":
-                    case "MOVE":
-                    case "CHANGE":
-                        this.history.update("chartFigures", chartId, "labelRange", labelRangeChange.range);
-                        break;
-                }
+            for (const [chartId, chart] of Object.entries(this.charts)) {
+                this.history.update("charts", chartId, chart === null || chart === void 0 ? void 0 : chart.updateRanges(applyChange));
             }
         }
         // ---------------------------------------------------------------------------
         // Command Handling
         // ---------------------------------------------------------------------------
         allowDispatch(cmd) {
-            const success = 0 /* Success */;
             switch (cmd.type) {
-                case "UPDATE_CHART":
                 case "CREATE_CHART":
-                    return this.checkValidations(cmd, this.chainValidations(this.checkEmptyDataset, this.checkDataset), this.checkLabelRange);
+                case "UPDATE_CHART":
+                    return this.validateChartDefinition(cmd.definition);
                 default:
-                    return success;
+                    return 0 /* Success */;
             }
         }
         handle(cmd) {
-            var _a, _b;
+            var _a;
             switch (cmd.type) {
                 case "CREATE_CHART":
-                    const x = cmd.position ? cmd.position.x : 0;
-                    const y = cmd.position ? cmd.position.y : 0;
-                    this.addChartFigure(cmd.sheetId, this.createChartDefinition(cmd.definition, cmd.sheetId), {
-                        id: cmd.id,
-                        x,
-                        y,
-                        height: 335,
-                        width: 536,
-                        tag: "chart",
-                    });
+                    this.addFigure(cmd.id, cmd.sheetId, cmd.position);
+                    this.addChart(cmd.id, cmd.sheetId, cmd.definition);
                     break;
                 case "UPDATE_CHART": {
-                    this.updateChartDefinition(cmd.id, cmd.definition);
+                    this.addChart(cmd.id, cmd.sheetId, cmd.definition);
                     break;
                 }
                 case "DUPLICATE_SHEET": {
@@ -14367,41 +16543,22 @@
                         if (fig.tag === "chart") {
                             const id = this.nextId.toString();
                             this.history.update("nextId", this.nextId + 1);
-                            const chartDefinition = { ...deepCopy(this.chartFigures[fig.id]), id };
-                            chartDefinition.sheetId = cmd.sheetIdTo;
-                            chartDefinition.dataSets.forEach((dataset) => {
-                                var _a;
-                                if (dataset.dataRange.sheetId === cmd.sheetId) {
-                                    dataset.dataRange.sheetId = cmd.sheetIdTo;
-                                }
-                                if (((_a = dataset.labelCell) === null || _a === void 0 ? void 0 : _a.sheetId) === cmd.sheetId) {
-                                    dataset.labelCell.sheetId = cmd.sheetIdTo;
-                                }
-                            });
-                            if (((_a = chartDefinition.labelRange) === null || _a === void 0 ? void 0 : _a.sheetId) === cmd.sheetId) {
-                                chartDefinition.labelRange.sheetId = cmd.sheetIdTo;
-                            }
-                            const figure = {
-                                id: id,
-                                x: fig.x,
-                                y: fig.y,
-                                height: fig.height,
-                                width: fig.width,
-                                tag: "chart",
-                            };
-                            this.addChartFigure(cmd.sheetIdTo, chartDefinition, figure);
+                            const chart = (_a = this.charts[fig.id]) === null || _a === void 0 ? void 0 : _a.copyForSheetId(cmd.sheetIdTo);
+                            // TODO:
+                            // This is not really correct, it should be the role of figures to
+                            // duplicate a figure.
+                            this.addFigure(id, cmd.sheetIdTo, { x: fig.x, y: fig.y });
+                            this.history.update("charts", id, chart);
                         }
                     }
                     break;
                 }
                 case "DELETE_FIGURE":
-                    this.history.update("chartFigures", cmd.id, undefined);
+                    this.history.update("charts", cmd.id, undefined);
                     break;
                 case "DELETE_SHEET":
-                    for (let id of Object.keys(this.chartFigures)) {
-                        if (((_b = this.chartFigures[id]) === null || _b === void 0 ? void 0 : _b.sheetId) === cmd.sheetId) {
-                            this.history.update("chartFigures", id, undefined);
-                        }
+                    for (let id of this.getChartIds(cmd.sheetId)) {
+                        this.history.update("charts", id, undefined);
                     }
                     break;
             }
@@ -14409,73 +16566,40 @@
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
-        getChartDefinition(figureId) {
-            return this.chartFigures[figureId];
-        }
-        getChartsIdBySheet(sheetId) {
-            return Object.entries(this.chartFigures)
-                .filter((chart) => {
-                return chart[1].sheetId === sheetId;
-            })
-                .map((chart) => chart[0]);
-        }
-        getChartDefinitionUI(sheetId, figureId) {
-            const data = this.chartFigures[figureId];
-            const dataSets = data.dataSets
-                .map((ds) => (ds ? this.getters.getRangeString(ds.dataRange, sheetId) : ""))
-                .filter((ds) => {
-                return ds !== ""; // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
-            });
-            return {
-                title: data && data.title ? data.title : "",
-                dataSets,
-                labelRange: data.labelRange
-                    ? this.getters.getRangeString(data.labelRange, sheetId)
-                    : undefined,
-                type: data ? data.type : "bar",
-                dataSetsHaveTitle: data && dataSets.length !== 0 ? Boolean(data.dataSets[0].labelCell) : false,
-                background: data.background,
-                verticalAxisPosition: data.verticalAxisPosition,
-                legendPosition: data.legendPosition,
-                stackedBar: data.stackedBar,
-                labelsAsText: data.labelsAsText,
-            };
-        }
-        getChartDefinitionExcel(sheetId, figureId) {
-            const data = this.chartFigures[figureId];
-            const dataSets = data.dataSets
-                .map((ds) => this.toExcelDataset(ds))
-                .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
-            return {
-                ...this.getChartDefinitionUI("forceSheetReference", figureId),
-                backgroundColor: toXlsxHexColor(data.background),
-                fontColor: toXlsxHexColor(chartFontColor(data.background)),
-                dataSets,
-            };
-        }
-        toExcelDataset(ds) {
+        getContextCreationChart(figureId) {
             var _a;
-            const labelZone = (_a = ds.labelCell) === null || _a === void 0 ? void 0 : _a.zone;
-            let dataZone = ds.dataRange.zone;
-            if (labelZone) {
-                const { height, width } = zoneToDimension(dataZone);
-                if (height === 1) {
-                    dataZone = { ...dataZone, left: dataZone.left + 1 };
-                }
-                else if (width === 1) {
-                    dataZone = { ...dataZone, top: dataZone.top + 1 };
-                }
+            return (_a = this.charts[figureId]) === null || _a === void 0 ? void 0 : _a.getContextCreation();
+        }
+        getChart(figureId) {
+            return this.charts[figureId];
+        }
+        getChartType(figureId) {
+            var _a;
+            const type = (_a = this.charts[figureId]) === null || _a === void 0 ? void 0 : _a.type;
+            if (!type) {
+                throw new Error("Chart not defined.");
             }
-            const dataRange = {
-                ...ds.dataRange,
-                zone: dataZone,
-            };
-            return {
-                label: ds.labelCell
-                    ? this.getters.getRangeString(ds.labelCell, "forceSheetReference")
-                    : undefined,
-                range: this.getters.getRangeString(dataRange, "forceSheetReference"),
-            };
+            return type;
+        }
+        isChartDefined(figureId) {
+            return figureId in this.charts && this.charts !== undefined;
+        }
+        getChartIds(sheetId) {
+            return Object.entries(this.charts)
+                .filter(([, chart]) => (chart === null || chart === void 0 ? void 0 : chart.sheetId) === sheetId)
+                .map(([id]) => id);
+        }
+        getChartDefinition(figureId) {
+            var _a;
+            const definition = (_a = this.charts[figureId]) === null || _a === void 0 ? void 0 : _a.getDefinition();
+            if (!definition) {
+                throw new Error(`There is no chart with the given figureId: ${figureId}`);
+            }
+            return definition;
+        }
+        getSheetIdsUsedInChartRanges(figureId) {
+            var _a;
+            return (_a = this.charts[figureId]) === null || _a === void 0 ? void 0 : _a.getSheetIdsUsedInChartRanges();
         }
         // ---------------------------------------------------------------------------
         // Import/Export
@@ -14484,12 +16608,11 @@
             for (let sheet of data.sheets) {
                 if (sheet.figures) {
                     for (let figure of sheet.figures) {
+                        // TODO:
+                        // figure data should be external IMO => chart should be in sheet.chart
+                        // instead of in figure.data
                         if (figure.tag === "chart") {
-                            const figureData = {
-                                ...figure.data,
-                            };
-                            this.chartFigures[figure.id] = this.createChartDefinition(figureData, sheet.id);
-                            delete figure.data;
+                            this.charts[figure.id] = this.createChart(figure.id, figure.data, sheet.id);
                         }
                     }
                 }
@@ -14498,11 +16621,12 @@
         export(data) {
             if (data.sheets) {
                 for (let sheet of data.sheets) {
+                    // TODO This code is false, if two plugins want ot insert figures on the sheet, it will crash !
                     const sheetFigures = this.getters.getFigures(sheet.id);
                     const figures = sheetFigures;
                     for (let figure of figures) {
                         if (figure && figure.tag === "chart") {
-                            figure.data = this.getChartDefinitionUI(sheet.id, figure.id);
+                            figure.data = this.getChartDefinition(figure.id);
                         }
                     }
                     sheet.figures = figures;
@@ -14510,12 +16634,19 @@
             }
         }
         exportForExcel(data) {
+            var _a;
             for (let sheet of data.sheets) {
                 const sheetFigures = this.getters.getFigures(sheet.id);
-                const figures = sheetFigures;
-                for (let figure of figures) {
+                const figures = [];
+                for (let figure of sheetFigures) {
                     if (figure && figure.tag === "chart") {
-                        figure.data = this.getChartDefinitionExcel(sheet.id, figure.id);
+                        const figureData = (_a = this.charts[figure.id]) === null || _a === void 0 ? void 0 : _a.getDefinitionForExcel();
+                        if (figureData) {
+                            figures.push({
+                                ...figure,
+                                data: figureData,
+                            });
+                        }
                     }
                 }
                 sheet.charts = figures;
@@ -14525,154 +16656,36 @@
         // Private
         // ---------------------------------------------------------------------------
         /**
-         * Create a new chart definition based on the given UI definition
+         * Add a figure with tag chart with the given id at the given position
          */
-        createChartDefinition(definition, sheetId) {
-            return {
-                ...definition,
-                dataSets: this.createDataSets(definition.dataSets, sheetId, definition.dataSetsHaveTitle),
-                labelRange: definition.labelRange
-                    ? this.getters.getRangeFromSheetXC(sheetId, definition.labelRange)
-                    : undefined,
-                sheetId,
+        addFigure(id, sheetId, position = { x: 0, y: 0 }) {
+            const figure = {
+                id,
+                x: position.x,
+                y: position.y,
+                height: 335,
+                width: 536,
+                tag: "chart",
             };
+            this.dispatch("CREATE_FIGURE", { sheetId, figure });
         }
         /**
-         * Update the chart definition linked to the given id with the attributes
-         * given in the partial UI definition
+         * Add a chart in the local state. If a chart already exists, this chart is
+         * replaced
          */
-        updateChartDefinition(id, definition) {
-            const chart = this.chartFigures[id];
-            if (!chart) {
-                throw new Error(`There is no chart with the given id: ${id}`);
-            }
-            if (definition.title !== undefined) {
-                this.history.update("chartFigures", id, "title", definition.title);
-            }
-            if (definition.type) {
-                this.history.update("chartFigures", id, "type", definition.type);
-            }
-            if (definition.dataSets) {
-                const dataSetsHaveTitle = !!definition.dataSetsHaveTitle;
-                const dataSets = this.createDataSets(definition.dataSets, chart.sheetId, dataSetsHaveTitle);
-                this.history.update("chartFigures", id, "dataSets", dataSets);
-            }
-            if (definition.labelRange !== undefined) {
-                const labelRange = definition.labelRange
-                    ? this.getters.getRangeFromSheetXC(chart.sheetId, definition.labelRange)
-                    : undefined;
-                this.history.update("chartFigures", id, "labelRange", labelRange);
-            }
-            if (definition.background) {
-                this.history.update("chartFigures", id, "background", definition.background);
-            }
-            if (definition.verticalAxisPosition) {
-                this.history.update("chartFigures", id, "verticalAxisPosition", definition.verticalAxisPosition);
-            }
-            if (definition.legendPosition) {
-                this.history.update("chartFigures", id, "legendPosition", definition.legendPosition);
-            }
-            if (definition.stackedBar !== undefined) {
-                this.history.update("chartFigures", id, "stackedBar", definition.stackedBar);
-            }
-            if (definition.labelsAsText !== undefined) {
-                this.history.update("chartFigures", id, "labelsAsText", definition.labelsAsText);
-            }
-        }
-        createDataSets(dataSetsString, sheetId, dataSetsHaveTitle) {
-            const dataSets = [];
-            for (const sheetXC of dataSetsString) {
-                const dataRange = this.getters.getRangeFromSheetXC(sheetId, sheetXC);
-                const { zone, sheetId: dataSetSheetId, invalidSheetName } = dataRange;
-                if (invalidSheetName) {
-                    continue;
-                }
-                if (zone.left !== zone.right && zone.top !== zone.bottom) {
-                    // It's a rectangle. We treat all columns (arbitrary) as different data series.
-                    for (let column = zone.left; column <= zone.right; column++) {
-                        const columnZone = {
-                            left: column,
-                            right: column,
-                            top: zone.top,
-                            bottom: zone.bottom,
-                        };
-                        dataSets.push(this.createDataSet(dataSetSheetId, columnZone, dataSetsHaveTitle
-                            ? {
-                                top: columnZone.top,
-                                bottom: columnZone.top,
-                                left: columnZone.left,
-                                right: columnZone.left,
-                            }
-                            : undefined));
-                    }
-                }
-                else if (zone.left === zone.right && zone.top === zone.bottom) {
-                    // A single cell. If it's only the title, the dataset is not added.
-                    if (!dataSetsHaveTitle) {
-                        dataSets.push(this.createDataSet(dataSetSheetId, zone, undefined));
-                    }
-                }
-                else {
-                    /* 1 row or 1 column */
-                    dataSets.push(this.createDataSet(dataSetSheetId, zone, dataSetsHaveTitle
-                        ? {
-                            top: zone.top,
-                            bottom: zone.top,
-                            left: zone.left,
-                            right: zone.left,
-                        }
-                        : undefined));
-                }
-            }
-            return dataSets;
-        }
-        addChartFigure(sheetId, data, figure) {
-            this.dispatch("CREATE_FIGURE", {
-                sheetId,
-                figure,
-            });
-            this.history.update("chartFigures", figure.id, data);
-        }
-        createDataSet(sheetId, fullZone, titleZone) {
-            if (fullZone.left !== fullZone.right && fullZone.top !== fullZone.bottom) {
-                throw new Error(`Zone should be a single column or row: ${zoneToXc(fullZone)}`);
-            }
-            if (titleZone) {
-                const dataXC = zoneToXc(fullZone);
-                const labelCellXC = zoneToXc(titleZone);
-                return {
-                    labelCell: this.getters.getRangeFromSheetXC(sheetId, labelCellXC),
-                    dataRange: this.getters.getRangeFromSheetXC(sheetId, dataXC),
-                };
-            }
-            else {
-                return {
-                    labelCell: undefined,
-                    dataRange: this.getters.getRangeFromSheetXC(sheetId, zoneToXc(fullZone)),
-                };
-            }
-        }
-        checkEmptyDataset(cmd) {
-            return cmd.definition.dataSets && cmd.definition.dataSets.length === 0
-                ? 28 /* EmptyDataSet */
-                : 0 /* Success */;
-        }
-        checkDataset(cmd) {
-            if (!cmd.definition.dataSets) {
-                return 0 /* Success */;
-            }
-            const invalidRanges = cmd.definition.dataSets.find((range) => !rangeReference.test(range)) !== undefined;
-            return invalidRanges ? 29 /* InvalidDataSet */ : 0 /* Success */;
-        }
-        checkLabelRange(cmd) {
-            if (!cmd.definition.labelRange) {
-                return 0 /* Success */;
-            }
-            const invalidLabels = !rangeReference.test(cmd.definition.labelRange || "");
-            return invalidLabels ? 30 /* InvalidLabelRange */ : 0 /* Success */;
+        addChart(id, sheetId, definition) {
+            this.history.update("charts", id, this.createChart(id, definition, sheetId));
         }
     }
-    ChartPlugin.getters = ["getChartDefinition", "getChartDefinitionUI", "getChartsIdBySheet"];
+    ChartPlugin.getters = [
+        "isChartDefined",
+        "getChartDefinition",
+        "getChartType",
+        "getChartIds",
+        "getChart",
+        "getContextCreationChart",
+        "getSheetIdsUsedInChartRanges",
+    ];
 
     // -----------------------------------------------------------------------------
     // Constants
@@ -14863,10 +16876,10 @@
                 return 24 /* InvalidSheetId */;
             const ruleIndex = this.cfRules[sheetId].findIndex((cf) => cf.id === cfId);
             if (ruleIndex === -1)
-                return 57 /* InvalidConditionalFormatId */;
+                return 70 /* InvalidConditionalFormatId */;
             const cfIndex2 = direction === "up" ? ruleIndex - 1 : ruleIndex + 1;
             if (cfIndex2 < 0 || cfIndex2 >= this.cfRules[sheetId].length) {
-                return 57 /* InvalidConditionalFormatId */;
+                return 70 /* InvalidConditionalFormatId */;
             }
             return 0 /* Success */;
         }
@@ -14907,10 +16920,10 @@
                     const errors = [];
                     const isEmpty = (value) => value === undefined || value === "";
                     if (expectedNumber >= 1 && isEmpty(rule.values[0])) {
-                        errors.push(37 /* FirstArgMissing */);
+                        errors.push(50 /* FirstArgMissing */);
                     }
                     if (expectedNumber >= 2 && isEmpty(rule.values[1])) {
-                        errors.push(38 /* SecondArgMissing */);
+                        errors.push(51 /* SecondArgMissing */);
                     }
                     return errors.length ? errors : 0 /* Success */;
                 }
@@ -14922,15 +16935,15 @@
                 (threshold.value === "" || isNaN(threshold.value))) {
                 switch (thresholdName) {
                     case "min":
-                        return 39 /* MinNaN */;
+                        return 52 /* MinNaN */;
                     case "max":
-                        return 41 /* MaxNaN */;
+                        return 54 /* MaxNaN */;
                     case "mid":
-                        return 40 /* MidNaN */;
+                        return 53 /* MidNaN */;
                     case "upperInflectionPoint":
-                        return 42 /* ValueUpperInflectionNaN */;
+                        return 55 /* ValueUpperInflectionNaN */;
                     case "lowerInflectionPoint":
-                        return 43 /* ValueLowerInflectionNaN */;
+                        return 56 /* ValueLowerInflectionNaN */;
                 }
             }
             return 0 /* Success */;
@@ -14944,15 +16957,15 @@
             catch (error) {
                 switch (thresholdName) {
                     case "min":
-                        return 44 /* MinInvalidFormula */;
+                        return 57 /* MinInvalidFormula */;
                     case "max":
-                        return 46 /* MaxInvalidFormula */;
+                        return 59 /* MaxInvalidFormula */;
                     case "mid":
-                        return 45 /* MidInvalidFormula */;
+                        return 58 /* MidInvalidFormula */;
                     case "upperInflectionPoint":
-                        return 47 /* ValueUpperInvalidFormula */;
+                        return 60 /* ValueUpperInvalidFormula */;
                     case "lowerInflectionPoint":
-                        return 48 /* ValueLowerInvalidFormula */;
+                        return 61 /* ValueLowerInvalidFormula */;
                 }
             }
             return 0 /* Success */;
@@ -14969,7 +16982,7 @@
             if (["number", "percentage", "percentile"].includes(rule.lowerInflectionPoint.type) &&
                 rule.lowerInflectionPoint.type === rule.upperInflectionPoint.type &&
                 Number(minValue) > Number(maxValue)) {
-                return 34 /* LowerBiggerThanUpper */;
+                return 47 /* LowerBiggerThanUpper */;
             }
             return 0 /* Success */;
         }
@@ -14979,7 +16992,7 @@
             if (["number", "percentage", "percentile"].includes(rule.minimum.type) &&
                 rule.minimum.type === rule.maximum.type &&
                 stringToNumber(minValue) >= stringToNumber(maxValue)) {
-                return 33 /* MinBiggerThanMax */;
+                return 46 /* MinBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -14991,7 +17004,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.midpoint.type === rule.maximum.type &&
                 stringToNumber(midValue) >= stringToNumber(maxValue)) {
-                return 35 /* MidBiggerThanMax */;
+                return 48 /* MidBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -15003,7 +17016,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.minimum.type === rule.midpoint.type &&
                 stringToNumber(minValue) >= stringToNumber(midValue)) {
-                return 36 /* MinBiggerThanMid */;
+                return 49 /* MinBiggerThanMid */;
             }
             return 0 /* Success */;
         }
@@ -15102,7 +17115,7 @@
         checkFigureExists(sheetId, figureId) {
             var _a;
             if (((_a = this.figures[sheetId]) === null || _a === void 0 ? void 0 : _a[figureId]) === undefined) {
-                return 56 /* FigureDoesNotExist */;
+                return 69 /* FigureDoesNotExist */;
             }
             return 0 /* Success */;
         }
@@ -15363,7 +17376,7 @@
             for (const zone of target) {
                 for (const zone2 of target) {
                     if (zone !== zone2 && overlap(zone, zone2)) {
-                        return 51 /* MergeOverlap */;
+                        return 64 /* MergeOverlap */;
                     }
                 }
             }
@@ -15607,7 +17620,7 @@
                     const elements = cmd.dimension === "COL" ? sheet.cols : sheet.rows;
                     return (hiddenGroup || []).flat().concat(cmd.elements).length < elements.length
                         ? 0 /* Success */
-                        : 52 /* TooManyHiddenElements */;
+                        : 65 /* TooManyHiddenElements */;
                 }
                 default:
                     return 0 /* Success */;
@@ -16580,7 +18593,7 @@
                     if (this.lastCellSelected.col !== undefined && this.lastCellSelected.row !== undefined) {
                         return 0 /* Success */;
                     }
-                    return 31 /* InvalidAutofillSelection */;
+                    return 44 /* InvalidAutofillSelection */;
                 case "AUTOFILL_AUTO":
                     const zone = this.getters.getSelectedZone();
                     return zone.top === zone.bottom
@@ -18098,7 +20111,7 @@
         validateSelection(length, start, end) {
             return start >= 0 && start <= length && end >= 0 && end <= length
                 ? 0 /* Success */
-                : 32 /* WrongComposerSelection */;
+                : 45 /* WrongComposerSelection */;
         }
         onColumnsRemoved(cmd) {
             if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
@@ -18466,7 +20479,7 @@
             for (let xc of compiledFormula.dependencies) {
                 ranges.push(this.getters.getRangeFromSheetXC(sheetId, xc));
             }
-            return compiledFormula.execute(ranges, sheetId, ...params);
+            return compiledFormula.execute(ranges, ...params);
         }
         /**
          * Return the value of each cell in the range as they are displayed in the grid.
@@ -18501,7 +20514,7 @@
                 }
             }
             for (let cell of Object.values(cells)) {
-                computeValue(cell, sheetId);
+                computeValue(cell);
             }
             function handleError(e, cell) {
                 if (!(e instanceof Error)) {
@@ -18514,7 +20527,7 @@
                     cell.assignError(msg, e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled));
                 }
             }
-            function computeValue(cell, sheetId) {
+            function computeValue(cell) {
                 if (!cell.isFormula()) {
                     return;
                 }
@@ -18532,7 +20545,7 @@
                         const position = params[2].getters.getCellPosition(cellId);
                         return toXC(position.col, position.row);
                     };
-                    cell.assignValue(cell.compiledFormula.execute(cell.dependencies, sheetId, ...params));
+                    cell.assignValue(cell.compiledFormula.execute(cell.dependencies, ...params));
                     if (Array.isArray(cell.evaluated.value)) {
                         // if a value returns an array (like =A1:A3)
                         throw new Error(_lt("This formula depends on invalid values"));
@@ -18567,25 +20580,27 @@
                     // fall back on the default value of the argument provided to the formula's compute function
                     return null;
                 }
-                return getCellValue(cell, range.sheetId);
+                return getCellValue(cell);
             }
-            function getCellValue(cell, sheetId) {
+            function getCellValue(cell) {
                 if (cell.isFormula() && cell.evaluated.type === CellValueType.error) {
                     throw new EvaluationError(cell.evaluated.value, _lt("This formula depends on invalid values: %s", cell.evaluated.error));
                 }
-                computeValue(cell, sheetId);
+                computeValue(cell);
                 if (cell.evaluated.type === CellValueType.error) {
                     throw new EvaluationError(cell.evaluated.value, _lt("This formula depends on invalid values: %s", cell.evaluated.error));
                 }
                 return cell.evaluated.value;
             }
             /**
-             * Return a range of values. It is a list of col values.
+             * Return the values of the cell(s) used in reference, but always in the format of a range even
+             * if a single cell is referenced. It is a list of col values. This is useful for the formulas that describe parameters as
+             * range<number> etc.
              *
              * Note that each col is possibly sparse: it only contain the values of cells
              * that are actually present in the grid.
              */
-            function _range(range) {
+            function range(range) {
                 const sheetId = range.sheetId;
                 if (!isZoneValid(range.zone)) {
                     throw new InvalidReferenceError();
@@ -18609,7 +20624,7 @@
                     const rowValues = [];
                     for (let row = zone.top; row <= zone.bottom; row++) {
                         const cell = evalContext.getters.getCell(range.sheetId, col, row);
-                        rowValues.push(cell ? getCellValue(cell, range.sheetId) : undefined);
+                        rowValues.push(cell ? getCellValue(cell) : undefined);
                     }
                     result.push(rowValues);
                 }
@@ -18618,18 +20633,14 @@
             /**
              * Returns the value of the cell(s) used in reference
              *
-             * @param position the index in the references array
-             * @param references all the references used in the current formula
-             * @param sheetId the sheet that is currently being evaluated, if a reference does not
-             *        include a sheet, it is the id of the sheet of the reference to be used
+             * @param range the references used
              * @param isMeta if a reference is supposed to be used in a `meta` parameter as described in the
              *        function for which this parameter is used, we just return the string of the parameter.
              *        The `compute` of the formula's function must process it completely
              */
-            function refFn(position, references, sheetId, isMeta, functionName, paramNumber) {
-                const range = references[position];
+            function refFn(range, isMeta, functionName, paramNumber) {
                 if (isMeta) {
-                    return evalContext.getters.getRangeString(range, sheetId);
+                    return evalContext.getters.getRangeString(range, range.sheetId);
                 }
                 if (!isZoneValid(range.zone)) {
                     throw new InvalidReferenceError();
@@ -18645,16 +20656,6 @@
                 }
                 return readCell(range);
             }
-            /**
-             * Return the values of the cell(s) used in reference, but always in the format of a range even
-             * if a single cell is referenced. This is useful for the formulas that describe parameters as
-             * range<number> etc.
-             *
-             * the parameters are the same as refFn, except that these parameters cannot be Meta
-             */
-            function range(position, references, sheetId) {
-                return _range(references[position]);
-            }
             return [refFn, range, evalContext];
         }
         /**
@@ -18669,310 +20670,58 @@
     }
     EvaluationPlugin.getters = ["evaluateFormula", "getRangeFormattedValues", "getRangeValues"];
 
-    const UNIT_LENGTH = {
-        second: 1000,
-        minute: 1000 * 60,
-        hour: 1000 * 3600,
-        day: 1000 * 3600 * 24,
-        month: 1000 * 3600 * 24 * 30,
-        year: 1000 * 3600 * 24 * 365,
-    };
-    const Milliseconds = {
-        inSeconds: function (milliseconds) {
-            return Math.floor(milliseconds / UNIT_LENGTH.second);
-        },
-        inMinutes: function (milliseconds) {
-            return Math.floor(milliseconds / UNIT_LENGTH.minute);
-        },
-        inHours: function (milliseconds) {
-            return Math.floor(milliseconds / UNIT_LENGTH.hour);
-        },
-        inDays: function (milliseconds) {
-            return Math.floor(milliseconds / UNIT_LENGTH.day);
-        },
-        inMonths: function (milliseconds) {
-            return Math.floor(milliseconds / UNIT_LENGTH.month);
-        },
-        inYears: function (milliseconds) {
-            return Math.floor(milliseconds / UNIT_LENGTH.year);
-        },
-    };
-    /**
-     * Regex to test if a format string is a date format that can be translated into a moment time format
-     */
-    const timeFormatMomentCompatible = /^((d|dd|m|mm|yyyy|yy|hh|h|ss|a)(-|:|\s|\/))*(d|dd|m|mm|yyyy|yy|hh|h|ss|a)$/i;
-    /** Get the time options for the XAxis of ChartJS */
-    function getChartTimeOptions(labels, labelFormat) {
-        const momentFormat = convertDateFormatForMoment(labelFormat);
-        const timeUnit = getBestTimeUnitForScale(labels, momentFormat);
-        const displayFormats = {};
-        if (timeUnit) {
-            displayFormats[timeUnit] = momentFormat;
-        }
-        return {
-            parser: momentFormat,
-            displayFormats,
-            unit: timeUnit,
-        };
-    }
-    /**
-     * Convert the given date format into a format that moment.js understands.
-     *
-     * https://momentjs.com/docs/#/parsing/string-format/
-     */
-    function convertDateFormatForMoment(format) {
-        format = format.replace(/y/g, "Y");
-        format = format.replace(/d/g, "D");
-        // "m" before "h" == month, "m" after "h" == minute
-        const indexH = format.indexOf("h");
-        if (indexH >= 0) {
-            format = format.slice(0, indexH).replace(/m/g, "M") + format.slice(indexH);
-        }
-        else {
-            format = format.replace(/m/g, "M");
-        }
-        // If we have an "a", we should display hours as AM/PM (h), otherwise display 24 hours format (H)
-        if (!format.includes("a")) {
-            format = format.replace(/h/g, "H");
-        }
-        return format;
-    }
-    /** Get the minimum time unit that the format is able to display */
-    function getFormatMinDisplayUnit(format) {
-        if (format.includes("s")) {
-            return "second";
-        }
-        else if (format.includes("m")) {
-            return "minute";
-        }
-        else if (format.includes("h") || format.includes("H")) {
-            return "hour";
-        }
-        else if (format.includes("D")) {
-            return "day";
-        }
-        else if (format.includes("M")) {
-            return "month";
-        }
-        return "year";
-    }
-    /**
-     * Returns the best time unit that should be used for the X axis of a chart in order to display all
-     * the labels correctly.
-     *
-     * There is two conditions :
-     *  - the format of the labels should be able to display the unit. For example if the format is "DD/MM/YYYY"
-     *    it makes no sense to try to use minutes in the X axis
-     *  - we want the "best fit" unit. For example if the labels span a period of several days, we want to use days
-     *    as a unit, but if they span 200 days, we'd like to use months instead
-     *
-     */
-    function getBestTimeUnitForScale(labels, format) {
-        const labelDates = labels.map((label) => { var _a; return (_a = parseDateTime(label)) === null || _a === void 0 ? void 0 : _a.jsDate; });
-        if (labelDates.some((date) => date === undefined) || labels.length < 2) {
-            return undefined;
-        }
-        const labelsTimestamps = labelDates.map((date) => date.getTime());
-        const period = Math.max(...labelsTimestamps) - Math.min(...labelsTimestamps);
-        const minUnit = getFormatMinDisplayUnit(format);
-        if (UNIT_LENGTH.second >= UNIT_LENGTH[minUnit] && Milliseconds.inSeconds(period) < 180) {
-            return "second";
-        }
-        else if (UNIT_LENGTH.minute >= UNIT_LENGTH[minUnit] && Milliseconds.inMinutes(period) < 180) {
-            return "minute";
-        }
-        else if (UNIT_LENGTH.hour >= UNIT_LENGTH[minUnit] && Milliseconds.inHours(period) < 96) {
-            return "hour";
-        }
-        else if (UNIT_LENGTH.day >= UNIT_LENGTH[minUnit] && Milliseconds.inDays(period) < 90) {
-            return "day";
-        }
-        else if (UNIT_LENGTH.month >= UNIT_LENGTH[minUnit] && Milliseconds.inMonths(period) < 36) {
-            return "month";
-        }
-        return "year";
-    }
-
     class EvaluationChartPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
-            // contains the configuration of the chart with it's values like they should be displayed,
-            // as well as all the options needed for the chart library to work correctly
-            this.chartRuntime = {};
-            this.outOfDate = new Set();
+            this.charts = {};
+            this.createRuntimeChart = chartRuntimeFactory(this.getters);
         }
         handle(cmd) {
             if (invalidateEvaluationCommands.has(cmd.type) ||
                 cmd.type === "EVALUATE_CELLS" ||
                 (cmd.type === "UPDATE_CELL" && "content" in cmd)) {
-                for (let chartId of Object.keys(this.chartRuntime)) {
-                    this.outOfDate.add(chartId);
+                for (const chartId in this.charts) {
+                    this.charts[chartId] = undefined;
                 }
             }
             switch (cmd.type) {
                 case "UPDATE_CHART":
                 case "CREATE_CHART":
-                    const chartDefinition = this.getters.getChartDefinition(cmd.id);
-                    this.chartRuntime[cmd.id] = this.mapDefinitionToRuntime(chartDefinition);
-                    break;
                 case "DELETE_FIGURE":
-                    delete this.chartRuntime[cmd.id];
+                    this.charts[cmd.id] = undefined;
                     break;
                 case "REFRESH_CHART":
-                    this.evaluateUsedSheets([cmd.id]);
-                    this.outOfDate.add(cmd.id);
+                    this.charts[cmd.id] = undefined;
+                    this.evaluateUsedSheets([cmd.id]); //TODO Lazy evaluation for the win
                     break;
                 case "ACTIVATE_SHEET":
-                    const chartsIds = this.getters.getChartsIdBySheet(cmd.sheetIdTo);
-                    this.evaluateUsedSheets(chartsIds);
+                    const chartsIds = this.getters.getChartIds(cmd.sheetIdTo);
+                    this.evaluateUsedSheets(chartsIds); //TODO Lazy evaluation for the win
                     break;
                 case "DELETE_SHEET":
-                    for (let chartId of Object.keys(this.chartRuntime)) {
-                        if (!this.getters.getChartDefinition(chartId)) {
-                            delete this.chartRuntime[chartId];
+                    for (let chartId in this.charts) {
+                        if (!this.getters.isChartDefined(chartId)) {
+                            this.charts[chartId] = undefined;
                         }
                     }
                     break;
             }
         }
-        // ---------------------------------------------------------------------------
-        // Getters
-        // ---------------------------------------------------------------------------
         getChartRuntime(figureId) {
-            if (this.outOfDate.has(figureId) || !(figureId in this.chartRuntime)) {
-                const chartDefinition = this.getters.getChartDefinition(figureId);
-                if (chartDefinition === undefined)
-                    return;
-                this.chartRuntime[figureId] = this.mapDefinitionToRuntime(chartDefinition);
-                this.outOfDate.delete(figureId);
-            }
-            return this.chartRuntime[figureId];
-        }
-        /**
-         * Check if the labels of the chart can be parsed to not be interpreted as text, ie. if the chart
-         * can be a date chart or a linear chart
-         */
-        canChartParseLabels(figureId) {
-            const definition = this.getters.getChartDefinition(figureId);
-            if (definition === undefined)
-                return false;
-            return this.canBeLinearChart(definition) || this.canBeDateChart(definition);
-        }
-        truncateLabel(label) {
-            if (!label) {
-                return "";
-            }
-            if (label.length > MAX_CHAR_LABEL) {
-                return label.substring(0, MAX_CHAR_LABEL) + "…";
-            }
-            return label;
-        }
-        getDefaultConfiguration(definition, labels, fontColor) {
-            const legend = {
-                labels: { fontColor },
-            };
-            if (!definition.labelRange && definition.dataSets.length === 1) {
-                legend.display = false;
-            }
-            else {
-                legend.position = definition.legendPosition;
-            }
-            const config = {
-                type: definition.type,
-                options: {
-                    legend,
-                    // https://www.chartjs.org/docs/latest/general/responsive.html
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: { left: 20, right: 20, top: definition.title ? 10 : 25, bottom: 10 },
-                    },
-                    elements: {
-                        line: {
-                            fill: false, // do not fill the area under line charts
-                        },
-                        point: {
-                            hitRadius: 15, // increased hit radius to display point tooltip when hovering nearby
-                        },
-                    },
-                    animation: {
-                        duration: 0, // general animation time
-                    },
-                    hover: {
-                        animationDuration: 10, // duration of animations when hovering an item
-                    },
-                    responsiveAnimationDuration: 0,
-                    title: {
-                        display: !!definition.title,
-                        fontSize: 22,
-                        fontStyle: "normal",
-                        text: definition.title,
-                        fontColor,
-                    },
-                },
-                data: {
-                    labels: labels.map(this.truncateLabel),
-                    datasets: [],
-                },
-            };
-            if (definition.type !== "pie") {
-                config.options.scales = {
-                    xAxes: [
-                        {
-                            offset: true,
-                            ticks: {
-                                // x axis configuration
-                                maxRotation: 60,
-                                minRotation: 15,
-                                padding: 5,
-                                labelOffset: 2,
-                                fontColor,
-                            },
-                        },
-                    ],
-                    yAxes: [
-                        {
-                            position: definition.verticalAxisPosition,
-                            ticks: {
-                                fontColor,
-                                // y axis configuration
-                                beginAtZero: true, // the origin of the y axis is always zero
-                            },
-                        },
-                    ],
-                };
-                if (definition.type === "bar" && definition.stackedBar) {
-                    config.options.scales.xAxes[0].stacked = true;
-                    config.options.scales.yAxes[0].stacked = true;
+            if (!this.charts[figureId]) {
+                const chart = this.getters.getChart(figureId);
+                if (!chart) {
+                    throw new Error(`No chart for the given id: ${figureId}`);
                 }
+                this.charts[figureId] = this.createRuntimeChart(chart);
             }
-            else {
-                config.options.tooltips = {
-                    callbacks: {
-                        title: function (tooltipItems, data) {
-                            return data.datasets[tooltipItems[0].datasetIndex].label;
-                        },
-                    },
-                };
-            }
-            return config;
-        }
-        getSheetIdsUsedInChart(chartDefinition) {
-            const sheetIds = new Set();
-            for (let ds of chartDefinition.dataSets) {
-                sheetIds.add(ds.dataRange.sheetId);
-            }
-            if (chartDefinition.labelRange) {
-                sheetIds.add(chartDefinition.labelRange.sheetId);
-            }
-            return sheetIds;
+            return this.charts[figureId];
         }
         evaluateUsedSheets(chartsIds) {
             const usedSheetsId = new Set();
             for (let chartId of chartsIds) {
-                const chartDefinition = this.getters.getChartDefinition(chartId);
-                const sheetsIds = chartDefinition !== undefined ? this.getSheetIdsUsedInChart(chartDefinition) : [];
-                sheetsIds.forEach((sheetId) => {
+                const sheetIds = this.getters.getSheetIdsUsedInChartRanges(chartId) || [];
+                sheetIds.forEach((sheetId) => {
                     if (sheetId !== this.getters.getActiveSheetId()) {
                         usedSheetsId.add(sheetId);
                     }
@@ -18982,203 +20731,8 @@
                 this.dispatch("EVALUATE_CELLS", { sheetId });
             }
         }
-        /** Get the format of the first cell in the label range of the chart, if any */
-        getLabelFormat(definition) {
-            if (!definition.labelRange)
-                return undefined;
-            const firstLabelCell = this.getters.getCell(definition.labelRange.sheetId, definition.labelRange.zone.left, definition.labelRange.zone.top);
-            return firstLabelCell === null || firstLabelCell === void 0 ? void 0 : firstLabelCell.format;
-        }
-        getChartAxisType(definition) {
-            if (this.isDateChart(definition)) {
-                return "time";
-            }
-            if (this.isLinearChart(definition)) {
-                return "linear";
-            }
-            return "category";
-        }
-        mapDefinitionToRuntime(definition) {
-            const axisType = this.getChartAxisType(definition);
-            const labelValues = this.getChartLabelValues(definition);
-            let labels = axisType === "linear" ? labelValues.values : labelValues.formattedValues;
-            let dataSetsValues = this.getChartDatasetValues(definition);
-            ({ labels, dataSetsValues } = this.filterEmptyDataPoints(labels, dataSetsValues));
-            if (axisType === "time") {
-                ({ labels, dataSetsValues } = this.fixEmptyLabelsForDateCharts(labels, dataSetsValues));
-            }
-            const fontColor = chartFontColor(definition.background);
-            const runtime = this.getDefaultConfiguration(definition, labels, fontColor);
-            const labelFormat = this.getLabelFormat(definition);
-            if (axisType === "time") {
-                runtime.options.scales.xAxes[0].type = "time";
-                runtime.options.scales.xAxes[0].time = getChartTimeOptions(labels, labelFormat);
-                runtime.options.scales.xAxes[0].ticks.maxTicksLimit = 15;
-            }
-            else if (axisType === "linear") {
-                runtime.options.scales.xAxes[0].type = "linear";
-                runtime.options.scales.xAxes[0].ticks.callback = (value) => formatValue(value, labelFormat);
-            }
-            const colors = new ChartColors();
-            for (let { label, data } of dataSetsValues) {
-                if (["linear", "time"].includes(axisType)) {
-                    // Replace empty string labels by undefined to make sure chartJS doesn't decide that "" is the same as 0
-                    data = data.map((y, index) => ({ x: labels[index] || undefined, y }));
-                }
-                const color = definition.type !== "pie" ? colors.next() : "#FFFFFF"; // white border for pie chart
-                const backgroundColor = definition.type === "pie" ? this.getPieColors(colors, dataSetsValues) : color;
-                const dataset = {
-                    label,
-                    data,
-                    lineTension: 0,
-                    borderColor: color,
-                    backgroundColor,
-                };
-                runtime.data.datasets.push(dataset);
-            }
-            return runtime;
-        }
-        /** Return the current cell values of the labels */
-        getChartLabelValues(definition) {
-            const labels = { values: [], formattedValues: [] };
-            if (definition.labelRange) {
-                if (!definition.labelRange.invalidXc && !definition.labelRange.invalidSheetName) {
-                    labels.formattedValues = this.getters.getRangeFormattedValues(definition.labelRange);
-                    labels.values = this.getters
-                        .getRangeValues(definition.labelRange)
-                        .map((val) => (val ? String(val) : ""));
-                }
-            }
-            else if (definition.dataSets.length === 1) {
-                for (let i = 0; i < this.getData(definition.dataSets[0], definition.sheetId).length; i++) {
-                    labels.formattedValues.push("");
-                    labels.values.push("");
-                }
-            }
-            else {
-                if (definition.dataSets[0]) {
-                    const ranges = this.getData(definition.dataSets[0], definition.sheetId);
-                    labels.formattedValues = range(0, ranges.length).map((r) => r.toString());
-                    labels.values = labels.formattedValues;
-                }
-            }
-            return labels;
-        }
-        /** Return the current cell values of the datasets */
-        getChartDatasetValues(definition) {
-            const datasetValues = [];
-            for (const [dsIndex, ds] of Object.entries(definition.dataSets)) {
-                let label;
-                if (ds.labelCell) {
-                    const labelRange = ds.labelCell;
-                    const cell = labelRange
-                        ? this.getters.getCell(labelRange.sheetId, labelRange.zone.left, labelRange.zone.top)
-                        : undefined;
-                    label =
-                        cell && labelRange
-                            ? this.truncateLabel(cell.formattedValue)
-                            : (label = `${ChartTerms.Series} ${parseInt(dsIndex) + 1}`);
-                }
-                else {
-                    label = label = `${ChartTerms.Series} ${parseInt(dsIndex) + 1}`;
-                }
-                let data = ds.dataRange ? this.getData(ds, definition.sheetId) : [];
-                datasetValues.push({ data, label });
-            }
-            return datasetValues;
-        }
-        /** Get array of colors of a pie chart */
-        getPieColors(colors, dataSetsValues) {
-            const pieColors = [];
-            const maxLength = Math.max(...dataSetsValues.map((ds) => ds.data.length));
-            for (let i = 0; i <= maxLength; i++) {
-                pieColors.push(colors.next());
-            }
-            return pieColors;
-        }
-        /**
-         * Replace the empty labels by the closest label, and set the values corresponding to this label in
-         * the dataset to undefined.
-         *
-         * Replacing labels with empty value is needed for date charts, because otherwise chartJS will consider them
-         * to have a value of 01/01/1970, messing up the scale. Setting their corresponding value to undefined
-         * will have the effect of breaking the line of the chart at this point.
-         */
-        fixEmptyLabelsForDateCharts(labels, dataSetsValues) {
-            if (labels.length === 0 || labels.every((label) => !label)) {
-                return { labels, dataSetsValues };
-            }
-            const newLabels = [...labels];
-            const newDatasets = deepCopy(dataSetsValues);
-            for (let i = 0; i < newLabels.length; i++) {
-                if (!newLabels[i]) {
-                    newLabels[i] = findNextDefinedValue(newLabels, i);
-                    for (let ds of newDatasets) {
-                        ds.data[i] = undefined;
-                    }
-                }
-            }
-            return { labels: newLabels, dataSetsValues: newDatasets };
-        }
-        filterEmptyDataPoints(labels, datasets) {
-            const numberOfDataPoints = Math.max(labels.length, ...datasets.map((dataset) => { var _a; return ((_a = dataset.data) === null || _a === void 0 ? void 0 : _a.length) || 0; }));
-            const dataPointsIndexes = range(0, numberOfDataPoints).filter((dataPointIndex) => {
-                const label = labels[dataPointIndex];
-                const values = datasets.map((dataset) => { var _a; return (_a = dataset.data) === null || _a === void 0 ? void 0 : _a[dataPointIndex]; });
-                return label || values.some((value) => value === 0 || Boolean(value));
-            });
-            return {
-                labels: dataPointsIndexes.map((i) => labels[i] || ""),
-                dataSetsValues: datasets.map((dataset) => ({
-                    ...dataset,
-                    data: dataPointsIndexes.map((i) => dataset.data[i]),
-                })),
-            };
-        }
-        // TODO type this with Chart.js types.
-        getData(ds, sheetId) {
-            if (ds.dataRange) {
-                const labelCellZone = ds.labelCell ? [zoneToXc(ds.labelCell.zone)] : [];
-                const dataXC = recomputeZones([zoneToXc(ds.dataRange.zone)], labelCellZone)[0];
-                if (dataXC === undefined) {
-                    return [];
-                }
-                const dataRange = this.getters.getRangeFromSheetXC(ds.dataRange.sheetId, dataXC);
-                return this.getters.getRangeValues(dataRange);
-            }
-            return [];
-        }
-        canBeDateChart(definition) {
-            if (!definition.labelRange || !definition.dataSets || definition.type !== "line") {
-                return false;
-            }
-            if (!this.canBeLinearChart(definition)) {
-                return false;
-            }
-            const labelFormat = this.getLabelFormat(definition);
-            return Boolean(labelFormat && timeFormatMomentCompatible.test(labelFormat));
-        }
-        isDateChart(definition) {
-            return !definition.labelsAsText && this.canBeDateChart(definition);
-        }
-        canBeLinearChart(definition) {
-            if (!definition.labelRange || !definition.dataSets || definition.type !== "line") {
-                return false;
-            }
-            const labels = this.getters.getRangeValues(definition.labelRange);
-            if (labels.some((label) => isNaN(Number(label)) && label)) {
-                return false;
-            }
-            if (labels.every((label) => !label)) {
-                return false;
-            }
-            return true;
-        }
-        isLinearChart(definition) {
-            return !definition.labelsAsText && this.canBeLinearChart(definition);
-        }
     }
-    EvaluationChartPlugin.getters = ["getChartRuntime", "canChartParseLabels"];
+    EvaluationChartPlugin.getters = ["getChartRuntime"];
 
     // -----------------------------------------------------------------------------
     // Constants
@@ -22116,7 +23670,7 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 49 /* InvalidSortZone */;
+                        return 62 /* InvalidSortZone */;
                     }
                 }
             }
@@ -22137,7 +23691,7 @@
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 49 /* InvalidSortZone */;
+                return 62 /* InvalidSortZone */;
             }
             return 0 /* Success */;
         }
@@ -22542,7 +24096,7 @@
                     return this.checkOffsetValidity(cmd.offsetX, cmd.offsetY);
                 case "RESIZE_VIEWPORT":
                     if (cmd.width < 0 || cmd.height < 0) {
-                        return 55 /* InvalidViewportSize */;
+                        return 68 /* InvalidViewportSize */;
                     }
                     return 0 /* Success */;
                 default:
@@ -22679,7 +24233,7 @@
             const sheet = this.getters.getActiveSheet();
             const { maxOffsetX, maxOffsetY } = this.getMaximumViewportOffset(sheet);
             if (offsetX < 0 || offsetY < 0 || offsetY > maxOffsetY || offsetX > maxOffsetX) {
-                return 54 /* InvalidOffset */;
+                return 67 /* InvalidOffset */;
             }
             return 0 /* Success */;
         }
@@ -24326,11 +25880,24 @@
         }
         getVisibleFigures() {
             const selectedId = this.env.model.getters.getSelectedFigureId();
-            return this.env.model.getters.getVisibleFigures().map((f) => ({
-                id: f.id,
-                isSelected: f.id === selectedId,
-                figure: f,
-            }));
+            return this.env.model.getters.getVisibleFigures().map((f) => {
+                let figure = f;
+                // Returns current state of drag&drop figure instead of its stored state
+                if (this.dnd.figureId === f.id) {
+                    figure = {
+                        ...f,
+                        x: this.dnd.x,
+                        y: this.dnd.y,
+                        width: this.dnd.width,
+                        height: this.dnd.height,
+                    };
+                }
+                return {
+                    id: f.id,
+                    isSelected: f.id === selectedId,
+                    figure: figure,
+                };
+            });
         }
         getDims(info) {
             const { figure, isSelected } = info;
@@ -24414,7 +25981,7 @@
                 return;
             }
             if (this.props.sidePanelIsOpen) {
-                this.env.openSidePanel("ChartPanel", { figure });
+                this.env.openSidePanel("ChartPanel", { figureId: figure.id });
             }
             const initialX = ev.clientX;
             const initialY = ev.clientY;
@@ -26398,6 +27965,117 @@
       background-color: white;
       text-align: left;
     }
+
+    .o-inflection {
+      .o-inflection-icon-button {
+        display: inline-block;
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 1px 2px;
+      }
+      .o-inflection-icon-button:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+      table {
+        table-layout: fixed;
+        margin-top: 2%;
+        display: table;
+        text-align: left;
+        font-size: 12px;
+        line-height: 18px;
+        width: 100%;
+      }
+      th.o-inflection-iconset-icons {
+        width: 8%;
+      }
+      th.o-inflection-iconset-text {
+        width: 28%;
+      }
+      th.o-inflection-iconset-operator {
+        width: 14%;
+      }
+      th.o-inflection-iconset-type {
+        width: 28%;
+      }
+      th.o-inflection-iconset-value {
+        width: 26%;
+      }
+      input,
+      select {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+      }
+    }
+
+    .o-dropdown {
+      position: relative;
+      .o-dropdown-content {
+        position: absolute;
+        top: calc(100% + 5px);
+        left: 0;
+        z-index: 10;
+        box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+        background-color: #f6f6f6;
+
+        .o-dropdown-item {
+          padding: 7px 10px;
+        }
+        .o-dropdown-item:hover {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+        .o-dropdown-line {
+          display: flex;
+          padding: 3px 6px;
+          .o-line-item {
+            width: 16px;
+            height: 16px;
+            margin: 1px 3px;
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.08);
+            }
+          }
+        }
+      }
+    }
+
+    .o-tools {
+      color: #333;
+      font-size: 13px;
+      cursor: default;
+      display: flex;
+
+      .o-tool {
+        display: flex;
+        align-items: center;
+        margin: 2px;
+        padding: 0 3px;
+        border-radius: 2px;
+      }
+
+      .o-tool.active,
+      .o-tool:not(.o-disabled):hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+
+      .o-with-color > span {
+        border-bottom: 4px solid;
+        height: 16px;
+        margin-top: 2px;
+      }
+      .o-with-color {
+        .o-line-item:hover {
+          outline: 1px solid gray;
+        }
+      }
+      .o-border {
+        .o-line-item {
+          padding: 4px;
+          margin: 1px;
+        }
+      }
+    }
   }
 `;
     class SidePanel extends owl.Component {
@@ -27040,16 +28718,6 @@
         }
     }
 
-    function transformZone(zone, executed) {
-        if (executed.type === "REMOVE_COLUMNS_ROWS") {
-            return reduceZoneOnDeletion(zone, executed.dimension === "COL" ? "left" : "top", executed.elements);
-        }
-        if (executed.type === "ADD_COLUMNS_ROWS") {
-            return expandZoneOnInsertion(zone, executed.dimension === "COL" ? "left" : "top", executed.base, executed.position, executed.quantity);
-        }
-        return { ...zone };
-    }
-
     /*
      * This file contains the specifics transformations
      */
@@ -27073,26 +28741,9 @@
         return toTransform;
     }
     function updateChartRangesTransformation(toTransform, executed) {
-        const definition = toTransform.definition;
-        let labelZone;
-        let dataSets;
-        if (definition.labelRange) {
-            labelZone = transformZone(toZone(definition.labelRange), executed);
-        }
-        if (definition.dataSets) {
-            dataSets = definition.dataSets
-                .map(toZone)
-                .map((zone) => transformZone(zone, executed))
-                .filter(isDefined$1)
-                .map(zoneToXc);
-        }
         return {
             ...toTransform,
-            definition: {
-                ...definition,
-                dataSets,
-                labelRange: labelZone ? zoneToXc(labelZone) : undefined,
-            },
+            definition: transformDefinition(toTransform.definition, executed),
         };
     }
     function createSheetTransformation(cmd, executed) {
@@ -28118,7 +29769,7 @@
         }
         allowDispatch(cmd) {
             if (this.isWaitingForUndoRedo) {
-                return 50 /* WaitingSessionConfirmation */;
+                return 63 /* WaitingSessionConfirmation */;
             }
             switch (cmd.type) {
                 case "REQUEST_UNDO":
@@ -30932,7 +32583,7 @@
                 const command = { type, ...payload };
                 let status = this.status;
                 if (this.getters.isReadonly() && !canExecuteInReadonly(command)) {
-                    return new DispatchResult(53 /* Readonly */);
+                    return new DispatchResult(66 /* Readonly */);
                 }
                 switch (status) {
                     case 0 /* Ready */:
@@ -31244,6 +32895,9 @@
         rowMenuRegistry,
         sidePanelRegistry,
         sheetMenuRegistry,
+        chartSidePanelComponentRegistry,
+        chartComponentRegistry,
+        chartRegistry,
         topbarMenuRegistry,
         topbarComponentRegistry,
         otRegistry,
@@ -31274,9 +32928,19 @@
     };
     const components = {
         ChartFigure,
-        ChartPanel,
+        ChartJsComponent,
+        ScorecardChart,
+        LineConfigPanel,
+        LineBarPieDesignPanel,
+        BarConfigPanel,
+        LineBarPieConfigPanel,
+        GaugeChartConfigPanel,
+        GaugeChartDesignPanel,
+        ScorecardChartConfigPanel,
+        ScorecardChartDesignPanel,
     };
 
+    exports.AbstractChart = AbstractChart;
     exports.CorePlugin = CorePlugin;
     exports.DATETIME_FORMAT = DATETIME_FORMAT;
     exports.DispatchResult = DispatchResult;
@@ -31304,8 +32968,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-06-03T07:36:53.623Z';
-    exports.__info__.hash = '088698e';
+    exports.__info__.date = '2022-06-08T14:19:44.618Z';
+    exports.__info__.hash = 'a6009e3';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

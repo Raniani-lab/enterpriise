@@ -229,27 +229,37 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ChartFigure" owl="1">
-    <div
-      class="o-chart-container"
-      t-ref="chartContainer"
-      t-on-contextmenu.prevent.stop="onContextMenu">
-      <div class="o-chart-menu">
-        <div
-          class="o-chart-menu-item"
-          t-on-click="showMenu"
-          t-ref="menuButton"
-          t-on-contextmenu.prevent.stop="showMenu">
-          <t t-call="o-spreadsheet.Icon.LIST"/>
+  <t t-name="o-spreadsheet.ChartJsComponent" owl="1">
+    <canvas class="o-figure-canvas" t-att-style="canvasStyle" t-ref="graphContainer"/>
+  </t>
+
+  <t t-name="o-spreadsheet.ScorecardChart" owl="1">
+    <div class="o-scorecard" t-att-style="chartStyle">
+      <t t-set="textStyles" t-value="getTextStyles()"/>
+      <div t-if="title" class="o-title-text" t-esc="title" t-att-style="textStyles.titleStyle"/>
+      <div class="o-key-text" t-esc="keyValue" t-att-style="textStyles.keyStyle"/>
+      <t t-if="baseline || baselineDescr">
+        <div class="o-baseline-text" t-att-style="textStyles.baselineStyle">
+          <t t-if="baseline">
+            <t t-if="baselineArrowDirection === 'up'">
+              <t t-call="o-spreadsheet.Icon.ARROW_UP">
+                <t t-set="color" t-value="'fill : ' + runtime.baselineColor"/>
+              </t>
+            </t>
+            <t t-if="baselineArrowDirection === 'down'">
+              <t t-call="o-spreadsheet.Icon.ARROW_DOWN">
+                <t t-set="color" t-value="'fill : ' + runtime.baselineColor"/>
+              </t>
+            </t>
+            <span t-att-style="baselineColorStyle">
+              <t t-esc="baseline"/>
+            </span>
+          </t>
+          <span t-att-style="textStyles.baselineDescrStyle">
+            <t t-esc="baselineDescr"/>
+          </span>
         </div>
-      </div>
-      <canvas t-att-style="canvasStyle" t-ref="graphContainer"/>
-      <Menu
-        t-if="menuState.isOpen"
-        position="menuState.position"
-        menuItems="menuState.menuItems"
-        onClose="() => this.menuState.isOpen=false"
-      />
+      </t>
     </div>
   </t>
 
@@ -272,7 +282,7 @@
               t-key="info.id"
               sidePanelIsOpen="props.sidePanelIsOpen"
               onFigureDeleted="props.onFigureDeleted"
-              figure="info.figure"
+              figureId="info.figure.id"
             />
             <t t-if="info.isSelected">
               <div
@@ -311,6 +321,35 @@
           </div>
         </div>
       </t>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.ChartFigure" owl="1">
+    <div
+      class="o-chart-container"
+      t-ref="chartContainer"
+      t-on-contextmenu.prevent.stop="onContextMenu">
+      <div class="o-chart-menu">
+        <div
+          class="o-chart-menu-item"
+          t-on-click="showMenu"
+          t-ref="menuButton"
+          t-on-contextmenu.prevent.stop="showMenu">
+          <t t-call="o-spreadsheet.Icon.LIST"/>
+        </div>
+      </div>
+      <t
+        t-component="chartComponent"
+        figureId="props.figureId"
+        t-key="props.figureId + '-' + chartType"
+      />
+
+      <Menu
+        t-if="menuState.isOpen"
+        position="menuState.position"
+        menuItems="menuState.menuItems"
+        onClose="() => this.menuState.isOpen=false"
+      />
     </div>
   </t>
 
@@ -982,6 +1021,7 @@
       viewBox="0 0 448 512">
       <path
         fill="#DC6965"
+        t-att-style="color"
         d="M413.1 222.5l22.2 22.2c9.4 9.4 9.4 24.6 0 33.9L241 473c-9.4 9.4-24.6 9.4-33.9 0L12.7 278.6c-9.4-9.4-9.4-24.6 0-33.9l22.2-22.2c9.5-9.5 25-9.3 34.3.4L184 343.4V56c0-13.3 10.7-24 24-24h32c13.3 0 24 10.7 24 24v287.4l114.8-120.5c9.3-9.8 24.8-10 34.3-.4z"
       />
     </svg>
@@ -990,6 +1030,7 @@
     <svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512">
       <path
         fill="#00A04A"
+        t-att-style="color"
         d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"
       />
     </svg>
@@ -1160,10 +1201,10 @@
             class="o-menu-item"
             t-att-class="{ 'o-menu-root': isMenuRoot, 'disabled': !isMenuEnabled}"
             t-att-style="getColor(menuItem)">
-            <t t-esc="getName(menuItem)"/>
+            <span class="o-menu-item-name" t-esc="getName(menuItem)"/>
             <span class="o-menu-item-shortcut" t-esc="getShortCut(menuItem)"/>
             <t t-if="isMenuRoot">
-              <t t-call="o-spreadsheet.Icon.TRIANGLE_RIGHT"/>
+              <span t-call="o-spreadsheet.Icon.TRIANGLE_RIGHT"/>
             </t>
             <t t-elif="menuItem.icon">
               <i t-att-class="menuItem.icon" class="o-menu-item-icon"/>
@@ -1231,90 +1272,403 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ChartPanel" owl="1">
-    <div class="o-chart">
-      <div class="o-panel">
-        <div
-          class="o-panel-element"
-          t-att-class="state.panel !== 'configuration' ? 'inactive' : ''"
-          t-on-click="() => this.activate('configuration')">
-          <i class="fa fa-sliders"/>
-          Configuration
-        </div>
-        <div
-          class="o-panel-element"
-          t-att-class="state.panel !== 'design' ? 'inactive' : ''"
-          t-on-click="() => this.activate('design')">
-          <i class="fa fa-paint-brush"/>
-          Design
-        </div>
-      </div>
-      <t t-if="state.panel === 'configuration'">
-        <t t-call="o-spreadsheet.ChartConfigurationPanel"/>
-      </t>
-      <t t-else="">
-        <t t-call="o-spreadsheet.ChartDesignPanel"/>
-      </t>
-    </div>
-  </t>
-
-  <t t-name="o-spreadsheet.ChartConfigurationPanel" owl="1">
+  <t t-name="o-spreadsheet.BarConfigPanel" owl="1">
     <div>
       <div class="o-section">
-        <div class="o-section-title">Chart type</div>
-        <select
-          t-model="state.chart.type"
-          class="o-input o-type-selector"
-          t-on-change="(ev) => this.updateSelect('type', ev)">
-          <option value="bar">Bar</option>
-          <option value="line">Line</option>
-          <option value="pie">Pie</option>
-        </select>
-        <t t-if="state.chart.type === 'bar'">
-          <div class="o_checkbox">
-            <input
-              type="checkbox"
-              name="stackedBar"
-              t-model="state.chart.stackedBar"
-              t-on-change="updateStacked"
-            />
-            Stacked barchart
-          </div>
-        </t>
+        <div class="o_checkbox">
+          <input
+            type="checkbox"
+            name="stackedBar"
+            t-att-checked="props.definition.stackedBar"
+            t-on-change="onUpdateStacked"
+          />
+          Stacked barchart
+        </div>
       </div>
       <div class="o-section o-data-series">
         <div class="o-section-title">Data Series</div>
         <SelectionInput
-          t-key="getKey('dataSets')"
-          ranges="state.chart.dataSets"
+          ranges="dataSeriesRanges"
           isInvalid="isDatasetInvalid"
           required="true"
-          onSelectionChanged="(ranges) => this.onSeriesChanged(ranges)"
-          onSelectionConfirmed="() => this.updateDataSet()"
+          onSelectionChanged="(ranges) => this.onDataSeriesRangesChanged(ranges)"
+          onSelectionConfirmed="() => this.onDataSeriesConfirmed()"
         />
         <input
           type="checkbox"
-          t-model="state.chart.dataSetsHaveTitle"
-          t-on-change="() => this.updateDataSet()"
+          t-att-checked="props.definition.dataSetsHaveTitle"
+          t-on-change="onUpdateDataSetsHaveTitle"
         />
         Data series include title
       </div>
       <div class="o-section o-data-labels">
         <div class="o-section-title">Categories / Labels</div>
         <SelectionInput
-          t-key="getKey('label')"
-          ranges="[state.chart.labelRange || '']"
+          ranges="[props.definition.labelRange || '']"
           isInvalid="isLabelInvalid"
           hasSingleRange="true"
           onSelectionChanged="(ranges) => this.onLabelRangeChanged(ranges)"
-          onSelectionConfirmed="() => this.updateLabelRange()"
+          onSelectionConfirmed="() => this.onLabelRangeConfirmed()"
         />
-        <div t-if="canTreatLabelsAsText()">
+      </div>
+      <div class="o-section o-sidepanel-error" t-if="errorMessages">
+        <div t-foreach="errorMessages" t-as="error" t-key="error">
+          <t t-esc="error"/>
+        </div>
+      </div>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.BarChartDesignPanel" owl="1">
+    <div>
+      <div class="o-section">
+        <div class="o-section-title">Background color</div>
+        <div class="o-with-color-picker">
+          Select a color...
+          <span
+            t-attf-style="border-color:{{props.definition.background}}"
+            t-on-click.stop="toggleColorPicker">
+            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+          </span>
+          <ColorPicker
+            t-if="state.fillColorTool"
+            onColorPicked="(color) => this.updateBackgroundColor(color)"
+            t-key="backgroundColor"
+          />
+        </div>
+      </div>
+      <div class="o-section o-chart-title">
+        <div class="o-section-title">Title</div>
+        <input
+          type="text"
+          t-att-value="props.definition.title"
+          t-on-change="updateTitle"
+          class="o-input"
+          placeholder="New Chart"
+        />
+      </div>
+      <div class="o-section">
+        <div class="o-section-title">Vertical axis position</div>
+        <select
+          t-att-value="props.definition.verticalAxisPosition"
+          class="o-input o-type-selector"
+          t-on-change="(ev) => this.updateSelect('verticalAxisPosition', ev)">
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+        </select>
+      </div>
+      <div class="o-section">
+        <div class="o-section-title">LegendPosition</div>
+        <select
+          t-att-value="props.definition.legendPosition"
+          class="o-input o-type-selector"
+          t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
+          <option value="top">Top</option>
+          <option value="bottom">Bottom</option>
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+        </select>
+      </div>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.GaugeChartConfigPanel" owl="1">
+    <div>
+      <div class="o-section o-data-series">
+        <div class="o-section-title">Data range</div>
+        <SelectionInput
+          ranges="[props.definition.dataRange]"
+          isInvalid="isDataRangeInvalid"
+          hasSingleRange="true"
+          required="true"
+          onSelectionChanged="(ranges) => this.onDataRangeChanged(ranges)"
+          onSelectionConfirmed="() => this.updateDataRange()"
+        />
+      </div>
+      <div class="o-section o-sidepanel-error" t-if="configurationErrorMessages">
+        <div t-foreach="configurationErrorMessages" t-as="error" t-key="error">
+          <t t-esc="error"/>
+        </div>
+      </div>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.GaugeChartDesignPanel" owl="1">
+    <div>
+      <div class="o-section">
+        <div class="o-section-title">Background color</div>
+        <div class="o-with-color-picker">
+          Select a color...
+          <span
+            title="Background Color"
+            t-attf-style="border-color:{{props.definition.background}}"
+            t-on-click.stop="() => this.toggleMenu('backgroundColor', ev)">
+            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+          </span>
+          <ColorPicker
+            t-if="state.openedMenu === 'backgroundColor'"
+            onColorPicked="(color) => this.updateBackgroundColor(color)"
+            t-key="backgroundColor"
+          />
+        </div>
+      </div>
+
+      <div class="o-section o-chart-title">
+        <div class="o-section-title">Title</div>
+        <input
+          type="text"
+          t-att-value="props.definition.title"
+          t-on-change="updateTitle"
+          class="o-input"
+          placeholder="New Chart"
+        />
+      </div>
+
+      <div class="o-section">
+        <div class="o-section-title">Range</div>
+        <div class="o-subsection-left">
+          <input
+            type="text"
+            t-att-value="props.definition.sectionRule.rangeMin"
+            t-on-change="updateRangeMin"
+            class="o-input o-data-range-min"
+            t-att-class="{ 'o-invalid': isRangeMinInvalid() }"
+          />
+        </div>
+        <div class="o-subsection-right">
+          <input
+            type="text"
+            t-att-value="props.definition.sectionRule.rangeMax"
+            t-on-change="updateRangeMax"
+            class="o-input o-data-range-max"
+            t-att-class="{ 'o-invalid': isRangeMaxInvalid() }"
+          />
+        </div>
+      </div>
+
+      <div class="o-section">
+        <div class="o-section-title">Thresholds</div>
+        <t t-call="o-spreadsheet.GaugeChartColorSectionTemplate">
+          <t t-set="sectionRule" t-value="props.definition.sectionRule"/>
+        </t>
+      </div>
+
+      <div class="o-section o-sidepanel-error" t-if="designErrorMessages.length">
+        <div t-foreach="designErrorMessages" t-as="error" t-key="error">
+          <t t-esc="error"/>
+        </div>
+      </div>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.GaugeChartColorSectionTemplate" owl="1">
+    <div class="o-gauge-color-set">
+      <table>
+        <tr>
+          <th class="o-gauge-color-set-colorPicker"/>
+          <th class="o-gauge-color-set-text"/>
+          <th class="o-gauge-color-set-value">Value</th>
+          <th class="o-gauge-color-set-type">Type</th>
+        </tr>
+
+        <t t-call="o-spreadsheet.GaugeChartColorSectionTemplateRow">
+          <t t-set="sectionColor" t-value="sectionRule.colors.lowerColor"/>
+          <t t-set="sectionType" t-value="'lowerColor'"/>
+          <t t-set="inflectionPoint" t-value="sectionRule.lowerInflectionPoint"/>
+          <t t-set="isInvalid" t-value="isLowerInflectionPointInvalid"/>
+          <t t-set="inflectionPointName" t-value="'lowerInflectionPoint'"/>
+        </t>
+
+        <t t-call="o-spreadsheet.GaugeChartColorSectionTemplateRow">
+          <t t-set="sectionColor" t-value="sectionRule.colors.middleColor"/>
+          <t t-set="sectionType" t-value="'middleColor'"/>
+          <t t-set="inflectionPoint" t-value="sectionRule.upperInflectionPoint"/>
+          <t t-set="isInvalid" t-value="isUpperInflectionPointInvalid"/>
+          <t t-set="inflectionPointName" t-value="'upperInflectionPoint'"/>
+        </t>
+
+        <tr>
+          <td>
+            <div class="o-tools">
+              <div class="o-tool o-dropdown o-with-color">
+                <span
+                  title="Fill Color"
+                  t-attf-style="border-color:{{sectionRule.colors.upperColor}}"
+                  t-on-click.stop="(ev) => this.toggleMenu('sectionColor-upperColor', ev)">
+                  <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+                </span>
+                <ColorPicker
+                  t-if="state.openedMenu === 'sectionColor-upperColor'"
+                  onColorPicked="(color) => this.updateSectionColor('upperColor', color)"
+                  dropdownDirection="'right'"
+                />
+              </div>
+            </div>
+          </td>
+          <td>Else</td>
+          <td/>
+          <td/>
+          <td/>
+        </tr>
+      </table>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.GaugeChartColorSectionTemplateRow" owl="1">
+    <tr>
+      <td>
+        <div class="o-tools">
+          <div class="o-tool o-dropdown o-with-color">
+            <span
+              title="Fill Color"
+              t-attf-style="border-color:{{sectionColor}}"
+              t-on-click.stop="(ev) => this.toggleMenu('sectionColor-'+sectionType, ev)">
+              <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+            </span>
+            <ColorPicker
+              t-if="state.openedMenu === 'sectionColor-'+sectionType"
+              onColorPicked="(color) => this.updateSectionColor(sectionType, color)"
+              dropdownDirection="'right'"
+            />
+          </div>
+        </div>
+      </td>
+      <td>When value is below</td>
+      <td>
+        <input
+          type="text"
+          class="o-input"
+          t-on-change="(ev) => this.updateInflectionPointValue(inflectionPointName, ev)"
+          t-attf-class="o-input-{{inflectionPointName}}"
+          t-att-class="{ 'o-invalid': isInvalid }"
+          t-model="inflectionPoint.value"
+        />
+      </td>
+      <td>
+        <select
+          class="o-input"
+          name="valueType"
+          t-model="inflectionPoint.type"
+          t-on-change="(ev) => this.updateInflectionPointType(inflectionPointName, ev)">
+          <option value="number">Number</option>
+          <option value="percentage">Percentage</option>
+        </select>
+      </td>
+    </tr>
+  </t>
+
+  <t t-name="o-spreadsheet.LineBarPieConfigPanel" owl="1">
+    <div>
+      <div class="o-section o-data-series">
+        <div class="o-section-title">Data Series</div>
+        <SelectionInput
+          ranges="dataSeriesRanges"
+          isInvalid="isDatasetInvalid"
+          required="true"
+          onSelectionChanged="(ranges) => this.onDataSeriesRangesChanged(ranges)"
+          onSelectionConfirmed="() => this.onDataSeriesConfirmed()"
+        />
+        <input
+          type="checkbox"
+          t-att-checked="props.definition.dataSetsHaveTitle"
+          t-on-change="onUpdateDataSetsHaveTitle"
+        />
+        Data series include title
+      </div>
+      <div class="o-section o-data-labels">
+        <div class="o-section-title">Categories / Labels</div>
+        <SelectionInput
+          ranges="[props.definition.labelRange || '']"
+          isInvalid="isLabelInvalid"
+          hasSingleRange="true"
+          onSelectionChanged="(ranges) => this.onLabelRangeChanged(ranges)"
+          onSelectionConfirmed="() => this.onLabelRangeConfirmed()"
+        />
+      </div>
+      <div class="o-section o-sidepanel-error" t-if="errorMessages">
+        <div t-foreach="errorMessages" t-as="error" t-key="error">
+          <t t-esc="error"/>
+        </div>
+      </div>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.LineBarPieDesignPanel" owl="1">
+    <div>
+      <div class="o-section">
+        <div class="o-section-title">Background color</div>
+        <div class="o-with-color-picker">
+          Select a color...
+          <span
+            t-attf-style="border-color:{{props.definition.background}}"
+            t-on-click.stop="toggleColorPicker">
+            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+          </span>
+          <ColorPicker
+            t-if="state.fillColorTool"
+            onColorPicked="(color) => this.updateBackgroundColor(color)"
+            t-key="backgroundColor"
+          />
+        </div>
+      </div>
+      <div class="o-section o-chart-title">
+        <div class="o-section-title">Title</div>
+        <input
+          type="text"
+          t-att-value="props.definition.title"
+          t-on-change="updateTitle"
+          class="o-input"
+          placeholder="New Chart"
+        />
+      </div>
+      <div class="o-section">
+        <div class="o-section-title">LegendPosition</div>
+        <select
+          t-att-value="props.definition.legendPosition"
+          class="o-input o-type-selector"
+          t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
+          <option value="top">Top</option>
+          <option value="bottom">Bottom</option>
+          <option value="left">Left</option>
+          <option value="right">Right</option>
+        </select>
+      </div>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.LineConfigPanel" owl="1">
+    <div>
+      <div class="o-section o-data-series">
+        <div class="o-section-title">Data Series</div>
+        <SelectionInput
+          ranges="dataSeriesRanges"
+          isInvalid="isDatasetInvalid"
+          required="true"
+          onSelectionChanged="(ranges) => this.onDataSeriesRangesChanged(ranges)"
+          onSelectionConfirmed="() => this.onDataSeriesConfirmed()"
+        />
+        <input
+          type="checkbox"
+          t-att-checked="props.definition.dataSetsHaveTitle"
+          t-on-change="onUpdateDataSetsHaveTitle"
+        />
+        Data series include title
+      </div>
+      <div class="o-section o-data-labels">
+        <div class="o-section-title">Categories / Labels</div>
+        <SelectionInput
+          ranges="[props.definition.labelRange || '']"
+          isInvalid="isLabelInvalid"
+          hasSingleRange="true"
+          onSelectionChanged="(ranges) => this.onLabelRangeChanged(ranges)"
+          onSelectionConfirmed="() => this.onLabelRangeConfirmed()"
+        />
+        <div t-if="canTreatLabelsAsText">
           <input
             type="checkbox"
             name="labelsAsText"
-            t-model="state.chart.labelsAsText"
-            t-on-change="updateLabelsAsText"
+            t-att-checked="props.definition.labelsAsText"
+            t-on-change="onUpdateLabelsAsText"
           />
           Treat labels as text
         </div>
@@ -1327,20 +1681,20 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ChartDesignPanel" owl="1">
+  <t t-name="o-spreadsheet.LineChartDesignPanel" owl="1">
     <div>
-      <div class="o-section o-chart-title">
+      <div class="o-section">
         <div class="o-section-title">Background color</div>
         <div class="o-with-color-picker">
           Select a color...
           <span
-            t-attf-style="border-color:{{state.chart.background}}"
+            t-attf-style="border-color:{{props.definition.background}}"
             t-on-click.stop="toggleColorPicker">
             <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.fillColorTool"
-            onColorPicked="(color) => this.setColor(color)"
+            onColorPicked="(color) => this.updateBackgroundColor(color)"
             t-key="backgroundColor"
           />
         </div>
@@ -1349,7 +1703,7 @@
         <div class="o-section-title">Title</div>
         <input
           type="text"
-          t-model="state.chart.title"
+          t-att-value="props.definition.title"
           t-on-change="updateTitle"
           class="o-input"
           placeholder="New Chart"
@@ -1358,7 +1712,7 @@
       <div class="o-section">
         <div class="o-section-title">Vertical axis position</div>
         <select
-          t-model="state.chart.verticalAxisPosition"
+          t-att-value="props.definition.verticalAxisPosition"
           class="o-input o-type-selector"
           t-on-change="(ev) => this.updateSelect('verticalAxisPosition', ev)">
           <option value="left">Left</option>
@@ -1368,7 +1722,7 @@
       <div class="o-section">
         <div class="o-section-title">LegendPosition</div>
         <select
-          t-model="state.chart.legendPosition"
+          t-att-value="props.definition.legendPosition"
           class="o-input o-type-selector"
           t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
           <option value="top">Top</option>
@@ -1376,6 +1730,179 @@
           <option value="left">Left</option>
           <option value="right">Right</option>
         </select>
+      </div>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.ChartPanel" owl="1">
+    <div class="o-chart">
+      <div class="o-panel">
+        <div
+          class="o-panel-element o-panel-configuration"
+          t-att-class="state.panel !== 'configuration' ? 'inactive' : ''"
+          t-on-click="() => this.activatePanel('configuration')">
+          <i class="fa fa-sliders"/>
+          Configuration
+        </div>
+        <div
+          class="o-panel-element o-panel-design"
+          t-att-class="state.panel !== 'design' ? 'inactive' : ''"
+          t-on-click="() => this.activatePanel('design')">
+          <i class="fa fa-paint-brush"/>
+          Design
+        </div>
+      </div>
+
+      <t t-set="definition" t-value="getChartDefinition()"/>
+      <t t-if="state.panel === 'configuration'">
+        <div class="o-section">
+          <div class="o-section-title">Chart type</div>
+          <t t-set="types" t-value="chartTypes"/>
+          <select
+            t-att-value="state.type"
+            class="o-input o-type-selector"
+            t-on-change="(ev) => this.onTypeChange(ev.target.value)">
+            <option
+              t-foreach="chartTypes"
+              t-as="type"
+              t-key="type"
+              t-att-value="type"
+              t-esc="types[type]"
+              t-att-selected="state.type === type"
+            />
+          </select>
+        </div>
+        <t
+          t-component="chartPanel.configuration"
+          definition="definition"
+          figureId="figureId"
+          updateChart.bind="updateChart"
+          t-key="figureId + state.type"
+        />
+      </t>
+      <t t-else="">
+        <t
+          t-component="chartPanel.design"
+          definition="definition"
+          figureId="figureId"
+          updateChart.bind="updateChart"
+          t-key="figureId + state.type"
+        />
+      </t>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.ScorecardChartConfigPanel" owl="1">
+    <div>
+      <div class="o-section o-data-series">
+        <div class="o-section-title">Key value</div>
+        <SelectionInput
+          ranges="[props.definition.keyValue]"
+          isInvalid="isKeyValueInvalid"
+          hasSingleRange="true"
+          required="true"
+          onSelectionChanged="(ranges) => this.onKeyValueRangeChanged(ranges)"
+          onSelectionConfirmed="() => this.updateKeyValueRange()"
+        />
+      </div>
+      <div class="o-section o-data-labels">
+        <div class="o-section-title">Baseline value</div>
+        <SelectionInput
+          ranges="[props.definition.baseline || '']"
+          isInvalid="isBaselineInvalid"
+          hasSingleRange="true"
+          onSelectionChanged="(ranges) => this.onBaselineRangeChanged(ranges)"
+          onSelectionConfirmed="() => this.updateBaselineRange()"
+        />
+      </div>
+      <div class="o-section o-sidepanel-error" t-if="errorMessages">
+        <div t-foreach="errorMessages" t-as="error" t-key="error">
+          <t t-esc="error"/>
+        </div>
+      </div>
+    </div>
+  </t>
+
+  <t t-name="o-spreadsheet.ScorecardChartDesignPanel" owl="1">
+    <div>
+      <div class="o-section">
+        <div class="o-section-title">Background color</div>
+        <div class="o-with-color-picker">
+          Select a color...
+          <span
+            title="Background Color"
+            t-attf-style="border-color:{{props.definition.background}}"
+            t-on-click.stop="() => this.openColorPicker('backgroundColor')">
+            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+          </span>
+          <ColorPicker
+            t-if="state.openedColorPicker === 'backgroundColor'"
+            onColorPicked="(color) => this.setColor(color, 'backgroundColor')"
+            t-key="backgroundColor"
+          />
+        </div>
+      </div>
+
+      <div class="o-section o-chart-title">
+        <div class="o-section-title">Title</div>
+        <input
+          type="text"
+          t-att-value="props.definition.title"
+          t-on-change="updateTitle"
+          class="o-input"
+          placeholder="New Chart"
+        />
+      </div>
+      <div class="o-section">
+        <div class="o-section-title">Baseline comparison to key value</div>
+        <select
+          t-att-value="props.definition.baselineMode"
+          class="o-input o-type-selector"
+          t-on-change="(ev) => this.updateBaselineMode(ev)">
+          <option value="absolute">Absolute change</option>
+          <option value="percentage">Percentage change</option>
+        </select>
+      </div>
+      <div class="o-section">
+        <div class="o-section-title">Baseline description</div>
+        <input
+          type="text"
+          t-att-value="props.definition.baselineDescr"
+          t-on-change="updateBaselineDescr"
+          class="o-input"
+        />
+      </div>
+    </div>
+    <div class="o-section">
+      <div class="o-section-title">Baseline color</div>
+      <div class="o-with-color-picker">
+        Color on value increase
+        <span
+          title="Color Up"
+          t-attf-style="border-color:{{props.definition.baselineColorUp}}"
+          t-on-click.stop="() => this.openColorPicker('baselineColorUp')">
+          <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+        </span>
+        <ColorPicker
+          t-if="state.openedColorPicker === 'baselineColorUp'"
+          onColorPicked="(color) => this.setColor(color, 'baselineColorUp')"
+          t-key="baselineColorUp"
+        />
+      </div>
+      <br/>
+      <div class="o-with-color-picker">
+        Color on value decrease
+        <span
+          title="Background Color"
+          t-attf-style="border-color:{{props.definition.baselineColorDown}}"
+          t-on-click.stop="() => this.openColorPicker('baselineColorDown')">
+          <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+        </span>
+        <ColorPicker
+          t-if="state.openedColorPicker === 'baselineColorDown'"
+          onColorPicked="(color) => this.setColor(color, 'baselineColorDown')"
+          t-key="baselineColorDown"
+        />
       </div>
     </div>
   </t>

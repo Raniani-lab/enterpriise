@@ -41,9 +41,11 @@ class TestUi(TestPointOfSaleHttpCommon):
 
         self.start_tour("/web", 'payment_terminals_tour', login="accountman")
 
-        order = env['pos.order'].search([])
-        self.assertEqual(len(order.ids), 1, "There should be only 1 order")
-        self.assertEqual(order.state, 'paid', "Validated order has payment of " + str(order.amount_paid) + " and total of " + str(order.amount_total))
+        orders = env['pos.order'].search([])
+        self.assertEqual(len(orders.ids), 2, "There should be 2 orders.")
+        # First order at index 1 because orders are sorted in descending order.
+        self.assertEqual(orders[1].state, 'paid', "The first order has payment of " + str(orders[0].amount_paid) + " and total of " + str(orders[0].amount_total))
+        self.assertAlmostEqual(orders[0].payment_ids[1].amount, 9, msg="The second order has first payment of 9.")
 
     def test_02_pos_iot_scale(self):
         env = self.env

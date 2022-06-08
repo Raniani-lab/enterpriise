@@ -111,7 +111,7 @@ var GaugeController = Chart.controllers.doughnut.extend({
     var minValue = _ref.minValue,
         data = _ref.data;
     var min = minValue || 0;
-    var max = data[data.length - 1] || 1;
+    var max = [undefined, null].includes(data[data.length - 1]) ? 1 : data[data.length - 1];
     var length = max - min;
     var percent = (value - min) / length;
     return percent;

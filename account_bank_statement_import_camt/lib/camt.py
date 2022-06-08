@@ -649,13 +649,11 @@ class CAMT:
         entry_amount = get_value_and_currency_name(entry, CAMT._amount_charges_getters, target_currency=journal_currency_name)[0]
 
         charges = get_charges(entry_details, entry)
-        if charges:
-            amount, amount_currency_name = get_value_and_currency_name(entry, CAMT._amount_charges_getters)
-        else:
-            amount, amount_currency_name = get_value_and_currency_name(entry_details, CAMT._amount_getters)
+        getters = CAMT._amount_charges_getters if charges else CAMT._amount_getters
+        amount, amount_currency_name = get_value_and_currency_name(entry_details, getters)
 
-        if not amount:
-            amount, amount_currency_name = get_value_and_currency_name(entry, CAMT._amount_getters)
+        if not amount or (charges and journal_currency and journal_currency.compare_amounts(amount + charges, entry_amount) == 0):
+            amount, amount_currency_name = get_value_and_currency_name(entry, getters)
 
         if not journal_currency or amount_currency_name == journal_currency_name:
             rate = 1.0

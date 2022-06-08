@@ -146,8 +146,10 @@ class BankRecWidget(models.Model):
         self.ensure_one()
         amls = self.env['account.move.line']
         amls_domain = self.st_line_id._get_default_amls_matching_domain()
+        mounted_payments = set(self.line_ids.filtered(lambda x: x.flag == 'new_aml').source_aml_id.payment_id)
         for batch in batch_payments:
             for payment in batch.payment_ids:
-                liquidity_lines, _counterpart_lines, _writeoff_lines = payment._seek_for_lines()
-                amls |= liquidity_lines.filtered_domain(amls_domain)
-        self._action_add_new_amls(amls)
+                if payment not in mounted_payments:
+                    liquidity_lines, _counterpart_lines, _writeoff_lines = payment._seek_for_lines()
+                    amls |= liquidity_lines.filtered_domain(amls_domain)
+        self._action_add_new_amls(amls, allow_partial=False)

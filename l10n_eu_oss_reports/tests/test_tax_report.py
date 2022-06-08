@@ -144,7 +144,7 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
             'country_id': cls.company_data['company'].account_fiscal_country_id.id,
         })
         report_line_invoice_base_line = cls._create_tax_report_line('Invoice base', cls.tax_report, sequence=1, tag_name='invoice_base_line')
-        report_line_refund_base_line = cls._create_tax_report_line('Refund base', cls.tax_report, sequence=1, tag_name='refund_base_line')
+        report_line_refund_base_line = cls._create_tax_report_line('Refund base', cls.tax_report, sequence=2, tag_name='refund_base_line')
 
         # Create an OSS tax from scratch
         oss_tag = cls.env.ref('l10n_eu_oss.tag_oss')

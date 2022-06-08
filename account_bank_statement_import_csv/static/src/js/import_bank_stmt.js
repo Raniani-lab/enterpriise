@@ -18,11 +18,6 @@ var DataImportStmt = BaseImport.DataImport.extend({
         return this._super().then(function (res) {
             self.id = self.parent_context.wizard_id;
             self.$('input[name=import_id]').val(self.id);
-            self.renderButtons();
-            var status = {
-                cp_content: {$buttons: self.$buttons},
-            };
-            self.updateControlPanel(status);
             self['loaded_file']();
         });
     },

@@ -3,6 +3,7 @@ odoo.define('stock_barcode.BarcodeKanbanRenderer', function (require) {
 
 var StockBarcodeKanbanRecord = require('stock_barcode.BarcodeKanbanRecord');
 var {bus, qweb} = require('web.core');
+var Session = require('web.session');
 
 var KanbanRenderer = require('web.KanbanRenderer');
 
@@ -14,6 +15,11 @@ var StockBarcodeListKanbanRenderer = KanbanRenderer.extend({
     init: function (parent, state, params) {
         this._super(...arguments);
         this.model = state.model;
+    },
+
+    willStart: async function () {
+        await this._super(...arguments);
+        this.group_tracking_lot = await Session.user_has_group('stock.group_tracking_lot');
     },
 
     /**
@@ -40,6 +46,7 @@ var StockBarcodeListKanbanRenderer = KanbanRenderer.extend({
         return this._super(...arguments).then(() => {
             const scanProductTip = qweb.render('scan_product_tip', {
                 display_protip: ['stock.picking'].includes(this.model),
+                group_tracking_lot: this.group_tracking_lot,
             });
             this.$el.prepend(scanProductTip);
         });

@@ -53,6 +53,7 @@ const MainMenu = AbstractAction.extend({
     willStart: async function () {
         await this._super(...arguments);
         this.group_stock_multi_location = await Session.user_has_group('stock.group_stock_multi_locations');
+        this.group_tracking_lot = await Session.user_has_group('stock.group_tracking_lot');
     },
 
     start: function() {

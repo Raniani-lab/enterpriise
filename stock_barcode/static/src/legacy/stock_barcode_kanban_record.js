@@ -46,7 +46,7 @@ var StockBarcodeKanbanController = KanbanController.extend({
         const {barcode} = ev.data;
         this._rpc({
             model: this.modelName,
-            method: 'filter_on_product',
+            method: 'filter_on_barcode',
             kwargs: {
                 barcode,
                 context: this.initialState.context,

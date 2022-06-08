@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models
+from odoo import models, api
 
 
 class QuantPackage(models.Model):
     _inherit = 'stock.quant.package'
     _barcode_field = 'name'
+
+    @api.model
+    def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+        args = self.env.company.nomenclature_id._preprocess_gs1_search_args(args, ['package'], 'name')
+        return super()._search(args, offset=offset, limit=limit, order=order, count=count, access_rights_uid=access_rights_uid)
 
     @api.model
     def action_create_from_barcode(self, vals_list):

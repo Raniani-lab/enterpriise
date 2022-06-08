@@ -174,33 +174,60 @@ class StockPicking(models.Model):
         ]
 
     @api.model
-    def filter_on_product(self, barcode):
-        """ Search for ready pickings for the scanned product. If at least one
-        picking is found, returns the picking kanban view filtered on this product.
+    def filter_on_barcode(self, barcode):
+        """ Searches ready pickings for the scanned product/package.
         """
-        product = self.env['product.product'].search_read([('barcode', '=', barcode)], ['id'], limit=1)
-        if product:
-            product_id = product[0]['id']
-            picking_type = self.env['stock.picking.type'].search_read(
-                [('id', '=', self.env.context.get('active_id'))],
-                ['name'],
-            )[0]
-            if not self.search_count([
-                ('product_id', '=', product_id),
-                ('picking_type_id', '=', picking_type['id']),
-                ('state', 'not in', ['cancel', 'done', 'draft']),
-            ]):
-                return {'warning': {
-                    'title': _("No %s ready for this product", picking_type['name']),
-                }}
-            action = self.env['ir.actions.actions']._for_xml_id('stock_barcode.stock_picking_action_kanban')
-            action['context'] = dict(self.env.context)
-            action['context']['search_default_product_id'] = product_id
-            return {'action': action}
-        return {'warning': {
-            'title': _("No product found for barcode %s", barcode),
-            'message': _("Scan a product to filter the transfers."),
-        }}
+        barcode_type = None
+        nomenclature = self.env.company.nomenclature_id
+        if nomenclature.is_gs1_nomenclature:
+            parsed_results = nomenclature.parse_barcode(barcode)
+            if parsed_results:
+                # filter with the last feasible rule
+                for result in parsed_results[::-1]:
+                    if result['rule'].type in ('product', 'package'):
+                        barcode_type = result['rule'].type
+                        break
+
+        picking_type = self.env['stock.picking.type'].browse(self.env.context.get('active_id'))
+        base_domain = [
+            ('picking_type_id', '=', picking_type.id),
+            ('state', 'not in', ['cancel', 'done', 'draft'])
+        ]
+
+        picking_nums = 0
+        additional_context = {}
+        if barcode_type == 'product' or not barcode_type:
+            product = self.env['product.product'].search_read([('barcode', '=', barcode)], ['id'], limit=1)
+            if product:
+                product_id = product[0]['id']
+                picking_nums = self.search_count(base_domain + [('product_id', '=', product_id)])
+                additional_context = {'search_default_product_id': product_id}
+        if self.env.user.has_group('stock.group_tracking_lot') and (barcode_type == 'package' or (not barcode_type and not picking_nums)):
+            package = self.env['stock.quant.package'].search_read([('name', '=', barcode)], ['id'], limit=1)
+            if package:
+                package_id = package[0]['id']
+                pack_domain = ['|', ('move_line_ids.package_id', '=', package_id), ('move_line_ids.result_package_id', '=', package_id)]
+                picking_nums = self.search_count(base_domain + pack_domain)
+                additional_context = {'search_default_move_line_ids': barcode}
+
+        if not picking_nums:
+            if barcode_type:
+                return {
+                    'warning': {
+                        'title': _("No %(picking_type)s ready for this %(barcode_type)s", picking_type=picking_type.name, barcode_type=barcode_type),
+                    }
+                }
+            return {
+                'warning': {
+                    'title': _('No product or package found for barcode %s', barcode),
+                    'message': _('Scan a product or a package to filter the transfers.'),
+                }
+            }
+
+        action = self.env['ir.actions.actions']._for_xml_id('stock_barcode.stock_picking_action_kanban')
+        action['context'] = dict(self.env.context)
+        action['context'].update(additional_context)
+        return {'action': action}
 
 
 class StockPickingType(models.Model):

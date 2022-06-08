@@ -18,22 +18,42 @@ class StockBarcodeController(http.Controller):
         """ Receive a barcode scanned from the main menu and return the appropriate
             action (open an existing / new picking) or warning.
         """
-        ret_open_picking = self._try_open_picking(barcode)
-        if ret_open_picking:
-            return ret_open_picking
+        barcode_type = None
+        nomenclature = request.env.company.nomenclature_id
+        if nomenclature.is_gs1_nomenclature:
+            parsed_results = nomenclature.parse_barcode(barcode)
+            if parsed_results:
+                # search with the last feasible rule
+                for result in parsed_results[::-1]:
+                    if result['rule'].type in ['product', 'package', 'location', 'dest_location']:
+                        barcode_type = result['rule'].type
+                        break
 
-        ret_open_picking_type = self._try_open_picking_type(barcode)
-        if ret_open_picking_type:
-            return ret_open_picking_type
+        if not barcode_type:
+            ret_open_picking = self._try_open_picking(barcode)
+            if ret_open_picking:
+                return ret_open_picking
 
-        if request.env.user.has_group('stock.group_stock_multi_locations'):
+            ret_open_picking_type = self._try_open_picking_type(barcode)
+            if ret_open_picking_type:
+                return ret_open_picking_type
+
+        if request.env.user.has_group('stock.group_stock_multi_locations') and \
+           (not barcode_type or barcode_type in ['location', 'dest_location']):
             ret_new_internal_picking = self._try_new_internal_picking(barcode)
             if ret_new_internal_picking:
                 return ret_new_internal_picking
 
-        ret_open_product_location = self._try_open_product_location(barcode)
-        if ret_open_product_location:
-            return ret_open_product_location
+        if not barcode_type or barcode_type == 'product':
+            ret_open_product_location = self._try_open_product_location(barcode)
+            if ret_open_product_location:
+                return ret_open_product_location
+
+        if request.env.user.has_group('stock.group_tracking_lot') and \
+           (not barcode_type or barcode_type == 'package'):
+            ret_open_package = self._try_open_package(barcode)
+            if ret_open_package:
+                return ret_open_package
 
         if request.env.user.has_group('stock.group_stock_multi_locations'):
             return {'warning': _('No picking or location or product corresponding to barcode %(barcode)s') % {'barcode': barcode}}
@@ -197,6 +217,24 @@ class StockBarcodeController(http.Controller):
         if corresponding_picking:
             action = corresponding_picking.action_open_picking_client_action()
             return {'action': action}
+        return False
+
+    def _try_open_package(self, barcode):
+        """ If barcode represents a package, open it.
+        """
+        package = request.env['stock.quant.package'].search([('name', '=', barcode)], limit=1)
+        if package:
+            view_id = request.env.ref('stock.view_quant_package_form').id
+            return {
+                'action': {
+                    'name': 'Open package',
+                    'res_model': 'stock.quant.package',
+                    'views': [(view_id, 'form')],
+                    'type': 'ir.actions.act_window',
+                    'res_id': package.id,
+                    'context': {'active_id': package.id}
+                }
+            }
         return False
 
     def _try_new_internal_picking(self, barcode):

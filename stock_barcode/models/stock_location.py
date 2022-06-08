@@ -9,5 +9,10 @@ class Location(models.Model):
     _barcode_field = 'barcode'
 
     @api.model
+    def _search(self, args, offset=0, limit=None, order=None, count=False, access_rights_uid=None):
+        args = self.env.company.nomenclature_id._preprocess_gs1_search_args(args, ['location', 'location_dest'])
+        return super()._search(args, offset=offset, limit=limit, order=order, count=count, access_rights_uid=access_rights_uid)
+
+    @api.model
     def _get_fields_stock_barcode(self):
         return ['display_name', 'barcode', 'parent_path']

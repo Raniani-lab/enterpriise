@@ -31,6 +31,7 @@
                     <li t-if="widget.group_stock_multi_location">Scan a <b>location</b> to create a new transfer from this location.</li>
                     <li>Scan a <b>document</b> to open it.</li>
                     <li>Scan a <b>product</b> to show its location and quantity.</li>
+                    <li t-if="widget.group_tracking_lot">Scan a <b>package</b> to know its content.</li>
                 </ul>
 
                 <hr class="mb-4 d-none d-sm-block"/>

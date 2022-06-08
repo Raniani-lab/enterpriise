@@ -163,6 +163,10 @@
         </function>
 
         <function model="mrp.production" name="button_mark_done" eval="[ref('purchase_mrp_workorder_quality.mrp_production')]"/>
+        <function model="product.template" name="write">
+            <value eval="[ref('mrp_workorder.product_template_stool_top'), ref('mrp_workorder.product_template_stool_foot')]"/>
+            <value eval="{'route_ids': [(4,ref('purchase_stock.route_warehouse0_buy'))]}"/>
+        </function>
 
     </data>
 </odoo>

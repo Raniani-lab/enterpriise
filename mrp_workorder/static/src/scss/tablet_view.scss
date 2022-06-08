@@ -136,6 +136,7 @@
 
         // Step's info block
         .o_workorder_data {
+            background-color: $o-wo-tablet-bg;
             padding: $o-wo-tablet-padding*0.5 $o-wo-tablet-padding 0;
             font-size: 0.9em;
 

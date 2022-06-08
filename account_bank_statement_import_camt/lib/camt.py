@@ -675,13 +675,12 @@ class CAMT:
         if total_amount and total_amount_currency == journal_currency_name:
             if total_amount == entry_amount:
                 return sign * amount * rate
-        else:
+        elif journal_currency:
             total_amount = total_amount or amount
-            if total_amount * rate == entry_amount:
-                return sign * amount * rate
-            elif journal_currency:
-                if journal_currency.compare_amounts(total_amount / rate, entry_amount) == 0:
-                    return journal_currency.round(sign * amount / rate)
+            if journal_currency.compare_amounts(total_amount * rate, entry_amount) == 0:
+                return journal_currency.round(sign * amount * rate)
+            elif journal_currency.compare_amounts(total_amount / rate, entry_amount) == 0:
+                return journal_currency.round(sign * amount / rate)
         return sign * amount
 
     @staticmethod

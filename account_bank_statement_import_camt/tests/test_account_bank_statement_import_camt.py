@@ -128,6 +128,17 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
         self._test_minimal_camt_file_import('camt_053_minimal_and_multicurrency_05.xml', usd_currency)
 
+    def test_minimal_and_multicurrency_camt_file_import_06(self):
+        """
+        This test aims at importing a file with amounts expressed in EUR and USD.
+        The company's currency is USD.
+        This is the same test than test_minimal_and_multicurrency_camt_file_import_02,
+        except that the exchange rate is leading to a rounding difference.
+        """
+        usd_currency = self.env.ref('base.USD')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        self._test_minimal_camt_file_import('camt_053_minimal_and_multicurrency_06.xml', usd_currency)
+
     def test_several_minimal_stmt_different_currency(self):
         """
         Two different journals with the same bank account. The first one is in USD, the second one in EUR

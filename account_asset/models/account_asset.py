@@ -546,6 +546,7 @@ class AccountAsset(models.Model):
             'name': _('Journal Entries'),
             'view_mode': 'tree,form',
             'res_model': 'account.move',
+            'search_view_id': [self.env.ref('account.view_account_move_filter').id, 'search'],
             'views': [(self.env.ref('account.view_move_tree').id, 'tree'), (False, 'form')],
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', self.depreciation_move_ids.ids)],

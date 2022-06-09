@@ -27,6 +27,7 @@
                         </div>
                         <div attrs="{'invisible': [('use_documents', '=', False)]}" class="pt-4">
                             <label for="documents_folder_id"/>
+                            <field name="company_id" invisible="1"/>
                             <field name="documents_folder_id" attrs="{'required': [('use_documents', '=', True), ('id', '!=', False)]}" context="{'documents_project': True, 'default_company_id': company_id}"/>
                             <br/>
                             <span attrs="{'invisible': [('documents_folder_id', '=', False)]}">

@@ -15,6 +15,7 @@
                 <field name="recurring_rule_boundary" invisible="1"/>
                 <field name="archived_product_count" invisible="1"/>
                 <field name="payment_mode" invisible="1"/>
+                <field name="payment_exception" invisible="1"/>
             </xpath>
             <button id="create_invoice" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), ('invoice_status', '!=', 'to invoice')]}</attribute>

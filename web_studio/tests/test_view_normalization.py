@@ -34,6 +34,7 @@ class TestViewNormalization(TransactionCase):
                     <field name="image_1920" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;image_128&quot;, &quot;size&quot;: [90, 90]}"/>
                     <div class="oe_title">
                         <field name="is_company" invisible="1"/>
+                        <field name="type" invisible="1"/>
                         <field name="company_type" widget="radio" class="oe_edit_only" on_change="on_change_company_type(company_type)" options="{'horizontal': true}"/>
                         <h1>
                             <field name="name" default_focus="1" placeholder="Name" attrs="{'required' : [('type', '=', 'contact')]}"/>

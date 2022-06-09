@@ -530,6 +530,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <tree string="Tickets" multi_edit="1" sample="1" default_order="priority desc, sla_deadline, id">
+                <field name="company_id" invisible="1"/>
                 <field name="use_sla" invisible="1"/>
                 <field name="ticket_ref" string="ID" readonly="1" optional="show"/>
                 <field name="priority" optional="show" widget="priority"/>
@@ -679,6 +680,7 @@
                     <field name="rating_count" invisible="1"/>
                     <field name="use_rating" invisible="1"/>
                     <field name="rating_avg" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_open_ratings" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_count', '=', 0)]}" groups="helpdesk.group_use_rating">
                             <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_avg', '&lt;', 3.66)]}" title="Satisfied"/>

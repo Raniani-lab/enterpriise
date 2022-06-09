@@ -590,6 +590,7 @@
         <field name="model">documents.workflow.rule</field>
         <field name="arch" type="xml">
             <form>
+                <field name="condition_type" invisible="1"/>
                 <sheet>
                     <div class="oe_title">
                       <label for="name" string="Action Name"/>

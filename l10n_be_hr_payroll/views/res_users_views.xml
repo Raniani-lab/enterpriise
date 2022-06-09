@@ -27,6 +27,7 @@
                 <field name="disabled_children_bool" attrs="{'readonly': [('can_edit', '=', False)]}"/>
                 <field name="disabled_children_number" attrs="{'invisible':[('disabled_children_bool','!=',True)], 'readonly': [('can_edit', '=', False)]}" colspan="1" help="number of dependent children declared as disabled"/>
                 <field name="dependent_children" invisible="1"/>
+                <field name="other_dependent_people" invisible="1"/>
                 <field name="other_dependent_people" groups="hr.group_hr_user" attrs="{'readonly': [('can_edit', '=', False)]}"/>
                 <field name="other_senior_dependent" attrs="{'invisible':[('other_dependent_people','!=',True)], 'readonly': [('can_edit', '=', False)]}"/>
                 <field name="other_disabled_senior_dependent" attrs="{'invisible':[('other_dependent_people','!=',True)], 'readonly': [('can_edit', '=', False)]}"/>

@@ -6,6 +6,7 @@
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
             <form string="Asset" js_class="asset_form">
+                <field name="company_id" invisible="1"/>
                 <field name="account_type" invisible="1"/>
                 <field name="display_account_asset_id" invisible="1"/>
                 <field name="display_model_choice" invisible="1"/>

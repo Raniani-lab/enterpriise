@@ -16,6 +16,7 @@
                 <field name="is_workorder_step" invisible="1"/>
             </field>
             <field name="user_id" position="after">
+                <field name="operation_id" invisible="1"/>
                 <field name="worksheet" widget="radio" attrs="{'invisible': ['|', ('is_workorder_step', '=', False), ('operation_id', '=', False)]}"/>
                 <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('is_workorder_step', '=', False), ('operation_id', '=', False), ('worksheet', '!=', 'scroll')]}"/>
             </field>

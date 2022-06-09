@@ -6,6 +6,7 @@
         <field name="inherit_id" ref="l10n_be_hr_payroll.hr_contract_view_form"/>
         <field name="arch" type="xml">
             <field name="transport_mode_car" position="replace">
+                <field name="transport_mode_car" invisible="1"/>
                 <div name="car_id_div" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"
                     colspan="2" class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager">
@@ -15,6 +16,7 @@
                 </div>
             </field>
             <xpath expr="//label[@for='fuel_card']" position="before">
+                <field name="new_car" invisible="1"/>
                 <div name="new_car_model_id_div"
                     colspan="2" class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager"

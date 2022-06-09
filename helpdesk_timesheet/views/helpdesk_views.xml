@@ -37,7 +37,6 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
         <field name="arch" type="xml">
                 <button name="assign_ticket_to_self" position="after">
-                    <field name="company_id" invisible="1"/>
                     <field name="display_timer" invisible="1"/>
                     <field name="display_timesheet_timer" invisible="1"/>
                     <field name="timer_pause" invisible="1" />

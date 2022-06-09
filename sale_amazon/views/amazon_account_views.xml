@@ -33,6 +33,7 @@
                             groups="base.group_no_one"/>
                 </header>
                 <sheet>
+                    <field name="company_id" invisible="1"/>
                     <field name="available_marketplace_ids" invisible="1"/>
                     <field name="is_follow_up_displayed" invisible="1"/>
                     <div class="oe_button_box" name="button_box">

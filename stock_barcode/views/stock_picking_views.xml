@@ -37,6 +37,7 @@
         <field name="arch" type="xml">
             <form string="Picking Details">
                 <field name="show_allocation" invisible="1"/>
+                <field name="company_id" invisible="1"/>
                 <group>
                     <button name="action_view_reception_report" string="Allocation"
                         context="{'default_picking_ids': [id]}"

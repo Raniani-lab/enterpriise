@@ -16,6 +16,7 @@
                     </header>
 
                     <sheet>
+                        <field name="company_id" invisible="1"/>
                         <div class="oe_button_box" name="sdd_mandate_form_button_box">
                             <button type="object" name="action_view_payments_to_collect" icon="fa-usd" class="oe_stat_button">
                                 <span><field name="payments_to_collect_nber" widget="statinfo" string="Payments to Collect" help="Payments generated for this mandate that have not yet been collected."/></span>

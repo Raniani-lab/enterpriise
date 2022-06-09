@@ -9,6 +9,8 @@
                 <div class="row mt-5 mb-4">
                     <field name="quantity" invisible="1"/>
                     <field name="product_uom_id" invisible="1"/>
+                    <!-- .test_inventory_adjustment -->
+                    <field name="location_id" invisible="1"/>
                     <div class="col-12 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-tags me-3" title="Product"/>
                         <field name="product_id" placeholder="Product"

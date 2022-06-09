@@ -16,6 +16,8 @@
                 <field name="product_uom_category_id" invisible="1" />
                 <field name="picking_code" invisible="1"/>
                 <field name="picking_id" invisible="1"/>
+                <field name="location_id" invisible="1"/>
+                <field name="location_dest_id" invisible="1"/>
                 <div class="col-12 d-flex align-items-baseline">
                     <i class="fa fa-fw fa-lg fa-tags me-3" title="Product"/>
                     <field name="product_id" placeholder="Product"

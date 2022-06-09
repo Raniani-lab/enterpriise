@@ -16,6 +16,7 @@
             <form string="vehicle Form">
                 <sheet>
                     <group>
+                        <field name="company_id" invisible="1"/>
                         <field name="name"/>
                         <field name="license_plate"/>
                         <field name="operator_id"/>

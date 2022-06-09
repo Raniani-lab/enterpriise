@@ -6,6 +6,7 @@
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <tree string="Shift List" multi_edit="1" sample="1" editable="top">
+                <field name="company_id" invisible="1"/>
                 <field name="resource_id" groups="planning.group_planning_user" widget="many2one_avatar_resource" optional="show"
                     attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'show_job_title': True}"/>
                 <field name="resource_type" invisible="1"/>
@@ -44,6 +45,7 @@
                         attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="q"/>
                     <field name="state" widget="statusbar" groups="planning.group_planning_manager"/>
                 </header>
+                <field name="company_id" invisible="1"/>
                 <field name="is_past" invisible="1"/>
                 <field name="is_unassign_deadline_passed" invisible="1"/>
                 <field name="work_email" invisible="1" />

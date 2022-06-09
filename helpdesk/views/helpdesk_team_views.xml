@@ -78,6 +78,7 @@
                         <h1 id="name"><field name="name" placeholder="e.g. Customer Care"/></h1>
                     </div>
                     <field name="active" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
                     <field name="description" placeholder="Describe your team to your colleagues and customers..."/>
                     <group>
                         <group>

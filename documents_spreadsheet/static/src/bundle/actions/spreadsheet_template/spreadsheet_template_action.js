@@ -2,9 +2,9 @@
 import { registry } from "@web/core/registry";
 import { _t } from "web.core";
 
-import SpreadsheetComponent from "documents_spreadsheet.SpreadsheetComponent";
+import SpreadsheetComponent from "@documents_spreadsheet/bundle/actions/spreadsheet_component";
 import { SpreadsheetControlPanel } from "../control_panel/spreadsheet_control_panel";
-import { base64ToJson, jsonToBase64 } from "../../o_spreadsheet/helpers";
+import { base64ToJson, jsonToBase64 } from "@spreadsheet/helpers/helpers";
 import { useService } from "@web/core/utils/hooks";
 import { AbstractSpreadsheetAction } from "../abstract_spreadsheet_action";
 

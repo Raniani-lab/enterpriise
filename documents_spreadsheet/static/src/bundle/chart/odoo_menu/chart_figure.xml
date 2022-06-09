@@ -1,9 +1,0 @@
-<odoo>
-    <div t-name="documents_spreadsheet.ChartFigure" t-inherit="o-spreadsheet-ChartFigure" t-inherit-mode="extension" owl="1">
-        <xpath expr="//div[hasclass('o-chart-menu-item')]" position="before">
-            <div t-if="hasOdooMenu" class="o-chart-menu-item o-chart-external-link" t-on-click="navigateToOdooMenu">
-                <span class="fa fa-external-link" />
-            </div>
-        </xpath>
-    </div>
-</odoo>

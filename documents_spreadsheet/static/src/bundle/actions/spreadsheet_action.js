@@ -10,8 +10,8 @@ import SpreadsheetComponent from "./spreadsheet_component";
 import { SpreadsheetControlPanel } from "./control_panel/spreadsheet_control_panel";
 import { SpreadsheetName } from "./control_panel/spreadsheet_name";
 
-import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants";
-import  spreadsheet  from "../o_spreadsheet/o_spreadsheet_extended";
+import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 const { Component, useState } = owl;
 const { createEmptyWorkbookData } = spreadsheet.helpers;

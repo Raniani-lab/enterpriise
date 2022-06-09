@@ -1,0 +1,462 @@
+/** @odoo-module */
+
+import { getCell, getCellContent, getCellValue } from "@spreadsheet/../tests/utils/getters";
+import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
+import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
+import { setCellContent } from "@spreadsheet/../tests/utils/commands";
+import { createModelWithDataSource } from "@spreadsheet/../tests/utils/model";
+import { nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { session } from "@web/session";
+
+QUnit.module("spreadsheet > pivot plugin", {}, () => {
+    QUnit.test("can select a Pivot from cell formula", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot({
+            arch: /* xml */ `
+                <pivot>
+                    <field name="product_id" type="col"/>
+                    <field name="foo" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+        });
+        const sheetId = model.getters.getActiveSheetId();
+        const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+        model.dispatch("SELECT_PIVOT", { pivotId });
+        const selectedPivotId = model.getters.getSelectedPivotId();
+        assert.strictEqual(selectedPivotId, "1");
+    });
+
+    QUnit.test(
+        "can select a Pivot from cell formula with '-' before the formula",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /* xml */ `
+                <pivot>
+                    <field name="product_id" type="col"/>
+                    <field name="foo" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            });
+            model.dispatch("SET_VALUE", {
+                xc: "C3",
+                text: `=-PIVOT("1","probability","bar","false","foo","2")`,
+            });
+            const sheetId = model.getters.getActiveSheetId();
+            const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+            model.dispatch("SELECT_PIVOT", { pivotId });
+            const selectedPivotId = model.getters.getSelectedPivotId();
+            assert.strictEqual(selectedPivotId, "1");
+        }
+    );
+
+    QUnit.test(
+        "can select a Pivot from cell formula with other numerical values",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /* xml */ `
+                <pivot>
+                    <field name="product_id" type="col"/>
+                    <field name="foo" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            });
+            model.dispatch("SET_VALUE", {
+                xc: "C3",
+                text: `=3*PIVOT("1","probability","bar","false","foo","2")+2`,
+            });
+            const sheetId = model.getters.getActiveSheetId();
+            const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+            model.dispatch("SELECT_PIVOT", { pivotId });
+            const selectedPivotId = model.getters.getSelectedPivotId();
+            assert.strictEqual(selectedPivotId, "1");
+        }
+    );
+
+    QUnit.test(
+        "can select a Pivot from cell formula where pivot is in a function call",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /* xml */ `
+            <pivot>
+                <field name="product_id" type="col"/>
+                <field name="foo" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+            });
+            model.dispatch("SET_VALUE", {
+                xc: "C3",
+                text: `=SUM(PIVOT("1","probability","bar","false","foo","2"),PIVOT("1","probability","bar","false","foo","2"))`,
+            });
+            const sheetId = model.getters.getActiveSheetId();
+            const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+            model.dispatch("SELECT_PIVOT", { pivotId });
+            const selectedPivotId = model.getters.getSelectedPivotId();
+            assert.strictEqual(selectedPivotId, "1");
+        }
+    );
+
+    QUnit.test(
+        "can select a Pivot from cell formula where the id is a reference",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot();
+            setCellContent(model, "C3", `=PIVOT(G10,"probability","bar","false","foo","2")+2`);
+            setCellContent(model, "G10", "1");
+            const sheetId = model.getters.getActiveSheetId();
+            const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+            model.dispatch("SELECT_PIVOT", { pivotId });
+            const selectedPivotId = model.getters.getSelectedPivotId();
+            assert.strictEqual(selectedPivotId, "1");
+        }
+    );
+
+    QUnit.test(
+        "can select a Pivot from cell formula (Mix of test scenarios above)",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /*xml*/ `
+                    <pivot>
+                        <field name="product_id" type="col"/>
+                        <field name="foo" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+            });
+            model.dispatch("SET_VALUE", {
+                xc: "C3",
+                text: `=3*SUM(PIVOT("1","probability","bar","false","foo","2"),PIVOT("1","probability","bar","false","foo","2"))+2*PIVOT("1","probability","bar","false","foo","2")`,
+            });
+            const sheetId = model.getters.getActiveSheetId();
+            const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
+            model.dispatch("SELECT_PIVOT", { pivotId });
+            const selectedPivotId = model.getters.getSelectedPivotId();
+            assert.strictEqual(selectedPivotId, "1");
+        }
+    );
+
+    QUnit.test("Can remove a pivot with undo after editing a cell", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot();
+        assert.ok(getCellContent(model, "B1").startsWith("=PIVOT.HEADER"));
+        setCellContent(model, "G10", "should be undoable");
+        model.dispatch("REQUEST_UNDO");
+        assert.equal(getCellContent(model, "G10"), "");
+        // 2 REQUEST_UNDO because of the AUTORESIZE feature
+        model.dispatch("REQUEST_UNDO");
+        model.dispatch("REQUEST_UNDO");
+        assert.equal(getCellContent(model, "B1"), "");
+        assert.equal(model.getters.getPivotIds().length, 0);
+    });
+
+    QUnit.test("rename pivot with empty name is refused", async (assert) => {
+        const { model } = await createSpreadsheetWithPivot();
+        const result = model.dispatch("RENAME_ODOO_PIVOT", {
+            pivotId: "1",
+            name: "",
+        });
+        assert.deepEqual(result.reasons, [CommandResult.EmptyName]);
+    });
+
+    QUnit.test("rename pivot with incorrect id is refused", async (assert) => {
+        const { model } = await createSpreadsheetWithPivot();
+        const result = model.dispatch("RENAME_ODOO_PIVOT", {
+            pivotId: "invalid",
+            name: "name",
+        });
+        assert.deepEqual(result.reasons, [CommandResult.PivotIdNotFound]);
+    });
+
+    QUnit.test("Undo/Redo for RENAME_ODOO_PIVOT", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot();
+        assert.equal(model.getters.getPivotName("1"), "Partner Pivot");
+        model.dispatch("RENAME_ODOO_PIVOT", { pivotId: "1", name: "test" });
+        assert.equal(model.getters.getPivotName("1"), "test");
+        model.dispatch("REQUEST_UNDO");
+        assert.equal(model.getters.getPivotName("1"), "Partner Pivot");
+        model.dispatch("REQUEST_REDO");
+        assert.equal(model.getters.getPivotName("1"), "test");
+    });
+
+    QUnit.test("Can delete pivot", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot();
+        model.dispatch("REMOVE_PIVOT", { pivotId: "1" });
+        assert.strictEqual(model.getters.getPivotIds().length, 0);
+        const B4 = getCell(model, "B4");
+        assert.equal(B4.evaluated.error, `There is no pivot with id "1"`);
+        assert.equal(B4.evaluated.value, `#ERROR`);
+    });
+
+    QUnit.test("Can undo/redo a delete pivot", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot();
+        const value = getCell(model, "B4").evaluated.value;
+        model.dispatch("REMOVE_PIVOT", { pivotId: "1" });
+        model.dispatch("REQUEST_UNDO");
+        assert.strictEqual(model.getters.getPivotIds().length, 1);
+        let B4 = getCell(model, "B4");
+        assert.equal(B4.evaluated.error, undefined);
+        assert.equal(B4.evaluated.value, value);
+        model.dispatch("REQUEST_REDO");
+        assert.strictEqual(model.getters.getPivotIds().length, 0);
+        B4 = getCell(model, "B4");
+        assert.equal(B4.evaluated.error, `There is no pivot with id "1"`);
+        assert.equal(B4.evaluated.value, `#ERROR`);
+    });
+
+    QUnit.test("Format header displays an error for non-existing field", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot();
+        setCellContent(model, "G10", `=PIVOT.HEADER("1", "measure", "non-existing")`);
+        setCellContent(model, "G11", `=PIVOT.HEADER("1", "non-existing", "bla")`);
+        await nextTick();
+        assert.equal(getCellValue(model, "G10"), "#ERROR");
+        assert.equal(getCellValue(model, "G11"), "#ERROR");
+        assert.equal(getCell(model, "G10").evaluated.error, "Field non-existing does not exist");
+        assert.equal(getCell(model, "G11").evaluated.error, "Field non-existing does not exist");
+    });
+
+    QUnit.test(
+        "user context is combined with pivot context to fetch data",
+        async function (assert) {
+            const context = {
+                allowed_company_ids: [15],
+                default_stage_id: 5,
+                search_default_stage_id: 5,
+                tz: "bx",
+                lang: "FR",
+                uid: 4,
+            };
+            const testSession = {
+                uid: 4,
+                user_companies: {
+                    allowed_companies: {
+                        15: { id: 15, name: "Hermit" },
+                        16: { id: 16, name: "Craft" },
+                    },
+                    current_company: 15,
+                },
+                user_context: context,
+            };
+            const spreadsheetData = {
+                sheets: [
+                    {
+                        id: "sheet1",
+                        cells: {
+                            A1: { content: `=PIVOT(1, "probability")` },
+                        },
+                    },
+                ],
+                pivots: {
+                    1: {
+                        id: 1,
+                        colGroupBys: ["foo"],
+                        domain: [],
+                        measures: [{ field: "probability", operator: "avg" }],
+                        model: "partner",
+                        rowGroupBys: ["bar"],
+                        context: {
+                            allowed_company_ids: [16],
+                            default_stage_id: 9,
+                            search_default_stage_id: 90,
+                            tz: "nz",
+                            lang: "EN",
+                            uid: 40,
+                        },
+                    },
+                },
+            };
+            const expectedFetchContext = {
+                allowed_company_ids: [15],
+                default_stage_id: 9,
+                search_default_stage_id: 90,
+                tz: "bx",
+                lang: "FR",
+                uid: 4,
+            };
+            patchWithCleanup(session, testSession);
+            await createModelWithDataSource({
+                spreadsheetData,
+                mockRPC: function (route, { model, method, kwargs }) {
+                    if (model !== "partner") {
+                        return;
+                    }
+                    switch (method) {
+                        case "read_group":
+                            assert.step("read_group");
+                            assert.deepEqual(kwargs.context, expectedFetchContext, "read_group");
+                            break;
+                    }
+                },
+            });
+            assert.verifySteps(["read_group", "read_group", "read_group", "read_group"]);
+        }
+    );
+
+    QUnit.test("fetch metadata only once per model", async function (assert) {
+        const spreadsheetData = {
+            sheets: [
+                {
+                    id: "sheet1",
+                    cells: {
+                        A1: { content: `=PIVOT(1, "probability")` },
+                        A2: { content: `=PIVOT(2, "probability")` },
+                    },
+                },
+            ],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                    context: {},
+                },
+                2: {
+                    id: 2,
+                    colGroupBys: ["bar"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "max" }],
+                    model: "partner",
+                    rowGroupBys: ["foo"],
+                    context: {},
+                },
+            },
+        };
+        await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (model === "partner" && method === "fields_get") {
+                    assert.step(`${model}/${method}`);
+                } else if (model === "ir.model" && method === "search_read") {
+                    assert.step(`${model}/${method}`);
+                }
+            },
+        });
+        assert.verifySteps(["partner/fields_get", "ir.model/search_read"]);
+    });
+
+    QUnit.test("don't fetch pivot data if no formula use it", async function (assert) {
+        const spreadsheetData = {
+            sheets: [
+                {
+                    id: "sheet1",
+                },
+                {
+                    id: "sheet2",
+                    cells: {
+                        A1: { content: `=PIVOT("1", "probability")` },
+                    },
+                },
+            ],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                },
+            },
+        };
+        const model = await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: function (route, { model, method, kwargs }) {
+                if (!["partner", "ir.model"].includes(model)) {
+                    return;
+                }
+                assert.step(`${model}/${method}`);
+            },
+        });
+        assert.verifySteps([]);
+        model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: "sheet1", sheetIdTo: "sheet2" });
+        assert.equal(getCellValue(model, "A1"), "Loading...");
+        await nextTick();
+        assert.verifySteps([
+            "partner/fields_get",
+            "ir.model/search_read",
+            "partner/read_group",
+            "partner/read_group",
+            "partner/read_group",
+            "partner/read_group",
+        ]);
+        assert.equal(getCellValue(model, "A1"), 131);
+    });
+
+    QUnit.test("relational PIVOT.HEADER with missing id", async function (assert) {
+        assert.expect(1);
+
+        const { model } = await createSpreadsheetWithPivot({
+            arch: /*xml*/ `
+                <pivot>
+                    <field name="product_id" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+        });
+        const sheetId = model.getters.getActiveSheetId();
+        model.dispatch("UPDATE_CELL", {
+            col: 4,
+            row: 9,
+            content: `=PIVOT.HEADER("1", "product_id", "1111111")`,
+            sheetId,
+        });
+        await nextTick();
+        assert.equal(
+            getCell(model, "E10").evaluated.error,
+            "Unable to fetch the label of 1111111 of model product"
+        );
+    });
+
+    QUnit.test("relational PIVOT.HEADER with undefined id", async function (assert) {
+        assert.expect(2);
+
+        const { model } = await createSpreadsheetWithPivot({
+            arch: /*xml*/ `
+                <pivot>
+                    <field name="foo" type="col"/>
+                    <field name="product_id" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+        });
+        setCellContent(model, "F10", `=PIVOT.HEADER("1", "product_id", A25)`);
+        assert.equal(getCell(model, "A25"), null, "the cell should be empty");
+        await nextTick();
+        assert.equal(getCellValue(model, "F10"), "(Undefined)");
+    });
+
+    QUnit.test("Verify pivot measures are correctly computed :)", async function (assert) {
+        assert.expect(4);
+
+        const { model } = await createSpreadsheetWithPivot();
+        assert.equal(getCellValue(model, "B4"), 11);
+        assert.equal(getCellValue(model, "C3"), 15);
+        assert.equal(getCellValue(model, "D4"), 10);
+        assert.equal(getCellValue(model, "E4"), 95);
+    });
+
+    QUnit.test("can import/export sorted pivot", async (assert) => {
+        const spreadsheetData = {
+            pivots: {
+                1: {
+                    id: "1",
+                    colGroupBys: ["foo"],
+                    domain: [],
+                    measures: [{ field: "probability" }],
+                    model: "partner",
+                    rowGroupBys: ["bar"],
+                    sortedColumn: {
+                        measure: "probability",
+                        order: "asc",
+                        groupId: [[], [1]],
+                    },
+                    name: "A pivot",
+                    context: {},
+                },
+            },
+        };
+        const model = await createModelWithDataSource({ spreadsheetData });
+        assert.deepEqual(model.getters.getPivotDefinition(1).sortedColumn, {
+            measure: "probability",
+            order: "asc",
+            groupId: [[], [1]],
+        });
+        assert.deepEqual(model.exportData().pivots, spreadsheetData.pivots);
+    });
+});

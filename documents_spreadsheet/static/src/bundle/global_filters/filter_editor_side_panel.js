@@ -3,9 +3,9 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
     "use strict";
 
     const core = require("web.core");
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
+    const spreadsheet = require("@spreadsheet/o_spreadsheet/o_spreadsheet_extended")[Symbol.for("default")];
     const DateFilterValue = require("documents_spreadsheet.DateFilterValue");
-    const CommandResult = require("documents_spreadsheet.CommandResult");
+    const CommandResult = require("@spreadsheet/o_spreadsheet/cancelled_reason")[Symbol.for("default")];
     const {
         FieldSelectorWidget,
         FieldSelectorAdapter,

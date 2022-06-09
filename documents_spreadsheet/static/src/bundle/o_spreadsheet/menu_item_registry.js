@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { _t, _lt } from "web.core";
-import spreadsheet from "./o_spreadsheet_extended";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { REINSERT_LIST_CHILDREN } from "../list/list_actions";
 import { INSERT_PIVOT_CELL_CHILDREN, REINSERT_PIVOT_CHILDREN } from "../pivot/pivot_actions";
 const { topbarMenuRegistry } = spreadsheet.registries;

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 const { Component } = owl;
 const { autofillModifiersRegistry, autofillRulesRegistry } = spreadsheet.registries;

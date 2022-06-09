@@ -1,9 +1,9 @@
 odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
     ("use strict");
 
-    const spreadsheet = require("documents_spreadsheet.spreadsheet");
-    const CommandResult = require("documents_spreadsheet.CommandResult");
-    const { pivotFormulaRegex } = require("documents_spreadsheet.pivot_utils");
+    const spreadsheet = require("@spreadsheet/o_spreadsheet/o_spreadsheet_extended")[Symbol.for("default")];
+    const CommandResult = require("@spreadsheet/o_spreadsheet/cancelled_reason")[Symbol.for("default")];
+    const { pivotFormulaRegex } = require("@spreadsheet/pivot/pivot_helpers");
     const { parse, astToFormula } = spreadsheet;
 
     /**

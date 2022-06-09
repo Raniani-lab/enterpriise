@@ -1,4 +1,4 @@
-/** @odoo-module alias=documents_spreadsheet.SpreadsheetCollaborativeChannel **/
+/** @odoo-module **/
 
 /**
  * This class implements the `TransportService` interface defined

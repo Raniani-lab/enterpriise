@@ -1,14 +1,14 @@
 /** @odoo-module */
 
-import spreadsheet from "@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet_extended";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 import { ormService } from "@web/core/orm_service";
 import { uiService } from "@web/core/ui/ui_service";
 import { registry } from "@web/core/registry";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
-import { DataSources } from "@documents_spreadsheet/bundle/o_spreadsheet/data_sources/data_sources";
-import { setupDataSourceEvaluation } from "../spreadsheet_test_utils";
+import { DataSources } from "@spreadsheet/data_sources/data_sources";
+import { setupDataSourceEvaluation } from "@spreadsheet/../tests/utils/model";
 
 const { Model } = spreadsheet;
 const serviceRegistry = registry.category("services");

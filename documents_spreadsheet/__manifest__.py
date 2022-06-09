@@ -6,7 +6,7 @@
     'category': 'Productivity/Documents',
     'summary': 'Documents Spreadsheet',
     'description': 'Documents Spreadsheet',
-    'depends': ['documents'],
+    'depends': ['documents', 'spreadsheet'],
     'data': [
         'data/documents_data.xml',
         'security/ir.model.access.csv',
@@ -25,7 +25,7 @@
     'license': 'OEEL-1',
     'assets': {
         'documents_spreadsheet.o_spreadsheet': [
-            'documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js',
+            ('include', 'spreadsheet.o_spreadsheet'),
             'documents_spreadsheet/static/src/bundle/**/*.js',
         ],
         'web.assets_backend': [
@@ -35,8 +35,6 @@
             'documents_spreadsheet/static/src/bundle/**/*.scss',
         ],
         'web.assets_qweb': [
-            # Load all o_spreadsheet templates first to allow to inherit them
-            'documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.xml',
             'documents_spreadsheet/static/src/**/*.xml',
         ],
         'web.assets_tests': [
@@ -44,7 +42,7 @@
         ],
         'web.qunit_suite_tests': [
             'documents_spreadsheet/static/tests/**/*',
-            ('include', 'documents_spreadsheet.o_spreadsheet')
+            'documents_spreadsheet/static/src/bundle/**/*.js',
         ]
     }
 }

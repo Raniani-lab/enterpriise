@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
-import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { IrMenuSelector } from "@documents_spreadsheet/assets/components/ir_menu_selector/ir_menu_selector";
 
 const { LineBarPieConfigPanel, ScorecardChartConfigPanel, GaugeChartConfigPanel } =

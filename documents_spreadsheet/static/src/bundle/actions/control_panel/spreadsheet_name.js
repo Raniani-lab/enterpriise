@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { UNTITLED_SPREADSHEET_NAME } from "../../o_spreadsheet/constants";
+import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 
 const { Component, onMounted, useState, useRef } = owl;
 

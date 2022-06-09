@@ -1,11 +1,7 @@
-/** @odoo-module alias=documents_spreadsheet.OperationalTransform */
+/** @odoo-module */
 
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-const { inverseCommandRegistry, otRegistry } = spreadsheet.registries;
-
-function identity(cmd) {
-    return [cmd];
-}
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+const { otRegistry } = spreadsheet.registries;
 
 otRegistry
 
@@ -24,10 +20,4 @@ otRegistry
         return undefined;
       }
       return toTransform;
-    });;
-
-inverseCommandRegistry
-    .add("INSERT_ODOO_LIST", identity)
-    .add("RE_INSERT_ODOO_LIST", identity)
-    .add("RENAME_ODOO_LIST", identity)
-    .add("REMOVE_ODOO_LIST", identity);
+    });

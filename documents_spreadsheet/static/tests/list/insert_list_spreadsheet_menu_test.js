@@ -8,7 +8,7 @@ import { click, nextTick, getFixture, patchWithCleanup, triggerEvent } from "@we
 import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { getSpreadsheetActionModel } from "../utils/webclient_helpers";
-import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
+import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
 const createView = testUtils.createView;
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
@@ -137,12 +137,15 @@ QUnit.module(
         QUnit.test("Sorted List name contains sorting info", async function (assert) {
             assert.expect(1);
             await spawnListViewForSpreadsheet({
-                orderBy: [{name:'bar', asc: true}],
+                orderBy: [{ name: "bar", asc: true }],
             });
 
             await click(target.querySelector(".o_favorite_menu button"));
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
-            assert.equal(document.body.querySelector(".o_spreadsheet_name").value, "Partners by Bar");
+            assert.equal(
+                document.body.querySelector(".o_spreadsheet_name").value,
+                "Partners by Bar"
+            );
         });
 
         QUnit.test("List name is not changed if the name is empty", async (assert) => {

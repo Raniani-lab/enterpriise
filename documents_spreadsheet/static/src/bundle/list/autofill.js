@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import { getNumberOfListFormulas } from "./list_helpers";
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+import { getNumberOfListFormulas } from "@spreadsheet/list/list_helpers";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 const { autofillModifiersRegistry, autofillRulesRegistry } = spreadsheet.registries;
 

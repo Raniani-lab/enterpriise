@@ -1,4 +1,4 @@
-/** @odoo-module alias=documents_spreadsheet.SpreadsheetComponent */
+/** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
@@ -6,12 +6,12 @@ import Dialog from "web.OwlDialog";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 import { useService } from "@web/core/utils/hooks";
 
-import { DEFAULT_LINES_NUMBER } from "../o_spreadsheet/constants";
+import { DEFAULT_LINES_NUMBER } from "@spreadsheet/helpers/constants";
 
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import { jsonToBase64 } from "../o_spreadsheet/helpers";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { jsonToBase64 } from "@spreadsheet/helpers/helpers";
 import { LegacyComponent } from "@web/legacy/legacy_component";
-import { DataSources } from "../o_spreadsheet/data_sources/data_sources";
+import { DataSources } from "@spreadsheet/data_sources/data_sources";
 
 const { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv, onWillStart } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();

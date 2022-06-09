@@ -3,7 +3,7 @@
 import { SpreadsheetSelectorDialog } from "@documents_spreadsheet/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { click, getFixture, mount, triggerEvent } from "@web/../tests/helpers/utils";
-import { getBasicServerData } from "../utils/spreadsheet_test_data";
+import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 
 const serverData = getBasicServerData();

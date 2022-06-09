@@ -4,9 +4,9 @@ import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { PivotDialogTable } from "./spreadsheet_pivot_dialog_table";
 
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
-import { makePivotFormula } from "./pivot_helpers"
+import { makePivotFormula } from "@spreadsheet/pivot/pivot_helpers";
 
 const { Component, useState } = owl;
 const formatValue = spreadsheet.helpers.formatValue;

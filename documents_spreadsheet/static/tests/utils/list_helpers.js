@@ -1,17 +1,23 @@
 /** @odoo-module */
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { patchWithCleanup, click, getFixture, makeDeferred, triggerEvent } from "@web/../tests/helpers/utils";
-import { getBasicServerData } from "./spreadsheet_test_data";
+import {
+    patchWithCleanup,
+    click,
+    getFixture,
+    makeDeferred,
+    triggerEvent,
+} from "@web/../tests/helpers/utils";
+import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import {
     getSpreadsheetActionEnv,
     getSpreadsheetActionModel,
     prepareWebClientForSpreadsheet,
 } from "./webclient_helpers";
 import { SpreadsheetAction } from "../../src/bundle/actions/spreadsheet_action";
-import { waitForDataSourcesLoaded } from "../spreadsheet_test_utils";
+import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
-/** @typedef {import("@documents_spreadsheet/bundle/o_spreadsheet/o_spreadsheet").Model} Model */
+/** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
 /**
  * Get a webclient with a list view.
@@ -42,7 +48,7 @@ export async function spawnListViewForSpreadsheet(params = {}) {
     /** sort the view by field */
     const target = getFixture();
     for (let order of params.orderBy || []) {
-        const selector = `thead th.o_column_sortable[data-name='${order.name}']`
+        const selector = `thead th.o_column_sortable[data-name='${order.name}']`;
         await click(target.querySelector(selector));
         if (order.asc === false) {
             await click(target.querySelector(selector));
@@ -63,7 +69,7 @@ export async function spawnListViewForSpreadsheet(params = {}) {
  *
  * @returns {Promise<{model: Model, webClient: object, env: object}>}
  */
-export async function createSpreadsheetFromList(params = {}) {
+export async function createSpreadsheetFromListView(params = {}) {
     const def = makeDeferred();
     let spreadsheetAction = {};
     patchWithCleanup(SpreadsheetAction.prototype, {

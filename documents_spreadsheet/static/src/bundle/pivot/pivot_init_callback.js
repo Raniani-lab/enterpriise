@@ -1,6 +1,6 @@
 /** @odoo-module **/
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import PivotDataSource from "./pivot_data_source";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import PivotDataSource from "@spreadsheet/pivot/pivot_data_source";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 

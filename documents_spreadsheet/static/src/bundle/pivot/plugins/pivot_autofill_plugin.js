@@ -1,13 +1,13 @@
 /** @odoo-module */
 
 import core from "web.core";
-import spreadsheet from "documents_spreadsheet.spreadsheet";
-import { formats } from "../../o_spreadsheet/constants";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { formats } from "@spreadsheet/helpers/constants";
 import {
     getFirstPivotFunction,
     getNumberOfPivotFormulas,
     makePivotFormula,
-} from "../pivot_helpers";
+} from "@spreadsheet/pivot/pivot_helpers";
 
 const { astToFormula } = spreadsheet;
 const _t = core._t;

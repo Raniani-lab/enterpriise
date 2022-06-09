@@ -3,9 +3,9 @@ import { useService } from "@web/core/utils/hooks";
 import { loadJS } from "@web/core/assets";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 
-import { UNTITLED_SPREADSHEET_NAME } from "../o_spreadsheet/constants"
-import { getDataFromTemplate } from "../o_spreadsheet/helpers";
-import spreadsheet, { initCallbackRegistry } from "../o_spreadsheet/o_spreadsheet_extended";
+import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
+import { getDataFromTemplate } from "@spreadsheet/helpers/helpers";
+import spreadsheet, {    initCallbackRegistry} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 import { LegacyComponent } from "@web/legacy/legacy_component";
 

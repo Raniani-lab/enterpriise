@@ -1,6 +1,6 @@
 /** @odoo-module **/
-import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
-import ListDataSource from "./list_data_source";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import ListDataSource from "@spreadsheet/list/list_data_source";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
@@ -11,11 +11,12 @@ const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
  *
  * @private
  *
- * @param {import("./plugins/list_plugin").SpreadsheetList} list
- * @param {number} threshold
- * @param {object} fields fields coming from list_model
+ * @param {import("@spreadsheet/list/plugins/list_plugin").SpreadsheetList} list
+ * @param {object} param
+ * @param {number} param.threshold
+ * @param {object} param.fields fields coming from list_model
  *
- * @returns {Function}
+ * @returns {function}
  */
 export function insertList({list, threshold, fields}) {
     const definition = {

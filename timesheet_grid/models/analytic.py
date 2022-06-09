@@ -266,7 +266,7 @@ class AnalyticLine(models.Model):
                 else:
                     if is_record_candidate(result, record):
                         domain = expression.normalize_domain(
-                            [(field, '=', value[0]) for field, value in list(zip(row_fields, key)) if value[0]])
+                            [(field, '=', value[0]) for field, value in list(zip(row_fields, key)) if value and value[0]])
                         add_record(False, key, {'values': record, 'domain': domain})
 
         if rows_dict:

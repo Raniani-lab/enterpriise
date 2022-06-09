@@ -14,11 +14,11 @@
         <field name="category_id" ref="hr_payroll_head_dp"/>
         <field name="name">European Leaves Deduction</field>
         <field name="code">EU.LEAVE.DEDUC</field>
-        <field name="sequence">3</field>
+        <field name="sequence">4</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = inputs.EULEAVEDEDUC</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = -min(result_rules['BASIC']['total'], inputs.EULEAVEDEDUC.amount)</field>
+        <field name="amount_python_compute">result = -min(result_rules['BASIC']['total'] + result_rules['DOUBLERECOVERY']['total'], inputs.EULEAVEDEDUC.amount)</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
     </record>
 
@@ -26,11 +26,11 @@
         <field name="category_id" ref="hr_payroll_head_dp"/>
         <field name="name">Double Holiday Pay Recovery</field>
         <field name="code">DOUBLERECOVERY</field>
-        <field name="sequence">4</field>
+        <field name="sequence">3</field>
         <field name="condition_select">python</field>
         <field name="condition_python">result = inputs.DOUBLERECOVERY</field>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = -(inputs.DOUBLERECOVERY.amount if inputs.DOUBLERECOVERY else 0)</field>
+        <field name="amount_python_compute">result = -min(result_rules['BASIC']['total'], (inputs.DOUBLERECOVERY.amount if inputs.DOUBLERECOVERY else 0))</field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_double_holiday"/>
     </record>
 

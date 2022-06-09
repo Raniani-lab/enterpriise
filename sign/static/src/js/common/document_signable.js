@@ -236,8 +236,13 @@ const SignatureDialog = SignInfoDialog.extend({
   addDefaultButtons() {
     const buttons = [];
     buttons.push({
-      text: _t("Adopt & Sign"),
-      classes: "btn-primary",
+      text: _t("Cancel"),
+      classes: 'btn-link',
+      close: true,
+    });
+    buttons.push({
+      text: _t("Sign"),
+      classes: "btn-secondary",
       disabled: true,
       click: (e) => {
         this.confirmFunction();
@@ -245,7 +250,7 @@ const SignatureDialog = SignInfoDialog.extend({
     });
     buttons.push({
       text: _t("Sign all"),
-      classes: "btn-secondary",
+      classes: "btn-primary",
       disabled: true,
       click: (e) => {
         //this.confirmAllFunction is undefined in documents with no sign items
@@ -254,7 +259,6 @@ const SignatureDialog = SignInfoDialog.extend({
           : this.confirmFunction();
       },
     });
-    buttons.push({ text: _t("Cancel"), close: true });
     return buttons;
   },
 
@@ -461,7 +465,7 @@ const SignItemNavigator = Widget.extend({
       parseInt($item.css("height")) / 2;
 
     const duration = Math.min(
-      1000,
+      500,
       5 *
         (Math.abs($container[0].scrollTop - scrollTop) +
           Math.abs(parseFloat(this.$el.css("top")) - scrollOffset))

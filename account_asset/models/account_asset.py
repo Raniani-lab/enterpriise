@@ -866,6 +866,10 @@ class AccountAsset(models.Model):
         else:
             asset_type = self[0].asset_type
         views = [v for v in self._get_views(asset_type) if v[1] in view_mode]
+        ctx = dict(self._context,
+                asset_type=asset_type,
+                default_asset_type=asset_type)
+        ctx.pop('default_move_type')
         action = {
             'name': _('Asset'),
             'view_mode': ','.join(view_mode),
@@ -874,11 +878,7 @@ class AccountAsset(models.Model):
             'res_model': 'account.asset',
             'views': views,
             'domain': [('id', 'in', self.ids)],
-            'context': {
-                **self._context,
-                'asset_type': asset_type,
-                'default_asset_type': asset_type
-            }
+            'context': ctx
         }
         if asset_type == 'sale':
             action['name'] = _('Deferred Revenue')

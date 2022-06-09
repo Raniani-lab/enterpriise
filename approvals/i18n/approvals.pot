@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 09:52+0000\n"
-"PO-Revision-Date: 2022-04-19 09:52+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -178,11 +178,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 #, python-format
 msgid "Approve"
-msgstr ""
-
-#. module: approvals
-#: model:res.groups,name:approvals.group_approval_user
-msgid "Approve All Requests"
 msgstr ""
 
 #. module: approvals
@@ -574,7 +569,6 @@ msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction
-#: model:ir.model.fields,help:approvals.field_approval_request__message_unread
 msgid "If checked, new messages require your attention."
 msgstr ""
 
@@ -839,8 +833,8 @@ msgid "Number of requests to validate"
 msgstr ""
 
 #. module: approvals
-#: model:ir.model.fields,help:approvals.field_approval_request__message_unread_counter
-msgid "Number of unread messages"
+#: model:res.groups,name:approvals.group_approval_user
+msgid "Officer : Approve all requests"
 msgstr ""
 
 #. module: approvals
@@ -1083,16 +1077,6 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__product_uom_id
 msgid "Unit of Measure"
-msgstr ""
-
-#. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_request__message_unread
-msgid "Unread Messages"
-msgstr ""
-
-#. module: approvals
-#: model:ir.model.fields,field_description:approvals.field_approval_request__message_unread_counter
-msgid "Unread Messages Counter"
 msgstr ""
 
 #. module: approvals

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.1+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-07 10:56+0000\n"
-"PO-Revision-Date: 2021-12-07 10:56+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -775,6 +775,14 @@ msgid "The Bill of Material this operation is linked to"
 msgstr ""
 
 #. module: mrp_workorder
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
+msgid ""
+"This workcenter isn't expected to have open workorders during this period. "
+"Work hours :"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_res_config_settings__group_mrp_wo_tablet_timer
 msgid "Timer"
 msgstr ""
@@ -890,6 +898,11 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_workorder.mrp_workorder_action_tablet
 #: model:ir.ui.menu,name:mrp_workorder.mrp_workorder_menu_planning
 msgid "Work Orders"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:ir.actions.server,name:mrp_workorder.action_mrp_workorder_dependencies_workcenter
+msgid "Work Orders Planning"
 msgstr ""
 
 #. module: mrp_workorder

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:01+0000\n"
-"PO-Revision-Date: 2022-04-19 14:01+0000\n"
+"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"PO-Revision-Date: 2022-06-09 14:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -62,6 +62,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_payable_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_receivable_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_multicurrency_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 msgid "&amp;nbsp;"
@@ -90,6 +91,21 @@ msgstr ""
 #: code:addons/account_reports/models/account_financial_report.py:0
 #, python-format
 msgid "(copy)"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
+msgid ", Grouped by month"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
+msgid ", Sorted by date"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
+msgid ", Sorted by number"
 msgstr ""
 
 #. module: account_reports
@@ -282,13 +298,6 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid ""
-"<span class=\"o_form_label\">Fiscal Country</span>\n"
-"                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
-msgstr ""
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid ""
 "<span class=\"o_form_label\">Tax Return Periodicity</span>\n"
 "                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
@@ -299,22 +308,10 @@ msgid "<span title=\"Latest Statement\">Latest Statement</span>"
 msgstr ""
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
-msgid ""
-"<span>Intrastat taxes are applied on unexpected journal entries "
-"(intranational or between non intrastat countries).</span>"
-msgstr ""
-
-#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
 msgid ""
 "<span>Please note that the report may include some rounding differences "
 "towards the bookings.</span>"
-msgstr ""
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
-msgid "<span>Some partners are missing a VAT number.</span>"
 msgstr ""
 
 #. module: account_reports
@@ -328,6 +325,16 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_multicurrency_report
 msgid "<span>This report only displays the data of the active company.</span>"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
+msgid "=&gt; Audit"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
+msgid "=&gt; Journal Items"
 msgstr ""
 
 #. module: account_reports
@@ -350,6 +357,8 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_aged_partner_balance.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #: model:ir.model,name:account_reports.model_account_account
@@ -383,11 +392,6 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_display_representative_field
 msgid "Account Display Representative Field"
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model,name:account_reports.model_report_account_report_journal
-msgid "Account Journal Report"
 msgstr ""
 
 #. module: account_reports
@@ -627,6 +631,12 @@ msgid "Amount Currency"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#, python-format
+msgid "Amount in currency: %s"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_accounting_report__analytic_account_id
 #: model:ir.model.fields,field_description:account_reports.field_account_aged_partner__analytic_account_id
 #: model:ir.model.fields,field_description:account_reports.field_account_aged_payable__analytic_account_id
@@ -709,6 +719,7 @@ msgid "At the beginning of the period"
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.ec_sales_line_caret_options
 #: model_terms:ir.ui.view,arch_db:account_reports.line_caret_options
 msgid "Audit"
 msgstr ""
@@ -736,10 +747,10 @@ msgstr ""
 #. module: account_reports
 #: code:addons/account_reports/models/account_analytic_report.py:0
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
-#: code:addons/account_reports/models/account_consolidated_journals.py:0
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #: model:ir.model.fields,field_description:account_reports.field_account_accounting_report__balance
 #: model:ir.model.fields,field_description:account_reports.field_account_aged_partner__balance
@@ -829,6 +840,7 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 #, python-format
 msgid "Base Amount"
 msgstr ""
@@ -1075,19 +1087,6 @@ msgid "Configure your tax accounts"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_consolidated_journals.py:0
-#: model:ir.actions.client,name:account_reports.action_account_report_cj
-#: model:ir.ui.menu,name:account_reports.menu_action_account_report_cj
-#, python-format
-msgid "Consolidated Journals"
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model,name:account_reports.model_account_consolidated_journal
-msgid "Consolidated Journals Report"
-msgstr ""
-
-#. module: account_reports
 #: model:ir.model,name:account_reports.model_res_partner
 msgid "Contact"
 msgstr ""
@@ -1124,7 +1123,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__country_id
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__country_id
-#: model_terms:ir.ui.view,arch_db:account_reports.report_journal
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "Country"
 msgstr ""
 
@@ -1164,8 +1163,9 @@ msgid "Created on"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_consolidated_journals.py:0
 #: code:addons/account_reports/models/account_general_ledger.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report_coa.py:0
 #: code:addons/account_reports/models/account_report_coa.py:0
@@ -1283,8 +1283,9 @@ msgid "Date:"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_consolidated_journals.py:0
 #: code:addons/account_reports/models/account_general_ledger.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report_coa.py:0
 #: code:addons/account_reports/models/account_report_coa.py:0
@@ -1308,12 +1309,6 @@ msgstr ""
 #. module: account_reports
 #: model:account.financial.html.report.line,name:account_reports.account_financial_report_depreciation0
 msgid "Depreciation"
-msgstr ""
-
-#. module: account_reports
-#: code:addons/account_reports/models/account_consolidated_journals.py:0
-#, python-format
-msgid "Details per month"
 msgstr ""
 
 #. module: account_reports
@@ -1369,11 +1364,6 @@ msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
-msgid "Domestic country of your accounting"
-msgstr ""
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Download the Data Inalterability Check Report"
 msgstr ""
 
@@ -1393,6 +1383,18 @@ msgstr ""
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_sales
 #, python-format
 msgid "EC Sales List"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_sales_report.py:0
+#, python-format
+msgid "EC tax on non EC countries"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_sales_report.py:0
+#, python-format
+msgid "EC tax on same country"
 msgstr ""
 
 #. module: account_reports
@@ -1425,6 +1427,18 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "End of Last Quarter"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#, python-format
+msgid "Ending Balance :"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_sales_report.py:0
+#, python-format
+msgid "Entries with partners with no VAT"
 msgstr ""
 
 #. module: account_reports
@@ -1574,11 +1588,6 @@ msgid "Financial Reports"
 msgstr ""
 
 #. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_res_config_settings__account_fiscal_country_id
-msgid "Fiscal Country"
-msgstr ""
-
-#. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__account_financial_html_report_line__figure_type__float
 msgid "Float"
 msgstr ""
@@ -1692,7 +1701,7 @@ msgid "Goods"
 msgstr ""
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.report_journal
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "Grid"
 msgstr ""
 
@@ -1712,8 +1721,18 @@ msgid "Gross profit margin (gross profit / operating income)"
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Group By Months"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__groupby
 msgid "Group by"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Group by months"
 msgstr ""
 
 #. module: account_reports
@@ -1735,6 +1754,11 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Groupby:"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Grouped by month"
 msgstr ""
 
 #. module: account_reports
@@ -1778,13 +1802,15 @@ msgid "ID"
 msgstr ""
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.report_journal
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "Impact On Grid"
 msgstr ""
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.report_journal
-msgid "Impacted Tax Grids"
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
+msgid ""
+"Impacted Tax Grids\n"
+"                                        &amp;nbsp;"
 msgstr ""
 
 #. module: account_reports
@@ -1793,7 +1819,13 @@ msgid "Include"
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Include Payments"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include Unposted Entries"
 msgstr ""
 
@@ -1804,6 +1836,7 @@ msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include unposted entries"
 msgstr ""
 
@@ -1868,6 +1901,17 @@ msgid "Internal Note"
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
+msgid "Intra-community taxes are applied on"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#, python-format
+msgid "Invoice"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report_line__green_on_positive
 msgid "Is growth good when positive"
 msgstr ""
@@ -1892,6 +1936,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "Journal"
+msgstr ""
+
+#. module: account_reports
+#: model:ir.model,name:account_reports.model_account_journal_audit
+msgid "Journal Audit Report"
 msgstr ""
 
 #. module: account_reports
@@ -1937,9 +1986,9 @@ msgid "Journal Items on the"
 msgstr ""
 
 #. module: account_reports
-#: code:addons/account_reports/models/account_consolidated_journals.py:0
-#, python-format
-msgid "Journal Name (Code)"
+#: model:ir.actions.client,name:account_reports.action_account_report_ja
+#: model:ir.ui.menu,name:account_reports.menu_action_account_report_ja
+msgid "Journal Report"
 msgstr ""
 
 #. module: account_reports
@@ -1948,8 +1997,9 @@ msgid "Journal items on the"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
 #: model:ir.actions.act_window,name:account_reports.action_account_print_journal_menu
-#: model:ir.ui.menu,name:account_reports.menu_print_journal
+#, python-format
 msgid "Journals Audit"
 msgstr ""
 
@@ -1970,6 +2020,8 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Label"
@@ -2052,6 +2104,7 @@ msgstr ""
 #. module: account_reports
 #: code:addons/account_reports/models/account_accounting_report.py:0
 #: code:addons/account_reports/models/account_general_ledger.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #, python-format
 msgid "Load more... (%s remaining)"
@@ -2184,6 +2237,8 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
 #: model:ir.model.fields,field_description:account_reports.field_account_accounting_report__name
 #: model:ir.model.fields,field_description:account_reports.field_account_aged_partner__name
 #: model:ir.model.fields,field_description:account_reports.field_account_aged_payable__name
@@ -2192,6 +2247,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation__name
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__name
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__name
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 #, python-format
 msgid "Name"
 msgstr ""
@@ -2353,6 +2409,13 @@ msgid "Only Show Unreconciled Entries"
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_payable_report
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_receivable_report
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
+msgid "Open"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_year_op
 msgid "Opening Balance of Financial Year"
 msgstr ""
@@ -2414,6 +2477,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_aged_receivable__partner_id
 #, python-format
 msgid "Partner"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_sales_report.py:0
+#, python-format
+msgid "Partner Audit"
 msgstr ""
 
 #. module: account_reports
@@ -2550,6 +2619,16 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Posted Entries Only"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
+msgid "Posted Entries only"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
+msgid "Posted and Draft Entries"
 msgstr ""
 
 #. module: account_reports
@@ -2819,6 +2898,11 @@ msgid "Show Warning Move"
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Show payment lines"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_financial_html_report__unfold_all_filter
 msgid "Show unfold all filter"
 msgstr ""
@@ -2826,6 +2910,26 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Some controls failed"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Sort By Date"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Sort by date"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Sorted by date"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
+msgid "Sorted by number"
 msgstr ""
 
 #. module: account_reports
@@ -2859,6 +2963,12 @@ msgid "Start from"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#, python-format
+msgid "Starting Balance :"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__summary
 msgid "Summary"
 msgstr ""
@@ -2880,6 +2990,7 @@ msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 #, python-format
 msgid "Tax Amount"
 msgstr ""
@@ -2898,8 +3009,9 @@ msgid "Tax Declaration"
 msgstr ""
 
 #. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.report_journal
-msgid "Tax Grid"
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#, python-format
+msgid "Tax Grids"
 msgstr ""
 
 #. module: account_reports
@@ -2976,11 +3088,24 @@ msgid "Tax return from %s to %s%s"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_journal_audit_report.py:0
+#, python-format
+msgid "Taxes"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
+msgid ""
+"Taxes Applied\n"
+"                            &amp;nbsp;"
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_bank_statement_line__tax_closing_end_date
 #: model:ir.model.fields,help:account_reports.field_account_move__tax_closing_end_date
 #: model:ir.model.fields,help:account_reports.field_account_payment__tax_closing_end_date
 msgid ""
-"Technical field used for VAT closing, containig the end date of the period "
+"Technical field used for VAT closing, containing the end date of the period "
 "this entry closes."
 msgstr ""
 
@@ -3023,11 +3148,6 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_financial_html_report__country_id
 msgid "The country this report is intended to."
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model.fields,help:account_reports.field_res_config_settings__account_fiscal_country_id
-msgid "The country to use the tax reports from for this company"
 msgstr ""
 
 #. module: account_reports
@@ -3130,12 +3250,11 @@ msgstr ""
 #: code:addons/account_reports/models/account_aged_partner_balance.py:0
 #: code:addons/account_reports/models/account_aged_partner_balance.py:0
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
-#: code:addons/account_reports/models/account_consolidated_journals.py:0
 #: code:addons/account_reports/models/account_financial_report.py:0
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report_coa.py:0
-#: code:addons/account_reports/models/account_sales_report_generic.py:0
+#: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Total"
 msgstr ""
@@ -3218,11 +3337,13 @@ msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold"
 msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold All"
 msgstr ""
 
@@ -3341,6 +3462,13 @@ msgid "With Draft Entries"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_sales_report.py:0
+#: code:addons/account_reports/models/account_sales_report_generic.py:0
+#, python-format
+msgid "Wrong model on line %s ; expected res.partner"
+msgstr ""
+
+#. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
@@ -3350,6 +3478,11 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_multicurrency_report
 msgid "You are using custom exchange rates."
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
+msgid "addressed to"
 msgstr ""
 
 #. module: account_reports
@@ -3411,7 +3544,15 @@ msgid "having a starting balance different than the previous ending balance"
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
+msgid "invoices"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_payable_report
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_aged_receivable_report
+#: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 msgid "journal items"
 msgstr ""
 
@@ -3439,6 +3580,11 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_report_manager__report_name
 msgid "name of the model of the report"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
+msgid "partners"
 msgstr ""
 
 #. module: account_reports
@@ -3474,6 +3620,11 @@ msgid "technical field used to know if there was a failed control check"
 msgstr ""
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
+msgid "that are not established abroad."
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "to:"
 msgstr ""
@@ -3486,6 +3637,16 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "which doesn't result from a bank statement nor payments."
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
+msgid "who are not established in any of the EC countries."
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_sales_report_main_template
+msgid "without a valid intra-community VAT number."
 msgstr ""
 
 #. module: account_reports

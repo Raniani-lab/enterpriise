@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 08:56+0000\n"
-"PO-Revision-Date: 2022-04-21 08:56+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -29,8 +29,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
-msgid ""
-"<b>Review and sign</b> your <b>worksheet report</b> with your customer."
+msgid "<b>Review and sign</b> the <b>task report</b> with your customer."
 msgstr ""
 
 #. module: industry_fsm
@@ -38,7 +37,7 @@ msgstr ""
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
-msgid "<b>Send your worksheet report</b> to your customer."
+msgid "<b>Send your task report</b> to your customer."
 msgstr ""
 
 #. module: industry_fsm
@@ -120,12 +119,12 @@ msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
-msgid "<strong>Customer: </strong>"
+msgid "<strong class=\"mr-2\">Total</strong>"
 msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
-msgid "<strong>Total</strong>"
+msgid "<strong>Customer: </strong>"
 msgstr ""
 
 #. module: industry_fsm
@@ -144,15 +143,6 @@ msgid "Activity Types"
 msgstr ""
 
 #. module: industry_fsm
-#. openerp-web
-#: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
-#, python-format
-msgid ""
-"Add a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning "
-"installation, etc.).</i>"
-msgstr ""
-
-#. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_manager
 msgid "Administrator"
 msgstr ""
@@ -167,7 +157,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
 msgid ""
-"Analyze the progress of your projects and the performance of your employees."
+"Analyze the progress of your tasks and the performance of your workers."
 msgstr ""
 
 #. module: industry_fsm
@@ -235,13 +225,22 @@ msgid "Closed"
 msgstr ""
 
 #. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
+msgid "Closed Last 30 Days"
+msgstr ""
+
+#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
+msgid "Closed Last 7 Days"
+msgstr ""
+
+#. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__is_closed
 msgid "Closing Stage"
 msgstr ""
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__comment
-#: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Comments"
 msgstr ""
 
@@ -276,13 +275,18 @@ msgstr ""
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid ""
-"Confirm the <b>time spent</b> on your task. <i>Tip: a rounding of 15min has "
-"automatically been applied.</i>"
+"Confirm the <b>time spent</b> on your task. <i>Tip: note that the duration "
+"has automatically been rounded to 15 minutes.</i>"
 msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_project_view_form_simplified_footer_fsm
 msgid "Create"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__create_date
+msgid "Create Date"
 msgstr ""
 
 #. module: industry_fsm
@@ -306,6 +310,13 @@ msgid "Create new quotations directly from your tasks"
 msgstr ""
 
 #. module: industry_fsm
+#: model_terms:ir.actions.act_window,help:industry_fsm.project_project_action_only_fsm
+msgid ""
+"Create projects to organize your tasks and define a different workflow for "
+"each project."
+msgstr ""
+
+#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
 msgid "Create reports to be signed off by your customers"
 msgstr ""
@@ -313,14 +324,12 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__create_uid
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__create_uid
-#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__create_date
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__create_date
-#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__create_date
 msgid "Created on"
 msgstr ""
 
@@ -340,6 +349,11 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Customer Preview"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.ui.menu,name:industry_fsm.fsm_menu_reporting_customer_ratings
+msgid "Customer Ratings"
 msgstr ""
 
 #. module: industry_fsm
@@ -507,7 +521,7 @@ msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm
-msgid "Find here your tasks planned for the following days."
+msgid "Find here your upcoming tasks for the next few days."
 msgstr ""
 
 #. module: industry_fsm
@@ -525,6 +539,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Future"
+msgstr ""
+
+#. module: industry_fsm
+#. openerp-web
+#: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
+#, python-format
+msgid ""
+"Give it a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning "
+"installation, etc.).</i>"
 msgstr ""
 
 #. module: industry_fsm
@@ -590,8 +613,12 @@ msgstr ""
 #. openerp-web
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
-msgid ""
-"Invite your customer to <b>validate and sign your worksheet report</b>."
+msgid "Invite your customer to <b>validate and sign your task report</b>."
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_reached
+msgid "Is Milestone Reached"
 msgstr ""
 
 #. module: industry_fsm
@@ -626,14 +653,12 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__write_uid
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__write_uid
-#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__write_date
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__write_date
-#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__write_date
 msgid "Last Updated on"
 msgstr ""
 
@@ -656,7 +681,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Let's <b>mark your task as done!</b> <i>Tip: when doing so, your stock will "
-"automatically be updated, and your task will move to the next stage.</i>"
+"automatically be updated, and your task will be closed.</i>"
 msgstr ""
 
 #. module: industry_fsm
@@ -685,6 +710,26 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Mark as done"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model,name:industry_fsm.model_ir_ui_menu
+msgid "Menu"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_id
+msgid "Milestone"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_deadline
+msgid "Milestone Deadline"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_milestones
+msgid "Milestones"
 msgstr ""
 
 #. module: industry_fsm
@@ -831,6 +876,11 @@ msgid "Past"
 msgstr ""
 
 #. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__personal_stage_type_ids
+msgid "Personal Stage"
+msgstr ""
+
+#. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
 msgid "Planned"
 msgstr ""
@@ -896,14 +946,14 @@ msgid "Projects"
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.actions.act_window,help:industry_fsm.project_project_action_only_fsm
-msgid "Projects regroup tasks on the same topic, and each has its dashboard."
-msgstr ""
-
-#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Rated tasks"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_last_text
+msgid "Rating Last Text"
 msgstr ""
 
 #. module: industry_fsm
@@ -950,7 +1000,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
-msgid "Save time by generating a <b>signature</b> automatically."
+msgid "Save time by automatically generating a <b>signature</b>."
 msgstr ""
 
 #. module: industry_fsm
@@ -963,13 +1013,9 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
-msgid "Schedule tasks and assign them to your workers."
-msgstr ""
-
-#. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm_planning_groupby_project
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm_planning_groupby_user
+#: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
 msgid "Schedule your tasks and assign them to your workers."
 msgstr ""
 
@@ -983,7 +1029,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
-msgid "Select the <b>customer</b> of your task."
+msgid "Select the <b>customer</b> for your task."
 msgstr ""
 
 #. module: industry_fsm
@@ -1171,6 +1217,11 @@ msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
+msgid "Tasks Soon in Overtime"
+msgstr ""
+
+#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Tasks in Conflict"
 msgstr ""
@@ -1241,6 +1292,12 @@ msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_all_fsm
+msgid ""
+"To get things done, plan activities and use the task status.<br>\n"
+"                Collaborate efficiently by chatting in real-time or via email."
+msgstr ""
+
+#. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_tasks_action_fsm
 msgid ""
 "To get things done, use activities and status on tasks.<br>\n"
@@ -1273,7 +1330,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
-msgid "Use the breadcrumbs to go back to your <b>task</b>."
+msgid "Use the breadcrumbs to return to your <b>task</b>."
 msgstr ""
 
 #. module: industry_fsm
@@ -1374,6 +1431,11 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "is FSM ?"
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.actions.server,name:industry_fsm.fsm_customer_ratings_server_action
+msgid "project.project.fsm"
 msgstr ""
 
 #. module: industry_fsm

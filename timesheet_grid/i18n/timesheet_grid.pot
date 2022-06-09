@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 08:56+0000\n"
-"PO-Revision-Date: 2022-04-21 08:56+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgid ""
 "                    <div>\n"
 "                        Hello <t t-out=\"object.name or ''\">Abigail Peterson</t>,<br/><br/>\n"
 "                        This is a friendly reminder to log your hours for the following period : <t t-out=\"ctx.get('date_start') or ''\">05/05/2021</t> - <t t-out=\"ctx.get('date_stop') or ''\">05/06/2021</t>.\n"
-"                        For the time being, you only logged <t t-out=\"ctx.get('timesheet_hours') or ''\">2</t> hours on the <t t-out=\"ctx.get('working_hours') or ''\">8</t> requested.<br/>\n"
+"                        For the time being, you only logged <t t-out=\"round(ctx.get('timesheet_hours'), 2) or ''\">2</t> hours on the <t t-out=\"ctx.get('working_hours') or ''\">8</t> requested.<br/>\n"
 "                        <div t-if=\"ctx.get('action_url')\" style=\"margin: 16px 0px 16px 0px;\">\n"
 "                            <a t-att-href=\"ctx.get('action_url')\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Fill in your timesheet</a>\n"
 "                        </div>\n"
@@ -236,6 +236,13 @@ msgid "Analytic Line"
 msgstr ""
 
 #. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
+#, python-format
+msgid "Apple App Store"
+msgstr ""
+
+#. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Block encoding of timesheets after a certain date"
 msgstr ""
@@ -253,6 +260,13 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 msgid "Cancel"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
+msgid ""
+"Check that your employees correctly filled in their timesheets and that "
+"their time is billable."
 msgstr ""
 
 #. module: timesheet_grid
@@ -275,10 +289,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
-msgid ""
-"Congratulations, you are now a master of Timesheets.</b> <i>Psst: try the  "
-"[a] - [Enter] - [b] - [Enter] - shift + [A]  sequence on your keyboard and "
-"see what happens next!</i>"
+msgid "Congratulations, you are now a master of Timesheets."
 msgstr ""
 
 #. module: timesheet_grid
@@ -452,14 +463,18 @@ msgid "Download our App"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__draft
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
-msgid "Draft"
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
+#, python-format
+msgid ""
+"Download our web/mobile apps to track your time from anywhere, even offline."
 msgstr ""
 
 #. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
-msgid "Duration"
+#: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__draft
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+msgid "Draft"
 msgstr ""
 
 #. module: timesheet_grid
@@ -504,9 +519,28 @@ msgstr ""
 
 #. module: timesheet_grid
 #. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
+#, python-format
+msgid "Google Chrome Store"
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
+#, python-format
+msgid "Google Play Store"
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_group_by_no_date_mixin.js:0
 #, python-format
 msgid "Grouping by date is not supported"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
+msgid "Hours Spent"
 msgstr ""
 
 #. module: timesheet_grid
@@ -557,6 +591,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__is_timer_running
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__is_timer_running
+#: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__is_timer_running
 msgid "Is Timer Running"
 msgstr ""
 
@@ -662,16 +697,19 @@ msgid "Month"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Projects"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Tasks"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Team"
 msgstr ""
@@ -687,14 +725,21 @@ msgid "Next scheduled date for manager reminder"
 msgstr ""
 
 #. module: timesheet_grid
-#: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
-msgid "No activities found."
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
+#, python-format
+msgid "No activities found. Let's start a new one!"
 msgstr ""
 
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_month
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_week
 msgid "No activities to validate."
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
+msgid "No timesheets to validate"
 msgstr ""
 
 #. module: timesheet_grid
@@ -885,6 +930,7 @@ msgid "Stop timer"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Suspicious Durations"
 msgstr ""
@@ -989,13 +1035,6 @@ msgid "Timesheet"
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:0
-#: code:addons/timesheet_grid/models/analytic.py:0
-#, python-format
-msgid "Timesheet Adjustment"
-msgstr ""
-
-#. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.view_employee_tree_inherit_timesheet
 msgid "Timesheet Approver"
 msgstr ""
@@ -1007,6 +1046,7 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__is_timesheet
+#: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__is_timesheet
 msgid "Timesheet Line"
 msgstr ""
 
@@ -1049,17 +1089,20 @@ msgid "Timesheets"
 msgstr ""
 
 #. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_timesheets_analysis_report
+msgid "Timesheets Analysis Report"
+msgstr ""
+
+#. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheets_past_days_encoding_limit
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheets_past_days_encoding_limit
 msgid "Timesheets Encoding Limit in Days"
 msgstr ""
 
 #. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:0
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_week
 #: model:ir.actions.act_window,name:timesheet_grid.timesheet_grid_to_validate_action
-#, python-format
 msgid "Timesheets to Validate"
 msgstr ""
 
@@ -1076,7 +1119,9 @@ msgid "Track the <b>time spent</b> on your projects. <i>It starts here.</i>"
 msgstr ""
 
 #. module: timesheet_grid
-#: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
+#, python-format
 msgid ""
 "Track your working hours by projects every day and invoice this time to your"
 " customers."
@@ -1129,6 +1174,7 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__validated
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Validated"
 msgstr ""
@@ -1140,6 +1186,7 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__validated
+#: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__validated
 msgid "Validated line"
 msgstr ""
 
@@ -1236,13 +1283,6 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
-#. openerp-web
-#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
-#, python-format
-msgid "add"
-msgstr ""
-
-#. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_manager_interval__months
 msgid "after the end of the month"
@@ -1262,9 +1302,8 @@ msgstr ""
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
-#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
-msgid "hot key"
+msgid "letter shortcut"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1290,9 +1329,8 @@ msgstr ""
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
-#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
-msgid "or use a"
+msgid "or a"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1300,6 +1338,13 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press"
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
+#, python-format
+msgid "press Shift + a letter shortcut"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1320,7 +1365,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
-msgid "use a hot key to"
+msgid "to add"
 msgstr ""
 
 #. module: timesheet_grid

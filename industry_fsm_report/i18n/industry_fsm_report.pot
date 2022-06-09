@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:02+0000\n"
-"PO-Revision-Date: 2022-04-19 14:02+0000\n"
+"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"PO-Revision-Date: 2022-06-09 14:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -102,7 +102,7 @@ msgstr ""
 
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
-msgid "Schedule tasks and assign them to your workers."
+msgid "Schedule your tasks and assign them to your workers."
 msgstr ""
 
 #. module: industry_fsm_report

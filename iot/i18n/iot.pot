@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:56+0000\n"
-"PO-Revision-Date: 2021-07-12 07:56+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -92,7 +92,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/action_manager.js:0
+#: code:addons/iot/static/src/js/iot_report_action.js:0
 #, python-format
 msgid "Check if the printer is still connected"
 msgstr ""
@@ -175,7 +175,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/action_manager.js:0
+#: code:addons/iot/static/src/js/iot_report_action.js:0
 #, python-format
 msgid "Connection to printer failed"
 msgstr ""
@@ -488,7 +488,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/action_manager.js:0
+#: code:addons/iot/static/src/js/iot_report_action.js:0
 #, python-format
 msgid "Printer "
 msgstr ""
@@ -535,7 +535,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/action_manager.js:0
+#: code:addons/iot/static/src/js/iot_report_action.js:0
 #, python-format
 msgid "Successfully sent to printer!"
 msgstr ""

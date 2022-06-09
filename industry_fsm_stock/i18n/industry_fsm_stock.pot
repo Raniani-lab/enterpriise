@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 08:57+0000\n"
-"PO-Revision-Date: 2022-04-21 08:57+0000\n"
+"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"PO-Revision-Date: 2022-06-09 14:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -106,6 +106,11 @@ msgstr ""
 
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
+msgid "Lot/Serial number"
+msgstr ""
+
+#. module: industry_fsm_stock
+#: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
 msgid "On hand:"
 msgstr ""
 
@@ -134,11 +139,6 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
-
-#. module: industry_fsm_stock
-#: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
-msgid "Serial"
 msgstr ""
 
 #. module: industry_fsm_stock

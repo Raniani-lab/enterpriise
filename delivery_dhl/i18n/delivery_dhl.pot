@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:01+0000\n"
-"PO-Revision-Date: 2022-04-19 14:01+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -240,7 +240,7 @@ msgstr ""
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
-msgid "DHL doens't support products with name greater than 75 characters."
+msgid "DHL doesn't support products with name greater than 75 characters."
 msgstr ""
 
 #. module: delivery_dhl

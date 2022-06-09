@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 08:58+0000\n"
-"PO-Revision-Date: 2022-04-21 08:58+0000\n"
+"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"PO-Revision-Date: 2022-06-09 14:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -41,14 +41,6 @@ msgid "*For orders over $39."
 msgstr ""
 
 #. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bignews_template
-msgid ""
-".\n"
-"                <br/>We will continue to offer the same friendly service at our new address on <strong>1600 Main Street</strong>,\n"
-"                <br/>which will allow us to offer an even larger selection of products and services."
-msgstr ""
-
-#. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid "24/7 <br/>Customer Service"
 msgstr ""
@@ -56,6 +48,16 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "5 Ways Drones Can Better Your Live Events"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
+msgid "<font style=\"background-color: rgb(231, 148, 57);\">TRAVEL</font>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
+msgid "<font style=\"background-color: rgb(231, 99, 99);\">LIFESTYLE</font>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -67,8 +69,13 @@ msgid ""
 msgstr ""
 
 #. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
+msgid "<font style=\"background-color: rgb(57, 123, 33);\">FOOD</font>"
+msgstr ""
+
+#. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
-msgid "<font style=\"color: rgb(173, 173, 173);\">Unsubscribe</font>"
+msgid "<font style=\"color: rgb(147, 146, 146);\">Unsubscribe</font>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -82,14 +89,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_vip_template
 msgid ""
 "<font style=\"color: rgb(255, 255, 255);\">EXCLUSIVE</font>\n"
-"                        <br/><strong><font style=\"color: rgb(255, 255, 255);\">DEALS</font></strong>"
+"                        <br/><span style=\"font-weight: bolder\"><font style=\"color: rgb(255, 255, 255);\">DEALS</font></span>"
 msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_vip_template
 msgid ""
 "<font style=\"color: rgb(255, 255, 255);\">FREE</font>\n"
-"                        <br/><strong><font style=\"color: rgb(255, 255, 255);\">SHIPPING</font></strong>"
+"                        <br/><span style=\"font-weight: bolder\"><font style=\"color: rgb(255, 255, 255);\">SHIPPING</font></span>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -105,20 +112,10 @@ msgid ""
 msgstr ""
 
 #. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_vip_template
-msgid "<font style=\"color: rgb(255, 255, 255);\">VIP10</font>"
-msgstr ""
-
-#. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid ""
 "<font style=\"color: rgb(255, 255, 255);\">Zero, zilch, nada! Odoo "
 "Experience is free for everyone!</font>"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
-msgid "<font style=\"color: rgb(54, 166, 210);\">READ MORE</font>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -129,32 +126,6 @@ msgid ""
 msgstr ""
 
 #. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bignews_template
-msgid ""
-"<small>\n"
-"                    <strong>Michael Fletcher</strong><br/>\n"
-"                    <small class=\"\">Community Manager</small>\n"
-"                </small>"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-msgid ""
-"<span class=\"fa fa-copyright\" role=\"img\" aria-label=\"Copyright\" "
-"title=\"Copyright\" style=\"color: rgb(137, 101, 1) !important;\">©</span>"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bignews_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_vip_template
-msgid ""
-"<span class=\"fa fa-copyright\" role=\"img\" aria-label=\"Copyright\" "
-"title=\"Copyright\">©</span>"
-msgstr ""
-
-#. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
 msgid "<span class=\"fa fa-play\"/>&amp;nbsp;&amp;nbsp;WATCH VIDEO"
 msgstr ""
@@ -162,42 +133,29 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid ""
-"<span style=\"color: rgb(255, 187, 0) !important;\" class=\"fa fa-2x fa-sun-o\"/>&amp;nbsp;\n"
-"                            <span style=\"font-size: 24px;\"><font style=\"font-weight: bolder; color: rgb(255, 255, 255); background-color: rgb(255, 187, 0);\">&amp;nbsp;SOLAR&amp;nbsp;</font></span>"
+"<span style=\"color: rgb(255, 187, 0) !important;\" class=\"fa fa-2x fa-"
+"sun-o\"/>&amp;nbsp;"
 msgstr ""
 
 #. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
 msgid ""
-"<span style=\"font-size: 14px; font-weight: bolder;\">\n"
-"                                <font style=\"background-color: rgb(57, 123, 33); color: rgb(255, 255, 255);\">FOOD</font>\n"
+"<span style=\"font-size: 24px;\"><font style=\"font-weight: bolder; color: "
+"rgb(255, 255, 255); background-color: rgb(255, 187, "
+"0);\">SOLAR</font></span>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+msgid ""
+"<span style=\"font-weight: bolder\">\n"
+"                                <font style=\"background-color: rgb(255, 255, 255); color: rgb(255, 187, 0);\">SOLAR</font>\n"
 "                            </span>"
 msgstr ""
 
 #. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
-msgid "<span style=\"font-size: 18px; font-weight: bolder;\">IN THIS ISSUE</span>"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
-msgid ""
-"<span style=\"font-weight: bolder;\">\n"
-"                                    <font style=\"background-color: rgb(231, 99, 99); color: rgb(255, 255, 255);\">LIFESTYLE</font>\n"
-"                                </span>"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
-msgid ""
-"<span style=\"font-weight: bolder;\">\n"
-"                                    <font style=\"color: rgb(255, 255, 255); background-color: rgb(231, 148, 57);\">TRAVEL</font>\n"
-"                                </span>"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
-msgid "<span style=\"font-weight: bolder;\">THE DAILY</span>"
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_vip_template
+msgid "<span style=\"font-weight: bolder;\">VIP10</span>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -205,19 +163,6 @@ msgstr ""
 msgid ""
 "<span style=\"font-weight: bolder;\">View online</span>&amp;nbsp;<span "
 "class=\"fa fa-external-link\"/>"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_tech_template
-msgid "<span title=\"Copyright\" class=\"fa fa-copyright\">​©</span>"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-msgid ""
-"<strong>\n"
-"                                <font style=\"background-color: rgb(255, 255, 255); color: rgb(255, 187, 0);\">SOLAR</font>\n"
-"                            </strong>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -313,11 +258,6 @@ msgid ""
 msgstr ""
 
 #. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bignews_template
-msgid "Demo Signature"
-msgstr ""
-
-#. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
 msgid "Destinations for an eco-holiday"
 msgstr ""
@@ -327,6 +267,11 @@ msgstr ""
 msgid ""
 "Destinations for an eco-holiday&amp;nbsp;\n"
 "                                <span class=\"fa fa-angle-right\"/>"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
+msgid "ENDOFSUMMER20"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -400,6 +345,11 @@ msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
+msgid "IN THIS ISSUE"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
 msgid ""
 "Imagine waking up with more energy, more flexibility, with less stress and "
 "fewer instances of anxiously rushing out the door."
@@ -421,7 +371,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
 msgid ""
 "Issue\n"
-"                        <br/><strong>#42</strong>"
+"                        <br/><span style=\"font-weight: bolder;\">#42</span>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -457,6 +407,13 @@ msgstr ""
 msgid ""
 "Meet (other) awesome members\n"
 "                                    <br/>of the community"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bignews_template
+msgid ""
+"Michael Fletcher<br/>\n"
+"               <span style=\"font-size: 12px; font-weight: bolder;\">Customer Service</span>"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -526,6 +483,16 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bignews_template
 msgid "See you there,"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bignews_template
+msgid "Signature"
+msgstr ""
+
+#. module: mass_mailing_themes
+#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bold_template
+msgid "THE DAILY"
 msgstr ""
 
 #. module: mass_mailing_themes
@@ -599,16 +566,12 @@ msgstr ""
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_bignews_template
 msgid ""
-"We are proud to announce that due to our remarkable growth in the "
-"Springfield area, we will be relocating to a new location on"
+"We are proud to announce that due to our remarkable growth in the Springfield area, we are moving to a new location on July 1.\n"
+"               <br/>We will continue to offer the same friendly service at our new address on <span style=\"font-weight: bolder\">1600 Main Street</span>,\n"
+"               <br/>which will allow us to offer an even larger selection of products and services."
 msgstr ""
 
 #. module: mass_mailing_themes
 #: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_newsletter_template
 msgid "Your Logo"
-msgstr ""
-
-#. module: mass_mailing_themes
-#: model_terms:ir.ui.view,arch_db:mass_mailing_themes.theme_solar_template
-msgid "code: SALE10"
 msgstr ""

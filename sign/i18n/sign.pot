@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:01+0000\n"
-"PO-Revision-Date: 2022-04-19 14:01+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -492,6 +492,13 @@ msgstr ""
 #: model:ir.model.fields,help:sign.field_sign_request__refusal_allowed
 #: model:ir.model.fields,help:sign.field_sign_send_request__refusal_allowed
 msgid "Allow the contacts to refuse the document for a specific reason."
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
+msgid ""
+"Allow users to define a signing order, where recipients are only notified "
+"when it is their turn to sign."
 msgstr ""
 
 #. module: sign
@@ -1104,6 +1111,12 @@ msgid "Employee: Send file to sign"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_res_config_settings__group_show_sign_order
+#: model:res.groups,name:sign.show_sign_order
+msgid "Enable Signing Order"
+msgstr ""
+
+#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
@@ -1590,6 +1603,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_log__longitude
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__longitude
 msgid "Longitude"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__mail_sent_order
+msgid "Mail Sent Order"
 msgstr ""
 
 #. module: sign
@@ -2493,6 +2511,11 @@ msgid "Sign Now"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__mail_sent_order
+msgid "Sign Order"
+msgstr ""
+
+#. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__sign_request_id
 msgid "Sign Request"
 msgstr ""
@@ -2623,7 +2646,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/components/sign_request/sign_request.js:0
+#: code:addons/sign/static/src/models/sign_request_view.js:0
 #: model:ir.actions.act_window,name:sign.action_sign_send_request
 #: model:ir.model,name:sign.model_sign_request
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_request_id
@@ -2712,6 +2735,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.portal_my_home_sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "Signatures"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,help:sign.field_sign_send_request__set_sign_order
+msgid "Signatures will be requested from lowest order to highest order."
 msgstr ""
 
 #. module: sign
@@ -2808,6 +2836,11 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sorry, you cannot refuse this document"
+msgstr ""
+
+#. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_send_request__set_sign_order
+msgid "Specify Signing Order"
 msgstr ""
 
 #. module: sign
@@ -3093,12 +3126,6 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The signature mail has been sent to: "
-msgstr ""
-
-#. module: sign
-#: code:addons/sign/models/sign_request.py:0
-#, python-format
-msgid "The signature mail has been sent to: %s(%s)"
 msgstr ""
 
 #. module: sign

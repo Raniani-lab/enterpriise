@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:56+0000\n"
-"PO-Revision-Date: 2021-07-12 07:56+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,56 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid " and"
-msgstr ""
-
-#. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid " on that day"
-msgstr ""
-
-#. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid " on the %(date)s"
-msgstr ""
-
-#. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid "%(employee)s is on time off%(period_leaves)s."
-msgstr ""
-
-#. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid "%(prefix)s from the %(dfrom)s %(tfrom)s to the %(dto)s %(tto)s"
-msgstr ""
-
-#. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid "%(prefix)s from the %(dfrom)s to the %(dto)s"
-msgstr ""
-
-#. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid "%(prefix)s on %(dfrom)s"
-msgstr ""
-
-#. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid "%(prefix)s%(date)s from the %(dfrom)s to the %(dto)s"
-msgstr ""
-
-#. module: planning_holidays
 #: model:ir.model.fields,field_description:planning_holidays.field_planning_slot__is_absent
-#: model_terms:ir.ui.view,arch_db:planning_holidays.planning_slot_view_search_inherit_planning_holidays
 msgid "Employees on Time Off"
 msgstr ""
 
@@ -86,7 +37,6 @@ msgid "Planning Shift"
 msgstr ""
 
 #. module: planning_holidays
-#: code:addons/planning_holidays/models/planning_slot.py:0
-#, python-format
-msgid "that day"
+#: model:ir.model,name:planning_holidays.model_resource_calendar_leaves
+msgid "Resource Time Off Detail"
 msgstr ""

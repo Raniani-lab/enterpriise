@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-17 19:57+0000\n"
-"PO-Revision-Date: 2022-03-17 19:57+0000\n"
+"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"PO-Revision-Date: 2022-06-09 14:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,6 @@ msgstr ""
 
 #. module: website_sale_account_avatax
 #: code:addons/website_sale_account_avatax/controllers/main.py:0
-#: code:addons/website_sale_account_avatax/controllers/main.py:0
 #, python-format
 msgid ""
 "This address does not appear to be valid. Please make sure it has been "
@@ -25,7 +24,6 @@ msgid ""
 msgstr ""
 
 #. module: website_sale_account_avatax
-#: code:addons/website_sale_account_avatax/controllers/main.py:0
 #: code:addons/website_sale_account_avatax/controllers/main.py:0
 #, python-format
 msgid "Validation Error"

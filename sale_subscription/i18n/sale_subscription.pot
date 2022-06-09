@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 08:56+0000\n"
-"PO-Revision-Date: 2022-04-21 08:56+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -344,7 +344,7 @@ msgid ""
 "                <tr><td valign=\"middle\">\n"
 "                    <t t-set=\"company\" t-value=\"object.company_id or object.invoice_user_id.company_id or user.company_id\"/>\n"
 "                    <span style=\"font-size: 10px;\">Your Subscription</span><br/>\n"
-"                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"ctx.get('code') or 'Document'\">Document</span>\n"
+"                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"ctx.get('code', ctx.get('subscription_name')) or 'Document'\">Document</span>\n"
 "                </td></tr>\n"
 "                <tr><td valign=\"middle\" align=\"right\">\n"
 "                    <img t-attf-src=\"/logo.png?company={{ company.id }}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" t-att-alt=\"company.name\"/>\n"
@@ -361,7 +361,10 @@ msgid ""
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                    Dear <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>,<br/><br/>\n"
-"                    Your Subscription (<t t-out=\"ctx.get('code') or ''\">CODE</t>) has just been renewed\n"
+"                    Your Subscription (<t t-out=\"ctx.get('subscription_name') or ''\">CODE</t>\n"
+"                    <t t-if=\"ctx.get('code')\">\n"
+"                    , Reference: <t t-out=\"ctx.get('code')\"/>\n"
+"                    </t>) has just been renewed\n"
 "                    <t t-if=\"ctx.get('total_amount') and ctx.get('payment_token')\">\n"
 "                        via a payment of <t t-out=\"ctx.get('total_amount') or ''\">100</t> <t t-out=\"ctx.get('currency_name') or ''\">$</t> charged on <t t-out=\"ctx.get('payment_token') or ''\">PAYMENT_TOKEN</t>.\n"
 "                    </t>\n"
@@ -632,6 +635,7 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__account_tag_ids
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Account Tags"
 msgstr ""
 
@@ -1042,13 +1046,9 @@ msgid "Country"
 msgstr ""
 
 #. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Create Invoice"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
-msgid "Create Recurring Invoice"
 msgstr ""
 
 #. module: sale_subscription
@@ -1570,7 +1570,8 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_success
-msgid "Invoice for subscription {{ ctx.get('code') }}"
+msgid ""
+"Invoice for subscription {{ ctx.get('code', ctx.get('subscription_name')) }}"
 msgstr ""
 
 #. module: sale_subscription
@@ -1583,7 +1584,8 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success
 msgid ""
-"Invoice_{{ ctx.get('code') }}_{{ format_date(ctx.get('previous_date')) }}"
+"Invoice_{{ ctx.get('code', ctx.get('subscription_name')) }}_{{ "
+"format_date(ctx.get('previous_date')) }}"
 msgstr ""
 
 #. module: sale_subscription
@@ -2037,7 +2039,9 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_reminder
-msgid "Payment reminder for subscription {{ object.client_order_ref }}"
+msgid ""
+"Payment reminder for subscription {{ object.client_order_ref or object.name "
+"}}"
 msgstr ""
 
 #. module: sale_subscription
@@ -2103,6 +2107,8 @@ msgid "Product Template"
 msgstr ""
 
 #. module: sale_subscription
+#: model:ir.actions.act_window,name:sale_subscription.product_action_subscription
+#: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_product
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Products"
 msgstr ""
@@ -2149,6 +2155,11 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action
 #: model:ir.ui.menu,name:sale_subscription.menu_template_of_subscription
 msgid "Quotation Templates"
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_template_ids
+msgid "Quotation templates"
 msgstr ""
 
 #. module: sale_subscription
@@ -2233,6 +2244,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_line_view_tree
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Recurrency"
 msgstr ""
 
@@ -2378,6 +2390,11 @@ msgstr ""
 #: model:ir.cron,cron_name:sale_subscription.account_analytic_cron
 #: model:ir.cron,name:sale_subscription.account_analytic_cron
 msgid "Sale Subscription: subscriptions expiration"
+msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.account_analytic_account_view_inherit_sale_subscription
+msgid "Sales"
 msgstr ""
 
 #. module: sale_subscription
@@ -2678,8 +2695,6 @@ msgid "Subscription Product"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.actions.act_window,name:sale_subscription.product_action_subscription
-#: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_product
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
 msgid "Subscription Products"
 msgstr ""
@@ -2713,11 +2728,6 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
 msgid "Subscription Template"
-msgstr ""
-
-#. module: sale_subscription
-#: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_template_ids
-msgid "Subscription Templates"
 msgstr ""
 
 #. module: sale_subscription
@@ -2798,7 +2808,6 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_action
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report_pivot
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_root
-#: model_terms:ir.ui.view,arch_db:sale_subscription.account_analytic_account_view_inherit_sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_home_menu_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_home_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -2855,7 +2864,6 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__tag_ids
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Tags"
 msgstr ""
 
@@ -2912,7 +2920,8 @@ msgstr ""
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_close
-msgid "Termination of subscription {{ object.client_order_ref }}"
+msgid ""
+"Termination of subscription {{ object.client_order_ref or object.name }}"
 msgstr ""
 
 #. module: sale_subscription

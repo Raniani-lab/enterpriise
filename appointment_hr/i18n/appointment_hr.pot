@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:03+0000\n"
-"PO-Revision-Date: 2022-04-19 14:03+0000\n"
+"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"PO-Revision-Date: 2022-06-09 14:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,7 @@ msgstr ""
 msgid ""
 "Used to define this appointment type's category.\n"
 "        Can be one of:\n"
-"            - Website: the default category, the people can access and shedule the appointment with users from the website\n"
+"            - Website: the default category, the people can access and schedule the appointment with users from the website\n"
 "            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots\n"
 "            - Work Hours: a special type of appointment type that is used by one user and which takes the working hours of this\n"
 "                user as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots\n"
@@ -80,4 +80,11 @@ msgstr ""
 #. module: appointment_hr
 #: model:ir.model.fields.selection,name:appointment_hr.selection__appointment_type__category__work_hours
 msgid "Work Hours"
+msgstr ""
+
+#. module: appointment_hr
+#. openerp-web
+#: code:addons/appointment_hr/static/src/xml/appointment_scheduling.xml:0
+#, python-format
+msgid "appointments.length !== 0 || context_user_has_employee"
 msgstr ""

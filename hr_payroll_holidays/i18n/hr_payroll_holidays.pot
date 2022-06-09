@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:01+0000\n"
-"PO-Revision-Date: 2022-04-19 14:01+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgstr ""
 
 #. module: hr_payroll_holidays
 #: model:ir.actions.server,name:hr_payroll_holidays.ir_actions_server_mark_as_reported
-msgid "Mark as defered"
+msgid "Mark as deferred"
 msgstr ""
 
 #. module: hr_payroll_holidays
@@ -77,8 +77,8 @@ msgstr ""
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid ""
-"Not enough attendance work entries to report the time off %s. Plase make the"
-" operation manually"
+"Not enough attendance work entries to report the time off %s. Please make "
+"the operation manually"
 msgstr ""
 
 #. module: hr_payroll_holidays

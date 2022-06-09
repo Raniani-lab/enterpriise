@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:02+0000\n"
-"PO-Revision-Date: 2022-04-19 14:02+0000\n"
+"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"PO-Revision-Date: 2022-06-09 14:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,6 +23,15 @@ msgid ""
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_kanban_inherited
+msgid ""
+"<i class=\"fa fa-long-arrow-right mx-2 oe_read_only\" aria-label=\"Arrow "
+"icon\" title=\"Arrow\" attrs=\"{'invisible': [('planned_date_begin', '=', "
+"False), ('planned_date_end', '=', False)]}\"/>"
+msgstr ""
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
 msgstr ""
@@ -45,8 +54,19 @@ msgid "<strong>Assignees — </strong>"
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<strong>Customer — </strong>"
+msgstr ""
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
+msgid "<strong>Milestone — </strong>"
+msgstr ""
+
+#. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
+msgid "<strong>Project Manager — </strong>"
 msgstr ""
 
 #. module: project_enterprise
@@ -104,6 +124,12 @@ msgid "End date"
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view_no_title
+msgid "Milestone"
+msgstr ""
+
+#. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_mobile
 msgid "Mobile"
 msgstr ""
@@ -134,12 +160,14 @@ msgid "Planned Date"
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "Planning"
 msgstr ""
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__planning_overlap
+#: model:ir.model.fields,field_description:project_enterprise.field_report_project_task_user__planning_overlap
 msgid "Planning Overlap"
 msgstr ""
 
@@ -197,6 +225,7 @@ msgid "Tasks Analysis"
 msgstr ""
 
 #. module: project_enterprise
+#: model_terms:ir.ui.view,arch_db:project_enterprise.report_project_task_user_view_search_inherited
 #: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_search_form_inherit_enterprise
 msgid "Tasks in Conflict"
 msgstr ""

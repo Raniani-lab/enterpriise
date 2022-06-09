@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~13.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-01 07:38+0000\n"
-"PO-Revision-Date: 2020-09-01 07:38+0000\n"
+"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"PO-Revision-Date: 2022-06-09 14:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -130,11 +130,6 @@ msgid "Company"
 msgstr ""
 
 #. module: data_cleaning
-#: model:ir.ui.menu,name:data_cleaning.menu_data_cleaning_config
-msgid "Configuration"
-msgstr ""
-
-#. module: data_cleaning
 #: model_terms:ir.actions.act_window,help:data_cleaning.action_data_cleaning_record
 #: model_terms:ir.actions.act_window,help:data_cleaning.action_data_cleaning_record_notification
 msgid "Configure rules to identify records to clean"
@@ -162,11 +157,6 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__current_value
 msgid "Current"
-msgstr ""
-
-#. module: data_cleaning
-#: model:ir.ui.menu,name:data_cleaning.menu_data_cleaning_root
-msgid "Data Cleaning"
 msgstr ""
 
 #. module: data_cleaning
@@ -382,7 +372,6 @@ msgstr ""
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__rule_ids
-#: model:ir.ui.menu,name:data_cleaning.menu_data_cleaning_config_rules
 msgid "Rules"
 msgstr ""
 

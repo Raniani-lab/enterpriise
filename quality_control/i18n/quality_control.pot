@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-16 13:42+0000\n"
-"PO-Revision-Date: 2021-11-16 13:42+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -504,7 +504,7 @@ msgid "Lot/SN"
 msgstr ""
 
 #. module: quality_control
-#: model:ir.model,name:quality_control.model_stock_production_lot
+#: model:ir.model,name:quality_control.model_stock_lot
 msgid "Lot/Serial"
 msgstr ""
 
@@ -807,6 +807,7 @@ msgstr ""
 #: code:addons/quality_control/models/quality.py:0
 #: model:ir.actions.act_window,name:quality_control.action_quality_check_wizard
 #: model:ir.model,name:quality_control.model_quality_check
+#: model_terms:ir.ui.view,arch_db:quality_control.view_stock_move_line_detailed_operation_tree_inherit_quality
 #, python-format
 msgid "Quality Check"
 msgstr ""
@@ -835,7 +836,7 @@ msgid "Quality Check Picture"
 msgstr ""
 
 #. module: quality_control
-#: model:ir.model.fields,field_description:quality_control.field_stock_production_lot__quality_check_qty
+#: model:ir.model.fields,field_description:quality_control.field_stock_lot__quality_check_qty
 msgid "Quality Check Qty"
 msgstr ""
 

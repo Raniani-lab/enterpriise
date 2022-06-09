@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:01+0000\n"
-"PO-Revision-Date: 2022-04-19 14:01+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -48,8 +48,14 @@ msgid "Anything else to add?"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#: model:ir.actions.act_window,name:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
 #: model:ir.ui.menu,name:website_helpdesk_livechat.helpdesk_team_canned_response_menu
 msgid "Canned Responses"
+msgstr ""
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.im_livechat_canned_response_view_search
+msgid "Canned Responses Search"
 msgstr ""
 
 #. module: website_helpdesk_livechat
@@ -147,6 +153,11 @@ msgid "No"
 msgstr ""
 
 #. module: website_helpdesk_livechat
+#: model_terms:ir.actions.act_window,help:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
+msgid "No canned reponses found. Let's create one!"
+msgstr ""
+
+#. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -221,6 +232,14 @@ msgstr ""
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_issue
 msgid "We're all set. Now, what is your issue?"
+msgstr ""
+
+#. module: website_helpdesk_livechat
+#: model_terms:ir.actions.act_window,help:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
+msgid ""
+"With canned responses, you can type <i>:shortcuts</i> to insert prewritten "
+"responses into your messages. These shortcuts are replaced directly in your "
+"messages so that you can still make changes before sending them."
 msgstr ""
 
 #. module: website_helpdesk_livechat

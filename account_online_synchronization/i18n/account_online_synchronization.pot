@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:01+0000\n"
-"PO-Revision-Date: 2022-04-19 14:01+0000\n"
+"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"PO-Revision-Date: 2022-06-09 14:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -48,14 +48,12 @@ msgid "Account Number"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_import_journal_creation__account_online_account_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__account_online_account_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__account_online_account_ids
 msgid "Account Online Account"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_import_journal_creation__account_online_link_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_link_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__account_online_link_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__account_online_link_id
@@ -272,7 +270,6 @@ msgid "Created on"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_import_journal_creation__bank_statement_creation_groupby
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__bank_statement_creation_groupby
 msgid "Creation of Bank Statements"
 msgstr ""
@@ -283,14 +280,12 @@ msgid "Currency"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,help:account_online_synchronization.field_account_bank_statement_import_journal_creation__expiring_synchronization_date
 #: model:ir.model.fields,help:account_online_synchronization.field_account_journal__expiring_synchronization_date
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__expiring_synchronization_date
 msgid "Date when the consent for this connection expires"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,help:account_online_synchronization.field_account_bank_statement_import_journal_creation__bank_statement_creation_groupby
 #: model:ir.model.fields,help:account_online_synchronization.field_account_journal__bank_statement_creation_groupby
 msgid ""
 "Defines when a new bank statement will be created when fetching new "
@@ -311,14 +306,12 @@ msgid "Error"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_import_journal_creation__expiring_synchronization_date
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__expiring_synchronization_date
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__expiring_synchronization_date
 msgid "Expiring Synchronization Date"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_import_journal_creation__expiring_synchronization_due_day
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__expiring_synchronization_due_day
 msgid "Expiring Synchronization Due Day"
 msgstr ""
@@ -398,6 +391,16 @@ msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: account_online_synchronization
+#: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_balance_sign
+msgid "If checked, the balance sign will be inverted"
+msgstr ""
+
+#. module: account_online_synchronization
+#: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_transaction_sign
+msgid "If checked, the transaction sign will be inverted"
+msgstr ""
+
+#. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__auto_sync
 msgid ""
 "If possible, we will try to automatically fetch new transactions for this "
@@ -406,7 +409,7 @@ msgstr ""
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__provider_data
-msgid "Information needed to interract with third party provider"
+msgid "Information needed to interact with third party provider"
 msgstr ""
 
 #. module: account_online_synchronization
@@ -424,6 +427,16 @@ msgstr ""
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Invalid value for proxy_mode config parameter."
+msgstr ""
+
+#. module: account_online_synchronization
+#: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_balance_sign
+msgid "Inverse Balance Sign"
+msgstr ""
+
+#. module: account_online_synchronization
+#: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_transaction_sign
+msgid "Inverse Transaction Sign"
 msgstr ""
 
 #. module: account_online_synchronization
@@ -612,7 +625,6 @@ msgid "Online Identifier"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_import_journal_creation__next_link_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__next_link_synchronization
 msgid "Online Link Next synchronization"
 msgstr ""
@@ -691,7 +703,6 @@ msgid "Set if third party provider has the full account number"
 msgstr ""
 
 #. module: account_online_synchronization
-#: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_import_journal_creation__account_online_link_state
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__account_online_link_state
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__state
 msgid "State"
@@ -810,6 +821,7 @@ msgid "You can not link two accounts to the same journal."
 msgstr ""
 
 #. module: account_online_synchronization
+#: code:addons/account_online_synchronization/models/account_journal.py:0
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "You cannot have two journals associated with the same Online Account."

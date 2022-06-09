@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-17 20:02+0000\n"
-"PO-Revision-Date: 2022-03-17 20:02+0000\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-06-09 14:09+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_avatax
-#: code:addons/account_avatax/models/account_avatax.py:0
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "%(response)s"
@@ -96,7 +95,6 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
-#: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid ""
 "Address validation is currently disabled, please enable it in the Accounting"
@@ -104,7 +102,6 @@ msgid ""
 msgstr ""
 
 #. module: account_avatax
-#: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid "Address validation is only supported for North American addresses."
@@ -312,7 +309,6 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
-#: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
 "Customers are required to have a zip, state and country when using Avatax."
@@ -325,20 +321,9 @@ msgid "Description"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model.fields,field_description:account_avatax.field_account_avatax__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_account_avatax_unique_code__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_account_fiscal_position__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_account_move__display_name
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__display_name
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_payment_link_wizard__display_name
 #: model:ir.model.fields,field_description:account_avatax.field_product_avatax_category__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_product_category__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_product_product__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_product_template__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_res_company__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:account_avatax.field_res_partner__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -359,26 +344,14 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
-#: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "Go to the configuration panel"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model.fields,field_description:account_avatax.field_account_avatax__id
-#: model:ir.model.fields,field_description:account_avatax.field_account_avatax_unique_code__id
-#: model:ir.model.fields,field_description:account_avatax.field_account_fiscal_position__id
-#: model:ir.model.fields,field_description:account_avatax.field_account_move__id
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__id
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__id
-#: model:ir.model.fields,field_description:account_avatax.field_payment_link_wizard__id
 #: model:ir.model.fields,field_description:account_avatax.field_product_avatax_category__id
-#: model:ir.model.fields,field_description:account_avatax.field_product_category__id
-#: model:ir.model.fields,field_description:account_avatax.field_product_product__id
-#: model:ir.model.fields,field_description:account_avatax.field_product_template__id
-#: model:ir.model.fields,field_description:account_avatax.field_res_company__id
-#: model:ir.model.fields,field_description:account_avatax.field_res_config_settings__id
-#: model:ir.model.fields,field_description:account_avatax.field_res_partner__id
 msgid "ID"
 msgstr ""
 
@@ -401,20 +374,9 @@ msgid "Journal Entry"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model.fields,field_description:account_avatax.field_account_avatax____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_account_avatax_unique_code____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_account_fiscal_position____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_account_move____last_update
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption____last_update
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_payment_link_wizard____last_update
 #: model:ir.model.fields,field_description:account_avatax.field_product_avatax_category____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_product_category____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_product_product____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_product_template____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_res_company____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_res_partner____last_update
 msgid "Last Modified on"
 msgstr ""
 
@@ -449,7 +411,6 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
-#: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
 "Odoo could not change the state of the transaction related to %(document)s in AvaTax\n"
@@ -458,13 +419,11 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/res_company.py:0
-#: code:addons/account_avatax/models/res_company.py:0
 #, python-format
 msgid "Odoo could not fetch the exemption codes of %(company)s"
 msgstr ""
 
 #. module: account_avatax
-#: code:addons/account_avatax/models/account_avatax.py:0
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
@@ -474,13 +433,11 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
-#: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid "Odoo could not validate the address of %(partner)s with Avalara."
 msgstr ""
 
 #. module: account_avatax
-#: code:addons/account_avatax/models/account_avatax.py:0
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
@@ -499,7 +456,6 @@ msgid "Partner"
 msgstr ""
 
 #. module: account_avatax
-#: code:addons/account_avatax/models/account_avatax.py:0
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "Please add your AvaTax credentials"
@@ -537,13 +493,11 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax_unique_code.py:0
-#: code:addons/account_avatax/models/account_avatax_unique_code.py:0
 #, python-format
 msgid "Search operation not supported"
 msgstr ""
 
 #. module: account_avatax
-#: code:addons/account_avatax/models/res_company.py:0
 #: code:addons/account_avatax/models/res_company.py:0
 #, python-format
 msgid ""
@@ -609,7 +563,6 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
-#: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
 "The Avalara Tax Code is required for %(name)s (#%(id)s)\n"
@@ -666,7 +619,6 @@ msgstr ""
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/res_partner.py:0
-#: code:addons/account_avatax/models/res_partner.py:0
 #, python-format
 msgid "Validate address of %s"
 msgstr ""
@@ -720,7 +672,6 @@ msgid "Zip Code"
 msgstr ""
 
 #. module: account_avatax
-#: code:addons/account_avatax/models/product.py:0
 #: code:addons/account_avatax/models/product.py:0
 #, python-format
 msgid "[%s] %s"

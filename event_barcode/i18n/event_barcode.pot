@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"PO-Revision-Date: 2022-06-09 14:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: event_barcode
-#: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
-msgid "&amp;nbsp;"
-msgstr ""
-
-#. module: event_barcode
-#: model_terms:ir.ui.view,arch_db:event_barcode.report_event_template_badge
+#: model_terms:ir.ui.view,arch_db:event_barcode.event_report_template_foldable_badge_inherit_barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.event_report_template_full_page_ticket_inherit_barcode
 msgid ""
 "<i class=\"fa-2x fa fa-barcode\" title=\"Barcode\" role=\"img\" aria-"
 "label=\"Barcode\"/>"
@@ -31,6 +27,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #: model:ir.model.fields,field_description:event_barcode.field_event_registration__barcode
+#: model_terms:ir.ui.view,arch_db:event_barcode.event_report_template_full_page_ticket_inherit_barcode
 #, python-format
 msgid "Barcode"
 msgstr ""

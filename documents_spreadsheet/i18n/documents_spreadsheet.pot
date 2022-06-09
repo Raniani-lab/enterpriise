@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 08:57+0000\n"
-"PO-Revision-Date: 2022-04-21 08:57+0000\n"
+"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"PO-Revision-Date: 2022-06-09 14:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -32,6 +32,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/models/spreadsheet_template.py:0
 #, python-format
 msgid "%s (copy)"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/actions/spreadsheet_component.js:0
+#, python-format
+msgid "%s - Template"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -296,6 +303,20 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/list/side_panels/listing_all_side_panel.js:0
+#, python-format
+msgid "Are you sure you want to delete this list ?"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/pivot/side_panels/pivot_list_side_panel.js:0
+#, python-format
+msgid "Are you sure you want to delete this pivot ?"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Are you sure you want to delete this sheet ?"
@@ -522,6 +543,20 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Clear columns %s - %s"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Clear formatting"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
+#, python-format
+msgid "Clear history"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -865,6 +900,18 @@ msgid "Currency"
 msgstr ""
 
 #. module: documents_spreadsheet
+#: model:ir.model,name:documents_spreadsheet.model_res_currency_rate
+msgid "Currency Rate"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/currency_rate/currency_data_source.js:0
+#, python-format
+msgid "Currency rate unavailable."
+msgstr ""
+
+#. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
@@ -935,6 +982,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Data not available"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
 msgid "Data series include title"
@@ -964,7 +1018,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/bundle/pivot/pivot_helpers.js:0
+#: code:addons/documents_spreadsheet/static/src/assets/helpers.js:0
 #, python-format
 msgid "Day"
 msgstr ""
@@ -1006,8 +1060,10 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/list/side_panels/listing_all_side_panel.xml:0
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#: code:addons/documents_spreadsheet/static/src/bundle/pivot/side_panels/pivot_list_side_panel.xml:0
 #, python-format
 msgid "Delete"
 msgstr ""
@@ -1281,6 +1337,20 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/assets/components/filter_date_value.js:0
 #, python-format
 msgid "February"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/pivot/pivot_model.js:0
+#, python-format
+msgid "Field %s does not exist"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/pivot/pivot_model.js:0
+#, python-format
+msgid "Field %s is not supported because of its type (%s)"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -1664,6 +1734,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Hide rows %s - %s"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Hide sheet"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2348,6 +2425,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/chart/odoo_menu/chart_panel.xml:0
+#, python-format
+msgid "Link to Odoo Menu"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #, python-format
 msgid "List Name"
@@ -2363,6 +2447,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/currency_rate/plugins/currency.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/list/list_model.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/list/plugins/list_structure_plugin.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/list/plugins/list_structure_plugin.js:0
@@ -2490,14 +2575,6 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/assets/components/filter_date_value.js:0
 #, python-format
 msgid "May"
-msgstr ""
-
-#. module: documents_spreadsheet
-#. openerp-web
-#: code:addons/documents_spreadsheet/static/src/bundle/pivot/plugins/pivot_autofill_plugin.js:0
-#: code:addons/documents_spreadsheet/static/src/bundle/pivot/plugins/pivot_autofill_plugin.js:0
-#, python-format
-msgid "Measure"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -2646,8 +2723,8 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/assets/helpers.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#: code:addons/documents_spreadsheet/static/src/bundle/pivot/pivot_helpers.js:0
 #, python-format
 msgid "Month"
 msgstr ""
@@ -2700,6 +2777,27 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__name
 msgid "Name"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
+#, python-format
+msgid "Name of the link:"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
+#, python-format
+msgid "Name of the list:"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
+#, python-format
+msgid "Name of the pivot:"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3113,8 +3211,8 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/assets/helpers.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#: code:addons/documents_spreadsheet/static/src/bundle/pivot/pivot_helpers.js:0
 #, python-format
 msgid "Quarter"
 msgstr ""
@@ -3232,6 +3330,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/actions/control_panel/spreadsheet_name.xml:0
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/editable_name/editable_name.xml:0
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Rename"
@@ -3263,7 +3362,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
-msgid "Replace all\""
+msgid "Replace all"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3306,6 +3405,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Returns opposite of provided logical value."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Returns the error value #N/A."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -3430,6 +3536,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/global_filters/global_filter_side_panel.xml:0
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/editable_name/editable_name.xml:0
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.xml:0
 #, python-format
@@ -3509,6 +3616,14 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/assets/insert_action_link_menu/insert_action_link_menu_legacy.js:0
+#: code:addons/documents_spreadsheet/static/src/assets/insert_action_link_menu/insert_action_link_menu_owl.js:0
+#, python-format
+msgid "Select a spreadsheet to insert your link"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/assets/list_view/list_controller.js:0
 #, python-format
 msgid "Select a spreadsheet to insert your list"
@@ -3516,7 +3631,6 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #: code:addons/documents_spreadsheet/static/src/assets/pivot_view/pivot_view.js:0
 #, python-format
 msgid "Select a spreadsheet to insert your pivot"
@@ -4278,6 +4392,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "The provided anchor is invalid. The cell must be part of the zone."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "The range is invalid"
 msgstr ""
 
@@ -4517,6 +4638,13 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/list/list_functions.js:0
+#, python-format
+msgid "There is no list with id \"%s\""
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/pivot/pivot_functions.js:0
 #, python-format
 msgid "There is no pivot with id \"%s\""
@@ -4525,10 +4653,16 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "This formula depends on invalid values"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
-msgid "This formula depends on invalid values"
+msgid "This formula depends on invalid values: %s"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -4542,6 +4676,16 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/currency_rate/formulas.js:0
+#, python-format
+msgid ""
+"This function takes in two currency codes as arguments, and returns the "
+"exchange rate from the first currency to the second as float."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "This operation is not allowed with multiple selections."
@@ -4600,11 +4744,17 @@ msgstr ""
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/pivot/plugins/pivot_autofill_plugin.js:0
-#: code:addons/documents_spreadsheet/static/src/bundle/pivot/plugins/pivot_autofill_plugin.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/pivot/plugins/pivot_structure_plugin.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/pivot/spreadsheet_pivot_dialog.js:0
 #, python-format
 msgid "Total"
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.xml:0
+#, python-format
+msgid "Treat labels as text"
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -4827,7 +4977,7 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
-#: code:addons/documents_spreadsheet/static/src/bundle/pivot/pivot_helpers.js:0
+#: code:addons/documents_spreadsheet/static/src/assets/helpers.js:0
 #, python-format
 msgid "Week"
 msgstr ""
@@ -4878,6 +5028,13 @@ msgstr ""
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
+msgid "Whether a value is an error other than #N/A."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
 msgid "Whether a value is an error."
 msgstr ""
 
@@ -4893,6 +5050,13 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
 #, python-format
 msgid "Whether a value is text."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. openerp-web
+#: code:addons/documents_spreadsheet/static/src/bundle/o_spreadsheet/o_spreadsheet.js:0
+#, python-format
+msgid "Whether a value is the error #N/A."
 msgstr ""
 
 #. module: documents_spreadsheet
@@ -4932,8 +5096,8 @@ msgstr ""
 
 #. module: documents_spreadsheet
 #. openerp-web
+#: code:addons/documents_spreadsheet/static/src/assets/helpers.js:0
 #: code:addons/documents_spreadsheet/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#: code:addons/documents_spreadsheet/static/src/bundle/pivot/pivot_helpers.js:0
 #, python-format
 msgid "Year"
 msgstr ""

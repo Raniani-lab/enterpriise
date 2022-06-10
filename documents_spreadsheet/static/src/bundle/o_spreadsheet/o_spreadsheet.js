@@ -262,7 +262,7 @@
             this.chart = new window.Chart(ctx, chartData);
         }
     }
-    ChartJsComponent.template = "o-spreadsheet.ChartJsComponent";
+    ChartJsComponent.template = "o-spreadsheet-ChartJsComponent";
     chartComponentRegistry.add("line", ChartJsComponent);
     chartComponentRegistry.add("bar", ChartJsComponent);
     chartComponentRegistry.add("pie", ChartJsComponent);
@@ -4389,7 +4389,7 @@
             (_b = (_a = this.props).onSelectionConfirmed) === null || _b === void 0 ? void 0 : _b.call(_a);
         }
     }
-    SelectionInput.template = "o-spreadsheet.SelectionInput";
+    SelectionInput.template = "o-spreadsheet-SelectionInput";
 
     class LineBarPieConfigPanel extends owl.Component {
         constructor() {
@@ -4451,7 +4451,7 @@
             });
         }
     }
-    LineBarPieConfigPanel.template = "o-spreadsheet.LineBarPieConfigPanel";
+    LineBarPieConfigPanel.template = "o-spreadsheet-LineBarPieConfigPanel";
     LineBarPieConfigPanel.components = { SelectionInput };
 
     class BarConfigPanel extends LineBarPieConfigPanel {
@@ -4461,7 +4461,7 @@
             });
         }
     }
-    BarConfigPanel.template = "o-spreadsheet.BarConfigPanel";
+    BarConfigPanel.template = "o-spreadsheet-BarConfigPanel";
 
     const COLORS = [
         [
@@ -4620,7 +4620,7 @@
             }
         }
     }
-    ColorPicker.template = "o-spreadsheet.ColorPicker";
+    ColorPicker.template = "o-spreadsheet-ColorPicker";
 
     class LineBarPieDesignPanel extends owl.Component {
         constructor() {
@@ -4649,12 +4649,12 @@
             });
         }
     }
-    LineBarPieDesignPanel.template = "o-spreadsheet.LineBarPieDesignPanel";
+    LineBarPieDesignPanel.template = "o-spreadsheet-LineBarPieDesignPanel";
     LineBarPieDesignPanel.components = { ColorPicker };
 
     class BarChartDesignPanel extends LineBarPieDesignPanel {
     }
-    BarChartDesignPanel.template = "o-spreadsheet.BarChartDesignPanel";
+    BarChartDesignPanel.template = "o-spreadsheet-BarChartDesignPanel";
 
     class GaugeChartConfigPanel extends owl.Component {
         constructor() {
@@ -4683,7 +4683,7 @@
             });
         }
     }
-    GaugeChartConfigPanel.template = "o-spreadsheet.GaugeChartConfigPanel";
+    GaugeChartConfigPanel.template = "o-spreadsheet-GaugeChartConfigPanel";
     GaugeChartConfigPanel.components = { SelectionInput };
 
     css /* scss */ `
@@ -4824,7 +4824,7 @@
             this.state.openedMenu = undefined;
         }
     }
-    GaugeChartDesignPanel.template = "o-spreadsheet.GaugeChartDesignPanel";
+    GaugeChartDesignPanel.template = "o-spreadsheet-GaugeChartDesignPanel";
     GaugeChartDesignPanel.components = { ColorPicker };
 
     /**
@@ -7029,11 +7029,11 @@
             });
         }
     }
-    LineConfigPanel.template = "o-spreadsheet.LineConfigPanel";
+    LineConfigPanel.template = "o-spreadsheet-LineConfigPanel";
 
     class LineChartDesignPanel extends LineBarPieDesignPanel {
     }
-    LineChartDesignPanel.template = "o-spreadsheet.LineChartDesignPanel";
+    LineChartDesignPanel.template = "o-spreadsheet-LineChartDesignPanel";
 
     class ScorecardChartConfigPanel extends owl.Component {
         constructor() {
@@ -7079,7 +7079,7 @@
             });
         }
     }
-    ScorecardChartConfigPanel.template = "o-spreadsheet.ScorecardChartConfigPanel";
+    ScorecardChartConfigPanel.template = "o-spreadsheet-ScorecardChartConfigPanel";
     ScorecardChartConfigPanel.components = { SelectionInput };
 
     class ScorecardChartDesignPanel extends owl.Component {
@@ -7118,7 +7118,7 @@
             this.state.openedColorPicker = undefined;
         }
     }
-    ScorecardChartDesignPanel.template = "o-spreadsheet.ScorecardChartDesignPanel";
+    ScorecardChartDesignPanel.template = "o-spreadsheet-ScorecardChartDesignPanel";
     ScorecardChartDesignPanel.components = { ColorPicker };
 
     const chartSidePanelComponentRegistry = new Registry();
@@ -7239,7 +7239,7 @@
             this.state.panel = panel;
         }
     }
-    ChartPanel.template = "o-spreadsheet.ChartPanel";
+    ChartPanel.template = "o-spreadsheet-ChartPanel";
 
     /**
      * Return true if the event was triggered from
@@ -7362,7 +7362,7 @@
             }
         }
     }
-    IconPicker.template = "o-spreadsheet.IconPicker";
+    IconPicker.template = "o-spreadsheet-IconPicker";
 
     // TODO vsc: add ordering of rules
     css /* scss */ `
@@ -8000,7 +8000,7 @@
             this.state.rules.iconSet.icons[target] = icon;
         }
     }
-    ConditionalFormattingPanel.template = "o-spreadsheet.ConditionalFormattingPanel";
+    ConditionalFormattingPanel.template = "o-spreadsheet-ConditionalFormattingPanel";
     ConditionalFormattingPanel.components = { SelectionInput, IconPicker, ColorPicker };
 
     css /* scss */ `
@@ -8136,7 +8136,7 @@
             return currency.name + (currency.code ? ` (${currency.code})` : "");
         }
     }
-    CustomCurrencyPanel.template = "o-spreadsheet.CustomCurrencyPanel";
+    CustomCurrencyPanel.template = "o-spreadsheet-CustomCurrencyPanel";
 
     css /* scss */ `
   .o-find-and-replace {
@@ -8270,7 +8270,7 @@
             };
         }
     }
-    FindAndReplacePanel.template = "o-spreadsheet.FindAndReplacePanel";
+    FindAndReplacePanel.template = "o-spreadsheet-FindAndReplacePanel";
 
     const sidePanelRegistry = new Registry();
     sidePanelRegistry.add("ConditionalFormatting", {
@@ -8466,7 +8466,7 @@
                 : keyValue;
         }
     }
-    ScorecardChart.template = "o-spreadsheet.ScorecardChart";
+    ScorecardChart.template = "o-spreadsheet-ScorecardChart";
     class BaselineElement {
         getElementWidth(fontSize, ctx, runtime) {
             if (!runtime)
@@ -8603,7 +8603,7 @@
             return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
         }
     }
-    Popover.template = "o-spreadsheet.Popover";
+    Popover.template = "o-spreadsheet-Popover";
     Popover.defaultProps = {
         flipHorizontalOffset: 0,
         flipVerticalOffset: 0,
@@ -8810,7 +8810,7 @@
             }
         }
     }
-    Menu.template = "o-spreadsheet.Menu";
+    Menu.template = "o-spreadsheet-Menu";
     Menu.components = { Menu, Popover };
     Menu.defaultProps = {
         depth: 1,
@@ -8918,7 +8918,7 @@
             return component;
         }
     }
-    ChartFigure.template = "o-spreadsheet.ChartFigure";
+    ChartFigure.template = "o-spreadsheet-ChartFigure";
     ChartFigure.components = { Menu };
 
     //------------------------------------------------------------------------------
@@ -24689,7 +24689,7 @@
             return fnName + ": " + (fnValue !== undefined ? formatValue(fnValue) : "__");
         }
     }
-    BottomBar.template = "o-spreadsheet.BottomBar";
+    BottomBar.template = "o-spreadsheet-BottomBar";
     BottomBar.components = { Menu };
 
     function startDnd(onMouseMove, onMouseUp) {
@@ -24870,7 +24870,7 @@
             this.env.model.dispatch("AUTOFILL_AUTO");
         }
     }
-    Autofill.template = "o-spreadsheet.Autofill";
+    Autofill.template = "o-spreadsheet-Autofill";
     class TooltipComponent extends owl.Component {
     }
     TooltipComponent.template = owl.xml /* xml */ `
@@ -24897,7 +24897,7 @@
             return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
         }
     }
-    ClientTag.template = "o-spreadsheet.ClientTag";
+    ClientTag.template = "o-spreadsheet-ClientTag";
 
     const functions$1 = functionRegistry.content;
     const providerRegistry = new Registry();
@@ -24993,7 +24993,7 @@
             return undefined;
         }
     }
-    TextValueProvider.template = "o-spreadsheet.TextValueProvider";
+    TextValueProvider.template = "o-spreadsheet-TextValueProvider";
 
     class ContentEditableHelper {
         constructor(el) {
@@ -25216,7 +25216,7 @@
             }, 2000);
         }
     }
-    FunctionDescriptionProvider.template = "o-spreadsheet.FunctionDescriptionProvider";
+    FunctionDescriptionProvider.template = "o-spreadsheet-FunctionDescriptionProvider";
 
     const functions = functionRegistry.content;
     const ASSISTANT_WIDTH = 300;
@@ -25675,7 +25675,7 @@
             this.processTokenAtCursor();
         }
     }
-    Composer.template = "o-spreadsheet.Composer";
+    Composer.template = "o-spreadsheet-Composer";
     Composer.components = { TextValueProvider, FunctionDescriptionProvider };
     Composer.defaultProps = {
         inputStyle: "",
@@ -25770,7 +25770,7 @@
     `;
         }
     }
-    GridComposer.template = "o-spreadsheet.GridComposer";
+    GridComposer.template = "o-spreadsheet-GridComposer";
     GridComposer.components = { Composer };
 
     css /* scss */ `
@@ -25783,7 +25783,7 @@
 `;
     class ErrorToolTip extends owl.Component {
     }
-    ErrorToolTip.template = "o-spreadsheet.ErrorToolTip";
+    ErrorToolTip.template = "o-spreadsheet-ErrorToolTip";
 
     // -----------------------------------------------------------------------------
     // STYLE
@@ -26035,7 +26035,7 @@
             }
         }
     }
-    FiguresContainer.template = "o-spreadsheet.FiguresContainer";
+    FiguresContainer.template = "o-spreadsheet-FiguresContainer";
     FiguresContainer.components = {};
     figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
 
@@ -26440,7 +26440,7 @@
             return this._getDimensionsInViewport(hiddenIndex).start;
         }
     }
-    ColResizer.template = "o-spreadsheet.ColResizer";
+    ColResizer.template = "o-spreadsheet-ColResizer";
     css /* scss */ `
   .o-row-resizer {
     position: absolute;
@@ -26614,7 +26614,7 @@
             return this._getDimensionsInViewport(hiddenIndex).start;
         }
     }
-    RowResizer.template = "o-spreadsheet.RowResizer";
+    RowResizer.template = "o-spreadsheet-RowResizer";
     css /* scss */ `
   .o-overlay {
     .all {
@@ -26632,7 +26632,7 @@
             this.env.model.selection.selectAll();
         }
     }
-    HeadersOverlay.template = "o-spreadsheet.HeadersOverlay";
+    HeadersOverlay.template = "o-spreadsheet-HeadersOverlay";
     HeadersOverlay.components = { ColResizer, RowResizer };
 
     css /* scss */ `
@@ -26676,7 +26676,7 @@
             this.props.onMoveHighlight(ev.clientX, ev.clientY);
         }
     }
-    Border.template = "o-spreadsheet.Border";
+    Border.template = "o-spreadsheet-Border";
 
     css /* scss */ `
   .o-corner {
@@ -26727,7 +26727,7 @@
             this.props.onResizeHighlight(this.isLeft, this.isTop);
         }
     }
-    Corner.template = "o-spreadsheet.Corner";
+    Corner.template = "o-spreadsheet-Corner";
 
     class Highlight extends owl.Component {
         constructor() {
@@ -26818,7 +26818,7 @@
             dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
         }
     }
-    Highlight.template = "o-spreadsheet.Highlight";
+    Highlight.template = "o-spreadsheet-Highlight";
     Highlight.components = {
         Corner,
         Border,
@@ -26894,7 +26894,7 @@
         }
     }
     LinkDisplay.components = { Menu };
-    LinkDisplay.template = "o-spreadsheet.LinkDisplay";
+    LinkDisplay.template = "o-spreadsheet-LinkDisplay";
 
     const MENU_OFFSET_X = 320;
     const MENU_OFFSET_Y = 100;
@@ -27050,7 +27050,7 @@
             }
         }
     }
-    LinkEditor.template = "o-spreadsheet.LinkEditor";
+    LinkEditor.template = "o-spreadsheet-LinkEditor";
     LinkEditor.components = { Menu };
 
     class ScrollBar {
@@ -27831,7 +27831,7 @@
             this.focus();
         }
     }
-    Grid.template = "o-spreadsheet.Grid";
+    Grid.template = "o-spreadsheet-Grid";
     Grid.components = {
         GridComposer,
         HeadersOverlay,
@@ -28091,7 +28091,7 @@
                 : this.state.panel.title;
         }
     }
-    SidePanel.template = "o-spreadsheet.SidePanel";
+    SidePanel.template = "o-spreadsheet-SidePanel";
 
     const FORMATS = [
         { name: "general", text: `${NumberFormatTerms.General} (${NumberFormatTerms.NoSpecificFormat})` },
@@ -28503,7 +28503,7 @@
             this.env.model.dispatch("REQUEST_REDO");
         }
     }
-    TopBar.template = "o-spreadsheet.TopBar";
+    TopBar.template = "o-spreadsheet-TopBar";
     TopBar.components = { ColorPicker, Menu, Composer };
 
     css /* scss */ `
@@ -28697,7 +28697,7 @@
             }
         }
     }
-    Spreadsheet.template = "o-spreadsheet.Spreadsheet";
+    Spreadsheet.template = "o-spreadsheet-Spreadsheet";
     Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel, LinkEditor };
     Spreadsheet._t = t;
 
@@ -32925,6 +32925,7 @@
         parseMarkdownLink,
         markdownLink,
         createEmptyWorkbookData,
+        EvaluationError,
     };
     const components = {
         ChartFigure,
@@ -32968,8 +32969,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-06-08T14:19:44.618Z';
-    exports.__info__.hash = 'a6009e3';
+    exports.__info__.date = '2022-06-10T12:04:05.740Z';
+    exports.__info__.hash = 'c4411fb';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

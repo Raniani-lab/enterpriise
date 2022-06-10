@@ -1,5 +1,5 @@
 <odoo>
-  <t t-name="o-spreadsheet.Autofill" owl="1">
+  <t t-name="o-spreadsheet-Autofill" owl="1">
     <div
       class="o-autofill"
       t-on-mousedown="onMouseDown"
@@ -13,7 +13,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.BottomBar" owl="1">
+  <t t-name="o-spreadsheet-BottomBar" owl="1">
     <div
       class="o-spreadsheet-bottom-bar o-two-columns"
       t-on-click="props.onClick"
@@ -22,10 +22,10 @@
         class="o-sheet-item o-add-sheet"
         t-att-class="{'disabled': env.model.getters.isReadonly()}"
         t-on-click="addSheet">
-        <t t-call="o-spreadsheet.Icon.PLUS"/>
+        <t t-call="o-spreadsheet-Icon.PLUS"/>
       </div>
       <div class="o-sheet-item o-list-sheets" t-on-click="listSheets">
-        <t t-call="o-spreadsheet.Icon.LIST"/>
+        <t t-call="o-spreadsheet-Icon.LIST"/>
       </div>
       <div class="o-all-sheets">
         <t t-foreach="getVisibleSheets()" t-as="sheet" t-key="sheet.id">
@@ -42,7 +42,7 @@
               t-on-dblclick="(ev) => this.onDblClick(sheet.id, ev)"
             />
             <span class="o-sheet-icon" t-on-click.stop="(ev) => this.onIconClick(sheet.id, ev)">
-              <t t-call="o-spreadsheet.Icon.TRIANGLE_DOWN"/>
+              <t t-call="o-spreadsheet-Icon.TRIANGLE_DOWN"/>
             </span>
           </div>
         </t>
@@ -55,7 +55,7 @@
         t-on-click="listSelectionStatistics">
         <t t-esc="selectedStatistic"/>
         <span>
-          <t t-call="o-spreadsheet.Icon.TRIANGLE_DOWN"/>
+          <t t-call="o-spreadsheet-Icon.TRIANGLE_DOWN"/>
         </span>
       </div>
 
@@ -68,13 +68,13 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ClientTag" owl="1">
+  <t t-name="o-spreadsheet-ClientTag" owl="1">
     <div>
       <div class="o-client-tag" t-att-style="tagStyle" t-esc="props.name"/>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ColorPicker" owl="1">
+  <t t-name="o-spreadsheet-ColorPicker" owl="1">
     <div
       class="o-color-picker"
       t-att-class="props.dropdownDirection || 'right'"
@@ -91,7 +91,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.TextValueProvider" owl="1">
+  <t t-name="o-spreadsheet-TextValueProvider" owl="1">
     <div
       t-att-class="{'o-autocomplete-dropdown':state.values.length}"
       t-att-style="state.values.length > 0 ? props.borderStyle : null">
@@ -110,7 +110,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.Composer" owl="1">
+  <t t-name="o-spreadsheet-Composer" owl="1">
     <div class="o-composer-container">
       <div
         t-att-class="{ 'o-composer': true, 'text-muted': env.model.getters.isReadonly(), 'unfocusable': env.model.getters.isReadonly() }"
@@ -150,7 +150,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.FunctionDescriptionProvider" owl="1">
+  <t t-name="o-spreadsheet-FunctionDescriptionProvider" owl="1">
     <div
       class="o-formula-assistant-container"
       t-att-style="props.borderStyle"
@@ -210,7 +210,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.GridComposer" owl="1">
+  <t t-name="o-spreadsheet-GridComposer" owl="1">
     <div class="o-grid-composer" t-att-style="containerStyle" t-ref="gridComposer">
       <Composer
         focus="props.focus"
@@ -223,17 +223,17 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ErrorToolTip" owl="1">
+  <t t-name="o-spreadsheet-ErrorToolTip" owl="1">
     <div class="o-error-tooltip">
       <t t-esc="props.text"/>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ChartJsComponent" owl="1">
+  <t t-name="o-spreadsheet-ChartJsComponent" owl="1">
     <canvas class="o-figure-canvas" t-att-style="canvasStyle" t-ref="graphContainer"/>
   </t>
 
-  <t t-name="o-spreadsheet.ScorecardChart" owl="1">
+  <t t-name="o-spreadsheet-ScorecardChart" owl="1">
     <div class="o-scorecard" t-att-style="chartStyle">
       <t t-set="textStyles" t-value="getTextStyles()"/>
       <div t-if="title" class="o-title-text" t-esc="title" t-att-style="textStyles.titleStyle"/>
@@ -242,12 +242,12 @@
         <div class="o-baseline-text" t-att-style="textStyles.baselineStyle">
           <t t-if="baseline">
             <t t-if="baselineArrowDirection === 'up'">
-              <t t-call="o-spreadsheet.Icon.ARROW_UP">
+              <t t-call="o-spreadsheet-Icon.ARROW_UP">
                 <t t-set="color" t-value="'fill : ' + runtime.baselineColor"/>
               </t>
             </t>
             <t t-if="baselineArrowDirection === 'down'">
-              <t t-call="o-spreadsheet.Icon.ARROW_DOWN">
+              <t t-call="o-spreadsheet-Icon.ARROW_DOWN">
                 <t t-set="color" t-value="'fill : ' + runtime.baselineColor"/>
               </t>
             </t>
@@ -263,7 +263,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.FiguresContainer" owl="1">
+  <t t-name="o-spreadsheet-FiguresContainer" owl="1">
     <div>
       <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
         <div
@@ -324,7 +324,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ChartFigure" owl="1">
+  <t t-name="o-spreadsheet-ChartFigure" owl="1">
     <div
       class="o-chart-container"
       t-ref="chartContainer"
@@ -335,7 +335,7 @@
           t-on-click="showMenu"
           t-ref="menuButton"
           t-on-contextmenu.prevent.stop="showMenu">
-          <t t-call="o-spreadsheet.Icon.LIST"/>
+          <t t-call="o-spreadsheet-Icon.LIST"/>
         </div>
       </div>
       <t
@@ -353,7 +353,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.Grid" owl="1">
+  <t t-name="o-spreadsheet-Grid" owl="1">
     <div
       class="o-grid"
       t-att-class="{'o-two-columns': !props.sidePanelIsOpen}"
@@ -471,7 +471,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.HeadersOverlay" owl="1">
+  <t t-name="o-spreadsheet-HeadersOverlay" owl="1">
     <div class="o-overlay">
       <ColResizer onOpenContextMenu="props.onOpenContextMenu"/>
       <RowResizer onOpenContextMenu="props.onOpenContextMenu"/>
@@ -479,7 +479,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.RowResizer" owl="1">
+  <t t-name="o-spreadsheet-RowResizer" owl="1">
     <div
       class="o-row-resizer"
       t-on-mousemove.self="onMouseMove"
@@ -519,7 +519,7 @@
             t-att-data-index="hiddenItem_index"
             t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) - 17}}px;"
             t-on-click="() => this.unhide(hiddenItem)">
-            <t t-call="o-spreadsheet.Icon.TRIANGLE_UP"/>
+            <t t-call="o-spreadsheet-Icon.TRIANGLE_UP"/>
           </div>
         </t>
         <t t-if="!hiddenItem.includes(env.model.getters.getActiveSheet().rows.length-1)">
@@ -528,14 +528,14 @@
             t-att-data-index="hiddenItem_index"
             t-attf-style="top:{{unhideStyleValue(hiddenItem[0]) + 3}}px;"
             t-on-click="() => this.unhide(hiddenItem)">
-            <t t-call="o-spreadsheet.Icon.TRIANGLE_DOWN"/>
+            <t t-call="o-spreadsheet-Icon.TRIANGLE_DOWN"/>
           </div>
         </t>
       </t>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ColResizer" owl="1">
+  <t t-name="o-spreadsheet-ColResizer" owl="1">
     <div
       class="o-col-resizer"
       t-on-mousemove.self="onMouseMove"
@@ -575,7 +575,7 @@
             t-att-data-index="hiddenItem_index"
             t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) - 17}}px; margin-right:6px;"
             t-on-click="() => this.unhide(hiddenItem)">
-            <t t-call="o-spreadsheet.Icon.TRIANGLE_LEFT"/>
+            <t t-call="o-spreadsheet-Icon.TRIANGLE_LEFT"/>
           </div>
         </t>
         <t t-if="!hiddenItem.includes(env.model.getters.getActiveSheet().cols.length-1)">
@@ -584,14 +584,14 @@
             t-att-data-index="hiddenItem_index"
             t-attf-style="left:{{unhideStyleValue(hiddenItem[0]) + 3}}px;"
             t-on-click="() => this.unhide(hiddenItem)">
-            <t t-call="o-spreadsheet.Icon.TRIANGLE_RIGHT"/>
+            <t t-call="o-spreadsheet-Icon.TRIANGLE_RIGHT"/>
           </div>
         </t>
       </t>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.Border" owl="1">
+  <t t-name="o-spreadsheet-Border" owl="1">
     <div
       class="o-border"
       t-on-mousedown="onMouseDown"
@@ -606,7 +606,7 @@
     />
   </t>
 
-  <t t-name="o-spreadsheet.Corner" owl="1">
+  <t t-name="o-spreadsheet-Corner" owl="1">
     <div
       class="o-corner"
       t-on-mousedown="onMouseDown"
@@ -621,7 +621,7 @@
     />
   </t>
 
-  <t t-name="o-spreadsheet.Highlight" owl="1">
+  <t t-name="o-spreadsheet-Highlight" owl="1">
     <div class="o-highlight" t-ref="highlight">
       <t t-foreach="['nw', 'ne', 'sw', 'se']" t-as="orientation" t-key="orientation">
         <Corner
@@ -643,31 +643,31 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.IconPicker" owl="1">
+  <t t-name="o-spreadsheet-IconPicker" owl="1">
     <div class="o-icon-picker">
       <t t-foreach="iconSets" t-as="iconSet" t-key="iconSet">
         <div class="o-cf-icon-line">
           <div
             class="o-icon-picker-item"
             t-on-click="() => this.onIconClick(iconSets[iconSet].good)">
-            <t t-call="o-spreadsheet.Icon.{{icons[iconSets[iconSet].good].template}}"/>
+            <t t-call="o-spreadsheet-Icon.{{icons[iconSets[iconSet].good].template}}"/>
           </div>
           <div
             class="o-icon-picker-item"
             t-on-click="() => this.onIconClick(iconSets[iconSet].neutral)">
-            <t t-call="o-spreadsheet.Icon.{{icons[iconSets[iconSet].neutral].template}}"/>
+            <t t-call="o-spreadsheet-Icon.{{icons[iconSets[iconSet].neutral].template}}"/>
           </div>
           <div
             class="o-icon-picker-item"
             t-on-click="() => this.onIconClick(iconSets[iconSet].bad)">
-            <t t-call="o-spreadsheet.Icon.{{icons[iconSets[iconSet].bad].template}}"/>
+            <t t-call="o-spreadsheet-Icon.{{icons[iconSets[iconSet].bad].template}}"/>
           </div>
         </div>
       </t>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.Icon.UNDO" owl="1">
+  <t t-name="o-spreadsheet-Icon.UNDO" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -676,7 +676,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.REDO" owl="1">
+  <t t-name="o-spreadsheet-Icon.REDO" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -685,7 +685,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.PAINT_FORMAT" owl="1">
+  <t t-name="o-spreadsheet-Icon.PAINT_FORMAT" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -694,7 +694,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.CLEAR_FORMAT" owl="1">
+  <t t-name="o-spreadsheet-Icon.CLEAR_FORMAT" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -703,27 +703,27 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.TRIANGLE_DOWN" owl="1">
+  <t t-name="o-spreadsheet-Icon.TRIANGLE_DOWN" owl="1">
     <svg class="o-icon">
       <polygon fill="#000000" points="0 0 4 4 8 0" transform="translate(5 7)"/>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.TRIANGLE_UP" owl="1">
+  <t t-name="o-spreadsheet-Icon.TRIANGLE_UP" owl="1">
     <svg class="o-icon">
       <polygon fill="#000000" points="4 0 0 4 8 4" transform="translate(5 7)"/>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.TRIANGLE_RIGHT" owl="1">
+  <t t-name="o-spreadsheet-Icon.TRIANGLE_RIGHT" owl="1">
     <svg class="o-icon">
       <polygon fill="#000000" points="0 0 4 4 0 8" transform="translate(5 5)"/>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.TRIANGLE_LEFT" owl="1">
+  <t t-name="o-spreadsheet-Icon.TRIANGLE_LEFT" owl="1">
     <svg class="o-icon">
       <polygon fill="#000000" points="4 0 0 4 4 8" transform="translate(5 5)"/>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BOLD" owl="1">
+  <t t-name="o-spreadsheet-Icon.BOLD" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -733,7 +733,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.ITALIC" owl="1">
+  <t t-name="o-spreadsheet-Icon.ITALIC" owl="1">
     <svg class="o-icon">
       <polygon
         fill="#000000"
@@ -743,7 +743,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.UNDERLINE" owl="1">
+  <t t-name="o-spreadsheet-Icon.UNDERLINE" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -752,7 +752,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.STRIKE" owl="1">
+  <t t-name="o-spreadsheet-Icon.STRIKE" owl="1">
     <svg class="o-icon">
       <path
         fill="#010101"
@@ -763,7 +763,7 @@
     </svg>
   </t>
 
-  <t t-name="o-spreadsheet.Icon.TEXT_COLOR" owl="1">
+  <t t-name="o-spreadsheet-Icon.TEXT_COLOR" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -772,7 +772,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.FILL_COLOR" owl="1">
+  <t t-name="o-spreadsheet-Icon.FILL_COLOR" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -780,7 +780,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.MERGE_CELL" owl="1">
+  <t t-name="o-spreadsheet-Icon.MERGE_CELL" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -788,7 +788,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.ALIGN_LEFT" owl="1">
+  <t t-name="o-spreadsheet-Icon.ALIGN_LEFT" owl="1">
     <svg class="o-icon align-left">
       <path
         fill="#000000"
@@ -797,7 +797,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.ALIGN_CENTER" owl="1">
+  <t t-name="o-spreadsheet-Icon.ALIGN_CENTER" owl="1">
     <svg class="o-icon align-center">
       <path
         fill="#000000"
@@ -806,7 +806,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.ALIGN_RIGHT" owl="1">
+  <t t-name="o-spreadsheet-Icon.ALIGN_RIGHT" owl="1">
     <svg class="o-icon align-right">
       <path
         fill="#000000"
@@ -815,7 +815,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.ALIGN_MIDDLE" owl="1">
+  <t t-name="o-spreadsheet-Icon.ALIGN_MIDDLE" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -824,7 +824,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.TEXT_WRAPPING" owl="1">
+  <t t-name="o-spreadsheet-Icon.TEXT_WRAPPING" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -833,7 +833,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDERS" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDERS" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -842,7 +842,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_HV" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_HV" owl="1">
     <svg class="o-icon">
       <g fill="#000000">
         <path
@@ -853,7 +853,7 @@
       </g>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_H" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_H" owl="1">
     <svg class="o-icon">
       <g fill="#000000">
         <path
@@ -864,7 +864,7 @@
       </g>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_V" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_V" owl="1">
     <svg class="o-icon">
       <g fill="#000000">
         <path
@@ -875,7 +875,7 @@
       </g>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_EXTERNAL" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_EXTERNAL" owl="1">
     <svg class="o-icon">
       <g fill="#000000">
         <path
@@ -886,7 +886,7 @@
       </g>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_LEFT" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_LEFT" owl="1">
     <svg class="o-icon">
       <g fill="#000000">
         <path
@@ -897,7 +897,7 @@
       </g>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_TOP" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_TOP" owl="1">
     <svg class="o-icon">
       <g fill="#000000">
         <path
@@ -908,7 +908,7 @@
       </g>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_RIGHT" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_RIGHT" owl="1">
     <svg class="o-icon">
       <g fill="#000000">
         <path
@@ -919,7 +919,7 @@
       </g>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_BOTTOM" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_BOTTOM" owl="1">
     <svg class="o-icon">
       <g fill="#000000">
         <path
@@ -930,7 +930,7 @@
       </g>
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.BORDER_CLEAR" owl="1">
+  <t t-name="o-spreadsheet-Icon.BORDER_CLEAR" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -942,7 +942,7 @@
     </svg>
   </t>
 
-  <t t-name="o-spreadsheet.Icon.PLUS" owl="1">
+  <t t-name="o-spreadsheet-Icon.PLUS" owl="1">
     <svg class="o-icon">
       <path
         fill="#000000"
@@ -950,7 +950,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.LIST" owl="1">
+  <t t-name="o-spreadsheet-Icon.LIST" owl="1">
     <svg class="o-icon" viewBox="0 0 384 384">
       <rect x="0" y="277.333" width="384" height="42.667"/>
       <rect x="0" y="170.667" width="384" height="42.667"/>
@@ -958,7 +958,7 @@
     </svg>
   </t>
 
-  <t t-name="o-spreadsheet.Icon.EDIT" owl="1">
+  <t t-name="o-spreadsheet-Icon.EDIT" owl="1">
     <svg class="o-icon" viewBox="0 0 576 512">
       <path
         fill="currentColor"
@@ -966,7 +966,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.UNLINK" owl="1">
+  <t t-name="o-spreadsheet-Icon.UNLINK" owl="1">
     <svg class="o-icon" viewBox="0 0 512 512">
       <path
         fill="currentColor"
@@ -978,7 +978,7 @@
  *  http://fontawesome.io/
  *  https://fontawesome.com/license
  */
-  <t t-name="o-spreadsheet.Icon.CARET_UP" owl="1">
+  <t t-name="o-spreadsheet-Icon.CARET_UP" owl="1">
     <svg class="caret-up" viewBox="0 0 320 512">
       <path
         fill="currentColor"
@@ -986,7 +986,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.CARET_DOWN" owl="1">
+  <t t-name="o-spreadsheet-Icon.CARET_DOWN" owl="1">
     <svg class="caret-down" viewBox="0 0 320 512">
       <path
         fill="currentColor"
@@ -995,7 +995,7 @@
     </svg>
   </t>
 
-  <t t-name="o-spreadsheet.Icon.TRASH" owl="1">
+  <t t-name="o-spreadsheet-Icon.TRASH" owl="1">
     <svg class="o-cf-icon trash" viewBox="0 0 448 512">
       <path
         fill="currentColor"
@@ -1003,7 +1003,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.REFRESH" owl="1">
+  <t t-name="o-spreadsheet-Icon.REFRESH" owl="1">
     <svg class="o-cf-icon refresh" viewBox="0 0 512 512">
       <path
         fill="currentColor"
@@ -1012,7 +1012,7 @@
     </svg>
   </t>
 
-  <t t-name="o-spreadsheet.Icon.ARROW_DOWN" owl="1">
+  <t t-name="o-spreadsheet-Icon.ARROW_DOWN" owl="1">
     <svg
       class="o-cf-icon arrow-down"
       width="10"
@@ -1026,7 +1026,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.ARROW_UP" owl="1">
+  <t t-name="o-spreadsheet-Icon.ARROW_UP" owl="1">
     <svg class="o-cf-icon arrow-up" width="10" height="10" focusable="false" viewBox="0 0 448 512">
       <path
         fill="#00A04A"
@@ -1035,7 +1035,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.ARROW_RIGHT" owl="1">
+  <t t-name="o-spreadsheet-Icon.ARROW_RIGHT" owl="1">
     <svg
       class="o-cf-icon arrow-right"
       width="10"
@@ -1049,7 +1049,7 @@
     </svg>
   </t>
 
-  <t t-name="o-spreadsheet.Icon.SMILE" owl="1">
+  <t t-name="o-spreadsheet-Icon.SMILE" owl="1">
     <svg class="o-cf-icon smile" width="10" height="10" focusable="false" viewBox="0 0 496 512">
       <path
         fill="#00A04A"
@@ -1057,7 +1057,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.MEH" owl="1">
+  <t t-name="o-spreadsheet-Icon.MEH" owl="1">
     <svg class="o-cf-icon meh" width="10" height="10" focusable="false" viewBox="0 0 496 512">
       <path
         fill="#F0AD4E"
@@ -1065,7 +1065,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.FROWN" owl="1">
+  <t t-name="o-spreadsheet-Icon.FROWN" owl="1">
     <svg class="o-cf-icon frown" width="10" height="10" focusable="false" viewBox="0 0 496 512">
       <path
         fill="#DC6965"
@@ -1074,7 +1074,7 @@
     </svg>
   </t>
 
-  <t t-name="o-spreadsheet.Icon.GREEN_DOT" owl="1">
+  <t t-name="o-spreadsheet-Icon.GREEN_DOT" owl="1">
     <svg class="o-cf-icon green-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512">
       <path
         fill="#00A04A"
@@ -1082,7 +1082,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.YELLOW_DOT" owl="1">
+  <t t-name="o-spreadsheet-Icon.YELLOW_DOT" owl="1">
     <svg
       class="o-cf-icon yellow-dot"
       width="10"
@@ -1095,7 +1095,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet.Icon.RED_DOT" owl="1">
+  <t t-name="o-spreadsheet-Icon.RED_DOT" owl="1">
     <svg class="o-cf-icon red-dot" width="10" height="10" focusable="false" viewBox="0 0 512 512">
       <path
         fill="#DC6965"
@@ -1104,7 +1104,7 @@
     </svg>
   </t>
 
-  <t t-name="o-spreadsheet.LinkDisplay" owl="1">
+  <t t-name="o-spreadsheet-LinkDisplay" owl="1">
     <div class="o-link-tool">
       <t t-set="link" t-value="cell.link"/>
       <a
@@ -1124,15 +1124,15 @@
         <t t-esc="cell.urlRepresentation"/>
       </a>
       <span class="o-link-icon o-unlink" t-on-click="unlink" title="Remove link">
-        <t t-call="o-spreadsheet.Icon.UNLINK"/>
+        <t t-call="o-spreadsheet-Icon.UNLINK"/>
       </span>
       <span class="o-link-icon o-edit-link" t-on-click="edit" title="Edit link">
-        <t t-call="o-spreadsheet.Icon.EDIT"/>
+        <t t-call="o-spreadsheet-Icon.EDIT"/>
       </span>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.LinkEditor" owl="1">
+  <t t-name="o-spreadsheet-LinkEditor" owl="1">
     <div
       class="o-link-editor"
       t-on-click.stop="() => this.menu.isOpen=false"
@@ -1154,7 +1154,7 @@
           </t>
           <button t-if="state.link.url" t-on-click="removeLink" class="o-remove-url">✖</button>
           <button t-if="!state.link.url" t-on-click.stop="openMenu" class="o-special-link">
-            <t t-call="o-spreadsheet.Icon.LIST"/>
+            <t t-call="o-spreadsheet-Icon.LIST"/>
           </button>
         </div>
       </div>
@@ -1174,7 +1174,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.Menu" owl="1">
+  <t t-name="o-spreadsheet-Menu" owl="1">
     <Popover
       t-if="props.menuItems.length"
       position="props.position"
@@ -1204,7 +1204,7 @@
             <span class="o-menu-item-name" t-esc="getName(menuItem)"/>
             <span class="o-menu-item-shortcut" t-esc="getShortCut(menuItem)"/>
             <t t-if="isMenuRoot">
-              <span t-call="o-spreadsheet.Icon.TRIANGLE_RIGHT"/>
+              <span t-call="o-spreadsheet-Icon.TRIANGLE_RIGHT"/>
             </t>
             <t t-elif="menuItem.icon">
               <i t-att-class="menuItem.icon" class="o-menu-item-icon"/>
@@ -1224,7 +1224,7 @@
     </Popover>
   </t>
 
-  <t t-name="o-spreadsheet.Popover" owl="1">
+  <t t-name="o-spreadsheet-Popover" owl="1">
     <t t-portal="'.o-spreadsheet'">
       <div t-att-style="style">
         <t t-slot="default"/>
@@ -1232,7 +1232,7 @@
     </t>
   </t>
 
-  <t t-name="o-spreadsheet.SelectionInput" owl="1">
+  <t t-name="o-spreadsheet-SelectionInput" owl="1">
     <div class="o-selection">
       <div
         t-foreach="ranges"
@@ -1272,7 +1272,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.BarConfigPanel" owl="1">
+  <t t-name="o-spreadsheet-BarConfigPanel" owl="1">
     <div>
       <div class="o-section">
         <div class="o_checkbox">
@@ -1319,7 +1319,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.BarChartDesignPanel" owl="1">
+  <t t-name="o-spreadsheet-BarChartDesignPanel" owl="1">
     <div>
       <div class="o-section">
         <div class="o-section-title">Background color</div>
@@ -1328,7 +1328,7 @@
           <span
             t-attf-style="border-color:{{props.definition.background}}"
             t-on-click.stop="toggleColorPicker">
-            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+            <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.fillColorTool"
@@ -1372,7 +1372,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.GaugeChartConfigPanel" owl="1">
+  <t t-name="o-spreadsheet-GaugeChartConfigPanel" owl="1">
     <div>
       <div class="o-section o-data-series">
         <div class="o-section-title">Data range</div>
@@ -1393,7 +1393,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.GaugeChartDesignPanel" owl="1">
+  <t t-name="o-spreadsheet-GaugeChartDesignPanel" owl="1">
     <div>
       <div class="o-section">
         <div class="o-section-title">Background color</div>
@@ -1403,7 +1403,7 @@
             title="Background Color"
             t-attf-style="border-color:{{props.definition.background}}"
             t-on-click.stop="() => this.toggleMenu('backgroundColor', ev)">
-            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+            <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.openedMenu === 'backgroundColor'"
@@ -1448,7 +1448,7 @@
 
       <div class="o-section">
         <div class="o-section-title">Thresholds</div>
-        <t t-call="o-spreadsheet.GaugeChartColorSectionTemplate">
+        <t t-call="o-spreadsheet-GaugeChartColorSectionTemplate">
           <t t-set="sectionRule" t-value="props.definition.sectionRule"/>
         </t>
       </div>
@@ -1461,7 +1461,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.GaugeChartColorSectionTemplate" owl="1">
+  <t t-name="o-spreadsheet-GaugeChartColorSectionTemplate" owl="1">
     <div class="o-gauge-color-set">
       <table>
         <tr>
@@ -1471,7 +1471,7 @@
           <th class="o-gauge-color-set-type">Type</th>
         </tr>
 
-        <t t-call="o-spreadsheet.GaugeChartColorSectionTemplateRow">
+        <t t-call="o-spreadsheet-GaugeChartColorSectionTemplateRow">
           <t t-set="sectionColor" t-value="sectionRule.colors.lowerColor"/>
           <t t-set="sectionType" t-value="'lowerColor'"/>
           <t t-set="inflectionPoint" t-value="sectionRule.lowerInflectionPoint"/>
@@ -1479,7 +1479,7 @@
           <t t-set="inflectionPointName" t-value="'lowerInflectionPoint'"/>
         </t>
 
-        <t t-call="o-spreadsheet.GaugeChartColorSectionTemplateRow">
+        <t t-call="o-spreadsheet-GaugeChartColorSectionTemplateRow">
           <t t-set="sectionColor" t-value="sectionRule.colors.middleColor"/>
           <t t-set="sectionType" t-value="'middleColor'"/>
           <t t-set="inflectionPoint" t-value="sectionRule.upperInflectionPoint"/>
@@ -1495,7 +1495,7 @@
                   title="Fill Color"
                   t-attf-style="border-color:{{sectionRule.colors.upperColor}}"
                   t-on-click.stop="(ev) => this.toggleMenu('sectionColor-upperColor', ev)">
-                  <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+                  <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
                 </span>
                 <ColorPicker
                   t-if="state.openedMenu === 'sectionColor-upperColor'"
@@ -1514,7 +1514,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.GaugeChartColorSectionTemplateRow" owl="1">
+  <t t-name="o-spreadsheet-GaugeChartColorSectionTemplateRow" owl="1">
     <tr>
       <td>
         <div class="o-tools">
@@ -1523,7 +1523,7 @@
               title="Fill Color"
               t-attf-style="border-color:{{sectionColor}}"
               t-on-click.stop="(ev) => this.toggleMenu('sectionColor-'+sectionType, ev)">
-              <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+              <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
             </span>
             <ColorPicker
               t-if="state.openedMenu === 'sectionColor-'+sectionType"
@@ -1557,7 +1557,7 @@
     </tr>
   </t>
 
-  <t t-name="o-spreadsheet.LineBarPieConfigPanel" owl="1">
+  <t t-name="o-spreadsheet-LineBarPieConfigPanel" owl="1">
     <div>
       <div class="o-section o-data-series">
         <div class="o-section-title">Data Series</div>
@@ -1593,7 +1593,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.LineBarPieDesignPanel" owl="1">
+  <t t-name="o-spreadsheet-LineBarPieDesignPanel" owl="1">
     <div>
       <div class="o-section">
         <div class="o-section-title">Background color</div>
@@ -1602,7 +1602,7 @@
           <span
             t-attf-style="border-color:{{props.definition.background}}"
             t-on-click.stop="toggleColorPicker">
-            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+            <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.fillColorTool"
@@ -1636,7 +1636,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.LineConfigPanel" owl="1">
+  <t t-name="o-spreadsheet-LineConfigPanel" owl="1">
     <div>
       <div class="o-section o-data-series">
         <div class="o-section-title">Data Series</div>
@@ -1681,7 +1681,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.LineChartDesignPanel" owl="1">
+  <t t-name="o-spreadsheet-LineChartDesignPanel" owl="1">
     <div>
       <div class="o-section">
         <div class="o-section-title">Background color</div>
@@ -1690,7 +1690,7 @@
           <span
             t-attf-style="border-color:{{props.definition.background}}"
             t-on-click.stop="toggleColorPicker">
-            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+            <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.fillColorTool"
@@ -1734,7 +1734,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ChartPanel" owl="1">
+  <t t-name="o-spreadsheet-ChartPanel" owl="1">
     <div class="o-chart">
       <div class="o-panel">
         <div
@@ -1792,7 +1792,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ScorecardChartConfigPanel" owl="1">
+  <t t-name="o-spreadsheet-ScorecardChartConfigPanel" owl="1">
     <div>
       <div class="o-section o-data-series">
         <div class="o-section-title">Key value</div>
@@ -1823,7 +1823,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ScorecardChartDesignPanel" owl="1">
+  <t t-name="o-spreadsheet-ScorecardChartDesignPanel" owl="1">
     <div>
       <div class="o-section">
         <div class="o-section-title">Background color</div>
@@ -1833,7 +1833,7 @@
             title="Background Color"
             t-attf-style="border-color:{{props.definition.background}}"
             t-on-click.stop="() => this.openColorPicker('backgroundColor')">
-            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+            <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.openedColorPicker === 'backgroundColor'"
@@ -1881,7 +1881,7 @@
           title="Color Up"
           t-attf-style="border-color:{{props.definition.baselineColorUp}}"
           t-on-click.stop="() => this.openColorPicker('baselineColorUp')">
-          <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+          <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
         </span>
         <ColorPicker
           t-if="state.openedColorPicker === 'baselineColorUp'"
@@ -1896,7 +1896,7 @@
           title="Background Color"
           t-attf-style="border-color:{{props.definition.baselineColorDown}}"
           t-on-click.stop="() => this.openColorPicker('baselineColorDown')">
-          <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+          <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
         </span>
         <ColorPicker
           t-if="state.openedColorPicker === 'baselineColorDown'"
@@ -1907,7 +1907,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.CellIsRuleEditorPreview" owl="1">
+  <t t-name="o-spreadsheet-CellIsRuleEditorPreview" owl="1">
     <div
       class="o-cf-preview-line"
       t-attf-style="font-weight:{{currentStyle.bold ?'bold':'normal'}};
@@ -1921,7 +1921,7 @@
     <t t-else="">Preview text</t>
   </t>
 
-  <t t-name="o-spreadsheet.CellIsRuleEditor" owl="1">
+  <t t-name="o-spreadsheet-CellIsRuleEditor" owl="1">
     <div class="o-cf-cell-is-rule">
       <div class="o-section-subtitle">Format cells if...</div>
       <select t-model="rule.operator" class="o-input o-cell-is-operator">
@@ -1949,7 +1949,7 @@
       </t>
       <div class="o-section-subtitle">Formatting style</div>
 
-      <t t-call="o-spreadsheet.CellIsRuleEditorPreview">
+      <t t-call="o-spreadsheet-CellIsRuleEditorPreview">
         <t t-set="currentStyle" t-value="rule.style"/>
       </t>
       <div class="o-tools">
@@ -1958,35 +1958,35 @@
           title="Bold"
           t-att-class="{active:rule.style.bold}"
           t-on-click="() => this.toggleStyle('bold')">
-          <t t-call="o-spreadsheet.Icon.BOLD"/>
+          <t t-call="o-spreadsheet-Icon.BOLD"/>
         </div>
         <div
           class="o-tool"
           title="Italic"
           t-att-class="{active:rule.style.italic}"
           t-on-click="() => this.toggleStyle('italic')">
-          <t t-call="o-spreadsheet.Icon.ITALIC"/>
+          <t t-call="o-spreadsheet-Icon.ITALIC"/>
         </div>
         <div
           class="o-tool"
           title="Underline"
           t-att-class="{active:rule.style.underline}"
           t-on-click="(ev) => this.toggleStyle('underline', ev)">
-          <t t-call="o-spreadsheet.Icon.UNDERLINE"/>
+          <t t-call="o-spreadsheet-Icon.UNDERLINE"/>
         </div>
         <div
           class="o-tool"
           title="Strikethrough"
           t-att-class="{active:rule.style.strikethrough}"
           t-on-click="(ev) => this.toggleStyle('strikethrough', ev)">
-          <t t-call="o-spreadsheet.Icon.STRIKE"/>
+          <t t-call="o-spreadsheet-Icon.STRIKE"/>
         </div>
         <div class="o-tool o-dropdown o-with-color">
           <span
             title="TextColor"
             t-attf-style="border-color:{{rule.style.textColor}}"
             t-on-click.stop="(ev) => this.toggleMenu('cellIsRule-textColor', ev)">
-            <t t-call="o-spreadsheet.Icon.TEXT_COLOR"/>
+            <t t-call="o-spreadsheet-Icon.TEXT_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.openedMenu === 'cellIsRule-textColor'"
@@ -2001,7 +2001,7 @@
             title="FillColor"
             t-attf-style="border-color:{{rule.style.fillColor}}"
             t-on-click.stop="(ev) => this.toggleMenu('cellIsRule-fillColor', ev)">
-            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+            <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.openedMenu === 'cellIsRule-fillColor'"
@@ -2014,11 +2014,11 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ColorScaleRuleEditorPreview" owl="1">
+  <t t-name="o-spreadsheet-ColorScaleRuleEditorPreview" owl="1">
     <div class="o-cf-preview-gradient" t-attf-style="{{getPreviewGradient()}}">Preview text</div>
   </t>
 
-  <t t-name="o-spreadsheet.ColorScaleRuleEditorThreshold" owl="1">
+  <t t-name="o-spreadsheet-ColorScaleRuleEditorThreshold" owl="1">
     <div t-attf-class="o-threshold o-threshold-{{thresholdType}}">
       <t t-if="thresholdType === 'midpoint'">
         <t t-set="type" t-value="threshold and threshold.type"/>
@@ -2057,7 +2057,7 @@
             title="Fill Color"
             t-attf-style="border-color:#{{getThresholdColor(threshold)}}"
             t-on-click.stop="(ev) => this.toggleMenu('colorScale-'+thresholdType+'Color', ev)">
-            <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+            <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
           <ColorPicker
             t-if="state.openedMenu === 'colorScale-'+thresholdType+'Color'"
@@ -2069,29 +2069,29 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ColorScaleRuleEditor" owl="1">
+  <t t-name="o-spreadsheet-ColorScaleRuleEditor" owl="1">
     <div class="o-cf-color-scale-editor">
       <div class="o-section-subtitle">Preview</div>
-      <t t-call="o-spreadsheet.ColorScaleRuleEditorPreview"/>
+      <t t-call="o-spreadsheet-ColorScaleRuleEditorPreview"/>
       <div class="o-section-subtitle">Minpoint</div>
-      <t t-call="o-spreadsheet.ColorScaleRuleEditorThreshold">
+      <t t-call="o-spreadsheet-ColorScaleRuleEditorThreshold">
         <t t-set="threshold" t-value="rule.minimum"/>
         <t t-set="thresholdType" t-value="'minimum'"/>
       </t>
       <div class="o-section-subtitle">MidPoint</div>
-      <t t-call="o-spreadsheet.ColorScaleRuleEditorThreshold">
+      <t t-call="o-spreadsheet-ColorScaleRuleEditorThreshold">
         <t t-set="threshold" t-value="rule.midpoint"/>
         <t t-set="thresholdType" t-value="'midpoint'"/>
       </t>
       <div class="o-section-subtitle">MaxPoint</div>
-      <t t-call="o-spreadsheet.ColorScaleRuleEditorThreshold">
+      <t t-call="o-spreadsheet-ColorScaleRuleEditorThreshold">
         <t t-set="threshold" t-value="rule.maximum"/>
         <t t-set="thresholdType" t-value="'maximum'"/>
       </t>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ConditionalFormattingPanel" owl="1">
+  <t t-name="o-spreadsheet-ConditionalFormattingPanel" owl="1">
     <div class="o-cf">
       <t t-if="state.mode === 'list' || state.mode === 'reorder'">
         <div class="o-cf-preview-list">
@@ -2100,7 +2100,7 @@
             t-foreach="conditionalFormats"
             t-as="cf"
             t-key="cf.id">
-            <t t-call="o-spreadsheet.ConditionalFormattingPanelPreview"/>
+            <t t-call="o-spreadsheet-ConditionalFormattingPanelPreview"/>
           </div>
         </div>
         <t t-if="state.mode === 'list'">
@@ -2183,15 +2183,15 @@
             </div>
           </div>
           <div class="o-section o-cf-editor">
-            <t t-if="state.currentCFType === 'CellIsRule'" t-call="o-spreadsheet.CellIsRuleEditor">
+            <t t-if="state.currentCFType === 'CellIsRule'" t-call="o-spreadsheet-CellIsRuleEditor">
               <t t-set="rule" t-value="state.rules.cellIs"/>
             </t>
             <t
               t-if="state.currentCFType === 'ColorScaleRule'"
-              t-call="o-spreadsheet.ColorScaleRuleEditor">
+              t-call="o-spreadsheet-ColorScaleRuleEditor">
               <t t-set="rule" t-value="state.rules.colorScale"/>
             </t>
-            <t t-if="state.currentCFType === 'IconSetRule'" t-call="o-spreadsheet.IconSetEditor">
+            <t t-if="state.currentCFType === 'IconSetRule'" t-call="o-spreadsheet-IconSetEditor">
               <t t-set="rule" t-value="state.rules.iconSet"/>
             </t>
             <div class="o-sidePanelButtons">
@@ -2213,13 +2213,13 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.ConditionalFormattingPanelPreview" owl="1">
+  <t t-name="o-spreadsheet-ConditionalFormattingPanelPreview" owl="1">
     <div class="o-cf-preview" t-att-class="{ 'o-cf-cursor-ptr': state.mode !== 'reorder' }">
       <t t-if="cf.rule.type==='IconSetRule'">
         <div class="o-cf-preview-icon">
-          <t t-call="o-spreadsheet.Icon.{{icons[cf.rule.icons.upper].template}}"/>
-          <t t-call="o-spreadsheet.Icon.{{icons[cf.rule.icons.middle].template}}"/>
-          <t t-call="o-spreadsheet.Icon.{{icons[cf.rule.icons.lower].template}}"/>
+          <t t-call="o-spreadsheet-Icon.{{icons[cf.rule.icons.upper].template}}"/>
+          <t t-call="o-spreadsheet-Icon.{{icons[cf.rule.icons.middle].template}}"/>
+          <t t-call="o-spreadsheet-Icon.{{icons[cf.rule.icons.lower].template}}"/>
         </div>
       </t>
       <t t-else="">
@@ -2246,14 +2246,14 @@
             <div
               class="o-cf-reorder-button-up o-cf-reorder-button"
               t-on-click="(ev) => this.reorderRule(cf, 'up', ev)">
-              <t t-call="o-spreadsheet.Icon.CARET_UP"/>
+              <t t-call="o-spreadsheet-Icon.CARET_UP"/>
             </div>
           </t>
           <t t-if="!cf_last">
             <div
               class="o-cf-reorder-button-down o-cf-reorder-button"
               t-on-click="(ev) => this.reorderRule(cf, 'down', ev)">
-              <t t-call="o-spreadsheet.Icon.CARET_DOWN"/>
+              <t t-call="o-spreadsheet-Icon.CARET_DOWN"/>
             </div>
           </t>
         </div>
@@ -2264,14 +2264,14 @@
             class="o-cf-delete-button"
             t-on-click.stop="(ev) => this.deleteConditionalFormat(cf, ev)"
             aria-label="Remove rule">
-            <t t-call="o-spreadsheet.Icon.TRASH"/>
+            <t t-call="o-spreadsheet-Icon.TRASH"/>
           </div>
         </div>
       </t>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.IconSets" owl="1">
+  <t t-name="o-spreadsheet-IconSets" owl="1">
     <div>
       <div class="o-section-subtitle">Icons</div>
       <div class="o-cf-iconsets">
@@ -2282,25 +2282,25 @@
           t-key="iconSet"
           t-on-click="(ev) => this.setIconSet(iconSet, ev)">
           <div class="o-cf-icon">
-            <t t-call="o-spreadsheet.Icon.{{icons[iconSets[iconSet].good].template}}"/>
+            <t t-call="o-spreadsheet-Icon.{{icons[iconSets[iconSet].good].template}}"/>
           </div>
           <div class="o-cf-icon">
-            <t t-call="o-spreadsheet.Icon.{{icons[iconSets[iconSet].neutral].template}}"/>
+            <t t-call="o-spreadsheet-Icon.{{icons[iconSets[iconSet].neutral].template}}"/>
           </div>
           <div class="o-cf-icon">
-            <t t-call="o-spreadsheet.Icon.{{icons[iconSets[iconSet].bad].template}}"/>
+            <t t-call="o-spreadsheet-Icon.{{icons[iconSets[iconSet].bad].template}}"/>
           </div>
         </div>
       </div>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.IconSetInflexionPointRow" owl="1">
+  <t t-name="o-spreadsheet-IconSetInflexionPointRow" owl="1">
     <tr>
       <td>
         <div t-on-click.stop="(ev) => this.toggleMenu('iconSet-'+icon+'Icon', ev)">
           <div class="o-cf-icon-button">
-            <t t-call="o-spreadsheet.Icon.{{icons[iconValue].template}}"/>
+            <t t-call="o-spreadsheet-Icon.{{icons[iconValue].template}}"/>
           </div>
         </div>
         <IconPicker
@@ -2338,7 +2338,7 @@
     </tr>
   </t>
 
-  <t t-name="o-spreadsheet.IconSetInflexionPoints" owl="1">
+  <t t-name="o-spreadsheet-IconSetInflexionPoints" owl="1">
     <div class="o-inflection">
       <table>
         <tr>
@@ -2348,13 +2348,13 @@
           <th class="o-cf-iconset-value">Value</th>
           <th class="o-cf-iconset-type">Type</th>
         </tr>
-        <t t-call="o-spreadsheet.IconSetInflexionPointRow">
+        <t t-call="o-spreadsheet-IconSetInflexionPointRow">
           <t t-set="iconValue" t-value="rule.icons.upper"/>
           <t t-set="icon" t-value="'upper'"/>
           <t t-set="inflectionPointValue" t-value="rule.upperInflectionPoint"/>
           <t t-set="inflectionPoint" t-value="'upperInflectionPoint'"/>
         </t>
-        <t t-call="o-spreadsheet.IconSetInflexionPointRow">
+        <t t-call="o-spreadsheet-IconSetInflexionPointRow">
           <t t-set="iconValue" t-value="rule.icons.middle"/>
           <t t-set="icon" t-value="'middle'"/>
           <t t-set="inflectionPointValue" t-value="rule.lowerInflectionPoint"/>
@@ -2364,7 +2364,7 @@
           <td>
             <div t-on-click.stop="(ev) => this.toggleMenu('iconSet-lowerIcon', ev)">
               <div class="o-cf-icon-button">
-                <t t-call="o-spreadsheet.Icon.{{icons[rule.icons.lower].template}}"/>
+                <t t-call="o-spreadsheet-Icon.{{icons[rule.icons.lower].template}}"/>
               </div>
             </div>
             <IconPicker
@@ -2380,20 +2380,20 @@
       </table>
     </div>
   </t>
-  <t t-name="o-spreadsheet.IconSetEditor" owl="1">
+  <t t-name="o-spreadsheet-IconSetEditor" owl="1">
     <div class="o-cf-iconset-rule">
-      <t t-call="o-spreadsheet.IconSets"/>
-      <t t-call="o-spreadsheet.IconSetInflexionPoints"/>
+      <t t-call="o-spreadsheet-IconSets"/>
+      <t t-call="o-spreadsheet-IconSetInflexionPoints"/>
       <div class="btn btn-link o_refresh_measures o-cf-iconset-reverse" t-on-click="reverseIcons">
         <div class="mr-1 d-inline-block">
-          <t t-call="o-spreadsheet.Icon.REFRESH"/>
+          <t t-call="o-spreadsheet-Icon.REFRESH"/>
         </div>
         Reverse icons
       </div>
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.CustomCurrencyPanel" owl="1">
+  <t t-name="o-spreadsheet-CustomCurrencyPanel" owl="1">
     <div class="o-custom-currency">
       <div class="o-section" t-if="availableCurrencies.length > 1">
         <div class="o-section-title">Currency</div>
@@ -2455,7 +2455,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.FindAndReplacePanel" owl="1">
+  <t t-name="o-spreadsheet-FindAndReplacePanel" owl="1">
     <div
       class="o-find-and-replace"
       tabindex="0"
@@ -2567,7 +2567,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.SidePanel" owl="1">
+  <t t-name="o-spreadsheet-SidePanel" owl="1">
     <div class="o-sidePanel">
       <div class="o-sidePanelHeader">
         <div class="o-sidePanelTitle" t-esc="getTitle()"/>
@@ -2591,7 +2591,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.Spreadsheet" owl="1">
+  <t t-name="o-spreadsheet-Spreadsheet" owl="1">
     <div class="o-spreadsheet" t-on-keydown="onKeydown" t-att-style="getStyle()">
       <TopBar
         t-if="!env.isDashboard()"
@@ -2619,7 +2619,7 @@
     </div>
   </t>
 
-  <t t-name="o-spreadsheet.TopBar" owl="1">
+  <t t-name="o-spreadsheet-TopBar" owl="1">
     <div class="o-spreadsheet-topbar o-two-columns" t-on-click="props.onClick">
       <div class="o-topbar-top">
         <!-- Menus -->
@@ -2662,24 +2662,24 @@
             title="Undo"
             t-att-class="{'o-disabled': !undoTool}"
             t-on-click="undo">
-            <t t-call="o-spreadsheet.Icon.UNDO"/>
+            <t t-call="o-spreadsheet-Icon.UNDO"/>
           </div>
           <div
             class="o-tool"
             t-att-class="{'o-disabled': !redoTool}"
             title="Redo"
             t-on-click="redo">
-            <t t-call="o-spreadsheet.Icon.REDO"/>
+            <t t-call="o-spreadsheet-Icon.REDO"/>
           </div>
           <div
             class="o-tool"
             title="Paint Format"
             t-att-class="{active:paintFormatTool}"
             t-on-click="paintFormat">
-            <t t-call="o-spreadsheet.Icon.PAINT_FORMAT"/>
+            <t t-call="o-spreadsheet-Icon.PAINT_FORMAT"/>
           </div>
           <div class="o-tool" title="Clear Format" t-on-click="clearFormatting">
-            <t t-call="o-spreadsheet.Icon.CLEAR_FORMAT"/>
+            <t t-call="o-spreadsheet-Icon.CLEAR_FORMAT"/>
           </div>
           <div class="o-divider"/>
           <div
@@ -2706,7 +2706,7 @@
             t-on-click="(ev) => this.toggleDropdownTool('formatTool', ev)">
             <div class="o-text-icon">
               123
-              <t t-call="o-spreadsheet.Icon.TRIANGLE_DOWN"/>
+              <t t-call="o-spreadsheet-Icon.TRIANGLE_DOWN"/>
             </div>
             <div
               class="o-dropdown-content o-text-options  o-format-tool "
@@ -2733,7 +2733,7 @@
             t-on-click="(ev) => this.toggleDropdownTool('fontSizeTool', ev)">
             <div class="o-text-icon">
               <t t-esc="style.fontSize || DEFAULT_FONT_SIZE"/>
-              <t t-call="o-spreadsheet.Icon.TRIANGLE_DOWN"/>
+              <t t-call="o-spreadsheet-Icon.TRIANGLE_DOWN"/>
             </div>
             <div
               class="o-dropdown-content o-text-options "
@@ -2750,28 +2750,28 @@
             title="Bold"
             t-att-class="{active:style.bold}"
             t-on-click="(ev) => this.toogleStyle('bold', ev)">
-            <t t-call="o-spreadsheet.Icon.BOLD"/>
+            <t t-call="o-spreadsheet-Icon.BOLD"/>
           </div>
           <div
             class="o-tool"
             title="Italic"
             t-att-class="{active:style.italic}"
             t-on-click="(ev) => this.toogleStyle('italic', ev)">
-            <t t-call="o-spreadsheet.Icon.ITALIC"/>
+            <t t-call="o-spreadsheet-Icon.ITALIC"/>
           </div>
           <div
             class="o-tool"
             title="Strikethrough"
             t-att-class="{active:style.strikethrough}"
             t-on-click="(ev) => this.toogleStyle('strikethrough', ev)">
-            <t t-call="o-spreadsheet.Icon.STRIKE"/>
+            <t t-call="o-spreadsheet-Icon.STRIKE"/>
           </div>
           <div class="o-tool o-dropdown o-with-color">
             <span
               t-attf-style="border-color:{{textColor}}"
               title="Text Color"
               t-on-click="(ev) => this.toggleDropdownTool('textColorTool', ev)">
-              <t t-call="o-spreadsheet.Icon.TEXT_COLOR"/>
+              <t t-call="o-spreadsheet-Icon.TEXT_COLOR"/>
             </span>
             <ColorPicker
               t-if="state.activeTool === 'textColorTool'"
@@ -2785,7 +2785,7 @@
               t-attf-style="border-color:{{fillColor}}"
               title="Fill Color"
               t-on-click="(ev) => this.toggleDropdownTool('fillColorTool', ev)">
-              <t t-call="o-spreadsheet.Icon.FILL_COLOR"/>
+              <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
             </span>
             <ColorPicker
               t-if="state.activeTool === 'fillColorTool'"
@@ -2795,43 +2795,43 @@
           </div>
           <div class="o-tool o-dropdown">
             <span title="Borders" t-on-click="(ev) => this.toggleDropdownTool('borderTool', ev)">
-              <t t-call="o-spreadsheet.Icon.BORDERS"/>
+              <t t-call="o-spreadsheet-Icon.BORDERS"/>
             </span>
             <div
               class="o-dropdown-content o-border-dropdown"
               t-if="state.activeTool === 'borderTool'">
               <div class="o-dropdown-line">
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('all', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDERS"/>
+                  <t t-call="o-spreadsheet-Icon.BORDERS"/>
                 </span>
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('hv', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_HV"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_HV"/>
                 </span>
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('h', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_H"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_H"/>
                 </span>
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('v', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_V"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_V"/>
                 </span>
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('external', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_EXTERNAL"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_EXTERNAL"/>
                 </span>
               </div>
               <div class="o-dropdown-line">
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('left', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_LEFT"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_LEFT"/>
                 </span>
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('top', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_TOP"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_TOP"/>
                 </span>
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('right', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_RIGHT"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_RIGHT"/>
                 </span>
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('bottom', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_BOTTOM"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_BOTTOM"/>
                 </span>
                 <span class="o-line-item" t-on-click="(ev) => this.setBorder('clear', ev)">
-                  <t t-call="o-spreadsheet.Icon.BORDER_CLEAR"/>
+                  <t t-call="o-spreadsheet-Icon.BORDER_CLEAR"/>
                 </span>
               </div>
             </div>
@@ -2841,7 +2841,7 @@
             title="Merge Cells"
             t-att-class="{active:inMerge, 'o-disabled': cannotMerge}"
             t-on-click="toggleMerge">
-            <t t-call="o-spreadsheet.Icon.MERGE_CELL"/>
+            <t t-call="o-spreadsheet-Icon.MERGE_CELL"/>
           </div>
           <div class="o-divider"/>
           <div
@@ -2850,25 +2850,25 @@
             t-on-click="(ev) => this.toggleDropdownTool('alignTool', ev)">
             <span>
               <t t-if="style.align === 'right'">
-                <t t-call="o-spreadsheet.Icon.ALIGN_RIGHT"/>
+                <t t-call="o-spreadsheet-Icon.ALIGN_RIGHT"/>
               </t>
               <t t-elif="style.align === 'center'">
-                <t t-call="o-spreadsheet.Icon.ALIGN_CENTER"/>
+                <t t-call="o-spreadsheet-Icon.ALIGN_CENTER"/>
               </t>
               <t t-else="">
-                <t t-call="o-spreadsheet.Icon.ALIGN_LEFT"/>
+                <t t-call="o-spreadsheet-Icon.ALIGN_LEFT"/>
               </t>
-              <t t-call="o-spreadsheet.Icon.TRIANGLE_DOWN"/>
+              <t t-call="o-spreadsheet-Icon.TRIANGLE_DOWN"/>
             </span>
             <div t-if="state.activeTool === 'alignTool'" class="o-dropdown-content">
               <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('left', ev)">
-                <t t-call="o-spreadsheet.Icon.ALIGN_LEFT"/>
+                <t t-call="o-spreadsheet-Icon.ALIGN_LEFT"/>
               </div>
               <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('center', ev)">
-                <t t-call="o-spreadsheet.Icon.ALIGN_CENTER"/>
+                <t t-call="o-spreadsheet-Icon.ALIGN_CENTER"/>
               </div>
               <div class="o-dropdown-item" t-on-click="(ev) => this.toggleAlign('right', ev)">
-                <t t-call="o-spreadsheet.Icon.ALIGN_RIGHT"/>
+                <t t-call="o-spreadsheet-Icon.ALIGN_RIGHT"/>
               </div>
             </div>
           </div>

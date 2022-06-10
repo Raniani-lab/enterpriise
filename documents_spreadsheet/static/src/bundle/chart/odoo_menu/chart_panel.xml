@@ -10,7 +10,7 @@
     </t>
 
     <t t-name="documents_spreadsheet.LineBarPieConfigPanel"
-        t-inherit="o-spreadsheet.LineBarPieConfigPanel"
+        t-inherit="o-spreadsheet-LineBarPieConfigPanel"
         t-inherit-mode="extension"
         owl="1">
         <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
@@ -19,7 +19,7 @@
     </t>
 
     <t t-name="documents_spreadsheet.BarConfigPanel"
-        t-inherit="o-spreadsheet.BarConfigPanel"
+        t-inherit="o-spreadsheet-BarConfigPanel"
         t-inherit-mode="extension"
         owl="1">
         <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
@@ -28,7 +28,7 @@
     </t>
 
     <t t-name="documents_spreadsheet.LineConfigPanel"
-        t-inherit="o-spreadsheet.LineConfigPanel"
+        t-inherit="o-spreadsheet-LineConfigPanel"
         t-inherit-mode="extension"
         owl="1">
         <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
@@ -37,7 +37,7 @@
     </t>
 
     <t t-name="documents_spreadsheet.ScorecardChartConfigPanel"
-        t-inherit="o-spreadsheet.ScorecardChartConfigPanel"
+        t-inherit="o-spreadsheet-ScorecardChartConfigPanel"
         t-inherit-mode="extension"
         owl="1">
         <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
@@ -46,7 +46,7 @@
     </t>
 
     <t t-name="documents_spreadsheet.GaugeChartConfigPanel"
-        t-inherit="o-spreadsheet.GaugeChartConfigPanel"
+        t-inherit="o-spreadsheet-GaugeChartConfigPanel"
         t-inherit-mode="extension"
         owl="1">
         <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">

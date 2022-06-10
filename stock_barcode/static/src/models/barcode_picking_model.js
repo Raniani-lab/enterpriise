@@ -248,6 +248,19 @@ export default class BarcodePickingModel extends BarcodeModel {
                 method: 'action_print_packges',
             });
         }
+        const picking_type_code = this.record.picking_type_code;
+        const picking_state = this.record.state;
+        if ( (picking_type_code === 'incoming') && (picking_state === 'done') ||
+             (picking_type_code === 'outgoing') && (picking_state !== 'done') ||
+             (picking_type_code === 'internal')
+           ) {
+            buttons.push({
+                name: _t("Scrap"),
+                class: 'o_scrap',
+                method: 'button_scrap',
+            });
+        }
+
         return buttons;
     }
 

@@ -393,7 +393,7 @@ class DatevExportCSV(models.AbstractModel):
 
         for m in moves:
             line_values = {}  # key: BalanceKey
-
+            move_currencies = {}
             payment_account = 0  # Used for non-reconciled payments
 
             for aml in m.line_ids:
@@ -451,6 +451,8 @@ class DatevExportCSV(models.AbstractModel):
                 if match_key in line_values:
                     # values already in line_values
                     line_values[match_key]['line_amount'] += line_amount
+                    line_values[match_key]['line_base_amount'] += aml.price_total
+                    move_currencies[match_key].add(aml.currency_id)
                     continue
 
                 # reference
@@ -463,10 +465,11 @@ class DatevExportCSV(models.AbstractModel):
                 if to_account_code == account_code and aml.date_maturity:
                     receipt2 = aml.date
 
+                move_currencies[match_key] = set([aml.currency_id])
                 currency = aml.company_id.currency_id
                 line_values[match_key] = {
                     'waehrung': currency.name,
-                    'line_base_amount': float_repr(aml.price_total, aml.currency_id.decimal_places).replace('.', ','),
+                    'line_base_amount': aml.price_total,
                     'line_base_currency': aml.currency_id.name,
                     'sollhaben': letter,
                     'buschluessel': code_correction,
@@ -496,9 +499,9 @@ class DatevExportCSV(models.AbstractModel):
                 array[0] = float_repr(line_value['line_amount'], aml.company_id.currency_id.decimal_places).replace('.', ',')
                 array[1] = line_value.get('sollhaben')
                 array[2] = line_value.get('waehrung')
-                if line_value.get('line_base_currency') != line_value.get('waehrung'):
+                if (len(move_currencies[match_key]) == 1) and line_value.get('line_base_currency') != line_value.get('waehrung'):
                     array[3] = line_value.get('kurs')
-                    array[4] = line_value.get('line_base_amount')
+                    array[4] = float_repr(line_value['line_base_amount'], aml.currency_id.decimal_places).replace('.', ',')
                     array[5] = line_value.get('line_base_currency')
                 array[6] = line_value.get('konto')
                 array[7] = line_value.get('gegenkonto')

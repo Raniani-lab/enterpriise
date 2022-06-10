@@ -880,7 +880,7 @@ var ManualModel = BasicModel.extend({
             reconciliation_proposition.push(prop);
 
             if (prop.tax_ids && prop.tax_ids.length && prop.__tax_to_recompute && prop.base_amount) {
-                var args = [prop.tax_ids.map(function(el){return el.id;}), prop.base_amount, formatOptions.currency_id];
+                var args = [prop.tax_ids.map(function(el){return el.id;}), prop.base_amount, formatOptions.currency_id, 1.0, false, false, false, true];
                 var add_context = {'round': true};
                 if(prop.tax_ids.length === 1 && line.createForm.force_tax_included)
                     add_context.force_price_include = true;

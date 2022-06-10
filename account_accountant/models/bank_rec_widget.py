@@ -1190,7 +1190,7 @@ class BankRecWidget(models.Model):
             [self._convert_to_tax_base_line_dict(x) for x in base_lines],
             tax_lines=[self._convert_to_tax_line_dict(x) for x in tax_lines],
             handle_price_include=None,
-            include_caba_tags=False,
+            include_caba_tags=True,
         )
 
         line_ids_commands = []

@@ -62,7 +62,8 @@
                 precision="{'day': 'hour:quarter', 'week': 'day:half', 'month': 'day:half'}"
                 decoration-danger="overlap_warning"
                 default_group_by="user_ids"
-                progress_bar="user_ids">
+                progress_bar="user_ids"
+                pill_label="True">
                 <templates>
                     <div t-name="gantt-popover">
                         <div name="project_id">

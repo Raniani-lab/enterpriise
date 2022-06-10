@@ -72,6 +72,7 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
         this.collapseFirstLevel = params.collapseFirstLevel;
         this.thumbnails = params.thumbnails;
         this.dependencyEnabled = params.dependencyEnabled;
+        this.pillLabel = params.pillLabel;
         this.dependencyField = params.dependencyField
 
         this.rowWidgets = {};
@@ -890,6 +891,7 @@ export default AbstractRenderer.extend(WidgetAdapterMixin, {
                 fromServer: row.fromServer,
                 scales: this.SCALES,
                 unavailabilities: row.unavailabilities,
+                pillLabel: this.pillLabel,
             };
             if (this.thumbnails && row.groupedByField && row.groupedByField in this.thumbnails){
                 params.thumbnail = {model: this.fieldsInfo[row.groupedByField].relation, field: this.thumbnails[row.groupedByField],};

@@ -13,9 +13,6 @@
     </t>
 
     <t t-name="PlanningGanttView.Row" t-extend="HrGanttView.Row">
-        <t t-jquery="*[t-esc='pill.display_name']" t-operation="attributes">
-            <attribute name="t-esc" value="typeof pill.label === 'undefined' ? pill.display_name : pill.label"/>
-        </t>
         <t t-jquery="*[t-esc='widget.progressBar.value_formatted']" t-operation="after">
             h
         </t>

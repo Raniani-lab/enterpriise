@@ -4942,5 +4942,45 @@ document.createElement("a").classList.contains
         assert.strictEqual($('.modal').length, 1, 'There should be one modal opened');
         gantt.destroy();
     });
+
+    QUnit.test('Only the task name appears in the pill title when the pill_label option is not set', async function (assert) {
+        assert.expect(1);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop"
+                        default_scale="week" scales="week"/>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        const pill = gantt.el.querySelector('.o_gantt_pill_title');
+        assert.strictEqual(pill.textContent, 'Task 1', "The pill should not include DateTime in the title.");
+        gantt.destroy();
+    });
+
+    QUnit.test('The date and task name appears in the pill title when the pill_label option is set', async function (assert) {
+        assert.expect(2);
+
+        const gantt = await createView({
+            View: GanttView,
+            model: 'tasks',
+            data: this.data,
+            arch: `<gantt date_start="start" date_stop="stop"
+                        default_scale="week" scales="week"
+                        pill_label="True"/>`,
+            viewOptions: {
+                initialDate: initialDate,
+            },
+        });
+
+        const pills = gantt.el.querySelectorAll('.o_gantt_pill_title');
+        assert.strictEqual(pills[0].innerText, '11/30 - 12/31 - Task 1', "The task span across in week then DateTime should be displayed on the pill label.");
+        assert.strictEqual(pills[1].innerText, 'Task 2', "The task does not span across in week scale then DateTime shouldn't be displayed on the pill label.");
+        gantt.destroy();
+    });
 });
 });

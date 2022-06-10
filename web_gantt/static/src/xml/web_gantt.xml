@@ -219,7 +219,7 @@
                                         &amp;nbsp;
                                     </span>
                                     <!-- README: be careful when modifying the DOM inside the pill ; @_onMouseMove is strongly dependant of it -->
-                                    <p class="text-truncate position-relative mb-0 o_gantt_pill_title" t-esc="pill.display_name"/>
+                                    <p class="text-truncate position-relative mb-0 o_gantt_pill_title" t-esc="pill.label ? pill.label : pill.display_name"/>
                                 </div>
                             </t>
                         </div>

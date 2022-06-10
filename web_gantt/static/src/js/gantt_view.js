@@ -178,6 +178,7 @@ const GanttView = AbstractView.extend({
         this.rendererParams.consolidationParams = consolidationParams;
         this.rendererParams.thumbnails = thumbnails;
         this.rendererParams.progressBarFields = arch.attrs.progress_bar;
+        this.rendererParams.pillLabel = !!arch.attrs.pill_label;
         this.rendererParams.dependencyEnabled = !!this.modelParams.dependencyField
         this.rendererParams.dependencyField = this.modelParams.dependencyField
     },

@@ -384,7 +384,8 @@
                 decoration-danger="overlap_slot_count > 0"
                 display_unavailability="1"
                 sample="1"
-                progress_bar="resource_id">
+                progress_bar="resource_id"
+                pill_label="True">
 
                 <field name="allocated_hours"/>
                 <field name="recurrency_id" />

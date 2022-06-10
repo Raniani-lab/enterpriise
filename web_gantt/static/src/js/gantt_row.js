@@ -7,6 +7,7 @@ var session = require('web.session');
 var Widget = require('web.Widget');
 const pyUtils = require('web.py_utils');
 let pyUtilsContext = null;
+const fieldUtils = require('web.field_utils');
 
 var QWeb = core.qweb;
 var _t = core._t;
@@ -63,6 +64,7 @@ var GanttRow = Widget.extend({
         this.isOpen = options.isOpen;
         this.rowId = options.rowId;
         this.fromServer = options.fromServer;
+        this.pillLabel = options.pillLabel;
         this.unavailabilities = (options.unavailabilities || []).map(u => {
             return {
                 startDate: self._convertToUserTime(u.start),
@@ -97,6 +99,9 @@ var GanttRow = Widget.extend({
         }
         this._calculateMarginAndWidth();
 
+        if (this.pillLabel) {
+            this._generatePillLabels(this.state.scale);
+        }
         // Add the 16px odoo window default padding.
         this.leftPadding = (this.groupLevel + 1) * this.LEVEL_LEFT_OFFSET;
         this.cellHeight = this.level * (this.LEVEL_TOP_OFFSET + 3) + (this.level > 0 ? this.level : 0);
@@ -362,6 +367,72 @@ var GanttRow = Widget.extend({
             }
         });
     },
+    /**
+     * This function will add a 'label' property to each
+     * non-consolidated pill included in the pills list.
+     * This new property is a string meant to replace
+     * the text displayed on a pill.
+     *
+     * @private
+     * @param {Object} pills
+     * @param {string} scale
+     */
+    _generatePillLabels(scale) {
+       // as localized yearless date formats do not exists yet in momentjs,
+        // this is an awful surgery adapted from SO: https://stackoverflow.com/a/29641375
+        // The following regex chain will:
+        //  - remove all 'Y'(ignoring case),
+        //  - then remove duplicate consecutives separators,
+        //  - and finally remove trailing orphaned separators left
+        const self = this;
+        this.pills.forEach((pill) => {
+            const dateFormat = moment.localeData().longDateFormat('l');
+            const yearlessDateFormat = dateFormat.replace(/Y/gi, '').replace(/(\W)\1+/g, '$1').replace(/^\W|\W$/, '');
+
+            const localStartDateTime = (pill[self.state.dateStartField] || pill.startDate).clone().local();
+            const localEndDateTime = (pill[self.state.dateStopField] || pill.stopDate).clone().local();
+
+            const spanAccrossDays = localStartDateTime.clone().startOf('day')
+                .diff(localEndDateTime.clone().startOf('day'), 'days') != 0;
+
+            const spanAccrossWeeks = localStartDateTime.clone().startOf('week')
+                .diff(localEndDateTime.clone().startOf('week'), 'weeks') != 0;
+
+            const spanAccrossMonths = localStartDateTime.clone().startOf('month')
+                .diff(localEndDateTime.clone().startOf('month'), 'months') != 0;
+
+            const labelElements = [];
+
+            // Start & End Dates
+            if (scale === 'year' && !spanAccrossDays) {
+                labelElements.push(localStartDateTime.format(yearlessDateFormat));
+            } else if (
+                (scale === 'day' && spanAccrossDays) ||
+                (scale === 'week' && spanAccrossWeeks) ||
+                (scale === 'month' && spanAccrossMonths) ||
+                (scale === 'year' && spanAccrossDays)
+            ) {
+                labelElements.push(localStartDateTime.format(yearlessDateFormat));
+                labelElements.push(localEndDateTime.format(yearlessDateFormat));
+            }
+
+            // Start & End Times
+            if (pill.allocated_hours && !spanAccrossDays && ['week', 'month'].includes(scale)) {
+                labelElements.push(
+                    localStartDateTime.format('LT'),
+                    localEndDateTime.format('LT') + ' (' + fieldUtils.format.float_time(pill.allocated_hours, {}, {noLeadingZeroHour: true}).replace(/(:00|:)/g, 'h') + ')'
+                );
+            }
+
+            // Original Display Name
+            if (scale !== 'month' || spanAccrossDays) {
+                labelElements.push(pill.display_name);
+            }
+
+            pill.label = labelElements.filter(el => !!el).join(' - ');
+        });
+    },
+
     /**
      * Returns the count of pill
      *

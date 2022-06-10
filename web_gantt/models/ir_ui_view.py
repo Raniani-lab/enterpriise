@@ -44,6 +44,7 @@ GANTT_VALID_ATTRIBUTES = set([
     'progress_bar',
     'dependency_field',
     'dependency_inverted_field',
+    'pill_label',
 ])
 
 class View(models.Model):

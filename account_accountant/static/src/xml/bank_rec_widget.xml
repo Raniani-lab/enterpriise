@@ -120,8 +120,8 @@
                                         <t t-if="line.flag.value == 'liquidity' &amp;&amp; !line.partner_id.id">
                                             <td class="o_data_cell o_field_cell o_list_many2one text-muted"
                                                 field="partner_id"
-                                                t-att-title="data.partner_name.display"
-                                                t-esc="data.partner_name.display"/>
+                                                t-att-title="data.partner_name"
+                                                t-esc="data.partner_name"/>
                                         </t>
                                         <t t-else="">
                                             <td class="o_data_cell o_field_cell o_list_many2one"

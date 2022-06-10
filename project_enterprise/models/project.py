@@ -77,7 +77,7 @@ class Task(models.Model):
     def _get_planning_overlap_per_task(self):
         if not self.ids:
             return {}
-        self.flush_recordset()
+        self.flush_model(['active', 'planned_date_begin', 'planned_date_end', 'user_ids', 'project_id'])
         query = """
             SELECT T.id, COUNT(T2.id)
               FROM project_task T

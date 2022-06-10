@@ -65,3 +65,21 @@ def _generate_payslips(cr, registry):
             # sql time for _mark_conflicting_work_entries into ~2 seconds
             env.cr.execute('ANALYZE hr_work_entry')
             payslip_runs.with_context(allowed_company_ids=cids).action_validate()
+
+        # Generate skills logs
+        logs_vals = []
+        today = fields.Date.today()
+        all_skills = env['hr.skill'].search([])
+        all_employees = env['hr.employee'].search([])
+        for employee in all_employees:
+            for skill in all_skills:
+                for index, level in enumerate(skill.skill_type_id.skill_level_ids):
+                    logs_vals.append({
+                        'employee_id': employee.id,
+                        'department_id': employee.department_id.id,
+                        'skill_id': skill.id,
+                        'skill_type_id': skill.skill_type_id.id,
+                        'skill_level_id': level.id,
+                        'date': today - relativedelta(months=(index + 1) * 3 + index % 3)
+                    })
+        env['hr.employee.skill.log'].create(logs_vals)

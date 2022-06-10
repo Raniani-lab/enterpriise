@@ -16,6 +16,7 @@
         'documents_hr_payroll',
         'documents_hr_recruitment',
         'documents_hr_contract',
+        'hr_skills',
     ],
     'demo': ['data/test_l10n_be_hr_payroll_account_demo.xml'],
     'auto_install': True,

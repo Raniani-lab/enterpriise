@@ -38,8 +38,11 @@ class AccountBatchPayment(models.Model):
 
     @api.depends('payment_ids', 'journal_id')
     def _compute_sct_generic(self):
+        switch_to_generic_warnings = {'no_iban', 'no_eur'}
         for record in self:
-            record.sct_generic = bool(record._get_sct_genericity_warnings()) or any(payment.company_id.account_fiscal_country_id.code == 'CH' for payment in record.payment_ids)
+            sct_warnings = record._get_sct_genericity_warnings()
+            record.sct_generic = any(warning.get('code') in switch_to_generic_warnings for warning in sct_warnings) \
+                                 or any(payment.company_id.account_fiscal_country_id.code == 'CH' for payment in record.payment_ids)
 
     def _get_methods_generating_files(self):
         rslt = super(AccountBatchPayment, self)._get_methods_generating_files()
@@ -79,18 +82,21 @@ class AccountBatchPayment(models.Model):
 
         if no_iban_payments:
             rslt.append({
+                'code': 'no_iban',
                 'title': _("Some payments are not made on an IBAN recipient account. This batch might not be accepted by certain banks because of that."),
                 'records': no_iban_payments,
             })
 
         if no_eur_payments:
             rslt.append({
+                'code': 'no_eur',
                 'title': _("Some payments were instructed in another currency than Euro. This batch might not be accepted by certain banks because of that."),
                 'records': no_eur_payments,
             })
 
         if invalid_address_payments:
             rslt.append({
+                'code': 'wrong_char_address',
                 'title': _("Some payments are linked to partner addresses with characters not supported by SEPA. These characters have been replaced by blanks."),
                 'records': invalid_address_payments,
                 'help': _("The text used in SEPA files can only contain the following characters :\n\n"
@@ -102,6 +108,7 @@ class AccountBatchPayment(models.Model):
 
         if invalid_ref_payments:
             rslt.append({
+                'code': 'wrong_char_ref',
                 'title': _("Some payments have a name or reference containing characters not supported by SEPA. These characters have been replaced by blanks."),
                 'records': invalid_ref_payments,
                 'help': _("The text used in SEPA files can only contain the following characters :\n\n"

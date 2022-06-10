@@ -47,7 +47,7 @@ class TestQualityCheckWorkorder(TestMrpCommon):
         # Check that the Quality Check were created and has correct values
         self.assertEqual(len(production.move_raw_ids[0].move_line_ids.check_ids), 2)
         self.assertEqual(len(production.move_raw_ids[1].move_line_ids.check_ids), 0)
-        self.assertEqual(len(production.move_finished_ids[0].move_line_ids.check_ids), 1)
+        self.assertEqual(len(production.check_ids.filtered(lambda qc: qc.product_id == production.product_id)), 1)
         self.assertEqual(len(production.check_ids), 2)
 
         # Registering consumption in tablet view

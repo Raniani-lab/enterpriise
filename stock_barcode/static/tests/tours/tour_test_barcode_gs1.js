@@ -753,7 +753,6 @@ registry.category("web_tour.tours").add('test_gs1_receipt_lot_serial', {test: tr
     },
     // The following scanned barcode should be decomposed like that:
     //      - (01)00000076543210    > product barcode (76543210)
-    //      - (10)b1-b001           > lot (b1-b001)
     //      - (30)00000008          > quantity (8)
 
     // Open manual scanner.
@@ -764,7 +763,7 @@ registry.category("web_tour.tours").add('test_gs1_receipt_lot_serial', {test: tr
     {
         trigger: '.modal-content .modal-body #manual_barcode',
         run: function(actions) {
-            actions.text("(01)00000076543210(10)b1-b001(30)00000008");
+            actions.text("(01)00000076543210(30)00000008");
         }
     },
     // Apply the manual entry of barcode.
@@ -773,14 +772,32 @@ registry.category("web_tour.tours").add('test_gs1_receipt_lot_serial', {test: tr
     },
 
     {
-        trigger: '.o_barcode_line:contains("b1-b001")',
+        trigger: '.o_barcode_line.o_selected',
         run: function () {
             helper.assertLinesCount(1);
             helper.assertLineIsHighlighted(0, true);
             helper.assertLineQty(0, "8 / 40");
         }
     },
-    // Same barcode but for another lot and for only 4 qty. (will be scanned two times).
+    // Scans the lot: as the line has already done quantity but no lot,
+    // it should apply the lot without increase the quantity.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 10b1-b001',
+    },
+    {
+        trigger: '.o_barcode_line:contains("b1-b001")',
+        run: function () {
+            helper.assertLinesCount(1);
+            const line = helper.getLine({barcode: '76543210'});
+            helper.assert(line.querySelector('.o_line_lot_name').innerText, 'b1-b001');
+            helper.assertLineQty(line, '8 / 40');
+        }
+    },
+    // Scan the product, lot and quantity all at once:
+    //      - (01)00000076543210    > product barcode (76543210)
+    //      - (10)b1-b002           > lot (b1-b002)
+    //      - (30)00000004          > quantity (4)
     {
         trigger: '.o_barcode_client_action',
         run: 'scan 010000007654321010b1-b002\x1D3000000004',

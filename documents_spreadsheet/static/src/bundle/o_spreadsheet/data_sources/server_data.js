@@ -92,26 +92,29 @@ export class ServerData {
     constructor(orm, { whenDataIsFetched }) {
         this.orm = orm;
         this.dataFetchedCallback = whenDataIsFetched;
+        /** @type {Record<string, unknown>}*/
         this.cache = {};
-        this.pendingPromises = {};
+        /** @type {Record<string, Promise<unknown>>}*/
+        this.asyncCache = {};
         this.batchEndpoints = {};
     }
 
     /**
-     * @returns {{get: (resModel:string, method: string, args:Array<unknown>) => any}}
+     * @returns {{get: (resModel:string, method: string, args: unknown) => any}}
      */
-    get batch () {
-        return { get: (resModel, method, ...args) => this._getBatchItem(resModel, method, ...args)}
+    get batch() {
+        return { get: (resModel, method, args) => this._getBatchItem(resModel, method, args) };
     }
 
     /**
+     * @private
      * @param {string} resModel
      * @param {string} method
-     * @param  {...unknown} args
+     * @param  {unknown} args
      * @returns {any}
      */
-    _getBatchItem(resModel, method, ...args) {
-        const request = new Request(resModel, method, args);
+    _getBatchItem(resModel, method, args) {
+        const request = new Request(resModel, method, [args]);
         if (!(request.key in this.cache)) {
             const error = new LoadingDataError();
             this.cache[request.key] = error;
@@ -124,16 +127,16 @@ export class ServerData {
     /**
      * @param {string} resModel
      * @param {string} method
-     * @param  {...unknown} args
+     * @param  {unknown[]} args
      * @returns {any}}
      */
-    get(resModel, method, ...args) {
+    get(resModel, method, args) {
         const request = new Request(resModel, method, args);
         if (!(request.key in this.cache)) {
             const error = new LoadingDataError();
             this.cache[request.key] = error;
             this.orm
-                .call(resModel, method, ...args)
+                .call(resModel, method, args)
                 .then((result) => (this.cache[request.key] = result))
                 .catch((error) => (this.cache[request.key] = error))
                 .finally(() => this.dataFetchedCallback());
@@ -146,24 +149,15 @@ export class ServerData {
      * Returns the request result if cached or the associated promise
      * @param {string} resModel
      * @param {string} method
-     * @param  {...unknown} args
+     * @param  {unknown[]} args
      * @returns {Promise<any>}
      */
-    async fetch(resModel, method, ...args) {
+    async fetch(resModel, method, args) {
         const request = new Request(resModel, method, args);
-        if (request.key in this.pendingPromises) {
-            return this.pendingPromises[request.key];
+        if (!(request.key in this.asyncCache)) {
+            this.asyncCache[request.key] = this.orm.call(resModel, method, args);
         }
-        if (!(request.key in this.cache)) {
-            this.cache[request.key] = undefined;
-            this.pendingPromises[request.key] = this.orm
-                .call(resModel, method, ...args)
-                .then((result) => (this.cache[request.key] = result))
-                .catch((error) => (this.cache[request.key] = error))
-                .finally(() => delete this.pendingPromises[request.key]);
-            return this.pendingPromises[request.key];
-        }
-        return this._getOrThrowCachedResponse(request);
+        return this.asyncCache[request.key];
     }
 
     /**
@@ -268,7 +262,7 @@ export default class BatchEndpoint {
         if (this._isScheduled || this._pendingBatch.requests.length === 0) {
             return;
         }
-        this._isScheduled = true
+        this._isScheduled = true;
         queueMicrotask(async () => {
             try {
                 this._isScheduled = false;
@@ -298,7 +292,7 @@ export default class BatchEndpoint {
             (request) => new ListRequestBatch(resModel, method, [request])
         );
         const proms = [];
-        for (batch of singleRequestBatches) {
+        for (const batch of singleRequestBatches) {
             const request = batch.requests[0];
             const prom = this.orm
                 .call(resModel, method, batch.payload)

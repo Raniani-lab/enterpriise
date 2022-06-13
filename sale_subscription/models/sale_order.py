@@ -972,7 +972,7 @@ class SaleOrder(models.Model):
             msg_body = 'Automatic payment failed. Contract set to "To Renew". No email sent this time. Error: %s' % (
                     transaction and transaction.state_message or 'No Payment Method')
 
-            if (fields.Date.today() - self.next_invoice_date).days in [0, 3, 7, 14]:
+            if (fields.Date.today() - self.next_invoice_date).days in [2, 7, 14]:
                 email_context.update({'date_close': date_close})
                 reminder_mail_template.with_context(email_context).send_mail(self.id)
                 _logger.debug("Sending Payment Failure Mail to %s for contract %s and setting contract to pending", self.partner_id.email, self.id)
@@ -1155,9 +1155,13 @@ class SaleOrder(models.Model):
             email_context = self._get_subscription_mail_payment_context()
             # Set the contract in exception. If something go wrong, the exception remains.
             order.with_context(mail_notrack=True).write({'payment_exception': True})
+            # success_payment will always try to charge and fail if the token is not valid/not set.
+            # validate_send will try to charge if there is a token on the order. Otherwise, it will only post the invoice
+            try_automatic_payment = order.sale_order_template_id.payment_mode == 'success_payment'
             if order.sale_order_template_id.payment_mode == 'validate_send':
                 invoice.action_post()
-            elif order.sale_order_template_id.payment_mode == 'success_payment':
+                try_automatic_payment = order.payment_token_id
+            if try_automatic_payment:
                 try:
                     payment_token = order.payment_token_id
                     transaction = None

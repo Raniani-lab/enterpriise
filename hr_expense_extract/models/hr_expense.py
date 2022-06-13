@@ -354,6 +354,12 @@ class HrExpense(models.Model):
             html_to_return = """
 <p class="o_view_nocontent_expense_receipt">
     <h2 class="d-none d-md-block">
+        Drag and drop files to create expenses
+    </h2>
+    <p>
+        Or
+    </p>
+    <h2 class="d-none d-md-block">
         Did you try the mobile app?
     </h2>
 </p>

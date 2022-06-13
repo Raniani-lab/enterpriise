@@ -65,6 +65,18 @@
         </field>
     </record>
 
+    <record id="hr_expense_extract_view_graph" model="ir.ui.view">
+        <field name="name">hr.expense.extract.view.graph</field>
+        <field name="model">hr.expense</field>
+        <field name="inherit_id" ref="hr_expense.hr_expense_view_graph"/>
+        <field name="arch" type="xml">
+            <xpath expr="//graph" position="inside">
+                <field name="extract_remote_id" invisible="1"/>
+                <field name="extract_status_code" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="hr_expense_extract_view_list" model="ir.ui.view">
         <field name="name">hr.expense.extract.view.list</field>
         <field name="model">hr.expense</field>

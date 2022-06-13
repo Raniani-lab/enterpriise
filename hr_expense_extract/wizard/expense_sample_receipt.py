@@ -17,7 +17,7 @@ class ExpenseSampleReceipt(models.Model):
             'name': _('Sample Employee'),
             'company_id': self.env.company.id,
         })
-        product = self.env.ref('hr_expense.product_product_fixed_cost')
+        product = self.env.ref('hr_expense.product_product_no_cost')
 
         # 3/ Compute the line values
         expense_line_values = {

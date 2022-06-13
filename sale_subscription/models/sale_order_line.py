@@ -216,8 +216,9 @@ class SaleOrderLine(models.Model):
             if not line.is_subscription_product:
                 non_subscription_lines |= line
                 continue
-            if line.id:
+            if line.pricing_id:
                 # We don't compute pricings for existing lines. This compute is only used for default values of new lines
+                # Subscription product must have a product pricing
                 continue
             other_lines = previous_lines.filtered(lambda l: l.order_id == line.order_id) - line
             latest_pricing_id = other_lines and other_lines[-1].pricing_id

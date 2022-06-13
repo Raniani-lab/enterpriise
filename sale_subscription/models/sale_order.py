@@ -42,7 +42,7 @@ class SaleOrder(models.Model):
     stage_id = fields.Many2one('sale.order.stage', string='Stage', index=True, default=lambda s: s._get_default_stage_id(),
                                copy=False, group_expand='_read_group_stage_ids', tracking=True)
     account_tag_ids = fields.Many2many('account.analytic.tag', 'account_analytic_tag_sale_order_rel',
-                                       'sale_order_id', 'account_analytic_tag_sale_order_rel', string='Account Tags',
+                                       'sale_order_id', 'account_analytic_tag_id', string='Account Tags',
                                        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)
     end_date = fields.Date(string='End Date', tracking=True,
                            help="If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field.")
@@ -741,20 +741,13 @@ class SaleOrder(models.Model):
     def update_existing_subscriptions(self):
         """
         Update subscriptions already linked to the order by updating or creating lines.
-
+        This method is only called on upsell confirmation
         :rtype: list(integer)
         :return: ids of modified subscriptions
         """
-        subscriptions = self.mapped('subscription_id')
         create_values, update_values = [], []
         for order in self:
-            if order.subscription_id and order.subscription_management != 'renew':
-                order.subscription_management = 'upsell'
-            if order.subscription_management == 'renew':
-                # remove existing lines, the renewal lines completely replace the old values
-                order.subscription_id.mapped('order_line').unlink()
-                subscriptions.payment_term_id = order.payment_term_id
-                subscriptions.set_open()
+            order.subscription_management = 'upsell'
             # We don't propagate the line description from the upsell order to the subscription
             create_values, update_values = order.order_line.filtered(lambda sol: not sol.display_type)._subscription_update_line_data(order.subscription_id)
             order.subscription_id.with_context(skip_next_invoice_update=True).write({'order_line': create_values + update_values})

@@ -17,6 +17,7 @@
         <field name="title"></field>
         <field name="survey_id" ref="appraisal_feedback_template"/>
         <field name="is_page" eval="True"/>
+        <field name="question_type" eval="False"/>
         <field name="sequence">1</field>
         <field name="description" type="xml">
             <h2>Overall Purpose Of Employee Appraisal</h2>
@@ -93,6 +94,7 @@
         <field name="title">About you</field>
         <field name="survey_id" ref="appraisal_360_feedback_template" />
         <field name="is_page" eval="True"/>
+        <field name="question_type" eval="False"/>
         <field name="sequence">1</field>
         <field name="description" type="xml"><p> </p></field>
     </record>
@@ -139,6 +141,7 @@
         <field name="title">About us</field>
         <field name="survey_id" ref="appraisal_360_feedback_template" />
         <field name="is_page" eval="True"/>
+        <field name="question_type" eval="False"/>
         <field name="sequence">4</field>
         <field name="description" type="xml"><p> </p></field>
     </record>
@@ -234,6 +237,7 @@
         <field name="title">Conclusion</field>
         <field name="survey_id" ref="appraisal_360_feedback_template" />
         <field name="is_page" eval="True"/>
+        <field name="question_type" eval="False"/>
         <field name="sequence">9</field>
         <field name="description" type="xml"><p> </p></field>
     </record>

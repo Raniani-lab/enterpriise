@@ -1105,10 +1105,18 @@ export default class BarcodeModel extends EventBus {
             barcodeData.uom = this.cache.getRecord('uom.uom', product.uom_id);
         }
 
+        // Searches and selects a line if needed.
+        if (!currentLine || this._shouldSearchForAnotherLine(currentLine, barcodeData)) {
+            currentLine = this._findLine(barcodeData);
+        }
+
         // Default quantity set to 1 by default if the product is untracked or
         // if there is a scanned tracking number.
         if (product.tracking === 'none' || barcodeData.lot || barcodeData.lotName || this._incrementTrackedLine()) {
-            barcodeData.quantity = barcodeData.quantity || 1;
+            const hasUnassignedQty = currentLine && currentLine.qty_done && !currentLine.lot_id && !currentLine.lot_name;
+            const isTrackingNumber = barcodeData.lot || barcodeData.lotName;
+            const defaultQuantity = isTrackingNumber && hasUnassignedQty ? 0 : 1;
+            barcodeData.quantity = barcodeData.quantity || defaultQuantity;
             if (product.tracking === 'serial' && barcodeData.quantity > 1 && (barcodeData.lot || barcodeData.lotName)) {
                 barcodeData.quantity = 1;
                 this.notification.add(
@@ -1116,11 +1124,6 @@ export default class BarcodeModel extends EventBus {
                     { type: 'danger' }
                 );
             }
-        }
-
-        // Searches and selects a line if needed.
-        if (!currentLine || this._shouldSearchForAnotherLine(currentLine, barcodeData)) {
-            currentLine = this._findLine(barcodeData);
         }
 
         if ((barcodeData.lotName || barcodeData.lot) && product) {
@@ -1176,7 +1179,7 @@ export default class BarcodeModel extends EventBus {
                     barcodeData.quantity = remainingQty;
                 }
             }
-            if (barcodeData.quantity > 0) {
+            if (barcodeData.quantity > 0 || barcodeData.lot || barcodeData.lotName) {
                 const fieldsParams = this._convertDataToFieldsParams(barcodeData);
                 if (barcodeData.uom) {
                     fieldsParams.uom = barcodeData.uom;

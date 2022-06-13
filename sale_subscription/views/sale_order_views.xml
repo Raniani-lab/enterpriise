@@ -23,9 +23,14 @@
                 <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), '|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}</attribute>
             </button>
             <button id="create_invoice" position="after">
+                <field name="show_rec_invoice_button" invisible="1"/>
                 <button name="action_invoice_subscription" string="Create Invoice"
                         id="create_recurring_invoice" type="object" class="btn-primary" data-hotkey="q"
-                        attrs="{'invisible': ['|', '|', ('state', '!=', 'sale'), ('is_subscription', '=', False), ('payment_mode', 'in', ['validate_send', 'success_payment'])]}"
+                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False), ('payment_mode', 'in', ['validate_send', 'success_payment'])]}"
+                />
+                <button name="action_invoice_subscription" string="Create Invoice"
+                        id="create_recurring_invoice" type="object" data-hotkey="q"
+                         attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False), ('payment_mode', 'in', ['manual', 'draft_invoice'])]}"
                 />
             </button>
             <button name="action_draft" position="after">
@@ -33,20 +38,16 @@
                             attrs="{'invisible': [
                             '|',
                             '|',
-                            '|',
                             ('is_subscription', '=', False),
                             ('stage_category', '!=', 'progress'),
                             ('state', 'not in', ['sale', 'done']),
-                            ('invoice_count', '=', 0),
                             ]}" data-hotkey="z"/>
                     <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
                         attrs="{'invisible': [
                         '|',
                         '|',
-                        '|',
                         ('state', '!=', 'sale'),
                         ('is_subscription', '=', False),
-                        ('invoice_count', '=', 0),
                         '&amp;','&amp;',
                         ('recurring_rule_boundary','=','unlimited'),
                         ('stage_category','not in',['closed', 'draft']),

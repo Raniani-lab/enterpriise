@@ -36,4 +36,13 @@
         </ul>
     </template>
 
+    <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document" priority="50">
+        <xpath expr="//th[@name='th_description']" position="after">
+                <th name="th_recurrency" t-if="doc.is_subscription" class="text-left">Recurrency</th>
+        </xpath>
+        <xpath expr="//td[@name='td_name']" position="after">
+            <td name="td_recurrency" t-if="doc.is_subscription" class="text-left"><span t-field="line.pricing_id"/></td>
+        </xpath>
+    </template>
+
 </odoo>

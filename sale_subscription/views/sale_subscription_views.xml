@@ -94,16 +94,17 @@
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <search string="Subscriptions">
-                <field name="name" string="Subscription" filter_domain="['|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self)]"/>
+                <field name="name" string="Order" filter_domain="['|', ('name', 'ilike', self), ('client_order_ref', 'ilike', self)]"/>
                 <field name="partner_id" operator="child_of"/>
                 <field name="user_id"/>
                 <field name="team_id"/>
                 <field name="order_line" string="Product" filter_domain="[('order_line.product_id', 'ilike', self)]"/>
                 <field name="sale_order_template_id"/>
                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
-                <filter name="is_subscription" string="Subscriptions" domain="[('is_subscription', '=', True)]"/>
-                <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid)]"/>
+                <filter name="my_subscriptions" string="My Orders" domain="[('user_id','=',uid), ('is_subscription', '=', True)]"/>
                 <filter string="Unassigned" name="contracts_not_assigned" help="Subscriptions that are not assigned to an account manager." domain="[('user_id', '=', False)]"/>
+                <separator/>
+                <filter name="is_subscription" string="Subscriptions" domain="[('is_subscription', '=', True)]"/>
                 <separator/>
                 <filter name="alive" string="Alive" domain="[('recurring_live','=', True), ]" help="Running Subscriptions"/>
                 <filter name="pending" string="To Renew" domain="[('to_renew','=',True)]" help="Pending subscriptions"/>

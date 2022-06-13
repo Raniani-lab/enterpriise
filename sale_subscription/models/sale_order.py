@@ -88,6 +88,7 @@ class SaleOrder(models.Model):
     recurring_pricing_details = fields.Html(compute='_compute_recurring_pricing_details')
     payment_exception = fields.Boolean("Contract in exception",
                                        help="Automatic payment with token failed. The payment acquirer configuration and token should be checked")
+    show_rec_invoice_button = fields.Boolean(compute='_compute_show_rec_invoice_button')
 
     _sql_constraints = [
         ('sale_subscription_stage_coherence',
@@ -331,6 +332,19 @@ class SaleOrder(models.Model):
             return self.env.ref('sale_subscription.subtype_stage_change')
         return super()._track_subtype(init_values)
 
+    def _compute_option_data_for_template_change(self, option):
+        values = super()._compute_option_data_for_template_change(option)
+        values['option_pricing_id'] = option.option_pricing_id.id
+        return values
+
+    def _compute_show_rec_invoice_button(self):
+        self.show_rec_invoice_button = False
+        for order in self:
+            if not order.is_subscription or order.stage_category != 'progress':
+                continue
+            order.show_rec_invoice_button = True
+
+
     @api.onchange('sale_order_template_id')
     def _onchange_sale_order_template_id(self):
         # Override to propagate the account tags on the subscription and update the prices according to periodicity
@@ -444,6 +458,11 @@ class SaleOrder(models.Model):
         if self.sale_order_template_id.journal_id:
             vals['journal_id'] = self.sale_order_template_id.journal_id.id
         return vals
+
+    def _notify_thread(self, message, msg_vals=False, **kwargs):
+        if not kwargs.get('model_description') and self.is_subscription:
+            kwargs['model_description'] = _("Subscription")
+        super()._notify_thread(message, msg_vals=msg_vals, **kwargs)
 
     ###########
     # CRUD    #

@@ -62,9 +62,9 @@
                       attrs="{'column_invisible': [('parent.product_variant_count', '&lt;', 2)]}"/>
                     <field name="duration"/>
                     <field name="unit"/>
-                    <field name="price"/>
                     <field name="pricelist_id" groups="product.group_product_pricelist"/>
                     <field name="currency_id" invisible="1"/>
+                    <field name="price"/>
                   </tree>
                 </field>
             </group>

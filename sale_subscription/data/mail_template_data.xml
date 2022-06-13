@@ -404,7 +404,6 @@
                             <p>Dear <t t-out="object.partner_id.name or ''">Brandon Freeman</t>,</p>
                             <p>Your subscription <strong t-out="object.name or ''">Office Cleaning Service"</strong> needs your attention.</p>
                             <p>We invite you to renew it by clicking on the following link.</p>
-                            <a t-attf-href="{{ object.access_url }}/5">PLOP</a>
                             <p>Kind regards.</p>
                         </td></tr>
                         <tr><td style="padding:15px 20px 10px 20px;" t-out="object.user_id.signature or ''">--<br/>Mitchell Admin</td></tr>

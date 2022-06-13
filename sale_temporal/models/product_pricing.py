@@ -24,7 +24,7 @@ class ProductPricing(models.Model):
 
     _name = 'product.pricing'
     _description = 'Pricing rule of temporal products'
-    _order = 'price'
+    _order = 'price,pricelist_id,unit,duration'
 
     name = fields.Char(compute='_compute_name')
     description = fields.Char(compute='_compute_description')

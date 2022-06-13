@@ -23,7 +23,7 @@ topbarMenuRegistry.addChild("make_copy", ["file"], {
     action: (env) => env.makeCopy(),
 });
 topbarMenuRegistry.addChild("save_as_template", ["file"], {
-    name: _lt("Save as Template"),
+    name: _lt("Save as template"),
     sequence: 40,
     action: (env) => env.saveAsTemplate(),
 });

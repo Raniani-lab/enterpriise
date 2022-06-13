@@ -123,7 +123,6 @@ class CustomerPortal(portal.CustomerPortal):
             order_sudo.company_id.id,
             order_sudo.partner_id.id,
             currency_id=order_sudo.currency_id.id,
-            force_tokenization=True,
             is_validation=not order_sudo.to_renew,
         )  # In sudo mode to read the fields of acquirers and partner (if not logged in)
         # The tokens are filtered based on the partner hierarchy to allow managing tokens of any

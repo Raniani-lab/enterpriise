@@ -203,7 +203,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
     @warmup
     def test_performance_l10n_be_payroll_whole_flow(self):
         # Work entry generation
-        with self.assertQueryCount(admin=3269):
+        with self.assertQueryCount(admin=1737):
             # Note 4408 requests are related to the db insertions
             # i.e. self.env['hr.work.entry'].create(vals_list) and thus
             # are not avoidable.
@@ -247,7 +247,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'year': self.date_from.year,
             'month': str(self.date_from.month),
         })
-        with self.assertQueryCount(admin=7):
+        with self.assertQueryCount(admin=5):
             start_time = time.time()
             declaration_273S.action_generate_xml()
             # --- 0.027051687240600586 seconds ---
@@ -259,7 +259,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'year': self.date_from.year,
             'month': str(self.date_from.month),
         })
-        with self.assertQueryCount(admin=9):
+        with self.assertQueryCount(admin=6):
             start_time = time.time()
             declaration_274_XX.action_generate_xml()
             # --- 0.04558062553405762 seconds ---
@@ -271,14 +271,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'reference_year': str(self.date_from.year),
         })
         self.assertEqual(len(declaration_281_10.line_ids), 100)
-        with self.assertQueryCount(admin=112):
+        with self.assertQueryCount(admin=110):
             start_time = time.time()
             declaration_281_10.action_generate_xml()
             # --- 0.0810704231262207 seconds ---
             _logger.info("Declaration 281.10 XML:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_10.xml_validation_state, 'done', declaration_281_10.error_message)
 
-        with self.assertQueryCount(admin=3042):
+        with self.assertQueryCount(admin=1942):
             start_time = time.time()
             declaration_281_10.line_ids.write({
                 'pdf_to_generate': True,
@@ -293,14 +293,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'reference_year': str(self.date_from.year),
         })
         self.assertEqual(len(declaration_281_45.line_ids), 100)
-        with self.assertQueryCount(admin=7):
+        with self.assertQueryCount(admin=5):
             start_time = time.time()
             declaration_281_45.action_generate_xml()
             # --- 0.027942657470703125 seconds ---
             _logger.info("Declaration 281.45:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)
 
-        with self.assertQueryCount(admin=3027):
+        with self.assertQueryCount(admin=1833):
             start_time = time.time()
             declaration_281_45.line_ids.write({
                 'pdf_to_generate': True,
@@ -316,7 +316,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': 'Test',
         })
         self.assertEqual(len(individual_accounts.line_ids), 100)
-        with self.assertQueryCount(admin=3024):
+        with self.assertQueryCount(admin=1824):
             start_time = time.time()
             individual_accounts.line_ids.write({
                 'pdf_to_generate': True,
@@ -331,7 +331,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_from': self.date_from + relativedelta(day=1, month=1),
             'date_to': self.date_from + relativedelta(day=31, month=12),
         })
-        with self.assertQueryCount(admin=22):
+        with self.assertQueryCount(admin=16):
             start_time = time.time()
             social_security_certificate.print_report()
             # --- 0.1080021858215332 seconds ---

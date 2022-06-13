@@ -46,5 +46,5 @@ class TestPerformance(TestCommon):
         self.env['planning.slot'].create(slot_vals_list)
         resource_calendar_leaves = leaves + public_holiday
         self.assertEqual(len(resource_calendar_leaves), 6)
-        with self.assertQueryCount(__system__=5):
+        with self.assertQueryCount(__system__=1):
             resource_calendar_leaves._recompute_shifts_in_leave_periods()

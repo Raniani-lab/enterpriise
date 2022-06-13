@@ -113,13 +113,13 @@ class TestResPartner(AccountTestInvoicingCommon):
         bill_payable_move_lines += payment.line_ids.filtered(lambda x: x.account_type == 'liability_payable')
         bill_payable_move_lines.reconcile()
 
-    def create_325_form(self, ref_year=2000, state='generated'):
+    def create_325_form(self, ref_year=2000, state='generated', test=False):
         form_325 = self.env['l10n_be.form.325'].create({
             'company_id': self.company_data['company'].id,
             'sender_id': self.sender.id,
             'debtor_id': self.debtor.id,
             'reference_year': ref_year,
-            'is_test': False,
+            'is_test': test,
             'sending_type': '0',
             'treatment_type': '0',
             'state': 'draft',
@@ -130,7 +130,10 @@ class TestResPartner(AccountTestInvoicingCommon):
             form_325._validate_form()
         return form_325
 
-    def create_form28150(self, ref_year=None, form_type='0', company=None, partner=None, commission=0.0, fees=0.0, atn=0.0, exposed_expenses=0.0, paid_amount=0.0, state='generated'):
+    def create_form28150(
+        self, ref_year=None, form_type='0', company=None, partner=None, commission=0.0, fees=0.0, atn=0.0,
+        exposed_expenses=0.0, paid_amount=0.0, state='generated', test=False
+    ):
         if not company:
             company = self.company_data['company']
         if not partner:
@@ -142,11 +145,11 @@ class TestResPartner(AccountTestInvoicingCommon):
             'debtor_id': company.partner_id.id,
             'reference_year': ref_year,
             'treatment_type': form_type,
-            'is_test': False,
-            'state': state,
+            'is_test': test,
+            'state': 'draft',
         })
 
-        return self.env['l10n_be.form.281.50'].create({
+        form_281_50 = self.env['l10n_be.form.281.50'].create({
             'form_325_id': form325.id,
             'company_id': company.id,
             'income_debtor_bce_number': self.debtor._get_bce_number(),
@@ -164,6 +167,9 @@ class TestResPartner(AccountTestInvoicingCommon):
             'exposed_expenses': exposed_expenses,
             'paid_amount': paid_amount,
         })
+        if state == 'generated':
+            form325._validate_form()
+        return form_281_50
 
     def create_tagged_accounts(self):
         account_ids = [
@@ -751,6 +757,12 @@ class TestResPartner(AccountTestInvoicingCommon):
         self.assertEqual(form.official_id, False)
         form_2 = self.create_form28150(ref_year=2020, state='draft')
         self.assertEqual(form_2.official_id, False)
+
+    def test_281_50_in_test_mode_should_not_consume_sequence_number(self):
+        test_form = self.create_form28150(ref_year=2020, test=True)
+        self.assertEqual(test_form.official_id, '1')
+        test_form_2 = self.create_form28150(ref_year=2020, test=False)
+        self.assertEqual(test_form_2.official_id, '1')
 
     def test_281_50_partner_relation(self):
         """Ensure Many2one and One2many are working as expected"""

@@ -77,6 +77,13 @@ class TestAccountAsset(TestAccountReportsCommon):
         # In order to test the process of Account Asset, I perform a action to confirm Account Asset.
         CEO_car.validate()
 
+        # TOFIX: the method validate() makes the field account.asset.asset_type
+        # dirty, but this field has to be flushed in CEO_car's environment.
+        # This is because the field 'asset_type' is stored, computed and
+        # context-dependent, which explains why its value must be retrieved
+        # from the right environment.
+        CEO_car.flush_recordset()
+
         # I check Asset is now in Open state.
         self.assertEqual(CEO_car.state, 'open',
                          'Asset should be in Open state')
@@ -1350,6 +1357,13 @@ class TestAccountAsset(TestAccountReportsCommon):
             ],
         })
         vendor_bill_manu.action_post()
+
+        # TOFIX: somewhere above this the field account.asset.asset_type is made
+        # dirty, but this field has to be flushed in a specific environment.
+        # This is because the field 'asset_type' is stored, computed and
+        # context-dependent, which explains why its value must be retrieved
+        # from the right environment.
+        self.env.flush_all()
 
         move_line_ids = vendor_bill_manu.mapped('line_ids').filtered(lambda x: 'Laptop' in x.name)
         asset_form = Form(self.env['account.asset'].with_context(

@@ -890,6 +890,13 @@ class SaleOrder(models.Model):
         else:
             return super(SaleOrder, self)._get_portal_return_action()
 
+    def _find_mail_template(self, force_confirmation_template=False):
+        template_id = super()._find_mail_template(force_confirmation_template=False)
+        if not force_confirmation_template and self.is_subscription:
+            if self.to_renew:
+                template_id = self.env['ir.model.data']._xmlid_to_res_id('sale_subscription.mail_template_subscription_alert', raise_if_not_found=False)
+        return template_id
+
     ####################
     # Invoicing Methods #
     ####################

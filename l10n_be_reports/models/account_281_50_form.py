@@ -24,7 +24,6 @@ class Form28150(models.Model):
     )
     official_id = fields.Char(
         string='Identification number',
-        compute='_compute_official_id', store=True,
     )
     company_id = fields.Many2one(
         'res.company',
@@ -155,31 +154,38 @@ class Form28150(models.Model):
     def name_get(self):
         return [(record.id, f"{record.reference_year} {record.partner_name}") for record in self]
 
-    @api.depends('state')
-    def _compute_official_id(self):
-        forms_to_compute = self.filtered(lambda f: f.state == f.state == 'generated')
-        if forms_to_compute:
-            sequences = self.env['ir.sequence'].search([
-                ('code', '=', 'l10n_be.l10n_be.form.281.50'),
-                ('company_id', 'in', self.company_id.ids)
-            ], order='company_id')
+    def assign_official_id(self):
+        """Assigns an official_id pulled from `ir.sequence` or, if in test mode, from a simple enumerate"""
+        # As compute method are batched by 1000 records, it could run the loops several time, breaking the test part
+        # Hence, it's not a compute method
+        sequence_per_company = self._get_sequence_per_company()
+        form_requiring_real_sequence = self.filtered(lambda f: not f.form_325_id.is_test)
+        for form in form_requiring_real_sequence.sorted(lambda f: (f.partner_zip, f.partner_name, f.id)):
+            sequence = sequence_per_company.get(form.company_id.id)
+            form.official_id = sequence.next_by_id(sequence_date=fields.Datetime.to_datetime(str(form.reference_year)))
 
-            companies_missing_sequences = self.company_id - sequences.company_id
-            if companies_missing_sequences:
-                sequences |= self.env['ir.sequence'].create([{
-                    'name': 'l10n_be form 281.50',
-                    'code': 'l10n_be.l10n_be.form.281.50',
-                    'number_next': 1,
-                    'number_increment': 1,
-                    'company_id': company.id,
-                    'use_date_range': True,
-                } for company in companies_missing_sequences])
+        test_forms = self - form_requiring_real_sequence
+        for i, form in enumerate(test_forms.sorted(lambda f: (f.partner_zip, f.partner_name, f.id)), start=1):
+            form.official_id = str(i)
 
-            sequence_per_company = {seq.company_id.id: seq for seq in sequences}
 
-            for form in forms_to_compute:
-                sequence = sequence_per_company.get(form.company_id.id)
-                form.official_id = sequence.next_by_id(sequence_date=fields.Datetime.to_datetime(str(form.reference_year)))
+    def _get_sequence_per_company(self):
+        sequences = self.env['ir.sequence'].search([
+            ('code', '=', 'l10n_be.l10n_be.form.281.50'),
+            ('company_id', 'in', self.company_id.ids)
+        ], order='company_id')
+        companies_missing_sequences = self.company_id - sequences.company_id
+        if companies_missing_sequences and self.env.user.has_group('account.group_account_user'):
+            sequences |= self.env['ir.sequence'].sudo().create([{
+                'name': 'l10n_be form 281.50',
+                'code': 'l10n_be.l10n_be.form.281.50',
+                'number_next': 1,
+                'number_increment': 1,
+                'company_id': company.id,
+                'use_date_range': True,
+            } for company in companies_missing_sequences])
+        sequence_per_company = {seq.company_id.id: seq for seq in sequences}
+        return sequence_per_company
 
     @api.depends('commissions', 'fees', 'atn', 'exposed_expenses')
     def _compute_total_remuneration(self):

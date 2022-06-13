@@ -188,7 +188,7 @@ class Form325(models.Model):
     )
 
     def name_get(self):
-        return [(record.id, f"325 - {record.reference_year}") for record in self]
+        return [(f_325.id, f"325 - {f_325.reference_year}{' - TEST' if f_325.is_test else ''}") for f_325 in self]
 
     @api.depends('form_281_50_ids')
     def _compute_form_281_50_count(self):
@@ -548,13 +548,15 @@ class Form325(models.Model):
         return etree.tostring(xml_element, xml_declaration=True, encoding='utf-8')  # Well format the xml and add the xml_declaration
 
     def _validate_form(self):
-        # Once the xml is generated, we decide that the 325 and 281.50 forms are now generated and can't be edited
+        # Once the xml is generated, the 325 and 281.50 forms are in the generated state and can't be edited
         # We save all information from sender and debtor in the form.
         self.ensure_one()
-        self.write({
-            'state': 'generated',
-            'user_id': self.env.user,
-        })
+        if self.state != 'generated':
+            self.form_281_50_ids.assign_official_id()
+            self.write({
+                'state': 'generated',
+                'user_id': self.env.user,
+            })
 
     def get_dict_values(self):
         self.ensure_one()

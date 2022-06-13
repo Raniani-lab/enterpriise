@@ -1,71 +1,52 @@
-odoo.define('marketing_automation.activity_graph', function (require) {
-'use strict';
+/** @odoo-module */
 
-var AbstractField = require('web.AbstractField');
-var registry = require('web.field_registry');
 
-var ActivityGraph = AbstractField.extend({
-    className: 'o_ma_activity_graph',
-    jsLibs: [
-        '/web/static/lib/Chart/Chart.js',
-    ],
+import { loadJS } from "@web/core/assets";
+import { registry } from "@web/core/registry";
+const fieldRegistry = registry.category("fields");
+const { Component, onWillStart, onWillUnmount, useEffect, useRef } = owl;
 
-    /**
-     * @private
-     * @override _init to set data
-     */
-    init: function () {
-        this._super.apply(this, arguments);
-        this._isInDOM = false;
+/**
+ * Inspired from the GraphView
+ */
+export class MarketingActivityGraph extends Component {
+    setup() {
         this.chart = null;
-        this.chartId =  _.uniqueId('chart');
-        this.data = JSON.parse(this.value);
-    },
+        this.canvasRef = useRef("canvas");
 
-    start: function () {
-        var $canvasContainer = $('<div/>', {class: 'o_graph_canvas_container'});
-        this.$canvas = $('<canvas/>').attr('id', this.chartId);
-        $canvasContainer.append(this.$canvas);
-        this.$el.append($canvasContainer);
-        return this._super.apply(this, arguments);
-    },
+        onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
+        useEffect(() => this.renderChart());
+        onWillUnmount(this.onWillUnmount);
+    }
 
-    on_attach_callback: function () {
-        this._isInDOM = true;
-        this._render();
-    },
+    onWillUnmount() {
+        if (this.chart) {
+            this.chart.destroy();
+        }
+    }
 
     //--------------------------------------------------------------------------
-    // Private
+    // Business
     //--------------------------------------------------------------------------
 
     /**
-     * @private
-     * @override
+     * Instantiates a Chart (Chart.js lib) to render the graph according to
+     * the current config.
      */
-    _render: function () {
-        if (!this._isInDOM) {
-            return;
+    renderChart() {
+        if (this.chart) {
+            this.chart.destroy();
         }
-        if(!this.data || !_.isArray(this.data)){
-            return;
-        }
+        const config = this.getChartConfig();
+        this.chart = new Chart(this.canvasRef.el, config);
+    }
 
-        function hexToRGBA (hex, opacity) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            var rgb = result.slice(1, 4).map(function (n) {
-                    return parseInt(n, 16);
-                }).join(',');
-            return 'rgba(' + rgb + ',' + opacity + ')';
-        }
+    getChartConfig() {
+        const chartData = JSON.parse(this.props.value);
 
-        var labels = this.data[0].points.map(function (point) {
-            return point.x;
-        });
-
-        var datasets = this.data.map(function (group) {
-            var borderColor = hexToRGBA(group.color, 1);
-            var fillColor = hexToRGBA(group.color, 0.6);
+        const datasets = chartData.map((group) => {
+            const borderColor = this.hexToRGBA(group.color, 1);
+            const fillColor = this.hexToRGBA(group.color, 0.6);
             return {
                 label: group.label,
                 data: group.points,
@@ -78,16 +59,20 @@ var ActivityGraph = AbstractField.extend({
             };
         });
 
+        const labels = chartData[0].points.map((point) => {
+            return point.x;
+        });
+
         Chart.defaults.global.elements.line.tension = 0;
 
-        var ctx = document.getElementById(this.chartId);
-        this.chart = new Chart(ctx, {
+        return {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: datasets,
             },
             options: {
+                animation: false,
                 layout: {
                     padding: {left: 25, right: 20, top: 5, bottom: 20}
                 },
@@ -119,9 +104,9 @@ var ActivityGraph = AbstractField.extend({
                     borderColor: 'rgba(0,0,0,0.2)',
                     borderWidth: 2,
                     callbacks: {
-                        labelColor: function (tooltipItem, chart) {
-                            var dataset = chart.data.datasets[tooltipItem.datasetIndex];
-                            var tooltipBorderColor = chart.tooltip._model.backgroundColor;
+                        labelColor: (tooltipItem, chart) => {
+                            const dataset = chart.data.datasets[tooltipItem.datasetIndex];
+                            const tooltipBorderColor = chart.tooltip._model.backgroundColor;
                             return {
                                 borderColor: tooltipBorderColor,
                                 backgroundColor: dataset.backgroundColor,
@@ -130,12 +115,29 @@ var ActivityGraph = AbstractField.extend({
                     }
                 }
             }
-        });
-    },
-});
+        };
+    }
 
-registry.add('marketing_activity_graph', ActivityGraph);
+    //--------------------------------------------------------------------------
+    // Tools
+    //--------------------------------------------------------------------------
 
-return ActivityGraph;
+    /**
+     * Converts a hex color code with an opacity to apply into a rgba string.
+     *
+     * @param {String} hex the hex color code (e.g: #AB05D7)
+     * @param {float} opacity the float opacity to apply
+     * @returns {String} the rgba string
+     */
+    hexToRGBA(hex, opacity) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        const rgb = result.slice(1, 4).map((n) => {
+            return parseInt(n, 16);
+        }).join(',');
+        return 'rgba(' + rgb + ',' + opacity + ')';
+    }
+}
 
-});
+MarketingActivityGraph.template = "marketing_automation.MarketingActivityGraph";
+
+fieldRegistry.add('marketing_activity_graph', MarketingActivityGraph);

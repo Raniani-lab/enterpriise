@@ -41,7 +41,7 @@
         <field name="name">marketing.campaign.view.form</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <form js_class="marketing_automation_campaign_form" string="Campaign">
+            <form string="Campaign">
                 <header attrs="{'invisible': [('active', '=', False)]}">
                     <button name="action_start_campaign" type="object" states="draft,stopped" class="btn-primary" string="Start" />
                     <button name="action_stop_campaign" type="object" states="running" class="btn-primary" string="Stop" />
@@ -148,9 +148,50 @@
                                 <field name="processed" />
                                 <field name="rejected" />
                                 <templates>
-                                    <div t-name="kanban-box">
+                                    <div t-name="kanban-box" t-if="!record.parent_id.raw_value || props.displayChildren">
                                         <div class="o_ma_body">
-                                            <t t-call="timeline" />
+                                            <div class="o_ma_timeline text-center">
+                                                <t t-if="record.trigger_type.raw_value == 'mail_open'">
+                                                    <div class="o_ma_text_processed">
+                                                        <i class="fa fa-envelope-open-o" /> Opened after
+                                                    </div>
+                                                </t>
+                                                <t t-if="record.trigger_type.raw_value == 'mail_reply'">
+                                                    <div class="o_ma_text_processed">
+                                                        <i class="fa fa-reply" /> Replied after
+                                                    </div>
+                                                </t>
+                                                <t t-if="record.trigger_type.raw_value == 'mail_click'">
+                                                    <div class="o_ma_text_processed">
+                                                        <i class="fa fa-hand-pointer-o" /> Clicked after
+                                                    </div>
+                                                </t>
+                                                <t t-if="record.trigger_type.raw_value == 'mail_not_open'">
+                                                    <div class="o_ma_text_rejected">
+                                                        <i class="fa fa-envelope-open-o" /> Not opened within
+                                                    </div>
+                                                </t>
+                                                <t t-if="record.trigger_type.raw_value == 'mail_not_reply'">
+                                                    <div class="o_ma_text_rejected">
+                                                        <i class="fa fa-reply" /> Not replied within
+                                                    </div>
+                                                </t>
+                                                <t t-if="record.trigger_type.raw_value == 'mail_not_click'">
+                                                    <div class="o_ma_text_rejected">
+                                                        <i class="fa fa-hand-pointer-o" /> Not clicked within
+                                                    </div>
+                                                </t>
+                                                <t t-if="record.trigger_type.raw_value == 'mail_bounce'">
+                                                    <div class="o_ma_text_rejected">
+                                                        <i class="fa fa-exclamation-circle" /> Bounced after
+                                                    </div>
+                                                </t>
+                                                <strong class="o_ma_interval">
+                                                    <i class="fa fa-clock-o pe-1" role="img" aria-label="Select time" title="Select time"/>
+                                                    <span class="pe-1"><field name="interval_number"/></span>
+                                                    <field name="interval_type" />
+                                                </strong>
+                                            </div>
                                             <div class="o_ma_card">
                                                 <div class="o_ma_title_bar">
                                                     <div class="o_ma_icon">
@@ -163,12 +204,22 @@
                                                     </div>
                                                     <div class="o_ma_switch">
                                                         <div t-if="!read_only_mode" class="float-start mt8 mr4">
-                                                            <a type="edit" role="button" class="btn btn-primary btn-sm">Edit</a><a type="delete" role="button" class="btn btn-link btn-sm">Delete</a>
+                                                            <a type="edit" role="button" class="btn btn-primary btn-sm" href="#">Edit</a>
+                                                            <a type="delete" role="button" class="btn btn-link btn-sm" href="#">Delete</a>
                                                         </div>
-                                                        <span data-mode="graph" class="active" role="img" title="Graph" aria-label="Graph"><i class="fa fa-pie-chart" /></span><span data-mode="filter" title="Filter" role="img" aria-label="Filter"><i class="fa fa-filter" /></span>
+                                                        <span role="img" title="Graph" aria-label="Graph"
+                                                             t-att-class="!state.activeTab || state.activeTab == 'graph' ? 'active' : ''"
+                                                             t-on-click="(ev) => this.onMarketingActivityTabClick(ev, 'graph')">
+                                                            <i class="fa fa-pie-chart" />
+                                                        </span>
+                                                        <span title="Filter" role="img" aria-label="Filter"
+                                                             t-att-class="state.activeTab == 'filter' ? 'active' : ''"
+                                                             t-on-click="(ev) => this.onMarketingActivityTabClick(ev, 'filter')">
+                                                            <i class="fa fa-filter" />
+                                                        </span>
                                                     </div>
                                                 </div>
-                                                <div class="o_pane o_pane_graph">
+                                                <div class="o_pane o_pane_graph" t-if="!state.activeTab or state.activeTab == 'graph'">
                                                     <div class="pb-3 row mt16">
                                                         <div class="col-lg-9 col-9 o_ma_graph mb10">
                                                             <t t-if="record.statistics_graph_data.value">
@@ -186,109 +237,93 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div t-if="record.activity_type.raw_value == 'email'" name="mail_details" class="row o_ma_email_details text-center">
+                                                    <div t-if="record.activity_type.raw_value == 'email'" name="mail_details"
+                                                        class="row o_ma_email_details text-center position-relative">
                                                         <div class="col text-uppercase">
                                                             <i class="fa fa-pie-chart" /> Details
                                                         </div>
-                                                        <div class="col" title="Mails sent and not bounced">
-                                                            <a name="action_view_sent" type="object">
+                                                        <div class="col">
+                                                            <a name="action_view_sent" string="Sent" type="object" title="Mails sent and not bounced">
                                                                 <strong><t t-esc="record.total_sent.raw_value or 0"></t></strong> Sent
                                                             </a>
                                                         </div>
                                                         <div class="col">
-                                                            <a name="action_view_clicked" type="object">
+                                                            <a name="action_view_clicked" string="Clicked" type="object">
                                                                 <strong><t t-esc="Math.round((record.total_click.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Clicked
                                                             </a>
                                                         </div>
                                                         <div class="col">
-                                                            <a name="action_view_replied" type="object">
+                                                            <a name="action_view_replied" string="Replied" type="object">
                                                                 <strong><t t-esc="Math.round((record.total_reply.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Replied
                                                             </a>
                                                         </div>
                                                         <div class="col">
-                                                            <a name="action_view_bounced" type="object">
+                                                            <a name="action_view_bounced" string="Bounced" type="object">
                                                                 <strong><t t-esc="Math.round((record.total_bounce.raw_value/(record.total_sent.raw_value or 1)) * 100) or 0" />%</strong> Bounced
                                                             </a>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="o_pane o_pane_filter d-none" />
+                                                <div class="o_pane o_pane_filter" t-if="state.activeTab == 'filter'">
+                                                    <field name="domain" widget="domain" options="{'model': 'model_name'}" readonly="1"/>
+                                                </div>
                                                 <div t-if="!read_only_mode" class="o_ma_child_activity text-center">
                                                     <div class="o_ma_child_activity_title text-muted">
                                                         <i class="fa fa-plus-circle" /> Add child activity
                                                     </div>
                                                     <div class="o_ma_child_activity_buttons">
-                                                        <i data-trigger-type="activity" class="fa fa-code-fork fa-rotate-180 fa-flip-vertical o_ma_text_processed o_add_child_activity" title="Add Another Activity" role="img" aria-label="Add Another Activity" />
+                                                        <i t-on-click="() => this.addChildActivity('activity')"
+                                                            class="fa fa-code-fork fa-rotate-180 fa-flip-vertical o_ma_text_processed o_add_child_activity"
+                                                            title="Add Another Activity" role="img" aria-label="Add Another Activity" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-trigger-type="mail_open" class="fa fa-envelope-open-o o_ma_text_processed o_add_child_activity"
+                                                            t-on-click="() => this.addChildActivity('mail_open')"
+                                                            class="fa fa-envelope-open-o o_ma_text_processed o_add_child_activity"
                                                             title="Opened" role="img" aria-label="Opened" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-trigger-type="mail_not_open" class="fa fa-envelope-open-o o_ma_text_rejected o_add_child_activity"
+                                                            t-on-click="() => this.addChildActivity('mail_not_open')"
+                                                            class="fa fa-envelope-open-o o_ma_text_rejected o_add_child_activity"
                                                             title="Not Opened" role="img" aria-label="Not Opened" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-trigger-type="mail_reply" class="fa fa-reply o_ma_text_processed o_add_child_activity"
+                                                            t-on-click="() => this.addChildActivity('mail_reply')"
+                                                            class="fa fa-reply o_ma_text_processed o_add_child_activity"
                                                             title="Replied" role="img" aria-label="Replied" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-trigger-type="mail_not_reply" class="fa fa-reply o_ma_text_rejected o_add_child_activity"
+                                                            t-on-click="() => this.addChildActivity('mail_not_reply')"
+                                                            class="fa fa-reply o_ma_text_rejected o_add_child_activity"
                                                             title="Not Replied" role="img" aria-label="Not Replied" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-trigger-type="mail_click" class="fa fa-hand-pointer-o o_ma_text_processed o_add_child_activity"
+                                                            t-on-click="() => this.addChildActivity('mail_click')"
+                                                            class="fa fa-hand-pointer-o o_ma_text_processed o_add_child_activity"
                                                             title="Clicked" role="img" aria-label="Clicked" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-trigger-type="mail_not_click" class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity"
+                                                            t-on-click="() => this.addChildActivity('mail_not_click')"
+                                                            class="fa fa-hand-pointer-o o_ma_text_rejected o_add_child_activity"
                                                             title="Not Clicked" role="img" aria-label="Not Clicked" />
                                                         <i t-if="record.activity_type.raw_value == 'email'"
-                                                            data-trigger-type="mail_bounce" class="fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity"
+                                                            t-on-click="() => this.addChildActivity('mail_bounce')"
+                                                            class="fa fa-exclamation-circle o_ma_text_rejected o_add_child_activity"
                                                             title="Bounced" role="img" aria-label="Bounced" />
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="o_hierarchy_children" />
+                                            <t t-set="children" t-value="props.record.data.children"/>
+                                            <div class="o_hierarchy_children" t-if="children and children.length !== 0">
+                                                <t t-foreach="children" t-as="record" t-key="record.data.id">
+                                                    <HierarchyKanbanRecord
+                                                        displayChildren="true"
+                                                        archInfo="props.archInfo"
+                                                        canResequence="props.canResequence"
+                                                        forceGlobalClick="props.forceGlobalClick"
+                                                        list="props.list"
+                                                        openRecord="props.openRecord"
+                                                        is_readonly="props.readonly"
+                                                        record="record"
+                                                        templates="props.templates"
+                                                    />
+                                                </t>
+                                            </div>
                                         </div>
                                     </div>
-                                    <t t-name="timeline">
-                                        <div class="o_ma_timeline text-center">
-                                            <t t-if="record.trigger_type.raw_value == 'mail_open'">
-                                                <div class="o_ma_text_processed">
-                                                    <i class="fa fa-envelope-open-o" /> Opened after
-                                                </div>
-                                            </t>
-                                            <t t-if="record.trigger_type.raw_value == 'mail_reply'">
-                                                <div class="o_ma_text_processed">
-                                                    <i class="fa fa-reply" /> Replied after
-                                                </div>
-                                            </t>
-                                            <t t-if="record.trigger_type.raw_value == 'mail_click'">
-                                                <div class="o_ma_text_processed">
-                                                    <i class="fa fa-hand-pointer-o" /> Clicked after
-                                                </div>
-                                            </t>
-                                            <t t-if="record.trigger_type.raw_value == 'mail_not_open'">
-                                                <div class="o_ma_text_rejected">
-                                                    <i class="fa fa-envelope-open-o" /> Not opened within
-                                                </div>
-                                            </t>
-                                            <t t-if="record.trigger_type.raw_value == 'mail_not_reply'">
-                                                <div class="o_ma_text_rejected">
-                                                    <i class="fa fa-reply" /> Not replied within
-                                                </div>
-                                            </t>
-                                            <t t-if="record.trigger_type.raw_value == 'mail_not_click'">
-                                                <div class="o_ma_text_rejected">
-                                                    <i class="fa fa-hand-pointer-o" /> Not clicked within
-                                                </div>
-                                            </t>
-                                            <t t-if="record.trigger_type.raw_value == 'mail_bounce'">
-                                                <div class="o_ma_text_rejected">
-                                                    <i class="fa fa-exclamation-circle" /> Bounced after
-                                                </div>
-                                            </t>
-                                            <strong class="o_ma_interval">
-                                                <i class="fa fa-clock-o" role="img" aria-label="Select time" title="Select time"/> <field name="interval_number" />
-                                                <field name="interval_type" />
-                                            </strong>
-                                        </div>
-                                    </t>
                                 </templates>
                             </kanban>
                         </field>

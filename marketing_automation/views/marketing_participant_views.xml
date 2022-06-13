@@ -49,9 +49,35 @@
                                 <field name="mailing_trace_status"/>
                                 <field name="links_click_datetime"/>
                                 <templates>
-                                    <div t-name="kanban-box">
+                                    <div t-name="kanban-box" t-if="!record.parent_id.raw_value || props.displayChildren">
                                         <div class="o_ma_body">
-                                            <t t-call="timeline" />
+                                            <div class="o_ma_timeline text-center">
+                                                <t t-if="record.schedule_date.value">
+                                                    <field name="schedule_date" />
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-if="record.trigger_type.raw_value == 'mail_bounce'">
+                                                        <span class="text-odoo">
+                                                            <i t-attf-class="fa fa-exclamation-circle" /> Not bounced yet
+                                                        </span>
+                                                    </t>
+                                                    <t t-if="record.trigger_type.raw_value == 'mail_open'">
+                                                        <span class="text-odoo">
+                                                            <i t-attf-class="fa fa-envelope-open-o" /> Not opened yet
+                                                        </span>
+                                                    </t>
+                                                    <t t-if="record.trigger_type.raw_value == 'mail_reply'">
+                                                        <span class="text-odoo">
+                                                            <i t-attf-class="fa fa-reply" /> Not replied yet
+                                                        </span>
+                                                    </t>
+                                                    <t t-if="record.trigger_type.raw_value == 'mail_click'">
+                                                        <span class="text-odoo">
+                                                            <i t-attf-class="fa fa-hand-pointer-o" /> Not clicked yet
+                                                        </span>
+                                                    </t>
+                                                </t>
+                                            </div>
                                             <div class="o_ma_card">
                                                 <div class="row">
                                                     <div class="col-1">
@@ -65,8 +91,8 @@
                                                             <field name="activity_id" />
                                                         </strong>
                                                         <span class="o_ma_type">
-                                                            <i class="fa fa-envelope" t-if="record.activity_type.raw_value == 'email'" title="Email" role="img" aria-label="Email"/>
-                                                            <i class="fa fa-cogs" t-else="" title="Other activity" role="img" aria-label="Other activity"/>
+                                                            <i class="fa fa-envelope pe-1" t-if="record.activity_type.raw_value == 'email'" title="Email" role="img" aria-label="Email"/>
+                                                            <i class="fa fa-cogs pe-1" t-else="" title="Other activity" role="img" aria-label="Other activity"/>
                                                             <field name="activity_type" />
                                                         </span>
                                                         <div>
@@ -86,46 +112,32 @@
                                                     </div>
                                                 </div>
                                                 <div t-if="record.state.raw_value == 'scheduled' and record.schedule_date.raw_value" class="o_ma_test_buttons">
-                                                    <button name="action_execute" type="object" class="btn btn-primary" title="Run" aria-label="Run">
+                                                    <button name="action_execute" string="Run" type="object" class="btn btn-primary me-1" title="Run" aria-label="Run">
                                                         <i class="fa fa-play" />
                                                     </button>
-                                                    <button name="participant_action_cancel" type="object" class="btn btn-warning" title="Cancel" aria-label="Cancel">
+                                                    <button name="participant_action_cancel" string="Cancel" type="object" class="btn btn-warning" title="Cancel" aria-label="Cancel">
                                                         <i class="fa fa-times" />
                                                     </button>
                                                 </div>
                                             </div>
-                                            <div class="o_hierarchy_children" />
+                                            <t t-set="children" t-value="props.record.data.children"/>
+                                            <div class="o_hierarchy_children" t-if="children and children.length !== 0">
+                                                <t t-foreach="children" t-as="record" t-key="record.data.id">
+                                                    <HierarchyKanbanRecord
+                                                        displayChildren="true"
+                                                        archInfo="props.archInfo"
+                                                        canResequence="props.canResequence"
+                                                        forceGlobalClick="props.forceGlobalClick"
+                                                        list="props.list"
+                                                        openRecord="props.openRecord"
+                                                        is_readonly="props.readonly"
+                                                        record="record"
+                                                        templates="props.templates"
+                                                    />
+                                                </t>
+                                            </div>
                                         </div>
                                     </div>
-                                    <t t-name="timeline">
-                                        <div class="o_ma_timeline text-center">
-                                            <t t-if="record.schedule_date.value">
-                                                <field name="schedule_date" />
-                                            </t>
-                                            <t t-else="">
-                                                <t t-if="record.trigger_type.raw_value == 'mail_bounce'">
-                                                    <span class="text-odoo">
-                                                        <i t-attf-class="fa fa-exclamation-circle" /> Not bounced yet
-                                                    </span>
-                                                </t>
-                                                <t t-if="record.trigger_type.raw_value == 'mail_open'">
-                                                    <span class="text-odoo">
-                                                        <i t-attf-class="fa fa-envelope-open-o" /> Not opened yet
-                                                    </span>
-                                                </t>
-                                                <t t-if="record.trigger_type.raw_value == 'mail_reply'">
-                                                    <span class="text-odoo">
-                                                        <i t-attf-class="fa fa-reply" /> Not replied yet
-                                                    </span>
-                                                </t>
-                                                <t t-if="record.trigger_type.raw_value == 'mail_click'">
-                                                    <span class="text-odoo">
-                                                        <i t-attf-class="fa fa-hand-pointer-o" /> Not clicked yet
-                                                    </span>
-                                                </t>
-                                            </t>
-                                        </div>
-                                    </t>
                                 </templates>
                             </kanban>
                         </field>

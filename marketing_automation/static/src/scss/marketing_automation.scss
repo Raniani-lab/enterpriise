@@ -32,7 +32,6 @@ $o-ma-border-color: map-get($grays, $o-ma-border-color-gray-value);
     padding: 10px 0px 24px 16px;
     background-color: $o-ma-hierarchy-background;
     box-shadow: 0px 1px 1px rgba(17, 17, 17, 0.23);
-    overflow-x: auto;
     .o_ma_hierarchy_title {
         padding: 0px 0px 0px 72px;
         font-size: 18px;
@@ -47,7 +46,7 @@ $o-ma-border-color: map-get($grays, $o-ma-border-color-gray-value);
             margin: 0px 0px 0px 44px;
             border-radius: 25px;
         }
-        .o_legacy_kanban_view.o_kanban_ungrouped .o_kanban_record {
+        .o_field_x2many_kanban .o_kanban_ungrouped .o_kanban_record {
             display: flex;
             flex: 0 0 100%;
             border: 0px;
@@ -123,7 +122,7 @@ $o-ma-border-color: map-get($grays, $o-ma-border-color-gray-value);
 }
 
 .o_form_editable{
-    .o_ma_hierarchy .o_ma_hierarchy_container .o_legacy_kanban_view.o_kanban_ungrouped > .o_kanban_record:last-child:before{
+    .o_ma_hierarchy .o_ma_hierarchy_container .o_field_x2many_kanban .o_kanban_ungrouped > .o_kanban_record:last-child:before{
         height: 100%;
     }
 }
@@ -132,7 +131,13 @@ $o-ma-border-color: map-get($grays, $o-ma-border-color-gray-value);
 // Campaign Card
 // ------------------------------------------------------------------
 .o_ma_hierarchy_container.o_ma_campaign_hierarchy {
-    .o_legacy_kanban_view.o_kanban_ungrouped  .o_kanban_record {
+    .o_field_x2many_kanban .o_kanban_ungrouped  .o_kanban_record {
+        & > div {
+            background-color: transparent;
+            border: 0;
+            padding: 0;
+        }
+
         .o_ma_title_bar {
             position: relative;
             border-bottom: 1px solid $o-ma-border-color;
@@ -203,23 +208,26 @@ $o-ma-border-color: map-get($grays, $o-ma-border-color-gray-value);
             }
             .o_ma_graph {
                 padding: 0px;
-                .o_ma_activity_graph {
-                    height: 110px;
+                .o_field_marketing_activity_graph {
                     width: 100%;
-                    .o_graph_canvas_container {
-                        position: relative;
-                        top: 0px;
-                        left: 0px;
+                    .o_ma_activity_graph {
+                        height: 110px;
+                        .o_graph_canvas_container {
+                            position: relative;
+                            top: 0px;
+                            left: 0px;
+                        }
                     }
-                }
-                .o_ma_chart_time {
-                    @include o-position-absolute($top: 5px, $left: 170px);
-                    font-size: 10px;
-                    color: #A7A7A7;
+                    .o_ma_chart_time {
+                        @include o-position-absolute($top: 5px, $left: 170px);
+                        font-size: 10px;
+                        color: #A7A7A7;
+                    }
                 }
             }
             .o_ma_email_details {
                 border-top: 1px solid $o-ma-border-color;
+                z-index: 1;  // force buttons to go above chart canvas
                 @include border-bottom-radius(3px);
                 > div {
                     padding: 4px 0px;
@@ -278,7 +286,13 @@ $o-ma-border-color: map-get($grays, $o-ma-border-color-gray-value);
 // Workitem Card
 // ------------------------------------------------------------------
 .o_ma_hierarchy_container.o_ma_workitem_hierarchy {
-    .o_legacy_kanban_view.o_kanban_ungrouped  .o_kanban_record {
+    .o_field_x2many_kanban .o_kanban_ungrouped  .o_kanban_record {
+        & > div {
+            background-color: transparent;
+            border: 0;
+            padding: 0;
+        }
+
         .o_ma_body .o_ma_timeline {
             top: 20px;
         }
@@ -321,9 +335,29 @@ $o-ma-border-color: map-get($grays, $o-ma-border-color-gray-value);
         }
         .o_ma_test_buttons {
             @include o-position-absolute($top: 5px, $right: -70px);
+            margin-left: -10px;
             .btn {
                 border-radius: 3px;
             }
+        }
+    }
+}
+
+// ------------------------------------------------------------------
+// Marketing Activity Form
+// ------------------------------------------------------------------
+
+.o_marketing_activity_form.o_form_view {
+    .o_group .o_field_widget {
+        // Force col-x classes to use their normal values
+        // Overrides '.o_form_view .o_group .o_field_widget' that sets the width to 100%
+
+        &.col-2 {
+            @extend .col-2;
+        }
+
+        &.col-10 {
+            @extend .col-10;
         }
     }
 }
@@ -354,4 +388,7 @@ $o-ma-border-color: map-get($grays, $o-ma-border-color-gray-value);
 }
 .o_ma_error {
     background-color: #8F8F8F;
+}
+.o_ma_scheduled {
+    background-color: $o-brand-odoo;
 }

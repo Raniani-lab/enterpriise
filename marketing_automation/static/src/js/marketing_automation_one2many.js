@@ -1,319 +1,199 @@
-odoo.define('marketing_automation.hierarchy_kanban', function (require) {
-"use strict";
+/** @odoo-module */
 
-var core = require('web.core');
-var Domain = require('web.Domain');
-var DomainSelector = require('web.DomainSelector');
-var Dialog = require('web.Dialog');
-var FieldOne2Many = require('web.relational_fields').FieldOne2Many;
-var KanbanRenderer = require('web.KanbanRenderer');
-var KanbanRecord = require('web.KanbanRecord');
-var registry = require('web.field_registry');
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
+import { useX2ManyCrud, useOpenX2ManyRecord } from "@web/views/fields/relational_utils";
+import { X2ManyField } from "@web/views/fields/x2many/x2many_field";
+import { KanbanRecord } from "@web/views/kanban/kanban_record";
+import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 
-var _t = core._t;
+const { onWillRender, useState, useSubEnv } = owl;
+const fieldRegistry = registry.category("fields");
 
-var HierarchyKanban = FieldOne2Many.extend({
-    custom_events: _.extend({}, FieldOne2Many.prototype.custom_events, {
-        'add_child_act': '_onAddChild',
-    }),
+export class HierarchyKanbanRecord extends KanbanRecord {
+    setup() {
+        super.setup();
 
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
+        this.dialogService = useService("dialog");
 
-    /**
-     * @private
-     * @override
-     * @returns {Promise}
-     */
-    _render: function () {
-        var self = this;
-        this._setHierarchyData();
-        var _super = this._super.bind(this);
-        var rendererProm;
-        if (!this.renderer) {
-            this.renderer = new HierarchyKanbanRenderer(this, this.value, {
-                arch: this.view.arch,
-                viewType: 'kanban',
-                record_options: {
-                    editable: false,
-                    deletable: false,
-                    read_only_mode: this.isReadonly,
-                },
-            });
-            rendererProm = this.renderer.appendTo(this.$el);
+        if (this.props.is_readonly !== undefined) {
+            this.props.readonly = this.props.is_readonly;
         }
-        return Promise.resolve(rendererProm).then(function () {
-            // Move control_panel at bottom
-            if (self.control_panel) {
-                self.control_panel.$el.appendTo(self.$el);
-            }
-            return _super();
-        });
-    },
-    /**
-     * Transforms the widget value into parent and child relationship.
-     *
-     * @private
-     */
-    _setHierarchyData: function () {
-        var data = this.value.data;
-        this.allData = data;
-        var parentMap = {};
-        this.value.data = _.filter(data, function (record) {
-            parentMap[record.res_id] = record;
-            record.children = [];
-            return record.data.parent_id === false;
-        });
-        _.each(data, function (record) {
-            if (record.data.parent_id && parentMap[record.data.parent_id.res_id]) {
-                parentMap[record.data.parent_id.res_id].children.push(record);
-            }
-        });
-    },
-    /**
-     * The implicit contract on this.value.data has been broken by _setHierarchyData
-     * so we need to make sure that we generated the right command by checking
-     * if the record id is in all_data (which is what this.value.data should be)
-     *
-     * if we delete a record, we also need to delete every child of this record
-     * @override
-     * @private
-     */
-    _setValue: function (value, options) {
-        if (value.operation === 'ADD' && _.some(this.allData, {id: value.id})) {
-            value.operation = 'UPDATE';
-        } else if(value.operation === 'DELETE') {
-            var removedRecords = this.allData.filter(function (record) {return value.ids.includes(record.id);});
 
-            // we want to delete these records and also each children which derive from the records
-            value.ids = this._getAllSubChildren(removedRecords)
-                .map(function (record) {return record.id;});
-        }
-        return this._super(value, options);
-    },
-
-    /**
-     * Return the elements and all children which derive from the ``parentRecords``
-     *
-     * @private
-     */
-    _getAllSubChildren: function (parentRecords) {
-        var childrenRecords = [];
-        parentRecords.forEach(function (record) {
-            childrenRecords = childrenRecords.concat(record.children || []);
-        });
-        return childrenRecords.length ? parentRecords.concat(this._getAllSubChildren(childrenRecords)) : parentRecords;
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * @override
-     * @param ev
-     * @private
-     */
-    _onAddRecord: function (ev) {
-        var self = this;
-        var fnSuper = this._super;
-        var fnArguments = arguments;
-        ev.data = { 'disable_multiple_selection': true };
-        this.trigger_up('save_form_before_new_activity', {
-            callback: function() { fnSuper.apply(self, fnArguments); }
-        });
-    },
-
-    /**
-     * Opens the record with custom context and adds the child activity on saved.
-     *
-     * @private
-     */
-    _onAddChild: function (params) {
-        var self = this;
-        var context = _.extend(this.record.getContext(this.recordParams), params.data);
-        this.trigger_up('open_one2many_record', {
-            domain: this.record.getDomain(this.recordParams),
-            context: context,
-            field: this.field,
-            fields_view: this.attrs.views && this.attrs.views.form,
-            parentID: this.value.id,
-            viewInfo: this.view,
-            disable_multiple_selection: true,
-            on_saved: function (record) {
-                self._setValue({operation: 'ADD', id: record.id});
-            },
-        });
-    },
-});
-
-var HierarchyKanbanRenderer = KanbanRenderer.extend({
-
-    /**
-     * Renders kanban records with its children.
-     *
-     * @private
-     * @override
-     */
-    _renderUngrouped: function (fragment, records) {
-        this.defs.push(this._renderUngroupedAux(fragment, records));
-    },
-    _renderUngroupedAux: function (fragment, records) {
-        var self = this;
-        var recordsDefs = [];
-        _.each(records || this.state.data, function (record) {
-            var kanbanRecord = new HierarchyKanbanRecord(self, record, self.recordOptions);
-            self.widgets.push(kanbanRecord);
-            var def = kanbanRecord.appendTo(fragment).then(function() {
-                if (record.children.length) {
-                    var newFragment = kanbanRecord.$('.o_hierarchy_children');
-                    return self._renderUngroupedAux(newFragment, record.children);
-                }
-            });
-            recordsDefs.push(def);
-        });
-        return Promise.all(recordsDefs);
-    },
-});
-
-var HierarchyKanbanRecord = KanbanRecord.extend({
-    events: _.extend({}, KanbanRecord.prototype.events, {
-        'click .o_ma_switch span': '_onClickSwitch',
-        'click .o_add_child_activity': '_onAddChildActivity',
-    }),
-
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
-
-    /**
-     * Renders DomainSelector.
-     *
-     * @private
-     * @returns {Promise}
-     */
-    _renderDomainSelector: function () {
-        if (!this.domainSelector) {
-            var domainModel = this.state.data.model_name;
-            var domain = Domain.prototype.stringToArray(this.state.data.domain);
-            this.domainSelector = new DomainSelector(this, domainModel, domain, {
-                readonly: true,
-                filters: {},
-            });
-            return this.domainSelector.prependTo(this.$('.o_ma_card:first > .o_pane_filter'));
-        }
-        return Promise.resolve();
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * Displays dialog if user try to delete record having children.
-     * Triggers actions (DELETE, EDIT...)
-     *
-     * @private
-     * @override
-     * @param {Event} event
-     */
-    _onKanbanActionClicked: function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-        var type = $(event.currentTarget).data('type') || 'button';
-        if (type === 'delete' && this.state.children.length) {
-            new Dialog(this, {
-                title: _t('Delete Activity'),
-                buttons: [{
-                    text: _t('Delete All'),
-                    classes: 'btn-primary',
-                    close: true,
-                    click: this._super.bind(this, event)
-                }, {
-                    text: _t('Discard'),
-                    close: true
-                }],
-                $content: $('<div>', {
-                    html: _t("This Activity has a dependant child activity. 'DELETE ALL' will delete all child activities."),
-                }),
-            }).open();
-        } else {
-            this._super.apply(this, arguments);
-        }
-    },
-
-    /**
-     * Handles clicking on a button "Add a child activity".
-     *
-     * The dom element can have an attribute ``data-trigger_type`` with the default trigger type
-     *
-     * @private
-     * @param {Event} event
-     */
-    _onAddChildActivity: function (event) {
-        event.stopPropagation();
-        event.preventDefault();
-        var triggerType = $(event.currentTarget).data('triggerType');
-        var self = this;
-        this.trigger_up('save_form_before_new_activity', {
-            callback: function () {
-                var promise;
-                if (!self.id) {
-                    promise = self._rpc({
-                        model: 'marketing.activity',
-                        method: 'search_read',
-                        domain: [
-                            ['name', '=', self.recordData.name],
-                            ['parent_id', '=', self.recordData.parent_id.res_id],
-                            ['trigger_type', '=', self.recordData.trigger_type],
-                        ],
-                        fields: ['id'],
-                        limit: 1,
-                    });
-                } else {
-                    promise = Promise.resolve();
-                }
-                promise.then(function (result) {
-                    if (result && result.length) {
-                        self.id = result[0].id;
-                    }
-                    if (self.id) {
-                        self.trigger_up('add_child_act', {
-                            'default_parent_id': self.id,
-                            'default_trigger_type': triggerType
-                        });
-                    }
-                });
-            }
-        });
-    },
-
-    /**
-     * Handles toggling of kanban pane.
-     *
-     * @private
-     * @param {Event} event
-     */
-    _onClickSwitch: function (event) {
-        event.stopPropagation();
-        var self = this;
-        $(event.currentTarget).siblings().removeClass('active');
-        $(event.currentTarget).addClass('active');
-        var mode = $(event.currentTarget).data('mode');
-        this._renderDomainSelector().then(function () {
-            self.$('.o_ma_card:first > [class*="o_pane_"]').addClass('d-none');
-            self.$('.o_ma_card:first > .o_pane_' + mode).removeClass('d-none');
-        });
+        this.state = useState({activeTab: 'graph'});
     }
-});
 
-registry.add('hierarchy_kanban', HierarchyKanban);
+    /**
+     * Simply adds a confirmation prompt when deleting a marketing.activity record that has children
+     * activities. Since the ORM will then perform a cascade deletion of children.
+     */
+    triggerAction(params) {
+        const { group, list, record } = this.props;
+        const listOrGroup = group || list;
+        const { type } = params;
 
-return {
-    HierarchyKanbanRecord: HierarchyKanbanRecord,
-    HierarchyKanbanRenderer: HierarchyKanbanRenderer,
-    HierarchyKanban: HierarchyKanban,
+        if (type === "delete" && !listOrGroup.deleteRecords &&
+            record.data.children && record.data.children.length !== 0) {
+            this.dialogService.add(ConfirmationDialog, {
+                body: this.env._t("Deleting this activity will delete ALL its children activities. Are you sure?"),
+                confirm: () => super.triggerAction(...arguments),
+                cancel: () => {},
+            });
+        } else {
+            super.triggerAction(...arguments);
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Business
+    //--------------------------------------------------------------------------
+
+    /**
+     * Helper method that opens the marketing.activity Form dialog with pre-configured trigger_type
+     * and parent_id. Used for the various create buttons on the kanban card footers.
+     *
+     * @param {String} triggerType the associated marketing.activity#trigger_type
+     */
+    async addChildActivity(triggerType) {
+        await this.props.list.model.root.save({stayInEdition: true});
+
+        const context = {
+            default_parent_id: this.props.record.data.id,
+            default_trigger_type: triggerType,
+        };
+        this.env.onAddMarketingActivity({ context });
+    }
+
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+
+    /**
+     * Allows to switch between the 'graph' and 'filter' tabs of the activity kanban card.
+     *
+     * @param {MouseEvent} ev
+     * @param {String} view the view to enable ('graph' or 'filter')
+     */
+    onMarketingActivityTabClick(ev, view) {
+        ev.stopPropagation();
+        this.state.activeTab = view;
+    }
+}
+
+HierarchyKanbanRecord.components = {
+    ...KanbanRecord.components,
+    HierarchyKanbanRecord
 };
 
-});
+HierarchyKanbanRecord.defaultProps = {
+    ...KanbanRecord.defaultProps,
+    displayChildren: false,
+};
+
+HierarchyKanbanRecord.props = KanbanRecord.props.concat([
+    'is_readonly?',
+    'displayChildren?',
+]);
+
+
+export class HierarchyKanbanRenderer extends KanbanRenderer {
+    setup() {
+        super.setup();
+
+        onWillRender(() => {
+            if (this.props.list.model.root.data.marketing_activity_ids
+                && this.props.list.model.root.data.marketing_activity_ids.records) {
+                this.props.list.model.root.data.marketing_activity_ids.records = this._getRecordsWithHierarchy(
+                    this.props.list.model.root.data.marketing_activity_ids.records
+                );
+            }
+
+            if (this.props.list.model.root.data.trace_ids
+                && this.props.list.model.root.data.trace_ids.records) {
+                this.props.list.model.root.data.trace_ids.records = this._getRecordsWithHierarchy(
+                    this.props.list.model.root.data.trace_ids.records
+                );
+            }
+        });
+    }
+
+    /**
+     * Transforms the record (typically marketing.activities or marketing.traces) to enable
+     * parent/children relationship within those records.
+     *
+     * The data comes 'flat' from the server and this method will create a hierarchy between records
+     * by adding a "children" key into the record data containing its children activities.
+     *
+     * @param {Array<Record>} record
+     * @returns {Array<Record>}
+     */
+    _getRecordsWithHierarchy(records) {
+        const parentMap = {};
+        const allChildrenIds = [];
+        records.forEach((activityRecord) => {
+            const parentId = activityRecord.data.parent_id;
+            if (parentId) {
+                if (!parentMap[parentId[0]]) {
+                    parentMap[parentId[0]] = [];
+                }
+
+                parentMap[parentId[0]].push(activityRecord);
+                allChildrenIds.push(activityRecord.data.id);
+            }
+        });
+
+        records.forEach((activityRecord) => {
+            activityRecord.data.children = parentMap[activityRecord.data.id] || [];
+        });
+
+        return records;
+    }
+}
+
+HierarchyKanbanRenderer.components.KanbanRecord = HierarchyKanbanRecord;
+
+export class HierarchyKanban extends X2ManyField {
+    /**
+     * Overrides the "openRecord" method to overload the save.
+     *
+     * Every time we save a sub-marketing.activity, we want to save the whole marketing.automation
+     * record and form view.
+     *
+     * This allows the end-user to easily chain activities, otherwise he would have to save the
+     * enclosing form view in-between each activity addition.
+     */
+    setup() {
+        super.setup();
+
+        const { saveRecord, updateRecord } = useX2ManyCrud(
+            () => this.list,
+            this.isMany2Many
+        );
+
+        const openRecord = useOpenX2ManyRecord({
+            resModel: this.list.resModel,
+            activeField: this.activeField,
+            activeActions: this.activeActions,
+            getList: () => this.list,
+            saveRecord: async (record) => {
+                await saveRecord(record);
+                await this.props.record.save({stayInEdition: true});
+            },
+            updateRecord: updateRecord,
+        });
+        this._openRecord = openRecord;
+
+        useSubEnv({
+            onAddMarketingActivity: this.onAdd.bind(this),
+        });
+    }
+
+}
+
+fieldRegistry.add("hierarchy_kanban", HierarchyKanban);
+
+HierarchyKanban.components = {
+    ...X2ManyField.components,
+    KanbanRenderer: HierarchyKanbanRenderer
+};

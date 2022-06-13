@@ -4,7 +4,7 @@
         <field name="name">marketing.activity.view.form</field>
         <field name="model">marketing.activity</field>
         <field name="arch" type="xml">
-            <form string="Activity">
+            <form string="Activity" class="o_marketing_activity_form">
                 <sheet>
                     <div class="oe_title">
                         <label for="name" string="Activity Name" />
@@ -42,7 +42,7 @@
                             <div class="container">
                                 <div class="row">
                                     <field name="interval_number" nolabel="1" class="col-2 px-0"/>
-                                    <field name="interval_type" nolabel="1" class="col-10"/>
+                                    <field name="interval_type" nolabel="1" class="col-10 pe-1"/>
                                 </div>
                                 <div class="row">
                                     <span class="col-2 px-0 pt-1">after</span>

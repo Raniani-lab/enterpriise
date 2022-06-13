@@ -34,12 +34,12 @@
         'web._assets_primary_variables': [
             'marketing_automation/static/src/scss/variables.scss',
         ],
+        'web.assets_qweb': [
+            'marketing_automation/static/src/xml/*.xml',
+        ],
         'web.assets_backend': [
-            'marketing_automation/static/src/js/marketing_automation_graph.js',
-            'marketing_automation/static/src/js/marketing_automation_one2many.js',
-            'marketing_automation/static/src/js/marketing_campaign_view.js',
-            'marketing_automation/static/src/js/marketing_campaign_controller.js',
-            'marketing_automation/static/src/scss/marketing_automation.scss',
+            'marketing_automation/static/src/js/*.js',
+            'marketing_automation/static/src/scss/*.scss',
         ],
         'web.qunit_suite_tests': [
             'marketing_automation/static/tests/**/*',

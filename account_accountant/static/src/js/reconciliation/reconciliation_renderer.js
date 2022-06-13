@@ -189,6 +189,7 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
         'click .create .add_line': '_onCreateProposition',
         'click .reconcile_model_create': '_onCreateReconcileModel',
         'click .reconcile_model_edit': '_onEditReconcileModel',
+        'click .entry_view': '_onOpenMove',
         'keyup input': '_onInputKeyup',
         'blur input': '_onInputKeyup',
         'keydown': '_onKeydown',
@@ -700,6 +701,22 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
         },
         {
             on_reverse_breadcrumb: function() {self.trigger_up('reload');},
+        });
+    },
+    /**
+     * @private
+     * @param {MouseEvent} event
+     */
+     _onOpenMove: function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var self = this;
+        this._rpc({
+            model: 'account.move.line',
+            method: 'open_move',
+            args: [parseInt(event.target.dataset.line_id)],
+        }).then(function (actionData){
+            return self.do_action(actionData);
         });
     },
     /**

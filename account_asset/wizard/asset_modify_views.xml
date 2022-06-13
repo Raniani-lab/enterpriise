@@ -41,7 +41,7 @@
                     <group attrs="{'invisible': [('modify_action', 'not in', ('sell'))]}">
                         <field name="invoice_id"
                                options="{'no_quick_create': True}"
-                               context="{'default_move_type': 'out_invoice', 'name_groupby':1}"
+                               context="{'default_move_type': 'out_invoice'}"
                                attrs="{'invisible': [('modify_action', '!=', 'sell')],
                                        'required': [('modify_action', '=', 'sell')]}"/>
                         <field name="invoice_line_id"

@@ -7,6 +7,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
     var ListController = require('web.ListController');
     var ListModel = require('web.ListModel');
     var ListRenderer = require('web.ListRenderer');
+    var localStorage = require('web.local_storage');
     var ListView = require('web.ListView');
     var viewRegistry = require('web.view_registry');
 
@@ -48,7 +49,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
             this._super.apply(this, arguments);
 
             this.currentAttachments = [];
-            this.hide_attachment = !!this.initialState.context.hide_attachment;
+            this.hide_attachment = localStorage.getItem('account.move_line_pdf_previewer_hidden') == 'true' ? true : false;
             this.last_selected = false;
 
         },
@@ -80,7 +81,11 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                     self.$attachmentPreview.appendTo(self.$('.o_content'));
                     self.$attachmentPreview.toggleClass('hidden', self.hide_attachment);
                 }
-            }).then(self._renderAttachmentPreview());
+            }).then(function () {
+                if (!self.hide_attachment){
+                    self._renderAttachmentPreview();
+                }
+            });
         },
         /**
          * Renders a preview of a record attachments.
@@ -139,13 +144,18 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                     });
                     self.$attachmentPreview.empty().append($empty);
                 }
+                self.$attachmentPreview.find("div.o_attachment_control").remove();
                 $('<div>', {class: 'o_attachment_control'}).appendTo(self.$attachmentPreview);
             });
         },
 
         _onToggleAttachment: function() {
             this.hide_attachment = !this.hide_attachment;
+            localStorage.setItem('account.move_line_pdf_previewer_hidden', this.hide_attachment);
             this.$attachmentPreview.toggleClass('hidden');
+            if (!this.hide_attachment) {
+                this._renderAttachmentPreview(this.last_selected)
+            }
         },
 
         //--------------------------------------------------------------------------
@@ -160,7 +170,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
         _onRowSelected: function (ev) {
             if (config.device.size_class >= config.device.SIZES.XXL) {
                 this.last_selected = ev.data.recordId;
-                if (this.last_selected.includes('line')) { // if it comes from _onToggleGroup, this._update is triggered but not if it comes from _selectRow
+                if (this.last_selected.includes('line') && !this.hide_attachment) { // if it comes from _onToggleGroup, this._update is triggered but not if it comes from _selectRow
                     this._renderAttachmentPreview(ev.data.recordId);
                 }
             }
@@ -221,21 +231,6 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                 });
             }
             return res;
-        },
-
-        _renderGroupRow: function (group, groupLevel) {
-            var ret = this._super.apply(this, arguments);
-            // Handle the markup of the name_get on account.move if name_groupby is in the context
-            if (this.state.context.name_groupby) {
-                var $th = ret.find('th.o_group_name');
-                $th.addClass('o_group_name_custom');
-                var text_node = $th.contents().filter(function () {
-                    return this.nodeType == 3;
-                })[0]; // we filter on text nodes (type 3) to get only the text and not the title tooltips we would have had with $.text()
-                text_node.nodeValue = _.escape(text_node.nodeValue).replace(/(\*\*)(.*)\1/g, '<strong>$2</strong>').replace(/\s+\([0-9]+\)/, ''); // we only change the value of the text and not eh html to keep the listeners on the buttons
-                $(text_node).replaceWith($('<span>' + text_node.nodeValue + '</span>')); // we need to create a new node (span) to replace, just inserting with the new html would mean that we replace by multiple nodes, which is impossible
-            }
-            return ret;
         },
 
         _onToggleGroup: function (ev) {

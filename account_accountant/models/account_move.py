@@ -88,3 +88,9 @@ class AccountMoveLine(models.Model):
             'binding_view_types': 'list',
             'context': {'active_ids': self.ids, 'active_model': 'account.move.line'},
         }
+
+    def open_move(self):
+        if self.statement_id:
+            return self.statement_id.action_bank_reconcile_bank_statements()
+        else:
+            return super().open_move()

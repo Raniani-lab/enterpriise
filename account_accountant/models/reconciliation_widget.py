@@ -28,7 +28,7 @@ class AccountReconciliation(models.AbstractModel):
 
         domain = self._domain_move_lines_for_manual_reconciliation(account_id, partner_id, excluded_ids, search_str)
         recs_count = Account_move_line.search_count(domain)
-        lines = Account_move_line.search(domain, limit=limit, order="date_maturity desc, id desc")
+        lines = Account_move_line.search(domain, limit=limit, order="date desc, id desc")
         if target_currency_id:
             target_currency = Currency.browse(target_currency_id)
         else:
@@ -327,7 +327,10 @@ class AccountReconciliation(models.AbstractModel):
             line_currency = (line.currency_id and line.amount_currency) and line.currency_id or company_currency
             ret_line = {
                 'id': line.id,
-                'name': line.name and line.name != '/' and line.move_id.name != line.name and line.move_id.name + ': ' + line.name or line.move_id.name,
+                'name': {
+                    'line_name': line.name and line.name != '/' and line.move_id.name != line.name and ': ' + line.name or '',
+                    'move_name': line.move_id.name,
+                },
                 'ref': line.move_id.ref or '',
                 # For reconciliation between statement transactions and already registered payments (eg. checks)
                 # NB : we don't use the 'reconciled' field because the line we're selecting is not the one that gets reconciled

@@ -211,13 +211,15 @@ class AccountGenericTaxReport(models.AbstractModel):
             tax_affecting_base_domain + additional_base_line_domain,
         ))
 
+        ctx = self._context.copy()
+        ctx.update({'search_default_group_by_taxes': 1, 'search_default_group_by_account': 2, 'expand': 1})
         return {
             'type': 'ir.actions.act_window',
             'name': _('Journal Items for Tax Audit'),
             'res_model': 'account.move.line',
             'views': [[self.env.ref('account.view_move_line_tax_audit_tree').id, 'list'], [False, 'form']],
             'domain': domain,
-            'context': self._context,
+            'context': ctx,
         }
 
     def action_dropdown_audit_default_tax_report(self, options, data):

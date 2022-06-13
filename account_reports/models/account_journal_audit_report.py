@@ -892,18 +892,17 @@ class ReportAccountJournalAudit(models.AbstractModel):
             'date_from': params and params.get('date_from') or options.get('date', {}).get('date_from'),
             'date_to': params and params.get('date_to') or options.get('date', {}).get('date_to'),
             'search_default_journal_id': params.get('journal_id'),
-            'name_groupby': 1,
             'expand': 1,
         }
         if params and params.get('tax_type') == 'tag':
             ctx.update({
                 'search_default_group_by_tax_tags': 1,
-                'search_default_group_by_account': 1,
+                'search_default_group_by_account': 2,
             })
         elif params and params.get('tax_type') == 'tax':
             ctx.update({
                 'search_default_group_by_taxes': 1,
-                'search_default_group_by_account': 1,
+                'search_default_group_by_account': 2,
             })
 
         if params and 'journal_id' in params:
@@ -920,7 +919,7 @@ class ReportAccountJournalAudit(models.AbstractModel):
             'name': params.get('name'),
             'view_mode': 'tree,pivot,graph,kanban',
             'res_model': 'account.move.line',
-            'views': [(self.env.ref('account.view_move_line_tree_grouped').id, 'list')],
+            'views': [(self.env.ref('account.view_move_line_tree').id, 'list')],
             'type': 'ir.actions.act_window',
             'domain': [('display_type', 'not in', ('line_section', 'line_note'))],
             'context': ctx,

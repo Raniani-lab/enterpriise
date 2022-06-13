@@ -1426,7 +1426,6 @@ class AccountReport(models.AbstractModel):
             'date_from': options.get('date').get('date_from'),
             'date_to': options.get('date').get('date_to'),
             'search_default_journal_id': params.get('journal_id'),
-            'name_groupby': 1,
             'expand': 1,
         }
 

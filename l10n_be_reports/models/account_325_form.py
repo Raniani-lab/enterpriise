@@ -2,6 +2,7 @@
 
 import base64
 import tempfile
+import re
 import zipfile
 
 from collections import Counter
@@ -227,7 +228,7 @@ class Form325(models.Model):
     def _compute_sender_phone_number(self):
         for form in self:
             if form.state == 'draft':
-                form.sender_phone_number = form.sender_id.phone
+                form.sender_phone_number = re.sub(r"\D", '', form.sender_id.phone)
 
     @api.depends('state', 'sender_id', 'sender_id.lang')
     def _compute_sender_lang_code(self):

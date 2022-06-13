@@ -195,7 +195,7 @@ class TestResPartner(AccountTestInvoicingCommon):
                             <v0015_adres>Rue du Laid Burniat 5</v0015_adres>
                             <v0016_postcode>1348</v0016_postcode>
                             <v0017_gemeente>Ottignies-Louvain-la-Neuve </v0017_gemeente>
-                            <v0018_telefoonnummer>+3222903490</v0018_telefoonnummer>
+                            <v0018_telefoonnummer>3222903490</v0018_telefoonnummer>
                             <v0021_contactpersoon>Because I am accountman!</v0021_contactpersoon>
                             <v0022_taalcode>2</v0022_taalcode>
                             <v0023_emailadres>accountman@test.com</v0023_emailadres>
@@ -285,7 +285,7 @@ class TestResPartner(AccountTestInvoicingCommon):
                             <v0015_adres>Rue du Laid Burniat 5</v0015_adres>
                             <v0016_postcode>1348</v0016_postcode>
                             <v0017_gemeente>Ottignies-Louvain-la-Neuve </v0017_gemeente>
-                            <v0018_telefoonnummer>+3222903490</v0018_telefoonnummer>
+                            <v0018_telefoonnummer>3222903490</v0018_telefoonnummer>
                             <v0021_contactpersoon>Because I am accountman!</v0021_contactpersoon>
                             <v0022_taalcode>2</v0022_taalcode>
                             <v0023_emailadres>accountman@test.com</v0023_emailadres>
@@ -379,7 +379,7 @@ class TestResPartner(AccountTestInvoicingCommon):
                             <v0015_adres>Rue du Laid Burniat 5</v0015_adres>
                             <v0016_postcode>1348</v0016_postcode>
                             <v0017_gemeente>Ottignies-Louvain-la-Neuve </v0017_gemeente>
-                            <v0018_telefoonnummer>+3222903490</v0018_telefoonnummer>
+                            <v0018_telefoonnummer>3222903490</v0018_telefoonnummer>
                             <v0021_contactpersoon>Because I am accountman!</v0021_contactpersoon>
                             <v0022_taalcode>2</v0022_taalcode>
                             <v0023_emailadres>accountman@test.com</v0023_emailadres>

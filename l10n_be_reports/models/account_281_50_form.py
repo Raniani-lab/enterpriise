@@ -247,7 +247,7 @@ class Form28150(models.Model):
             'F2005': self.income_debtor_bce_number,
             'F2008': 28150,  # fiche type
             'F2009': int(self.official_id),  # id number of this fiche for this beneficiary
-            'F2013': self.partner_name,
+            'F2013': self.partner_name[:41],
             'F2015': self.partner_address,
             'F2016': self.partner_zip if is_partner_from_belgium else '',
             'F2017': self.partner_city,

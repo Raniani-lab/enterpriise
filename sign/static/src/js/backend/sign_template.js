@@ -125,7 +125,12 @@ const SignItemCustomPopover = Widget.extend({
     const alignment = this.$(
       ".o_sign_field_align_group .o_sign_align_button.btn-primary"
     ).data("align");
-    let name = this.$("#o_sign_name").val();
+    if(! odoo.debug){
+      var name = this.$currentTarget.data('name') || this.$currentTarget.prop('field-placeholder')
+    }
+    else{
+      var name = this.$('#o_sign_name').val();
+    }
     this.getParent().currentRole = resp;
     if (!name) {
       name = false;

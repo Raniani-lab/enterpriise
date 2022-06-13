@@ -45,6 +45,10 @@ class HelpdeskStageDelete(models.TransientModel):
         self.stage_ids.write({'active': False})
         return self._get_action()
 
+    def action_unarchive_ticket(self):
+        tickets = self.env['helpdesk.ticket'].with_context(active_test=False).search([('stage_id', 'in', self.stage_ids.ids)])
+        tickets.action_unarchive()
+
     def action_unlink(self):
         self.stage_ids.unlink()
         return self._get_action()

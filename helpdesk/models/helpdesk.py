@@ -942,6 +942,25 @@ class HelpdeskStage(models.Model):
             self.env['helpdesk.ticket'].search([('stage_id', 'in', self.ids)]).write({'active': False})
         return super(HelpdeskStage, self).write(vals)
 
+    def toggle_active(self):
+        res = super().toggle_active()
+        stage_active = self.filtered('active')
+        if stage_active and sum(stage_active.with_context(active_test=False).mapped('ticket_count')) > 0:
+            wizard = self.env['helpdesk.stage.delete.wizard'].create({
+                'stage_ids': stage_active.ids,
+            })
+
+            return {
+                'name': _('Unarchive Tickets'),
+                'view_mode': 'form',
+                'res_model': 'helpdesk.stage.delete.wizard',
+                'views': [(self.env.ref('helpdesk.view_helpdesk_stage_unarchive_wizard').id, 'form')],
+                'type': 'ir.actions.act_window',
+                'res_id': wizard.id,
+                'target': 'new',
+            }
+        return res
+
     def action_unlink_wizard(self, stage_view=False):
         self = self.with_context(active_test=False)
         # retrieves all the teams with a least 1 ticket in that stage

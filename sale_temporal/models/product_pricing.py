@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 import math
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 from odoo.tools import format_amount
 
 # For our use case: pricing depending on the duration, the values should be sufficiently different from one plan to
@@ -41,8 +43,34 @@ class ProductPricing(models.Model):
 
     _sql_constraints = [
         ('temporal_pricing_duration', "CHECK(duration >= 0)", "The pricing duration has to be greater or equal to 0."),
-        ('temporal_pricing_price', "CHECK(price >= 0)", "The pricing price has to be greater or equal to 0."),
     ]
+
+    @api.constrains('product_template_id', 'pricelist_id', 'duration', 'unit', 'product_variant_ids')
+    def _check_unique_parameters(self):
+        """ We want to avoid having several lines that applies for the same conditions.
+        The pricing must differ by at least one parameter among
+        the template, the variants, the pricelist (if defined or not), the duration and the time unit.
+        """
+        conflict_counter = defaultdict(int)
+        for price in self.product_template_id.product_pricing_ids:
+            key_list = [
+                price.product_template_id.id,
+                price.pricelist_id,
+                price.duration, price.unit
+            ]
+            variants = price.product_variant_ids.ids or [_('all variants')]
+            for v in variants:
+                key_list.append(v)
+                key_val = tuple(key_list)
+                conflict_counter[key_val] += 1
+        pricing_issues = [k for k, v in conflict_counter.items() if v > 1]
+        if pricing_issues:
+            raise ValidationError(_("You cannnot have multiple pricing for the same variant, duration, unit, and pricelist"))
+
+
+
+
+
 
     @api.depends('duration', 'unit')
     def _compute_name(self):

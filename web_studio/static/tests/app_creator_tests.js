@@ -188,7 +188,10 @@ QUnit.module("Studio", (hooks) => {
 
         // Click and upload on first link: upload a file
         // mimic the event triggered by the upload (jquery)
-        await triggerEvent(target, ".o_web_studio_upload input", "change");
+        // we do not use the triggerEvent helper as it requires the element to be visible,
+        // which isn't the case here (and this is valid)
+        target.querySelector(".o_web_studio_upload input").dispatchEvent(new Event("change"));
+        await nextTick();
 
         assert.strictEqual(
             state.iconData.uploaded_attachment_id,

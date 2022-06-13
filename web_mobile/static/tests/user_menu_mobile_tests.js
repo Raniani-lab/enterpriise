@@ -28,7 +28,7 @@ QUnit.module("UserMenu", {
 });
 
 QUnit.test("can execute the callback of addHomeShortcut on an App", async (assert) => {
-    assert.expect(7)
+    assert.expect(8)
     patchWithCleanup(mobile.methods, {
         addHomeShortcut({ title, shortcut_url, web_icon }) {
             assert.step("should call addHomeShortcut");
@@ -48,6 +48,9 @@ QUnit.test("can execute the callback of addHomeShortcut on an App", async (asser
     // Set App1 menu and mount
     env.services.menu.setCurrentMenu(1);
     await mount(UserMenu, target, { env });
+    assert.hasClass(target.querySelector(".o_user_menu"), "d-none");
+    // remove the "d-none" class to make the menu visible before interacting with it
+    target.querySelector(".o_user_menu").classList.remove("d-none");
     await click(target.querySelector("button.dropdown-toggle"));
     assert.containsOnce(target, ".dropdown-menu .dropdown-item");
     const item = target.querySelector(".dropdown-menu .dropdown-item");
@@ -72,6 +75,8 @@ QUnit.test("can execute the callback of addHomeShortcut on the HomeMenu", async 
 
     userMenuRegistry.add("web_mobile.shortcut", shortcutItem);
     await mount(UserMenu, target, { env });
+    // remove the "d-none" class to make the menu visible before interacting with it
+    target.querySelector(".o_user_menu").classList.remove("d-none");
     await click(target.querySelector("button.dropdown-toggle"));
     assert.containsOnce(target, ".dropdown-menu .dropdown-item");
     const item = target.querySelector(".dropdown-menu .dropdown-item");
@@ -91,6 +96,8 @@ QUnit.test("can execute the callback of switchAccount", async (assert) => {
 
     userMenuRegistry.add("web_mobile.switch", switchAccountItem);
     await mount(UserMenu, target, { env });
+    // remove the "d-none" class to make the menu visible before interacting with it
+    target.querySelector(".o_user_menu").classList.remove("d-none");
     await click(target.querySelector("button.dropdown-toggle"));
     assert.containsOnce(target, ".dropdown-menu .dropdown-item");
     const item = target.querySelector(".dropdown-menu .dropdown-item");

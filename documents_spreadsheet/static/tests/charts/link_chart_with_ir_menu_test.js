@@ -21,11 +21,30 @@ const { Model } = spreadsheet;
 let target;
 const chartId = "uuid1";
 
+/**
+ * The chart menu is hidden by default, and visible on :hover, but this property
+ * can't be triggered programmatically, so we artificially make it visible to be
+ * able to interact with it.
+ */
+async function showChartMenu() {
+    const chartMenu = target.querySelector(".o-chart-menu");
+    chartMenu.style.display = "flex";
+    await nextTick();
+}
+
 /** Open the chart side panel of the first chart found in the page*/
 async function openChartSidePanel() {
-    const chartMenu = target.querySelector(".o-chart-menu-item:not(.o-chart-external-link)");
-    await click(chartMenu);
+    await showChartMenu();
+    const chartMenuItem = target.querySelector(".o-chart-menu-item:not(.o-chart-external-link)");
+    await click(chartMenuItem);
     await click(target, ".o-menu-item[title='Edit']");
+}
+
+/** Click on external link of the first chart found in the page*/
+async function clickChartExternalLink() {
+    await showChartMenu();
+    const chartMenuItem = target.querySelector(".o-chart-menu-item.o-chart-external-link");
+    await click(chartMenuItem);
 }
 
 QUnit.module(
@@ -394,10 +413,7 @@ QUnit.module(
                 assert.equal(chartMenu.id, 2, "Odoo menu is linked to chart");
                 await nextTick();
 
-                const externalRefIcon = target.querySelector(
-                    ".o-chart-external-link"
-                );
-                await click(externalRefIcon);
+                await clickChartExternalLink();
 
                 assert.verifySteps(["doAction"]);
             }
@@ -440,10 +456,7 @@ QUnit.module(
                 });
                 await nextTick();
 
-                const externalRefIcon = target.querySelector(
-                    ".o-chart-external-link"
-                );
-                await click(externalRefIcon);
+                await clickChartExternalLink();
                 assert.verifySteps(["doAction"]);
             }
         );

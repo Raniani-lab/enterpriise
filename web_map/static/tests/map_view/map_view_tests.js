@@ -1319,7 +1319,11 @@ QUnit.module("Views", (hooks) => {
             "0.3",
             "The opacity of the polyline should be 0.3"
         );
-        await click(target, "path.leaflet-interactive");
+        // bypass the click helper because the element isn't visible
+        target
+            .querySelector("path.leaflet-interactive")
+            .dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+        await nextTick();
         assert.strictEqual(
             target.querySelector("path.leaflet-interactive").getAttribute("stroke"),
             "darkblue",
@@ -1537,7 +1541,11 @@ QUnit.module("Views", (hooks) => {
                 "The popup div should contain one element"
             );
 
-            await click(target, ".leaflet-map-pane");
+            // bypass the click helper because the element isn't visible
+            target
+                .querySelector(".leaflet-map-pane")
+                .dispatchEvent(new MouseEvent("click", { bubbles: true }));
+            await nextTick();
             // wait for the popup's destruction which takes a certain time...
             for (let i = 0; i < 15; i++) {
                 await nextTick();

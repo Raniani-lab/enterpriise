@@ -209,6 +209,17 @@ class SaleOrderLine(models.Model):
     def _compute_pricing(self):
         other_lines = self.env['sale.order.line']
         previous_lines = self.order_id.order_line.filtered('is_subscription_product')
+        # search pricing_ids for each variant in self
+        available_pricing_ids = self.env['product.pricing'].search([
+            ('product_template_id', 'in', self.product_id.product_tmpl_id.ids),
+            '|',
+            ('product_variant_ids', 'in', self.product_id.ids),
+            ('product_variant_ids', '=', False),
+            '|',
+            ('pricelist_id', 'in', self.order_id.pricelist_id.ids),
+            ('pricelist_id', '=', False)
+        ])
+
         for line in self:
             if not line.is_subscription_product:
                 other_lines |= line
@@ -218,7 +229,12 @@ class SaleOrderLine(models.Model):
                 continue
             other_lines = previous_lines.filtered(lambda l: l.order_id == line.order_id) - line
             latest_pricing_id = other_lines and other_lines[-1].pricing_id
-            best_pricing_id = line.product_id.product_tmpl_id.product_pricing_ids[:1]
+            best_pricing_id = available_pricing_ids.filtered(
+                lambda pricing:
+                    line.product_id.product_tmpl_id == pricing.product_template_id and (
+                        line.product_id in pricing.product_variant_ids or not pricing.product_variant_ids
+                    ) and (line.order_id.pricelist_id == pricing.pricelist_id or not pricing.pricelist_id)
+            )[:1]
             if latest_pricing_id:
                 pricing_match = line.product_id._get_best_pricing_rule(duration=latest_pricing_id.duration,
                                                                        unit=latest_pricing_id.unit)

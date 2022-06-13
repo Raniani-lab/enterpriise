@@ -1351,3 +1351,63 @@ class TestSubscription(TestSubscriptionCommon):
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2023, 1, 1), "A new invoice should be created")
             self.assertEqual(inv.amount_untaxed, 800, "A new invoice should be created, all the lines should be invoiced")
+
+    def test_product_pricing_respects_variants(self):
+        # create a product with 2 variants
+        ProductTemplate = self.env['product.template']
+        ProductAttributeVal = self.env['product.attribute.value']
+        Pricing = self.env['product.pricing']
+        product_attribute = self.env['product.attribute'].create({'name': 'Weight'})
+        product_attribute_val1 = ProductAttributeVal.create({
+            'name': '1kg',
+            'attribute_id': product_attribute.id
+        })
+        product_attribute_val2 = ProductAttributeVal.create({
+            'name': '2kg',
+            'attribute_id': product_attribute.id
+        })
+        product = ProductTemplate.create({
+            'recurring_invoice': True,
+            'detailed_type': 'service',
+            'name': 'Variant Products',
+        })
+        product.attribute_line_ids = [(Command.create({
+            'attribute_id': product_attribute.id,
+            'value_ids': [Command.set([product_attribute_val1.id, product_attribute_val2.id])],
+        }))]
+
+        # set pricing for variants. make sure the cheaper one is not for the variant we're testing
+        cheaper_pricing = Pricing.create({
+            'duration': 1,
+            'unit': 'day',
+            'price': 10,
+            'product_template_id': product.id,
+            'product_variant_ids': [Command.link(product.product_variant_ids[0].id)],
+        })
+
+        pricing2 = Pricing.create({
+            'duration': 1,
+            'unit': 'day',
+            'price': 25,
+            'product_template_id': product.id,
+            'product_variant_ids': [Command.link(product.product_variant_ids[-1].id)],
+        })
+
+        product.write({
+            'product_pricing_ids': [Command.set([cheaper_pricing.id, pricing2.id])]
+        })
+
+        # create SO with product variant having the most expensive pricing
+        sale_order = self.env['sale.order'].create({
+            'name': 'TestSubscription',
+            'is_subscription': True,
+            'partner_id': self.user_portal.partner_id.id,
+            'pricelist_id': self.company_data['default_pricelist'].id,
+            'order_line': [Command.create({
+                'product_id': product.product_variant_ids[-1].id,
+                'product_uom_qty': 1
+            })]
+        })
+
+        # check that correct pricing is being used
+        self.assertEqual(sale_order.order_line[0].pricing_id.id, pricing2.id)

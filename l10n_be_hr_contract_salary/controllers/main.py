@@ -390,13 +390,30 @@ class HrContractSalary(main.HrContractSalary):
     def _get_compute_results(self, new_contract):
         result = super()._get_compute_results(new_contract)
         result['double_holiday_wage'] = round(new_contract.double_holiday_wage, 2)
+        # Horrible hack: Add a sequence / display condition fields on salary resume model in master
+        resume = result['resume_lines_mapped']['Monthly Salary']
+        if 'SALARY' in resume and resume['wage_with_holidays'][1] != resume['SALARY'][1]:
+            ordered_fields = ['wage_with_holidays', 'SALARY', 'NET']
+        else:
+            ordered_fields = ['wage_with_holidays', 'NET']
+        result['resume_lines_mapped']['Monthly Salary'] = {field: resume[field] for field in ordered_fields}
         return result
 
     def _generate_payslip(self, new_contract):
         payslip = super()._generate_payslip(new_contract)
         if new_contract.car_id:
             payslip.vehicle_id = new_contract.car_id
+        if new_contract.commission_on_target:
+            payslip.input_line_ids = [(0, 0, {
+                'input_type_id': request.env.ref('l10n_be_hr_payroll.input_fixed_commission').id,
+                'amount': new_contract.commission_on_target,
+            })]
         return payslip
+
+    def _get_payslip_line_values(self, payslip, codes):
+        res = super()._get_payslip_line_values(payslip, codes + ['BASIC', 'COMMISSION'])
+        res['SALARY'][payslip.id]['total'] = res['BASIC'][payslip.id]['total'] + res['COMMISSION'][payslip.id]['total']
+        return res
 
     def _get_personal_infos_langs(self, contract, personal_info):
         active_langs = super()._get_personal_infos_langs(contract, personal_info)

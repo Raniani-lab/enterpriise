@@ -426,7 +426,7 @@ class HrContractSalary(http.Controller):
             'work_entry_source': contract.work_entry_source,
         }
         for advantage in contract_advantages:
-            if advantage.field not in contract:
+            if not advantage.res_field_id or advantage.field not in contract:
                 continue
             if hasattr(contract, '_get_advantage_values_%s' % (advantage.field)):
                 contract_vals.update(getattr(contract, '_get_advantage_values_%s' % (advantage.field))(contract, advantages))
@@ -747,7 +747,7 @@ class HrContractSalary(http.Controller):
                 value = _('Yes') if contract[advantage.fold_field] else _('No')
                 contract_info[advantage.advantage_type_id.name].append((field_names['hr.contract'][advantage.fold_field], value))
             field_name = advantage.field
-            if field_name not in contract:
+            if not field_name or field_name not in contract:
                 continue
             field_value = contract[field_name]
             if isinstance(field_value, models.BaseModel):

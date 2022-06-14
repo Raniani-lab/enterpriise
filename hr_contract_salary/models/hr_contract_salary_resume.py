@@ -23,6 +23,9 @@ class HrContractSalaryResume(models.Model):
     def _get_available_fields(self):
         return [(field, description['string']) for field, description in self.env['hr.contract'].fields_get().items()]
 
+    # YTI TODO master:
+    # Add sequence field
+    # Add display condition field
     name = fields.Char()
     value_type = fields.Selection([
         ('fixed', 'Fixed Value'),

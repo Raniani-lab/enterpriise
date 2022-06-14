@@ -27,6 +27,7 @@
     ],
     'demo': [
         'data/l10n_be_hr_contract_salary_demo.xml',
+        # 'data/hr_contract_salary_advantage_demo.xml',
     ],
     'license': 'OEEL-1',
     'auto_install': True,

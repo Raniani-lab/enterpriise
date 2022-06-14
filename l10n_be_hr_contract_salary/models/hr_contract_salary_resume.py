@@ -13,6 +13,7 @@ class HrContractSalaryResume(models.Model):
                          ('monthly_cash', 'Monthly Cash'),
                          ('yearly_cash', 'Yearly Cash'),
                          ('annual_time_off', 'Annual Time Off'),
-                         ('holidays', 'Extra Time Off')]
+                         ('holidays', 'Extra Time Off'),
+                         ('SALARY', 'Salary')]
 
     code = fields.Selection(_get_available_fields)

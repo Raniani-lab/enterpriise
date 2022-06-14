@@ -77,7 +77,7 @@
                                         <div class="hr_cs_control_indicator"/>
                                     </label>
                                 </t>
-                                <div t-att-class="'folded_content ' + ('d-none' if ('fold_' + advantage.field in initial_values and not initial_values['fold_' + advantage.field]) else '')">
+                                <div t-att-class="'folded_content ' + ('d-none' if (advantage.res_field_id and 'fold_' + advantage.field in initial_values and not initial_values['fold_' + advantage.field]) else '')">
                                     <t t-if="advantage.display_type == 'slider'">
                                         <span class="badge badge-secondary"><t t-esc="advantage.slider_min"/></span>
                                         <!-- YTI TODO master: Add step field on slider advantages -->
@@ -164,10 +164,11 @@
                                             </t>
                                         </select>
                                     </t>
-                                    <span class="form-text" t-att-name="'description_' + advantage.field"><t t-out="contract._get_advantage_description(advantage)"/></span>
+                                    <span class="form-text" t-att-name="'description_' + (advantage.field or 'undefined')"><t t-out="contract._get_advantage_description(advantage)"/></span>
                                 </div>
                             </div>
                             <div class="col-md-2">
+                                <t t-if="advantage.res_field_id">
                                 <div class="input-group">
                                     <input
                                         class="form-control"
@@ -185,6 +186,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                </t>
                             </div>
                         </div>
                     </div>

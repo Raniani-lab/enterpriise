@@ -28,6 +28,9 @@ class HrContractSalary(main.HrContractSalary):
             'date_to': request.env['hr.payslip'].default_get(['date_to'])['date_to'],
         })
 
+    def _get_payslip_line_values(self, payslip, codes):
+        return payslip._get_line_values(codes)
+
     def _get_compute_results(self, new_contract):
         result = super()._get_compute_results(new_contract)
 
@@ -75,7 +78,8 @@ class HrContractSalary(main.HrContractSalary):
         result['resume_categories'] = [c.name for c in sorted(resume_categories, key=lambda x: x.sequence)]
 
         all_codes = (resume_lines - monthly_total_lines).mapped('code')
-        line_values = payslip._get_line_values(all_codes) if all_codes else False
+        line_values = self._get_payslip_line_values(payslip, all_codes) if all_codes else False
+
         for resume_line in resume_lines - monthly_total_lines:
             value = round(line_values[resume_line.code][payslip.id]['total'], 2)
             resume_explanation = False

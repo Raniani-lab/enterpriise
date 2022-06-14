@@ -24,7 +24,7 @@ class HrContractSalaryAdvantage(models.Model):
     name = fields.Char(translate=True)
     active = fields.Boolean(default=True)
     res_field_id = fields.Many2one(
-        'ir.model.fields', string="Advantage Field", domain=_get_field_domain, ondelete='cascade', required=True,
+        'ir.model.fields', string="Advantage Field", domain=_get_field_domain, ondelete='cascade', required=False,
         help='Contract field linked to this advantage')
     cost_res_field_id = fields.Many2one(
         'ir.model.fields', string="Cost Field", domain=_get_field_domain, ondelete='cascade',
@@ -99,6 +99,12 @@ class HrContractSalaryAdvantage(models.Model):
         for record in self:
             if record.display_type == 'slider' and record.slider_min > record.slider_max:
                 raise ValidationError(_('The minimum value for the slider should be inferior to the maximum value.'))
+
+    @api.constrains('display_type', 'res_field_id')
+    def _check_min_inferior_to_max(self):
+        for record in self:
+            if not record.res_field_id and record.display_type != 'always':
+                raise ValidationError(_('Advanges that are not linked to a field should always be displayed.'))
 
 class HrContractSalaryAdvantageType(models.Model):
     _name = 'hr.contract.salary.advantage.type'

@@ -41,6 +41,15 @@ class TestQuality(TransactionCase):
         # Form should keep the default products set
         self.assertEqual(len(quality_point_form.product_ids), 1)
         self.assertEqual(quality_point_form.product_ids[0].id, self.product_2.id)
+        # <field name="operation_id" attrs="{'invisible': [('is_workorder_step', '=', False)]}"/>
+        # @api.depends('operation_id', 'picking_type_ids')
+        # def _compute_is_workorder_step(self):
+        #     for quality_point in self:
+        #         quality_point.is_workorder_step = quality_point.operation_id or quality_point.picking_type_ids and\
+        #             all(pt.code == 'mrp_operation' for pt in quality_point.picking_type_ids)
+        quality_point_form.picking_type_ids.add(
+            self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1)
+        )
         # Select a workorder operation
         quality_point_form.operation_id = self.bom.operation_ids[0]
         # Product should be replaced by the product linked to the bom

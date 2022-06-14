@@ -778,7 +778,8 @@ class AccountMove(models.Model):
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
 
         with self.get_form_context_manager() as move_form:
-            move_form.date = datetime.strptime(move_form.date, tools.DEFAULT_SERVER_DATE_FORMAT).date()
+            if not move_form._get_modifier('date', 'invisible'):
+                move_form.date = datetime.strptime(move_form.date, tools.DEFAULT_SERVER_DATE_FORMAT).date()
             if not move_form.partner_id:
                 if vat_number_ocr:
                     partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)

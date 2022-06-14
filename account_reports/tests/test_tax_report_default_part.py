@@ -930,9 +930,8 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         # Form is used here for the dynamic tax line to get created automatically
         move_form = Form(self.env['account.move']\
                          .with_context(default_move_type='entry', account_predictive_bills_disable_prediction=True))
-        move_form.partner_id = self.partner_a
-        move_form.invoice_date = '2022-02-01'
-        move_form.date = move_form.invoice_date
+        # {'invisible': [('move_type', 'not in', ['out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'])]
+        move_form.date = '2022-02-01'
 
         for name, account_id, debit, credit, tax_to_apply in (
                 ("invoice line in entry", self.company_data['default_account_revenue'], 0.0, 20.0, tax),

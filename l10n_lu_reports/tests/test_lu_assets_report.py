@@ -111,6 +111,9 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
     @classmethod
     def _get_report_data_linked_assets(cls, invoice_lines):
         asset_form = Form(cls.env['account.asset'].with_context(asset_type='purchase'))
+        # `original_move_line_ids` is not visible when it's empty by default
+        # {'invisible' : [('original_move_line_ids', '=', [])]}
+        asset_form._view['modifiers']['original_move_line_ids']['invisible'] = False
         for line in invoice_lines:
             asset_form.original_move_line_ids.add(line)
         asset_form.account_depreciation_id = cls.company_data['default_account_expense']

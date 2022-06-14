@@ -29,7 +29,6 @@ class TestSaleOrder(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
-        form.commission_plan_frozen = False
         so = form.save()
 
         # Demote the referrer to silver.
@@ -44,7 +43,6 @@ class TestSaleOrder(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
-        form.commission_plan_frozen = False
         with form.order_line.new() as line:
             line.name = self.worker.name
             line.product_id = self.worker
@@ -66,7 +64,6 @@ class TestSaleOrder(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
-        form.commission_plan_frozen = False
         # We test the non recurring flow: recurring_invoice is False on the product
         self.worker.recurring_invoice = False
         with form.order_line.new() as line:
@@ -87,7 +84,6 @@ class TestSaleOrder(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
-        form.commission_plan_frozen = False
         # We test the non recurring flow: recurring_invoice is False on the product
         self.worker.recurring_invoice = False
         with form.order_line.new() as line:

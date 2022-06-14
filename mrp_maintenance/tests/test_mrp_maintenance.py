@@ -82,18 +82,20 @@ class TestMrpMaintenance(common.TransactionCase):
                 10-05-2018              = 05-05-2018 + 5day
         """
 
-        # Create a new equipment
-        equipment_form = Form(self.equipment)
-        equipment_form.name = 'Acer Laptop'
-        equipment_form.maintenance_team_id = self.maintenance_team_id
-        equipment_form.category_id = self.category_id
-        equipment_form.technician_user_id = self.technician_user_id
-        equipment_form.assign_date = time.strftime('%Y-%m-%d')
-        equipment_form.serial_no = 'MT/127/18291015'
-        equipment_form.expected_mtbf = 2
-        equipment_form.effective_date = (datetime.now().date() + timedelta(days=5)).strftime("%Y-%m-%d")
-        equipment_form.period = 5
-        equipment_01 = equipment_form.save()
+        # Required for `assign_date` to be visible in the view
+        with self.debug_mode():
+            # Create a new equipment
+            equipment_form = Form(self.equipment)
+            equipment_form.name = 'Acer Laptop'
+            equipment_form.maintenance_team_id = self.maintenance_team_id
+            equipment_form.category_id = self.category_id
+            equipment_form.technician_user_id = self.technician_user_id
+            equipment_form.assign_date = time.strftime('%Y-%m-%d')
+            equipment_form.serial_no = 'MT/127/18291015'
+            equipment_form.expected_mtbf = 2
+            equipment_form.effective_date = (datetime.now().date() + timedelta(days=5)).strftime("%Y-%m-%d")
+            equipment_form.period = 5
+            equipment_01 = equipment_form.save()
 
         # Check that equipment is created or not
         self.assertTrue(equipment_01, 'Equipment not created')
@@ -134,18 +136,20 @@ class TestMrpMaintenance(common.TransactionCase):
             latest failure equipment requests.
         """
 
-        # Create a new equipment
-        equipment_form = Form(self.equipment)
-        equipment_form.name = 'Acer Laptop'
-        equipment_form.maintenance_team_id = self.maintenance_team_id
-        equipment_form.category_id = self.category_id
-        equipment_form.technician_user_id = self.technician_user_id
-        equipment_form.assign_date = time.strftime('%Y-%m-%d')
-        equipment_form.serial_no = 'MT/127/18291015'
-        equipment_form.expected_mtbf = 2
-        equipment_form.effective_date = '2017-04-13'
-        equipment_form.period = 5
-        equipment_01 = equipment_form.save()
+        # Required for `assign_date` to be visible in the view
+        with self.debug_mode():
+            # Create a new equipment
+            equipment_form = Form(self.equipment)
+            equipment_form.name = 'Acer Laptop'
+            equipment_form.maintenance_team_id = self.maintenance_team_id
+            equipment_form.category_id = self.category_id
+            equipment_form.technician_user_id = self.technician_user_id
+            equipment_form.assign_date = time.strftime('%Y-%m-%d')
+            equipment_form.serial_no = 'MT/127/18291015'
+            equipment_form.expected_mtbf = 2
+            equipment_form.effective_date = '2017-04-13'
+            equipment_form.period = 5
+            equipment_01 = equipment_form.save()
 
         # Check that equipment is created or not
         self.assertTrue(equipment_01, 'Equipment not created')
@@ -225,18 +229,20 @@ class TestMrpMaintenance(common.TransactionCase):
             30-04-2018   =    25-04-2018    +   5 days
         """
 
-        # Create a new equipment
-        equipment_form = Form(self.equipment)
-        equipment_form.name = 'Acer Laptop'
-        equipment_form.maintenance_team_id = self.maintenance_team_id
-        equipment_form.category_id = self.category_id
-        equipment_form.technician_user_id = self.technician_user_id
-        equipment_form.assign_date = time.strftime('%Y-%m-%d')
-        equipment_form.serial_no = 'MT/127/18291015'
-        equipment_form.expected_mtbf = 2
-        equipment_form.effective_date = datetime.now().date() + timedelta(days=5)
-        equipment_form.period = 5
-        equipment_01 = equipment_form.save()
+        # Required for `assign_date` to be visible in the view
+        with self.debug_mode():
+            # Create a new equipment
+            equipment_form = Form(self.equipment)
+            equipment_form.name = 'Acer Laptop'
+            equipment_form.maintenance_team_id = self.maintenance_team_id
+            equipment_form.category_id = self.category_id
+            equipment_form.technician_user_id = self.technician_user_id
+            equipment_form.assign_date = time.strftime('%Y-%m-%d')
+            equipment_form.serial_no = 'MT/127/18291015'
+            equipment_form.expected_mtbf = 2
+            equipment_form.effective_date = datetime.now().date() + timedelta(days=5)
+            equipment_form.period = 5
+            equipment_01 = equipment_form.save()
 
         # Check that equipment is created or not
         self.assertTrue(equipment_01, 'Equipment not created')

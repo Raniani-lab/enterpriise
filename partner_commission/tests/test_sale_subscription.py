@@ -31,7 +31,6 @@ class TestSaleSubscription(TestCommissionsSetup):
         form.partner_id = self.customer
         form.referrer_id = self.referrer
         form.sale_order_template_id = self.template_yearly
-        form.commission_plan_frozen = False
         # Subscription plan is defined by the product and pricing
         with form.order_line.new() as line:
             line.name = self.worker.name
@@ -85,7 +84,6 @@ class TestSaleSubscription(TestCommissionsSetup):
                     view=self.env.ref('sale_subscription.sale_subscription_primary_form_view'))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
-        form.commission_plan_frozen = False
 
         with form.order_line.new() as line:
             line.name = self.worker.name
@@ -110,7 +108,6 @@ class TestSaleSubscription(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
-        form.commission_plan_frozen = False
         # We test the non recurring flow: recurring_invoice is False on the product
         self.worker.recurring_invoice = False
         with form.order_line.new() as line:
@@ -135,16 +132,19 @@ class TestSaleSubscription(TestCommissionsSetup):
         form.partner_id = self.customer
         form.referrer_id = self.referrer
         form.sale_order_template_id = self.template_yearly
-        form.commission_plan_frozen = True
-        form.commission_plan_id = self.env['commission.plan']
         form.pricelist_id = self.usd_8
-        form.end_date = fields.Date.today()
 
         with form.order_line.new() as line:
             line.name = self.worker.name
             line.product_id = self.worker
             line.product_uom_qty = 2
             line.pricing_id = self.worker_pricing
+
+        # `commission_plan_frozen` and `end_date` are invisible until `is_subscription` is True
+        # `is_subscription` is True when there are recurring lines in the sale order.
+        form.commission_plan_frozen = True
+        form.commission_plan_id = self.env['commission.plan']
+        form.end_date = fields.Date.today()
 
         sub = form.save()
         sub.action_confirm()

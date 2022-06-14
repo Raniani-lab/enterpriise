@@ -144,6 +144,8 @@ class TestDuplicateProducts(common.TransactionCase):
 
     def test_byproduct_1(self):
         """ Use the same product as component and as byproduct"""
+        # Required for `byproduct_ids` to be visible in the view
+        self.env.user.groups_id += self.env.ref('mrp.group_mrp_byproducts')
         bom_form = Form(self.bom_boat)
         with bom_form.byproduct_ids.new() as bp:
             bp.product_id = self.painting

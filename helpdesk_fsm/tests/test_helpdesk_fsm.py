@@ -14,8 +14,7 @@ class TestHelpdeskFsm(HelpdeskCommon):
             'team_id': self.test_team.id,
         })
 
-        task_form = Form(self.env['helpdesk.create.fsm.task'])
-        task_form.helpdesk_ticket_id = ticket
+        task_form = Form(self.env['helpdesk.create.fsm.task'].with_context(default_helpdesk_ticket_id=ticket.id))
         task_form.name = ticket.name
         task_form.partner_id = self.partner
         task = task_form.save().action_generate_task()

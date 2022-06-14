@@ -72,12 +72,12 @@ class AccountMove(models.Model):
             with self.env.cr.savepoint():
                 with self.get_form_context_manager() as move_form:
                     for purchase_order in purchase_orders:
-                        move_form.purchase_id = purchase_order
+                        move_form.purchase_vendor_bill_id = self.env['purchase.bill.union'].browse(-purchase_order.id)
         except ValidationError:
             # In case of ValidationError due to a duplicated vendor reference, set it to False and display a warning message
             with self.get_form_context_manager() as move_form:
                 for purchase_order in purchase_orders:
-                    move_form.purchase_id = purchase_order
+                    move_form.purchase_vendor_bill_id = self.env['purchase.bill.union'].browse(-purchase_order.id)
                 move_form.ref = False
                 move_form.extract_status_code = WARNING_DUPLICATE_VENDOR_REFERENCE
                 self.duplicated_vendor_ref = ocr_vendor_ref

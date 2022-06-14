@@ -415,7 +415,6 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         for inv in invoices:
             move_form = Form(cls.env['account.move'].with_context(default_move_type='out_invoice'))
             move_form.invoice_date = date
-            move_form.date = date
             move_form.partner_id = inv['partner']
             with move_form.invoice_line_ids.new() as line_form:
                 line_form.product_id = inv['product']

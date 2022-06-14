@@ -267,7 +267,8 @@ class TestCommissionsSetup(TransactionCase):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
-        form.commission_plan_frozen = False
+        # commission_plan_frozen is False by default
+        # it's not visible if the sale order is not a recurring subscription / until it has recurring lines
 
         for l in spec.lines:
             with form.order_line.new() as line:

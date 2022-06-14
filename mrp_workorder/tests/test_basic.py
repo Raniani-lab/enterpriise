@@ -226,6 +226,8 @@ class TestWorkOrderProcessCommon(TestMrpCommon):
         form.bom_id = self.bom_laptop
         mo_laptop = form.save()
         mo_laptop.action_confirm()
+        # <field name="qty_producing" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+        form = Form(mo_laptop)
         form.qty_producing = 2.0
         mo_laptop = form.save()
         mo_laptop.action_assign()
@@ -1140,12 +1142,15 @@ class TestWorkOrderProcess(TestWorkOrderProcessCommon):
 
         workorder_1 = mo.workorder_ids[1]
         workorder_1.button_start()
-        with Form(workorder_1) as wo:
-            wo.finished_lot_id = lot_1
+        # `finished_lot_id` is invisible in the view
+        # however, it's a computed field
+        # `workorder.finished_lot_id = workorder.production_id.lot_producing_id`
+        with Form(workorder_1.production_id) as wo_production:
+            wo_production.lot_producing_id = lot_1
         workorder_1 = self.env['mrp.workorder'].browse(workorder_1.record_production()['res_id'])
 
-        with Form(workorder_1) as wo:
-            wo.finished_lot_id = lot_2
+        with Form(workorder_1.production_id) as wo_production:
+            wo_production.lot_producing_id = lot_2
         workorder_1.record_production()
 
         workorder_2 = mo.workorder_ids[2]
@@ -2097,6 +2102,8 @@ class TestRoutingAndKits(TransactionCase):
         """ Make a production using multi step routing. Add an additional move
         on a specific operation and check that the produce is consumed into the
         right workorder. """
+        # Required for `product_uom` to be visible in the view
+        self.env.user.groups_id += self.env.ref('uom.group_uom')
         self.bom_finished1.consumption = 'flexible'
         add_product = self.env['product.product'].create({
             'name': 'Additional',
@@ -2131,6 +2138,8 @@ class TestRoutingAndKits(TransactionCase):
         """ Make a production using multi step routing. Add an additional move
         on a specific operation and check that the produce is consumed into the
         right workorder. """
+        # Required for `product_uom` to be visible in the view
+        self.env.user.groups_id += self.env.ref('uom.group_uom')
         self.bom_finished1.consumption = 'flexible'
         add_product = self.env['product.product'].create({
             'name': 'Additional',

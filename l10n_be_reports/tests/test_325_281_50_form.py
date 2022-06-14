@@ -506,6 +506,7 @@ class TestResPartner(AccountTestInvoicingCommon):
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
         form = WizardForm(wizard)
+        form._view['modifiers']['todo_command']['invisible'] = False
         form.todo_command = f'mount_line_in_edit,{line.index}'
         form.form_account_id = expense_account_atn_281_50
         wizard = form.save()
@@ -550,6 +551,7 @@ class TestResPartner(AccountTestInvoicingCommon):
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
         form = WizardForm(wizard)
+        form._view['modifiers']['todo_command']['invisible'] = False
         form.todo_command = f'mount_line_in_edit,{line.index}'
         form.form_account_id = expense_account_atn_281_50
         wizard = form.save()

@@ -49,8 +49,8 @@ class TestReleaseToPayInvoice(AccountTestInvoicingCommon):
         AccountMove = self.env['account.move'].with_context(default_move_type='in_invoice')
         for (action, params) in scenario:
             if action == 'invoice':
-                move_form = Form(AccountMove)
-                move_form.purchase_id = purchase_order
+                # <field name="purchase_id" invisible="1"/>
+                move_form = Form(AccountMove.with_context(default_purchase_id=purchase_order.id))
                 with move_form.invoice_line_ids.edit(0) as line_form:
                     if 'price' in params:
                         line_form.price_unit = params['price']

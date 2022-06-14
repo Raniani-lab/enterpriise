@@ -297,10 +297,12 @@ class FetchmailServer(models.Model):
         This method creates a draft vendor bill from the attached xml in the incoming email.
         """
         with Form(self.env['account.move'].with_context(
+                # `invoice_source_email` is not visible if `False`, which is the case for a new move
+                # {'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund')), ('invoice_source_email', '=', False)]}
+                default_invoice_source_email=from_address,
                 default_move_type=default_move_type, allowed_company_ids=[company_id],
                 account_predictive_bills_disable_prediction=True)) as invoice_form:
             invoice_form.partner_id = partner
-            invoice_form.invoice_source_email = from_address
             invoice_date = dte_xml.findtext('.//ns0:FchEmis', namespaces=XML_NAMESPACES)
             if invoice_date is not None:
                 invoice_form.invoice_date = fields.Date.from_string(invoice_date)

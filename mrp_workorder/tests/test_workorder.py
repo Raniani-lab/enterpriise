@@ -685,6 +685,8 @@ class TestWorkOrder(common.TestMrpCommon):
 
     def test_workorder_3(self):
         # Test multiple final lots management
+        # Required for `byproduct_ids` to be visible in the view
+        self.env.user.groups_id += self.env.ref('mrp.group_mrp_byproducts')
         self.angry_british_diver = self.env['product.product'].create({
             'name': 'Angry Bristish Driver',
             'description': 'can stick his submarine where it hurts',
@@ -1169,6 +1171,9 @@ class TestWorkOrder(common.TestMrpCommon):
                 'time_cycle': 60,
             })]
         })
+        # <field name="lot_id" attrs="{'invisible': [('component_tracking', '=', 'none')]}"/>
+        self.product_1.tracking = 'lot'
+        self.product_2.tracking = 'lot'
         #self.bom_submarine.routing_id = self.mrp_routing_0
         self.bom_submarine.consumption = 'flexible'
         lot1 = self.env['stock.lot'].create({

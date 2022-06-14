@@ -60,17 +60,36 @@ class TestHR(common.TransactionCase):
         leave_type_form = Form(self.env['hr.leave.type'].with_user(user))
         leave_type_form.name = name
         leave_type_form.requires_allocation = requires_allocation
-        leave_type_form.employee_requests = employee_requests
-        leave_type_form.request_unit = request_unit
+        # attrs="{'invisible': [('requires_allocation', '=', 'no')]}"
+        if requires_allocation == 'yes':
+            leave_type_form.employee_requests = employee_requests
+            # attrs="{'invisible': ['|', ('requires_allocation', '=', 'no'), ('employee_requests', '=', 'no')]}"
+            if employee_requests == 'yes':
+                leave_type_form.allocation_validation_type = allocation_validation
         leave_type_form.leave_validation_type = validation
-        leave_type_form.allocation_validation_type = allocation_validation
+        leave_type_form.request_unit = request_unit
         leave_type_form.responsible_id = user
         return leave_type_form.save()
 
     def create_allocation(self, user, employee, leave_type, number_of_days=10):
+        user.groups_id += self.env.ref('hr_holidays.group_hr_holidays_manager')
         allocation_form = Form(self.env['hr.leave.allocation'].with_user(user))
-        allocation_form.number_of_days = number_of_days
-        allocation_form.employee_id = employee
+        # <field name="number_of_days" invisible="1"/>
+        # @api.depends(...'number_of_days_display'...)
+        # def _compute_from_holiday_status_id(self):
+        #     ...
+        #     for allocation in self:
+        #         ...
+        #         allocation.number_of_days = allocation.number_of_days_display
+        #         ...
+        allocation_form.number_of_days_display = number_of_days
+        # <field name="employee_id" invisible="1" groups="hr_holidays.group_hr_holidays_user"/>
+        # @api.depends('employee_ids')
+        # def _compute_from_employee_ids(self):
+        #     for allocation in self:
+        #         if len(allocation.employee_ids) == 1:
+        #             allocation.employee_id = allocation.employee_ids[0]._origin
+        allocation_form.employee_ids.add(employee)
         allocation_form.name = 'New Request'
         allocation_form.date_from = time.strftime('2015-1-1')
         allocation_form.date_to = time.strftime('%Y-12-31')
@@ -81,8 +100,8 @@ class TestHR(common.TransactionCase):
         employee = employee or user.employee_id
         leave_form = Form(self.env['hr.leave'].with_context(default_employee_id=employee.id).with_user(user))
         leave_form.holiday_status_id = leave_type
-        leave_form.date_from = start
-        leave_form.date_to = end
+        leave_form.request_date_from = start
+        leave_form.request_date_to = end
         return leave_form.save()
 
     def _test_leave(self):
@@ -222,6 +241,8 @@ class TestHR(common.TransactionCase):
         contract_form.date_start = start
         contract_form.date_end = end
         if car:  # only for fleet manager
+            # attrs="{'invisible': [('transport_mode_car', '=', False)]}"
+            contract_form.transport_mode_car = True
             contract_form.car_id = car
         contract_form.wage = wage
         contract_form.state = state

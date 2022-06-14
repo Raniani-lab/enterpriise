@@ -82,6 +82,8 @@ class TestPurchaseOrder(TestCommissionsSetup):
         Commission on {{move.name}}, {{move.partner_id.name}}, {{move.amount_untaxed}} €
         {{subscription.code}}, from {{date_from}} to {{subscription.recurring_next_date}} ({{number of months}})
         """
+        # Required for `partner_invoice_id`, `partner_shipping_id` to be visible in the view
+        self.salesman.groups_id += self.env.ref('account.group_delivery_invoice_address')
         self.referrer.commission_plan_id = self.gold_plan
         self.referrer.grade_id = self.gold
 
@@ -90,7 +92,6 @@ class TestPurchaseOrder(TestCommissionsSetup):
         form.partner_invoice_id = self.customer
         form.partner_shipping_id = self.customer
         form.referrer_id = self.referrer
-        form.commission_plan_frozen = False
 
         # Testing same rules, with cap reached, are grouped together.
         with form.order_line.new() as line:
@@ -120,7 +121,6 @@ class TestPurchaseOrder(TestCommissionsSetup):
             form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
             form.partner_id = self.customer
             form.referrer_id = self.referrer
-            form.commission_plan_frozen = False
             if so_sales_rep:
                 form.user_id = so_sales_rep
 

@@ -98,20 +98,25 @@ class TestIndustryFsmProject(TestFsmFlowSaleCommon):
             5) Change manually the price unit in this mapping and check if the edition is correctly done as expected
             6) Save the creation and check the value in the pricing_type, partner_id and employee mapping price_unit fields.
         """
-        with Form(self.env['project.project'].with_context({'tracking_disable': True})) as project_form:
-            project_form.name = 'Test Fsm Project'
-            project_form.is_fsm = True
-            with project_form.sale_line_employee_ids.new() as mapping_form:
-                mapping_form.employee_id = self.employee_manager
-                mapping_form.timesheet_product_id = self.product_order_timesheet1
-                self.assertEqual(mapping_form.price_unit, self.product_order_timesheet1.lst_price, 'The price unit should be computed and equal to the price unit defined in the timesheet product.')
-                mapping_form.price_unit = 150
-                self.assertNotEqual(mapping_form.price_unit, self.product_order_timesheet1.lst_price, 'The price unit should be the one selected by the user and no longer the one defined in the timesheet product.')
-                self.assertEqual(mapping_form.price_unit, 150, 'The price should be equal to 150.')
-            project = project_form.save()
-            self.assertEqual(project.pricing_type, 'employee_rate', 'The pricing type of this project should be equal to employee rate since it has a mapping.')
-            self.assertFalse(project.partner_id, 'No partner should be set with the compute_partner_id because this compute should be ignored in a fsm project.')
-            self.assertEqual(project.sale_line_employee_ids.price_unit, 150, 'The price unit should remain to 150.')
+        with self.debug_mode():
+            # <div class="col-lg-6 o_setting_box" groups="base.group_no_one">
+            #     <div class="o_setting_left_pane">
+            #         <field name="is_fsm"/>
+            #     </div>
+            with Form(self.env['project.project'].with_context({'tracking_disable': True})) as project_form:
+                project_form.name = 'Test Fsm Project'
+                project_form.is_fsm = True
+                with project_form.sale_line_employee_ids.new() as mapping_form:
+                    mapping_form.employee_id = self.employee_manager
+                    mapping_form.timesheet_product_id = self.product_order_timesheet1
+                    self.assertEqual(mapping_form.price_unit, self.product_order_timesheet1.lst_price, 'The price unit should be computed and equal to the price unit defined in the timesheet product.')
+                    mapping_form.price_unit = 150
+                    self.assertNotEqual(mapping_form.price_unit, self.product_order_timesheet1.lst_price, 'The price unit should be the one selected by the user and no longer the one defined in the timesheet product.')
+                    self.assertEqual(mapping_form.price_unit, 150, 'The price should be equal to 150.')
+                project = project_form.save()
+                self.assertEqual(project.pricing_type, 'employee_rate', 'The pricing type of this project should be equal to employee rate since it has a mapping.')
+                self.assertFalse(project.partner_id, 'No partner should be set with the compute_partner_id because this compute should be ignored in a fsm project.')
+                self.assertEqual(project.sale_line_employee_ids.price_unit, 150, 'The price unit should remain to 150.')
 
     def test_fetch_sale_order_items(self):
         self.assertFalse(self.task.sale_line_id, 'The task in the FSM Project should not have any SOL linked.')

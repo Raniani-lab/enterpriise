@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from lxml import etree
+
 from odoo import Command
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged, Form
@@ -53,6 +55,16 @@ class TestBankRecWidgetCommon(AccountTestInvoicingCommon):
             'currency_unit_label': 'Black Choco',
             'currency_subunit_label': 'Black Cacao Powder',
         }, rate2016=12.0, rate2017=8.0)
+
+        # <field name="todo_command" invisible="1"/>
+        # This test tests the onchange behvior of todo_command, `_onchange_todo_command`
+        # But `todo_command` is always invisible in the view, and shouldn't be able to changed in the form by a user
+        # The fact it gets changed is thanks to a custom js widget changing the value of the field even if invisible.
+        view = cls.env.ref('account_accountant.view_bank_rec_widget_form')
+        tree = etree.fromstring(view.arch)
+        for node in tree.xpath('//field[@name="todo_command"]'):
+            del node.attrib['invisible']
+        view.arch = etree.tostring(tree)
 
     @classmethod
     def _create_invoice_line(cls, amount, partner, move_type, currency=None, pay_reference=None, ref=None, name=None, inv_date='2017-01-01'):

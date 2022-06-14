@@ -31,8 +31,13 @@ class TestProjectMilestone(TestProjectCommon):
         })
         self.assertFalse(fsm_project.allow_milestones, 'The "Milestones" feature should not be enabled by default on New FSM project even if the feature is globally enabled')
 
-        with Form(Project) as project_form:
-            project_form.name = 'My Mouses Project'
-            self.assertTrue(project_form.allow_milestones, 'New projects allow_milestones should be True by default.')
-            project_form.is_fsm = True
-            self.assertFalse(project_form.allow_milestones, 'When the project becomes a FSM one the `allow_milestones` should be equal to False by default.')
+        with self.debug_mode():
+            # <div class="col-lg-6 o_setting_box" groups="base.group_no_one">
+            #     <div class="o_setting_left_pane">
+            #         <field name="is_fsm"/>
+            #     </div>
+            with Form(Project) as project_form:
+                project_form.name = 'My Mouses Project'
+                self.assertTrue(project_form.allow_milestones, 'New projects allow_milestones should be True by default.')
+                project_form.is_fsm = True
+                self.assertFalse(project_form.allow_milestones, 'When the project becomes a FSM one the `allow_milestones` should be equal to False by default.')

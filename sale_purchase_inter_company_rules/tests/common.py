@@ -8,6 +8,9 @@ class TestInterCompanyRulesCommonSOPO(TestInterCompanyRulesCommon):
     @classmethod
     def setUpClass(cls):
         super(TestInterCompanyRulesCommonSOPO, cls).setUpClass()
+        # Required for `warehouse_id` to be visible in the view
+        cls.env.user.groups_id += cls.env.ref('stock.group_stock_multi_warehouses')
+
         # Set warehouse on company A
         cls.company_a.warehouse_id = cls.env['stock.warehouse'].search([('company_id', '=', cls.company_a.id)])
 

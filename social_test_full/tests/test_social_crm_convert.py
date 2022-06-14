@@ -64,11 +64,21 @@ class TestSocialCrmConvert(common.SocialCase):
 
         self.social_stream_post.write({'facebook_post_id': 'abc123'})
         john_doe = self.env['res.partner'].sudo().create({'name': 'John Doe'})
-        with Form(self.env['social.post.to.lead']) as convert_wizard_form:
-            convert_wizard_form.social_account_id = self.social_account
-            convert_wizard_form.social_stream_post_id = self.social_stream_post
-            convert_wizard_form.conversion_source = 'stream_post'
-            convert_wizard_form.post_content = 'Hello'
+        # <form string="Convert Post to Lead">
+        #     ...
+        #             <field name="conversion_source" invisible="1"/>
+        #             <field name="post_content" invisible="1"/>
+        #             ...
+        #             <field name="social_account_id" invisible="1"/>
+        #             <field name="social_stream_post_id" invisible="1"/>
+        #     ...
+        # </form>
+        convert_wizard_form = Form(self.env['social.post.to.lead'].with_context(
+            default_social_account_id=self.social_account,
+            default_social_stream_post_id=self.social_stream_post,
+            default_conversion_source='stream_post',
+            default_post_content='Hello',
+        ))
 
         convert_wizard = convert_wizard_form.save()
         self.assertEqual(convert_wizard.post_datetime, self.social_stream_post.published_date)
@@ -91,14 +101,14 @@ class TestSocialCrmConvert(common.SocialCase):
         no campaign, the medium from the related social.account and source set to our master data. """
 
         self.env['res.partner'].sudo().create({'name': 'Doug'})
-        with Form(self.env['social.post.to.lead']) as convert_wizard_form:
-            convert_wizard_form.social_account_id = self.social_account
-            convert_wizard_form.social_stream_post_id = self.social_stream_post
-            convert_wizard_form.conversion_source = 'comment'
-            convert_wizard_form.post_content = 'Hello'
-            convert_wizard_form.author_name = 'Jack'
-            convert_wizard_form.post_link = 'https://www.facebook.com/1'
-
+        convert_wizard_form = Form(self.env['social.post.to.lead'].with_context(
+            default_social_account_id=self.social_account.id,
+            default_social_stream_post_id=self.social_stream_post.id,
+            default_conversion_source='comment',
+            default_post_content='Hello',
+            default_author_name='Jack',
+            default_post_link='https://www.facebook.com/1',
+        ))
         convert_wizard = convert_wizard_form.save()
         self.assertEqual(convert_wizard.action, 'create')
         self.assertFalse(convert_wizard.partner_id)

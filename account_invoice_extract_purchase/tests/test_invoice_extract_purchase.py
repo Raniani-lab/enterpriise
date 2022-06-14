@@ -16,6 +16,11 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_ext
 
         cls.env.user.groups_id |= cls.env.ref('base.group_system')
 
+        # Required for `price_total` to be visible in the view
+        config = cls.env['res.config.settings'].create({})
+        config.show_line_subtotals_tax_selection = "tax_included"
+        config.execute()
+
         # Avoid passing on the iap.account's `get` method to avoid the cr.commit breaking the test transaction.
         cls.env['iap.account'].create([
             {

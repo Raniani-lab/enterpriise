@@ -80,6 +80,7 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
             wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=line.id).new({})
             auto_balance_line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
             form = WizardForm(wizard)
+            form._view['modifiers']['todo_command']['invisible'] = False
             form.todo_command = f'mount_line_in_edit,{auto_balance_line.index}'
             form.form_name = "toto"
             form.form_account_id = self.account

@@ -239,8 +239,8 @@ class Form28150(models.Model):
             form.partner_country = form.partner_id.country_id
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_only_if_state_not_generated(self):
-        if self.filtered(lambda x: x.state == 'generated'):
+    def _unlink_only_if_state_not_generated_and_not_test(self):
+        if self.filtered(lambda f_250: f_250.state == 'generated' and not f_250.form_325_id.is_test):
             raise UserError(_("You can't delete a 281.50 for which its form 325 xml has been generated"))
 
     def get_dict_values(self):

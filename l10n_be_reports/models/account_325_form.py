@@ -631,6 +631,6 @@ class Form325(models.Model):
         return super().unlink()
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_only_if_state_not_generated(self):
-        if self.filtered(lambda x: x.state == 'generated'):
+    def _unlink_only_if_state_not_generated_and_not_test(self):
+        if self.filtered(lambda f_325: f_325.state == 'generated' and not f_325.is_test):
             raise UserError(_("You can't delete a 281.50 for which its form 325 xml has been generated"))

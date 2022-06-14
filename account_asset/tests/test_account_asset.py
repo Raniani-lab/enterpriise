@@ -1396,3 +1396,50 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         self.assertTrue(all(m.state == 'posted' for m in asset.depreciation_move_ids))
         self.assertEqual(asset.state, 'close')
+
+    def test_decrement_book_value_with_negative_asset(self):
+        """
+        Test the computation of book value and remaining value
+        when posting a depreciation move related with a negative asset
+        """
+        depreciation_account = self.company_data['default_account_assets'].copy()
+        asset_model = self.env['account.asset'].create({
+            'name': 'test',
+            'state': 'model',
+            'active': True,
+            'asset_type': 'purchase',
+            'method': 'linear',
+            'method_number': 5,
+            'method_period': '1',
+            'prorata': False,
+            'account_asset_id': self.company_data['default_account_expense'].id,
+            'account_depreciation_id': depreciation_account.id,
+            'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
+            'journal_id': self.company_data['default_journal_purchase'].id,
+        })
+
+        depreciation_account.asset_type = 'purchase'
+        depreciation_account.can_create_asset = True
+        depreciation_account.create_asset = 'draft'
+        depreciation_account.asset_model = asset_model
+
+        refund = self.env['account.move'].create({
+            'move_type': 'in_refund',
+            'partner_id': self.ref("base.res_partner_12"),
+            'invoice_date': fields.Date.today() - relativedelta(months=1),
+            'invoice_line_ids': [(0, 0, {'name': 'refund', 'account_id': depreciation_account.id, 'price_unit': 500, 'tax_ids': False})],
+        })
+        refund.action_post()
+
+        self.assertTrue(refund.asset_ids)
+
+        asset = refund.asset_ids
+
+        self.assertEqual(asset.book_value, refund.amount_total)
+        self.assertEqual(asset.value_residual, refund.amount_total)
+
+        asset.validate()
+
+        self.assertEqual(len(asset.depreciation_move_ids.filtered(lambda m: m.state == 'posted')), 1)
+        self.assertEqual(asset.book_value, 400.0)
+        self.assertEqual(asset.value_residual, 400.0)

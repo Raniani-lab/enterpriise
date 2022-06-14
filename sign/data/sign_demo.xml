@@ -20,6 +20,7 @@
         <field name="posY" type="float">0.160</field>
         <field name="width" type="float">0.375</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Name</field>
     </record>
     <record model="sign.item" id="sign_item_2">
         <field name="template_id" ref="template_sign_1"/>
@@ -30,6 +31,7 @@
         <field name="posY" type="float">0.160</field>
         <field name="width" type="float">0.170</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Date</field>
     </record>
     <record model="sign.item" id="sign_item_3">
         <field name="template_id" ref="template_sign_1"/>
@@ -40,6 +42,7 @@
         <field name="posY" type="float">0.185</field>
         <field name="width" type="float">0.680</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Text</field>
     </record>
     <record model="sign.item" id="sign_item_4">
         <field name="template_id" ref="template_sign_1"/>
@@ -50,6 +53,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_5">
         <field name="template_id" ref="template_sign_1"/>
@@ -60,6 +64,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_8">
         <field name="template_id" ref="template_sign_1"/>
@@ -70,6 +75,7 @@
         <field name="posY" type="float">0.670</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.050</field>
+        <field name="name">Signature</field>
     </record>
     <record model="sign.item" id="sign_item_9">
         <field name="template_id" ref="template_sign_1"/>
@@ -80,6 +86,7 @@
         <field name="posY" type="float">0.695</field>
         <field name="width" type="float">0.205</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Date</field>
     </record>
 
     <record id="attachment_sign_2" model="ir.attachment">
@@ -103,6 +110,7 @@
         <field name="posY" type="float">0.175</field>
         <field name="width" type="float">0.140</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Name</field>
     </record>
     <record model="sign.item" id="sign_item_11">
         <field name="template_id" ref="template_sign_2"/>
@@ -113,6 +121,7 @@
         <field name="posY" type="float">0.175</field>
         <field name="width" type="float">0.230</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Text</field>
     </record>
     <record model="sign.item" id="sign_item_12">
         <field name="template_id" ref="template_sign_2"/>
@@ -123,6 +132,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_13">
         <field name="template_id" ref="template_sign_2"/>
@@ -133,6 +143,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_14">
         <field name="template_id" ref="template_sign_2"/>
@@ -143,6 +154,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_15">
         <field name="template_id" ref="template_sign_2"/>
@@ -153,6 +165,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_16">
         <field name="template_id" ref="template_sign_2"/>
@@ -163,6 +176,7 @@
         <field name="posY" type="float">0.365</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.050</field>
+        <field name="name">Signature</field>
     </record>
     <record model="sign.item" id="sign_item_18">
         <field name="template_id" ref="template_sign_2"/>
@@ -173,6 +187,7 @@
         <field name="posY" type="float">0.445</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Name</field>
     </record>
 
     <record id="attachment_sign_3" model="ir.attachment">
@@ -193,6 +208,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_21">
         <field name="template_id" ref="template_sign_3"/>
@@ -203,6 +219,7 @@
         <field name="posY" type="float">0.600</field>
         <field name="width" type="float">0.300</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Name</field>
     </record>
     <record model="sign.item" id="sign_item_22">
         <field name="template_id" ref="template_sign_3"/>
@@ -213,6 +230,7 @@
         <field name="posY" type="float">0.631</field>
         <field name="width" type="float">0.300</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Email</field>
     </record>
     <record model="sign.item" id="sign_item_23">
         <field name="template_id" ref="template_sign_3"/>
@@ -223,6 +241,7 @@
         <field name="posY" type="float">0.662</field>
         <field name="width" type="float">0.300</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Text</field>
     </record>
     <record model="sign.item" id="sign_item_24">
         <field name="template_id" ref="template_sign_3"/>
@@ -233,6 +252,7 @@
         <field name="posY" type="float">0.693</field>
         <field name="width" type="float">0.300</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Date</field>
     </record>
     <record model="sign.item" id="sign_item_25">
         <field name="template_id" ref="template_sign_3"/>
@@ -243,6 +263,7 @@
         <field name="posY" type="float">0.725</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.050</field>
+        <field name="name">Signature</field>
     </record>
 
     <record id="attachment_sign_4" model="ir.attachment">
@@ -266,6 +287,7 @@
         <field name="posY" type="float">0.206</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.012</field>
+        <field name="name">Name</field>
     </record>
     <record model="sign.item" id="sign_item_29">
         <field name="template_id" ref="template_sign_4"/>
@@ -276,6 +298,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_31">
         <field name="template_id" ref="template_sign_4"/>
@@ -286,6 +309,7 @@
         <field name="posY" type="float">0.801</field>
         <field name="width" type="float">0.180</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Name</field>
     </record>
     <record model="sign.item" id="sign_item_33">
         <field name="template_id" ref="template_sign_4"/>
@@ -296,6 +320,7 @@
         <field name="posY" type="float">0.820</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.050</field>
+        <field name="name">Signature</field>
     </record>
 
     <record id="attachment_sign_5" model="ir.attachment">
@@ -318,6 +343,7 @@
         <field name="posY" type="float">0.125</field>
         <field name="width" type="float">0.315</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Company</field>
     </record>
     <record model="sign.item" id="sign_item_35">
         <field name="template_id" ref="template_sign_5"/>
@@ -328,6 +354,7 @@
         <field name="posY" type="float">0.125</field>
         <field name="width" type="float">0.315</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Name</field>
     </record>
     <record model="sign.item" id="sign_item_36">
         <field name="template_id" ref="template_sign_5"/>
@@ -338,6 +365,7 @@
         <field name="posY" type="float">0.150</field>
         <field name="width" type="float">0.345</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Email</field>
     </record>
     <record model="sign.item" id="sign_item_37">
         <field name="template_id" ref="template_sign_5"/>
@@ -348,6 +376,7 @@
         <field name="posY" type="float">0.150</field>
         <field name="width" type="float">0.325</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Phone</field>
     </record>
     <record model="sign.item" id="sign_item_43">
         <field name="template_id" ref="template_sign_5"/>
@@ -358,6 +387,7 @@
         <field name="posY" type="float">0.655</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.015</field>
+        <field name="name">Company</field>
     </record>
     <record model="sign.item" id="sign_item_45">
         <field name="template_id" ref="template_sign_5"/>
@@ -368,6 +398,7 @@
         <field name="posY" type="float">0.675</field>
         <field name="width" type="float">0.200</field>
         <field name="height" type="float">0.050</field>
+        <field name="name">Signature</field>
     </record>
     <record model="sign.item" id="sign_item_46">
         <field name="template_id" ref="template_sign_5"/>
@@ -378,6 +409,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_47">
         <field name="template_id" ref="template_sign_5"/>
@@ -388,6 +420,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
     <record model="sign.item" id="sign_item_48">
         <field name="template_id" ref="template_sign_5"/>
@@ -398,6 +431,7 @@
         <field name="posY" type="float">0.970</field>
         <field name="width" type="float">0.085</field>
         <field name="height" type="float">0.030</field>
+        <field name="name">Initials</field>
     </record>
 
     <record id="base.user_admin" model="res.users">

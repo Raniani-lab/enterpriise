@@ -6004,13 +6004,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         payslip.compute_sheet()
 
         payslip_results = {
-            'BASIC': 2668.0,
-            'SALARY': 2465.0,
-            'ONSS': -322.18,
-            'GROSS': 2345.82,
-            'P.P': -923.55,
-            'PPTOTAL': 923.55,
-            'NET': 1422.27,
+            'BASIC': 2438.0,
+            'SALARY': 2252.5,
+            'ONSS': -294.4,
+            'GROSS': 2143.6,
+            'P.P': -843.93,
+            'PPTOTAL': 843.93,
+            'NET': 1299.66,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -6051,13 +6051,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         payslip.compute_sheet()
 
         payslip_results = {
-            'BASIC': 2058.5,
-            'SALARY': 1901.88,
-            'ONSS': -248.58,
-            'GROSS': 1809.92,
-            'P.P': -712.57,
-            'PPTOTAL': 712.57,
-            'NET': 1097.36,
+            'BASIC': 1828.5,
+            'SALARY': 1689.38,
+            'ONSS': -220.8,
+            'GROSS': 1607.7,
+            'P.P': -632.95,
+            'PPTOTAL': 632.95,
+            'NET': 974.75,
         }
         self._validate_payslip(payslip, payslip_results)
 
@@ -8366,3 +8366,42 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CO2FEE': 28.17,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_aa_double_pay_commission_first_incomplete_month(self):
+        # If a payslip (first one or mid-month signing is incomplete and has commissions
+        # take them into account
+        self.contract.write({
+            'date_start': datetime.date(2021, 12, 7),
+            'commission_on_target': 1500,
+        })
+
+        payslip = self._generate_payslip(datetime.date(2021, 12, 1), datetime.date(2021, 12, 31))
+        payslip.input_line_ids = [(0, 0, {
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.input_fixed_commission').id,
+            'amount': 300,
+        })]
+        payslip.compute_sheet()
+        payslip.action_payslip_done()
+
+        double_payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2022, 6, 1),
+            'date_to': datetime.date(2022, 6, 30)
+        })
+        double_payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 249.16,
+            'SALARY': 230.21,
+            'ONSS': -30.09,
+            'GROSS': 219.08,
+            'P.P': -92.87,
+            'PPTOTAL': 92.87,
+            'NET': 126.21,
+        }
+        self._validate_payslip(double_payslip, payslip_results)

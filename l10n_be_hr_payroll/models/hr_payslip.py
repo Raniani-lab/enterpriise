@@ -283,28 +283,22 @@ class Payslip(models.Model):
         if not self.contract_id.commission_on_target:
             return 0
         date_from = self.env.context.get('variable_revenue_date_from', self.date_from)
+        first_contract_date = self.employee_id.first_contract_date
+        if not first_contract_date:
+            return 0
+        start = first_contract_date
+        end = date_from + relativedelta(day=31, months=-1)
+        number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
+        number_of_month = min(12, number_of_month)
+        if number_of_month <= 0:
+            return 0
         payslips = self.env['hr.payslip'].search([
             ('employee_id', '=', self.employee_id.id),
             ('state', 'in', ['done', 'paid']),
             ('date_from', '>=', date_from + relativedelta(months=-12, day=1)),
             ('date_from', '<=', date_from),
         ], order="date_from asc")
-        complete_payslips = payslips.filtered(
-            lambda p: not p._get_worked_days_line_number_of_hours('OUT'))
-        if not complete_payslips:
-            return 0
-        total_amount = complete_payslips._get_line_values(['COMMISSION'], compute_sum=True)['COMMISSION']['sum']['total']
-        first_contract_date = self.employee_id.first_contract_date
-        if not first_contract_date:
-            return 0
-        # Only complete months count
-        if first_contract_date.day != 1:
-            start = first_contract_date + relativedelta(day=1, months=1)
-        else:
-            start = first_contract_date
-        end = date_from + relativedelta(day=31, months=-1)
-        number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
-        number_of_month = min(12, number_of_month)
+        total_amount = payslips._get_line_values(['COMMISSION'], compute_sum=True)['COMMISSION']['sum']['total']
         return total_amount / number_of_month if number_of_month else 0
 
     def _get_last_year_average_warrant_revenues(self):
@@ -462,7 +456,7 @@ class Payslip(models.Model):
                 avg_variable_revenues = 0
             else:
                 avg_variable_revenues = self.with_context(
-                    variable_revenue_date_from=self.date_from + relativedelta(months=-1)
+                    variable_revenue_date_from=self.date_from
                 )._get_last_year_average_variable_revenues()
         return fixed_salary + avg_variable_revenues
 
@@ -505,7 +499,7 @@ class Payslip(models.Model):
                 avg_variable_revenues = 0
             else:
                 avg_variable_revenues = self.with_context(
-                    variable_revenue_date_from=self.date_from + relativedelta(months=-1)
+                    variable_revenue_date_from=self.date_from
                 )._get_last_year_average_variable_revenues()
         return fixed_salary + avg_variable_revenues
 

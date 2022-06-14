@@ -189,6 +189,7 @@ class QualityAlertTeam(models.Model):
         if self.id:
             values['alias_defaults'] = defaults = ast.literal_eval(self.alias_defaults or "{}")
             defaults['team_id'] = self.id
+            defaults['company_id'] = self.company_id.id
         return values
 
 

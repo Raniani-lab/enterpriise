@@ -1868,8 +1868,6 @@ class AccountReport(models.AbstractModel):
         return {
             'o_account_reports_no_print': '',
             'table-responsive': '',
-            markupsafe.Markup('<a'): markupsafe.Markup('<span'),
-            markupsafe.Markup('</a>'): markupsafe.Markup('</span>')
         }
 
     def get_pdf(self, options):

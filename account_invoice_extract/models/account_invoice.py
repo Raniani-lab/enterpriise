@@ -705,6 +705,8 @@ class AccountMove(models.Model):
             if result['status_code'] == SUCCESS:
                 self.extract_state = "waiting_validation"
                 ocr_results = result['results'][0]
+                if 'full_text_annotation' in ocr_results:
+                    self.message_main_attachment_id.index_content = ocr_results['full_text_annotation']
                 self.extract_word_ids.unlink()
 
                 # We still want to save all other fields when there is a duplicate vendor reference

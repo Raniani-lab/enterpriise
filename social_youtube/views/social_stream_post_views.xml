@@ -11,8 +11,8 @@
                 <field name="youtube_comments_count"/>
                 <field name="youtube_likes_count"/>
                 <field name="youtube_dislikes_count"/>
+                <field name="youtube_likes_ratio"/>
                 <field name="youtube_views_count"/>
-                <field name="youtube_video_duration"/>
                 <field name="youtube_thumbnail_url"/>
             </xpath>
             <xpath expr="//span[hasclass('o_social_stream_post_author_image')]" position="inside">
@@ -44,13 +44,11 @@
                     <div class="d-flex justify-content-around">
                         <div class="o_social_subtle_btn_disabled pl-2">
                             <i class="fa fa-thumbs-up" title="Likes"/>
-                            <b class="o_social_kanban_likes_count" t-esc="record.youtube_likes_count.raw_value"/>
+                            <b>
+                                <field name="youtube_likes_ratio"/>
+                                %
+                            </b>
                         </div>
-                        <div class="o_social_subtle_btn_disabled pl-2">
-                            <i class="fa fa-thumbs-down" title="Dislikes"/>
-                            <b class="o_social_kanban_likes_count" t-esc="record.youtube_dislikes_count.raw_value"/>
-                        </div>
-
                         <div class="o_social_youtube_comments o_social_comments o_social_subtle_btn pl-3"
                             t-att-data-stream-id="record.stream_id.raw_value"
                             t-att-data-post-id="record.id.raw_value"
@@ -70,21 +68,18 @@
                             t-att-data-link-description="record.link_description.raw_value"
                             t-att-data-youtube-likes-count="record.youtube_likes_count.raw_value"
                             t-att-data-youtube-dislikes-count="record.youtube_dislikes_count.raw_value"
+                            t-att-data-youtube-likes-ratio="record.youtube_likes_ratio.raw_value"
                             t-att-data-youtube-comments-count="record.youtube_comments_count.raw_value"
-                            t-att-data-youtube-views-count="record.youtube_views_count.raw_value"
-                            t-att-data-youtube-video-duration="record.youtube_video_duration.raw_value">
+                            t-att-data-youtube-views-count="record.youtube_views_count.raw_value">
                             <i class="fa fa-comments" title="Comments"/>
                             <b t-esc="record.youtube_comments_count.value"/>
                         </div>
                     </div>
 
                     <div class="flex-grow-1 text-right text-muted">
-                        <div class="o_social_subtle_btn_disabled pr-2 d-inline-block" t-if="record.youtube_video_duration.raw_value">
-                            <field name="youtube_video_duration" class="oe_inline font-weight-bold" widget="float_time"/>
-                        </div>
-                        <div class="o_social_subtle_btn_disabled pr-2 d-inline-block">
-                            <i class="fa fa-eye" title="Views"/>
-                            <b t-esc="record.youtube_views_count.value"/>
+                        <div class="o_social_subtle_btn_disabled pr-2 d-inline-block font-weight-bold">
+                            Views
+                            <t t-esc="record.youtube_views_count.value"/>
                         </div>
                     </div>
                 </div>

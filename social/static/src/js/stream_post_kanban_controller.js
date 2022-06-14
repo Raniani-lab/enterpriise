@@ -223,7 +223,7 @@ var StreamPostKanbanController = KanbanController.extend({
         ]).then(function (results) {
             var streamsNeedRefresh = results[0];
             var socialAccountsStats = results[1];
-            if (streamsNeedRefresh || forceStreamRenderRefresh) {
+            if (streamsNeedRefresh || forceStreamRenderRefresh === true) {
                 self.renderer._refreshStreamsRequired();
             }
 

@@ -24,8 +24,11 @@ class SocialPostYoutube(models.Model):
         compute='_compute_youtube_accounts_count')
     youtube_accounts_other_count = fields.Integer('Selected Other Accounts',
         compute='_compute_youtube_accounts_count')
-    youtube_video_url = fields.Char('Youtube Video Url', compute="_compute_youtube_video_url")
-    youtube_thumbnail_url = fields.Char('Youtube Thumbnail Url', compute="_compute_youtube_thumbnail_url")
+    youtube_video_privacy = fields.Selection([('public', 'Public'), ('unlisted', 'Unlisted'), ('private', 'Private')],
+        string='Video Privacy', default='public', required=True,
+        help='Once posted, set the video as Public/Private/Unlisted')
+    youtube_video_url = fields.Char('YouTube Video Url', compute="_compute_youtube_video_url")
+    youtube_thumbnail_url = fields.Char('YouTube Thumbnail Url', compute="_compute_youtube_thumbnail_url")
 
     @api.constrains('message')
     def _check_message_not_empty(self):
@@ -86,6 +89,18 @@ class SocialPostYoutube(models.Model):
                 raise UserError(_("Please select a single YouTube account at a time."))
             if not social_post.youtube_video_id and 'youtube' in social_post.media_ids.mapped('media_type'):
                 raise UserError(_("You have to upload a video when posting on YouTube."))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """The names of the UTM sources are generated based on the content of _rec_name.
+
+        But for Youtube, the message field is not required, so we should use the title
+        of the video instead.
+        """
+        for values in vals_list:
+            if not values.get('message') and not values.get('name') and values.get('youtube_title'):
+                values['name'] = self.env['utm.source']._generate_name(self, values.get('youtube_title'))
+        return super().create(vals_list)
 
     def _get_stream_post_domain(self):
         domain = super(SocialPostYoutube, self)._get_stream_post_domain()

@@ -36,6 +36,7 @@
         <field name="model">social.account</field>
         <field name="arch" type="xml">
             <form string="Social Account" create="0">
+                <header></header>
                 <sheet>
                     <field name="image" widget="image" class="oe_avatar"/>
                     <div class="oe_title">

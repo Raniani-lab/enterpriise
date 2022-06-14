@@ -112,20 +112,6 @@ class SocialStreamYoutube(models.Model):
                 'youtube_views_count': video_stats.get('viewCount', 0)
             }
 
-            youtube_duration = video.get('contentDetails', {}).get('duration')
-            if youtube_duration:
-                if youtube_duration == 'P0D':
-                    continue  # video has no duration -> skip it
-
-                # parse duration from Youtube format and set the value on the post
-                # more info: https://en.wikipedia.org/wiki/ISO_8601#Durations
-                parsed_duration = re.search(r'^P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$', youtube_duration)
-                days = int(parsed_duration.group(1) or 0)
-                hours = int(parsed_duration.group(2) or 0)
-                minutes = int(parsed_duration.group(3) or 0)
-                seconds = int(parsed_duration.group(4) or 0)
-                values['youtube_video_duration'] = seconds / 60 + minutes + (hours * 60) + (days * 1440)
-
             if existing_post:
                 existing_post.sudo().write(values)
             else:

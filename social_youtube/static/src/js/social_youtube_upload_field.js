@@ -248,7 +248,7 @@ var YoutubeUploadField = basicFields.FieldChar.extend({
                     var processingDetails = response.items[0].processingDetails;
                     // Youtube is supposed to send a "partsProcessed / partsTotal"
                     // but from my tests it doesn't work (it either doesn't send it or sends 1000 / 1000)
-                    self.$('.o_social_youtube_upload_text').text(_t('Youtube is processing...'));
+                    self.$('.o_social_youtube_upload_text').text(_t('Processing...'));
 
                     if (processingDetails.processingStatus === 'succeeded') {
                         clearInterval(self.processingInfoInterval);

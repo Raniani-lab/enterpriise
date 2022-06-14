@@ -98,6 +98,9 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
             font-size: 1rem;
             display: inline-block;
         }
+        br:not(:first-child) {
+            display: none;
+        }
     }
 
     &.o_social_stream_post_with_attachments {

@@ -12,8 +12,7 @@ from odoo.tests import common
 
 class SocialYouTubeCase(common.TransactionCase):
     def test_youtube_data_cleaning(self):
-        with patch.object(SocialAccountYoutube, '_compute_statistics', lambda x: None), \
-             patch.object(SocialAccountYoutube, '_create_default_stream_youtube', lambda *args, **kwargs: None), \
+        with patch.object(SocialAccountYoutube, '_create_default_stream_youtube', lambda *args, **kwargs: None), \
              patch.object(SocialStreamYoutube, '_fetch_stream_data', lambda x: None):
 
             SocialStreamPost = self.env['social.stream.post']

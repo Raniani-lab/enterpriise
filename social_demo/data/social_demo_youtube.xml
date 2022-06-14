@@ -25,7 +25,6 @@
         <field name="youtube_dislikes_count">5</field>
         <field name="youtube_comments_count">57</field>
         <field name="youtube_views_count">57945</field>
-        <field name="youtube_video_duration">21.17</field>
         <field name="link_image_url">http://i3.ytimg.com/vi/kmt-oVAB6hU/hqdefault.jpg</field>
         <field name="twitter_profile_image_url" eval="'/web/image/res.users/%s/image_128' % ref('base.user_admin')" />
         <field name="message">To celebrate the new year, we have a gift for you: Learn how to build your own chair!</field>

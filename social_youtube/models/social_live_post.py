@@ -104,7 +104,7 @@ class SocialLivePostYoutube(models.Model):
                     'categoryId': self.post_id.youtube_video_category_id,
                 },
                 'status': {
-                    'privacyStatus': 'public',
+                    'privacyStatus': self.post_id.youtube_video_privacy,
                     'embeddable': True
                 }
             },

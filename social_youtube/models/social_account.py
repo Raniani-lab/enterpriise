@@ -5,20 +5,21 @@ import requests
 from datetime import timedelta
 from werkzeug.urls import url_join
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class SocialAccountYoutube(models.Model):
     _inherit = 'social.account'
 
-    youtube_channel_id = fields.Char('Youtube Channel ID', readonly=True,
+    youtube_channel_id = fields.Char('YouTube Channel ID', readonly=True,
         help="YouTube Channel ID provided by the YouTube API, this should never be set manually.")
     youtube_access_token = fields.Char('Google Access Token', readonly=True,
         help="Access token provided by the YouTube API, this should never be set manually.")
     youtube_refresh_token = fields.Char('Google Refresh Token', readonly=True,
         help="Refresh token provided by the YouTube API, this should never be set manually.")
     youtube_token_expiration_date = fields.Datetime('Token expiration date', readonly=True,
-        help="Expiration date of the Access Token provided by the Youtube API, this should never be set manually.")
+        help="Expiration date of the Access Token provided by the YouTube API, this should never be set manually.")
     youtube_upload_playlist_id = fields.Char('YouTube Upload Playlist ID', readonly=True,
          help="'Uploads' Playlist ID provided by the YouTube API, this should never be set manually.")
 
@@ -30,38 +31,30 @@ class SocialAccountYoutube(models.Model):
         for account in youtube_accounts:
             account.stats_link = "https://studio.youtube.com/channel/%s/analytics/tab-overview" % account.youtube_channel_id
 
-    def _compute_statistics(self):
-        youtube_accounts = self._filter_by_media_types(['youtube'])
-        super(SocialAccountYoutube, (self - youtube_accounts))._compute_statistics()
-        endpoint_url = url_join(self.env['social.media']._YOUTUBE_ENDPOINT, "youtube/v3/channels")
-
-        for account in youtube_accounts:
-            account._refresh_youtube_token()
-
-            stats_response = requests.get(endpoint_url,
-                params={
-                    'access_token': account.youtube_access_token,
-                    'id': account.youtube_channel_id,
-                    'part': 'statistics',
-                },
-                timeout=5
-            ).json()
-
-            if stats_response.get('error'):
-                account._action_disconnect_accounts(stats_response)
-            else:
-                stats = stats_response.get('items', [{}])[0].get('statistics', {})
-                account.write({
-                    'audience': stats.get('subscriberCount', 0),
-                    'engagement': stats.get('viewCount', 0),
-                    'stories': stats.get('commentCount', 0),
-                })
-
     @api.model_create_multi
     def create(self, vals_list):
         res = super(SocialAccountYoutube, self).create(vals_list)
         res.filtered(lambda account: account.media_type == 'youtube')._create_default_stream_youtube()
         return res
+
+    def action_youtube_revoke(self):
+        """Open the "social account revoke youtube" wizard in order to revoke the access token of this account."""
+        self.ensure_one()
+
+        if self.media_type != 'youtube':
+            raise UserError(_('Revoking access tokens is currently limited to YouTube accounts only.'))
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Revoke Account'),
+            'res_model': 'social.account.revoke.youtube',
+            'target': 'new',
+            'view_mode': 'form',
+            'views': [[False, 'form']],
+            'context': {
+                'default_account_id': self.id,
+            }
+        }
 
     def _create_default_stream_youtube(self):
         """ This will create a stream to show the account video for each created account.

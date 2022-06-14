@@ -1062,3 +1062,14 @@ class AmazonAccount(models.Model):
                 "Sent order synchronization failure notification email to %s",
                 ', '.join(responsible_emails)
             )
+
+    def _neutralize(self):
+        super()._neutralize()
+        self.flush()
+        self.invalidate_cache()
+        self.env.cr.execute("""
+            UPDATE amazon_account
+            SET seller_key = 'dummy',
+                refresh_token = 'dummy'
+        """)
+

@@ -784,6 +784,15 @@ class TestResPartner(AccountTestInvoicingCommon):
         with self.assertRaises(UserError):
             form.unlink()
 
+    def test_delete_testing_325_and_281_50_should_succeed(self):
+        # deletion from 325 form
+        form = self.create_form28150(ref_year=2020, test=True)
+        form.form_325_id.unlink()
+        self.assertEqual(len(form.exists()), 0)
+        # deletion from 281_50
+        form_2 = self.create_form28150(ref_year=2020, test=True)
+        form_2.unlink()
+
     def test_281_50_fields_should_remain_the_same_even_if_partner_info_changed(self):
         partner = self.partner_a
         form = self.create_form28150(ref_year=2020, commission=1000.0, fees=2000.0, atn=3000.0, exposed_expenses=4000.0, paid_amount=10000.0)

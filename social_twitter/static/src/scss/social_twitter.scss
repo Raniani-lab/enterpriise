@@ -69,7 +69,7 @@
     }
 
     a:not(.btn-outline-secondary):not(.o_social_comment_published_date:not(.o_social_post_published_date)), a.o_social_original_post_author, a.o_social_comment_author_name:not(.dropdown-item) {
-        @include hover-focus () {
+        &:hover, &:focus {
             color: #40AFF4;
             text-decoration: underline;
         }

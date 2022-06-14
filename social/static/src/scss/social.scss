@@ -116,7 +116,7 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 .o_social_stream_post_kanban_new_content {
     display: block;
 
-    @include hover-focus {
+    &:hover, &:focus {
         $bg-color: theme-color-level('info', $alert-border-level + 1);
         background: $bg-color;
         color: color-yiq($bg-color);
@@ -212,7 +212,7 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     cursor: pointer;
     color: lighten($o-main-text-color, 10%);
 
-    @include hover-focus {
+    &:hover, &:focus {
         outline: none;
         color: darken($o-main-text-color, 20%);
     }
@@ -304,7 +304,7 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
         background-color: $list-group-bg;
         cursor: pointer;
 
-        @include hover-focus {
+        &:hover, &:focus {
             background-color: $list-group-hover-bg;
         }
     }

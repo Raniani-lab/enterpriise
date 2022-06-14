@@ -9,7 +9,7 @@
     .o_statusbar_status .o_arrow_button:not(.disabled) {
         @extend .btn-light;
 
-        @include hover-focus-active() {
+        &:hover, &:focus, &:active {
             &:after {
                 border-left-color: gray('100');
             }

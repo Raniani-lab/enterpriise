@@ -168,7 +168,7 @@ $map-marker-color: #2c8397;
 
     .leaflet-container a {
         color: $link-color;
-        @include hover {
+        &:hover {
             color: $link-hover-color;
         }
     }

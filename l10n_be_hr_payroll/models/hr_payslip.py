@@ -389,6 +389,9 @@ class Payslip(models.Model):
             for day in days_to_check:
                 day = day.date()
                 out_of_schedule = True
+                # Full time credit time doesn't count
+                if contract.time_credit and not contract.work_time_rate:
+                    continue
                 if contract_start <= day <= (contract.date_end or date.max):
                     out_of_schedule = False
                 elif day.weekday() not in work_days:
@@ -473,23 +476,20 @@ class Payslip(models.Model):
 
         basic = self.contract_id._get_contract_wage()
         force_months = self.input_line_ids.filtered(lambda l: l.code == 'MONTHS')
-        if force_months or self.contract_id.first_contract_date > date(self.date_from.year - 1, 1, 1):
-            year = self.date_from.year - 1
-            date_from = date(year, 1, 1)
-            date_to = date(year, 12, 31)
 
-            if force_months:
-                n_months = force_months[0].amount
-                presence_prorata = 1
-            else:
-                # 1. Number of months
-                n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
-                # 2. Deduct absences
-                presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
-            fixed_salary = basic * n_months / 12 * presence_prorata
+        year = self.date_from.year - 1
+        date_from = date(year, 1, 1)
+        date_to = date(year, 12, 31)
+
+        if force_months:
+            n_months = force_months[0].amount
+            presence_prorata = 1
         else:
-            n_months = 12
-            fixed_salary = basic
+            # 1. Number of months
+            n_months = self._compute_number_complete_months_of_work(date_from, date_to, contracts)
+            # 2. Deduct absences
+            presence_prorata = self._compute_presence_prorata(date_from, date_to, contracts)
+        fixed_salary = basic * n_months / 12 * presence_prorata
 
         force_avg_variable_revenues = self.input_line_ids.filtered(lambda l: l.code == 'VARIABLE')
         if force_avg_variable_revenues:

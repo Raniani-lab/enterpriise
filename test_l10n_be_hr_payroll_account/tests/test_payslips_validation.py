@@ -8367,7 +8367,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-    def test_aa_double_pay_commission_first_incomplete_month(self):
+    def test_double_holidays_commission_first_incomplete_month(self):
         # If a payslip (first one or mid-month signing is incomplete and has commissions
         # take them into account
         self.contract.write({
@@ -8403,5 +8403,41 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'P.P': -92.87,
             'PPTOTAL': 92.87,
             'NET': 126.21,
+        }
+        self._validate_payslip(double_payslip, payslip_results)
+
+    def test_double_holidays_full_time_credit_time(self):
+        # Check that a full time credit time is not taken into account
+        # on the number of occupation months
+        self.contract.write({
+            'name': "Full Time Parental Time Off",
+            'time_credit': True,
+            'standard_calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'work_time_rate': 0,
+            'time_credit_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_parental_time_off').id,
+            'resource_calendar_id': self.resource_calendar_0_hours_per_week.id,
+            'date_start': datetime.date(2021, 1, 1),
+        })
+
+        double_payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2022, 6, 1),
+            'date_to': datetime.date(2022, 6, 30)
+        })
+        double_payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 0.0,
+            'SALARY': 0.0,
+            'ONSS': 0.0,
+            'GROSS': 0.0,
+            'P.P': 0.0,
+            'PPTOTAL': 0.0,
+            'NET': 0.0,
         }
         self._validate_payslip(double_payslip, payslip_results)

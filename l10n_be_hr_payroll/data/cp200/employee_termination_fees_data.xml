@@ -576,6 +576,81 @@ result = result_rules['BASIC']['total']</field>
         <field name="appears_on_payslip" eval="False"/>
     </record>
 
+    <record id="cp200_employees_termination_fees_attachment_salary" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_head_div_net"/>
+        <field name="name">Attachment of Salary</field>
+        <field name="code">ATTACH_SALARY</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">185</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.ATTACH_SALARY</field>
+        <field name="amount_python_compute">
+result = -inputs.ATTACH_SALARY.amount
+result_name = inputs.ATTACH_SALARY.name
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_asignment_salary" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_head_div_net"/>
+        <field name="name">Assignment of Salary</field>
+        <field name="code">ASSIG_SALARY</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">185</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.ASSIG_SALARY</field>
+            <field name="amount_python_compute">
+result = -inputs.ASSIG_SALARY.amount
+result_name = inputs.ASSIG_SALARY.name
+            </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_child_support" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll_head_div_net"/>
+        <field name="name">Child Support</field>
+        <field name="code">CHILD_SUPPORT</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">185</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.CHILD_SUPPORT</field>
+        <field name="amount_python_compute">
+result = -inputs.CHILD_SUPPORT.amount
+result_name = inputs.CHILD_SUPPORT.name
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_deduction" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="name">Deduction</field>
+        <field name="code">DEDUCTION</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">185</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.DEDUCTION</field>
+        <field name="amount_python_compute">
+result = -inputs.DEDUCTION.amount
+result_name = inputs.DEDUCTION.name
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
+    <record id="cp200_employees_termination_fees_reimbursement" model="hr.salary.rule">
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="name">Reimbursement</field>
+        <field name="code">REIMBURSEMENT</field>
+        <field name="amount_select">code</field>
+        <field name="sequence">185</field>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = inputs.REIMBURSEMENT</field>
+        <field name="amount_python_compute">
+result = inputs.REIMBURSEMENT.amount
+result_name = inputs.REIMBURSEMENT.name
+        </field>
+        <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
+    </record>
+
     <record id="cp200_employees_termination_fees_net" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll.NET"/>
         <field name="name">Net Salary</field>
@@ -585,7 +660,11 @@ result = result_rules['BASIC']['total']</field>
         <field name="condition_select">none</field>
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
-result = result_rules['GROSS']['total'] - result_rules['PPTOTAL']['total']
+assignment_types = [
+    'ATTACH_SALARY', 'ASSIG_SALARY', 'CHILD_SUPPORT', 'DEDUCTION', 'REIMBURSEMENT']
+assignment_amount = sum(
+    result_rules[assignment_type]['total'] for assignment_type in assignment_types)
+result = result_rules['GROSS']['total'] - result_rules['PPTOTAL']['total'] + assignment_amount
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_termination_fees"/>
         <field name="appears_on_employee_cost_dashboard" eval="True"/>

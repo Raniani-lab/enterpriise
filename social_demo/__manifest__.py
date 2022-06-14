@@ -22,7 +22,8 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'social_demo/static/**/*',
+            'social_demo/static/src/js/stream_post_comment.js',
+            'social_demo/static/src/js/stream_post_comments_reply.js',
         ],
     },
     'license': 'OEEL-1',

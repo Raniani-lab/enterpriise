@@ -1,32 +1,34 @@
-odoo.define('social_facebook.post_formatter_mixin', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var SocialPostFormatterMixin = require('social.post_formatter_mixin');
-var _superFormatPost = SocialPostFormatterMixin._formatPost;
+import { SocialPostFormatterMixin } from '@social/js/social_post_formatter_mixin';
+
+import { patch } from '@web/core/utils/patch';
 
 /*
  * Add Facebook @tag and #hashtag support.
  * Replace all occurrences of `#hashtag` and of `@tag` by a HTML link to a
  * search of the hashtag/tag on the media website
  */
-SocialPostFormatterMixin._formatPost = function (formattedValue) {
-    formattedValue = _superFormatPost.apply(this, arguments);
-    var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
+patch(SocialPostFormatterMixin, 'social_facebook.SocialPostFormatterMixin', {
 
-    if (mediaType === 'facebook' || mediaType === 'facebook_preview') {
-        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
+    _formatPost(value) {
+        value = this._super(...arguments);
+        const mediaType = this._getMediaType();
+        if (['facebook', 'facebook_preview'].includes(mediaType)) {
+            value = value.replace(this.REGEX_HASHTAG,
                 `$1<a href='https://www.facebook.com/hashtag/$2' target='_blank'>#$2</a>`);
 
-        if (mediaType !== 'facebook_preview') {
-            // Facebook uses a special regex for "@person" support.
-            // See social.stream.post#_format_facebook_message for more information.
-            var REGEX_AT_FACEBOOK = /\B@\[([0-9]*)\]\s([\w\dÀ-ÿ-]+)/g
-            var accountId = this.accountId || this.recordData.account_id.res_id;
-            formattedValue = formattedValue.replace(REGEX_AT_FACEBOOK,
-                `<a href='/social_facebook/redirect_to_profile/` + accountId + `/$1?name=$2' target='_blank'>$2</a>`);
+            const accountId = this.record && this.record.account_id.raw_value ||
+                this.originalPost && this.originalPost.account_id.raw_value;
+            if (accountId) {
+                // Facebook uses a special regex for "@person" support.
+                // See social.stream.post#_format_facebook_message for more information.
+                const REGEX_AT_FACEBOOK = /\B@\[([0-9]*)\]\s([\w\dÀ-ÿ-]+)/g;
+                value = value.replace(REGEX_AT_FACEBOOK,
+                    `<a href='/social_facebook/redirect_to_profile/` + accountId + `/$1?name=$2' target='_blank'>$2</a>`);
+            }
         }
-    }
-    return formattedValue;
-};
+        return value;
+    },
 
 });

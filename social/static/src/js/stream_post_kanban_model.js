@@ -1,12 +1,8 @@
-odoo.define('social.social_stream_post_kanban_model', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var KanbanModel = require('web.KanbanModel');
+import { KanbanModel } from '@web/views/kanban/kanban_model';
 
-var StreamPostKanbanModel = KanbanModel.extend({
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
+export class StreamPostKanbanModel extends KanbanModel {
 
     /**
      * Method responsible for refreshing the configured streams.
@@ -14,14 +10,10 @@ var StreamPostKanbanModel = KanbanModel.extend({
      *
      * @private
      */
-    _refreshStreams: function () {
-        return this._rpc({
-            model: 'social.stream',
-            method: 'refresh_all'
-        }, {
-            shadow: true
-        });
-    },
+    _refreshStreams() {
+        // @see orm_service.js:235 for the .withOption() => doesn't seems to work ...
+        return this.orm.call('social.stream', 'refresh_all', []);
+    }
 
     /**
      * Method responsible for refreshing the 'dashboard' view of social.accounts.
@@ -31,21 +23,10 @@ var StreamPostKanbanModel = KanbanModel.extend({
      *
      * @private
      */
-    _refreshAccountsStats: function () {
-        this._rpc({
-            model: 'social.live.post',
-            method: 'refresh_statistics'
-        }, {
-            shadow: true
-        });
-
-        return this._rpc({
-            model: 'social.account',
-            method: 'refresh_statistics'
-        }, {
-            shadow: true
-        });
-    },
+    _refreshAccountsStats() {
+        this.orm.call('social.live.post', 'refresh_statistics', []);
+        return this.orm.call('social.account', 'refresh_statistics', []);
+    }
 
     /**
      * Will load the social.account statistics that are used to populate the dashboard on
@@ -53,12 +34,10 @@ var StreamPostKanbanModel = KanbanModel.extend({
      *
      * @private
      */
-    _loadAccountsStats: function () {
-        return this._rpc({
-            model: 'social.account',
-            method: 'search_read',
-            domain: [['has_account_stats', '=', true]],
-            fields: [
+    _loadAccountsStats() {
+        return this.orm.searchRead('social.account',
+            [['has_account_stats', '=', true]],
+            [
                 'id',
                 'name',
                 'is_media_disconnected',
@@ -73,11 +52,15 @@ var StreamPostKanbanModel = KanbanModel.extend({
                 'media_type',
                 'stats_link',
                 'image',
-            ],
-        });
-    },
-});
+        ]);
+    }
 
-return StreamPostKanbanModel;
+    /**
+     * See 'StreamPostKanbanRenderer#showNoContentHelper'
+     * @override
+     */
+    hasData() {
+        return this.root.records.length > 0;
+    }
 
-});
+}

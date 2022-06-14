@@ -1,73 +1,48 @@
-odoo.define('social.social_post_kanban_add_stream_modal', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var core = require('web.core');
-var Dialog = require('web.Dialog');
-var _t = core._t;
+import { Dialog } from '@web/core/dialog/dialog';
+import { FormViewDialog } from '@web/views/view_dialogs/form_view_dialog';
+import { useChildRef, useService } from '@web/core/utils/hooks';
 
-/**
- * Simple Dialog extension to customize the addition of streams and allow to connect new accounts.
- */
-var AddStreamModal = Dialog.extend({
-    template: 'social.AddStreamModal',
-    events: _.extend({}, Dialog.prototype.events, {
-        'click .o_social_account_card': '_onClickSocialAccount',
-        'click .o_social_media': '_onClickSocialMedia',
-    }),
+const { Component } = owl;
 
-    /**
-     * @override
-     */
-    init: function (parent, options) {
-        options = _.defaults(options || {}, {
-            title: _t('Add a Stream'),
-            size: 'medium',
-            renderFooter: false,
-        });
+export class AddSocialStreamDialog extends Component {
 
-        this.isSocialManager = options.isSocialManager;
-        this.socialMedia = options.socialMedia;
-        this.socialAccounts = options.socialAccounts;
-        this.companies = options.companies;
-
-        this._super.apply(this, arguments);
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * Triggers 'new_stream_account_clicked' to be caught by parent.
-     *
-     * @param {MouseEvent} ev
-     * @private
-     */
-    _onClickSocialAccount: function (ev) {
-        var $target = $(ev.currentTarget);
-        this.trigger_up('new_stream_account_clicked', {
-            mediaId: $target.data('mediaId'),
-            accountId: $target.data('accountId')
-        });
-        this.close();
-    },
-
-    /**
-     * Triggers 'new_stream_media_clicked' to be caught by parent.
-     *
-     * @param {MouseEvent} ev
-     * @private
-     */
-    _onClickSocialMedia: function (ev) {
-        const mediaId = $(ev.currentTarget).data('mediaId');
-
-        const selectCompany = $('select[name="company_id"]');
-        const companyId = selectCompany.length ? parseInt(selectCompany.val()) || 0 : undefined;
-
-        this.trigger_up('new_stream_media_clicked', {'mediaId': mediaId, 'companyId': companyId});
+    setup() {
+        super.setup();
+        this.dialog = useService('dialog');
+        this.modalRef = useChildRef();
+        this.orm = useService('orm');
     }
-});
 
-return AddStreamModal;
+    _onClickSocialAccount(event) {
+        const target = event.currentTarget;
+        this.dialog.add(FormViewDialog, {
+            title: this.env._t('Add a Stream'),
+            resModel: 'social.stream',
+            context: {
+                default_media_id: parseInt(target.dataset.mediaId),
+                default_account_id: parseInt(target.dataset.accountId),
+                form_view_ref: 'social.social_stream_view_form_wizard',
+            },
+            onRecordSaved: (result) => this.props.onSaved(result),
+        });
+        this.props.close();
+    }
 
-});
+    _onClickSocialMedia(event) {
+        const mediaId = parseInt(event.currentTarget.dataset.mediaId);
+        const selectCompany = this.modalRef.el.querySelector('select[name="company_id"]');
+        const companyId = selectCompany ? parseInt(selectCompany.value) || 0 : undefined;
+
+        this.orm.call('social.media', 'action_add_account', [mediaId], {
+            company_id: companyId
+        }).then((action) => {
+            document.location = action.url;
+        });
+    }
+
+}
+
+AddSocialStreamDialog.components = { Dialog };
+AddSocialStreamDialog.template = "social.AddSocialStreamDialog";

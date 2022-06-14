@@ -1,42 +1,39 @@
-odoo.define('social.post_formatter_mixin', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var SocialEmojisMixin = require('@mail/js/emojis_mixin')[Symbol.for("default")];
+import MailEmojisMixin from '@mail/js/emojis_mixin';
 
-var SocialPostFormatterMixin = {
+const SocialPostFormatterRegex = {
     REGEX_AT: /\B@([\w\dÀ-ÿ-.]+)/g,
     REGEX_HASHTAG: /(^|\s|<br>)#([a-zA-Z\d\-_]+)/g,
     REGEX_URL: /http(s)?:\/\/(www\.)?[a-zA-Z0-9@:%_+~#=~#?&/=\-;!.]{3,2000}/g,
 };
 
-return Object.assign({}, SocialPostFormatterMixin, {
+export const SocialPostFormatterMixin = Object.assign({}, SocialPostFormatterRegex, {
+
     /**
      * Add emojis support
      * Wraps links, #hashtag and @tag around anchors
      * Regex from: https://stackoverflow.com/questions/19484370/how-do-i-automatically-wrap-text-urls-in-anchor-tags
      *
-     * @param {String} formattedValue
+     * @param {String} value
      * @private
      */
-     _formatPost: function (formattedValue) {
+    _formatPost(value) {
         // add emojis support and escape HTML
-        formattedValue = SocialEmojisMixin._formatText(formattedValue);
+        value = MailEmojisMixin._formatText(value);
 
         // highlight URLs
-        formattedValue = formattedValue.replace(
-            SocialPostFormatterMixin.REGEX_URL,
+        value = value.replace(
+            SocialPostFormatterRegex.REGEX_URL,
             "<a href='$&' target='_blank' rel='noreferrer noopener'>$&</a>");
 
-        return formattedValue;
+        return value;
     },
 
-    _getMediaType: function () {
-        if (this.mediaType) {
-            return this.mediaType;
-        } else if (this.attrs && this.attrs.media_type) {
-            return this.attrs.media_type;
-        }
-    },
-});
+    _getMediaType() {
+        return this.props && this.props.mediaType || 
+            this.record && this.record.media_type.raw_value ||
+            this.originalPost && this.originalPost.media_type.raw_value || '';
+    }
 
 });

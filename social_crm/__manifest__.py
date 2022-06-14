@@ -18,7 +18,8 @@
     'auto_install': True,
     'assets': {
         'web.assets_backend': [
-            ('after', 'social/static/src/js/stream_post_comments.js', 'social_crm/static/src/js/social_stream_post_comments.js'),
+            ('after', 'social/static/src/js/stream_post_comment.js', 'social_crm/static/src/js/stream_post_comment.js'),
+            ('after', 'social/static/src/js/stream_post_comments.js', 'social_crm/static/src/js/stream_post_comments.js'),
             'social_crm/static/src/xml/**/*',
         ],
     },

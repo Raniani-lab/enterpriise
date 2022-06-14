@@ -18,7 +18,7 @@ class DemoSocialStreamPost(models.Model):
     def _facebook_comment_fetch(self, next_records_token=False, count=20):
         return {
             'comments': self._get_demo_comments(),
-            'summary': {'totalCount': 1}
+            'summary': {'total_count': 2}
         }
 
     def _facebook_comment_post(self, endpoint_url, message, existing_attachment_id=None, attachment=None):
@@ -75,7 +75,7 @@ class DemoSocialStreamPost(models.Model):
 
         return {
             'comments': comments,
-            'summary': {'totalCount': len(comments)}
+            'summary': {'total_count': 2}
         }
 
     # TWITTER

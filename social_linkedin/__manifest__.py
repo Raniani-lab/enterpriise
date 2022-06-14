@@ -16,10 +16,13 @@
     'auto_install': True,
     'assets': {
         'web.assets_backend': [
-            'social_linkedin/static/src/js/stream_post_kanban_controller.js',
-            'social_linkedin/static/src/js/stream_post_linkedin_comments.js',
-            'social_linkedin/static/src/scss/social_linkedin.scss',
+            'social_linkedin/static/src/js/stream_post_comment.js',
+            'social_linkedin/static/src/js/stream_post_comment_list.js',
+            'social_linkedin/static/src/js/stream_post_comments.js',
+            'social_linkedin/static/src/js/stream_post_comments_reply.js',
+            'social_linkedin/static/src/js/stream_post_kanban_record.js',
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_linkedin/static/src/js/social_post_formatter_mixin.js'),
+            'social_linkedin/static/src/scss/social_linkedin.scss',
             'social_linkedin/static/src/xml/**/*',
         ],
     },

@@ -19,32 +19,14 @@
             <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
                 <div class="o_social_stream_post_linkedin_stats px-2 d-flex justify-content-around"
                     t-if="record.media_type.raw_value === 'linkedin'">
-                    <div t-attf-class="o_social_linkedin_likes o_social_subtle_btn_disabled ps-2 pe-3"
-                        t-att-data-post-id="record.id.raw_value"
-                        t-att-data-post-urn="record.linkedin_post_urn.raw_value"
-                        t-if="record.linkedin_likes_count.raw_value !== 0">
-                        <i class="fa fa-thumbs-up" title="Likes"/>
-                        <b class="o_social_kanban_likes_count" t-esc="record.linkedin_likes_count.raw_value"/>
+                    <div t-if="record.linkedin_likes_count.raw_value !== 0"
+                         class="o_social_linkedin_likes o_social_subtle_btn_disabled ps-2 pe-3">
+                        <i class="fa fa-thumbs-up me-1" title="Likes"/>
+                        <b class="o_social_kanban_likes_count" t-esc="_insertThousandSeparator(record.linkedin_likes_count.raw_value)"/>
                     </div>
                     <div class="o_social_linkedin_comments o_social_comments o_social_subtle_btn px-3"
-                        data-media-type="linkedin"
-                        t-att-data-post-id="record.id.raw_value"
-                        t-att-data-post-urn="record.linkedin_post_urn.raw_value"
-                        t-att-data-post-message="record.message.raw_value"
-                        t-att-data-post-images="record.stream_post_image_urls.raw_value"
-                        t-att-data-post-link="record.post_link.raw_value"
-                        t-att-data-author-name="record.author_name.raw_value"
-                        t-att-data-author-link="record.author_link.raw_value"
-                        t-att-data-author-image="record.linkedin_author_image_url.raw_value"
-                        t-att-data-published-date="record.published_date.value"
-                        t-att-data-formatted-published-date="record.formatted_published_date.value"
-                        t-att-data-link-url="record.link_url.raw_value"
-                        t-att-data-link-image="record.link_image_url.raw_value"
-                        t-att-data-link-title="record.link_title.raw_value"
-                        t-att-data-link-description="record.link_description.raw_value"
-                        t-att-data-linkedin-account-id="record.account_id.raw_value"
-                        t-att-data-likes-count="record.linkedin_likes_count.raw_value">
-                        <i class="fa fa-comments" title="Comments"></i>
+                         t-on-click.prevent="_onLinkedInCommentsClick">
+                        <i class="fa fa-comments me-1" title="Comments"/>
                         <b t-esc="record.linkedin_comments_count.value !== '0' ? record.linkedin_comments_count.value : ''"/>
                     </div>
                 </div>

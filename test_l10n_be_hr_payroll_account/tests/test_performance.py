@@ -278,7 +278,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             _logger.info("Declaration 281.10 XML:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_10.xml_validation_state, 'done', declaration_281_10.error_message)
 
-        with self.assertQueryCount(admin=1942):
+        with self.assertQueryCount(admin=1943):
             start_time = time.time()
             declaration_281_10.line_ids.write({
                 'pdf_to_generate': True,

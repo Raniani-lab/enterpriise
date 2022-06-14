@@ -35,7 +35,8 @@ class HrLeave(models.Model):
             if any(
                 p.employee_id == leave.employee_id and
                 p.date_from <= leave.date_to.date() and
-                p.date_to >= leave.date_from.date()
+                p.date_to >= leave.date_from.date() and
+                p.is_regular
                 for p in all_payslips
             ):
                 raise ValidationError(_("The selected period is covered by a validated payslip. You can't create a time off for that period."))

@@ -311,7 +311,6 @@ class Form325(models.Model):
             raise UserError(_("You already generated 281.50 forms for this 325 form."))
         partner_tag_id = self.env.ref('l10n_be_reports.res_partner_tag_281_50').id
         partner_ids = self.env['res.partner'].search([
-            ('parent_id', '=', False),
             ('category_id', '=', partner_tag_id),
         ])
         partner_281_50_form_values = self._get_remuneration_281_50_per_partner(partner_ids)

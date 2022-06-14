@@ -117,7 +117,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries.action_validate()
         self.payslip.contract_id = contract
         self.payslip.struct_id = self.structure
-        self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 11 / 12, msg='It should count 11/12 months')
+        self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 12 / 12, msg='It should count 12/12 months')
 
     def test_unpaid_work_entry(self):
         contract = self.create_contract(date(2015, 1, 24))

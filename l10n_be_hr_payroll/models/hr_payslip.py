@@ -398,13 +398,20 @@ class Payslip(models.Model):
                     out_of_schedule = False
                 invalid_days_by_year[day.year][day.month][day] &= out_of_schedule
 
+        # If X = valid days
+        # -  0 <= X <= 10 days :   0 month
+        # - 11 <= X <= 20 days : 0.5 month
+        # - 21 <= X <= 31 days :   1 month
+        # If X = invalid days
+        # -  0 <= X <= 10 days :   1 month
+        # - 11 <= X <= 20 days : 0.5 month
+        # - 21 <= X <= 31 days :   0 month
         complete_months = [
-            month
+            1 if sum(days.values()) <= 10 else 0.5 if 11 <= sum(days.values()) <= 20 else 0
             for year, invalid_days_by_months in invalid_days_by_year.items()
             for month, days in invalid_days_by_months.items()
-            if not any(days.values())
         ]
-        return len(complete_months)
+        return sum(complete_months)
 
     def _compute_presence_prorata(self, date_from, date_to, contracts):
         unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids

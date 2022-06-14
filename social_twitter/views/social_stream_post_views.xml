@@ -13,6 +13,7 @@
                 <field name="twitter_likes_count"/>
                 <field name="twitter_user_likes"/>
                 <field name="twitter_retweet_count"/>
+                <field name="twitter_screen_name"/>
                 <field name="twitter_comments_count"/>
                 <field name="twitter_quoted_tweet_id_str"/>
                 <field name="twitter_quoted_tweet_message"/>
@@ -53,10 +54,7 @@
                         t-out="author_info"/>
                     <div name="o_social_stream_post_message_text" class="o_social_stream_post_message_text overflow-hidden">
                         <t t-if="record.twitter_quoted_tweet_message.raw_value">
-                            <field t-if="record.twitter_quoted_tweet_message.raw_value"
-                                name="twitter_quoted_tweet_message"
-                                widget="social_kanban_field_stream_post"
-                                media_type="twitter"/>
+                            <div t-out="formatPost(record.twitter_quoted_tweet_message.value)"/>
                         </t>
                         <t t-else=""><span class="fst-italic">Empty tweet</span></t>
                     </div>
@@ -66,48 +64,24 @@
                 <div class="o_social_stream_post_twitter_stats px-2 d-flex justify-content-around" t-if="record.media_type.raw_value === 'twitter'">
                     <div class="d-flex justify-content-around">
                         <div t-attf-class="o_social_twitter_likes o_social_subtle_btn ps-2 pe-3 #{record.twitter_user_likes.raw_value ? 'o_social_twitter_user_likes' : ''}"
-                            t-att-data-stream-id="record.stream_id.raw_value"
-                            t-att-data-user-likes="record.twitter_user_likes.raw_value"
-                            t-att-data-post-id="record.id.raw_value"
-                            t-att-data-twitter-tweet-id="record.twitter_tweet_id.raw_value">
+                             t-on-click.prevent="_onTwitterTweetLike">
                             <t t-if="record.twitter_likes_count.raw_value !== '0'">
-                                <i class="fa fa-heart" title="Likes"/>
-                                <b class="o_social_kanban_likes_count" t-esc="record.twitter_likes_count.raw_value"/>
+                                <i class="fa fa-heart me-1" title="Likes"/>
+                                <b class="o_social_kanban_likes_count" t-esc="_insertThousandSeparator(record.twitter_likes_count.raw_value)"/>
                             </t>
                         </div>
 
                         <div class="o_social_twitter_comments o_social_comments o_social_subtle_btn px-4"
-                            t-att-data-stream-id="record.stream_id.raw_value"
-                            t-att-data-post-id="record.id.raw_value"
-                            t-att-data-twitter-account-id="record.account_id.raw_value"
-                            t-att-data-twitter-tweet-id="record.twitter_tweet_id.raw_value"
-                            data-media-type="twitter"
-                            t-att-data-post-message="record.message.raw_value"
-                            t-att-data-post-images="record.stream_post_image_urls.raw_value"
-                            t-att-data-post-link="record.post_link.raw_value"
-                            t-att-data-twitter-author-id="record.twitter_author_id.raw_value"
-                            t-att-data-twitter-profile-image-url="record.twitter_profile_image_url.raw_value"
-                            t-att-data-author-name="record.author_name.raw_value"
-                            t-att-data-author-link="record.author_link.raw_value"
-                            t-att-data-published-date="record.published_date.value"
-                            t-att-data-formatted-published-date="record.formatted_published_date.value"
-                            t-att-data-link-url="record.link_url.raw_value"
-                            t-att-data-link-image="record.link_image_url.raw_value"
-                            t-att-data-link-title="record.link_title.raw_value"
-                            t-att-data-link-description="record.link_description.raw_value"
-                            t-att-data-twitter-user-likes="record.twitter_user_likes.raw_value"
-                            t-att-data-twitter-likes-count="record.twitter_likes_count.raw_value"
-                            t-att-data-twitter-retweet-count="record.twitter_retweet_count.raw_value"
-                            t-att-data-twitter-comments-count="record.twitter_comments_count.raw_value">
-                            <i class="fa fa-comments" title="Comments"/>
+                            t-on-click.prevent="_onTwitterCommentsClick">
+                            <i class="fa fa-comments me-1" title="Comments"/>
                         </div>
                     </div>
 
                     <div class="flex-grow-1 text-end text-muted">
-                        <div class="d-inline-block dropdown show">
+                        <div class="d-inline-block dropdown shown kanban_ignore_dropdown">
                             <a href="#" class="o_social_twitter_retweet_icon o_social_subtle_btn"
                                 role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i t-attf-class="fa fa-retweet #{record.twitter_can_retweet.raw_value ? '' : 'active'}"
+                                <i t-attf-class="fa fa-retweet #{record.twitter_can_retweet.raw_value ? '' : 'active'} me-1"
                                     role="img" aria-label="Retweet" title="Retweet or Quote"/>
                                 <t t-if="record.twitter_retweet_count.value > 0">
                                     <div class="d-inline-block">
@@ -116,39 +90,16 @@
                                     </div>
                                 </t>
                             </a>
-                            <div class="dropdown-menu" role="menu">
+                            <div class="dropdown-menu kanban_ignore_dropdown" role="menu">
                                 <a class="dropdown-item o_social_twitter_retweet" href="#" role="button"
-                                    t-att-data-stream-id="record.stream_id.raw_value"
-                                    t-att-data-twitter-tweet-id="record.twitter_tweet_id.raw_value"
-                                    t-att-data-user-retweet="record.twitter_can_retweet.raw_value">
-                                    <i class="fa fa-retweet" title="Retweet a tweet"/>
+                                   t-on-click.prevent="_onTwitterRetweet">
+                                    <i class="fa fa-retweet me-1" title="Retweet a tweet"/>
                                     <span t-if="record.twitter_can_retweet.raw_value">Retweet</span>
                                     <span t-else="">Undo Retweet</span>
                                 </a>
                                 <a class="dropdown-item o_social_twitter_quote" href="#" role="button"
-                                    t-att-data-post-id="record.id.raw_value"
-                                    t-att-data-stream-id="record.stream_id.raw_value"
-                                    t-att-data-account-id="record.account_id.raw_value"
-                                    t-att-data-twitter-tweet-id="record.twitter_tweet_id.raw_value"
-                                    data-media-type="twitter"
-                                    t-att-data-post-message="record.message.raw_value"
-                                    t-att-data-post-images="record.stream_post_image_urls.raw_value"
-                                    t-att-data-post-link="record.post_link.raw_value"
-                                    t-att-data-twitter-author-id="record.twitter_author_id.raw_value"
-                                    t-att-data-twitter-profile-image-url="record.twitter_profile_image_url.raw_value"
-                                    t-att-data-author-name="record.author_name.raw_value"
-                                    t-att-data-author-link="record.author_link.raw_value"
-                                    t-att-data-published-date="record.published_date.value"
-                                    t-att-data-formatted-published-date="record.formatted_published_date.value"
-                                    t-att-data-link-url="record.link_url.raw_value"
-                                    t-att-data-link-image="record.link_image_url.raw_value"
-                                    t-att-data-link-title="record.link_title.raw_value"
-                                    t-att-data-link-description="record.link_description.raw_value"
-                                    t-att-data-twitter-user-likes="record.twitter_user_likes.raw_value"
-                                    t-att-data-twitter-likes-count="record.twitter_likes_count.raw_value"
-                                    t-att-data-twitter-retweet-count="record.twitter_retweet_count.raw_value"
-                                    t-att-data-twitter-comments-count="record.twitter_comments_count.raw_value">
-                                    <i class="fa fa-pencil" title="Quote a tweet"/>
+                                   t-on-click.prevent="_onTwitterQuote">
+                                    <i class="fa fa-pencil me-1" title="Quote a tweet"/>
                                     <span>Quote Tweet</span>
                                 </a>
                             </div>

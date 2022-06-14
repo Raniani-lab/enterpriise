@@ -1,23 +1,23 @@
-odoo.define('social_youtube.post_formatter_mixin', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var SocialPostFormatterMixin = require('social.post_formatter_mixin');
-var _superFormatPost = SocialPostFormatterMixin._formatPost;
+import { SocialPostFormatterMixin } from '@social/js/social_post_formatter_mixin';
+
+import { patch } from '@web/core/utils/patch';
 
 /*
-* Add Youtube #hashtag support.
-* Replace all occurrences of `#hashtag` by a HTML link to a search of the hashtag
-* on the media website
-*/
-SocialPostFormatterMixin._formatPost = function (formattedValue) {
-    formattedValue = _superFormatPost.apply(this, arguments);
-    var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
+ * Add Youtube #hashtag support.
+ * Replace all occurrences of `#hashtag` by a HTML link to a search of the hashtag
+ * on the media website
+ */
+patch(SocialPostFormatterMixin, 'social_youtube.SocialPostFormatterMixin', {
 
-    if (mediaType === 'youtube' || mediaType === 'youtube_preview') {
-        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
+    _formatPost(value) {
+        value = this._super(...arguments);
+        if (['youtube', 'youtube_preview'].includes(this._getMediaType())) {
+            value = value.replace(this.REGEX_HASHTAG,
                 `$1<a href='https://www.youtube.com/results?search_query=%23$2' target='_blank'>#$2</a>`);
+        }
+        return value;
     }
-    return formattedValue;
-};
 
 });

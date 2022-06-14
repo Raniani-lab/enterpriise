@@ -1,24 +1,25 @@
-odoo.define('social_twitter.post_formatter_mixin', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var SocialPostFormatterMixin = require('social.post_formatter_mixin');
-var _superFormatPost = SocialPostFormatterMixin._formatPost;
+import { SocialPostFormatterMixin } from '@social/js/social_post_formatter_mixin';
+
+import { patch } from '@web/core/utils/patch';
 
 /*
  * Add Twitter @tag and #hashtag support.
  * Replace all occurrences of `#hashtag` by a HTML link to a search of the hashtag
  * on the media website
  */
-SocialPostFormatterMixin._formatPost = function (formattedValue) {
-    formattedValue = _superFormatPost.apply(this, arguments);
-    var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
-    if (mediaType === 'twitter') {
-        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
+patch(SocialPostFormatterMixin, 'social_twitter.SocialPostFormatterMixin', {
+
+    _formatPost(value) {
+        value = this._super(...arguments);
+        if (this._getMediaType() === 'twitter') {
+            value = value.replace(this.REGEX_HASHTAG,
                 `$1<a href='https://twitter.com/hashtag/$2?src=hash' target='_blank'>#$2</a>`);
-        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_AT,
+            value = value.replace(this.REGEX_AT,
                 `<a href='https://twitter.com/$1' target='_blank'>@$1</a>`);
+        }
+        return value;
     }
-    return formattedValue;
-};
 
 });

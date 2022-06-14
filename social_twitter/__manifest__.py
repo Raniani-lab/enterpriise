@@ -21,10 +21,14 @@
     'assets': {
         'web.assets_backend': [
             'social_twitter/static/src/scss/social_twitter.scss',
-            'social_twitter/static/src/js/twitter_users_autocomplete.js',
-            'social_twitter/static/src/js/stream_post_twitter_comments.js',
+            'social_twitter/static/src/js/stream_post_comment.js',
+            'social_twitter/static/src/js/stream_post_comment_list.js',
+            'social_twitter/static/src/js/stream_post_comments.js',
+            'social_twitter/static/src/js/stream_post_comments_reply.js',
+            'social_twitter/static/src/js/stream_post_comments_reply_quote.js',
+            'social_twitter/static/src/js/stream_post_kanban_record.js',
             'social_twitter/static/src/js/stream_post_twitter_quote.js',
-            'social_twitter/static/src/js/stream_post_kanban_controller.js',
+        #     'social_twitter/static/src/js/twitter_users_autocomplete.js',
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_twitter/static/src/js/social_post_formatter_mixin.js'),
             'social_twitter/static/src/xml/**/*',
         ],

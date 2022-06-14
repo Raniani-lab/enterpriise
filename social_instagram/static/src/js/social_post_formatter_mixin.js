@@ -1,24 +1,25 @@
-odoo.define('social_instagram.post_formatter_mixin', function (require) {
-"use strict";
+/** @odoo-module **/
 
-var SocialPostFormatterMixin = require('social.post_formatter_mixin');
-var _superFormatPost = SocialPostFormatterMixin._formatPost;
+import { SocialPostFormatterMixin } from '@social/js/social_post_formatter_mixin';
+
+import { patch } from '@web/core/utils/patch';
 
 /*
-* Add Instagram #hashtag and @mention support.
-* Replace all occurrences of `#hashtag` and `@mention` by a HTML link to a
-* search of the hashtag/mention on the media website
-*/
-SocialPostFormatterMixin._formatPost = function (formattedValue) {
-    formattedValue = _superFormatPost.apply(this, arguments);
-    var mediaType = SocialPostFormatterMixin._getMediaType.apply(this, arguments);
-    if (mediaType === 'instagram') {
-        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_AT,
-            `<a href='https://www.instagram.com/$1' target='_blank'>@$1</a>`);
-        formattedValue = formattedValue.replace(SocialPostFormatterMixin.REGEX_HASHTAG,
-            `$1<a href='https://www.instagram.com/explore/tags/$2' target='_blank'>#$2</a>`);
+ * Add Instagram #hashtag and @mention support.
+ * Replace all occurrences of `#hashtag` and `@mention` by a HTML link to a
+ * search of the hashtag/mention on the media website
+ */
+patch(SocialPostFormatterMixin, 'social_instagram.SocialPostFormatterMixin', {
+
+    _formatPost(value) {
+        value = this._super(...arguments);
+        if (this._getMediaType() === 'instagram') {
+            value = value.replace(this.REGEX_HASHTAG,
+                `$1<a href='https://www.instagram.com/explore/tags/$2' target='_blank'>#$2</a>`);
+            value = value.replace(this.REGEX_AT,
+                `<a href='https://www.instagram.com/$1' target='_blank'>@$1</a>`);
+        }
+        return value;
     }
-    return formattedValue;
-};
 
 });

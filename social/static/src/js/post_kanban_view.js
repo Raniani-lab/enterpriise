@@ -6,7 +6,7 @@ import { kanbanView } from "@web/views/kanban/kanban_view";
 import { registry } from "@web/core/registry";
 
 import { ImagesCarouselDialog } from './images_carousel_dialog';
-import { SocialPostFormatterMixin } from "./social_post_formatter_mixin_owl";
+import { SocialPostFormatterMixin } from "./social_post_formatter_mixin";
 
 const { markup } = owl;
 

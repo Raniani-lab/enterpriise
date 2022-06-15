@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, tools
 
 
 class MailActivity(models.Model):
@@ -31,16 +31,19 @@ class MailActivity(models.Model):
         phonecall_activities = activities.filtered(
             lambda act: (act.phone or act.mobile) and act.activity_category == 'phonecall'
         )
-        for activity in phonecall_activities:
-            phonecall = self.env['voip.phonecall'].create_from_activity(activity)
-            activity.voip_phonecall_id = phonecall.id
+        if phonecall_activities:
+            # avoid clash with default_type
+            phonecalls = self.env['voip.phonecall'].with_context(
+                tools.clean_context(self.env.context)
+            ).create(
+                phonecall_activities._prepare_voip_phonecall_values_list()
+            )
+            for activity, phonecall in zip(phonecall_activities, phonecalls):
+                activity.voip_phonecall_id = phonecall.id
 
-        users_to_notify = phonecall_activities.user_id
-        if users_to_notify:
-            self.env['bus.bus']._sendmany([
-                [user.partner_id, 'refresh_voip', {}]
-                for user in users_to_notify
-            ])
+            users_to_notify = phonecall_activities.user_id
+            for user in users_to_notify:
+                self.env['bus.bus']._sendone(user.partner_id, 'refresh_voip', {})
         return activities
 
     def write(self, values):
@@ -100,6 +103,20 @@ class MailActivity(models.Model):
                     'phone': phone,
                 }
         return activity_voip_info
+
+    def _prepare_voip_phonecall_values_list(self):
+        voip_info = self._get_customer_phone_info()
+        return [{
+            'activity_id': activity.id,
+            'date_deadline': activity.date_deadline,
+            'name': activity.res_name,
+            'mobile': activity.mobile,
+            'partner_id': voip_info[activity.id]['partner'].id,
+            'phone': activity.phone,
+            'user_id': activity.user_id.id,
+            'note': activity.note,
+            'state': 'open',
+        } for activity in self]
 
     def _action_done(self, feedback=False, attachment_ids=None):
         # extract potential required data to update phonecalls

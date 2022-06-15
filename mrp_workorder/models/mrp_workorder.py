@@ -539,7 +539,7 @@ class MrpProductionWorkcenterLine(models.Model):
         # Loop on the quants to get the locations. If there is not enough
         # quantity into stock, we take the move location. Anyway, no
         # reservation is made, so it is still possible to change it afterwards.
-        vals = {
+        shared_vals = {
             'move_id': self.move_id.id,
             'product_id': self.move_id.product_id.id,
             'location_dest_id': location_dest_id.id,
@@ -549,6 +549,7 @@ class MrpProductionWorkcenterLine(models.Model):
             'company_id': self.move_id.company_id.id,
         }
         for quant in quants:
+            vals = shared_vals.copy()
             quantity = quant.quantity - quant.reserved_quantity
             quantity = self.product_id.uom_id._compute_quantity(quantity, self.product_uom_id, rounding_method='HALF-UP')
             rounding = quant.product_uom_id.rounding
@@ -567,6 +568,7 @@ class MrpProductionWorkcenterLine(models.Model):
                 break
 
         if float_compare(self.qty_done, 0, precision_rounding=self.product_id.uom_id.rounding) > 0:
+            vals = shared_vals.copy()
             vals.update({
                 'location_id': self.move_id.location_id.id,
                 'qty_done': self.qty_done,

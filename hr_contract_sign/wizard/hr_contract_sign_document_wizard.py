@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _, Command
-from odoo.exceptions import ValidationError
 
 
 class HrContractSignDocumentWizard(models.TransientModel):
@@ -187,10 +186,11 @@ class HrContractSignDocumentWizard(models.TransientModel):
 
         for employee in self.employee_ids:
             if self.responsible_id and sign_templates_both_ids:
-                signatories_text = _('%s and %s are the signatories.') % (employee.display_name, self.responsible_id.display_name)
+                signatories_text = _('%s and %s are the signatories.', employee.display_name, self.responsible_id.display_name)
             else:
-                signatories_text = _('Only %s has to sign.') % employee.display_name
+                signatories_text = _('Only %s has to sign.', employee.display_name)
             record_to_post = self.contract_id if self.contract_id.employee_id == employee else employee
+            # YTI TODO: Use message_post_with_view
             record_to_post.message_post(
                 body=_('%s requested a new signature on the following documents:<br/><ul>%s</ul>%s') % (
                     self.env.user.display_name,

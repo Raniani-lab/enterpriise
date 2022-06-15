@@ -84,7 +84,7 @@ class SaleOrderAlert(models.Model):
             if alert.mrr_max:
                 domain += [('recurring_monthly', '<=', alert.mrr_max)]
             if alert.product_ids:
-                domain += [('recurring_invoice_line_ids.product_id', 'in', alert.product_ids.ids)]
+                domain += [('order_line.product_id', 'in', alert.product_ids.ids)]
             if alert.mrr_change_amount:
                 if alert.mrr_change_unit == 'percentage':
                     domain += [('kpi_%s_mrr_percentage' % alert.mrr_change_period, '>', alert.mrr_change_amount / 100)]

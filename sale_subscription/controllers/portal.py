@@ -291,10 +291,11 @@ class PaymentPortal(payment_portal.PaymentPortal):
         :param int token_id: The token to assign, as a `payment.token` id
         :return: None
         """
-        order = request.env['sale.order'].browse(order_id)
-        new_token = request.env['payment.token'].browse(int(token_id))
-        order.payment_token_id = new_token
-
+        order_sudo = request.env['sale.order'].sudo().browse(order_id).exists()
+        new_token_sudo = request.env['payment.token'].sudo().browse(int(token_id)).exists()
+        if order_sudo.partner_id.commercial_partner_id == new_token_sudo.partner_id.commercial_partner_id and \
+                request.env.user.partner_id.commercial_partner_id == new_token_sudo.partner_id.commercial_partner_id:
+            order_sudo.payment_token_id = new_token_sudo
 
 class SalePortal(sale_portal.CustomerPortal):
 

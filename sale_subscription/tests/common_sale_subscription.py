@@ -151,8 +151,18 @@ class TestSubscriptionCommon(TestSaleCommon):
 
         cls.malicious_user = TestUsersEnv.create({
             'name': 'Al Capone',
-            'login': 'Al',
+            'login': 'al',
+            'password': 'alalalal',
             'email': 'al@capone.it',
+            'groups_id': [(6, 0, [group_portal_id])],
+            'property_account_receivable_id': cls.account_receivable.id,
+            'property_account_payable_id': cls.account_receivable.id,
+        })
+        cls.legit_user = TestUsersEnv.create({
+            'name': 'Eliot Ness',
+            'login': 'ness',
+            'password': 'nessnessness',
+            'email': 'ness@USDT.us',
             'groups_id': [(6, 0, [group_portal_id])],
             'property_account_receivable_id': cls.account_receivable.id,
             'property_account_payable_id': cls.account_receivable.id,

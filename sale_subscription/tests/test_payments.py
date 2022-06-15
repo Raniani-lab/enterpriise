@@ -212,31 +212,6 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
         for patcher in patchers:
             patcher.stop()
 
-    def test_prevents_assigning_not_owned_payment_tokens_to_subscriptions(self):
-        malicious_user_subscription = self.env['sale.order'].create({
-            'name': 'Free Subscription',
-            'partner_id': self.malicious_user.partner_id.id,
-            'sale_order_template_id': self.subscription_tmpl.id,
-        })
-        malicious_user_subscription._onchange_sale_order_template_id()
-        self.partner = self.env['res.partner'].create(
-            {'name': 'Stevie Nicks',
-             'email': 'sti@fleetwood.mac',
-             'property_account_receivable_id': self.account_receivable.id,
-             'property_account_payable_id': self.account_receivable.id,
-             'company_id': self.env.company.id})
-        stolen_payment_method = self.env['payment.token'].create(
-            {'name': 'Jimmy McNulty',
-             'partner_id': self.partner.id,
-             'acquirer_id': self.dummy_acquirer.id,
-             'acquirer_ref': 'Omar Little'})
-
-        with self.assertRaises(AccessError):
-            malicious_user_subscription.with_user(self.malicious_user).write({
-                'payment_token_id': stolen_payment_method.id,
-                # payment token not related to al capone
-            })
-
     def test_do_payment_calls_send_payment_request_only_once(self):
         self.invoice = self.env['account.move'].create(
             self.subscription._prepare_invoice()

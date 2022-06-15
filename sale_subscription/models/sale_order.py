@@ -483,10 +483,6 @@ class SaleOrder(models.Model):
         subscriptions = self.filtered('is_subscription')
         old_partners = {s.id: s.partner_id.id for s in subscriptions}
         old_in_progress = {s.id: s.stage_category == "progress" for s in subscriptions}
-        if vals.get('payment_token_id'):
-            # check access rule for token to make sure the user is allowed to read it. This prevents
-            # assigning unowned tokens through RPC calls
-            self.env['payment.token'].browse(vals.get('payment_token_id')).check_access_rule('read')
         res = super().write(vals)
         if vals.get('stage_id'):
             subscriptions._send_subscription_rating_mail(force_send=True)

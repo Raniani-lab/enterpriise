@@ -100,7 +100,7 @@ class TestActivityPerformance(BaseMailPerformance):
         enabled. No computed fields are involved. """
         test_record = self.test_record.with_env(self.env)
 
-        with self.assertQueryCount(employee=35):
+        with self.assertQueryCount(employee=32):
             activity = test_record.activity_schedule(
                 'mail.mail_activity_data_call',
                 summary='Call Activity',
@@ -154,7 +154,7 @@ class TestActivityPerformance(BaseMailPerformance):
     def test_create_call_in_queue(self):
         test_record_voip = self.test_record_voip.with_env(self.env)
 
-        with self.assertQueryCount(employee=14):
+        with self.assertQueryCount(employee=13):
             activity = test_record_voip.create_call_in_queue()
             self.env.flush_all()
 
@@ -218,7 +218,7 @@ class TestActivityPerformance(BaseMailPerformance):
         in order to see difference with other activities (generic type). """
         test_records = self.test_records_voip.with_env(self.env)
 
-        with self.assertQueryCount(employee=59):
+        with self.assertQueryCount(employee=49):
             activities = test_records.create_call_in_queue()
             self.env.flush_all()
 

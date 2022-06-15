@@ -64,7 +64,7 @@ class TestActivity(TestSMSCommon, TestSMSRecipients):
         self.assertEqual(phonecall.mobile, self.partner_1.mobile)
         self.assertEqual(phonecall.name, record.name)
         self.assertEqual(phonecall.note, Markup('<p>Test Default Note</p>'))
-        self.assertFalse(phonecall.partner_id)
+        self.assertEqual(phonecall.partner_id, self.partner_1)
         self.assertFalse(phonecall.phone)
         self.assertEqual(phonecall.state, 'open')
         self.assertEqual(phonecall.user_id, self.user_admin,
@@ -87,7 +87,7 @@ class TestActivity(TestSMSCommon, TestSMSRecipients):
         self.assertEqual(phonecall.mobile, self.partner_1.mobile)
         self.assertEqual(phonecall.name, record.name)
         self.assertFalse(phonecall.note)
-        self.assertFalse(phonecall.partner_id)
+        self.assertEqual(phonecall.partner_id, self.partner_1)
         self.assertFalse(phonecall.phone)
         self.assertEqual(phonecall.state, 'open')
         self.assertEqual(phonecall.user_id, self.user_employee)

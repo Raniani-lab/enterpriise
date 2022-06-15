@@ -262,10 +262,16 @@ class VoipPhonecall(models.Model):
     def create_from_activity(self, activity):
         record = self.env[activity.res_model].browse(activity.res_id)
         partner_id = False
-        if record._name == 'res.partner':
-            partner_id = record.id
+        if hasattr(record, '_mail_get_partners'):
+            partner_id = next(
+                (partner.id
+                 for partner in record._mail_get_partners()[record.id]
+                 if partner),
+                False
+            )
         elif 'partner_id' in record:
             partner_id = record.partner_id.id
+
         #clean context to remove default_type
         #maybe move this in create_call_in_queue
         ctx = clean_context(self.env.context)

@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, time, date
 from odoo import api, fields, models, _
 from odoo.tools import format_time
 from odoo.addons.resource.models.resource import float_to_time
+from odoo.exceptions import ValidationError
 
 
 class PlanningTemplate(models.Model):
@@ -24,10 +25,18 @@ class PlanningTemplate(models.Model):
     duration_days = fields.Integer('Duration Days', compute='_compute_name')
 
     _sql_constraints = [
-        ('check_start_time_lower_than_24', 'CHECK(start_time <= 24)', 'The start hour cannot be greater than 24.'),
+        ('check_start_time_lower_than_24', 'CHECK(start_time < 24)', 'The start hour cannot be greater than 24.'),
         ('check_start_time_positive', 'CHECK(start_time >= 0)', 'The start hour cannot be negative.'),
         ('check_duration_positive', 'CHECK(duration >= 0)', 'The duration cannot be negative.')
     ]
+
+    @api.constrains('duration')
+    def _validate_duration(self):
+        try:
+            for shift_template in self:
+                datetime.today() + shift_template._get_duration()
+        except OverflowError:
+            raise ValidationError(_("The selected duration creates a date too far into the future."))
 
     @api.depends('start_time', 'duration')
     def _compute_name(self):
@@ -36,7 +45,7 @@ class PlanningTemplate(models.Model):
         today = date.today()
         for shift_template in self:
             start_time = time(hour=int(shift_template.start_time), minute=round(math.modf(shift_template.start_time)[0] / (1 / 60.0)))
-            duration = timedelta(hours=int(shift_template.duration), minutes=round(math.modf(shift_template.duration)[0] / (1 / 60.0)))
+            duration = shift_template._get_duration()
             end_time = datetime.combine(date.today(), start_time) + duration
             start_datetime = user_tz.localize(datetime.combine(today, start_time))
             shift_template.duration_days, shift_template.end_time = self._get_company_work_duration_data(calendar, start_datetime, shift_template.duration)
@@ -84,3 +93,7 @@ class PlanningTemplate(models.Model):
             res.append(data)
 
         return res
+
+    def _get_duration(self):
+        self.ensure_one()
+        return timedelta(hours=int(self.duration), minutes=round(math.modf(self.duration)[0] / (1 / 60.0)))

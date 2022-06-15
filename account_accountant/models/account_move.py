@@ -27,6 +27,30 @@ class AccountMoveLine(models.Model):
 
     move_attachment_ids = fields.One2many('ir.attachment', compute='_compute_attachment')
 
+    @api.model
+    def _generate_order_by(self, order_spec, query):
+        # EXTENDS base
+        # Hack for the bank reconciliation widget to force the candidates amls having exactly the same amount as the
+        # statement line to be on top of the list.
+        query = super()._generate_order_by(order_spec, query)
+        if not query:
+            return query
+
+        if 'bank_rec_widget_st_line_amount' in self._context:
+            query_split = query.split(' ORDER BY ')
+            st_currency_id = self._context['bank_rec_widget_st_line_currency_id']
+            st_amount = self._context['bank_rec_widget_st_line_amount']
+            st_amount_percent = st_amount * 0.05
+            additional_queries = f'''
+                CASE WHEN "account_move_line"."currency_id" != {st_currency_id}
+                THEN ABS({st_amount_percent})
+                ELSE LEAST(ABS("account_move_line"."amount_residual_currency" - {st_amount}), ABS({st_amount_percent}))
+                END
+            '''
+            query = ' ORDER BY ' + ', '.join([additional_queries, query_split[1]])
+
+        return query
+
     def _compute_attachment(self):
         for record in self:
             record.move_attachment_ids = self.env['ir.attachment'].search(expression.OR(record._get_attachment_domains()))

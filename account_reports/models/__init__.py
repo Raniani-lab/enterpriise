@@ -18,6 +18,8 @@ from . import account_move_line
 from . import account_report_coa
 from . import account_aged_partner_balance
 from . import account_partner_ledger
+from . import mail_activity
+from . import mail_activity_type
 from . import res_config_settings
 from . import chart_template
 from . import account_activity

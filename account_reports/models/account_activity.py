@@ -119,17 +119,3 @@ class AccountMove(models.Model):
         if tax_return_moves:
             tax_return_moves._close_tax_entry()
         return super()._post(soft)
-
-
-class AccountTaxReportActivityType(models.Model):
-    _inherit = "mail.activity.type"
-
-    category = fields.Selection(selection_add=[('tax_report', 'Tax report')])
-
-class AccountTaxReportActivity(models.Model):
-    _inherit = "mail.activity"
-
-    def action_open_tax_report(self):
-        self.ensure_one()
-        move = self.env['account.move'].browse(self.res_id)
-        return move.action_open_tax_report()

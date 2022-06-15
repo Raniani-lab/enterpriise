@@ -32,7 +32,7 @@
         'views/assets.xml',
         'views/documents_views.xml',
         'views/templates.xml',
-        'views/activity_views.xml',
+        'views/mail_activity_views.xml',
         'wizard/request_activity_views.xml',
         'wizard/link_to_record_views.xml',
     ],

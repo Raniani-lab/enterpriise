@@ -23,6 +23,7 @@ Accounting Reports
         'views/search_template_view.xml',
         'views/partner_view.xml',
         'views/account_journal_dashboard_view.xml',
+        'views/mail_activity_views.xml',
         'views/res_config_settings_views.xml',
         'wizard/multicurrency_revaluation.xml',
         'wizard/report_export_wizard.xml',

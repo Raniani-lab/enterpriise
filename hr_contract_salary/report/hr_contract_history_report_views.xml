@@ -9,7 +9,7 @@
                 <attribute name="invisible">True</attribute>
             </field>
             <xpath expr="//notebook/page[@name='contract_history']//tree/field[@name='wage']" position="replace">
-                <field name="wage_with_holidays" string="Monthly Wage"/>
+                <field name="wage_on_signature" string="Monthly Wage"/>
                 <field name="monthly_yearly_costs" string="Monthly Cost" widget="monetary"/>
                 <field name="final_yearly_costs" string="Yearly Cost" widget="monetary"/>
             </xpath>

@@ -753,30 +753,10 @@ class SaleOrder(models.Model):
             order.subscription_id.with_context(skip_next_invoice_update=True).write({'order_line': create_values + update_values})
         return create_values, update_values
 
-    def _subscription_update_line_data(self, subscription):
-        """Prepare a dictionnary of values to add or update lines on a subscription."""
-        update_values = []
-        create_values = []
-        dict_changes = []
-        for line in self:
-            sub_line = subscription.recurring_invoice_line_ids.filtered(
-                lambda l: (l.product_id, l.uom_id, l.price_unit) == (line.product_id, line.product_uom, line.price_unit)
-            )
-            if sub_line:
-                # We have already a subscription line, we need to modify the product quantity
-                if len(sub_line) > 1:
-                    # we are in an ambiguous case. To avoid adding information to a random line, in that case we create a new line
-                    # we can simply duplicate an arbitrary line to that effect
-                    sub_line[0].copy({'name': line.display_name, 'quantity': line.product_uom_qty})
-                else:
-                    dict_changes.setdefault(sub_line.id, sub_line.quantity)
-                    # upsell, we add the product to the existing quantity
-                    dict_changes[sub_line.id] += line.product_uom_qty
-            else:
-                # we create a new line in the subscription:
-                create_values.append(line._prepare_subscription_line_data()[0])
-        update_values += [(1, sub_id, {'quantity': dict_changes[sub_id]}) for sub_id in dict_changes]
-        return create_values, update_values
+    def _compute_line_data_for_template_change(self, line):
+        data = super()._compute_line_data_for_template_change(line)
+        data.update({'pricing_id': line.pricing_id.id})
+        return data
 
     def _set_closed_state(self):
         stages_closed = self.env['sale.order.stage'].search([('category', '=', 'closed')])

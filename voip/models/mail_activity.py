@@ -42,15 +42,21 @@ class MailActivity(models.Model):
                 activity.voip_phonecall_id = phonecall.id
 
             users_to_notify = phonecall_activities.user_id
-            for user in users_to_notify:
-                self.env['bus.bus']._sendone(user.partner_id, 'refresh_voip', {})
+            if users_to_notify:
+                self.env['bus.bus']._sendmany([
+                    [user.partner_id, 'refresh_voip', {}]
+                    for user in users_to_notify
+                ])
         return activities
 
     def write(self, values):
         if 'date_deadline' in values:
-            self.mapped('voip_phonecall_id').write({'date_deadline': values['date_deadline']})
-            for user in self.mapped('user_id'):
-                self.env['bus.bus']._sendone(user.partner_id, 'refresh_voip', {})
+            self.voip_phonecall_id.date_deadline = values['date_deadline']
+            if self.user_id:
+                self.env['bus.bus']._sendmany([
+                    [partner, 'refresh_voip', {}]
+                    for partner in self.user_id.partner_id
+                ])
         return super(MailActivity, self).write(values)
 
     def _get_customer_phone_info(self):

@@ -74,6 +74,8 @@
 
             &.o_strong {
                 background-color: transparent;
+                animation-name: highlighting-flash-white;
+                animation-duration: 0.5s;
             }
             &.o_clickable {
                 cursor: pointer;

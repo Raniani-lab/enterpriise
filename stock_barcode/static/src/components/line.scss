@@ -66,6 +66,10 @@
 
         .qty-done, .inventory_quantity {
             min-width: 20px;
+            &.o_flash {
+                animation-name: highlighting-flash-primary;
+                animation-duration: 0.5s;
+            }
         }
     }
 

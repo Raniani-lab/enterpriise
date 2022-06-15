@@ -4,7 +4,7 @@
 from datetime import timedelta
 from markupsafe import Markup
 
-from odoo import exceptions, fields
+from odoo import fields
 from odoo.addons.test_mail_sms.tests.common import TestSMSCommon, TestSMSRecipients
 from odoo.tests.common import users
 from odoo.tests import tagged
@@ -98,5 +98,8 @@ class TestActivity(TestSMSCommon, TestSMSRecipients):
         phonecall_activities.write({'activity_type_id': False})
         self.phonecall_activity.unlink()
 
-        with self.assertRaises(exceptions.UserError):
-            activity = record.create_call_in_queue()
+        # no more phonecall activity -> will be dynamically created
+        self.assertFalse(self.env['mail.activity.type'].search([('category', '=', 'phonecall')]))
+        activity = record.create_call_in_queue()
+        new_activity_type = self.env['mail.activity.type'].search([('category', '=', 'phonecall')])
+        self.assertTrue(bool(new_activity_type))

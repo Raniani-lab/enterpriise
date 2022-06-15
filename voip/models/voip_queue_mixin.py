@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class VoipQueueMixin(models.AbstractModel):
     _name = 'voip.queue.mixin'
-    _description = 'Add voip queue support to a model'
+    _description = 'VOIP Queue support'
 
     has_call_in_queue = fields.Boolean("Is in the Call Queue", compute='_compute_has_call_in_queue')
 
@@ -32,30 +32,43 @@ class VoipQueueMixin(models.AbstractModel):
         ]
 
     def create_call_in_queue(self):
-        # creating an activity of type phonecall will automaticaly create a voip.phonecall
-        # will only work if _compute_phonenumbers gives a result
-        phonecall_activity_type = self.env.ref('mail.mail_activity_data_call', raise_if_not_found=False)
-        if not phonecall_activity_type:
-            phonecall_activity_type = self.env['mail.activity.type'].search([('category', '=', 'phonecall')], limit=1)
-            if not phonecall_activity_type:
-                phonecall_activity_type = self.env.ref('mail.mail_activity_todo', raise_if_not_found=False) or self.env['mail.activity.type'].search([('category', '=', False)], limit=1)
-                if phonecall_activity_type:
-                    _logger.warning("No phonecall activity type found. VOIP activities aren't guaranteed to work as expected. Fallback on %s", phonecall_activity_type.name)
-                else:
-                    _logger.warning("No phonecall or fallback activity type found. VOIP activities aren't guaranteed to work as expected.")
-        # VFE FIXME what if mail_activity_data_call was deleted by user?
-        values_list = [{
-            'res_id': record.id,
-            'res_model_id': self.env['ir.model']._get(record._name).id,
-            'activity_type_id': phonecall_activity_type and phonecall_activity_type.id,
-            'user_id': self.env.user.id,
-            'date_deadline': fields.Date.today(self),
-        } for record in self]
-        activities = self.env['mail.activity'].create(values_list)
-        for activity in activities:
-            if not activity.voip_phonecall_id:
-                record = self.env[activity.res_model_id.model].browse(activity.res_id)
-                raise UserError(_('Could not add "%s" to the call queue. Are you sure it has a phone number set ?', record.name))
+        if not self:
+            return self.env['mail.activity']
+
+        phonecall_activity_type_id = self.env['ir.model.data']._xmlid_to_res_id('mail.mail_activity_data_call', raise_if_not_found=False)
+        if not phonecall_activity_type_id:
+            phonecall_activity_type_id = self.env['mail.activity.type'].search(
+                ['|', ('res_model', '=', False), ('res_model', '=', self._name),
+                 ('category', '=', 'phonecall')], limit=1
+            ).id
+        if not phonecall_activity_type_id:
+            phonecall_activity_type_id = self.env['mail.activity.type'].sudo().create({
+                'name': _('Call'),
+                'icon': 'fa-phone',
+                'category': 'phonecall',
+                'delay_count': 2,
+                'sequence': 999,
+            }).id
+
+        date_deadline = fields.Date.today(self)
+        res_model_id = self.env['ir.model']._get_id(self._name)
+        activities = self.env['mail.activity'].create([
+            {
+                'activity_type_id': phonecall_activity_type_id,
+                'date_deadline': date_deadline,
+                'res_id': record.id,
+                'res_model_id': res_model_id,
+                'user_id': self.env.uid,
+            } for record in self
+        ])
+
+        failed_activities = activities.filtered(lambda act: not act.voip_phonecall_id)
+        if failed_activities:
+            failed_records = self.browse(failed_activities.mapped('res_id'))
+            raise UserError(
+                _('Some documents cannot be added to the call queue as they do not have a phone number set: %(record_names)s',
+                  record_names=', '.join(failed_records.mapped('display_name')))
+            )
         return activities
 
     def delete_call_in_queue(self):

@@ -17,7 +17,7 @@ class TestSubscriptionPerformance(TestSubscriptionCommon):
             'email': 'jean-luc-%s@opoo.com' % (idx)
         } for idx in range(ORDER_COUNT)])
 
-        with self.assertQueryCount(__system__=3189):
+        with self.assertQueryCount(__system__=3195):
             sale_orders = self.env['sale.order'].create([{
                 'name': "SO %s" % idx,
                 'partner_id': partners[idx].id,
@@ -53,3 +53,31 @@ class TestSubscriptionPerformance(TestSubscriptionCommon):
         # global count
         # with self.assertQueryCount(__system__=9133):
         #     sale_orders._create_recurring_invoice()
+
+        # non recurring products
+        product_tmpl = self.env['product.template'].create({
+            'name': 'Non recurring Product',
+            'type': 'service',
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+        })
+        product_id = product_tmpl.product_variant_id
+        NR_COUNT = 25
+        non_recuring_sale_orders = self.env['sale.order'].create([{
+            'name': "SO %s" % idx,
+            'partner_id': partners[idx].id,
+            'pricelist_id': self.company_data['default_pricelist'].id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.company_data['product_order_cost'].name,
+                    'product_id': product_id.id,
+                    'product_uom_qty': 2,
+                    'qty_delivered': 1,
+                    'product_uom': self.company_data['product_order_cost'].uom_id.id,
+                    'price_unit': self.company_data['product_order_cost'].list_price,
+                }),
+            ],
+
+        } for idx in range(NR_COUNT)])
+
+        with self.assertQueryCount(__system__=4):
+            (sale_orders | non_recuring_sale_orders)._compute_recurring_live()

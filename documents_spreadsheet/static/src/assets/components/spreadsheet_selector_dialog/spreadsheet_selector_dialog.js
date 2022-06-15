@@ -50,12 +50,11 @@ export class SpreadsheetSelectorDialog extends Component {
 
         onWillStart(async () => {
             await this._fetchSpreadsheets();
-            const ids = await this.orm.searchRead(
+            this.state.pagerProps.total = await this.orm.call(
                 "documents.document",
-                [["handler", "=", "spreadsheet"]],
-                ["id"]
+                "search_count",
+                [[["handler", "=", "spreadsheet"]]],
             );
-            this.state.pagerProps.total = ids.length;
         });
     }
 

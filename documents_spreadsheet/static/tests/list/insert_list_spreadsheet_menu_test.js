@@ -77,7 +77,7 @@ QUnit.module(
                 mockRPC: async function (route, args) {
                     if (args.model === "documents.document") {
                         /** These two methods are used for the PivotSelectorDialog */
-                        if (args.method !== "search_read" && args.method !== "get_views") {
+                        if (args.method !== "search_count" && args.method !== "get_views") {
                             assert.step(args.method);
                             switch (args.method) {
                                 case "get_spreadsheets_to_display":

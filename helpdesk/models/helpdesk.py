@@ -67,12 +67,14 @@ class HelpdeskTeam(models.Model):
         ('portal', 'Invited portal users and all internal users')],
         string='Visibility', required=True,
         default='portal',
-        help="Defines the visibility of the tasks of the project:\n"
-            "- Invited portal users and all internal users:"
-            "  Invited portal users may see project and tasks followed by them or by someone of their company.\n"
-            "  Internal users with corresponding access rights may see all teams and tickets.\n"
-            "- All internal users: users with corresponding access rights may see all teams and tickets.\n"
-            "- Invited internal users: users with corresponding access rights may only see the followed project and tasks.")
+        help="People to whom this helpdesk team and its tickets will be visible.\n\n"
+            "- Invited internal users: internal users can access the team and the tickets they are following. "
+            "This access can be modified on each ticket individually by adding or removing the user as follower.\n"
+            "A user with the helpdesk > administrator access right level can still access this team and its tickets, even if they are not explicitely part of the followers.\n\n"
+            "- All internal users: all internal users can access the team and all of its tickets without distinction.\n\n"
+            "- Invited portal users and all internal users: all internal users can access the team and all of its tickets without distinction.\n"
+            "Portal users can only access the tickets they are following. "
+            "This access can be modified on each ticket individually by adding or removing the portal user as follower.")
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email Alias', default=True)

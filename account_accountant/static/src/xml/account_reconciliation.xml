@@ -253,7 +253,7 @@
         </td>
         <td class="cell_label">
             <t t-if="line.partner_id &amp;&amp; line.partner_id !== state.st_line.partner_id">
-                <t t-if="line.partner_name.length">
+                <t t-if="line.partner_name &amp;&amp; line.partner_name.length">
                     <span class="font-weight-bold" t-esc="line.partner_name"/>:
                 </t>
             </t>

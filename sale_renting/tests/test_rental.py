@@ -222,6 +222,20 @@ class TestRentalCommon(SingleTransactionCase):
         sale_order.update_prices()
         self.assertEqual(sol.discount, 0, "Discount should always been 0 on pricelist change")
 
+    def test_is_add_to_cart_possible(self):
+        # Check that `is_add_to_cart_possible` returns True when
+        # the product is active and can be rent or/and sold
+        self.product_template_id.write({'sale_ok': False, 'rent_ok': False})
+        self.assertFalse(self.product_template_id._is_add_to_cart_possible())
+        self.product_template_id.write({'sale_ok': True})
+        self.assertTrue(self.product_template_id._is_add_to_cart_possible())
+        self.product_template_id.write({'sale_ok': False, 'rent_ok': True})
+        self.assertTrue(self.product_template_id._is_add_to_cart_possible())
+        self.product_template_id.write({'sale_ok': True})
+        self.assertTrue(self.product_template_id._is_add_to_cart_possible())
+        self.product_template_id.write({'active': False})
+        self.assertFalse(self.product_template_id._is_add_to_cart_possible())
+
     # TODO availability testing with sale_rental functions? (no stock)
 
     def test_no_pickup_nor_return(self):

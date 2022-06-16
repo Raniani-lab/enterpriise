@@ -255,10 +255,6 @@ export default class BarcodeModel extends EventBus {
         return false;
     }
 
-    get informationParams() {
-        return false;
-    }
-
     get isDone() {
         return false;
     }
@@ -394,10 +390,9 @@ export default class BarcodeModel extends EventBus {
         return true;
     }
 
-    get viewsWidgetData() { // shouldn't be override by the child model instead of set lineModel and viewReference
+    get viewsWidgetData() {
         return {
-            model: this.lineModel,
-            view: this.lineFormViewReference,
+            resModel: this.lineModel,
             additionalContext: this._getNewLineDefaultContext(),
         };
     }
@@ -474,11 +469,18 @@ export default class BarcodeModel extends EventBus {
     /**
      * @param {integer} [recordId] if provided, it will define the record's page as current page
      */
-    displayBarcodeLines(recordId) {
+    async displayBarcodeLines(recordId) {
         this.view = 'barcodeLines';
         if (recordId) { // If we pass a record id...
-            if (this.pages.length > 1) { // ... looks to go to this record's page...
-                for (let i = 0; i < this.pages.length; i++) {
+            // ... checks if the record still exist...
+            const res = await this.orm.search(this.lineModel, [['id', '=', recordId]]);
+            if (!res.length) { // The record was deleted, we remove the corresponding line.
+                const lineIndex = this.currentState.lines.findIndex(l => l.id == recordId);
+                this.currentState.lines.splice(lineIndex, 1);
+                this._groupLinesByPage(this.currentState);
+            }
+            if (this.pages.length > 1) { // ... then looks to go to this record's page...
+                for (const i in this.pages) {
                     const lineIds = this.pages[i].lines.map(line => line.id);
                     if (lineIds.includes(recordId)) {
                         this.pageIndex = i;

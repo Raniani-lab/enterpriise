@@ -311,7 +311,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         trigger: ".ui-menu-item > a:contains('productlot1')",
     },
     {
-        trigger: "input.o_field_widget[name=qty_done]",
+        trigger: ".o_field_widget[name=qty_done] input",
         run: 'text 0',
     },
     {

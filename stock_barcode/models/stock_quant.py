@@ -86,6 +86,7 @@ class StockQuant(models.Model):
             data["records"]["stock.location"] = locations.read(locations._get_fields_stock_barcode(), load=False)
         if package_types:
             data["records"]["stock.package.type"] = package_types.read(package_types._get_fields_stock_barcode(), load=False)
+        data['line_view_id'] = self.env.ref('stock_barcode.stock_quant_barcode').id
         return data
 
     def get_stock_barcode_data_records(self):

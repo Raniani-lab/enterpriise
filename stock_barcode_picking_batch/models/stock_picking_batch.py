@@ -117,6 +117,8 @@ class StockPickingBatch(models.Model):
             if not self.picking_type_id:
                 picking_types = allowed_picking_ids.picking_type_id
                 picking_data['picking_types'] = picking_types.read(['name'], False)
+        picking_data['line_view_id'] = self.env.ref('stock_barcode_picking_batch.stock_move_line_product_selector_inherit').id
+        picking_data['form_view_id'] = self.env.ref('stock_barcode_picking_batch.stock_barcode_batch_picking_view_info').id
         return picking_data
 
     @api.model

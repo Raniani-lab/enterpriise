@@ -12,7 +12,7 @@
                 </nav>
                 <nav class="navbar-nav">
                     <t t-if="displayBarcodeApplication">
-                        <button t-if="informationParams" t-on-click="toggleInformation" class="o_show_information btn nav-link">
+                        <button t-if="env.model.formViewId" t-on-click="toggleInformation" class="o_show_information btn nav-link">
                             <i class="fa fa-info-circle"/>
                         </button>
                         <button t-if="mobileScanner" class="o_stock_mobile_barcode btn nav-link" t-on-click="openMobileScanner">
@@ -22,7 +22,7 @@
                             <i class="fa fa-cog"/>
                         </button>
                     </t>
-                    <button t-else="" t-on-click="toggleBarcodeLines" class="o_close btn nav-link">
+                    <button t-else="" t-on-click="() => this.toggleBarcodeLines()" class="o_close btn nav-link">
                         <i class="fa fa-times"/>
                     </button>
                 </nav>
@@ -89,13 +89,30 @@
             </t>
         </div>
         <div t-if="displayProductPage"> <!-- Barcode Line Edit Form View -->
-            <ViewsWidgetAdapter Component="ViewsWidget" data="viewsWidgetData"/>
+            <View type="'form'" mode="'edit'"
+                viewId="env.model.lineFormViewId"
+                resModel="lineFormViewData.resModel"
+                resId="lineFormViewData.resId"
+                display="{ controlPanel: false }"
+                context="lineFormViewData.context"
+                onSave="(record) => this.saveFormView(record)"
+                onDiscard="() => this.toggleBarcodeLines()"/>
         </div>
         <div t-if="displayPackageContent"> <!-- Quants (in package) Kanban View -->
-            <ViewsWidgetAdapter Component="ViewsWidget" data="viewsWidgetDataForPackage"/>
+            <View type="'kanban'"
+                viewId="packageKanbanViewId"
+                display="{ controlPanel: false }"
+                resModel="'stock.quant'"
+                domain="[['package_id', '=', _inspectedPackageId]]"/>
         </div>
-        <div t-if="displayInformation"> <!-- Picking Form View -->
-            <ViewsWidgetAdapter Component="ViewsWidget" data="informationParams"/>
+        <div t-if="displayInformation"> <!-- Res Model Form View -->
+            <View type="'form'" mode="'edit'"
+                viewId="env.model.formViewId"
+                display="{ controlPanel: false }"
+                resModel="props.model"
+                resId="props.id"
+                onSave="() => this._onRefreshState(this._editedLineParams &amp;&amp; this._editedLineParams.currentId)"
+                onDiscard="() => this.toggleBarcodeLines()"/>
             <ChatterContainer threadModel="props.model" threadId="props.id"/>
         </div>
         <div t-if="displayBarcodeActions" class="o_barcode_settings flex-column h100 bg-700">

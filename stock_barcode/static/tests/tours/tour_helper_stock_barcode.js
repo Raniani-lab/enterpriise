@@ -214,16 +214,11 @@ function assertFormLocationDest(expected) {
     var $location = $('.o_field_widget[name="location_dest_id"] input');
     assert($location.val(), expected, 'Wrong destination location');
 }
+
 function assertFormQuantity(expected) {
-    var $location = $('.o_field_widget[name="qty_done"]');
-    assert($location.val(), expected, 'Wrong destination location');
-
-}
-
-function assertInventoryFormQuantity(expected) {
-    var $location = $('.o_field_widget[name="inventory_quantity"]');
-    assert($location.val(), expected, 'Wrong quantity');
-
+    const quantityField = document.querySelector(
+        '.o_field_widget[name="inventory_quantity"] input, .o_field_widget[name="qty_done"] input');
+    assert(quantityField.value, expected, 'Wrong quantity');
 }
 
 function assertErrorMessage(expected) {
@@ -231,9 +226,10 @@ function assertErrorMessage(expected) {
     assert($errorMessage[0].innerText, expected, 'wrong or absent error message');
 }
 
-function assertQuantsCount(expected) {
-    var $quantity = $('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length;
-    assert($quantity, expected, 'Wrong number of cards');
+function assertKanbanRecordsCount(expected) {
+    const kanbanRecords = document.querySelectorAll(
+        '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)');
+    assert(kanbanRecords.length, expected, 'Wrong number of cards');
 }
 
 function pressShift() {
@@ -261,8 +257,7 @@ return {
     assertErrorMessage: assertErrorMessage,
     assertFormLocationDest: assertFormLocationDest,
     assertFormLocationSrc: assertFormLocationSrc,
-    assertFormQuantity: assertFormQuantity,
-    assertInventoryFormQuantity: assertInventoryFormQuantity,
+    assertFormQuantity,
     assertLinesCount: assertLinesCount,
     assertLineIsHighlighted: assertLineIsHighlighted,
     assertLineQty: assertLineQty,
@@ -275,7 +270,7 @@ return {
     assertPageSummary: assertPageSummary,
     assertPreviousEnabled: assertPreviousEnabled,
     assertPreviousVisible: assertPreviousVisible,
-    assertQuantsCount: assertQuantsCount,
+    assertKanbanRecordsCount,
     assertScanMessage: assertScanMessage,
     assertSublinesCount,
     assertValidateEnabled: assertValidateEnabled,

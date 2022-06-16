@@ -79,6 +79,10 @@
                     </field>
                     <field name="note" readonly="1" attrs="{'invisible': [('note', '=', False)]}"/>
                 </group>
+                <div class="o_barcode_control d-flex fixed-bottom">
+                    <button string="Discard" class="btn btn-secondary o_discard" special="cancel"/>
+                    <button string="Confirm" class="btn btn-primary o_save" special="save"/>
+                </div>
             </form>
         </field>
     </record>

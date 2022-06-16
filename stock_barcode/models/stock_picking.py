@@ -119,6 +119,9 @@ class StockPicking(models.Model):
         # Extracts pickings' note if it's empty HTML.
         for picking in data['records']['stock.picking']:
             picking['note'] = False if is_html_empty(picking['note']) else html2plaintext(picking['note'])
+        data['line_view_id'] = self.env.ref('stock_barcode.stock_move_line_product_selector').id
+        data['form_view_id'] = self.env.ref('stock_barcode.stock_picking_barcode').id
+        data['package_view_id'] = self.env.ref('stock_barcode.stock_quant_barcode_kanban').id
         return data
 
     @api.model

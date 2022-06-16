@@ -1,49 +1,34 @@
 /** @odoo-module **/
 
-import widgetRegistry from 'web.widget_registry';
-import Widget from 'web.Widget';
+import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
 
-const SetReservedQuantityButton = Widget.extend({
-    template: 'stock_barcode.SetReservedQuantityButtonTemplate',
-    events: { click: '_onClickButton' },
+const { Component, onWillStart } = owl;
 
-    /**
-     * @override
-     */
-    init: function (parent, data, options) {
-        this._super(...arguments);
-        this.parent = parent;
-        this.dataPointID = data.id;
-        this.viewType = data.viewType;
-        this.record = this.parent.state.data;
-        this.quantityField = options.attrs.field_to_set;
-        this.qty = this.record[options.attrs.quantity];
-        const uom = this.record.product_uom_id;
-        this.uom = uom && uom.data.display_name;
-    },
+export class SetReservedQuantityButton extends Component {
+    setup() {
+        const user = useService('user');
+        onWillStart(async () => {
+            this.displayUOM = await user.hasGroup('uom.group_uom');
+        });
+    }
 
-    /**
-     * @override
-     */
-    willStart: function () {
-        this.display_uom = this.uom && this.getSession().user_has_group('uom.group_uom');
-        return Promise.all([
-            this._super(...arguments),
-            this.display_uom,
-        ]);
-    },
+    get uom() {
+        const [id, name] = this.props.record.data.product_uom_id || [];
+        return { id, name };
+    }
 
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
+    _setQuantity (ev) {
+        ev.stopPropagation();
+        this.props.record.update({ [this.props.fieldToSet]: this.props.value });
+    }
+}
 
-    _onClickButton: function (ev) {
-        ev.preventDefault();
-        const { dataPointID, viewType } = this;
-        const changes = { [this.quantityField]: this.qty };
-        this.trigger_up('field_changed', { dataPointID, changes, viewType });
-    },
-});
+SetReservedQuantityButton.extractProps = ({ attrs }) => {
+    if (attrs.field_to_set) {
+        return { fieldToSet: attrs.field_to_set };
+    }
+};
 
-widgetRegistry.add('set_reserved_qty_button', SetReservedQuantityButton);
-export default SetReservedQuantityButton;
+SetReservedQuantityButton.template = 'stock_barcode.SetReservedQuantityButtonTemplate';
+registry.category('fields').add('set_reserved_qty_button', SetReservedQuantityButton);

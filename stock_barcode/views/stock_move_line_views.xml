@@ -6,8 +6,8 @@
     <field name="model">stock.move.line</field>
     <field name="priority">1000</field>
     <field name="arch" type="xml">
-        <form string="Select a Product" class="o_barcode_line_form">
-            <div class="row mt-5 mb-4">
+        <form string="Select a Product" class="o_barcode_line_form flex-column">
+            <div class="row mt-4 mb-4">
                 <field name="company_id" force_save="1" invisible="1"/>
                 <field name="reserved_uom_qty" invisible="1" />
                 <field name="move_id" invisible="1" />
@@ -31,11 +31,9 @@
                 <div class="col-6 my-2 d-flex align-items-baseline">
                     <i class="fa fa-fw fa-lg fa-cube me-3" title="Quantity"/>
                     <field name="is_completed" invisible="1"/>
-                    <field name="qty_done" class="w-50 w-md-100 text-end o_qty_done_field_completed" attrs="{'invisible': [('is_completed', '=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>
-                    <field name="qty_done" class="w-50 w-md-100 text-end o_qty_done_field_not_completed" attrs="{'invisible':[('is_completed', '!=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>
-                    <widget name="set_reserved_qty_button"
-                        field_to_set="qty_done" quantity="reserved_uom_qty"
-                        attrs="{'invisible': [('reserved_uom_qty', '=', 0)]}"/>
+                    <field name="qty_done" class="w-100 w-md-50 text-end o_qty_done_field_completed" attrs="{'invisible': [('is_completed', '=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>
+                    <field name="qty_done" class="w-100 w-md-50 text-end o_qty_done_field_not_completed" attrs="{'invisible':[('is_completed', '!=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>
+                    <field name="reserved_uom_qty" widget="set_reserved_qty_button" field_to_set="qty_done" attrs="{'invisible': [('reserved_uom_qty', '=', 0)]}"/>
                 </div>
                 <div class="col-6 my-2 d-flex align-items-baseline" groups="uom.group_uom"
                     attrs="{'invisible': [('reserved_uom_qty', '!=', 0)]}">
@@ -107,6 +105,18 @@
                 <div class="col-12 my-2 d-flex">
                     <i class="fa fa-fw fa-lg fa-cubes me-3" title="Locations"/>
                     <field name="product_stock_quant_ids" context="{'kanban_view_ref': 'stock_barcode.stock_quant_barcode_kanban_2', 'tree_view_ref': 'stock_barcode.view_stock_quant_tree'}"/>
+                </div>
+            </div>
+            <div class="fixed-bottom">
+                <div class="o_barcode_control d-flex">
+                    <button string="Discard" class="btn btn-secondary o_discard" special="cancel"/>
+                    <button string="Confirm" class="btn btn-primary o_save" special="save"/>
+                </div>
+                <div class="o_barcode_control d-flex" attrs="{'invisible': [('reserved_uom_qty', '!=', 0)]}">
+                    <button string="Delete" class="btn btn-danger text-uppercase o_delete"
+                            name="unlink" type="object">
+                        <i class="fa fa-trash-o"/> Delete
+                    </button>
                 </div>
             </div>
         </form>

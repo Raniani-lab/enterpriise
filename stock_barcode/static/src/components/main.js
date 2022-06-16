@@ -12,10 +12,9 @@ import LocationButton from '@stock_barcode/components/location_button';
 import PackageLineComponent from '@stock_barcode/components/package_line';
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import ViewsWidget from '@stock_barcode/widgets/views_widget';
-import ViewsWidgetAdapter from '@stock_barcode/components/views_widget_adapter';
 import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { View } from "@web/views/view";
 
 const { Component, onMounted, onPatched, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
 
@@ -42,7 +41,6 @@ class MainComponent extends Component {
             },
             () => this.render(true)
         );
-        this.ViewsWidget = ViewsWidget;
         this.props.model = this.props.action.res_model;
         this.props.id = this.props.action.context.active_id;
         const model = this._getModel(this.props);
@@ -161,6 +159,13 @@ class MainComponent extends Component {
         return this.env.model.view === 'productPage';
     }
 
+    get lineFormViewData() {
+        const data = this.env.model.viewsWidgetData;
+        data.context = data.additionalContext;
+        data.resId = this._editedLineParams && this._editedLineParams.currentId;
+        return data;
+    }
+
     get highlightDestinationLocation() {
         return this.env.model.highlightDestinationLocation;
     }
@@ -181,10 +186,6 @@ class MainComponent extends Component {
         return this.env.model.barcodeInfo;
     }
 
-    get informationParams() {
-        return this.env.model.informationParams;
-    }
-
     get isTransfer() {
         return this.currentSourceLocation && this.currentDestinationLocation;
     }
@@ -203,27 +204,6 @@ class MainComponent extends Component {
 
     get packageLines() {
         return this.env.model.packageLines;
-    }
-
-    get viewsWidgetData() {
-        const data = this.env.model.viewsWidgetData;
-        data.params = this._editedLineParams;
-        return data;
-    }
-
-    get viewsWidgetDataForPackage() {
-        const params = {
-            searchQuery: {
-                domain: [['package_id', '=', this._inspectedPackageId]],
-            },
-        };
-        return {
-            model: 'stock.quant',
-            view: 'stock_barcode.stock_quant_barcode_kanban',
-            additionalContext: {},
-            params,
-            view_type: 'kanban'
-        };
     }
 
     //--------------------------------------------------------------------------
@@ -281,10 +261,6 @@ class MainComponent extends Component {
         }
     }
 
-    closeProductPage() {
-        this.toggleBarcodeLines();
-    }
-
     async exit(ev) {
         if (this.displayBarcodeApplication) {
             await this.env.model.save();
@@ -333,6 +309,11 @@ class MainComponent extends Component {
     putInPack(ev) {
         ev.stopPropagation();
         this.env.model._putInPack();
+    }
+
+    saveFormView(record) {
+        const recordId = (record && record.data.id) || (this._editedLineParams && this._editedLineParams.currentId);
+        this._onRefreshState(recordId);
     }
 
     toggleBarcodeActions(ev) {
@@ -480,11 +461,11 @@ class MainComponent extends Component {
 }
 MainComponent.template = 'stock_barcode.MainComponent';
 MainComponent.components = {
+    View,
     GroupedLineComponent,
     LineComponent,
     LocationButton,
     PackageLineComponent,
-    ViewsWidgetAdapter,
     ChatterContainer,
 };
 

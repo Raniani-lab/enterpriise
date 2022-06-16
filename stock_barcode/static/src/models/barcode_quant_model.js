@@ -8,7 +8,6 @@ export default class BarcodeQuantModel extends BarcodeModel {
     constructor(params) {
         super(...arguments);
         this.lineModel = params.model;
-        this.lineFormViewReference = 'stock_barcode.stock_quant_barcode';
         this.validateMessage = _t("The inventory adjustment has been validated");
         this.validateMethod = 'action_validate';
     }
@@ -68,6 +67,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
         const locations = data.data.records['stock.location'];
         this.locationList = locations ?
             locations.map(loc => this.cache.getRecord('stock.location', loc.id)) : [];
+        this.lineFormViewId = data.data.line_view_id;
     }
 
     get displayApplyButton() {

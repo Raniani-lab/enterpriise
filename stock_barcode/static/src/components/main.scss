@@ -3,6 +3,7 @@
     flex-direction: column;
     height: 100%;
     background-color: white;
+    overflow: auto;
 
     .o_strong {
         font-weight: bold;
@@ -265,28 +266,28 @@
                 }
             }
 
-            .o_qty_done_field_completed{
+            .o_qty_done_field_completed input {
                 background: #f6fdf6;
             }
 
-            .o_qty_done_field_not_completed{
+            .o_qty_done_field_not_completed input {
                 background: #fcf9f2;
             }
 
             & > div {
+                .o_field_float {
+                    min-width: 100%;
+                    max-width: 100%;
+                }
+
+                @include media-breakpoint-down(sm) {
+                    min-width: 510px;
+                    max-width: 510px;
+                }
+
                 .o_input {
                     padding: 8px;
                     border: 1px solid $o-form-lightsecondary;
-
-                    &.o_field_number {
-                        min-width: 100%;
-                        max-width: 100%;
-                    }
-
-                    @include media-breakpoint-up(sm) {
-                        min-width: 510px;
-                        max-width: 510px;
-                    }
                 }
 
                 .o_required_modifier .o_input {

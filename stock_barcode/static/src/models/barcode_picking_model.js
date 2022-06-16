@@ -7,9 +7,7 @@ import { sprintf } from '@web/core/utils/strings';
 export default class BarcodePickingModel extends BarcodeModel {
     constructor(params) {
         super(...arguments);
-        this.formViewReference = 'stock_barcode.stock_picking_barcode';
         this.lineModel = 'stock.move.line';
-        this.lineFormViewReference = 'stock_barcode.stock_move_line_product_selector';
         this.validateMessage = _t("The transfer has been validated");
         this.validateMethod = 'button_validate';
     }
@@ -31,6 +29,9 @@ export default class BarcodePickingModel extends BarcodeModel {
         });
         this._useReservation = this.initialState.lines.some(line => line.reserved_uom_qty);
         this.displayPutInPackButton = this.groups.group_tracking_lot;
+        this.lineFormViewId = data.data.line_view_id;
+        this.formViewId = data.data.form_view_id;
+        this.packageKanbanViewId = data.data.package_view_id;
     }
 
     async changeDestinationLocation(id, moveScannedLineOnly) {
@@ -203,14 +204,6 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     get highlightValidateButton() {
         return this.highlightNextButton;
-    }
-
-    get informationParams() {
-        return {
-            model: this.params.model,
-            view: this.formViewReference,
-            params: { currentId: this.params.id },
-        };
     }
 
     get isDone() {

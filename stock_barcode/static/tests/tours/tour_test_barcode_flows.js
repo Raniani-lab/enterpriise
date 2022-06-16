@@ -338,7 +338,7 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
 
     {
         extra_trigger: '.o_field_widget[name="product_id"]',
-        trigger: "input.o_field_widget[name=qty_done]",
+        trigger: ".o_field_widget[name=qty_done] input",
         run: 'text 2',
     },
 
@@ -1529,7 +1529,7 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
     {
         trigger: '.o_field_widget[name="product_id"]',
         run: function() {
-            helper.assert($('input[name="qty_done"]').val(), "1");
+            helper.assertFormQuantity("1");
             helper.assert($('div[name="package_id"] input').val(), "pack_sn_2");
             helper.assert($('div[name="result_package_id"] input').val(), "");
             helper.assert($('div[name="owner_id"] input').val(), "Particulier");
@@ -1814,7 +1814,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
 
     // On the first line, goes on the form view and press digipad +1 button.
     { trigger: '.o_barcode_line:first-child .o_edit' },
-    { trigger: '.o_digipad_button[data-button="increase"]' },
+    { trigger: '.o_digipad_button.o_increase' },
     { trigger: '.o_save' },
     {
         trigger: '.o_barcode_lines',
@@ -1894,7 +1894,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     },
     // Goes on the form view and press digipad +1 button.
     { trigger: '.o_barcode_line:first-child .o_edit' },
-    { trigger: '.o_digipad_button[data-button="increase"]' },
+    { trigger: '.o_digipad_button.o_increase' },
     { trigger: '.o_save' },
     {
         trigger: '.o_barcode_lines',
@@ -2676,7 +2676,7 @@ tour.register('test_bypass_source_scan', {test: true}, [
     },
 
     {
-        trigger: 'input.o_field_widget[name=qty_done]',
+        trigger: '.o_field_widget[name=qty_done] input',
         run: 'text 0',
     },
 
@@ -2763,7 +2763,7 @@ tour.register('test_inventory_adjustment', {test: true}, [
     {
         trigger: '.o_field_widget[name="inventory_quantity"]',
         run: function () {
-            helper.assertInventoryFormQuantity('2');
+            helper.assertFormQuantity('2');
         }
     },
 
@@ -2795,7 +2795,7 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: "input.o_field_widget[name=inventory_quantity]",
+        trigger: ".o_field_widget[name=inventory_quantity] input",
         run: 'text 2',
     },
 
@@ -3074,7 +3074,7 @@ tour.register('test_inventory_package', {test: true}, [
     },
 
     {
-        trigger: '[name="inventory_quantity"]',
+        trigger: '[name="inventory_quantity"] input',
         run: 'text 21'
     },
 
@@ -3261,9 +3261,9 @@ tour.register('test_pack_multiple_location', {test: true}, [
 
     { trigger: '.o_package_content' },
     {
-        trigger: '.o_legacy_kanban_view:contains("product1")',
+        trigger: '.o_kanban_view:contains("product1")',
         run: function () {
-            helper.assertQuantsCount(2);
+            helper.assertKanbanRecordsCount(2);
         },
     },
     { trigger: '.o_close' },
@@ -3425,7 +3425,7 @@ tour.register('test_reload_flow', {test: true}, [
 
     {
         extra_trigger: '.o_field_widget[name="product_id"]',
-        trigger: 'input.o_field_widget[name=qty_done]',
+        trigger: '.o_field_widget[name=qty_done] input',
         run: 'text 2',
     },
 
@@ -4097,10 +4097,9 @@ tour.register('test_show_entire_package', {test: true}, [
     },
     { trigger: '.o_line_button.o_package_content' },
     {
-        trigger: '.o_barcode_generic_view .o_kanban_record',
+        trigger: '.o_kanban_view .o_kanban_record',
         run: function () {
-            const records = document.querySelectorAll('.o_kanban_record:not(.o_kanban_ghost)');
-            helper.assert(records.length, 1);
+            helper.assertKanbanRecordsCount(1);
         },
     },
     { trigger: 'button.o_close' },

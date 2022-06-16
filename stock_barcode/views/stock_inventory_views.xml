@@ -5,9 +5,8 @@
         <field name="model">stock.quant</field>
         <field name="priority">1000</field>
         <field name="arch" type="xml">
-            <form class="o_barcode_line_form">
-                <div class="row mt-5 mb-4">
-                    <field name="quantity" invisible="1"/>
+            <form class="o_barcode_line_form flex-column">
+                <div class="row mt-4 mb-4">
                     <field name="product_uom_id" invisible="1"/>
                     <!-- .test_inventory_adjustment -->
                     <field name="location_id" invisible="1"/>
@@ -24,8 +23,7 @@
                     <div class="col-6 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-cube me-3" title="Counted Quantity"/>
                         <field name="inventory_quantity" class="w-50 w-md-100 text-end" options="{'type': 'number'}" placeholder="Counted Quantity"/>
-                        <widget name="set_reserved_qty_button"
-                            field_to_set="inventory_quantity" quantity="quantity"/>
+                        <field name="quantity" widget="set_reserved_qty_button" field_to_set="inventory_quantity"/>
                     </div>
                 </div>
                 <div class="row justify-content-center justify-content-md-start">
@@ -69,8 +67,15 @@
                         <field name="owner_id" placeholder="Owner" attrs="{'readonly': [('id', '!=', False)]}"/>
                     </div>
                 </div>
+                <div class="fixed-bottom">
+                    <div class="o_barcode_control d-flex">
+                        <button string="Discard" class="btn btn-secondary o_discard" special="cancel"/>
+                        <button string="Confirm" class="btn btn-primary o_save" special="save"/>
+                    </div>
+                </div>
 
                 <group>
+                    <field name="id" invisible="1"/>
                     <field name="company_id" invisible="1"/>
                     <field name="tracking" invisible="1"/>
                     <field name="user_id" invisible="1"/>

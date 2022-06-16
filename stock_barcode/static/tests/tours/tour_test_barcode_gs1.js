@@ -907,7 +907,7 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
     },
     { trigger: ".ui-menu-item > a:contains('Battle Droid')" },
     {
-        trigger: 'input[name=qty_done]',
+        trigger: '[name=qty_done] input',
         run: 'text 0',
     },
     { trigger: '.o_save' },
@@ -1150,10 +1150,9 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
     // Clicks on the edit button to trigger a save.
     { trigger: '.o_barcode_line:first-child .o_edit' },
     {
-        trigger: 'input[name="qty_done"]',
+        trigger: '[name=qty_done] input',
         run: function () {
-            const fieldQtyDone = document.querySelector('input[name="qty_done"]');
-            helper.assert(fieldQtyDone.value, "1250");
+            helper.assertFormQuantity("1250");
         }
     },
     ...tour.stepUtils.discardBarcodeForm(),
@@ -1199,10 +1198,9 @@ tour.register('test_gs1_receipt_packaging', {test: true}, [
     // Clicks on the edit button to trigger a save.
     { trigger: '.o_barcode_line:first-child .o_edit' },
     {
-        trigger: 'input[name="qty_done"]',
+        trigger: '[name="qty_done"] input',
         run: function () {
-            const fieldQtyDone = document.querySelector('input[name="qty_done"]');
-            helper.assert(fieldQtyDone.value, "30");
+            helper.assertFormQuantity("30");
         }
     },
     ...tour.stepUtils.discardBarcodeForm(),

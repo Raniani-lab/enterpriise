@@ -7,13 +7,13 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
     constructor(params) {
         super(...arguments);
         this.formViewReference = 'stock_barcode_picking_batch.stock_barcode_batch_picking_view_info';
-        this.lineFormViewReference = 'stock_barcode_picking_batch.stock_move_line_product_selector_inherit';
         this.validateMessage = _t("The Batch Transfer has been validated");
         this.validateMethod = 'action_done';
     }
 
     setData(data) {
         super.setData(...arguments);
+        this.formViewId = data.data.form_view_id;
         // In case it's a new batch, we must display the pickings selector first.
         if (this.record.state === 'draft' && this.record.picking_ids.length === 0) {
             this.selectedPickings = [];

@@ -28,7 +28,7 @@ class AccountMoveReversal(models.TransientModel):
     def reverse_moves(self):
         if self.company_id.country_id.code != "CL":
             return super().reverse_moves()
-        if not self.reason:
+        if self.move_type != 'entry' and not self.reason:
             raise UserError(_('You need to provide a reason for the refund. '))
         return super(AccountMoveReversal, self.with_context(
             default_l10n_cl_edi_reference_doc_code=self.l10n_cl_edi_reference_doc_code,

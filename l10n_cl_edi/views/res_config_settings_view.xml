@@ -103,7 +103,7 @@
                             <div class="content-group">
                                 <div class="row mt16">
                                     <br/>
-                                    <button name="%(fetchmail.action_email_server_tree)d" icon="fa-arrow-right" type="action"
+                                    <button name="%(mail.action_email_server_tree)d" icon="fa-arrow-right" type="action"
                                         string="Configure DTE Incoming Email" class="btn-link"/>
                                 </div>
                             </div>

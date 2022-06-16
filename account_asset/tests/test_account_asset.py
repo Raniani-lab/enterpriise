@@ -1443,3 +1443,81 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(len(asset.depreciation_move_ids.filtered(lambda m: m.state == 'posted')), 1)
         self.assertEqual(asset.book_value, 400.0)
         self.assertEqual(asset.value_residual, 400.0)
+
+    def test_depreciation_schedule_report_with_negative_asset(self):
+        """
+        Test the computation of book value and remaining value
+        when posting a depreciation move related with a negative asset
+        """
+        depreciation_account = self.company_data['default_account_assets']
+        asset_model = self.env['account.asset'].create({
+            'name': 'test',
+            'state': 'model',
+            'active': True,
+            'asset_type': 'purchase',
+            'method': 'linear',
+            'method_number': 5,
+            'method_period': '1',
+            'prorata': False,
+            'account_asset_id': depreciation_account.id,
+            'account_depreciation_id': depreciation_account.id,
+            'account_depreciation_expense_id': depreciation_account.copy().id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+        })
+
+        depreciation_account.asset_type = 'purchase'
+        depreciation_account.can_create_asset = True
+        depreciation_account.create_asset = 'draft'
+        depreciation_account.asset_model = asset_model
+
+        refund = self.env['account.move'].create({
+            'move_type': 'in_refund',
+            'partner_id': self.ref("base.res_partner_12"),
+            'invoice_date': fields.Date.today() - relativedelta(months=1),
+            'invoice_line_ids': [(0, 0, {'name': 'refund', 'account_id': depreciation_account.id, 'price_unit': 500})],
+        })
+        refund.action_post()
+
+        self.assertTrue(refund.asset_ids)
+
+        asset = refund.asset_ids
+        asset.validate()
+
+        report = self.env.ref('account_asset.assets_report')
+
+        options = self._generate_options(report, fields.Date.today() + relativedelta(years=0, months=-4, days=-11), fields.Date.today() + relativedelta(years=0, months=7, days=19))
+
+        expected_values_open_asset = [
+            ("refund", "", "", 500.0, -500.0, "", "", 100.0, -100.0, -400.0),
+        ]
+
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_open_asset)
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'invoice_date': fields.Date.today(),
+            'partner_id': self.ref("base.res_partner_12"),
+            'invoice_line_ids': [
+                (0, 0, {
+                    'name': 'Product B',
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'price_unit': 200.0,
+                    'quantity': 4,
+                }),
+            ]
+        })
+
+        res_move = self.env['asset.modify'].create({
+            'asset_id': asset.id,
+            'invoice_id': invoice.id,
+            'modify_action': 'sell',
+            'gain_account_id': self.company_data['default_account_receivable'].id,
+        }).sell_dispose()
+
+        self.env['account.move'].search(res_move['domain']).action_post()
+
+        expected_values_closed_asset = [
+            ("refund", "", 500.0, 500.0, "", "", 100.0, 100.0, "", ""),
+        ]
+
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset)

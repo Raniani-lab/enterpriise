@@ -244,6 +244,14 @@ class AssetsReport(models.Model):
                     asset_minus = asset_closing
                     asset_closing = 0.0
 
+                asset = self.env['account.asset'].browse(al['asset_id'])
+                is_negative_asset = asset.original_move_line_ids.move_id.move_type == 'in_refund'
+
+                if is_negative_asset:
+                    asset_add, asset_minus = asset_minus, asset_add
+                    depreciation_add, depreciation_minus = depreciation_minus, depreciation_add
+                    asset_closing, depreciation_closing = -asset_closing, -depreciation_closing
+
                 asset_gross = asset_closing - depreciation_closing
 
                 current_values = [asset_opening, asset_add, asset_minus, asset_closing, depreciation_opening,

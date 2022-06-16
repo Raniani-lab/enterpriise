@@ -987,4 +987,40 @@ tour.register('web_studio_local_storage_tour', {
     extra_trigger: '.o_web_client:not(.o_in_studio)'
 }]);
 
+tour.register('web_studio_custom_background_tour', {
+    url: "/web",
+    test: true,
+}, [{
+    content: 'class for custom background must be enabled (outside studio)',
+    trigger: '.o_home_menu_background_custom.o_home_menu_background:not(.o_in_studio)',
+    run: () => null,
+}, {
+    content: 'opening studio',
+    trigger: '.o_main_navbar .o_web_studio_navbar_item',
+}, {
+    content: 'class for custom background must be enabled (in studio)',
+    trigger: '.o_home_menu_background_custom.o_home_menu_background.o_in_studio',
+    run: () => null,
+}, {
+    content: 'click on Customizations button',
+    trigger: '.o_web_studio_home_studio_menu button',
+}, {
+    content: 'reset the background',
+    trigger: '.o_web_studio_reset_default_background',
+}, {
+    content: 'validate the reset of the background',
+    trigger: '.modal-dialog .btn-primary',
+}, {
+    content: 'class for custom background must be disabled (inside studio)',
+    trigger: '.o_home_menu_background.o_in_studio:not(.o_home_menu_background_custom)',
+    run: () => null,
+}, {
+    content: 'leaving studio',
+    trigger: '.o_web_studio_leave a',
+}, {
+    content: 'class for custom background must be disabled (outside studio)',
+    trigger: '.o_home_menu_background:not(.o_in_studio.o_home_menu_background_custom)',
+    run: () => null,
+}]);
+
 });

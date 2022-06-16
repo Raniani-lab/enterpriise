@@ -27,6 +27,16 @@ class TestUi(odoo.tests.HttpCase):
     def test_approval(self):
         self.start_tour("/web?debug=tests", 'web_studio_approval_tour', login="admin")
 
+    def test_background(self):
+        attachment = self.env['ir.attachment'].create({
+            'datas': b'R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs=',
+            'name': 'testFilename.gif',
+            'public': True,
+            'mimetype': 'image/gif'
+        })
+        self.env.company.background_image = attachment.datas
+        self.start_tour("/web?debug=tests", 'web_studio_custom_background_tour', login="admin")
+
 
 @odoo.tests.tagged('post_install', '-at_install')
 class TestStudioUIUnit(odoo.tests.HttpCase):

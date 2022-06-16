@@ -168,4 +168,17 @@
             </group>
         </field>
     </record>
+
+    <record id="view_sales_order_filter_subscription" model="ir.ui.view">
+        <field name="name">sale.order.filter.subscription</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="my_sale_orders_filter" position="after">
+                <separator/>
+                <filter string="Recurring" name="recurring" domain="[('is_subscription', '=', True)]"/>
+                <filter string="Not Recurring" name="not_recurring" domain="[('is_subscription', '=', False)]"/>
+            </filter>
+        </field>
+    </record>
 </odoo>

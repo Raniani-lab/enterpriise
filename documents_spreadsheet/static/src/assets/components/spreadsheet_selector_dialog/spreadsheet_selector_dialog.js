@@ -1,13 +1,15 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
+import { browser } from "@web/core/browser/browser";
+import { KeepLast } from "@web/core/utils/concurrency";
 import { Dialog } from "@web/core/dialog/dialog";
 import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
 import { SearchBar } from "@web/search/search_bar/search_bar";
 import { Pager } from "@web/core/pager/pager";
 
-const { Component, onWillStart, useState } = owl;
+const { Component, onWillStart, useState, onWillUnmount } = owl;
 
 const LABELS = {
     PIVOT: "pivot",
@@ -45,8 +47,10 @@ export class SpreadsheetSelectorDialog extends Component {
                 total: 0,
             },
         });
+        this.keepLast = new KeepLast();
         this.orm = useService("orm");
         this.currentSearch = "";
+        this.debounce = undefined;
 
         onWillStart(async () => {
             await this._fetchSpreadsheets();
@@ -56,11 +60,20 @@ export class SpreadsheetSelectorDialog extends Component {
                 [[["handler", "=", "spreadsheet"]]],
             );
         });
+
+        onWillUnmount(() => {
+            browser.clearTimeout(this.debounce);
+        });
     }
 
     onSearchInput(ev) {
         this.currentSearch = ev.target.value;
-        this._fetchSpreadsheets();
+        this._debouncedFetchSpreadsheets();
+    }
+
+    _debouncedFetchSpreadsheets() {
+        browser.clearTimeout(this.debounce);
+        this.debounce = browser.setTimeout(() => this._fetchSpreadsheets.call(this), 400);
     }
 
     /**
@@ -110,11 +123,11 @@ export class SpreadsheetSelectorDialog extends Component {
         }
         const { offset, limit } = this.state.pagerProps;
 
-        this.state.spreadsheets = await this.orm.call(
-            "documents.document",
-            "get_spreadsheets_to_display",
-            [domain],
-            { offset, limit }
+        this.state.spreadsheets = await this.keepLast.add(
+            this.orm.call("documents.document", "get_spreadsheets_to_display", [domain], {
+                offset,
+                limit,
+            })
         );
     }
 

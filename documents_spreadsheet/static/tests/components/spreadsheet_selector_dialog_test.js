@@ -2,7 +2,14 @@
 
 import { SpreadsheetSelectorDialog } from "@documents_spreadsheet/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { click, getFixture, mount, triggerEvent } from "@web/../tests/helpers/utils";
+import { browser } from "@web/core/browser/browser";
+import {
+    click,
+    getFixture,
+    mount,
+    patchWithCleanup,
+    triggerEvent,
+} from "@web/../tests/helpers/utils";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 
@@ -152,6 +159,12 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
     QUnit.test(
         "Change the search bar content trigger a new search with updated domain",
         async (assert) => {
+            let callback;
+            patchWithCleanup(browser, {
+                setTimeout: (later) => {
+                    callback = later;
+                },
+            });
             const { target } = await mountSpreadsheetSelectorDialog({
                 mockRPC: async function (route, args) {
                     if (
@@ -166,7 +179,10 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
             const input = target.querySelector(".o-sp-searchview-input");
             input.value = "a";
             await triggerEvent(input, null, "input");
-            assert.verifySteps(["[]", JSON.stringify([["name", "ilike", "a"]])]);
+            assert.verifySteps(["[]"]);
+            //@ts-ignore
+            callback();
+            assert.verifySteps([JSON.stringify([["name", "ilike", "a"]])]);
         }
     );
 

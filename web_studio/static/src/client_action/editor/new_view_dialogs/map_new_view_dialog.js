@@ -7,6 +7,9 @@ export class MapNewViewDialog extends NewViewDialog {
     setup() {
         super.setup();
         this.dialog = useService("dialog");
+        this.fieldsChoice = {
+            res_partner: null,
+        };
     }
 
     get viewType() {
@@ -23,6 +26,8 @@ export class MapNewViewDialog extends NewViewDialog {
                 contentClass: "o_web_studio_preserve_space",
             });
             this.props.close();
+        } else {
+            this.fieldsChoice.res_partner = this.partnerFields[0].name;
         }
     }
 }

@@ -4,6 +4,8 @@ odoo.define('planning.calendar_frontend', function (require) {
 
 const publicWidget = require('web.public.widget');
 const time = require('web.time');
+const translation = require('web.translation');
+const _t = translation._t;
 
 publicWidget.registry.PlanningView = publicWidget.Widget.extend({
     selector: '#calendar_employee',
@@ -89,7 +91,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 // Data
                 events: employeeSlotsFcData,
                 // Event Function is called when clicking on the event
-                eventClick: this.eventFunction,
+                eventClick: this.eventFunction.bind(this),
                 });
                 this.calendar.setOption('locale', locale);
                 this.calendar.render();
@@ -108,13 +110,20 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         calRender.el.classList.add('o_cursor_pointer');
         calRender.el.childNodes[0].classList.add('font-weight-bold');
     },
+    formatDateAsBackend: function (date) {
+        const weekday = moment(date).format('ddd.');
+        const timeFormat = _t.database.parameters.time_format.replace(':%S', '');
+        const dateTimeFormat = `${_t.database.parameters.date_format} ${timeFormat}`;
+        const dateTime = moment(date).format(time.strftime_to_moment_format(dateTimeFormat));
+        return `${weekday} ${dateTime}`;
+    },
     eventFunction: function (calEvent) {
         const planningToken = $('.planning_token').attr('value');
         const employeeToken = $('.employee_token').attr('value');
         $(".modal-title").text(calEvent.event.title);
         $(".modal-header").css("background-color", calEvent.event.backgroundColor);
-        $('.o_start_date').text(`${moment(calEvent.event.start).format('ddd')}. ${moment(calEvent.event.start).format(time.getLangDatetimeFormat())}`);
-        let textValue = `${moment(calEvent.event.end).format('ddd')}. ${moment(calEvent.event.end).format(time.getLangDatetimeFormat())}`;
+        $('.o_start_date').text(this.formatDateAsBackend(calEvent.event.start));
+        let textValue = this.formatDateAsBackend(calEvent.event.end);
         if (calEvent.event.extendedProps.alloc_hours) {
             textValue += ` (${calEvent.event.extendedProps.alloc_hours})`;
         }

@@ -65,9 +65,11 @@
                                         <t t-foreach="open_slots_ids" t-as="shift">
                                             <tr>
                                                 <td class="align-middle">
-                                                    <t t-out="shift.start_datetime" t-options="{'widget': 'datetime'}"/>
+                                                    <t t-out="shift.start_datetime" t-options="{'widget': 'datetime', 'format': 'EEE'}"/>.&amp;nbsp;
+                                                    <t t-out="shift.start_datetime" t-options="{'widget': 'datetime',  'hide_seconds': 'True'}"/>
                                                     <i class="fa fa-long-arrow-right" aria-label="Arrow icon" title="Arrow"/>
-                                                    <t t-out="shift.end_datetime" t-options="{'widget': 'datetime'}"/>
+                                                    <t t-out="shift.end_datetime" t-options="{'widget': 'datetime', 'format': 'EEE'}"/>.&amp;nbsp;
+                                                    <t t-out="shift.end_datetime" t-options="{'widget': 'datetime',  'hide_seconds': 'True'}"/>
                                                     (<t t-out="'%d:%02d' % (int(shift.allocated_hours), round(shift.allocated_hours % 1 * 60))"/>)
                                                     <t t-if="shift.allocated_percentage &lt; 100">
                                                         (<t t-out="shift.allocated_percentage" t-options="{'widget': 'float', 'precision': 2}"/>%)

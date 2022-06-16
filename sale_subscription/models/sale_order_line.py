@@ -423,12 +423,10 @@ class SaleOrderLine(models.Model):
             product = line.product_id
             if subscription_management == 'upsell':
                 quantity = 0
-                next_invoice_date = line.next_invoice_date
                 line_start = today
             else:
                 line_start = line.next_invoice_date
                 quantity = line.product_uom_qty
-                next_invoice_date = line_start + get_timedelta(line.pricing_id.duration, line.pricing_id.unit)
 
             order_lines.append((0, 0, {
                 'parent_line_id': line.id,
@@ -438,7 +436,6 @@ class SaleOrderLine(models.Model):
                 'product_uom_qty': quantity,
                 'price_unit': line.price_unit,
                 'start_date': line_start,
-                'next_invoice_date': next_invoice_date,
                 'pricing_id': line.pricing_id.id
             }))
         return order_lines

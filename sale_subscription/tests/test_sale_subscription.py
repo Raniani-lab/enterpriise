@@ -234,9 +234,9 @@ class TestSubscription(TestSubscriptionCommon):
             line_values = [(line.product_uom_qty, line.pricing_id.id, line.start_date,
                             line.next_invoice_date, line.product_uom.id,) for line in renewal_so.mapped('order_line').sorted('id')]
             # First, all quantity are equal to 0. The salesman has to edit the SO before confirmation
-            self.assertEqual(line_values[0], (1, self.pricing_month.id, datetime.datetime(2021, 12, 18), datetime.datetime(2022, 1, 18), self.product.uom_id.id), 'First line start after next invoice')
-            self.assertEqual(line_values[1], (1, self.pricing_year.id, datetime.datetime(2022, 11, 18), datetime.datetime(2023, 11, 18), self.product.uom_id.id), 'Second line is kept')
-            self.assertEqual(line_values[2], (42, pricing_3_year.id, datetime.datetime(2024, 11, 18), datetime.datetime(2027, 11, 18), uom_dozen), 'Third line is kept')
+            self.assertEqual(line_values[0], (1, self.pricing_month.id, datetime.datetime(2021, 12, 18), datetime.datetime(2021, 12, 18), self.product.uom_id.id), 'First line start after next invoice')
+            self.assertEqual(line_values[1], (1, self.pricing_year.id, datetime.datetime(2022, 11, 18), datetime.datetime(2022, 11, 18), self.product.uom_id.id), 'Second line is kept')
+            self.assertEqual(line_values[2], (42, pricing_3_year.id, datetime.datetime(2024, 11, 18), datetime.datetime(2024, 11, 18), uom_dozen), 'Third line is kept')
 
         with freeze_time("2024-11-17"):
             invoice = self.subscription._create_recurring_invoice(automatic=True)

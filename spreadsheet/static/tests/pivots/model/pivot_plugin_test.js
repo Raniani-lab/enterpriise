@@ -178,7 +178,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         model.dispatch("REMOVE_PIVOT", { pivotId: "1" });
         assert.strictEqual(model.getters.getPivotIds().length, 0);
         const B4 = getCell(model, "B4");
-        assert.equal(B4.evaluated.error, `There is no pivot with id "1"`);
+        assert.equal(B4.evaluated.error.message, `There is no pivot with id "1"`);
         assert.equal(B4.evaluated.value, `#ERROR`);
     });
 
@@ -194,7 +194,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         model.dispatch("REQUEST_REDO");
         assert.strictEqual(model.getters.getPivotIds().length, 0);
         B4 = getCell(model, "B4");
-        assert.equal(B4.evaluated.error, `There is no pivot with id "1"`);
+        assert.equal(B4.evaluated.error.message, `There is no pivot with id "1"`);
         assert.equal(B4.evaluated.value, `#ERROR`);
     });
 
@@ -205,8 +205,14 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         await nextTick();
         assert.equal(getCellValue(model, "G10"), "#ERROR");
         assert.equal(getCellValue(model, "G11"), "#ERROR");
-        assert.equal(getCell(model, "G10").evaluated.error, "Field non-existing does not exist");
-        assert.equal(getCell(model, "G11").evaluated.error, "Field non-existing does not exist");
+        assert.equal(
+            getCell(model, "G10").evaluated.error.message,
+            "Field non-existing does not exist"
+        );
+        assert.equal(
+            getCell(model, "G11").evaluated.error.message,
+            "Field non-existing does not exist"
+        );
     });
 
     QUnit.test(
@@ -399,7 +405,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         });
         await nextTick();
         assert.equal(
-            getCell(model, "E10").evaluated.error,
+            getCell(model, "E10").evaluated.error.message,
             "Unable to fetch the label of 1111111 of model product"
         );
     });

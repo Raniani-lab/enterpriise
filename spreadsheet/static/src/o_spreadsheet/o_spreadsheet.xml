@@ -1202,7 +1202,11 @@
             t-att-class="{ 'o-menu-root': isMenuRoot, 'disabled': !isMenuEnabled}"
             t-att-style="getColor(menuItem)">
             <span class="o-menu-item-name" t-esc="getName(menuItem)"/>
-            <span class="o-menu-item-shortcut" t-esc="getShortCut(menuItem)"/>
+            <span
+              t-if="getDescription(menuItem)"
+              class="o-menu-item-description"
+              t-esc="getDescription(menuItem)"
+            />
             <t t-if="isMenuRoot">
               <span t-call="o-spreadsheet-Icon.TRIANGLE_RIGHT"/>
             </t>
@@ -2536,18 +2540,6 @@
             t-on-keydown="onKeydownReplace"
           />
         </div>
-
-        <div class="o-far-item">
-          <label class="o-far-checkbox">
-            <input
-              class="o-far-input"
-              t-att-disabled="state.searchOptions.searchFormulas"
-              type="checkbox"
-              t-model="state.replaceOptions.modifyFormulas"
-            />
-            <span class="o-far-label">Also modify formulas</span>
-          </label>
-        </div>
       </div>
 
       <div class="o-sidePanelButtons" t-if="!env.model.getters.isReadonly()">
@@ -2717,6 +2709,7 @@
                   t-att-data-format="format.name"
                   t-att-class="{active: currentFormat === format.name}">
                   <t t-esc="format.text"/>
+                  <span class="float-right text-muted" t-esc="format.description"/>
                 </div>
               </t>
               <t t-foreach="customFormats" t-as="customFormat" t-key="customFormat.name">

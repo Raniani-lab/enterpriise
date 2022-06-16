@@ -33,7 +33,7 @@ QUnit.test("Currency rate throw with unknown currency", async (assert) => {
     });
     setCellContent(model, "A1", `=ODOO.CURRENCY.RATE("INVALID","USD")`);
     await nextTick();
-    assert.strictEqual(getCell(model, "A1").evaluated.error, "Currency rate unavailable.");
+    assert.strictEqual(getCell(model, "A1").evaluated.error.message, "Currency rate unavailable.");
 });
 
 QUnit.test("Currency rates are only loaded once", async (assert) => {

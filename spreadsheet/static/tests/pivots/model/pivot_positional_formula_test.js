@@ -92,7 +92,7 @@ QUnit.module("documents_spreadsheet > positional pivot formula", {}, () => {
         setCellContent(model, "A10", `=PIVOT.HEADER(1,"#bar","this is not a number")`);
         assert.strictEqual(getCellValue(model, "A10"), "#ERROR");
         assert.strictEqual(
-            getCell(model, "A10").evaluated.error,
+            getCell(model, "A10").evaluated.error.message,
             "The function PIVOT.HEADER expects a number value, but 'this is not a number' is a string, and cannot be coerced to a number."
         );
     });

@@ -371,7 +371,7 @@ QUnit.module(
                     "B4",
                     getCellFormula(model, "B4").replace(`PIVOT(1`, `PIVOT("5)`)
                 ); //Invalid id
-                assert.ok(getCell(model, "B4").evaluated.error);
+                assert.ok(getCell(model, "B4").evaluated.error.message);
                 assert.notOk(root.isVisible(env));
             }
         );

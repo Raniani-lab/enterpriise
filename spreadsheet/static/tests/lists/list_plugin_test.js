@@ -201,7 +201,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         const A2 = getCell(model, "A2");
         assert.equal(A2.evaluated.type, "error");
         assert.equal(
-            A2.evaluated.error,
+            A2.evaluated.error.message,
             `The field ${forbiddenFieldName} does not exist or you do not have access to that field`
         );
     });
@@ -359,7 +359,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         model.dispatch("REMOVE_ODOO_LIST", { listId: "1" });
         assert.strictEqual(model.getters.getListIds().length, 0);
         const B4 = getCell(model, "B4");
-        assert.equal(B4.evaluated.error, `There is no list with id "1"`);
+        assert.equal(B4.evaluated.error.message, `There is no list with id "1"`);
         assert.equal(B4.evaluated.value, `#ERROR`);
     });
 
@@ -375,7 +375,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         model.dispatch("REQUEST_REDO");
         assert.strictEqual(model.getters.getListIds().length, 0);
         B4 = getCell(model, "B4");
-        assert.equal(B4.evaluated.error, `There is no list with id "1"`);
+        assert.equal(B4.evaluated.error.message, `There is no list with id "1"`);
         assert.equal(B4.evaluated.value, `#ERROR`);
     });
 });

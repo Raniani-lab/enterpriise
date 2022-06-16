@@ -19,7 +19,7 @@
         return s;
     }
     /***
-     * Allow to inject a translation function from outside o-spreadsheet-
+     * Allow to inject a translation function from outside o-spreadsheet.
      * @param tfn the function that will do the translation
      */
     function setTranslationMethod(tfn) {
@@ -55,10 +55,26 @@
         CellErrorType["CircularDependency"] = "#CYCLE";
         CellErrorType["GenericError"] = "#ERROR";
     })(CellErrorType || (CellErrorType = {}));
+    var CellErrorLevel;
+    (function (CellErrorLevel) {
+        CellErrorLevel[CellErrorLevel["silent"] = 0] = "silent";
+        CellErrorLevel[CellErrorLevel["error"] = 1] = "error";
+    })(CellErrorLevel || (CellErrorLevel = {}));
     class EvaluationError extends Error {
-        constructor(cellErrorType, message) {
+        constructor(errorType, message, logLevel = CellErrorLevel.error) {
             super(message);
-            this.errorType = cellErrorType;
+            this.errorType = errorType;
+            this.logLevel = logLevel;
+        }
+    }
+    class BadExpressionError extends EvaluationError {
+        constructor(errorMessage) {
+            super(CellErrorType.BadExpression, errorMessage);
+        }
+    }
+    class CircularDependencyError extends EvaluationError {
+        constructor() {
+            super(CellErrorType.CircularDependency, _lt("Circular reference"));
         }
     }
     class InvalidReferenceError extends EvaluationError {
@@ -68,7 +84,7 @@
     }
     class NotAvailableError extends EvaluationError {
         constructor() {
-            super(CellErrorType.NotAvailable, _lt("Data not available"));
+            super(CellErrorType.NotAvailable, _lt("Data not available"), CellErrorLevel.silent);
         }
     }
 
@@ -102,7 +118,7 @@
     const MIN_CELL_TEXT_MARGIN = 4;
     const CF_ICON_EDGE_LENGTH = 15;
     // Menus
-    const MENU_WIDTH = 200;
+    const MENU_WIDTH = 250;
     const MENU_ITEM_HEIGHT = 24;
     const MENU_SEPARATOR_BORDER_WIDTH = 1;
     const MENU_SEPARATOR_PADDING = 5;
@@ -2523,7 +2539,7 @@
         isVisible: () => true,
         isEnabled: () => true,
         isReadonlyAllowed: false,
-        shortCut: "",
+        description: "",
         action: false,
         children: [],
         separator: false,
@@ -2582,8 +2598,8 @@
             }
             return node.name;
         }
-        getShortCut(node) {
-            return node.shortCut ? node.shortCut : "";
+        getDescription(node) {
+            return node.description ? node.description : "";
         }
         /**
          * Get a list of all elements in the registry, ordered by sequence
@@ -3305,20 +3321,20 @@
     cellMenuRegistry
         .add("cut", {
         name: _lt("Cut"),
-        shortCut: "Ctrl+X",
+        description: "Ctrl+X",
         sequence: 10,
         action: CUT_ACTION,
     })
         .add("copy", {
         name: _lt("Copy"),
-        shortCut: "Ctrl+C",
+        description: "Ctrl+C",
         sequence: 20,
         isReadonlyAllowed: true,
         action: COPY_ACTION,
     })
         .add("paste", {
         name: _lt("Paste"),
-        shortCut: "Ctrl+V",
+        description: "Ctrl+V",
         sequence: 30,
         action: PASTE_ACTION,
     })
@@ -3436,20 +3452,20 @@
     colMenuRegistry
         .add("cut", {
         name: _lt("Cut"),
-        shortCut: "Ctrl+X",
+        description: "Ctrl+X",
         sequence: 10,
         action: CUT_ACTION,
     })
         .add("copy", {
         name: _lt("Copy"),
-        shortCut: "Ctrl+C",
+        description: "Ctrl+C",
         sequence: 20,
         isReadonlyAllowed: true,
         action: COPY_ACTION,
     })
         .add("paste", {
         name: _lt("Paste"),
-        shortCut: "Ctrl+V",
+        description: "Ctrl+V",
         sequence: 30,
         action: PASTE_ACTION,
     })
@@ -3566,19 +3582,19 @@
         .add("cut", {
         name: _lt("Cut"),
         sequence: 10,
-        shortCut: "Ctrl+X",
+        description: "Ctrl+X",
         action: CUT_ACTION,
     })
         .add("copy", {
         name: _lt("Copy"),
-        shortCut: "Ctrl+C",
+        description: "Ctrl+C",
         sequence: 20,
         isReadonlyAllowed: true,
         action: COPY_ACTION,
     })
         .add("paste", {
         name: _lt("Paste"),
-        shortCut: "Ctrl+V",
+        description: "Ctrl+V",
         sequence: 30,
         action: PASTE_ACTION,
     })
@@ -3804,7 +3820,6 @@
     };
     const NumberFormatTerms = {
         General: _lt("General"),
-        NoSpecificFormat: _lt("no specific format"),
         Number: _lt("Number"),
         Percent: _lt("Percent"),
         Currency: _lt("Currency"),
@@ -3829,39 +3844,39 @@
         .add("data", { name: _lt("Data"), sequence: 60 })
         .addChild("save", ["file"], {
         name: _lt("Save"),
-        shortCut: "Ctrl+S",
+        description: "Ctrl+S",
         sequence: 10,
         action: () => console.log("Not implemented"),
     })
         .addChild("undo", ["edit"], {
         name: _lt("Undo"),
-        shortCut: "Ctrl+Z",
+        description: "Ctrl+Z",
         sequence: 10,
         action: UNDO_ACTION,
     })
         .addChild("redo", ["edit"], {
         name: _lt("Redo"),
-        shortCut: "Ctrl+Y",
+        description: "Ctrl+Y",
         sequence: 20,
         action: REDO_ACTION,
         separator: true,
     })
         .addChild("copy", ["edit"], {
         name: _lt("Copy"),
-        shortCut: "Ctrl+C",
+        description: "Ctrl+C",
         sequence: 30,
         isReadonlyAllowed: true,
         action: COPY_ACTION,
     })
         .addChild("cut", ["edit"], {
         name: _lt("Cut"),
-        shortCut: "Ctrl+X",
+        description: "Ctrl+X",
         sequence: 40,
         action: CUT_ACTION,
     })
         .addChild("paste", ["edit"], {
         name: _lt("Paste"),
-        shortCut: "Ctrl+V",
+        description: "Ctrl+V",
         sequence: 50,
         action: PASTE_ACTION,
     })
@@ -3899,7 +3914,7 @@
     })
         .addChild("find_and_replace", ["edit"], {
         name: _lt("Find and replace"),
-        shortCut: "Ctrl+H",
+        description: "Ctrl+H",
         sequence: 65,
         isReadonlyAllowed: true,
         action: OPEN_FAR_SIDEPANEL_ACTION,
@@ -4016,29 +4031,33 @@
         separator: true,
     })
         .addChild("format_number_general", ["format", "format_number"], {
-        name: `${NumberFormatTerms.General} (${NumberFormatTerms.NoSpecificFormat})`,
+        name: NumberFormatTerms.General,
         sequence: 10,
         separator: true,
         action: FORMAT_GENERAL_ACTION,
     })
         .addChild("format_number_number", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Number} (1,000.12)`,
+        name: NumberFormatTerms.Number,
+        description: "(1,000.12)",
         sequence: 20,
         action: FORMAT_NUMBER_ACTION,
     })
         .addChild("format_number_percent", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Percent} (10.12%)`,
+        name: NumberFormatTerms.Percent,
+        description: "(10.12%)",
         sequence: 30,
         separator: true,
         action: FORMAT_PERCENT_ACTION,
     })
         .addChild("format_number_currency", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Currency} ($1,000.12)`,
+        name: NumberFormatTerms.Currency,
+        description: "($1,000.12)",
         sequence: 37,
         action: FORMAT_CURRENCY_ACTION,
     })
         .addChild("format_number_currency_rounded", ["format", "format_number"], {
-        name: `${NumberFormatTerms.CurrencyRounded} ($1,000)`,
+        name: NumberFormatTerms.CurrencyRounded,
+        description: "($1,000)",
         sequence: 38,
         action: FORMAT_CURRENCY_ROUNDED_ACTION,
     })
@@ -4049,22 +4068,26 @@
         action: OPEN_CUSTOM_CURRENCY_SIDEPANEL_ACTION,
     })
         .addChild("format_number_date", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Date} (9/26/2008)`,
+        name: NumberFormatTerms.Date,
+        description: "(9/26/2008)",
         sequence: 40,
         action: FORMAT_DATE_ACTION,
     })
         .addChild("format_number_time", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Time} (10:43:00 PM)`,
+        name: NumberFormatTerms.Time,
+        description: "(10:43:00 PM)",
         sequence: 50,
         action: FORMAT_TIME_ACTION,
     })
         .addChild("format_number_date_time", ["format", "format_number"], {
-        name: `${NumberFormatTerms.DateTime} (9/26/2008 22:43:00)`,
+        name: NumberFormatTerms.DateTime,
+        description: "(9/26/2008 22:43:00)",
         sequence: 60,
         action: FORMAT_DATE_TIME_ACTION,
     })
         .addChild("format_number_duration", ["format", "format_number"], {
-        name: `${NumberFormatTerms.Duration} (27:51:38)`,
+        name: NumberFormatTerms.Duration,
+        description: "(27:51:38)",
         sequence: 70,
         separator: true,
         action: FORMAT_DURATION_ACTION,
@@ -4072,18 +4095,18 @@
         .addChild("format_bold", ["format"], {
         name: _lt("Bold"),
         sequence: 20,
-        shortCut: "Ctrl+B",
+        description: "Ctrl+B",
         action: FORMAT_BOLD_ACTION,
     })
         .addChild("format_italic", ["format"], {
         name: _lt("Italic"),
         sequence: 30,
-        shortCut: "Ctrl+I",
+        description: "Ctrl+I",
         action: FORMAT_ITALIC_ACTION,
     })
         .addChild("format_underline", ["format"], {
         name: _lt("Underline"),
-        shortCut: "Ctrl+U",
+        description: "Ctrl+U",
         sequence: 40,
         action: FORMAT_UNDERLINE_ACTION,
     })
@@ -5807,7 +5830,9 @@
             if (!labelRange.invalidXc && !labelRange.invalidSheetName) {
                 labels = {
                     formattedValues: getters.getRangeFormattedValues(labelRange),
-                    values: getters.getRangeValues(labelRange).map((val) => (val ? String(val) : "")),
+                    values: getters
+                        .getRangeValues(labelRange)
+                        .map((val) => (val !== undefined && val !== null ? String(val) : "")),
                 };
             }
         }
@@ -8203,16 +8228,12 @@
         }
         onFocusSidePanel() {
             this.state.searchOptions.searchFormulas = this.env.model.getters.shouldShowFormulas();
-            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas
-                ? this.state.searchOptions.searchFormulas
-                : this.state.replaceOptions.modifyFormulas;
             this.env.model.dispatch("REFRESH_SEARCH");
         }
         searchFormulas() {
             this.env.model.dispatch("SET_FORMULA_VISIBILITY", {
                 show: this.state.searchOptions.searchFormulas,
             });
-            this.state.replaceOptions.modifyFormulas = this.state.searchOptions.searchFormulas;
             this.updateSearch();
         }
         onSelectPreviousCell() {
@@ -8236,13 +8257,11 @@
         replace() {
             this.env.model.dispatch("REPLACE_SEARCH", {
                 replaceWith: this.state.replaceWith,
-                replaceOptions: this.state.replaceOptions,
             });
         }
         replaceAll() {
             this.env.model.dispatch("REPLACE_ALL_SEARCH", {
                 replaceWith: this.state.replaceWith,
-                replaceOptions: this.state.replaceOptions,
             });
         }
         // ---------------------------------------------------------------------------
@@ -8263,9 +8282,6 @@
                     matchCase: false,
                     exactMatch: false,
                     searchFormulas: false,
-                },
-                replaceOptions: {
-                    modifyFormulas: false,
                 },
             };
         }
@@ -8617,7 +8633,7 @@
     css /* scss */ `
   .o-menu {
     background-color: white;
-    padding: 8px 0px;
+    padding: 5px 0px;
     .o-menu-item {
       display: flex;
       justify-content: space-between;
@@ -8649,7 +8665,7 @@
         &:hover {
           background-color: #ebebeb;
         }
-        .o-menu-item-shortcut {
+        .o-menu-item-description {
           color: grey;
         }
       }
@@ -8761,8 +8777,8 @@
         getName(menu) {
             return cellMenuRegistry.getName(menu, this.env);
         }
-        getShortCut(menu) {
-            return cellMenuRegistry.getShortCut(menu);
+        getDescription(menu) {
+            return cellMenuRegistry.getDescription(menu);
         }
         isRoot(menu) {
             return !menu.action;
@@ -14927,10 +14943,10 @@
                     break;
             }
         }
-        assignError(value, errorMessage) {
+        assignError(value, error) {
             this.evaluated = {
                 value,
-                error: errorMessage,
+                error,
                 type: CellValueType.error,
             };
         }
@@ -14947,7 +14963,11 @@
          * @param properties
          */
         constructor(id, content, error, properties) {
-            super(id, { value: CellErrorType.BadExpression, type: CellValueType.error, error }, properties);
+            super(id, {
+                value: CellErrorType.BadExpression,
+                type: CellValueType.error,
+                error,
+            }, properties);
             this.content = content;
         }
     }
@@ -15047,7 +15067,7 @@
                 return builder.createCell(id, content, properties, sheetId, getters);
             }
             catch (error) {
-                return new BadExpressionCell(id, content, error.message || DEFAULT_ERROR_MESSAGE, properties);
+                return new BadExpressionCell(id, content, new BadExpressionError(error.message || DEFAULT_ERROR_MESSAGE), properties);
             }
         };
     }
@@ -19213,6 +19233,7 @@
             return 0 /* Success */;
         }
         handle(cmd) {
+            var _a, _b;
             switch (cmd.type) {
                 case "COPY":
                 case "CUT":
@@ -19245,10 +19266,29 @@
                     break;
                 }
                 case "ADD_COLUMNS_ROWS": {
-                    // If we add a col/row inside a cut clipped area, we invalidate the clipboard
-                    const isClipboardDirty = this.isAddRowColDirtyingClipboard(cmd.base, cmd.position, cmd.dimension);
-                    if (this.state && this.state.operation == "CUT" && isClipboardDirty) {
+                    this.status = "invisible";
+                    // If we add a col/row inside or before the cut area, we invalidate the clipboard
+                    if (((_a = this.state) === null || _a === void 0 ? void 0 : _a.operation) !== "CUT") {
+                        return;
+                    }
+                    const isClipboardDirty = this.isColRowDirtyingClipboard(cmd.position === "before" ? cmd.base : cmd.base + 1, cmd.dimension);
+                    if (isClipboardDirty) {
                         this.state = undefined;
+                    }
+                    break;
+                }
+                case "REMOVE_COLUMNS_ROWS": {
+                    this.status = "invisible";
+                    // If we remove a col/row inside or before the cut area, we invalidate the clipboard
+                    if (((_b = this.state) === null || _b === void 0 ? void 0 : _b.operation) !== "CUT") {
+                        return;
+                    }
+                    for (let el of cmd.elements) {
+                        const isClipboardDirty = this.isColRowDirtyingClipboard(el, cmd.dimension);
+                        if (isClipboardDirty) {
+                            this.state = undefined;
+                            break;
+                        }
                     }
                     this.status = "invisible";
                     break;
@@ -19737,35 +19777,20 @@
             return this.getters.buildFormulaContent(sheetId, cell, ranges);
         }
         /**
-         * Check if the given zone and at least one of the clipped zones overlap
+         * Check if a col/row added/removed at the given position is dirtying the clipboard
          */
-        isZoneOverlapClippedZone(zones, zone) {
-            return zones.some((clippedZone) => overlap(zone, clippedZone));
-        }
-        /**
-         * Check if a ADD_COLUMNS_ROWS command is affecting an area inside the clipboard
-         */
-        isAddRowColDirtyingClipboard(base, position, dimension) {
+        isColRowDirtyingClipboard(position, dimension) {
             if (!this.state || !this.state.zones)
                 return false;
-            const sheet = this.getters.getActiveSheet();
-            const affectedZone = {
-                top: 0,
-                bottom: sheet.rows.length - 1,
-                left: 0,
-                right: sheet.cols.length - 1,
-            };
-            if (dimension === "COL") {
-                const affectedCol = position === "before" ? base - 1 : base + 1;
-                affectedZone.left = affectedCol;
-                affectedZone.right = affectedCol;
+            for (let zone of this.state.zones) {
+                if (dimension === "COL" && position <= zone.right) {
+                    return true;
+                }
+                if (dimension === "ROW" && position <= zone.bottom) {
+                    return true;
+                }
             }
-            else {
-                const affectedRow = position === "before" ? base - 1 : base + 1;
-                affectedZone.top = affectedRow;
-                affectedZone.bottom = affectedRow;
-            }
-            return this.isZoneOverlapClippedZone(this.state.zones, affectedZone);
+            return false;
         }
         // ---------------------------------------------------------------------------
         // Grid rendering
@@ -20524,7 +20549,7 @@
                     const msg = (e === null || e === void 0 ? void 0 : e.errorType) || CellErrorType.GenericError;
                     // apply function name
                     const __lastFnCalled = params[2].__lastFnCalled || "";
-                    cell.assignError(msg, e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled));
+                    cell.assignError(msg, new EvaluationError(msg, e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled), e.logLevel !== undefined ? e.logLevel : CellErrorLevel.error));
                 }
             }
             function computeValue(cell) {
@@ -20534,7 +20559,7 @@
                 const cellId = cell.id;
                 if (cellId in visited) {
                     if (visited[cellId] === null) {
-                        cell.assignError(CellErrorType.CircularDependency, _lt("Circular reference"));
+                        cell.assignError(CellErrorType.CircularDependency, new CircularDependencyError());
                     }
                     return;
                 }
@@ -20584,11 +20609,11 @@
             }
             function getCellValue(cell) {
                 if (cell.isFormula() && cell.evaluated.type === CellValueType.error) {
-                    throw new EvaluationError(cell.evaluated.value, _lt("This formula depends on invalid values: %s", cell.evaluated.error));
+                    throw new EvaluationError(cell.evaluated.value, cell.evaluated.error.message, cell.evaluated.error.logLevel);
                 }
                 computeValue(cell);
                 if (cell.evaluated.type === CellValueType.error) {
-                    throw new EvaluationError(cell.evaluated.value, _lt("This formula depends on invalid values: %s", cell.evaluated.error));
+                    throw new EvaluationError(cell.evaluated.value, cell.evaluated.error.message, cell.evaluated.error.logLevel);
                 }
                 return cell.evaluated.value;
             }
@@ -21136,9 +21161,6 @@
                 exactMatch: false,
                 searchFormulas: false,
             };
-            this.replaceOptions = {
-                modifyFormulas: false,
-            };
             this.toSearch = "";
         }
         // ---------------------------------------------------------------------------
@@ -21159,10 +21181,10 @@
                     this.selectNextCell(Direction.next);
                     break;
                 case "REPLACE_SEARCH":
-                    this.replace(cmd.replaceWith, cmd.replaceOptions);
+                    this.replace(cmd.replaceWith);
                     break;
                 case "REPLACE_ALL_SEARCH":
-                    this.replaceAll(cmd.replaceWith, cmd.replaceOptions);
+                    this.replaceAll(cmd.replaceWith);
                     break;
                 case "UNDO":
                 case "REDO":
@@ -21292,19 +21314,14 @@
                 exactMatch: false,
                 searchFormulas: false,
             };
-            this.replaceOptions = {
-                modifyFormulas: false,
-            };
         }
         // ---------------------------------------------------------------------------
         // Replace
         // ---------------------------------------------------------------------------
         /**
-         * Replace the value of the currently selected match if the replaceOptions
-         * allow it
+         * Replace the value of the currently selected match
          */
-        replace(replaceWith, replaceOptions) {
-            this.replaceOptions = replaceOptions;
+        replace(replaceWith) {
             if (this.selectedMatchIndex === null || !this.currentSearchRegex) {
                 return;
             }
@@ -21332,10 +21349,10 @@
         /**
          * Apply the replace function to all the matches one time.
          */
-        replaceAll(replaceWith, replaceOptions) {
+        replaceAll(replaceWith) {
             const matchCount = this.searchMatches.length;
             for (let i = 0; i < matchCount; i++) {
-                this.replace(replaceWith, replaceOptions);
+                this.replace(replaceWith);
             }
         }
         /**
@@ -21347,7 +21364,7 @@
                 if (this.searchOptions.searchFormulas && cell.isFormula()) {
                     return cell.content;
                 }
-                else if (this.replaceOptions.modifyFormulas || !cell.isFormula()) {
+                else if (this.searchOptions.searchFormulas || !cell.isFormula()) {
                     return cell.evaluated.value.toString();
                 }
             }
@@ -22033,8 +22050,9 @@
                 align,
             };
             /** Error */
-            if (cell.evaluated.type === CellValueType.error) {
-                box.error = cell.evaluated.error;
+            if (cell.evaluated.type === CellValueType.error &&
+                cell.evaluated.error.logLevel > CellErrorLevel.silent) {
+                box.error = cell.evaluated.error.message;
             }
             /** ClipRect */
             const isOverflowing = contentWidth > width || fontSizeMap[fontSize] > height;
@@ -27388,7 +27406,9 @@
             const sheetId = this.env.model.getters.getActiveSheetId();
             const { col: mainCol, row: mainRow } = this.env.model.getters.getMainCellPosition(sheetId, col, row);
             const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
-            if (cell && cell.evaluated.type === CellValueType.error) {
+            if (cell &&
+                cell.evaluated.type === CellValueType.error &&
+                cell.evaluated.error.logLevel > CellErrorLevel.silent) {
                 const viewport = this.env.model.getters.getActiveSnappedViewport();
                 const [x, y, width] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
                 return {
@@ -27397,7 +27417,7 @@
                         x: x + width + this.canvasPosition.x,
                         y: y + this.canvasPosition.y,
                     },
-                    text: cell.evaluated.error,
+                    text: cell.evaluated.error.message,
                     cellWidth: width,
                 };
             }
@@ -28094,23 +28114,35 @@
     SidePanel.template = "o-spreadsheet-SidePanel";
 
     const FORMATS = [
-        { name: "general", text: `${NumberFormatTerms.General} (${NumberFormatTerms.NoSpecificFormat})` },
-        { name: "number", text: `${NumberFormatTerms.Number} (1,000.12)`, value: "#,##0.00" },
-        { name: "percent", text: `${NumberFormatTerms.Percent} (10.12%)`, value: "0.00%" },
-        { name: "currency", text: `${NumberFormatTerms.Currency} ($1,000.12)`, value: "[$$]#,##0.00" },
+        { name: "general", text: NumberFormatTerms.General },
+        { name: "number", text: NumberFormatTerms.Number, description: "(1,000.12)", value: "#,##0.00" },
+        { name: "percent", text: NumberFormatTerms.Percent, description: "(10.12%)", value: "0.00%" },
+        {
+            name: "currency",
+            text: NumberFormatTerms.Currency,
+            description: "($1,000.12)",
+            value: "[$$]#,##0.00",
+        },
         {
             name: "currency_rounded",
-            text: `${NumberFormatTerms.CurrencyRounded} ($1,000)`,
+            text: NumberFormatTerms.CurrencyRounded,
+            description: "($1,000)",
             value: "[$$]#,##0",
         },
-        { name: "date", text: `${NumberFormatTerms.Date} (9/26/2008)`, value: "m/d/yyyy" },
-        { name: "time", text: `${NumberFormatTerms.Time} (10:43:00 PM)`, value: "hh:mm:ss a" },
+        { name: "date", text: NumberFormatTerms.Date, description: "(9/26/2008)", value: "m/d/yyyy" },
+        { name: "time", text: NumberFormatTerms.Time, description: "(10:43:00 PM)", value: "hh:mm:ss a" },
         {
             name: "datetime",
-            text: `${NumberFormatTerms.DateTime} (9/26/2008 22:43:00)`,
+            text: NumberFormatTerms.DateTime,
+            description: "(9/26/2008 22:43:00)",
             value: "m/d/yyyy hh:mm:ss",
         },
-        { name: "duration", text: `${NumberFormatTerms.Duration} (27:51:38)`, value: "hhhh:mm:ss" },
+        {
+            name: "duration",
+            text: NumberFormatTerms.Duration,
+            description: "(27:51:38)",
+            value: "hhhh:mm:ss",
+        },
     ];
     const CUSTOM_FORMATS = [
         { name: "custom_currency", text: NumberFormatTerms.CustomCurrency, sidePanel: "CustomCurrency" },
@@ -28274,16 +28306,18 @@
             }
 
             &.o-format-tool {
-              padding: 7px 0;
+              padding: 5px 0;
+              width: 250px;
+              font-size: 12px;
               > div {
-                padding-left: 25px;
+                padding: 0 20px;
                 white-space: nowrap;
 
                 &.active:before {
                   content: "✓";
                   font-weight: bold;
                   position: absolute;
-                  left: 10px;
+                  left: 5px;
                 }
               }
             }
@@ -31656,7 +31690,7 @@
         return ast ? astToFormula(ast) : formulaText;
     }
     /**
-     * Some Excel function need required args that might not be mandatory in o-spreadsheet-
+     * Some Excel function need required args that might not be mandatory in o-spreadsheet.
      * This adds those missing args.
      */
     function addMissingRequiredArgs(ast) {
@@ -32945,6 +32979,7 @@
     exports.CorePlugin = CorePlugin;
     exports.DATETIME_FORMAT = DATETIME_FORMAT;
     exports.DispatchResult = DispatchResult;
+    exports.EvaluationError = EvaluationError;
     exports.Model = Model;
     exports.Registry = Registry;
     exports.Revision = Revision;
@@ -32969,8 +33004,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-06-10T12:04:05.740Z';
-    exports.__info__.hash = 'c4411fb';
+    exports.__info__.date = '2022-06-16T13:18:55.491Z';
+    exports.__info__.hash = 'e4049c2';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

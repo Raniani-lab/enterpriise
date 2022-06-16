@@ -242,7 +242,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
         assert.ok(root.isVisible(env));
         setCellContent(model, "B2", getCellFormula(model, "B2").replace(`LIST(1`, `LIST("5)`)); //Invalid id
-        assert.ok(getCell(model, "B2").evaluated.error);
+        assert.ok(getCell(model, "B2").evaluated.error.message);
         assert.notOk(root.isVisible(env));
     });
 

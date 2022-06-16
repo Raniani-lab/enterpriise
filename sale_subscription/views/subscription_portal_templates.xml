@@ -380,7 +380,7 @@
                 <t t-foreach="orders" t-as="order">
                     <tr>
                         <td>
-                            <a t-att-href="order.get_portal_url()+'&amp;'+keep_query()"><t t-esc="order.display_name"/></a>
+                            <a t-att-href="order.get_portal_url()"><t t-esc="order.display_name"/></a>
                         </td>
                         <td class="text-center" id="subscription_state">
                             <t t-if="order.stage_category == 'progress' and not order.to_renew">

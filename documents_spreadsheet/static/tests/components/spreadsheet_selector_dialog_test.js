@@ -226,4 +226,16 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
         await triggerEvent(blank, null, "focus");
         await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
     });
+
+    QUnit.test("Selected spreadsheet is identifiable", async (assert) => {
+        const { target } = await mountSpreadsheetSelectorDialog();
+        assert.hasClass(
+            target.querySelector(".o-sp-dialog-item-blank img"),
+            "selected",
+            "Blank spreadsheet should be selected by default"
+        );
+        const sp = target.querySelector('.o-sp-dialog-item div[data-id="1"]');
+        await triggerEvent(sp, null, "focus");
+        assert.hasClass(sp, "selected", "Selected spreadsheet should be identifiable");
+    });
 });

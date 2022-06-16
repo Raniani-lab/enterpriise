@@ -32,12 +32,12 @@
                         <div class="o-sp-dialog-items">
                             <t t-if="state.panel === 'spreadsheets'">
                                 <div class="o-sp-dialog-item o-sp-dialog-item-blank">
-                                    <img tabindex="0" t-on-focus="() => this._selectItem(false)" t-att-class="{ selected: state.selectedSpreadsheet === ''}" src="documents_spreadsheet/static/img/spreadsheet.svg" t-att-title="Blank"/>
+                                    <img tabindex="0" t-on-focus="() => this._selectItem(false)" t-att-class="{ selected: state.selectedSpreadsheetId === false }" src="documents_spreadsheet/static/img/spreadsheet.svg" t-att-title="Blank"/>
                                     <div class="o-sp-dialog-item-label">Blank spreadsheet</div>
                                 </div>
                                 <div t-foreach="state.spreadsheets" t-as="spreadsheet" t-key="spreadsheet.id" class="o-sp-dialog-item">
-                                    <div t-if="!spreadsheet.thumbnail" class="o-sp-dialog-no-preview text-muted" tabindex="0" t-on-focus="() => this._selectItem(spreadsheet.id)" t-att-class="{ selected: state.selectedSpreadsheet === spreadsheet.id}" t-att-data-id="spreadsheet.id">No preview</div>
-                                    <img t-else="1" class="o-sp-dialog-item-img" tabindex="0" t-on-focus="() => this._selectItem(spreadsheet.id)" t-att-class="{ selected: state.selectedSpreadsheet === spreadsheet.id}" t-att-src="getUrl(spreadsheet.thumbnail)" t-att-title="spreadsheet.name" t-att-data-id="spreadsheet.id"/>
+                                    <div t-if="!spreadsheet.thumbnail" class="o-sp-dialog-no-preview text-muted" tabindex="0" t-on-focus="() => this._selectItem(spreadsheet.id)" t-att-class="{ selected: state.selectedSpreadsheetId === spreadsheet.id}" t-att-data-id="spreadsheet.id">No preview</div>
+                                    <img t-else="1" class="o-sp-dialog-item-img" tabindex="0" t-on-focus="() => this._selectItem(spreadsheet.id)" t-att-class="{ selected: state.selectedSpreadsheetId === spreadsheet.id}" t-att-src="getUrl(spreadsheet.thumbnail)" t-att-title="spreadsheet.name" t-att-data-id="spreadsheet.id"/>
                                     <div class="o-sp-dialog-item-label" t-esc="spreadsheet.name"/>
                                 </div>
                             </t>

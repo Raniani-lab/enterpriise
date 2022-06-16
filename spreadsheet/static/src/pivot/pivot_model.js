@@ -434,9 +434,9 @@ export class SpreadsheetPivotModel extends PivotModel {
             const { field } = this.parseGroupField(groupFieldString);
             const { cols, rows } = this._getColsRowsValuesFromDomain(domain);
             if (this._isCol(field)) {
-                return this.getGroupByDisplayLabel(field.name, cols[cols.length - 1]);
+                return this.getGroupByDisplayLabel(groupFieldString, cols[cols.length - 1]);
             } else {
-                return this.getGroupByDisplayLabel(field.name, rows[rows.length - 1]);
+                return this.getGroupByDisplayLabel(groupFieldString, rows[rows.length - 1]);
             }
         }
         return this.getGroupByDisplayLabel(groupFieldString, groupValueString);

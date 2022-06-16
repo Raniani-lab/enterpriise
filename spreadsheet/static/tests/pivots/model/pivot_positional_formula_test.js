@@ -324,4 +324,16 @@ QUnit.module("documents_spreadsheet > positional pivot formula", {}, () => {
         assert.strictEqual(getCellValue(model, "C10"), 20);
         assert.strictEqual(getCellValue(model, "C11"), 12);
     });
+
+    QUnit.test("Formatting a pivot positional preserves the interval", async (assert) => {
+        const { model } = await createSpreadsheetWithPivot({
+            arch: /*xml*/ `
+                <pivot>
+                    <field name="date:day" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+        });
+        setCellContent(model, "A1", `=PIVOT.HEADER(1,"#date:day",1)`);
+        assert.strictEqual(getCellValue(model, "A1"), "20 Jan 2016");
+    });
 });

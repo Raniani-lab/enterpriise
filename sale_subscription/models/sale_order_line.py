@@ -131,7 +131,7 @@ class SaleOrderLine(models.Model):
         today = fields.Datetime.today()
         other_lines = self.env['sale.order.line']
         for line in self:
-            if not line.next_invoice_date or line.temporal_type != 'subscription' or line.order_id.subscription_management != 'upsell':
+            if line.discount or not line.next_invoice_date or line.temporal_type != 'subscription' or line.order_id.subscription_management != 'upsell':
                 other_lines |= line
                 continue
             order_default_values = default_dates.get(line.order_id, {})

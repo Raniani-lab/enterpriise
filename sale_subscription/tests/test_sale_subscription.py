@@ -1340,14 +1340,16 @@ class TestSubscription(TestSubscriptionCommon):
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")
         with freeze_time("2022-07-01"):
+            discount = upsell_so.order_line.mapped('discount')[0]
+            self.assertEqual(discount, 46.58, "The discount is almost equal to 50% and should not be updated for confirmed SO")
             upsell_invoice = upsell_so._create_invoices()
-            self.env['sale.order']._cron_recurring_create_invoice()
+            (upsell_so | sub)._cron_recurring_create_invoice()
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")
-            self.assertEqual(upsell_invoice.amount_untaxed, 267.1, "The upsell amount should be equal to 267.1")
+            self.assertEqual(upsell_invoice.amount_untaxed, 267.1, "The upsell amount should be equal to 267.1") # (1-0.4658)*(200+300)
 
         with freeze_time("2023-01-01"):
-            self.env['sale.order']._cron_recurring_create_invoice()
+            (upsell_so | sub)._cron_recurring_create_invoice()
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2023, 1, 1), "A new invoice should be created")
             self.assertEqual(inv.amount_untaxed, 800, "A new invoice should be created, all the lines should be invoiced")

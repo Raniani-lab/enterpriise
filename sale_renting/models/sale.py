@@ -212,12 +212,6 @@ class RentalOrderLine(models.Model):
             return_date_part,
         )
 
-    def _compute_discount(self):
-        """Ensure no discount computation is applied on rental order lines."""
-        rental_lines = self.filtered('is_rental')
-        super(RentalOrderLine, self-rental_lines)._compute_discount()
-        rental_lines.discount = 0.0
-
     def _generate_delay_line(self, qty):
         """Generate a sale order line representing the delay cost due to the late return.
 

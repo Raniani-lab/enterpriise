@@ -70,7 +70,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             'account.move,false,form':
                 '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
-                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
@@ -213,7 +213,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             'account.move,false,form':
                 '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
-                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
@@ -324,7 +324,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             'account.move,false,form':
                 '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
-                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
@@ -424,7 +424,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             'account.move,false,form':
                 '<form string="Account Invoice">' +
                     '<div class="o_success_ocr"/>' +
-                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +

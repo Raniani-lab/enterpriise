@@ -17,11 +17,10 @@ import '@mail/widgets/form_renderer/form_renderer';
  *
  * Some options can be passed to change its behavior:
  *     types: ['image', 'pdf']
- *     order: 'asc' or 'desc'
  *
  * For example, if you want to display only pdf type attachment and the latest
  * one then use:
- *     <div class="o_attachment_preview" options="{'types': ['pdf'], 'order': 'desc'}"/>
+ *     <div class="o_attachment_preview" options="{'types': ['pdf']}"/>
 **/
 
 FormRenderer.include({
@@ -231,19 +230,14 @@ FormRenderer.include({
         var self = this;
         var options = _.defaults(this.$attachmentPreview.data(), {
             types: ['pdf', 'image'],
-            order: 'asc'
         });
         const thread = ev.data.thread;
-        var attachments = $.extend(true, {}, thread.allAttachments);  // clone array
+        var attachments = $.extend(true, {}, thread.allAttachments.reverse());  // clone array
         attachments = _.filter(attachments, function (attachment) {
             var match = attachment.mimetype.match(options.types.join('|'));
             attachment.update({ type: match ? match[0] : false });
             return match && !attachment.isUploading;
         });
-        // most recent attachment is first in attachment list, so default order is 'desc'
-        if (options.order === 'asc') {
-            attachments.reverse();
-        }
         if (attachments.length || this.attachmentViewer) {
             if (this.attachmentViewer) {
                 // FIXME should be improved : what if somehow an attachment is replaced in a thread ?
@@ -258,7 +252,7 @@ FormRenderer.include({
                         this._interchangeChatter(false);
                     }
                     else {
-                        this.attachmentViewer.updateContents(attachments, options.order);
+                        this.attachmentViewer.updateContents(attachments);
                     }
                 } else {
                     // The attachmentViewer lose its event listeners when it is reused,

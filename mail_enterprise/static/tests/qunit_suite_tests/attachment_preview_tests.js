@@ -24,7 +24,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         const views = {
             'res.partner,false,form':
                 '<form string="Partners">' +
-                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
@@ -85,7 +85,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
-                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
@@ -205,7 +205,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                         <sheet>
                             <field name="name"/>
                         </sheet>
-                        <div class="o_attachment_preview" options="{'order':'desc'}"></div>
+                        <div class="o_attachment_preview"/>
                         <div class="oe_chatter">
                             <field name="message_ids"/>
                         </div>
@@ -261,7 +261,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
-                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
@@ -307,7 +307,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
-                    '<div class="o_attachment_preview" options="{\'order\':\'desc\'}"></div>' +
+                    '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
                     '</div>' +
@@ -344,7 +344,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     <sheet>
                         <field name="channel_ids"/>
                     </sheet>
-                    <div class="o_attachment_preview" options="{ 'order': 'desc' }"/>
+                    <div class="o_attachment_preview"/>
                     <div class="oe_chatter">
                         <field name="message_ids"/>
                     </div>

@@ -44,9 +44,8 @@ var AttachmentViewer = Widget.extend({
      * Update attachments list and activeAttachment.
      *
      * @param {Array<Object>} attachments list of attachments
-     * @param {string} order
      */
-    updateContents: function (attachments, order) {
+    updateContents: function (attachments) {
         this.attachments = attachments;
         this._setActive();
         this._renderAttachment();

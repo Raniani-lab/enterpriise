@@ -60,7 +60,7 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                         true,
                         "Wrong default filter value"
                     );
-                    actions.click(pivot.querySelector(".o_side_panel_filter_icon"));
+                    actions.click(pivot.querySelector(".o_side_panel_filter_icon.fa-cog"));
                 },
             },
             {

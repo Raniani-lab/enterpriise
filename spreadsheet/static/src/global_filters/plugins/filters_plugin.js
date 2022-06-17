@@ -1,11 +1,14 @@
 /** @odoo-module */
 
 /**
+ * @typedef {"year"|"month"|"quarter"} RangeType
+ *
+/**
  * @typedef {Object} GlobalFilter
  * @property {string} id
  * @property {string} label
  * @property {string} type "text" | "date" | "relation"
- * @property {string|undefined} rangeType "year" | "month" | "quarter"
+ * @property {RangeType} rangeType
  * @property {Object} pivotFields
  * @property {Object} listFields
  * @property {string|Array<string>|Object} defaultValue Default Value
@@ -195,7 +198,23 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
     import(data) {
         if (data.globalFilters) {
             for (const globalFilter of data.globalFilters) {
+                // TODO: this naming trick should be handled by proper python data migrations
                 globalFilter.pivotFields = globalFilter.fields;
+                if (globalFilter.type === "date" && 'year' in globalFilter.defaultValue) {
+                    switch (globalFilter.defaultValue.year) {
+                        case "last_year":
+                            globalFilter.defaultValue.yearOffset = -1;
+                            break;
+                        case "antepenultimate_year":
+                            globalFilter.defaultValue.yearOffset = -2;
+                            break;
+                        case "this_year":
+                        case undefined:
+                            globalFilter.defaultValue.yearOffset = 0;
+                            break;
+                    }
+                    delete globalFilter.defaultValue.year;
+                }
                 this.globalFilters[globalFilter.id] = globalFilter;
                 if (!this.globalFilters[globalFilter.id].listFields) {
                     this.globalFilters[globalFilter.id].listFields = {};

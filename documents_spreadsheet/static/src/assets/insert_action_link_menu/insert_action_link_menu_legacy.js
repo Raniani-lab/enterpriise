@@ -6,7 +6,7 @@ import pyUtils from "web.py_utils";
 import Domain from "web.Domain";
 import { useService } from "@web/core/utils/hooks";
 import { useModel } from "web.Model";
-import { sprintf } from "@web/core/utils/strings"
+import { sprintf } from "@web/core/utils/strings";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 

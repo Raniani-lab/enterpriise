@@ -6,40 +6,31 @@
  */
 
 import { _t } from "@web/core/l10n/translation";
+import { sprintf } from "@web/core/utils/strings";
 import { Domain } from "@web/core/domain";
-import {
-    constructDateDomain,
-    constructDateRange,
-    yearSelected,
-    getPeriodOptions,
-} from "web.searchUtils";
+import { constructDateRange, getPeriodOptions, QUARTER_OPTIONS } from "@web/search/utils/dates";
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 
 import { checkFiltersTypeValueCombination } from "@spreadsheet/global_filters/helpers";
 
+const { DateTime } = luxon;
+
 const MONTHS = {
-    january: { value: 0, granularity: "month" },
-    february: { value: 1, granularity: "month" },
-    march: { value: 2, granularity: "month" },
-    april: { value: 3, granularity: "month" },
-    may: { value: 4, granularity: "month" },
-    june: { value: 5, granularity: "month" },
-    july: { value: 6, granularity: "month" },
-    august: { value: 7, granularity: "month" },
-    september: { value: 8, granularity: "month" },
-    october: { value: 9, granularity: "month" },
-    november: { value: 10, granularity: "month" },
-    december: { value: 11, granularity: "month" },
+    january: { value: 1, granularity: "month" },
+    february: { value: 2, granularity: "month" },
+    march: { value: 3, granularity: "month" },
+    april: { value: 4, granularity: "month" },
+    may: { value: 5, granularity: "month" },
+    june: { value: 6, granularity: "month" },
+    july: { value: 7, granularity: "month" },
+    august: { value: 8, granularity: "month" },
+    september: { value: 9, granularity: "month" },
+    october: { value: 10, granularity: "month" },
+    november: { value: 11, granularity: "month" },
+    december: { value: 12, granularity: "month" },
 };
-const THIS_YEAR = moment().year();
-const YEARS = {
-    this_year: { value: THIS_YEAR, granularity: "year" },
-    last_year: { value: THIS_YEAR - 1, granularity: "year" },
-    antepenultimate_year: { value: THIS_YEAR - 2, granularity: "year" },
-};
-const PERIOD_OPTIONS = Object.assign({}, MONTHS, YEARS);
 
 export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     constructor(getters, history, dispatch, config) {
@@ -97,6 +88,10 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                 delete this.recordsDisplayName[cmd.id];
                 delete this.values[cmd.id];
                 break;
+            case "CLEAR_GLOBAL_FILTER_VALUE":
+                this.recordsDisplayName[cmd.id] = [];
+                this._clearGlobalFilterValue(cmd.id);
+                break;
         }
         switch (cmd.type) {
             case "START":
@@ -104,6 +99,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             case "EDIT_GLOBAL_FILTER":
             case "SET_GLOBAL_FILTER_VALUE":
             case "REMOVE_GLOBAL_FILTER":
+            case "CLEAR_GLOBAL_FILTER_VALUE":
                 this._updateAllDomains();
                 break;
         }
@@ -127,44 +123,54 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     }
 
     /**
+     * @param {string} id Id of the filter
+     *
+     * @returns { boolean } true if the given filter is active
+     */
+    isFilterActive(id) {
+        const { type } = this.getters.getGlobalFilter(id);
+        const value = this.getGlobalFilterValue(id);
+        switch (type) {
+            case "text":
+                return value;
+            case "date":
+                return value && (value.yearOffset !== undefined || value.period);
+            case "relation":
+                return value && value.length;
+        }   
+    }
+
+    /**
      * Get the number of active global filters
      *
      * @returns {number}
      */
     getActiveFilterCount() {
-        return this.getters.getGlobalFilters().filter((filter) => {
-            const value = this.getGlobalFilterValue(filter.id);
-            switch (filter.type) {
-                case "text":
-                    return value;
-                case "date":
-                    return value && (value.year || value.period);
-                case "relation":
-                    return value && value.length;
-            }
-        }).length;
+        return this.getters.getGlobalFilters().filter(
+            (filter) => this.isFilterActive(filter.id)
+        ).length;
     }
 
     getFilterDisplayValue(filterName) {
         const filter = this.getters.getGlobalFilterLabel(filterName);
         if (!filter) {
-            throw new Error(_.str.sprintf(_t(`Filter "%s" not found`), filterName));
+            throw new Error(sprintf(_t(`Filter "%s" not found`), filterName));
         }
         const value = this.getGlobalFilterValue(filter.id);
         switch (filter.type) {
             case "text":
                 return value || "";
             case "date": {
-                if (!value || !value.year) return "";
-                const periodOptions = getPeriodOptions(moment());
-                const year = periodOptions.find(({ id }) => value.year === id).description;
+                if(!value || value.yearOffset === undefined) {
+                    return ""
+                }
+                const periodOptions = getPeriodOptions(DateTime.local());
+                const year = DateTime.local().year + value.yearOffset;
                 const period = periodOptions.find(({ id }) => value.period === id);
                 let periodStr = period && period.description;
                 // Named months aren't in getPeriodOptions
                 if (!period) {
-                    periodStr =
-                        MONTHS[value.period] &&
-                        String(MONTHS[value.period].value + 1).padStart(2, "0");
+                    periodStr = MONTHS[value.period] && String(MONTHS[value.period].value).padStart(2, "0");
                 }
                 return periodStr ? periodStr + "/" + year : year;
             }
@@ -199,6 +205,28 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     }
 
     /**
+     * Set the current value to empty values which functionally deactivate the filter
+     *
+     * @param {string} id Id of the filter
+     */
+    _clearGlobalFilterValue(id) {
+        const {type, rangeType} = this.getters.getGlobalFilter(id);
+        let value;
+        switch (type) {
+            case 'text':
+                value = '';
+                break;
+            case 'date':
+                value = { yearOffset: undefined };
+                break;
+            case 'relation':
+                value = [];
+                break;
+        }
+        this.values[id] = {value, rangeType };
+    }
+
+    /**
      * Update the domain of all pivots and all lists
      *
      * @private
@@ -230,30 +258,42 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      * @param {GlobalFilter} filter
      * @param {Field} fieldDesc
      *
-     * @returns {string|undefined}
+     * @returns {Domain|undefined}
      */
-    _getDateDomain(filter, fieldDesc) {
-        const value = this.getGlobalFilterValue(filter.id);
-        const values = value && Object.values(value).filter(Boolean);
-        if (!values || values.length === 0) {
+     _getDateDomain(filter, fieldDesc) {
+        if (!this.isFilterActive(filter.id)) {
             return undefined;
         }
-        if (!yearSelected(values)) {
-            values.push("this_year");
-        }
+        let granularity;
+        const value = this.getGlobalFilterValue(filter.id);
         const field = fieldDesc.field;
         const type = fieldDesc.type;
-        const dateFilterRange =
-            filter.rangeType === "month"
-                ? constructDateRange({
-                      referenceMoment: moment(),
-                      fieldName: field,
-                      fieldType: type,
-                      granularity: "month",
-                      setParam: this._getSelectedOptions(values),
-                  })
-                : constructDateDomain(moment(), field, type, values);
-        return new Domain(dateFilterRange.domain);
+        const luxonDate = DateTime.local();
+        const setParam = {year: luxonDate.year};
+        const plusParam = { years: value.yearOffset || 0 };
+        if (!value.period || value.period === 'empty') {
+            granularity = 'year';
+        }
+        else {
+            switch (filter.rangeType) {
+                case "month":
+                    granularity = "month";
+                    setParam.month = MONTHS[value.period].value ;
+                    break;
+                case "quarter":
+                    granularity = "quarter";
+                    setParam.quarter = QUARTER_OPTIONS[value.period].setParam.quarter;
+                    break;
+            }
+        }
+        return constructDateRange({
+            referenceMoment: luxonDate,
+            fieldName: field,
+            fieldType: type,
+            granularity,
+            setParam,
+            plusParam
+        }).domain
     }
 
     /**
@@ -264,7 +304,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      * @param {GlobalFilter} filter
      * @param {Field} fieldDesc
      *
-     * @returns {string|undefined}
+     * @returns {Domain|undefined}
      */
     _getTextDomain(filter, fieldDesc) {
         const value = this.getGlobalFilterValue(filter.id);
@@ -283,7 +323,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      * @param {GlobalFilter} filter
      * @param {Field} fieldDesc
      *
-     * @returns {string|undefined}
+     * @returns {Domain|undefined}
      */
     _getRelationDomain(filter, fieldDesc) {
         const values = this.getGlobalFilterValue(filter.id);
@@ -330,20 +370,11 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
         }
         return domain.toString();
     }
-
-    _getSelectedOptions(selectedOptionIds) {
-        const selectedOptions = { year: [] };
-        for (const optionId of selectedOptionIds) {
-            const option = PERIOD_OPTIONS[optionId];
-            const granularity = option.granularity;
-            selectedOptions[granularity] = option.value;
-        }
-        return selectedOptions;
-    }
 }
 
 FiltersEvaluationPlugin.getters = [
     "getFilterDisplayValue",
     "getGlobalFilterValue",
     "getActiveFilterCount",
+    "isFilterActive",
 ];

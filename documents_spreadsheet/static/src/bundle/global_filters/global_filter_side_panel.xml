@@ -34,12 +34,15 @@
                     </span>
                     <DateFilterValue
                         t-if="filter.type === 'date'"
-                        year="filterValue &amp;&amp; filterValue.year"
                         period="filterValue &amp;&amp; filterValue.period"
+                        yearOffset="filterValue &amp;&amp; filterValue.yearOffset"
                         type="filter.rangeType"
-                        isReadonly="isReadonly"
                         onTimeRangeChanged="(value) => this.onDateInput(filter.id, value)"
                     />
+                    <i  t-if="getters.isFilterActive(filter.id)"
+                        class="fa fa-times btn btn-link text-muted o_side_panel_filter_icon"
+                        title="Clear"
+                        t-on-click="() => this.onClear(filter.id)"/>
                     <i t-if="!isReadonly"
                         class="fa fa-cog btn btn-link text-muted o_side_panel_filter_icon"
                         title="Edit"
@@ -91,17 +94,22 @@
                     t-model="state.date.type"
                     t-on-change="onDateOptionChange"
                     class="o_input">
-                <option value="year" t-key="'year'">Year</option>
-                <option value="quarter" t-key="'quarter'">Quarter</option>
-                <option value="month" t-key="'month'">Month</option>
+                    <t t-foreach="dateRangeTypes" t-as="range" t-key="range.type">
+                        <option t-if="isDateTypeSelected(range.type)" selected="1" t-att-value="range.type">
+                            <t t-esc="range.description"/>
+                        </option>
+                        <option t-else="" t-att-value="range.type">
+                            <t t-esc="range.description"/>
+                        </option>
+                    </t>
             </select>
         </div>
         <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModelName">
             <div class="o_side_panel_title">Default Value</div>
             <DateFilterValue
                 t-if="state.type === 'date'"
-                year="state.date.defaultValue.year"
                 period="state.date.defaultValue.period"
+                yearOffset="state.date.defaultValue.yearOffset"
                 type="state.date.type"
                 onTimeRangeChanged.bind="onTimeRangeChanged"
             />
@@ -162,26 +170,19 @@
         <select t-if="!isYear()" class="o_input" t-on-change="onPeriodChanged">
             <option value="empty"/>
             <t t-set="type" t-value="props.type"/>
-            <t t-foreach="dateOptions(type)" t-as="period" t-key="period.id">
-                <option t-if="isSelected(period.id)" selected="1" t-att-value="period.id">
-                    <t t-esc="period.description"/>
+            <t t-foreach="dateOptions(type)" t-as="periodOption" t-key="periodOption.id">
+                <option t-if="isSelected(periodOption.id)" selected="1" t-att-value="periodOption.id">
+                    <t t-esc="periodOption.description"/>
                 </option>
-                <option t-else="" t-att-value="period.id">
-                    <t t-esc="period.description"/>
-                </option>
-            </t>
-        </select>
-        <select class="o_input" t-on-change="onYearChanged">
-            <option t-if="!props.period" value="empty"/>
-            <t t-foreach="dateOptions('year')" t-as="year" t-key="year.id">
-                <option t-if="isSelected(year.id)" selected="1" t-att-value="year.id">
-                    <t t-esc="year.description"/>
-                </option>
-                <option t-else="" t-att-value="year.id">
-                    <t t-esc="year.description"/>
+                <option t-else="" t-att-value="periodOption.id">
+                    <t t-esc="periodOption.description"/>
                 </option>
             </t>
         </select>
+        <YearPicker 
+            date="date"
+            onDateTimeChanged.bind="onYearChanged"
+        />
     </div>
 
 

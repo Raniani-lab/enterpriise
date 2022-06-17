@@ -29,6 +29,14 @@ const TagSelectorWidget = Widget.extend(StandaloneFieldManagerMixin, {
         this.selectedValues = selectedValues;
         this.widget = undefined;
     },
+    updateWidgetState: async function (state) {
+        this.selectedValues = state.selectedValues;
+        this.relatedModel = state.relatedModel;
+        await this._makeM2MWidget();
+        const $content = $(QWeb.render("documents_spreadsheet.RelationTags", {}));
+        this.$el.empty().append($content);
+        this.widget.appendTo($content);
+    },
     /**
      * @override
      */
@@ -120,6 +128,25 @@ class TagSelectorWidgetAdapter extends ComponentAdapter {
     get widgetArgs() {
         return [this.props.relatedModel, this.props.selectedValues];
     }
+
+    /**
+     * @override
+     */
+     async updateWidget(nextProps) {
+        if (
+            nextProps.relatedModel !== this.props.relatedModel ||
+            JSON.stringify(nextProps.selectedValues) !==
+            JSON.stringify(this.props.selectedValues)
+        ) {
+            const payload = {relatedModel: nextProps.relatedModel, selectedValues: nextProps.selectedValues}
+            return this.widget.updateWidgetState(payload);
+        }
+    }
+
+    /**
+     * @override
+     */
+    renderWidget() {}
 }
 
 export class X2ManyTagSelector extends Component {

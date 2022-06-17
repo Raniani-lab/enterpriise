@@ -31,7 +31,7 @@
                 flex-direction: row;
                 flex-grow: 1;
 
-                > div {
+                > span {
                     width: 100%;
                 }
 
@@ -65,9 +65,17 @@
     .date_filter_values {
         display: flex;
         flex-direction: row;
+        width: 100%;
 
-        select:not(:first-child) {
-            margin-left: 10px;
+        .o_datepicker {
+            width: 100%;
+            &:not(:first-child) {
+                margin-left: 10px;
+            }
+
+            .o_datepicker_button {
+                right: 0px;
+            }
         }
     }
 }

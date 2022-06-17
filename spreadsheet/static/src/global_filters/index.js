@@ -25,9 +25,10 @@ invalidateEvaluationCommands.add("ADD_GLOBAL_FILTER");
 invalidateEvaluationCommands.add("EDIT_GLOBAL_FILTER");
 invalidateEvaluationCommands.add("REMOVE_GLOBAL_FILTER");
 invalidateEvaluationCommands.add("SET_GLOBAL_FILTER_VALUE");
+invalidateEvaluationCommands.add("CLEAR_GLOBAL_FILTER_VALUE");
 
 readonlyAllowedCommands.add("SET_GLOBAL_FILTER_VALUE");
-
+readonlyAllowedCommands.add("CLEAR_GLOBAL_FILTER_VALUE");
 
 inverseCommandRegistry
   .add("EDIT_GLOBAL_FILTER", identity)

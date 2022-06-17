@@ -4,8 +4,8 @@ import { _t } from "@web/core/l10n/translation";
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
-import FilterEditorSidePanel from "documents_spreadsheet.filter_editor_side_panel";
-import GlobalFiltersSidePanel  from "documents_spreadsheet.global_filters_side_panel";
+import FilterEditorSidePanel from "./filter_editor_side_panel";
+import GlobalFiltersSidePanel  from "./global_filters_side_panel";
 import { FilterComponent } from "./filter_component";
 
 import "./operational_transform";

@@ -78,7 +78,11 @@ function parseAccountingMonth(dateRange) {
  */
 function parseAccountingYear(dateRange) {
     const dateNumber = toNumber(dateRange);
-    // @reviewer-ignore
+    // This allows a bit of flexibility for the user if they were to input a
+    // numeric value instead of a year.
+    // Users won't need to fetch accounting info for year 3000 before a long time
+    // And the numeric value 3000 corresponds to 18th march 1908, so it's not an
+    //issue to prevent them from fetching accounting data prior to that date.
     if (dateNumber < 3000) {
         return { rangeType: "year", year: dateNumber };
     }

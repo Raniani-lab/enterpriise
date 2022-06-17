@@ -1,91 +1,109 @@
-odoo.define("documents_spreadsheet.DateFilterValue", function (require) {
-    "use strict";
+/** @odoo-module */
 
-    const { getPeriodOptions } = require("web.searchUtils");
-    const { _lt } = require('web.core');
+import { getPeriodOptions } from "@web/search/utils/dates";
 
-    const { Component } = owl;
-    const dateTypeOptions = {
-        quarter: ["first_quarter", "second_quarter", "third_quarter", "fourth_quarter"],
-        year: ["this_year", "last_year", "antepenultimate_year"],
-    };
-    const monthsOptions = [
-        { id: "january", description: _lt("January") },
-        { id: "february", description: _lt("February") },
-        { id: "march", description: _lt("March") },
-        { id: "april", description: _lt("April") },
-        { id: "may", description: _lt("May") },
-        { id: "june", description: _lt("June") },
-        { id: "july", description: _lt("July") },
-        { id: "august", description: _lt("August") },
-        { id: "september", description: _lt("September") },
-        { id: "october", description: _lt("October") },
-        { id: "november", description: _lt("November") },
-        { id: "december", description: _lt("December") },
-    ];
+import { _lt } from "@web/core/l10n/translation";
+import { YearPicker } from "@documents_spreadsheet/assets/components/year_picker";
+const { DateTime } = luxon;
+const { Component, onWillUpdateProps } = owl;
 
-    /**
-     * Return a list of time options to choose from according to the requested
-     * type. Each option contains its (translated) description.
-     * @see getPeriodOptions
-     * @param {string} type "month" | "quarter" | "year"
-     * @returns {Array<Object>}
-     */
-    function dateOptions(type) {
-        if (type === "month") {
-            return monthsOptions;
-        } else {
-            return getPeriodOptions(moment()).filter(({ id }) => dateTypeOptions[type].includes(id));
-        }
+const dateTypeOptions = {
+    quarter: [
+        "first_quarter",
+        "second_quarter",
+        "third_quarter",
+        "fourth_quarter",
+    ],
+    year: ["this_year", "last_year", "antepenultimate_year"],
+};
+// TODO Remove this mapping, We should only need number > description to avoid multiple conversions
+// This would require a migration though
+const monthsOptions = [
+    { id: "january", description: _lt("January") },
+    { id: "february", description: _lt("February") },
+    { id: "march", description: _lt("March") },
+    { id: "april", description: _lt("April") },
+    { id: "may", description: _lt("May") },
+    { id: "june", description: _lt("June") },
+    { id: "july", description: _lt("July") },
+    { id: "august", description: _lt("August") },
+    { id: "september", description: _lt("September") },
+    { id: "october", description: _lt("October") },
+    { id: "november", description: _lt("November") },
+    { id: "december", description: _lt("December") },
+];
+
+/**
+ * Return a list of time options to choose from according to the requested
+ * type. Each option contains its (translated) description.
+ * @see getPeriodOptions
+ * @param {string} type "month" | "quarter" | "year"
+ * @returns {Array<Object>}
+ */
+function dateOptions(type) {
+    if (type === "month") {
+        return monthsOptions;
+    } else {
+        return getPeriodOptions(DateTime.local()).filter(({ id }) =>
+            dateTypeOptions[type].includes(id)
+        );
+    }
+}
+
+export default class DateFilterValue extends Component {
+    setup() {
+        this._setStateFromProps(this.props);
+        onWillUpdateProps(this._setStateFromProps);
+    }
+    _setStateFromProps(props) {
+        this.period = props.period;
+        /** @type {number|undefined} */
+        this.yearOffset = props.yearOffset;
+        // date should be undefined if we don't have the yearOffset
+        /** @type {DateTime|undefined} */
+        this.date =
+            this.yearOffset !== undefined
+                ? DateTime.local().plus({ year: this.yearOffset })
+                : undefined;
     }
 
-    class DateFilterValue extends Component {
-        dateOptions(type) {
-            return type ? dateOptions(type) : [];
-        }
-
-        isYear() {
-            return this.props.type === "year";
-        }
-
-        isSelected(periodId) {
-            return [this.props.year, this.props.period].includes(periodId);
-        }
-
-        getCurrentDateFilterValue() {
-            const period = dateOptions(this.props.type).filter(period => this.isSelected(period.id))
-            let value = period.length && period[0].description || ""
-
-            if (!this.isYear()){
-                const year = dateOptions("year").filter(period => this.isSelected(period.id))
-                value += ` ${year.length && year[0].description || ""}`
-            }
-            return value
-        }
-
-        onPeriodChanged(ev) {
-            const value = ev.target.value;
-            this.props.onTimeRangeChanged({
-                /** We need to ensure that a year is set when the period
-                 * is selected since the user can bypass the year selection.
-                 * If we don't, we might end up with a date filter with year===undefined
-                 * which works to setup a pivot domain but is technically incorrect
-                 * and will return a bad value on FILTER.VALUE function.
-                 * */
-                year: this.props.year || this.dateOptions('year')[0].id,
-                period: value !== "empty" ? value : undefined,
-            });
-        }
-
-        onYearChanged(ev) {
-            const value = ev.target.value;
-            this.props.onTimeRangeChanged({
-                year: value !== "empty" ? value : undefined,
-                period: this.props.period,
-            });
-        }
+    dateOptions(type) {
+        return type ? dateOptions(type) : [];
     }
-    DateFilterValue.template = "documents_spreadsheet.DateFilterValue";
 
-    return DateFilterValue;
-});
+    isYear() {
+        return this.props.type === "year";
+    }
+
+    isSelected(periodId) {
+        return this.period === periodId;
+    }
+
+    onPeriodChanged(ev) {
+        this.period = ev.target.value;
+        this._updateFilter();
+    }
+
+    onYearChanged(date) {
+        this.date = date;
+        this.yearOffset = date.year - DateTime.now().year;
+        this._updateFilter();
+    }
+
+    _updateFilter() {
+        this.props.onTimeRangeChanged({
+            yearOffset: this.yearOffset || 0,
+            period: this.period,
+        });
+    }
+}
+DateFilterValue.template = "documents_spreadsheet.DateFilterValue";
+DateFilterValue.components = { YearPicker };
+
+DateFilterValue.props = {
+    // See @documents_spreadsheet/bundle/global_filters/filters_plugin.RangeType
+    type: { validate: (t) => ["year", "month", "quarter"].includes(t) },
+    onTimeRangeChanged: Function,
+    yearOffset: { type: Number, optional: true },
+    period: { type: String, optional: true },
+};

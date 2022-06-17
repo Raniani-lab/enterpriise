@@ -118,7 +118,7 @@ class ProductProduct(models.Model):
             qty2remove = old_qty - quantity
             delivery = self._get_contextual_fsm_task().sale_order_id.picking_ids
             if delivery:
-                available_moves = delivery.move_lines.filtered(lambda d: d.state != 'done' and d.product_id == self)
+                available_moves = delivery.move_ids.filtered(lambda d: d.state != 'done' and d.product_id == self)
                 for move in available_moves:
                     removable = min(move.product_uom_qty - move.quantity_done, qty2remove)
                     qty2remove -= removable

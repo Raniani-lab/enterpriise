@@ -488,15 +488,17 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
 
         product.type = 'consu'
         self.assertEqual(product.set_fsm_quantity(-1), None)
-        self.assertTrue(product.set_fsm_quantity(1))
+        self.assertEqual(product.set_fsm_quantity(6), True)
+        self.assertEqual(product.set_fsm_quantity(5), True)
 
         product.tracking = 'lot'
-        self.assertIn('name', product.set_fsm_quantity(2))
+        self.assertIn('name', product.set_fsm_quantity(4))
 
         product.tracking = 'none'
         self.task.with_user(self.project_user).action_fsm_validate()
         self.task.sale_order_id.sudo().state = 'done'
-        self.assertFalse(product.set_fsm_quantity(3))
+        self.assertEqual(product.set_fsm_quantity(3), False)
+
     def test_stock_moves_and_pickings_when_task_is_done(self):
         """
         1) Assert no stock moves, no stock pickings and available qty from storable_product_ordered is 0

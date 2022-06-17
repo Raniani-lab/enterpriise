@@ -676,7 +676,7 @@ class MrpEco(models.Model):
                             'res_model': 'product.template',
                             'res_id': eco.product_tmpl_id.id,
                         })
-                        eco.product_tmpl_id.version = eco.product_tmpl_id.version + 1
+                    eco.product_tmpl_id.version = eco.product_tmpl_id.version + 1
                 else:
                     eco.mapped('new_bom_id').apply_new_version()
                     for attach in eco.mrp_document_ids:

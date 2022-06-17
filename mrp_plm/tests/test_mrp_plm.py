@@ -329,3 +329,19 @@ class TestMrpPlm(TestPlmCommon):
             {'change_type': 'add', 'operation_change': 'op2'},
             {'change_type': 'remove', 'operation_change': 'op1'},
         ])
+
+    def test_product_version(self):
+        """Test product version number will be increase after a product ECO is done.
+        """
+        version_num = self.table.product_tmpl_id.version
+        mrp_eco = self.env['mrp.eco'].create({
+            'name': 'a plm',
+            'product_tmpl_id': self.table.product_tmpl_id.id,
+            'stage_id': self.eco_stage.id,
+            'type_id': self.eco_type.id,
+            'type': 'product',
+        })
+        mrp_eco.action_new_revision()
+        mrp_eco.action_apply()
+        self.assertEqual(mrp_eco.state, 'done')
+        self.assertEqual(self.table.product_tmpl_id.version, version_num + 1)

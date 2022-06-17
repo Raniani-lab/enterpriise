@@ -198,7 +198,7 @@ class SaleOrderLine(models.Model):
         super()._compute_price_unit()
 
     @api.depends('product_id')
-    def _compute_pricing(self):
+    def _compute_pricing_id(self):
         non_subscription_lines = self.env['sale.order.line']
         previous_lines = self.order_id.order_line.filtered('is_subscription_product')
         # search pricing_ids for each variant in self
@@ -233,7 +233,7 @@ class SaleOrderLine(models.Model):
                 if (pricing_match.duration, pricing_match.unit) == (latest_pricing_id.duration, latest_pricing_id.unit):
                     best_pricing_id = pricing_match
             line.pricing_id = best_pricing_id.id
-        super(SaleOrderLine, non_subscription_lines)._compute_pricing()
+        super(SaleOrderLine, non_subscription_lines)._compute_pricing_id()
 
     @api.depends('start_date', 'order_id.state', 'invoice_lines')
     def _compute_last_invoice_date(self):

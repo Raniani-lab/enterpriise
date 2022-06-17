@@ -31,7 +31,7 @@ class SaleOrderLine(models.Model):
                                         "'|',"
                                         "('pricelist_id', '=', False),"
                                         "('pricelist_id', '=', pricelist_id)]",
-                                 compute='_compute_pricing', store=True, precompute=True, readonly=False)
+                                 compute='_compute_pricing_id', store=True, precompute=True, readonly=False)
     temporal_type = fields.Selection([], compute="_compute_temporal_type")
 
     def _compute_start_date(self):
@@ -40,7 +40,7 @@ class SaleOrderLine(models.Model):
     def _compute_next_invoice_date(self):
         self.next_invoice_date = False
 
-    def _compute_pricing(self):
+    def _compute_pricing_id(self):
         self.pricing_id = False
 
     @api.depends('order_id', 'product_template_id')

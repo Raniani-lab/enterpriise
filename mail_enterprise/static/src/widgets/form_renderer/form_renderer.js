@@ -218,12 +218,7 @@ FormRenderer.include({
         }
         var self = this;
         const thread = ev.data.thread;
-        var attachments = $.extend(true, {}, thread.allAttachments.reverse());  // clone array
-        attachments = _.filter(attachments, function (attachment) {
-            var match = attachment.mimetype.match('pdf|image');
-            attachment.update({ type: match ? match[0] : false });
-            return match && !attachment.isUploading;
-        });
+        const attachments = thread.attachmentsInWebClientView;
         if (attachments.length || this.attachmentViewer) {
             if (this.attachmentViewer) {
                 // FIXME should be improved : what if somehow an attachment is replaced in a thread ?
@@ -238,7 +233,7 @@ FormRenderer.include({
                         this._interchangeChatter(false);
                     }
                     else {
-                        this.attachmentViewer.updateContents(attachments);
+                        this.attachmentViewer.updateContents(thread);
                     }
                 } else {
                     // The attachmentViewer lose its event listeners when it is reused,
@@ -252,7 +247,7 @@ FormRenderer.include({
                 this._updateChatterContainerTarget();
             } else {
                 this.attachmentPreviewResID = this.state.res_id;
-                this.attachmentViewer = new AttachmentViewer(this, attachments);
+                this.attachmentViewer = new AttachmentViewer(this, thread);
                 this.attachmentViewer.appendTo(this.$attachmentPreview).then(function() {
                     self.trigger_up('preview_attachment_validation');
                     self.$attachmentPreview.resizable({

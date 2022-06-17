@@ -1,5 +1,7 @@
 /** @odoo-module **/
 
+import { replace } from '@mail/model/model_field_command';
+
 import core from 'web.core';
 import Widget from 'web.Widget';
 import { hidePDFJSButtons } from '@web/legacy/js/libs/pdfjs';
@@ -19,11 +21,12 @@ var AttachmentViewer = Widget.extend({
      * @constructor
      * @override
      * @param {Widget} parent
-     * @param {Array<Object>} attachments list of attachments
+     * @param {Thread} thread
      */
-    init: function (parent, attachments) {
+    init: function (parent, thread) {
         this._super.apply(this, arguments);
-        this.attachments = attachments;
+        this.thread = thread;
+        this.attachments = this.thread.attachmentsInWebClientView;
         this._setActive();
     },
     /**
@@ -42,11 +45,12 @@ var AttachmentViewer = Widget.extend({
 
     /**
      * Update attachments list and activeAttachment.
-     *
-     * @param {Array<Object>} attachments list of attachments
+
+     * @param {Thread} thread
      */
-    updateContents: function (attachments) {
-        this.attachments = attachments;
+    updateContents(thread) {
+        this.thread = thread;
+        this.attachments = this.thread.attachmentsInWebClientView;
         this._setActive();
         this._renderAttachment();
     },
@@ -62,8 +66,8 @@ var AttachmentViewer = Widget.extend({
      */
     _renderAttachment: function () {
         this.$el.empty();
-        this.$el.append(QWeb.render('mail_enterprise.AttachmentPreview', {widget: this}));
-        if (this.activeAttachment && this.activeAttachment.type === 'pdf') {
+        this.$el.append(QWeb.render('mail_enterprise.AttachmentPreview', { thread: this.thread }));
+        if (this.thread.mainAttachment && this.thread.mainAttachment.isPdf) {
             hidePDFJSButtons(this.el);
         }
     },
@@ -72,16 +76,8 @@ var AttachmentViewer = Widget.extend({
      * @private
      */
     _setActive: function () {
-        this.activeAttachment = _.find(this.attachments, function (attachment) {
-            return attachment.is_main;
-        });
-        if (!this.activeAttachment && this.attachments.length) {
-            this.activeAttachment = this.attachments[0];
-            this._rpc({
-                model: 'ir.attachment',
-                method: 'register_as_main_attachment',
-                args: [[this.activeAttachment.id], this.activeAttachment.is_main === false],
-            });
+        if (!this.thread.mainAttachment && this.thread.attachmentsInWebClientView.length > 0) {
+            this._switch_main_attachment(0);
         }
     },
 
@@ -94,11 +90,11 @@ var AttachmentViewer = Widget.extend({
     **/
     _switch_main_attachment: function (index) {
         var self = this;
-        this.activeAttachment = this.attachments[index];
+        this.thread.update({ mainAttachment: replace(this.thread.attachmentsInWebClientView[index]) });
         this._rpc({
             model: 'ir.attachment',
             method: 'register_as_main_attachment',
-            args: [[this.activeAttachment['id']]],
+            args: [[this.thread.mainAttachment['id']]],
         }).then(
             function() {
                 self._renderAttachment();
@@ -114,8 +110,8 @@ var AttachmentViewer = Widget.extend({
      */
     _onClickNext: function (ev) {
         ev.preventDefault();
-        var index = _.findIndex(this.attachments, this.activeAttachment);
-        index = index === this.attachments.length -1 ? 0 : index + 1;
+        var index = _.findIndex(this.thread.attachmentsInWebClientView, this.thread.mainAttachment);
+        index = index === this.thread.attachmentsInWebClientView.length - 1 ? 0 : index + 1;
         this._switch_main_attachment(index);
     },
     /**
@@ -126,8 +122,8 @@ var AttachmentViewer = Widget.extend({
      */
     _onClickPrevious: function (ev) {
         ev.preventDefault();
-        var index = _.findIndex(this.attachments, this.activeAttachment);
-        index = index === 0 ? this.attachments.length - 1 : index - 1;
+        var index = _.findIndex(this.thread.attachmentsInWebClientView, this.thread.mainAttachment);
+        index = index === 0 ? this.thread.attachmentsInWebClientView.length - 1 : index - 1;
         this._switch_main_attachment(index);
     },
 });

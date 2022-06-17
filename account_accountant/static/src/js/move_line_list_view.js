@@ -1,7 +1,9 @@
 odoo.define('account_accountant.MoveLineListView', function (require) {
 "use strict";
 
+    const { insert } = require('@mail/model/model_field_command');
     var AttachmentViewer = require('@mail_enterprise/js/attachment_viewer')[Symbol.for("default")];
+
     var config = require('web.config');
     var core = require('web.core');
     var ListController = require('web.ListController');
@@ -93,7 +95,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
          * @param {string} recordId
          * @private
          */
-        _renderAttachmentPreview: function (recordId) {
+        async _renderAttachmentPreview(recordId) {
             var self = this;
             if (_.filter(this.model.localData, function(value, key, object) {return value.groupData == self.last_selected}).length) {
                 recordId = _.filter(this.model.localData, function(value, key, object) {return value.groupData == self.last_selected})[0].data[0]
@@ -102,30 +104,28 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                 return Promise.resolve()
             }
             var record = this.model.get(recordId || this.last_selected);
-            var types = ['pdf', 'image'];
             // record type will be list when multi groupby while expanding group row
             if (record.type === 'list') {
                 return;
             }
-            let attachments = record.data.move_attachment_ids.data.map(function (attachment) {
-                return {
-                    id: attachment.res_id,
-                    filename: attachment.data.filename,
-                    mimetype: attachment.data.mimetype,
-                    url: '/web/content/' + attachment.res_id + '?download=true',
-                };
+            const messaging = await owl.Component.env.services.messaging.get();
+            const thread = messaging.models['Thread'].insert({
+                attachments: insert(record.data.move_attachment_ids.data.map(function (attachment) {
+                    return {
+                        id: attachment.data.id,
+                        mimetype: attachment.data.mimetype,
+                    };
+                })),
+                id: record.res_id,
+                model: record.model,
             });
-            attachments = _.filter(attachments, function (attachment) {
-                var match = attachment.mimetype.match(types.join('|'));
-                attachment.type = match ? match[0] : false;
-                return match;
-            });
+            const attachments = thread.attachmentsInWebClientView;
             var prom;
             if (!_.isEqual(_.pluck(this.currentAttachments, 'id'), _.pluck(attachments, 'id'))) {
                 if (this.attachmentViewer) {
-                    this.attachmentViewer.updateContents(attachments);
+                    this.attachmentViewer.updateContents(thread);
                 } else {
-                    this.attachmentViewer = new AttachmentViewer(this, attachments);
+                    this.attachmentViewer = new AttachmentViewer(this, thread);
                 }
                 prom = this.attachmentViewer.appendTo(this.$attachmentPreview.empty()).then(function () {
                     self.$attachmentPreview.resizable({

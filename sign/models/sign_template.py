@@ -333,7 +333,7 @@ class SignItem(models.Model):
 
     option_ids = fields.Many2many("sign.item.option", string="Selection options")
 
-    name = fields.Char(string="Field Name")
+    name = fields.Char(string="Field Name", default=lambda self: self.type_id.placeholder)
     page = fields.Integer(string="Document Page", required=True, default=1)
     posX = fields.Float(digits=(4, 3), string="Position X", required=True)
     posY = fields.Float(digits=(4, 3), string="Position Y", required=True)

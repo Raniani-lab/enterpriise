@@ -78,7 +78,7 @@ const SignItemCustomPopover = Widget.extend({
         this.$currentTarget.data("required")
       );
 
-      this.$("#o_sign_name").val(this.$currentTarget.data("name") || this.$currentTarget.prop('field-placeholder') || "");
+      this.$("#o_sign_name").val(this.$currentTarget.data("name") || "");
       this.title = this.$currentTarget.prop("field-name");
       if (fieldType !== "selection") {
         this.$(".o_sign_options_group").hide();
@@ -126,7 +126,7 @@ const SignItemCustomPopover = Widget.extend({
       ".o_sign_field_align_group .o_sign_align_button.btn-primary"
     ).data("align");
     if(! odoo.debug){
-      var name = this.$currentTarget.data('name') || this.$currentTarget.prop('field-placeholder') || ""
+      var name = this.$currentTarget.data('name') || ""
     }
     else{
       var name = this.$('#o_sign_name').val();

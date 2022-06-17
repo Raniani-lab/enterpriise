@@ -137,7 +137,7 @@ class SocialFacebookController(SocialController):
         else:
             redirect_url = 'https://www.facebook.com/search/?q=%s' % urllib.parse.quote(name)
 
-        return werkzeug.utils.redirect(redirect_url)
+        return request.redirect(redirect_url, local=False)
 
     def _facebook_create_accounts(self, access_token, media, is_extended_token):
         """ Steps to create the facebook social.accounts:

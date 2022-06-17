@@ -6,7 +6,6 @@ import pprint
 
 from werkzeug.exceptions import Forbidden
 from werkzeug.urls import url_encode
-from werkzeug.utils import redirect
 
 from odoo import _, http
 from odoo.exceptions import UserError, ValidationError
@@ -77,7 +76,7 @@ class AmazonController(http.Controller):
                 qcontext={'error_message': e['name'], 'account_url': account_url},
             )
 
-        return redirect(account_url)
+        return request.redirect(account_url, local=False)
 
     @staticmethod
     def _compute_account_url(account_id):

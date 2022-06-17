@@ -105,7 +105,7 @@ QUnit.test('activity with approval to be made by another user', async function (
 
     const pyEnv = await startServer();
     const approvalRequestId1 = pyEnv['approval.request'].create({});
-    const resUsersId1 = pyEnv['res.users'].create();
+    const resUsersId1 = pyEnv['res.users'].create({});
     pyEnv['approval.approver'].create({
         request_id: approvalRequestId1,
         status: 'pending',

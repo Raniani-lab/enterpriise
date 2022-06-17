@@ -1173,15 +1173,15 @@ class View(models.Model):
             root = root.inherit_id
         combined_views = self.browse(view_ids).with_context(check_view_ids=[])._get_inheriting_views()
 
-        fields_to_ignore = (field for field in self._fields if field != 'arch_base')
-        for view in (combined_views - self).with_context(from_copy_translation=True):
-            view.copy_translations(new, fields_to_ignore)
-
         new.write({
             'name': '%s copy(%s)' % (new.name, copy_no),
             'key': new_key,
             'arch_base': etree.tostring(arch_tree, encoding='unicode'),
         })
+
+        fields_to_ignore = (field for field in self._fields if field != 'arch_base')
+        for view in (combined_views - self).with_context(from_copy_translation=True):
+            view.copy_translations(new, fields_to_ignore)
 
         return new
 

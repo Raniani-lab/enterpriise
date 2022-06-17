@@ -249,9 +249,9 @@ class TestSubscription(TestSubscriptionCommon):
 
     def test_upsell_via_so(self):
         # Test the upsell flow using an intermediary upsell quote.
-        princing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month', 'price': 50, 'product_template_id': self.product.product_tmpl_id.id})
+        pricing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month', 'price': 50, 'product_template_id': self.product.product_tmpl_id.id})
         pricing_6_month2 = self.env['product.pricing'].create({'duration': 6, 'unit': 'month', 'price': 20, 'product_template_id': self.product2.product_tmpl_id.id})
-        princing_6_month3 = self.env['product.pricing'].create({'duration': 6, 'unit': 'month', 'price': 15, 'product_template_id': self.product3.product_tmpl_id.id})
+        pricing_6_month3 = self.env['product.pricing'].create({'duration': 6, 'unit': 'month', 'price': 15, 'product_template_id': self.product3.product_tmpl_id.id})
         with freeze_time("2021-01-01"):
             self.subscription.order_line = False
             self.subscription.write({
@@ -266,7 +266,7 @@ class TestSubscription(TestSubscriptionCommon):
                                                'name': "2 month",
                                                'price_unit': 420,
                                                'product_uom_qty': 3,
-                                               'pricing_id': princing_2_month.id
+                                               'pricing_id': pricing_2_month.id
                                                }),
                                ]
             })
@@ -276,14 +276,24 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-01-15"):
             action = self.subscription.prepare_upsell_order()
             upsell_so = self.env['sale.order'].browse(action['res_id'])
-            self.assertEqual(upsell_so.order_line.mapped('product_uom_qty'), [0, 0], 'The upsell order has 0 quantity')
+            self.assertEqual(len(upsell_so.order_line.filtered('discount')), 2)
+            self.assertEqual(
+                upsell_so.order_line.mapped('product_uom_qty'), [0, 0], 'The upsell order has 0 quantity')
             upsell_names = upsell_so.order_line.sorted('id').mapped('name')
             line1_period = upsell_names[0].split('\n')[1]
-            self.assertEqual(line1_period, '01/15/2021 to 01/31/2021', "Prorated duration correspond to the dates")
+            self.assertEqual(
+                line1_period, '01/15/2021 to 01/31/2021', "Prorated duration correspond to the dates")
             line2_period = upsell_names[1].split('\n')[1]
-            self.assertEqual(line2_period, '01/15/2021 to 02/28/2021', "Prorated duration correspond to the dates")
+            self.assertEqual(
+                line2_period, '01/15/2021 to 02/28/2021', "Prorated duration correspond to the dates")
 
             upsell_so.order_line.product_uom_qty = 1
+            self.assertEqual(
+                upsell_so.order_line.mapped('price_unit'), [50.0, 50.0],
+                "Prices are recomputed on qty update")
+            self.assertEqual(
+                len(upsell_so.order_line.filtered('discount')), 2,
+                "Discount is kept when prices are recomputed")
             # When the upsell order is created, all quantities are equal to 0
             # add line to quote manually, it must be taken into account in the subscription after validation
             upsell_so.order_line = [(0, 0, {
@@ -301,7 +311,7 @@ class TestSubscription(TestSubscriptionCommon):
                 'product_uom_qty': 1,
                 'product_uom': self.product3.uom_id.id,
                 'price_unit': self.product3.list_price,
-                'pricing_id': princing_6_month3.id,
+                'pricing_id': pricing_6_month3.id,
                 'start_date': datetime.datetime(2021, 6, 1), # start in june
             })]
             # During the test, the next_invoice_date of the added line are not set because _get_previous_order_default_dates
@@ -349,7 +359,7 @@ class TestSubscription(TestSubscriptionCommon):
         """ Test the prorated values obtained when creating an upsell. complementary to the previous one where new
          lines had no existing default values.
         """
-        princing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month', 'price': 50})
+        pricing_2_month = self.env['product.pricing'].create({'duration': 2, 'unit': 'month', 'price': 50})
         usd_currency = self.env.ref('base.USD')
         usd_currency.active = True
         pricelist_id = self.env['product.pricelist'].create({
@@ -383,7 +393,7 @@ class TestSubscription(TestSubscriptionCommon):
                         'name': "2 month: original",
                         'price_unit': 50,
                         'product_uom_qty': 1,
-                        'pricing_id': princing_2_month.id,
+                        'pricing_id': pricing_2_month.id,
                         'start_date': '2021-01-01'
                     }),
                     Command.create({
@@ -419,7 +429,7 @@ class TestSubscription(TestSubscriptionCommon):
                 'product_uom_qty': 1,
                 'product_uom': self.product3.uom_id.id,
                 'price_unit': self.product3.list_price,
-                'pricing_id': princing_2_month.id,
+                'pricing_id': pricing_2_month.id,
             }]
             self.env['sale.order.line'].create(so_line_vals)
             upsell_so.order_line.product_uom_qty = 1
@@ -1044,15 +1054,20 @@ class TestSubscription(TestSubscriptionCommon):
                                       ('1_change', datetime.date(2022, 2, 2), 'progress', 40.0, 120.0)])
 
     def test_option_template(self):
-        pricing_year_1 = self.env['product.pricing'].create({'duration': 3, 'unit': 'year', 'price': 10,
-                                                             'pricelist_id': self.company_data['default_pricelist'].id,
-                                                             'product_template_id': self.product.product_tmpl_id.id})
+        pricing_year_1 = self.env['product.pricing'].create({
+            'duration': 3, 'unit': 'year', 'price': 10,
+            'pricelist_id': self.company_data['default_pricelist'].id,
+            'product_template_id': self.product.product_tmpl_id.id
+        })
         other_pricelist = self.env['product.pricelist'].create({
             'name': 'New pricelist',
             'currency_id': self.company.currency_id.id,
         })
-        self.env['product.pricing'].create(
-            {'duration': 3, 'unit': 'year', 'pricelist_id': other_pricelist.id, 'price': 15, 'product_template_id': self.product.product_tmpl_id.id})
+        self.env['product.pricing'].create({
+            'duration': 3, 'unit': 'year', 'price': 15,
+            'pricelist_id': other_pricelist.id,
+            'product_template_id': self.product.product_tmpl_id.id
+        })
         template = self.subscription_tmpl = self.env['sale.order.template'].create({
             'name': 'Subscription template without discount',
             'recurring_rule_boundary': 'unlimited',
@@ -1081,11 +1096,12 @@ class TestSubscription(TestSubscriptionCommon):
             'sale_order_template_id': template.id,
         })
         subscription._onchange_sale_order_template_id()
-        self.assertEqual(subscription.order_line.price_unit, 10, "The second pricing should be applied")
-        self.assertEqual(subscription.sale_order_option_ids.price_unit, 10, "The second pricing should be applied")
+        self.assertEqual(subscription.order_line.pricing_id, pricing_year_1)
+        self.assertEqual(subscription.order_line.price_unit, 10, "The first pricing should be applied")
+        self.assertEqual(subscription.sale_order_option_ids.price_unit, 10, "The first pricing should be applied")
         subscription.pricelist_id = other_pricelist.id
-        subscription.sale_order_template_id = template.id
         subscription._onchange_sale_order_template_id()
+        self.assertEqual(subscription.order_line.pricing_id, pricing_year_1)
         self.assertEqual(subscription.pricelist_id.id, other_pricelist.id, "The second pricelist should be applied")
         self.assertEqual(subscription.order_line.price_unit, 15, "The second pricing should be applied")
         self.assertEqual(subscription.sale_order_option_ids.price_unit, 15, "The second pricing should be applied")

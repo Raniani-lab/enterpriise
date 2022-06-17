@@ -233,13 +233,13 @@ FormRenderer.include({
             types: ['pdf', 'image'],
             order: 'asc'
         });
-        var attachments = $.extend(true, {}, ev.data.attachments);  // clone array
+        const thread = ev.data.thread;
+        var attachments = $.extend(true, {}, thread.allAttachments);  // clone array
         attachments = _.filter(attachments, function (attachment) {
             var match = attachment.mimetype.match(options.types.join('|'));
             attachment.update({ type: match ? match[0] : false });
             return match && !attachment.isUploading;
         });
-        const thread = ev.data.thread;
         // most recent attachment is first in attachment list, so default order is 'desc'
         if (options.order === 'asc') {
             attachments.reverse();

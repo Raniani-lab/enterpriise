@@ -7,6 +7,10 @@
         <xpath expr="//div[@id='wrap']" position="attributes">
             <attribute name="class" value="o_appointment"/>
         </xpath>
+        <xpath expr="//div[@id='wrap']" position="after">
+            <input t-if='state == "new" and website.plausible_shared_key' type='hidden' class='js_plausible_push'
+                data-event-name='Lead Generation' data-event-params='{"CTA": "Appointment"}' />
+        </xpath>
         <xpath expr="//div[hasclass('oe_structure')][1]" position="before">
             <nav t-if="appointment_type and appointment_type.category == 'website'" class="navbar navbar-light border-top shadow-sm d-print-none">
                 <div class="container">

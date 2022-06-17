@@ -2,7 +2,6 @@
 
 import config from 'web.config';
 import dom from 'web.dom';
-import pyUtils from 'web.py_utils';
 import FormRenderer from 'web.FormRenderer';
 import AttachmentViewer from '@mail_enterprise/js/attachment_viewer';
 
@@ -14,13 +13,6 @@ import '@mail/widgets/form_renderer/form_renderer';
  *
  * To use this simply add div with class o_attachment_preview in format
  *     <div class="o_attachment_preview"/>
- *
- * Some options can be passed to change its behavior:
- *     types: ['image', 'pdf']
- *
- * For example, if you want to display only pdf type attachment and the latest
- * one then use:
- *     <div class="o_attachment_preview" options="{'types': ['pdf']}"/>
 **/
 
 FormRenderer.include({
@@ -162,9 +154,6 @@ FormRenderer.include({
             }
             this._handleAttributes(this.$attachmentPreview, node);
             this._registerModifiers(node, this.state, this.$attachmentPreview);
-            if (node.attrs.options) {
-                this.$attachmentPreview.data(pyUtils.py_eval(node.attrs.options));
-            }
             if (this.attachmentPreviewWidth) {
                 this.$attachmentPreview.css('width', this.attachmentPreviewWidth);
             }
@@ -228,13 +217,10 @@ FormRenderer.include({
             return;
         }
         var self = this;
-        var options = _.defaults(this.$attachmentPreview.data(), {
-            types: ['pdf', 'image'],
-        });
         const thread = ev.data.thread;
         var attachments = $.extend(true, {}, thread.allAttachments.reverse());  // clone array
         attachments = _.filter(attachments, function (attachment) {
-            var match = attachment.mimetype.match(options.types.join('|'));
+            var match = attachment.mimetype.match('pdf|image');
             attachment.update({ type: match ? match[0] : false });
             return match && !attachment.isUploading;
         });

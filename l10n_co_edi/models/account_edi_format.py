@@ -49,6 +49,8 @@ class AccountEdiFormat(models.Model):
                                                   int(invoice_number))
 
     def _l10n_co_edi_get_round_amount(self, amount):
+        if amount == '':
+            return ''
         if abs(amount - float("%.2f" % amount)) > 0.00001:
             return "%.3f" % amount
         return '%.2f' % amount

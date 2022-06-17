@@ -4,19 +4,16 @@
     <t t-name="timesheet_grid.GroupedGridBody" t-inherit="web_grid.GroupedGridBody" t-inherit-mode="extension" owl="1">
         <xpath expr="//th" position="replace">
             <th>
-                <t t-if="grid.__label">
-                    <t t-if="showEmployeeAvatar">
-                        <TimesheetM2OAvatarEmployeeAdapter Component="widgetComponents.TimesheetM2OAvatarEmployee" value="grid.__label" workingHoursData="props.workingHoursData[grid.__label[0]]" timeBoundariesContext="props.timeBoundariesContext" rowIndex="grid_index" rangeContext="props.range" />
-                    </t>
-                    <t t-elif="widgetToShow === 'task_id'">
-                        <TimesheetM2OWidgetAdapter Component="widgetComponents.TimesheetM2OTask" value="grid.__label" workingHoursData="props.taskHoursData[grid.__label[0]]" rowIndex="grid_index" />
-                    </t>
-                    <t t-elif="widgetToShow === 'project_id'">
-                        <TimesheetM2OWidgetAdapter Component="widgetComponents.TimesheetM2OProject" value="grid.__label" workingHoursData="props.projectHoursData[grid.__label[0]]" rowIndex="grid_index" />
-                    </t>
-                    <t t-else="" t-esc="grid.__label[1]"/>
+                <t t-if="showEmployeeAvatar">
+                    <TimesheetM2OAvatarEmployeeAdapter Component="widgetComponents.TimesheetM2OAvatarEmployee" value="grid.__label" workingHoursData="props.workingHoursData[grid.__label[0]]" timeBoundariesContext="props.timeBoundariesContext" rowIndex="grid_index" rangeContext="props.range" />
                 </t>
-                <t t-else="">Undefined</t>
+                <t t-elif="widgetToShow === 'task_id'">
+                    <TimesheetM2OWidgetAdapter Component="widgetComponents.TimesheetM2OTask" value="grid.__label" workingHoursData="props.taskHoursData[grid.__label[0]]" rowIndex="grid_index" />
+                </t>
+                <t t-elif="widgetToShow === 'project_id'">
+                    <TimesheetM2OWidgetAdapter Component="widgetComponents.TimesheetM2OProject" value="grid.__label" workingHoursData="props.projectHoursData[grid.__label[0]]" rowIndex="grid_index" />
+                </t>
+                <t t-else="" t-out="grid.__label[1]"/>
             </th>
         </xpath>
     </t>

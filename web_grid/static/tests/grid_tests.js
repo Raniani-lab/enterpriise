@@ -2078,5 +2078,33 @@ QUnit.module('LegacyViews', {
         grid.destroy();
     });
 
+    QUnit.test('display the empty grid without None line when there is no data', async function (assert) {
+
+        this.data['analytic.line'].records = [];
+
+        this.arch = `<grid string="Timesheet By Project" adjustment="object" adjust_name="adjust_grid">
+                <field name="project_id" type="row" section="1"/>
+                <field name="task_id" type="row"/>
+                <field name="date" type="col">
+                    <range name="week" string="Week" span="week" step="day"/>
+                    <range name="month" string="Month" span="month" step="day"/>
+                </field>
+                <field name="unit_amount" type="measure" widget="float_time"/>
+            </grid>`;
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2016-01-24",
+        });
+
+        assert.strictEqual(grid.$('.o_grid_section:eq(0) th').length, 0,
+            "should not add None row");
+
+        grid.destroy();
+    });
+
 });
 });

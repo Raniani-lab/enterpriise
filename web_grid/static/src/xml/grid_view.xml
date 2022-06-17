@@ -123,10 +123,9 @@
     <t t-name="web_grid.GroupedGridBody" owl="1">
         <t t-foreach="props.data" t-as="grid" t-key="grid_index">
             <tbody class="o_grid_section">
-                <tr>
+                <tr t-if="grid.__label">
                     <th>
-                        <t t-if="grid.__label" t-esc="grid.__label[1]"/>
-                        <t t-else="">None</t>
+                        <t t-out="grid.__label[1]"/>
                     </th>
                     <t t-foreach="columns" t-as="column" t-key="column_index">
                         <td t-att-class="{

@@ -75,14 +75,13 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             const MAX_HEIGHT = 800;
             const MIDDLE_HEIGHT = 400;
             const DELTA_TEST = 20;
-            const viewPort = testUtils.prepareTarget();
 
             const form = await createView({
                 View: FormView,
                 arch:
                     '<form>' +
                         '<sheet>' +
-                            '<div style="height: 1000px"></div>' +
+                            `<div style="height: ${2 * MAX_HEIGHT}px"></div>` +
                         '</sheet>' +
                     '</form>',
                 data: this.data,
@@ -91,14 +90,14 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             });
 
             const controlPanelEl = document.querySelector('.o_control_panel');
-            const controlPanelHeight = controlPanelEl.getBoundingClientRect().height;
+            const controlPanelHeight = controlPanelEl.offsetHeight;
 
-            // Force viewport to have a scrollbar
-            viewPort.style.position = 'initial';
+            // Force container to have a scrollbar
+            controlPanelEl.parentElement.style.maxHeight = `${MAX_HEIGHT}px`;
 
-            async function scrollAndAssert(targetHeight, expectedTopValue, hasStickyClass) {
+            const scrollAndAssert = async (targetHeight, expectedTopValue, hasStickyClass) => {
                 if (targetHeight !== null) {
-                    window.scrollTo(0, targetHeight);
+                    controlPanelEl.parentElement.scrollTo(0, targetHeight);
                     await testUtils.nextTick();
                 }
                 const expectedPixelValue = `${expectedTopValue}px`;
@@ -115,23 +114,22 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             // Initial position (scrollTop: 0)
             await scrollAndAssert(null, 0, false);
 
-            // Scroll down 400px (scrollTop: 400)
+            // Scroll down 800px (scrollTop: 800)
             await scrollAndAssert(MAX_HEIGHT, -controlPanelHeight, true);
 
-            // Scoll up 20px (scrollTop: 380)
-            await scrollAndAssert(MAX_HEIGHT - DELTA_TEST, -(controlPanelHeight - DELTA_TEST), true);
+            // Scoll up 20px (scrollTop: 780)
+            await scrollAndAssert(MAX_HEIGHT - DELTA_TEST, -controlPanelHeight + DELTA_TEST, true);
 
-            // Scroll up 180px (scrollTop: 200)
+            // Scroll up 380px (scrollTop: 400)
             await scrollAndAssert(MIDDLE_HEIGHT, 0, true);
 
-            // Scroll down 200px (scrollTop: 400)
+            // Scroll down 200px (scrollTop: 800)
             await scrollAndAssert(MAX_HEIGHT, -controlPanelHeight, true);
 
             // Scroll up 400px (scrollTop: 0)
             await scrollAndAssert(0, -controlPanelHeight, false);
 
             form.destroy();
-            viewPort.style.position = '';
         });
 
         QUnit.test("mobile search: basic display", async function (assert) {

@@ -4,7 +4,7 @@ import { Dropdown } from "@web/core/dropdown/dropdown";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { patch } from "@web/core/utils/patch";
 
-const { onMounted, useExternalListener, useState, useRef } = owl;
+const { onMounted, useExternalListener, useState, useRef, useEffect } = owl;
 const STICKY_CLASS = "o_mobile_sticky";
 
 patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
@@ -19,18 +19,32 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
             showViewSwitcher: false,
         });
 
+        this.onScrollThrottledBound = this.onScrollThrottled.bind(this);
+
         useExternalListener(window, "click", this.onWindowClick);
-        const display = this.display;
-        if (!("adaptToScroll" in display) || display.adaptToScroll) {
-            useExternalListener(document, "scroll", this.onScrollThrottled);
-        }
-        onMounted(() => {
-            this.oldScrollTop = 0;
-            this.initialScrollTop = document.documentElement.scrollTop;
-            if (this.env.isSmall) {
-                this.mobileControlPanelRef.el.style.top = "0px";
+        useEffect(() => {
+            if (!this.env.isSmall || ("adaptToScroll" in this.display && !this.display.adaptToScroll) || !this.mobileControlPanelRef.el) {
+                return;
             }
+            const scrollingEl = this.getScrollingElement();
+            scrollingEl.addEventListener("scroll", this.onScrollThrottledBound);
+            this.mobileControlPanelRef.el.style.top = "0px";
+            return () => {
+                scrollingEl.removeEventListener("scroll", this.onScrollThrottledBound);
+            }
+        })
+        onMounted(() => {
+            if (!this.mobileControlPanelRef.el) {
+                return;
+            }
+            this.oldScrollTop = 0;
+            this.lastScrollTop = 0;
+            this.initialScrollTop = this.getScrollingElement().scrollTop;
         });
+    },
+
+    getScrollingElement() {
+        return this.mobileControlPanelRef.el.parentElement;
     },
 
     /**
@@ -54,28 +68,28 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
      * often than necessary.
      */
     onScrollThrottled() {
-        if (this.isScrolling) {
+        if (!this.mobileControlPanelRef.el || this.isScrolling) {
             return;
         }
         this.isScrolling = true;
         requestAnimationFrame(() => (this.isScrolling = false));
 
-        const scrollTop = document.documentElement.scrollTop;
+        const scrollTop = this.getScrollingElement().scrollTop;
         const delta = Math.round(scrollTop - this.oldScrollTop);
 
         if (scrollTop > this.initialScrollTop) {
             // Beneath initial position => sticky display
-            const elRect = this.mobileControlPanelRef.el.getBoundingClientRect();
             this.mobileControlPanelRef.el.classList.add(STICKY_CLASS);
-            this.mobileControlPanelRef.el.style.top =
-                delta < 0
-                    ? // Going up
-                      `${Math.min(0, elRect.top - delta)}px`
-                    : // Going down | not moving
-                      `${Math.max(-elRect.height, elRect.top - delta)}px`;
+            this.lastScrollTop = delta < 0 ?
+                // Going up
+                Math.min(0, this.lastScrollTop - delta) :
+                // Going down | not moving
+                Math.max(-this.mobileControlPanelRef.el.offsetHeight, -this.mobileControlPanelRef.el.offsetTop - delta);
+            this.mobileControlPanelRef.el.style.top = `${this.lastScrollTop}px`;
         } else {
-            // Above intial position => standard display
+            // Above initial position => standard display
             this.mobileControlPanelRef.el.classList.remove(STICKY_CLASS);
+            this.lastScrollTop = 0;
         }
 
         this.oldScrollTop = scrollTop;

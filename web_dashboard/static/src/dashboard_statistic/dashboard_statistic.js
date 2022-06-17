@@ -2,10 +2,10 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { Field } from "@web/views/fields/field";
 import { session } from "@web/session";
-import { Field } from "@web/fields/fields";
 
-const { Component, toRaw } = owl;
+const { Component } = owl;
 
 export class DashboardStatistic extends Component {
     setup() {
@@ -86,35 +86,6 @@ export class DashboardStatistic extends Component {
             return " - ";
         }
         return this.formatter(value, this.formatOpts);
-    }
-
-    getFakeRecord(index) {
-        if (!this.recordId) {
-            this.recordId = 1;
-        } else {
-            this.recordId++;
-        }
-        const fakeData = {};
-        for (const [fName, data] of Object.entries(this.props.model.data)) {
-            fakeData[fName] = data.values[index];
-        }
-        const allFields = Object.assign(
-            {},
-            toRaw(this.props.model.metaData.fields),
-            toRaw(this.props.model.metaData.statistics || {})
-        );
-        for (const field of Object.values(allFields)) {
-            field.type = field.fieldType;
-        }
-        return {
-            id: this.recordId,
-            viewtype: "dashboard",
-            fields: allFields,
-            fieldsInfo: {
-                dashboard: allFields,
-            },
-            data: fakeData,
-        };
     }
 
     // Variation

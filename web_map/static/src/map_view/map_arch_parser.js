@@ -2,7 +2,7 @@
 
 import { unique } from "@web/core/utils/arrays";
 import { XMLParser } from "@web/core/utils/xml";
-import { archParseBoolean } from "@web/views/helpers/utils";
+import { archParseBoolean } from "@web/views/utils";
 
 export class MapArchParser extends XMLParser {
     parse(arch) {

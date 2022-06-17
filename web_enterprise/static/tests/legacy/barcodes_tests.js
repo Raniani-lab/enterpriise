@@ -108,8 +108,6 @@ odoo.define('web_mobile.barcode.tests', function (require) {
         });
 
         QUnit.test("web_mobile: barcode button in a mobile environment with multiple results", async function (assert) {
-            assert.expect(4);
-
             // simulate a mobile environment
             fieldRegistry.add('many2one_barcode', FieldMany2OneBarcode);
             mock.patch(BarcodeScanner, {

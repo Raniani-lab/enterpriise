@@ -2,8 +2,8 @@
 
 import { _lt } from "@web/core/l10n/translation";
 import { KeepLast, Race } from "@web/core/utils/concurrency";
-import { Model } from "@web/views/helpers/model";
-import { computeReportMeasures, processMeasure } from "@web/views/helpers/utils";
+import { Model } from "@web/views/model";
+import { computeReportMeasures, processMeasure } from "@web/views/utils";
 
 export const MODES = ["retention", "churn"];
 export const TIMELINES = ["forward", "backward"];

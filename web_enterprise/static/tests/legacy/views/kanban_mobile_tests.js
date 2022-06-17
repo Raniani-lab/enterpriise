@@ -4,7 +4,7 @@ odoo.define('web_enterprise.kanban_mobile_tests', function (require) {
 const KanbanView = require('web.KanbanView');
 const { createView, dom} = require('web.test_utils');
 
-QUnit.module('Views', {
+QUnit.module('LegacyViews', {
     beforeEach() {
         this.data = {
             partner: {
@@ -50,6 +50,7 @@ QUnit.module('Views', {
         };
     },
 }, function () {
+    QUnit.module("KanbanView (legacy) - Mobile")
     QUnit.test('kanban with searchpanel: rendering in mobile', async function (assert) {
         assert.expect(34);
 

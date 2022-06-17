@@ -162,7 +162,7 @@ export const ActionEditorMain = Widget.extend({
             var loadViewDef = self.loadViews(self.action.res_model, context, self.views, {
                 load_filters: true,
             });
-            return loadViewDef.then(function (fields_views) {
+            return loadViewDef.then(async function (fields_views) {
                 if (!self.action.controlPanelFieldsView) {
                     // in case of Studio navigation, the processing done on the
                     // action in ActWindowActionManager@_executeWindowAction
@@ -172,6 +172,17 @@ export const ActionEditorMain = Widget.extend({
                 if (!self.controllerState.currentId) {
                     self.controllerState.currentId =
                         self.controllerState.resIds && self.controllerState.resIds[0];
+                    // FIXME: legacy/wowl views compatibility
+                    // This can be reworked when studio will be converted
+                    if (!self.controllerState.currentId && self.viewType === "form") {
+                        const result = await self._rpc({
+                            model: self.action.res_model,
+                            method: "search",
+                            args: [[]],
+                            kwargs: { limit: 1 },
+                        });
+                        self.controllerState.currentId = result[0];
+                    }
                 }
                 var params = {
                     action: self.action,

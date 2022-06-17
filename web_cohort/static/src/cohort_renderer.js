@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { formatFloat, formatPercentage } from "@web/fields/formatters";
+import { formatFloat, formatPercentage } from "@web/views/fields/formatters";
 
 const { Component } = owl;
 

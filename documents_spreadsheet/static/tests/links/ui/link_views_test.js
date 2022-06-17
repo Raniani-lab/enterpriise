@@ -1,4 +1,6 @@
 /** @odoo-module */
+
+import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import {
     click,
     getFixture,
@@ -8,6 +10,7 @@ import {
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
+import { useLegacyViews } from "@web/../tests/legacy/legacy_setup";
 import {
     applyGroup,
     selectGroup,
@@ -20,7 +23,6 @@ import {
 } from "@web/../tests/search/helpers";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
-import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
 import { InsertViewSpreadsheet } from "@documents_spreadsheet/assets/insert_action_link_menu/insert_action_link_menu_owl";
@@ -54,7 +56,8 @@ async function openView(viewType, options = {}) {
         { sequence: 1 }
     );
     serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
-    serviceRegistry.add("spreadsheetLinkMenuCell", spreadsheetLinkMenuCellService);
+    serviceRegistry.add('spreadsheetLinkMenuCell', spreadsheetLinkMenuCellService);
+    useLegacyViews();
     const webClient = await createWebClient({
         serverData,
         mockRPC: options.mockRPC,

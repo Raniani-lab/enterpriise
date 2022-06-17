@@ -187,7 +187,7 @@ QUnit.module('documents_kanban_tests.js', {
         assert.ok(kanban.$buttons.find('.o_documents_kanban_share_domain').is(':disabled'),
             "the share button should be disabled on global view");
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6,
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6,
             "should have 6 records in the renderer");
         assert.containsNone(kanban, '.o_documents_selector_tags',
             "should not display the tag navigation because no workspace is selected by default");
@@ -199,11 +199,11 @@ QUnit.module('documents_kanban_tests.js', {
             "should have 3 columns");
         assert.containsOnce(kanban.$('.o_content'), '> div.o_search_panel',
             "should have a 'documents selector' column");
-        assert.containsOnce(kanban, '.o_content > .o_kanban_view',
+        assert.containsOnce(kanban, '.o_content > .o_legacy_kanban_view',
             "should have a 'classical kanban view' column");
-        assert.hasClass(kanban.$('.o_kanban_view'), 'o_documents_kanban_view',
+        assert.hasClass(kanban.$('.o_legacy_kanban_view'), 'o_documents_kanban_view',
             "should have classname 'o_documents_kanban_view'");
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5,
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5,
             "should have 5 records in the renderer");
         assert.containsOnce(kanban, '.o_kanban_record:first .o_record_selector',
             "should have a 'selected' button");
@@ -958,7 +958,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         await kanban.reload({active: false});
 
-        assert.containsNone(kanban, '.o_kanban_view .o_record_selected',
+        assert.containsNone(kanban, '.o_legacy_kanban_view .o_record_selected',
             "should have no selected archived record");
 
         kanban.destroy();
@@ -2020,7 +2020,7 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the chatter");
         assert.containsOnce(document.body, '.o_search_panel:visible',
             "documents selector should still be visible");
-        assert.containsOnce(document.body, '.o_kanban_view:visible',
+        assert.containsOnce(document.body, '.o_legacy_kanban_view:visible',
             "kanban view should still be visible");
         assert.containsOnce(document.body, '.o_documents_inspector:visible',
             "document inspector should still be visible");
@@ -2692,14 +2692,14 @@ QUnit.module('documents_kanban_tests.js', {
 
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should have 4 related models");
 
         // filter on 'Task'
         await testUtils.dom.click(
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
         );
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 3 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 3 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should have 4 related models");
 
         // filter on 'Attachment' (should be a disjunction)
@@ -2707,7 +2707,7 @@ QUnit.module('documents_kanban_tests.js', {
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Attachment")
         );
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 3 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 3 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // remove both filters
@@ -2718,7 +2718,7 @@ QUnit.module('documents_kanban_tests.js', {
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
         );
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         kanban.destroy();
@@ -2739,7 +2739,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should have 4 related models");
 
         // filter on 'Not a file'
@@ -2747,14 +2747,14 @@ QUnit.module('documents_kanban_tests.js', {
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Not a file")
         );
 
-        assert.containsOnce(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', "should have 1 records in the renderer");
+        assert.containsOnce(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', "should have 1 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // filter on 'Task'
         await testUtils.dom.click(
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
         );
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 4 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 4 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // remove both filters
@@ -2765,7 +2765,7 @@ QUnit.module('documents_kanban_tests.js', {
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
         );
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         kanban.destroy();
@@ -2792,7 +2792,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.ok(
             testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n2"),
             "should display the correct number of records"
@@ -2802,13 +2802,13 @@ QUnit.module('documents_kanban_tests.js', {
         await testUtils.dom.click(
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
         );
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2, "should have 3 records in the renderer");
+        assert.strictEqual(kanban.$('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2, "should have 3 records in the renderer");
 
         // reload with a domain
         await toggleFilterMenu(kanban.el);
         await toggleMenuItem(kanban.el, "OwO");
 
-        assert.containsOnce(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 1, "should have 1 record in the renderer");
+        assert.containsOnce(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 1, "should have 1 record in the renderer");
         assert.ok(
             testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n1"),
             "should display the correct number of records"
@@ -2823,13 +2823,13 @@ QUnit.module('documents_kanban_tests.js', {
             testUtils.dom.find(kanban, '.o_search_panel_label_title', "Attachment")
         );
 
-        assert.containsN(kanban, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 2 records in the renderer");
+        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 2 records in the renderer");
 
         // reload without the domain
         await toggleFilterMenu(kanban.el);
         await toggleMenuItem(kanban.el, "OwO");
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 4 record in the renderer");
+        assert.strictEqual(kanban.$('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 4 record in the renderer");
         assert.ok(
             testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n2"),
             "should display the correct number of records"
@@ -2905,7 +2905,7 @@ QUnit.module('documents_kanban_tests.js', {
         assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
             "tag selector should be checked");
 
-        assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
+        assert.strictEqual(kanban.$('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
             4, "should have records in the renderer");
 
         await testUtils.dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
@@ -2922,7 +2922,7 @@ QUnit.module('documents_kanban_tests.js', {
 
             assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
                         "tag selector should still be checked");
-            assert.strictEqual(kanban.$('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
+            assert.strictEqual(kanban.$('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
             4, "should still have the same records in the renderer");
 
             kanban.destroy();

@@ -8,8 +8,10 @@ import {
     startServer,
 } from '@mail/../tests/helpers/test_utils';
 
+import { registerCleanup } from "@web/../tests/helpers/cleanup";
+
 import FormRenderer from '@account_invoice_extract/js/invoice_extract_form_renderer';
-import FormView from '@account_invoice_extract/js/invoice_extract_form_view';
+import InvoiceExtractFormView from '@account_invoice_extract/js/invoice_extract_form_view';
 import invoiceExtractTestUtils from '@account_invoice_extract/tests/helpers/invoice_extract_test_utils';
 
 import { registry } from '@web/core/registry';
@@ -36,7 +38,11 @@ QUnit.module('invoice_extract_form_view_tests.js', {
 
         // replace the basic form view by the custom one.
         registry.category('views').remove('form');
-        legacyViewRegistry.add("form", FormView);
+        const FormView = legacyViewRegistry.get("form");
+        legacyViewRegistry.add("form", InvoiceExtractFormView);
+        registerCleanup(() => {
+            legacyViewRegistry.add("form", FormView);
+        })
     },
     afterEach: function () {
         testUtils.mock.unpatch(FormRenderer);

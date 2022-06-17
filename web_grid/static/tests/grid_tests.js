@@ -11,7 +11,7 @@ const { createWebClient, doAction } = require('@web/../tests/webclient/helpers')
 const { getFixture, patchWithCleanup } = require("@web/../tests/helpers/utils");
 const { browser } = require("@web/core/browser/browser");
 
-QUnit.module('Views', {
+QUnit.module('LegacyViews', {
     beforeEach: function () {
         this.data = {
             'analytic.line': {
@@ -71,7 +71,7 @@ QUnit.module('Views', {
         };
     }
 }, function () {
-    QUnit.module('GridView');
+    QUnit.module('GridView (legacy)');
 
     QUnit.test('basic grid view', async function (assert) {
         assert.expect(18);
@@ -1905,7 +1905,7 @@ QUnit.module('Views', {
         });
 
         assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
-        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "two groupbys"); 
+        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "two groupbys");
         assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], "two groupbys");
 
         // open Group By menu
@@ -1915,21 +1915,21 @@ QUnit.module('Views', {
 
         // the data has not been fetched yet (the calls to read_grid take time)
         assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
-        assert.deepEqual(grid.model.groupedBy, ['project_id'], "one groupby"); 
+        assert.deepEqual(grid.model.groupedBy, ['project_id'], "one groupby");
         assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], "_gridData has not been modified yet");
 
         // click again on Project while the data are being fetched (the read_grid results have not returned yet)
         await cpHelpers.toggleMenuItem(grid.el, 'Project');
 
         assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
-        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "two groupbys"); 
+        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "two groupbys");
         assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], "two groupbys");
 
         prom.resolve();
         await testUtils.nextTick();
 
         assert.containsOnce(grid, ".o_grid_section tr div[title='BS task']");
-        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "the model state has not been corrupted"); 
+        assert.deepEqual(grid.model.groupedBy, ['project_id', 'task_id'], "the model state has not been corrupted");
         assert.deepEqual(grid.model._gridData.groupBy, ['project_id', 'task_id'], " the model state has not been corrupted");
 
         grid.destroy();
@@ -2018,7 +2018,7 @@ QUnit.module('Views', {
                 </field>
                 <field name="unit_amount" type="measure" widget="float_time"/>
             </grid>`;
-        
+
         this.data['analytic.line'].records = [];
         this.data['analytic.line'].records.push({id: 2, project_id: 31, task_id: 1, date: "2017-01-10", unit_amount: 0});
         this.data['analytic.line'].records.push({id: 6, project_id: 142, task_id: 12, date: "2017-01-26", unit_amount: 3.5});

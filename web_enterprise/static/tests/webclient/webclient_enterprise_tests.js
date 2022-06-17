@@ -2,8 +2,8 @@
 
 import {
     click,
+    editInput,
     getFixture,
-    legacyExtraNextTick,
     nextTick,
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
@@ -12,7 +12,6 @@ import { registry } from "@web/core/registry";
 import { editView } from "@web/views/debug_items";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
-import testUtils from "web.test_utils";
 import { ormService } from "@web/core/orm_service";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
@@ -44,7 +43,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             serverData.views["partner,false,form"] = `
                 <form>
                     <field name="display_name"/>
-                    <field name="m2o"/>'
+                    <field name="m2o"/>
                 </form>`;
             mockRPC = async (route) => {
                 assert.step(route);
@@ -75,12 +74,10 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await createEnterpriseWebClient({ fixture, serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(fixture.querySelector(".o_app.o_menuitem"));
-            await nextTick(); // there is another tick to update navar and destroy HomeMenu
-            await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ]);
             assert.notOk(document.body.classList.contains("o_home_menu_background"));
             assert.containsNone(fixture, ".o_home_menu");
@@ -94,16 +91,13 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await createEnterpriseWebClient({ fixture, serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(fixture.querySelector(".o_app.o_menuitem"));
-            await nextTick();
-            await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ]);
             await click(fixture.querySelector(".o_kanban_record"));
             await nextTick(); // there is another tick to update navbar and destroy HomeMenu
-            await legacyExtraNextTick();
             assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
             assert.isVisible(fixture.querySelector(".o_menu_toggle"));
             assert.containsOnce(fixture, ".o_form_view");
@@ -117,20 +111,14 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await createEnterpriseWebClient({ fixture, serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(fixture.querySelector(".o_app.o_menuitem"));
-            await nextTick();
-            await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ]);
             await click(fixture.querySelector(".o_kanban_record"));
-            await nextTick();
-            await legacyExtraNextTick();
             assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
-            await click(fixture.querySelector('.o_field_widget[name="m2o"]'));
-            await nextTick();
-            await legacyExtraNextTick();
+            await click(fixture.querySelector('.o_field_widget[name="m2o"] .o_form_uri'));
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
                 "/web/dataset/call_kw/partner/get_views",
@@ -150,20 +138,14 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 await createEnterpriseWebClient({ fixture, serverData, mockRPC });
                 assert.verifySteps(["/web/webclient/load_menus"]);
                 await click(fixture.querySelector(".o_app.o_menuitem"));
-                await nextTick();
-                await legacyExtraNextTick();
                 assert.verifySteps([
                     "/web/action/load",
                     "/web/dataset/call_kw/partner/get_views",
-                    "/web/dataset/search_read",
+                    "/web/dataset/call_kw/partner/web_search_read",
                 ]);
                 await click(fixture.querySelector(".o_kanban_record"));
-                await nextTick();
-                await legacyExtraNextTick();
                 assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
-                await click(fixture.querySelector('.o_field_widget[name="m2o"]'));
-                await nextTick();
-                await legacyExtraNextTick();
+                await click(fixture.querySelector('.o_field_widget[name="m2o"] .o_form_uri'));
                 assert.verifySteps([
                     "/web/dataset/call_kw/partner/get_formview_action",
                     "/web/dataset/call_kw/partner/get_views",
@@ -171,7 +153,6 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 ]);
                 const menuToggle = fixture.querySelector(".o_menu_toggle");
                 await click(menuToggle);
-                await nextTick();
                 assert.verifySteps([]);
                 assert.ok(menuToggle.classList.contains("o_menu_toggle_back"));
                 assert.containsOnce(fixture, ".o_home_menu");
@@ -183,20 +164,14 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await createEnterpriseWebClient({ fixture, serverData, mockRPC });
             assert.verifySteps(["/web/webclient/load_menus"]);
             await click(fixture.querySelector(".o_app.o_menuitem"));
-            await nextTick();
-            await legacyExtraNextTick();
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ]);
             await click(fixture.querySelector(".o_kanban_record"));
-            await nextTick();
-            await legacyExtraNextTick();
             assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
-            await click(fixture.querySelector('.o_field_widget[name="m2o"]'));
-            await nextTick();
-            await legacyExtraNextTick();
+            await click(fixture.querySelector('.o_field_widget[name="m2o"] .o_form_uri'));
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
                 "/web/dataset/call_kw/partner/get_views",
@@ -212,8 +187,6 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             // );
             // endif
             // if we reload on going back to underlying action
-            await nextTick();
-            await legacyExtraNextTick();
             assert.verifySteps(
                 ["/web/dataset/call_kw/partner/read"],
                 "the underlying view should reload when toggling the HomeMenu to off"
@@ -230,18 +203,15 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         });
 
         QUnit.test("restore the newly created record in form view (legacy)", async (assert) => {
-            assert.expect(7);
             const action = serverData.actions[6];
             delete action.res_id;
             action.target = "current";
             const webClient = await createEnterpriseWebClient({ fixture, serverData });
 
             await doAction(webClient, 6);
-            let formEl = fixture.querySelector(".o_form_view");
-            assert.isVisible(formEl);
-            assert.ok(formEl.classList.contains("o_form_editable"));
-            const input = fixture.querySelector("input.o_input");
-            await testUtils.fields.editInput(input, "red right hand");
+            assert.containsOnce(fixture, ".o_form_view");
+            assert.containsOnce(fixture, ".o_form_view .o_form_editable");
+            await editInput(fixture, ".o_field_widget[name=display_name] input", "red right hand");
             await click(fixture.querySelector(".o_form_button_save"));
             assert.strictEqual(
                 fixture.querySelector(".breadcrumb-item.active").textContent,
@@ -251,11 +221,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.isNotVisible(fixture.querySelector(".o_form_view"));
 
             await click(fixture.querySelector(".o_menu_toggle"));
-            await nextTick();
-            await legacyExtraNextTick();
-            formEl = fixture.querySelector(".o_form_view");
-            assert.isVisible(formEl);
-            assert.notOk(formEl.classList.contains("o_form_editable"));
+            assert.containsOnce(fixture, ".o_form_view");
+            assert.containsOnce(fixture, ".o_form_view .o_form_readonly");
             assert.strictEqual(
                 fixture.querySelector(".breadcrumb-item.active").textContent,
                 "red right hand"
@@ -322,25 +289,20 @@ QUnit.module("WebClient Enterprise", (hooks) => {
 
         const webClient = await createEnterpriseWebClient({ fixture, serverData, mockRPC });
         await doAction(webClient, 3, { viewType: "form" });
-        await legacyExtraNextTick();
-        assert.containsOnce(fixture, ".o_form_view.o_form_editable");
-        const input = fixture.querySelector("input.o_input");
-        await testUtils.fields.editInput(input, "red right hand");
+        assert.containsOnce(fixture, ".o_form_view .o_form_editable");
+        await editInput(fixture, ".o_field_widget[name=display_name] input", "red right hand");
 
         await click(fixture.querySelector(".o_menu_toggle"));
-        await nextTick();
-        assert.isNotVisible(fixture.querySelector(".o_form_view"));
-        assert.containsNone(document.body, ".modal");
+        assert.containsNone(fixture, ".o_form_view");
+        assert.containsNone(fixture, ".modal");
         assert.containsOnce(fixture, ".o_home_menu");
     });
 
     QUnit.test("can have HomeMenu and dialog action", async function (assert) {
         const webClient = await createEnterpriseWebClient({ fixture, serverData });
-        await nextTick();
         assert.containsOnce(fixture, ".o_home_menu");
         assert.containsNone(fixture, ".modal .o_form_view");
         await doAction(webClient, 5);
-        await legacyExtraNextTick();
         assert.containsOnce(fixture, ".modal .o_form_view");
         assert.isVisible(fixture.querySelector(".modal .o_form_view"));
         assert.containsOnce(fixture, ".o_home_menu");
@@ -370,7 +332,6 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     QUnit.test(
         "debug manager resets to global items when home menu is displayed",
         async function (assert) {
-            assert.expect(9);
             const debugRegistry = registry.category("debug");
             debugRegistry.category("view").add("editView", editView);
             debugRegistry.category("default").add("item_1", () => {
@@ -427,14 +388,12 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     QUnit.test(
         "url state is well handled when going in and out of the HomeMenu",
         async function (assert) {
-            assert.expect(4);
-
             const webClient = await createEnterpriseWebClient({ fixture, serverData });
             await nextTick();
             assert.deepEqual(webClient.env.services.router.current.hash, { action: "menu" });
 
             await click(fixture.querySelector(".o_app.o_menuitem:nth-child(2)"));
-            await legacyExtraNextTick();
+            await nextTick();
             assert.deepEqual(webClient.env.services.router.current.hash, {
                 action: 1002,
                 menu_id: 2,
@@ -445,8 +404,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.deepEqual(webClient.env.services.router.current.hash, { action: "menu" });
 
             await click(fixture.querySelector(".o_menu_toggle"));
+            await nextTick();
             // if we reload on going back to underlying action
-            await legacyExtraNextTick();
             // end if
             assert.deepEqual(webClient.env.services.router.current.hash, {
                 action: 1002,
@@ -458,7 +417,6 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     QUnit.test(
         "underlying action's menu items are invisible when HomeMenu is displayed",
         async function (assert) {
-            assert.expect(10);
             serverData.menus[1].children = [99];
             serverData.menus[99] = {
                 id: 99,
@@ -488,12 +446,10 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     );
 
     QUnit.test("loadState back and forth keeps relevant keys in state", async function (assert) {
-        assert.expect(9);
-
         const webClient = await createEnterpriseWebClient({ fixture, serverData });
 
         await click(fixture.querySelector(".o_app.o_menuitem:nth-child(2)"));
-        await legacyExtraNextTick();
+        await nextTick();
         assert.containsOnce(fixture, ".test_client_action");
         assert.containsNone(fixture, ".o_home_menu");
         const state = webClient.env.services.router.current.hash;
@@ -518,14 +474,11 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     QUnit.test(
         "go back to home menu using browser back button (i.e. loadState)",
         async function (assert) {
-            assert.expect(7);
-
             const webClient = await createEnterpriseWebClient({ fixture, serverData });
             assert.containsOnce(fixture, ".o_home_menu");
             assert.isNotVisible(fixture.querySelector(".o_main_navbar .o_menu_toggle"));
 
             await click(fixture.querySelector(".o_app.o_menuitem:nth-child(2)"));
-            await legacyExtraNextTick();
             assert.containsOnce(fixture, ".test_client_action");
             assert.containsNone(fixture, ".o_home_menu");
 
@@ -537,8 +490,6 @@ QUnit.module("WebClient Enterprise", (hooks) => {
     );
 
     QUnit.test("initial action crashes", async (assert) => {
-        assert.expect(6);
-
         const handler = (ev) => {
             // need to preventDefault to remove error from console (so python test pass)
             ev.preventDefault();

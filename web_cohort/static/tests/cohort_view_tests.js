@@ -372,7 +372,8 @@ QUnit.module("Views", (hooks) => {
         "when clicked on cell redirects to the correct list/form view ",
         async function (assert) {
             serverData.views = {
-                "subscription,false,cohort": `<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />`,
+                "subscription,false,cohort": `
+                    <cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />`,
                 "subscription,my_list_view,list": `
                     <tree>
                         <field name="start"/>
@@ -411,7 +412,6 @@ QUnit.module("Views", (hooks) => {
 
             // Going to the list view, while clicking Period / Count cell
             await click(target.querySelector("td.o_cohort_value"));
-            await nextTick();
 
             let listColumnsHeads = target.querySelectorAll(".o_list_view th");
             assert.strictEqual(
@@ -426,10 +426,8 @@ QUnit.module("Views", (hooks) => {
             );
             // Going back to cohort view
             await click(target.querySelector(".o_back_button"));
-            await nextTick();
             // Going to the list view
             await click(target.querySelector("td div.o_cohort_value"));
-            await nextTick();
             listColumnsHeads = target.querySelectorAll(".o_list_view th");
             assert.strictEqual(
                 listColumnsHeads[1].textContent,
@@ -442,18 +440,17 @@ QUnit.module("Views", (hooks) => {
                 "First field in the list view should be start"
             );
             // Going to the form view
-            await click(target.querySelector(".o_list_view .o_data_row"));
-            await nextTick();
+            await click(target.querySelector(".o_list_view .o_data_row .o_data_cell"));
 
-            const formSpanLabel = target.querySelectorAll(".o_form_view span");
+            const fieldWidgets = target.querySelectorAll(".o_form_view .o_field_widget");
             assert.hasAttrValue(
-                formSpanLabel[0],
+                fieldWidgets[0],
                 "name",
                 "start",
                 "First field in the form view should be start"
             );
             assert.hasAttrValue(
-                formSpanLabel[1],
+                fieldWidgets[1],
                 "name",
                 "stop",
                 "Second field in the form view should be stop"
@@ -527,7 +524,8 @@ QUnit.module("Views", (hooks) => {
         "when clicked on cell redirects to the action list/form view passed in context",
         async function (assert) {
             serverData.views = {
-                "subscription,false,cohort": `<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />`,
+                "subscription,false,cohort": `
+                    <cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />`,
                 "subscription,my_list_view,list": `
                     <tree>
                         <field name="start"/>
@@ -563,7 +561,6 @@ QUnit.module("Views", (hooks) => {
 
             // Going to the list view, while clicking Period / Count cell
             await click(target.querySelector("td.o_cohort_value"));
-            await nextTick();
 
             let listColumnsHeads = target.querySelectorAll(".o_list_view th");
             assert.strictEqual(
@@ -578,10 +575,8 @@ QUnit.module("Views", (hooks) => {
             );
             // Going back to cohort view
             await click(target.querySelector(".o_back_button"));
-            await nextTick();
             // Going to the list view
             await click(target.querySelector("td div.o_cohort_value"));
-            await nextTick();
             listColumnsHeads = target.querySelectorAll(".o_list_view th");
             assert.strictEqual(
                 listColumnsHeads[1].textContent,
@@ -594,18 +589,17 @@ QUnit.module("Views", (hooks) => {
                 "First field in the list view should be start"
             );
             // Going to the form view
-            await click(target.querySelector(".o_list_view .o_data_row"));
-            await nextTick();
+            await click(target.querySelector(".o_list_view .o_data_row .o_data_cell"));
 
-            const formSpanLabel = target.querySelectorAll(".o_form_view span");
+            const fieldWidgets = target.querySelectorAll(".o_form_view .o_field_widget");
             assert.hasAttrValue(
-                formSpanLabel[0],
+                fieldWidgets[0],
                 "name",
                 "start",
                 "First field in the form view should be start"
             );
             assert.hasAttrValue(
-                formSpanLabel[1],
+                fieldWidgets[1],
                 "name",
                 "stop",
                 "Second field in the form view should be stop"

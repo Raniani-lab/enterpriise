@@ -10,11 +10,14 @@ import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { registerStudioDependencies } from "@web_studio/../tests/helpers";
 import { studioLegacyService } from "@web_studio/legacy/studio_legacy_service";
 
+import { useLegacyViews } from "@web/../tests/legacy/legacy_setup";
+
 let serverData;
 let target;
 
 QUnit.module('Studio', (hooks) => {
     hooks.beforeEach(() => {
+        useLegacyViews();
         serverData = getActionManagerServerData();
         registerStudioDependencies();
         registry.category('services').add('studio_legacy', studioLegacyService);

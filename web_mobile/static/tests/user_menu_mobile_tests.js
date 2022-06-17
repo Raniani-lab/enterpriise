@@ -6,11 +6,13 @@ import { UserMenu } from "@web/webclient/user_menu/user_menu";
 import { shortcutItem, switchAccountItem } from "../src/js/user_menu_items";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
-import { click, getFixture, mount, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click as _click, getFixture, mount, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { actionService } from "@web/webclient/actions/action_service";
 
 import mobile from "web_mobile.core";
+import { viewService } from "@web/views/view_service";
+import { ormService } from "@web/core/orm_service";
 
 const serviceRegistry = registry.category("services");
 const userMenuRegistry = registry.category("user_menuitems");
@@ -18,10 +20,22 @@ const MY_IMAGE =
     "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==";
 let target;
 
+
+// The UserMenu has a d-none class which is overriden, purely by bootstrap
+// by d-x-block classes when the screen has a minimum size.
+// To avoid problems, we always skip the visibility check by default when clicking
+const click = (el, selector, skipVisibility) => {
+    if (skipVisibility === undefined) {
+        skipVisibility = true;
+    }
+    return _click(el, selector, skipVisibility);
+};
 QUnit.module("UserMenu", {
     async beforeEach() {
         serviceRegistry.add("hotkey", hotkeyService);
-        serviceRegistry.add("action", actionService);
+        serviceRegistry.add("action", actionService)
+            .add("view", viewService) // #action-serv-leg-compat-js-class
+            .add("orm", ormService); // #action-serv-leg-compat-js-class
         serviceRegistry.add("menu", menuService);
         target = getFixture();
     },

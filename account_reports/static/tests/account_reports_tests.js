@@ -1,7 +1,8 @@
 odoo.define('account_reports/static/tests/account_reports_tests', function (require) {
     "use strict";
 
-    const ControlPanel = require('web.ControlPanel');
+    const LegacyControlPanel = require('web.ControlPanel');
+    const { ControlPanel } = require("@web/search/control_panel/control_panel");
     const testUtils = require("web.test_utils");
     const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
     const { legacyExtraNextTick, getFixture, patchWithCleanup, destroy } = require("@web/../tests/helpers/utils");
@@ -70,9 +71,22 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
                         this.__uniqueId = mountCount;
                         assert.step(`mounted ${this.__uniqueId}`);
                     });
-
                     onWillUnmount(() => {
                         assert.step(`willUnmount ${this.__uniqueId}`);
+                    });
+                },
+            });
+            patchWithCleanup(LegacyControlPanel.prototype, {
+                setup() {
+                    this._super();
+                    onMounted(() => {
+                        mountCount = mountCount + 1;
+                        this.__uniqueId = mountCount;
+                        assert.step(`mounted ${this.__uniqueId} (legacy)`);
+                    });
+
+                    onWillUnmount(() => {
+                        assert.step(`willUnmount ${this.__uniqueId} (legacy)`);
                     });
                 }
             });
@@ -91,12 +105,12 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
             destroy(webClient);
 
             assert.verifySteps([
-                'mounted 1',
-                'willUnmount 1',
+                'mounted 1 (legacy)',
+                'willUnmount 1 (legacy)',
                 'mounted 2',
                 'willUnmount 2',
-                'mounted 3',
-                'willUnmount 3',
+                'mounted 3 (legacy)',
+                'willUnmount 3 (legacy)',
             ]);
         });
 

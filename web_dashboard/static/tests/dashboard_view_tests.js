@@ -6,7 +6,6 @@ import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import {
     click,
     getFixture,
-    legacyExtraNextTick,
     nextTick,
     patchDate,
     patchWithCleanup,
@@ -42,8 +41,6 @@ import { graphView } from "@web/views/graph/graph_view";
 import { actionService } from "@web/webclient/actions/action_service";
 import { companyService } from "@web/webclient/company_service";
 import { DashboardModel } from "@web_dashboard/dashboard_model";
-import { FieldFloat } from "web.basic_fields";
-import legacyFieldRegistry from "web.field_registry";
 import legacyViewRegistry from "web.view_registry";
 import PieChart from "web.PieChart";
 import Widget from "web.Widget";
@@ -723,7 +720,11 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_subview .o_graph_view .o_control_panel .o_cp_top_left");
         assert.containsNone(target, ".o_subview .o_graph_view .o_control_panel .o_cp_top_right");
         assert.containsOnce(target, ".o_subview .o_graph_view .o_control_panel .o_cp_bottom_left");
-        assert.containsNone(target, ".o_subview .o_graph_view .o_control_panel .o_cp_bottom_right");
+        assert.strictEqual(
+            target.querySelector(".o_subview .o_graph_view .o_control_panel .o_cp_bottom_right")
+                .innerHTML,
+            ""
+        );
         assert.containsOnce(
             target,
             ".o-web-dashboard-view-wrapper--switch-button",
@@ -1145,7 +1146,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.strictEqual(
             target.querySelector(".o_value").textContent.trim(),
-            "8.00 €",
+            "8.00\u00a0€",
             "should format the amount with the correct currency"
         );
     });
@@ -1198,7 +1199,7 @@ QUnit.module("Views", (hooks) => {
 
             assert.strictEqual(
                 target.querySelector(".o_value").textContent.trim(),
-                "£ 8.00",
+                "£\u00a08.00",
                 "should format the amount with the correct currency"
             );
         }
@@ -1285,42 +1286,31 @@ QUnit.module("Views", (hooks) => {
         );
     });
 
-    QUnit.test(
-        "rendering of formula with widget attribute (widget legacy)",
-        async function (assert) {
-            assert.expect(3);
+    QUnit.test("rendering of formula with widget attribute", async function (assert) {
+        class MyWidget extends Component {}
+        MyWidget.template = xml`The value is <t t-esc="props.value.toFixed(2)"/>`;
+        registry.category("fields").add("test", MyWidget);
 
-            const MyWidget = FieldFloat.extend({
-                start: function () {
-                    this.$el.text("The value is " + this._formatValue(this.value));
-                },
-            });
-            legacyFieldRegistry.add("test", MyWidget);
-
-            await makeView({
-                type: "dashboard",
-                resModel: "test_report",
-                serverData,
-                arch: `
+        await makeView({
+            type: "dashboard",
+            resModel: "test_report",
+            serverData,
+            arch: `
                 <dashboard>
                     <aggregate name="sold" field="sold" invisible="1"/>
                     <aggregate name="untaxed" field="untaxed" invisible="1"/>
                     <formula name="some_value" value="record.sold / record.untaxed" widget="test"/>
                 </dashboard>
             `,
-            });
-            await legacyExtraNextTick();
-            assert.containsOnce(target, ".o_value");
-            assert.isVisible(target.querySelector(".o_value"));
-            assert.strictEqual(
-                target.querySelector(".o_value").textContent,
-                "The value is 0.27",
-                "should have used the specified widget (as there is no 'test' formatter)"
-            );
-
-            delete legacyFieldRegistry.map.test;
-        }
-    );
+        });
+        assert.containsOnce(target, ".o_value");
+        assert.isVisible(target.querySelector(".o_value"));
+        assert.strictEqual(
+            target.querySelector(".o_value").textContent,
+            "The value is 0.27",
+            "should have used the specified widget (as there is no 'test' formatter)"
+        );
+    });
 
     QUnit.test("invisible attribute on a field", async function (assert) {
         assert.expect(2);
@@ -1357,12 +1347,6 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.containsNone(target, ".o_formula");
-        // assert.hasClass(
-        //     // Idem as before
-        //     target.querySelector(".o_formula"),
-        //     "o_invisible_modifier",
-        //     "the formula should be invisible"
-        // );
     });
 
     QUnit.test("invisible modifier on an aggregate", async function (assert) {
@@ -1383,11 +1367,6 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.containsNone(target, ".o_aggregate[name=sold]");
-        // assert.hasClass(
-        //     target.querySelector(".o_aggregate[name=sold]"),
-        //     "o_invisible_modifier",
-        //     "the aggregate 'sold' should be invisible"
-        // );
     });
 
     QUnit.test("invisible modifier on a formula", async function (assert) {
@@ -1409,11 +1388,6 @@ QUnit.module("Views", (hooks) => {
         });
 
         assert.containsNone(target, ".o_formula");
-        // assert.hasClass(
-        //     target.querySelector(".o_formula"),
-        //     "o_invisible_modifier",
-        //     "the formula should be invisible"
-        // );
     });
 
     QUnit.test("rendering of aggregates with domain attribute", async function (assert) {
@@ -3275,15 +3249,10 @@ QUnit.module("Views", (hooks) => {
         assert.ok(isItemSelected(target, "Sold"));
     });
 
-    QUnit.test("rendering of aggregate with widget attribute (widget)", async function (assert) {
-        assert.expect(3);
-
-        const MyWidget = FieldFloat.extend({
-            start: function () {
-                this.$el.text("The value is " + this._formatValue(this.value));
-            },
-        });
-        legacyFieldRegistry.add("test", MyWidget);
+    QUnit.test("rendering of aggregate with widget attribute", async function (assert) {
+        class MyWidget extends Component {}
+        MyWidget.template = xml`The value is <t t-esc="props.value.toFixed(2)"/>`;
+        registry.category("fields").add("test", MyWidget);
 
         await makeView({
             type: "dashboard",
@@ -3301,7 +3270,6 @@ QUnit.module("Views", (hooks) => {
             },
         });
 
-        await legacyExtraNextTick();
         assert.containsOnce(target, ".o_value");
         assert.isVisible(target.querySelector(".o_value"));
         assert.strictEqual(
@@ -3309,21 +3277,16 @@ QUnit.module("Views", (hooks) => {
             "The value is 8.00",
             "should have used the specified widget (as there is no 'test' formatter)"
         );
-
-        delete legacyFieldRegistry.map.test;
     });
 
     QUnit.test(
-        "rendering of aggregate with widget attribute (widget legacy) and comparison active",
+        "rendering of aggregate with widget attribute and comparison active",
         async function (assert) {
             assert.expect(16);
 
-            const MyWidget = FieldFloat.extend({
-                start: function () {
-                    this.$el.text("The value is " + this._formatValue(this.value));
-                },
-            });
-            legacyFieldRegistry.add("test", MyWidget);
+            class MyWidget extends Component {}
+            MyWidget.template = xml`The value is <t t-esc="props.value.toFixed(2)"/>`;
+            registry.category("fields").add("test", MyWidget);
 
             let nbReadGroup = 0;
 
@@ -3412,8 +3375,6 @@ QUnit.module("Views", (hooks) => {
                 target.querySelector(".o_aggregate .o_comparison").textContent,
                 "The value is 16.00 vs The value is 4.00"
             );
-
-            delete legacyFieldRegistry.map.test;
         }
     );
 
@@ -4256,14 +4217,12 @@ QUnit.module("Views", (hooks) => {
     );
 
     QUnit.test("dashboard statistic support wowl field", async (assert) => {
-        assert.expect(5);
-
         class CustomField extends Component {
             setup() {
                 assert.ok(this.props.model instanceof DashboardModel);
                 assert.ok("record" in this.props);
                 assert.strictEqual(this.props.name, "sold");
-                assert.strictEqual(this.props.type, "custom");
+                assert.strictEqual(this.props.type, "float");
                 assert.strictEqual(this.props.record.data[this.props.name], 8);
             }
         }
@@ -4291,7 +4250,7 @@ QUnit.module("Views", (hooks) => {
                 assert.ok(this.props.model instanceof DashboardModel);
                 assert.ok("record" in this.props);
                 assert.strictEqual(this.props.name, "some_value");
-                assert.strictEqual(this.props.type, "custom");
+                assert.strictEqual(this.props.type, "float");
                 assert.strictEqual(
                     this.props.record.data[this.props.name],
                     expectedFieldValues.shift()

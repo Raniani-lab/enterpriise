@@ -3328,7 +3328,7 @@ tour.register('test_pack_multiple_location', {test: true}, [
     },
 
     {
-        trigger: '.o_kanban_view:contains("product1")',
+        trigger: '.o_legacy_kanban_view:contains("product1")',
         run: function () {
             helper.assertQuantsCount(2);
         },

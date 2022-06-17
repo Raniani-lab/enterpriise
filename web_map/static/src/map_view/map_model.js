@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Model } from "@web/views/helpers/model";
+import { Model } from "@web/views/model";
 import { session } from "@web/session";
 import { browser } from "@web/core/browser/browser";
 import { parseDate, parseDateTime } from "@web/core/l10n/dates";
@@ -330,15 +330,15 @@ export class MapModel extends Model {
             if (["date", "datetime"].includes(fieldType) && value) {
                 const date = fieldType === "date" ? parseDate(value) : parseDateTime(value);
                 id = name = date.toFormat(DATE_GROUP_FORMATS[subGroup]);
-            } else if (fieldType === 'boolean') {
-                id = name = value ? this.env._t('Yes') : this.env._t('No');
+            } else if (fieldType === "boolean") {
+                id = name = value ? this.env._t("Yes") : this.env._t("No");
             } else {
                 id = Array.isArray(value) ? value[0] : value;
                 name = Array.isArray(value) ? value[1] : value;
             }
 
             if (id === false && name === false) {
-                id = name = this.env._t('None');
+                id = name = this.env._t("None");
             }
 
             if (!groups[id]) {

@@ -2,9 +2,9 @@
 
 import { loadJS, loadCSS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
-import { useModel } from "@web/views/helpers/model";
-import { standardViewProps } from "@web/views/helpers/standard_view_props";
-import { useSetupView } from "@web/views/helpers/view_hook";
+import { useModel } from "@web/views/model";
+import { standardViewProps } from "@web/views/standard_view_props";
+import { useSetupView } from "@web/views/view_hook";
 import { Layout } from "@web/search/layout";
 import { usePager } from "@web/search/pager_hook";
 
@@ -13,7 +13,6 @@ const { Component, onWillUnmount, onWillStart } = owl;
 export class MapController extends Component {
     setup() {
         this.action = useService("action");
-
 
         /** @type {typeof MapModel} */
         const Model = this.props.Model;
@@ -30,10 +29,12 @@ export class MapController extends Component {
             },
         });
 
-        onWillStart(() => Promise.all([
-            loadJS("/web_map/static/lib/leaflet/leaflet.js"),
-            loadCSS("/web_map/static/lib/leaflet/leaflet.css"),
-        ]));
+        onWillStart(() =>
+            Promise.all([
+                loadJS("/web_map/static/lib/leaflet/leaflet.js"),
+                loadCSS("/web_map/static/lib/leaflet/leaflet.css"),
+            ])
+        );
 
         usePager(() => {
             return {
@@ -121,4 +122,3 @@ MapController.props = {
     Renderer: Function,
     buttonTemplate: String,
 };
-

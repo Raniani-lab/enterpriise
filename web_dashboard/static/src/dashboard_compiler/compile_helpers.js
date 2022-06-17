@@ -1,6 +1,7 @@
 /* @odoo-module */
 
 import { evaluateExpr } from "@web/core/py_js/py";
+import { combineAttributes } from "@web/core/utils/xml";
 
 /**
  * A helper to identify nodes in an arch to allow matching between
@@ -11,7 +12,7 @@ import { evaluateExpr } from "@web/core/py_js/py";
  * @return {Function} An add function to execute on each node of a given tagName
  *  Function.idFor: Produce an Id for the lastNode, or for the given node.
  */
-export function nodeIdentifier() {
+export function makeNodeIdentifier() {
     const mapping = {};
     let lastNode;
 
@@ -35,81 +36,9 @@ export function nodeIdentifier() {
         return `${node.tagName}_${nodeMap.id}`;
     }
 
-    return Object.assign(add, {
-        idFor(node) {
-            return idFor(node);
-        },
-    });
+    return { add, idFor };
 }
 
-/**
- * Helper to add onto a Component node the information of the arch node (e.g. modifiers)
- * This is almost exclusively the support of legacy Widgets.
- * @param {Element} node A node from an arch
- * @param {Element} compiled A node of a pre-compiled template
- */
-export function addLegacyNodeInfo(node, compiled) {
-    const modifiers = getAllModifiers(node);
-    if (modifiers) {
-        const legacyNode = {
-            attrs: { modifiers },
-        };
-        compiled.setAttribute("_legacyNode_", `"${encodeObjectForTemplate(legacyNode)}"`);
-    }
-}
-
-/**
- * Encodes an object into a string usable inside a pre-compiled template
- * @param  {Object}
- * @return {string}
- */
-export function encodeObjectForTemplate(obj) {
-    return encodeURI(JSON.stringify(obj));
-}
-
-/**
- * Decodes a string within an attribute into an Object
- * @param  {string} str
- * @return {Object}
- */
-export function decodeObjectForTemplate(str) {
-    return JSON.parse(decodeURI(str));
-}
-
-/**
- * Transforms a string into a valid expression to be injected
- * in a template as a props via setAttribute.
- * Example: myString = `Some weird language quote (") `;
- *     should become in the template:
- *      <Component label="&quot;Some weird language quote (\\&quot;)&quot; " />
- *     which should be interpreted by owl as a JS expression being a string:
- *      `Some weird language quote (") `
- *
- * @param  {string} str The initial value: a pure string to be interpreted as such
- * @return {string}     the valid string to be injected into a component's node props.
- */
-export function tranformStringForExpression(str) {
-    const delimiter = `"`;
-    const newStr = str.replaceAll(delimiter, `\\${delimiter}`);
-    return `${delimiter}${newStr}${delimiter}`;
-}
-
-/**
- * Combines the existing value of a node attribute with new given parts. The glue
- * is the string used to join the parts.
- * @param {Element} node
- * @param {string} attr
- * @param {string | string[]} parts
- * @param {string} [glue=" "]
- */
-export const combineAttributes = (node, attr, parts, glue = " ") => {
-    const allValues = [];
-    if (node.hasAttribute(attr)) {
-        allValues.push(node.getAttribute(attr));
-    }
-    allValues.push(...(Array.isArray(parts) ? parts : [parts]));
-    node.setAttribute(attr, allValues.join(glue));
-};
 /**
  * there is no particular expectation of what should be a boolean
  * according to a view's arch

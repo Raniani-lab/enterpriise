@@ -3,7 +3,7 @@
 import GanttModel from 'web_gantt.GanttModel';
 import { _t } from 'web.core';
 import { PlanningModelMixin } from './planning_mixins';
-import { formatPercentage } from "@web/fields/formatters";
+import { formatPercentage } from "@web/views/fields/formatters";
 
 const GROUPBY_COMBINATIONS = [
     "role_id",

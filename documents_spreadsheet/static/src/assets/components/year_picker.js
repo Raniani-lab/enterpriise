@@ -46,7 +46,7 @@ export class YearPicker extends DatePicker {
      */
     bootstrapDateTimePicker(commandOrParams) {
         if (typeof commandOrParams === "object") {
-            const widgetParent = window.$(this.root.el);
+            const widgetParent = window.$(this.rootRef.el);
             commandOrParams = { ...commandOrParams, widgetParent };
         }
         super.bootstrapDateTimePicker(commandOrParams);
@@ -69,7 +69,7 @@ export class YearPicker extends DatePicker {
             ) {
                 pickerParams[prop] = nextProps[prop];
                 if (prop === "date") {
-                    this.setDate(nextProps);
+                    this.setDateAndFormat(nextProps);
                     shouldUpdateInput = true;
                 }
             }
@@ -83,28 +83,15 @@ export class YearPicker extends DatePicker {
      * @override: allow displaying empty dates
      */
     updateInput({ useStatic } = {}) {
-        try {
-            this.inputRef.el.value = this.date
-                ? this.formatValue(this.date, this.getOptions(useStatic))
-                : "";
-        } catch (_err) {
-            // Do nothing
-        }
+        const [formattedValue] = this.formatValue(this.date, this.getOptions(useStatic));
+        this.inputRef.el.value = formattedValue || "";
     }
 
     /**
      * @override
      */
     onDateChange({ useStatic } = {}) {
-        let date;
-        try {
-            date = this.parseValue(
-                this.inputRef.el.value,
-                this.getOptions(useStatic)
-            );
-        } catch (_err) {
-            // Reset to default (= given) date.
-        }
+        const [date] = this.parseValue(this.inputRef.el.value, this.getOptions(useStatic));
         if (
             !date ||
             (this.date instanceof DateTime && date.equals(this.date))

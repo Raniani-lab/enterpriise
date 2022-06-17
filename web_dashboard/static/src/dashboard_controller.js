@@ -3,16 +3,15 @@
 import { useService } from "@web/core/utils/hooks";
 import { capitalize, sprintf } from "@web/core/utils/strings";
 import { Layout } from "@web/search/layout";
-import { useModel } from "@web/views/helpers/model";
-import { standardViewProps } from "@web/views/helpers/standard_view_props";
-import { useSetupView, useViewArch } from "@web/views/helpers/view_hook";
+import { useModel } from "@web/views/model";
+import { standardViewProps } from "@web/views/standard_view_props";
+import { useSetupView, useViewArch } from "@web/views/view_hook";
+import { Widget } from "@web/views/widgets/widget";
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 import { DashboardStatistic } from "./dashboard_statistic/dashboard_statistic";
-import { ViewWidget } from "./view_widget";
 import { ViewWrapper } from "./view_wrapper/view_wrapper";
 
-const { Component, onWillStart, onWillUpdateProps } = owl;
-
+const { Component, onWillStart, onWillUpdateProps, useRef } = owl;
 
 const SUB_VIEW_CONTROL_PANEL_DISPLAY = {
     "bottom-right": false,
@@ -63,6 +62,7 @@ export class DashboardController extends Component {
         this.formulae = formulae;
 
         useSetupView({
+            rootRef: useRef("root"),
             getLocalState: () => {
                 return {
                     subViews: this.callRecordedCallbacks("__getLocalState__"),
@@ -76,20 +76,23 @@ export class DashboardController extends Component {
         // indexed by view type
         this.viewWrapperProps = {};
 
-        this.model = useModel(this.props.Model, {
-            resModel,
-            fields,
-            aggregates: this.aggregates,
-            formulae: this.formulae,
-        }, {
-            onUpdate: ()  => {
-                // renew every view whenever dashboard model is updated
-                this.renderKey++;
-                this.viewWrapperProps = {};
-                this.render();
+        this.model = useModel(
+            this.props.Model,
+            {
+                resModel,
+                fields,
+                aggregates: this.aggregates,
+                formulae: this.formulae,
+            },
+            {
+                onUpdate: () => {
+                    // renew every view whenever dashboard model is updated
+                    this.renderKey++;
+                    this.viewWrapperProps = {};
+                    this.render();
+                },
             }
-        });
-
+        );
 
         onWillStart(this.onWillStart);
         onWillUpdateProps(this.onWillUpdateProps);
@@ -248,6 +251,8 @@ export class DashboardController extends Component {
                 searchViewFields: this.props.info.searchViewFields,
                 type: viewType,
                 display: { controlPanel: SUB_VIEW_CONTROL_PANEL_DISPLAY },
+                selectRecord: this.props.selectRecord,
+                createRecord: this.props.createRecord,
             },
             VIEW_PROPS[viewType],
             subView.props,
@@ -318,10 +323,10 @@ export class DashboardController extends Component {
 }
 DashboardController.template = "web_dashboard.DashboardView";
 DashboardController.props = {
-  ...standardViewProps,
-  Model: Function,
-  Compiler: Function,
-  ArchParser: Function,
+    ...standardViewProps,
+    Model: Function,
+    Compiler: Function,
+    ArchParser: Function,
 };
 
-DashboardController.components = { Layout, DashboardStatistic, ViewWidget, ViewWrapper };
+DashboardController.components = { Layout, DashboardStatistic, Widget, ViewWrapper };

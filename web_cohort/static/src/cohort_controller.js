@@ -5,11 +5,11 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { download } from "@web/core/network/download";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
-import { useModel } from "@web/views/helpers/model";
-import { standardViewProps } from "@web/views/helpers/standard_view_props";
-import { useSetupView } from "@web/views/helpers/view_hook";
+import { useModel } from "@web/views/model";
+import { standardViewProps } from "@web/views/standard_view_props";
+import { useSetupView } from "@web/views/view_hook";
 
-const { Component } = owl;
+const { Component, useRef } = owl;
 
 export class CohortController extends Component {
     setup() {
@@ -17,6 +17,7 @@ export class CohortController extends Component {
         this.model = useModel(this.props.Model, owl.toRaw(this.props.modelParams));
 
         useSetupView({
+            rootRef: useRef("root"),
             getLocalState: () => {
                 return { metaData: this.model.metaData };
             },
@@ -123,10 +124,9 @@ CohortController.props = {
     Model: Function,
     modelParams: Object,
     Renderer: Function,
-    buttonTemplate: String,    
+    buttonTemplate: String,
 };
 
 CohortController.defaultProps = {
     additionalMeasures: [],
 };
-

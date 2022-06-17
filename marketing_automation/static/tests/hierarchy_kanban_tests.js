@@ -88,7 +88,7 @@ QUnit.module('Marketing Automation', {
         });
 
         // Checking number of child and their positions
-        var $parentRecords = form.$('.o_ma_hierarchy_container .o_kanban_view > .o_kanban_record');
+        var $parentRecords = form.$('.o_ma_hierarchy_container .o_legacy_kanban_view > .o_kanban_record');
         assert.strictEqual($parentRecords.length, 2, "There should be 2 parent");
         assert.containsOnce($($parentRecords[0]), '> .o_hierarchy_children > .o_kanban_record', "First parent should have 1 child");
         assert.containsN($($parentRecords[1]), '> .o_hierarchy_children > .o_kanban_record', 2, "Second parent should have 2 child");

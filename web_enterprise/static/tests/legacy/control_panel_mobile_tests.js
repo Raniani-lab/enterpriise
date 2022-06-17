@@ -176,8 +176,8 @@ odoo.define('web.control_panel_mobile_tests', function (require) {
             let searchRPCFlag = false;
 
             const mockRPC = (route, args) => {
-                if (searchRPCFlag) {
-                    assert.deepEqual(args.domain, [['foo', 'ilike', 'A']],
+                if (searchRPCFlag && args.method === "web_search_read") {
+                    assert.deepEqual(args.kwargs.domain, [['foo', 'ilike', 'A']],
                         "domain should have been properly transferred to list view");
                 }
             };

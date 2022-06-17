@@ -78,9 +78,6 @@
             <xpath expr="//form" position="attributes">
                 <attribute name="js_class">account_invoice_extract_preview</attribute>
             </xpath>
-            <xpath expr="//div[hasclass('o_attachment_preview')]" position="replace">
-                <div class="o_attachment_preview" options="{'preview_priority_type': 'pdf'}"/>
-            </xpath>
             <xpath expr="//page[@id='other_tab']//group[@name='accounting_info_group']" position="after">
                 <group string="Extraction Information"
                        name="extraction_info_group"

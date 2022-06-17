@@ -74,11 +74,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
          */
         this._isOutgoing = false;
         /**
-         * Either 'demo' or 'prod'. The demo mode simulates a call in the
-         * interface but no session is actually established.
-         */
-        this._mode = undefined;
-        /**
          * An instance of SIP.Registerer, needed to register the current user
          * agent, making it reachable.
          */
@@ -97,6 +92,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
 
         owl.Component.env.services.messaging.get().then((messaging) => {
             this._messaging = messaging;
+            this.voip = messaging.voip;
             this._rpc({
                 model: 'voip.configurator',
                 method: 'get_pbx_config',
@@ -172,7 +168,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {string} number
      */
     makeCall(number) {
-        if (this._mode === 'demo') {
+        if (this.voip.mode === 'demo') {
             if (this.PLAY_MEDIA) {
                 this._audioRingbackTone.play().catch(() => {});
             }
@@ -187,7 +183,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Mutes the current call
      */
     muteCall() {
-        if (this._mode === 'demo') {
+        if (this.voip.mode === 'demo') {
             return;
         }
         if (this._callState !== CALL_STATE.ONGOING_CALL) {
@@ -218,7 +214,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {string} number number clicked
      */
     sendDtmf(number) {
-        if (this._mode === 'demo') {
+        if (this.voip.mode === 'demo') {
             return;
         }
         if (this._callState !== CALL_STATE.ONGOING_CALL) {
@@ -232,7 +228,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {string} number
      */
     transfer(number) {
-        if (this._mode === 'demo') {
+        if (this.voip.mode === 'demo') {
             this._updateCallState(CALL_STATE.NO_CALL);
             this._messaging.messagingBus.trigger('sip_bye');
             return;
@@ -248,7 +244,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         });
     },
     unmuteCall() {
-        if (this._mode === 'demo') {
+        if (this.voip.mode === 'demo') {
             return;
         }
         if (this._callState !== CALL_STATE.ONGOING_CALL) {
@@ -269,7 +265,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _answerCall() {
         const inviteSession = this._currentInviteSession;
 
-        if (this._mode === 'demo') {
+        if (this.voip.mode === 'demo') {
             this._updateCallState(CALL_STATE.ONGOING_CALL);
             this._messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
             return;
@@ -306,7 +302,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._sipSession.cancel();
             this._sipSession = false;
         }
-        if (this._mode === 'demo') {
+        if (this.voip.mode === 'demo') {
             clearTimeout(this._timerAcceptedTimeout);
         }
     },
@@ -475,8 +471,8 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     async _initUserAgent(result) {
         this.infoPbxConfiguration = result;
-        this._mode = result.mode;
-        if (this._mode === 'prod') {
+        this.voip.update({ mode: result.mode });
+        if (this.voip.mode === 'prod') {
             this._messaging.messagingBus.trigger('sip_error', {
                 isConnecting: true,
                 message: _t("Connecting..."),
@@ -912,7 +908,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onOutgoingInvitationAccepted(response) {
         this._updateCallState(CALL_STATE.ONGOING_CALL);
         this._stopRingtones();
-        if (this._mode === 'prod' && this._alwaysTransfer && this._currentNumber) {
+        if (this.voip.mode === 'prod' && this._alwaysTransfer && this._currentNumber) {
             this.transfer(this._currentNumber);
         } else {
             this._messaging.messagingBus.trigger('sip_accepted');

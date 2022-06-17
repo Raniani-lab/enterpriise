@@ -23,30 +23,17 @@ class TestUi(odoo.tests.HttpCase, SignRequestCommon):
         self.assertTrue(signer.exists(), 'A partner should exists with the email provided while signing')
 
     def test_translate_sign_instructions(self):
-        new_lang = self.env['res.lang'].create({
-            'name': 'Parseltongue',
-            'code': 'pa_GB',
-            'iso_code': 'pa_GB',
-            'url_code': 'pa_GB',
-        })
-        with mute_logger('odoo.addons.base.models.ir_translation'):
-            self.env["base.language.install"].create({'lang_ids': [new_lang.id]}).lang_install()
-        self.env['ir.translation'].create({
-            'type': 'code',
-            'name': 'addons/sign/static/src/js/sign_common.js',
-            'lang': 'pa_GB',
-            'module': 'sign',
-            'src': "Click to start",
-            'value': "Click to ssssssstart",
-            'state': 'translated',
-            'comments': WEB_TRANSLATION_COMMENT,
-        })
+        fr_lang = self.env['res.lang'].with_context(active_test=False).search([('code', '=', 'fr_FR')])
+        self.env["base.language.install"].create({
+            'overwrite': True,
+            'lang_ids': [(6, 0, [fr_lang.id])]
+        }).lang_install()
 
         # Once `website` is installed, the available langs are only the ones
         # from the website, which by default is just the `en_US` lang.
         langs = self.env['res.lang'].with_context(active_test=False).search([]).get_sorted()
         self.patch(self.registry['res.lang'], 'get_available', lambda self: langs)
-        self.partner_1.lang = "pa_GB"
+        self.partner_1.lang = 'fr_FR'
         sign_request = self.create_sign_request_1_role(customer=self.partner_1, cc_partners=self.env['res.partner'])
         url = f"/sign/document/{sign_request.id}/{sign_request.request_item_ids.access_token}"
         self.start_tour(url, 'translate_sign_instructions', login=None)

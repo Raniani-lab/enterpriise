@@ -21,7 +21,8 @@ class RentalSchedule(models.Model):
                 rental.is_available = True
 
     def _get_product_name(self):
-        return """COALESCE(lot_info.name, t.name) as product_name"""
+        lang = self.env.lang or 'en_US'
+        return f"""COALESCE(lot_info.name, NULLIF(t.name->>'{lang}', ''), t.name->>'en_US') as product_name"""
 
     def _id(self):
         return """CONCAT(lot_info.lot_id, pdg.max_id, sol.id) as id"""

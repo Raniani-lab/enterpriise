@@ -11,17 +11,21 @@ registerModel({
             if (!this.exists()) {
                 return;
             }
-            const component = this.component;
+            const chatter = this.activityViewOwner.activityBoxView.chatter;
             await this.activityViewOwner.activity.approval.approve();
-            component.trigger('o-approval-approved');
+            if (chatter.exists()) {
+                chatter.reloadParentView();
+            }
         },
         async onClickRefuse() {
             if (!this.exists()) {
                 return;
             }
-            const component = this.component;
+            const chatter = this.activityViewOwner.activityBoxView.chatter;
             await this.activityViewOwner.activity.approval.refuse();
-            component.trigger('o-approval-refused');
+            if (chatter.exists()) {
+                chatter.reloadParentView();
+            }
         },
     },
     fields: {

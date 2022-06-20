@@ -487,8 +487,6 @@ class SaleOrder(models.Model):
         old_partners = {s.id: s.partner_id.id for s in subscriptions}
         old_in_progress = {s.id: s.stage_category == "progress" for s in subscriptions}
         res = super().write(vals)
-        if vals.get('stage_id'):
-            subscriptions._send_subscription_rating_mail(force_send=True)
         if vals.get('company_id'):
             # simple SO don't see their lines recomputed, especially when they are in a sent/confirmed state.
             # Subscription should be updated
@@ -506,6 +504,9 @@ class SaleOrder(models.Model):
                     subscriptions_to_cancel += subscription
                 if diff_partner or subscription.stage_category != "progress":
                     subscription.message_unsubscribe([old_partners[subscription.id]])
+        if vals.get('stage_id'):
+            subscriptions_to_rate = subscriptions - subscriptions_to_confirm - subscriptions_to_cancel
+            subscriptions_to_rate._send_subscription_rating_mail(force_send=True)
         if subscriptions_to_confirm:
             subscriptions_to_confirm.action_confirm()
         if subscriptions_to_cancel:

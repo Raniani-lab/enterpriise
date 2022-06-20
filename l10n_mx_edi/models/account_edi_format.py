@@ -369,6 +369,9 @@ class AccountEdiFormat(models.Model):
 
         return cfdi_values
 
+    def _l10n_mx_edi_get_invoice_templates(self):
+        return self.env.ref('l10n_mx_edi.cfdiv33'), self.sudo().env.ref('l10n_mx_edi.xsd_cached_cfdv33_xsd', False)
+
     def _l10n_mx_edi_export_invoice_cfdi(self, invoice):
         ''' Create the CFDI attachment for the invoice passed as parameter.
 

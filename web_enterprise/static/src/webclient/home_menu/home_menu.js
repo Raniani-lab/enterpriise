@@ -65,7 +65,7 @@ export class HomeMenu extends Component {
         });
 
         onMounted(() => {
-            this.inputRef.el.focus();
+            this._focusInput();
         });
 
         onPatched(() => {
@@ -191,6 +191,12 @@ export class HomeMenu extends Component {
         this.state.focusedIndex = newIndex;
     }
 
+    _focusInput() {
+        if (!this.env.isSmall && this.inputRef.el) {
+            this.inputRef.el.focus();
+        }
+    }
+
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
@@ -239,14 +245,12 @@ export class HomeMenu extends Component {
             this.ui.activeElement === document &&
             !["TEXTAREA", "INPUT"].includes(document.activeElement.tagName)
         ) {
-            this.inputRef.el.focus();
+            this._focusInput();
         }
     }
     _onInputSearch() {
         const onClose = () => {
-            if (this.inputRef.el) {
-                this.inputRef.el.focus();
-            }
+            this._focusInput();
         };
         const searchValue = this.compositionStart ? "/" : `/${this.inputRef.el.value.trim()}`;
         this.compositionStart = false;
@@ -259,7 +263,7 @@ export class HomeMenu extends Component {
         // non-interactive element) restore focus to avoid IME input issue
         setTimeout(() => {
             if (document.activeElement === document.body && this.ui.activeElement === document) {
-                this.inputRef.el.focus();
+                this._focusInput();
             }
         }, 0);
     }

@@ -178,6 +178,7 @@ class StockPicking(models.Model):
             'picking_type_entire_packs',
             'use_create_lots',
             'use_existing_lots',
+            'user_id',
         ]
 
     @api.model

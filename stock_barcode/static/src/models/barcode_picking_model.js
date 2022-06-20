@@ -3,6 +3,7 @@
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import {_t, _lt} from "web.core";
 import { sprintf } from '@web/core/utils/strings';
+import { session } from '@web/session';
 
 export default class BarcodePickingModel extends BarcodeModel {
     constructor(params) {
@@ -590,6 +591,11 @@ export default class BarcodePickingModel extends BarcodeModel {
         return await super.validate();
     }
 
+    async displayProductPage() {
+        await this._setUser(); // Set current user as picking's responsible.
+        super.displayProductPage();
+    }
+
     // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------
@@ -1091,6 +1097,16 @@ export default class BarcodePickingModel extends BarcodeModel {
         }
     }
 
+    /**
+     * Set the pickings's responsible if not assigned to active user.
+     */
+    async _setUser() {
+        if (this.record.user_id != session.uid) {
+            await this.orm.write(this.params.model, [this.record.id], { user_id: session.uid });
+            this.record.user_id = session.uid;
+        }
+    }
+
     _setLocationFromBarcode(result, location) {
         if (this.record.picking_type_code === 'outgoing') {
             result.location = location;
@@ -1143,6 +1159,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 }
             }
             line.qty_done += args.qty_done;
+            this._setUser();
         }
     }
 

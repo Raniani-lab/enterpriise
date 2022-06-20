@@ -33,7 +33,22 @@ odoo.define('pos_settle_due.PartnerListScreen', function (require) {
                 if (!confirmed) return;
                 this.state.selectedPartner = this.state.editModeProps.partner;
                 this.confirm(); // make sure the PartnerListScreen resolves and properly closed.
-                const newOrder = this.env.pos.add_new_order();
+
+                // Reuse an empty order that has no partner or has partner equal to the selected partner.
+                let newOrder;
+                const emptyOrder = this.env.pos.orders.find(
+                    (order) =>
+                        order.orderlines.length === 0 &&
+                        order.paymentlines.length === 0 &&
+                        (!order.partner || order.partner.id === this.state.selectedPartner.id)
+                );
+                if (emptyOrder) {
+                    newOrder = emptyOrder;
+                    // Set the empty order as the current order.
+                    this.env.pos.set_order(newOrder);
+                } else {
+                    newOrder = this.env.pos.add_new_order()
+                }
                 const payment = newOrder.add_paymentline(selectedPaymentMethod);
                 payment.set_amount(totalDue);
                 newOrder.set_partner(this.state.selectedPartner);

@@ -53,6 +53,7 @@
             'form_view_initial_mode': 'edit',
             'contact_display': 'partner_address',
             'search_default_available': 1,
+            'search_default_to_do_transfers': 1,
             'force_detailed_view': True
         }</field>
         <field name="help" type="html">

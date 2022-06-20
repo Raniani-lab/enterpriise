@@ -1098,6 +1098,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_in.id,
+            'user_id': False,
         })
 
         url = self._get_client_action_url(receipts_picking.id)
@@ -1120,7 +1121,9 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         receipts_picking.action_confirm()
         receipts_picking.action_assign()
 
+        self.assertEqual(receipts_picking.user_id.id, False)
         self.start_tour(url, 'test_receipt_reserved_lots_multiloc_1', login='admin', timeout=180)
+        self.assertEqual(receipts_picking.user_id.id, self.env.user.id)
         self.env.invalidate_all()
         lines = receipts_picking.move_line_ids
         self.assertEqual(lines[0].qty_done, 0.0)

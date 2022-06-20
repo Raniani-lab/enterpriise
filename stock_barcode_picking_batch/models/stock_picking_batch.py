@@ -134,4 +134,5 @@ class StockPickingBatch(models.Model):
             'picking_type_id',
             'picking_type_code',
             'state',
+            'user_id',
         ]

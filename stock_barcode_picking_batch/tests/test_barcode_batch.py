@@ -193,6 +193,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         picking_receipt_3 = picking_form.save()
         picking_receipt_3.action_confirm()
         picking_receipt_3.name = 'picking_receipt_3'
+        picking_receipt_3.user_id = False
 
         batch_form = Form(self.env['stock.picking.batch'])
         batch_form.picking_ids.add(self.picking_receipt_1)
@@ -207,9 +208,15 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         batch_receipt.action_confirm()
         self.assertEqual(len(batch_receipt.move_ids), 5)
         self.assertEqual(len(batch_receipt.move_line_ids), 6)
+        self.assertEqual(batch_receipt.user_id.id, False)
+        self.assertEqual(picking_receipt_3.user_id.id, False)
 
         url = self._get_batch_client_action_url(batch_receipt.id)
         self.start_tour(url, 'test_barcode_batch_receipt_1', login='admin', timeout=180)
+        # Checks user was assign on the batch and its pickings.
+        self.assertEqual(batch_receipt.user_id.id, self.env.user.id)
+        self.assertEqual(picking_receipt_3.user_id.id, self.env.user.id)
+
 
     def test_barcode_batch_delivery_1(self):
         """ Create a batch picking with 2 deliveries (split into 3 locations),

@@ -3,6 +3,8 @@
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import {_t} from "web.core";
 import { sprintf } from '@web/core/utils/strings';
+import { session } from '@web/session';
+
 export default class BarcodePickingBatchModel extends BarcodePickingModel {
     constructor(params) {
         super(...arguments);
@@ -273,4 +275,35 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
             }
         }
     }
+
+    /**
+     * Set the batch's responsible if the batch or one of its picking is unassigned.
+     */
+    async _setUser() {
+        if (this._shouldAssignUser()) {
+            await this.orm.write(this.params.model, [this.record.id], { user_id: session.uid });
+            this.record.user_id = session.uid;
+            const pickings = [];
+            for (const pickingId of this.record.picking_ids) {
+                const picking = this.cache.getRecord('stock.picking', pickingId);
+                picking.user_id = session.uid;
+                pickings.push(picking);
+            }
+            this.cache.setCache({'stock.picking': pickings});
+        }
+    }
+
+    _shouldAssignUser() {
+        // First checks if user should be assigned to batch...
+        if (this.record.user_id != session.uid)
+            return true;
+        // ... then checks if user should be assigned to atleast one picking.
+        for (const pickingId of this.record.picking_ids) {
+            const picking = this.cache.getRecord('stock.picking', pickingId);
+            if (picking.user_id != session.uid)
+                return true;
+        }
+        return false;
+    }
+
 }

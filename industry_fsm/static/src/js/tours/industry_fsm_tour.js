@@ -29,7 +29,7 @@ tour.register('industry_fsm_tour', {
     trigger: ".o_form_view .o_task_customer_field",
     extra_trigger: '.o_form_project_tasks.o_form_editable',
     content: _t('Select the <b>customer</b> for your task.'),
-    position: "bottom",
+    position: "right",
     run: function (actions) {
         actions.text("Brandon Freeman", this.$anchor.find("input"));
     },

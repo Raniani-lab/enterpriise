@@ -36,19 +36,19 @@ class TestWorksheet(TransactionCase):
             1) Test project template propagation when changing task project
             2) Test project template propagation when creating new task
         """
-        self.assertFalse(self.fsm_project.worksheet_template_id)
-        self.assertEqual(self.second_fsm_project.worksheet_template_id, self.worksheet_template)
-        self.assertFalse(self.task.worksheet_template_id)
+        self.assertEqual(self.task.worksheet_template_id, self.fsm_project.worksheet_template_id)
+        self.assertTrue(self.second_fsm_project.worksheet_template_id)
+        self.assertNotEqual(self.task.worksheet_template_id, self.second_fsm_project.worksheet_template_id)
 
         self.task.write({
             'project_id': self.second_fsm_project.id,
         })
 
-        self.assertEqual(self.task.worksheet_template_id, self.worksheet_template)
+        self.assertEqual(self.task.worksheet_template_id, self.second_fsm_project.worksheet_template_id)
         secondTask = self.env['project.task'].create({
             'name': 'Fsm task',
             'project_id': self.second_fsm_project.id,
             'partner_id': self.partner.id,
         })
-        self.assertEqual(secondTask.worksheet_template_id, self.worksheet_template)
+        self.assertEqual(secondTask.worksheet_template_id, self.second_fsm_project.worksheet_template_id)
         self.assertTrue(secondTask.allow_worksheets)

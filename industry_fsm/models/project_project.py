@@ -39,10 +39,10 @@ class Project(models.Model):
         for project in self:
             project.allow_task_dependencies = has_group and not project.is_fsm
 
+    @api.depends('is_fsm')
     def _compute_allow_worksheets(self):
         for project in self:
-            if not project._origin:
-                project.allow_worksheets = project.is_fsm
+            project.allow_worksheets = project.is_fsm
 
     @api.depends('is_fsm')
     def _compute_allow_milestones(self):

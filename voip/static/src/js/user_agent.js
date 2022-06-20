@@ -12,14 +12,6 @@ const { Markup } = require('web.utils');
 
 const _t = core._t;
 
-/**
- * @param {string} number
- * @return {string}
- */
-function cleanNumber(number) {
-    return number.replace(/[\s-/.\u00AD]/g, '');
-}
-
 const CALL_STATE = {
     NO_CALL: 0,
     RINGING_CALL: 1,
@@ -119,18 +111,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._answerCall();
     },
     /**
-     * Return the Mobile Call config
-     */
-    async getMobileCallConfig() {
-        this.infoPbxConfiguration = await this._rpc({
-            model: 'voip.configurator',
-            method: 'get_pbx_config',
-            args: [],
-            kwargs: {},
-        });
-        return this.infoPbxConfiguration.how_to_call_on_mobile;
-    },
-    /**
      * Returns PBX Configuration.
      *
      * @return {Object} result user and pbx configuration return by the rpc
@@ -139,17 +119,19 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         return this.infoPbxConfiguration;
     },
     /**
-     *
-     * @param userUID
      * @param useVoIPChoice
      */
-    async updateCallPreference(userUID, useVoIPChoice) {
-        await this._rpc({
-            model: 'res.users',
-            method: 'write',
-            args: [[userUID], {how_to_call_on_mobile: useVoIPChoice}],
-        });
-        await this.getMobileCallConfig();
+    async updateCallPreference(useVoIPChoice) {
+        await this._messaging.rpc(
+            {
+                model: 'res.users.settings',
+                method: 'set_res_users_settings',
+                args: [[this._messaging.currentUser.res_users_settings_id.id], {
+                    how_to_call_on_mobile: useVoIPChoice,
+                }],
+            },
+            { shadow: true },
+        );
     },
     /**
      * Hangs up the current call.
@@ -381,7 +363,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 _t("PBX or Websocket address is missing. Please check your settings."));
             return false;
         }
-        if (!(params.voip_username && params.voip_secret)) {
+        if (!this._messaging.voip.areCredentialsSet) {
             this._triggerError(
                 _t("Your credentials are not correctly set. Please contact your administrator."));
             return false;
@@ -445,8 +427,8 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _getUaConfig(params) {
         return {
-            authorizationPassword: params.voip_secret,
-            authorizationUsername: params.voip_username,
+            authorizationPassword: this._messaging.currentUser.res_users_settings_id.voip_secret,
+            authorizationUsername: this._messaging.currentUser.res_users_settings_id.voip_username,
             delegate: {
                 onDisconnect: (error) => this._onDisconnect(error),
                 onInvite: (inviteSession) => this._onInvite(inviteSession),
@@ -460,7 +442,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 server: params.wsServer || null,
                 traceSip: params.traceSip,
             },
-            uri: window.SIP.UserAgent.makeURI(`sip:${params.voip_username}@${params.pbx_ip}`),
+            uri: window.SIP.UserAgent.makeURI(`sip:${this._messaging.currentUser.res_users_settings_id.voip_username}@${params.pbx_ip}`),
         };
     },
     /**
@@ -477,11 +459,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 isConnecting: true,
                 message: _t("Connecting..."),
             });
-            this._alwaysTransfer = result.should_call_from_another_device;
-            this._ignoreIncoming = result.should_auto_reject_incoming_calls;
-            if (result.external_device_number) {
-                this._externalPhone = cleanNumber(result.external_device_number);
-            }
             if (!window.RTCPeerConnection || !window.MediaStream || !navigator.mediaDevices) {
                 this._triggerError(
                     _t("Your browser could not support WebRTC. Please check your configuration."));
@@ -518,11 +495,11 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             return;
         }
         try {
-            number = cleanNumber(number);
+            number = this._messaging.voip.cleanPhoneNumber(number);
             this._currentCallParams = { number };
             let calleeURI;
-            if (this._alwaysTransfer && this._externalPhone) {
-                calleeURI = window.SIP.UserAgent.makeURI(`sip:${this._externalPhone}@${this.infoPbxConfiguration.pbx_ip}`);
+            if (this.voip.willCallFromAnotherDevice) {
+                calleeURI = window.SIP.UserAgent.makeURI(`sip:${this.voip.cleanedExternalDeviceNumber}@${this.infoPbxConfiguration.pbx_ip}`);
                 this._currentNumber = number;
             } else {
                 calleeURI = window.SIP.UserAgent.makeURI(`sip:${number}@${this.infoPbxConfiguration.pbx_ip}`);
@@ -773,7 +750,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             inviteSession.reject({ statusCode: 603 });
             return;
         }
-        if (this._ignoreIncoming) {
+        if (this._messaging.currentUser.res_users_settings_id.should_auto_reject_incoming_calls) {
             /**
              * 488: "Not Acceptable Here"
              * Request doesn't succeed but may succeed elsewhere.
@@ -908,7 +885,11 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onOutgoingInvitationAccepted(response) {
         this._updateCallState(CALL_STATE.ONGOING_CALL);
         this._stopRingtones();
-        if (this.voip.mode === 'prod' && this._alwaysTransfer && this._currentNumber) {
+        if (
+            this.voip.mode === 'prod' &&
+            this._messaging.currentUser.res_users_settings_id.should_call_from_another_device &&
+            this._currentNumber
+        ) {
             this.transfer(this._currentNumber);
         } else {
             this._messaging.messagingBus.trigger('sip_accepted');

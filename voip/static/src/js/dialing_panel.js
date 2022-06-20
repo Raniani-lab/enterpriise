@@ -11,7 +11,6 @@ const config = require('web.config');
 const Dialog = require('web.Dialog');
 const dom = require('web.dom');
 const mobile = require('web_mobile.core');
-const realSession = require('web.session');
 const { sprintf } = require('@web/core/utils/strings');
 const Widget = require('web.Widget');
 
@@ -214,10 +213,6 @@ const DialingPanel = Widget.extend({
      */
     getPbxConfiguration() {
         return this._userAgent.getPbxConfiguration();
-    },
-
-    async getMobileCallConfig() {
-        return this._userAgent.getMobileCallConfig();
     },
 
     //--------------------------------------------------------------------------
@@ -550,7 +545,7 @@ const DialingPanel = Widget.extend({
             return true;
         }
 
-        const mobileCallMethod = await this.getMobileCallConfig();
+        const mobileCallMethod = this._messaging.currentUser.res_users_settings_id.how_to_call_on_mobile;
         // avoid ask choice if value is set
         if (mobileCallMethod !== 'ask') {
             return mobileCallMethod === 'voip';
@@ -570,7 +565,7 @@ const DialingPanel = Widget.extend({
 
             const processChoice = useVoip => {
                 if ($checkbox.find('input[type="checkbox"]').is(':checked')) {
-                    this._userAgent.updateCallPreference(realSession.uid, useVoip ? 'voip' : 'phone');
+                    this._userAgent.updateCallPreference(useVoip ? 'voip' : 'phone');
                 }
                 resolve(useVoip);
             };

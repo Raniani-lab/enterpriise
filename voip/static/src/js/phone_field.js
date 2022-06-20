@@ -29,19 +29,17 @@ Phone.include({
     },
 
     async _hasPbxConfig() {
-
+        const { voip } = await owl.Component.env.services.messaging.get();
         const pbxConfiguration = await new Promise(resolve => {
             this.trigger_up('get_pbx_configuration', {
                 callback: output => resolve(output.pbxConfiguration),
             });
         });
 
-        return pbxConfiguration.mode !== 'prod' ||
-        (
-            pbxConfiguration.pbx_ip &&
-            pbxConfiguration.wsServer &&
-            pbxConfiguration.voip_username &&
-            pbxConfiguration.voip_secret
+        return (
+            voip.mode !== "prod" ||
+            Boolean(pbxConfiguration.pbx_ip && pbxConfiguration.wsServer) &&
+            voip.areCredentialsSet
         );
     },
     //--------------------------------------------------------------------------

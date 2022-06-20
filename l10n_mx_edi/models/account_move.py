@@ -145,6 +145,9 @@ class AccountMove(models.Model):
         self.ensure_one()
         return self.company_id.partner_id.commercial_partner_id
 
+    def _l10n_mx_edi_get_tax_objected(self):
+        return '02'
+
     def _l10n_mx_edi_decode_cfdi(self, cfdi_data=None):
         ''' Helper to extract relevant data from the CFDI to be used, for example, when printing the invoice.
         :param cfdi_data:   The optional cfdi data.

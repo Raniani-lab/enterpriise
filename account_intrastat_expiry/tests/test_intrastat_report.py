@@ -95,7 +95,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             # pylint: disable=C0326
             lines,
             #    country code,  transaction code,  origin country
-            [    2,             3,                 7   ],
+            [    2,             3,                 6   ],
             [
                 ('DE',          '103',             'QV'),
                 ('DE',          '104',             'QV'),
@@ -123,7 +123,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             # pylint: disable=C0326
             lines,
             #    country code,  transaction code,  commodity code,  origin country
-            [    2,             3,                 5,               7  ],
+            [    2,             3,                 5,               6  ],
             [
                 ('DE',          11,                '100',          'QV'),
                 ('DE',          11,                '101',          'QV'),
@@ -160,7 +160,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             # pylint: disable=C0326
             lines,
             #    country code,  transaction code,  commodity code,  origin country
-            [    2,             3,                 5,               7  ],
+            [    2,             3,                 5,               6  ],
             [
                 ('DE',          11,                '100',          'QV'),
                 ('DE',          11,                '101',          'QV'),

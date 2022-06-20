@@ -34,7 +34,7 @@ class IntrastatReport(models.AbstractModel):
     filter_intrastat_extended = True
 
     def print_xlsx(self, options):
-        return super().print_xlsx({**options, 'country_format': 'code'})
+        return super().print_xlsx({**options, 'country_format': 'code', 'commodity_flow': 'code'})
 
     def _get_filter_journals(self):
         #only show sale/purchase journals
@@ -48,7 +48,7 @@ class IntrastatReport(models.AbstractModel):
     def _get_columns_name(self, options):
         columns = [
             {'name': ''},
-            {'name': _('System')},
+            {'name': _('Commodity Flow')},
             {'name': _('Country Code')},
             {'name': _('Transaction Code')},
         ]
@@ -58,7 +58,6 @@ class IntrastatReport(models.AbstractModel):
             ]
         columns += [
             {'name': _('Commodity Code')},
-            {'name': _('Type')},
             {'name': _('Origin Country')},
             {'name': _('Partner VAT')},
         ]
@@ -80,13 +79,14 @@ class IntrastatReport(models.AbstractModel):
         country_column = 'country_code' if options.get('country_format') == 'code' else 'country_name'
         origin_country_column = 'intrastat_product_origin_country' if options.get('country_format') == 'code' else 'intrastat_product_origin_country_name'
 
+        commodity_flow = vals['system'] if options.get('commodity_flow') else f"{vals['system']} ({vals['type']})"
         columns = [{'name': c} for c in [
-            vals['system'], vals[country_column], vals['transaction_code'],
+            commodity_flow, vals[country_column], vals['transaction_code'],
         ]]
         if self._show_region_code():
             columns.append({'name': vals['region_code']})
         columns += [{'name': c} for c in [
-            vals['commodity_code'], vals['type'], vals[origin_country_column], vals['partner_vat'],
+            vals['commodity_code'], vals[origin_country_column], vals['partner_vat'],
         ]]
         if options.get('intrastat_extended'):
             columns += [{'name': c} for c in [

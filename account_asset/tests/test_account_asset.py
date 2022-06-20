@@ -1397,6 +1397,10 @@ class TestAccountAsset(TestAccountReportsCommon):
             'method_period': '1',
             'method': 'linear',
         })
+        asset.compute_depreciation_board()
+
+        self.assertTrue(all(m.state == 'draft' for m in asset.depreciation_move_ids))
+
         asset.validate()
 
         self.assertTrue(all(m.state == 'posted' for m in asset.depreciation_move_ids))

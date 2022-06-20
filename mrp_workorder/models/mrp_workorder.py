@@ -614,10 +614,6 @@ class MrpProductionWorkcenterLine(models.Model):
             'views': [[self.env.ref('mrp_workorder.mrp_workorder_view_form_tablet').id, 'form']],
             'res_id': self.id,
             'target': 'fullscreen',
-            'flags': {
-                'withControlPanel': False,
-                'form_view_initial_mode': 'edit',
-            },
             'context': {
                 'from_production_order': self.env.context.get('from_production_order'),
                 'from_manufacturing_order': self.env.context.get('from_manufacturing_order')

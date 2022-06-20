@@ -42,6 +42,7 @@ var TabletPDFViewer = FormView.extend({
     config: _.extend({}, FormView.prototype.config, {
         Renderer: PDFViewerNoReloadRenderer,
     }),
+    withControlPanel: false,
 });
 
 viewRegistry.add('tablet_pdf_viewer', TabletPDFViewer);

@@ -9,11 +9,11 @@
         <!-- Mobile search -->
         <t t-elif="state.showMobileSearch">
             <t t-portal="'body'">
-                <div class="o_search_panel o_searchview o_mobile_search">
+                <div class="o_search_panel o_searchview o_mobile_search" t-ref="root">
                     <div class="o_mobile_search_header">
                         <button type="button"
                             class="o_mobile_search_button btn"
-                            t-on-click="state.showMobileSearch = false"
+                            t-on-click="() => state.showMobileSearch = false"
                         >
                             <i class="fa fa-arrow-left" />
                             <strong class="ml8">FILTER</strong>
@@ -24,7 +24,7 @@
                     </div>
                     <button type="button"
                         class="btn btn-primary o_mobile_search_footer"
-                        t-on-click.stop="state.showMobileSearch = false"
+                        t-on-click.stop="() => state.showMobileSearch = false"
                     >
                         <t>SEE RESULT</t>
                     </button>
@@ -33,7 +33,7 @@
         </t>
         <!-- Summary header -->
         <t t-else="">
-            <div class="o_search_panel o_search_panel_summary" t-on-click="state.showMobileSearch = true">
+            <div class="o_search_panel o_search_panel_summary" t-on-click="() => state.showMobileSearch = true" t-ref="root">
                 <t t-set="categories" t-value="getCategorySelection()" />
                 <t t-set="filters" t-value="getFilterSelection()" />
                 <div class="d-flex align-items-center">

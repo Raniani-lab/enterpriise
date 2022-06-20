@@ -1,6 +1,8 @@
 odoo.define('voip.tests', function (require) {
 "use strict";
 
+const { start, startServer } = require('@mail/../tests/helpers/test_utils');
+
 const basicFields = require('web.basic_fields');
 var config = require('web.config');
 var FormView = require('web.FormView');
@@ -131,32 +133,40 @@ QUnit.module('voip', {
     });
 
     QUnit.test("click on phone field link triggers call once", async function (assert) {
+        const pyEnv = await startServer();
+        const resPartnerId1 = pyEnv['res.partner'].create({
+            phone: "+324567606798",
+        });
+        const views = {
+            'res.partner,false,form': `
+                <form string="Partners">
+                    <sheet>
+                        <group>
+                            <field name="phone" widget="phone"/>
+                        </group>
+                    </sheet>
+                </form>
+            `,
+        };
+        const { openView } = await start({
+            serverData: { views },
+        });
+        await openView({
+            res_id: resPartnerId1,
+            res_model: 'res.partner',
+            views: [[false, 'form']],
+        });
         testUtils.mock.patch(basicFields.FieldPhone, {
             _onClickLink(...args) {
                 assert.step("phone link clicked");
                 this._super(...args);
             },
         });
-        const form = await createView({
-            View: FormView,
-            model: 'partner',
-            data: this.data,
-            arch: `<form string="Partners">
-                    <sheet>
-                        <group>
-                            <field name="foo" widget="phone"/>
-                        </group>
-                    </sheet>
-                </form>`,
-            res_id: 1,
-        });
 
-        await testUtils.dom.click(form.el.querySelector('.o_field_phone a'));
-        assert.containsOnce(form.el, ".o_form_readonly", "form view should not change to edit mode from click on phone link");
+        await testUtils.dom.click(document.querySelector('.o_field_phone a'));
+        assert.containsOnce(document.body, ".o_form_readonly", "form view should not change to edit mode from click on phone link");
         assert.verifySteps(["phone link clicked"], "should have called click handler of phone link only once");
         testUtils.mock.unpatch(basicFields.FieldPhone);
-
-        form.destroy();
     });
 
 });

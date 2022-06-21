@@ -116,8 +116,7 @@ FormRenderer.include({
     //--------------------------------------------------------------------------
 
     /**
-     * @private
-     * @returns {boolean}
+     * @override
      */
     _isChatterAside() {
         const parent = this._chatterContainerTarget && this._chatterContainerTarget.parentNode;
@@ -170,25 +169,9 @@ FormRenderer.include({
      */
     _makeChatterContainerProps() {
         const props = this._super(...arguments);
-        const isChatterAside = this._isChatterAside();
         return Object.assign(props, {
-            hasExternalBorder: !isChatterAside,
-            hasMessageListScrollAdjust: isChatterAside,
             isInFormSheetBg: this._isChatterInFormSheetBg,
         });
-    },
-    /**
-     * Add a class to allow styling of chatter depending on the fact is is
-     * printed aside or underneath the form sheet.
-     *
-     * @override
-     */
-    _updateChatterContainerTarget() {
-        if (this._isChatterAside()) {
-            $(this._chatterContainerTarget).addClass('o-aside');
-        } else {
-            $(this._chatterContainerTarget).removeClass('o-aside');
-        }
     },
     /**
      * Triggered from the mail chatter, send attachments data for preview

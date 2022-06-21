@@ -33,6 +33,11 @@ class IntrastatReport(models.AbstractModel):
         #only show sale/purchase journals
         return self.env['account.journal'].search([('company_id', 'in', self.env.companies.ids or [self.env.company.id]), ('type', 'in', ('sale', 'purchase'))], order="company_id, name")
 
+    def _show_region_code(self):
+        """Return a bool indicating if the region code is to be displayed for the country concerned in this localisation."""
+        # TO OVERRIDE
+        return True
+
     def _get_columns_name(self, options):
         columns = [
             {'name': ''},
@@ -40,7 +45,12 @@ class IntrastatReport(models.AbstractModel):
             {'name': _('System')},
             {'name': _('Country Code')},
             {'name': _('Transaction Code')},
-            {'name': _('Region Code')},
+        ]
+        if self._show_region_code():
+            columns += [
+                {'name': _('Region Code')},
+            ]
+        columns += [
             {'name': _('Commodity Code')},
             {'name': _('Type')},
             {'name': _('Origin Country')},
@@ -62,8 +72,11 @@ class IntrastatReport(models.AbstractModel):
     def _create_intrastat_report_line(self, options, vals):
         columns = [{'name': c} for c in [
             vals['invoice_date'], vals['system'], vals['country_code'], vals['transaction_code'],
-            vals['region_code'], vals['commodity_code'], vals['type'],
-            vals['intrastat_product_origin_country'], vals['partner_vat'],
+        ]]
+        if self._show_region_code():
+            columns.append({'name': vals['region_code']})
+        columns += [{'name': c} for c in [
+            vals['commodity_code'], vals['type'], vals['intrastat_product_origin_country'], vals['partner_vat'],
         ]]
         if options.get('intrastat_extended'):
             columns += [{'name': c} for c in [

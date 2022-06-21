@@ -24,6 +24,13 @@ class IntrastatReport(models.AbstractModel):
         action['data']['output_format'] = 'csv'
         return action
 
+    def _show_region_code(self):
+        # The region code is irrelevant for the Netherlands and will always be an empty column, with
+        # this function we can conditionally exclude it from the report.
+        if self.env.company.country_id.code == 'NL':
+            return False
+        return super()._show_region_code()
+
     @api.model
     def get_csv(self, options):
         ''' Export the Centraal Bureau voor de Statistiek (CBS) file.

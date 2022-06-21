@@ -2,14 +2,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import exceptions
-from odoo.addons.test_mail.tests.common import TestMailCommon, TestRecipients
+from odoo.addons.test_mail_sms.tests.common import TestSMSCommon, TestSMSRecipients
 from odoo.tests.common import users
 from odoo.tests import tagged
 from odoo.tools import mute_logger
 
 
 @tagged('mail_activity')
-class TestActivity(TestMailCommon, TestRecipients):
+class TestActivity(TestSMSCommon, TestSMSRecipients):
 
     @classmethod
     def setUpClass(cls):

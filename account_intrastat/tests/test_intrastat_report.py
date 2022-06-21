@@ -66,11 +66,11 @@ class TestIntrastatReport(TestAccountReportsCommon):
         lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
-            #    Name               CountryCode    CommodityCode  Type           SupplementaryUnits
+            #    Name              Country        CommodityCode  Type           SupplementaryUnits
             #
-            [    0,                 3,             6,             7,             13],
+            [    0,                2,             5,             6,             12  ],
             [
-                ('INV/2022/00001', 'BE',          '97040000',    'Dispatch',    None)
+                ('INV/2022/00001', 'Belgium',     '97040000',    'Dispatch',    None)
             ],
         )
 
@@ -122,14 +122,14 @@ class TestIntrastatReport(TestAccountReportsCommon):
         lines.sort(key=lambda l: l['id'])
         self.assertLinesValues(
             lines,
-            #    Name               CountryCode    CommodityCode  Type           SupplementaryUnits
+            #    Name             Country         CommodityCode  Type           SupplementaryUnits
             #
-            [    0,                 3,             6,             7,             13],
+            [    0,                2,             5,             6,             12    ],
             [
-                ('INV/2022/00001', 'BE',          '93012000',    'Dispatch',    123.0),
-                ('INV/2022/00001', 'BE',          '93012000',    'Dispatch',    240.0),
-                ('INV/2022/00001', 'BE',          '90212110',    'Dispatch',    1.23),
-                ('INV/2022/00001', 'BE',          '90212110',    'Dispatch',    2.4),
+                ('INV/2022/00001', 'Belgium',     '93012000',    'Dispatch',    123   ),
+                ('INV/2022/00001', 'Belgium',     '93012000',    'Dispatch',    240   ),
+                ('INV/2022/00001', 'Belgium',     '90212110',    'Dispatch',      1.23),
+                ('INV/2022/00001', 'Belgium',     '90212110',    'Dispatch',      2.4 ),
             ],
         )
 
@@ -159,10 +159,10 @@ class TestIntrastatReport(TestAccountReportsCommon):
         lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
-            #    Name               CountryCode    CommodityCode  Type           SupplementaryUnits
+            #    Name             Country         CommodityCode  Type           SupplementaryUnits
             #
-            [    0,                 3,             6,             7,             13],
+            [    0,                2,             5,             6,             12    ],
             [
-                ('INV/2022/00001', 'BE',          '37061020',    'Dispatch',    1230.0),
+                ('INV/2022/00001', 'Belgium',     '37061020',    'Dispatch',    1230  ),
             ],
         )

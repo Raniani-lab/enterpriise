@@ -89,12 +89,13 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
         options = report._get_options(None)
         options['date']['date_from'] = '1900-01-01'
         options['date']['date_to'] = '2022-12-01'
+        options.update({'country_format': 'code'})
         lines = report._get_lines(options)
         self.assertLinesValues(
             # pylint: disable=C0326
             lines,
             #    country code,  transaction code,  origin country
-            [    3,             4,                 8],
+            [    2,             3,                 7   ],
             [
                 ('DE',          '103',             'QU'),
                 ('DE',          '104',             'QU'),
@@ -116,12 +117,13 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
         options = report._get_options(None)
         options['date']['date_from'] = '1900-01-01'
         options['date']['date_to'] = '2022-12-01'
+        options.update({'country_format': 'code'})
         lines = report._get_lines(options)
         self.assertLinesValues(
             # pylint: disable=C0326
             lines,
             #    country code,  transaction code,  commodity code,  origin country
-            [    3,             4,                 6,               8],
+            [    2,             3,                 5,               7  ],
             [
                 ('DE',          11,                '100',          'QU'),
                 ('DE',          11,                '101',          'QU'),
@@ -152,12 +154,13 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
         options = report._get_options(None)
         options['date']['date_from'] = '1900-01-01'
         options['date']['date_to'] = '2022-12-01'
+        options.update({'country_format': 'code'})
         lines = report._get_lines(options)
         self.assertLinesValues(
             # pylint: disable=C0326
             lines,
             #    country code,  transaction code,  commodity code,  origin country
-            [    3,             4,                 6,               8],
+            [    2,             3,                 5,               7  ],
             [
                 ('DE',          11,                '100',          'QU'),
                 ('DE',          11,                '101',          'QU'),

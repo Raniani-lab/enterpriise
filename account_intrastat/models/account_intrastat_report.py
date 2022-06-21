@@ -29,6 +29,9 @@ class IntrastatReport(models.AbstractModel):
     ]
     filter_intrastat_extended = True
 
+    def print_xlsx(self, options):
+        return super().print_xlsx({**options, 'country_format': 'code'})
+
     def _get_filter_journals(self):
         #only show sale/purchase journals
         return self.env['account.journal'].search([('company_id', 'in', self.env.companies.ids or [self.env.company.id]), ('type', 'in', ('sale', 'purchase'))], order="company_id, name")
@@ -41,7 +44,6 @@ class IntrastatReport(models.AbstractModel):
     def _get_columns_name(self, options):
         columns = [
             {'name': ''},
-            {'name': _('Date')},
             {'name': _('System')},
             {'name': _('Country Code')},
             {'name': _('Transaction Code')},
@@ -70,13 +72,17 @@ class IntrastatReport(models.AbstractModel):
 
     @api.model
     def _create_intrastat_report_line(self, options, vals):
+        # This is so that full country names are displayed when in the UI, and the 2-digit iso codes are used when 'code' is in the options
+        country_column = 'country_code' if options.get('country_format') == 'code' else 'country_name'
+        origin_country_column = 'intrastat_product_origin_country' if options.get('country_format') == 'code' else 'intrastat_product_origin_country_name'
+
         columns = [{'name': c} for c in [
-            vals['invoice_date'], vals['system'], vals['country_code'], vals['transaction_code'],
+            vals['system'], vals[country_column], vals['transaction_code'],
         ]]
         if self._show_region_code():
             columns.append({'name': vals['region_code']})
         columns += [{'name': c} for c in [
-            vals['commodity_code'], vals['type'], vals['intrastat_product_origin_country'], vals['partner_vat'],
+            vals['commodity_code'], vals['type'], vals[origin_country_column], vals['partner_vat'],
         ]]
         if options.get('intrastat_extended'):
             columns += [{'name': c} for c in [
@@ -129,6 +135,7 @@ class IntrastatReport(models.AbstractModel):
                 row_number() over () AS sequence,
                 CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN %(import_merchandise_code)s ELSE %(export_merchandise_code)s END AS system,
                 country.code AS country_code,
+                country.name AS country_name,
                 company_country.code AS comp_country_code,
                 transaction.code AS transaction_code,
                 company_region.code AS region_code,
@@ -169,6 +176,7 @@ class IntrastatReport(models.AbstractModel):
                      THEN \'QU\'  -- If you don't know the country of origin of the goods, as an exception you may replace the country code by "QU".
                      ELSE product_country.code
                 END AS intrastat_product_origin_country,
+                product_country.name AS intrastat_product_origin_country_name,
                 CASE WHEN partner_country.id IS NULL
                      THEN \'QV999999999999\'  -- For VAT numbers of companies outside the European Union, for example in the case of triangular trade, you always have to use the code "QV999999999999".
                      ELSE partner.vat

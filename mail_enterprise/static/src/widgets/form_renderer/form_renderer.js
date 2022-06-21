@@ -92,8 +92,6 @@ FormRenderer.include({
         if (!this.hasChatter) {
             return;
         }
-        this._updateChatterContainerTarget();
-
         // for cached messages, `preview_attachment` will be triggered
         // before the view rendering where the chatter is replaced ; in this
         // case, we need to interchange its position if needed

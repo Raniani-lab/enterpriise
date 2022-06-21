@@ -183,14 +183,6 @@ FormRenderer.include({
      *
      * @override
      */
-    _makeChatterContainerTarget() {
-        const $el = this._super(...arguments);
-        this._updateChatterContainerTarget();
-        return $el;
-    },
-    /**
-     * @private
-     */
     _updateChatterContainerTarget() {
         if (this._isChatterAside()) {
             $(this._chatterContainerTarget).addClass('o-aside');

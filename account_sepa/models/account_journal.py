@@ -321,8 +321,9 @@ class AccountJournal(models.Model):
     def _get_CdtTrfTxInf(self, PmtInfId, payment, sct_generic, pain_version, local_instrument=None):
         CdtTrfTxInf = etree.Element("CdtTrfTxInf")
         PmtId = etree.SubElement(CdtTrfTxInf, "PmtId")
-        InstrId = etree.SubElement(PmtId, "InstrId")
-        InstrId.text = sanitize_communication(payment['name'][:35])
+        if payment['name']:
+            InstrId = etree.SubElement(PmtId, "InstrId")
+            InstrId.text = sanitize_communication(payment['name'][:35])
         EndToEndId = etree.SubElement(PmtId, "EndToEndId")
         EndToEndId.text = (PmtInfId.text + str(payment['id']))[-30:]
         Amt = etree.SubElement(CdtTrfTxInf, "Amt")

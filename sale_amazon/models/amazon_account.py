@@ -567,7 +567,9 @@ class AmazonAccount(models.Model):
         }
         if self.location_id.warehouse_id:
             order_vals['warehouse_id'] = self.location_id.warehouse_id.id
-        return self.env['sale.order'].with_context(mail_create_nosubscribe=True).create(order_vals)
+        return self.env['sale.order'].with_context(
+            mail_create_nosubscribe=True
+        ).with_company(self.company_id).create(order_vals)
 
     def _find_or_create_partners_from_data(self, order_data):
         """ Find or create the contact and delivery partners based on the provided order data.

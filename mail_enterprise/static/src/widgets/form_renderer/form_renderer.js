@@ -89,7 +89,7 @@ FormRenderer.include({
      */
     async _renderView() {
         await this._super(...arguments);
-        if (!this._hasChatter()) {
+        if (!this.hasChatter) {
             return;
         }
         this._updateChatterContainerTarget();

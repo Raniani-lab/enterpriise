@@ -290,7 +290,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
 
         return this._super.apply(this, arguments).then(async function () {
             // Add chatter hook + chatter preview
-            if (!self._hasChatter() && self.chatter_allowed) {
+            if (!self.hasChatter && self.chatter_allowed) {
                 var $chatter_hook = $('<div>').addClass('o_web_studio_add_chatter o_chatter');
                 // Append non-hover content
                 $chatter_hook.append($('<span>', {class: 'container'})
@@ -670,7 +670,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
      */
     async _renderView() {
         await this._super(...arguments);
-        if (this._hasChatter()) {
+        if (this.hasChatter) {
             const $el = $(this._chatterContainerComponent.el);
             this.setSelectable($el);
             // Put a div in overlay preventing all clicks chatter's elements

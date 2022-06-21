@@ -89,7 +89,7 @@
                     'o_pdf_rule_buttons': !isMobile,
                     'dropdown-item': isMobile,
                     'ml-3': !isMobile &amp;&amp; rule_index === 0}"
-                t-on-click="() => this._onClickRule(rule.id)"
+                t-on-click="(ev) => this._onClickRule(rule.id, ev)"
                 t-esc="rule.display_name"
                 t-att-disabled="state.uploadingLock"/>
         </t>

@@ -110,6 +110,10 @@ class HrExpense(models.Model):
                 if record.extract_state == "no_extract_requested":
                     record.retry_ocr()
 
+    def _message_set_main_attachment_id(self, attachment_ids):
+        super(HrExpense, self)._message_set_main_attachment_id(attachment_ids)
+        self.attach_document()
+
     def get_validation(self, field):
 
         text_to_send = {}

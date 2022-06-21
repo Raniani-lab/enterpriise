@@ -54,6 +54,9 @@ Allows to make call from next activities or with click-to-dial.
         'web.assets_backend_prod_only': [
             'voip/static/src/main.js',
         ],
+        'web.tests_assets': [
+            'voip/static/tests/helpers/*.js',
+        ],
         'web.qunit_suite_tests': [
             'voip/static/tests/qunit_suite_tests/**/*.js',
         ],

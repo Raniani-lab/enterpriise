@@ -66,12 +66,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         owl.Component.env.services.messaging.get().then((messaging) => {
             this._messaging = messaging;
             this.voip = messaging.voip;
-            this._rpc({
-                model: 'voip.configurator',
-                method: 'get_pbx_config',
-                args: [],
-                kwargs: {},
-            }).then(result => this._initUserAgent(result));
+            this._initUserAgent();
         });
 
         window.onbeforeunload = function (event) {
@@ -90,14 +85,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     acceptIncomingCall() {
         this._answerCall();
-    },
-    /**
-     * Returns PBX Configuration.
-     *
-     * @return {Object} result user and pbx configuration return by the rpc
-     */
-    getPbxConfiguration() {
-        return this.infoPbxConfiguration;
     },
     /**
      * @param useVoIPChoice
@@ -197,7 +184,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         if (this._callState !== CALL_STATE.ONGOING_CALL) {
             return;
         }
-        const transferTarget = window.SIP.UserAgent.makeURI(`sip:${number}@${this.infoPbxConfiguration.pbx_ip}`);
+        const transferTarget = window.SIP.UserAgent.makeURI(`sip:${number}@${this.voip.pbxAddress}`);
         this._sipSession.refer(transferTarget, {
             requestDelegate: {
                 onAccept: (response) => this._onReferAccepted(response),
@@ -316,15 +303,14 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         return registerer;
     },
     /**
-     * Instantiates a new user agent using the provided configuration.
+     * Instantiates a new user agent using the current configuration.
      *
      * @private
-     * @param {Object} params user and pbx configuration parameters
      * @return {SIP.UserAgent|false} Returns `false` if some mandatory
      * configurations are missing.
      */
-    _createUserAgent(params) {
-        if (!(params.pbx_ip && params.wsServer)) {
+    _createUserAgent() {
+        if (!this.voip.pbxAddress || !this.voip.webSocketUrl) {
             this._triggerError(
                 _t("PBX or Websocket address is missing. Please check your settings."));
             return false;
@@ -334,20 +320,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 _t("Your credentials are not correctly set. Please contact your administrator."));
             return false;
         }
-        if (params.debug) {
-            params.traceSip = true;
-            params.log = {
-                level: 3,
-                builtinEnabled: true,
-            };
-        } else {
-            params.traceSip = false;
-            params.log = {
-                level: 2,
-                builtinEnabled: false,
-            };
-        }
-        return new window.SIP.UserAgent(this._getUaConfig(params));
+        return new window.SIP.UserAgent(this._getUaConfig());
     },
     /**
      * @private
@@ -388,10 +361,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Returns the UA configuration required.
      *
      * @private
-     * @param {Object} params user and pbx configuration parameters
      * @return {Object} the ua configuration parameters
      */
-    _getUaConfig(params) {
+    _getUaConfig() {
+        const isDebug = owl.Component.env.isDebug() !== '';
         return {
             authorizationPassword: this._messaging.currentUser.res_users_settings_id.voip_secret,
             authorizationUsername: this.voip.authorizationUsername,
@@ -400,26 +373,23 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 onInvite: (inviteSession) => this._onInvite(inviteSession),
             },
             hackIpInContact: true,
-            logLevel: params.log.level,
-            logBuiltinEnabled: params.log.builtinEnabled,
+            logBuiltinEnabled: isDebug,
+            logLevel: isDebug ? 'debug' : 'error',
             sessionDescriptionHandlerFactory: window.SIP.Web.defaultSessionDescriptionHandlerFactory(this._getMediaStreamFactory()),
             sessionDescriptionHandlerFactoryOptions: { iceGatheringTimeout: 1000 },
             transportOptions: {
-                server: params.wsServer || null,
-                traceSip: params.traceSip,
+                server: this.voip.webSocketUrl,
+                traceSip: isDebug,
             },
-            uri: window.SIP.UserAgent.makeURI(`sip:${this._messaging.currentUser.res_users_settings_id.voip_username}@${params.pbx_ip}`),
+            uri: window.SIP.UserAgent.makeURI(`sip:${this._messaging.currentUser.res_users_settings_id.voip_username}@${this.voip.pbxAddress}`),
         };
     },
     /**
      * Initialises the ua, binds events and appends audio in the dom.
      *
      * @private
-     * @param {Object} result user and pbx configuration return by the rpc
      */
-    async _initUserAgent(result) {
-        this.infoPbxConfiguration = result;
-        this.voip.update({ mode: result.mode });
+    async _initUserAgent() {
         if (this.voip.mode === 'prod') {
             this._messaging.messagingBus.trigger('sip_error', {
                 isConnecting: true,
@@ -430,7 +400,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                     _t("Your browser could not support WebRTC. Please check your configuration."));
                 return;
             }
-            this._userAgent = this._createUserAgent(result);
+            this._userAgent = this._createUserAgent();
             if (!this._userAgent) {
                 return;
             }
@@ -465,10 +435,10 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._currentCallParams = { number };
             let calleeURI;
             if (this.voip.willCallFromAnotherDevice) {
-                calleeURI = window.SIP.UserAgent.makeURI(`sip:${this.voip.cleanedExternalDeviceNumber}@${this.infoPbxConfiguration.pbx_ip}`);
+                calleeURI = window.SIP.UserAgent.makeURI(`sip:${this.voip.cleanedExternalDeviceNumber}@${this.voip.pbxAddress}`);
                 this._currentNumber = number;
             } else {
-                calleeURI = window.SIP.UserAgent.makeURI(`sip:${number}@${this.infoPbxConfiguration.pbx_ip}`);
+                calleeURI = window.SIP.UserAgent.makeURI(`sip:${number}@${this.voip.pbxAddress}`);
             }
             this._sipSession = new window.SIP.Inviter(this._userAgent, calleeURI);
             this._sipSession.delegate = this._getSessionDelegate();

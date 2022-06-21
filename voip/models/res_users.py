@@ -51,6 +51,17 @@ class ResUsers(models.Model):
         last_call = self.env['voip.phonecall'].search(domain, order='call_date desc', limit=1)
         self.env.user.last_seen_phone_call = last_call.id
 
+    def _init_messaging(self):
+        get_param = self.env['ir.config_parameter'].sudo().get_param
+        return {
+            **super()._init_messaging(),
+            'voipConfig': {
+                'mode': get_param('voip.mode', default='demo'),
+                'pbxAddress': get_param('voip.pbx_ip', default="localhost"),
+                'webSocketUrl': get_param('voip.wsServer', default="ws://localhost"),
+            },
+        }
+
     def _reflect_change_in_res_users_settings(self):
         """
         Updates the values of the VoIP User Configuration Fields in `res_users_settings_ids` to have the same values as

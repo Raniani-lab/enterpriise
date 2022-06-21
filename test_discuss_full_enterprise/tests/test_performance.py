@@ -15,6 +15,15 @@ def _get_init_messaging_result(self):
         'voip_secret': False,
         'voip_username': False,
     })
+    res['voipConfig'] = {
+        'mode': 'demo',
+        'pbxAddress': "localhost",
+        'webSocketUrl': "ws://localhost",
+    }
     return res
 
+def _get_query_count(self):
+    return 84
+
 TestDiscussFullPerformance._get_init_messaging_result = _get_init_messaging_result
+TestDiscussFullPerformance._get_query_count = _get_query_count

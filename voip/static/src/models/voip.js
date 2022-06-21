@@ -98,11 +98,22 @@ registerModel({
          * the interface but no RTC sessions are actually established.
          */
         mode: attr(),
+        /**
+         * The address of the PBX server.
+         *
+         * This is used as the hostname in SIP URIs.
+         */
+        pbxAddress: attr(),
         ringtoneRegistry: one("RingtoneRegistry", {
             default: insertAndReplace(),
             inverse: "voip",
             isCausal: true,
         }),
+        /**
+         * The WebSocket URL of the signaling server that will be used to
+         * communicate SIP messages between Odoo and the PBX server.
+         */
+        webSocketUrl: attr(),
         /**
          * Determines if the `should_call_from_another_device` setting is set
          * and if an `external_device_number` has been provided.

@@ -35,11 +35,6 @@ export class DialingPanelAdapter extends ComponentAdapter {
         this.voipLegacy.bus.on('VOIP-ACTIVITY-CALL', this, (data) => {
             this.widget.callFromActivityWidget(data);
         });
-        this.voipLegacy.bus.on('GET-PBX-CONFIGURATION', this, (callback) => {
-            callback({
-                pbxConfiguration: this.widget.getPbxConfiguration(),
-            });
-        });
     }
 }
 
@@ -58,9 +53,6 @@ export const voipLegacyCompatibilityService = {
         });
         browser.addEventListener("voip-activity-call", (ev) => {
             bus.trigger('VOIP-ACTIVITY-CALL', ev.detail);
-        });
-        browser.addEventListener("get-pbx-configuration", (ev) => {
-            bus.trigger('GET-PBX-CONFIGURATION', ev.detail.callback);
         });
 
         return { bus };

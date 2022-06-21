@@ -206,14 +206,6 @@ const DialingPanel = Widget.extend({
             this.displayNotification({ title: YOUR_ARE_ALREADY_IN_A_CALL });
         }
     },
-    /**
-     * Function called when a phone number is clicked
-     *
-     * @return {Object}
-     */
-    getPbxConfiguration() {
-        return this._userAgent.getPbxConfiguration();
-    },
 
     //--------------------------------------------------------------------------
     // Private

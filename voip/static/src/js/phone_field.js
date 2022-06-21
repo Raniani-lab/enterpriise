@@ -30,15 +30,9 @@ Phone.include({
 
     async _hasPbxConfig() {
         const { voip } = await owl.Component.env.services.messaging.get();
-        const pbxConfiguration = await new Promise(resolve => {
-            this.trigger_up('get_pbx_configuration', {
-                callback: output => resolve(output.pbxConfiguration),
-            });
-        });
-
         return (
             voip.mode !== "prod" ||
-            Boolean(pbxConfiguration.pbx_ip && pbxConfiguration.wsServer) &&
+            Boolean(voip.pbxAddress && voip.webSocketUrl) &&
             voip.areCredentialsSet
         );
     },

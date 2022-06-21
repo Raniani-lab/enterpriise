@@ -24,6 +24,7 @@
                     <field name="move_id"
                            string="Journal Entry"
                            filter_domain="['|', ('move_id.name', 'ilike', self), ('move_id.ref', 'ilike', self)]"/>
+                    <field name="statement_line_id" string="Statement Line"/>
 
                     <filter name="deposits" string="Deposits" domain="[('amount', '&lt;', 0.0)]"/>
                     <filter name="payments" string="Payments" domain="[('amount', '>', 0.0)]"/>

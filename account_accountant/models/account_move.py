@@ -91,6 +91,11 @@ class AccountMoveLine(models.Model):
 
     def open_move(self):
         if self.statement_id:
-            return self.statement_id.action_bank_reconcile_bank_statements()
+            return self.statement_line_id._action_open_bank_reconciliation_widget(
+                default_context={
+                    'search_default_journal_id': self.statement_line_id.journal_id.id,
+                    'search_default_statement_line_id': self.statement_line_id.id,
+                }
+            )
         else:
             return super().open_move()

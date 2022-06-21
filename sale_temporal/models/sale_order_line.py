@@ -23,15 +23,6 @@ class SaleOrderLine(models.Model):
     next_invoice_date = fields.Datetime(compute='_compute_next_invoice_date', readonly=False, store=True, precompute=True,
                                         help="The next invoice will be created on this date then the period will be extended.")
     pricelist_id = fields.Many2one(related='order_id.pricelist_id')
-    pricing_id = fields.Many2one('product.pricing',
-                                 domain="[('id', 'in', product_pricing_ids),"
-                                        "'|',"
-                                        "('product_variant_ids', '=', False),"
-                                        "('product_variant_ids', '=', product_id),"
-                                        "'|',"
-                                        "('pricelist_id', '=', False),"
-                                        "('pricelist_id', '=', pricelist_id)]",
-                                 compute='_compute_pricing_id', store=True, precompute=True, readonly=False)
     temporal_type = fields.Selection([], compute="_compute_temporal_type")
 
     #=== COMPUTE METHODS ===#
@@ -40,9 +31,6 @@ class SaleOrderLine(models.Model):
 
     def _compute_next_invoice_date(self):
         self.next_invoice_date = False
-
-    def _compute_pricing_id(self):
-        self.pricing_id = False
 
     @api.depends('order_id', 'product_template_id')
     def _compute_temporal_type(self):

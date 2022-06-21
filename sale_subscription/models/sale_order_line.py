@@ -27,6 +27,16 @@ class SaleOrderLine(models.Model):
     product_pricing_ids = fields.One2many(related='product_id.product_pricing_ids')
     parent_line_id = fields.Many2one('sale.order.line')
     end_date = fields.Date(related='order_id.end_date')
+    pricing_id = fields.Many2one(
+        'product.pricing',
+        domain="[('id', 'in', product_pricing_ids),"
+            "'|',"
+            "('product_variant_ids', '=', False),"
+            "('product_variant_ids', '=', product_id),"
+            "'|',"
+            "('pricelist_id', '=', False),"
+            "('pricelist_id', '=', pricelist_id)]",
+        compute='_compute_pricing_id', store=True, precompute=True, readonly=False)
 
     def _check_line_unlink(self):
         """ Override. Check wether a line can be deleted or not."""
@@ -199,7 +209,6 @@ class SaleOrderLine(models.Model):
 
     @api.depends('product_id')
     def _compute_pricing_id(self):
-        non_subscription_lines = self.env['sale.order.line']
         previous_lines = self.order_id.order_line.filtered('is_subscription_product')
         # search pricing_ids for each variant in self
         available_pricing_ids = self.env['product.pricing'].search([
@@ -214,7 +223,7 @@ class SaleOrderLine(models.Model):
 
         for line in self:
             if not line.is_subscription_product:
-                non_subscription_lines |= line
+                line.pricing_id = False
                 continue
             if line.pricing_id:
                 # We don't compute pricings for existing lines. This compute is only used for default values of new lines
@@ -234,7 +243,6 @@ class SaleOrderLine(models.Model):
                 if (pricing_match.duration, pricing_match.unit) == (latest_pricing_id.duration, latest_pricing_id.unit):
                     best_pricing_id = pricing_match
             line.pricing_id = best_pricing_id.id
-        super(SaleOrderLine, non_subscription_lines)._compute_pricing_id()
 
     @api.depends('start_date', 'order_id.state', 'invoice_lines')
     def _compute_last_invoice_date(self):

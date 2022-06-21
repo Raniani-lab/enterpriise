@@ -213,11 +213,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
 msgid "View Availability"
 msgstr ""
-
-#. module: industry_fsm_stock
-#: code:addons/industry_fsm_stock/models/product.py:0
-#, python-format
-msgid ""
-"You cannot have a quantity inferior to the number of items which have "
-"already been delivered."
-msgstr ""

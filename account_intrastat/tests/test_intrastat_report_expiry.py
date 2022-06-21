@@ -118,9 +118,9 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
 
     @freeze_time('2022-01-31')
     def test_intrastat_report_commodity_on_products(self):
-        self.product_a.intrastat_id = self.intrastat_codes['commodity-no_date']
-        self.product_b.intrastat_id = self.intrastat_codes['commodity-expired']
-        self.product_c.intrastat_id = self.intrastat_codes['commodity-premature']
+        self.product_a.intrastat_code_id = self.intrastat_codes['commodity-no_date']
+        self.product_b.intrastat_code_id = self.intrastat_codes['commodity-expired']
+        self.product_c.intrastat_code_id = self.intrastat_codes['commodity-premature']
         self._create_invoices()
         report = self.env.ref('account_intrastat.intrastat_report')
         options = self._generate_options(
@@ -144,44 +144,4 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
         self.assertEqual(options['intrastat_warnings'], {
             'expired_comm': [self.product_b.id],
             'premature_comm': [self.product_c.id],
-        })
-
-    @freeze_time('2022-01-31')
-    def test_intrastat_report_commodity_on_product_categories(self):
-        self.product_a.categ_id = self.env['product.category'].create({
-            'name': 'categ_a',
-            'intrastat_id': self.intrastat_codes['commodity-no_date'].id,
-        })
-        self.product_b.categ_id = self.env['product.category'].create({
-            'name': 'categ_b',
-            'intrastat_id': self.intrastat_codes['commodity-expired'].id,
-        })
-        self.product_c.categ_id = self.env['product.category'].create({
-            'name': 'categ_c',
-            'intrastat_id': self.intrastat_codes['commodity-premature'].id,
-        })
-        self._create_invoices()
-        report = self.env.ref('account_intrastat.intrastat_report')
-        options = self._generate_options(
-            report,
-            date_from=fields.Date.from_string('2022-01-01'),
-            date_to=fields.Date.from_string('2022-01-31'),
-            default_options={
-                'country_format': 'code'
-            })
-        lines = report._get_lines(options)
-        self.assertLinesValues(
-            # pylint: disable=C0326
-            lines,
-            #    country code,  transaction code,  commodity code,  origin country
-            [    2,             3,                 5,               6  ],
-            [
-                ('DE',          11,                '100',          'QU'),
-                ('DE',          11,                '101',          'QU'),
-                ('DE',          11,                '102',          'QU'),
-            ],
-        )
-        self.assertEqual(options['intrastat_warnings'], {
-            'expired_categ_comm': [self.product_b.categ_id.id],
-            'premature_categ_comm': [self.product_c.categ_id.id],
         })

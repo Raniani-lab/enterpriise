@@ -10,6 +10,7 @@
                     <field name="code"/>
                     <field name="description"/>
                     <field name="country_id"/>
+                    <field name="supplementary_unit"/>
                     <field name="start_date" width="1" optional="hide"/>
                     <field name="expiry_date" width="1" optional="hide"/>
                 </tree>
@@ -24,6 +25,7 @@
                     <field name="description"/>
                     <field name="code"/>
                     <field name="country_id"/>
+                    <field name="supplementary_unit"/>
                     <filter string="Active" domain="[
                         '|',
                         ('expiry_date', '&gt;', context_today().strftime('%Y-%m-%d')),
@@ -38,6 +40,7 @@
                     <filter string="Region" domain="[('type','=','region')]" name="type_region"/>
                     <filter name="group_by_type" string="By type" context="{'group_by': 'type'}"/>
                     <filter name="group_by_country" string="By country" context="{'group_by': 'country_id'}"/>
+                    <filter name="group_by_supplementary_unit" string="Supplementary Unit" context="{'group_by': 'supplementary_unit'}"/>
                 </search>
             </field>
         </record>
@@ -91,6 +94,7 @@
                             <field name="name"/>
                             <field name="code"/>
                             <field name="type"/>
+                            <field name="supplementary_unit"/>
                             <field name="country_id" attrs="{'invisible': [('type', '!=', 'region')], 'required': [('type', '=', 'region')]}" options="{'no_create': True}"/>
                             <field name="start_date" attrs="{'invisible':[('type', 'not in', ('transaction','commodity'))]}"/>
                             <field name="expiry_date" attrs="{'invisible':[('type', 'not in', ('transaction','commodity'))]}"/>

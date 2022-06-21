@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models, _
-from .supplementary_unit_codes import SUPPLEMENTARY_UNITS_TO_COMMODITY_CODES as SUPP_TO_COMMODITY
 
 from datetime import datetime
 from collections import defaultdict
@@ -50,7 +49,6 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         full_query = " UNION ALL ".join(query_list)
         self._cr.execute(full_query, full_query_params)
         results = self._cr.dictfetchall()
-        results = self._fill_supplementary_units(results)
 
         # Fill dictionaries
         for result in self._fill_missing_values(results):
@@ -295,6 +293,13 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                     CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                     THEN inv_line_uom.factor ELSE 1 END
                 ) AS quantity,
+                CASE WHEN code.supplementary_unit IS NOT NULL and prod.intrastat_supplementary_unit_amount != 0
+                    THEN  prod.intrastat_supplementary_unit_amount * (
+                        quantity / (
+                            CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
+                            THEN inv_line_uom.factor ELSE 1 END
+                        )
+                    ) ELSE NULL END AS supplementary_units,
                 account_move_line.quantity AS line_quantity,
                 CASE WHEN account_move_line.price_subtotal = 0 THEN account_move_line.price_unit * account_move_line.quantity ELSE account_move_line.price_subtotal END AS value,
                 COALESCE(product_country.code, %s) AS intrastat_product_origin_country_code,
@@ -323,7 +328,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 LEFT JOIN res_country company_country ON comp_partner.country_id = company_country.id
                 INNER JOIN product_product prod ON account_move_line.product_id = prod.id
                 LEFT JOIN product_template prodt ON prod.product_tmpl_id = prodt.id
-                LEFT JOIN account_intrastat_code code ON code.id = COALESCE(prod.intrastat_variant_id, prodt.intrastat_id)
+                LEFT JOIN account_intrastat_code code ON code.id = prod.intrastat_code_id
                 LEFT JOIN uom_uom inv_line_uom ON account_move_line.product_uom_id = inv_line_uom.id
                 LEFT JOIN uom_uom prod_uom ON prodt.uom_id = prod_uom.id
                 LEFT JOIN account_incoterms inv_incoterm ON account_move.invoice_incoterm_id = inv_incoterm.id
@@ -376,28 +381,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         Then, this method is used to compute the missing values fetched from the database.
         :param vals_list:    A dictionary created by the dictfetchall method.
         """
-        # Prefetch data before looping
-        category_ids = self.env['product.category'].browse({vals['category_id'] for vals in vals_list})
-        self.env['product.category'].search([('id', 'parent_of', category_ids.ids)]).read(['intrastat_id', 'parent_id'])
-
         for vals in vals_list:
-            # Check account.intrastat.code
-            # If missing, retrieve the commodity code by looking in the product category recursively.
-            if not vals['commodity_code']:
-                category_id = self.env['product.category'].browse(vals['category_id'])
-                categ_commodity_code = category_id.search_intrastat_code()
-                vals['commodity_code'] = categ_commodity_code.code
-                if categ_commodity_code:
-                    # if vals now has a commodity_code, it's from it's product category
-                    if categ_commodity_code.expiry_date and categ_commodity_code.expiry_date <= vals['invoice_date']:
-                        vals['expired_categ_comm'] = True
-                    if categ_commodity_code.start_date and categ_commodity_code.start_date > vals['invoice_date']:
-                        vals['premature_categ_comm'] = True
-
-            # set transaction_code default value if none (this is overridden in account_intrastat_expiry)
-            if not vals['transaction_code']:
-                vals['transaction_code'] = 1 if vals['invoice_date'] < datetime.strptime('2022-01-01', '%Y-%m-%d').date() else 11
-
             # Check the currency.
             currency_id = self.env['res.currency'].browse(vals['invoice_currency_id'])
             company_currency_id = self.env.company.currency_id
@@ -405,57 +389,6 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 vals['value'] = currency_id._convert(vals['value'], company_currency_id, self.env.company, vals['invoice_date'])
 
         return vals_list
-
-    def _fill_supplementary_units(self, query_results):
-        """ Although the default measurement provided is the weight in kg, some commodities require a supplementary unit
-        in the report.
-
-            e.g. Livestock are measured p/st, which is to say per animal.
-                 Bags of plastic artificial teeth (code 90212110) are measured 100 p/st, which is
-                 per hundred teeth.
-                 Code 29372200 Halogenated derivatives of corticosteroidal hormones are measured in grams... obviously.
-
-        Since there is not always 1-to-1 mapping between these supplementary units, this function tries to occupy the field
-        with the most accurate / relevant value, based on the available odoo units of measure. When the customer does not have
-        inventory installed, or has left the UoM otherwise undefined, the default 'unit' UoM is used. In this case the quantity
-        is used as the supplementary unit.
-        """
-
-        supp_unit_dict = {
-            'p/st': {'uom_id': self.env.ref('uom.product_uom_unit'), 'factor': 1},
-            'pa': {'uom_id': self.env.ref('uom.product_uom_unit'), 'factor': 2},
-            '100 p/st': {'uom_id': self.env.ref('uom.product_uom_unit'), 'factor': 100},
-            '1000 p/st': {'uom_id': self.env.ref('uom.product_uom_unit'), 'factor': 1000},
-            'g': {'uom_id': self.env.ref('uom.product_uom_gram'), 'factor': 1},
-            'm': {'uom_id': self.env.ref('uom.product_uom_meter'), 'factor': 1},
-            'l': {'uom_id': self.env.ref('uom.product_uom_litre'), 'factor': 1},
-        }
-
-        # Transform the dictionary to the form Commodity code -> Supplementary unit name
-        commodity_to_supp_code = {}
-        for key in SUPP_TO_COMMODITY:
-            commodity_to_supp_code.update({v: key for v in SUPP_TO_COMMODITY[key]})
-
-        for vals in query_results:
-            commodity_code = vals['commodity_code']
-            supp_code = commodity_to_supp_code.get(commodity_code)
-            supp_unit = supp_unit_dict.get(supp_code)
-            if not supp_code or not supp_unit:
-                vals['supplementary_units'] = None
-                continue
-
-            # If the supplementary unit is undefined here, the best we can do is
-            uom_id, uom_category_id = vals['uom_id'], vals['uom_category_id']
-
-            if uom_id == supp_unit['uom_id'].id:
-                vals['supplementary_units'] = vals['line_quantity'] / supp_unit['factor']
-            else:
-                if uom_category_id == supp_unit['uom_id'].category_id.id:
-                    vals['supplementary_units'] = self.env['uom.uom'].browse(uom_id)._compute_quantity(vals['line_quantity'], supp_unit['uom_id']) / supp_unit['factor']
-                else:
-                    vals['supplementary_units'] = None
-
-        return query_results
 
     ####################################################
     # ACTIONS

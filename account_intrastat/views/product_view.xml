@@ -7,8 +7,20 @@
             <field name="inherit_id" ref="account.product_template_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[@name='invoicing']//group[@name='accounting']" position="inside">
-                    <group name="intrastat" string="Intrastat">
-                        <field name="intrastat_id"/>
+                    <group name="intrastat" string="Intrastat" attrs="{'invisible': [('product_variant_count', '>', 1), ('is_product_variant', '=', False)]}" >
+                        <field name="intrastat_code_id"/>
+                        <label for="intrastat_supplementary_unit_amount" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '=', False)]}"/>
+                        <div class="o_row" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '=', False)]}">
+                            <field name="intrastat_supplementary_unit_amount"/>
+                            <span class="oe_inline"></span>
+                            <field name="intrastat_supplementary_unit"/>
+                        </div>
+                        <label for="weight" attrs="{'invisible': ['|',('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '!=', False)]}"/>
+                        <div class="o_row" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '!=', False)]}">
+                        <field name="weight"/>
+                            <span class="oe_inline"></span>
+                            <field name="weight_uom_name"/>
+                        </div>
                         <field name="intrastat_origin_country_id" options="{'no_open': True, 'no_create': True}"/>
                     </group>
                 </xpath>
@@ -26,26 +38,31 @@
                 <xpath expr="//sheet" position="inside">
                     <group>
                         <group name="intrastat" string="Intrastat">
-                            <field name="intrastat_id"/>
+                            <field name="intrastat_code_id"/>
+                            <label for="intrastat_supplementary_unit_amount" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '=', False)]}"/>
+                            <div class="o_row" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '=', False)]}">
+                                <field name="intrastat_supplementary_unit_amount"/>
+                                <span class="oe_inline"></span>
+                                <field name="intrastat_supplementary_unit"/>
+                            </div>
+                            <label for="weight" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '!=', False)]}"/>
+                            <div class="o_row" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '!=', False)]}">
+                            <field name="weight"/>
+                                <span class="oe_inline"></span>
+                                <field name="weight_uom_name"/>
+                            </div>
+                            <field name="intrastat_origin_country_id" options="{'no_open': True, 'no_create': True}"/>
                         </group>
                     </group>
                 </xpath>
             </field>
         </record>
 
-        <record id="product_category_form_view_inherit_account_intrastat" model="ir.ui.view">
-            <field name="name">product.category.form.inherit.account.intrastat</field>
-            <field name="model">product.category</field>
-            <field name="inherit_id" ref="product.product_category_form_view"/>
-            <field name="arch" type="xml">
-                <xpath expr="//group[@name='first']" position="after">
-                    <group string="Intrastat">
-                        <field name="intrastat_id"/>
-                    </group>
-                </xpath>
-            </field>
-        </record>
-
+        <!--
+            VIEWS FOR REPORT ALERTS
+            These are accessible via actions that appear on the top of the intrastat report when
+            the products are configured incorrectly or incompletely.
+        -->
         <record id="product_product_tree_view_account_intrastat" model="ir.ui.view">
             <field name="name">product.product.tree.account.intrastat</field>
             <field name="model">product.product</field>
@@ -55,34 +72,57 @@
                 <tree string="Product" multi_edit="1" duplicate="false" editable="bottom" expand="context.get('expand', False)">
                     <field name="default_code" readonly="1"/>
                     <field name="name" readonly="1"/>
-                    <field name="intrastat_id"/>
+                    <field name="intrastat_code_id"/>
                 </tree>
             </field>
         </record>
 
-        <record id="account_intrastat_product_category_search_view" model="ir.ui.view">
-            <field name="name">product.category.search.account.intrastat</field>
-            <field name="model">product.category</field>
-            <field name="inherit_id" ref="product.product_category_search_view"/>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='parent_id']" position="after">
-                    <filter string="Intrastat" name="group_by_intrastat_id" context="{'group_by':'intrastat_id'}"/>
-                </xpath>
-            </field>
-        </record>
-
-        <record id="product_category_tree_view_account_intrastat" model="ir.ui.view">
-            <field name="name">product.category.tree.account.intrastat</field>
-            <field name="model">product.category</field>
+        <record id="product_product_tree_view_account_intrastat_supplementary_unit" model="ir.ui.view">
+            <field name="name">product.product.tree.account.intrastat</field>
+            <field name="model">product.product</field>
             <field name="mode">primary</field>
             <field eval="7" name="priority"/>
             <field name="arch" type="xml">
-                <tree string="Product Categories" multi_edit="1" duplicate="false" editable="bottom" expand="context.get('expand', False)">
-                    <field name="display_name" string="Product Category" readonly="1"/>
-                    <field name="intrastat_id"/>
+                <tree string="product" multi_edit="1" duplicate="false" editable="bottom" expand="context.get('expand', false)">
+                    <field name="default_code" readonly="1"/>
+                    <field name="name" readonly="1"/>
+                    <field name="intrastat_code_id" string="Commodity Code" readonly="1"/>
+                    <field name="intrastat_supplementary_unit"/>
+                    <field name="intrastat_supplementary_unit_amount" string="Supplementary Units per Product"/>
                 </tree>
             </field>
         </record>
+
+        <record id="product_product_tree_view_account_intrastat_weight" model="ir.ui.view">
+            <field name="name">product.product.tree.account.intrastat</field>
+            <field name="model">product.product</field>
+            <field name="mode">primary</field>
+            <field eval="7" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Product" multi_edit="1" duplicate="false" editable="bottom" expand="context.get('expand', False)">
+                    <field name="default_code" readonly="1"/>
+                    <field name="name" readonly="1"/>
+                    <field name="intrastat_code_id" string="Commodity Code" readonly="1"/>
+                    <field name="weight"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Product variant tree view -->
+        <record id="account_intrastat_product_tree" model="ir.ui.view">
+            <field name="name">product.account.intrastat.tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="type" position="after">
+                    <field name="intrastat_code_id" attrs="{'invisible':[('type', '!=', 'product')]}" optional="hide"/>
+                    <field name="intrastat_supplementary_unit_amount" attrs="{'invisible':[('type', '!=', 'product')]}" optional="hide"/>
+                    <field name="intrastat_supplementary_unit" attrs="{'invisible':[('type', '!=', 'product')]}" optional="hide"/>
+                    <field name="intrastat_origin_country_id" attrs="{'invisible':[('type', '!=', 'product')]}" optional="hide"/>
+                </field>
+            </field>
+        </record>
+
 
     </data>
 </odoo>

@@ -19,7 +19,6 @@ Intrastat Reports
         'views/res_country_view.xml',
         'views/account_invoice_view.xml',
         'data/account_financial_report_data.xml',
-        'views/res_config_settings.xml',
         'views/report_invoice.xml',
         'views/account_move_view.xml',
         'views/report_financial.xml',

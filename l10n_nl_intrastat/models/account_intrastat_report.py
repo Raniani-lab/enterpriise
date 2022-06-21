@@ -56,7 +56,6 @@ class IntrastatReportCustomHandler(models.AbstractModel):
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
-        query_res = self._fill_supplementary_units(query_res)
         query_res = self._build_query(query_res)
         line_map = dict((l.id, l) for l in self.env['account.move.line'].browse(res['id'] for res in query_res))
 

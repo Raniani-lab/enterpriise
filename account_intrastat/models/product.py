@@ -4,46 +4,44 @@
 from odoo import api, fields, models
 
 
-class ProductCategory(models.Model):
-    _inherit = "product.category"
-
-    intrastat_id = fields.Many2one('account.intrastat.code', string='Commodity Code', domain=[('type', '=', 'commodity')])
-
-    def search_intrastat_code(self):
-        self.ensure_one()
-        return self.intrastat_id or (self.parent_id and self.parent_id.search_intrastat_code()) or self.intrastat_id
-
-
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    intrastat_id = fields.Many2one('account.intrastat.code', string='Commodity Code', domain="[('type', '=', 'commodity')]")
-    intrastat_origin_country_id = fields.Many2one('res.country', string='Country of Origin')
-
-    def search_intrastat_code(self):
-        self.ensure_one()
-        return self.intrastat_id or self.categ_id.search_intrastat_code()
-
+    intrastat_code_id = fields.Many2one(
+        'account.intrastat.code',
+        related='product_variant_ids.intrastat_code_id',
+        string='Commodity Code',
+        readonly=False,
+    )
+    intrastat_supplementary_unit = fields.Selection(related='intrastat_code_id.supplementary_unit')
+    intrastat_supplementary_unit_amount = fields.Float(
+        related='product_variant_ids.intrastat_supplementary_unit_amount',
+        help='The number of supplementary units per product quantity.',
+        readonly=False,
+    )
+    intrastat_origin_country_id = fields.Many2one(
+        'res.country',
+        related='product_variant_ids.intrastat_origin_country_id',
+        string='Country of Origin',
+        readonly=False,
+    )
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    # Product variant may need different intrastat code.
-    intrastat_variant_id = fields.Many2one(comodel_name='account.intrastat.code', string='Variant commodity Code',
-                                           domain="[('type', '=', 'commodity')]")
+    intrastat_code_id = fields.Many2one(comodel_name='account.intrastat.code', string='Commodity code', domain="[('type', '=', 'commodity')]")
+    # The supplementary unit of the current commodity code
+    intrastat_supplementary_unit = fields.Selection(related='intrastat_code_id.supplementary_unit')
+    # The ratio of product to the number of supplementary units
+    intrastat_supplementary_unit_amount = fields.Float(
+        string='Supplementary Units',
+        help='The number of supplementary units per product quantity.',
+    )
+    intrastat_origin_country_id = fields.Many2one('res.country', string='Country of Origin')
 
-    intrastat_id = fields.Many2one(comodel_name='account.intrastat.code', string='Commodity Code',
-                                   domain="[('type', '=', 'commodity')]", compute='_compute_intrastat_id',
-                                   inverse='_set_intrastat_id')
-
-    def search_intrastat_code(self):
-        self.ensure_one()
-        return self.intrastat_variant_id or self.product_tmpl_id.search_intrastat_code()
-
-    def _compute_intrastat_id(self):
-        """Get the intrastat id from the template if no intrastat id is set on the variant."""
+    @api.depends('intrastat_supplementary_unit')
+    def _compute_intrastat_supplementary_unit_amount(self):
+        """ In the case when the product has no supplementary unit (i.e. we are using weight) the supplementary unit amount is set to 0 """
         for product in self:
-            product.intrastat_id = product.intrastat_variant_id or product.product_tmpl_id.intrastat_id
-
-    def _set_intrastat_id(self):
-        return self._set_template_field('intrastat_id', 'intrastat_variant_id')
+            if not product.intrastat_supplementary_unit:
+                product.intrastat_supplementary_unit_amount = 0

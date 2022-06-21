@@ -30,27 +30,31 @@ class TestIntrastatReport(TestAccountReportsCommon):
         # A product that has no supplementary unit
         cls.product_no_supplementary_unit = cls.env['product.product'].create({
             'name': 'stamp collection',
-            'intrastat_id': cls.env.ref('account_intrastat.commodity_code_2018_97040000').id,
+            'intrastat_code_id': cls.env.ref('account_intrastat.commodity_code_2018_97040000').id,
+            'intrastat_supplementary_unit_amount': None,
         })
         # A product that has a supplementary unit of the type "p/st"
         cls.product_unit_supplementary_unit = cls.env['product.product'].create({
             'name': 'rocket',
-            'intrastat_id': cls.env.ref('account_intrastat.commodity_code_2018_93012000').id,
+            'intrastat_code_id': cls.env.ref('account_intrastat.commodity_code_2018_93012000').id,
+            'intrastat_supplementary_unit_amount': 1,
         })
         # A product that has a supplementary unit of the type "100 p/st"
         cls.product_100_unit_supplementary_unit = cls.env['product.product'].create({
-            'name': 'Imipolex G Teeth',
-            'intrastat_id': cls.env.ref('account_intrastat.commodity_code_2018_90212110').id,
+            'name': 'Imipolex G Tooth',
+            'intrastat_code_id': cls.env.ref('account_intrastat.commodity_code_2018_90212110').id,
+            'intrastat_supplementary_unit_amount': 0.01,
         })
         # A product that has a supplementary unit of the type "m"
         cls.product_metre_supplementary_unit = cls.env['product.product'].create({
             'name': 'Proper Gander Film',
-            'intrastat_id': cls.env.ref('account_intrastat.commodity_code_2018_37061020').id,
+            'intrastat_code_id': cls.env.ref('account_intrastat.commodity_code_2018_37061020').id,
+            'intrastat_supplementary_unit_amount': 305,
         })
         # A product with the product origin country set to spain
-        cls.spanish_rioja = cls.env['product.template'].create({
+        cls.spanish_rioja = cls.env['product.product'].create({
             'name': 'rioja',
-            'intrastat_id': cls.env.ref('account_intrastat.commodity_code_2018_22042176').id,
+            'intrastat_code_id': cls.env.ref('account_intrastat.commodity_code_2018_22042176').id,
             'intrastat_origin_country_id': cls.env.ref('base.es').id,
         })
 
@@ -79,7 +83,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
             'property_account_expense_id': cls.company_data['default_account_expense'].id,
             'taxes_id': [Command.set(cls.tax_sale_a.ids)],
             'supplier_taxes_id': [Command.set(cls.tax_purchase_a.ids)],
-            'intrastat_id': cls.intrastat_codes['commodity'].id,
+            'intrastat_code_id': cls.intrastat_codes['commodity'].id,
             'weight': 0.3,
         })
 
@@ -92,7 +96,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
             'property_account_expense_id': cls.company_data['default_account_expense'].id,
             'taxes_id': [Command.set(cls.tax_sale_a.ids)],
             'supplier_taxes_id': [Command.set(cls.tax_purchase_a.ids)],
-            'intrastat_id': cls.intrastat_codes['commodity'].id,
+            'intrastat_code_id': cls.intrastat_codes['commodity'].id,
             'weight': 0.6,
         })
 
@@ -105,7 +109,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
             'property_account_expense_id': cls.company_data['default_account_expense'].id,
             'taxes_id': [Command.set(cls.tax_sale_a.ids)],
             'supplier_taxes_id': [Command.set(cls.tax_purchase_a.ids)],
-            'intrastat_id': cls.intrastat_codes['commodity'].id,
+            'intrastat_code_id': cls.intrastat_codes['commodity'].id,
             'weight': 0.5,
         })
 
@@ -306,7 +310,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
             #
             [    0,                1,               2,             5,             11, ],
             [
-                ('INV/2022/00001', '19 (Dispatch)', 'Belgium',     '37061020',    1230),
+                ('INV/2022/00001', '19 (Dispatch)', 'Belgium',     '37061020',    375.15),
             ],
         )
 

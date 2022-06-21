@@ -14,7 +14,7 @@ UserAgent.include({
      */
     _getUaConfig(result) {
         let config = this._super(...arguments);
-        config.authorizationUser = result.onsip_auth_user;
+        config.authorizationUsername = result.onsip_auth_user;
         return config;
     },
 });

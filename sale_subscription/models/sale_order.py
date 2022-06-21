@@ -48,8 +48,11 @@ class SaleOrder(models.Model):
                            help="If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field.")
     archived_product_ids = fields.Many2many('product.product', string='Archived Products', compute='_compute_archived')
     archived_product_count = fields.Integer("Archived Product", compute='_compute_archived')
-    next_invoice_date = fields.Date(string='Date of Next Invoice', compute='_compute_next_invoice_date', search='_search_next_invoice_date',
-                                    help="The next invoice will be created on this date then the period will be extended.")
+    next_invoice_date = fields.Date(
+        string='Date of Next Invoice',
+        compute='_compute_next_invoice_date',
+        store=True,
+        help="The next invoice will be created on this date then the period will be extended.")
     start_date = fields.Date(string='Start Date', compute='_compute_start_date', search='_search_start_date',
                              help="The subscription starts when at least one of its line starts.")
     recurring_live = fields.Boolean(string='Alive', compute='_compute_recurring_live', store=True)
@@ -264,12 +267,6 @@ class SaleOrder(models.Model):
                 so.next_invoice_date = invoice_dates and min(invoice_dates)
             else:
                 so.next_invoice_date = False
-
-    @api.model
-    def _search_next_invoice_date(self, operator, value):
-        result = self._get_computed_date_search_orders('next_invoice_date', operator, value)
-        sale_order_ids = [res['order_id'] for res in result]
-        return [('id', 'in', sale_order_ids)]
 
     @api.depends('origin_order_id')
     def _compute_history_count(self):

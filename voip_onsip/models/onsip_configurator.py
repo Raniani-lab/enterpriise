@@ -13,5 +13,5 @@ class OnsipConfigurator(models.Model):
     @api.model
     def get_pbx_config(self):
         result = super(OnsipConfigurator, self).get_pbx_config()
-        result.update(onsip_auth_user=self.env.user.onsip_auth_user)
+        result.update(onsip_auth_username=self.env.user.onsip_auth_username)
         return result

@@ -7,7 +7,7 @@
       <field name="arch" type="xml">
         <data>
           <xpath expr="//field[@name='voip_username']" position="after">
-            <field name="onsip_auth_user" class="oe_inline" readonly="0"/>
+            <field name="onsip_auth_username" class="oe_inline" readonly="0"/>
           </xpath>
         </data>
       </field>

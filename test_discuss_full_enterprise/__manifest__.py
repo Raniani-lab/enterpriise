@@ -11,6 +11,7 @@
         'mail_enterprise',
         'test_discuss_full',
         'voip',
+        'voip_onsip',
         'website_helpdesk_livechat',
     ],
     'application': False,

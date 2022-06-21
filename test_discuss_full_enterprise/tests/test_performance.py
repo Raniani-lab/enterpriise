@@ -9,6 +9,7 @@ def _get_init_messaging_result(self):
     res['current_user_settings'].update({
         'how_to_call_on_mobile': 'ask',
         'external_device_number': False,
+        'onsip_auth_username': False,
         'should_call_from_another_device': False,
         'should_auto_reject_incoming_calls': False,
         'voip_secret': False,

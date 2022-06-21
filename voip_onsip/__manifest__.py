@@ -18,6 +18,9 @@ Module with the required configuration to connect to OnSIP.
         ],
     'license': 'OEEL-1',
     'assets': {
+        'mail.assets_discuss_public': [
+            'voip_onsip/static/src/models/*.js',
+        ],
         'web.assets_backend': [
             'voip_onsip/static/src/**/*',
         ],

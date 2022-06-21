@@ -23,10 +23,11 @@ QUnit.test('activity with approval to be made by logged user', async function (a
         res_model: 'approval.request',
         user_id: pyEnv.currentUserId,
     });
-    const { createChatterContainerComponent } = await start();
-    await createChatterContainerComponent({
-        threadId: approvalRequestId1,
-        threadModel: 'approval.request',
+    const { openView } = await start();
+    await openView({
+        res_model: 'approval.request',
+        res_id: approvalRequestId1,
+        views: [[false, 'form']],
     });
     assert.containsOnce(
         document.body,
@@ -117,10 +118,11 @@ QUnit.test('activity with approval to be made by another user', async function (
         res_model: 'approval.request',
         user_id: resUsersId1,
     });
-    const { createChatterContainerComponent } = await start();
-    await createChatterContainerComponent({
-        threadId: approvalRequestId1,
-        threadModel: 'approval.request',
+    const { openView } = await start();
+    await openView({
+        res_model: 'approval.request',
+        res_id: approvalRequestId1,
+        views: [[false, 'form']],
     });
     assert.containsOnce(
         document.body,
@@ -214,13 +216,13 @@ QUnit.test('approve approval', async function (assert) {
         status: 'pending',
         user_id: pyEnv.currentUserId,
     });
-    const mailActivityId1 = pyEnv['mail.activity'].create({
+    pyEnv['mail.activity'].create({
         can_write: true,
         res_id: approvalRequestId1,
         res_model: 'approval.request',
         user_id: pyEnv.currentUserId,
     });
-    const { createChatterContainerComponent } = await start({
+    const { openView } = await start({
         async mockRPC(route, args) {
             if (args.method === 'action_approve') {
                 assert.strictEqual(args.args.length, 1);
@@ -230,9 +232,10 @@ QUnit.test('approve approval', async function (assert) {
             }
         },
     });
-    await createChatterContainerComponent({
-        threadId: mailActivityId1,
-        threadModel: 'approval.request',
+    await openView({
+        res_model: 'approval.request',
+        res_id: approvalRequestId1,
+        views: [[false, 'form']],
     });
     assert.containsOnce(
         document.body,
@@ -259,13 +262,13 @@ QUnit.test('refuse approval', async function (assert) {
         status: 'pending',
         user_id: pyEnv.currentUserId,
     });
-    const mailActivityId1 = pyEnv['mail.activity'].create({
+    pyEnv['mail.activity'].create({
         can_write: true,
         res_id: approvalRequestId1,
         res_model: 'approval.request',
         user_id: pyEnv.currentUserId,
     });
-    const { createChatterContainerComponent } = await start({
+    const { openView } = await start({
         async mockRPC(route, args) {
             if (args.method === 'action_refuse') {
                 assert.strictEqual(args.args.length, 1);
@@ -275,9 +278,10 @@ QUnit.test('refuse approval', async function (assert) {
             }
         },
     });
-    await createChatterContainerComponent({
-        threadId: mailActivityId1,
-        threadModel: 'approval.request',
+    await openView({
+        res_model: 'approval.request',
+        res_id: approvalRequestId1,
+        views: [[false, 'form']],
     });
     assert.containsOnce(
         document.body,

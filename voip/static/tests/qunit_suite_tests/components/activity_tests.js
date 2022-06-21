@@ -16,10 +16,11 @@ QUnit.test('activity: rendering - only with mobile number', async function (asse
         res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start();
-    await createChatterContainerComponent({
-        threadId: resPartnerId1,
-        threadModel: 'res.partner',
+    const { openView } = await start();
+    await openView({
+        res_model: 'res.partner',
+        res_id: resPartnerId1,
+        views: [[false, 'form']],
     });
     assert.containsOnce(
         document.body,
@@ -58,10 +59,11 @@ QUnit.test('activity: rendering - only with phone number', async function (asser
         res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start();
-    await createChatterContainerComponent({
-        threadId: resPartnerId1,
-        threadModel: 'res.partner',
+    const { openView } = await start();
+    await openView({
+        res_model: 'res.partner',
+        res_id: resPartnerId1,
+        views: [[false, 'form']],
     });
     assert.containsOnce(
         document.body,
@@ -99,10 +101,11 @@ QUnit.test('activity: rendering - with both mobile and phone number', async func
         res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start();
-    await createChatterContainerComponent({
-        threadId: resPartnerId1,
-        threadModel: 'res.partner',
+    const { openView } = await start();
+    await openView({
+        res_model: 'res.partner',
+        res_id: resPartnerId1,
+        views: [[false, 'form']],
     });
     assert.containsOnce(
         document.body,
@@ -147,10 +150,11 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
         res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start();
-    await createChatterContainerComponent({
-        threadId: resPartnerId1,
-        threadModel: 'res.partner',
+    const { openView } = await start();
+    await openView({
+        res_model: 'res.partner',
+        res_id: resPartnerId1,
+        views: [[false, 'form']],
     });
     const onVoipActivityCallMobile = (ev) => {
         assert.step('voip_call_mobile_triggered');
@@ -165,14 +169,14 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
             "Voip call should be triggered with the id of the activity"
         );
     };
-    document.addEventListener('voip_activity_call', onVoipActivityCallMobile);
+    document.addEventListener('voip-activity-call', onVoipActivityCallMobile);
 
     document.querySelector('.o_Activity_voipCallMobile').click();
     assert.verifySteps(
         ['voip_call_mobile_triggered'],
         "A voip call has to be triggered"
     );
-    document.removeEventListener('voip_activity_call', onVoipActivityCallMobile);
+    document.removeEventListener('voip-activity-call', onVoipActivityCallMobile);
 });
 
 QUnit.test('activity: calling - only with phone', async function (assert) {
@@ -185,10 +189,11 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
         res_id: resPartnerId1,
         res_model: 'res.partner',
     });
-    const { createChatterContainerComponent } = await start();
-    await createChatterContainerComponent({
-        threadId: resPartnerId1,
-        threadModel: 'res.partner',
+    const { openView } = await start();
+    await openView({
+        res_model: 'res.partner',
+        res_id: resPartnerId1,
+        views: [[false, 'form']],
     });
     const onVoipActivityCallPhone = (ev) => {
         assert.step('voip_call_phone_triggered');
@@ -203,14 +208,14 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
             "Voip call should be triggered with the id of the activity"
         );
     };
-    document.addEventListener('voip_activity_call', onVoipActivityCallPhone);
+    document.addEventListener('voip-activity-call', onVoipActivityCallPhone);
 
     document.querySelector('.o_Activity_voipCallPhone').click();
     assert.verifySteps(
         ['voip_call_phone_triggered'],
         "A voip call has to be triggered"
     );
-    document.removeEventListener('voip_activity_call', onVoipActivityCallPhone);
+    document.removeEventListener('voip-activity-call', onVoipActivityCallPhone);
 });
 
 });

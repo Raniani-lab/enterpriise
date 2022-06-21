@@ -16,6 +16,10 @@ import '@mail/widgets/form_renderer/form_renderer';
 **/
 
 FormRenderer.include({
+    //--------------------------------------------------------------------------
+    // Form Overrides
+    //--------------------------------------------------------------------------
+
     /**
      * @override
      */
@@ -47,20 +51,68 @@ FormRenderer.include({
     /**
      * @override
      */
-    destroy() {
-        window.removeEventListener('resize', this._onResizeWindow);
-        this._super();
+    start() {
+        window.addEventListener('resize', this._onResizeWindow);
+        return this._super(...arguments);
+    },
+    /**
+     * Overrides the function that renders the nodes to return the preview's $el
+     * for the `o_attachment_preview` div node.
+     *
+     * @override
+     */
+    _renderNode(node) {
+        if (node.tag === 'div' && node.attrs.class === 'o_attachment_preview') {
+            if (this.attachmentViewer) {
+                if (this.attachmentPreviewResID !== this.state.res_id) {
+                    this.attachmentViewer.destroy();
+                    this.attachmentViewer = undefined;
+                }
+            } else {
+                this.$attachmentPreview = $('<div>', { class: 'o_attachment_preview' });
+            }
+            this._handleAttributes(this.$attachmentPreview, node);
+            this._registerModifiers(node, this.state, this.$attachmentPreview);
+            if (this.attachmentPreviewWidth) {
+                this.$attachmentPreview.css('width', this.attachmentPreviewWidth);
+            }
+            return this.$attachmentPreview;
+        } else {
+            return this._super.apply(this, arguments);
+        }
+    },
+    /**
+     * Overrides the function to interchange the chatter and the preview once
+     * the chatter is in the dom.
+     *
+     * @override
+     */
+    async _renderView() {
+        await this._super(...arguments);
+        if (!this._hasChatter()) {
+            return;
+        }
+        this._updateChatterContainerTarget();
+
+        // for cached messages, `preview_attachment` will be triggered
+        // before the view rendering where the chatter is replaced ; in this
+        // case, we need to interchange its position if needed
+        const enablePreview = this.attachmentPreviewResID &&
+            this.attachmentPreviewResID === this.state.res_id &&
+            this.$attachmentPreview &&
+            !this.$attachmentPreview.hasClass('o_invisible_modifier');
+        this._interchangeChatter(enablePreview);
     },
     /**
      * @override
      */
-    start() {
-        window.addEventListener('resize',  this._onResizeWindow);
-        return this._super(...arguments);
+    destroy() {
+        window.removeEventListener('resize', this._onResizeWindow);
+        this._super();
     },
 
     //--------------------------------------------------------------------------
-    // Private
+    // Mail Methods
     //--------------------------------------------------------------------------
 
     /**
@@ -137,54 +189,6 @@ FormRenderer.include({
         return $el;
     },
     /**
-     * Overrides the function that renders the nodes to return the preview's $el
-     * for the `o_attachment_preview` div node.
-     *
-     * @override
-     */
-    _renderNode: function (node) {
-        if (node.tag === 'div' && node.attrs.class === 'o_attachment_preview') {
-            if (this.attachmentViewer) {
-                if (this.attachmentPreviewResID !== this.state.res_id) {
-                    this.attachmentViewer.destroy();
-                    this.attachmentViewer = undefined;
-                }
-            } else {
-                this.$attachmentPreview = $('<div>', {class: 'o_attachment_preview'});
-            }
-            this._handleAttributes(this.$attachmentPreview, node);
-            this._registerModifiers(node, this.state, this.$attachmentPreview);
-            if (this.attachmentPreviewWidth) {
-                this.$attachmentPreview.css('width', this.attachmentPreviewWidth);
-            }
-            return this.$attachmentPreview;
-        } else {
-            return this._super.apply(this, arguments);
-        }
-    },
-    /**
-     * Overrides the function to interchange the chatter and the preview once
-     * the chatter is in the dom.
-     *
-     * @override
-     */
-    async _renderView() {
-        await this._super(...arguments);
-        if (!this._hasChatter()) {
-            return;
-        }
-        this._updateChatterContainerTarget();
-
-        // for cached messages, `preview_attachment` will be triggered
-        // before the view rendering where the chatter is replaced ; in this
-        // case, we need to interchange its position if needed
-        const enablePreview = this.attachmentPreviewResID &&
-            this.attachmentPreviewResID === this.state.res_id &&
-            this.$attachmentPreview &&
-            !this.$attachmentPreview.hasClass('o_invisible_modifier');
-        this._interchangeChatter(enablePreview);
-    },
-    /**
      * @private
      */
     _updateChatterContainerTarget() {
@@ -194,11 +198,6 @@ FormRenderer.include({
             $(this._chatterContainerTarget).removeClass('o-aside');
         }
     },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
     /**
      * Triggered from the mail chatter, send attachments data for preview
      *
@@ -231,8 +230,7 @@ FormRenderer.include({
                         this.attachmentViewer = undefined;
                         this.attachmentPreviewResID = undefined;
                         this._interchangeChatter(false);
-                    }
-                    else {
+                    } else {
                         this.attachmentViewer.updateContents(thread);
                     }
                 } else {
@@ -248,7 +246,7 @@ FormRenderer.include({
             } else {
                 this.attachmentPreviewResID = this.state.res_id;
                 this.attachmentViewer = new AttachmentViewer(this, thread);
-                this.attachmentViewer.appendTo(this.$attachmentPreview).then(function() {
+                this.attachmentViewer.appendTo(this.$attachmentPreview).then(function () {
                     self.trigger_up('preview_attachment_validation');
                     self.$attachmentPreview.resizable({
                         handles: 'w',
@@ -278,6 +276,5 @@ FormRenderer.include({
             this._updateChatterContainerTarget();
         }
         this._applyFormSizeClass();
-    }
-
+    },
 });

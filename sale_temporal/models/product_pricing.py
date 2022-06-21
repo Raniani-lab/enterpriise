@@ -59,6 +59,8 @@ class ProductPricing(models.Model):
                 price.duration, price.unit
             ]
             variants = price.product_variant_ids.ids or [_('all variants')]
+            pricing_has_all_variants = self.product_template_id.product_variant_count == len(price.product_variant_ids)
+            variants = [_('all variants')] if pricing_has_all_variants else variants
             for v in variants:
                 key_list.append(v)
                 key_val = tuple(key_list)

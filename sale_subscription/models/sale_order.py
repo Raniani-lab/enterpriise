@@ -41,7 +41,9 @@ class SaleOrder(models.Model):
     is_subscription = fields.Boolean("Recurring", compute='_compute_is_subscription', store=True, index=True)
     stage_id = fields.Many2one('sale.order.stage', string='Stage', index=True, default=lambda s: s._get_default_stage_id(),
                                copy=False, group_expand='_read_group_stage_ids', tracking=True)
-    account_tag_ids = fields.Many2many('account.analytic.tag', 'account_analytic_tag_sale_order_rel',
+    # YTI TODO in saas-15.3: Change field definition
+    # account_tag_ids = fields.Many2many('account.analytic.tag', 'account_analytic_tag_sale_order_rel',
+    account_tag_ids = fields.Many2many('account.analytic.tag', 'account_analytic_tag_id',
                                        'sale_order_id', 'account_analytic_tag_id', string='Account Tags',
                                        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", check_company=True)
     end_date = fields.Date(string='End Date', tracking=True,

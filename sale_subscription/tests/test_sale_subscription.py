@@ -325,7 +325,9 @@ class TestSubscription(TestSubscriptionCommon):
             prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
             self.assertEqual(prices, [27.42, 38.14, 3.76, 2.23], 'Prorated prices should be applied')
 
-            upsell_so._create_invoices()
+            # We freeze date to ensure that all line are invoiced
+            with freeze_time("2021-03-01"):
+                upsell_so._create_invoices()
             last_invoice_line_name = upsell_so.invoice_ids.line_ids.sorted('id')[2].name.split('\n')[1]
             self.assertEqual(last_invoice_line_name, '01/15/2021 to 01/31/2021 - 6 month',
                              "The upsell invoice take into account the first period, until the next invoice.")
@@ -857,7 +859,8 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(sub.order_line.product_uom_qty, 1)
 
     def test_recurring_invoices_from_interface(self):
-        # From the interface, all the subscription lines are invoiced each time the button is pressed
+        # From the interface, all the subscription lines are invoiced only when they have the same invoice date
+        # or it the current date is > than their next_invoice_date
         sub = self.subscription
         sub.end_date = datetime.date(2029, 4, 1)
         with freeze_time("2021-01-01"):
@@ -876,21 +879,21 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-02-01"):
             sub._create_recurring_invoice(automatic=False)
             self.assertEqual("2021-03-01", lines[0].next_invoice_date.strftime("%Y-%m-%d"))
-            self.assertEqual("2023-01-01", lines[1].next_invoice_date.strftime("%Y-%m-%d"))
+            self.assertEqual("2022-01-01", lines[1].next_invoice_date.strftime("%Y-%m-%d"))
             inv = sub.invoice_ids.sorted('date')[-1]
             invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
             invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
-            self.assertEqual(invoice_start_periods, [datetime.date(2021, 2, 1), datetime.date(2022, 1, 1)], "monthly is updated everytime in manual action")
-            self.assertEqual(invoice_end_periods, [datetime.date(2021, 2, 28), datetime.date(2022, 12, 31)], "yearly is updated everytime in manual action")
+            self.assertEqual(invoice_start_periods, [datetime.date(2021, 2, 1)], "monthly is updated everytime in manual action")
+            self.assertEqual(invoice_end_periods, [datetime.date(2021, 2, 28)], "yearly is not updated")
 
             sub._create_recurring_invoice(automatic=False)
             self.assertEqual("2021-04-01", lines[0].next_invoice_date.strftime("%Y-%m-%d"))
-            self.assertEqual("2024-01-01", lines[1].next_invoice_date.strftime("%Y-%m-%d"))
+            self.assertEqual("2022-01-01", lines[1].next_invoice_date.strftime("%Y-%m-%d"))
             inv = sub.invoice_ids.sorted('date')[-1]
             invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
             invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
-            self.assertEqual(invoice_start_periods, [datetime.date(2021, 3, 1), datetime.date(2023, 1, 1)], "monthly is updated everytime in manual action")
-            self.assertEqual(invoice_end_periods, [datetime.date(2021, 3, 31), datetime.date(2023, 12, 31)], "yearly is updated everytime in manual action")
+            self.assertEqual(invoice_start_periods, [datetime.date(2021, 3, 1)], "monthly is updated everytime in manual action")
+            self.assertEqual(invoice_end_periods, [datetime.date(2021, 3, 31)], "yearly is updated everytime in manual action")
 
         with freeze_time("2021-04-01"):
             # Automatic invoicing, only one line generated
@@ -911,6 +914,17 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(invoice_start_periods, [datetime.date(2021, 5, 1)], "Monthly is because it is due, but yearly is not.")
             self.assertEqual(invoice_end_periods, [datetime.date(2021, 5, 31)], "Monthly is because it is due, but yearly is not.")
             self.assertEqual(inv.date, datetime.date(2021, 5, 1))
+
+        with freeze_time("2022-02-02"):
+            # With non-automatic, we invoice all line prior to today once
+            sub._create_recurring_invoice(automatic=False)
+            self.assertEqual("2021-07-01", lines[0].next_invoice_date.strftime("%Y-%m-%d"))
+            self.assertEqual("2023-01-01", lines[1].next_invoice_date.strftime("%Y-%m-%d"))
+            inv = sub.invoice_ids.sorted('date')[-1]
+            invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
+            invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
+            self.assertEqual(invoice_start_periods, [datetime.date(2021, 6, 1), datetime.date(2022, 1, 1)], "monthly is updated when prior to today")
+            self.assertEqual(invoice_end_periods, [datetime.date(2021, 6, 30), datetime.date(2022, 12, 31)], "yearly is updated when prior to today")
 
     def test_renew_kpi_mrr(self):
         # Test that renew with MRR transfer give correct result

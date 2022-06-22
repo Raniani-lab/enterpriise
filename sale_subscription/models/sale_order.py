@@ -907,8 +907,14 @@ class SaleOrder(models.Model):
         if automatic_invoice:
             subscription_lines = self.order_line.filtered(filter_sub_lines)
         else:
-            # We invoice all the subscription lines
-            subscription_lines = self.order_line.filtered(lambda l: l.temporal_type == 'subscription')
+            # We invoice all the subscription lines that are either:
+            # To be invoiced before today or today if there are any
+            # ELSE on the first next_invoice_date among all the lines.
+            subscription_lines = self.env['sale.order.line']
+            for so in self:
+                invoice_date = max(so.next_invoice_date, fields.Date.today()) if so.next_invoice_date else fields.Date.today()
+                subscription_lines |= so.order_line.filtered(lambda sol: sol.temporal_type == 'subscription'
+                                                                          and sol.next_invoice_date.date() <= invoice_date)
         return res | subscription_lines
 
     def _subscription_post_success_payment(self, invoice, transaction):

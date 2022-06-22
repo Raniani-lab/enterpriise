@@ -329,5 +329,5 @@ class TaxReport(models.AbstractModel):
             'res_model': 'account.move',
             'view_mode': 'tree,form',
             'views': [(False, 'tree'), (False, 'form')],
-            'domain': [('partner_id', '=', partner.id), ('line_ids.tax_tag_ids', 'in', tags.ids)],
+            'domain': [('commercial_partner_id', '=', partner.id), ('line_ids.tax_tag_ids', 'in', tags.ids)],
         }

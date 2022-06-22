@@ -830,13 +830,9 @@ class AnalyticLine(models.Model):
 
     @api.model
     def get_timer_data(self):
-        last_timesheet_ids = self.search([('user_id', '=', self.env.user.id)], limit=5)
-        favorite_project = False
-        if len(last_timesheet_ids) == 5 and len(last_timesheet_ids.project_id) == 1:
-            favorite_project = last_timesheet_ids.project_id.id
         return {
             'step_timer': int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15)),
-            'favorite_project': favorite_project
+            'favorite_project': self._get_favorite_project_id()
         }
 
     @api.model

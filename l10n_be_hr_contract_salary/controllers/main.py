@@ -396,7 +396,7 @@ class HrContractSalary(main.HrContractSalary):
             ordered_fields = ['wage_with_holidays', 'SALARY', 'NET']
         else:
             ordered_fields = ['wage_with_holidays', 'NET']
-        result['resume_lines_mapped']['Monthly Salary'] = {field: resume[field] for field in ordered_fields}
+        result['resume_lines_mapped']['Monthly Salary'] = {field: resume.get(field, 0) for field in ordered_fields}
         return result
 
     def _generate_payslip(self, new_contract):

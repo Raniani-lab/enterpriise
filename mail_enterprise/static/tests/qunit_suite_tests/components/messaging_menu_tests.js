@@ -22,8 +22,7 @@ QUnit.test("'backbutton' event should close messaging menu", async function (ass
     patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {},
     });
-    const { createMessagingMenuComponent } = await start();
-    await createMessagingMenuComponent();
+    await start();
     await afterNextRender(() => document.querySelector('.o_MessagingMenu_toggler').click());
 
     await afterNextRender(() => {
@@ -49,8 +48,7 @@ QUnit.test('[technical] messaging menu should properly override the back button'
         },
     });
     patchUiSize({ size: SIZES.SM });
-    const { createMessagingMenuComponent } = await start();
-    await createMessagingMenuComponent();
+    await start();
 
     await afterNextRender(() =>
         document.querySelector('.o_MessagingMenu_toggler').click()

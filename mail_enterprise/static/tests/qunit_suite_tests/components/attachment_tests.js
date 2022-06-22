@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
-import { link, replace } from '@mail/model/model_field_command';
 import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
     afterNextRender,
     start,
+    startServer,
 } from '@mail/../tests/helpers/test_utils';
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
@@ -25,21 +25,27 @@ QUnit.test("'backbutton' event should close attachment viewer", async function (
     });
 
     patchUiSize({ size: SIZES.SM });
-    const { createMessageComponent, messaging } = await start();
-
-    const attachment = messaging.models['Attachment'].create({
-        filename: "test.png",
-        id: 750,
-        mimetype: 'image/png',
+    const pyEnv = await startServer();
+    const channelId = pyEnv['mail.channel'].create({
+        channel_type: 'channel',
+        name: 'channel1',
+    });
+    const messageAttachmentId = pyEnv['ir.attachment'].create({
         name: "test.png",
+        mimetype: 'image/png',
     });
-    const message = messaging.models['Message'].create({
-        attachments: link(attachment),
-        author: replace(messaging.currentPartner),
+    pyEnv['mail.message'].create({
+        attachment_ids: [messageAttachmentId],
         body: "<p>Test</p>",
-        id: 100,
+        model: 'mail.channel',
+        res_id: channelId
     });
-    await createMessageComponent(message);
+    const { openDiscuss } = await start({
+        discuss: {
+            context: { active_id: channelId },
+        },
+    });
+    await openDiscuss();
 
     await afterNextRender(() => document.querySelector('.o_AttachmentImage').click());
     await afterNextRender(() => {
@@ -66,21 +72,24 @@ QUnit.test('[technical] attachment viewer should properly override the back butt
     });
 
     patchUiSize({ size: SIZES.SM });
-    const { createMessageComponent, messaging } = await start();
-
-    const attachment = messaging.models['Attachment'].create({
-        filename: "test.png",
-        id: 750,
-        mimetype: 'image/png',
+    const pyEnv = await startServer();
+    const partnerId = pyEnv['res.partner'].create({ name: 'partner 1' });
+    const messageAttachmentId = pyEnv['ir.attachment'].create({
         name: "test.png",
+        mimetype: 'image/png',
     });
-    const message = messaging.models['Message'].create({
-        attachments: link(attachment),
-        author: replace(messaging.currentPartner),
+    pyEnv['mail.message'].create({
+        attachment_ids: [messageAttachmentId],
         body: "<p>Test</p>",
-        id: 100,
+        model: 'res.partner',
+        res_id: partnerId
     });
-    await createMessageComponent(message);
+    const { openView } = await start();
+    await openView({
+        res_id: partnerId,
+        res_model: 'res.partner',
+        views: [[false, 'form']],
+    });
 
     await afterNextRender(() => document.querySelector('.o_AttachmentImage').click());
     assert.verifySteps(

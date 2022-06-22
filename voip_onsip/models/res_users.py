@@ -15,9 +15,3 @@ class ResUsers(models.Model):
     @property
     def SELF_WRITEABLE_FIELDS(self):
         return super().SELF_WRITEABLE_FIELDS + ['onsip_auth_user']
-
-    def _neutralize(self):
-        super()._neutralize()
-        self.flush_model()
-        self.invalidate_model()
-        self.env.cr.execute("UPDATE res_users SET onsip_auth_user = 'dummy'")

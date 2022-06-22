@@ -55,5 +55,6 @@ QUnit.module("WebClient Mobile", (hooks) => {
         assert.containsOnce(target, ".o_kanban_view");
 
         assert.strictEqual(document.firstElementChild.scrollTop, 123);
+        target.style.position = "";
     });
 });

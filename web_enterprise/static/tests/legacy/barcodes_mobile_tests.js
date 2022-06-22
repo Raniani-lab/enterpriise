@@ -1,7 +1,6 @@
 odoo.define('web_mobile.barcode.tests', function (require) {
     "use strict";
 
-    const ajax = require('web.ajax');
     const fieldRegistry = require('web.field_registry');
     const FormView = require('web.FormView');
     const { FieldMany2One } = require('web.relational_fields');
@@ -134,8 +133,6 @@ odoo.define('web_mobile.barcode.tests', function (require) {
                 archs: ARCHS,
                 mockRPC,
             });
-
-            await ajax.loadJS('/web/static/lib/jquery.touchSwipe/jquery.touchSwipe.js');
 
             const $scanButton = form.$('.o_barcode_mobile');
 

@@ -3,8 +3,6 @@
 import { createWebClient, doAction, getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
 import { click, getFixture, legacyExtraNextTick } from "@web/../tests/helpers/utils";
 
-import { loadJS } from "@web/core/assets";
-
 let serverData;
 let target;
 
@@ -93,9 +91,6 @@ QUnit.test('lazy load mobile-friendly view', async function (assert) {
     assert.containsNone(target, '.o_list_view');
     assert.containsNone(target, '.o_kanban_view');
     assert.containsOnce(target, '.o_form_view');
-
-    // this lib is normally lazy loaded in the kanban view initialization.
-    await loadJS("/web/static/lib/jquery.touchSwipe/jquery.touchSwipe.js");
 
     // go back to lazy loaded view
     await click(target, '.o_control_panel .breadcrumb .o_back_button');

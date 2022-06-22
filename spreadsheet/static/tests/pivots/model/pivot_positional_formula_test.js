@@ -6,7 +6,7 @@ import { getCell, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import { createModelWithDataSource } from "@spreadsheet/../tests/utils/model";
 
-QUnit.module("documents_spreadsheet > positional pivot formula", {}, () => {
+QUnit.module("spreadsheet > positional pivot formula", {}, () => {
     QUnit.test("Can have positional args in pivot formula", async function (assert) {
         const { model } = await createSpreadsheetWithPivot();
 

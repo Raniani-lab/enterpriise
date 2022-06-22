@@ -38,7 +38,7 @@ QUnit.test("Can open see records on headers col", async function (assert) {
     const { env, model } = await createSpreadsheetWithPivot();
     selectCell(model, "B1");
     await nextTick();
-    const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+    const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
     await root.action(env);
     assert.verifySteps(["doAction"]);
 });
@@ -60,7 +60,7 @@ QUnit.test("Can open see records on headers row", async function (assert) {
     const { env, model } = await createSpreadsheetWithPivot();
     selectCell(model, "A3");
     await nextTick();
-    const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+    const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
     await root.action(env);
     assert.verifySteps(["doAction"]);
 });
@@ -82,7 +82,7 @@ QUnit.test("Can open see records on measure headers", async function (assert) {
     const { env, model } = await createSpreadsheetWithPivot();
     selectCell(model, "B2");
     await nextTick();
-    const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+    const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
     await root.action(env);
     assert.verifySteps(["doAction"]);
 });

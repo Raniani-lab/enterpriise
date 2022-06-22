@@ -339,7 +339,7 @@ QUnit.module(
                 });
                 selectCell(model, "D3");
                 await nextTick();
-                const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+                const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
                 await root.action(env);
                 assert.verifySteps(["partner", `[["foo","=",2],["bar","=",false]]`]);
             }
@@ -351,7 +351,7 @@ QUnit.module(
                 const { env, model } = await createSpreadsheetWithPivot();
                 selectCell(model, "B4");
                 await nextTick();
-                const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+                const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
                 assert.ok(root.isVisible(env));
                 setCellContent(model, "B4", getCellFormula(model, "B4").replace("PIVOT", "pivot"));
                 assert.ok(root.isVisible(env));
@@ -364,7 +364,7 @@ QUnit.module(
                 const { env, model } = await createSpreadsheetWithPivot();
                 selectCell(model, "B4");
                 await nextTick();
-                const root = cellMenuRegistry.getAll().find((item) => item.id === "see records");
+                const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
                 assert.ok(root.isVisible(env));
                 setCellContent(
                     model,

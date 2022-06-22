@@ -2,7 +2,11 @@
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import { DataSources } from "../data_sources/data_sources";
+import { formatDate } from "@web/core/l10n/dates";
 
+const { DateTime } = luxon;
+
+const SERVER_DATE_FORMAT = "yyyy-MM-dd";
 const Model = spreadsheet.Model;
 
 /**
@@ -113,3 +117,50 @@ export async function getDataFromTemplate(env, orm, templateId) {
 export function orderByToString(orderBy) {
     return orderBy.map((o) => `${o.name} ${o.asc ? "ASC" : "DESC"}`).join(", ");
 }
+
+
+/**
+ * Convert a spreadsheet date representation to an odoo
+ * server formatted date
+ *
+ * @param {Date} value
+ * @returns {string}
+ */
+ export function toServerDateString(value) {
+    // When this number is transformed into a Date object,
+    // it takes the timezone of the browser. With timezone: true, we ensure that it
+    // convert the date to the day we want, regardless of the timezone.
+    const date = DateTime.fromJSDate(value);
+    return formatDate(date, {
+        timezone: true,
+        format: SERVER_DATE_FORMAT,
+    });
+}
+
+/**
+ * @param {number[]} array
+ * @returns {number}
+ */
+export function sum(array) {
+    return array.reduce((acc, n) => acc + n, 0);
+}
+
+function camelToSnakeKey(word) {
+    const result = word.replace(/(.){1}([A-Z])/g, "$1 $2");
+    return result.split(" ").join("_").toLowerCase();
+}
+
+/**
+ * Recursively convert camel case object keys to snake case keys
+ * @param {object} obj
+ * @returns {object}
+ */
+export function camelToSnakeObject(obj) {
+    const result = {};
+    for (const [key, value] of Object.entries(obj)) {
+        const isPojo = typeof value === "object" && value !== null && value.constructor === Object;
+        result[camelToSnakeKey(key)] = isPojo ? camelToSnakeObject(value) : value;
+    }
+    return result;
+}
+

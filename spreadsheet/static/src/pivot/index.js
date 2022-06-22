@@ -29,7 +29,7 @@ coreTypes.add("RE_INSERT_PIVOT");
 
 readonlyAllowedCommands.add("ADD_PIVOT_DOMAIN");
 
-cellMenuRegistry.add("see records", {
+cellMenuRegistry.add("pivot_see_records", {
     name: _lt("See records"),
     sequence: 175,
     async action(env) {

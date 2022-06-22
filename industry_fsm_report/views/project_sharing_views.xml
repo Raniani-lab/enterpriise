@@ -53,7 +53,7 @@
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_template_id" attrs="{'invisible': [('allow_worksheets', '=', False)]}" options="{'no_open': True, 'no_create': True, 'no_edit': True}"/>
             </xpath>
-            <xpath expr="//field[@name='child_ids']/tree/field[@name='stage_id']" position="after">
+            <xpath expr="//field[@name='child_ids']/tree/field[@name='priority']" position="after">
                 <field name="worksheet_template_id" optional="hide"/>
             </xpath>
         </field>

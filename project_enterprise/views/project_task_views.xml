@@ -119,7 +119,7 @@
         <field name="priority">10</field>
         <field name="inherit_id" ref="project.view_task_search_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//filter[@name='late']" position="before">
+            <xpath expr="//filter[@name='tasks_due_today']" position="after">
                 <filter name="conflict_task" string="Tasks in Conflict" domain="[('planning_overlap', '&gt;', 0)]"/>
             </xpath>
         </field>

@@ -66,17 +66,17 @@
                             <div id="switch-warning" class="alert alert-warning" style="margin-bottom: 25px">
                                 <span class="warning-text"/>
                             </div>
-                            <dl class="row mt-0 mb-0">
-                                <dt class="col-sm-4">Date </dt>
-                                <dd class="col-sm-8" id="date">
+                            <dl class="d-flex flex-column mt-0 mb-0">
+                                <dt>Date </dt>
+                                <dd id="date">
                                     <span class="o_start_date"/>
                                     <i class="mx-1 fa fa-long-arrow-right" aria-label="Arrow icon" title="Arrow"/>
                                     <span class="o_end_date"/>
                                 </dd>
-                                <dt class="col-sm-4">Role</dt>
-                                <dd class="col-sm-8" id="role"/>
-                                <dt class="col-sm-4">Note</dt>
-                                <dd class="col-sm-8" id="note"/>
+                                <dt>Role</dt>
+                                <dd id="role"/>
+                                <dt>Note</dt>
+                                <dd id="note"/>
                                 <div class="d-none" t-esc="shift_id" id="shift_uid"/>
                             </dl>
                         </div>
@@ -219,7 +219,7 @@
                 <a tabindex="0" class="btn contact-assignee-popover"
                     role="button"
                     rel='popover'
-                    data-bs-toggle="popover" 
+                    data-bs-toggle="popover"
                     data-bs-placement="right"
                     data-bs-custom-class="contact-assignee-popover"
                     data-bs-html="true"
@@ -273,11 +273,11 @@
                         <i class="fa fa-exclamation-circle text-warning"/> You can no longer unassign yourself from this shift.
                     </t>
                     <t t-if="message_slug == 'switch'">
-                        <i class="fa fa-check-circle text-success"/> 
-                        You have successfully requested to switch your shift. You will be notified when another employee takes over your shift.                   
+                        <i class="fa fa-check-circle text-success"/>
+                        You have successfully requested to switch your shift. You will be notified when another employee takes over your shift.
                     </t>
                     <t t-if="message_slug == 'cancel_switch'">
-                        <i class="fa fa-check-circle text-success"/> Request to switch shift cancelled successfully. 
+                        <i class="fa fa-check-circle text-success"/> Request to switch shift cancelled successfully.
                     </t>
                 </div>
             </div>

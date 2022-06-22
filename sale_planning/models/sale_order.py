@@ -70,6 +70,7 @@ class SaleOrder(models.Model):
                 'default_sale_line_id': self.planning_first_sale_line_id.id,
                 'search_default_group_by_role': 1,
                 'search_default_group_by_resource': 2,
+                'search_default_role_id': self.order_line.product_template_id.planning_role_id.ids,
                 'initialDate': self.planning_initial_date,
                 'planning_gantt_active_sale_order_id': self.id}
         })

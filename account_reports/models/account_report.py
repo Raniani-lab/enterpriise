@@ -1420,7 +1420,7 @@ class AccountReport(models.AbstractModel):
 
     def open_journal_items(self, options, params, view_id=None):
         ctx = {
-            'search_default_group_by_move': 1,
+            'search_default_group_by_account': 1,
             'search_default_posted': 0 if options.get('all_entries') else 1,
             'search_default_date_between': 1,
             'date_from': options.get('date').get('date_from'),

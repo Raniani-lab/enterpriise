@@ -730,4 +730,6 @@ class ReportPartnerLedger(models.AbstractModel):
     def view_all_journal_items(self, options, params):
         if params.get('id'):
             params['id'] = int(params.get('id').split('_')[1])
-        return self.env['account.report'].open_journal_items(options, params, view_id=self.env.ref('account.view_move_line_tree_grouped_partner').id)
+        action = self.env['account.report'].open_journal_items(options, params, view_id=self.env.ref('account.view_move_line_tree_grouped_partner').id)
+        action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_partner': 1})
+        return action

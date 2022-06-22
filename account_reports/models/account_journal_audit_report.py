@@ -924,3 +924,8 @@ class ReportAccountJournalAudit(models.AbstractModel):
             'domain': [('display_type', 'not in', ('line_section', 'line_note'))],
             'context': ctx,
         }
+
+    def open_journal_items(self, options, params, view_id=None):
+        action = super(ReportAccountJournalAudit, self).open_journal_items(options=options, params=params, view_id=view_id)
+        action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_move': 1})
+        return action

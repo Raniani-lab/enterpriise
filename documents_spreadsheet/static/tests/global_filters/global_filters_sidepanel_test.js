@@ -646,20 +646,7 @@ QUnit.module(
 
         QUnit.test("Readonly user can update text filter values", async function (assert) {
             assert.expect(6);
-            const { model } = await createSpreadsheetFromPivotView({
-                serverData: {
-                    models: getBasicData(),
-                    views: {
-                        "partner,false,pivot": `
-                            <pivot string="Partners">
-                                <field name="name" type="col"/>
-                                <field name="date" interval="month" type="row"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                        "partner,false,search": `<search/>`,
-                    },
-                },
-            });
+            const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, {
                 filter: {
                     id: "42",
@@ -695,15 +682,7 @@ QUnit.module(
 
         QUnit.test("Readonly user can update date filter values", async function (assert) {
             assert.expect(11);
-            const { model } = await createSpreadsheetFromPivotView({
-                arch: `
-                    <pivot string="Partners">
-                        <field name="name" type="col"/>
-                        <field name="date" interval="month" type="row"/>
-                        <field name="probability" type="measure"/>
-                    </pivot>
-                `,
-            });
+            const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, {
                 filter: {
                     id: "43",

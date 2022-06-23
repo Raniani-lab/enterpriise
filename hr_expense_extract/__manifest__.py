@@ -14,7 +14,7 @@
         'data/config_parameter_endpoint.xml',
         'views/hr_expense_views.xml',
         'views/res_config_settings_views.xml',
-        'data/update_status_cron.xml',
+        'data/crons.xml',
         ],
     'auto_install': True,
     'license': 'OEEL-1',

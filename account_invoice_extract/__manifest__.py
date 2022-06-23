@@ -13,7 +13,7 @@
         'data/config_parameter_endpoint.xml',
         'data/extraction_status.xml',
         'data/res_config_settings_views.xml',
-        'data/update_status_cron.xml',
+        'data/crons.xml',
         'views/account_move_views.xml',
     ],
     'auto_install': True,

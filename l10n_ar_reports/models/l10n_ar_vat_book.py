@@ -3,6 +3,7 @@ from odoo import _, api, models
 from odoo.exceptions import UserError
 from collections import OrderedDict
 from odoo.tools.misc import format_date
+from odoo.tools.float_utils import float_split_str
 import re
 import json
 import zipfile
@@ -235,7 +236,8 @@ class L10nARVatBook(models.AbstractModel):
                * a integer with padding 15 that includes the sign of the amount if negative
                * the integer part of the amount concatenate with 2 digits of the decimal part of the amount """
         template = "{:0" + str(padding) + "d}"
-        return template.format(round(amount * 10**decimals))
+        (unitary_part, decimal_part) = float_split_str(amount, decimals)
+        return template.format(int(unitary_part + decimal_part))
 
     @api.model
     def _get_partner_document_code_and_number(self, partner):

@@ -205,7 +205,7 @@ class HrApplicant(models.Model):
         else:
             self.extract_state = 'error_status'
 
-    def action_send_for_digitalization(self):
+    def action_send_for_digitization(self):
         if any(not applicant.is_first_stage for applicant in self):
             raise UserError(_("You cannot send a CV for an applicant who's not in first stage!"))
 
@@ -271,7 +271,7 @@ class HrApplicant(models.Model):
                     self.extract_state = 'not_enough_credit'
                     self.env['iap.account']._send_iap_bus_notification(
                         service_name='invoice_ocr',
-                        title=_("Not enough credits for CV Digitalization"),
+                        title=_("Not enough credits for CV Digitization"),
                         error_type='credit')
                 else:
                     self.extract_state = 'error_status'

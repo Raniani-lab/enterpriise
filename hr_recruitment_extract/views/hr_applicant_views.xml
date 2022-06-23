@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="retry_ocr" class="oe_highlight" string="Send For Digitalization" type="object"
+                <button name="retry_ocr" class="oe_highlight" string="Send For Digitization" type="object"
                 attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="q"/>
             </xpath>
             <xpath expr="//header" position='after'>
@@ -25,7 +25,7 @@
                             ('is_first_stage', '=', False),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary float-end mb0"/>
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitalization" type="object"
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object"
                         attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="q"/>
                     You don't have enough credit to extract data from your CV.
                     <div class="clearfix"/>
@@ -88,7 +88,7 @@
     </record>
 
     <record id="hr_recruitment_parse_action_server" model="ir.actions.server">
-            <field name="name">Send for digitalization</field>
+            <field name="name">Send for digitization</field>
             <field name="type">ir.actions.server</field>
             <field name="model_id" ref="model_hr_applicant"/>
             <field name="binding_model_id" ref="model_hr_applicant"/>
@@ -96,7 +96,7 @@
             <field name="state">code</field>
             <field name="code">
 if records:
-    action = records.action_send_for_digitalization()
+    action = records.action_send_for_digitization()
             </field>
     </record>
 </odoo>

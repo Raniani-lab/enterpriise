@@ -239,7 +239,7 @@ class HrExpense(models.Model):
         else:
             self.extract_state = 'error_status'
 
-    def action_send_for_digitalization(self):
+    def action_send_for_digitization(self):
         if any(expense.state != 'draft' or expense.sheet_id for expense in self):
             raise UserError(_("You cannot send a expense that is not in draft state!"))
 

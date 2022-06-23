@@ -13,7 +13,6 @@ const {
     onWillUpdateProps,
     useState,
     useRef,
-    xml,
 } = owl;
 
 class FooterComponent extends Component {
@@ -21,10 +20,7 @@ class FooterComponent extends Component {
         this.controlKey = isMacOS() ? "COMMAND" : "CONTROL";
     }
 }
-FooterComponent.template = xml`
-<span>
-    <span class='o_promote'>TIP</span> — open me anywhere with <span t-esc="controlKey" class='o_promote'/> + <span class='o_promote'>K</span>
-</span>`;
+FooterComponent.template = "web_enterprise.HomeMenu.CommandPalette.Footer";
 /**
  * Home menu
  *

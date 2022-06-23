@@ -37,9 +37,9 @@
     </div>
 </t>
 
-<t t-name="web_enterprise.HomeMenu.CommandPalette.footer" owl="1">
+<t t-name="web_enterprise.HomeMenu.CommandPalette.Footer" owl="1">
     <span>
-        <span class='o_promote'>TIP</span> — open me anywhere with <span class='o_promote'><t t-if="env.browser.isMacOS()">CONTROL</t><t t-else="">COMMAND</t></span> + <span class='o_promote'>K</span>
+        <span class='font-weight-bolder text-primary'>TIP</span> — open me anywhere with <span t-esc="controlKey" class='font-weight-bolder text-primary'/> + <span class='font-weight-bolder text-primary'>K</span>
     </span>
 </t>
 

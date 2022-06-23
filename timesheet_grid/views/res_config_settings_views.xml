@@ -54,11 +54,11 @@
                     <field name="reminder_user_interval" class="oe_inline ms-2 pe-2"/>
                 </div>
             </xpath>
-            <xpath expr="//div[@id='reminder_manager_allow']" position="inside">
-                <div class="mt16" id="manager_mail_alias_domain" attrs="{'invisible': [('reminder_manager_allow', '=', False)]}">
-                    <label for="reminder_manager_interval" string="Frequency"/>
-                    <field name="reminder_manager_delay" class="w-25 text-center"/> days
-                    <field name="reminder_manager_interval" class="oe_inline ms-2 pe-2"/>
+            <xpath expr="//div[@id='reminder_allow']" position="inside">
+                <div class="mt16" id="manager_mail_alias_domain" attrs="{'invisible': [('reminder_allow', '=', False)]}">
+                    <label for="reminder_interval" string="Frequency"/>
+                    <field name="reminder_delay" class="w-25 text-center"/> days
+                    <field name="reminder_interval" class="oe_inline ms-2 pe-2"/>
                 </div>
             </xpath>
         </field>

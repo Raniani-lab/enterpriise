@@ -100,11 +100,11 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
             self.startPatcher(patcher)
 
         self.user_manager.company_id.write({
-            'timesheet_mail_manager_interval': interval,
-            'timesheet_mail_manager_delay': delay,
+            'timesheet_mail_interval': interval,
+            'timesheet_mail_delay': delay,
         })
 
-        self.assertEqual(result, self.user_manager.company_id.timesheet_mail_manager_nextdate)
+        self.assertEqual(result, self.user_manager.company_id.timesheet_mail_nextdate)
 
     def test_timesheet_next_date_reminder_neg_delay(self):
 
@@ -276,7 +276,7 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         self.assertEqual(result['rows'][0]['values']['project_id'][0], self.timesheet2.project_id.id)
         self.assertEqual(result['rows'][0]['values']['task_id'][0], self.timesheet2.task_id.id)
 
-    def test_timesheet_manager_reminder(self):
+    def test_timesheet_reminder(self):
         """ Reminder mail will be sent to both manager Administrator and User Officer to validate the timesheet """
         date = datetime(2022, 3, 3, 8, 8, 15)
         now = datetime(2022, 3, 1, 8, 8, 15)
@@ -284,7 +284,7 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         user = self.env.ref('base.user_admin')
 
         with freeze_time(date), self.mock_mail_gateway():
-            self.env['res.company']._cron_timesheet_reminder_manager()
+            self.env['res.company']._cron_timesheet_reminder()
             self.assertEqual(len(self._new_mails.filtered(lambda x: x.res_id == user.employee_id.id)), 1, "An email sent to the 'Administrator Manager'")
             self.assertEqual(len(self._new_mails.filtered(lambda x: x.res_id == self.empl_manager.id)), 1, "An email sent to the 'User Empl Officer'")
 

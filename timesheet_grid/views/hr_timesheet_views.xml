@@ -48,13 +48,13 @@
         <record id="timesheet_view_tree_user_inherited" model="ir.ui.view">
             <field name="name">account.analytic.line.tree.timesheet_grid</field>
             <field name="model">account.analytic.line</field>
+            <field name="mode">primary</field>
             <field name="inherit_id" ref="hr_timesheet.timesheet_view_tree_user"/>
             <field name="arch" type="xml">
                 <xpath expr="//tree" position="inside">
                     <header>
                         <button name="action_validate_timesheet" string="Validate" type="object"
-                                groups="hr_timesheet.group_hr_timesheet_approver"
-                                invisible="not context.get('search_default_nonvalidated',0)"/>
+                                groups="hr_timesheet.group_hr_timesheet_approver"/>
                     </header>
                 </xpath>
             </field>
@@ -826,7 +826,7 @@ action = model._action_open_to_validate_timesheet_view()
 
         <record id="hr_timesheet_to_validate_action_tree" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="hr_timesheet.timesheet_view_tree_user" />
+            <field name="view_id" ref="timesheet_view_tree_user_inherited"/>
             <field name="act_window_id" ref="timesheet_grid_to_validate_action" />
             <field name="sequence">20</field>
         </record>

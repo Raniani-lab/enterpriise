@@ -11,10 +11,6 @@
                 <filter name="validated" string="Validated" domain="[('validated', '=', True)]"/>
                 <separator/>
             </xpath>
-            <xpath expr="//filter[@name='month']" position="after">
-                <separator/>
-                <filter string="Suspicious Durations" name="suspicious_durations" domain="['|', ('unit_amount', '&gt;', 24), ('unit_amount', '=', 0), ('date', '&lt;', context_today().strftime('%Y-%m-%d')), ('is_timer_running', '=', False)]"/>
-            </xpath>
             <xpath expr="//filter[@name='mine']" position="after">
                 <filter name="my_team_timesheet" string="My Team" domain="[
                     '|', ('employee_id.timesheet_manager_id', '=', uid),

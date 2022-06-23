@@ -1,21 +1,24 @@
-/* global _ */
 odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require) {
     "use strict";
 
     const core = require("web.core");
-    const spreadsheet = require("@spreadsheet/o_spreadsheet/o_spreadsheet_extended")[Symbol.for("default")];
+    const spreadsheet = require("@spreadsheet/o_spreadsheet/o_spreadsheet_extended")[
+        Symbol.for("default")
+    ];
     const DateFilterValue = require("documents_spreadsheet.DateFilterValue");
-    const CommandResult = require("@spreadsheet/o_spreadsheet/cancelled_reason")[Symbol.for("default")];
+    const CommandResult = require("@spreadsheet/o_spreadsheet/cancelled_reason")[
+        Symbol.for("default")
+    ];
     const {
         FieldSelectorWidget,
         FieldSelectorAdapter,
     } = require("documents_spreadsheet.field_selector_widget");
+    const { ModelSelectorWidgetAdapter } = require("documents_spreadsheet.model_selector_widget");
     const {
-        ModelSelectorWidgetAdapter,
-    } = require("documents_spreadsheet.model_selector_widget");
-    const { StandaloneMany2OneField } = require("@documents_spreadsheet/assets/widgets/standalone_many2one_field");
+        StandaloneMany2OneField,
+    } = require("@documents_spreadsheet/assets/widgets/standalone_many2one_field");
     const {
-        X2ManyTagSelector
+        X2ManyTagSelector,
     } = require("@documents_spreadsheet/assets/widgets/tag_selector_widget");
     const { useService } = require("@web/core/utils/hooks");
     const { LegacyComponent } = require("@web/legacy/legacy_component");
@@ -58,6 +61,10 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
                     relatedModelName: undefined,
                 },
             });
+            this.modelDisplayNames = {
+                pivots: {},
+                lists: {},
+            };
             this.getters = this.env.model.getters;
             this.pivotIds = this.getters.getPivotIds();
             this.listIds = this.getters.getListIds();
@@ -142,10 +149,22 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             const proms = [];
             proms.push(this.fetchModelFromName());
             for (const pivotId of this.getters.getPivotIds()) {
-                proms.push(this.getters.getSpreadsheetPivotDataSource(pivotId).loadModel());
+                const dataSource = this.getters.getSpreadsheetPivotDataSource(pivotId);
+                proms.push(dataSource.loadModel());
+                proms.push(
+                    dataSource
+                        .getModelLabel()
+                        .then((name) => (this.modelDisplayNames.pivots[pivotId] = name))
+                );
             }
             for (const listId of this.listIds) {
-                proms.push(this.getters.getSpreadsheetListDataSource(listId).loadModel());
+                const dataSource = this.getters.getSpreadsheetListDataSource(listId);
+                proms.push(dataSource.loadModel());
+                proms.push(
+                    dataSource
+                        .getModelLabel()
+                        .then((name) => (this.modelDisplayNames.lists[listId] = name))
+                );
             }
             await Promise.all(proms);
         }
@@ -162,11 +181,13 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
          * @returns {Array<string, Field>|undefined}
          */
         _findRelation(fields) {
-            return Object.entries(fields).find(
+            return (
+                Object.entries(fields).find(
                     ([, fieldDesc]) =>
                         fieldDesc.type === "many2one" &&
                         fieldDesc.relation === this.state.relation.relatedModelName
-                ) || [];
+                ) || []
+            );
         }
 
         async onModelSelected(value) {
@@ -176,13 +197,17 @@ odoo.define("documents_spreadsheet.filter_editor_side_panel", function (require)
             this.state.relation.relatedModelID = value;
             await this.fetchModelFromId();
             for (const pivotId of this.pivotIds) {
-                const [field, fieldDesc] = this._findRelation(this.getters.getSpreadsheetPivotModel(pivotId).getFields());
+                const [field, fieldDesc] = this._findRelation(
+                    this.getters.getSpreadsheetPivotModel(pivotId).getFields()
+                );
                 this.state.pivotFields[pivotId] = field
                     ? { field, type: fieldDesc.type }
                     : undefined;
             }
             for (const listId of this.listIds) {
-                const [field, fieldDesc] = this._findRelation(this.getters.getSpreadsheetListModel(listId).getFields());
+                const [field, fieldDesc] = this._findRelation(
+                    this.getters.getSpreadsheetListModel(listId).getFields()
+                );
                 this.state.listFields[listId] = field ? { field, type: fieldDesc.type } : undefined;
             }
         }

@@ -49,7 +49,7 @@ cellMenuRegistry.add("pivot_see_records", {
             argsDomain = argsDomain.slice(0, argsDomain.length - 2);
         }
         const domain = pivotModel.getPivotCellDomain(argsDomain);
-        const name = pivotModel.getModelLabel();
+        const name = await env.model.getters.getSpreadsheetPivotDataSource(pivotId).getModelLabel();
         await env.services.action.doAction({
             type: "ir.actions.act_window",
             name,

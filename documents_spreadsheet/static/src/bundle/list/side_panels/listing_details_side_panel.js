@@ -7,13 +7,19 @@ import { time_to_str } from "web.time";
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 import DomainComponentAdapter from "../../legacy/domain_component_adapter";
 
-const { Component } = owl;
+const { Component, onWillStart } = owl;
 
 export class ListingDetailsSidePanel extends Component {
     constructor() {
         super(...arguments);
         this.getters = this.env.model.getters;
         this.DomainSelector = DomainSelector;
+        onWillStart(async () => {
+            const name = await this.getters
+                .getSpreadsheetListDataSource(this.props.listId)
+                .getModelLabel();
+            this.modelDisplayName = name;
+        });
     }
 
     get listDefinition() {
@@ -21,16 +27,16 @@ export class ListingDetailsSidePanel extends Component {
         const def = this.getters.getListDefinition(listId);
         return {
             model: def.model,
-            modelDisplayName: this.getters.getSpreadsheetListModel(listId).getModelLabel(),
+            modelDisplayName: this.modelDisplayName,
             domain: def.domain,
             orderBy: def.orderBy,
         };
     }
 
     formatSort(sort) {
-        return `${this.getters.getSpreadsheetListModel(this.props.listId).getListHeaderValue(sort.name)} (${
-            sort.asc ? _t("ascending") : _t("descending")
-        })`;
+        return `${this.getters
+            .getSpreadsheetListModel(this.props.listId)
+            .getListHeaderValue(sort.name)} (${sort.asc ? _t("ascending") : _t("descending")})`;
     }
 
     getLastUpdate() {

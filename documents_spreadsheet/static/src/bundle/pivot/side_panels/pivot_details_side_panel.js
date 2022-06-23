@@ -19,20 +19,21 @@ export default class PivotDetailsSidePanel extends Component {
                 this.props.pivotId
             );
             const definition = this.env.model.getters.getPivotDefinition(this.props.pivotId);
+            const modelDisplayName = await this.env.model.getters
+                .getSpreadsheetPivotDataSource(this.props.pivotId)
+                .getModelLabel();
             this.pivotDefinition = {
                 model: definition.model,
-                modelDisplayName: this.spreadsheetModel.getModelLabel(),
+                modelDisplayName,
                 domain: definition.domain,
                 dimensions: [
                     ...definition.rowGroupBys,
-                    ...definition.colGroupBys
-                ].map((fieldName) =>
-                    this.spreadsheetModel.getFormattedGroupBy(fieldName)
-                ),
+                    ...definition.colGroupBys,
+                ].map((fieldName) => this.spreadsheetModel.getFormattedGroupBy(fieldName)),
                 measures: definition.measures.map((measure) =>
                     this.spreadsheetModel.getGroupByDisplayLabel("measure", measure)
                 ),
-                sortedColumn: definition.sortedColumn
+                sortedColumn: definition.sortedColumn,
             };
         });
     }
@@ -47,7 +48,10 @@ export default class PivotDetailsSidePanel extends Component {
     formatSort() {
         const sortedColumn = this.pivotDefinition.sortedColumn;
         const order = sortedColumn.order === "asc" ? _t("ascending") : _t("descending");
-        const measureDisplayName = this.spreadsheetModel.getGroupByDisplayLabel("measure", sortedColumn.measure);
+        const measureDisplayName = this.spreadsheetModel.getGroupByDisplayLabel(
+            "measure",
+            sortedColumn.measure
+        );
         return `${measureDisplayName} (${order})`;
     }
 
@@ -57,8 +61,7 @@ export default class PivotDetailsSidePanel extends Component {
      * @returns {string} date formatted
      */
     getLastUpdate() {
-        const lastUpdate = this.env.model.getters
-            .getSpreadsheetPivotDataSource(this.props.pivotId)
+        const lastUpdate = this.env.model.getters.getSpreadsheetPivotDataSource(this.props.pivotId)
             .lastUpdate;
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));

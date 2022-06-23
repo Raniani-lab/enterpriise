@@ -6,13 +6,7 @@ import { nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { createModelWithDataSource, waitForDataSourcesLoaded } from "../utils/model";
 import { setCellContent } from "../utils/commands";
-import {
-    getCell,
-    getCellContent,
-    getCellFormula,
-    getCells,
-    getCellValue,
-} from "../utils/getters";
+import { getCell, getCellContent, getCellFormula, getCells, getCellValue } from "../utils/getters";
 import { createSpreadsheetWithList } from "../utils/list";
 
 QUnit.module("spreadsheet > list plugin", {}, () => {
@@ -244,7 +238,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         assert.equal(getCellValue(model, "A1"), "Loading...");
         await nextTick();
         assert.equal(getCellValue(model, "A1"), 12);
-        assert.verifySteps(["partner/fields_get", "ir.model/search_read", "partner/search_read"]);
+        assert.verifySteps(["partner/fields_get", "partner/search_read"]);
     });
 
     QUnit.test("user context is combined with list context to fetch data", async function (assert) {

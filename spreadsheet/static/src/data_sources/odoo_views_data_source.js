@@ -21,7 +21,6 @@ function removeContextUserInfo(context) {
  * @typedef {Object} OdooModelMetaData
  * @property {string} resModel
  * @property {Array<Object>|undefined} fields
- * @property {string|undefined} modelLabel
  */
 
 export class OdooViewsDataSource extends DataSource {
@@ -43,11 +42,6 @@ export class OdooViewsDataSource extends DataSource {
     async _fetchMetadata() {
         if (!this._metaData.fields) {
             this._metaData.fields = await this._metadataRepository.fieldsGet(
-                this._metaData.resModel
-            );
-        }
-        if (!this._metaData.modelLabel) {
-            this._metaData.modelLabel = await this._metadataRepository.modelDisplayName(
                 this._metaData.resModel
             );
         }
@@ -81,5 +75,12 @@ export class OdooViewsDataSource extends DataSource {
             return;
         }
         this.load({ reload: true });
+    }
+
+    /**
+     * @returns {Promise<string>} Display name of the model
+     */
+    getModelLabel() {
+        return this._metadataRepository.modelDisplayName(this._metaData.resModel);
     }
 }

@@ -144,13 +144,6 @@ export class SpreadsheetListModel extends EventBus {
     //--------------------------------------------------------------------------
 
     /**
-     * @returns {string} Display name of the model
-     */
-    getModelLabel() {
-        return this.metaData.modelLabel;
-    }
-
-    /**
      * @returns {Object} List of fields
      */
     getFields() {

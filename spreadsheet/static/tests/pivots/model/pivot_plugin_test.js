@@ -334,7 +334,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
                 }
             },
         });
-        assert.verifySteps(["partner/fields_get", "ir.model/search_read"]);
+        assert.verifySteps(["partner/fields_get"]);
     });
 
     QUnit.test("don't fetch pivot data if no formula use it", async function (assert) {
@@ -376,7 +376,6 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         await nextTick();
         assert.verifySteps([
             "partner/fields_get",
-            "ir.model/search_read",
             "partner/read_group",
             "partner/read_group",
             "partner/read_group",

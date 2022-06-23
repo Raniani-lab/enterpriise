@@ -77,9 +77,9 @@ function throwUnsupportedFieldError(field) {
  */
 export function parsePivotFormulaFieldValue(field, groupValue) {
     const groupValueString =
-    typeof groupValue === "boolean"
-      ? toString(groupValue).toLocaleLowerCase()
-      : toString(groupValue);
+        typeof groupValue === "boolean"
+            ? toString(groupValue).toLocaleLowerCase()
+            : toString(groupValue);
     if (isNotSupported(field.type)) {
         throwUnsupportedFieldError(field);
     }
@@ -179,13 +179,6 @@ export class SpreadsheetPivotModel extends PivotModel {
         } catch (_) {
             return false;
         }
-    }
-
-    /**
-     * @returns {string} Display name of the model
-     */
-    getModelLabel() {
-        return this._modelLabel;
     }
 
     /**
@@ -491,7 +484,12 @@ export class SpreadsheetPivotModel extends PivotModel {
                 for (let i = 0; i < group.values.length; i++) {
                     const { field } = this.parseGroupField(groupBys[i]);
                     if (!field.relation) {
-                        metadataRepository.registerLabel(config.metaData.resModel, field.name, group.values[i], group.labels[i]);
+                        metadataRepository.registerLabel(
+                            config.metaData.resModel,
+                            field.name,
+                            group.values[i],
+                            group.labels[i]
+                        );
                     }
                 }
             }
@@ -610,9 +608,8 @@ export class SpreadsheetPivotModel extends PivotModel {
             let value;
             if (isPositional) {
                 value = this._parsePivotFormulaWithPosition(field, groupValue, cols, rows);
-            }
-            else {
-                value = parsePivotFormulaFieldValue(field, groupValue)
+            } else {
+                value = parsePivotFormulaFieldValue(field, groupValue);
             }
             if (this._isCol(field)) {
                 cols.push(value);

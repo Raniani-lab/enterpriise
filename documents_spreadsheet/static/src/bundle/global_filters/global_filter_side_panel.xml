@@ -124,7 +124,7 @@
             <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingPivotField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
                 <t t-set="pivotModel" t-value="getters.getSpreadsheetPivotModel(pivotId)"/>
                 <t t-if="pivotModel !== undefined">
-                    <div><t t-esc="pivotModel.getModelLabel()"/> <span class="o_pivot_model_technical_name text-muted">(Pivot #<t t-esc="pivotId"/>)</span></div>
+                    <div><t t-esc="modelDisplayNames.pivots[pivotId]"/> <span class="o_pivot_model_technical_name text-muted">(Pivot #<t t-esc="pivotId"/>)</span></div>
                     <FieldSelectorAdapter
                         Component="FieldSelectorWidget"
                         model="getters.getPivotDefinition(pivotId).model"
@@ -138,7 +138,7 @@
                 </t>
             </div>
             <div t-foreach="listIds" t-as="listId" t-key="listId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
-                <div><t t-esc="getters.getSpreadsheetListModel(listId).getModelLabel()"/> <span class="o_pivot_model_technical_name text-muted">(List #<t t-esc="listId"/>)</span></div>
+                <div><t t-esc="modelDisplayNames.lists[listId]"/> <span class="o_pivot_model_technical_name text-muted">(List #<t t-esc="listId"/>)</span></div>
                 <FieldSelectorAdapter
                     Component="FieldSelectorWidget"
                     model="getters.getListDefinition(listId).model"

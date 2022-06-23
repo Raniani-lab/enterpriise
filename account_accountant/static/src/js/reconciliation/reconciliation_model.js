@@ -457,6 +457,8 @@ var ManualModel = BasicModel.extend({
                         prop.tax_ids = _.filter(prop.tax_ids, function (val) {
                             return val.id !== id;
                         });
+                        // Remove all tax tags, they will be recomputed in case of remaining taxes
+                        prop.tax_tag_ids = [];
                         break;
                 }
             }

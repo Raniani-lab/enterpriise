@@ -12,7 +12,7 @@ import { getOdooFunctions } from "../helpers/odoo_functions_helpers";
  */
 export function getNumberOfListFormulas(formula) {
     return getOdooFunctions(formula, (functionName) =>
-        ["LIST", "LIST.HEADER"].includes(functionName)
+        ["ODOO.LIST", "ODOO.LIST.HEADER"].includes(functionName)
     ).filter((fn) => fn.isMatched).length;
 }
 
@@ -25,6 +25,6 @@ export function getNumberOfListFormulas(formula) {
  */
 export function getFirstListFunction(formula) {
     return getOdooFunctions(formula, (functionName) =>
-        ["LIST", "LIST.HEADER"].includes(functionName)
+        ["ODOO.LIST", "ODOO.LIST.HEADER"].includes(functionName)
     ).find((fn) => fn.isMatched);
 }

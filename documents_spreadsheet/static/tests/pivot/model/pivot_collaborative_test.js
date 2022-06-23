@@ -122,12 +122,12 @@ QUnit.test("Add a pivot", async (assert) => {
         1
     );
     const cellFormulas = {
-        B1: `=PIVOT.HEADER(1,"foo",1)`, // header col
-        A3: `=PIVOT.HEADER(1,"bar","false")`, // header row
-        B2: `=PIVOT.HEADER(1,"foo",1,"measure","probability")`, // measure
-        B3: `=PIVOT(1,"probability","bar","false","foo",1)`, // value
-        F1: `=PIVOT.HEADER(1)`, // total header rows
-        A5: `=PIVOT.HEADER(1)`, // total header cols
+        B1: `=ODOO.PIVOT.HEADER(1,"foo",1)`, // header col
+        A3: `=ODOO.PIVOT.HEADER(1,"bar","false")`, // header row
+        B2: `=ODOO.PIVOT.HEADER(1,"foo",1,"measure","probability")`, // measure
+        B3: `=ODOO.PIVOT(1,"probability","bar","false","foo",1)`, // value
+        F1: `=ODOO.PIVOT.HEADER(1)`, // total header rows
+        A5: `=ODOO.PIVOT.HEADER(1)`, // total header cols
     };
     for (const [cellXc, formula] of Object.entries(cellFormulas)) {
         assert.spreadsheetIsSynchronized(
@@ -164,12 +164,12 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellFormula(user, "B1"),
-        `=PIVOT.HEADER(1,"foo",1)`
+        `=ODOO.PIVOT.HEADER(1,"foo",1)`
     );
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellFormula(user, "B26"),
-        `=PIVOT.HEADER(2,"foo",1)`
+        `=ODOO.PIVOT.HEADER(2,"foo",1)`
     );
     await nextTick();
 
@@ -222,7 +222,7 @@ QUnit.test("Add a pivot in another sheet", async (assert) => {
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellFormula(user, "B1"),
-        `=PIVOT.HEADER(1,"foo",1)`
+        `=ODOO.PIVOT.HEADER(1,"foo",1)`
     );
     // values should not be loaded yet (lazy load)
     assert.spreadsheetIsSynchronized(

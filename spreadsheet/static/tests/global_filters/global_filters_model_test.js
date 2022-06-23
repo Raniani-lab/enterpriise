@@ -418,11 +418,11 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.equal(model.getters.getActiveFilterCount(), true);
     });
 
-    QUnit.test("FILTER.VALUE text filter", async function (assert) {
+    QUnit.test("ODOO.FILTER.VALUE text filter", async function (assert) {
         assert.expect(3);
 
         const model = await createModelWithDataSource();
-        setCellContent(model, "A10", `=FILTER.VALUE("Text Filter")`);
+        setCellContent(model, "A10", `=ODOO.FILTER.VALUE("Text Filter")`);
         await nextTick();
         assert.equal(getCellValue(model, "A10"), "#ERROR");
         await addGlobalFilter(model, {
@@ -449,11 +449,11 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.equal(getCellValue(model, "A10"), "Hello");
     });
 
-    QUnit.test("FILTER.VALUE date filter", async function (assert) {
+    QUnit.test("ODOO.FILTER.VALUE date filter", async function (assert) {
         assert.expect(4);
 
         const model = await createModelWithDataSource();
-        setCellContent(model, "A10", `=FILTER.VALUE("Date Filter")`);
+        setCellContent(model, "A10", `=ODOO.FILTER.VALUE("Date Filter")`);
         await nextTick();
         console.log(await addGlobalFilter(model, {
             filter: {
@@ -508,7 +508,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.equal(getCellValue(model, "A10"), ``);
     });
 
-    QUnit.test("FILTER.VALUE relation filter", async function (assert) {
+    QUnit.test("ODOO.FILTER.VALUE relation filter", async function (assert) {
         assert.expect(6);
 
         const orm = {
@@ -526,7 +526,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
             }
         );
         setupDataSourceEvaluation(model);
-        setCellContent(model, "A10", `=FILTER.VALUE("Relation Filter")`);
+        setCellContent(model, "A10", `=ODOO.FILTER.VALUE("Relation Filter")`);
         await nextTick();
         await addGlobalFilter(model, {
             filter: {
@@ -567,7 +567,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
     });
 
     QUnit.test(
-        "FILTER.VALUE formulas are updated when filter label is changed",
+        "ODOO.FILTER.VALUE formulas are updated when filter label is changed",
         async function (assert) {
             assert.expect(1);
 
@@ -585,7 +585,11 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
                     },
                 },
             });
-            setCellContent(model, "A10", `=FILTER.VALUE("Cuillère") & FILTER.VALUE( "Cuillère" )`);
+            setCellContent(
+                model,
+                "A10",
+                `=ODOO.FILTER.VALUE("Cuillère") & ODOO.FILTER.VALUE( "Cuillère" )`
+            );
             const [filter] = model.getters.getGlobalFilters();
             const newFilter = {
                 type: "date",
@@ -600,7 +604,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
             await editGlobalFilter(model, { id: filter.id, filter: newFilter });
             assert.equal(
                 getCellFormula(model, "A10"),
-                `=FILTER.VALUE("Interprete") & FILTER.VALUE("Interprete")`
+                `=ODOO.FILTER.VALUE("Interprete") & ODOO.FILTER.VALUE("Interprete")`
             );
         }
     );
@@ -754,7 +758,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
                     {
                         id: "sheet1",
                         cells: {
-                            A1: { content: `=PIVOT("1", "probability")` },
+                            A1: { content: `=ODOO.PIVOT("1", "probability")` },
                         },
                     },
                 ],
@@ -812,7 +816,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
                     {
                         id: "sheet1",
                         cells: {
-                            A1: { content: `=PIVOT("1", "probability")` },
+                            A1: { content: `=ODOO.PIVOT("1", "probability")` },
                         },
                     },
                 ],
@@ -863,7 +867,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
                 {
                     id: "sheet1",
                     cells: {
-                        A1: { content: `=PIVOT("1", "probability")` },
+                        A1: { content: `=ODOO.PIVOT("1", "probability")` },
                     },
                 },
             ],
@@ -919,7 +923,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
                     {
                         id: "sheet2",
                         cells: {
-                            A1: { content: `=PIVOT("1", "probability")` },
+                            A1: { content: `=ODOO.PIVOT("1", "probability")` },
                         },
                     },
                 ],
@@ -976,7 +980,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
                     {
                         id: "sheet2",
                         cells: {
-                            A1: { content: `=PIVOT("1", "probability")` },
+                            A1: { content: `=ODOO.PIVOT("1", "probability")` },
                         },
                     },
                 ],

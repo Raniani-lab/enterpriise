@@ -89,11 +89,11 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
                             assert.ok(context.default_thumbnail);
                             assert.equal(
                                 cells.A3.content,
-                                `=PIVOT.HEADER(1,"product_id",PIVOT.POSITION(1,"product_id",1))`
+                                `=ODOO.PIVOT.HEADER(1,"product_id",ODOO.PIVOT.POSITION(1,"product_id",1))`
                             );
                             assert.equal(
                                 cells.B3.content,
-                                `=PIVOT(1,"probability","product_id",PIVOT.POSITION(1,"product_id",1),"bar","false")`
+                                `=ODOO.PIVOT(1,"probability","product_id",ODOO.PIVOT.POSITION(1,"product_id",1),"bar","false")`
                             );
                             assert.equal(cells.A11.content, "😃");
                             return Promise.resolve(true);

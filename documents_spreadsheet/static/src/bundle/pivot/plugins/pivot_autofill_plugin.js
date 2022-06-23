@@ -61,18 +61,18 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
               if (evaluatedArgs[i + 1] < 0) {
                 return formula;
               }
-              if (functionName === "PIVOT") {
-                return makePivotFormula("PIVOT", evaluatedArgs);
-              } else if (functionName === "PIVOT.HEADER") {
-                return makePivotFormula("PIVOT.HEADER", evaluatedArgs);
+              if (functionName === "ODOO.PIVOT") {
+                return makePivotFormula("ODOO.PIVOT", evaluatedArgs);
+              } else if (functionName === "ODOO.PIVOT.HEADER") {
+                return makePivotFormula("ODOO.PIVOT.HEADER", evaluatedArgs);
               }
               return formula;
             }
         }
         let builder;
-        if (functionName === "PIVOT") {
+        if (functionName === "ODOO.PIVOT") {
             builder = this._autofillPivotValue.bind(this);
-        } else if (functionName === "PIVOT.HEADER") {
+        } else if (functionName === "ODOO.PIVOT.HEADER") {
             if (evaluatedArgs.length === 1) {
                 // Total
                 if (isColumn) {
@@ -112,9 +112,9 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             .map(astToFormula)
             .map((arg) => this.getters.evaluateFormula(arg));
         const pivotId = evaluatedArgs[0];
-        if (functionName === "PIVOT") {
+        if (functionName === "ODOO.PIVOT") {
             return this._tooltipFormatPivot(pivotId, evaluatedArgs, isColumn);
-        } else if (functionName === "PIVOT.HEADER") {
+        } else if (functionName === "ODOO.PIVOT.HEADER") {
             return this._tooltipFormatPivotHeader(pivotId, evaluatedArgs);
         }
         return [];
@@ -225,7 +225,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             }
             measure = cols.pop();
         }
-        return makePivotFormula("PIVOT", this._buildArgs(pivotId, measure, rows, cols));
+        return makePivotFormula("ODOO.PIVOT", this._buildArgs(pivotId, measure, rows, cols));
     }
     /**
      * Get the next value to autofill from a pivot header ("=PIVOT.HEADER()")
@@ -293,7 +293,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                     groupValues.push(currentCols.values[i]);
                 }
             }
-            return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], groupValues));
+            return makePivotFormula("ODOO.PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], groupValues));
         } else {
             // UP-DOWN
             const colIndex = currentElement.cols.length - 1;
@@ -310,7 +310,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 const cols = [...measureCell.values];
                 const measure = cols.pop();
                 const rows = [...table.getCellsFromRowAtIndex(rowIndex).values];
-                return makePivotFormula("PIVOT", this._buildArgs(pivotId, measure, rows, cols));
+                return makePivotFormula("ODOO.PIVOT", this._buildArgs(pivotId, measure, rows, cols));
             } else {
                 // Targeting a col.header
                 const cols = [];
@@ -318,7 +318,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 for (let i = 0; i <= nextIndex;i++) {
                     cols.push(currentCols.values[i]);
                 }
-                return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], cols));
+                return makePivotFormula("ODOO.PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], cols));
             }
         }
     }
@@ -367,7 +367,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             const measureCell = table.getCellFromMeasureRowAtIndex(colIndex);
             const values = [...measureCell.values];
             const measure = values.pop();
-            return makePivotFormula("PIVOT", 
+            return makePivotFormula("ODOO.PIVOT", 
                 this._buildArgs(pivotId, measure, currentElement.rows, values)
             );
         } else {
@@ -385,7 +385,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 }
                 rows = [...table.getCellsFromRowAtIndex(nextIndex).values];
             }
-            return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, rows, []));
+            return makePivotFormula("ODOO.PIVOT.HEADER", this._buildArgs(pivotId, undefined, rows, []));
         }
     }
     /**
@@ -415,7 +415,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         for (let i = 0; i <= index;i++) {
             cols.push(currentElement.cols[i]);
         }
-        return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], cols));
+        return makePivotFormula("ODOO.PIVOT.HEADER", this._buildArgs(pivotId, undefined, [], cols));
     }
     /**
      * Create a row header from a value
@@ -432,7 +432,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
         if (!rows) {
             return "";
         }
-        return makePivotFormula("PIVOT.HEADER", this._buildArgs(pivotId, undefined, rows, []));
+        return makePivotFormula("ODOO.PIVOT.HEADER", this._buildArgs(pivotId, undefined, rows, []));
     }
     /**
      * Parse the arguments of a pivot function to find the col values and

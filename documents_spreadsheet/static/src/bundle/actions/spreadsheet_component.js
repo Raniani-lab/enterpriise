@@ -12,6 +12,7 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { jsonToBase64 } from "@spreadsheet/helpers/helpers";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
+import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 
 const { onMounted, onWillUnmount, useExternalListener, useState, useSubEnv, onWillStart } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -59,7 +60,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
         const dataSources = new DataSources(this.orm);
 
         this.model = new Model(
-            this.props.data,
+            migrate(this.props.data),
             {
                 evalContext: { env: this.env, orm: this.orm },
                 transportService: this.props.transportService,

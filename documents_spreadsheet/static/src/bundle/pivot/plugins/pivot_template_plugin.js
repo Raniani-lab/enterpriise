@@ -124,7 +124,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             switch (ast.type) {
                 case "FUNCALL":
                     switch (ast.value) {
-                        case "PIVOT.POSITION":
+                        case "ODOO.PIVOT.POSITION":
                             return this._pivotPositionToAbsolute(ast);
                         default:
                             return Object.assign({}, ast, {
@@ -165,9 +165,9 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
             switch (ast.type) {
                 case "FUNCALL":
                     switch (ast.value) {
-                        case "PIVOT":
+                        case "ODOO.PIVOT":
                             return this._pivot_absoluteToRelative(ast);
-                        case "PIVOT.HEADER":
+                        case "ODOO.PIVOT.HEADER":
                             return this._pivotHeader_absoluteToRelative(ast);
                         default:
                             return Object.assign({}, ast, {
@@ -271,7 +271,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                         fieldAst,
                         {
                             type: "FUNCALL",
-                            value: "PIVOT.POSITION",
+                            value: "ODOO.PIVOT.POSITION",
                             args: [pivotIdAst, fieldAst, { type: "NUMBER", value: index + 1 }],
                         },
                     ]);

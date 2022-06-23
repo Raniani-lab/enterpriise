@@ -9,16 +9,16 @@ function stringArg(value) {
 
 QUnit.module("spreadsheet > pivot_helpers", {}, () => {
     QUnit.test("Basic formula extractor", async function (assert) {
-        const formula = `=PIVOT("1", "test") + LIST("2", "hello", "bla")`;
+        const formula = `=ODOO.PIVOT("1", "test") + ODOO.LIST("2", "hello", "bla")`;
         let functionName;
         let args;
         ({ functionName, args } = getFirstPivotFunction(formula));
-        assert.strictEqual(functionName, "PIVOT");
+        assert.strictEqual(functionName, "ODOO.PIVOT");
         assert.strictEqual(args.length, 2);
         assert.deepEqual(args[0], stringArg("1"));
         assert.deepEqual(args[1], stringArg("test"));
         ({ functionName, args } = getFirstListFunction(formula));
-        assert.strictEqual(functionName, "LIST");
+        assert.strictEqual(functionName, "ODOO.LIST");
         assert.strictEqual(args.length, 3);
         assert.deepEqual(args[0], stringArg("2"));
         assert.deepEqual(args[1], stringArg("hello"));
@@ -26,11 +26,11 @@ QUnit.module("spreadsheet > pivot_helpers", {}, () => {
     });
 
     QUnit.test("Extraction with two PIVOT formulas", async function (assert) {
-        const formula = `=PIVOT("1", "test") + PIVOT("2", "hello", "bla")`;
+        const formula = `=ODOO.PIVOT("1", "test") + ODOO.PIVOT("2", "hello", "bla")`;
         let functionName;
         let args;
         ({ functionName, args } = getFirstPivotFunction(formula));
-        assert.strictEqual(functionName, "PIVOT");
+        assert.strictEqual(functionName, "ODOO.PIVOT");
         assert.strictEqual(args.length, 2);
         assert.deepEqual(args[0], stringArg("1"));
         assert.deepEqual(args[1], stringArg("test"));
@@ -38,7 +38,7 @@ QUnit.module("spreadsheet > pivot_helpers", {}, () => {
     });
 
     QUnit.test("Number of formulas", async function (assert) {
-        const formula = `=PIVOT("1", "test") + PIVOT("2", "hello", "bla") + LIST("1", "bla")`;
+        const formula = `=ODOO.PIVOT("1", "test") + ODOO.PIVOT("2", "hello", "bla") + ODOO.LIST("1", "bla")`;
         assert.strictEqual(getNumberOfPivotFormulas(formula), 2);
         assert.strictEqual(getNumberOfListFormulas(formula), 1);
         assert.strictEqual(getNumberOfPivotFormulas("=1+1"), 0);

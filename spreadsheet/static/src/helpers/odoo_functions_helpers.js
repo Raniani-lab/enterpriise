@@ -12,8 +12,8 @@ const { parse } = spreadsheet;
  */
 
 /**
- * This function is used to extract the Odoo functions (PIVOT, LIST) from a
- * spreadsheet formula.
+ * This function is used to search for the functions which match the given matcher
+ * from the given formula
  *
  * @param {string} formula
  * @param {Function} matcher a predicate that matches a function name
@@ -31,9 +31,11 @@ export function getOdooFunctions(formula, matcher) {
 }
 
 /**
- * This function is used to extract the Odoo functions (PIVOT, LIST) from an AST.
+ * This function is used to search for the functions which match the given matcher
+ * from the given AST
  *
- * @param {Object} AST (see o-spreadsheet)
+ * @param {Object} ast (see o-spreadsheet)
+ * @param {Function} matcher a predicate that matches a function name
  *
  * @private
  * @returns {Array<OdooFunctionDescription>}

@@ -36,7 +36,7 @@ function assertDomainLength(domain) {
 }
 
 functionRegistry
-    .add("FILTER.VALUE", {
+    .add("ODOO.FILTER.VALUE", {
         description: _t("Return the current value of a spreadsheet filter."),
         compute: function (filterName) {
             return this.getters.getFilterDisplayValue(filterName);
@@ -46,7 +46,7 @@ functionRegistry
         `),
         returns: ["STRING"],
     })
-    .add("PIVOT", {
+    .add("ODOO.PIVOT", {
         description: _t("Get the value from a pivot."),
         compute: function (pivotId, measureName, ...domain) {
             pivotId = toString(pivotId);
@@ -65,7 +65,7 @@ functionRegistry
     `),
         returns: ["NUMBER", "STRING"],
     })
-    .add("PIVOT.HEADER", {
+    .add("ODOO.PIVOT.HEADER", {
         description: _t("Get the header of a pivot."),
         compute: function (pivotId, ...domain) {
             pivotId = toString(pivotId);
@@ -81,7 +81,7 @@ functionRegistry
     `),
         returns: ["NUMBER", "STRING"],
     })
-    .add("PIVOT.POSITION", {
+    .add("ODOO.PIVOT.POSITION", {
         description: _t("Get the absolute ID of an element in the pivot"),
         compute: function () {
             throw new Error(_t(`[[FUNCTION_NAME]] cannot be called from the spreadsheet.`));

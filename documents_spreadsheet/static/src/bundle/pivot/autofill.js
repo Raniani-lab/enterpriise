@@ -21,11 +21,10 @@ AutofillTooltip.template = "documents_spreadsheet.AutofillTooltip";
 
 autofillRulesRegistry
     .add("autofill_pivot", {
-        condition: (cell) =>
-            cell && cell.isFormula() && cell.content.match(/=\s*PIVOT/),
+        condition: (cell) => cell && cell.isFormula() && cell.content.match(/=\s*ODOO\.PIVOT/),
         generateRule: (cell, cells) => {
             const increment = cells.filter(
-                (cell) => cell && cell.isFormula() && cell.content.match(/=\s*PIVOT/)
+                (cell) => cell && cell.isFormula() && cell.content.match(/=\s*ODOO\.PIVOT/)
             ).length;
             return { type: "PIVOT_UPDATER", increment, current: 0 };
         },
@@ -33,7 +32,7 @@ autofillRulesRegistry
     })
     .add("autofill_pivot_position", {
         condition: (cell) =>
-            cell && cell.isFormula() && cell.content.match(/=.*PIVOT.*PIVOT\.POSITION/),
+            cell && cell.isFormula() && cell.content.match(/=.*ODOO\.PIVOT.*ODOO\.PIVOT\.POSITION/),
         generateRule: () => ({ type: "PIVOT_POSITION_UPDATER", current: 0 }),
         sequence: 1,
     });
@@ -106,7 +105,7 @@ autofillModifiersRegistry
          */
         apply: (rule, data, getters, direction) => {
             const formulaString = data.cell.content;
-            const pivotId = formulaString.match(/PIVOT\.POSITION\(\s*"(\w+)"\s*,/)[1];
+            const pivotId = formulaString.match(/ODOO\.PIVOT\.POSITION\(\s*"(\w+)"\s*,/)[1];
             if (!getters.isExistingPivot(pivotId))
                 return { cellData: { ...data.cell, content: formulaString } };
             const pivotDefinition = getters.getPivotDefinition(pivotId);
@@ -117,10 +116,12 @@ autofillModifiersRegistry
 
             const field = fields
                 .reverse()
-                .find((field) => new RegExp(`PIVOT\\.POSITION.*${field}.*\\)`).test(formulaString));
+                .find((field) =>
+                    new RegExp(`ODOO\\.PIVOT\\.POSITION.*${field}.*\\)`).test(formulaString)
+                );
             const content = formulaString.replace(
                 new RegExp(
-                    `(.*PIVOT\\.POSITION\\(\\s*"\\w"\\s*,\\s*"${field}"\\s*,\\s*"?)(\\d+)(.*)`
+                    `(.*ODOO\\.PIVOT\\.POSITION\\(\\s*"\\w"\\s*,\\s*"${field}"\\s*,\\s*"?)(\\d+)(.*)`
                 ),
                 (match, before, position, after) => {
                     rule.current += step;

@@ -3,6 +3,7 @@
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import { DataSources } from "../data_sources/data_sources";
 import { formatDate } from "@web/core/l10n/dates";
+import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 
 const { DateTime } = luxon;
 
@@ -100,7 +101,7 @@ export async function getDataFromTemplate(env, orm, templateId) {
     let [{ data }] = await orm.read("spreadsheet.template", [templateId], ["data"]);
     data = base64ToJson(data);
 
-    const model = new Model(data, {
+    const model = new Model(migrate(data), {
         dataSources: new DataSources(orm),
     });
     await model.config.dataSources.waitForAllLoaded();

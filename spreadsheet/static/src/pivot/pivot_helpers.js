@@ -33,7 +33,7 @@ export function formatDate(interval, value) {
  */
 export function getNumberOfPivotFormulas(formula) {
     return getOdooFunctions(formula, (functionName) =>
-        ["PIVOT", "PIVOT.HEADER", "PIVOT.POSITION"].includes(functionName)
+        ["ODOO.PIVOT", "ODOO.PIVOT.HEADER", "ODOO.PIVOT.POSITION"].includes(functionName)
     ).filter((fn) => fn.isMatched).length;
 }
 
@@ -46,7 +46,7 @@ export function getNumberOfPivotFormulas(formula) {
  */
 export function getFirstPivotFunction(formula) {
     return getOdooFunctions(formula, (functionName) =>
-        ["PIVOT", "PIVOT.HEADER", "PIVOT.POSITION"].includes(functionName)
+        ["ODOO.PIVOT", "ODOO.PIVOT.HEADER", "ODOO.PIVOT.POSITION"].includes(functionName)
     ).find((fn) => fn.isMatched);
 }
 

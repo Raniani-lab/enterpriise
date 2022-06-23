@@ -282,7 +282,7 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
     // ---------------------------------------------------------------------
 
     /**
-     * Update all FILTER.VALUE formulas to reference a filter
+     * Update all ODOO.FILTER.VALUE formulas to reference a filter
      * by its new label.
      *
      * @param {string} currentLabel

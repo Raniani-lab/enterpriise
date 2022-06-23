@@ -214,8 +214,8 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
                 services: model.config.evalContext.env.services,
             };
             setCellContent(model, "A1", "test");
-            setCellContent(model, "A2", `=LIST("1","1","foo")`);
-            setCellContent(model, "A3", `=LIST("1","1","foo")+LIST("1","1","foo")`);
+            setCellContent(model, "A2", `=ODOO.LIST("1","1","foo")`);
+            setCellContent(model, "A3", `=ODOO.LIST("1","1","foo")+LIST("1","1","foo")`);
             const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
 
             selectCell(model, "A1");
@@ -232,7 +232,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         selectCell(model, "B2");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
         assert.ok(root.isVisible(env));
-        setCellContent(model, "B2", getCellFormula(model, "B2").replace("LIST", "list"));
+        setCellContent(model, "B2", getCellFormula(model, "B2").replace("ODOO.LIST", "odoo.list"));
         assert.ok(root.isVisible(env));
     });
 
@@ -241,7 +241,11 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         selectCell(model, "B2");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
         assert.ok(root.isVisible(env));
-        setCellContent(model, "B2", getCellFormula(model, "B2").replace(`LIST(1`, `LIST("5)`)); //Invalid id
+        setCellContent(
+            model,
+            "B2",
+            getCellFormula(model, "B2").replace(`ODOO.LIST(1`, `ODOO.LIST("5)`)
+        ); //Invalid id
         assert.ok(getCell(model, "B2").evaluated.error.message);
         assert.notOk(root.isVisible(env));
     });

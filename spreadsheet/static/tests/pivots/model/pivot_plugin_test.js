@@ -98,7 +98,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         "can select a Pivot from cell formula where the id is a reference",
         async function (assert) {
             const { model } = await createSpreadsheetWithPivot();
-            setCellContent(model, "C3", `=PIVOT(G10,"probability","bar","false","foo","2")+2`);
+            setCellContent(model, "C3", `=ODOO.PIVOT(G10,"probability","bar","false","foo","2")+2`);
             setCellContent(model, "G10", "1");
             const sheetId = model.getters.getActiveSheetId();
             const pivotId = model.getters.getPivotIdFromPosition(sheetId, 2, 2);
@@ -133,7 +133,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
 
     QUnit.test("Can remove a pivot with undo after editing a cell", async function (assert) {
         const { model } = await createSpreadsheetWithPivot();
-        assert.ok(getCellContent(model, "B1").startsWith("=PIVOT.HEADER"));
+        assert.ok(getCellContent(model, "B1").startsWith("=ODOO.PIVOT.HEADER"));
         setCellContent(model, "G10", "should be undoable");
         model.dispatch("REQUEST_UNDO");
         assert.equal(getCellContent(model, "G10"), "");
@@ -200,8 +200,8 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
 
     QUnit.test("Format header displays an error for non-existing field", async function (assert) {
         const { model } = await createSpreadsheetWithPivot();
-        setCellContent(model, "G10", `=PIVOT.HEADER("1", "measure", "non-existing")`);
-        setCellContent(model, "G11", `=PIVOT.HEADER("1", "non-existing", "bla")`);
+        setCellContent(model, "G10", `=ODOO.PIVOT.HEADER("1", "measure", "non-existing")`);
+        setCellContent(model, "G11", `=ODOO.PIVOT.HEADER("1", "non-existing", "bla")`);
         await nextTick();
         assert.equal(getCellValue(model, "G10"), "#ERROR");
         assert.equal(getCellValue(model, "G11"), "#ERROR");
@@ -242,7 +242,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
                     {
                         id: "sheet1",
                         cells: {
-                            A1: { content: `=PIVOT(1, "probability")` },
+                            A1: { content: `=ODOO.PIVOT(1, "probability")` },
                         },
                     },
                 ],
@@ -298,8 +298,8 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
                 {
                     id: "sheet1",
                     cells: {
-                        A1: { content: `=PIVOT(1, "probability")` },
-                        A2: { content: `=PIVOT(2, "probability")` },
+                        A1: { content: `=ODOO.PIVOT(1, "probability")` },
+                        A2: { content: `=ODOO.PIVOT(2, "probability")` },
                     },
                 },
             ],
@@ -346,7 +346,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
                 {
                     id: "sheet2",
                     cells: {
-                        A1: { content: `=PIVOT("1", "probability")` },
+                        A1: { content: `=ODOO.PIVOT("1", "probability")` },
                     },
                 },
             ],
@@ -399,7 +399,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         model.dispatch("UPDATE_CELL", {
             col: 4,
             row: 9,
-            content: `=PIVOT.HEADER("1", "product_id", "1111111")`,
+            content: `=ODOO.PIVOT.HEADER("1", "product_id", "1111111")`,
             sheetId,
         });
         await nextTick();
@@ -420,7 +420,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
                     <field name="probability" type="measure"/>
                 </pivot>`,
         });
-        setCellContent(model, "F10", `=PIVOT.HEADER("1", "product_id", A25)`);
+        setCellContent(model, "F10", `=ODOO.PIVOT.HEADER("1", "product_id", A25)`);
         assert.equal(getCell(model, "A25"), null, "the cell should be empty");
         await nextTick();
         assert.equal(getCellValue(model, "F10"), "(Undefined)");

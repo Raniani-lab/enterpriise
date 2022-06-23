@@ -30,7 +30,7 @@ export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
             .map((arg) => this.getters.evaluateFormula(arg));
         const listId = evaluatedArgs[0];
         const columns = this.getters.getListDefinition(listId).columns;
-        if (functionName === "LIST") {
+        if (functionName === "ODOO.LIST") {
             const position = parseInt(evaluatedArgs[1], 10);
             const field = evaluatedArgs[2];
             if (isColumn) {
@@ -52,7 +52,7 @@ export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
                 return this._getListFunction(listId, nextPosition, field);
             }
         }
-        if (functionName === "LIST.HEADER") {
+        if (functionName === "ODOO.LIST.HEADER") {
             const field = evaluatedArgs[1];
             if (isColumn) {
                 /** Change the field */
@@ -87,19 +87,19 @@ export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
         const evaluatedArgs = args
             .map(astToFormula)
             .map((arg) => this.getters.evaluateFormula(arg));
-        if (isColumn || functionName === "LIST.HEADER") {
-            const fieldName = functionName === "LIST" ? evaluatedArgs[2] : evaluatedArgs[1];
+        if (isColumn || functionName === "ODOO.LIST.HEADER") {
+            const fieldName = functionName === "ODOO.LIST" ? evaluatedArgs[2] : evaluatedArgs[1];
             return this.getters.getSpreadsheetListModel(evaluatedArgs[0]).getListHeaderValue(fieldName);
         }
         return _t("Record #") + evaluatedArgs[1];
     }
 
     _getListFunction(listId, position, field) {
-        return `=LIST(${listId},${position},"${field}")`;
+        return `=ODOO.LIST(${listId},${position},"${field}")`;
     }
 
     _getListHeaderFunction(listId, field) {
-        return `=LIST.HEADER(${listId},"${field}")`;
+        return `=ODOO.LIST.HEADER(${listId},"${field}")`;
     }
 }
 

@@ -14,16 +14,16 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         const { model } = await createSpreadsheetWithList();
         const total = 4 + 10 * 4; // 4 Headers + 10 lines
         assert.strictEqual(Object.values(getCells(model)).length, total);
-        assert.strictEqual(getCellFormula(model, "A1"), `=LIST.HEADER(1,"foo")`);
-        assert.strictEqual(getCellFormula(model, "B1"), `=LIST.HEADER(1,"bar")`);
-        assert.strictEqual(getCellFormula(model, "C1"), `=LIST.HEADER(1,"date")`);
-        assert.strictEqual(getCellFormula(model, "D1"), `=LIST.HEADER(1,"product_id")`);
-        assert.strictEqual(getCellFormula(model, "A2"), `=LIST(1,1,"foo")`);
-        assert.strictEqual(getCellFormula(model, "B2"), `=LIST(1,1,"bar")`);
-        assert.strictEqual(getCellFormula(model, "C2"), `=LIST(1,1,"date")`);
-        assert.strictEqual(getCellFormula(model, "D2"), `=LIST(1,1,"product_id")`);
-        assert.strictEqual(getCellFormula(model, "A3"), `=LIST(1,2,"foo")`);
-        assert.strictEqual(getCellFormula(model, "A11"), `=LIST(1,10,"foo")`);
+        assert.strictEqual(getCellFormula(model, "A1"), `=ODOO.LIST.HEADER(1,"foo")`);
+        assert.strictEqual(getCellFormula(model, "B1"), `=ODOO.LIST.HEADER(1,"bar")`);
+        assert.strictEqual(getCellFormula(model, "C1"), `=ODOO.LIST.HEADER(1,"date")`);
+        assert.strictEqual(getCellFormula(model, "D1"), `=ODOO.LIST.HEADER(1,"product_id")`);
+        assert.strictEqual(getCellFormula(model, "A2"), `=ODOO.LIST(1,1,"foo")`);
+        assert.strictEqual(getCellFormula(model, "B2"), `=ODOO.LIST(1,1,"bar")`);
+        assert.strictEqual(getCellFormula(model, "C2"), `=ODOO.LIST(1,1,"date")`);
+        assert.strictEqual(getCellFormula(model, "D2"), `=ODOO.LIST(1,1,"product_id")`);
+        assert.strictEqual(getCellFormula(model, "A3"), `=ODOO.LIST(1,2,"foo")`);
+        assert.strictEqual(getCellFormula(model, "A11"), `=ODOO.LIST(1,10,"foo")`);
         assert.strictEqual(getCellFormula(model, "A12"), "");
     });
 
@@ -48,7 +48,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
 
     QUnit.test("Can display a field which is not in the columns", async function (assert) {
         const { model } = await createSpreadsheetWithList();
-        setCellContent(model, "A1", `=LIST(1,1,"active")`);
+        setCellContent(model, "A1", `=ODOO.LIST(1,1,"active")`);
         assert.strictEqual(getCellValue(model, "A1"), undefined);
         await nextTick(); // Await for batching collection of missing fields
         await waitForDataSourcesLoaded(model);
@@ -57,7 +57,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
 
     QUnit.test("Can remove a list with undo after editing a cell", async function (assert) {
         const { model } = await createSpreadsheetWithList();
-        assert.ok(getCellContent(model, "B1").startsWith("=LIST.HEADER"));
+        assert.ok(getCellContent(model, "B1").startsWith("=ODOO.LIST.HEADER"));
         setCellContent(model, "G10", "should be undoable");
         model.dispatch("REQUEST_UNDO");
         assert.equal(getCellContent(model, "G10"), "");
@@ -111,7 +111,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         "can select a List from cell formula with '-' before the formula",
         async function (assert) {
             const { model } = await createSpreadsheetWithList();
-            setCellContent(model, "A1", `=-LIST("1","1","foo")`);
+            setCellContent(model, "A1", `=-ODOO.LIST("1","1","foo")`);
             const sheetId = model.getters.getActiveSheetId();
             const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
             model.dispatch("SELECT_ODOO_LIST", { listId });
@@ -123,7 +123,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         "can select a List from cell formula with other numerical values",
         async function (assert) {
             const { model } = await createSpreadsheetWithList();
-            setCellContent(model, "A1", `=3*LIST("1","1","foo")`);
+            setCellContent(model, "A1", `=3*ODOO.LIST("1","1","foo")`);
             const sheetId = model.getters.getActiveSheetId();
             const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
             model.dispatch("SELECT_ODOO_LIST", { listId });
@@ -134,7 +134,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
 
     QUnit.test("can select a List from cell formula within a formula", async function (assert) {
         const { model } = await createSpreadsheetWithList();
-        setCellContent(model, "A1", `=SUM(LIST("1","1","foo"),1)`);
+        setCellContent(model, "A1", `=SUM(ODOO.LIST("1","1","foo"),1)`);
         const sheetId = model.getters.getActiveSheetId();
         const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
         model.dispatch("SELECT_ODOO_LIST", { listId });
@@ -146,7 +146,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         "can select a List from cell formula where the id is a reference",
         async function (assert) {
             const { model } = await createSpreadsheetWithList();
-            setCellContent(model, "A1", `=LIST(G10,"1","foo")`);
+            setCellContent(model, "A1", `=ODOO.LIST(G10,"1","foo")`);
             setCellContent(model, "G10", "1");
             const sheetId = model.getters.getActiveSheetId();
             const listId = model.getters.getListIdFromPosition(sheetId, 0, 0);
@@ -184,8 +184,8 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         delete model.getters.getSpreadsheetListModel(listId).getFields()[forbiddenFieldName];
         spreadsheetLoaded = true;
         model.dispatch("REFRESH_ALL_DATA_SOURCES");
-        setCellContent(model, "A1", `=LIST.HEADER("1", "${forbiddenFieldName}")`);
-        setCellContent(model, "A2", `=LIST("1","1","${forbiddenFieldName}")`);
+        setCellContent(model, "A1", `=ODOO.LIST.HEADER("1", "${forbiddenFieldName}")`);
+        setCellContent(model, "A2", `=ODOO.LIST("1","1","${forbiddenFieldName}")`);
 
         assert.equal(
             model.getters.getSpreadsheetListModel(listId).getFields()[forbiddenFieldName],
@@ -209,7 +209,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
                 {
                     id: "sheet2",
                     cells: {
-                        A1: { content: `=LIST("1", "1", "foo")` },
+                        A1: { content: `=ODOO.LIST("1", "1", "foo")` },
                     },
                 },
             ],
@@ -266,7 +266,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
                 {
                     id: "sheet1",
                     cells: {
-                        A1: { content: `=LIST("1", "1", "name")` },
+                        A1: { content: `=ODOO.LIST("1", "1", "name")` },
                     },
                 },
             ],

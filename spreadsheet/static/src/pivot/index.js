@@ -42,7 +42,7 @@ cellMenuRegistry.add("pivot_see_records", {
         const pivotId = env.model.getters.getPivotIdFromPosition(sheetId, col, row);
         const { model } = env.model.getters.getPivotDefinition(pivotId);
         const pivotModel = await env.model.getters.getAsyncSpreadsheetPivotModel(pivotId);
-        const slice = functionName === "PIVOT.HEADER" ? 1 : 2;
+        const slice = functionName === "ODOO.PIVOT.HEADER" ? 1 : 2;
         let argsDomain = evaluatedArgs.slice(slice);
         if (argsDomain[argsDomain.length - 2] === "measure") {
             // We have to remove the measure from the domain

@@ -276,7 +276,7 @@ export default class PivotPlugin extends CorePlugin {
                         right: anchorLeft + cell.width - 1,
                     });
                 }
-                this._addPivotFormula(sheetId, anchorLeft, anchorTop, "PIVOT.HEADER", args);
+                this._addPivotFormula(sheetId, anchorLeft, anchorTop, "ODOO.PIVOT.HEADER", args);
                 anchorLeft += cell.width;
             }
             anchorTop++;
@@ -364,7 +364,7 @@ export default class PivotPlugin extends CorePlugin {
                 args.push(row.fields[i]);
                 args.push(row.values[i]);
             }
-            this._addPivotFormula(sheetId, x, y, "PIVOT.HEADER", args);
+            this._addPivotFormula(sheetId, x, y, "ODOO.PIVOT.HEADER", args);
             if (row.indent <= 2) {
                 const target = [{ top: y, bottom: y, left: x, right: x }];
                 const style = row.indent === 2 ? HEADER_STYLE : TOP_LEVEL_STYLE;
@@ -395,7 +395,7 @@ export default class PivotPlugin extends CorePlugin {
                     args.push(col.fields[i]);
                     args.push(col.values[i]);
                 }
-                this._addPivotFormula(sheetId, x, y, "PIVOT", args);
+                this._addPivotFormula(sheetId, x, y, "ODOO.PIVOT", args);
                 y++;
             }
             x++;

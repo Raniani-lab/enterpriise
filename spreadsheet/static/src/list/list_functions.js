@@ -16,7 +16,7 @@ function assertListsExists(listId, getters) {
     }
 }
 
-functionRegistry.add("LIST", {
+functionRegistry.add("ODOO.LIST", {
     description: _t("Get the value from a list."),
     compute: function (listId, index, fieldName) {
         const id = toString(listId);
@@ -33,7 +33,7 @@ functionRegistry.add("LIST", {
     returns: ["NUMBER", "STRING"],
 });
 
-functionRegistry.add("LIST.HEADER", {
+functionRegistry.add("ODOO.LIST.HEADER", {
     description: _t("Get the header of a list."),
     compute: function (listId, fieldName) {
         const id = toString(listId);

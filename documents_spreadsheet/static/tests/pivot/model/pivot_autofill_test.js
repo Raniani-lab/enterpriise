@@ -140,43 +140,43 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
 
     QUnit.test("Autofill with pivot positions", async function (assert) {
         const { model } = await createSpreadsheetWithPivot();
-        setCellContent(model, "C3", `=PIVOT(1,"probability","#bar",1,"#foo",1)`);
+        setCellContent(model, "C3", `=ODOO.PIVOT(1,"probability","#bar",1,"#foo",1)`);
         assert.strictEqual(
             getPivotAutofillValue(model, "C3", { direction: "left", steps: 1 }),
-            `=PIVOT(1,"probability","#bar",1,"#foo",0)`
+            `=ODOO.PIVOT(1,"probability","#bar",1,"#foo",0)`
         );
         /** Would be negative => just copy the value */
         assert.strictEqual(
             getPivotAutofillValue(model, "C3", { direction: "left", steps: 2 }),
-            `=PIVOT(1,"probability","#bar",1,"#foo",1)`
+            `=ODOO.PIVOT(1,"probability","#bar",1,"#foo",1)`
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "C3", { direction: "right", steps: 1 }),
-            `=PIVOT(1,"probability","#bar",1,"#foo",2)`
+            `=ODOO.PIVOT(1,"probability","#bar",1,"#foo",2)`
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "C3", { direction: "right", steps: 10 }),
-            `=PIVOT(1,"probability","#bar",1,"#foo",11)`
+            `=ODOO.PIVOT(1,"probability","#bar",1,"#foo",11)`
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "C3", { direction: "top", steps: 1 }),
-            `=PIVOT(1,"probability","#bar",0,"#foo",1)`
+            `=ODOO.PIVOT(1,"probability","#bar",0,"#foo",1)`
         );
         /** Would be negative => just copy the value */
         assert.strictEqual(
             getPivotAutofillValue(model, "C3", { direction: "top", steps: 2 }),
-            `=PIVOT(1,"probability","#bar",1,"#foo",1)`
+            `=ODOO.PIVOT(1,"probability","#bar",1,"#foo",1)`
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "C3", { direction: "bottom", steps: 1 }),
-            `=PIVOT(1,"probability","#bar",2,"#foo",1)`
+            `=ODOO.PIVOT(1,"probability","#bar",2,"#foo",1)`
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "C3", {
                 direction: "bottom",
                 steps: 10,
             }),
-            `=PIVOT(1,"probability","#bar",11,"#foo",1)`
+            `=ODOO.PIVOT(1,"probability","#bar",11,"#foo",1)`
         );
     });
 
@@ -197,7 +197,7 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "A5", { direction: "bottom", steps: 1 }),
-            '=PIVOT.HEADER(1,"date:month","01/2017")'
+            '=ODOO.PIVOT.HEADER(1,"date:month","01/2017")'
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "B3", { direction: "bottom", steps: 1 }),
@@ -267,7 +267,7 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         });
         assert.strictEqual(
             getPivotAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
-            `=PIVOT.HEADER(1,"date:month","05/2016")`
+            `=ODOO.PIVOT.HEADER(1,"date:month","05/2016")`
         );
     });
 
@@ -316,7 +316,7 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         });
         assert.strictEqual(
             getPivotAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
-            `=PIVOT.HEADER(1,"date","05/2016")`
+            `=ODOO.PIVOT.HEADER(1,"date","05/2016")`
         );
     });
 
@@ -350,10 +350,10 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
             { value: 1 },
             { value: "Probability" },
         ]);
-        assert.deepEqual(model.getters.getTooltipFormula(`=PIVOT.HEADER("1")`, true), [
+        assert.deepEqual(model.getters.getTooltipFormula(`=ODOO.PIVOT.HEADER("1")`, true), [
             { value: "Total" },
         ]);
-        assert.deepEqual(model.getters.getTooltipFormula(`=PIVOT.HEADER("1")`, false), [
+        assert.deepEqual(model.getters.getTooltipFormula(`=ODOO.PIVOT.HEADER("1")`, false), [
             { value: "Total" },
         ]);
     });

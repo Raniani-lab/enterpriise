@@ -86,12 +86,12 @@ QUnit.test("Add two lists concurrently", async (assert) => {
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellFormula(user, "A1"),
-        `=LIST.HEADER(1,"foo")`
+        `=ODOO.LIST.HEADER(1,"foo")`
     );
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) => getCellFormula(user, "A26"),
-        `=LIST.HEADER(2,"foo")`
+        `=ODOO.LIST.HEADER(2,"foo")`
     );
     await nextTick();
 

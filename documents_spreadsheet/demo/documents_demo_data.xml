@@ -7,6 +7,7 @@
         <field name="handler">spreadsheet</field>
         <field name="mimetype">application/o-spreadsheet</field>
         <field name="datas" type="base64" file="documents_spreadsheet/demo/files/res_partner_spreadsheet.json"/>
+        <field name="thumbnail" type="base64" file="documents_spreadsheet/demo/files/res_partner_spreadsheet_thumbnail.jpg"/>
     </record>
     </data>
 </odoo>

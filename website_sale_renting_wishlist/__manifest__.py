@@ -19,5 +19,5 @@ This module allows you to sell rental products in your eCommerce Wishlist.
         ],
     },
     'auto_install': True,
-    'license': 'LGPL-3',
+    'license': 'OEEL-1',
 }

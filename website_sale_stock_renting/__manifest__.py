@@ -20,5 +20,5 @@ appropriate views and selling choices.
         'data/demo.xml',
     ],
     'auto_install': True,
-    'license': 'LGPL-3',
+    'license': 'OEEL-1',
 }

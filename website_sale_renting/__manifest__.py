@@ -29,5 +29,5 @@ appropriate views and selling choices.
         ],
     },
     'auto_install': True,
-    'license': 'LGPL-3',
+    'license': 'OEEL-1',
 }

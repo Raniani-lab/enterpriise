@@ -24,8 +24,7 @@
     'auto_install': ['documents'],
     'license': 'OEEL-1',
     'assets': {
-        'documents_spreadsheet.o_spreadsheet': [
-            ('include', 'spreadsheet.o_spreadsheet'),
+        'spreadsheet.o_spreadsheet': [
             'documents_spreadsheet/static/src/bundle/**/*.js',
         ],
         'web.assets_backend': [

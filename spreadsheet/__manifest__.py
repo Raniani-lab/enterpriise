@@ -16,9 +16,11 @@
         'spreadsheet.o_spreadsheet': [
             'spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js',
             'spreadsheet/static/src/**/*.js',
+            ('remove', 'spreadsheet/static/src/assets_backend/**/*.js')
         ],
         'web.assets_backend': [
             'spreadsheet/static/src/**/*.scss',
+            'spreadsheet/static/src/assets_backend/**/*.js'
         ],
         'web.assets_qweb': [
             # Load all o_spreadsheet templates first to allow to inherit them

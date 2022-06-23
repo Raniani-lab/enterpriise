@@ -20,7 +20,7 @@
                 <field name="display_sol" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='so_line']" position="attributes">
-                <attribute name="attrs">{'invisible': [('display_sol', '!=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', ('display_sol', '!=', True), ('allow_billable', '=', False)]}</attribute>
             </xpath>
         </field>
     </record>

@@ -58,8 +58,8 @@ class Task(models.Model):
 
     def default_get(self, fields_list):
         result = super().default_get(fields_list)
-        planned_date_begin = result.get('planned_date_begin', False)
-        planned_date_end = result.get('planned_date_end', False)
+        planned_date_begin = result.get('planned_date_begin', self.env.context.get('planned_date_begin', False))
+        planned_date_end = result.get('planned_date_end', self.env.context.get('planned_date_end', False))
         if planned_date_begin and planned_date_end and not self.env.context.get('fsm_mode', False):
             user_id = result.get('user_id', None)
             planned_date_begin, planned_date_end = self._calculate_planned_dates(planned_date_begin, planned_date_end, user_id)

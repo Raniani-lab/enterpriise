@@ -200,7 +200,8 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
             self.env["spreadsheet.revision"].with_user(self.user).create(
                 {
                     "commands": self.new_revision_data(self.spreadsheet),
-                    "document_id": self.spreadsheet.id,
+                    "res_id": self.spreadsheet.id,
+                    "res_model": "documents.document",
                     "revision_id": "a revision id",
                 }
             )
@@ -212,7 +213,8 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
             .create(
                 {
                     "commands": self.new_revision_data(self.spreadsheet),
-                    "document_id": self.spreadsheet.id,
+                    "res_id": self.spreadsheet.id,
+                    "res_model": "documents.document",
                     "revision_id": "a revision id",
                     "parent_revision_id": uuid4().hex,
                 }

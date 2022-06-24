@@ -11,12 +11,13 @@ class SpreadsheetRevision(models.Model):
     _description = "Collaborative spreadsheet revision"
 
     active = fields.Boolean(default=True)
-    document_id = fields.Many2one("documents.document", required=True, readonly=True)
+    res_model = fields.Char(string="Model", required=True)
+    res_id = fields.Many2oneReference(string="Record id", model_field='res_model', required=True)
     commands = fields.Char(required=True)
     revision_id = fields.Char(required=True)
     parent_revision_id = fields.Char(required=True)
     _sql_constraints = [
-        ('parent_revision_unique', 'unique(parent_revision_id, document_id)', 'o-spreadsheet revision refused due to concurrency')
+        ('parent_revision_unique', 'unique(parent_revision_id, res_id, res_model)', 'o-spreadsheet revision refused due to concurrency')
     ]
 
     @api.autovacuum

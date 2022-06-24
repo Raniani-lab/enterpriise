@@ -28,7 +28,8 @@ class Document(models.Model):
     raw = fields.Binary(related="attachment_id.raw", readonly=False)
     spreadsheet_snapshot = fields.Binary()
     spreadsheet_revision_ids = fields.One2many(
-        "spreadsheet.revision", "document_id",
+        "spreadsheet.revision", "res_id",
+        domain=[("res_model", "=", "documents.document")],
         groups="documents.group_documents_manager",
     )
     # TODO extend the versioning system to use raw.
@@ -229,7 +230,8 @@ class Document(models.Model):
             with mute_logger("odoo.sql_db"):
                 self.env["spreadsheet.revision"].sudo().create(
                     {
-                        "document_id": self.id,
+                        "res_model": self._name,
+                        "res_id": self.id,
                         "commands": json.dumps(commands),
                         "parent_revision_id": parent_revision_id,
                         "revision_id": next_revision_id,

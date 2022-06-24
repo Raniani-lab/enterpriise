@@ -100,8 +100,9 @@
         <field name="model">spreadsheet.revision</field>
         <field name="arch" type="xml">
             <search>
-                <field name="document_id"/>
-                <filter string="Spreadsheet" name="group_by_document_id" context="{'group_by':'document_id'}"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <filter string="Spreadsheet" name="group_by_document_id" context="{'group_by':'res_model'}"/>
             </search>
         </field>
     </record>
@@ -114,6 +115,8 @@
             <tree>
                 <field name="create_date"/>
                 <field name="revision_id"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
             </tree>
         </field>
     </record>
@@ -128,7 +131,8 @@
                         <group>
                             <field name="create_date"/>
                             <field name="revision_id"/>
-                            <field name="document_id"/>
+                            <field name="res_model"/>
+                            <field name="res_id"/>
                         </group>
                         <field name="commands" widget="text"/>
                     </group>

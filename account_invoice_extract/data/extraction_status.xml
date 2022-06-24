@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="retry_ocr" class="oe_highlight" string="Send For Digitization" type="object"
+                <button name="action_manual_send_for_digitization" class="oe_highlight" string="Send For Digitization" type="object"
                 attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="x" />
             </xpath>
             <xpath expr="//header" position='after'>
@@ -19,8 +19,7 @@
                      attrs="{'invisible':['|', '|',
                             ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
-                            ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" >
-                    <!-- Extraction processed with success. Don't forget to validate the different fields. -->
+                            ('extract_state', 'not in', ['waiting_validation'])]}" >
                 </div>
                 <div role="status" class="alert alert-danger mb8"
                      attrs="{'invisible':['|', '|',
@@ -28,7 +27,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary float-end mb0"/>
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object"
+                    <button name="action_manual_send_for_digitization" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object"
                     attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="v"/>
                     You don't have enough credit to extract data from your invoice.
                     <div class="clearfix"/>
@@ -37,7 +36,7 @@
                      attrs="{'invisible':['|', '|',
                             ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
-                            ('extract_state', 'not in', ['waiting_extraction'])]}">
+                            ('extract_state', 'not in', ['waiting_upload', 'waiting_extraction'])]}">
                     <button string="Refresh" type="object" name="check_status" class="btn btn-sm btn-primary float-end mb0"/>
                     All fields will be automated by Artificial Intelligence, it might take 5 seconds.
                     <div class="clearfix"/>
@@ -58,7 +57,8 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status']),
                             ('extract_status_code', '&gt;', 99)]}">
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object" data-hotkey="v"/>
+                    <button name="action_manual_send_for_digitization" class="btn btn-sm btn-primary float-end mb0 me-1"
+                            string="Resend For Digitization" type="object" data-hotkey="v"/>
                     <field name="extract_error_message" class="oe_inline"/>
                     <div class="clearfix"/>
                 </div>
@@ -94,11 +94,10 @@
             <field name="state">code</field>
             <field name="code">
                 if records:
-                    for rec in records:
-                        if rec.is_invoice():
-                            action = rec.retry_ocr()
-                        else:
-                            raise UserError("This action is only possible for invoices")
+                    if all(rec.is_invoice() for rec in records):
+                        action = rec.action_manual_send_for_digitization()
+                    else:
+                        raise UserError("This action is only possible for invoices")
             </field>
     </record>
 

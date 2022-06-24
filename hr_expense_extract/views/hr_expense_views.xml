@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr_expense.hr_expense_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="retry_ocr" class="oe_highlight" string="Send For Digitization" type="object"
+                <button name="action_manual_send_for_digitization" class="oe_highlight" string="Send For Digitization" type="object"
                 attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="q"/>
             </xpath>
             <xpath expr="//header" position='after'>
@@ -14,18 +14,12 @@
                 <field name="extract_word_ids" attrs="{'invisible':True}"/>
                 <field name="extract_can_show_resend_button" attrs="{'invisible':True}"/>
                 <field name="extract_can_show_send_button" attrs="{'invisible':True}"/>
-                <div role="status" class="o_success_ocr"
-                     attrs="{'invisible':['|',
-                            ('state', 'not in', ['draft']),
-                            ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" >
-                    <!-- Extraction processed with success. Don't forget to validate the different fields. -->
-                </div>
                 <div role="status" class="alert alert-danger mb8"
                      attrs="{'invisible':['|',
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary float-end mb0"/>
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object"
+                    <button name="action_manual_send_for_digitization" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object"
                         attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="q"/>
                     You don't have enough credit to extract data from your expense.
                     <div class="clearfix"/>
@@ -33,9 +27,9 @@
                 <div role="status" class="alert alert-info mb8"
                      attrs="{'invisible':['|',
                             ('state', 'not in', ['draft']),
-                            ('extract_state', 'not in', ['waiting_extraction'])]}">
+                            ('extract_state', 'not in', ['waiting_upload', 'waiting_extraction'])]}">
                     <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary float-end mb0"/>
-                    The file has been sent and is being processed. It usually takes between 5 and 60 seconds.
+                    The file has been sent and is being processed. It usually takes between 5 and 10 seconds.
                     <div class="clearfix"/>
                 </div>
                 <field name="extract_status_code" invisible="1"/>
@@ -44,7 +38,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['extract_not_ready'])]}">
                     <button string="Update status" type="object" name="check_status" class="btn btn-sm btn-primary float-end mb0"/>
-                    The data extraction is not finished yet. The extraction usually takes between 5 and 60 seconds.
+                    The data extraction is not finished yet. The extraction usually takes between 5 and 10 seconds.
                     <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-danger mb8"
@@ -86,7 +80,7 @@
     </record>
 
     <record id="hr_expense_parse_action_server" model="ir.actions.server">
-            <field name="name">Send for digitization</field>
+            <field name="name">Send For Digitization</field>
             <field name="type">ir.actions.server</field>
             <field name="model_id" ref="model_hr_expense"/>
             <field name="binding_model_id" ref="model_hr_expense"/>

@@ -40,9 +40,11 @@ class HrApplicant(models.Model):
             ('no_extract_requested', 'No extract requested'),
             ('not_enough_credit', 'Not enough credit'),
             ('error_status', 'An error occurred'),
+            ('waiting_upload', 'Waiting upload'),
             ('waiting_extraction', 'Waiting extraction'),
             ('extract_not_ready', 'Waiting extraction, but not ready'),
             ('waiting_validation', 'Waiting validation'),
+            ('to_validate', 'To validate'),
             ('done', 'Completed flow')],
         string='Extract State',
         default='no_extract_requested',
@@ -85,7 +87,7 @@ class HrApplicant(models.Model):
         self.ensure_one()
         if (not self.env.company.recruitment_extract_show_ocr_option_selection or self.env.company.recruitment_extract_show_ocr_option_selection == 'no_send') \
                 or not self.message_main_attachment_id \
-                or (resend and self.extract_state not in ['error_status', 'not_enough_credit', 'module_not_up_to_date']) \
+                or (resend and self.extract_state not in ['error_status', 'not_enough_credit']) \
                 or (not resend and self.extract_state not in ['no_extract_requested']) \
                 or not self.is_first_stage:
             return False
@@ -104,7 +106,7 @@ class HrApplicant(models.Model):
     @api.depends('extract_state')
     def _compute_state_processed(self):
         for applicant in self:
-            applicant.state_processed = applicant.extract_state == 'waiting_extraction'
+            applicant.state_processed = applicant.extract_state in ['waiting_extraction', 'waiting_upload']
 
     def get_validation(self, field):
         text_to_send = {}
@@ -116,8 +118,30 @@ class HrApplicant(models.Model):
             text_to_send["content"] = self.name
         return text_to_send
 
-    def write(self, vals):
+    def _cron_validate(self):
         """Send user corrected values to the ocr"""
+        app_to_validate = self.search([('extract_state', '=', 'to_validate')])
+        documents = {
+            record.extract_remote_id: {
+                'email': record.get_validation('email'),
+                'phone': record.get_validation('phone'),
+                'name': record.get_validation('name'),
+            } for record in app_to_validate
+        }
+
+        params = {
+            'documents': documents,
+            'version': CLIENT_OCR_VERSION,
+        }
+        endpoint = self.env['ir.config_parameter'].sudo().get_param(
+            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/validate_batch'
+        try:
+            iap_tools.iap_jsonrpc(endpoint, params=params)
+            app_to_validate.extract_state = 'done'
+        except AccessError:
+            pass
+
+    def write(self, vals):
         res = super().write(vals)
         if not self or 'stage_id' not in vals:
             return res
@@ -125,26 +149,9 @@ class HrApplicant(models.Model):
         if not new_stage.hired_stage:
             return res
 
-        endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/validate'
-        for applicant in self:
-            if applicant.extract_state != 'waiting_validation':
-                continue
-            values = {
-                'email': applicant.get_validation('email'),
-                'phone': applicant.get_validation('phone'),
-                'name': applicant.get_validation('name'),
-            }
-            params = {
-                'document_id': applicant.extract_remote_id,
-                'version': CLIENT_OCR_VERSION,
-                'values': values
-            }
-            try:
-                iap_tools.iap_jsonrpc(endpoint, params=params)
-                applicant.extract_state = 'done'
-            except AccessError:
-                pass
+        self.extract_state = 'to_validate'
+        self.env.ref('hr_recruitment_extract.ir_cron_ocr_validate')._trigger()
+
         return res
 
     @api.model
@@ -205,12 +212,19 @@ class HrApplicant(models.Model):
         else:
             self.extract_state = 'error_status'
 
+    def action_manual_send_for_digitization(self):
+        for rec in self:
+            rec.env['iap.account']._send_iap_bus_notification(
+                service_name='invoice_ocr',
+                title=_("CV is being Digitized"))
+        self.extract_state = 'waiting_upload'
+        self.env.ref('hr_recruitment_extract.ir_cron_ocr_parse')._trigger()
+
     def action_send_for_digitization(self):
         if any(not applicant.is_first_stage for applicant in self):
             raise UserError(_("You cannot send a CV for an applicant who's not in first stage!"))
 
-        for applicant in self:
-            applicant.retry_ocr()
+        self.action_manual_send_for_digitization()
 
         if len(self) == 1:
             return {
@@ -230,12 +244,20 @@ class HrApplicant(models.Model):
             'domain': [('id', 'in', self.ids)],
         }
 
+    @api.model
+    def _cron_parse(self):
+        for rec in self.search([('extract_state', '=', 'waiting_upload')]):
+            rec.retry_ocr()
+
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
         if not self.env.company.recruitment_extract_show_ocr_option_selection or self.env.company.recruitment_extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
-        if attachments and attachments.exists() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
+        if (
+                attachments and
+                self.extract_state in ['no_extract_requested', 'waiting_upload', 'not_enough_credit', 'error_status']
+        ):
             account_token = self.env['iap.account'].get('invoice_ocr')
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/parse'
@@ -264,15 +286,8 @@ class HrApplicant(models.Model):
                 if result['status_code'] == SUCCESS:
                     self.extract_state = 'waiting_extraction'
                     self.extract_remote_id = result['document_id']
-                    self.env['iap.account']._send_iap_bus_notification(
-                        service_name='invoice_ocr',
-                        title=_("CV is being Digitized"))
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.extract_state = 'not_enough_credit'
-                    self.env['iap.account']._send_iap_bus_notification(
-                        service_name='invoice_ocr',
-                        title=_("Not enough credits for CV Digitization"),
-                        error_type='credit')
                 else:
                     self.extract_state = 'error_status'
                     _logger.warning('There was an issue while doing the OCR operation on this file. Error: -1')
@@ -292,7 +307,7 @@ class HrApplicant(models.Model):
         res = super()._message_set_main_attachment_id(attachment_ids)
         for applicant in self:
             if applicant._needs_auto_extract() and applicant.message_main_attachment_id:
-                applicant.retry_ocr()
+                applicant.action_manual_send_for_digitization()
         return res
 
     def _needs_auto_extract(self):

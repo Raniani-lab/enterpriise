@@ -35,6 +35,15 @@ registerModel({
         /**
          * @returns {string|FieldCommand}
          */
+        _computeAuthorizationUsername() {
+            if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
+                return clear();
+            }
+            return this.messaging.currentUser.res_users_settings_id.voip_username;
+        },
+        /**
+         * @returns {string|FieldCommand}
+         */
         _computeCleanedExternalDeviceNumber() {
             if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
                 return clear();
@@ -67,6 +76,14 @@ registerModel({
         areCredentialsSet: attr({
             compute: "_computeAreCredentialsSet",
             default: false,
+        }),
+        /**
+         * With some providers, the authorization username (the one used to
+         * register with the PBX server) differs from the username.
+         */
+        authorizationUsername: attr({
+            compute: "_computeAuthorizationUsername",
+            default: "",
         }),
         /**
          * Notes: this is a bit strange having to clean a string retrieved from

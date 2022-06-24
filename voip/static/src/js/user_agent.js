@@ -428,7 +428,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _getUaConfig(params) {
         return {
             authorizationPassword: this._messaging.currentUser.res_users_settings_id.voip_secret,
-            authorizationUsername: this._messaging.currentUser.res_users_settings_id.voip_username,
+            authorizationUsername: this.voip.authorizationUsername,
             delegate: {
                 onDisconnect: (error) => this._onDisconnect(error),
                 onInvite: (inviteSession) => this._onInvite(inviteSession),

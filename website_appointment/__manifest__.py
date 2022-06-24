@@ -34,7 +34,7 @@ Allow clients to Schedule Appointments through your Website
     'license': 'OEEL-1',
     'assets': {
         'website.assets_editor': [
-            'website_appointment/static/src/js/website_appointment.editor.js',
+            'website_appointment/static/src/js/systray_items/calendar_appointment_type_add_form.js',
         ],
         'web.assets_tests': [
             'website_appointment/static/tests/tours/*',

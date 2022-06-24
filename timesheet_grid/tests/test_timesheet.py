@@ -233,6 +233,9 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         working_hours = employee.get_timesheet_and_working_hours_for_employees(employees_grid_data, '2021-12-01', '2021-12-31')
         self.assertEqual(working_hours[employee.id]['units_to_work'], 184.0, "Number of hours should be 23d * 8h/d = 184h")
 
+        working_hours = employee.get_timesheet_and_working_hours('2021-12-01', '2021-12-31')
+        self.assertEqual(working_hours[employee.id]['working_hours'], 184.0, "Number of hours should be 23d * 8h/d = 184h")
+
     def test_timesheet_grid_filter_equal_string(self):
         """Make sure that if you use a filter with (not) equal to,
            there won't be any error with grid view"""

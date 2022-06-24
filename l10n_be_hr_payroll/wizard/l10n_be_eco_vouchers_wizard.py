@@ -75,7 +75,7 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
             all_payslips = self.env['hr.payslip'].search([
                 ('employee_id', 'in', all_employees.ids),
                 ('company_id', '=', wizard.company_id.id),
-                ('date_from', '>=', date_from),
+                ('date_from', '>=', date_from + relativedelta(months=1)),
                 ('date_to', '<=', date_to),
                 ('state', 'in', ['done', 'paid', 'verify'] if batch_specific else ['done', 'paid'])
             ])

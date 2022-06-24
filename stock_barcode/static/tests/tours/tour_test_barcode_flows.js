@@ -3011,7 +3011,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 
     {
-        trigger: ':contains("productserial1") .o_sublines .o_barcode_line:nth-child(3)',
+        trigger: ':contains("productserial1") .o_sublines .o_barcode_line:contains("serial3")',
         run: function () {
             helper.assertLinesCount(2);
             helper.assertSublinesCount(3);
@@ -3048,14 +3048,14 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
         run: 'scan lot2',
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line .o_barcode_line.o_selected:contains("lot2")',
         run: 'scan lot3',
     },
 
     // Must have 6 lines in two groups: lot1, lot2, lot3 and serial1, serial2, serial3.
-    // Line groupd for `productlot1` should be unfolded.
+    // Grouped lines for `productlot1` should be unfolded.
     {
-        trigger: '.o_barcode_line:contains("productlot1") .o_sublines .o_barcode_line:nth-child(3)',
+        trigger: '.o_barcode_line:contains("productlot1") .o_sublines>.o_barcode_line.o_selected:contains("lot3")',
         run: function () {
             helper.assertLinesCount(2);
             helper.assertSublinesCount(3);

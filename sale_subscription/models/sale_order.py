@@ -886,6 +886,7 @@ class SaleOrder(models.Model):
         today = fields.Date.today()
         res = res.filtered(lambda l: l.temporal_type != 'subscription')
         automatic_invoice = self.env.context.get('recurring_automatic')
+        line_zero_delivery = self.env.context.get('line_zero_delivery')
 
         def filter_sub_lines(line):
             time_condition = line.next_invoice_date and line.next_invoice_date.date() <= today
@@ -895,12 +896,7 @@ class SaleOrder(models.Model):
             elif time_condition and line.product_id.invoice_policy == 'order' and line.order_id.state == 'sale':
                 # Invoice due lines
                 return True
-            elif not line.invoice_lines and line.qty_to_invoice:
-                # Invoice if the line was never invoiced
-                return True
-            elif float_is_zero(line.product_uom_qty, precision_rounding=line.product_id.uom_id.rounding):
-                return False
-            elif time_condition and line.product_id.invoice_policy == 'delivery' and not float_is_zero(line.qty_delivered, precision_rounding=line.product_id.uom_id.rounding):
+            elif time_condition and line.product_id.invoice_policy == 'delivery' and (not float_is_zero(line.qty_delivered, precision_rounding=line.product_id.uom_id.rounding) or line_zero_delivery):
                 return True
             else:
                 return False
@@ -1010,7 +1006,7 @@ class SaleOrder(models.Model):
         # don't spam sale with assigned emails.
         all_subscriptions = all_subscriptions.with_context(mail_auto_subscribe_no_notify=True)
         auto_close_subscription = all_subscriptions.filtered_domain([('recurring_rule_boundary', '=', 'limited')])
-        all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=automatic)._get_invoiceable_lines(final=False)
+        all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=automatic, line_zero_delivery=True)._get_invoiceable_lines(final=False)
         auto_close_subscription._subscription_auto_close_and_renew(all_invoiceable_lines)
         batch_tag = self.env.ref('sale_subscription.invoice_batch', raise_if_not_found=False)
         lines_to_reset_qty = self.env['sale.order.line'] # qty_delivered is set to 0 after invoicing for some categories of products (timesheets etc)
@@ -1089,8 +1085,11 @@ class SaleOrder(models.Model):
         """ Override to increment periods when needed """
         # Only update the invoice date if there is already one invoice for the lines and when the so is not done
         # done contract are finished or renewed
-        invoiceable_line_ids = self._get_invoiceable_lines(final=False)
-        invoices = super()._create_invoices(grouped=grouped, final=final, date=date)
+        invoiceable_line_ids = self.with_context(line_zero_delivery=True)._get_invoiceable_lines(final=False)
+        if not invoiceable_line_ids or self._get_invoiceable_lines(final=False):
+            invoices = super()._create_invoices(grouped=grouped, final=final, date=date)
+        else:
+            invoices = self.env['account.move']
         line_to_update_ids = self.env['sale.order.line']
         # update next_invoice_date if not payment_mode != success payment
         # For success_payment payement_mode, the update is done in reconcile_pending_transaction

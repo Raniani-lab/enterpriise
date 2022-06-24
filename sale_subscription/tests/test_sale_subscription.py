@@ -830,27 +830,29 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertFalse(sub.order_line.qty_delivered)
             # We only invoice what we deliver
             self.assertFalse(sub.order_line.qty_to_invoice)
-            sub._create_recurring_invoice(automatic=True)
-            # Next invoice date should not be bumped up because it is the first period
-            invoice_line = sub.invoice_ids.invoice_line_ids
-            self.assertFalse(invoice_line.quantity, "We can't invoice if we don't deliver the product")
-            sub.invoice_ids.unlink()
+            self.assertFalse(sub.invoice_count, "We don't invoice if we don't deliver the product")
+            # Deliver some product
             sub.order_line.qty_delivered = 1
             self.assertEqual(sub.order_line.qty_to_invoice, 1)
+            sub._create_recurring_invoice(automatic=True)
+            # We should not invoice as the next_invoice_date is next month
+            self.assertFalse(sub.invoice_count, "We don't auto invoice yer")
+
+        with freeze_time("2021-02-03"):
             sub._create_recurring_invoice(automatic=True)
             # The quantity to invoice and delivered are reset after the creation of the invoice
             self.assertTrue(sub.order_line.qty_delivered)
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.invoice_line_ids.quantity, 1)
 
-        with freeze_time("2021-02-03"):
+        with freeze_time("2021-03-03"):
             # February
             sub.order_line.qty_delivered = 1
             sub._create_recurring_invoice(automatic=True)
             self.assertEqual(sub.order_line.qty_delivered, 1)
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.invoice_line_ids.quantity, 1)
-        with freeze_time("2021-03-03"):
+        with freeze_time("2021-04-03"):
             # March
             sub.order_line.qty_delivered = 2
             sub._create_recurring_invoice(automatic=True)

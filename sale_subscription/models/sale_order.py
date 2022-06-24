@@ -979,9 +979,11 @@ class SaleOrder(models.Model):
             extra_domain = []
         current_date = fields.Date.today()
         batch_tag = self.env.ref('sale_subscription.invoice_batch', raise_if_not_found=False)
-        search_domain = [('account_tag_ids', 'not in', batch_tag.id),
+        invoiced_cron_tag = self.env.ref('sale_subscription.invoiced_cron_tag', raise_if_not_found=False)
+        search_domain = [('account_tag_ids', 'not in', batch_tag.ids + invoiced_cron_tag.ids),
                          ('is_subscription', '=', True),
                          ('subscription_management', '!=', 'upsell'),
+                         ('state', 'not in', ['draft', 'sent']),
                          ('payment_exception', '=', False),
                          '|', '|', ('next_invoice_date', '<=', current_date), ('end_date', '>=', current_date), ('stage_category', '=', 'progress')]
         if extra_domain:
@@ -1009,6 +1011,9 @@ class SaleOrder(models.Model):
         all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=automatic, line_zero_delivery=True)._get_invoiceable_lines(final=False)
         auto_close_subscription._subscription_auto_close_and_renew(all_invoiceable_lines)
         batch_tag = self.env.ref('sale_subscription.invoice_batch', raise_if_not_found=False)
+        invoiced_cron_tag = self.env.ref('sale_subscription.invoiced_cron_tag', raise_if_not_found=False)
+        if automatic and invoiced_cron_tag:
+            all_subscriptions.write({'account_tag_ids': [Command.link(invoiced_cron_tag.id)]})
         lines_to_reset_qty = self.env['sale.order.line'] # qty_delivered is set to 0 after invoicing for some categories of products (timesheets etc)
         account_moves = self.env['account.move']
         # Set quantity to invoice before the invoice creation. If something goes wrong, the line will appear as "to invoice"
@@ -1074,6 +1079,10 @@ class SaleOrder(models.Model):
                 self.env['sale.order']._create_recurring_invoice(automatic, batch_size)
             else:
                 self.env.ref('sale_subscription.account_analytic_cron_for_invoice')._trigger()
+
+        if automatic and not need_cron_trigger and invoiced_cron_tag:
+            cron_subs = self.search([('account_tag_ids', 'in', invoiced_cron_tag.ids)])
+            cron_subs.write({'account_tag_ids': [Command.unlink(invoiced_cron_tag.id)]})
 
         if not need_cron_trigger and batch_tag:
             failing_subscriptions = self.search([('account_tag_ids', 'in', batch_tag.ids)])

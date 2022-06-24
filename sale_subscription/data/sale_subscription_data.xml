@@ -29,6 +29,11 @@
             <field name="color">4</field>
         </record>
 
+        <record id="invoiced_cron_tag" model="account.analytic.tag">
+            <field name="name">Subscription Invoiced in cron</field>
+            <field name="color">7</field>
+        </record>
+
         <!-- Subtypes -->
         <record id="subtype_stage_change" model="mail.message.subtype">
             <field name="name">Stage Change</field>

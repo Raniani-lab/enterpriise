@@ -3,7 +3,11 @@
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { nextTick, getFixture } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
-import { getBasicData, getBasicPivotArch, getBasicServerData } from "@spreadsheet/../tests/utils/data";
+import {
+    getBasicData,
+    getBasicPivotArch,
+    getBasicServerData,
+} from "@spreadsheet/../tests/utils/data";
 import { getCell, getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import {
     addGlobalFilter,
@@ -340,7 +344,9 @@ QUnit.module(
                 });
                 selectCell(model, "D3");
                 await nextTick();
-                const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
+                const root = cellMenuRegistry
+                    .getAll()
+                    .find((item) => item.id === "pivot_see_records");
                 await root.action(env);
                 assert.verifySteps(["partner", `[["foo","=",2],["bar","=",false]]`]);
             }
@@ -352,7 +358,9 @@ QUnit.module(
                 const { env, model } = await createSpreadsheetWithPivot();
                 selectCell(model, "B4");
                 await nextTick();
-                const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
+                const root = cellMenuRegistry
+                    .getAll()
+                    .find((item) => item.id === "pivot_see_records");
                 assert.ok(root.isVisible(env));
                 setCellContent(
                     model,
@@ -369,7 +377,9 @@ QUnit.module(
                 const { env, model } = await createSpreadsheetWithPivot();
                 selectCell(model, "B4");
                 await nextTick();
-                const root = cellMenuRegistry.getAll().find((item) => item.id === "pivot_see_records");
+                const root = cellMenuRegistry
+                    .getAll()
+                    .find((item) => item.id === "pivot_see_records");
                 assert.ok(root.isVisible(env));
                 setCellContent(
                     model,

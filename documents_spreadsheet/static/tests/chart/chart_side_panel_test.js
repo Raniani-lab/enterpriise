@@ -4,9 +4,9 @@ import { click, getFixture, triggerEvent } from "@web/../tests/helpers/utils";
 import { createBasicChart } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromGraphView, openChartSidePanel } from "../utils/chart_helpers";
-import { patchGraphSpreadsheet } from "@documents_spreadsheet/assets/graph_view/graph_view";
 import { patch, unpatch } from "@web/core/utils/patch";
 import { GraphController } from "@web/views/graph/graph_controller";
+import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/graph_view";
 
 function beforeEach() {
     patch(GraphController.prototype, "graph_spreadsheet", patchGraphSpreadsheet);

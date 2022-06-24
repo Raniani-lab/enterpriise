@@ -25,9 +25,5 @@
             <field name="documents_spreadsheet_folder_id" ref="documents_spreadsheet_folder"/>
         </record>
 
-        <record model="ir.config_parameter" id="ir_config_parameter_revisions_limit_days">
-            <field name="key">documents_spreadsheets.revisions_limit_days</field>
-            <field name="value">60</field>
-        </record>
     </data>
 </odoo>

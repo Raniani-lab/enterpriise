@@ -9,7 +9,7 @@ import { ormService } from "@web/core/orm_service";
 
 import { CrossTab } from '@bus/crosstab_bus';
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
-import { useAutoSavingWarning } from "@documents_spreadsheet/bundle/actions/control_panel/collaborative_cross_tab_bus_warning";
+import { useAutoSavingWarning } from "@spreadsheet_edition/bundle/actions/control_panel/collaborative_cross_tab_bus_warning";
 
 const { Component, useState, xml } = owl;
 

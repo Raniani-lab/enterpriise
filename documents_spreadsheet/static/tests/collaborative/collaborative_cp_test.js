@@ -3,9 +3,12 @@
 import { getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
-import { joinSession, leaveSession } from "../utils/collaborative_helpers";
 import { actionService } from "@web/webclient/actions/action_service";
 import { registry } from "@web/core/registry";
+import {
+    joinSession,
+    leaveSession,
+} from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
 
 /**
  * @param {HTMLElement} target

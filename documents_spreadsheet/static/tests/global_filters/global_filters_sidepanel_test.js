@@ -1,7 +1,11 @@
 /** @odoo-module */
 import testUtils from "web.test_utils";
 
-import { getBasicData, getBasicPivotArch, getBasicServerData } from "@spreadsheet/../tests/utils/data";
+import {
+    getBasicData,
+    getBasicPivotArch,
+    getBasicServerData,
+} from "@spreadsheet/../tests/utils/data";
 import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
@@ -67,7 +71,14 @@ QUnit.module(
             const { model } = await createSpreadsheetFromPivotView();
             const label = "This year";
             await addGlobalFilter(model, {
-                filter: { id: "42", type: "date", rangeType:"year", label, pivotFields: {}, defaultValue: {} },
+                filter: {
+                    id: "42",
+                    type: "date",
+                    rangeType: "year",
+                    label,
+                    pivotFields: {},
+                    defaultValue: {},
+                },
             });
             const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
             await testUtils.dom.click(searchIcon);
@@ -499,14 +510,14 @@ QUnit.module(
             const month = target.querySelector(".date_filter_values select.o_input");
             assert.equal(month.length, 13);
             const year = target.querySelector(".o_datepicker_input");
-            assert.equal(year.value, '');
+            assert.equal(year.value, "");
 
             // start with year as setting the month will set a default year if not defined
-            await selectYear('2022');
-            assert.equal(year.value, '2022');
+            await selectYear("2022");
+            assert.equal(year.value, "2022");
 
             await testUtils.fields.editAndTrigger(month, "october", ["change"]);
-            assert.equal(month.value, "october")
+            assert.equal(month.value, "october");
 
             // pivot
             $($(target).find(".o_field_selector_value")[0]).focusin();
@@ -609,11 +620,11 @@ QUnit.module(
         QUnit.test("Choose any year in a year picker", async function (assert) {
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, THIS_YEAR_FILTER);
-    
+
             const searchIcon = target.querySelector(".o_topbar_filter_icon");
             await testUtils.dom.click(searchIcon);
             await nextTick();
-    
+
             const pivots = target.querySelectorAll(".pivot_filter_section");
             assert.containsOnce(target, ".pivot_filter_section");
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-cog");
@@ -622,21 +633,19 @@ QUnit.module(
                 pivots[0].querySelector(".o_side_panel_filter_label").textContent,
                 THIS_YEAR_FILTER.filter.label
             );
-    
+
             assert.containsOnce(pivots[0], ".pivot_filter_input input.o_datepicker_input");
-            const year = pivots[0].querySelector(
-                ".pivot_filter_input input.o_datepicker_input"
-            );
-    
+            const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
+
             const this_year = luxon.DateTime.local().year;
             assert.equal(year.value, String(this_year));
-    
+
             await selectYear(String(this_year - 127));
             assert.equal(year.value, String(this_year - 127));
             assert.deepEqual(model.getters.getGlobalFilterValue(THIS_YEAR_FILTER.filter.id), {
                 yearOffset: -127,
             });
-    
+
             await selectYear(String(this_year + 32));
             assert.equal(year.value, String(this_year + 32));
             assert.deepEqual(model.getters.getGlobalFilterValue(THIS_YEAR_FILTER.filter.id), {
@@ -715,15 +724,15 @@ QUnit.module(
                 ".pivot_filter_input div.date_filter_values select"
             );
             assert.containsOnce(pivots[0], ".pivot_filter_input input.o_datepicker_input");
-            const year = pivots[0].querySelector(
-                ".pivot_filter_input input.o_datepicker_input"
-            );
+            const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
 
             const this_year = luxon.DateTime.local().year;
             assert.equal(quarter.value, "fourth_quarter");
             assert.equal(year.value, String(this_year));
             await testUtils.fields.editSelect(quarter, "second_quarter");
+            await nextTick();
             await selectYear(String(this_year - 1));
+            await nextTick();
 
             assert.equal(quarter.value, "second_quarter");
             assert.equal(year.value, String(this_year - 1));
@@ -796,22 +805,22 @@ QUnit.module(
             });
             const searchIcon = target.querySelector(".o_topbar_filter_icon");
             await click(searchIcon);
-    
+
             const pivots = target.querySelectorAll(".pivot_filter_section");
             const input = pivots[0].querySelector(".pivot_filter_input input");
             assert.equal(input.value, "");
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-cog");
             // no default value
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
-    
+
             await testUtils.fields.editAndTrigger(input, "something", ["change"]);
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-times");
-    
+
             await click(target.querySelector("i.o_side_panel_filter_icon.fa-times"));
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
             assert.equal(input.value, "");
-        })
-    
+        });
+
         QUnit.test("Can clear a date filter values", async function (assert) {
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, {
@@ -831,30 +840,28 @@ QUnit.module(
             const quarter = pivots[0].querySelector(
                 ".pivot_filter_input div.date_filter_values select"
             );
-            const year = pivots[0].querySelector(
-                ".pivot_filter_input input.o_datepicker_input"
-            );
+            const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
             const this_year = luxon.DateTime.local().year;
             assert.equal(quarter.value, "empty");
             assert.equal(year.value, "");
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-cog");
             // no default value
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
-    
+
             await testUtils.fields.editSelect(quarter, "second_quarter");
             await selectYear(String(this_year - 1));
-    
+
             assert.equal(quarter.value, "second_quarter");
             assert.equal(year.value, String(this_year - 1));
-    
+
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-times");
-    
+
             await click(target.querySelector("i.o_side_panel_filter_icon.fa-times"));
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
             assert.equal(quarter.value, "empty");
             assert.equal(year.value, "");
-        })
-    
+        });
+
         QUnit.test("Can clear a relation filter values", async function (assert) {
             const tagSelector = ".o_field_many2manytags .badge";
             const { model } = await createSpreadsheetFromPivotView();
@@ -870,10 +877,10 @@ QUnit.module(
                 },
             });
             assert.equal(model.getters.getGlobalFilters().length, 1);
-    
+
             const searchIcon = target.querySelector(".o_topbar_filter_icon");
             await testUtils.dom.click(searchIcon);
-    
+
             const pivot = target.querySelector(".pivot_filter_section");
             assert.containsOnce(target, ".pivot_filter_section");
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-cog");
@@ -887,19 +894,19 @@ QUnit.module(
                 [...pivot.querySelectorAll(tagSelector)].map((el) => el.textContent.trim()),
                 []
             );
-    
+
             await testUtils.dom.click(
                 pivot.querySelector(".pivot_filter_input input.ui-autocomplete-input")
             );
             await testUtils.dom.click(document.querySelector("ul.ui-autocomplete li:first-child"));
-    
+
             assert.containsOnce(pivot, tagSelector);
             assert.deepEqual(
                 [...pivot.querySelectorAll(tagSelector)].map((el) => el.textContent.trim()),
                 ["xphone"]
             );
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-times");
-    
+
             // clear filter
             await click(target.querySelector("i.o_side_panel_filter_icon.fa-times"));
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
@@ -908,7 +915,7 @@ QUnit.module(
                 [...pivot.querySelectorAll(tagSelector)].map((el) => el.textContent.trim()),
                 []
             );
-        })
+        });
 
         QUnit.test(
             "Changing the range of a date global filter reset the default value",
@@ -955,10 +962,10 @@ QUnit.module(
                         rangeType: "month",
                         label: "This month",
                         pivotFields: {
-                        1: { field: "date", type: "date" },
+                            1: { field: "date", type: "date" },
                         },
                         defaultValue: {
-                        period: "january",
+                            period: "january",
                         },
                     },
                 });
@@ -975,7 +982,7 @@ QUnit.module(
                 const timeRangeOption = target.querySelectorAll(
                     ".o_spreadsheet_filter_editor_side_panel .o_side_panel_section"
                 )[1];
-                const selectField = timeRangeOption.querySelector('select')
+                const selectField = timeRangeOption.querySelector("select");
                 await testUtils.fields.editSelect(selectField, "quarter");
                 const quarterOption = target.querySelectorAll(
                     ".o_spreadsheet_filter_editor_side_panel .o_side_panel_section"

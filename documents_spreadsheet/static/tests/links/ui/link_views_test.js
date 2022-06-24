@@ -25,13 +25,13 @@ import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { registry } from "@web/core/registry";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { InsertViewSpreadsheet } from "@documents_spreadsheet/assets/insert_action_link_menu/insert_action_link_menu_owl";
-import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@documents_spreadsheet/assets/insert_action_link_menu/insert_action_link_menu_legacy";
+import { InsertViewSpreadsheet } from "@spreadsheet_edition/assets/insert_action_link_menu/insert_action_link_menu_owl";
+import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@spreadsheet_edition/assets/insert_action_link_menu/insert_action_link_menu_legacy";
 import { browser } from "@web/core/browser/browser";
-import { makeFakeSpreadsheetService } from "../../utils/webclient_helpers";
 import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 
 import { loadJS } from "@web/core/assets";
+import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
 
 const { Component } = owl;
 const serviceRegistry = registry.category("services");
@@ -98,7 +98,7 @@ function getCurrentAction(webClient) {
 
 let target;
 QUnit.module(
-    "documents_spreadsheet > action link",
+    "spreadsheet_edition > action link",
     {
         beforeEach: function () {
             target = getFixture();

@@ -2,17 +2,17 @@
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { createView, dom } from "web.test_utils";
-import { insertList } from "@documents_spreadsheet/bundle/list/list_init_callback";
+import { insertList } from "@spreadsheet_edition/bundle/list/list_init_callback";
 import ListView from "@web/legacy/js/views/list/list_view";
 import { selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getCell, getCellFormula } from "@spreadsheet/../tests/utils/getters";
-import { createSpreadsheetFromListView } from "../utils/list_helpers";
 import {
     getBasicData,
     getBasicListArch,
     getBasicServerData,
 } from "@spreadsheet/../tests/utils/data";
 import { nextTick, getFixture, click } from "@web/../tests/helpers/utils";
+import { createSpreadsheetFromListView } from "@documents_spreadsheet/../tests/utils/list_helpers";
 
 const { getMenuChildren } = spreadsheet.helpers;
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;

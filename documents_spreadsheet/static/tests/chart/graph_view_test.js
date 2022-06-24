@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { patchGraphSpreadsheet } from "@documents_spreadsheet/assets/graph_view/graph_view";
+import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/graph_view";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { click, patchWithCleanup, triggerEvent } from "@web/../tests/helpers/utils";
 import { patch, unpatch } from "@web/core/utils/patch";

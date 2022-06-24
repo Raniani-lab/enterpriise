@@ -4,7 +4,7 @@
 from .common import SpreadsheetTestCommon
 from odoo.tests.common import new_test_user
 from odoo.addons.mail.tests.common import MailCase
-from odoo.addons.documents_spreadsheet.controllers.bus import SpreadsheetCollaborationController
+from odoo.addons.spreadsheet_edition.controllers.bus import SpreadsheetCollaborationController
 
 
 class TestSpreadsheetBus(SpreadsheetTestCommon, MailCase):

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { SpreadsheetSelectorDialog } from "@documents_spreadsheet/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
+import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { browser } from "@web/core/browser/browser";
 import {

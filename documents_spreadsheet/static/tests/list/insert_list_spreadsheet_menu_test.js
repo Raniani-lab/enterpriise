@@ -3,8 +3,14 @@
 import ListView from "web.ListView";
 import testUtils from "web.test_utils";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu_legacy";
-import { click, nextTick, getFixture, patchWithCleanup, triggerEvent } from "@web/../tests/helpers/utils";
+import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_legacy";
+import {
+    click,
+    nextTick,
+    getFixture,
+    patchWithCleanup,
+    triggerEvent,
+} from "@web/../tests/helpers/utils";
 import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { getSpreadsheetActionModel } from "../utils/webclient_helpers";
@@ -115,7 +121,7 @@ QUnit.module(
             await click(document.body.querySelector(".o_favorite_menu button"));
             await click(document.body.querySelector(".o_insert_list_spreadsheet_menu"));
             /** @type {HTMLInputElement} */
-            const name = document.body.querySelector(".o_spreadsheet_name")
+            const name = document.body.querySelector(".o_spreadsheet_name");
             name.value = "New name";
             await triggerEvent(name, null, "input");
             await modal.clickButton("Confirm");

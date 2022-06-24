@@ -47,7 +47,7 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
         const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
         const download = file.children.find((item) => item.id === "download");
         await download.action(env);
-        assert.verifySteps(["/documents/xlsx"]);
+        assert.verifySteps(["/spreadsheet/xlsx"]);
     });
 
     QUnit.test("Can make a copy", async function (assert) {

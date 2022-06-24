@@ -7,7 +7,7 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";
 
-const { Model } = spreadsheet;
+const { Model } = spreadsheet;
 const { cellMenuRegistry } = spreadsheet.registries;
 
 QUnit.module("documents_spreadsheet > see pivot records UI");

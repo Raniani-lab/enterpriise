@@ -6,7 +6,7 @@
     'category': 'Productivity/Documents',
     'summary': 'Documents Spreadsheet',
     'description': 'Documents Spreadsheet',
-    'depends': ['documents', 'spreadsheet'],
+    'depends': ['documents', 'spreadsheet_edition'],
     'data': [
         'data/documents_data.xml',
         'security/ir.model.access.csv',
@@ -28,10 +28,9 @@
             'documents_spreadsheet/static/src/bundle/**/*.js',
         ],
         'web.assets_backend': [
-            'documents_spreadsheet/static/src/assets/**/*.js',
-            'documents_spreadsheet/static/src/assets/**/*.scss',
-            'documents_spreadsheet/static/src/scss/**/*',
-            'documents_spreadsheet/static/src/bundle/**/*.scss',
+            'documents_spreadsheet/static/src/**/*.js',
+            'documents_spreadsheet/static/src/**/*.scss',
+            ('remove', 'documents_spreadsheet/static/src/bundle/**/*.js',),
         ],
         'web.assets_qweb': [
             'documents_spreadsheet/static/src/**/*.xml',
@@ -41,7 +40,6 @@
         ],
         'web.qunit_suite_tests': [
             'documents_spreadsheet/static/tests/**/*',
-            'documents_spreadsheet/static/src/bundle/**/*.js',
         ]
     }
 }

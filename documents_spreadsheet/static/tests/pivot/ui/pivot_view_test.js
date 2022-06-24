@@ -84,7 +84,10 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         assert.strictEqual(getCellContent(model, "B1"), "=ODOO.PIVOT.HEADER(1)");
         assert.strictEqual(getCellContent(model, "B2"), '=ODOO.PIVOT.HEADER(1,"measure","foo")');
         assert.strictEqual(getCell(model, "B2").style.bold, undefined);
-        assert.strictEqual(getCellContent(model, "C2"), '=ODOO.PIVOT.HEADER(1,"measure","probability")');
+        assert.strictEqual(
+            getCellContent(model, "C2"),
+            '=ODOO.PIVOT.HEADER(1,"measure","probability")'
+        );
         assert.strictEqual(getCellContent(model, "B3"), '=ODOO.PIVOT(1,"foo")');
         assert.strictEqual(getCell(model, "B3").format, "#,##0.00");
         assert.strictEqual(getCellContent(model, "C3"), '=ODOO.PIVOT(1,"probability")');
@@ -340,7 +343,10 @@ QUnit.module("spreadsheet pivot view", {}, () => {
                 },
             },
         });
-        assert.strictEqual(getCellContent(model, "A3"), '=ODOO.PIVOT.HEADER(1,"product_id","false")');
+        assert.strictEqual(
+            getCellContent(model, "A3"),
+            '=ODOO.PIVOT.HEADER(1,"product_id","false")'
+        );
     });
 
     QUnit.test("undefined date is inserted in pivot", async (assert) => {
@@ -442,7 +448,10 @@ QUnit.module("spreadsheet pivot view", {}, () => {
             },
         });
         assert.strictEqual(Object.keys(getCells(model)).length, 9);
-        assert.strictEqual(getCellContent(model, "C2"), '=ODOO.PIVOT.HEADER(1,"measure","__count")');
+        assert.strictEqual(
+            getCellContent(model, "C2"),
+            '=ODOO.PIVOT.HEADER(1,"measure","__count")'
+        );
         assert.strictEqual(getCellContent(model, "C3"), '=ODOO.PIVOT(1,"__count")');
     });
 
@@ -502,10 +511,22 @@ QUnit.module("spreadsheet pivot view", {}, () => {
                 },
             },
         });
-        assert.strictEqual(getCellContent(model, "A3"), `=ODOO.PIVOT.HEADER(1,"date:week","15/2016")`);
-        assert.strictEqual(getCellContent(model, "A4"), `=ODOO.PIVOT.HEADER(1,"date:week","43/2016")`);
-        assert.strictEqual(getCellContent(model, "A5"), `=ODOO.PIVOT.HEADER(1,"date:week","49/2016")`);
-        assert.strictEqual(getCellContent(model, "A6"), `=ODOO.PIVOT.HEADER(1,"date:week","50/2016")`);
+        assert.strictEqual(
+            getCellContent(model, "A3"),
+            `=ODOO.PIVOT.HEADER(1,"date:week","15/2016")`
+        );
+        assert.strictEqual(
+            getCellContent(model, "A4"),
+            `=ODOO.PIVOT.HEADER(1,"date:week","43/2016")`
+        );
+        assert.strictEqual(
+            getCellContent(model, "A5"),
+            `=ODOO.PIVOT.HEADER(1,"date:week","49/2016")`
+        );
+        assert.strictEqual(
+            getCellContent(model, "A6"),
+            `=ODOO.PIVOT.HEADER(1,"date:week","50/2016")`
+        );
     });
 
     QUnit.test("Can save a pivot in a new spreadsheet", async (assert) => {

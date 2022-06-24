@@ -5,7 +5,6 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 import { getFixture, mockDownload, nextTick } from "@web/../tests/helpers/utils";
-import MockSpreadsheetCollaborativeChannel from "../utils/mock_spreadsheet_collaborative_channel";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { dom } from "web.test_utils";
@@ -104,7 +103,7 @@ QUnit.module(
                     },
                 });
                 await nextTick();
-                assert.verifySteps(["/documents/xlsx"]);
+                assert.verifySteps(["/spreadsheet/xlsx"]);
             }
         );
 
@@ -136,7 +135,6 @@ QUnit.module(
                 tag: "action_open_spreadsheet",
                 params: {
                     spreadsheet_id: 1,
-                    transportService: new MockSpreadsheetCollaborativeChannel(),
                 },
             });
             const breadcrumbItems = $(target).find(".breadcrumb-item");

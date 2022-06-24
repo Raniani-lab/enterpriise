@@ -3,7 +3,11 @@
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { dom } from "web.test_utils";
-import { getBasicData, getBasicPivotArch, getBasicServerData } from "@spreadsheet/../tests/utils/data";
+import {
+    getBasicData,
+    getBasicPivotArch,
+    getBasicServerData,
+} from "@spreadsheet/../tests/utils/data";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";

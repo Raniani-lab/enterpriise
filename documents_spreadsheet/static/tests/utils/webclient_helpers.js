@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu_legacy";
-import { InsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu_owl";
+import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_legacy";
+import { InsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_owl";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { useLegacyViews } from "@web/../tests/legacy/legacy_setup";
 import { loadJS } from "@web/core/assets";
@@ -11,9 +11,8 @@ import { ormService } from "@web/core/orm_service";
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { viewService } from "@web/views/view_service";
+import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { spreadsheetCollaborativeService } from "../../src/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service";
-import MockSpreadsheetCollaborativeChannel from "./mock_spreadsheet_collaborative_channel";
 
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 const serviceRegistry = registry.category("services");
@@ -41,24 +40,14 @@ export async function prepareWebClientForSpreadsheet() {
         {
             Component: InsertListSpreadsheetMenu,
             groupNumber: 4,
-            isDisplayed: ({ config, isSmall }) => 
-                !isSmall && config.actionType === "ir.actions.act_window" && config.viewType === "list"
+            isDisplayed: ({ config, isSmall }) =>
+                !isSmall &&
+                config.actionType === "ir.actions.act_window" &&
+                config.viewType === "list",
         },
-        { sequence: 5 },
+        { sequence: 5 }
     );
     useLegacyViews();
-}
-
-export function makeFakeSpreadsheetService() {
-    return {
-        ...spreadsheetCollaborativeService,
-        start() {
-            const fakeSpreadsheetService = spreadsheetCollaborativeService.start(...arguments);
-            fakeSpreadsheetService.getCollaborativeChannel = () =>
-                new MockSpreadsheetCollaborativeChannel();
-            return fakeSpreadsheetService;
-        },
-    };
 }
 
 /**

@@ -455,7 +455,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         const model = await createModelWithDataSource();
         setCellContent(model, "A10", `=ODOO.FILTER.VALUE("Date Filter")`);
         await nextTick();
-        console.log(await addGlobalFilter(model, {
+        await addGlobalFilter(model, {
             filter: {
                 id: "42",
                 type: "date",
@@ -467,7 +467,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
                     },
                 },
             },
-        }));
+        });
         await nextTick();
         const [filter] = model.getters.getGlobalFilters();
         await setGlobalFilterValue(model, {

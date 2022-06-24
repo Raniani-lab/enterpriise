@@ -1,0 +1,13 @@
+<odoo>
+    <t t-name="spreadsheet_edition.OdooBarChartConfigPanel" owl="1">
+        <div>
+            <div class="o-section">
+                <div class="o_checkbox">
+                    <input type="checkbox" name="stackedBar" t-att-checked="props.definition.stacked" t-on-change="onUpdateStacked" />
+                    Stacked barchart
+                </div>
+            </div>
+            <t t-call="spreadsheet_edition.OdooMenuChartPanelSection"/>
+        </div>
+    </t>
+</odoo>

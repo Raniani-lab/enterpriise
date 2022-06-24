@@ -16,6 +16,8 @@ _merchandise_import_code = {
     'NL': '6',
 }
 
+_qn_unknown_individual_vat_country_codes = ('FI', 'SE', 'SK', 'DE', 'AT')
+
 class IntrastatReport(models.AbstractModel):
     _name = 'account.intrastat.report'
     _description = 'Intrastat Report'
@@ -157,7 +159,6 @@ class IntrastatReport(models.AbstractModel):
                 inv_transport.code AS invoice_transport,
                 comp_transport.code AS company_transport,
                 CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
-                partner.vat as partner_vat,
                 ROUND(
                     prod.weight * inv_line.quantity / (
                         CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
@@ -176,9 +177,9 @@ class IntrastatReport(models.AbstractModel):
                 CASE WHEN inv_line.price_subtotal = 0 THEN inv_line.price_unit * inv_line.quantity ELSE inv_line.price_subtotal END AS value,
                 COALESCE(product_country.code, 'QV') AS intrastat_product_origin_country, -- If you don't know the country of origin of the goods, as an exception you may replace the country code by "QV".
                 product_country.name AS intrastat_product_origin_country_name,
-                CASE WHEN partner_country.id IS NULL
-                     THEN \'QV999999999999\'  -- For VAT numbers of companies outside the European Union, for example in the case of triangular trade, you always have to use the code "QV999999999999".
-                     ELSE partner.vat
+                CASE WHEN partner.vat IS NOT NULL THEN partner.vat
+                     WHEN partner.vat IS NULL AND partner.is_company IS FALSE THEN %(unknown_individual_vat)s
+                     ELSE 'QV999999999999'
                 END AS partner_vat
                 '''
         from_ = '''
@@ -227,6 +228,7 @@ class IntrastatReport(models.AbstractModel):
             'date_to': date_to,
             'journal_ids': tuple(journal_ids),
             'weight_category_id': self.env['ir.model.data']._xmlid_to_res_id('uom.product_uom_categ_kgm'),
+            'unknown_individual_vat': 'QN999999999999' if self.env.company.country_id.code in _qn_unknown_individual_vat_country_codes else 'QV999999999999',
         }
         if with_vat:
             where += ' AND partner.vat IS NOT NULL '

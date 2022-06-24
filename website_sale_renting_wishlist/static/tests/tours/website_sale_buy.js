@@ -39,7 +39,7 @@ tour.register('shop_buy_rental_product_wishlist', {
             content: "click on add to cart",
             trigger: '.o_wish_add',
         },
-        tourUtils.goToCart(1),
+        tourUtils.goToCart({quantity: 1}),
         {
             content: "Verify there is a Computer",
             trigger: '#cart_products tbody td.td-product_name a strong:contains("Computer")',

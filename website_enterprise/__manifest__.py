@@ -10,14 +10,13 @@ This module overrides community website features and introduces enterprise look 
     'depends': ['website'],
     'data': [
         'data/website_data.xml',
-        'views/website_enterprise_templates.xml'
     ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
-        'web.assets_frontend': [
-            'website_enterprise/static/src/**/*',
+        'website.assets_editor': [
+            'website_enterprise/static/src/js/systray_items/*.js',
         ],
     }
 }

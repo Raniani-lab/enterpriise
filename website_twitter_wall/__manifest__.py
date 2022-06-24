@@ -20,6 +20,7 @@ Turn your event into an interactive experience by letting everybody post to your
         'security/ir.model.access.csv',
         'views/website_twitter_wall_templates.xml',
         'views/website_twitter_wall_views.xml',
+        'views/snippets.xml',
     ],
     'assets': {
         'web.assets_frontend': [

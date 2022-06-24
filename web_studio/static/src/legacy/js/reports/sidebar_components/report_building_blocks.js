@@ -4,10 +4,12 @@ odoo.define('web_studio.reportNewComponents', function (require) {
 var config = require('web.config');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
-var weWidgets = require('wysiwyg.widgets');
 
 var Abstract = require('web_studio.AbstractReportComponent');
 var NewFieldDialog = require('web_studio.NewFieldDialog');
+
+const { MediaDialogWrapper } = require('@web_editor/components/media_dialog/media_dialog');
+const { ComponentWrapper } = require('web.OwlCompatibility');
 
 var _t = core._t;
 var _lt = core._lt;
@@ -666,30 +668,26 @@ var Image = AbstractNewBuildingBlock.extend({
         var self = this;
         return this._super.apply(this, arguments).then(function () {
             var def = new Promise(function (resolve, reject) {
-                var $image = $("<img/>");
-                var dialog = new weWidgets.MediaDialog(self, {
+                const dialog = new ComponentWrapper(this, MediaDialogWrapper, {
                     onlyImages: true,
-                }, $image[0]).open();
-                var value;
-                dialog.on("save", self, function (el) {
-                    // el is a vanilla JS element
-                    // Javascript Element.src returns the full url (including protocol)
-                    // But we want only a relative path
-                    // https://www.w3schools.com/jsref/prop_img_src.asp
-                    // We indeed expect only one image at this point
-                    value = el.attributes.src && el.attributes.src.value;
-                });
-                dialog.on('closed', self, function () {
-                    if (value) {
+                    save: el => {
+                        // el is a vanilla JS element
+                        // Javascript Element.src returns the full url (including protocol)
+                        // But we want only a relative path
+                        // https://www.w3schools.com/jsref/prop_img_src.asp
+                        // We indeed expect only one image at this point
+                        const value = el.attributes.src && el.attributes.src.value;
                         resolve({
                             inheritance: self._createContent({
                                 content: '<img class="img-fluid" src="' + value + '"/>',
                             })
                         });
-                    } else {
+                    },
+                    close: () => {
                         reject();
                     }
                 });
+                dialog.mount(self.el);
             });
             return def;
         });
@@ -893,7 +891,7 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
     _dataInheritance: function (values) {
         var data = this._dataInheritanceValues(values);
         return this._createContent({
-            contentInStructure: 
+            contentInStructure:
                 '<table class="table table-sm">' +
                     `<t t-set="tax_totals" t-value="json.loads(${data.tax_totals_json})"/>` +
                     '<t t-call="account.document_tax_totals"/>' +

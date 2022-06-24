@@ -188,7 +188,7 @@
         </nav>
     </template>
 
-    <template id="navbar_search_date" inherit_id="website_helpdesk.navbar" name="Filter by Date" active="True" customize_show="True">
+    <template id="navbar_search_date" inherit_id="website_helpdesk.navbar" name="Filter by Date" active="True">
         <xpath expr="//ul[hasclass('o_whelpdesk_topbar_filters')]" position="inside">
             <li class="nav-item dropdown mr-2 my-1 border rounded">
                 <a href="#" role="button" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -212,7 +212,7 @@
         </xpath>
     </template>
 
-    <template id="navbar_search_type" inherit_id="website_helpdesk.navbar" name="Filter by Type" active="True" customize_show="True">
+    <template id="navbar_search_type" inherit_id="website_helpdesk.navbar" name="Filter by Type" active="True">
         <xpath expr="//ul[hasclass('o_whelpdesk_topbar_filters')]" position="inside">
             <li class="nav-item dropdown mr-2 my-1 border rounded" t-if="len(available_types) > 1">
                 <a href="#" role="button" class="btn dropdown-toggle" data-toggle="dropdown">
@@ -236,7 +236,7 @@
         </xpath>
     </template>
 
-    <template id="navbar_search_tag" inherit_id="website_helpdesk.navbar" name="Filter by Tags" active="True" customize_show="True">
+    <template id="navbar_search_tag" inherit_id="website_helpdesk.navbar" name="Filter by Tags" active="True">
         <xpath expr="//ul[hasclass('o_whelpdesk_topbar_filters')]" position="inside">
             <li class="nav-item dropdown mr-2 my-1 border rounded" t-if="len(available_tags) > 1">
                 <a href="#" role="button" class="btn dropdown-toggle" data-toggle="dropdown">

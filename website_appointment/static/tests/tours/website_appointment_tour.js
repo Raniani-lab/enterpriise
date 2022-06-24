@@ -47,29 +47,29 @@ tour.register('website_appointment_tour', {
         extra_trigger: 'button.o_form_button_edit',
         content: 'go to the frontend',
     }, {
-        trigger: 'td.o_day:first',
+        trigger: 'iframe td.o_day:first',
         content: 'click on first date available',
     }, {
-        trigger: '.o_slots_list a:first',
+        trigger: 'iframe .o_slots_list a:first',
         content: 'click on first slot available',
     }, {
-        trigger: 'input[id="phone_field"]',
+        trigger: 'iframe input[id="phone_field"]',
         content: 'fill tel field',
         run: 'text 0123456789'
     }, {
-        trigger: 'button[type="submit"]',
+        trigger: 'iframe button[type="submit"]',
         content: 'confirm appointment',
         run: 'click',
     }, {
-        trigger: 'a:contains("Cancel") i',
+        trigger: 'iframe a:contains("Cancel") i',
         content: 'cancel appointment',
         run: 'click',
     }, {
-        trigger: 'a.css_edit_dynamic',
+        trigger: '.o_menu_systray_item.o_website_edit_in_backend .dropdown-toggle',
         content: 'open edit dropdown',
         run: 'click',
     }, {
-        trigger: 'a[id="edit-in-backend"]',
+        trigger: '.o_menu_systray_item.o_website_edit_in_backend .dropdown-menu .dropdown-item',
         content: 'return in backend',
         run: 'click',
     }, {

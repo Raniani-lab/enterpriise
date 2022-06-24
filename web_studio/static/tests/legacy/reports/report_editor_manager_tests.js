@@ -6,11 +6,13 @@ const ajax = require('web.ajax');
 var config = require('web.config');
 const core = require('web.core');
 const { Markup } = require('web.utils');
-var MediaDialog = require('wysiwyg.widgets.MediaDialog');
+const { MediaDialogWrapper } = require('@web_editor/components/media_dialog/media_dialog');
 var testUtils = require('web.test_utils');
-var testUtilsDom = require('web.test_utils_dom');
 var studioTestUtils = require('web_studio.testUtils');
 var session = require('web.session');
+const { patchWithCleanup } = require("@web/../tests/helpers/utils");
+
+const { useEffect } = owl;
 
 function getFloatSizeFromPropertyInPixels($element, propertyName) {
     var size = $element.css(propertyName);
@@ -2051,9 +2053,8 @@ QUnit.module('ReportEditorManager', {
     });
 
     QUnit.test('drag & drop block "Image"', async function (assert) {
-        assert.expect(2);
+        assert.expect(1);
         var done = assert.async();
-        var self = this;
 
         this.templates.push({
             key: 'template1',
@@ -2075,13 +2076,6 @@ QUnit.module('ReportEditorManager', {
             reportViews: studioTestUtils.getReportViews(this.templates),
             reportMainViewID: 42,
             mockRPC: function (route, args) {
-                // Bypass mockSearchRead domain evauation
-                if (route === '/web/dataset/call_kw/ir.attachment/search_read') {
-                    return Promise.resolve([self.data['ir.attachment'].records[0]]);
-                }
-                if (route.match(/\/web_editor\/attachment\/\d+\/update/)) {
-                    return Promise.resolve(this.data['ir.attachment'].records[0]);
-                }
                 if (route === '/web_studio/edit_report_view') {
                     if (editReportViewCalls === 0) {
                         assert.strictEqual(
@@ -2102,33 +2096,30 @@ QUnit.module('ReportEditorManager', {
 
         // Process to use the report editor
         await rem.editorIframeDef.then(async function () {
-            var defMediaDialogInit = testUtils.makeTestPromise();
-            testUtils.mock.patch(MediaDialog, {
-                init: function () {
-                    this._super.apply(this, arguments);
-                    this.opened(defMediaDialogInit.resolve.bind(defMediaDialogInit));
+            var $page = rem.$('iframe').contents().find('.page');
+            var $imageBlock = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Image)');
+
+            // Mock the MediaDialogWrapper
+            const defMediaDialog = testUtils.makeTestPromise();
+            patchWithCleanup(MediaDialogWrapper.prototype, {
+                setup() {
+                    useEffect(() => {
+                        this.save();
+                    }, () => []);
+                },
+                save() {
+                    const imageEl = document.createElement('img');
+                    imageEl.src = '/web/static/joes_garage.png?access_token=token';
+                    this.props.save(imageEl);
+                    defMediaDialog.resolve();
                 },
             });
 
-            // Wait for the image modal to be fully loaded in two steps:
-            // First, the Bootstrap modal itself
-            $('body').one('shown.bs.modal', function () {
-                assert.containsOnce($('body'), '.modal-dialog.o_select_media_dialog',
-                    'The bootstrap modal for media selection is open');
-            });
-            // Second, when the modal element is there, bootstrap focuses on the "image" tab
-            // then only could we use the widget and select an image safely
-            defMediaDialogInit.then(async function () {
-                var $modal = $('.o_select_media_dialog');
-                await testUtilsDom.click($modal.find('.o_existing_attachment_cell').removeClass('d-none'));
-
-                testUtils.mock.unpatch(MediaDialog);
+            defMediaDialog.then(async function () {
+                await testUtils.nextTick();
                 done();
                 rem.destroy();
             });
-
-            var $page = rem.$('iframe').contents().find('.page');
-            var $imageBlock = rem.$('.o_web_studio_sidebar .o_web_studio_component:contains(Image)');
             await testUtils.dom.dragAndDrop($imageBlock, $page, {position: 'inside'});
         });
     });

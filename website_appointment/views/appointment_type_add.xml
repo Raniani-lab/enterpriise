@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="appointment_type_view_form_add" model="ir.ui.view">
+    <field name="name">appointment.type.view.form.add</field>
+    <field name="model">appointment.type</field>
+    <field name="arch" type="xml">
+        <form js_class="website_appointment_add_form">
+            <group>
+                <field name="website_url" invisible="1"/>
+                <field name="name" string="Name"/>
+            </group>
+        </form>
+    </field>
+</record>
+
+<record id="appointment_type_action_add" model="ir.actions.act_window">
+    <field name="name">New Appointment Type</field>
+    <field name="res_model">appointment.type</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+    <field name="view_id" ref="appointment_type_view_form_add"/>
+</record>
+
+</odoo>

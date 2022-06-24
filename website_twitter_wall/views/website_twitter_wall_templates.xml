@@ -150,7 +150,7 @@
     </template>
 
     <!-- Social networks sharing option -->
-    <template id="opt_twitter_wall_share" inherit_id="website_twitter_wall.twitter_wall_view" name="Share Option" customize_show="True" >
+    <template id="opt_twitter_wall_share" inherit_id="website_twitter_wall.twitter_wall_view" name="Share Option">
         <xpath expr="//h2" position="after">
             <t t-call="website_twitter_wall.twitter_wall_share" class="mt32">
                 <t t-set="wall" t-value="wall" />

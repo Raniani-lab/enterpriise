@@ -57,7 +57,7 @@ tour.register('shop_buy_rental_product_comparison', {
             content: "click on add to cart",
             trigger: '.product_summary:contains("Computer") .a-submit:contains("Add to Cart")',
         },
-        tourUtils.goToCart(1),
+        tourUtils.goToCart({quantity: 1}),
         {
             content: "Verify there is a Computer",
             trigger: '#cart_products tbody td.td-product_name a strong:contains("Computer")',

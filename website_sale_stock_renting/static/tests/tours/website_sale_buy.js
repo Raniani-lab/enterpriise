@@ -36,7 +36,7 @@ tour.register('shop_buy_rental_stock_product', {
         },
         {
             content: "Apply change",
-            trigger: '.daterangepicker.o_website_sale_renting.drop-up button.applyBtn',
+            trigger: '.daterangepicker.o_website_sale_renting button.applyBtn',
         },
         {
             content: "Add one quantity",
@@ -46,7 +46,7 @@ tour.register('shop_buy_rental_stock_product', {
             content: "click on add to cart",
             trigger: '#product_detail form[action^="/shop/cart/update"] #add_to_cart',
         },
-        tourUtils.goToCart(2),
+        tourUtils.goToCart({quantity: 2}),
         {
             content: "Verify there is a Computer",
             trigger: '#cart_products tbody td.td-product_name a strong:contains("Computer")',
@@ -66,7 +66,7 @@ tour.register('shop_buy_rental_stock_product', {
             trigger: 'div#threshold_message_renting:contains("Only 3 Units still available during the selected period.")',
             run: function () {}, // it's a check
         },
-        tourUtils.goToCart(2),
+        tourUtils.goToCart({quantity: 2}),
         {
             content: "Check quantity",
             trigger: '#cart_products input.js_quantity:propValue(2)',

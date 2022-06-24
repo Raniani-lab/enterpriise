@@ -22,9 +22,10 @@ Allow clients to Schedule Appointments through your Website
         'views/appointment_templates_appointments.xml',
         'views/appointment_templates_registration.xml',
         'views/appointment_templates_validation.xml',
-        'views/website_templates.xml',
+        'views/appointment_type_add.xml',
         'security/calendar_security.xml',
         'security/ir.model.access.csv',
+        'views/snippets.xml',
     ],
     'demo': [
         'data/appointment_demo.xml',
@@ -33,9 +34,6 @@ Allow clients to Schedule Appointments through your Website
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
-        'website.assets_editor': [
-            'website_appointment/static/src/js/website_appointment.editor.js',
-        ],
         'web.assets_tests': [
             'website_appointment/static/tests/tours/*',
         ],
@@ -45,6 +43,9 @@ Allow clients to Schedule Appointments through your Website
         ],
         'web.assets_qweb': [
             'website_appointment/static/src/xml/**/*',
+        ],
+        'website.assets_editor': [
+            'website_appointment/static/src/js/systray_items/*.js',
         ],
     }
 }

@@ -40,7 +40,7 @@ QUnit.module("documents_spreadsheet > SpreadsheetCollaborativeChannel", {
 
 QUnit.test("sending a message forward it to the registered listener", function (assert) {
     assert.expect(3);
-    const channel = new SpreadsheetCollaborativeChannel(this.env, 5);
+    const channel = new SpreadsheetCollaborativeChannel(this.env, "my.model", 5);
     channel.onNewMessage("anId", (message) => {
         assert.step("message");
         assert.strictEqual(message.message, "hello", "It should have the correct message content");
@@ -51,7 +51,7 @@ QUnit.test("sending a message forward it to the registered listener", function (
 
 QUnit.test("previous messages are forwarded when registering a listener", function (assert) {
     assert.expect(3);
-    const channel = new SpreadsheetCollaborativeChannel(this.env, 5);
+    const channel = new SpreadsheetCollaborativeChannel(this.env, "my.model", 5);
     channel.sendMessage("hello");
     channel.onNewMessage("anId", (message) => {
         assert.step("message");
@@ -62,7 +62,7 @@ QUnit.test("previous messages are forwarded when registering a listener", functi
 
 QUnit.test("the channel does not care about other bus messages", function (assert) {
     assert.expect(1);
-    const channel = new SpreadsheetCollaborativeChannel(this.env, 5);
+    const channel = new SpreadsheetCollaborativeChannel(this.env, "my.model", 5);
     channel.onNewMessage("anId", () => assert.step("message"));
     this.env.services.bus_service.notify("a-random-channel", "a-random-message");
     assert.verifySteps([], "The message should not have been received");

@@ -15,11 +15,13 @@
 export default class SpreadsheetCollaborativeChannel {
     /**
      * @param {Env} env
-     * @param {number} documentId Id of the spreadsheet
+     * @param {string} resModel model linked to the spreadsheet
+     * @param {number} resId Id of the spreadsheet
      */
-    constructor(env, documentId) {
+    constructor(env, resModel, resId) {
         this.env = env;
-        this._documentId = documentId;
+        this.resId = resId;
+        this.resModel = resModel;
         /**
          * A callback function called to handle messages when they are received.
          */
@@ -30,9 +32,9 @@ export default class SpreadsheetCollaborativeChannel {
          */
         this._queue = [];
         // Listening this channel tells the server the spreadsheet is active
-        // but the server will actually push to channel [{dbname}, "spreadsheet", {documentId}]
+        // but the server will actually push to channel [{dbname},  {resModel}, {resId}]
         // The user can listen to this channel only if he has the required read access.
-        this._channel = `spreadsheet_collaborative_session_${this._documentId}`;
+        this._channel = `spreadsheet_collaborative_session:${this.resModel}:${this.resId}`;
         this.env.services.bus_service.addChannel(this._channel);
         this.env.services.bus_service.onNotification(this, (notifs) =>
             this._handleNotifications(this._filterSpreadsheetNotifs(notifs))
@@ -61,9 +63,9 @@ export default class SpreadsheetCollaborativeChannel {
      */
     sendMessage(message) {
         return this.env.services.rpc({
-            model: "documents.document",
+            model: this.resModel,
             method: "dispatch_spreadsheet_message",
-            args: [this._documentId, message],
+            args: [this.resId, message],
         }, { shadow: true });
     }
 
@@ -86,7 +88,7 @@ export default class SpreadsheetCollaborativeChannel {
     _filterSpreadsheetNotifs(notifs) {
         return notifs.filter((notification) => {
             const { payload, type } = notification;
-            return type === 'spreadsheet' && payload.id === this._documentId;
+            return type === 'spreadsheet' && payload.id === this.resId;
         });
     }
 

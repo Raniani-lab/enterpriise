@@ -7,11 +7,12 @@ class SpreadsheetCollaborativeService {
     /**
      * Get a new collaborative channel for the given spreadsheet id
      * @param {Env} env Env of owl (Component.env)
-     * @param {number} spreadsheetId id of the spreadsheet
+     * @param {string} resModel model linked to the spreadsheet
+     * @param {number} resId id of the spreadsheet
      */
-    getCollaborativeChannel(env, spreadsheetId) {
+    getCollaborativeChannel(env, resModel, resId) {
         if (env.services.bus_service) {
-            return new SpreadsheetCollaborativeChannel(env, spreadsheetId);
+            return new SpreadsheetCollaborativeChannel(env, resModel, resId);
         }
         return undefined;
     }

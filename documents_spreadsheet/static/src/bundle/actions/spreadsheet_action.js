@@ -41,7 +41,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 
   async onWillStart() {
     await super.onWillStart();
-    this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(Component.env, this.resId);
+    this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(Component.env, "documents.document", this.resId);
   }
 
   async _fetchData() {

@@ -16,7 +16,7 @@ class TestSpreadsheetBus(SpreadsheetTestCommon, MailCase):
         return self.env["bus.bus"]._poll(channels, last, options)
 
     def poll_spreadsheet(self, spreadsheet_id):
-        external_channel = f"spreadsheet_collaborative_session_{spreadsheet_id}"
+        external_channel = f"spreadsheet_collaborative_session:documents.document:{spreadsheet_id}"
         notifs = self.poll(external_channel)
         return [
             m["message"]["payload"]

@@ -112,7 +112,7 @@ class HrApplicant(models.Model):
             text_to_send["content"] = self.email_from
         elif field == "phone":
             text_to_send["content"] = self.partner_phone
-        elif field == "description":
+        elif field == "name":
             text_to_send["content"] = self.name
         return text_to_send
 
@@ -126,14 +126,14 @@ class HrApplicant(models.Model):
             return res
 
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/recruitment_extract/1/validate'
+            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/validate'
         for applicant in self:
             if applicant.extract_state != 'waiting_validation':
                 continue
             values = {
                 'email': applicant.get_validation('email'),
                 'phone': applicant.get_validation('phone'),
-                'description': applicant.get_validation('description'),
+                'name': applicant.get_validation('name'),
             }
             params = {
                 'document_id': applicant.extract_remote_id,
@@ -180,7 +180,7 @@ class HrApplicant(models.Model):
     def _check_ocr_status(self):
         self.ensure_one()
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/recruitment_extract/1/get_result'
+            'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/get_result'
         params = {
             'version': CLIENT_OCR_VERSION,
             'document_id': self.extract_remote_id
@@ -191,11 +191,11 @@ class HrApplicant(models.Model):
             self.extract_state = "waiting_validation"
             ocr_results = result['results'][0]
 
-            description_ocr = ocr_results['description']['selected_value']['content'] if 'description' in ocr_results else ""
+            name_ocr = ocr_results['name']['selected_value']['content'] if 'name' in ocr_results else ""
             email_from_ocr = ocr_results['email']['selected_value']['content'] if 'email' in ocr_results else ""
             phone_ocr = ocr_results['phone']['selected_value']['content'] if 'phone' in ocr_results else ""
 
-            self.name = description_ocr
+            self.name = name_ocr
             self.email_from = email_from_ocr
             self.partner_mobile = phone_ocr
             self.partner_phone = phone_ocr
@@ -238,7 +238,7 @@ class HrApplicant(models.Model):
         if attachments and attachments.exists() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                    'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/recruitment_extract/1/parse'
+                    'hr_recruitment_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/applicant/1/parse'
 
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')

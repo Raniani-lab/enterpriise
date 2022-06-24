@@ -54,7 +54,9 @@
                             '&amp;',
                             ('extract_status_code', '&gt;', 99),
                             ('extract_status_code', '&lt;', 200)]}">
-                    <field name="extract_error_message"/>
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 mr-1" string="Resend For Digitalization" type="object" data-hotkey="q"/>
+                    <field name="extract_error_message" class="oe_inline"/>
+                    <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-warning mb8"
                      attrs="{'invisible':['|', '|', '|',

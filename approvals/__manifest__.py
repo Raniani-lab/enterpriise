@@ -37,14 +37,15 @@ creates next activities for the related approvers.
     'application': True,
     'installable': True,
     'assets': {
+        'mail.assets_messaging': [
+            'approvals/static/src/models/*.js',
+        ],
         'mail.assets_discuss_public': [
             'approvals/static/src/components/*/*',
-            'approvals/static/src/models/*.js',
         ],
         'web.assets_backend': [
             'approvals/static/src/components/*/*.js',
             'approvals/static/src/components/*/*.scss',
-            'approvals/static/src/models/*.js',
         ],
         'web.assets_tests': [
             'approvals/static/tests/tours/**/*',

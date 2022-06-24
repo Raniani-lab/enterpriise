@@ -29,7 +29,7 @@ Allows to make call from next activities or with click-to-dial.
     'application': True,
     'license': 'OEEL-1',
     'assets': {
-        'mail.assets_discuss_public': [
+        'mail.assets_messaging': [
             'voip/static/src/models/*.js',
         ],
         'web.assets_backend': [
@@ -47,7 +47,6 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/src/js/voip_systray_item.js',
             'voip/static/src/js/legacy_compatibility.js',
             'voip/static/src/js/user_agent.js',
-            'voip/static/src/models/*.js',
             'voip/static/src/scss/call_center_field.scss',
             'voip/static/src/scss/voip.scss',
             'voip/static/src/voip_service.js',

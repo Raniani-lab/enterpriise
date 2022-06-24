@@ -40,6 +40,9 @@ Let your customers follow the signature process easily.
     'installable': True,
     'license': 'OEEL-1',
     'assets': {
+        'mail.assets_messaging': [
+            'sign/static/src/models/*.js',
+        ],
         'sign.assets_pdf_iframe': [
             'web/static/src/libs/fontawesome/css/font-awesome.css',
             'web/static/lib/jquery.ui/jquery-ui.css',
@@ -75,7 +78,6 @@ Let your customers follow the signature process easily.
             'sign/static/src/js/tours/sign.js',
             'sign/static/src/js/activity.js',
             'sign/static/src/components/sign_request/sign_request.js',
-            'sign/static/src/models/*.js',
             'sign/static/src/scss/sign_backend.scss',
         ],
         'web.assets_frontend': [

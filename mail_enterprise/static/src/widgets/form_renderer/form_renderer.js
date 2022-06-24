@@ -45,7 +45,6 @@ FormRenderer.include({
          * for the time being.
          */
         this._attachmentViewerThread = undefined;
-        this._isChatterInFormSheetBg = false;
         this._onResizeWindow = _.debounce(this._onResizeWindow.bind(this), 200);
     },
     /**
@@ -92,14 +91,7 @@ FormRenderer.include({
         if (!this.hasChatter) {
             return;
         }
-        // for cached messages, `preview_attachment` will be triggered
-        // before the view rendering where the chatter is replaced ; in this
-        // case, we need to interchange its position if needed
-        const enablePreview = this.attachmentPreviewResID &&
-            this.attachmentPreviewResID === this.state.res_id &&
-            this.$attachmentPreview &&
-            !this.$attachmentPreview.hasClass('o_invisible_modifier');
-        this._interchangeChatter(enablePreview);
+        this._interchangeChatter();
     },
     /**
      * @override
@@ -114,13 +106,23 @@ FormRenderer.include({
     //--------------------------------------------------------------------------
 
     /**
+     * @returns {boolean}
+     */
+    hasAttachmentViewer() {
+        return (
+            config.device.size_class >= config.device.SIZES.XXL &&
+            this.$attachmentPreview && !this.$attachmentPreview.hasClass('o_invisible_modifier') &&
+            this.attachmentPreviewResID && this.attachmentPreviewResID === this.state.res_id
+        );
+    },
+    /**
      * @override
      */
     _isChatterAside() {
         const parent = this._chatterContainerTarget && this._chatterContainerTarget.parentNode;
         return (
             config.device.size_class >= config.device.SIZES.XXL &&
-            !this.attachmentViewer &&
+            !this.hasAttachmentViewer() &&
             // We also test the existance of parent.classList. At start of the
             // form_renderer, parent is a DocumentFragment and not the parent of
             // the chatter. DocumentFragment doesn't have a classList property.
@@ -131,34 +133,22 @@ FormRenderer.include({
      * Interchange the position of the chatter and the attachment preview.
      *
      * @private
-     * @param {boolean} enablePreview
      */
-     _interchangeChatter(enablePreview) {
-        if (config.device.size_class < config.device.SIZES.XXL) {
-            return;
-        }
-        if (!this.$attachmentPreview) {
-            return;
-        }
-        const $sheet = this.$('.o_form_sheet_bg');
-
+     _interchangeChatter() {
+        const $sheetBg = this.$('.o_form_sheet_bg');
         this._updateChatterContainerTarget();
-        if (enablePreview) {
-            this.$attachmentPreview.insertAfter($sheet);
-            dom.append($sheet, $(this._chatterContainerTarget), {
+        if (this.hasAttachmentViewer()) {
+            this.$attachmentPreview.insertAfter($sheetBg);
+            dom.append($sheetBg, $(this._chatterContainerTarget), {
                 callbacks: [{ widget: this.chatter }],
                 in_DOM: this._isInDom,
             });
-            this._chatterContainerTarget.classList.add('o-isInFormSheetBg');
-            this._isChatterInFormSheetBg = true;
         } else {
-            $(this._chatterContainerTarget).insertAfter($sheet);
-            dom.append($sheet, this.$attachmentPreview, {
+            $(this._chatterContainerTarget).insertAfter($sheetBg);
+            dom.append($sheetBg, this.$attachmentPreview, {
                 callbacks: [],
                 in_DOM: this._isInDom,
             });
-            this._chatterContainerTarget.classList.remove('o-isInFormSheetBg');
-            this._isChatterInFormSheetBg = false;
         }
         this._updateChatterContainerComponent();
     },
@@ -168,7 +158,7 @@ FormRenderer.include({
     _makeChatterContainerProps() {
         const props = this._super(...arguments);
         return Object.assign(props, {
-            isInFormSheetBg: this._isChatterInFormSheetBg,
+            isInFormSheetBg: this.hasAttachmentViewer(),
         });
     },
     /**
@@ -202,7 +192,7 @@ FormRenderer.include({
                         this.attachmentViewer.destroy();
                         this.attachmentViewer = undefined;
                         this.attachmentPreviewResID = undefined;
-                        this._interchangeChatter(false);
+                        this._interchangeChatter();
                     } else {
                         this.attachmentViewer.updateContents(thread);
                     }
@@ -229,7 +219,7 @@ FormRenderer.include({
                             self.attachmentPreviewWidth = ui.size.width;
                         },
                     });
-                    self._interchangeChatter(true);
+                    self._interchangeChatter();
                 });
             }
         }
@@ -245,9 +235,19 @@ FormRenderer.include({
      */
     _onResizeWindow(ev) {
         if (this._chatterContainerComponent) {
-            this._updateChatterContainerComponent();
-            this._updateChatterContainerTarget();
+            this._interchangeChatter();
         }
         this._applyFormSizeClass();
+    },
+    /**
+     * @override
+     */
+    _updateChatterContainerTarget() {
+        this._super();
+        if (this.hasAttachmentViewer()) {
+            this._chatterContainerTarget.classList.add('o-isInFormSheetBg');
+        } else {
+            this._chatterContainerTarget.classList.remove('o-isInFormSheetBg');
+        }
     },
 });

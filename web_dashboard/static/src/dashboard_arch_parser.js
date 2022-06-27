@@ -60,10 +60,12 @@ export class DashboardArchParser extends XMLParser {
             }
             if (node.tagName === "formula") {
                 nodeIdentifier.add(node);
+                const operation = node.getAttribute("value");
                 formulae.push({
                     name: node.getAttribute("name") || nodeIdentifier.idFor(),
-                    operation: node.getAttribute("value"),
+                    operation,
                     domain: node.getAttribute("domain"),
+                    string: node.getAttribute("string") || operation,
                 });
             }
         });

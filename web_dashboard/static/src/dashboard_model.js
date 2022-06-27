@@ -47,6 +47,7 @@ const setupRelationalModel = (model) => {
     const allFields = { ...model.metaData.fields };
     for (const agg of model.metaData.aggregates) {
         const fakeField = {
+            ...model.metaData.fields[agg.field],
             ...agg,
             type: agg.fieldType === "many2one" ? "integer" : agg.fieldType,
         };
@@ -89,10 +90,6 @@ const setupRelationalModel = (model) => {
             // Make legacy record
             const [baseRecord, comparisonRecord] = getPseudoRecords(model.metaData, data);
             async function _makeRecord(record) {
-                const fields = {};
-                Object.keys(model.metaData.statistics).forEach((fieldName) => {
-                    fields[fieldName] = fieldsInfo.dashboard[fieldName];
-                });
                 const handle = await legacyModel.makeRecord(
                     model.metaData.resModel,
                     fieldsInfo.dashboard,
@@ -332,7 +329,3 @@ export class DashboardModel extends Model {
         return fakeFields;
     }
 }
-
-// TODO:
-// comparisons beware of legacy record
-// check fakeFields in legacyrecord

@@ -4477,4 +4477,42 @@ QUnit.module("Views", (hooks) => {
             ["5.00", "3.00", "8.00"]
         );
     });
+
+    QUnit.test("rendering of a pie chart widget and aggregate", async function (assert) {
+        await makeView({
+            type: "dashboard",
+            resModel: "test_report",
+            serverData,
+            arch: `
+                <dashboard>
+                    <widget name="pie_chart" title="Products sold" attrs="{'measure': 'sold', 'groupby': 'categ_id'}"/>
+                    <group>
+                        <aggregate name="sold" field="sold"/>
+                    </group>
+                </dashboard>
+            `,
+            legacyParams: { withLegacyMockServer: true },
+        });
+
+        assert.containsOnce(target, ".o_pie_chart");
+    });
+
+    QUnit.test("rendering of a pie chart widget and formula", async function (assert) {
+        await makeView({
+            type: "dashboard",
+            resModel: "test_report",
+            serverData,
+            arch: `
+                <dashboard>
+                    <widget name="pie_chart" title="Products sold" attrs="{'measure': 'sold', 'groupby': 'categ_id'}"/>
+                    <group>
+                        <formula name="sold" value="record.sold * record.untaxed"/>
+                    </group>
+                </dashboard>
+            `,
+            legacyParams: { withLegacyMockServer: true },
+        });
+
+        assert.containsOnce(target, ".o_pie_chart");
+    });
 });

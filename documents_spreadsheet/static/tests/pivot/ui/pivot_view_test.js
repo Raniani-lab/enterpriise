@@ -481,7 +481,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
                 },
             });
             // 72 products * 1 groups + 1 row header + 1 total col
-            assert.strictEqual(model.getters.getActiveSheet().cols.length, 75);
+            assert.strictEqual(model.getters.getNumberCols(model.getters.getActiveSheetId()), 75);
         }
     );
 
@@ -734,7 +734,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         const sheetId = model.getters.getActiveSheetId();
         const defaultColSize = 96;
         assert.ok(
-            model.getters.getCol(sheetId, 1).size > defaultColSize,
+            model.getters.getColSize(sheetId, 1) > defaultColSize,
             "Column should be resized"
         );
     });

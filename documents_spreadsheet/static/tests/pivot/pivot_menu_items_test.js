@@ -55,8 +55,8 @@ QUnit.module(
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
             const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
             await reinsertPivot1.action(env);
-            assert.equal(model.getters.getActiveSheet().cols.length, 6);
-            assert.equal(model.getters.getActiveSheet().rows.length, 5);
+            assert.equal(model.getters.getNumberCols("111"), 6);
+            assert.equal(model.getters.getNumberRows("111"), 5);
             assert.equal(
                 getCellFormula(model, "B3"),
                 `=PIVOT(1,"probability","bar","false","foo",1)`,

@@ -324,8 +324,7 @@ export default class PivotPlugin extends CorePlugin {
      */
     _resizeSheet(sheetId, anchor, table) {
         const colLimit = table.getColWidth() + 1; // +1 for the Top-Left
-        const sheet = this.getters.getSheet(sheetId);
-        const numberCols = sheet.cols.length;
+        const numberCols = this.getters.getNumberCols(sheetId);
         const deltaCol = numberCols - anchor[0];
         if (deltaCol < colLimit) {
             this.dispatch("ADD_COLUMNS_ROWS", {
@@ -337,7 +336,7 @@ export default class PivotPlugin extends CorePlugin {
             });
         }
         const rowLimit = table.getColHeight() + table.getRowHeight();
-        const numberRows = sheet.rows.length;
+        const numberRows = this.getters.getNumberRows(sheetId);
         const deltaRow = numberRows - anchor[1];
         if (deltaRow < rowLimit) {
             this.dispatch("ADD_COLUMNS_ROWS", {

@@ -329,8 +329,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
      * @param {number} rows Number of rows of the list
      */
     _resizeSheet(sheetId, anchor, columns, rows) {
-        const sheet = this.getters.getSheet(sheetId);
-        const numberCols = sheet.cols.length;
+        const numberCols = this.getters.getNumberCols(sheetId);
         const deltaCol = numberCols - anchor[0];
         if (deltaCol < columns) {
             this.dispatch("ADD_COLUMNS_ROWS", {
@@ -341,7 +340,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                 position: "after",
             });
         }
-        const numberRows = sheet.rows.length;
+        const numberRows = this.getters.getNumberRows(sheetId);
         const deltaRow = numberRows - anchor[1];
         if (deltaRow < rows) {
             this.dispatch("ADD_COLUMNS_ROWS", {

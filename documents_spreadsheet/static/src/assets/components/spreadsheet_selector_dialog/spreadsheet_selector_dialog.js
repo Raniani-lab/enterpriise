@@ -15,6 +15,7 @@ const LABELS = {
     PIVOT: "pivot",
     LIST: "list",
     LINK: "link",
+    GRAPH: "graph",
 };
 
 const DEFAULT_LIMIT = 9;

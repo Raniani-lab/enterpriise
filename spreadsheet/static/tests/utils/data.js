@@ -50,6 +50,14 @@ export function getBasicListArch() {
     `;
 }
 
+export function getBasicGraphArch() {
+    return /* xml */ `
+        <graph>
+            <field name="bar" />
+        </graph>
+    `;
+}
+
 /**
  * @returns {ServerData}
  */
@@ -59,6 +67,7 @@ export function getBasicServerData() {
         views: {
             "partner,false,list": getBasicListArch(),
             "partner,false,pivot": getBasicPivotArch(),
+            "partner,false,graph": getBasicGraphArch(),
             "partner,false,search": /* xml */ `<search/>`,
         },
     };

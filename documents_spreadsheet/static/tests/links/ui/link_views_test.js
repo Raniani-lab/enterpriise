@@ -233,12 +233,14 @@ QUnit.module(
         });
 
         QUnit.test("simple graph view", async function (assert) {
+            serviceRegistry.add("user", makeFakeUserService());
             const webClient = await openView("graph");
             await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "graph");
         });
 
         QUnit.test("graph view with custom chart type and order", async function (assert) {
+            serviceRegistry.add("user", makeFakeUserService());
             const webClient = await openView("graph");
             await click(target, ".fa-pie-chart");
             // count measure
@@ -302,6 +304,7 @@ QUnit.module(
         });
 
         QUnit.test("simple dashboard view", async function (assert) {
+            serviceRegistry.add("user", makeFakeUserService());
             const webClient = await openView("dashboard");
             await insertInSpreadsheetAndClickLink(target);
             assert.strictEqual(getCurrentViewType(webClient), "dashboard");
@@ -310,6 +313,7 @@ QUnit.module(
         QUnit.test(
             "dashboard view with custom chart type, group by and measure",
             async function (assert) {
+                serviceRegistry.add("user", makeFakeUserService());
 
                 patchWithCleanup(browser, { setTimeout: (fn) => fn() });
                 const webClient = await openView("dashboard");

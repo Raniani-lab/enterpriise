@@ -112,6 +112,19 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
         assert.strictEqual(target.querySelector(".o-sp-dialog-meta-threshold"), null);
     });
 
+    QUnit.test("Threshold is not displayed with graph type", async (assert) => {
+        const { target } = await mountSpreadsheetSelectorDialog({ props: { type: "GRAPH" } });
+        assert.strictEqual(
+            target.querySelector(".modal-title").textContent,
+            "Select a spreadsheet to insert your graph."
+        );
+        assert.strictEqual(
+            target.querySelector(".o-sp-dialog-meta-name-label").textContent,
+            "Name of the graph:"
+        );
+        assert.strictEqual(target.querySelector(".o-sp-dialog-meta-threshold"), null);
+    });
+
     QUnit.test("Threshold is displayed with list type", async (assert) => {
         const { target } = await mountSpreadsheetSelectorDialog({ props: { type: "LIST" } });
         assert.strictEqual(

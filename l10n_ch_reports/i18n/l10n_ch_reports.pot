@@ -259,6 +259,16 @@ msgid "Short-term assets with stock exchange price"
 msgstr ""
 
 #. module: l10n_ch_reports
+#: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_290_a
+msgid "Legal reserves"
+msgstr ""
+
+#. module: l10n_ch_reports
+#: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_290_b
+msgid "Previous years' profit or loss"
+msgstr ""
+
+#. module: l10n_ch_reports
 #: model:account.financial.html.report.line,name:l10n_ch_reports.account_financial_report_line_ch_5
 msgid "Staff cost"
 msgstr ""

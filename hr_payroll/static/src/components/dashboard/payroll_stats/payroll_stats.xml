@@ -40,7 +40,7 @@
 
     <t t-name="hr_payroll.Tooltip" owl="1">
         <div class="o-tooltip px-2 py-1">
-            <p style="font-size: large;" t-esc="info.help"/>
+            <p style="font-size: large;" t-esc="help"/>
         </div>
     </t>
 </odoo>

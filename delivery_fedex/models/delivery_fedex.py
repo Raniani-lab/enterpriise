@@ -196,6 +196,7 @@ class ProviderFedex(models.Model):
             srm.duties_payment(order.warehouse_id.partner_id, superself.fedex_account_number, superself.fedex_duty_payment)
 
         # Prepare the request
+        self._fedex_update_srm(srm, 'rate', order=order)
         del srm.ClientDetail['Region']
         request = serialize_object(dict(WebAuthenticationDetail=srm.WebAuthenticationDetail,
                                         ClientDetail=srm.ClientDetail,
@@ -302,6 +303,7 @@ class ProviderFedex(models.Model):
                 srm.set_master_package(net_weight, len(packages), master_tracking_id=master_tracking_id)
 
                 # Prepare the request
+                self._fedex_update_srm(srm, 'ship', picking=picking)
                 request = serialize_object(dict(WebAuthenticationDetail=srm.WebAuthenticationDetail,
                                                 ClientDetail=srm.ClientDetail,
                                                 TransactionDetail=srm.TransactionDetail,
@@ -398,13 +400,14 @@ class ProviderFedex(models.Model):
         srm.return_label(tracking_number, origin_date)
 
         # Prepare the request
+        self._fedex_update_srm(srm, 'return', picking=picking)
         request = serialize_object(dict(WebAuthenticationDetail=srm.WebAuthenticationDetail,
                                         ClientDetail=srm.ClientDetail,
                                         TransactionDetail=srm.TransactionDetail,
                                         VersionId=srm.VersionId,
                                         RequestedShipment=srm.RequestedShipment))
         self._fedex_add_extra_data_to_request(request, 'return')
-        response = srm.process_shipment()
+        response = srm.process_shipment(request)
         if not response.get('errors_message'):
             fedex_labels = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), response['tracking_number'], index, self.fedex_label_file_type), label)
                             for index, label in enumerate(srm._get_labels(self.fedex_label_file_type))]
@@ -485,7 +488,7 @@ class ProviderFedex(models.Model):
             'rate': self.fedex_extra_data_rate_request,
             'ship': self.fedex_extra_data_ship_request,
             'return': self.fedex_extra_data_return_request,
-        }.get(request_type, '')
+        }.get(request_type) or ''
         try:
             extra_data = const_eval('{' + extra_data_input + '}')
         except SyntaxError:
@@ -528,6 +531,10 @@ class ProviderFedex(models.Model):
         # Rounding to avoid differences between sum of values before and after conversion, caused by
         # Floating Point Arithmetic issues (ex: .1 + .1 + .1 != .3)
         return float_repr(new_value, 10)
+
+    def _fedex_update_srm(self, srm, request_type, order=None, picking=None):
+        """ Hook to introduce new custom behaviors in the Fedex request. """
+        return srm
 
 
 def _convert_curr_fdx_iso(code):

@@ -302,9 +302,9 @@ class FedexRequest():
             self.RequestedShipment.CustomsClearanceDetail.DutiesPayment.Payor = Payor
 
     def customs_value(self, customs_value_currency, customs_value_amount, document_content):
+        self.RequestedShipment.CustomsClearanceDetail = self.factory.CustomsClearanceDetail()
         if self.hasCommodities:
             self.RequestedShipment.CustomsClearanceDetail.Commodities = self.listCommodities
-        self.RequestedShipment.CustomsClearanceDetail = self.factory.CustomsClearanceDetail()
         self.RequestedShipment.CustomsClearanceDetail.CustomsValue = self.factory.Money()
         self.RequestedShipment.CustomsClearanceDetail.CustomsValue.Currency = customs_value_currency
         self.RequestedShipment.CustomsClearanceDetail.CustomsValue.Amount = customs_value_amount

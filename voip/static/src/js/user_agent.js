@@ -22,31 +22,12 @@ const CALL_STATE = {
 
 const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     /**
-     * Determine whether audio media can be played or not. This is useful in
-     * test, to prevent "NotAllowedError". This may be triggered if no DOM
-     * manipulation is detected before playing the media (chrome policy to
-     * prevent from autoplaying)
-     */
-    PLAY_MEDIA: true,
-    /**
      * @constructor
      */
     init(parent) {
         var self = this;
         mixins.EventDispatcherMixin.init.call(this);
         this.setParent(parent);
-        /**
-         * The audio element used to play the dial tone.
-         */
-        this._audioDialRingtone = undefined;
-        /**
-         * The audio element used to play the incoming call ringtone.
-         */
-        this._audioIncomingRingtone = undefined;
-        /**
-         * The audio element used to play the ringback tone.
-         */
-        this._audioRingbackTone = undefined;
         this._updateCallState(CALL_STATE.NO_CALL);
         /**
          * The phone number of the current external party.
@@ -151,9 +132,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     makeCall(number) {
         if (this.voip.mode === 'demo') {
-            if (this.PLAY_MEDIA) {
-                this._audioRingbackTone.play().catch(() => {});
-            }
+            this.voip.ringtoneRegistry.ringbackTone.play({ loop: true });
             this._timerAcceptedTimeout = this._demoTimeout(() => this._onOutgoingInvitationAccepted());
             this._isOutgoing = true;
             this._updateCallState(CALL_STATE.RINGING_CALL);
@@ -178,7 +157,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     rejectIncomingCall() {
         this._messaging.messagingBus.trigger('sip_rejected', this._currentCallParams);
-        this._audioIncomingRingtone.pause();
+        this.voip.ringtoneRegistry.incomingCallRingtone.stop();
         this._sipSession = false;
         this._updateCallState(CALL_STATE.NO_CALL);
         if (this._currentInviteSession) {
@@ -256,7 +235,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             return;
         }
 
-        this._audioIncomingRingtone.pause();
+        this.voip.ringtoneRegistry.incomingCallRingtone.stop();
         const callOptions = {
             sessionDescriptionHandlerOptions: {
                 constraints: { audio: true, video: false },
@@ -277,7 +256,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @private
      */
     _cancelEstablishingSession() {
-        this._stopRingtones();
+        this.voip.ringtoneRegistry.stopAll();
         this._updateCallState(CALL_STATE.NO_CALL);
         this._messaging.messagingBus.trigger('sip_cancel_outgoing');
         if (this._sipSession) {
@@ -306,19 +285,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this.$remoteAudio = document.createElement('audio');
         this.$remoteAudio.autoplay = true;
         $('html').append(this.$remoteAudio);
-        this._audioRingbackTone = document.createElement('audio');
-        this._audioRingbackTone.loop = 'true';
-        this._audioRingbackTone.src = '/voip/static/src/sounds/ringbacktone.mp3';
-        $('html').append(this._audioRingbackTone);
-        this._audioIncomingRingtone = document.createElement('audio');
-        this._audioIncomingRingtone.loop = 'true';
-        this._audioIncomingRingtone.src = '/voip/static/src/sounds/incomingcall.mp3';
-        $('html').append(this._audioincomingRingtone);
-        this._audioDialRingtone = document.createElement('audio');
-        this._audioDialRingtone.loop = 'true';
-        this._audioDialRingtone.src = '/voip/static/src/sounds/dialtone.mp3';
-        this._audioDialRingtone.volume = 0.7;
-        $('html').append(this._audioDialRingtone);
     },
     /**
      * Configure the audio media stream, at the begining of a call.
@@ -335,7 +301,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             }
         }
         this.$remoteAudio.srcObject = remoteStream;
-        if (this.PLAY_MEDIA) {
+        if (!this._messaging.isInQUnitTest) {
             this.$remoteAudio.play().catch(() => {});
         }
     },
@@ -536,7 +502,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _rejectInvite(inviteSession) {
         if (!this._isOutgoing) {
-            this._audioIncomingRingtone.pause();
+            this.voip.ringtoneRegistry.incomingCallRingtone.stop();
             inviteSession.reject({ statusCode: 603 });
         }
     },
@@ -585,13 +551,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 }
             }
         }
-    },
-    /**
-     * @private
-     */
-    _stopRingtones() {
-        this._audioRingbackTone.pause();
-        this._audioDialRingtone.pause();
     },
     /**
      * Exits the `ongoing` state. In production mode, sends a BYE request to end
@@ -711,9 +670,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onGetUserMediaSuccess(stream) {
         if (this._isOutgoing) {
             this._messaging.messagingBus.trigger('sip_error_resolved');
-            if (this.PLAY_MEDIA) {
-                this._audioDialRingtone.play().catch(() => {});
-            }
+            this.voip.ringtoneRegistry.dialTone.play({ loop: true });
         } else {
             this._updateCallState(CALL_STATE.ONGOING_CALL);
             this._messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
@@ -727,7 +684,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {SIP.IncomingRequestMessage} message
      */
     _onIncomingInvitationCanceled(message) {
-        this._audioIncomingRingtone.pause();
+        this.voip.ringtoneRegistry.incomingCallRingtone.stop();
         if (this._notification) {
             this._notification.removeEventListener('close', this._rejectInvite, this._sipSession);
             this._notification.close();
@@ -852,9 +809,8 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         this._isOutgoing = false;
         this._updateCallState(CALL_STATE.RINGING_CALL);
-        this._audioIncomingRingtone.currentTime = 0;
-        if (this.PLAY_MEDIA && this.call('bus_service', 'isMasterTab')) {
-            this._audioIncomingRingtone.play().catch(() => {});
+        if (this.call('bus_service', 'isMasterTab')) {
+            this.voip.ringtoneRegistry.incomingCallRingtone.play({ loop: true });
         }
         this._notification = this._sendNotification('Odoo', content);
         this._currentCallParams = incomingCallParams;
@@ -884,7 +840,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onOutgoingInvitationAccepted(response) {
         this._updateCallState(CALL_STATE.ONGOING_CALL);
-        this._stopRingtones();
+        this.voip.ringtoneRegistry.stopAll();
         if (
             this.voip.mode === 'prod' &&
             this._messaging.currentUser.res_users_settings_id.should_call_from_another_device &&
@@ -912,10 +868,8 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onOutgoingInvitationProgress(response) {
         const { statusCode } = response.message;
         if (statusCode === 183 /* Session Progress */ || statusCode === 180 /* Ringing */) {
-            this._audioDialRingtone.pause();
-            if (this.PLAY_MEDIA) {
-                this._audioRingbackTone.play().catch(() => {});
-            }
+            this.voip.ringtoneRegistry.dialTone.stop();
+            this.voip.ringtoneRegistry.ringbackTone.play({ loop: true });
             this._messaging.messagingBus.trigger('changeStatus');
         }
     },
@@ -935,7 +889,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             return;
         }
         this._sipSession = false;
-        this._stopRingtones();
+        this.voip.ringtoneRegistry.stopAll();
         this._updateCallState(CALL_STATE.NO_CALL);
         const errorMessage = (() => {
             switch (response.message.statusCode) {

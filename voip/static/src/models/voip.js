@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
 import { registerModel } from "@mail/model/model_core";
-import { attr } from "@mail/model/model_field";
-import { clear } from "@mail/model/model_field_command";
+import { attr, one } from "@mail/model/model_field";
+import { clear, insertAndReplace } from "@mail/model/model_field_command";
 
 /**
  * Models the global state of the VoIP module.
@@ -98,6 +98,11 @@ registerModel({
          * the interface but no RTC sessions are actually established.
          */
         mode: attr(),
+        ringtoneRegistry: one("RingtoneRegistry", {
+            default: insertAndReplace(),
+            inverse: "voip",
+            isCausal: true,
+        }),
         /**
          * Determines if the `should_call_from_another_device` setting is set
          * and if an `external_device_number` has been provided.

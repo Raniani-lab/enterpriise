@@ -17,9 +17,6 @@
             <div name="date_deadline" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('is_closed', '=', True)]}</attribute>
             </div>
-            <div name="date_deadline" position="after">
-                <field name="planned_date_begin" />
-            </div>
             <xpath expr="//field[@name='kanban_state']" position="attributes">
                 <attribute name="invisible">context.get('fsm_mode', False)</attribute>
             </xpath>

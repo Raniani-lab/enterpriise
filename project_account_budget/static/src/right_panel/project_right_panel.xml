@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="o_rightpanel_data" t-if="budget and budget_items.length > 0">
-                <table class="w-100">
+                <table class="w-100 table-striped">
                     <thead>
                         <tr>
                             <th style="width: 40%">Budgetary Positions</th>

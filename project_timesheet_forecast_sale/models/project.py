@@ -28,7 +28,7 @@ class Project(models.Model):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("project_timesheet_forecast.project_timesheet_forecast_report_action")
         action.update({
-            'name': 'Timesheets and Planning Analysis',
+            'display_name': _("%s's Timesheets and Planning Analysis", name=self.name),
             'domain': [('project_id', '=', self.id)],
             'context': {
                 'pivot_row_groupby': ['entry_date:month', 'sale_line_id'],

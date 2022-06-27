@@ -16,6 +16,7 @@ Bridge module for project and enterprise
         'views/project_task_views.xml',
         'views/project_views.xml',
         'views/project_sharing_templates.xml',
+        'views/project_sharing_views.xml',
         'report/project_report_views.xml',
         'wizard/task_confirm_schedule_wizard_views.xml',
     ],

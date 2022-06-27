@@ -5,7 +5,7 @@ import ast
 import datetime
 import json
 
-from odoo import api, fields, models, _lt
+from odoo import api, fields, models, _, _lt
 from odoo.osv import expression
 
 
@@ -40,6 +40,7 @@ class Project(models.Model):
             'search_default_project_id': [self.id],
             **ast.literal_eval(action['context'])
         }
+        action['display_name'] = _("%s's Planning", self.name)
         if first_slot:
             action['context'].update({'initialDate': first_slot.start_datetime})
         elif self.date_start and self.date_start >= datetime.date.today():
@@ -54,7 +55,7 @@ class Project(models.Model):
         buttons = super(Project, self)._get_stat_buttons()
         buttons.append({
             'icon': 'tasks',
-            'text': _lt('Forecast'),
+            'text': _lt('Planned'),
             'number': '%s Hours' % (self.total_forecast_time),
             'action_type': 'object',
             'action': 'action_project_forecast_from_project',

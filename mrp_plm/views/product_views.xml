@@ -24,7 +24,7 @@
         <field name="groups_id" eval="[(4, ref('mrp_plm.group_plm_user'))]"/>
         <field name="arch" type="xml">
             <button name="action_view_mos" position="before">
-                <button class="oe_stat_button" name="%(mrp_eco_action_product_tmpl)d" type="action" icon="fa-wrench" groups="mrp_plm.group_plm_user">
+                <button class="oe_stat_button" name="%(mrp_eco_action_product_tmpl)d" type="action" icon="fa-wrench" groups="mrp_plm.group_plm_user" attrs="{'invisible': [('detailed_type', '==', 'service')]}">
                     <field string="ECOs" name="eco_count" widget="statinfo"/>
                 </button>
             </button>

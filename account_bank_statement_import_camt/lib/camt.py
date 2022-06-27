@@ -647,6 +647,7 @@ class CAMT:
         entry = nodes[1] if len(nodes) > 1 else nodes[0]
         journal_currency_name = journal_currency.name if journal_currency else None
         entry_amount = get_value_and_currency_name(entry, CAMT._amount_charges_getters, target_currency=journal_currency_name)[0]
+        entry_details_amount = get_value_and_currency_name(entry_details, CAMT._amount_charges_getters, target_currency=journal_currency_name)[0]
 
         charges = get_charges(entry_details, entry)
         getters = CAMT._amount_charges_getters if charges else CAMT._amount_getters
@@ -674,12 +675,13 @@ class CAMT:
             if total_amount == entry_amount:
                 return sign * amount * rate
         elif journal_currency:
+            entry_amount = entry_details_amount or entry_amount
             total_amount = total_amount or amount
             if journal_currency.compare_amounts(total_amount * rate, entry_amount) == 0:
                 return journal_currency.round(sign * amount * rate)
             elif journal_currency.compare_amounts(total_amount / rate, entry_amount) == 0:
                 return journal_currency.round(sign * amount / rate)
-        return sign * amount
+        return sign * amount * rate
 
     @staticmethod
     def _get_counter_party(*nodes, namespaces):

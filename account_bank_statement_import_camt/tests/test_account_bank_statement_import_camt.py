@@ -236,6 +236,9 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
     def test_camt_with_several_tx_details_and_multicurrency_02(self):
         self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_multicurrency_02.xml')
 
+    def test_camt_with_several_tx_details_and_multicurrency_03(self):
+        self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_multicurrency_03.xml')
+
     def test_camt_with_several_tx_details_and_charges(self):
         self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_charges.xml')
 

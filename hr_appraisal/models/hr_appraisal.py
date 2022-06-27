@@ -417,14 +417,17 @@ class HrAppraisal(models.Model):
     def action_back(self):
         self.action_confirm()
 
-    def action_open_last_appraisal(self):
+    def action_open_last_appraisals(self):
         self.ensure_one()
+        view_id = self.env.ref('hr_appraisal.hr_appraisal_view_tree_orderby_create_date').id
         return {
-            'view_mode': 'form',
+            'name': _('Previous Appraisals'),
             'res_model': 'hr.appraisal',
+            'view_mode': 'tree,kanban,form,gantt,calendar,activity',
+            'view_ids': [(view_id, 'tree'), (False, 'kanban'), (False, 'form'), (False, 'gantt'), (False, 'calendar'), (False, 'activity')],
+            'domain': [('employee_id', '=', self.employee_id.id)],
             'type': 'ir.actions.act_window',
             'target': 'current',
-            'res_id': self.previous_appraisal_id.id,
         }
 
     def action_open_goals(self):

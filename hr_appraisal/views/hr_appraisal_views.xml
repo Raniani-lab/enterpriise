@@ -30,7 +30,7 @@
                             <span class="o_stat_text">Goals</span>
                         </div>
                     </button>
-                    <button class="oe_stat_button" name="action_open_last_appraisal" icon="fa-star-half-o" type="object" attrs="{'invisible': &quot;['|', ('previous_appraisal_id', '=', False), ('previous_appraisal_id', '=', id)]&quot;}">
+                    <button class="oe_stat_button" name="action_open_last_appraisals" icon="fa-star-half-o" type="object" attrs="{'invisible': &quot;['|', ('previous_appraisal_id', '=', False), ('previous_appraisal_id', '=', id)]&quot;}">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_value">Prev. Appraisal</span>
                             <span class="o_stat_text"><field name="previous_appraisal_date"/></span>
@@ -168,6 +168,21 @@
                 <field name="state" widget="badge" readonly="1" decoration-info="state in ('new','pending')" decoration-success="state == 'done'"/>
                 <field name="company_id" readonly="1" groups="base.group_multi_company"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="hr_appraisal_view_tree_orderby_create_date" model="ir.ui.view">
+        <field name="name">hr.appraisal.tree</field>
+        <field name="model">hr.appraisal</field>
+        <field name="inherit_id" ref="view_hr_appraisal_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="active" position="after">
+                <field name="create_date" invisible="1"/>
+            </field>
+            <tree position="attributes">
+                <attribute name="default_order">create_date desc</attribute> 
             </tree>
         </field>
     </record>

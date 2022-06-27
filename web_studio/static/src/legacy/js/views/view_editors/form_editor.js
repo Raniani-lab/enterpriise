@@ -671,7 +671,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
     async _renderView() {
         await this._super(...arguments);
         if (this.hasChatter) {
-            const $el = $(this._chatterContainerComponent.el);
+            const $el = $(this._chatterContainerTarget);
             this.setSelectable($el);
             // Put a div in overlay preventing all clicks chatter's elements
             $el.append($('<div>', { 'class': 'o_web_studio_overlay' }));

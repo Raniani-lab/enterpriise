@@ -1638,17 +1638,17 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o_ChatterContainer[data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o_FormRenderer_chatterContainer[data-node-id]',
             "there should be a chatter node");
 
         // click on the chatter
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_ChatterContainer[data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_FormRenderer_chatterContainer[data-node-id]'));
 
         assert.hasClass(vem.$('.o_web_studio_sidebar .o_web_studio_properties'),'active',
             "the Properties tab should now be active");
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_chatter',
             "the sidebar should now display the chatter properties");
-        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_ChatterContainer[data-node-id]'),'o_web_studio_clicked',
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_FormRenderer_chatterContainer[data-node-id]'),'o_web_studio_clicked',
             "the chatter should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="email_alias"]').val(), "coucou",
             "the email alias in sidebar should be fetched");

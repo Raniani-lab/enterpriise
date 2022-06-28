@@ -49,7 +49,12 @@ class AccountBatchPaymentRejection(models.TransientModel):
 
     def button_cancel_payments(self):
         self.rejected_payment_ids.batch_payment_id = False
-        self.rejected_payment_ids.move_id._reverse_moves(cancel=True)
+        to_unlink = self.rejected_payment_ids.move_id.filtered(lambda x: not x._get_violated_lock_dates(x.date, False))
+        to_reject = self.rejected_payment_ids.move_id - to_unlink
+        if to_unlink:
+            to_unlink.button_draft()
+        if to_reject:
+            to_reject._reverse_moves(cancel=True)
         return True
 
     def button_continue(self):

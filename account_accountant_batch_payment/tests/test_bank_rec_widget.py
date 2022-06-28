@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from unittest.mock import patch
+
 from odoo import Command
 from odoo.addons.account_accountant.tests.test_bank_rec_widget_common import TestBankRecWidgetCommon, WizardForm
 from odoo.tests import tagged
@@ -146,6 +148,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         payments = self.env['account.payment'].create([
             {
+                'date': '2018-01-01',
                 'payment_type': 'inbound',
                 'partner_type': 'customer',
                 'partner_id': self.partner_a.id,
@@ -190,7 +193,19 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             'nb_batch_payment_ids': 1,
         }])
 
-        # Chose to cancel the payments.
+        # Chose to cancel the payments with a lock date.
+        self.env.company.fiscalyear_lock_date = '2018-01-01'
         rejection_wizard.button_cancel_payments()
         self.assertEqual(len(batch.payment_ids), len(payments) - 1, "The last payment has been removed from the batch")
         self.assertRecordValues(payments[-1].line_ids, [{'reconciled': True}] * 2)
+
+        # Chose to cancel the payments without a lock date.
+        def _autorise_lock_date_changes(*args, **kwargs):
+            pass
+
+        with patch('odoo.addons.account_lock.models.res_company.ResCompany._autorise_lock_date_changes', new=_autorise_lock_date_changes):
+            self.env.company.fiscalyear_lock_date = None
+        rejection_wizard.rejected_payment_ids.line_ids.remove_move_reconcile()
+        rejection_wizard.rejected_payment_ids.batch_payment_id = batch
+        rejection_wizard.button_cancel_payments()
+        self.assertFalse(rejection_wizard.rejected_payment_ids.exists())

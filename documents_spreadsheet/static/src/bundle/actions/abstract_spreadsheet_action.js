@@ -5,7 +5,9 @@ import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import { getDataFromTemplate } from "@spreadsheet/helpers/helpers";
-import spreadsheet, {    initCallbackRegistry} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import spreadsheet, {
+    initCallbackRegistry,
+} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
@@ -20,11 +22,11 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
             // the action is coming from wowl
             this.params = this.props.action.params;
         }
-        this.isEmptySpreadsheet = !(this.params.spreadsheet_id ||
-            this.params.active_id);
-        this.resId = this.params.spreadsheet_id ||
+        this.isEmptySpreadsheet = !(this.params.spreadsheet_id || this.params.active_id);
+        this.resId =
+            this.params.spreadsheet_id ||
             this.params.active_id || // backward compatibility. spreadsheet_id used to be active_id
-            this.props.state && this.props.state.resId; // used when going back to a spreadsheet via breadcrumb
+            (this.props.state && this.props.state.resId); // used when going back to a spreadsheet via breadcrumb
         this.router = useService("router");
         this.actionService = useService("action");
         this.notifications = useService("notification");
@@ -33,7 +35,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
             getLocalState: () => {
                 return {
                     resId: this.resId,
-                }
+                };
             },
         });
         this.state = useState({
@@ -44,7 +46,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         onMounted(() => this.onMounted());
     }
 
-    async loadChartLibs () {
+    async loadChartLibs() {
         await loadJS("/web/static/lib/Chart/Chart.js");
         await loadJS("/documents_spreadsheet/static/lib/chartjs-gauge/chartjs-gauge.js");
     }
@@ -53,9 +55,12 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         // if we are returning to the spreadsheet via the breadcrumb, we don't want
         // to do all the "creation" options of the actions
         if (!this.props.state) {
-            [this.resId, ] = await Promise.all([this._createAddSpreadsheetData(), this.loadChartLibs()]);
+            [this.resId] = await Promise.all([
+                this._createAddSpreadsheetData(),
+                this.loadChartLibs(),
+            ]);
         }
-        const [record, ] = await Promise.all([this._fetchData(), this.loadChartLibs()]);
+        const [record] = await Promise.all([this._fetchData(), this.loadChartLibs()]);
         this._initializeWith(record);
     }
 
@@ -74,19 +79,25 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
             });
         }
         if (this.params.preProcessingAction) {
-            const initCallbackGenerator = initCallbackRegistry.get(this.params.preProcessingAction).bind(this);
+            const initCallbackGenerator = initCallbackRegistry
+                .get(this.params.preProcessingAction)
+                .bind(this);
             this.initCallback = await initCallbackGenerator(this.params.preProcessingActionData);
         }
         if (this.params.preProcessingAsyncAction) {
-            const initCallbackGenerator = initCallbackRegistry.get(this.params.preProcessingAsyncAction).bind(this);
-            this.asyncInitCallback = await initCallbackGenerator(this.params.preProcessingAsyncActionData);
+            const initCallbackGenerator = initCallbackRegistry
+                .get(this.params.preProcessingAsyncAction)
+                .bind(this);
+            this.asyncInitCallback = await initCallbackGenerator(
+                this.params.preProcessingAsyncActionData
+            );
         }
         return resId;
     }
 
     onMounted() {
         this.router.pushState({ spreadsheet_id: this.resId });
-        this.env.config.setDisplayName(this.state.spreadsheetName)
+        this.env.config.setDisplayName(this.state.spreadsheetName);
     }
 
     async _onMakeCopy() {

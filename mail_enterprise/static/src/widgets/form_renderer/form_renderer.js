@@ -25,8 +25,6 @@ FormRenderer.include({
      */
     init: function () {
         this._super.apply(this, arguments);
-
-        this.attachmentViewerTarget = undefined;
         this.attachmentPreviewResID = undefined;
         this.attachmentViewer = undefined;
         /**
@@ -67,16 +65,9 @@ FormRenderer.include({
                     this.attachmentViewer.destroy();
                     this.attachmentViewer = undefined;
                 }
-            } else {
-                this.attachmentViewerTarget = document.createElement("div");
-                this.attachmentViewerTarget.classList.add("o_attachment_preview");
             }
-            this._handleAttributes($(this.attachmentViewerTarget), node);
-            this._registerModifiers(node, this.state, $(this.attachmentViewerTarget));
-            return this.attachmentViewerTarget;
-        } else {
-            return this._super.apply(this, arguments);
         }
+        return this._super.apply(this, arguments);
     },
     /**
      * Overrides the function to interchange the chatter and the preview once

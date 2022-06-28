@@ -2,12 +2,9 @@
 
 import ListController from "web.ListController";
 import { _t } from "web.core";
-import { sprintf } from "@web/core/utils/strings";
 
 import { removeContextUserInfo } from "../helpers";
 import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
-
-
 
 ListController.include({
     _insertListSpreadsheet() {
@@ -19,12 +16,16 @@ ListController.include({
         if (sortBy) {
             name += ` ${_t("by")} ` + model.fields[sortBy.name].string;
         }
-
+        const { list, fields } = this._getListForSpreadsheet(name);
+        const actionOptions = {
+            preProcessingAsyncAction: "insertList",
+            preProcessingAsyncActionData: { list, threshold, fields },
+        };
         const params = {
             threshold,
             type: "LIST",
             name,
-            confirm: (args) => this._insertInSpreadsheet(args),
+            actionOptions,
         };
         this.call("dialog", "add", SpreadsheetSelectorDialog, params);
     },
@@ -42,7 +43,7 @@ ListController.include({
             .filter((col) => col.tag === "field")
             .filter((col) => col.attrs.widget !== "handle")
             .filter((col) => fields[col.attrs.name].type !== "binary")
-            .map((col) => ({name: col.attrs.name, type: fields[col.attrs.name].type}));
+            .map((col) => ({ name: col.attrs.name, type: fields[col.attrs.name].type }));
     },
 
     /**
@@ -65,52 +66,6 @@ ListController.include({
             },
             fields: data.fields,
         };
-    },
-
-
-    /**
-     * Open a new spreadsheet or an existing one and insert the list in it.
-     *
-     * @private
-     *
-     * @param {Object} params
-     * @param {object} params.spreadsheet details of the selected document
-     *                                  in which the pivot should be inserted. undefined if
-     *                                  it's a new sheet. Might be null is no spreadsheet was selected
-     * @param {number} params.spreadsheet.id the id of the selected spreadsheet
-     * @param {string} params.spreadsheet.name the name of the selected spreadsheet
-     * @param {number} params.threshold Number of records to insert
-     * @param {string} params.name Name of the list
-     *
-     */
-    async _insertInSpreadsheet({ spreadsheet, threshold, name }) {
-        let notificationMessage;
-        const { list, fields } = this._getListForSpreadsheet(name);
-        const actionOptions = {
-            preProcessingAsyncAction: "insertList",
-            preProcessingAsyncActionData: { list, threshold, fields }
-        };
-
-        if (!spreadsheet) {
-            actionOptions.alwaysCreate = true;
-            notificationMessage = _t("New spreadsheet created in Documents");
-        } else {
-            actionOptions.spreadsheet_id = spreadsheet.id;
-            notificationMessage = sprintf(
-                _t("New sheet inserted in '%s'"),
-                spreadsheet.name
-            );
-        }
-        this.displayNotification({
-            type: "info",
-            message: notificationMessage,
-            sticky: false,
-        });
-        this.do_action({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: actionOptions,
-        });
     },
 
     on_attach_callback() {

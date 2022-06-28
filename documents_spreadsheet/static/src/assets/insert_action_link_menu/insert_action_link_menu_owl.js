@@ -3,9 +3,7 @@
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
 import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
-
 
 const { Component } = owl;
 const favoriteMenuRegistry = registry.category("favoriteMenu");
@@ -26,42 +24,17 @@ export class InsertViewSpreadsheet extends Component {
     //-------------------------------------------------------------------------
 
     linkInSpreadsheet() {
-        this.dialogManager.add(SpreadsheetSelectorDialog, {
-            type: "LINK",
-            name: this.env.config.getDisplayName(),
-            confirm: (args) => this.insertInSpreadsheet(args),
-        });
-    }
-
-    /**
-     * Open a new spreadsheet or an existing one and insert a link to the action.
-     */
-    async insertInSpreadsheet({ spreadsheet, name }) {
         const actionToLink = this.getViewDescription();
-        actionToLink.name = name;
         // do action with action link
-        let notificationMessage;
         const actionOptions = {
             preProcessingAction: "insertLink",
             preProcessingActionData: actionToLink,
         };
 
-        if (!spreadsheet.id) {
-            actionOptions.alwaysCreate = true;
-            notificationMessage = this.env._t("New spreadsheet created in Documents");
-        } else {
-            actionOptions.spreadsheet_id = spreadsheet.id;
-            notificationMessage = sprintf(
-                this.env._t("New sheet inserted in '%s'"),
-                spreadsheet.name
-            );
-        }
-
-        this.notification.add(notificationMessage, { type: "info" });
-        this.actionService.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: actionOptions,
+        this.dialogManager.add(SpreadsheetSelectorDialog, {
+            type: "LINK",
+            actionOptions,
+            name: this.env.config.getDisplayName(),
         });
     }
 
@@ -92,7 +65,7 @@ favoriteMenuRegistry.add(
         Component: InsertViewSpreadsheet,
         groupNumber: 4,
         isDisplayed: ({ config, isSmall }) =>
-            !isSmall && config.actionType === "ir.actions.act_window"
+            !isSmall && config.actionType === "ir.actions.act_window",
     },
     { sequence: 1 }
 );

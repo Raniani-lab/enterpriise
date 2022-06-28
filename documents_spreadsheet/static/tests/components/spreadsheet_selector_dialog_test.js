@@ -12,6 +12,11 @@ import {
 } from "@web/../tests/helpers/utils";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
+import { notificationService } from "@web/core/notifications/notification_service";
+import { registry } from "@web/core/registry";
+import { actionService } from "@web/webclient/actions/action_service";
+
+const serviceRegistry = registry.category("services");
 
 const serverData = getBasicServerData();
 serverData.models["documents.document"].records = [
@@ -45,7 +50,7 @@ function getDefaultProps() {
     return {
         type: "PIVOT",
         name: "Pipeline",
-        confirm: () => {},
+        actionOptions: {},
         close: () => {},
     };
 }
@@ -80,7 +85,12 @@ async function mountSpreadsheetSelectorDialog(config = {}) {
     return { target, env };
 }
 
-QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
+function beforeEach() {
+    serviceRegistry.add("notification", notificationService);
+    serviceRegistry.add("action", actionService);
+}
+
+QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", { beforeEach }, () => {
     QUnit.test("Display only spreadsheet and a blank spreadsheet", async (assert) => {
         const { target } = await mountSpreadsheetSelectorDialog();
         assert.strictEqual(target.querySelectorAll(".o-sp-dialog-item").length, 3);
@@ -139,27 +149,55 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
     });
 
     QUnit.test("Can change the name of an object", async (assert) => {
-        assert.expect(1);
         const NEW_NAME = "new name";
-        const confirm = (args) => {
-            assert.strictEqual(args.name, NEW_NAME);
+        const fakeActionService = {
+            name: "action",
+            start() {
+                return {
+                    doAction(action) {
+                        assert.step(action.tag);
+                        assert.deepEqual(action.params.preProcessingActionData.name, "new name");
+                        assert.deepEqual(
+                            action.params.preProcessingAsyncActionData.name,
+                            "new name"
+                        );
+                    },
+                };
+            },
         };
-        const { target } = await mountSpreadsheetSelectorDialog({ props: { confirm } });
+        serviceRegistry.add("action", fakeActionService, { force: true });
+        const { target } = await mountSpreadsheetSelectorDialog();
         /** @type {HTMLInputElement} */
         const input = target.querySelector(".o-sp-dialog-meta-name input");
         input.value = NEW_NAME;
         await triggerEvent(input, null, "input");
         await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
+        assert.verifySteps(["action_open_spreadsheet"]);
     });
 
     QUnit.test("Can change the threshold of a list object", async (assert) => {
-        assert.expect(2);
         const threshold = 10;
-        const confirm = (args) => {
-            assert.strictEqual(args.threshold, threshold);
+        const fakeActionService = {
+            name: "action",
+            start() {
+                return {
+                    doAction(action) {
+                        assert.step(action.tag);
+                        assert.deepEqual(
+                            action.params.preProcessingActionData.threshold,
+                            threshold
+                        );
+                        assert.deepEqual(
+                            action.params.preProcessingAsyncActionData.threshold,
+                            threshold
+                        );
+                    },
+                };
+            },
         };
+        serviceRegistry.add("action", fakeActionService, { force: true });
         const { target } = await mountSpreadsheetSelectorDialog({
-            props: { type: "LIST", confirm, threshold: 4 },
+            props: { type: "LIST", threshold: 4 },
         });
         /** @type {HTMLInputElement} */
         const input = target.querySelector(".o-sp-dialog-meta-threshold-input");
@@ -167,6 +205,7 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
         input.value = threshold.toString();
         await triggerEvent(input, null, "input");
         await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
+        assert.verifySteps(["action_open_spreadsheet"]);
     });
 
     QUnit.test(
@@ -236,10 +275,18 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
 
     QUnit.test("Can select the empty spreadsheet", async (assert) => {
         assert.expect(1);
-        const confirm = (args) => {
-            assert.strictEqual(args.spreadsheet, false);
+        const fakeActionService = {
+            name: "action",
+            start() {
+                return {
+                    doAction(action) {
+                        assert.deepEqual(action.params.spreadsheet_id, false);
+                    },
+                };
+            },
         };
-        const { target } = await mountSpreadsheetSelectorDialog({ props: { confirm } });
+        serviceRegistry.add("action", fakeActionService, { force: true });
+        const { target } = await mountSpreadsheetSelectorDialog();
         const blank = target.querySelector(".o-sp-dialog-item-blank img");
         await triggerEvent(blank, null, "focus");
         await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
@@ -247,10 +294,19 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", {}, () => {
 
     QUnit.test("Can select an existing spreadsheet", async (assert) => {
         assert.expect(1);
-        const confirm = (args) => {
-            assert.strictEqual(args.spreadsheet.id, 1);
+
+        const fakeActionService = {
+            name: "action",
+            start() {
+                return {
+                    doAction(action) {
+                        assert.deepEqual(action.params.spreadsheet_id, 1);
+                    },
+                };
+            },
         };
-        const { target } = await mountSpreadsheetSelectorDialog({ props: { confirm } });
+        serviceRegistry.add("action", fakeActionService, { force: true });
+        const { target } = await mountSpreadsheetSelectorDialog();
         const blank = target.querySelector('.o-sp-dialog-item div[data-id="1"]');
         await triggerEvent(blank, null, "focus");
         await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));

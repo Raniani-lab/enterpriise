@@ -15,10 +15,11 @@ const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
  * @param {object} param
  * @param {number} param.threshold
  * @param {object} param.fields fields coming from list_model
+ * @param {string} param.name Name of the list
  *
  * @returns {function}
  */
-export function insertList({list, threshold, fields}) {
+export function insertList({ list, threshold, fields, name }) {
     const definition = {
         metaData: {
             resModel: list.model,
@@ -30,18 +31,14 @@ export function insertList({list, threshold, fields}) {
             context: list.context,
             orderBy: list.orderBy,
         },
-        name: list.name,
-    }
+        name,
+    };
     return async (model) => {
         const dataSourceId = uuidGenerator.uuidv4();
-        model.config.dataSources.add(
-            dataSourceId,
-            ListDataSource,
-            {
-                ...definition,
-                limit: threshold
-            }
-        );
+        model.config.dataSources.add(dataSourceId, ListDataSource, {
+            ...definition,
+            limit: threshold,
+        });
         await model.config.dataSources.load(dataSourceId);
         if (!this.isEmptySpreadsheet) {
             const sheetId = uuidGenerator.uuidv4();

@@ -16,33 +16,8 @@
                     </div>
                 </div>
                 <div class="o-sp-dialog-spreadsheets">
-                    <div class="o-sp-dialog-headers">
-                        <div class="o-sp-dialog-header" t-att-class="{ active: state.panel === 'spreadsheets' }" t-on-click="() => this.activatePanel('spreadsheets')">Spreadsheets</div>
-                    </div>
-                    <div class="o-sp-dialog-content">
-                        <div class="o-sp-dialog-cp">
-                            <div class="o-sp-searchview">
-                                <input type="text" class="o-sp-searchview-input" placeholder="Search..." t-on-input="onSearchInput"/>
-                                <i class="o-sp-searchview-icon oi oi-search" role="img" aria-label="Search..." title="Search..."></i>
-                            </div>
-                            <div class="o-pager">
-                                <Pager offset="state.pagerProps.offset" limit="state.pagerProps.limit" total="state.pagerProps.total" onUpdate.bind="onUpdatePager" isEditable="false" />
-                            </div>
-                        </div>
-                        <div class="o-sp-dialog-items">
-                            <t t-if="state.panel === 'spreadsheets'">
-                                <div class="o-sp-dialog-item o-sp-dialog-item-blank">
-                                    <img tabindex="0" t-on-focus="() => this._selectItem(false)" t-att-class="{ selected: state.selectedSpreadsheetId === false }" src="documents_spreadsheet/static/img/spreadsheet.svg" t-att-title="Blank"/>
-                                    <div class="o-sp-dialog-item-label">Blank spreadsheet</div>
-                                </div>
-                                <div t-foreach="state.spreadsheets" t-as="spreadsheet" t-key="spreadsheet.id" class="o-sp-dialog-item">
-                                    <div t-if="!spreadsheet.thumbnail" class="o-sp-dialog-no-preview text-muted" tabindex="0" t-on-focus="() => this._selectItem(spreadsheet.id)" t-att-class="{ selected: state.selectedSpreadsheetId === spreadsheet.id}" t-att-data-id="spreadsheet.id">No preview</div>
-                                    <img t-else="1" class="o-sp-dialog-item-img" tabindex="0" t-on-focus="() => this._selectItem(spreadsheet.id)" t-att-class="{ selected: state.selectedSpreadsheetId === spreadsheet.id}" t-att-src="getUrl(spreadsheet.thumbnail)" t-att-title="spreadsheet.name" t-att-data-id="spreadsheet.id"/>
-                                    <div class="o-sp-dialog-item-label" t-esc="spreadsheet.name"/>
-                                </div>
-                            </t>
-                        </div>
-                    </div>
+                    <div class="o-sp-dialog-headers"></div>
+                    <div class="o-sp-dialog-content"></div>
                 </div>
                 <t t-set-slot="footer" owl="1">
                     <button class="btn btn-primary" t-on-click="_confirm">Confirm</button>
@@ -50,6 +25,24 @@
                 </t>
             </div>
         </Dialog>
+    </t>
+
+    <t t-name="documents_spreadsheet.DocumentSelectorPanel"
+        t-inherit="documents_spreadsheet.SpreadsheetSelectorDialog"
+        t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o-sp-dialog-headers')]" position="inside">
+            <div class="o-sp-dialog-header"
+                t-att-class="{ active: state.panel === 'spreadsheets' }"
+                t-on-click="() => this.activatePanel('spreadsheets')">
+                Spreadsheets
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('o-sp-dialog-content')]" position="inside">
+            <DocumentsSelectorPanel
+                t-if="state.panel === 'spreadsheets'"
+                onSpreadsheetSelected.bind="onSpreadsheetSelected"
+            />
+        </xpath>
     </t>
 
 </templates>

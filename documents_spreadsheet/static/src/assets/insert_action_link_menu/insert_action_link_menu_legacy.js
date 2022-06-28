@@ -6,10 +6,8 @@ import pyUtils from "web.py_utils";
 import Domain from "web.Domain";
 import { useService } from "@web/core/utils/hooks";
 import { useModel } from "web.Model";
-import { sprintf } from "@web/core/utils/strings";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
-
 
 export class InsertViewSpreadsheet extends LegacyComponent {
     setup() {
@@ -26,42 +24,14 @@ export class InsertViewSpreadsheet extends LegacyComponent {
      * @private
      */
     linkInSpreadsheet() {
-        this.dialogManager.add(SpreadsheetSelectorDialog, {
-            type: "LINK",
-            name: this.env.action.name,
-            confirm: (args) => this._insertInSpreadsheet(args),
-        });
-    }
-
-    /**
-     * Open a new spreadsheet or an existing one and insert a link to the action.
-     * @private
-     */
-    async _insertInSpreadsheet({ spreadsheet, name }) {
-        const actionToLink = this._getViewDescription();
-        actionToLink.name = name;
-        // do action with action link
-        let notificationMessage;
         const actionOptions = {
             preProcessingAction: "insertLink",
-            preProcessingActionData: actionToLink,
+            preProcessingActionData: this._getViewDescription(),
         };
-
-        if (!spreadsheet.id) {
-            actionOptions.alwaysCreate = true;
-            notificationMessage = this.env._t("New spreadsheet created in Documents");
-        } else {
-            actionOptions.spreadsheet_id = spreadsheet.id;
-            notificationMessage = sprintf(
-                this.env._t("New sheet inserted in '%s'"),
-                spreadsheet.name
-            );
-        }
-
-        this.notification.notify({ title: "", message: notificationMessage, type: "info" });
-        this.trigger("do-action", {
-            action: "action_open_spreadsheet",
-            options: { additional_context: actionOptions },
+        this.dialogManager.add(SpreadsheetSelectorDialog, {
+            type: "LINK",
+            actionOptions,
+            name: this.env.action.name,
         });
     }
 

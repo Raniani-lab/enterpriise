@@ -1,15 +1,11 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import { browser } from "@web/core/browser/browser";
-import { KeepLast } from "@web/core/utils/concurrency";
 import { Dialog } from "@web/core/dialog/dialog";
 import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
-import { SearchBar } from "@web/search/search_bar/search_bar";
-import { Pager } from "@web/core/pager/pager";
 
-const { Component, onWillStart, useState, onWillUnmount } = owl;
+const { Component, useState } = owl;
 
 const LABELS = {
     PIVOT: "pivot",
@@ -17,8 +13,6 @@ const LABELS = {
     LINK: "link",
     GRAPH: "graph",
 };
-
-const DEFAULT_LIMIT = 9;
 
 /**
  * @typedef State
@@ -37,55 +31,17 @@ export class SpreadsheetSelectorDialog extends Component {
     setup() {
         /** @type {State} */
         this.state = useState({
-            spreadsheets: {},
             panel: "spreadsheets",
-            selectedSpreadsheetId: false,
             threshold: this.props.threshold,
             name: this.props.name,
-            pagerProps: {
-                offset: 0,
-                limit: DEFAULT_LIMIT,
-                total: 0,
-            },
         });
-        this.keepLast = new KeepLast();
-        this.orm = useService("orm");
-        this.currentSearch = "";
-        this.debounce = undefined;
-
-        onWillStart(async () => {
-            await this._fetchSpreadsheets();
-            this.state.pagerProps.total = await this.orm.call(
-                "documents.document",
-                "search_count",
-                [[["handler", "=", "spreadsheet"]]],
-            );
-        });
-
-        onWillUnmount(() => {
-            browser.clearTimeout(this.debounce);
-        });
-    }
-
-    onSearchInput(ev) {
-        this.currentSearch = ev.target.value;
-        this._debouncedFetchSpreadsheets();
-    }
-
-    _debouncedFetchSpreadsheets() {
-        browser.clearTimeout(this.debounce);
-        this.debounce = browser.setTimeout(() => this._fetchSpreadsheets.call(this), 400);
-    }
-
-    /**
-     * @param {Object} param0
-     * @param {number} param0.offset
-     * @param {number} param0.limit
-     */
-    onUpdatePager({ offset, limit }) {
-        this.state.pagerProps.offset = offset;
-        this.state.pagerProps.limit = limit;
-        this._fetchSpreadsheets();
+        this.actionState = {
+            actionTag: undefined,
+            selectedSpreadsheet: false,
+            notificationMessage: "",
+        };
+        this.notification = useService("notification");
+        this.actionService = useService("action");
     }
 
     /**
@@ -93,14 +49,6 @@ export class SpreadsheetSelectorDialog extends Component {
      */
     activatePanel(panel) {
         this.state.panel = panel;
-    }
-
-    /**
-     * @param {string} [base64]
-     * @returns {string}
-     */
-    getUrl(base64) {
-        return base64 ? `data:image/jpeg;charset=utf-8;base64,${base64}` : "";
     }
 
     get nameLabel() {
@@ -112,42 +60,44 @@ export class SpreadsheetSelectorDialog extends Component {
     }
 
     /**
-     * Fetch spreadsheets according to the search domain and the pager
-     * offset given as parameter.
-     * @private
-     * @returns {Promise<void>}
-     */
-    async _fetchSpreadsheets() {
-        const domain = [];
-        if (this.currentSearch !== "") {
-            domain.push(["name", "ilike", this.currentSearch]);
-        }
-        const { offset, limit } = this.state.pagerProps;
-
-        this.state.spreadsheets = await this.keepLast.add(
-            this.orm.call("documents.document", "get_spreadsheets_to_display", [domain], {
-                offset,
-                limit,
-            })
-        );
-    }
-
-    /**
      * @param {number|false} id
      */
-    _selectItem(id) {
-        this.state.selectedSpreadsheetId = id;
+    onSpreadsheetSelected({ spreadsheet, actionTag, notificationMessage }) {
+        this.actionState = {
+            selectedSpreadsheet: spreadsheet,
+            actionTag,
+            notificationMessage,
+        };
     }
 
     _confirm() {
         const threshold = this.state.threshold ? parseInt(this.state.threshold, 10) : 0;
-        const spreadsheet =
-            this.state.selectedSpreadsheetId &&
-            this.state.spreadsheets.find((s) => s.id === this.state.selectedSpreadsheetId);
-        this.props.confirm({
-            spreadsheet,
-            name: this.state.name,
-            threshold,
+        const isNewItem = this.actionState.selectedSpreadsheet === false;
+        const notificationMessage = isNewItem
+            ? this.actionState.notificationMessage
+            : sprintf(_t("New sheet inserted in '%s'"), this.actionState.selectedSpreadsheet.name);
+        const actionOptions = {
+            ...this.props.actionOptions,
+            preProcessingAsyncActionData: {
+                ...this.props.actionOptions.preProcessingAsyncActionData,
+                threshold,
+                name: this.state.name,
+            },
+            preProcessingActionData: {
+                ...this.props.actionOptions.preProcessingActionData,
+                threshold,
+                name: this.state.name,
+            },
+            alwaysCreate: isNewItem,
+            spreadsheet_id:
+                this.actionState.selectedSpreadsheet && this.actionState.selectedSpreadsheet.id,
+        };
+
+        this.notification.add(notificationMessage, { type: "info" });
+        this.actionService.doAction({
+            type: "ir.actions.client",
+            tag: this.actionState.actionTag,
+            params: actionOptions,
         });
         this.props.close();
     }
@@ -158,12 +108,12 @@ export class SpreadsheetSelectorDialog extends Component {
 }
 
 SpreadsheetSelectorDialog.template = "documents_spreadsheet.SpreadsheetSelectorDialog";
-SpreadsheetSelectorDialog.components = { Dialog, SearchBar, Pager };
+SpreadsheetSelectorDialog.components = { Dialog };
 SpreadsheetSelectorDialog.props = {
+    actionOptions: Object,
     type: String,
     threshold: { type: Number, optional: true },
     maxThreshold: { type: Number, optional: true },
     name: String,
-    confirm: Function,
     close: Function,
 };

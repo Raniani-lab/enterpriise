@@ -30,10 +30,8 @@ screen devices.
             'mail_enterprise/static/src/components/*/*.js',
             'mail_enterprise/static/src/js/attachment_viewer.js',
             'mail_enterprise/static/src/scss/mail_enterprise.scss',
-            'mail_enterprise/static/src/components/*/*.scss',
             'mail_enterprise/static/src/scss/mail_enterprise_mobile.scss',
             'mail_enterprise/static/src/widgets/*/*.js',
-            'mail_enterprise/static/src/widgets/*/*.scss',
         ],
         'web.assets_tests': [
             'mail_enterprise/static/tests/tours/**/*',

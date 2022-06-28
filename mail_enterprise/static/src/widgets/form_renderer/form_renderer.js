@@ -103,7 +103,7 @@ FormRenderer.include({
     //--------------------------------------------------------------------------
 
     /**
-     * @returns {boolean}
+     * @override
      */
     hasAttachmentViewer() {
         return (
@@ -148,15 +148,6 @@ FormRenderer.include({
             });
         }
         this._updateChatterContainerComponent();
-    },
-    /**
-     * @override
-     */
-    _makeChatterContainerProps() {
-        const props = this._super(...arguments);
-        return Object.assign(props, {
-            isInFormSheetBg: this.hasAttachmentViewer(),
-        });
     },
     /**
      * Triggered from the mail chatter, send attachments data for preview
@@ -227,16 +218,5 @@ FormRenderer.include({
             this._interchangeChatter();
         }
         this._applyFormSizeClass();
-    },
-    /**
-     * @override
-     */
-    _updateChatterContainerTarget() {
-        this._super();
-        if (this.hasAttachmentViewer()) {
-            this._chatterContainerTarget.classList.add('o-isInFormSheetBg');
-        } else {
-            this._chatterContainerTarget.classList.remove('o-isInFormSheetBg');
-        }
     },
 });

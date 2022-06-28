@@ -175,7 +175,6 @@ EditorMenu.viewTypes = [
 editorTabRegistry
     .add("views", { name: _lt("Views"), action: "web_studio.action_editor" })
     .add("reports", { name: _lt("Reports") })
-    .add("translations", { name: _lt("Translations") })
     .add("automations", { name: _lt("Automations") })
     .add("acl", { name: _lt("Access Control") })
     .add("filters", { name: _lt("Filter Rules") });

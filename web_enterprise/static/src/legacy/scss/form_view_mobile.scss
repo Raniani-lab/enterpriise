@@ -75,13 +75,4 @@
         }
 
     }
-
-    // change the dropdown ui for mobile website
-    .ui-autocomplete.ui-front.ui-menu.ui-widget.ui-widget-content {
-        width: 100% !important;
-        height: 80%;
-        max-height: fit-content;
-        left: 0 !important;
-        overflow-y: auto;
-    }
 }

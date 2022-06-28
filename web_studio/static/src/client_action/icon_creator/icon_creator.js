@@ -46,16 +46,25 @@ export class IconCreator extends Component {
         // on the 'edit' icon of an existing app) and in the legacy environment (through the app
         // creator)
         this.FileInput = FileInput;
+        this.fileInputProps = {
+            acceptedFileExtensions: "image/png",
+            resModel: "res.users",
+        };
         try {
             const user = useService("user");
             this.orm = useService("orm");
-            this.userId = user.userId;
+            this.fileInputProps.resId = user.userId;
         } catch (e) {
             if (e.message === "Service user is not available") {
-                this.userId = this.env.session.uid;
                 // we are in a legacy environment, so use the legacy CustomFileInput as
                 // the new one requires the new http service
                 this.FileInput = CustomFileInput;
+                this.fileInputProps = {
+                    accepted_file_extensions: "image/png",
+                    action: "/web/binary/upload_attachment",
+                    id: this.env.session.uid,
+                    model: "res.users",
+                };
             }
         }
         this.rpc = useService("rpc");

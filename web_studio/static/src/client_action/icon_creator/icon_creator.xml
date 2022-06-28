@@ -77,13 +77,7 @@
                 Design your Icon
             </a>
             <span class="text-muted"> or </span>
-            <t t-component="FileInput"
-                action="'/web/binary/upload_attachment'"
-                id="userId"
-                model="'res.users'"
-                accepted_file_extensions="'image/png'"
-                onUpload.bind="onFileUploaded"
-            >
+            <t t-component="FileInput" t-props="fileInputProps" onUpload.bind="onFileUploaded">
                 <a href="#">
                     <t t-if="props.type === 'base64'">upload one</t>
                     <t t-else="">upload it</t>

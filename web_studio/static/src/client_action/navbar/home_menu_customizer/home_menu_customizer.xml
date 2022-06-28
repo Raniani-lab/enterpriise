@@ -9,10 +9,10 @@
         </t>
         <DropdownItem class="'o_web_studio_change_background'" parentClosingMode="'none'">
         <FileInput
-          action="'/web/binary/upload_attachment'"
-          model="'res.company'" id="company.currentCompany.id"
-          accepted_file_extensions="'image/*'"
-          onUpload.bind="onBackgroundUpload"
+            acceptedFileExtensions="'image/*'"
+            onUpload.bind="onBackgroundUpload"
+            resId="company.currentCompany.id"
+            resModel="'res.company'"
         >
           Change Background
         </FileInput>

@@ -168,8 +168,8 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         cls.user = new_test_user(
             cls.env, login="John", groups="documents.group_documents_user"
         )
-        cls.manager = new_test_user(
-            cls.env, login="John's manager", groups="documents.group_documents_manager"
+        cls.admin = new_test_user(
+            cls.env, login="John's manager", groups="documents.group_documents_manager,base.group_system"
         )
         cls.spreadsheet = cls.env["documents.document"].create(
             {
@@ -209,7 +209,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
     def test_create_manager(self):
         revision = (
             self.env["spreadsheet.revision"]
-            .with_user(self.manager)
+            .with_user(self.admin)
             .create(
                 {
                     "commands": self.new_revision_data(self.spreadsheet),
@@ -241,7 +241,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
             self.new_revision_data(self.spreadsheet)
         )
         self.env.invalidate_all()
-        revision = self.env["spreadsheet.revision"].with_user(self.manager).search([])
+        revision = self.env["spreadsheet.revision"].with_user(self.admin).search([])
         self.assertTrue(revision)
         self.assertTrue(revision.read())
 
@@ -263,7 +263,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
             self.new_revision_data(self.spreadsheet)
         )
         self.env.invalidate_all()
-        self.spreadsheet.with_user(self.manager).spreadsheet_revision_ids.write(
+        self.spreadsheet.with_user(self.admin).spreadsheet_revision_ids.write(
             {"commands": "coucou"}
         )
         self.assertEqual(self.spreadsheet.spreadsheet_revision_ids.commands, "coucou")
@@ -283,7 +283,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         )
         self.assertTrue(self.spreadsheet.spreadsheet_revision_ids)
         self.env.invalidate_all()
-        self.spreadsheet.with_user(self.manager).spreadsheet_revision_ids.unlink()
+        self.spreadsheet.with_user(self.admin).spreadsheet_revision_ids.unlink()
         self.assertFalse(self.spreadsheet.spreadsheet_revision_ids)
 
     def test_join_user(self):

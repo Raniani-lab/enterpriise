@@ -153,8 +153,9 @@
 
         <menuitem
             id="stock_dashboard_menuitem"
-            name="Warehouse Analysis"
+            name="Performance"
             parent="stock.menu_warehouse_report"
-            action="stock_report_dashboard_action"/>
+            action="stock_report_dashboard_action"
+            sequence="300"/>
     </data>
 </odoo>

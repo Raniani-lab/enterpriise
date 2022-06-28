@@ -87,7 +87,7 @@ class SaleOrderLine(models.Model):
         other_lines = self.env['sale.order.line']
         for line in self:
             if not (line.order_id.is_subscription or line.order_id.subscription_management == 'upsell') and not line.temporal_type == 'subscription':
-                line |= other_lines
+                other_lines |= line
             elif line.order_id.subscription_management == 'upsell' and line.order_id.subscription_id:
                 upsell_line_ids |= line
             elif line.pricing_id and not line.next_invoice_date:

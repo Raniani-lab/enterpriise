@@ -12,6 +12,7 @@ import { SpreadsheetName } from "./control_panel/spreadsheet_name";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { getDataFromTemplate } from "@spreadsheet/helpers/helpers";
 
 const { Component, useState } = owl;
 const { createEmptyWorkbookData } = spreadsheet.helpers;
@@ -44,6 +45,23 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
             "documents.document",
             this.resId
         );
+    }
+
+    /**
+     * @override
+     * @returns {Promise<number>}
+     */
+    async _createSpreadsheetRecord() {
+        const data = this.params.createFromTemplateId
+            ? await getDataFromTemplate(this.env, this.orm, this.params.createFromTemplateId)
+            : createEmptyWorkbookData(`${this.env._t("Sheet")}1`);
+        return this.orm.create("documents.document", {
+            name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
+            mimetype: "application/o-spreadsheet",
+            handler: "spreadsheet",
+            raw: JSON.stringify(data),
+            folder_id: this.params.createInFolderId,
+        });
     }
 
     async _fetchData() {

@@ -4,14 +4,10 @@ import { loadJS } from "@web/core/assets";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
-import { getDataFromTemplate } from "@spreadsheet/helpers/helpers";
-import spreadsheet, {
-    initCallbackRegistry,
-} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-const { createEmptyWorkbookData } = spreadsheet.helpers;
 const { onMounted, onWillStart, useState } = owl;
 export class AbstractSpreadsheetAction extends LegacyComponent {
     setup() {
@@ -67,16 +63,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
     async _createAddSpreadsheetData() {
         let resId = this.resId;
         if (this.params.alwaysCreate) {
-            const data = this.params.createFromTemplateId
-                ? await getDataFromTemplate(this.env, this.orm, this.params.createFromTemplateId)
-                : createEmptyWorkbookData(`${this.env._t("Sheet")}1`);
-            resId = await this.orm.create("documents.document", {
-                name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
-                mimetype: "application/o-spreadsheet",
-                handler: "spreadsheet",
-                raw: JSON.stringify(data),
-                folder_id: this.params.createInFolderId,
-            });
+            resId = this._createSpreadsheetRecord();
         }
         if (this.params.preProcessingAction) {
             const initCallbackGenerator = initCallbackRegistry
@@ -98,6 +85,14 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
     onMounted() {
         this.router.pushState({ spreadsheet_id: this.resId });
         this.env.config.setDisplayName(this.state.spreadsheetName);
+    }
+
+    /**
+     * @protected
+     * @returns {Promise<number>}
+     */
+    async _createSpreadsheetRecord() {
+        throw new Error("not implemented by children");
     }
 
     async _onMakeCopy() {

@@ -1675,7 +1675,7 @@ export const SignableDocument = Document.extend({
 },
 
   _refuse: function () {
-    const refusalReason = this.$(".o_sign_refuse_confirm_message").val();
+    const refusalReason = $(".o_sign_refuse_confirm_message").val();
 
     // refuse sign request
     const route = `/sign/refuse/${this.requestID}/${this.accessToken}`;

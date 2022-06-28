@@ -48,20 +48,6 @@
                     }
                 }
             }
-            // fixes for jquery resizer
-            left: auto !important;
-            .ui-resizable-w {
-                cursor: ew-resize;
-                width: 10px;
-            }
-            // overlay for iframe so we get proper mouseevents
-            &.ui-resizable-resizing:before {
-                content: ' ';
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                z-index: 10;
-            }
         }
     }
     @include media-breakpoint-down(xl, $o-extra-grid-breakpoints) {

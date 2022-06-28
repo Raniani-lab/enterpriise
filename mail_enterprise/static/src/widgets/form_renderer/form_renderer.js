@@ -72,9 +72,6 @@ FormRenderer.include({
             }
             this._handleAttributes(this.$attachmentPreview, node);
             this._registerModifiers(node, this.state, this.$attachmentPreview);
-            if (this.attachmentPreviewWidth) {
-                this.$attachmentPreview.css('width', this.attachmentPreviewWidth);
-            }
             return this.$attachmentPreview;
         } else {
             return this._super.apply(this, arguments);
@@ -211,14 +208,6 @@ FormRenderer.include({
                 this.attachmentViewer = new AttachmentViewer(this, thread);
                 this.attachmentViewer.appendTo(this.$attachmentPreview).then(function () {
                     self.trigger_up('preview_attachment_validation');
-                    self.$attachmentPreview.resizable({
-                        handles: 'w',
-                        minWidth: 400,
-                        maxWidth: 900,
-                        resize: function (event, ui) {
-                            self.attachmentPreviewWidth = ui.size.width;
-                        },
-                    });
                     self._interchangeChatter();
                 });
             }

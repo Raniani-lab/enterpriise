@@ -127,13 +127,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                 } else {
                     this.attachmentViewer = new AttachmentViewer(this, thread);
                 }
-                prom = this.attachmentViewer.appendTo(this.$attachmentPreview.empty()).then(function () {
-                    self.$attachmentPreview.resizable({
-                        handles: 'w',
-                        minWidth: 400,
-                        maxWidth: 900,
-                    });
-                });
+                prom = this.attachmentViewer.appendTo(this.$attachmentPreview.empty());
             }
             return Promise.resolve(prom).then(function () {
                 self.currentAttachments = attachments;

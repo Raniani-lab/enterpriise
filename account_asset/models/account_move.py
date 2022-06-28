@@ -27,10 +27,13 @@ class AccountMove(models.Model):
     )
 
     asset_ids = fields.One2many('account.asset', string='Assets', compute="_compute_asset_ids")
-    linked_asset_type = fields.Char(compute="_compute_asset_ids")  # just a button label. That's to avoid a plethora of different buttons defined in xml
     asset_id_display_name = fields.Char(compute="_compute_asset_ids")   # just a button label. That's to avoid a plethora of different buttons defined in xml
-    number_asset_ids = fields.Integer(compute="_compute_asset_ids")
-    draft_asset_ids = fields.Boolean(compute="_compute_asset_ids")
+    count_asset = fields.Integer(compute="_compute_asset_ids")
+    count_deferred_revenue = fields.Integer(compute="_compute_asset_ids")
+    count_deferred_expense = fields.Integer(compute="_compute_asset_ids")
+    draft_asset_exists = fields.Boolean(compute="_compute_asset_ids")
+    draft_deferred_revenue_exists = fields.Boolean(compute="_compute_asset_ids")
+    draft_deferred_expense_exists = fields.Boolean(compute="_compute_asset_ids")
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
@@ -290,16 +293,25 @@ class AccountMove(models.Model):
     def _compute_asset_ids(self):
         for record in self:
             record.asset_ids = record.line_ids.asset_ids
-            record.number_asset_ids = len(record.asset_ids)
-            record.linked_asset_type = record.asset_ids[:1].asset_type
+            record.count_asset = len(record.asset_ids.filtered(lambda x: x.asset_type == "purchase"))
+            record.count_deferred_revenue = len(record.asset_ids.filtered(lambda x: x.asset_type == "sale"))
+            record.count_deferred_expense = len(record.asset_ids.filtered(lambda x: x.asset_type == "expense"))
             record.asset_id_display_name = {'sale': _('Revenue'), 'purchase': _('Asset'), 'expense': _('Expense')}.get(record.asset_id.asset_type)
-            record.draft_asset_ids = bool(record.asset_ids.filtered(lambda x: x.state == "draft"))
+            record.draft_asset_exists = bool(record.asset_ids.filtered(lambda x: x.asset_type == "purchase" and x.state == "draft"))
+            record.draft_deferred_revenue_exists = bool(record.asset_ids.filtered(lambda x: x.asset_type == "sale" and x.state == "draft"))
+            record.draft_deferred_expense_exists = bool(record.asset_ids.filtered(lambda x: x.asset_type == "expense" and x.state == "draft"))
 
     def open_asset_view(self):
         return self.asset_id.open_asset(['form'])
 
     def action_open_asset_ids(self):
-        return self.asset_ids.open_asset(['tree', 'form'])
+        return self.asset_ids.filtered(lambda x: x.asset_type == "purchase").open_asset(['tree', 'form'])
+
+    def action_open_deferred_revenue_ids(self):
+        return self.asset_ids.filtered(lambda x: x.asset_type == "sale").open_asset(['tree', 'form'])
+
+    def action_open_deferred_expense_ids(self):
+        return self.asset_ids.filtered(lambda x: x.asset_type == "expense").open_asset(['tree', 'form'])
 
     def _delete_reversed_entry_assets(self):
         ReverseKey = namedtuple('ReverseKey', ['product_id', 'price_unit', 'quantity'])

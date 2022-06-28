@@ -8,6 +8,7 @@ import {
     setupDataSourceEvaluation,
 } from "@spreadsheet/../tests/utils/model";
 import { createSpreadsheetWithPivotAndList } from "@spreadsheet/../tests/utils/pivot_list";
+import FiltersPlugin from "@spreadsheet/global_filters/plugins/filters_plugin";
 
 import { getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import {
@@ -1056,5 +1057,38 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         });
         const [filter] = model.getters.getGlobalFilters();
         assert.equal(model.getters.getGlobalFilterValue(filter.id), defaultValue);
+    });
+
+    QUnit.test(
+        "filter display value of year filter is a string",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivotAndList();
+            await addGlobalFilter(model, THIS_YEAR_FILTER);
+            const [filter] = model.getters.getGlobalFilters();
+            assert.strictEqual(
+                model.getters.getFilterDisplayValue(filter.label),
+                String(new Date().getFullYear())
+            );
+        }
+    );
+
+    QUnit.test("Export global filters for excel", async function (assert) {
+        const { model } = await createSpreadsheetWithPivotAndList();
+        await addGlobalFilter(model, THIS_YEAR_FILTER);
+        const [filter] = model.getters.getGlobalFilters();
+        const filterPlugin = model["handlers"].find(
+            (handler) => handler instanceof FiltersPlugin
+        );
+        const exportData = { styles: [], sheets: [] };
+        filterPlugin.exportForExcel(exportData);
+        const filterSheet = exportData.sheets[0];
+        assert.ok(filterSheet, "A sheet to export global filters was created");
+        assert.equal(filterSheet.cells["A1"].content, "Filter");
+        assert.equal(filterSheet.cells["A2"].content, filter.label);
+        assert.equal(filterSheet.cells["B1"].content, "Value");
+        assert.equal(
+            filterSheet.cells["B2"].content,
+            model.getters.getFilterDisplayValue(filter.label)
+        );
     });
 });

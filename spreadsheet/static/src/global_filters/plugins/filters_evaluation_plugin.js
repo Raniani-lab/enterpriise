@@ -165,7 +165,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                     return ""
                 }
                 const periodOptions = getPeriodOptions(DateTime.local());
-                const year = DateTime.local().year + value.yearOffset;
+                const year = String(DateTime.local().year + value.yearOffset);
                 const period = periodOptions.find(({ id }) => value.period === id);
                 let periodStr = period && period.description;
                 // Named months aren't in getPeriodOptions

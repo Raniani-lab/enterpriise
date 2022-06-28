@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+
+    <t t-name="timesheet_grid.OvertimeGridTimeComponent" t-inherit="web_grid.BaseGridComponent" t-inherit-mode="primary" owl="1">
+        <xpath expr="//div[@class='o_grid_total_bar']/span" position="replace">
+            <span t-if="props.cellHeight"
+                t-attf-class="o_grid_total_title position-absolute bg-white px-1 o_total_with_overtime 
+                            {{ (props.overtimeVal != 0 and props.smallDisplay) ? 'o_small_overtime' : ' ' }}"
+                title="Total timesheeted time and overtime for this day"
+                t-esc="_format(props.cellValue).concat(_overtimeFormat(props.overtimeVal))"/>
+            <i class="o_grid_cell_information"
+                title="Current overtime">
+            </i >
+        </xpath>
+
+        <xpath expr="//t[@t-if='props.isTotal']/div[@t-else='']" position="replace">
+            <div t-else=""> 
+                <span t-esc="_format(props.cellValue)"/>
+                <span t-if="props.overtimeVal != 0"
+                    t-attf-class="o_grid_section_subtext o_overtime 
+                                {{ Math.abs(props.overtimeVal) > 9.99 and props.smallDisplay ? 'o_tiny_overtime' : ' ' }}" 
+                    title="Total overtime"
+                    t-esc="_overtimeFormat(props.overtimeVal)"/>
+            </div>
+        </xpath>
+    </t>
+
+    <t t-name="timesheet_grid.OvertimeGridToggleComponent" t-inherit="web_grid.FloatToggleComponent" t-inherit-mode="primary" owl="1">
+        <xpath expr="//div[@class='o_grid_total_bar']/span" position="replace">
+            <span t-if="props.cellHeight"
+                t-attf-class="o_grid_total_title position-absolute bg-white px-1 o_total_with_overtime 
+                            {{ (props.overtimeVal != 0 and props.smallDisplay) ? 'o_small_overtime' : ' ' }}"
+                title="Total timesheeted time and overtime for this day"
+                t-esc="_format(props.cellValue).concat(_overtimeFormat(props.overtimeVal))"/>
+        </xpath>
+        
+        <xpath expr="//t[@t-if='props.isTotal']/div[@t-else='']" position="replace">
+            <div t-else=""> 
+                <span t-esc="_format(props.cellValue)"/>
+                <span t-if="props.overtimeVal != 0"
+                    t-attf-class="o_total_with_overtime {{ (props.smallDisplay) ? 'o_tiny_overtime' : ' ' }}" 
+                    title="Total overtime"
+                    t-esc="_overtimeFormat(props.overtimeVal)"/>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

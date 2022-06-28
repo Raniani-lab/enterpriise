@@ -3,6 +3,9 @@ odoo.define('timesheet_grid.timesheet_grid_tests', function (require) {
 
 var TimesheetTimerGridView = require('timesheet_grid.TimerGridView');
 var testUtils = require('web.test_utils');
+const fieldUtils = require('web.field_utils');
+const gridComponentRegistry = require('web_grid.component_registry');
+const { OvertimeGridTimeComponent } = require('timesheet_grid.OvertimeGridComponents');
 
 var createView = testUtils.createView;
 const get_planned_and_worked_hours = function (args) {
@@ -25,6 +28,7 @@ QUnit.module('Views', {
                 fields: {
                     project_id: {string: "Project", type: "many2one", relation: "project.project"},
                     task_id: {string: "Task", type: "many2one", relation: "project.task"},
+                    employee_id: {string: "Employee", type: "many2one", relation: "hr.employee"},
                     date: {string: "Date", type: "date"},
                     unit_amount: {string: "Unit Amount", type: "float"},
                 },
@@ -61,6 +65,29 @@ QUnit.module('Views', {
                 ],
                 get_planned_and_worked_hours(args) {
                     return get_planned_and_worked_hours(args);
+                }
+            },
+            'hr.employee': {
+                fields: {},
+                get_daily_working_hours(args) {
+                    const result = {}
+                    const date_start_date = new Date(args[0]);
+                    const date_stop_date = new Date(args[1]);
+                    
+                    let currentDate = date_start_date;
+                    
+                    let iter = 0;
+                    while (currentDate <= date_stop_date) {
+                        result[iter] = {
+                            'date': fieldUtils.parse.date(currentDate).format("YYYY-MM-DD"),
+                            'total_hours': 0,
+                        }
+                        currentDate.setDate(currentDate.getDate() + 1);
+                        iter += 1;
+                
+                    }
+
+                    return result;
                 }
             },
         };
@@ -645,6 +672,45 @@ QUnit.module('Views', {
             "input should not be formatted like there is an error");
         assert.strictEqual($input.val(), "04:30",
             "val should be 04:30");
+
+        grid.destroy();
+    });
+
+    QUnit.test('Check that individual and total overtime is properly displayed', async function(assert) {
+        assert.expect(3);
+
+        // We do the below in order to use the new overtime component in the arch for the test
+        gridComponentRegistry.add('test_float_overtime_time', OvertimeGridTimeComponent);
+        this.arch = this.arch.replace("float_time", "test_float_overtime_time");
+
+        const grid = await createView({
+            View: TimesheetTimerGridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: this.arch,
+            currentDate: "2017-01-25",
+            mockRPC: function (route, args) {
+                if (args.method === 'get_timer_data') {
+                    return Promise.resolve({
+                        'step_timer': 30,
+                        'favorite_project': 31
+                    });
+                } else if (args.method === 'search') {
+                    return Promise.resolve([1, 2, 3, 4, 5]);
+                } else if (args.method === 'adjust_grid') {
+                    return Promise.resolve([]);
+                } 
+                return this._super.apply(this, arguments);
+            },
+        });
+
+            
+        const numberOfDaysWithPositiveOvertime = grid.$("tfoot td:contains('+')").length;
+        assert.ok(numberOfDaysWithPositiveOvertime > 0, 'There must be at least one element or this test is useless');
+        assert.strictEqual(numberOfDaysWithPositiveOvertime, 3, 'The number of cells with overtime is wrong');
+
+        const totalOvertime = grid.$("tfoot td:contains('10:00')").length;
+        assert.strictEqual(totalOvertime, 1, 'The value of the total overtime is wrong');
 
         grid.destroy();
     });

@@ -35,7 +35,16 @@ class CommonTimesheetGridRenderer extends GridRenderer {
         }
         return false;
     };
+
+    _overtimeValue(columnIndex) {
+        return 0;
+    }
+
+    _totalOvertimeValue() {
+        return 0;
+    }
 };
+CommonTimesheetGridRenderer.template = 'timesheet_grid.GridRenderer';
 
 class TimesheetM2OWidgetAdapter extends ComponentAdapter {
 

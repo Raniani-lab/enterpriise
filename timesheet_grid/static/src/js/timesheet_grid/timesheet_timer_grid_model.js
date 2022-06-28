@@ -63,6 +63,21 @@ odoo.define('timesheet_grid.TimerGridModel', function (require) {
             return this._gridData;
         },
 
+        /**
+         * Method that performs an RPC call to the hr_employee model and executes the "get_daily_timesheet_hours" function. 
+         * @param {String} start - the start of the time period range
+         * @param {String} end - the stop of the time period range
+         * @returns {Promise<object>} - a dictionary of dates and the total hours to work for each date
+         */
+        async fetchTimesheetData(start, end) {
+            // Make the rpc call and retrive the timesheet data
+            return await this._rpc({
+                model: 'hr.employee',
+                method: 'get_daily_working_hours',
+                args: [start, end],
+            });
+        },
+
         // -------------------------------------------------------------------------
         // Private
         // -------------------------------------------------------------------------
@@ -72,7 +87,19 @@ odoo.define('timesheet_grid.TimerGridModel', function (require) {
          */
         async __load() {
             await this._super(...arguments);
+            
+            const timeContext = this._getTimeContext();
+            this._gridData.timesheetData = await this.fetchTimesheetData(timeContext.start, timeContext.end);
             await this._getTimerData();
+        },
+        /**
+         * @override
+         */
+        async __reload() {
+            await this._super(...arguments);
+
+            const timeContext = this._getTimeContext();
+            this._gridData.timesheetData = await this.fetchTimesheetData(timeContext.start, timeContext.end);
         },
         _changeTimerDescription(timesheetId, description) {
             this._rpc({

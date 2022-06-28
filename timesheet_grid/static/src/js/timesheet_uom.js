@@ -2,6 +2,7 @@ odoo.define('timesheet_grid.timesheet_uom', function (require) {
     'use strict';
 
     const gridComponentRegistry = require('web_grid.component_registry');
+    const { OvertimeGridTimeComponent, OvertimeGridToggleComponent } = require('timesheet_grid.OvertimeGridComponents');
     const gridComponent = require('web_grid.components');
     const session = require('web.session');
     const { registry } = require("@web/core/registry");
@@ -38,7 +39,7 @@ odoo.define('timesheet_grid.timesheet_uom', function (require) {
             return fieldOptions;
         }
     }
-    class FloatToggleComponentTimesheet extends TimesheetUOMMultiCompanyMixin(gridComponent.FloatToggleComponent) {
+    class FloatToggleComponentTimesheet extends TimesheetUOMMultiCompanyMixin(OvertimeGridToggleComponent) {
         //----------------------------------------------------------------------
         // Getters
         //----------------------------------------------------------------------
@@ -80,6 +81,8 @@ odoo.define('timesheet_grid.timesheet_uom', function (require) {
                 FieldTimesheetUom = FloatToggleComponentTimesheet;
             } else if (widgetName === "float_factor") {
                 FieldTimesheetUom = FloatFactorComponentTimesheet;
+            } else if (widgetName === "float_time") {
+                FieldTimesheetUom = OvertimeGridTimeComponent;
             } else {
                 FieldTimesheetUom = (gridComponentRegistry.get(widgetName) || FloatFactorComponentTimesheet);
             }

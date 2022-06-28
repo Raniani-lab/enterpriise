@@ -2,6 +2,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
     "use strict";
 
     const utils = require('web.utils');
+    const fieldUtils = require('web.field_utils');
     const CommonTimesheetGridRenderer = require('timesheet_grid.CommonTimesheetGridRenderer');
     const TimerHeaderComponent = require('timesheet_grid.TimerHeaderComponent');
     const TimerStartComponent = require('timesheet_grid.TimerStartComponent');
@@ -272,6 +273,49 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
             }
             this._bus.trigger("TIMESHEET_TIMER:focusStopButton");
         }
+        /**
+         * Method which computes and returns the overtime value of a specific date given the column
+         * @param {Number} columnIndex - the grid's column index
+         * @returns {Number} the overtime value (can be positive, negative or zero)
+         */
+        _overtimeValue(columnIndex) {
+            const dateKey = this.props.timesheetData[columnIndex]['date'];
+            if (!this._considerOvertime(dateKey, moment())) {
+                return 0;
+            }
+            const overtimeRecord = this.props.timesheetData[columnIndex]
+            const value = this.props.totals.columns[columnIndex] - overtimeRecord['total_hours'];
+
+            return value;
+        }
+        /**
+         * Method which computes and returns the total overtime value. 
+         * The method does not use the _overtimeValue method to compute individual overtime for the sake of decoupling 
+         * (perhaps in the future the way we compute these values diverges)
+         * @returns {Number} the total overtime value (can be positive, negative or zero)
+         */
+        _totalOvertimeValue() {
+            let totalOvertime = 0;
+            const currentTime = moment();
+
+            for (const columnKey in this.props.timesheetData) {
+                if (!this._considerOvertime(this.props.timesheetData[columnKey]['date'], currentTime)) {
+                    return totalOvertime;
+                }
+                totalOvertime += (this.props.totals.columns[columnKey] || 0) - this.props.timesheetData[columnKey]['total_hours'];
+            }
+
+            return totalOvertime;
+        }
+        /**
+         * We dont consider the overtime for dates later than the current date, this method is used to check that. 
+         * It converts the current's columns date to a moment object and compares to the current date-time.
+         * @param {String} dateKey - the date of the current column 
+         * @returns {Boolean} whether the overtime for this column should be considered
+         */
+        _considerOvertime(dateKey, currentTime) {
+            return fieldUtils.parse.date(dateKey) <= currentTime;
+        }
 
         //----------------------------------------------------------------------
         // Handlers
@@ -359,6 +403,7 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
     }
 
     TimerGridRenderer.props = Object.assign({}, CommonTimesheetGridRenderer.props, {
+        timesheetData: Object,
         serverTime: {
             type: String,
             optional: true

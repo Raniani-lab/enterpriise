@@ -1,6 +1,8 @@
 odoo.define('voip.UserAgent', function (require) {
 "use strict";
 
+const { insertAndReplace } = require('@mail/model/model_field_command');
+
 const Class = require('web.Class');
 const concurrency = require('web.concurrency');
 const core = require('web.core');
@@ -8,7 +10,6 @@ const { escape, sprintf } = require('@web/core/utils/strings');
 const mixins = require('web.mixins');
 const mobile = require('web_mobile.core');
 const ServicesMixin = require('web.ServicesMixin');
-const { Markup } = require('web.utils');
 
 const _t = core._t;
 
@@ -47,11 +48,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
          */
         this._isOutgoing = false;
         /**
-         * An instance of SIP.Registerer, needed to register the current user
-         * agent, making it reachable.
-         */
-        this._registerer = undefined;
-        /**
          * Represents the real-time communication session between two user
          * agents, managed according to the SIP protocol.
          */
@@ -61,7 +57,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
          * time before the call is picked up.
          */
         this._timerAcceptedTimeout = undefined;
-        this._userAgent = undefined;
 
         owl.Component.env.services.messaging.get().then((messaging) => {
             this._messaging = messaging;
@@ -231,10 +226,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         inviteSession.accept(callOptions);
         this._isOutgoing = false;
         this._sipSession = inviteSession;
-        this._messaging.messagingBus.trigger('sip_error', {
-            isConnecting: true,
-            message: _t("Please accept the use of the microphone."),
-        });
+        this.voip.triggerError(_t("Please accept the use of the microphone."));
     },
     /**
      * Exits the `ringing` state. In production mode, sends a CANCEL request to
@@ -293,16 +285,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
     },
     /**
-     * @private
-     * @param {SIP.UserAgent} userAgent
-     * @returns {SIP.Registerer}
-     */
-    _createRegisterer(userAgent) {
-        const registerer = new window.SIP.Registerer(userAgent, { expires: 3600 });
-        registerer.stateChange.addListener((state) => this._onRegistererStateChange(state));
-        return registerer;
-    },
-    /**
      * Instantiates a new user agent using the current configuration.
      *
      * @private
@@ -310,14 +292,12 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * configurations are missing.
      */
     _createUserAgent() {
-        if (!this.voip.pbxAddress || !this.voip.webSocketUrl) {
-            this._triggerError(
-                _t("PBX or Websocket address is missing. Please check your settings."));
+        if (!this.voip.isServerConfigured) {
+            this.voip.triggerError(_t("PBX or Websocket address is missing. Please check your settings."));
             return false;
         }
-        if (!this._messaging.voip.areCredentialsSet) {
-            this._triggerError(
-                _t("Your credentials are not correctly set. Please contact your administrator."));
+        if (!this.voip.areCredentialsSet) {
+            this.voip.triggerError(_t("Your credentials are not correctly set. Please contact your administrator."));
             return false;
         }
         return new window.SIP.UserAgent(this._getUaConfig());
@@ -391,32 +371,23 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     async _initUserAgent() {
         if (this.voip.mode === 'prod') {
-            this._messaging.messagingBus.trigger('sip_error', {
-                isConnecting: true,
-                message: _t("Connecting..."),
-            });
+            this.voip.triggerError(_t("Connecting..."));
             if (!this._messaging.device.hasRtcSupport || !navigator.mediaDevices) {
-                this._triggerError(
-                    _t("Your browser could not support WebRTC. Please check your configuration."));
+                this.voip.triggerError(_t("Your browser could not support WebRTC. Please check your configuration."));
                 return;
             }
-            this._userAgent = this._createUserAgent();
-            if (!this._userAgent) {
+            this.voip.userAgent.update({ __sipJsUserAgent: this._createUserAgent() });
+            if (!this.voip.userAgent.__sipJsUserAgent) {
                 return;
             }
             try {
-                await this._userAgent.start();
+                await this.voip.userAgent.__sipJsUserAgent.start();
             } catch (_error) {
-                this._triggerError(_t("Failed to start the user agent. The URL of the websocket server may be wrong. Please have an administrator verify the websocket server URL in the General Settings."));
+                this.voip.triggerError(_t("Failed to start the user agent. The URL of the websocket server may be wrong. Please have an administrator verify the websocket server URL in the General Settings."));
                 return;
             }
-            this._registerer = this._createRegisterer(this._userAgent);
-            this._registerer.register({
-                requestDelegate: {
-                    onAccept: (response) => this._onRegistrationAccepted(response),
-                    onReject: (response) => this._onRegistrationRejected(response),
-                },
-            });
+            this.voip.userAgent.update({ registerer: insertAndReplace() });
+            this.voip.userAgent.registerer.register();
         }
         this._configureDomElements();
     },
@@ -440,7 +411,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             } else {
                 calleeURI = window.SIP.UserAgent.makeURI(`sip:${number}@${this.voip.pbxAddress}`);
             }
-            this._sipSession = new window.SIP.Inviter(this._userAgent, calleeURI);
+            this._sipSession = new window.SIP.Inviter(this.voip.userAgent.__sipJsUserAgent, calleeURI);
             this._sipSession.delegate = this._getSessionDelegate();
             this._sipSession.stateChange.addListener((state) => this._onSessionStateChange(state));
             this._sipSession.invite({
@@ -455,12 +426,9 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             });
             this._isOutgoing = true;
             this._updateCallState(CALL_STATE.RINGING_CALL);
-            this._messaging.messagingBus.trigger('sip_error', {
-                isConnecting: true,
-                message: _t("Please accept the use of the microphone."),
-            });
+            this.voip.triggerError(_t("Please accept the use of the microphone."));
         } catch (err) {
-            this._triggerError(_t("The connection cannot be made.</br> Please check your configuration."));
+            this.voip.triggerError(_t("The connection cannot be made.</br> Please check your configuration."));
             console.error(err);
         }
     },
@@ -537,20 +505,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._updateCallState(CALL_STATE.NO_CALL);
         this._messaging.messagingBus.trigger('sip_bye');
     },
-    /**
-     * Triggers up an error.
-     *
-     * @private
-     * @param {string} message message diplayed
-     * @param {Object} [param1={}]
-     * @param {boolean} [param1.isTemporary] if the message can be discarded or not
-     */
-    _triggerError(message, { isTemporary }={}) {
-        this._messaging.messagingBus.trigger('sip_error', {
-            isTemporary,
-            message,
-        });
-    },
     _updateCallState(newState) {
         this._callState = newState;
         if (!mobile.methods.changeAudioMode) {
@@ -604,7 +558,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {Error} error
      */
     _onDisconnect(error) {
-        this._triggerError(_t("The websocket connection with the server has been lost. Please try to refresh the page."));
+        this.voip.triggerError(_t("The websocket connection with the server has been lost. Please try to refresh the page."));
     },
     /**
      * @private
@@ -626,7 +580,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                     );
             }
         })();
-        this._triggerError(errorMessage, { isTemporary: true });
+        this.voip.triggerError(errorMessage, { isNonBlocking: true });
         if (this._isOutgoing) {
             this.hangup();
         } else {
@@ -880,7 +834,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                     );
             }
         })();
-        this._triggerError(errorMessage, { isTemporary: true });
+        this.voip.triggerError(errorMessage, { isNonBlocking: true });
         this._messaging.messagingBus.trigger('sip_cancel_outgoing');
     },
     /**
@@ -893,54 +847,6 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onReferAccepted(response) {
         this._terminateSession();
-    },
-    /**
-     * @private
-     * @param {SIP.RegistererState} newState
-     */
-    _onRegistererStateChange(newState) {
-        if (newState === window.SIP.RegistererState.Registered) {
-            this._messaging.messagingBus.trigger('sip_error_resolved');
-        }
-    },
-    /**
-     * Triggered when receiving a response with status code 2xx to the REGISTER
-     * request.
-     *
-     * @private
-     * @param {SIP.IncomingResponse} response The server final response to the
-     * REGISTER request.
-     */
-    _onRegistrationAccepted(response) {
-        this._messaging.messagingBus.trigger('sip_error_resolved');
-    },
-    /**
-     * Triggered when receiving a response with status code 4xx, 5xx, or 6xx to
-     * the REGISTER request.
-     *
-     * @private
-     * @param {SIP.IncomingResponse} response The server final response to the
-     * REGISTER request.
-     */
-    _onRegistrationRejected(response) {
-        const errorMessage = sprintf(
-            "Registration rejected: %(statusCode)s %(reasonPhrase)s.",
-            {
-                statusCode: response.message.statusCode,
-                reasonPhrase: response.message.reasonPhrase,
-            },
-        );
-        const help = (() => {
-            switch (response.message.statusCode) {
-                case 401: // Unauthorized
-                    return _t("The server failed to authenticate you. Please have an administrator verify that you are reaching the right server (PBX server IP in the General Settings) and that the credentials in your user preferences are correct.");
-                case 503: // Service Unavailable
-                    return _t("The error may come from the transport layer. Please have an administrator verify the websocket server URL in the General Settings. If the problem persists, this is probably an issue with the server.");
-                default:
-                    return _t("Please try again later. If the problem persists, you may want to ask an administrator to check the configuration.");
-            }
-        })();
-        this._triggerError(Markup`${errorMessage}</br></br>${help}`);
     },
     /**
      * @private

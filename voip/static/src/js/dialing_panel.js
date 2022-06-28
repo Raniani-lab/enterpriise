@@ -1,6 +1,8 @@
 odoo.define('voip.DialingPanel', function (require) {
 "use strict";
 
+const { insertAndReplace } = require('@mail/model/model_field_command');
+
 const PhoneCallActivitiesTab = require('voip.PhoneCallActivitiesTab');
 const PhoneCallContactsTab = require('voip.PhoneCallContactsTab');
 const PhoneCallRecentTab = require('voip.PhoneCallRecentTab');
@@ -123,7 +125,11 @@ const DialingPanel = Widget.extend({
          * so that errors triggered during the initialization of the user agent
          * using sip_error are caught.
          */
-        this._userAgent = new UserAgent(this);
+        this._messaging.voip.update({
+            userAgent: insertAndReplace({
+                legacyUserAgent: new UserAgent(this),
+            }),
+        });
         core.bus.on('transfer_call', this, this._onTransferCall);
         core.bus.on('voip_onToggleDisplay', this,  function () {
             this._resetMissedCalls();
@@ -321,7 +327,7 @@ const DialingPanel = Widget.extend({
                 await this._toggleDisplay();
             }
             await this._activeTab.initPhoneCall(phoneCall);
-            this._userAgent.makeCall(number);
+            this._messaging.voip.userAgent.legacyUserAgent.makeCall(number);
             this._isInCall = true;
         } else {
             this.displayNotification({ title: YOUR_ARE_ALREADY_IN_A_CALL });
@@ -557,7 +563,7 @@ const DialingPanel = Widget.extend({
 
             const processChoice = useVoip => {
                 if ($checkbox.find('input[type="checkbox"]').is(':checked')) {
-                    this._userAgent.updateCallPreference(useVoip ? 'voip' : 'phone');
+                    this._messaging.voip.userAgent.legacyUserAgent.updateCallPreference(useVoip ? 'voip' : 'phone');
                 }
                 resolve(useVoip);
             };
@@ -612,7 +618,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _onClickAcceptButton() {
-        this._userAgent.acceptIncomingCall();
+        this._messaging.voip.userAgent.legacyUserAgent.acceptIncomingCall();
         this._$mainButtons.show();
         this._$incomingCallButtons.hide();
     },
@@ -688,7 +694,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _onClickHangupButton() {
-        this._userAgent.hangup();
+        this._messaging.voip.userAgent.legacyUserAgent.hangup();
         this._cancelCall();
         this._activeTab._selectPhoneCall(this._activeTab._currentPhoneCallId);
     },
@@ -707,14 +713,14 @@ const DialingPanel = Widget.extend({
             return;
         }
         this._isPostpone = true;
-        this._userAgent.hangup();
+        this._messaging.voip.userAgent.legacyUserAgent.hangup();
     },
     /**
      * @private
      */
     _onClickRejectButton() {
         this.$el.css('zIndex', '');
-        this._userAgent.rejectIncomingCall();
+        this._messaging.voip.userAgent.legacyUserAgent.rejectIncomingCall();
     },
     /**
      * @private
@@ -786,7 +792,7 @@ const DialingPanel = Widget.extend({
      */
     _onKeypadButtonClick(number) {
         if (this._isInCall) {
-            this._userAgent.sendDtmf(number);
+            this._messaging.voip.userAgent.legacyUserAgent.sendDtmf(number);
         }
         this._$keypadInput.val(this._$keypadInput.val() + number);
     },
@@ -811,7 +817,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _onMuteCall() {
-        this._userAgent.muteCall();
+        this._messaging.voip.userAgent.legacyUserAgent.muteCall();
     },
     /**
      * @private
@@ -887,10 +893,8 @@ const DialingPanel = Widget.extend({
     /**
      * @private
      * @param {Object} detail
-     * @param {boolean} [detail.isConnecting] is true if voip is trying to
-     *   connect and the error message must not disappear
-     * @param {Object} detail.isTemporary it we want to block voip temporarly
-     *   to display an error message
+     * @param {Object} detail.isNonBlocking Set to true if the error should not
+     * block the UI.
      * @param {Object} detail.message contains the message to display on the
      *   gray overlay
      */
@@ -899,14 +903,10 @@ const DialingPanel = Widget.extend({
         this._isInCall = false;
         this._isPostpone = false;
         this._hidePostponeButton();
-        if (detail.isConnecting) {
-            this._blockOverlay(message);
-        } else if (detail.isTemporary) {
-            this._blockOverlay(message);
+        this._blockOverlay(message);
+        if (detail.isNonBlocking) {
             this.$('.blockOverlay').on('click', () => this._onSipErrorResolved());
             this.$('.blockOverlay').attr('title', _t("Click to unblock"));
-        } else {
-            this._blockOverlay(message);
         }
     },
     /**
@@ -985,13 +985,13 @@ const DialingPanel = Widget.extend({
      * @param {string} number
      */
     _onTransferCall(number) {
-        this._userAgent.transfer(number);
+        this._messaging.voip.userAgent.legacyUserAgent.transfer(number);
     },
     /**
      * @private
      */
     _onUnmuteCall() {
-        this._userAgent.unmuteCall();
+        this._messaging.voip.userAgent.legacyUserAgent.unmuteCall();
     },
 });
 

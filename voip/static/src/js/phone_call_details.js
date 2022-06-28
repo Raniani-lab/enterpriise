@@ -91,7 +91,7 @@ const PhoneCallDetails = Widget.extend({
         this._onInputNumberDebounced = _.debounce(this._onInputNumber.bind(this), 350);
 
         var self = this;
-        var number = this.getParent().getParent()._userAgent._externalPhone;
+        var number = this.getParent().getParent()._messaging.voip.cleanedExternalDeviceNumber;
         $('.o_dial_transfer_button').popover({
             placement: 'top',
             delay: {show: 0, hide: 100},

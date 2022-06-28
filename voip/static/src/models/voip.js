@@ -21,6 +21,21 @@ registerModel({
             return phoneNumber.replace(/[\s-/.\u00AD]/g, "");
         },
         /**
+         * Triggers an error that will be displayed in the softphone, and blocks
+         * the UI by default.
+         *
+         * @param {string} message The error message to be displayed.
+         * @param {Object} [options={}]
+         * @param {boolean} [options.isNonBlocking=false] If true, the error
+         * will not block the UI.
+         */
+        triggerError(message, { isNonBlocking = false } = {}) {
+            this.messaging.messagingBus.trigger("sip_error", {
+                isNonBlocking,
+                message,
+            });
+        },
+        /**
          * @returns {boolean|FieldCommand}
          */
         _computeAreCredentialsSet() {
@@ -54,6 +69,12 @@ registerModel({
             return this.cleanPhoneNumber(
                 this.messaging.currentUser.res_users_settings_id.external_device_number
             );
+        },
+        /**
+         * @returns {boolean}
+         */
+        _computeIsServerConfigured() {
+            return Boolean(this.pbxAddress && this.webSocketUrl);
         },
         /**
          * @returns {boolean|FieldCommand}
@@ -94,6 +115,13 @@ registerModel({
             default: "",
         }),
         /**
+         * Determines if `pbxAddress` and `webSocketUrl` are defined.
+         */
+        isServerConfigured: attr({
+            compute: "_computeIsServerConfigured",
+            default: false,
+        }),
+        /**
          * Either 'demo' or 'prod'. In demo mode, phone calls are simulated in
          * the interface but no RTC sessions are actually established.
          */
@@ -106,6 +134,10 @@ registerModel({
         pbxAddress: attr(),
         ringtoneRegistry: one("RingtoneRegistry", {
             default: insertAndReplace(),
+            inverse: "voip",
+            isCausal: true,
+        }),
+        userAgent: one("UserAgent", {
             inverse: "voip",
             isCausal: true,
         }),

@@ -32,7 +32,7 @@ Phone.include({
         const { voip } = await owl.Component.env.services.messaging.get();
         return (
             voip.mode !== "prod" ||
-            Boolean(voip.pbxAddress && voip.webSocketUrl) &&
+            voip.isServerConfigured &&
             voip.areCredentialsSet
         );
     },

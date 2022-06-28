@@ -59,7 +59,8 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "wait refresh",
-            trigger: ".o_account_reports_level2:last() .o_account_report_column_value:contains('')"
+            trigger: ".o_account_reports_level2:last() .o_account_report_column_value:contains('')",
+            extra_trigger: ".o_account_reports_filter_date:not(.show)"
         },
         {
             content: "change comparison filter",

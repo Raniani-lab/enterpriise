@@ -26,7 +26,7 @@ FormRenderer.include({
     init: function () {
         this._super.apply(this, arguments);
 
-        this.$attachmentPreview = undefined;
+        this.attachmentViewerTarget = undefined;
         this.attachmentPreviewResID = undefined;
         this.attachmentViewer = undefined;
         /**
@@ -68,11 +68,12 @@ FormRenderer.include({
                     this.attachmentViewer = undefined;
                 }
             } else {
-                this.$attachmentPreview = $('<div>', { class: 'o_attachment_preview' });
+                this.attachmentViewerTarget = document.createElement("div");
+                this.attachmentViewerTarget.classList.add("o_attachment_preview");
             }
-            this._handleAttributes(this.$attachmentPreview, node);
-            this._registerModifiers(node, this.state, this.$attachmentPreview);
-            return this.$attachmentPreview;
+            this._handleAttributes($(this.attachmentViewerTarget), node);
+            this._registerModifiers(node, this.state, $(this.attachmentViewerTarget));
+            return this.attachmentViewerTarget;
         } else {
             return this._super.apply(this, arguments);
         }
@@ -108,7 +109,7 @@ FormRenderer.include({
     hasAttachmentViewer() {
         return (
             config.device.size_class >= config.device.SIZES.XXL &&
-            this.$attachmentPreview && !this.$attachmentPreview.hasClass('o_invisible_modifier') &&
+            this.attachmentViewerTarget && !$(this.attachmentViewerTarget).hasClass('o_invisible_modifier') &&
             this.attachmentPreviewResID && this.attachmentPreviewResID === this.state.res_id
         );
     },
@@ -135,14 +136,14 @@ FormRenderer.include({
         const $sheetBg = this.$('.o_form_sheet_bg');
         this._updateChatterContainerTarget();
         if (this.hasAttachmentViewer()) {
-            this.$attachmentPreview.insertAfter($sheetBg);
+            $(this.attachmentViewerTarget).insertAfter($sheetBg);
             dom.append($sheetBg, $(this._chatterContainerTarget), {
                 callbacks: [{ widget: this.chatter }],
                 in_DOM: this._isInDom,
             });
         } else {
             $(this._chatterContainerTarget).insertAfter($sheetBg);
-            dom.append($sheetBg, this.$attachmentPreview, {
+            dom.append($sheetBg, $(this.attachmentViewerTarget), {
                 callbacks: [],
                 in_DOM: this._isInDom,
             });
@@ -163,7 +164,7 @@ FormRenderer.include({
         if (config.device.size_class < config.device.SIZES.XXL) {
             return;
         }
-        if (!this.$attachmentPreview || this.$attachmentPreview.hasClass('o_invisible_modifier')) {
+        if (!this.attachmentViewerTarget || $(this.attachmentViewerTarget).hasClass('o_invisible_modifier')) {
             return;
         }
         var self = this;
@@ -197,7 +198,7 @@ FormRenderer.include({
             } else {
                 this.attachmentPreviewResID = this.state.res_id;
                 this.attachmentViewer = new AttachmentViewer(this, thread);
-                this.attachmentViewer.appendTo(this.$attachmentPreview).then(function () {
+                this.attachmentViewer.appendTo($(this.attachmentViewerTarget)).then(function () {
                     self.trigger_up('preview_attachment_validation');
                     self._interchangeChatter();
                 });

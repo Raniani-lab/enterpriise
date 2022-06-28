@@ -270,13 +270,13 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
     _onAttachmentPreviewValidation: function (ev) {
         ev.stopPropagation();
         var self = this;
-        if (this.$attachmentPreview === undefined) {
+        if (this.attachmentViewerTarget === undefined) {
             return;
         }
         // case pdf (iframe)
-        this.$attachmentPreview.find('iframe').on("load", function () { // wait for iframe to load
-            var $iframe = self.$attachmentPreview.find('iframe');
-            var $iframeDoc = self.$attachmentPreview.find('iframe').contents();
+        $(this.attachmentViewerTarget).find('iframe').on("load", function () { // wait for iframe to load
+            var $iframe = $(self.attachmentViewerTarget).find('iframe');
+            var $iframeDoc = $(self.attachmentViewerTarget).find('iframe').contents();
             // To get pagerendered trigger_up from pdf.js, we needed to change pdf.js default option and set
             // eventBusDispatchToDOM to True
             $iframeDoc[0].addEventListener('pagerendered', function () {
@@ -284,12 +284,12 @@ var InvoiceExtractFormRenderer = FormRenderer.extend({
             });
         });
         // case img
-        var $documentImg = self.$attachmentPreview.find('.img-fluid');
+        var $documentImg = $(self.attachmentViewerTarget).find('.img-fluid');
         var $attachment = $('#attachment_img');
         if ($attachment.length && $attachment[0].complete) {
             this._startInvoiceExtract($documentImg);
         } else {
-            this.$attachmentPreview.find('.img-fluid').on("load", function () {
+            $(this.attachmentViewerTarget).find('.img-fluid').on("load", function () {
                 self._startInvoiceExtract($documentImg);
             });
         }

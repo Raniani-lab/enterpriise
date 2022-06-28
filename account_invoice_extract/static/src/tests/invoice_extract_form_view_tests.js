@@ -31,7 +31,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
              */
             _onAttachmentPreviewValidation: function (ev) {
                 ev.stopPropagation();
-                var $attachment = this.$attachmentPreview.find('.img-fluid');
+                var $attachment = $(this.attachmentViewerTarget).find('.img-fluid');
                 this._startInvoiceExtract($attachment);
             },
         });

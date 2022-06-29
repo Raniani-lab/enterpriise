@@ -49,7 +49,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
     };
     const target = getFixture();
     target.classList.add('o_web_client');
-    const { afterEvent, openView } = await start({
+    const { afterEvent, openFormView } = await start({
         async mockRPC(route, args) {
             if (route === '/mail/thread/messages') {
                 assert.step('/mail/thread/messages');
@@ -58,24 +58,9 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
         serverData: { views },
         target,
     });
-
-    await afterEvent({
-        eventName: 'o-thread-view-hint-processed',
-        func() {
-            openView({
-                res_id: resPartnerId1,
-                res_model: 'res.partner',
-                views: [[false, 'form']],
-            });
-        },
-        message: "should wait until partner 11 thread displayed its messages",
-        predicate: ({ hint, threadViewer }) => {
-            return (
-                hint.type === 'messages-loaded' &&
-                threadViewer.thread.model === 'res.partner' &&
-                threadViewer.thread.id === resPartnerId1
-            );
-        },
+    await openFormView({
+        res_id: resPartnerId1,
+        res_model: 'res.partner',
     });
     assert.verifySteps(
         ['/mail/thread/messages'],
@@ -166,7 +151,7 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
     };
     const target = getFixture();
     target.classList.add('o_web_client');
-    const { afterEvent, openView } = await start({
+    const { afterEvent, openFormView } = await start({
         async mockRPC(route, args) {
             if (route === '/mail/message/post') {
                 assert.step('/mail/message/post');
@@ -175,23 +160,9 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
         serverData: { views },
         target,
     });
-    await afterEvent({
-        eventName: 'o-thread-view-hint-processed',
-        async func() {
-            await openView({
-                res_id: resPartnerId1,
-                res_model: 'res.partner',
-                views: [[false, 'form']],
-            });
-        },
-        message: "should wait until partner 11 thread displayed its messages",
-        predicate: ({ hint, threadViewer }) => {
-            return (
-                hint.type === 'messages-loaded' &&
-                threadViewer.thread.model === 'res.partner' &&
-                threadViewer.thread.id === resPartnerId1
-            );
-        },
+    await openFormView({
+        res_id: resPartnerId1,
+        res_model: 'res.partner',
     });
     const controllerContentEl = document.querySelector('.o_content');
 

@@ -385,5 +385,5 @@ class ResPartner(models.Model):
                 _logger.exception(e)
 
     def _cron_execute_followup(self):
-        for company in self.env.user.company_ids:
+        for company in self.env["res.company"].search([]):
             self.with_context(allowed_company_ids=company.ids)._cron_execute_followup_company()

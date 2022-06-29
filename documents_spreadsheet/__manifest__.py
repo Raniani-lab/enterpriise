@@ -21,7 +21,7 @@
     ],
 
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['documents'],
     'license': 'OEEL-1',
     'assets': {
         'documents_spreadsheet.o_spreadsheet': [

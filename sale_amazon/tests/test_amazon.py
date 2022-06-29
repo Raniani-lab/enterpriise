@@ -418,7 +418,7 @@ class TestAmazon(common.TestAmazonCommon):
     @mute_logger('odoo.addons.sale_amazon.models.amazon_account')
     @mute_logger('odoo.addons.sale_amazon.models.stock_picking')
     def test_sync_orders_cancel_abort(self):
-        """ Test the pickings that were confirmed at odoo and then order is canceled at amazon. """
+        """ Test the pickings that were confirmed at odoo and then order is canceled at Amazon. """
 
         def get_sp_api_response_mock(_account, operation_, **_kwargs):
             """ Return a mock response without making an actual call to the Selling Partner API. """
@@ -479,7 +479,7 @@ class TestAmazon(common.TestAmazonCommon):
             self.assertEqual(len(picking), 1, msg="FBM orders should generate exactly one picking.")
             picking.carrier_id, picking.carrier_tracking_ref = self.carrier, self.tracking_ref
             picking._action_done()
-            self.assertTrue(picking.amazon_sync_pending)
+            self.assertEqual(picking.amazon_sync_status, 'pending')
             picking._sync_pickings(account_ids=(self.account.id,))
             self.assertEqual(
                 mock.call_count,
@@ -487,7 +487,7 @@ class TestAmazon(common.TestAmazonCommon):
                 msg="An order fulfillment feed should be sent to Amazon for each confirmed "
                     "picking.",
             )
-            self.assertFalse(picking.amazon_sync_pending)
+            self.assertEqual(picking.amazon_sync_status, 'processing')
 
     def test_find_matching_product_search(self):
         """ Test the product search based on the internal reference. """

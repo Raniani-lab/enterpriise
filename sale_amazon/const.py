@@ -37,6 +37,14 @@ API_OPERATIONS_MAPPING = {
         'url_path': '/tokens/2021-03-01/restrictedDataToken',
         'restricted_resource_path': None,
     },
+    'getFeed': {
+        'url_path': '/feeds/2021-06-30/feeds/{param}',
+        'restricted_resource_path': None,
+    },
+    'getFeedDocument': {
+        'url_path': '/feeds/2021-06-30/documents/{param}',
+        'restricted_resource_path': None,
+    },
     'getMarketplaceParticipations': {
         'url_path': '/sellers/v1/marketplaceParticipations',
         'restricted_resource_path': None,

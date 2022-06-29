@@ -86,6 +86,7 @@ GET_ORDER_ITEMS_MOCK = {
 }
 
 OPERATIONS_RESPONSES_MAP = {
+    'getOrder': {'payload': ORDER_MOCK},
     'getOrders': GET_ORDERS_RESPONSE_MOCK,
     'getOrderItems': GET_ORDER_ITEMS_MOCK,
     'createFeedDocument': {'feedDocumentId': '123123', 'url': 'my_amazing_feed_url.test'},

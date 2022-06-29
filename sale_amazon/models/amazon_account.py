@@ -2,9 +2,11 @@
 
 import json
 import logging
+from datetime import timedelta
 
 import dateutil.parser
 import psycopg2
+from markupsafe import Markup
 from werkzeug import urls
 
 from odoo import _, api, exceptions, fields, models
@@ -333,6 +335,9 @@ class AmazonAccount(models.Model):
     def action_sync_pickings(self):
         self.env['stock.picking']._sync_pickings(tuple(self.ids))
 
+    def action_sync_feeds_status(self):
+        self._sync_feeds()
+
     def action_recover_order(self):
         self.ensure_one()
         return {
@@ -379,7 +384,7 @@ class AmazonAccount(models.Model):
             )
 
     def _sync_orders(self, auto_commit=True):
-        """ Synchronize the sales orders that were recently updated on Amazon.
+        """ Synchronize the accounts' sales orders that were recently updated on Amazon.
 
         If called on an empty recordset, the orders of all active accounts are synchronized instead.
 
@@ -451,7 +456,9 @@ class AmazonAccount(models.Model):
                                 # Dismiss business errors to allow the synchronization to skip the
                                 # problematic orders and require synchronizing them manually.
                                 self.env.cr.rollback()
-                                account._handle_order_sync_failure(amazon_order_ref)
+                                account._handle_sync_failure(
+                                    flow='order_sync', amazon_order_ref=amazon_order_ref
+                                )
                                 continue  # Skip these order data and resume with the next ones.
 
                         # The synchronization of this order went through, use its last status update
@@ -522,7 +529,8 @@ class AmazonAccount(models.Model):
         If no matching sales order is found, a new one is created if it is in a 'synchronizable'
         status: 'Shipped' or 'Unshipped', if it is respectively an FBA or an FBA order. If the
         matching sales order already exists and the Amazon order was canceled, the sales order is
-        also canceled.
+        also canceled. If the matching sales order already exists and the order data confirm that a
+        FBM order got shipped, we update the shipping status when it's needed.
 
         Note: self.ensure_one()
 
@@ -538,8 +546,8 @@ class AmazonAccount(models.Model):
             [('amazon_order_ref', '=', amazon_order_ref)], limit=1
         )
         amazon_status = order_data['OrderStatus']
+        fulfillment_channel = order_data['FulfillmentChannel']
         if not order:  # No sales order was found with the given Amazon order reference.
-            fulfillment_channel = order_data['FulfillmentChannel']
             if amazon_status in const.STATUS_TO_SYNCHRONIZE[fulfillment_channel]:
                 # Create the sales order and generate stock moves depending on the Amazon channel.
                 order = self._create_order_from_data(order_data)
@@ -548,26 +556,40 @@ class AmazonAccount(models.Model):
                 elif order.amazon_channel == 'fbm':
                     order.with_context(mail_notrack=True).action_done()
                 _logger.info(
-                    "Created a new sales order with amazon_order_ref %s for Amazon account with "
-                    "id %s.", amazon_order_ref, self.id
+                    "Created a new sales order with amazon_order_ref %(ref)s for Amazon account"
+                    " with id %(id)s.", {'ref': amazon_order_ref, 'id': self.id}
                 )
             else:
                 _logger.info(
-                    "Ignored Amazon order with reference %(ref)s and status %(status)s for Amazon "
-                    "account with id %(account_id)s.",
+                    "Ignored Amazon order with reference %(ref)s and status %(status)s for Amazon"
+                    " account with id %(account_id)s.",
                     {'ref': amazon_order_ref, 'status': amazon_status, 'account_id': self.id},
                 )
         else:  # The sales order already exists.
+            unsynced_pickings = order.picking_ids.filtered(
+                lambda picking: picking.amazon_sync_status != 'done' and picking.state != 'cancel'
+            )  # Consider any "unsynced" status so that we synchronize updates made from Amazon.
             if amazon_status == 'Canceled' and order.state != 'cancel':
                 order._action_cancel()
                 _logger.info(
-                    "Canceled sales order with amazon_order_ref %s for Amazon account with id %s.",
-                    amazon_order_ref, self.id
+                    "Canceled sales order with amazon_order_ref %(ref)s for Amazon account with id"
+                    " %(id)s.", {'ref': amazon_order_ref, 'id': self.id}
+                )
+            elif amazon_status == 'Shipped' and fulfillment_channel == 'MFN' and unsynced_pickings:
+                # The processing of the feed of a batch of pickings can fail on Amazon side in a way
+                # that we cannot tell which picking is faulty. In that case, all pickings of the
+                # batch are flagged as in error. The order status update allows correcting the
+                # status of non-faulty pickings while leaving the faulty one in error.
+                unsynced_pickings.amazon_sync_status = 'done'
+                _logger.info(
+                    "Forced the picking synchronization status to 'done' for sales order with"
+                    " Amazon order reference %(ref)s and Amazon account with id %(id)s.",
+                    {'ref': amazon_order_ref, 'id': self.id},
                 )
             else:
                 _logger.info(
-                    "Ignored already synchronized sales order with amazon_order_ref %s for Amazon"
-                    "account with id %s.", amazon_order_ref, self.id
+                    "Ignored already synchronized sales order with amazon_order_ref %(ref)s for"
+                    " Amazon account with id %(id)s.", {'ref': amazon_order_ref, 'id': self.id}
                 )
         return order
 
@@ -1073,25 +1095,178 @@ class AmazonAccount(models.Model):
             stock_move._set_quantity_done(order_line.product_uom_qty)
             stock_move._action_done()
 
-    def _handle_order_sync_failure(self, amazon_order_ref):
-        """ Send a mail to the responsible persons to report an order synchronization failure.
+    def _sync_feeds(self):
+        """ Synchronize the status of the accounts' feeds that were sent to Amazon.
 
-        :param str amazon_order_ref: The amazon reference of the order that failed to synchronize.
+        If called on an empty recordset, the feeds of all active account are synchronized instead.
+
+        We assume that the combined set of feeds (of all accounts) to be handled will always be too
+        small for the cron to be killed before it finishes synchronizing all feeds.
+
+        Note: This method is called by the `ir_cron_sync_amazon_feeds` cron.
+
         :return: None
         """
-        _logger.exception(
-            "Failed to synchronize order with amazon id %(ref)s for amazon.account with id "
-            "%(account_id)s (seller id %(seller_id)s).", {
-                'ref': amazon_order_ref,
-                'account_id': self.id,
-                'seller_id': self.seller_key,
-            }
-        )
-        mail_template = self.env.ref('sale_amazon.order_sync_failure', raise_if_not_found=False)
-        if not mail_template:
-            _logger.warning(
-                "The mail template with xmlid sale_amazon.order_sync_failure has been deleted."
+        StockPicking = self.env['stock.picking']
+        self = self or self.search([])
+        pickings_by_account = StockPicking._get_pickings_by_account('processing', tuple(self.ids))
+        accounts = self.filtered(lambda acc: acc in pickings_by_account)
+        amazon_utils.refresh_aws_credentials(accounts)
+
+        for account, pickings in pickings_by_account.items():
+            amazon_utils.ensure_account_is_set_up(account)
+            account._pull_feeds_status(pickings)
+
+        # Re-schedule the cron if not all the pickings reached a final status.
+        processing_pickings = StockPicking
+        for account_pickings in pickings_by_account.values():
+            processing_pickings += account_pickings.filtered(
+                lambda p: p.amazon_sync_status == 'processing'
             )
+        if processing_pickings:
+            next_call = fields.Datetime.now() + timedelta(minutes=10)
+            self.env.ref('sale_amazon.ir_cron_sync_amazon_feeds')._trigger(at=next_call)
+
+    def _pull_feeds_status(self, pickings):
+        """ Pull the status of the feeds corresponding to the provided pickings.
+
+        Note: `self.ensure_one()`
+
+        :param stock.picking pickings: The pickings whose feed status should be pulled.
+        :return: None
+        """
+        self.ensure_one()
+
+        pickings_by_feed = {}
+        for picking in pickings:
+            pickings_by_feed.setdefault(picking.amazon_feed_ref, self.env['stock.picking'])
+            pickings_by_feed[picking.amazon_feed_ref] += picking
+
+        errors_by_picking = {}
+        for feed_ref, feed_pickings in pickings_by_feed.items():
+            # Pull the status and result document reference for the current feed.
+            feed_data = amazon_utils.make_sp_api_request(self, 'getFeed', path_parameter=feed_ref)
+            feed_status = feed_data['processingStatus']
+            result_document_ref = feed_data.get('resultFeedDocumentId')
+
+            # Update the pickings according to their feed status.
+            if feed_status == 'DONE':  # The feed was fully processed.
+                try:
+                    document = amazon_utils.get_feed_document(self, result_document_ref)
+                except amazon_utils.AmazonRateLimitError:
+                    raise  # Don't treat a rate limit error as a business error.
+                except ValidationError:
+                    _logger.exception(
+                        "A business error occurred while processing feed %(feed_ref)s for Amazon"
+                        " account with id %(account_id)s. Skipping the feed and moving to the next"
+                        " one.", {'feed_ref': feed_ref, 'account_id': self.id}
+                    )
+                else:
+                    if document.find('ProcessingSummary/MessagesWithError').text == '0':
+                        feed_pickings.amazon_sync_status = 'done'
+                        _logger.info(
+                            "Synchronized feed %(feed_ref)s for Amazon account with id"
+                            " %(account_id)s.", {'feed_ref': feed_ref, 'account_id': self.id}
+                        )
+                        continue
+
+                    # Iterate over the processing results and flag failed pickings as in 'error'.
+                    consider_unprocessed_pickings_as_failed = False
+                    for result_message in document.iter('Result'):
+                        result_code = result_message.find('ResultCode').text
+                        if result_code == 'Error':
+                            order_info = result_message.find('AdditionalInfo/AmazonOrderID')
+                            order_id = order_info is not None and order_info.text
+                            if order_id:  # We can identify failed pickings.
+                                error_desc = result_message.find('ResultDescription').text
+                                failed_pickings = feed_pickings.filtered(
+                                    lambda p: p.sale_id.amazon_order_ref == order_id
+                                )
+                                for failed_picking in failed_pickings:
+                                    errors_by_picking.setdefault(failed_picking, [])
+                                    errors_by_picking[failed_picking].append(error_desc)
+                            else:  # Amazon doesn't specify which order (and thus picking) failed.
+                                consider_unprocessed_pickings_as_failed = True
+                    feed_pickings.filtered(
+                        lambda p: p in errors_by_picking
+                    ).amazon_sync_status = 'error'
+                    unprocessed_pickings = feed_pickings.filtered(
+                        lambda p: p.amazon_sync_status == 'processing'
+                    )  # The sync order might have run before, avoid changing back done pickings.
+                    if consider_unprocessed_pickings_as_failed:
+                        for picking in unprocessed_pickings:
+                            errors_by_picking.setdefault(picking, []).append(None)
+                        unprocessed_pickings.amazon_sync_status = 'error'
+                    else:  # All errors were identified, the remaining pickings succeeded.
+                        unprocessed_pickings.amazon_sync_status = 'done'
+                    _logger.info(
+                        "Found errors while synchronizing feed %(feed_ref)s for Amazon account with"
+                        " id %(account_id)s.", {'feed_ref': feed_ref, 'account_id': self.id}
+                    )
+
+            elif feed_status in ['IN_QUEUE', 'IN_PROGRESS']:  # The feed has not yet been processed.
+                _logger.info(
+                    "Ignoring in progress feed %(feed_ref)s for Amazon account with id"
+                    " %(account_id)s.", {'feed_ref': feed_ref, 'account_id': self.id}
+                )
+
+            elif feed_status == 'CANCELLED':  # The feed has been canceled before being processed.
+                feed_pickings.amazon_sync_status = 'pending'
+                _logger.info(
+                    "Re-scheduling a synchronization for pickings of canceled feed %(feed_ref)s for"
+                    " Amazon account with id %(account_id)s.",
+                    {'feed_ref': feed_ref, 'account_id': self.id},
+                )
+
+            elif feed_status == 'FATAL':  # The feed failed with no further information.
+                for picking in feed_pickings:
+                    errors_by_picking.setdefault(picking, []).append(None)
+                feed_pickings.amazon_sync_status = 'error'
+
+        if errors_by_picking:
+            error_messages = []
+            for p, errors in errors_by_picking.items():
+                for error in errors:
+                    if error:
+                        p.message_post(body=Markup("%s<br/>%s") % (
+                            _("The synchronization with Amazon failed. Amazon gave us this "
+                              "information about the problem:"),
+                            error,
+                        ))
+                    error_messages.append(
+                        {'order_ref': p.sale_id.amazon_order_ref, 'message': error}
+                    )
+            self._handle_sync_failure(flow='picking_sync', error_messages=error_messages)
+
+    def _handle_sync_failure(self, flow, amazon_order_ref=False, error_messages=False):
+        """ Send a mail to the responsible persons to report a synchronization failure.
+
+        :param str flow: The flow for which the failure mail is requested. Either `order_sync` or
+                         `picking_sync`.
+        :param str amazon_order_ref: The amazon reference of the order that failed to synchronize.
+                                     Required for the `order_sync` flow.
+        :param list[dict] error_messages: A list containing the referenced Amazon orders and their
+                                           linked errors in the format [{'order_ref': 'error'}].
+                                           Required for the `picking_sync` flow.
+        :return: None
+        """
+        if flow == 'order_sync':
+            _logger.exception(
+                "Failed to synchronize order with amazon reference %(ref)s for amazon.account with "
+                "id %(account_id)s (seller id %(seller_id)s).",
+                {'ref': amazon_order_ref, 'account_id': self.id, 'seller_id': self.seller_key},
+            )
+            mail_template_id = 'sale_amazon.order_sync_failure'
+        else:  # flow == 'picking_sync'
+            _logger.exception(
+                "Failed to synchronize pickings for amazon.account with id %(account_id)s "
+                "(seller id %(seller_id)s).", {'account_id': self.id, 'seller_id': self.seller_key}
+            )
+            mail_template_id = 'sale_amazon.picking_sync_failure'
+
+        mail_template = self.env.ref(mail_template_id, raise_if_not_found=False)
+        if not mail_template:
+            _logger.warning("The mail template with xmlid %s has been deleted.", mail_template_id)
         else:
             responsible_emails = {user.email for user in filter(
                 None, (self.user_id, self.env.ref('base.user_admin', raise_if_not_found=False))
@@ -1099,8 +1274,9 @@ class AmazonAccount(models.Model):
             mail_template.with_context(**{
                 'email_to': ','.join(responsible_emails),
                 'amazon_order_ref': amazon_order_ref,
+                'error_messages': error_messages,
             }).send_mail(self.env.user.id)
             _logger.info(
-                "Sent order synchronization failure notification email to %s",
+                "Sent synchronization failure notification email to %s",
                 ', '.join(responsible_emails)
             )

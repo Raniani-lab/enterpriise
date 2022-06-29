@@ -27,7 +27,12 @@
                             class="btn-secondary"
                             groups="base.group_no_one"/>
                     <button name="action_sync_pickings"
-                            string="Sync Pickings"
+                            string="Sync Delivery Orders"
+                            type="object"
+                            class="btn-secondary"
+                            groups="base.group_no_one"/>
+                    <button name="action_sync_feeds_status"
+                            string="Sync Feeds Status"
                             type="object"
                             class="btn-secondary"
                             groups="base.group_no_one"/>

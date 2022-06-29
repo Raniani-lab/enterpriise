@@ -378,14 +378,16 @@ class Form325(models.Model):
             return {}
 
         self.env.cr.execute("""
-            SELECT line.partner_id, ROUND(SUM(line.balance), %(decimal_places)s) AS balance
+            SELECT COALESCE(move.commercial_partner_id, line.partner_id), 
+                   ROUND(SUM(line.balance), %(decimal_places)s) AS balance
               FROM account_move_line line
-             WHERE line.partner_id = ANY(%(partners)s)
+              JOIN account_move move on line.move_id = move.id
+             WHERE COALESCE(move.commercial_partner_id, line.partner_id) = ANY(%(partners)s)
                AND line.account_id = ANY(%(accounts)s)
                AND line.date BETWEEN %(move_date_from)s AND %(move_date_to)s
                AND line.parent_state = 'posted'
                AND line.company_id = %(company)s
-          GROUP BY line.partner_id
+          GROUP BY COALESCE(move.commercial_partner_id, line.partner_id)
         """, {
             'partners': partners.ids,
             'accounts': accounts.ids,
@@ -395,7 +397,6 @@ class Form325(models.Model):
             'decimal_places': self.env.company.currency_id.decimal_places,
         })
         return dict(self.env.cr.fetchall())
-
     @api.model
     def _get_281_50_tags(self):
         missing_tag = []
@@ -424,10 +425,11 @@ class Form325(models.Model):
         self.env.cr.execute("""
         WITH paid_expense_line AS (
             SELECT aml_payable.id AS payable_id,
-                   aml_payable.partner_id,
+                   COALESCE(move_payable.commercial_partner_id, aml_payable.partner_id) as partner_id,
                    aml_expense.move_id,
                    aml_expense.balance
               FROM account_move_line aml_payable
+              JOIN account_move move_payable ON aml_payable.move_id = move_payable.id
               JOIN account_account account ON aml_payable.account_id = account.id
               JOIN account_move_line aml_expense ON aml_payable.move_id = aml_expense.move_id
               JOIN account_account_account_tag account_tag_rel ON aml_expense.account_id = account_tag_rel.account_account_id
@@ -437,7 +439,7 @@ class Form325(models.Model):
                AND aml_payable.company_id = %(company_id)s
                AND aml_payable.date BETWEEN %(invoice_date_from)s AND %(invoice_date_to)s
                AND aml_expense.date BETWEEN %(invoice_date_from)s AND %(invoice_date_to)s
-               AND aml_payable.partner_id = ANY(%(partner_ids)s)
+               AND COALESCE(move_payable.commercial_partner_id, aml_payable.partner_id) = ANY(%(partner_ids)s)
         ),
         amount_paid_per_partner_based_on_bill_reconciled AS (
             SELECT paid_expense_line.partner_id AS partner_id,

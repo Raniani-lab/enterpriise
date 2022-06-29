@@ -675,6 +675,54 @@ class TestResPartner(AccountTestInvoicingCommon):
             'form_281_50_ids': form_281_50_from_form_325_ids.ids,
         }])
 
+    def test_325_50_invoicing_and_paying_subpartner_should_impact_commercial_partner_legacy_issue(self):
+        """ In previous version from Odoo, the aml could get the partner_id instead of the commercial_partner_id
+        set as a partner
+        """
+        parent_partner = self.env['res.partner'].create({
+            'name': 'parent partner',
+            'is_company': True,
+            'street': "Rue des Bourlottes 9",
+            'zip': "1367",
+            'city': "Ramillies",
+            'vat': 'BE0477472701',
+            'country_id': self.env.ref('base.be').id,
+            'category_id': [Command.link(self.env.ref('l10n_be_reports.res_partner_tag_281_50').id)]
+        })
+        child_partner = self.env['res.partner'].create({
+            'name': 'child partner',
+            'is_company': False,
+            'street': "Rue du doudou",
+            'street2': "3",
+            'zip': "7000",
+            'city': "Mons",
+            'citizen_identification': '12345612345',
+            'country_id': self.env.ref('base.be').id,
+            'parent_id': parent_partner.id,
+            'category_id': [Command.link(self.env.ref('l10n_be_reports.res_partner_tag_281_50').id)],
+        })
+        bill = self.create_and_post_bill(partner_id=child_partner, product_id=self.product_a, amount=1500.0, date='2000-05-12')
+        # simulate the previous behavior of Odoo setting the child_partner on the amls instead of commercial_partner_id
+        # for details on this solved issue, see those 2 commits as examples:
+        # https://github.com/odoo/odoo/commit/4606d1a8890
+        # https://github.com/odoo/odoo/commit/91379d20da6f7114359c9147654a60fe86b904d5
+        bill.line_ids.partner_id = child_partner
+
+        self.pay_bill(bill=bill, amount=1500.0, date='2000-05-12')
+        form_325 = self.create_325_form(ref_year=2000)
+        form_281_50_from_form_325_ids = form_325.form_281_50_ids
+        self.assertRecordValues(form_325.form_281_50_ids, [
+            # pylint: disable=C0326
+            {'partner_id': parent_partner.id, 'commissions': 1500.0, 'fees': 0.0, 'atn': 0.0, 'exposed_expenses': 0.0,
+                'total_remuneration': 1500.0, 'paid_amount': 1500.0, 'partner_is_natural_person': False, },
+            {'partner_id': self.partner_a.id, 'commissions': 1000.0, 'fees': 0.0, 'atn': 0.0, 'exposed_expenses': 0.0,
+                'total_remuneration': 1000.0, 'paid_amount':    0.0, 'partner_is_natural_person': False, }
+        ])
+        self.assertRecordValues(form_325, [{
+            'form_281_50_total_amount': 2500.0,
+            'form_281_50_ids': form_281_50_from_form_325_ids.ids,
+        }])
+
     def test_281_50_should_have_basic_sequence(self):
         """Ensure 281_50 gets a sequence assigned and that it is multi_company_safe"""
         form = self.create_form28150(ref_year=2020)

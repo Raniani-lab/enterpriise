@@ -54,7 +54,7 @@ function parseGroupField(allFields, groupFieldString) {
     };
 }
 
-const UNSUPPORTED_FIELD_TYPES = ["one2many", "many2many", "binary", "html"];
+const UNSUPPORTED_FIELD_TYPES = ["one2many", "binary", "html"];
 const NO_RECORD_AT_THIS_POSITION = Symbol("NO_RECORD_AT_THIS_POSITION");
 
 function isNotSupported(fieldType) {
@@ -101,6 +101,7 @@ export function parsePivotFormulaFieldValue(field, groupValue) {
         case "integer":
         case "monetary":
         case "many2one":
+        case "many2many":
             return toNumber(groupValueString);
         default:
             throwUnsupportedFieldError(field);

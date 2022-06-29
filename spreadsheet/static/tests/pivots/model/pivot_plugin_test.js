@@ -1,6 +1,11 @@
 /** @odoo-module */
 
-import { getCell, getCellContent, getCellValue } from "@spreadsheet/../tests/utils/getters";
+import {
+    getCell,
+    getCellContent,
+    getCellFormula,
+    getCellValue,
+} from "@spreadsheet/../tests/utils/getters";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
@@ -463,5 +468,55 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
             groupId: [[], [1]],
         });
         assert.deepEqual(model.exportData().pivots, spreadsheetData.pivots);
+    });
+
+    QUnit.test("Can group by many2many field ", async (assert) => {
+        const { model } = await createSpreadsheetWithPivot({
+            arch: /* xml */ `
+            <pivot>
+                <field name="foo" type="col"/>
+                <field name="tag_ids" type="row"/>
+                <field name="probability" type="measure"/>
+            </pivot>`,
+        });
+        assert.equal(getCellFormula(model, "A3"), '=ODOO.PIVOT.HEADER(1,"tag_ids","false")');
+        assert.equal(getCellFormula(model, "A4"), '=ODOO.PIVOT.HEADER(1,"tag_ids",42)');
+        assert.equal(getCellFormula(model, "A5"), '=ODOO.PIVOT.HEADER(1,"tag_ids",67)');
+
+        assert.equal(
+            getCellFormula(model, "B3"),
+            '=ODOO.PIVOT(1,"probability","tag_ids","false","foo",1)'
+        );
+        assert.equal(
+            getCellFormula(model, "B4"),
+            '=ODOO.PIVOT(1,"probability","tag_ids",42,"foo",1)'
+        );
+        assert.equal(
+            getCellFormula(model, "B5"),
+            '=ODOO.PIVOT(1,"probability","tag_ids",67,"foo",1)'
+        );
+
+        assert.equal(
+            getCellFormula(model, "C3"),
+            '=ODOO.PIVOT(1,"probability","tag_ids","false","foo",2)'
+        );
+        assert.equal(
+            getCellFormula(model, "C4"),
+            '=ODOO.PIVOT(1,"probability","tag_ids",42,"foo",2)'
+        );
+        assert.equal(
+            getCellFormula(model, "C5"),
+            '=ODOO.PIVOT(1,"probability","tag_ids",67,"foo",2)'
+        );
+
+        assert.equal(getCellValue(model, "A3"), "(Undefined)");
+        assert.equal(getCellValue(model, "A4"), "isCool");
+        assert.equal(getCellValue(model, "A5"), "Growing");
+        assert.equal(getCellValue(model, "B3"), "");
+        assert.equal(getCellValue(model, "B4"), "11");
+        assert.equal(getCellValue(model, "B5"), "11");
+        assert.equal(getCellValue(model, "C3"), "");
+        assert.equal(getCellValue(model, "C4"), "15");
+        assert.equal(getCellValue(model, "C5"), "");
     });
 });

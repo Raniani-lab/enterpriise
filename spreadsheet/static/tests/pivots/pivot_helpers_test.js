@@ -115,7 +115,7 @@ QUnit.module("spreadsheet > parsePivotFormulaFieldValue", {}, () => {
     });
 
     QUnit.test("parse values of numeric fields", (assert) => {
-        for (const fieldType of ["float", "integer", "monetary", "many2one"]) {
+        for (const fieldType of ["float", "integer", "monetary", "many2one", "many2many"]) {
             const field = {
                 type: fieldType,
                 string: "A field",
@@ -134,7 +134,7 @@ QUnit.module("spreadsheet > parsePivotFormulaFieldValue", {}, () => {
     });
 
     QUnit.test("parse values of unsupported fields", (assert) => {
-        for (const fieldType of ["one2many", "many2many", "binary", "html"]) {
+        for (const fieldType of ["one2many", "binary", "html"]) {
             const field = {
                 type: fieldType,
                 string: "A field",

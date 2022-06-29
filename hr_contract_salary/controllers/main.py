@@ -235,6 +235,7 @@ class HrContractSalary(http.Controller):
                 'country_id': contract_country.id,
                 'certificate': False,  # To force encoding it
                 'company_id': contract.company_id.id,
+                'resource_calendar_id': contract.resource_calendar_id.id,
                 'address_home_id': address_home_id.id,
             })
 
@@ -569,6 +570,7 @@ class HrContractSalary(http.Controller):
                 'name': 'Simulation Employee',
                 'active': False,
                 'company_id': contract.company_id.id,
+                'resource_calendar_id': contract.resource_calendar_id.id,
             })
 
         # get differences for personnal information

@@ -1,93 +1,36 @@
-odoo.define("documents_spreadsheet.DocumentsControllerMixin", function (require) {
-    "use strict";
+/** @odoo-module **/
 
-    const TemplateDialog = require("documents_spreadsheet.TemplateDialog");
-    const { ComponentWrapper } = require("web.OwlCompatibility");
+import { useService } from "@web/core/utils/hooks";
+import { TemplateDialog } from "@documents_spreadsheet/assets/spreadsheet_template/spreadsheet_template_dialog";
 
-    const DocumentsSpreadsheetControllerMixin = {
-        events: {
-            "click .o_documents_kanban_spreadsheet": "_onNewSpreadSheet",
-        },
-        custom_events: {
-            spreadsheet_created: "_onSpreadsheetCreated",
-            dialog_closed: "_destroyDialog",
-        },
+export const DocumentsSpreadsheetControllerMixin = {
+    setup() {
+        this._super(...arguments);
+        this.action = useService("action");
+        this.dialogService = useService("dialog");
+    },
 
-        //--------------------------------------------------------------------------
-        // Public
-        //--------------------------------------------------------------------------
+    /**
+     * @override
+     */
+    async onOpenDocumentsPreview(ev) {
+        const { documents } = ev.detail;
+        if (documents.length !== 1 || documents[0].data.handler !== "spreadsheet") {
+            return this._super(...arguments);
+        }
+        this.action.doAction({
+            type: "ir.actions.client",
+            tag: "action_open_spreadsheet",
+            params: {
+                spreadsheet_id: documents[0].resId,
+            },
+        });
+    },
 
-        /**
-         * Disables the control panel buttons if there is no selected folder.
-         *
-         * @private
-         */
-        updateButtons() {
-            const selectedFolderId = this.searchModel.get("selectedFolderId");
-            const hasButtonAccess = this.searchModel.get('hasButtonAccess');
-            this.$buttons[0].querySelector(
-                ".o_documents_kanban_spreadsheet"
-            ).disabled = !selectedFolderId || !hasButtonAccess;
-        },
-
-        //--------------------------------------------------------------------------
-        // Private
-        //--------------------------------------------------------------------------
-
-        /**
-         * If there is a template dialog it will be unmounted.
-         *
-         * @private
-         */
-        _destroyDialog() {
-            if (this.templateDialog) {
-                this.templateDialog.destroy();
-            }
-            this.templateDialog = undefined;
-        },
-        //--------------------------------------------------------------------------
-        // Handlers
-        //--------------------------------------------------------------------------
-
-        /**
-         * Create a new spreadsheet
-         *
-         * @private
-         * @param {MouseEvent} ev
-         */
-        _onNewSpreadSheet: async function (ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            const context = this.model.get(this.handle).getContext();
-            const searchView = await this.loadFieldView(
-                "spreadsheet.template",
-                context,
-                false,
-                "search"
-            );
-            this.templateDialog = new ComponentWrapper(this, TemplateDialog, {
-                searchView,
-                folderId: this.searchModel.get("selectedFolderId"),
-                context,
-            });
-            await this.templateDialog.mount(this.el);
-        },
-        /**
-         * This handler is called to open en redirect a user to a sheet.
-         *
-         * @private
-         * @param {MouseEvent} ev
-         */
-        _onSpreadsheetCreated(ev) {
-            this.do_action({
-                type: "ir.actions.client",
-                tag: "action_open_spreadsheet",
-                params: {
-                    spreadsheet_id: ev.data.spreadsheetId,
-                },
-            });
-        },
-    };
-
-    return DocumentsSpreadsheetControllerMixin;
-});
+    async onClickCreateSpreadsheet(ev) {
+        this.dialogService.add(TemplateDialog, {
+            folderId: this.env.searchModel.getSelectedFolderId(),
+            context: this.props.context,
+        });
+    },
+};

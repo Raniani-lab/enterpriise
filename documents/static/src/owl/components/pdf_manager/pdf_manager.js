@@ -1,23 +1,26 @@
-odoo.define('documents.component.PdfManager', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const PdfGroupName = require('documents.component.PdfGroupName');
-const PdfPage = require('documents.component.PdfPage');
-const { computeMultiSelection } = require('documents.utils');
-const { isEventHandled, markEventHandled } = require('@mail/utils/utils');
-const { LegacyComponent } = require("@web/legacy/legacy_component");
+import { PdfGroupName } from '@documents/owl/components/pdf_group_name/pdf_group_name';
+import { PdfPage } from '@documents/owl/components/pdf_page/pdf_page';
+import { computeMultiSelection } from 'documents.utils';
+import { isEventHandled, markEventHandled } from '@mail/utils/utils';
+import { useService } from '@web/core/utils/hooks';
+import { Dialog } from "@web/core/dialog/dialog";
 
-const ajax = require('web.ajax');
-const { csrf_token, _t } = require('web.core');
+import ajax from 'web.ajax';
+import { csrf_token, _t } from 'web.core';
 
-const { onMounted, onWillUnmount, onWillStart, useState } = owl;
+const { Component, onMounted, onWillUnmount, onWillStart, useRef, useState } = owl;
 
-class PdfManager extends LegacyComponent {
+export class PdfManager extends Component {
 
     /**
      * @override
      */
     setup() {
+        this.root = useRef("root");
+        this.addFileInput = useRef("addFileInput");
+        this.notification = useService("notification");
         this.state = useState({
             // Disables upload button if currently uploading.
             uploadingLock: false,
@@ -96,6 +99,10 @@ class PdfManager extends LegacyComponent {
         );
     }
 
+    get isDebugMode() {
+        return Boolean(odoo.debug);
+    }
+
     //----------------------------------------------------------------------
     // Private
     //----------------------------------------------------------------------
@@ -158,6 +165,14 @@ class PdfManager extends LegacyComponent {
         }
         this.state.pages[pageId].groupId = groupId;
     }
+    _displayErrorNotification(message) {
+        this.notification.add(
+            message,
+            {
+                title: _t("Error"),
+            },
+        );
+    }
     /**
      * Ignored pages are not committed but are instead kept in the
      * PDF Manager. If no ignored page remain, the PDF Manager closes and the
@@ -169,7 +184,7 @@ class PdfManager extends LegacyComponent {
     async _applyChanges(ruleId) {
         const processedPageIds = this.activePageIds;
         if (processedPageIds.length === 0) {
-            this.trigger('pdf-manager-error', { message: _t("No document has been selected") });
+            this._displayErrorNotification(_t("No document has been selected"));
             return;
         }
         const pageIds = this.ignoredPageIds;
@@ -183,15 +198,18 @@ class PdfManager extends LegacyComponent {
         try {
             const result = await this._sendChanges({ exit, ruleId });
             const documentIds = JSON.parse(result);
-            this.trigger('process-documents', { documentIds, ruleId, exit });
+            this.props.onProcessDocuments({ documentIds, ruleId, exit });
+            // this.trigger('process-documents', { documentIds, ruleId, exit });
             if (!exit) {
                 for (const pageId of processedPageIds) {
-                this._removePage(pageId, { fromFile: true });
+                    this._removePage(pageId, { fromFile: true });
                 }
                 this._createGroup({ name: _t("Remaining Pages"), pageIds, isSelected: true });
+            } else {
+                this.props.close();
             }
         } catch (error) {
-            this.trigger('pdf-manager-error', { message: error.message || error });
+            this._displayErrorNotification(error.message || error);
             if (pageIds.length) {
                 this._createGroup({ name: _t("Remaining Pages"), pageIds: pageIds, isSelected: true });
             }
@@ -316,7 +334,7 @@ class PdfManager extends LegacyComponent {
      */
     async _loadCanvases({ newPages, pageCount, pdf }) {
         for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
-            if (!this.el) {
+            if (!this.root.el) {
                 break;
             }
             const pageId = newPages[pageNumber];
@@ -467,10 +485,10 @@ class PdfManager extends LegacyComponent {
 
             const document = this.props.documents[0];
             data.append('vals', JSON.stringify({
-                folder_id: document.folder_id.res_id,
-                tag_ids: document.tag_ids.res_ids,
-                owner_id: document.owner_id.res_id,
-                partner_id: document.partner_id.res_id,
+                folder_id: document.folder_id[0],
+                tag_ids: document.tag_ids.currentIds,
+                owner_id: document.owner_id[0],
+                partner_id: document.partner_id[0],
             }));
 
             xhr.send(data);
@@ -507,26 +525,23 @@ class PdfManager extends LegacyComponent {
     _onClickDropdown(ev) {
         markEventHandled(ev, 'PdfManager.toggleDropdown');
     }
+    _onClickGlobalAdd() {
+        this.addFileInput.el.click();
+    }
     /**
      * @private
      * @param {MouseEvent} ev
      */
-    _onClickGlobalAdd(ev) {
+    async _onFileInputChange(ev) {
         ev.stopPropagation();
-        const $uploadInput = $('<input/>', {
-            type: 'file',
-            name: 'files[]',
-            multiple: 'multiple',
-            accept: 'application/pdf',
-        });
-        $uploadInput.on('change', async e => {
-            const files = $uploadInput[0].files;
-            $uploadInput.remove();
-            for (const file of files) {
-                await this._addFile(file.name, { file });
-            }
-        });
-        $uploadInput.click();
+        if (!ev.target.files.length) {
+            return;
+        }
+        const files = ev.target.files;
+        for (const file of files) {
+            await this._addFile(file.name, { file });
+        }
+        ev.target.value = null;
     }
     /**
      * @private
@@ -534,15 +549,14 @@ class PdfManager extends LegacyComponent {
      */
     _onClickGlobalClose(ev) {
         ev.stopPropagation();
-        this.trigger('process-documents', { exit: true });
+        this.props.close();
     }
     /**
      * @private
      * @param {customEvent} ev
      * @param {String} ev.detail
      */
-    _onSelectClicked(ev) {
-        const { pageId, isCheckbox, isRangeSelection, isKeepSelection } = ev.detail;
+    _onSelectClicked(pageId, isCheckbox, isRangeSelection, isKeepSelection) {
         const selectedPageIds = this.activePageIds;
         const anchorId = this.state.anchorId || selectedPageIds[0];
         const recordIds = [];
@@ -580,9 +594,7 @@ class PdfManager extends LegacyComponent {
      * @param {customEvent} ev
      * @param {String} ev.detail
      */
-    async _onClickPage(ev) {
-        ev.stopPropagation();
-        const pageId = ev.detail;
+    async _onClickPage(pageId) {
         const page = this.state.pageCanvases[pageId].page;
         if (!page) {
             return;
@@ -634,7 +646,6 @@ class PdfManager extends LegacyComponent {
      * @param {customEvent} ev
      */
     _onClickPreview(ev) {
-        ev.stopPropagation();
         this.previewCanvas = undefined;
         this.state.viewedPage = undefined;
     }
@@ -644,7 +655,6 @@ class PdfManager extends LegacyComponent {
      * @param {MouseEvent} ev
      */
     _onClickRule(ruleId, ev) {
-        ev.stopPropagation();
         this._applyChanges(ruleId);
     }
     /**
@@ -658,13 +668,11 @@ class PdfManager extends LegacyComponent {
     /**
      * @private
      * @param {customEvent} ev
-     * @param {String} ev.detail.groupId
-     * @param {String} ev.detail.name
+     * @param {String} groupId
+     * @param {String} name
      */
-    _onEditName(ev) {
-        ev.stopPropagation();
-        const groupId = ev.detail.groupId;
-        this.state.groupData[groupId].name = ev.detail.name || _t("unnamed");
+    _onEditName(groupId, name) {
+        this.state.groupData[groupId].name = name || _t("unnamed");
     }
     /**
      * @private
@@ -687,7 +695,9 @@ class PdfManager extends LegacyComponent {
         if ($(ev.target).is('input')) {
             return;
         }
-        if (ev.key === 'A') {
+        if (ev.key === 'Escape') {
+            this.props.close();
+        } else if (ev.key === 'A') {
             for (const pageId in this.state.pages) {
                 this.state.pages[pageId].isSelected = true;
             }
@@ -711,17 +721,18 @@ class PdfManager extends LegacyComponent {
      * @param {number} ev.detail.targetPageId
      * @param {number} ev.detail.pageId
      */
-    _onPageDrop(ev) {
-        ev.stopPropagation();
-        const targetPageId = ev.detail.targetPageId;
-        const pageId = ev.detail.pageId;
+    _onPageDrop(targetPageId, pageId) {
         const targetGroupId = this.state.pages[targetPageId].groupId;
         const index = this.state.groupData[targetGroupId].pageIds.indexOf(targetPageId);
         this._addPage(pageId, targetGroupId, { index });
     }
 }
 
-PdfManager.components = { PdfPage, PdfGroupName };
+PdfManager.components = {
+    Dialog,
+    PdfPage,
+    PdfGroupName,
+};
 
 PdfManager.defaultProps = {
     rules: [],
@@ -730,10 +741,8 @@ PdfManager.defaultProps = {
 PdfManager.props = {
     documents: Array,
     rules: { type: Array, optional: true },
+    onProcessDocuments: { type: Function },
+    close: { type: Function },
 };
 
 PdfManager.template = 'documents.component.PdfManager';
-
-return PdfManager;
-
-});

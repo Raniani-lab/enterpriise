@@ -1,11 +1,7 @@
-odoo.define('documents.test_utils', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const AbstractStorageService = require('web.AbstractStorageService');
-const RamStorage = require('web.RamStorage');
-const { createView } = require('web.test_utils');
-
-const { start } = require('@mail/../tests/helpers/test_utils');
+import { makeView } from "@web/../tests/views/helpers";
+import { start } from "@mail/../tests/helpers/test_utils";
 
 function getEnrichedSearchArch(searchArch='<search></search>') {
     var searchPanelArch = `
@@ -18,23 +14,12 @@ function getEnrichedSearchArch(searchArch='<search></search>') {
     return searchArch.split('</search>')[0] + searchPanelArch + '</search>';
 }
 
-async function createDocumentsView(params) {
-    params.archs = params.archs || {};
-    params.archs[`${params.model},false,search`] =
-         getEnrichedSearchArch(params.archs[`${params.model},false,search`]);
-    if (!params.services || !params.services.local_storage) {
-        // the searchPanel uses the localStorage to store/retrieve default
-        // active category value
-        params.services = params.services || {};
-        const RamStorageService = AbstractStorageService.extend({
-            storage: new RamStorage(),
-        });
-        params.services.local_storage = RamStorageService;
-    }
-    return createView(params);
+export async function createDocumentsView(params) {
+    params.searchViewArch = getEnrichedSearchArch(params.searchViewArch);
+    return makeView(params);
 }
 
-async function createDocumentsViewWithMessaging(params) {
+export async function createDocumentsViewWithMessaging(params) {
     const serverData = params.serverData || {};
     serverData.views = serverData.views || {};
     const searchArchs = {};
@@ -48,10 +33,3 @@ async function createDocumentsViewWithMessaging(params) {
     };
     return start(params);
 }
-
-return {
-    createDocumentsView,
-    createDocumentsViewWithMessaging,
-};
-
-});

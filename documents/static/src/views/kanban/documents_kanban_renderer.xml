@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="documents.DocumentsKanbanRenderer" t-inherit="web.KanbanRenderer" t-inherit-mode="primary" owl="1">
+        <xpath expr="//div[hasclass('o_kanban_renderer')]" position="attributes">
+            <attribute name="class">o_kanban_renderer o_documents_kanban_view o_documents_view o_renderer_with_search_panel position-relative</attribute>
+            <attribute name="t-on-drop.stop.prevent">onDrop</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_kanban_renderer')]" position="after">
+            <DocumentsInspector t-props="getDocumentsInspectorProps()"/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_kanban_renderer')]" position="inside">
+            <DocumentsDropZone setDropZone.bind="setDropZone"/>
+        </xpath>
+        <t t-foreach="getGroupsOrRecords()" position="before">
+            <DocumentsFileUploadViewContainer recordTemplate="uploadRecordTemplate" filterOutRecordUploads="true"/>
+        </t>
+        <t t-call="web.ActionHelper" position="replace">
+            <t t-if="props.noContentHelp">
+                <DocumentsActionHelper noContentHelp="props.noContentHelp"/>
+            </t>
+        </t>
+    </t>
+</templates>

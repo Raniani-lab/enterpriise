@@ -1,10 +1,8 @@
-odoo.define('documents.component.PdfGroupName', function (require) {
-'use strict';
+/** @odoo-module **/
 
-const { LegacyComponent } = require("@web/legacy/legacy_component");
-const { useRef, useState } = owl;
+const { Component, useRef, useState } = owl;
 
-class PdfGroupName extends LegacyComponent {
+export class PdfGroupName extends Component {
 
     /**
      * @override
@@ -25,10 +23,10 @@ class PdfGroupName extends LegacyComponent {
      * @private
      */
     _onBlur() {
-        this.trigger('edit-name', {
-            groupId: this.props.groupId,
-            name: this.nameInputRef.el.value,
-        });
+        this.props.onEditName(
+            this.props.groupId,
+            this.nameInputRef.el.value,
+        );
         this.state.edit = false;
     }
     /**
@@ -48,10 +46,10 @@ class PdfGroupName extends LegacyComponent {
             return;
         }
         ev.stopPropagation();
-        this.trigger('edit-name', {
-            groupId: this.props.groupId,
-            name: this.nameInputRef.el.value,
-        });
+        this.props.onEditName(
+            this.props.groupId,
+            this.nameInputRef.el.value,
+        );
         this.state.edit = false;
     }
 }
@@ -66,7 +64,3 @@ PdfGroupName.props = {
 };
 
 PdfGroupName.template = 'documents.component.PdfGroupName';
-
-return PdfGroupName;
-
-});

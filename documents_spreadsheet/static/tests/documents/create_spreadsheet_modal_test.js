@@ -1,16 +1,19 @@
 /** @odoo-module */
 
-import { createDocumentsView } from "documents.test_utils";
-import DocumentsKanbanView from "documents_spreadsheet.KanbanView";
-import DocumentsListView from "documents_spreadsheet.ListView";
-import { dom, fields } from "web.test_utils";
+import { createDocumentsView } from "@documents/../tests/documents_test_utils";
 
 import { startServer } from "@mail/../tests/helpers/test_utils";
 
-import { nextTick, click } from "@web/../tests/helpers/utils";
+import { editInput, triggerEvent, getFixture, click, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 
-async function getDocumentBasicData() {
+import { setupViewRegistries } from "@web/../tests/views/helpers";
+import { registry } from '@web/core/registry';
+import { documentsFileUploadService } from '@documents/views/helper/documents_file_upload_service';
+
+const serviceRegistry = registry.category("services");
+
+async function getDocumentBasicData(views = {}) {
     const pyEnv = await startServer();
     const documentsFolderId1 = pyEnv["documents.folder"].create({
         name: "Workspace1",
@@ -28,28 +31,37 @@ async function getDocumentBasicData() {
         { name: "Template 2", data: btoa("{}") },
     ]);
     return {
-        ...getBasicData(),
-        ...pyEnv.getData(),
+        models: {
+            ...getBasicData(),
+            ...pyEnv.getData(),
+        },
+        views,
     };
 }
 
-QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {}, () => {
+let target;
+
+QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
+    beforeEach() {
+        setupViewRegistries();
+        target = getFixture();
+        serviceRegistry.add("documents_file_upload", documentsFileUploadService);
+    }
+}, () => {
     QUnit.test("Create spreadsheet from kanban view opens a modal", async function (assert) {
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: "documents.document",
-            data: await getDocumentBasicData(),
+        await createDocumentsView({
+            type: "kanban",
+            resModel: "documents.document",
+            serverData: await getDocumentBasicData({
+                "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
+            }),
             arch: /*xml*/ `
-            <kanban><templates><t t-name="kanban-box">
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                 <div><field name="name"/></div>
             </t></templates></kanban>
         `,
-            archs: {
-                "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-            },
         });
-        await click(kanban.el, ".o_documents_kanban_spreadsheet");
-        await nextTick();
+        await click(target, ".o_documents_kanban_spreadsheet");
         assert.ok(
             $(".o-spreadsheet-templates-dialog").length,
             "should have opened the template modal"
@@ -58,20 +70,18 @@ QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
             $(".o-spreadsheet-templates-dialog .modal-body .o_searchview").length,
             "The Modal should have a search view"
         );
-        kanban.destroy();
     });
 
     QUnit.test("Create spreadsheet from list view opens a modal", async function (assert) {
-        const list = await createDocumentsView({
-            View: DocumentsListView,
-            model: "documents.document",
-            data: await getDocumentBasicData(),
-            arch: `<tree></tree>`,
-            archs: {
+        await createDocumentsView({
+            type: "list",
+            resModel: "documents.document",
+            serverData: await getDocumentBasicData({
                 "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-            },
+            }),
+            arch: `<tree js_class="documents_list"></tree>`,
         });
-        await click(list.el, ".o_documents_kanban_spreadsheet");
+        await click(target, ".o_documents_kanban_spreadsheet");
         assert.ok(
             $(".o-spreadsheet-templates-dialog").length,
             "should have opened the template modal"
@@ -80,39 +90,38 @@ QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
             $(".o-spreadsheet-templates-dialog .modal-body .o_searchview").length,
             "The Modal should have a search view"
         );
-        list.destroy();
     });
 
     QUnit.test("Can search template in modal with searchbar", async function (assert) {
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: "documents.document",
-            data: await getDocumentBasicData(),
+        await createDocumentsView({
+            type: "kanban",
+            resModel: "documents.document",
+            serverData: await getDocumentBasicData({
+                "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
+            }),
             arch: /*xml*/ `
-                <kanban><templates><t t-name="kanban-box">
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <field name="name"/>
                 </t></templates></kanban>
             `,
-            archs: {
-                "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-            },
         });
-        await click(kanban.el, ".o_documents_kanban_spreadsheet");
-        const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
+        await click(target, ".o_documents_kanban_spreadsheet");
+        const dialog = target.querySelector(".o-spreadsheet-templates-dialog");
         assert.equal(dialog.querySelectorAll(".o-template").length, 3);
         assert.equal(dialog.querySelector(".o-template").textContent, "Blank spreadsheet");
 
         const searchInput = dialog.querySelector(".o_searchview_input");
-        await fields.editInput(searchInput, "Template 1");
-        await dom.triggerEvent(searchInput, "keydown", { key: "Enter" });
+        await editInput(searchInput, null, "Template 1");
+        await triggerEvent(searchInput, null, "keydown", { key: "Enter" });
         assert.equal(dialog.querySelectorAll(".o-template").length, 2);
         assert.equal(dialog.querySelector(".o-template").textContent, "Blank spreadsheet");
-        kanban.destroy();
     });
 
     QUnit.test("Can fetch next templates", async function (assert) {
-        const data = await getDocumentBasicData();
-        data["spreadsheet.template"].records = data["spreadsheet.template"].records.concat([
+        const data = await getDocumentBasicData({
+            "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
+        });
+        data.models["spreadsheet.template"].records = data.models["spreadsheet.template"].records.concat([
             { id: 3, name: "Template 3", data: btoa("{}") },
             { id: 4, name: "Template 4", data: btoa("{}") },
             { id: 5, name: "Template 5", data: btoa("{}") },
@@ -125,49 +134,46 @@ QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
             { id: 12, name: "Template 12", data: btoa("{}") },
         ]);
         let fetch = 0;
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: "documents.document",
-            data,
+        await createDocumentsView({
+            type: "kanban",
+            resModel: "documents.document",
+            serverData: data,
             arch: /*xml*/ `
-                <kanban><templates><t t-name="kanban-box">
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <field name="name"/>
                 </t></templates></kanban>
             `,
-            archs: {
-                "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-            },
-            mockRPC: function (route, args) {
+            mockRPC: async function (route, args) {
                 if (route === "/web/dataset/search_read" && args.model === "spreadsheet.template") {
                     fetch++;
                     assert.equal(args.limit, 9);
                     assert.step("fetch_templates");
                     if (fetch === 1) {
-                        assert.equal(args.offset, undefined);
+                        assert.equal(args.offset, 0);
                     } else if (fetch === 2) {
                         assert.equal(args.offset, 9);
                     }
                 }
                 if (args.method === "search_read" && args.model === "ir.model") {
-                    return Promise.resolve([{ name: "partner" }]);
+                    return [{ name: "partner" }];
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        await dom.click(".o_documents_kanban_spreadsheet");
+        await click(target, ".o_documents_kanban_spreadsheet");
         const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
 
         assert.equal(dialog.querySelectorAll(".o-template").length, 10);
-        await dom.click(dialog.querySelector(".o_pager_next"));
+        await click(dialog.querySelector(".o_pager_next"));
         assert.verifySteps(["fetch_templates", "fetch_templates"]);
-        kanban.destroy();
     });
 
     QUnit.test("Disable create button if no template is selected", async function (assert) {
         assert.expect(2);
-        const data = await getDocumentBasicData();
-        data["spreadsheet.template"].records = data["spreadsheet.template"].records.concat([
+        const data = await getDocumentBasicData({
+            "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
+        });
+        data.models["spreadsheet.template"].records = data.models["spreadsheet.template"].records.concat([
             { id: 3, name: "Template 3", data: btoa("{}") },
             { id: 4, name: "Template 4", data: btoa("{}") },
             { id: 5, name: "Template 5", data: btoa("{}") },
@@ -179,33 +185,29 @@ QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
             { id: 11, name: "Template 11", data: btoa("{}") },
             { id: 12, name: "Template 12", data: btoa("{}") },
         ]);
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: "documents.document",
-            data: data,
+        await createDocumentsView({
+            type: "kanban",
+            resModel: "documents.document",
+            serverData: data,
             arch: /*xml*/ `
-                <kanban><templates><t t-name="kanban-box">
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <field name="name"/>
                 </t></templates></kanban>
             `,
-            archs: {
-                "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-            },
         });
         // open template dialog
-        await dom.click(".o_documents_kanban_spreadsheet");
+        await click(target, ".o_documents_kanban_spreadsheet");
         const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
 
         // select template
-        await dom.triggerEvent(dialog.querySelectorAll(".o-template img")[1], "focus");
+        await triggerEvent(dialog.querySelectorAll(".o-template img")[1], null, "focus");
 
         // change page; no template should be selected
-        await dom.click(dialog.querySelector(".o_pager_next"));
+        await click(dialog.querySelector(".o_pager_next"));
         assert.containsNone(dialog, ".o-template-selected");
         const createButton = dialog.querySelector(".o-spreadsheet-create");
-        await dom.click(createButton);
+        await click(createButton);
         assert.ok(createButton.attributes.disabled);
-        kanban.destroy();
     });
 
     QUnit.test("Can create a blank spreadsheet from template dialog", async function (assert) {
@@ -219,39 +221,36 @@ QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
             handler: "spreadsheet",
         });
         const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: "documents.document",
-            data: pyEnv.getData(),
-            arch: `
-            <kanban><templates><t t-name="kanban-box">
-                <field name="name"/>
-            </t></templates></kanban>
-        `,
-            archs: {
+            type: "kanban",
+            resModel: "documents.document",
+            serverData: { models: pyEnv.getData(), views: {
                 "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-            },
-            // data: pyEnv.getData(),
-            intercepts: {
-                do_action: function (ev) {
-                    assert.step("redirect");
-                    assert.equal(ev.data.action.tag, "action_open_spreadsheet");
-                    assert.deepEqual(ev.data.action.params, {
-                        alwaysCreate: true,
-                        createFromTemplateId: null,
-                        createFromTemplateName: undefined,
-                        createInFolderId: 1,
-                    });
-                },
+            }},
+            arch: `
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                <field name="name"/>
+            </t></templates></kanban>`,
+        });
+
+        patchWithCleanup(kanban.env.services.action, {
+            doAction(action) {
+                assert.step("redirect");
+                assert.equal(action.tag, "action_open_spreadsheet");
+                assert.deepEqual(action.params, {
+                    alwaysCreate: true,
+                    createFromTemplateId: null,
+                    createFromTemplateName: undefined,
+                    createInFolderId: 1,
+                });
             },
         });
 
-        await dom.click(".o_documents_kanban_spreadsheet");
+        await click(target, ".o_documents_kanban_spreadsheet");
         const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
 
         // select blank spreadsheet
-        await dom.triggerEvent(dialog.querySelectorAll(".o-template img")[0], "focus");
-        await dom.click(dialog.querySelector(".o-spreadsheet-create"));
+        await triggerEvent(dialog.querySelectorAll(".o-template img")[0], null, "focus");
+        await click(dialog.querySelector(".o-spreadsheet-create"));
         assert.verifySteps(["redirect"]);
-        kanban.destroy();
     });
 });

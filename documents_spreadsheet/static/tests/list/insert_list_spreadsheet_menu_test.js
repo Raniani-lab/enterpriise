@@ -3,7 +3,7 @@
 import ListView from "web.ListView";
 import testUtils from "web.test_utils";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu";
+import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu_legacy";
 import { click, nextTick, getFixture, patchWithCleanup, triggerEvent } from "@web/../tests/helpers/utils";
 import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";

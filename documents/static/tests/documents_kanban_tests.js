@@ -1,62 +1,57 @@
-odoo.define('documents.documents_kanban_tests', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const AbstractStorageService = require('web.AbstractStorageService');
-const DocumentsKanbanController = require('documents.DocumentsKanbanController');
-const DocumentsKanbanView = require('documents.DocumentsKanbanView');
-const DocumentsListView = require('documents.DocumentsListView');
-const { createDocumentsView: originalCreateDocumentsView, createDocumentsViewWithMessaging } = require('documents.test_utils');
-const { registry } = require('@web/core/registry');
-const { legacyExtraNextTick, patchWithCleanup } = require("@web/../tests/helpers/utils");
+import { documentsFileUploadService } from '@documents/views/helper/documents_file_upload_service';
+import { createDocumentsView as originalCreateDocumentsView, createDocumentsViewWithMessaging } from './documents_test_utils';
+import { registry } from '@web/core/registry';
+import { setupViewRegistries } from "@web/../tests/views/helpers";
 
-const {
+import {
     afterNextRender,
     startServer,
-} = require('@mail/../tests/helpers/test_utils');
+} from '@mail/../tests/helpers/test_utils';
 
-const {
+import {
     toggleFilterMenu,
     toggleMenuItem,
-} = require("@web/../tests/search/helpers");
+    pagerNext,
+    pagerPrevious,
+} from "@web/../tests/search/helpers";
 
-const concurrency = require('web.concurrency');
-const KanbanView = require('web.KanbanView');
-const RamStorage = require('web.RamStorage');
-const relationalFields = require('web.relational_fields');
-const testUtils = require('web.test_utils');
-const { str_to_datetime } = require('web.time');
-const legacyViewRegistry = require('web.view_registry');
+import testUtils from 'web.test_utils';
+import {
+    editInput,
+    clickOpenedDropdownItem,
+    clickOpenM2ODropdown,
+    getFixture,
+    nextTick,
+    click,
+    patchWithCleanup,
+    triggerEvent,
+} from '@web/../tests/helpers/utils';
+import { str_to_datetime } from 'web.time';
+import { session } from "@web/session";
+import { browser, makeRAMLocalStorage } from "@web/core/browser/browser";
 
-function autocompleteLength() {
-    var $el = $('.ui-autocomplete');
-    if ($el.length === 0) {
-        throw new Error('Autocomplete not found');
-    }
-    return $el.find('li').length;
-}
+const serviceRegistry = registry.category("services");
+const find = testUtils.dom.find;
 
-function searchValue(el, value) {
-    var matches = typeof el === 'string' ? $(el) : el;
-    if (matches.length !== 1) {
-        throw new Error(`Found ${matches.length} elements instead of 1`);
-    }
-    matches.val(value).trigger('keydown');
-}
-
-let pyEnv;
 function createDocumentsView(params) {
     return originalCreateDocumentsView({
-        data: pyEnv.getData(),
+        serverData: { models: pyEnv.getData(), views: {} },
         ...params,
     });
 }
 
+let target;
+let pyEnv;
+
 QUnit.module('documents', {}, function () {
 QUnit.module('documents_kanban_tests.js', {
     async beforeEach() {
-        this.ORIGINAL_CREATE_XHR = DocumentsKanbanController.prototype._createXHR;
+        serviceRegistry.add("documents_file_upload", documentsFileUploadService);
+        this.ORIGINAL_CREATE_XHR = documentsFileUploadService._createXHR;
         this.patchDocumentXHR = (mockedXHRs, customSend) => {
-            DocumentsKanbanController.prototype._createXhr = () => {
+            documentsFileUploadService._createXhr = () => {
                 const xhr = {
                     upload: new window.EventTarget(),
                     open() {},
@@ -146,388 +141,344 @@ QUnit.module('documents_kanban_tests.js', {
                 partner_id: resPartnerIds[2],
             },
         ]);
-        // replace the basic kanban view by the custom one, this used to be easier
-        // with createView but now that a webClient is used, it's a bit tricky.
-        registry.category('views').remove('kanban');
-        legacyViewRegistry.add("kanban", DocumentsKanbanView);
+        setupViewRegistries();
+        target = getFixture();
     },
     afterEach() {
-        DocumentsKanbanController.prototype._createXHR = this.ORIGINAL_CREATE_XHR;
+        documentsFileUploadService._createXHR = this.ORIGINAL_CREATE_XHR;
         pyEnv = undefined;
     },
 }, function () {
     QUnit.test('kanban basic rendering', async function (assert) {
         assert.expect(25);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
-        assert.strictEqual(kanban.$('header.active > label > span').text().trim(), 'Workspace1',
+        assert.strictEqual(target.querySelector('header.active > label > span').textContent.trim(), 'Workspace1',
             "the first selected record should be the first folder");
-        assert.strictEqual(kanban.$('header.active > span').text().trim(), '5',
+        assert.strictEqual(target.querySelector('header.active > span').textContent.trim(), '5',
             "the first folder should have 5 as counter");
-        assert.containsOnce(kanban, '.o_search_panel_category_value:contains(All) header',
+        assert.containsOnce(target, '.o_search_panel_category_value:contains(All) header',
             "Should only have a single all selector");
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
+        await click(target, '.o_search_panel_category_value:nth-of-type(1) header');
 
-        assert.ok(kanban.$buttons.find('.o_documents_kanban_upload').is(':disabled'),
+        assert.ok(target.querySelector('.o_documents_kanban_upload').disabled,
             "the upload button should be disabled on global view");
-        assert.ok(kanban.$buttons.find('.o_documents_kanban_url').is(':disabled'),
+        assert.ok(target.querySelector('.o_documents_kanban_url').disabled,
             "the upload url button should be disabled on global view");
-        assert.ok(kanban.$buttons.find('.o_documents_kanban_request').is(':disabled'),
+        assert.ok(target.querySelector('.o_documents_kanban_request').disabled,
             "the request button should be disabled on global view");
-        assert.ok(kanban.$buttons.find('.o_documents_kanban_share_domain').is(':disabled'),
+        assert.ok(target.querySelector('.o_documents_kanban_share_domain').disabled,
             "the share button should be disabled on global view");
 
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6,
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 6,
             "should have 6 records in the renderer");
-        assert.containsNone(kanban, '.o_documents_selector_tags',
+        assert.containsNone(target, '.o_documents_selector_tags',
             "should not display the tag navigation because no workspace is selected by default");
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
+        await click(target, '.o_search_panel_category_value:nth-of-type(2) header');
 
         // check view layout
-        assert.containsN(kanban, '.o_content > div', 3,
+        assert.containsN(target, '.o_content > div', 3,
             "should have 3 columns");
-        assert.containsOnce(kanban.$('.o_content'), '> div.o_search_panel',
+        assert.containsOnce(target.querySelector('.o_content'), '> div.o_search_panel',
             "should have a 'documents selector' column");
-        assert.containsOnce(kanban, '.o_content > .o_legacy_kanban_view',
+        assert.containsOnce(target, '.o_content > .o_kanban_renderer',
             "should have a 'classical kanban view' column");
-        assert.hasClass(kanban.$('.o_legacy_kanban_view'), 'o_documents_kanban_view',
+        assert.hasClass(target.querySelector('.o_kanban_renderer'), 'o_documents_kanban_view',
             "should have classname 'o_documents_kanban_view'");
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 5,
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 5,
             "should have 5 records in the renderer");
-        assert.containsOnce(kanban, '.o_kanban_record:first .o_record_selector',
+        assert.containsOnce(target, '.o_kanban_record:first .o_record_selector',
             "should have a 'selected' button");
-        assert.containsOnce(kanban, '.o_content > .o_documents_inspector',
+        assert.containsOnce(target, '.o_content > .o_documents_inspector',
             "should have a 'document inspector' column");
 
         // check control panel buttons
-        assert.containsOnce(kanban, '.o_cp_buttons .btn-primary');
-        assert.strictEqual(kanban.$('.o_cp_buttons .btn-primary').text().trim(), 'Upload',
+        assert.containsOnce(target, '.o_cp_buttons .btn-primary');
+        assert.strictEqual(target.querySelector('.o_cp_buttons .btn-primary').textContent.trim(), 'Upload',
             "should have a primary 'Upload' button");
-        assert.ok(kanban.$buttons.find('.o_documents_kanban_upload').not(':disabled'),
+        assert.ok(target.querySelector('.o_documents_kanban_upload').disabled === false,
             "the upload button should be enabled when a folder is selected");
-        assert.containsOnce(kanban, '.o_cp_buttons button.o_documents_kanban_url',
+        assert.containsOnce(target, '.o_cp_buttons button.o_documents_kanban_url',
             "should allow to save a URL");
-        assert.ok(kanban.$buttons.find('.o_documents_kanban_url').not(':disabled'),
+        assert.ok(target.querySelector('.o_documents_kanban_url').disabled === false,
             "the upload url button should be enabled when a folder is selected");
-        assert.strictEqual(kanban.$('.o_cp_buttons button.o_documents_kanban_request').text().trim(), 'Request',
+        assert.strictEqual(target.querySelector('.o_cp_buttons button.o_documents_kanban_request').textContent.trim(), 'Request',
             "should have a primary 'request' button");
-        assert.ok(kanban.$buttons.find('.o_documents_kanban_request').not(':disabled'),
+        assert.ok(target.querySelector('.o_documents_kanban_request').disabled === false,
             "the request button should be enabled when a folder is selected");
-        assert.strictEqual(kanban.$('.o_cp_buttons button.btn-secondary.o_documents_kanban_share_domain').text().trim(), 'Share',
+        assert.strictEqual(target.querySelector('.o_cp_buttons button.btn-secondary.o_documents_kanban_share_domain').textContent.trim(), 'Share',
             "should have a secondary 'Share' button");
-        assert.ok(kanban.$buttons.find('.o_documents_kanban_share_domain').not(':disabled'),
+        assert.ok(target.querySelector('.o_documents_kanban_share_domain').disabled === false,
             "the share button should be enabled when a folder is selected");
-
-        kanban.destroy();
     });
 
     QUnit.test('can select records by clicking on the select icon', async function (assert) {
         assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        var $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
-            "first record should not be selected");
-        await testUtils.dom.click($firstRecord.find('.o_record_selector'));
-        assert.hasClass($firstRecord, 'o_record_selected',
+        const firstRecord = target.querySelector('.o_kanban_record');
+        assert.doesNotHaveClass(firstRecord, 'o_record_selected',
+        "first record should not be selected");
+        await click(firstRecord, '.o_record_selector');
+        assert.hasClass(firstRecord, 'o_record_selected',
             "first record should be selected");
 
-        var $thirdRecord = kanban.$('.o_kanban_record:nth(2)');
-        assert.doesNotHaveClass($thirdRecord, 'o_record_selected',
+        const thirdRecord = target.querySelectorAll('.o_kanban_record')[2];
+        assert.doesNotHaveClass(thirdRecord, 'o_record_selected',
             "third record should not be selected");
-        await testUtils.dom.click($thirdRecord.find('.o_record_selector'));
-        assert.hasClass($thirdRecord, 'o_record_selected',
+        await click(thirdRecord, '.o_record_selector');
+        assert.hasClass(thirdRecord, 'o_record_selected',
             "third record should be selected");
 
-        await testUtils.dom.click($firstRecord.find('.o_record_selector'));
-        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
+        await click(firstRecord, '.o_record_selector');
+        assert.doesNotHaveClass(firstRecord, 'o_record_selected',
             "first record should not be selected");
-        assert.hasClass($thirdRecord, 'o_record_selected',
+        assert.hasClass(thirdRecord, 'o_record_selected',
             "third record should be selected");
-
-        kanban.destroy();
     });
 
     QUnit.test('can select records by clicking on them', async function (assert) {
         assert.expect(5);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div>
+                            <field name="name"/>
+                        </div>
+                    </t></templates></kanban>`,
         });
 
-        assert.containsNone(kanban, '.o_kanban_record.o_record_selected',
+        assert.containsNone(target, '.o_kanban_record.o_record_selected',
             "no record should be selected");
 
-        var $firstRecord = kanban.$('.o_kanban_record:first');
-        await testUtils.dom.click($firstRecord);
-        assert.containsOnce(kanban, '.o_kanban_record.o_record_selected',
+        const firstRecord = target.querySelector('.o_kanban_record');
+        await click(firstRecord);
+        assert.containsOnce(target, '.o_kanban_record.o_record_selected',
             "one record should be selected");
-        assert.hasClass($firstRecord, 'o_record_selected',
+        assert.hasClass(firstRecord, 'o_record_selected',
             "first record should be selected");
 
-        var $thirdRecord = kanban.$('.o_kanban_record:nth(2)');
-        await testUtils.dom.click($thirdRecord);
-        assert.containsOnce(kanban, '.o_kanban_record.o_record_selected',
+        const thirdRecord = target.querySelectorAll('.o_kanban_record')[2];
+        await click(thirdRecord);
+        assert.containsOnce(target, '.o_kanban_record.o_record_selected',
             "one record should be selected");
-        assert.hasClass($thirdRecord, 'o_record_selected',
+        assert.hasClass(thirdRecord, 'o_record_selected',
             "third record should be selected");
-
-        kanban.destroy();
     });
 
     QUnit.test('can unselect a record', async function (assert) {
         assert.expect(3);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div>
+                            <field name="name"/>
+                        </div>
+                    </t></templates></kanban>`,
         });
 
-        assert.containsNone(kanban, '.o_kanban_record.o_record_selected');
+        assert.containsNone(target, '.o_kanban_record.o_record_selected');
 
-        var $firstRecord = kanban.$('.o_kanban_record:first');
-        await testUtils.dom.click($firstRecord);
-        assert.hasClass($firstRecord, 'o_record_selected');
+        const firstRecord = target.querySelector('.o_kanban_record');
+        await click(firstRecord);
+        assert.hasClass(firstRecord, 'o_record_selected');
 
-        await testUtils.dom.click($firstRecord);
-        assert.containsNone(kanban, '.o_kanban_record.o_record_selected');
-
-        kanban.destroy();
+        await click(firstRecord);
+        assert.containsNone(target, '.o_kanban_record.o_record_selected');
     });
 
     QUnit.test('can select records with keyboard navigation', async function (assert) {
         assert.expect(4);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                        '<button name="some_method" type="object"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            intercepts: {
-                execute_action: function () {
-                    assert.ok(false, "should not trigger an 'execute_action' event");
-                },
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div>
+                            <field name="name"/>
+                            <button name="some_method" type="object"/>
+                        </div>
+                    </t></templates></kanban>`,
+        });
+
+        patchWithCleanup(kanban.env.services.action, {
+            doActionButton({ onClose }) {
+                assert.ok(false, "should not trigger an 'execute_action' event");
+                onClose();
             },
         });
 
-        var $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
+        const firstRecord = target.querySelector('.o_kanban_record');
+        assert.doesNotHaveClass(firstRecord, 'o_record_selected',
             "first record should not be selected");
-        $firstRecord.focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.ENTER,
-            which: $.ui.keyCode.ENTER,
-        }));
-        await testUtils.nextTick();
-        assert.hasClass($firstRecord, 'o_record_selected',
+        await triggerEvent(firstRecord, null, 'keydown', {
+            key: "Enter",
+        });
+        assert.hasClass(firstRecord, 'o_record_selected',
             "first record should be selected");
 
-        var $thirdRecord = kanban.$('.o_kanban_record:nth(2)');
-        $thirdRecord.focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.ENTER,
-            which: $.ui.keyCode.ENTER,
-        }));
-        await testUtils.nextTick();
-        assert.hasClass($thirdRecord, 'o_record_selected',
+        const thirdRecord = target.querySelector('.o_kanban_record:nth-of-type(3)');
+        await triggerEvent(thirdRecord, null, 'keydown', {
+            key: "Enter",
+        });
+        assert.hasClass(thirdRecord, 'o_record_selected',
             "third record should be selected");
-        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
+        assert.doesNotHaveClass(firstRecord, 'o_record_selected',
             "first record should no longer be selected");
-
-        kanban.destroy();
     });
 
     QUnit.test('can multi select records with shift and ctrl', async function (assert) {
         assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                        '<button name="some_method" type="object"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                        <button name="some_method" type="object"/>
+                    </div>
+                </t></templates></kanban>`,
         });
-        var $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
+
+        const firstRecord = target.querySelector('.o_kanban_record');
+        assert.doesNotHaveClass(firstRecord, 'o_record_selected',
             "first record should not be selected");
-        $firstRecord.focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.ENTER,
-            which: $.ui.keyCode.ENTER,
-        }));
-        await testUtils.nextTick();
-        assert.hasClass($firstRecord, 'o_record_selected',
+        await triggerEvent(firstRecord, null, 'keydown', {
+            key: "Enter",
+        });
+        assert.hasClass(firstRecord, 'o_record_selected',
             "first record should be selected");
 
-        var $thirdRecord = kanban.$('.o_kanban_record:nth(2)');
-        $thirdRecord.focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.ENTER,
-            which: $.ui.keyCode.ENTER,
+        const thirdRecord = target.querySelectorAll('.o_kanban_record')[2];
+        await triggerEvent(thirdRecord, null, 'keydown', {
+            key: "Enter",
             shiftKey: true,
-        }));
-        await testUtils.nextTick();
-        assert.hasClass($thirdRecord, 'o_record_selected',
+        });
+        assert.hasClass(thirdRecord, 'o_record_selected',
             "third record should be selected (shift)");
-        assert.hasClass($firstRecord, 'o_record_selected',
+        assert.hasClass(firstRecord, 'o_record_selected',
             "first record should still be selected (shift)");
 
-        $firstRecord.focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.ENTER,
-            which: $.ui.keyCode.ENTER,
-            ctrlKey: true,
-        }));
-        await testUtils.nextTick();
+        await triggerEvent(firstRecord, null, 'keydown', {
+            key: "Enter",
+            ctrlKey: true
+        });
 
-        assert.hasClass($thirdRecord, 'o_record_selected',
+        assert.hasClass(thirdRecord, 'o_record_selected',
             "third record should still be selected (ctrl)");
-        assert.doesNotHaveClass($firstRecord, 'o_record_selected',
+        assert.doesNotHaveClass(firstRecord, 'o_record_selected',
             "first record should no longer be selected (ctrl)");
-
-        kanban.destroy();
     });
 
     QUnit.test('only visible selected records are kept after a reload', async function (assert) {
         assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: '<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">' +
                     '<div>' +
                         '<i class="fa fa-circle-thin o_record_selector"/>' +
                         '<field name="name"/>' +
                         '<button name="some_method" type="object"/>' +
                     '</div>' +
                 '</t></templates></kanban>',
-            archs: {
-                "documents.document,false,search": `
+            searchViewArch: `
                     <search>
                         <filter name="owo" string="OwO" domain="[['name', '=', 'burp']]"/>
-                    </search>`
-            },
+                    </search>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
+        kanban.model.root.records.filter(rec => ['yop', 'burp', 'blip'].includes(rec.data.name)).forEach(rec => rec.toggleSelection(true));
+        await nextTick();
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_record_selected', 3,
+        assert.containsN(target, '.o_record_selected', 3,
             "should have 3 selected records");
-        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 3,
+        assert.containsN(target, '.o_documents_inspector_preview .o_document_preview', 3,
             "should show 3 document previews in the DocumentsInspector");
 
-        await toggleFilterMenu(kanban.el);
-        await toggleMenuItem(kanban.el, "OwO");
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "OwO");
 
-        assert.containsOnce(kanban, '.o_record_selected',
+        assert.containsOnce(target, '.o_record_selected',
             "should have 1 selected record");
-        assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
+        assert.containsOnce(target, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document preview in the DocumentsInspector");
 
-        await toggleMenuItem(kanban.el, "OwO");
+        await toggleMenuItem(target, "OwO");
 
-        assert.containsOnce(kanban, '.o_record_selected',
+        assert.containsOnce(target, '.o_record_selected',
             "should have 1 selected records");
-        assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
+        assert.containsOnce(target, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document previews in the DocumentsInspector");
-
-        kanban.destroy();
     });
 
     QUnit.test('selected records are kept when a button is clicked', async function (assert) {
-        assert.expect(7);
+        assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                        '<button name="some_method" type="object"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
-                if (args.method === 'read' && args.model === 'documents.document') {
-                    assert.deepEqual(args.args[0], [1],
-                        "should read the clicked record");
-                }
-                return this._super.apply(this, arguments);
-            },
-            intercepts: {
-                execute_action: function (ev) {
-                    assert.strictEqual(ev.data.action_data.name, 'some_method',
-                        "should call the correct method");
-                    pyEnv['documents.document'].write([ev.data.env.currentID], { name: 'yop changed' });
-                    ev.data.on_closed();
-                },
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                        <button name="some_method" type="object"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        patchWithCleanup(kanban.env.services.action, {
+            doActionButton(ev) {
+                assert.strictEqual(ev.name, 'some_method',
+                    "should call the correct method");
+                pyEnv['documents.document'].write([ev.resId], { name: 'yop changed' });
+                ev.onClose();
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
+        kanban.model.root.records.filter(rec => ['yop', 'burp', 'blip'].includes(rec.data.name)).forEach(rec => rec.toggleSelection(true));
+        await nextTick();
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_record_selected', 3,
+        assert.containsN(target, '.o_record_selected', 3,
             "should have 3 selected records");
-        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 3,
+        assert.containsN(target, '.o_documents_inspector_preview .o_document_preview', 3,
             "should show 3 document previews in the DocumentsInspector");
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) button'));
+        await click(Array.from(target.querySelectorAll('.o_kanban_record button')).find(el => el.parentElement.textContent.trim() === "yop"));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.strictEqual(kanban.$('.o_record_selected:contains(yop changed)').length, 1,
+        assert.strictEqual(Array.from(target.querySelectorAll('.o_record_selected')).filter(el => el.textContent.trim() === 'yop changed').length, 1,
             "should have re-rendered the updated record");
-        assert.containsN(kanban, '.o_record_selected', 3,
+        assert.containsN(target, '.o_record_selected', 3,
             "should still have 3 selected records");
-        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 3,
+        assert.containsN(target, '.o_documents_inspector_preview .o_document_preview', 3,
             "should still show 3 document previews in the DocumentsInspector");
-
-        kanban.destroy();
     });
 
     QUnit.test('can share current domain', async function (assert) {
@@ -536,15 +487,15 @@ QUnit.module('documents_kanban_tests.js', {
         const [resUsersId1] = pyEnv['res.users'].search([['display_name', '=', 'Lukaku']]);
         const domain = ['owner_id', '=', resUsersId1];
         const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
             domain: [domain],
-            mockRPC: function (route, args) {
+            mockRPC: async function (route, args) {
                 if (args.method === 'open_share_popup') {
                     assert.deepEqual(args.args, [{
                         document_ids: false,
@@ -556,75 +507,81 @@ QUnit.module('documents_kanban_tests.js', {
                                 ["res_model", "in", ["res.fake"]]
                         ],
                         folder_id: 1,
-                        tag_ids: [[6, 0, []]],
+                        tag_ids: [[6, false, []]],
                         type: 'domain',
                     }]);
+                    return { ignore: true };
                 }
-                return this._super.apply(this, arguments);
             },
         });
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_category_value header', 1)
+
+        const oldDoAction = kanban.env.services.action.doAction;
+        patchWithCleanup(kanban.env.services.action, {
+            doAction(action) {
+                if (action.ignore) {
+                    return;
+                }
+                return oldDoAction.call(this, action);
+            },
+        });
+        await click(
+            find(target, '.o_search_panel_category_value header', 1)
         );
         // filter on 'task' in the DocumentsSelector
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
+        await click(
+            find(target, '.o_search_panel_label_title', "Task")
         );
 
-        assert.containsN(kanban, '.o_kanban_record:not(.o_kanban_ghost)', 1,
+        assert.containsN(target, '.o_kanban_record:not(.o_kanban_ghost)', 1,
             "should have 2 records in the renderer");
 
-        await testUtils.dom.click(kanban.$buttons.find('.o_documents_kanban_share_domain'));
-
-        kanban.destroy();
+        await click(target, '.o_documents_kanban_share_domain');
     });
 
     QUnit.test('can upload from URL', async function (assert) {
         assert.expect(1);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            intercepts: {
-                do_action: function (ev) {
-                    assert.deepEqual(ev.data.action, "documents.action_url_form", "should open the URL form");
-                },
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        patchWithCleanup(kanban.env.services.action, {
+            doAction(action) {
+                assert.deepEqual(action, 'documents.action_url_form', 'should open the url form');
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$buttons.find('button.o_documents_kanban_url'));
-
-        kanban.destroy();
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('button.o_documents_kanban_url'));
     });
 
     QUnit.test('can Request a file', async function (assert) {
         assert.expect(1);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            intercepts: {
-                do_action: function (ev) {
-                    assert.deepEqual(ev.data.action, "documents.action_request_form", "should open the Request form");
-                },
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        patchWithCleanup(kanban.env.services.action, {
+            doAction(action) {
+                assert.deepEqual(action, 'documents.action_request_form', 'should open the url form');
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$buttons.find('button.o_documents_kanban_request'));
-
-        kanban.destroy();
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('button.o_documents_kanban_request'));
     });
 
     QUnit.module('DocumentsInspector');
@@ -632,527 +589,463 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document inspector with no document selected', async function (assert) {
         assert.expect(3);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
-            '_F1-test-description_', "should display the current workspace description");
-        assert.strictEqual(kanban.$('.o_documents_inspector_info .o_inspector_value:first').text().trim(),
-            '5', "should display the correct number of documents");
-        assert.strictEqual(kanban.$('.o_documents_inspector_info .o_inspector_value:nth(1)').text().trim(),
-            '0.12 MB', "should display the correct size");
 
-        kanban.destroy();
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        assert.strictEqual(target.querySelector('.o_documents_inspector_preview').textContent.replace(/\s+/g, ''),
+            '_F1-test-description_', "should display the current workspace description");
+        assert.strictEqual(target.querySelectorAll('.o_inspector_value')[0].textContent.trim(),
+            '5', "should display the correct number of documents");
+        assert.strictEqual(target.querySelectorAll('.o_inspector_value')[1].textContent.trim(),
+            '0.12 MB', "should display the correct size");
     });
 
     QUnit.test('document inspector with selected documents', async function (assert) {
         assert.expect(5);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
         // select a first document
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(1) .o_record_selector'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsNone(kanban, '.o_documents_inspector_info .o_selection_size',
+        assert.containsNone(target, '.o_documents_inspector_info .o_selection_size',
             "should not display the number of selected documents (because only 1)");
-        assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
+        assert.containsOnce(target, '.o_documents_inspector_preview .o_document_preview',
             "should show a preview of the selected document");
-        assert.hasClass(kanban.$('.o_documents_inspector_preview .o_document_preview'), 'o_documents_single_preview',
+        assert.hasClass(target.querySelector('.o_documents_inspector_preview .o_document_preview'), 'o_documents_single_preview',
             "should have the 'o_documents_single_preview' className");
 
         // select a second document
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(2) .o_record_selector'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_selection_size').text().trim(),
+        assert.strictEqual(target.querySelector('.o_documents_inspector_preview .o_selection_size').textContent.trim(),
             '2 documents selected', "should display the correct number of selected documents");
-        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 2,
+        assert.containsN(target, '.o_documents_inspector_preview .o_document_preview', 2,
             "should show a preview of the selected documents");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector limits preview to 4 documents', async function (assert) {
         assert.expect(2);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
         // select five documents
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(0) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(2) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(3) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
+        for (let i = 0; i < 5; i++) {
+            kanban.model.root.records[i].toggleSelection(true);
+        }
+        await nextTick();
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview .o_selection_size').text().trim(),
+        assert.strictEqual(target.querySelector('.o_documents_inspector_preview .o_selection_size').textContent.trim(),
             '5 documents selected', "should display the correct number of selected documents");
-        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 4,
+        assert.containsN(target, '.o_documents_inspector_preview .o_document_preview', 4,
             "should only show a preview of 4 selected documents");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector shows selected records of the current page', async function (assert) {
         assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban limit="2"><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban" limit="2"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        kanban.model.root.records[0].toggleSelection(0);
+        await nextTick();
 
-        assert.containsOnce(kanban, '.o_record_selected',
+        assert.containsOnce(target, '.o_record_selected',
             "should have 1 selected record");
-        assert.containsOnce(kanban, '.o_documents_inspector_preview .o_document_preview',
+        assert.containsOnce(target, '.o_documents_inspector_preview .o_document_preview',
             "should show 1 document preview in the DocumentsInspector");
 
-        await testUtils.controlPanel.pagerNext(kanban);
-        await testUtils.nextTick();
+        await pagerNext(target);
 
-        assert.containsNone(kanban, '.o_record_selected',
+        assert.containsNone(target, '.o_record_selected',
             "should have no selected record");
-        assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
+        assert.containsNone(target, '.o_documents_inspector_preview .o_document_preview',
             "should show no document preview in the DocumentsInspector");
 
-        await testUtils.controlPanel.pagerPrevious(kanban);
-        await testUtils.nextTick();
+        await pagerPrevious(target);
 
-        assert.containsNone(kanban, '.o_record_selected',
+        assert.containsNone(target, '.o_record_selected',
             "should have no selected record");
-        assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
+        assert.containsNone(target, '.o_documents_inspector_preview .o_document_preview',
             "should show no document preview in the DocumentsInspector");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: document preview', async function (assert) {
         assert.expect(8);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        const views = {
+            'documents.document,false,kanban': 
+                `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div>
+                            <field name="name"/>
+                        </div>
+                    </t></templates></kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
         });
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
+        });
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        assert.containsNone(kanban, '.o_document_preview img',
+        assert.containsNone(target, '.o_document_preview img',
             "should not have a clickable image");
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp)'));
+        await click(find(target, '.o_kanban_record', 'burp'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsNone(kanban, '.o_viewer_content',
+        assert.containsNone(target, '.o_AttachmentViewer',
             "should not have a document preview");
-        assert.containsOnce(kanban, '.o_document_preview img',
+        assert.containsOnce(target, '.o_document_preview img',
             "should have a clickable image");
 
-        await testUtils.dom.click(kanban.$('.o_document_preview img'));
+        await click(target, '.o_document_preview img');
 
-        assert.containsOnce(kanban, '.o_viewer_content',
+        assert.containsOnce(target, '.o_AttachmentViewer',
             "should have a document preview");
-        assert.containsOnce(kanban, '.o_close_btn',
+        assert.containsOnce(target, '.o_AttachmentViewer_headerItemButtonClose',
             "should have a close button");
 
-        await testUtils.dom.click(kanban.$('.o_close_btn'));
+        await click(target, '.o_AttachmentViewer_headerItemButtonClose');
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip)'));
+        await click(find(target, '.o_kanban_record', 'blip'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target, '.o_preview_available');
 
-        await testUtils.dom.click(kanban.$('.o_preview_available'));
-
-        assert.containsOnce(kanban, '.o_documents_split_pdf_area', "should have a pdf splitter");
-        assert.containsOnce(kanban, 'iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model%3Ddocuments.document%26filename%3Dblip"]',
+        assert.containsOnce(target, '.o_AttachmentViewer_buttonSplit', "should have a pdf splitter");
+        assert.containsOnce(target, 'iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model=documents.document"]',
             "should have an iframe with the correct pdfviewer src");
 
-        await testUtils.dom.click(kanban.$('.o_close_btn'));
+        await click(target, '.o_AttachmentViewer_headerItemButtonClose');
 
-        assert.containsNone(kanban, '.o_viewer_content',
+        assert.containsNone(target, '.o_AttachmentViewer',
             "should not have a document preview after pdf exit");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: open preview while modifying document', async function (assert) {
         assert.expect(2);
         var def = testUtils.makeTestPromise();
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
+        const views = {
+            'documents.document,false,kanban': 
+                `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div>
+                            <field name="name"/>
+                        </div>
+                    </t></templates></kanban>`,
+        };
+        const { openView } = await createDocumentsViewWithMessaging({
+            serverData: { views },
+            mockRPC: async (route, args) => {
                 if (args.method === 'write') {
                     return def;
                 }
-                return this._super.apply(this, arguments);
             },
         });
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp)'));
+        await openView({
+            res_model: 'documents.document',
+            views: [[false, 'kanban']],
+        });
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'burp'));
 
-        kanban.$('input[name=name]').val("foo").trigger('input');
+        target.querySelector('div[name=name] input').value = "foo";
+        triggerEvent(target.querySelector('div[name=name] input'), null, 'change');
 
-        await testUtils.dom.click(kanban.$('.o_document_preview img'));
-        await testUtils.nextTick();
-        assert.containsNone(kanban, '.o_viewer_content',
+        await click(target, '.o_document_preview img');
+        await nextTick();
+        assert.containsNone(target, '.o_AttachmentViewer',
             "document preview should have been canceled");
 
         def.resolve();
-        await testUtils.nextTick();
-        await testUtils.dom.click(kanban.$('.o_document_preview img'));
-        await testUtils.nextTick();
-        assert.containsOnce(kanban, '.o_viewer_content',
+        await nextTick();
+        await click(target, '.o_document_preview img');
+        await nextTick();
+        assert.containsOnce(target, '.o_AttachmentViewer',
                 "should have a document preview");
-        await testUtils.dom.click(kanban.$('.o_close_btn'));
-        kanban.destroy();
+        await click(target, '.o_AttachmentViewer_headerItemButtonClose');
     });
 
     QUnit.test('document inspector: can delete records', async function (assert) {
         assert.expect(5);
 
         const selectedRecordIds = pyEnv['documents.document'].search(['&', ['name', 'in', ['wip', 'zorro']], ['active', '=', false]]);
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             domain: [['active', '=', false]],
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
             mockRPC: function (route, args) {
                 if (args.method === 'unlink') {
                     assert.deepEqual(args.args[0], selectedRecordIds,
                         "should unlink the selected records");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(wip) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(zorro) .o_record_selector'));
+        await click(find(target, '.o_kanban_record', 'wip'), '.o_record_selector');
+        await click(find(target, '.o_kanban_record', 'zorro'), '.o_record_selector');
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_record_selected', 2,
+        assert.containsN(target, '.o_record_selected', 2,
             "should have 2 selected records");
-        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 2,
+        assert.containsN(target, '.o_documents_inspector_preview .o_document_preview', 2,
             "should show 2 document previews in the DocumentsInspector");
 
-        await testUtils.dom.click(kanban.$('.o_documents_inspector_info .o_inspector_delete'));
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_documents_inspector_info .o_inspector_delete'));
+        // await nextTick();
 
-        assert.containsNone(kanban, '.o_record_selected',
+        assert.containsNone(target, '.o_record_selected',
             "should have no selected record");
-        assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
+        assert.containsNone(target, '.o_documents_inspector_preview .o_document_preview',
             "should show 0 document preview in the DocumentsInspector");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: can archive records', async function (assert) {
         assert.expect(5);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
-                if (route === "/web/dataset/call_kw/documents.document/toggle_active") {
-                    var documentIDS = args.args[0];
-                    var records = this.data['documents.document'].records;
-                    documentIDS.forEach((documentID) => {
-                        records.find((record) => record.id === documentID).active = false;
-                    });
-                    return Promise.resolve();
-                }
-                return this._super.apply(this, arguments);
-            },
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
+        await click(find(target, '.o_kanban_record', 'yop'), '.o_record_selector');
+        await click(find(target, '.o_kanban_record', 'burp'), '.o_record_selector');
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_record_selected', 2,
+        assert.containsN(target, '.o_record_selected', 2,
             "should have 2 selected records");
-        assert.containsN(kanban, '.o_documents_inspector_preview .o_document_preview', 2,
+        assert.containsN(target, '.o_documents_inspector_preview .o_document_preview', 2,
             "should show 2 document previews in the DocumentsInspector");
 
-        await testUtils.dom.click(kanban.$('.o_documents_inspector_info .o_inspector_archive'));
+        await click(target.querySelector('.o_documents_inspector_info .o_inspector_archive'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsNone(kanban, '.o_record_selected',
+        assert.containsNone(target, '.o_record_selected',
             "should have no selected record");
-        assert.containsNone(kanban, '.o_documents_inspector_preview .o_document_preview',
+        assert.containsNone(target, '.o_documents_inspector_preview .o_document_preview',
             "should show no document preview in the DocumentsInspector");
 
-        await kanban.reload({active: false});
+        await kanban.model.root.load();
 
-        assert.containsNone(kanban, '.o_legacy_kanban_view .o_record_selected',
+        assert.containsNone(target, '.o_kanban_renderer .o_record_selected',
             "should have no selected archived record");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: can share records', async function (assert) {
         assert.expect(2);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            mockRPC: async (route, args) => {
                 if (args.method === 'open_share_popup') {
                     assert.deepEqual(args.args, [{
-                        document_ids: [[6, 0, [1, 2]]],
+                        document_ids: [[6, false, [1, 2]]],
                         folder_id: 1,
                         type: 'ids',
                     }]);
+                    return { ignore: true };
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
+        const oldDoAction = kanban.env.services.action.doAction;
+        patchWithCleanup(kanban.env.services.action, {
+            doAction(action) {
+                if (action.ignore) {
+                    return;
+                }
+                return oldDoAction.call(this, action);
+            },
+        });
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(find(target, '.o_kanban_record', 'yop'), '.o_record_selector');
+        await click(find(target, '.o_kanban_record', 'blip'), '.o_record_selector');
 
-        assert.containsN(kanban, '.o_record_selected', 2,
+        assert.containsN(target, '.o_record_selected', 2,
             "should have 2 selected records");
 
-        await testUtils.dom.click(kanban.$('.o_documents_inspector_info .o_inspector_share'));
-
-        kanban.destroy();
+        await click(target.querySelector('.o_documents_inspector_info .o_inspector_share'));
     });
 
     QUnit.test('document inspector: locked records', async function (assert) {
         assert.expect(6);
 
         pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Hazard']])[0];
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            session: {
-                uid: pyEnv.currentUserId,
-            },
+        patchWithCleanup(session, { uid: pyEnv.currentUserId });
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
         // select a record that is locked by ourself
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(zip)'));
+        await click(find(target, '.o_kanban_record', 'zip'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.hasClass(kanban.$('.o_inspector_lock'), 'o_locked',
+        assert.hasClass(target.querySelector('.o_inspector_lock'), 'o_locked',
             "this attachment should be locked");
-        assert.notOk(kanban.$('.o_inspector_lock').is(':disabled'),
+        assert.notOk(target.querySelector('.o_inspector_lock').disabled,
             "lock button should not be disabled");
-        assert.notOk(kanban.$('.o_inspector_replace').is(':disabled'),
+        assert.notOk(target.querySelector('.o_inspector_replace').disabled,
             "replace button should not be disabled");
 
         // select a record that is locked by someone else
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(gnap)'));
+        await click(find(target, '.o_kanban_record', 'gnap'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.hasClass(kanban.$('.o_inspector_lock'), 'o_locked',
+        assert.hasClass(target.querySelector('.o_inspector_lock'), 'o_locked',
             "this attachment should be locked as well");
-        assert.ok(kanban.$('.o_inspector_replace').is(':disabled'),
+        assert.ok(target.querySelector('.o_inspector_replace').disabled,
             "replace button should be disabled");
-        assert.ok(kanban.$('.o_inspector_archive').is(':disabled'),
+        assert.ok(target.querySelector('.o_inspector_archive').disabled,
             "archive button should be disabled");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: can (un)lock records', async function (assert) {
         assert.expect(5);
 
         pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Hazard']])[0];
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            session: {
-                uid: pyEnv.currentUserId,
-            },
-            mockRPC: function (route, args) {
-                if (args.method === 'toggle_lock') {
+        patchWithCleanup(session, { uid: pyEnv.currentUserId });
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            mockRPC: async (route, args, performRpc) => {
+                if (route === '/web/dataset/call_kw/documents.document/toggle_lock') {
                     assert.deepEqual(args.args, [1], "should call method for the correct record");
-                    const [record] = pyEnv['documents.document'].searchRead([['name', '=', 'yop']]);
-                    pyEnv['documents.document'].write([record.id], { lock_uid: record.lock_uid ? false : pyEnv.currentUserId });
-                    return Promise.resolve();
+                    const record = kanban.model.root.records.find(rec => rec.resId === 1);
+                    return performRpc('', {
+                        method: 'write',
+                        model: 'documents.document',
+                        args: [
+                            [1],
+                            { lock_uid: record.data.lock_uid ? false : pyEnv.currentUserId },
+                        ],
+                    });
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.doesNotHaveClass(kanban.$('.o_inspector_lock'), 'o_locked',
+        assert.doesNotHaveClass(target.querySelector('.o_inspector_lock'), 'o_locked',
             "this attachment should not be locked");
 
         // lock the record
-        await testUtils.dom.click(kanban.$('.o_inspector_lock'));
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_inspector_lock'));
 
-        assert.hasClass(kanban.$('.o_inspector_lock'), 'o_locked',
+        assert.hasClass(target.querySelector('.o_inspector_lock'), 'o_locked',
             "this attachment should be locked");
 
-
         // unlock the record
-        await testUtils.dom.click(kanban.$('.o_inspector_lock'));
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_inspector_lock'));
 
-        assert.doesNotHaveClass(kanban.$('.o_inspector_lock'), 'o_locked',
+        assert.doesNotHaveClass(target.querySelector('.o_inspector_lock'), 'o_locked',
             "this attachment should not be locked anymore");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: document info with one document selected', async function (assert) {
         assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.strictEqual(kanban.$('.o_field_widget[name=name]').val(),
+        assert.strictEqual(target.querySelector('.o_field_widget[name=name] input').value,
             'yop', "should correctly display the name");
-        assert.strictEqual(kanban.$('.o_field_widget[name=owner_id] input').val(),
+        assert.strictEqual(target.querySelector('.o_field_widget[name=owner_id] input').value,
             'Hazard', "should correctly display the owner");
-        assert.strictEqual(kanban.$('.o_field_widget[name=partner_id] input').val(),
+        assert.strictEqual(target.querySelector('.o_field_widget[name=partner_id] input').value,
             'Lukaku', "should correctly display the related partner");
-        assert.containsNone(kanban, '.o_field_many2one .o_external_button:visible',
+        assert.containsNone(target, '.o_field_many2one .o_external_button:visible',
             "should not display the external button in many2ones");
-        assert.strictEqual(kanban.$('.o_inspector_model_name').text(),
+        assert.strictEqual(target.querySelector('.o_inspector_model_name').textContent,
             ' Task', "should correctly display the resource model");
-        assert.strictEqual(kanban.$('.o_inspector_object_name').text(),
+        assert.strictEqual(target.querySelector('.o_inspector_object_name').textContent,
             'Write specs', "should correctly display the resource name");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: update document info with one document selected', async function (assert) {
         assert.expect(7);
-        var count = 0;
-
-        var M2O_DELAY = relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY;
-        relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = 0;
+        let count = 0;
 
         const [deBruyneUserId] = pyEnv['res.users'].search([['display_name', '=', 'De Bruyne']]);
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                        '<field name="owner_id"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                        <field name="owner_id"/>
+                    </div>
+                </t></templates></kanban>`,
+            mockRPC: async function (route, args) {
                 if (args.method === 'write') {
                     count++;
                     switch (count) {
@@ -1166,172 +1059,145 @@ QUnit.module('documents_kanban_tests.js', {
                             break;
                     }
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        var $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.strictEqual($firstRecord.text(), 'yopHazard',
+        const firstRecord = find(target, '.o_kanban_record', 'yopHazard');
+        assert.strictEqual(firstRecord.textContent, 'yopHazard',
             "should display the correct owner");
 
-        await testUtils.dom.click($firstRecord);
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(firstRecord);
 
-        assert.hasClass($firstRecord, 'o_record_selected');
+        assert.hasClass(firstRecord, 'o_record_selected');
 
         // change m2o value
-        await testUtils.fields.many2one.searchAndClickItem('owner_id', {search: 'De Bruyne'});
-        await testUtils.nextTick();
+        const input = await clickOpenM2ODropdown(target, "owner_id");
+        await editInput(input, null, "De Bruyne");
+        await clickOpenedDropdownItem(target, "owner_id", "De Bruyne");
 
-        $firstRecord = kanban.$('.o_kanban_record:first');
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.strictEqual($firstRecord.text(), 'yopDe Bruyne',
+        assert.strictEqual(firstRecord.textContent, 'yopDe Bruyne',
             "should have updated the owner");
-        assert.hasClass($firstRecord, 'o_record_selected',
+        assert.hasClass(firstRecord, 'o_record_selected',
             "first record should still be selected");
-        assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(), 'De Bruyne',
+        assert.strictEqual(target.querySelector('.o_field_many2one[name=owner_id] input').value, 'De Bruyne',
             "should display the new value in the many2one");
 
-        kanban.$('.o_field_many2one[name=owner_id] input').val('').trigger('keyup').trigger('focusout');
-        await testUtils.nextTick();
-        relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = M2O_DELAY;
-        kanban.destroy();
+        await editInput(input, null, "");
     });
 
     QUnit.test('document inspector: document info with several documents selected', async function (assert) {
         assert.expect(7);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
         // select two records with same m2o value
-        var $blip = kanban.$('.o_kanban_record:contains(blip)');
-        var $gnap = kanban.$('.o_kanban_record:contains(gnap)');
-        await testUtils.dom.click($blip);
-        await testUtils.dom.click($gnap.find('.o_record_selector'));
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        const blip = find(target, '.o_kanban_record', 'blip');
+        const gnap = find(target, '.o_kanban_record', 'gnap');
+        await click(blip);
+        await click(gnap, '.o_record_selector');
 
-        assert.hasClass($blip, 'o_record_selected',
+        assert.hasClass(blip, 'o_record_selected',
             "blip record should be selected");
-        assert.hasClass($gnap, 'o_record_selected',
+        assert.hasClass(gnap, 'o_record_selected',
             "gnap record should be selected");
 
-        assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(),
+        assert.strictEqual(target.querySelector('.o_field_many2one[name=owner_id] span').textContent,
             'Lukaku', "should display the correct m2o value");
-        assert.containsNone(kanban, '.o_field_many2one .o_external_button:visible',
+        assert.containsNone(target, '.o_field_many2one .o_external_button:visible',
             "should not display the external button in many2one");
 
         // select a third record with another m2o value
-        var $yop = kanban.$('.o_kanban_record:contains(yop)');
-        await testUtils.dom.click($yop.find('.o_record_selector'));
-        assert.hasClass($yop, 'o_record_selected',
+        const yop = find(target, '.o_kanban_record', 'yop');
+        await click(yop, '.o_record_selector');
+        assert.hasClass(yop, 'o_record_selected',
             "yop record should be selected");
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(),
+        assert.strictEqual(target.querySelector('.o_field_many2one[name=owner_id] span').textContent,
             'Multiple values', "should display 'Multiple values'");
-        assert.containsNone(kanban, '.o_field_many2one .o_external_button:visible',
+        assert.containsNone(target, '.o_field_many2one .o_external_button:visible',
             "should not display the external button in many2one");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: update document info with several documents selected', async function (assert) {
         assert.expect(10);
 
-        var M2O_DELAY = relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY;
-        relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = 0;
         const [deBruyneUserId] = pyEnv['res.users'].search([['display_name', '=', 'De Bruyne']]);
-
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                        '<field name="owner_id"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                        <field name="owner_id"/>
+                    </div>
+                </t></templates></kanban>`,
             mockRPC: function (route, args) {
                 if (args.method === 'write') {
                     assert.deepEqual(args.args, [[1, 2], {owner_id: deBruyneUserId}],
                         "should save the change directly");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        var $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.strictEqual($firstRecord.text(), 'yopHazard',
+        const firstRecord = target.querySelector('.o_kanban_record');
+        assert.strictEqual(firstRecord.textContent, 'yopHazard',
             "should display the correct owner (record 1)");
-        var $secondRecord = kanban.$('.o_kanban_record:nth(1)');
-        assert.strictEqual($secondRecord.text(), 'blipLukaku',
+        const secondRecord = target.querySelector('.o_kanban_record:nth-of-type(2)');
+        assert.strictEqual(secondRecord.textContent, 'blipLukaku',
             "should display the correct owner (record 2)");
 
-        await testUtils.dom.click($firstRecord);
-        await testUtils.dom.click($secondRecord.find('.o_record_selector'));
+        await click(firstRecord);
+        await click(secondRecord, '.o_record_selector');
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.hasClass($firstRecord, 'o_record_selected',
+        assert.hasClass(firstRecord, 'o_record_selected',
             "first record should be selected");
-        assert.hasClass($secondRecord, 'o_record_selected',
+        assert.hasClass(secondRecord, 'o_record_selected',
             "second record should be selected");
 
-        // change m2o value for both records
-        await testUtils.fields.many2one.searchAndClickItem('owner_id', {search: 'De Bruyne'});
-        await testUtils.nextTick();
+        // change m2o value
+        const input = await clickOpenM2ODropdown(target, "owner_id");
+        await editInput(input, null, "De Bruyne");
+        await clickOpenedDropdownItem(target, "owner_id", "De Bruyne");
 
-        $firstRecord = kanban.$('.o_kanban_record:first');
-        assert.strictEqual($firstRecord.text(), 'yopDe Bruyne',
+        assert.strictEqual(firstRecord.textContent, 'yopDe Bruyne',
             "should have updated the owner of first record");
-        $secondRecord = kanban.$('.o_kanban_record:nth(1)');
-        assert.strictEqual($secondRecord.text(), 'blipDe Bruyne',
+        assert.strictEqual(secondRecord.textContent, 'blipDe Bruyne',
             "should have updated the owner of second record");
-        assert.hasClass($firstRecord, 'o_record_selected',
+        assert.hasClass(firstRecord, 'o_record_selected',
             "first record should still be selected");
-        assert.hasClass($secondRecord, 'o_record_selected',
+        assert.hasClass(secondRecord, 'o_record_selected',
             "second record should still be selected");
-        assert.strictEqual(kanban.$('.o_field_many2one[name=owner_id] input').val(), 'De Bruyne',
+        assert.strictEqual(target.querySelector('.o_field_many2one[name=owner_id] input').value, 'De Bruyne',
             "should display the new value in the many2one");
-
-        relationalFields.FieldMany2One.prototype.AUTOCOMPLETE_DELAY = M2O_DELAY;
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: update info: handle concurrent updates', async function (assert) {
         assert.expect(11);
 
-        var def = testUtils.makeTestPromise();
-        var nbWrite = 0;
-        var value;
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
-                var result = this._super.apply(this, arguments);
+        const def = testUtils.makeTestPromise();
+        let nbWrite = 0;
+        let value;
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            mockRPC: async function (route, args, performRpc) {
                 if (args.method === 'write') {
+                    const result = performRpc(route, args);
                     assert.step('write');
                     nbWrite++;
                     assert.deepEqual(args.args, [[1], {name: value}],
@@ -1339,300 +1205,275 @@ QUnit.module('documents_kanban_tests.js', {
                     if (nbWrite === 1) {
                         return def.then(() => result);
                     }
+                    return result;
                 }
-                return result;
             },
         });
 
-        assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'yop',
+        assert.strictEqual(target.querySelector('.o_kanban_record').textContent, 'yop',
             "should display the correct filename");
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
-
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_kanban_record'));
 
         // change filename value of selected record (but block RPC)
         value = 'temp name';
-        await testUtils.fields.editInput(kanban.$('.o_field_char[name=name]'), value);
+        await editInput(target.querySelector('div[name=name] input'), null, value);
 
-        assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'yop',
+        assert.strictEqual(target.querySelector('.o_kanban_record').textContent, 'yop',
             "should still display the old filename");
 
         // change filename value again (this RPC isn't blocked but must wait for
         // the first one to return)
         value = 'new name';
-        await testUtils.fields.editInput(kanban.$('.o_field_char[name=name]'), value);
+        await editInput(target.querySelector('div[name=name] input'), null, value);
 
-        assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'yop',
+        assert.strictEqual(target.querySelector('.o_kanban_record').textContent, 'yop',
             "should still display the old filename");
 
         assert.step('resolve');
         def.resolve();
-        await testUtils.nextTick();
-        await testUtils.nextTick();
+        await nextTick();
 
-        assert.strictEqual(kanban.$('.o_kanban_record:first').text(), 'new name',
+        assert.strictEqual(target.querySelector('.o_kanban_record').textContent, 'new name',
             "should still display the new filename in the record");
-        assert.strictEqual(kanban.$('.o_field_char[name=name]').val(), 'new name',
+        assert.strictEqual(target.querySelector('.o_field_char[name=name] input').value, 'new name',
             "should still display the new filename in the document inspector");
 
         assert.verifySteps(['write', 'resolve', 'write']);
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: open resource', async function (assert) {
-        assert.expect(1);
+        assert.expect(2);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            intercepts: {
-                do_action: function (ev) {
-                    assert.deepEqual(ev.data.action, {
-                        res_id: pyEnv['res.fake'].search([['name', '=', 'fake1']])[0],
-                        res_model: 'res.fake',
-                        type: 'ir.actions.act_window',
-                        views: [[false, 'form']],
-                    }, "should open the resource in a form view");
-                },
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            async mockRPC(route, args) {
+                if (args.method === 'get_formview_action') {
+                    assert.strictEqual(args.model, 'res.fake',
+                        "should fetch the action for res.fake")
+                    return { ignore: true };
+                }
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        patchWithCleanup(kanban.env.services.action, {
+            doAction(action) {
+                assert.ok(action.ignore, "should call the action after loading it");
+            },
+        });
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_kanban_record'));
 
-        await testUtils.dom.click(kanban.$('.o_documents_inspector .o_inspector_object_name'));
-
-        kanban.destroy();
+        await click(target.querySelector('.o_documents_inspector .o_inspector_object_name'));
     });
 
     QUnit.test('document inspector: display tags of selected documents', async function (assert) {
         assert.expect(4);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value:eq(1) header'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_inspector_tag', 2,
+        assert.containsN(target, '.o_inspector_tag', 2,
             "should display the tags of the selected document");
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(2) .o_record_selector'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_record_selected', 2,
+        assert.containsN(target, '.o_record_selected', 2,
             "should have 2 selected records");
-        assert.containsOnce(kanban, '.o_inspector_tag',
+        assert.containsOnce(target, '.o_inspector_tag',
             "should display the common tags between the two selected documents");
-        assert.strictEqual(kanban.$('.o_inspector_tag').text().replace(/\s/g, ""), 'Status>Draft×',
+        assert.strictEqual(target.querySelector('.o_inspector_tag').textContent.replace(/\s/g, ""), 'Status>Draft×',
             "should correctly display the content of the tag");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: input to add tags is hidden if no tag to add', async function (assert) {
         assert.expect(2);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(gnap)'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(find(target, '.o_kanban_record', 'gnap'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_inspector_tag', 3,
+        assert.containsN(target, '.o_inspector_tag', 3,
             "should have 3 tags");
-        assert.containsNone(kanban, '.o_inspector_tags .o_inspector_tag_add',
+        assert.containsNone(target, '.o_inspector_tags .o_inspector_tag_add',
             "should not have an input to add tags");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: remove tag', async function (assert) {
         assert.expect(4);
 
         pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Hazard']])[0];
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
+        patchWithCleanup(session, { uid: pyEnv.currentUserId });
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            mockRPC: async function (route, args) {
                 if (args.method === 'write') {
                     assert.deepEqual(args.args[0], [1, 5],
                         "should write on the selected records");
                     assert.deepEqual(args.args[1], {
-                        tag_ids: [[3, 2]],
+                        tag_ids: [[3, 2, false]],
                     }, "should write the correct value");
                 }
-                return this._super.apply(this, arguments);
-            },
-            session: {
-                uid: pyEnv.currentUserId,
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(5) .o_record_selector'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_inspector_tag', 2,
+        assert.containsN(target, '.o_inspector_tag', 2,
             "should display two tags");
 
-        await testUtils.dom.click(kanban.$('.o_inspector_tag:first .o_inspector_tag_remove'));
+        await click(target.querySelector('.o_inspector_tag:nth-of-type(2) .o_inspector_tag_remove'));
 
-        assert.containsOnce(kanban, '.o_inspector_tag',
+        assert.containsOnce(target, '.o_inspector_tag',
             "should display one tag");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: add a tag', async function (assert) {
-        assert.expect(7);
-        var done = assert.async();
+        assert.expect(8);
+
+        // Make autocomplete input instantaneous
+        patchWithCleanup(browser, {
+            setTimeout: (fn) => fn(),
+        });
 
         const [lastDocumentsTagId] = pyEnv['documents.tag'].search([['display_name', '=', 'No stress']]);
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
             mockRPC: function (route, args) {
                 if (args.method === 'write') {
                     assert.deepEqual(args.args[0], [1, 2],
                         "should write on the selected records");
                     assert.deepEqual(args.args[1], {
-                        tag_ids: [[4, lastDocumentsTagId]],
+                        tag_ids: [[4, lastDocumentsTagId, false]],
                     }, "should write the correct value");
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(2) .o_record_selector'));
+        
+        const input = target.querySelector('.o_inspector_tags input');
 
-        assert.notOk($('.o_inspector_tag_add').is(':focus'), "the tag input should not be focused");
+        assert.notOk(input === document.activeElement,
+            "the tag input should not be focused");
 
-        assert.containsOnce(kanban, '.o_inspector_tag');
+        await click(input);
+        assert.containsOnce(target, '.o_inspector_tag');
 
-        searchValue('.o_inspector_tag_add', 'stress');
-        concurrency.delay(0).then(async function () {
-            assert.strictEqual(autocompleteLength(), 1,
-                "should have an entry in the autocomplete dropdown");
-            var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
-            // TO DO understand problem with autocomplete
-            await testUtils.dom.click($autocomplete.find('li > a:first'));
+        let autocompleteValues = target.querySelectorAll('.o_inspector_tags ul li');
+        assert.strictEqual(autocompleteValues.length, 2,
+            "Should have 2 entries in the autocomplete dropdown");
 
-            assert.containsN(kanban, '.o_inspector_tag', 2,
-                "should display two tags");
-            assert.strictEqual($('.o_inspector_tag_add')[0], document.activeElement, "the tag input should be focused");
-            kanban.destroy();
-            done();
-        });
+        await editInput(input, null, 'stress');
+        autocompleteValues = target.querySelectorAll('.o_inspector_tags ul li');
+        assert.strictEqual(autocompleteValues.length, 1,
+            "Should only have one entry in the autocomplete dropdown");
+        await click(target.querySelector('.o_inspector_tags ul li'));
+
+        assert.containsN(target, '.o_inspector_tag', 2,
+            "should display two tags");
+        assert.strictEqual(input, document.activeElement,
+            "the tag input should be focused");
     });
 
     QUnit.test('document inspector: do not suggest already linked tags', async function (assert) {
         assert.expect(2);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        // Make autocomplete input instantaneous
+        patchWithCleanup(browser, {
+            setTimeout: (fn) => fn(),
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
 
-        assert.containsN(kanban, '.o_inspector_tag', 2,
+        assert.containsN(target, '.o_inspector_tag', 2,
             "should display two tags");
 
-        searchValue('.o_inspector_tag_add', 'new');
-        assert.strictEqual(autocompleteLength(), 0,
+        await click(target.querySelector('.o_inspector_tags input'));
+        await editInput(target.querySelector('.o_inspector_tags input'), null, 'new');
+        assert.strictEqual(target.querySelectorAll('.o_inspector_tags ul li').length, 0,
             "should have no entry in the autocomplete drodown");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: tags: trigger a search on input clicked', async function (assert) {
         assert.expect(1);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        // Make autocomplete input instantaneous
+        patchWithCleanup(browser, {
+            setTimeout: (fn) => fn(),
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
 
-        await testUtils.dom.click(kanban.$('.o_inspector_tag_add'));
-        var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
-        assert.strictEqual(autocompleteLength(), 1,
-            "should have an entry in the autocomplete dropdown");
-        await testUtils.dom.click($autocomplete.find('li > a:first'));
-
-        kanban.destroy();
+        await click(target.querySelector('.o_inspector_tags input'));
+        assert.strictEqual(target.querySelectorAll('.o_inspector_tags ul li').length, 1,
+            "should have no entry in the autocomplete drodown");
     });
 
     QUnit.test('document inspector: unknown tags are hidden', async function (assert) {
@@ -1640,107 +1481,84 @@ QUnit.module('documents_kanban_tests.js', {
 
         const [firstDocumentRecord] = pyEnv['documents.document'].searchRead([]);
         pyEnv['documents.document'].write([firstDocumentRecord.id], { tag_ids: [...firstDocumentRecord.tag_ids, 42] });
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_inspector_tag', 2,
+        assert.containsN(target, '.o_inspector_tag', 2,
             "should not display the unknown tag");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: display rules of selected documents', async function (assert) {
         assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_inspector_rule', 3,
+        assert.containsN(target, '.o_inspector_rule', 3,
             "should display the rules of the selected document");
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(2)'), '.o_record_selector');
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_record_selected', 2,
+        assert.containsN(target, '.o_record_selected', 2,
             "should have 2 selected records");
-        assert.containsOnce(kanban, '.o_inspector_rule',
+        assert.containsOnce(target, '.o_inspector_rule',
             "should display the common rules between the two selected documents");
-        assert.containsOnce(kanban, '.o_inspector_rule .o_inspector_trigger_rule',
+        assert.containsOnce(target, '.o_inspector_rule .o_inspector_trigger_rule',
             "should display the button for the common rule");
-        assert.strictEqual(kanban.$('.o_inspector_rule').text().trim(), 'Convincing AI not to turn evil',
+        assert.strictEqual(target.querySelector('.o_inspector_rule').textContent.trim(), 'Convincing AI not to turn evil',
             "should correctly display the content of the rule");
-        assert.hasAttrValue(kanban.$('.o_inspector_rule span'), 'title', "Racing for AI Supremacy",
+        assert.hasAttrValue(target.querySelector('.o_inspector_rule span'), 'title', "Racing for AI Supremacy",
             "should correctly display the tooltip of the rule");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: displays the right amount of single record rules', async function (assert) {
         assert.expect(2);
 
         pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Hazard']])[0];
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            session: {
-                uid: pyEnv.currentUserId,
-            },
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        patchWithCleanup(session, { uid: pyEnv.currentUserId });
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(0)'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_inspector_rule', 3,
+        assert.containsN(target, '.o_inspector_rule', 3,
             "should display the rules of the selected document (2 multi record, 1 single record)");
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(4) .o_record_selector'));
+        await click(target.querySelectorAll('.o_kanban_record')[4], '.o_record_selector');
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_inspector_rule', 2,
+        assert.containsN(target, '.o_inspector_rule', 2,
             "should display the rules in common except the single record rule");
-
-        kanban.destroy();
     });
 
     QUnit.test('document inspector: locked by another user', async function (assert) {
@@ -1753,14 +1571,11 @@ QUnit.module('documents_kanban_tests.js', {
             name: 'lockedByAnother',
         });
         pyEnv.currentUserId = pyEnv['res.users'].search([['display_name', '=', 'Lukaku']])[0];
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            session: {
-                uid: pyEnv.currentUserId,
-            },
-            arch: `
-                <kanban><templates><t t-name="kanban-box">
+        patchWithCleanup(session, { uid: pyEnv.currentUserId });
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <div>
                         <i class="fa fa-circle-thin o_record_selector"/>
                         <field name="name"/>
@@ -1768,209 +1583,194 @@ QUnit.module('documents_kanban_tests.js', {
                 </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(lockedByAnother)'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(find(target, '.o_kanban_record', 'lockedByAnother'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        assert.containsNone(target, '.o_inspector_rule', "should not display any rule");
 
-        assert.containsNone(kanban, '.o_inspector_rule', "should not display any rule");
-
-        assert.ok(kanban.$('.o_inspector_lock').prop('disabled'), "the lock button should be disabled");
-        assert.ok(kanban.$('.o_inspector_replace').prop('disabled'), "the replace button should be disabled");
-        assert.ok(kanban.$('.o_inspector_archive').prop('disabled'), "the archive button should be disabled");
-
-        kanban.destroy();
+        assert.ok(target.querySelector('.o_inspector_lock').disabled, "the lock button should be disabled");
+        assert.ok(target.querySelector('.o_inspector_replace').disabled, "the replace button should be disabled");
+        assert.ok(target.querySelector('.o_inspector_archive').disabled, "the archive button should be disabled");
     });
 
     QUnit.test('document inspector: display rules of reloaded record', async function (assert) {
-        assert.expect(7);
+        assert.expect(9);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                        '<button name="some_method" type="object"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            intercepts: {
-                execute_action: function (ev) {
-                    assert.strictEqual(ev.data.action_data.name, 'some_method',
-                        "should call the correct method");
-                    pyEnv['documents.document'].write([ev.data.env.currentID], { name: 'yop changed' });
-                    ev.data.on_closed();
-                },
+        const kanban = await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                        <button name="some_method" type="object"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        patchWithCleanup(kanban.env.services.action, {
+            doActionButton(action) {
+                assert.strictEqual(action.name, 'some_method',
+                    "should call the correct method");
+                kanban.orm.write(
+                    'documents.document',
+                    [action.resId],
+                    { name: 'yop changed' },
+                    kanban.context,
+                );
+                action.onClose();
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop)'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsN(kanban, '.o_inspector_rule span', 3,
+        assert.containsN(target, '.o_inspector_rule span', 3,
             "should display the rules of the selected document");
 
-        assert.strictEqual(kanban.$('.o_inspector_rule span:eq(0)').text(), 'Convincing AI not to turn evil',
+        assert.strictEqual(target.querySelector('.o_inspector_rule:nth-of-type(1) span').textContent, 'Convincing AI not to turn evil',
             "should display the right rule");
 
-        assert.strictEqual(kanban.$('.o_inspector_rule span:eq(1)').text(), 'Follow the white rabbit',
+        assert.strictEqual(target.querySelector('.o_inspector_rule:nth-of-type(2) span').textContent, 'Follow the white rabbit',
             "should display the right rule");
 
-        assert.strictEqual(kanban.$('.o_inspector_rule span:eq(2)').text(), 'One record rule',
+        assert.strictEqual(target.querySelector('.o_inspector_rule:nth-of-type(3) span').textContent, 'One record rule',
             "should display the right rule");
 
         // click on the button to reload the record
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop) button'));
+        await click(find(target, '.o_kanban_record', 'yop'), 'button');
 
-        assert.strictEqual(kanban.$('.o_record_selected:contains(yop changed)').length, 1,
+        assert.strictEqual($(target).find('.o_record_selected:contains(yop changed)').length, 1,
             "should have reloaded the updated record");
 
-        // unselect and re-select it (the record has been reloaded, so we want
-        // to make sure its rules have been reloaded correctly as well)
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop changed)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(yop changed)'));
+        assert.strictEqual(target.querySelector('.o_inspector_rule:nth-of-type(1) span').textContent, 'Convincing AI not to turn evil',
+            "should display the right rule");
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        assert.strictEqual(target.querySelector('.o_inspector_rule:nth-of-type(2) span').textContent, 'Follow the white rabbit',
+            "should display the right rule");
 
-        assert.strictEqual(kanban.$('.o_inspector_rule span').text(),
-            'Convincing AI not to turn evilFollow the white rabbitOne record rule',
-            "should correctly display the rules of the selected document");
-
-        kanban.destroy();
+        assert.strictEqual(target.querySelector('.o_inspector_rule:nth-of-type(3) span').textContent, 'One record rule',
+            "should display the right rule");
     });
 
     QUnit.test('document inspector: trigger rule actions on selected documents', async function (assert) {
         assert.expect(3);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            mockRPC: function (route, args) {
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            mockRPC: async function (route, args) {
                 if (args.model === 'documents.workflow.rule' && args.method === 'apply_actions') {
                     assert.deepEqual(args.args[0], [1],
                         "should execute actions on clicked rule");
                     assert.deepEqual(args.args[1], [1, 2],
                         "should execute actions on the selected records");
-                    return Promise.resolve();
+                    return Promise.resolve(true);
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(2) .o_record_selector'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsOnce(kanban, '.o_inspector_rule',
+        assert.containsOnce(target, '.o_inspector_rule',
             "should display the common rules between the two selected documents");
-        await testUtils.dom.click(kanban.$('.o_inspector_rule .o_inspector_trigger_rule'));
-
-        kanban.destroy();
+        await click(target.querySelector('.o_inspector_rule .o_inspector_trigger_rule'));
     });
 
     QUnit.test('document inspector: checks the buttons deleting/editing a link between a document and a record', async function (assert) {
-        // Check the display of the edit and delete buttons of a link between a document and its record.
-        // Check the operation of the delete link button.
         assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: `<kanban><templates><t t-name="kanban-box">
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <div>
                         <i class="fa fa-circle-thin o_record_selector"/>
                         <field name="name"/>
                         <field name="is_editable_attachment" invisible="1"/>
                     </div>
                 </t></templates></kanban>`,
-            mockRPC: function (route, args) {
+            mockRPC: async function (route, args, performRPC) {
                 if (args.method === 'check_access_rights') {
-                    return Promise.resolve(true);
+                    return true;
                 } else if (args.model === 'documents.workflow.rule' && args.method === 'unlink_record') {
-                    this.data['documents.document'].records = this.data['documents.document'].records.map(r => {
-                        if (r.id === args.args[0]) {
-                            r.res_model = 'documents.document';
-                            r.res_id = false;
-                            r.is_editable_attachment = false;
-                        }
-                        return r;
-                    });
-                    return Promise.resolve();
+                    performRPC(
+                        '',
+                        {
+                            model: 'documents.document',
+                            method: 'write',
+                            args: [
+                                args.args[0],
+                                {
+                                    res_model: 'documents.document',
+                                    res_id: false,
+                                    is_editable_attachment: false,
+                                },
+                            ],
+                        },
+                    );
+                    return true;
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
         // Document with an editable link.
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-        assert.containsOnce(kanban, '.o_inspector_model_button.o_inspector_model_edit',
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        await click(target.querySelector('.o_kanban_record'));
+
+        assert.containsOnce(target, '.o_inspector_model_button.o_inspector_model_edit',
             "should display the edit button of the link between the document and the record on the inspector.");
-        assert.containsOnce(kanban, '.o_inspector_model_button.o_inspector_model_delete',
+        assert.containsOnce(target, '.o_inspector_model_button.o_inspector_model_delete',
             "should display the delete button of the link between the document and the record on the inspector.");
 
         // Delete the link
-        await testUtils.dom.click(kanban.$('.o_inspector_model_delete'));
-        await testUtils.dom.click($('.modal-footer .btn-primary'));
-        assert.containsNone(kanban, 'o_inspector_custom_field .o_model_container',
+        await click(target.querySelector('.o_inspector_model_delete'));
+        await click(target.querySelector('.modal-footer .btn-primary'));
+        assert.containsNone(target, 'o_inspector_custom_field .o_model_container',
             "should display no records link to the document");
 
         // Document with a non-editable link
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(1) .o_record_selector'));
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-        assert.containsNone(kanban, 'o_inspector_custom_field .o_model_container',
-            "should display a record link to the document");
-        assert.containsNone(kanban, '.o_inspector_model_button.o_inspector_model_edit',
-            "should not display the edit button of the link between the document and the record on the inspector.");
-        assert.containsNone(kanban, '.o_inspector_model_button.o_inspector_model_delete',
-            "should not display the delete button of the link between the document and the record on the inspector.");
+        await click(target.querySelector('.o_kanban_record'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(2) .o_record_selector'));
 
-        kanban.destroy();
+        assert.containsNone(target, 'o_inspector_custom_field .o_model_container',
+            "should display a record link to the document");
+        assert.containsNone(target, '.o_inspector_model_button.o_inspector_model_edit',
+            "should not display the edit button of the link between the document and the record on the inspector.");
+        assert.containsNone(target, '.o_inspector_model_button.o_inspector_model_delete',
+            "should not display the delete button of the link between the document and the record on the inspector.");
     });
 
     QUnit.test('document inspector: quick create not enabled in dropdown', async function (assert) {
         assert.expect(2);
 
-       var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+       await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first'));
-        await testUtils.nextTick();
-        await testUtils.fields.many2one.clickOpenDropdown('partner_id');
-        await testUtils.fields.editInput(kanban.$('.o_field_widget[name=partner_id] input'), "Dupont");
-        assert.strictEqual($('.ui-autocomplete .o_m2o_dropdown_option').length, 1,
+        await click(target.querySelector('.o_kanban_record'));
+        const input = await clickOpenM2ODropdown(target, 'partner_id');
+        await editInput(input, null, "Dupont");
+        assert.strictEqual(target.querySelectorAll('.ui-autocomplete .o_m2o_dropdown_option').length, 1,
             "Dropdown should be opened and have only one item");
         assert.notEqual(
-            $('.ui-autocomplete .o_m2o_dropdown_option')[0].textContent,
+            target.querySelector('.ui-autocomplete .o_m2o_dropdown_option').textContent,
             'Create "Dupont"',
             'there should not be a quick create in dropdown'
         );
-        kanban.destroy();
     });
 
     QUnit.module('DocumentChatter');
@@ -1980,7 +1780,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-                `<kanban>
+                `<kanban js_class="documents_kanban">
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -2003,31 +1803,26 @@ QUnit.module('documents_kanban_tests.js', {
             "should not display any chatter");
 
         // select a record
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
-
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'yop'));
 
         assert.containsNone(document.body, '.o_Chatter',
             "should still not display any chatter");
 
         // open the chatter
-        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(document.body, '.o_Chatter',
+        assert.containsOnce(target, '.o_Chatter',
             "should display the chatter");
-        assert.containsOnce(document.body, '.o_search_panel:visible',
+        assert.containsOnce(target, '.o_search_panel:visible',
             "documents selector should still be visible");
-        assert.containsOnce(document.body, '.o_legacy_kanban_view:visible',
+        assert.containsOnce(target, '.o_kanban_renderer:visible',
             "kanban view should still be visible");
-        assert.containsOnce(document.body, '.o_documents_inspector:visible',
+        assert.containsOnce(target, '.o_documents_inspector:visible',
             "document inspector should still be visible");
 
         // close the chatter
-        await testUtils.dom.click(document.querySelector('.o_ChatterTopbar_buttonClose'));
-        assert.containsNone(document.body, '.o_document_chatter_container .o_Chatter',
+        await click(target.querySelector('.o_ChatterTopbar_buttonClose'));
+        assert.containsNone(target, '.o_document_chatter_container .o_Chatter',
             "should no longer display the chatter");
     });
 
@@ -2042,7 +1837,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-                `<kanban>
+                `<kanban js_class="documents_kanban">
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -2061,18 +1856,14 @@ QUnit.module('documents_kanban_tests.js', {
             views: [[false, 'kanban']],
         });
 
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'yop'));
 
         await afterNextRender(() =>
-            testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'))
+            click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'))
         );
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsN(document.body, '.o_document_chatter_container .o_Chatter .o_Message', 2,
+        assert.containsN(target, '.o_document_chatter_container .o_Chatter .o_Message', 2,
             "should display two messages in the chatter");
     });
 
@@ -2099,7 +1890,7 @@ QUnit.module('documents_kanban_tests.js', {
         ]);
         const views = {
             'documents.document,false,kanban':
-                `<kanban>
+                `<kanban js_class="documents_kanban">
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -2118,26 +1909,21 @@ QUnit.module('documents_kanban_tests.js', {
             views: [[false, 'kanban']],
         });
 
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(
-            document.body,
+            target,
             '.o_document_chatter_container .o_Chatter',
             "should display the chatter"
         );
-        assert.containsOnce(document.body,
+        assert.containsOnce(target,
             '.o_document_chatter_container .o_FollowerListMenu',
             "should display the follower widget"
         );
         assert.strictEqual(
-            document.querySelector('.o_FollowerListMenu_buttonFollowersCount').textContent,
+            target.querySelector('.o_FollowerListMenu_buttonFollowersCount').textContent,
             "2",
             "should have two followers"
         );
@@ -2148,7 +1934,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-                `<kanban>
+                `<kanban js_class="documents_kanban">
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -2187,21 +1973,17 @@ QUnit.module('documents_kanban_tests.js', {
             },
         });
 
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
-        var activityButtons = document.querySelectorAll('.o_document_chatter_container .o_ChatterTopbar_buttonScheduleActivity');
+        const activityButtons = target.querySelectorAll('.o_document_chatter_container .o_ChatterTopbar_buttonScheduleActivity');
         assert.strictEqual(activityButtons.length, 1,
             "should display the activity button");
-        await testUtils.dom.click(activityButtons[0]);
+        await click(activityButtons[0]);
     });
 
     QUnit.test('document chatter: render the activity button 2', async function (assert) {
@@ -2220,7 +2002,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-                `<kanban>
+                `<kanban js_class="documents_kanban">
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -2239,39 +2021,29 @@ QUnit.module('documents_kanban_tests.js', {
             views: [[false, 'kanban']],
         });
 
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
-
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
-        assert.containsOnce(document.body, '.o_ActivityBox',
+        assert.containsOnce(target, '.o_ActivityBox',
             "should display the activity area");
-        assert.containsOnce(document.body, '.o_Activity',
+        assert.containsOnce(target, '.o_Activity',
             "should display an activity");
-        assert.strictEqual(document.querySelectorAll('.o_Activity_markDoneButton').length, 1,
+        assert.strictEqual(target.querySelectorAll('.o_Activity_markDoneButton').length, 1,
             "should display the activity mark done button");
-        assert.containsOnce(document.body, '.o_Activity_editButton',
+        assert.containsOnce(target, '.o_Activity_editButton',
             "should display the activity Edit button");
-        assert.containsOnce(document.body, '.o_Activity_cancelButton',
+        assert.containsOnce(target, '.o_Activity_cancelButton',
             "should display the activity Cancel button");
+        
+        await click(find(target, '.o_kanban_record', 'blip'));
 
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('blip').test(element.textContent))
-        );
-
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsNone(document.body, '.o_Activity',
+        assert.containsNone(target, '.o_Activity',
             "should not display an activity");
     });
 
@@ -2280,7 +2052,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-                `<kanban>
+                `<kanban js_class="documents_kanban">
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -2310,37 +2082,32 @@ QUnit.module('documents_kanban_tests.js', {
             views: [[false, 'kanban']],
         });
 
-        // select a record and open the chatter
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsNone(document.body, '.o_document_chatter_container .o_Composer',
+        assert.containsNone(target, '.o_document_chatter_container .o_Composer',
             "chatter composer should not be open");
 
         // open the composer
-        await testUtils.dom.click(document.querySelector('.o_document_chatter_container .o_ChatterTopbar_buttonSendMessage'));
+        await click(target.querySelector('.o_document_chatter_container .o_ChatterTopbar_buttonSendMessage'));
 
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Composer',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Composer',
             "chatter composer should be open");
 
         // write and send a message (need to wait the Send button to be enabled)
-        document.querySelector(`.o_ComposerTextInput_textarea`).focus();
+        target.querySelector(`.o_ComposerTextInput_textarea`).focus();
         await afterNextRender(() => {
             document.execCommand('insertText', false, "Some message");
         });
-        await testUtils.dom.click(document.querySelector('.o_Composer_buttonSend'));
-        assert.containsOnce(document.body, '.o_Message',
+        await click(target.querySelector('.o_Composer_buttonSend'));
+        assert.containsOnce(target, '.o_Message',
             "a message should have been created"
         );
         assert.strictEqual(
-            document.querySelector('.o_Message_content').textContent,
+            target.querySelector('.o_Message_content').textContent,
             "Some message",
             "the created message should have the right body"
         );
@@ -2357,7 +2124,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-                `<kanban>
+                `<kanban js_class="documents_kanban">
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -2376,35 +2143,26 @@ QUnit.module('documents_kanban_tests.js', {
             views: [[false, 'kanban']],
         });
 
-        // select a record and open the chatter
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
-
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'yop'));
 
         await afterNextRender(() =>
-            testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'))
+            click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'))
         );
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Message',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Message',
             "should display one message in the chatter");
-        assert.strictEqual(document.querySelector('.o_Message .o_Message_content').innerText.trim(),
+        assert.strictEqual(target.querySelector('.o_Message .o_Message_content').innerText.trim(),
             "Message on 'yop'", "should display the correct message");
 
         // select another record
-        await afterNextRender(() =>
-            testUtils.dom.click(
-                Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('blip').test(element.textContent))
-            )
-        );
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        await click(find(target, '.o_kanban_record', 'blip'));
+
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Message',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Message',
             "should display one message in the chatter");
-        assert.strictEqual(document.querySelector('.o_Message .o_Message_content').innerText.trim(),
+        assert.strictEqual(target.querySelector('.o_Message .o_Message_content').innerText.trim(),
             "Message on 'blip'", "should display the correct message");
     });
 
@@ -2413,7 +2171,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-                `<kanban>
+                `<kanban js_class="documents_kanban">
                     <templates>
                         <t t-name="kanban-box">
                             <div>
@@ -2436,27 +2194,20 @@ QUnit.module('documents_kanban_tests.js', {
             views: [[false, 'kanban']],
         });
 
-        // select a record and open the chatter
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
-
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
         // reload with a domain
-        await toggleFilterMenu(document);
-        await toggleMenuItem(document, "OwO");
-        await legacyExtraNextTick();
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "OwO");
 
-        assert.containsOnce(document.body, '.o_record_selected',
+        assert.containsOnce(target, '.o_record_selected',
             "record should still be selected");
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
     });
 
@@ -2465,7 +2216,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-            `<kanban>
+            `<kanban js_class="documents_kanban">
                 <templates>
                     <t t-name="kanban-box">
                         <div>
@@ -2484,28 +2235,16 @@ QUnit.module('documents_kanban_tests.js', {
             views: [[false, 'kanban']],
         });
 
-        // select a record and open the chatter
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await click(target.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
-        assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
-        // select another record alongside the first one
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record'))
-                .filter(element => RegExp('blip').test(element.textContent))[0].querySelector('.o_record_selector')
-        );
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-        await testUtils.nextTick(); // need to wait a little longer to be sure chatter component is unmounted
+        await click(find(target, '.o_kanban_record', 'blip'), '.o_record_selector');
 
-        assert.containsNone(document.body, '.o_document_chatter_container .o_Chatter',
+        assert.containsNone(target, '.o_document_chatter_container .o_Chatter',
             "should have closed the chatter");
     });
 
@@ -2514,7 +2253,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         const views = {
             'documents.document,false,kanban':
-            `<kanban>
+            `<kanban js_class="documents_kanban">
                 <templates>
                     <t t-name="kanban-box">
                         <div>
@@ -2537,15 +2276,9 @@ QUnit.module('documents_kanban_tests.js', {
             views: [[false, 'kanban']],
         });
 
-        // select a record and open the chatter
-        await testUtils.dom.click(
-            Array.from(document.querySelectorAll('.o_kanban_record')).filter(element => RegExp('yop').test(element.textContent))
-        );
+        await click(find(target, '.o_kanban_record', 'yop'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        await testUtils.dom.click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
+        await click(document.querySelector('.o_documents_inspector .o_inspector_open_chatter'));
 
         assert.containsOnce(document.body, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
@@ -2565,312 +2298,273 @@ QUnit.module('documents_kanban_tests.js', {
     QUnit.test('document selector: basic rendering', async function (assert) {
         assert.expect(18);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_section .o_search_panel_section_header').eq(0).text().trim(),
+        assert.strictEqual(target.querySelectorAll('.o_search_panel .o_search_panel_section .o_search_panel_section_header')[0].textContent.trim(),
             'Workspace', "should have a 'Workspace' section");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_category_value', 3,
+        assert.containsN(target, '.o_search_panel .o_search_panel_category_value', 3,
             "three of them should be visible");
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value:eq(1) header'));
-        assert.strictEqual(kanban.$('.o_documents_inspector_preview').text().replace(/\s+/g, ''),
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        assert.strictEqual(target.querySelector('.o_documents_inspector_preview').textContent.replace(/\s+/g, ''),
             '_F1-test-description_', "should display the first workspace");
 
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_section .o_search_panel_section_header').eq(1).text().trim(),
+        assert.strictEqual(target.querySelectorAll('.o_search_panel .o_search_panel_section .o_search_panel_section_header')[1].textContent.trim(),
             'Tags', "should have a 'tags' section");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_group', 2,
+        assert.containsN(target, '.o_search_panel .o_search_panel_filter_group', 2,
             "should have 2 facets");
 
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:first label:first > span').text().replace(/\s/g, ''),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_filter_group:nth-of-type(1) label:nth-of-type(1) > span').textContent.replace(/\s/g, ''),
             '●Priority', "the first facet should be 'Priority'");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:first label:first').attr('title').trim(),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_filter_group:nth-of-type(1) label:nth-of-type(1)').title.trim(),
             'A priority tooltip', "the first facet have a tooltip");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last label:first > span').text().replace(/\s/g, ''),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_filter_group:last-child label:nth-of-type(1) > span').textContent.replace(/\s/g, ''),
             '●Status', "the last facet should be 'Status'");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last label:first').attr('title').trim(),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_filter_group:last-child label:nth-of-type(1)').title.trim(),
             'A Status tooltip', "the last facet should be 'Status'");
 
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_group:last .o_search_panel_filter_value', 2,
+        assert.containsN(target, '.o_search_panel .o_search_panel_filter_group:last-child .o_search_panel_filter_value', 2,
             "should have 2 tags in the last facet");
 
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last .o_search_panel_filter_value:first label').text().trim(),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_filter_group:last-child .o_search_panel_filter_value:nth-of-type(1) label').textContent.trim(),
             'Draft', "the first tag in the last facet should be 'Draft'");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last .o_search_panel_filter_value:first label').attr('title').trim(),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_filter_group:last-child .o_search_panel_filter_value:nth-of-type(1) label').title.trim(),
             'A Status tooltip', "the first tag in the last facet have a tooltip");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last .o_search_panel_filter_value:last label').text().trim(),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_filter_group:last-child .o_search_panel_filter_value:last-child label').textContent.trim(),
             'New', "the last tag in the last facet should be 'New'");
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_filter_group:last .o_search_panel_filter_value:last label').attr('title').trim(),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_filter_group:last-child .o_search_panel_filter_value:last-child label').title.trim(),
             'A Status tooltip', "the last tag in the last facet have a tooltip");
 
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_section:nth-child(3) .o_search_panel_section_header').text().trim(),
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_section:nth-of-type(3) .o_search_panel_section_header').textContent.trim(),
             'Attached To', "should have an 'attached to' section");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(3) .o_search_panel_filter_value', 4,
+        assert.containsN(target, '.o_search_panel .o_search_panel_section:nth-of-type(3) .o_search_panel_filter_value', 4,
             "should have 4 types of models");
-        assert.ok(testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n2"), "should display the correct number of records");
-        assert.containsOnce(kanban.$('.o_search_panel'), '.o_search_panel_section:nth-child(3) .o_search_panel_filter_value:contains("Not attached")', "should at least have a no-model element");
-
-        kanban.destroy();
+        assert.ok(find(target, '.o_search_panel_filter_value', "Task\n2"), "should display the correct number of records");
+        assert.containsOnce(target.querySelector('.o_search_panel'), '.o_search_panel_section:nth-child(3) .o_search_panel_filter_value:contains("Not attached")', "should at least have a no-model element");
     });
 
     QUnit.test('document selector: render without facets & tags', async function (assert) {
-        assert.expect(3);
+        assert.expect(2);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
             mockRPC: function (route, args) {
                 if (args.method === 'search_panel_select_multi_range') {
                     return Promise.resolve({values: [], });
                 }
-                return this._super.apply(this, arguments);
             },
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        assert.strictEqual(kanban.$('.o_search_panel .o_documents_selector_tags .o_search_panel_section_header').text().trim(),
-            '', "shouldn't have a 'tags' section");
-        assert.containsNone(kanban, '.o_search_panel .o_search_panel_filter_group',
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        assert.containsNone(target, '.o_search_panel .o_search_panel_filter_group',
             "shouldn't have any facet");
-        assert.containsNone(kanban, '.o_search_panel .o_search_panel_filter_group .o_search_panel_filter_value',
+        assert.containsNone(target, '.o_search_panel .o_search_panel_filter_group .o_search_panel_filter_value',
             "shouldn't have any tag");
-
-        kanban.destroy();
     });
 
     QUnit.test('document selector: render without related models', async function (assert) {
         assert.expect(4);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
             domain: [['res_model', '=', false]],
         });
 
-        assert.containsNone(kanban, '.o_search_panel .o_documents_selector_tags .o_search_panel_section_header',
+        assert.containsNone(target, '.o_search_panel .o_documents_selector_tags .o_search_panel_section_header',
             "shouldn't have a 'tags' section");
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
-        assert.strictEqual(kanban.$('.o_search_panel .o_search_panel_section:nth-child(3) .o_search_panel_section_header').text().trim(),
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
+        assert.strictEqual(target.querySelector('.o_search_panel .o_search_panel_section:nth-of-type(3) .o_search_panel_section_header').textContent.trim(),
             'Attached To', "should have an 'attached to' section");
-        assert.containsNone(kanban, '.o_search_panel .o_search_panel_section:nth-child(3) .o_search_panel_filter_value:contains("Not attached")',
+        assert.notOk([...target.querySelectorAll('.o_search_panel_filter_value')].find(el => el.innerText.trim() === 'Not attached'),
             "should not have an unattached document");
-        assert.containsOnce(kanban, '.o_search_panel .o_search_panel_section:nth-child(3) .o_search_panel_filter_value:contains("Not a file")',
-            "should at least have a no-model element");
-
-        kanban.destroy();
+        assert.notOk([...target.querySelectorAll('.o_search_panel_filter_value')].find(el => el.innerText.trim() === 'Not a file'),
+            "should not have an unattached document");
     });
 
     QUnit.test('document selector: filter on related model', async function (assert) {
         assert.expect(8);
 
-        // TO: decide what should be done for Attached To section
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(1) header'));
 
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should have 4 related models");
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(target, '.o_search_panel .o_search_panel_section:nth-of-type(2) .o_search_panel_filter_value', 4, "should have 4 related models");
 
         // filter on 'Task'
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
-        );
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 3 records in the renderer");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should have 4 related models");
+        await click(find(target, '.o_search_panel_label_title', "Task"));
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 3 records in the renderer");
+        assert.containsN(target, '.o_search_panel .o_search_panel_section:nth-of-type(2) .o_search_panel_filter_value', 4, "should have 4 related models");
 
         // filter on 'Attachment' (should be a disjunction)
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Attachment")
-        );
+        await click(find(target, '.o_search_panel_label_title', "Attachment"));
 
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 3 records in the renderer");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should still have 4 related models");
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 3 records in the renderer");
+        assert.containsN(target, '.o_search_panel .o_search_panel_section:nth-of-type(2) .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // remove both filters
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Attachment")
-        );
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
-        );
+        await click(find(target, '.o_search_panel_label_title', "Attachment"));
+        await click(find(target, '.o_search_panel_label_title', "Task"));
 
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_section:nth-child(2) .o_search_panel_filter_value', 4, "should still have 4 related models");
-
-        kanban.destroy();
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(target, '.o_search_panel .o_search_panel_section:nth-of-type(2) .o_search_panel_filter_value', 4, "should still have 4 related models");
     });
 
     QUnit.test('document selector: filter on attachments without related model', async function (assert) {
         assert.expect(8);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(1) header'));
 
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should have 4 related models");
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(target, '.o_search_panel .o_search_panel_filter_value', 4, "should have 4 related models");
 
         // filter on 'Not a file'
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Not a file")
-        );
+        await click(find(target, '.o_search_panel_label_title', "Not a file"));
 
-        assert.containsOnce(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', "should have 1 records in the renderer");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
+        assert.containsOnce(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', "should have 1 records in the renderer");
+        assert.containsN(target, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // filter on 'Task'
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
-        );
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 4 records in the renderer");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
+        await click(find(target, '.o_search_panel_label_title', "Task"));
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 3, "should have 4 records in the renderer");
+        assert.containsN(target, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
 
         // remove both filters
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Not a file")
-        );
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
-        );
+        await click(find(target, '.o_search_panel_label_title', "Not a file"));
+        await click(find(target, '.o_search_panel_label_title', "Task"));
 
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
-        assert.containsN(kanban, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
-
-        kanban.destroy();
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(target, '.o_search_panel .o_search_panel_filter_value', 4, "should still have 4 related models");
     });
 
     QUnit.test('document selector: mix filter on related model and search filters', async function (assert) {
         assert.expect(10);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
-            archs: {
-                "documents.document,false,search": `
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+            searchViewArch: `
                     <search>
                         <filter name="owo" string="OwO" domain="[['name', 'in', ['yop', 'burp', 'pom', 'wip', 'zorro']]]"/>
-                    </search>`
-            },
+                    </search>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(0)'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(1) header'));
 
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 6, "should have 6 records in the renderer");
         assert.ok(
-            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n2"),
+            find(target, '.o_search_panel_filter_value', "Task\n2"),
             "should display the correct number of records"
         );
 
         // filter on 'Task'
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Task")
-        );
-        assert.strictEqual(kanban.$('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2, "should have 3 records in the renderer");
+        await click(find(target, '.o_search_panel_label_title', "Task"));
+        assert.strictEqual(target.querySelectorAll('.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)').length, 2, "should have 3 records in the renderer");
 
         // reload with a domain
-        await toggleFilterMenu(kanban.el);
-        await toggleMenuItem(kanban.el, "OwO");
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "OwO");
 
-        assert.containsOnce(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 1, "should have 1 record in the renderer");
+        assert.containsOnce(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 1, "should have 1 record in the renderer");
         assert.ok(
-            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n1"),
+            find(target, '.o_search_panel_filter_value', "Task\n1"),
             "should display the correct number of records"
         );
         assert.ok(
-            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Attachment\n1"),
+            find(target, '.o_search_panel_filter_value', "Attachment\n1"),
             "should display the correct number of records"
         );
 
         // filter on 'Attachment'
-        await testUtils.dom.click(
-            testUtils.dom.find(kanban, '.o_search_panel_label_title', "Attachment")
-        );
+        await click(find(target, '.o_search_panel_label_title', "Attachment"));
 
-        assert.containsN(kanban, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 2 records in the renderer");
+        assert.containsN(target, '.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)', 2, "should have 2 records in the renderer");
 
         // reload without the domain
-        await toggleFilterMenu(kanban.el);
-        await toggleMenuItem(kanban.el, "OwO");
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "OwO");
 
-        assert.strictEqual(kanban.$('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 4 record in the renderer");
+        assert.strictEqual(target.querySelectorAll('.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)').length, 3, "should have 4 record in the renderer");
         assert.ok(
-            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Task\n2"),
+            find(target, '.o_search_panel_filter_value', "Task\n2"),
             "should display the correct number of records"
         );
         assert.ok(
-            testUtils.dom.find(kanban, '.o_search_panel_filter_value', "Attachment\n1"),
+            find(target, '.o_search_panel_filter_value', "Attachment\n1"),
             "should display the correct number of records"
         );
-
-        kanban.destroy();
     });
 
     QUnit.test('document selector: selected tags are reset when switching between workspaces', async function (assert) {
         assert.expect(6);
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
             mockRPC: function (route, args) {
-                if (route === '/web/dataset/search_read' && args.model === 'documents.document') {
-                    assert.step(JSON.stringify(args.domain || []));
+                if (route === '/web/dataset/call_kw/documents.document/web_search_read' && args.model === 'documents.document') {
+                    assert.step(JSON.stringify(args.kwargs.domain || []));
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
         // filter on records having tag Draft
-        await testUtils.dom.click(kanban.$('.o_search_panel_filter_value:contains(Draft) input'));
+        const input = find(target, '.o_search_panel_filter_value', 'Draft').querySelector('input');
+        await click(input);
 
-        assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
+        assert.ok(input.checked,
             "tag selector should be checked");
 
         // switch to Workspace2
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value:contains(Workspace2) header'));
-
-        assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(3) header'));
+        assert.ok(input.checked,
             "tag selector should not be checked anymore");
 
         assert.verifySteps([
@@ -2878,90 +2572,85 @@ QUnit.module('documents_kanban_tests.js', {
             '["&",["folder_id","child_of",1],["tag_ids","in",[2]]]',
             '["&",["folder_id","child_of",2],["tag_ids","in",[2]]]',
         ]);
-
-        kanban.destroy();
     });
 
     QUnit.test('document selector: should keep its selection when adding a tag', async function (assert) {
         assert.expect(5);
-        var done = assert.async();
 
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<i class="fa fa-circle-thin o_record_selector"/>' +
-                        '<field name="name"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        // Make autocomplete input instantaneous
+        patchWithCleanup(browser, {
+            setTimeout: (fn) => fn(),
+        });
+        
+
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_search_panel_category_value header:eq(1)'));
+        await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
 
         // filter on records having tag Draft
-        await testUtils.dom.click(kanban.$('.o_search_panel_filter_value:contains(Draft) input'));
+        await click(find(target, '.o_search_panel_filter_value', 'Draft').querySelector('input'));
 
-        assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
+        assert.ok(find(target, '.o_search_panel_filter_value', 'Draft').querySelector('input').checked,
             "tag selector should be checked");
 
-        assert.strictEqual(kanban.$('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
+        assert.strictEqual(target.querySelectorAll('.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)').length,
             4, "should have records in the renderer");
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:first .o_record_selector'));
+        await click(target.querySelector('.o_kanban_record'), '.o_record_selector');
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        searchValue('.o_inspector_tag_add', 'stress');
-        concurrency.delay(0).then(async function () {
-            assert.strictEqual(autocompleteLength(), 1,
-                "should have an entry in the autocomplete drodown");
-            var $autocomplete = kanban.$('.o_inspector_tag_add').autocomplete('widget');
-            await testUtils.dom.click($autocomplete.find('li > a:first'));
-
-            assert.ok(kanban.$('.o_search_panel_filter_value:contains(Draft) input').is(':checked'),
-                        "tag selector should still be checked");
-            assert.strictEqual(kanban.$('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length,
+        const input = target.querySelector('.o_inspector_tags input');
+        await editInput(input, null, 'stress');
+        const autocompleteValues = target.querySelectorAll('.o_inspector_tags ul li');
+        assert.strictEqual(autocompleteValues.length, 1,
+            "should have an entry in the autocomplete dropdown");
+        await click(autocompleteValues[0], 'a');
+        assert.ok(find(target, '.o_search_panel_filter_value', 'Draft').querySelector('input').checked,
+            "tag selector should still be checked");
+        assert.strictEqual(target.querySelectorAll('.o_kanban_renderer .o_kanban_record:not(.o_kanban_ghost)').length,
             4, "should still have the same records in the renderer");
-
-            kanban.destroy();
-            done();
-        });
     });
 
     QUnit.test('documents Kanban color widget', async function (assert) {
         assert.expect(4);
-        var kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            arch: '<kanban><templates><t t-name="kanban-box">' +
-                    '<div>' +
-                        '<field name="tag_ids" widget="documents_many2many_tags"/>' +
-                    '</div>' +
-                '</t></templates></kanban>',
+        
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <field name="tag_ids" widget="documents_many2many_tags"/>
+                    </div>
+                </t></templates></kanban>`,
         });
-        assert.containsN(kanban, '.o_field_many2manytags', 5,
+
+        assert.containsN(target, '.o_field_documents_many2many_tags', 5,
             "All the records should have a color widget");
 
-        assert.containsN(kanban, '.o_field_many2manytags:nth(2) > span', 3,
-            "All the records should have 3 tags");
+        assert.containsN(target, '.o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag', 3,
+            "This record should have 3 tags");
 
-        assert.containsOnce(kanban.$('.o_field_many2manytags:nth(2) > span:first'), '> span',
+        assert.containsOnce(target, '.o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1) > span',
             "should have a span for color ball");
 
-        assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
-            "rgb(247, 205, 31)", "should have the right color");
-
-        kanban.destroy();
+        assert.strictEqual(target.querySelector('.o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1) > span').style.backgroundColor,
+            "rgb(108, 193, 237)", "should have the right color");
     });
 
     QUnit.test('kanban color widget without SearchPanel', async function (assert) {
         assert.expect(5);
 
-        const kanban = await createDocumentsView({
-            View: KanbanView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `<kanban><templates><t t-name="kanban-box">
                     <div>
                         <field name="name"/>
@@ -2970,33 +2659,39 @@ QUnit.module('documents_kanban_tests.js', {
                 </t></templates></kanban>`,
         });
 
-        assert.containsN(kanban, '.o_field_many2manytags', 6,
+        assert.containsN(target, '.o_field_documents_many2many_tags', 6,
             "All the records should have a color widget");
 
-        assert.containsN(kanban, '.o_field_many2manytags:nth(2) > span', 3,
+        assert.containsN(target, '.o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag', 3,
             "Third record should have 3 tags");
 
-        assert.containsOnce(kanban.$('.o_field_many2manytags:nth(2) > span:first'), '> span',
+        assert.containsOnce(target.querySelector('.o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1)'), '> span',
             "should have a span for color ball");
-        assert.containsN(kanban.$('.o_field_many2manytags:nth(2)'), '.o_tag_color_0', 3,
+        assert.containsN(target.querySelector('.o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags'), '.o_tag_color_0', 3,
             "should have 3 spans for color ball with grey color by default");
 
-        assert.strictEqual(kanban.$('.o_field_many2manytags:nth(2) > span:first > span').css('color'),
+        assert.strictEqual(target.querySelector('.o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1) > span').style.backgroundColor,
             "rgb(74, 79, 89)", "should have the right color");
-
-        kanban.destroy();
     });
 
     QUnit.test('SearchPanel: can drag and drop in the search panel', async function (assert) {
         assert.expect(4);
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            mockRPC: function (route, args) {
+
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                <div draggable="true" class="oe_kanban_global_area o_document_draggable">
+                    <i class="fa fa-circle-thin o_record_selector"/>
+                    <field name="name"/>
+                </div>
+            </t></templates></kanban>`,
+            mockRPC: async function (route, args) {
                 if (args.method === 'write' && args.model === 'documents.document') {
                     assert.deepEqual(
                         args.args[0],
-                        [1, 4, 2],
+                        [1, 2, 4],
                         "should write the right records");
                     assert.deepEqual(
                         args.args[1],
@@ -3004,22 +2699,14 @@ QUnit.module('documents_kanban_tests.js', {
                         "should have written on a folder");
                     assert.step('documents.documents/write');
                 }
-                return this._super.apply(this, arguments);
             },
-            arch: `
-            <kanban><templates><t t-name="kanban-box">
-                <div draggable="true" class="oe_kanban_global_area o_document_draggable">
-                    <i class="fa fa-circle-thin o_record_selector"/>
-                    <field name="name"/>
-                </div>
-            </t></templates></kanban>`,
         });
 
-        const $yopRecord = kanban.$('.o_kanban_record:contains(yop) .o_record_selector');
+        const yopRecord = find(target, '.o_kanban_record', 'yop').querySelector('.o_record_selector');
         // selects three records
-        await testUtils.dom.click($yopRecord);
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(burp) .o_record_selector'));
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(blip) .o_record_selector'));
+        await click(yopRecord);
+        await click(find(target, '.o_kanban_record', 'burp'), '.o_record_selector');
+        await click(find(target, '.o_kanban_record', 'blip'), '.o_record_selector');
 
         // making sure that the documentInspector is already rendered as it is painted after the selection.
         await testUtils.nextTick();
@@ -3028,86 +2715,67 @@ QUnit.module('documents_kanban_tests.js', {
         const startEvent = new Event('dragstart', { bubbles: true, });
         const dataTransfer = new DataTransfer();
         startEvent.dataTransfer = dataTransfer;
-        $yopRecord[0].dispatchEvent(startEvent);
+        yopRecord.dispatchEvent(startEvent);
 
         // drop on the second search panel category (folder)
         const endEvent = new Event('drop', { bubbles: true, });
         endEvent.dataTransfer = dataTransfer;
-        kanban.$('.o_search_panel_category_value header:eq(2)')[0].dispatchEvent(endEvent);
+        target.querySelector('.o_search_panel_category_value:nth-of-type(3)').dispatchEvent(endEvent);
 
         assert.verifySteps(['documents.documents/write']);
-
-        // makes sure that we are after the setTimeout of the dragStart handler
-        // that removes the drag Icon from the DOM.
-        await testUtils.nextTick();
-
-        kanban.destroy();
     });
 
     QUnit.test('SearchPanel: can not drag and hover over the search panel All selector', async function (assert) {
         assert.expect(1);
 
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            mockRPC: function (route, args) {
-                if (args.method === 'write' && args.model === 'documents.document') {
-                    throw new Error('It should not be possible to drop a record on the All selector');
-                }
-                return this._super.apply(this, arguments);
-            },
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-            <kanban><templates><t t-name="kanban-box">
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                 <div draggable="true" class="oe_kanban_global_area o_document_draggable">
                     <i class="fa fa-circle-thin o_record_selector"/>
                     <field name="name"/>
                 </div>
             </t></templates></kanban>`,
+            mockRPC: function (route, args) {
+                if (args.method === 'write' && args.model === 'documents.document') {
+                    throw new Error('It should not be possible to drop a record on the All selector');
+                }
+            },
         });
 
-        const $yopRecord = kanban.$('.o_kanban_record:contains(yop) .o_record_selector');
-        const $allSelector = kanban.$('.o_search_panel_category_value:eq(0)');
+        const yopRecord = find(target, '.o_kanban_record', 'yop').querySelector('.o_record_selector');
+        const allSelector = target.querySelector('.o_search_panel_category_value:nth-of-type(1)');
         // selects one record
-        await testUtils.dom.click($yopRecord);
-
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(yopRecord);
 
         // starts the drag on a selected record
         const startEvent = new Event('dragstart', { bubbles: true, });
         const dataTransfer = new DataTransfer();
         startEvent.dataTransfer = dataTransfer;
-        $yopRecord[0].dispatchEvent(startEvent);
+        yopRecord.dispatchEvent(startEvent);
 
         const dragenterEvent = new Event('dragenter', { bubbles: true, });
-        $allSelector[0].dispatchEvent(dragenterEvent);
-         assert.doesNotHaveClass($allSelector, 'o_drag_over_selector',
+        allSelector.dispatchEvent(dragenterEvent);
+         assert.doesNotHaveClass(allSelector, 'o_drag_over_selector',
             "the All selector should not have the hover effect");
 
         // drop on the "All" search panel category
         // it should not add another write step.
         const dropEvent = new Event('drop', { bubbles: true, });
         dropEvent.dataTransfer = dataTransfer;
-        $allSelector.find('header')[0].dispatchEvent(dropEvent);
-
-        // makes sure that we are after the setTimeout of the dragStart handler
-        // that removes the drag Icon from the DOM.
-        await testUtils.nextTick();
-
-        kanban.destroy();
+        allSelector.querySelector('header').dispatchEvent(dropEvent);
     });
 
     QUnit.test('SearchPanel: search panel should be resizable', async function (assert) {
         assert.expect(1);
 
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            mockRPC: function (route, args) {
-                return this._super.apply(this, arguments);
-            },
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-                <kanban><templates><t t-name="kanban-box">
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <div draggable="true" class="oe_kanban_global_area o_document_draggable">
                         <i class="fa fa-circle-thin o_record_selector"/>
                         <field name="name"/>
@@ -3115,7 +2783,7 @@ QUnit.module('documents_kanban_tests.js', {
                 </t></templates></kanban>`,
         });
 
-        const searchPanel = kanban.el.getElementsByClassName('o_search_panel')[0];
+        const searchPanel = target.getElementsByClassName('o_search_panel')[0];
         const resizeHandle = searchPanel.getElementsByClassName('o_resize')[0];
         const originalWidth = searchPanel.offsetWidth;
 
@@ -3123,8 +2791,6 @@ QUnit.module('documents_kanban_tests.js', {
 
         assert.ok(searchPanel.offsetWidth - originalWidth > 0,
             "width should be increased after resizing search panel");
-
-        kanban.destroy();
     });
 
     QUnit.test('documents: upload progress bars', async function (assert) {
@@ -3139,38 +2805,40 @@ QUnit.module('documents_kanban_tests.js', {
         const mockedXHRs = [];
         this.patchDocumentXHR(mockedXHRs, () => assert.step('xhrSend'));
 
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-            <kanban><templates><t t-name="kanban-box">
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                 <div draggable="true" class="oe_kanban_global_area">
                     <field name="name"/>
                 </div>
             </t></templates></kanban>`,
         });
 
-        testUtils.file.dropFile(kanban.$('.o_documents_view'), file);
+        testUtils.file.dropFile($(target.querySelector('.o_kanban_renderer')), file);
         assert.verifySteps(['xhrSend']);
-
-        await testUtils.nextTick();
 
         const progressEvent = new Event('progress', { bubbles: true, });
         progressEvent.loaded = 250000000;
         progressEvent.total = 500000000;
         progressEvent.lengthComputable = true;
         mockedXHRs[0].upload.dispatchEvent(progressEvent);
-        assert.strictEqual(kanban.$('.o_file_upload_progress_text_left').text(), "Uploading... (50%)",
+
+        await nextTick();
+        
+        assert.strictEqual(target.querySelector('.o_file_upload_progress_text_left').textContent, "Uploading... (50%)",
             "the current upload progress should be at 50%");
 
-        assert.containsOnce(kanban, '.fa.fa-circle-o-notch');
+        assert.containsOnce(target, '.fa.fa-circle-o-notch');
 
         progressEvent.loaded = 350000000;
         mockedXHRs[0].upload.dispatchEvent(progressEvent);
-        assert.strictEqual(kanban.$('.o_file_upload_progress_text_right').text(), "(350/500Mb)",
-            "the current upload progress should be at (350/500Mb)");
 
-        kanban.destroy();
+        await nextTick();
+
+        assert.strictEqual(target.querySelector('.o_file_upload_progress_text_right').textContent, "(350/500MB)",
+            "the current upload progress should be at (350/500MB)");
     });
 
     QUnit.test('documents: max upload limit', async function (assert) {
@@ -3183,38 +2851,30 @@ QUnit.module('documents_kanban_tests.js', {
         });
 
         const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            services: {
-                notification: {
-                    notify(notification) {
-                        assert.strictEqual(
-                            notification.message,
-                            "File is too Large.",
-                            "the notification message should be the response error message"
-                        );
-                    },
-                },
-            },
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-            <kanban><templates><t t-name="kanban-box">
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                 <div draggable="true" class="oe_kanban_global_area">
                     <field name="name"/>
                 </div>
             </t></templates></kanban>`,
             async mockRPC(route, args) {
                 if (args.model === 'documents.document' && args.method === 'get_document_max_upload_limit') {
-                    return Promise.resolve(11);
+                    return 11;
                 }
-                return this._super.apply(this, arguments);
             },
         });
 
-        assert.strictEqual(file.size, 12, 'Upload file size is greater than upload limit');
-        testUtils.file.dropFile(kanban.$('.o_documents_view'), file);
-        await testUtils.nextTick();
+        patchWithCleanup(kanban.env.services.notification, {
+            add(message, _option) {
+                assert.strictEqual(message, "File is too large.",
+                    "the notification message should be File is too large.");
+            }
+        });
 
-        kanban.destroy();
+        assert.strictEqual(file.size, 12, 'Upload file size is greater than upload limit');
+        testUtils.file.dropFile($(target.querySelector('.o_documents_view')), file);
     });
 
     QUnit.test('documents: upload replace bars', async function (assert) {
@@ -3233,41 +2893,41 @@ QUnit.module('documents_kanban_tests.js', {
             contentType: 'text/plain',
         });
 
-        const ORIGINAL_PROMPT_FILE_INPUT = DocumentsKanbanController.prototype._promptFileInput;
-        DocumentsKanbanController.prototype._promptFileInput = $input => testUtils.file.inputFiles($input[0], [file]);
-
         this.patchDocumentXHR([], () => assert.step('xhrSend'));
 
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-                <kanban><templates><t t-name="kanban-box">
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <div draggable="true" class="oe_kanban_global_area o_documents_attachment" data-id="${documentsDocumentId1}">
                         <field name="name"/>
+                        <t t-set="fileUpload" t-value="getFileUpload(props.record)"/>
+                        <i t-if="!fileUpload" class="fa fa-circle-thin o_record_selector" title="Select document"/>
+                        <t t-else="">
+                            <DocumentsFileUploadProgressBar fileUpload="fileUpload"/>
+                        </t>
                     </div>
                 </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_documents_attachment'));
+        await click(target.querySelector('.o_documents_attachment'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        await testUtils.dom.click(kanban.$('.o_inspector_request_icon'));
-        await testUtils.nextTick();
+        const fileInput = target.querySelector('.o_inspector_replace_input');
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+        fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+        await nextTick();
 
         assert.verifySteps(['xhrSend']);
 
-        assert.containsOnce(kanban, '.o_documents_attachment > .o_file_upload_progress_bar',
+        assert.containsOnce(target, '.o_documents_attachment > .o_file_upload_progress_bar',
             "there should be a progress card");
-        assert.containsOnce(kanban, '.o_documents_attachment > .o_file_upload_progress_bar > .o_file_upload_progress_bar_value',
+        assert.containsOnce(target, '.o_documents_attachment > .o_file_upload_progress_bar > .o_file_upload_progress_bar_value',
             "there should be a progress bar");
-        assert.containsOnce(kanban, '.o_documents_attachment > .o_file_upload_progress_bar > .o_upload_cross',
+        assert.containsOnce(target, '.o_documents_attachment > .o_file_upload_progress_bar > .o_upload_cross',
             "there should be cancel upload cross");
-
-        kanban.destroy();
-        DocumentsKanbanController.prototype._promptFileInput = ORIGINAL_PROMPT_FILE_INPUT;
     });
 
     QUnit.test('documents: upload multiple progress bars', async function (assert) {
@@ -3292,36 +2952,36 @@ QUnit.module('documents_kanban_tests.js', {
         const mockedXHRs = [];
         this.patchDocumentXHR(mockedXHRs, () => assert.step('xhrSend'));
 
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-            <kanban><templates><t t-name="kanban-box">
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                 <div draggable="true" class="oe_kanban_global_area">
                     <field name="name"/>
                 </div>
             </t></templates></kanban>`,
         });
 
-        const $dropZone = kanban.$('.o_documents_view');
+        const $dropZone = $(target.querySelector('.o_kanban_renderer'));
         testUtils.file.dropFile($dropZone, file1);
 
         // awaiting next tick as the file drop is not synchronous
-        await testUtils.nextTick();
+        await nextTick();
 
         assert.verifySteps(['xhrSend']);
-        assert.strictEqual(kanban.$('.o_kanban_record_title > span:eq(0)').text(), 'text1.txt',
+        assert.strictEqual(target.querySelector('.o_kanban_record:nth-of-type(1) .o_kanban_record_title span').textContent, 'text1.txt',
             "The first kanban card should be named after the file");
 
         testUtils.file.dropFiles($dropZone, [file2, file3]);
 
         // awaiting next tick as the file drop is not synchronous
-        await testUtils.nextTick();
+        await nextTick();
 
         assert.verifySteps(['xhrSend']);
-        assert.strictEqual(kanban.$('.o_kanban_record_title > span:eq(0)').text(), '2 Files',
+        assert.strictEqual(target.querySelector('.o_kanban_record:nth-of-type(2) .o_kanban_record_title span').textContent, '2 Files',
             "The new kanban card should be named after the amount of files");
-        assert.containsN(kanban, '.o_kanban_progress_card', 2, "There should be 2 cards");
+        assert.containsN(target, '.o_kanban_progress_card', 2, "There should be 2 cards");
 
         // simulates 1st upload successful completion
         mockedXHRs[1].response = JSON.stringify({
@@ -3330,11 +2990,9 @@ QUnit.module('documents_kanban_tests.js', {
         mockedXHRs[1].onload();
 
         // awaiting next tick as the render of the notify card isn't synchronous
-        await testUtils.nextTick();
+        await nextTick();
 
-        assert.containsOnce(kanban, '.o_kanban_progress_card', "There should only be one card left");
-
-        kanban.destroy();
+        assert.containsOnce(target, '.o_kanban_progress_card', "There should only be one card left");
     });
 
     QUnit.test('documents: notifies server side errors', async function (assert) {
@@ -3350,30 +3008,26 @@ QUnit.module('documents_kanban_tests.js', {
         this.patchDocumentXHR(mockedXHRs);
 
         const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
-            services: {
-                notification: {
-                    notify(notification) {
-                        assert.strictEqual(
-                            notification.message,
-                            "One or more file(s) failed to upload",
-                            "the notification message should be the response error message"
-                        );
-                    },
-                },
-            },
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-            <kanban><templates><t t-name="kanban-box">
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                 <div draggable="true" class="oe_kanban_global_area">
                     <field name="name"/>
                 </div>
             </t></templates></kanban>`,
         });
 
-        const $dropZone = kanban.$('.o_documents_view');
+        patchWithCleanup(kanban.env.services.notification, {
+            add(message, _option) {
+                assert.strictEqual(message, "One or more file(s) failed to upload",
+                    "the notification message should be the response error message");
+            }
+        });
+
+        const $dropZone = $(target.querySelector('.o_kanban_renderer'));
         testUtils.file.dropFile($dropZone, file);
-        await testUtils.nextTick();
+        await nextTick();
 
 
         // simulates 1st upload server side error completion
@@ -3382,10 +3036,9 @@ QUnit.module('documents_kanban_tests.js', {
         });
         mockedXHRs[0].status = 200;
         mockedXHRs[0].onload();
-        await testUtils.nextTick();
+        await nextTick();
 
-        assert.containsNone(kanban, '.o_kanban_progress_card', "There should be no upload card left");
-        kanban.destroy();
+        assert.containsNone(target, '.o_kanban_progress_card', "There should be no upload card left");
     });
 
     QUnit.test('documents Kanban: displays youtube thumbnails', async function (assert) {
@@ -3398,11 +3051,11 @@ QUnit.module('documents_kanban_tests.js', {
             url: 'https://youtu.be/Ayab6wZ_U1A'
         });
 
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-                <kanban><templates><t t-name="kanban-box">
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <div>
                         <i class="fa fa-circle-thin o_record_selector"/>
                         <field name="name"/>
@@ -3410,26 +3063,22 @@ QUnit.module('documents_kanban_tests.js', {
                 </t></templates></kanban>`,
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:contains(youtubeVideo) .o_record_selector'));
-
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
+        await click(find(target, '.o_kanban_record', 'youtubeVideo'), '.o_record_selector');
 
         assert.strictEqual(
-            kanban.$('.o_documents_inspector img, .o_documents_single_preview .o_preview_available').attr('data-src'),
+            target.querySelector('.o_documents_inspector img, .o_documents_single_preview .o_preview_available').dataset.src,
             "https://img.youtube.com/vi/Ayab6wZ_U1A/0.jpg",
             "the inspector should display the thumbnail of the youtube video");
-        kanban.destroy();
     });
 
     QUnit.test('documents List: multi selection', async function (assert) {
         assert.expect(4);
 
-        const list = await createDocumentsView({
-            View: DocumentsListView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: 'list',
+            resModel: 'documents.document',
             arch: `
-                <tree>
+                <tree js_class="documents_list">
                     <field name="type" invisible="1"/>
                     <field name="name"/>
                     <field name="partner_id"/>
@@ -3438,33 +3087,30 @@ QUnit.module('documents_kanban_tests.js', {
                 </tree>`,
         });
 
-        const $record = list.$('.o_document_list_record[data-res-id="2"]');
-        await testUtils.dom.click($record);
-        assert.ok($record.find('.o_list_record_selector input').prop('checked'), "the record should be selected");
+        await click(target.querySelector('.o_data_row:nth-of-type(2)'));
+        assert.ok(target.querySelector('.o_data_row:nth-of-type(2) input').checked, "the record should be selected");
 
-        list.$('.o_document_list_record[data-res-id="5"]').trigger($.Event('click', {
+        triggerEvent(target.querySelector('.o_data_row:nth-of-type(5)'), null, 'click', {
             shiftKey: true,
-        }));
-        await testUtils.nextTick();
-        assert.containsN(list, '.o_list_record_selector input:checked', 4, "there should be 4 selected records");
+        });
+        await nextTick();
+        assert.containsN(target, '.o_list_record_selector input:checked', 4, "there should be 4 selected records");
 
-        await testUtils.dom.click(list.$('thead .o_list_record_selector input'));
-        assert.containsN(list, '.o_list_record_selector input:checked', 6, "All (6) records should be selected");
+        await click(target.querySelector('thead .o_list_record_selector input'));
+        assert.containsN(target, '.o_list_record_selector input:checked', 6, "All (6) records should be selected");
 
-        await testUtils.dom.click(list.$('thead .o_list_record_selector input'));
-        assert.containsNone(list, '.o_list_record_selector input:checked', "No record should be selected");
-
-        list.destroy();
+        await click(target.querySelector('thead .o_list_record_selector input'));
+        assert.containsNone(target, '.o_list_record_selector input:checked', "No record should be selected");
     });
 
     QUnit.test('documents List: selection using keyboard', async function (assert) {
         assert.expect(6);
 
-        const list = await createDocumentsView({
-            View: DocumentsListView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: 'list',
+            resModel: 'documents.document',
             arch: `
-            <tree>
+            <tree js_class="documents_list">
                 <field name="type" invisible="1"/>
                 <field name="name"/>
                 <field name="partner_id"/>
@@ -3473,47 +3119,47 @@ QUnit.module('documents_kanban_tests.js', {
             </tree>`,
         });
 
-        let $recordSelector = list.$('.o_document_list_record[data-res-id="5"] .o_list_record_selector');
-        $recordSelector.focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.ENTER,
-            which: $.ui.keyCode.ENTER,
-        }));
-        await testUtils.nextTick();
-        assert.containsOnce(list, '.o_list_record_selector input:checked',
+        let recordSelector = target.querySelector('.o_data_row:nth-of-type(5) .o_list_record_selector');
+        recordSelector.focus();
+        triggerEvent(recordSelector, null, 'keydown', {
+            key: 'Enter',
+        })
+        await nextTick();
+        assert.containsOnce(target, '.o_list_record_selector input:checked',
             "there should be 1 selected record");
-        assert.ok($recordSelector.find('input').prop('checked'),
+        assert.ok(recordSelector.querySelector('input').checked,
             "the right record should be selected");
 
-        $recordSelector = list.$('.o_document_list_record[data-res-id="4"] .o_list_record_selector');
-        $recordSelector.focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.ENTER,
-            which: $.ui.keyCode.ENTER,
-        }));
-        await testUtils.nextTick();
-        assert.containsOnce(list, '.o_list_record_selector input:checked',
+        recordSelector = target.querySelector('.o_data_row:nth-of-type(4) .o_list_record_selector');
+        recordSelector.focus();
+        triggerEvent(recordSelector, null, 'keydown', {
+            key: 'Enter',
+        })
+        await nextTick();
+        assert.containsOnce(target, '.o_list_record_selector input:checked',
             "there should be 1 selected record");
-        assert.ok($recordSelector.find('input').prop('checked'),
+        assert.ok(recordSelector.querySelector('input').checked,
             "the right record should be selected");
 
         // Press Enter key with Shift key should select multiple records
-        list.$('.o_document_list_record[data-res-id="3"] td:first').focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.ENTER,
-            which: $.ui.keyCode.ENTER,
+        recordSelector = target.querySelector('.o_data_row:nth-of-type(3) .o_list_record_selector');
+        recordSelector.focus();
+        triggerEvent(recordSelector, null, 'keydown', {
+            key: 'Enter',
             shiftKey: true,
-        }));
-        await testUtils.nextTick();
-        assert.containsN(list, '.o_list_record_selector input:checked', 2,
+        });
+        await nextTick();
+        assert.containsN(target, '.o_list_record_selector input:checked', 2,
             "there should be 2 selected records");
 
-        list.$('.o_document_list_record[data-res-id="2"] .o_list_record_selector').focus().trigger($.Event('keydown', {
-            keyCode: $.ui.keyCode.SPACE,
-            which: $.ui.keyCode.SPACE,
-        }));
-        await testUtils.nextTick();
-        assert.containsN(list, '.o_list_record_selector input:checked', 3,
+        recordSelector = target.querySelector('.o_data_row:nth-of-type(2) .o_list_record_selector');
+        recordSelector.focus();
+        triggerEvent(recordSelector, null, 'keydown', {
+            key: ' ',
+        });
+        await nextTick();
+        assert.containsN(target, '.o_list_record_selector input:checked', 3,
             "there should be 3 selected records");
-
-        list.destroy();
     });
 
     QUnit.test('documents: Versioning', async function (assert) {
@@ -3532,11 +3178,11 @@ QUnit.module('documents_kanban_tests.js', {
             previous_attachment_ids: [irAttachmentId1],
         });
 
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: 'documents.document',
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
             arch: `
-                <kanban><templates><t t-name="kanban-box">
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <div draggable="true" class="oe_kanban_global_area">
                         <field name="name"/>
                     </div>
@@ -3546,7 +3192,7 @@ QUnit.module('documents_kanban_tests.js', {
                     assert.deepEqual(args.args[0], [irAttachmentId1],
                         "should unlink the right attachment");
                     assert.step('attachmentUnlinked');
-                    return;
+                    return true;
                 }
                 if (args.model === 'documents.document' && args.method === 'write') {
                     assert.deepEqual(args.args[0], [documentsDocumentId1],
@@ -3554,39 +3200,34 @@ QUnit.module('documents_kanban_tests.js', {
                     assert.deepEqual(args.args[1], {attachment_id: irAttachmentId1},
                         "should target the right attachment");
                     assert.step('attachmentRestored');
-                    return;
+                    return true;
                 }
-                return this._super(...arguments);
             },
         });
 
-        await testUtils.dom.click(kanban.$('.o_kanban_record:nth(5)'));
+        await click(target.querySelector('.o_kanban_record:nth-of-type(6)'));
 
-        // making sure that the documentInspector is already rendered as it is painted after the selection.
-        await testUtils.nextTick();
-
-        assert.strictEqual(kanban.$('.o_inspector_history_name').text(), 'oldYoutubeVideo',
+        assert.strictEqual(target.querySelector('.o_inspector_history_name').textContent, 'oldYoutubeVideo',
             "should display the correct record name");
-        assert.strictEqual(kanban.$('.o_inspector_history_create_name').text(), 'Your Company, Mitchell Admin',
+        assert.strictEqual(target.querySelector('.o_inspector_history_create_name').textContent, 'Your Company, Mitchell Admin',
             "should display the correct name");
         assert.strictEqual(
-            kanban.$('.o_inspector_history_info_date').text(),
+            target.querySelector('.o_inspector_history_info_date').textContent,
             str_to_datetime('2019-12-09 14:13:21').toLocaleDateString(),
             "should display the correct date"
         );
 
-        assert.containsOnce(kanban, '.o_inspector_history_item_restore',
+        assert.containsOnce(target, '.o_inspector_history_item_restore',
             "There should be one restore button");
-        assert.containsOnce(kanban, '.o_inspector_history_item_download',
+        assert.containsOnce(target, '.o_inspector_history_item_download',
             "There should be one download button");
-        assert.containsOnce(kanban, '.o_inspector_history_item_delete',
+        assert.containsOnce(target, '.o_inspector_history_item_delete',
             "There should be one delete button");
 
-        await testUtils.dom.click(kanban.$('.o_inspector_history_item_restore'));
+        await click(target.querySelector('.o_inspector_history_item_restore'));
         assert.verifySteps(['attachmentRestored']);
-        await testUtils.dom.click(kanban.$('.o_inspector_history_item_delete'));
+        await click(target.querySelector('.o_inspector_history_item_delete'));
         assert.verifySteps(['attachmentUnlinked']);
-        kanban.destroy();
     });
 
     QUnit.test("store and retrieve active category value", async function (assert) {
@@ -3594,13 +3235,12 @@ QUnit.module('documents_kanban_tests.js', {
 
         let expectedActiveId = 3;
         const storageKey = "searchpanel_documents.document_folder_id";
-        const Storage = RamStorage.extend({
-            init() {
-                this._super(...arguments);
-                this.setItem(storageKey, expectedActiveId);
-            },
+        const ramStorage = makeRAMLocalStorage();
+        const getItem = ramStorage.getItem.bind(ramStorage);
+        const setItem = ramStorage.setItem.bind(ramStorage);
+        const storage = Object.assign(ramStorage, {
             getItem(key) {
-                const value = this._super(...arguments);
+                const value = getItem(key);
                 if (key === storageKey) {
                     assert.step(`storage get ${value}`);
                 }
@@ -3610,18 +3250,18 @@ QUnit.module('documents_kanban_tests.js', {
                 if (key === storageKey) {
                     assert.step(`storage set ${value}`);
                 }
-                this._super(...arguments);
+                setItem(key, value);
             },
         });
-        const local_storage = AbstractStorageService.extend({
-            storage: new Storage(),
+        storage.setItem(storageKey, expectedActiveId);
+        patchWithCleanup(browser, {
+            localStorage: storage,
         });
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: "documents.document",
-            services: { local_storage },
+        await createDocumentsView({
+            type: "kanban",
+            resModel: "documents.document",
             arch: `
-                <kanban>
+                <kanban js_class="documents_kanban">
                     <templates>
                         <div t-name="kanban-box">
                             <field name="name"/>
@@ -3629,54 +3269,49 @@ QUnit.module('documents_kanban_tests.js', {
                     </templates>
                 </kanban>`,
             async mockRPC(route, args) {
-                if (route === "/web/dataset/search_read") {
-                    assert.deepEqual(args.domain, [["folder_id", "child_of", expectedActiveId]]);
+                if (route === '/web/dataset/call_kw/documents.document/web_search_read' && args.model === 'documents.document') {
+                    assert.deepEqual(args.kwargs.domain, [["folder_id", "child_of", expectedActiveId]]);
                 }
-                return this._super(...arguments);
             },
         });
 
-        assert.containsOnce(kanban, ".o_search_panel_category_value .active");
-        assert.containsOnce(kanban, ".o_search_panel_category_value:nth(1) .active");
+        assert.containsOnce(target, ".o_search_panel_category_value .active");
+        assert.containsOnce(target, ".o_search_panel_category_value:nth-of-type(1) .active");
 
         expectedActiveId = 2;
-        await testUtils.dom.click(kanban.$(".o_search_panel_category_value:nth(3) header"));
+        await click(target, ".o_search_panel_category_value:nth-of-type(3) header");
 
         assert.verifySteps([
             "storage set 3", // Manual set for initial value
             "storage get 3",
             "storage set 2", // Set on toggle
         ]);
-
-        kanban.destroy();
     });
 
     QUnit.test("retrieved category value does not exist", async function (assert) {
         assert.expect(5);
 
         const storageKey = "searchpanel_documents.document_folder_id";
-        const Storage = RamStorage.extend({
-            init() {
-                this._super(...arguments);
-                this.setItem(storageKey, 343); // Doesn't exist
-            },
+        const ramStorage = makeRAMLocalStorage();
+        const getItem = ramStorage.getItem.bind(ramStorage);
+        const storage = Object.assign(ramStorage, {
             getItem(key) {
-                const value = this._super(...arguments);
+                const value = getItem(key);
                 if (key === storageKey) {
                     assert.step(`storage get ${value}`);
                 }
                 return value;
             },
         });
-        const local_storage = AbstractStorageService.extend({
-            storage: new Storage(),
+        storage.setItem(storageKey, 343);
+        patchWithCleanup(browser, {
+            localStorage: storage,
         });
-        const kanban = await createDocumentsView({
-            View: DocumentsKanbanView,
-            model: "documents.document",
-            services: { local_storage },
+        await createDocumentsView({
+            type: "kanban",
+            resModel: "documents.document",
             arch: `
-                <kanban>
+                <kanban js_class="documents_kanban">
                     <templates>
                         <div t-name="kanban-box">
                             <field name="name"/>
@@ -3684,21 +3319,16 @@ QUnit.module('documents_kanban_tests.js', {
                     </templates>
                 </kanban>`,
             async mockRPC(route, args) {
-                if (route === "/web/dataset/search_read") {
-                    assert.deepEqual(args.domain, [["folder_id", "child_of", 1]]);
+                if (route === '/web/dataset/call_kw/documents.document/web_search_read' && args.model === 'documents.document') {
+                    assert.deepEqual(args.kwargs.domain, [["folder_id", "child_of", 1]]);
                 }
-                return this._super(...arguments);
             },
         });
 
-        assert.containsOnce(kanban, ".o_search_panel_category_value .active");
-        assert.containsOnce(kanban, ".o_search_panel_category_value:nth(1) .active");
+        assert.containsOnce(target, ".o_search_panel_category_value .active");
+        assert.containsOnce(target, ".o_search_panel_category_value:nth(1) .active");
 
         assert.verifySteps(["storage get 343"]);
-
-        kanban.destroy();
     });
 });
-});
-
 });

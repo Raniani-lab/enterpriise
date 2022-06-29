@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="documents.component.PdfManager" owl="1">
-        <div class='o_documents_pdf_manager' t-on-click="_onClickManager">
+        <div role="dialog" class="modal d-block o_technical_modal" tabindex="-1">
+        <div class='o_documents_pdf_manager' t-on-click="_onClickManager" t-ref="root">
             <div class="o_documents_pdf_manager_top_bar">
-                <t t-if="env.device.isMobile" t-call="documents.component.PdfManager.ButtonsMobile"/>
+                <input type="file" t-ref="addFileInput" class="o_input_file o_hidden" t-on-change.stop="_onFileInputChange"/>
+                <t t-if="env.isSmall" t-call="documents.component.PdfManager.ButtonsMobile"/>
                 <span t-else="" class="o_pdf_global_buttons">
                     <div>
                         <t t-call="documents.component.PdfManager.GlobalButtons"/>
@@ -11,7 +13,7 @@
                     </div>
                 </span>
                 <span class="pdf_manager_topbar_buttons_right">
-                    <span class="o_pdf_archive_menu me-2" t-on-click="_onClickArchive" t-if="env.isDebug()">
+                    <span class="o_pdf_archive_menu me-2" t-on-click="_onClickArchive" t-if="isDebugMode">
                         <span>Archive original file(s) </span>
                         <input class="ms-2" id="pdf_archive" type="checkbox" name="archive" t-att-checked="state.archive"/>
                     </span>
@@ -19,11 +21,11 @@
                         aria-label="Add new file"
                         title="Add new file"
                         t-att-disabled="state.uploadingLock"
-                        t-on-click="_onClickGlobalAdd" t-if="!env.device.isMobile">
+                        t-on-click="_onClickGlobalAdd" t-if="!env.isSmall">
                         <span>Add File</span>
                     </button>
                     <button class="btn btn-danger me-2 text-uppercase"
-                        t-att-class="{'o_pdf_manager_button': !env.device.isMobile}"
+                        t-att-class="{'o_pdf_manager_button': !env.isSmall}"
                         aria-label="Discard"
                         title="Discard"
                         t-att-disabled="state.uploadingLock"
@@ -70,10 +72,11 @@
                 </t>
             </div>
         </div>
+        </div>
     </t>
 
     <t t-name="documents.component.PdfManager.GlobalButtons" owl="1">
-        <t t-set="isMobile" t-value="env.device.isMobile"/>
+        <t t-set="isMobile" t-value="env.isSmall"/>
         <button class="btn btn-primary o_pdf_manager_button"
             t-att-class="{'dropdown-item': isMobile, 'm-0': isMobile, 'h-auto': isMobile}"
             t-att-disabled="state.uploadingLock"

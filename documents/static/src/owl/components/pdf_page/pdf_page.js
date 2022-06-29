@@ -1,13 +1,11 @@
-odoo.define('documents.component.PdfPage', function (require) {
-'use strict';
+/** @odoo-module alias=documents.component.PdfPage **/
 
-const { LegacyComponent } = require("@web/legacy/legacy_component");
-const { onMounted, onPatched, useState, useRef } = owl;
+const { Component, onMounted, onPatched, useState, useRef } = owl;
 
 /**
  * Represents the page of a PDF.
  */
-class PdfPage extends LegacyComponent {
+export class PdfPage extends Component {
 
     /**
      * @override
@@ -56,7 +54,7 @@ class PdfPage extends LegacyComponent {
      */
     _onClickWrapper(ev) {
         ev.stopPropagation();
-        this.trigger('page-clicked', this.props.pageId);
+        this.props.onPageClicked(this.props.pageId);
     }
     /**
      * @private
@@ -64,12 +62,14 @@ class PdfPage extends LegacyComponent {
      */
     _onClickSelect(ev) {
         ev.stopPropagation();
-        this.trigger('select-clicked', {
-            pageId: this.props.pageId,
-            isCheckbox: true,
-            isRangeSelection: ev.shiftKey,
-            isKeepSelection: true,
-        });
+        if (this.props.onSelectClicked) {
+            this.props.onSelectClicked(
+                this.props.pageId,
+                true,
+                ev.shiftKey,
+                true,
+            );
+        }
     }
     /**
      * @private
@@ -102,7 +102,9 @@ class PdfPage extends LegacyComponent {
      */
     _onDragStart(ev) {
         ev.stopPropagation();
-        this.trigger('page-dragged');
+        if (this.props.onPageDragged) {
+            this.props.onPageDragged(ev);
+        }
         ev.dataTransfer.setData('o_documents_pdf_data', this.props.pageId);
     }
     /**
@@ -118,7 +120,9 @@ class PdfPage extends LegacyComponent {
         if (pageId === this.props.pageId) {
             return;
         }
-        this.trigger('page-dropped', { targetPageId: this.props.pageId, pageId });
+        if (this.props.onPageDropped) {
+            this.props.onPageDropped(this.props.pageId, pageId);
+        }
     }
 }
 
@@ -160,7 +164,3 @@ PdfPage.props = {
 };
 
 PdfPage.template = 'documents.component.PdfPage';
-
-return PdfPage;
-
-});

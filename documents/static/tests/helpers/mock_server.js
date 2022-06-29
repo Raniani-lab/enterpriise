@@ -114,14 +114,8 @@ patch(MockServer.prototype, 'documents', {
             const records = this.mockSearchRead('documents.folder', [[], fields], {});
 
             let domainImage = new Map();
-            if (enableCounters) {
-                const modelDomain = Domain.prototype.normalizeArray([
-                    ...(kwargs.search_domain, []),
-                    ...(kwargs.category_domain, []),
-                    ...(kwargs.filter_domain, []),
-                    [fieldName, '!=', false],
-                ]);
-                domainImage = this.mockSearchPanelFieldImage(model, fieldName, modelDomain, enableCounters);
+            if (enableCounters || !kwargs.expand) {
+                domainImage = this.mockSearchPanelFieldImage(model, fieldName, { ...kwargs, only_counters: kwargs.expand});
             }
 
             const valuesRange = new Map();

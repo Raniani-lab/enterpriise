@@ -1,6 +1,7 @@
 /** @odoo-module */
 
-import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu";
+import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu_legacy";
+import { InsertListSpreadsheetMenu } from "@documents_spreadsheet/assets/components/insert_list_spreadsheet_menu_owl";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { useLegacyViews } from "@web/../tests/legacy/legacy_setup";
 import { loadJS } from "@web/core/assets";
@@ -34,6 +35,16 @@ export async function prepareWebClientForSpreadsheet() {
         "insert-list-spreadsheet-menu",
         LegacyInsertListSpreadsheetMenu,
         5
+    );
+    registry.category("favoriteMenu").add(
+        "insert-list-spreadsheet-menu",
+        {
+            Component: InsertListSpreadsheetMenu,
+            groupNumber: 4,
+            isDisplayed: ({ config, isSmall }) => 
+                !isSmall && config.actionType === "ir.actions.act_window" && config.viewType === "list"
+        },
+        { sequence: 5 },
     );
     useLegacyViews();
 }

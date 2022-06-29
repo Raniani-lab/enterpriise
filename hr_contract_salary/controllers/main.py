@@ -473,8 +473,9 @@ class HrContractSalary(http.Controller):
             except ValueError:
                 employee_infos[key] = None
 
+        job = request.env['hr.job'].sudo().browse(employee_infos['employee_job_id'])
         if not employee_infos['job_title']:
-            employee_infos['job_title'] = request.env['hr.job'].sudo().browse(employee_infos['employee_job_id']).name
+            employee_infos['job_title'] = job.name
 
         employee_vals = {'job_title': employee_infos['job_title'],
                          'job_id': employee_infos['employee_job_id'],
@@ -532,6 +533,9 @@ class HrContractSalary(http.Controller):
             employee_vals['bank_account_id'] = bank_account.id
 
         employee_vals['address_home_id'] = partner.id
+
+        if job.address_id:
+            employee_vals['address_id'] = job.address_id.id
 
         if partner.type != 'private':
             partner.type = 'private'

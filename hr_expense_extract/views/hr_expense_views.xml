@@ -20,6 +20,16 @@
                             ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" >
                     <!-- Extraction processed with success. Don't forget to validate the different fields. -->
                 </div>
+                <div role="status" class="alert alert-info mb8"
+                     attrs="{'invisible':['|',
+                            ('state', 'not in', ['draft']),
+                            ('extract_state', 'not in', ['planned'])]}">
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 mr-1" string="Send For Digitization" type="object"
+                            data-hotkey="a"/>
+                    The file will be sent to digitalization shortly.
+                    <div class="clearfix"/>
+                </div>
+
                 <div role="status" class="alert alert-danger mb8"
                      attrs="{'invisible':['|',
                             ('state', 'not in', ['draft']),

@@ -748,10 +748,10 @@ class AccountMove(models.Model):
             else self.journal_id._l10n_ar_get_afip_last_invoice_number(self.l10n_latam_document_type_id)
         return "%s %05d-%08d" % (self.l10n_latam_document_type_id.doc_code_prefix, self.journal_id.l10n_ar_afip_pos_number, last_number)
 
-    def _get_last_sequence(self, relaxed=False, with_prefix=None):
+    def _get_last_sequence(self, relaxed=False, with_prefix=None, lock=True):
         """ For argentina electronic invoice, if there is not sequence already then consult the last number from AFIP
         @return: string with the sequence, something like 'FA-A 00001-00000011' """
-        res = super()._get_last_sequence(relaxed=relaxed, with_prefix=with_prefix)
+        res = super()._get_last_sequence(relaxed=relaxed, with_prefix=with_prefix, lock=lock)
         if not res and self._is_argentina_electronic_invoice() and self.l10n_latam_document_type_id:
             res = self._get_last_sequence_from_afip()
         return res

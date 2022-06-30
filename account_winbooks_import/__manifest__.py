@@ -8,11 +8,16 @@
         Import Data From Winbooks
     """,
     'category': 'Accounting/Accounting',
-    'depends': ['account_accountant', 'base_vat'],
+    'depends': ['account_accountant', 'base_vat', 'account_base_import'],
     'external_dependencies': {'python': ['dbfread']},
     'data': [
         'security/ir.model.access.csv',
         'wizard/import_wizard_views.xml',
     ],
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_qweb': [
+            'account_winbooks_import/static/src/xml/**/*',
+        ],
+    },
 }

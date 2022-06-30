@@ -30,7 +30,5 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-    <menuitem id="menu_action_import_winbooks" parent="account.menu_finance_configuration" action="winbooks_import_action" sequence="25" groups="base.group_no_one"/>
-
 
 </odoo>

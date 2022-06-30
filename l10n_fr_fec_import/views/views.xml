@@ -42,17 +42,5 @@
             action = env.company.fec_import_action()
         </field>
     </record>
-    <menuitem
-        sequence="25"
-        name="Accounting Import"
-        id="menu_finance_configuration_account_import"
-        parent="account.menu_finance_configuration"
-        groups="account.group_account_manager"/>
-    <menuitem
-        sequence="10"
-        name="FEC Import"
-        id="menu_finance_configuration_fec_import"
-        parent="menu_finance_configuration_account_import"
-        action="fec_import_action" />
 
 </odoo>

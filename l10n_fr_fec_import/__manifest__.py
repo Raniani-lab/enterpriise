@@ -23,10 +23,15 @@
 
     """,
     "category": "Accounting/Accounting",
-    "depends": ["account_accountant", "base_vat", "l10n_fr", "l10n_fr_fec"],
+    "depends": ["account_accountant", "base_vat", "l10n_fr", "l10n_fr_fec", "account_base_import"],
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
     ],
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_qweb': [
+            'l10n_fr_fec_import/static/src/xml/**/*',
+        ],
+    },
 }

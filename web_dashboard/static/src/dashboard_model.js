@@ -1,11 +1,11 @@
 /** @odoo-module */
 
-import BasicModel from "web.BasicModel";
-import { computeVariation } from "@web/core/utils/numbers";
 import { Domain } from "@web/core/domain";
 import { evaluateExpr } from "@web/core/py_js/py";
 import { KeepLast } from "@web/core/utils/concurrency";
-import { Model } from "@web/views/helpers/model";
+import { computeVariation } from "@web/core/utils/numbers";
+import { Record, RelationalModel } from "@web/views/basic_relational_model";
+import { Model } from "@web/views/model";
 
 /**
  * @typedef {import("@web/search/search_model").SearchParams} SearchParams
@@ -16,8 +16,7 @@ function getPseudoRecords(meta, data) {
     for (let i = 0; i < meta.domains.length; i++) {
         const record = {};
         for (const [statName, statInfo] of Object.entries(data)) {
-            const { values } = statInfo;
-            record[statName] = values[i];
+            record[statName] = statInfo.values[i];
         }
         records.push(record);
     }
@@ -36,31 +35,108 @@ function getVariationAsRecords(data) {
     return periods;
 }
 
-function setupBasicModel(resModel, { getFieldsInfo, postProcessRecord }) {
-    const basicModel = new BasicModel();
-    const mkDatapoint = basicModel._makeDataPoint;
+const setupRelationalModel = (model) => {
+    const enrichParams = (additionalParams) => ({
+        ...additionalParams,
+        context: model.metaData.context,
+        compare: model.metaData.domains.length > 1,
+    });
 
-    const { viewFieldsInfo, fieldsInfo } = getFieldsInfo();
+    // Compute view fields info
+    const fieldsInfo = { dashboard: {}, formulas: {} };
+    const allFields = { ...model.metaData.fields };
+    for (const agg of model.metaData.aggregates) {
+        const fakeField = {
+            ...model.metaData.fields[agg.field],
+            ...agg,
+            type: agg.fieldType === "many2one" ? "integer" : agg.fieldType,
+        };
+        fieldsInfo.dashboard[agg.name] = fakeField;
+        allFields[agg.name] = fakeField;
+    }
+    model.metaData.formulae.forEach((formula, formulaId) => {
+        const formulaName = formula.name || `formula_${formulaId + 1}`;
+        const fakeField = {
+            ...formula,
+            type: "float",
+            name: formulaName,
+        };
+        fieldsInfo.dashboard[formulaName] = fakeField;
+        fieldsInfo.formulas[formulaName] = fakeField;
+        allFields[formulaName] = fakeField;
+    });
+    fieldsInfo.default = fieldsInfo.dashboard;
 
-    let legacyModelParams;
-    basicModel._makeDataPoint = (params) => {
-        params = Object.assign({}, params, legacyModelParams);
-        return mkDatapoint.call(basicModel, params);
+    // Make basic relational model
+    const modelParams = { resModel: model.metaData.resModel, rootType: "record" };
+    const services = { orm: model.orm };
+    const relationalModel = new RelationalModel(model.env, modelParams, services);
+
+    // Make basic model
+    const legacyModel = relationalModel.__bm__;
+    const { __get, _makeDataPoint } = legacyModel;
+    let lastDataPointInfo = null;
+    legacyModel._makeDataPoint = (params) => _makeDataPoint.call(legacyModel, enrichParams(params));
+    legacyModel.__get = (...args) => {
+        return {
+            ...__get.call(legacyModel, ...args),
+            ...lastDataPointInfo,
+        };
     };
 
+    // Returns simplified object
     return {
-        makeRecord: async (params, data) => {
-            legacyModelParams = params;
-            const recId = await basicModel.makeRecord(resModel, viewFieldsInfo, fieldsInfo);
-            const record = basicModel.get(recId);
-            postProcessRecord(record, data);
-            return record;
+        async makeRecords(data) {
+            // Make legacy record
+            const [baseRecord, comparisonRecord] = getPseudoRecords(model.metaData, data);
+            async function _makeRecord(record) {
+                const handle = await legacyModel.makeRecord(
+                    model.metaData.resModel,
+                    fieldsInfo.dashboard,
+                    fieldsInfo
+                );
+                const dp = legacyModel.localData[handle];
+                dp.data = record;
+                dp.domain = model.metaData.domain;
+                dp.fields = allFields;
+                if (record === baseRecord) {
+                    if (model.metaData.domains.length > 1) {
+                        const comparison = model.env.searchModel.getFullComparison();
+                        lastDataPointInfo = {
+                            comparisonData: comparisonRecord,
+                            comparisonTimeRange: comparison.comparisonRange,
+                            timeRange: comparison.range,
+                            timeRanges: comparison,
+                            variationData: getVariationAsRecords(data)[0],
+                        };
+                    } else {
+                        lastDataPointInfo = null;
+                    }
+                }
+                // Make wowl record
+                const activeFields = {};
+                for (const fieldName in fieldsInfo.dashboard) {
+                    activeFields[fieldName] = {};
+                }
+                const recordParams = enrichParams({
+                    fields: fieldsInfo.dashboard,
+                    activeFields,
+                    handle,
+                });
+                return new Record(relationalModel, recordParams);
+            }
+            const result = [];
+            result.push(await _makeRecord(baseRecord));
+            if (comparisonRecord) {
+                result.push(await _makeRecord(comparisonRecord));
+            }
+            return result;
         },
-        set isSample(bool) {
-            basicModel.isSample = bool;
+        set useSampleModel(bool) {
+            relationalModel.useSampleModel = bool;
         },
     };
-}
+};
 
 export class DashboardModel extends Model {
     setup(params) {
@@ -73,7 +149,7 @@ export class DashboardModel extends Model {
 
         this.metaData.aggregates = [];
         for (const agg of aggregates) {
-            const enrichedCopy = Object.assign({}, agg);
+            const enrichedCopy = { ...agg };
 
             const groupOperator = agg.groupOperator || "sum";
             enrichedCopy.measureSpec = `${agg.name}:${groupOperator}(${agg.field})`;
@@ -86,55 +162,7 @@ export class DashboardModel extends Model {
 
         this.metaData.statistics = this._statisticsAsFields();
 
-        this.basicModel = setupBasicModel(this.metaData.resModel, {
-            getFieldsInfo: () => {
-                const legFieldsInfo = {
-                    dashboard: {},
-                };
-
-                this.metaData.aggregates.forEach((agg) => {
-                    legFieldsInfo.dashboard[agg.name] = Object.assign({}, agg, {
-                        type: agg.fieldType,
-                    });
-                });
-
-                Object.entries(this.metaData.fields).forEach(([fName, f]) => {
-                    legFieldsInfo.dashboard[fName] = Object.assign({}, f);
-                });
-
-                let formulaId = 1;
-                this.metaData.formulae.forEach((formula) => {
-                    const formulaName = formula.name || `formula_${formulaId++}`;
-                    const fakeField = Object.assign({}, formula, {
-                        type: "float",
-                        name: formulaName,
-                    });
-                    legFieldsInfo.dashboard[formulaName] = fakeField;
-                    legFieldsInfo.formulas = Object.assign(legFieldsInfo.formulas || {}, {
-                        [formulaName]: fakeField,
-                    });
-                });
-                legFieldsInfo.default = legFieldsInfo.dashboard;
-                return { viewFieldsInfo: legFieldsInfo.dashboard, fieldsInfo: legFieldsInfo };
-            },
-            postProcessRecord: (record, data) => {
-                record.context = this.env.searchModel.context;
-                record.viewType = "dashboard";
-
-                const pseudoRecords = getPseudoRecords(this.metaData, data);
-                record.data = pseudoRecords[0];
-
-                if (this.metaData.domains.length > 1) {
-                    const comparison = this.env.searchModel.getFullComparison();
-
-                    record.comparisonData = pseudoRecords[1];
-                    record.comparisonTimeRange = comparison.comparisonRange;
-                    record.timeRange = comparison.range;
-                    record.timeRanges = comparison;
-                    record.variationData = getVariationAsRecords(data)[0];
-                }
-            },
-        });
+        this.relationalModel = setupRelationalModel(this);
     }
 
     /**
@@ -142,23 +170,17 @@ export class DashboardModel extends Model {
      */
     async load(searchParams) {
         const { comparison, domain, context } = searchParams;
-        const metaData = Object.assign({}, this.metaData, { context, domain });
+        const metaData = { ...this.metaData, context, domain };
         if (comparison) {
             metaData.domains = comparison.domains;
         } else {
             metaData.domains = [{ arrayRepr: domain, description: null }];
         }
         await this.keepLast.add(this._load(metaData));
-        this.basicModel.isSample = metaData.useSampleModel;
+        this.relationalModel.useSampleModel = metaData.useSampleModel;
         this.metaData = metaData;
 
-        const legacyParams = {
-            domain: metaData.domain,
-            compare: metaData.domains.length > 1,
-        };
-        this._legacyRecord_ = await this.keepLast.add(
-            this.basicModel.makeRecord(legacyParams, this.data)
-        );
+        this.records = await this.keepLast.add(this.relationalModel.makeRecords(this.data));
     }
 
     /**
@@ -276,7 +298,9 @@ export class DashboardModel extends Model {
                                     };
                                 }
                                 const { type: fieldType } = meta.fields[agg.field];
-                                data[agg.name].values[i] = group[agg.name] || (["date", "datetime"].includes(fieldType) ? NaN : 0);
+                                data[agg.name].values[i] =
+                                    group[agg.name] ||
+                                    (["date", "datetime"].includes(fieldType) ? NaN : 0);
                             }
                         })
                 );
@@ -300,12 +324,8 @@ export class DashboardModel extends Model {
             fakeFields[agg.name] = agg;
         }
         for (const formula of this.metaData.formulae) {
-            fakeFields[formula.name] = Object.assign({}, formula, { fieldType: "float" });
+            fakeFields[formula.name] = { ...formula, fieldType: "float" };
         }
         return fakeFields;
     }
 }
-
-// TODO:
-// comparisons beware of legacy record
-// check fakeFields in legacyrecord

@@ -143,10 +143,10 @@ odoo.define('web_mobile.barcode.tests', function (require) {
             const $modal = $('.o_modal_full .modal-lg');
             assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
 
-            assert.equal($modal.find('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2,
+            assert.equal($modal.find('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length, 2,
                 'there should be 2 records displayed');
 
-            await dom.click($modal.find('.o_kanban_view .o_kanban_record:first'));
+            await dom.click($modal.find('.o_legacy_kanban_view .o_kanban_record:first'));
 
             const selectedId = form.renderer.state.data[PRODUCT_FIELD_NAME].res_id;
             assert.equal(selectedId, this.data[PRODUCT_PRODUCT].records[1].id,

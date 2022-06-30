@@ -1,17 +1,19 @@
 /** @odoo-module */
 
-import { XMLParser } from "@web/core/utils/xml";
+import { createElement, XMLParser } from "@web/core/utils/xml";
+import { toStringExpression } from "@web/views/utils";
 import {
-    addLegacyNodeInfo,
+    assignOwlDirectives,
+    encodeObjectForTemplate,
+    isComponentNode,
+} from "@web/views/view_compiler";
+import {
     appendAttr,
     appendTo,
     applyInvisibleModifier,
-    encodeObjectForTemplate,
-    getAllModifiers,
     getModifier,
     isAlwaysInvisible,
-    nodeIdentifier,
-    tranformStringForExpression,
+    makeNodeIdentifier,
 } from "./compile_helpers";
 
 /**
@@ -26,7 +28,7 @@ import {
  * @return {Element}
  */
 function makeGroupTitleRow(node) {
-    const titleDiv = this.document.createElement("div");
+    const titleDiv = createElement("div");
     titleDiv.classList.add("o_horizontal_separator");
     titleDiv.textContent = node.getAttribute("string");
     return titleDiv;
@@ -35,7 +37,6 @@ function makeGroupTitleRow(node) {
 /**
  * Compiles a template node for a `<group>`arch's node. Only for first level
  * @param {Object} config
- * @param  {Document} config.document The document from which we can create elements
  * @param  {Function} config.compileNode   A function to compile children nodes
  * @param  {number} [config.outerGroupCol] the default group column
  * @param {Object} params The execution parameters
@@ -43,10 +44,10 @@ function makeGroupTitleRow(node) {
  * @param  {CompilationContext} params.compilationContext
  * @return {Element} The compiled group node
  */
-function compileGroup({ document, compileNode, outerGroupCol }, { node, compilationContext }) {
+function compileGroup({ compileNode, outerGroupCol }, { node, compilationContext }) {
     outerGroupCol = outerGroupCol || 2;
 
-    const group = document.createElement("div");
+    const group = createElement("div");
     group.setAttribute("class", "o_group");
 
     if (node.hasAttribute("string")) {
@@ -61,7 +62,7 @@ function compileGroup({ document, compileNode, outerGroupCol }, { node, compilat
     compilationContext.groupLevel = (compilationContext.groupLevel || 1) + 1;
     for (let child of node.children) {
         if (child.tagName === "newline") {
-            appendTo(group, this.doc.createElement("br"));
+            appendTo(group, createElement("br"));
             continue;
         }
         const compiled = compileNode(child, compilationContext);
@@ -70,8 +71,14 @@ function compileGroup({ document, compileNode, outerGroupCol }, { node, compilat
         }
         const colspan =
             "colspan" in child.attributes ? parseInt(node.getAttribute("colspan"), 10) : 1;
+        const className = `o_group_col_${colSize * colspan}`;
 
-        compiled.classList.add(`o_group_col_${colSize * colspan}`);
+        if (isComponentNode(compiled)) {
+            const classList = compiled.getAttribute("class") || "''";
+            compiled.setAttribute("class", classList.replace(/'$/, ` ${className}'`).trim());
+        } else {
+            compiled.classList.add(className);
+        }
         appendTo(group, compiled);
     }
     return group;
@@ -79,24 +86,24 @@ function compileGroup({ document, compileNode, outerGroupCol }, { node, compilat
 
 /**
  * Compiles a template node for a `<widget>`arch's node
- * @param {Object} config
- * @param  {Document} config.document The document from which we can create elements
- * @param {Object} params The execution parameters
- * @param  {Element} params.node An arch's node
- * @return {Element} The compiled ViewWidget node
+ * @param {Element} el An arch's node
+ * @return {Element} The compiled Widget node
  */
-function compileWidget({ document }, { node }) {
-    const viewWidget = document.createElement("ViewWidget");
-    viewWidget.setAttribute("model", "model");
-    viewWidget.setAttribute("widgetName", `"${node.getAttribute("name")}"`);
-    viewWidget.setAttribute("t-key", "renderKey");
-
-    if ("title" in node.attributes) {
-        viewWidget.setAttribute("title", `"${node.getAttribute("title")}"`);
+function compileWidget(el) {
+    const attrs = {};
+    const props = { record: "model.records[0]" };
+    for (const { name, value } of el.attributes) {
+        if (name === "name") {
+            props.name = `'${value}'`;
+        } else if (name === "modifiers") {
+            attrs.modifiers = JSON.parse(value || "{}");
+        } else {
+            attrs[name] = value;
+        }
     }
-    addLegacyNodeInfo(node, viewWidget);
-
-    return viewWidget;
+    props.node = encodeObjectForTemplate({ attrs });
+    const widget = createElement("Widget", props);
+    return assignOwlDirectives(widget, el);
 }
 
 function setSampleDisable(node) {
@@ -105,9 +112,8 @@ function setSampleDisable(node) {
 
 export class DashboardCompiler {
     constructor() {
-        this.doc = new DOMParser().parseFromString("<templates />", "text/xml");
         this.OUTER_GROUP_COL = 6;
-        this.nodeIdentifier = nodeIdentifier();
+        this.nodeIdentifier = makeNodeIdentifier();
     }
 
     compileArch(arch) {
@@ -117,14 +123,14 @@ export class DashboardCompiler {
     }
 
     compile(node, params = {}) {
-        const newRoot = this.doc.createElement("t");
+        const newRoot = createElement("t");
         const child = this.compileNode(node, params);
         appendTo(newRoot, child);
         return newRoot;
     }
 
     compileDashboard(node, params) {
-        const dash = this.doc.createElement("t");
+        const dash = createElement("t");
         for (const child of node.children) {
             appendTo(dash, this.compileNode(child, params));
         }
@@ -132,7 +138,7 @@ export class DashboardCompiler {
     }
 
     compileNode(node, params) {
-        this.nodeIdentifier(node);
+        this.nodeIdentifier.add(node);
         if (isAlwaysInvisible(node, params)) {
             return;
         }
@@ -153,7 +159,7 @@ export class DashboardCompiler {
                 return this.compileStatistic(node, params);
             }
             case "widget": {
-                return compileWidget({ document: this.doc }, { node });
+                return compileWidget(node);
             }
         }
     }
@@ -163,7 +169,6 @@ export class DashboardCompiler {
             {
                 compileNode: this.compileNode.bind(this),
                 outerGroupCol: this.OUTER_GROUP_COL,
-                document: this.doc,
             },
             { node, compilationContext: params }
         );
@@ -175,15 +180,15 @@ export class DashboardCompiler {
     }
 
     compileView(node) {
-        const view = this.doc.createElement("ViewWrapper");
+        const view = createElement("ViewWrapper");
         const type = node.getAttribute("type");
-        view.setAttribute("t-props", `this.getViewWrapperProps("${type}")`);
+        view.setAttribute("t-props", `this.getViewWrapperProps('${type}')`);
         view.setAttribute("t-key", "renderKey");
         return view;
     }
 
     compileStatistic(node, params) {
-        const agg = this.doc.createElement("DashboardStatistic");
+        const agg = createElement("DashboardStatistic");
         let aggName;
         if ("name" in node.attributes) {
             aggName = node.getAttribute("name");
@@ -191,17 +196,14 @@ export class DashboardCompiler {
             aggName = this.nodeIdentifier.idFor(node);
         }
         const displayName = node.getAttribute("string") || aggName;
-        agg.setAttribute("displayName", tranformStringForExpression(displayName));
+        agg.setAttribute("displayName", toStringExpression(displayName));
         agg.setAttribute("model", "model");
         agg.setAttribute("name", `"${aggName}"`);
         agg.setAttribute("statisticType", `"${node.tagName}"`);
         agg.setAttribute("t-key", "renderKey");
 
         if ("value_label" in node.attributes) {
-            agg.setAttribute(
-                "valueLabel",
-                tranformStringForExpression(node.getAttribute("value_label"))
-            );
+            agg.setAttribute("valueLabel", toStringExpression(node.getAttribute("value_label")));
         }
 
         if ("widget" in node.attributes) {
@@ -209,12 +211,12 @@ export class DashboardCompiler {
         }
 
         if ("help" in node.attributes) {
-            agg.setAttribute("help", tranformStringForExpression(node.getAttribute("help")));
+            agg.setAttribute("help", toStringExpression(node.getAttribute("help")));
         }
 
-        const modifiers = getAllModifiers(node);
+        const modifiers = node.getAttribute("modifiers");
         if (modifiers) {
-            agg.setAttribute("modifiers", `"${encodeObjectForTemplate(modifiers)}"`);
+            agg.setAttribute("modifiers", encodeObjectForTemplate(JSON.parse(modifiers)));
         }
 
         if (node.tagName === "aggregate") {
@@ -232,8 +234,7 @@ export class DashboardCompiler {
         }
         let compiled = agg;
         if (params.groupLevel) {
-            const div = this.doc.createElement("div");
-            div.setAttribute("class", "o_aggregate_col");
+            const div = createElement("div", { class: "o_aggregate_col" });
             appendTo(div, agg);
             compiled = div;
         }

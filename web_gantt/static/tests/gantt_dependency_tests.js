@@ -79,7 +79,7 @@ const CSS = {
     },
 };
 
-QUnit.module('Views > GanttView > Gantt Dependency', {
+QUnit.module('LegacyViews > GanttView (legacy) > Gantt Dependency', {
     async beforeEach() {
         testPromise = testUtils.makeTestPromise();
         ganttViewParams.data = {

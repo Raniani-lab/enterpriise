@@ -172,16 +172,16 @@ QUnit.module('relational_fields', {
 
         var $modal = $('.o_modal_full .modal-lg');
         assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
-        assert.containsOnce($modal, '.o_kanban_view',
+        assert.containsOnce($modal, '.o_legacy_kanban_view',
             'kanban view should be open in SelectCreateDialog');
         assert.containsOnce($modal, '.o_cp_searchview',
             'should have Search view inside SelectCreateDialog');
         assert.containsNone($modal.find(".o_control_panel .o_cp_buttons"), '.o-kanban-button-new',
             "kanban view in SelectCreateDialog should not have Create button");
-        assert.strictEqual($modal.find(".o_kanban_view .o_kanban_record:not(.o_kanban_ghost)").length, 3,
+        assert.strictEqual($modal.find(".o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)").length, 3,
             "popup should load 3 records in kanban");
 
-        await testUtils.dom.click($modal.find('.o_kanban_view .o_kanban_record:first'));
+        await testUtils.dom.click($modal.find('.o_legacy_kanban_view .o_kanban_record:first'));
 
         assert.strictEqual($input.val(), 'first record',
             'clicking kanban card should select record for many2one field');
@@ -232,11 +232,11 @@ QUnit.module('relational_fields', {
 
         var $modal = $('.o_modal_full .modal-lg');
         assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
-        assert.containsOnce($modal, '.o_kanban_view',
+        assert.containsOnce($modal, '.o_legacy_kanban_view',
             'kanban view should be open in SelectCreateDialog');
-        assert.containsNone($modal, '.o_kanban_view .o_sibling_tags',
+        assert.containsNone($modal, '.o_legacy_kanban_view .o_sibling_tags',
             'o_sibling_tags div should not be available as div have condition on selection_mode');
-        assert.containsN($modal, '.o_kanban_view .o_foo', 3,
+        assert.containsN($modal, '.o_legacy_kanban_view .o_foo', 3,
             'o_foo div should be available as div have condition on selection_mode');
 
         form.destroy();
@@ -290,11 +290,11 @@ QUnit.module('relational_fields', {
 
         var $modal = $('.o_modal_full .modal-lg');
         assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
-        assert.containsOnce($modal, '.o_kanban_view',
+        assert.containsOnce($modal, '.o_legacy_kanban_view',
             'kanban view should be open in SelectCreateDialog');
-        assert.hasClass($modal.find('.o_kanban_view'), 'kanban2',
+        assert.hasClass($modal.find('.o_legacy_kanban_view'), 'kanban2',
             'kanban view with id 2 should be opened as it is given as kanban_view_ref');
-        assert.strictEqual($modal.find('.o_kanban_view .o_kanban_record:first').text(),
+        assert.strictEqual($modal.find('.o_legacy_kanban_view .o_kanban_record:first').text(),
             'first recordaaa',
             'kanban with two fields should be opened');
 
@@ -337,10 +337,10 @@ QUnit.module('relational_fields', {
         await testUtils.dom.click($input);
         assert.containsOnce($('body'), '.modal.o_modal_full',
             "there should be a modal opened in full screen");
-        assert.containsN($('.modal'), '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3,
+        assert.containsN($('.modal'), '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3,
             "popup should load 3 records in kanban");
 
-        await testUtils.dom.click($('.modal').find('.o_kanban_view .o_kanban_record:first'));
+        await testUtils.dom.click($('.modal').find('.o_legacy_kanban_view .o_kanban_record:first'));
         assert.strictEqual($input.val(), 'first record',
             'clicking kanban card should select record for many2one field');
 
@@ -406,16 +406,16 @@ QUnit.module('relational_fields', {
 
         var $modal = $('.o_modal_full .modal-lg');
         assert.equal($modal.length, 1, 'there should be one modal opened in full screen');
-        assert.containsOnce($modal, '.o_kanban_view',
+        assert.containsOnce($modal, '.o_legacy_kanban_view',
             'kanban view should be open in SelectCreateDialog');
         assert.containsOnce($modal, '.o_cp_searchview',
             'should have Search view inside SelectCreateDialog');
         assert.containsNone($modal.find(".o_control_panel .o_cp_buttons"), '.o-kanban-button-new',
             "kanban view in SelectCreateDialog should not have Create button");
-        assert.strictEqual($modal.find(".o_kanban_view .o_kanban_record:not(.o_kanban_ghost)").length, 3,
+        assert.strictEqual($modal.find(".o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)").length, 3,
             "popup should load 3 records in kanban");
 
-        await testUtils.dom.click($modal.find('.o_kanban_view .o_kanban_record:first'));
+        await testUtils.dom.click($modal.find('.o_legacy_kanban_view .o_kanban_record:first'));
 
         assert.strictEqual(rpcReadCount, 2, "there should be a read for current form record and selected sibling");
         assert.strictEqual(form.$(".o_field_widget.o_input .badge").length, 1,
@@ -472,10 +472,10 @@ QUnit.module('relational_fields', {
         });
 
         await testUtils.form.clickEdit(form);
-        assert.containsN(form, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3,
+        assert.containsN(form, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 3,
             "should have 3 records in kanban");
 
-        await testUtils.dom.click(form.$('.o_kanban_view .o_kanban_record:first'));
+        await testUtils.dom.click(form.$('.o_legacy_kanban_view .o_kanban_record:first'));
         assert.containsOnce($('body'), '.modal.o_modal_full',
             "there should be a modal opened in full screen");
 
@@ -485,7 +485,7 @@ QUnit.module('relational_fields', {
 
         await testUtils.dom.click($('.modal').find('.modal-header .o_btn_remove'));
         assert.containsNone($('body'), '.modal', "there should be no more modal");
-        assert.containsN(form, '.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2,
+        assert.containsN(form, '.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)', 2,
             "should have 2 records in kanban");
 
         // save and check that the correct command has been generated

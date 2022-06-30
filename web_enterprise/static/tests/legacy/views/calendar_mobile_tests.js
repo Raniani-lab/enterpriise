@@ -8,7 +8,7 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
     const preInitialDate = new Date(2016, 11, 12, 8, 0, 0);
     const initialDate = new Date(preInitialDate.getTime() - preInitialDate.getTimezoneOffset() * 60 * 1000);
 
-    QUnit.module('Views', {
+    QUnit.module('LegacyViews', {
         beforeEach: function () {
             this.data = {
                 event: {
@@ -42,7 +42,7 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
         },
     }, function () {
 
-        QUnit.module('CalendarView Mobile');
+        QUnit.module('CalendarView (legacy) - Mobile');
 
         QUnit.test('simple calendar rendering in mobile', async function (assert) {
             assert.expect(7);

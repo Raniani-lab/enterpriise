@@ -6,7 +6,7 @@ let testUtils = require('web.test_utils');
 
 let createView = testUtils.createView;
 
-QUnit.module('Views', {
+QUnit.module('LegacyViews', {
     beforeEach: function () {
         this.data = {
             'analytic.line': {
@@ -57,7 +57,7 @@ QUnit.module('Views', {
         `;
     }
 }, function () {
-    QUnit.module('GridView Mobile');
+    QUnit.module('GridView (legacy) - Mobile');
 
     QUnit.test('basic grid view, range button in mobile', async function (assert) {
         assert.expect(5);

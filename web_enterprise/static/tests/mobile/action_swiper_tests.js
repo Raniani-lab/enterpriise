@@ -152,7 +152,6 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     },
                 ],
             });
-            await nextTick();
             assert.ok(
                 targetContainer.style.transform.includes("translateX"),
                 "target has translateX"
@@ -262,7 +261,6 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     },
                 ],
             });
-            await nextTick();
             assert.ok(
                 targetContainer.style.transform.includes("translateX"),
                 "target has translateX"
@@ -400,7 +398,6 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     },
                 ],
             });
-            await nextTick();
             assert.ok(
                 targetContainer.style.transform.includes("translateX"),
                 "target has translateX"
@@ -547,11 +544,21 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     },
                 ],
             });
-            await nextTick();
             assert.ok(
                 targetContainer.style.transform.includes("translateX"),
                 "the swiper can swipe if the scrollable area is not under touch pressure"
             );
+            await triggerEvent(target, ".o_actionswiper", "touchmove", {
+                touches: [
+                    {
+                        identifier: 0,
+                        clientX: 0,
+                        clientY: 0,
+                        target: target,
+                    },
+                ],
+            });
+            await triggerEvent(target, ".o_actionswiper", "touchend", {});
             await triggerEvent(scrollable, ".large-text", "touchstart", {
                 touches: [
                     {
@@ -576,7 +583,6 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     },
                 ],
             });
-            await nextTick();
             assert.ok(
                 !targetContainer.style.transform.includes("translateX"),
                 "the swiper has not swiped to the right because the scrollable element was scrollable to the left"
@@ -607,7 +613,6 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     },
                 ],
             });
-            await nextTick();
             assert.ok(
                 targetContainer.style.transform.includes("translateX"),
                 "the swiper has swiped to the right because the scrollable element couldn't scroll anymore to the left"
@@ -752,7 +757,6 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     },
                 ],
             });
-            await nextTick();
             assert.ok(
                 !targetContainer.style.transform.includes("translateX"),
                 "the swiper has not swiped to the right because the scrollable element was scrollable to the left"
@@ -783,7 +787,6 @@ QUnit.module("web_enterprise.Components", ({ beforeEach }) => {
                     },
                 ],
             });
-            await nextTick();
             assert.ok(
                 targetContainer.style.transform.includes("translateX"),
                 "the swiper has swiped to the right because the scrollable element couldn't scroll anymore to the left"

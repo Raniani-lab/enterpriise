@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { SampleServer } from "@web/views/helpers/sample_server";
+import { SampleServer } from "@web/views/sample_server";
 import { parseDate } from "@web/core/l10n/dates";
 import { registry } from "@web/core/registry";
 

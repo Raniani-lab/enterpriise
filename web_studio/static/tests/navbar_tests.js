@@ -21,6 +21,7 @@ import { registerStudioDependencies, openStudio, leaveStudio } from "./helpers";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
 import { companyService } from "@web/webclient/company_service";
+import { viewService } from "@web/views/view_service";
 
 const serviceRegistry = registry.category("services");
 let target;
@@ -30,7 +31,7 @@ QUnit.module("Studio > Navbar", (hooks) => {
     hooks.beforeEach(() => {
         target = getFixture();
         registerStudioDependencies();
-        serviceRegistry.add("action", actionService);
+        serviceRegistry.add("action", actionService).add("view", viewService); // #action-serv-leg-compat-js-class
         serviceRegistry.add("dialog", makeFakeDialogService());
         serviceRegistry.add("menu", menuService);
         serviceRegistry.add("hotkey", hotkeyService);

@@ -13,6 +13,8 @@ import testUtils from "web.test_utils";
 import { openStudio, leaveStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
 import { session } from "@web/session";
 
+import { useLegacyViews } from "@web/../tests/legacy/legacy_setup";
+
 // -----------------------------------------------------------------------------
 // Tests
 // -----------------------------------------------------------------------------
@@ -21,6 +23,7 @@ let serverData;
 let target;
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
+        useLegacyViews();
         target = getFixture();
         serverData = getActionManagerServerData();
         registerStudioDependencies();
@@ -129,7 +132,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/webclient/load_menus",
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ],
             "should have loaded the action"
         );
@@ -165,7 +168,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ],
             "should have reloaded the previous action edited by Studio"
         );
@@ -260,7 +263,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/webclient/load_menus",
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ],
             "should have loaded the action"
         );
@@ -321,11 +324,7 @@ QUnit.module("Studio", (hooks) => {
         await leaveStudio(target);
 
         assert.verifySteps(
-            [
-                "/web/action/load",
-                "/web/dataset/call_kw/pony/get_views",
-                "/web/dataset/search_read",
-            ],
+            ["/web/action/load", "/web/dataset/call_kw/pony/get_views", "/web/dataset/search_read"],
             "should have reloaded the previous action edited by Studio"
         );
 

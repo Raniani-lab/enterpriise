@@ -104,23 +104,25 @@ QUnit.test('lazy load mobile-friendly view', async function (assert) {
         '/web/action/load',
         'get_views',
         'onchange', // default_get/onchange to open form view
-        '/web/dataset/search_read', // search read when coming back to Kanban
+        'web_search_read', // web search read when coming back to Kanban
     ]);
 });
 
 QUnit.test('view switcher button should be displayed in dropdown on mobile screens', async function (assert) {
+    // This test will spawn a kanban view (mobile friendly).
+    // so, the "legacy" code won't be tested here.
     const webClient = await createWebClient({ serverData });
 
     await doAction(webClient, 1);
 
-    assert.containsOnce(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons > button');
-    assert.containsNone(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons .o_switch_view.o_kanban');
-    assert.containsNone(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons button.o_switch_view');
+    assert.containsOnce(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons > .o-dropdown > button');
+    assert.containsNone(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons .o-dropdown--menu .o_switch_view.o_kanban');
+    assert.containsNone(target.querySelector('.o_control_panel'), '.o_cp_switch_buttons .o-dropdown--menu button.o_switch_view');
 
-    assert.hasClass(target.querySelector('.o_control_panel .o_cp_switch_buttons > button > span'), 'oi-view-kanban');
-    await click(target, '.o_control_panel .o_cp_switch_buttons > button');
+    assert.hasClass(target.querySelector('.o_control_panel .o_cp_switch_buttons > .o-dropdown > button > i'), 'oi-view-kanban');
+    await click(target, '.o_control_panel .o_cp_switch_buttons > .o-dropdown > button');
 
-    assert.hasClass(target.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'active');
-    assert.doesNotHaveClass(target.querySelector('.o_cp_switch_buttons button.o_switch_view.o_list'), 'active');
-    assert.hasClass(target.querySelector('.o_cp_switch_buttons button.o_switch_view.o_kanban'), 'oi-view-kanban');
+    assert.hasClass(target.querySelector('.o_cp_switch_buttons .o-dropdown--menu button.o_switch_view.o_kanban'), 'active');
+    assert.doesNotHaveClass(target.querySelector('.o_cp_switch_buttons .o-dropdown--menu button.o_switch_view.o_list'), 'active');
+    assert.hasClass(target.querySelector('.o_cp_switch_buttons .o-dropdown--menu button.o_switch_view.o_kanban'), 'oi-view-kanban');
 });

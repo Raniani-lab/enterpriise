@@ -130,7 +130,7 @@
                 display: none;
             }
             // hide the optionalColumnsDropdown button in a listview added by web_enterprise
-            i.o_optional_columns_dropdown_toggle {
+            div.o_optional_columns_dropdown {
                 display: none;
             }
             th.o_column_sortable:not(:empty):last-child {

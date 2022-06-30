@@ -3,7 +3,7 @@ import { browser } from "@web/core/browser/browser";
 import { localization } from "@web/core/l10n/localization";
 import { clamp } from "@web/core/utils/numbers";
 
-const { Component, onMounted, onWillUnmount, useEffect, useRef, useState } = owl;
+const { Component, onMounted, onWillUnmount, useRef, useState } = owl;
 
 const isScrollSwipable = (scrollables) => {
     return {
@@ -30,27 +30,22 @@ export class ActionSwiper extends Component {
         this.defaultState = {
             containerStyle: "",
             isSwiping: false,
-            startX: undefined,
             width: undefined,
         };
         this.root = useRef("root");
         this.targetContainer = useRef("targetContainer");
-        this.scrollables = undefined;
         this.state = useState({ ...this.defaultState });
+        this.scrollables = undefined;
+        this.startX = undefined;
         this.swipedDistance = 0;
+        this.isScrollValidated = false;
         onMounted(() => {
             if (this.targetContainer.el) {
                 this.state.width = this.targetContainer.el.getBoundingClientRect().width;
             }
-        });
-        onWillUnmount(() => {
-            browser.clearTimeout(this.actionTimeoutId);
-            browser.clearTimeout(this.resetTimeoutId);
-        });
-        // Forward classes set on component to slot, as we only want to wrap an
-        // existing component without altering the DOM structure any more than
-        // strictly necessary
-        useEffect(() => {
+            // Forward classes set on component to slot, as we only want to wrap an
+            // existing component without altering the DOM structure any more than
+            // strictly necessary
             if (this.props.onLeftSwipe || this.props.onRightSwipe) {
                 const classes = new Set(this.root.el.classList);
                 classes.delete("o_actionswiper");
@@ -59,6 +54,10 @@ export class ActionSwiper extends Component {
                     this.root.el.classList.remove(className);
                 }
             }
+        });
+        onWillUnmount(() => {
+            browser.clearTimeout(this.actionTimeoutId);
+            browser.clearTimeout(this.resetTimeoutId);
         });
     }
     get localizedProps() {
@@ -77,29 +76,21 @@ export class ActionSwiper extends Component {
     _onTouchEndSwipe() {
         if (this.state.isSwiping) {
             this.state.isSwiping = false;
-            if (this.localizedProps.onRightSwipe && this.swipedDistance > this.state.width / 2) {
+            if (
+                this.localizedProps.onRightSwipe &&
+                this.swipedDistance > this.state.width / this.props.swipeDistanceRatio
+            ) {
                 this.swipedDistance = this.state.width;
-                this.state.containerStyle = `transform: translateX(${this.swipedDistance}px)`;
-                this.actionTimeoutId = browser.setTimeout(
-                    this.localizedProps.onRightSwipe.action,
-                    500
-                );
+                this.handleSwipe(this.localizedProps.onRightSwipe.action);
             } else if (
                 this.localizedProps.onLeftSwipe &&
-                this.swipedDistance < -this.state.width / 2
+                this.swipedDistance < -this.state.width / this.props.swipeDistanceRatio
             ) {
                 this.swipedDistance = -this.state.width;
-                this.state.containerStyle = `transform: translateX(${this.swipedDistance}px)`;
-                this.actionTimeoutId = browser.setTimeout(
-                    this.localizedProps.onLeftSwipe.action,
-                    500
-                );
+                this.handleSwipe(this.localizedProps.onLeftSwipe.action);
             } else {
                 this.state.containerStyle = "";
             }
-            this.resetTimeoutId = browser.setTimeout(() => {
-                this._reset();
-            }, 500);
         }
     }
     /**
@@ -110,19 +101,23 @@ export class ActionSwiper extends Component {
         if (this.state.isSwiping) {
             const { onLeftSwipe, onRightSwipe } = this.localizedProps;
             this.swipedDistance = clamp(
-                ev.touches[0].clientX - this.state.startX,
+                ev.touches[0].clientX - this.startX,
                 onLeftSwipe ? -this.state.width : 0,
                 onRightSwipe ? this.state.width : 0
             );
             // If there are scrollable elements under touch pressure,
             // they must be at their limits to allow swiping.
             if (
-                !this.scrollables ||
-                isScrollSwipable(this.scrollables)[this.swipedDistance > 0 ? "left" : "right"]
+                !this.isScrollValidated &&
+                this.scrollables &&
+                !isScrollSwipable(this.scrollables)[this.swipedDistance > 0 ? "left" : "right"]
             ) {
+                return this._reset();
+            }
+            this.isScrollValidated = true;
+
+            if (this.props.animationOnMove) {
                 this.state.containerStyle = `transform: translateX(${this.swipedDistance}px)`;
-            } else {
-                this._reset();
             }
         }
     }
@@ -137,14 +132,16 @@ export class ActionSwiper extends Component {
                 (e) =>
                     e.nodeType === 1 &&
                     this.targetContainer.el.contains(e) &&
-                    e.scrollWidth > e.getBoundingClientRect().width
+                    e.scrollWidth > e.getBoundingClientRect().width &&
+                    ["auto", "scroll"].includes(window.getComputedStyle(e)["overflow-x"])
             );
         if (!this.state.width) {
             this.state.width =
                 this.targetContainer && this.targetContainer.el.getBoundingClientRect().width;
         }
         this.state.isSwiping = true;
-        this.state.startX = ev.touches[0].clientX;
+        this.isScrollValidated = false;
+        this.startX = ev.touches[0].clientX;
     }
 
     /**
@@ -153,14 +150,34 @@ export class ActionSwiper extends Component {
     _reset() {
         Object.assign(this.state, { ...this.defaultState });
         this.scrollables = undefined;
+        this.startX = undefined;
         this.swipedDistance = 0;
+        this.isScrollValidated = false;
+    }
+
+    handleSwipe(action) {
+        if (this.props.animationType === "bounce") {
+            this.state.containerStyle = `transform: translateX(${this.swipedDistance}px)`;
+            this.actionTimeoutId = browser.setTimeout(() => {
+                action();
+                this._reset();
+            }, 500);
+        } else if (this.props.animationType === "forwards") {
+            this.state.containerStyle = `transform: translateX(${this.swipedDistance}px)`;
+            this.actionTimeoutId = browser.setTimeout(() => {
+                action();
+                this.state.isSwiping = true;
+                this.state.containerStyle = `transform: translateX(${-this.swipedDistance}px)`;
+                this.resetTimeoutId = browser.setTimeout(() => {
+                    this._reset();
+                }, 200);
+            }, 200);
+        } else {
+            return action();
+        }
     }
 }
 
-ActionSwiper.defaultProps = {
-    onLeftSwipe: undefined,
-    onRightSwipe: undefined,
-};
 ActionSwiper.props = {
     onLeftSwipe: {
         type: Object,
@@ -181,5 +198,17 @@ ActionSwiper.props = {
         optional: true,
     },
     slots: Object,
+    animationOnMove: { type: Boolean, optional: true },
+    animationType: { type: String, optional: true },
+    swipeDistanceRatio: { type: Number, optional: true },
 };
+
+ActionSwiper.defaultProps = {
+    onLeftSwipe: undefined,
+    onRightSwipe: undefined,
+    animationOnMove: true,
+    animationType: "bounce",
+    swipeDistanceRatio: 2,
+};
+
 ActionSwiper.template = "web_enterprise.ActionSwiper";

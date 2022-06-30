@@ -1,8 +1,9 @@
 /** @odoo-module **/
 
+import { browser } from "@web/core/browser/browser";
 import { Dropdown } from "@web/core/dropdown/dropdown";
-import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { patch } from "@web/core/utils/patch";
+import { ControlPanel } from "@web/search/control_panel/control_panel";
 
 const { onMounted, useExternalListener, useState, useRef, useEffect } = owl;
 const STICKY_CLASS = "o_mobile_sticky";
@@ -11,7 +12,7 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
     setup() {
         this._super();
 
-        this.mobileControlPanelRef = useRef("mobile_control_panel");
+        this.root = useRef("root");
 
         this.state = useState({
             showSearchBar: false,
@@ -23,18 +24,24 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
 
         useExternalListener(window, "click", this.onWindowClick);
         useEffect(() => {
-            if (!this.env.isSmall || ("adaptToScroll" in this.display && !this.display.adaptToScroll) || !this.mobileControlPanelRef.el) {
+            if (
+                !this.env.isSmall ||
+                ("adaptToScroll" in this.display && !this.display.adaptToScroll)
+            ) {
                 return;
             }
             const scrollingEl = this.getScrollingElement();
             scrollingEl.addEventListener("scroll", this.onScrollThrottledBound);
-            this.mobileControlPanelRef.el.style.top = "0px";
+            this.root.el.style.top = "0px";
             return () => {
                 scrollingEl.removeEventListener("scroll", this.onScrollThrottledBound);
-            }
-        })
+            };
+        });
         onMounted(() => {
-            if (!this.mobileControlPanelRef.el) {
+            if (
+                !this.env.isSmall ||
+                ("adaptToScroll" in this.display && !this.display.adaptToScroll)
+            ) {
                 return;
             }
             this.oldScrollTop = 0;
@@ -44,7 +51,7 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
     },
 
     getScrollingElement() {
-        return this.mobileControlPanelRef.el.parentElement;
+        return this.root.el.parentElement;
     },
 
     /**
@@ -68,27 +75,32 @@ patch(ControlPanel.prototype, "web_enterprise.ControlPanel", {
      * often than necessary.
      */
     onScrollThrottled() {
-        if (!this.mobileControlPanelRef.el || this.isScrolling) {
+        if (this.isScrolling) {
             return;
         }
         this.isScrolling = true;
-        requestAnimationFrame(() => (this.isScrolling = false));
+        browser.requestAnimationFrame(() => (this.isScrolling = false));
 
         const scrollTop = this.getScrollingElement().scrollTop;
         const delta = Math.round(scrollTop - this.oldScrollTop);
 
         if (scrollTop > this.initialScrollTop) {
             // Beneath initial position => sticky display
-            this.mobileControlPanelRef.el.classList.add(STICKY_CLASS);
-            this.lastScrollTop = delta < 0 ?
+            this.root.el.classList.add(STICKY_CLASS);
+            if (delta < 0) {
                 // Going up
-                Math.min(0, this.lastScrollTop - delta) :
+                this.lastScrollTop = Math.min(0, this.lastScrollTop - delta);
+            } else {
                 // Going down | not moving
-                Math.max(-this.mobileControlPanelRef.el.offsetHeight, -this.mobileControlPanelRef.el.offsetTop - delta);
-            this.mobileControlPanelRef.el.style.top = `${this.lastScrollTop}px`;
+                this.lastScrollTop = Math.max(
+                    -this.root.el.offsetHeight,
+                    -this.root.el.offsetTop - delta
+                );
+            }
+            this.root.el.style.top = `${this.lastScrollTop}px`;
         } else {
             // Above initial position => standard display
-            this.mobileControlPanelRef.el.classList.remove(STICKY_CLASS);
+            this.root.el.classList.remove(STICKY_CLASS);
             this.lastScrollTop = 0;
         }
 

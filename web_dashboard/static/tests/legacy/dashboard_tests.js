@@ -35,7 +35,7 @@ var patchDate = testUtils.mock.patchDate;
 var FieldFloat = BasicFields.FieldFloat;
 
 let serverData;
-QUnit.module('Views', {
+QUnit.module('LegacyViews', {
     beforeEach: function () {
         this.data = {
             test_report: {

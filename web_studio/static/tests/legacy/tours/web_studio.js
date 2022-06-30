@@ -693,7 +693,7 @@ tour.register('web_studio_new_report_tour', {
     run: function () {
         $('.o_kanban_record:contains(My Awesome Report) .o_dropdown_kanban').css('visibility', 'visible');
     },
-    trigger: '.o_kanban_view',
+    trigger: '.o_legacy_kanban_view',
 }, {
     // open the dropdown
     trigger: '.o_kanban_record:contains(My Awesome Report) .dropdown-toggle',
@@ -836,7 +836,7 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     run: function () {
         $('.o_kanban_record:contains(My Awesome basic layout Report) .o_dropdown_kanban').css('visibility', 'visible');
     },
-    trigger: '.o_kanban_view',
+    trigger: '.o_legacy_kanban_view',
 }, {
     // open the dropdown
     trigger: '.o_kanban_record:contains(My Awesome basic layout Report) .dropdown-toggle',
@@ -918,7 +918,7 @@ tour.register('web_studio_approval_tour', {
     // open first record (should be the one that was used, so the button should be there)
     trigger: '.o_kanban_view .o_kanban_record .o_dropdown_kanban .dropdown-toggle',
 }, {
-    trigger: '.dropdown-menu.show .dropdown-item',
+    trigger: '.o_kanban_view .o_kanban_record .o-dropdown--menu .dropdown-item',
 },{
     // try to do the action
     trigger: 'button[studio_approval]',

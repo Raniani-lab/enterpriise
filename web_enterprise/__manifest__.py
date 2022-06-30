@@ -45,6 +45,8 @@ This module modifies the web addon to provide Enterprise design and responsivene
             ('replace', 'web/static/src/legacy/scss/form_view_extra.scss', 'web_enterprise/static/src/legacy/scss/form_view.scss'),
             ('replace', 'web/static/src/legacy/scss/list_view_extra.scss', 'web_enterprise/static/src/legacy/scss/list_view.scss'),
             ('replace', 'web/static/src/search/search_panel/search_view_extra.scss', 'web_enterprise/static/src/legacy/scss/search_view.scss'),
+            ('replace', 'web/static/src/views/form/form_view_extra.scss', 'web_enterprise/static/src/views/form/form_view.scss'),
+            ('replace', 'web/static/src/views/list/list_view_extra.scss', 'web_enterprise/static/src/views/list/list_view.scss'),
 
             'web_enterprise/static/src/legacy/scss/dropdown.scss',
             'web_enterprise/static/src/legacy/scss/base_settings_mobile.scss',

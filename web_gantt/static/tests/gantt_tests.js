@@ -94,7 +94,7 @@ function getPillItemWidth($el) {
     return $el.attr('style').split('width: ')[1].split(';')[0];
 }
 
-QUnit.module('Views', {
+QUnit.module('LegacyViews', {
     beforeEach: function () {
         this.data = {
             tasks: {
@@ -169,7 +169,7 @@ QUnit.module('Views', {
         };
     },
 }, function () {
-    QUnit.module('GanttView');
+    QUnit.module('GanttView (legacy)');
 
     // BASIC TESTS
 

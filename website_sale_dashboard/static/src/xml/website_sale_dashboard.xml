@@ -15,7 +15,7 @@
         t-inherit-mode="primary"
         owl="1">
         <xpath expr="//Layout" position="inside">
-            <t t-set-slot="control-panel-bottom-left">
+            <t t-set-slot="layout-buttons">
                 <a role="button" href="/" class="btn btn-primary" title="Go to Website">
                     Go to Website
                 </a>

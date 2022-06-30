@@ -234,7 +234,7 @@ function assertErrorMessage(expected) {
 }
 
 function assertQuantsCount(expected) {
-    var $quantity = $('.o_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length;
+    var $quantity = $('.o_legacy_kanban_view .o_kanban_record:not(.o_kanban_ghost)').length;
     assert($quantity, expected, 'Wrong number of cards');
 }
 

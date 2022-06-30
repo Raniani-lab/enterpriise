@@ -7,6 +7,8 @@ import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { registry } from "@web/core/registry";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { actionService } from "@web/webclient/actions/action_service";
+import { ormService } from "@web/core/orm_service";
+import { viewService } from "@web/views/view_service";
 
 const { Model } = spreadsheet;
 
@@ -112,6 +114,8 @@ QUnit.module(
                 },
             };
             registry.category("services").add("menu", menuService).add("action", actionService);
+            registry.category("services").add("view", viewService, { force: true }); // #action-serv-leg-compat-js-class
+            registry.category("services").add("orm", ormService, { force: true }); // #action-serv-leg-compat-js-class
         },
     },
 

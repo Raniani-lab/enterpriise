@@ -4,6 +4,9 @@ odoo.define('web_cohort.cohort_tests', function (require) {
 var CohortView = require('web_cohort.CohortView');
 var testUtils = require('web.test_utils');
 
+var FormView = require('web.FormView');
+var ListView = require('web.ListView');
+
 const legacyViewRegistry = require("web.view_registry");
 const { registry } = require("@web/core/registry");
 const viewRegistry = registry.category("views");
@@ -24,7 +27,7 @@ const { getFixture, nextTick, patchWithCleanup } = require('@web/../tests/helper
 
 const { markup } = owl;
 
-QUnit.module('Views', {
+QUnit.module('LegacyViews', {
     beforeEach: function () {
         this.data = {
             subscription: {
@@ -81,7 +84,7 @@ QUnit.module('Views', {
         serverData = {models: this.data};
     }
 }, function () {
-    QUnit.module('LegacyCohortView');
+    QUnit.module('CohortView (legacy)');
 
     QUnit.test('simple cohort rendering', async function (assert) {
         assert.expect(7);
@@ -302,6 +305,11 @@ QUnit.module('Views', {
     QUnit.test('when clicked on cell redirects to the correct list/form view ', async function(assert) {
         assert.expect(6);
 
+        registry.category("views").remove("list"); // remove new list from registry
+        registry.category("views").remove("form"); // remove new form from registry
+        legacyViewRegistry.add("list", ListView); // add legacy list -> will be wrapped and added to new registry
+        legacyViewRegistry.add("form", FormView); // add legacy form -> will be wrapped and added to new registry
+
         const views = {
             'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />',
             'subscription,my_list_view,list': '<tree>' +
@@ -419,6 +427,12 @@ QUnit.module('Views', {
 
     QUnit.test('when clicked on cell redirects to the action list/form view passed in context', async function(assert) {
         assert.expect(6);
+
+        registry.category("views").remove("list"); // remove new list from registry
+        registry.category("views").remove("form"); // remove new form from registry
+        legacyViewRegistry.add("list", ListView); // add legacy list -> will be wrapped and added to new registry
+        legacyViewRegistry.add("form", FormView); // add legacy form -> will be wrapped and added to new registry
+
         const views = {
             'subscription,false,cohort': '<cohort string="Subscriptions" date_start="start" date_stop="stop" measure="__count" interval="week" />',
             'subscription,my_list_view,list': '<tree>' +

@@ -7,7 +7,7 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
 
     const { createView, dom, mock } = testUtils;
 
-    QUnit.module("Views", {
+    QUnit.module("LegacyViews", {
         beforeEach() {
             this.data = {
                 foo: {
@@ -35,7 +35,7 @@ odoo.define('web_enterprise.list_mobile_tests', function (require) {
         },
     }, function () {
 
-        QUnit.module("ListView Mobile");
+        QUnit.module("ListView (legacy) - Mobile");
 
         QUnit.test("selection is properly displayed (single page)", async function (assert) {
             assert.expect(10);

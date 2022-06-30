@@ -235,38 +235,57 @@ class ApprovalRequest(models.Model):
 
         self.filtered_domain([('request_status', 'in', ['approved', 'refused', 'cancel'])])._cancel_activities()
 
+    @api.model
+    def _update_approver_vals(self, approver_id_vals, approver, new_required, new_sequence):
+        if approver.required != new_required or approver.sequence != new_sequence:
+            approver_id_vals.append(Command.update(approver.id, {'required': new_required, 'sequence': new_sequence}))
+
+    @api.model
+    def _create_or_update_approver(self, user_id, users_to_approver, approver_id_vals, required, sequence):
+        if user_id not in users_to_approver.keys():
+            approver_id_vals.append(Command.create({
+                'user_id': user_id,
+                'status': 'new',
+                'required': required,
+                'sequence': sequence,
+            }))
+        else:
+            current_approver = users_to_approver.pop(user_id)
+            self._update_approver_vals(approver_id_vals, current_approver, required, sequence)
+
     @api.depends('category_id', 'request_owner_id')
     def _compute_approver_ids(self):
         for request in self:
-            #Don't remove manually added approvers
-            users_to_approver = defaultdict(lambda: self.env['approval.approver'])
+            users_to_approver = {}
             for approver in request.approver_ids:
-                users_to_approver[approver.user_id.id] |= approver
-            users_to_category_approver = defaultdict(lambda: self.env['approval.category.approver'])
+                users_to_approver[approver.user_id.id] = approver
+
+            users_to_category_approver = {}
             for approver in request.category_id.approver_ids:
-                users_to_category_approver[approver.user_id.id] |= approver
-            new_users = request.category_id.user_ids
-            manager_user = 0
+                users_to_category_approver[approver.user_id.id] = approver
+
+            approver_id_vals = []
+
             if request.category_id.manager_approval:
                 employee = self.env['hr.employee'].search([('user_id', '=', request.request_owner_id.id)], limit=1)
                 if employee.parent_id.user_id:
-                    new_users |= employee.parent_id.user_id
-                    manager_user = employee.parent_id.user_id.id
-            approver_id_vals = []
-            for user in new_users:
-                # Force require on the manager if he is explicitely in the list
-                required = users_to_category_approver[user.id].required or (request.category_id.manager_approval == 'required' if manager_user == user.id else False)
-                current_approver = users_to_approver[user.id]
-                if current_approver and current_approver.required != required:
-                    approver_id_vals.append(Command.update(current_approver.id, {'required': required}))
-                elif not current_approver:
-                    sequence = (users_to_category_approver[user.id].sequence or 1000) if request.approver_sequence else 10
-                    approver_id_vals.append(Command.create({
-                        'user_id': user.id,
-                        'status': 'new',
-                        'required': required,
-                        'sequence': sequence,
-                    }))
+                    manager_user_id = employee.parent_id.user_id.id
+                    manager_required = request.category_id.manager_approval == 'required'
+                    # We set the manager sequence to be lower than all others (9) so they are the first to approve.
+                    self._create_or_update_approver(manager_user_id, users_to_approver, approver_id_vals, manager_required, 9)
+                    if manager_user_id in users_to_category_approver.keys():
+                        users_to_category_approver.pop(manager_user_id)
+
+            for user_id in users_to_category_approver:
+                self._create_or_update_approver(user_id, users_to_approver, approver_id_vals,
+                                                users_to_category_approver[user_id].required,
+                                                users_to_category_approver[user_id].sequence)
+
+            for current_approver in users_to_approver.values():
+                # Reset sequence and required for the remaining approvers that are no (longer) part of the category approvers or managers.
+                # Set the sequence of these manually added approvers to 1000, so that they always appear after the category approvers.
+                self._update_approver_vals(approver_id_vals, current_approver, False, 1000)
+
             request.update({'approver_ids': approver_id_vals})
 
     def write(self, vals):

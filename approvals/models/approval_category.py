@@ -62,7 +62,7 @@ class ApprovalCategory(models.Model):
     """)
     user_ids = fields.Many2many('res.users', compute='_compute_user_ids', string="Approver Users")
     approver_ids = fields.One2many('approval.category.approver', 'category_id', string="Approvers")
-    approver_sequence = fields.Boolean('Approvers Sequence?', help="If checked, the approvers have to approve in sequence (one after the other).")
+    approver_sequence = fields.Boolean('Approvers Sequence?', help="If checked, the approvers have to approve in sequence (one after the other). If Employee's Manager is selected as approver, they will be the first in line.")
     request_to_validate_count = fields.Integer("Number of requests to validate", compute="_compute_request_to_validate_count")
     automated_sequence = fields.Boolean('Automated Sequence?',
         help="If checked, the Approval Requests will have an automated generated name based on the given code.")

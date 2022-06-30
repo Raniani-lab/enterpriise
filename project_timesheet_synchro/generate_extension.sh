@@ -65,6 +65,11 @@ cp -r $odoo_path/addons/web/static/lib/underscore.string extension/web/static/li
 sassc $odoo_path/addons/web/static/lib/bootstrap/scss/bootstrap.scss > extension/web/static/lib/bootstrap/css/bootstrap.min.css
 
 [ -d extension/web/static/lib/bootstrap/js ] || mkdir -p extension/web/static/lib/bootstrap/js
-cp $odoo_path/addons/web/static/lib/bootstrap/js/modal.js extension/web/static/lib/bootstrap/js
+cp $odoo_path/addons/web/static/lib/bootstrap/js/dist/dom/data.js extension/web/static/lib/bootstrap/js/dom/
+cp $odoo_path/addons/web/static/lib/bootstrap/js/dist/dom/event-handler.js extension/web/static/lib/bootstrap/js/dom/
+cp $odoo_path/addons/web/static/lib/bootstrap/js/dist/dom/manipulator.js extension/web/static/lib/bootstrap/js/dom/
+cp $odoo_path/addons/web/static/lib/bootstrap/js/dist/dom/selector-engine.js extension/web/static/lib/bootstrap/js/dom/
+cp $odoo_path/addons/web/static/lib/bootstrap/js/dist/base-component.js extension/web/static/lib/bootstrap/js/
+cp $odoo_path/addons/web/static/lib/bootstrap/js/dist/modal.js extension/web/static/lib/bootstrap/js/
 
 echo "Extension created"

@@ -40,6 +40,7 @@ Accounting Reports
     'assets': {
         'account_reports.assets_financial_report': [
             ('include', 'web._assets_helpers'),
+            'web/static/src/libs/bootstrap/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
             ('include', 'web._assets_bootstrap'),
             'web/static/fonts/fonts.scss',

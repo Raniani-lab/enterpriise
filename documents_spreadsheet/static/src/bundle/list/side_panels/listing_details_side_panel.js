@@ -1,11 +1,11 @@
 /** @odoo-module */
 
-import DomainSelector from "web.DomainSelector";
+import { Domain } from "@web/core/domain";
+import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { _t } from "web.core";
 import { time_to_str } from "web.time";
 
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
-import DomainComponentAdapter from "../../legacy/domain_component_adapter";
 
 const { Component, onWillStart } = owl;
 
@@ -13,7 +13,6 @@ export class ListingDetailsSidePanel extends Component {
     constructor() {
         super(...arguments);
         this.getters = this.env.model.getters;
-        this.DomainSelector = DomainSelector;
         onWillStart(async () => {
             const name = await this.getters
                 .getSpreadsheetListDataSource(this.props.listId)
@@ -28,7 +27,7 @@ export class ListingDetailsSidePanel extends Component {
         return {
             model: def.model,
             modelDisplayName: this.modelDisplayName,
-            domain: def.domain,
+            domain: new Domain(def.domain).toString(),
             orderBy: def.orderBy,
         };
     }
@@ -60,7 +59,7 @@ export class ListingDetailsSidePanel extends Component {
     }
 }
 ListingDetailsSidePanel.template = "documents_spreadsheet.ListingDetailsSidePanel";
-ListingDetailsSidePanel.components = { DomainComponentAdapter, EditableName };
+ListingDetailsSidePanel.components = { DomainSelector, EditableName };
 ListingDetailsSidePanel.props = {
     listId: {
         type: String,

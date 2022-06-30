@@ -1,16 +1,15 @@
 /** @odoo-module */
 
+import { Domain } from "@web/core/domain";
+import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { _t } from "web.core";
-import DomainSelector from "web.DomainSelector";
 import { time_to_str } from "web.time";
-import DomainComponentAdapter from "../../legacy/domain_component_adapter";
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 
 const { Component, onWillStart } = owl;
 
 export default class PivotDetailsSidePanel extends Component {
     setup() {
-        this.DomainSelector = DomainSelector;
         this.spreadsheetModel = undefined;
         this.pivotDefinition = {};
 
@@ -25,7 +24,7 @@ export default class PivotDetailsSidePanel extends Component {
             this.pivotDefinition = {
                 model: definition.model,
                 modelDisplayName,
-                domain: definition.domain,
+                domain: new Domain(definition.domain).toString(),
                 dimensions: [
                     ...definition.rowGroupBys,
                     ...definition.colGroupBys,
@@ -78,7 +77,7 @@ export default class PivotDetailsSidePanel extends Component {
     }
 }
 PivotDetailsSidePanel.template = "documents_spreadsheet.PivotDetailsSidePanel";
-PivotDetailsSidePanel.components = { DomainComponentAdapter, EditableName };
+PivotDetailsSidePanel.components = { DomainSelector, EditableName };
 PivotDetailsSidePanel.props = {
     pivotId: {
         type: String,

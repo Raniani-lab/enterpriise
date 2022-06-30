@@ -14,7 +14,7 @@
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Domain</div>
-            <DomainComponentAdapter Component="DomainSelector" model="def.model" domain="def.domain" t-key="'pivot_' + props.pivotId"/>
+            <DomainSelector resModel="def.model" value="def.domain" t-key="'pivot_' + props.pivotId"/>
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Dimensions</div>

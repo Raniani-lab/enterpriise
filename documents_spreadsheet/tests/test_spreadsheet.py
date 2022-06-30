@@ -66,8 +66,11 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
 
     def test_spreadsheet_to_display_with_domain(self):
         self.archive_existing_spreadsheet()
-        spreadsheet1 = self.create_spreadsheet(name="My Spreadsheet")
-        spreadsheet2 = self.create_spreadsheet(name="Untitled Spreadsheet")
+
+        with freeze_time("2020-02-03"):
+            spreadsheet1 = self.create_spreadsheet(name="My Spreadsheet")
+        with freeze_time("2020-02-02"):
+            spreadsheet2 = self.create_spreadsheet(name="Untitled Spreadsheet")
         spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([("name", "ilike", "My")])
         spreadsheet_ids = [s["id"] for s in spreadsheets]
         self.assertEqual(spreadsheet_ids, [spreadsheet1.id])

@@ -16,34 +16,6 @@ var Widget = require('web.Widget');
 var QWeb = core.qweb;
 var _t = core._t;
 
-/*
- *  Clone the table to be able to keep the header in a fixed position.
- *  This is used as a scroll handler.
- */
-function moveScroll(){
-    var scroll = $(".o_content").offset().top;
-    var anchor_top = $(".o_account_reports_table").offset().top;
-    var anchor_bottom = $(".js_account_report_footnotes").offset().top;
-    if (scroll > anchor_top && scroll < anchor_bottom) {
-        var clone_table = $("#table_header_clone");
-        if(clone_table.length == 0){
-            clone_table = $(".o_account_reports_table").clone();
-            clone_table.attr('id', 'table_header_clone');
-            clone_table.css({
-                top: scroll,
-                width: $(".o_account_reports_table").width(),
-            });
-            $(".table-responsive").append(clone_table);
-        }
-    } else {
-        $("#table_header_clone").remove();
-    }
-}
-function recomputeHeader() {
-    $("#table_header_clone").remove();
-    moveScroll();
-}
-
 var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
     /**
      * @constructor
@@ -225,10 +197,6 @@ var accountReportsWidget = AbstractAction.extend({
         if("default_filter_accounts" in (this.odoo_context || {}))
             this.$('.o_account_reports_filter_input').val(this.odoo_context.default_filter_accounts).trigger("input");
     },
-    on_detach_callback: function () {
-        $(window).off('resize', recomputeHeader);
-        this._super.apply(this, arguments);
-    },
     parse_reports_informations: function(values) {
         this.report_options = values.options;
         this.odoo_context = values.context;
@@ -307,6 +275,7 @@ var accountReportsWidget = AbstractAction.extend({
     },
     render: function() {
         this.render_template();
+        this.table_vertical_scroll();
         this.render_footnotes();
         this.render_searchview_buttons();
         this.batch_fold(this.$('.js_account_report_foldable').filter(function() {
@@ -315,14 +284,29 @@ var accountReportsWidget = AbstractAction.extend({
     },
     render_template: function() {
         this.$('.o_content').html(this.main_html);
-        this.$('.o_content').scroll(moveScroll);
         this.$('.o_content').find('.o_account_reports_summary_edit').hide();
         this.$('[data-bs-toggle="tooltip"]').tooltip();
         this._add_line_classes();
     },
-    on_attach_callback: function() {
-        $(window).resize(recomputeHeader);
-        this._super.apply(this, arguments);
+    table_vertical_scroll: function() {
+        this.$('.o_content').scroll(function() {
+            var content_top = $('.o_content').offset().top;
+            var table_top = $('.o_account_reports_table').offset().top;
+            var thead = $('.o_account_reports_table thead');
+
+            // Makes thead stick
+            if (content_top >= table_top) {
+                thead.css({
+                    'position': 'relative',
+                    'top': (content_top - table_top) + 'px',
+                });
+            } else {
+                thead.css({
+                    'position': '',
+                    'top': '',
+                });
+            }
+        });
     },
     _init_line_popups: function(){
         /*

@@ -27,12 +27,8 @@
 @media (min-width: map-get($grid-breakpoints,"xl")) {
     .o_content > .o_account_reports_body {
         .o_account_reports_no_print {
-            min-width: map-get($container-max-widths,"xl");
+            min-width: map-get($container-max-widths,"xl") !important;
             width: fit-content !important;
-        }
-
-        .o_account_reports_summary {
-            display: none;
         }
     }
 }
@@ -53,16 +49,28 @@
         }
     }
 
+    .o_account_reports_summary {
+        display: none;
+    }
+
     .o_account_reports_no_print {
         // form sheet
         border: 1px solid #C9CCD2;
         box-shadow: 0 5px 20px -15px rgba(0,0,0,.4);
         margin: 24px 12px 48px;
         padding: 24px;
-        width: calc(100% - 12px);
+        min-width: calc(100% - 12px);
+        max-width: calc(100% - 12px); // Prevents the sheet to take horizontal space that is not available
 
         .table-responsive {
             min-height: 470px;
+        }
+
+        .o_account_reports_table {
+            thead {
+                background-color: #FFFFFF;
+                z-index: 2;
+            }
         }
     }
 }
@@ -164,7 +172,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding-left: 8px;
+            padding: 0 8px;
         }
         > span[class="o_account_report_column_value"] {
             max-width: 320px;
@@ -494,12 +502,13 @@
     }
     .table-hover tbody {
         tr:not(.o_account_reports_level0):hover > td {
-            background-color: #F0F0F0;
+            background-color: #F0F0F0 !important;
             background-clip: padding-box;
         }
 
         // Since, we can't add spacing between rows in a table, this prevents the background to be the full height of the row.
-        .o_account_reports_level0:hover {
+        tr.o_account_reports_level0:hover > td {
+            background-color: #F0F0F0 !important;
             background-repeat: no-repeat;
             background-image: linear-gradient(#FFF, #FFF), linear-gradient(#F0F0F0, #F0F0F0);
             background-size: 100% 26px, 100% 28px;
@@ -570,8 +579,8 @@
     float: right;
     width: 150px;
     margin-bottom: 20px;
-    float: right;
-        .searchIcon {
+
+    .searchIcon {
         position: absolute;
         right: 10px;
     }
@@ -596,6 +605,7 @@
 // -----------------------------------------
 .o_account_reports_body .o_account_reports_summary {
     display: inline-block;
+    position: relative;
 
     .o_account_report_summary_placeholder{
         opacity: .5;

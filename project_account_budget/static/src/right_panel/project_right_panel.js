@@ -10,7 +10,7 @@ export class AddBudget extends ProjectRightSidePanelComponent {
         super.setup();
         this.contextValue = Object.assign({}, {
             'project_update': true,
-        });
+        }, this.contextValue);
     }
 
     async openLegacyFormDialog(params) {

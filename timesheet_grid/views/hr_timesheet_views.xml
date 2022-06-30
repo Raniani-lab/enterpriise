@@ -548,6 +548,18 @@
             </field>
         </record>
 
+        <record id="timesheet_grid_pivot_view_all_validate" model="ir.ui.view">
+            <field name="name">account.analytic.line.pivot.weekly.validate.timesheet_grid</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.view_hr_timesheet_line_pivot"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <pivot position="attributes">
+                    <attribute name="js_class">timesheet_validation_pivot_view</attribute>
+                </pivot>
+            </field>
+        </record>
+
         <record id="timesheet_action_view_grid" model="ir.actions.act_window.view">
             <field name="sequence" eval="2"/>
             <field name="view_mode">grid</field>

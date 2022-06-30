@@ -972,6 +972,10 @@ class AnalyticLine(models.Model):
                 for view_id, view_type in views
             ]
         elif not type_view:
+            views = [
+                (view_id if view_type != 'pivot' else self.env.ref('timesheet_grid.timesheet_grid_pivot_view_all_validate').id, view_type)
+                for view_id, view_type in views
+            ]
             views.sort(key=lambda v: 1 if v[1] == 'pivot' else 1000)
         action.update({
             "views": views,

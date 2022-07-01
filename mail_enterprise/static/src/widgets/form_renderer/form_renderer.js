@@ -53,23 +53,6 @@ FormRenderer.include({
         return this._super(...arguments);
     },
     /**
-     * Overrides the function that renders the nodes to return the preview's $el
-     * for the `o_attachment_preview` div node.
-     *
-     * @override
-     */
-    _renderNode(node) {
-        if (node.tag === 'div' && node.attrs.class === 'o_attachment_preview') {
-            if (this.attachmentViewer) {
-                if (this.attachmentPreviewResID !== this.state.res_id) {
-                    this.attachmentViewer.destroy();
-                    this.attachmentViewer = undefined;
-                }
-            }
-        }
-        return this._super.apply(this, arguments);
-    },
-    /**
      * Overrides the function to interchange the chatter and the preview once
      * the chatter is in the dom.
      *

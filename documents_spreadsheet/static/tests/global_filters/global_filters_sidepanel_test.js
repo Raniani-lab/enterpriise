@@ -14,6 +14,7 @@ import { registry } from "@web/core/registry";
 import { addGlobalFilter } from "@spreadsheet/../tests/utils/commands";
 import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
 import { insertListInSpreadsheet } from "@spreadsheet/../tests/utils/list";
+import { insertGraphInSpreadsheet } from "@spreadsheet/../tests/utils/chart";
 
 let target;
 
@@ -421,6 +422,37 @@ QUnit.module(
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
             assert.deepEqual(globalFilter.pivotFields[1], {
+                field: "product_id",
+                type: "many2one",
+            });
+        });
+
+        QUnit.test("Create a new relational global filter with a graph", async function (assert) {
+            const { model } = await createSpreadsheet();
+            insertGraphInSpreadsheet(model);
+            await nextTick();
+            const searchIcon = target.querySelector(".o_topbar_filter_icon");
+            await click(searchIcon);
+            const newRelation = target.querySelector(".o_global_filter_new_relation");
+            await click(newRelation);
+            let selector = `.o_side_panel_related_model input`;
+            await testUtils.dom.click($(target).find(selector)[0]);
+            let item = target.querySelector(".o_sp_selector_product");
+            await click(item);
+
+            let save = target.querySelector(
+                ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
+            );
+            await click(save);
+            assert.equal(
+                target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
+                1
+            );
+            const [graphId] = model.getters.getOdooChartIds();
+            let globalFilter = model.getters.getGlobalFilters()[0];
+            assert.equal(globalFilter.label, "Product");
+            assert.deepEqual(globalFilter.defaultValue, []);
+            assert.deepEqual(globalFilter.graphFields[graphId], {
                 field: "product_id",
                 type: "many2one",
             });

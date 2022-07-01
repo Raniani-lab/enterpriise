@@ -36,12 +36,30 @@ export default class OdooGraphPlugin extends CorePlugin {
                 }
                 break;
             }
+            case "ADD_GRAPH_DOMAIN":
+                this.getters.getSpreadsheetGraphDataSource(cmd.id).addDomain(cmd.domain);
         }
     }
 
     // -------------------------------------------------------------------------
     // Getters
     // -------------------------------------------------------------------------
+
+    /**
+     * Get all the odoo chart ids
+     * @returns {Array<string>}
+     */
+    getOdooChartIds() {
+        const ids = [];
+        for (const sheetId of this.getters.getSheetIds()) {
+            ids.push(
+                ...this.getters
+                    .getChartIds(sheetId)
+                    .filter((id) => this.getters.getChartType(id).startsWith("odoo_"))
+            );
+        }
+        return ids;
+    }
 
     /**
      * @param {string} id
@@ -92,6 +110,10 @@ export default class OdooGraphPlugin extends CorePlugin {
     }
 }
 
-OdooGraphPlugin.getters = ["getSpreadsheetGraphDataSource", "getSpreadsheetGraphModel"];
+OdooGraphPlugin.getters = [
+    "getSpreadsheetGraphDataSource",
+    "getSpreadsheetGraphModel",
+    "getOdooChartIds",
+];
 
 corePluginRegistry.add("odoo_graph_plugin", OdooGraphPlugin);

@@ -11,6 +11,7 @@
  * @property {RangeType} rangeType
  * @property {Object} pivotFields
  * @property {Object} listFields
+ * @property {Object} graphFields
  * @property {string|Array<string>|Object} defaultValue Default Value
  * @property {number} [modelID] ID of the related model
  * @property {string} [modelName] Name of the related model
@@ -114,6 +115,17 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
     }
 
     /**
+     * Get the field name on which the global filter is applied for a graph
+     *
+     * @param {string} filterId Id of the filter
+     * @param {string} graphId Id of the Graph
+     * @returns {string|undefined}
+     */
+    getGlobalFilterFieldGraph(filterId, graphId) {
+        return this.getGlobalFilter(filterId).graphFields[graphId];
+    }
+
+    /**
      * Get the global filter with the given name
      *
      * @param {string} label Label
@@ -200,7 +212,7 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
             for (const globalFilter of data.globalFilters) {
                 // TODO: this naming trick should be handled by proper python data migrations
                 globalFilter.pivotFields = globalFilter.fields;
-                if (globalFilter.type === "date" && 'year' in globalFilter.defaultValue) {
+                if (globalFilter.type === "date" && "year" in globalFilter.defaultValue) {
                     switch (globalFilter.defaultValue.year) {
                         case "last_year":
                             globalFilter.defaultValue.yearOffset = -1;
@@ -218,6 +230,9 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
                 this.globalFilters[globalFilter.id] = globalFilter;
                 if (!this.globalFilters[globalFilter.id].listFields) {
                     this.globalFilters[globalFilter.id].listFields = {};
+                }
+                if (!this.globalFilters[globalFilter.id].graphFields) {
+                    this.globalFilters[globalFilter.id].graphFields = {};
                 }
             }
         }
@@ -335,4 +350,5 @@ FiltersPlugin.getters = [
     "getGlobalFilterLabel",
     "getGlobalFilterFieldPivot",
     "getGlobalFilterFieldList",
+    "getGlobalFilterFieldGraph",
 ];

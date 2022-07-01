@@ -279,6 +279,12 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             );
             this.dispatch("ADD_LIST_DOMAIN", { id: listId, domain });
         }
+        for (const chartId of this.getters.getOdooChartIds()) {
+            const domain = this._getComputedDomain((filterId) =>
+                this.getters.getGlobalFilterFieldGraph(filterId, chartId)
+            );
+            this.dispatch("ADD_GRAPH_DOMAIN", { id: chartId, domain });
+        }
     }
 
     // -------------------------------------------------------------------------

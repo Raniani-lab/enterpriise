@@ -12,6 +12,7 @@ import { X2ManyTagSelector } from "@spreadsheet_edition/assets/widgets/tag_selec
 import { useService } from "@web/core/utils/hooks";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ModelSelector } from "@spreadsheet_edition/assets/components/model_selector/model_selector";
+import { sprintf } from "@web/core/utils/strings";
 
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -23,7 +24,7 @@ const RANGE_TYPES = [
 ];
 
 /**
- * @typedef {import("../o_spreadsheet/basic_data_source").Field} Field
+ * @typedef {import("@spreadsheet/data_sources/data_source").Field} Field
  */
 
 /**
@@ -42,6 +43,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             type: this.props.type,
             pivotFields: {},
             listFields: {},
+            graphFields: {},
             text: {
                 defaultValue: undefined,
             },
@@ -63,10 +65,12 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.modelDisplayNames = {
             pivots: {},
             lists: {},
+            graph: {},
         };
         this.getters = this.env.model.getters;
         this.pivotIds = this.getters.getPivotIds();
         this.listIds = this.getters.getListIds();
+        this.graphIds = this.getters.getOdooChartIds();
         this.loadValues();
         // Widgets
         this.FieldSelectorWidget = FieldSelectorWidget;
@@ -81,7 +85,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * Retrieve the placeholder of the label
      */
     get placeholder() {
-        return _.str.sprintf(_t("New %s filter"), this.state.type);
+        return sprintf(_t("New %s filter"), this.state.type);
     }
 
     get missingLabel() {
@@ -94,6 +98,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 
     get missingListField() {
         return this.state.saved && Object.keys(this.state.listFields).length === 0;
+    }
+
+    get missingGraphField() {
+        return this.state.saved && Object.keys(this.state.graphFields).length === 0;
     }
 
     get missingModel() {
@@ -123,7 +131,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         const lists = this.listIds.map((listId) =>
             Object.values(this.getters.getSpreadsheetListModel(listId).getFields())
         );
-        const all = pivots.concat(lists);
+        const graphs = this.graphIds.map((graphId) =>
+            Object.values(this.getters.getSpreadsheetGraphDataSource(graphId).getFields())
+        );
+        const all = pivots.concat(lists).concat(graphs);
         return [
             ...new Set(
                 all
@@ -142,6 +153,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             this.state.type = globalFilter.type;
             this.state.pivotFields = globalFilter.pivotFields;
             this.state.listFields = globalFilter.listFields;
+            this.state.graphFields = globalFilter.graphFields;
             this.state.date.type = globalFilter.rangeType;
             this.state.date.defaultsToCurrentPeriod = globalFilter.defaultsToCurrentPeriod;
             this.state[this.state.type].defaultValue = globalFilter.defaultValue;
@@ -170,6 +182,15 @@ export default class FilterEditorSidePanel extends LegacyComponent {
                 dataSource
                     .getModelLabel()
                     .then((name) => (this.modelDisplayNames.lists[listId] = name))
+            );
+        }
+        for (const graphId of this.graphIds) {
+            const dataSource = this.getters.getSpreadsheetGraphDataSource(graphId);
+            proms.push(dataSource.loadModel());
+            proms.push(
+                dataSource
+                    .getModelLabel()
+                    .then((name) => (this.modelDisplayNames.graph[graphId] = name))
             );
         }
         await Promise.all(proms);
@@ -217,6 +238,12 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             );
             this.state.listFields[listId] = field ? { field, type: fieldDesc.type } : undefined;
         }
+        for (const graphId of this.graphIds) {
+            const [field, fieldDesc] = this._findRelation(
+                this.getters.getSpreadsheetGraphModel(graphId).metaData.fields
+            );
+            this.state.graphFields[graphId] = field ? { field, type: fieldDesc.type } : undefined;
+        }
     }
 
     async fetchModelFromName() {
@@ -254,11 +281,23 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         }
     }
 
+    onSelectedGraphField(graphId, chain) {
+        const fieldName = chain[0];
+        const field = this.getters.getSpreadsheetGraphModel(graphId).metaData.fields[fieldName];
+        if (field) {
+            this.state.graphFields[graphId] = {
+                field: fieldName,
+                type: field.type,
+            };
+        }
+    }
+
     onSave() {
         this.state.saved = true;
         const missingField =
             (this.listIds.length !== 0 && this.missingListField) ||
-            (this.pivotIds.length !== 0 && this.missingPivotField);
+            (this.pivotIds.length !== 0 && this.missingPivotField) ||
+            (this.graphIds.length !== 0 && this.missingGraphField);
         if (this.missingLabel || missingField || this.missingModel) {
             this.notification.add(this.env._t("Some required fields are not valid"), {
                 type: "danger",
@@ -279,6 +318,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             defaultsToCurrentPeriod: this.state.date.defaultsToCurrentPeriod,
             pivotFields: this.state.pivotFields,
             listFields: this.state.listFields,
+            graphFields: this.state.graphFields,
         };
         const result = this.env.model.dispatch(cmd, { id, filter });
         if (result.isCancelledBecause(CommandResult.DuplicatedFilterLabel)) {

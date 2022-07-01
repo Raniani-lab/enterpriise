@@ -108,7 +108,7 @@
         <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModel.technical">
             <div class="o_side_panel_title o_field_matching_title">Field Matching</div>
             <div class="text-muted">
-                Match this filter to a field for each pivot/list
+                Match this filter to a field for each data source
             </div>
             <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingPivotField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
                 <t t-set="pivotModel" t-value="getters.getSpreadsheetPivotModel(pivotId)"/>
@@ -138,6 +138,18 @@
                     t-key="listId + (state.relation.relatedModel.technical or 'not_defined')"
                     onFieldChainChanged="chain => this.onSelectedListField(listId, chain)"
                     />
+            </div>
+            <div t-foreach="graphIds" t-as="graphId" t-key="graphId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
+                <div><t t-esc="modelDisplayNames.graph[graphId]"/> <span class="o_pivot_model_technical_name text-muted">(Graph - <t t-esc="getters.getChartDefinition(graphId).title"/>)</span></div>
+                <FieldSelectorAdapter
+                    Component="FieldSelectorWidget"
+                    model="getters.getChartDefinition(graphId).metaData.resModel"
+                    fields="getters.getSpreadsheetGraphModel(graphId).metaData.fields"
+                    type="state.type"
+                    relatedModel="state.relation.relatedModelName"
+                    selected="state.graphFields[graphId]"
+                    t-key="graphId + (state.relation.relatedModelName or 'not_defined')"
+                    onFieldChainChanged="chain => this.onSelectedGraphField(graphId, chain)" />
             </div>
         </div>
         <div class="o_side_panel_section o-sidePanelButtons">

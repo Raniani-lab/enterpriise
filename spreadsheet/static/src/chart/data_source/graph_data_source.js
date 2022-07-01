@@ -15,6 +15,13 @@ export default class GraphDataSource extends OdooViewsDataSource {
     }
 
     /**
+     * @returns {object} field definitions
+     */
+    getFields() {
+        return this._metaData.fields;
+    }
+
+    /**
      * @protected
      */
     async _createDataSourceModel() {

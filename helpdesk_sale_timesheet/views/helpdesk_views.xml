@@ -70,7 +70,7 @@
                         <label class="fw-bold text-danger" for="remaining_hours_so" string="Remaining Days on SO"
                             attrs="{'invisible': ['|', ('encode_uom_in_days', '=', False), ('remaining_hours_so', '&gt;=', 0)]}"/>
                     </span>
-                    <field name="remaining_hours_so" nolabel="1" widget="timesheet_uom" attrs="{'invisible': ['|', '|', '|', '|', ('sale_order_id', '=', False), ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False), ('sale_line_id', '=', False), ('remaining_hours_available', '=', False)]}"/>
+                    <field name="remaining_hours_so" nolabel="1" widget="timesheet_uom" attrs="{'invisible': ['|', '|', '|', '|', ('sale_order_id', '=', False), ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False), ('sale_line_id', '=', False), ('remaining_hours_available', '=', False)]}" decoration-danger="remaining_hours_so &lt; 0"/>
                 </t>
             </xpath>
         </field>

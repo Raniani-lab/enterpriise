@@ -3,7 +3,7 @@
 import config from 'web.config';
 import dom from 'web.dom';
 import FormRenderer from 'web.FormRenderer';
-import AttachmentViewer from '@mail_enterprise/js/attachment_viewer';
+import { AttachmentViewer } from '@mail/widgets/attachment_viewer/attachment_viewer';
 
 // ensure `.include()` on `mail` is applied before `mail_enterprise`
 import '@mail/widgets/form_renderer/form_renderer';

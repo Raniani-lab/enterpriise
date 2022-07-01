@@ -28,8 +28,6 @@ screen devices.
         ],
         'web.assets_backend': [
             'mail_enterprise/static/src/components/*/*.js',
-            'mail_enterprise/static/src/js/attachment_viewer.js',
-            'mail_enterprise/static/src/scss/mail_enterprise.scss',
             'mail_enterprise/static/src/scss/mail_enterprise_mobile.scss',
             'mail_enterprise/static/src/widgets/*/*.js',
         ],
@@ -41,7 +39,6 @@ screen devices.
         ],
         'web.assets_qweb': [
             'mail_enterprise/static/src/components/*/*.xml',
-            'mail_enterprise/static/src/xml/mail_enterprise.xml',
         ],
     }
 }

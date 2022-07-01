@@ -2,7 +2,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
 "use strict";
 
     const { insert } = require('@mail/model/model_field_command');
-    var AttachmentViewer = require('@mail_enterprise/js/attachment_viewer')[Symbol.for("default")];
+    const { AttachmentViewer } = require('@mail/widgets/attachment_viewer/attachment_viewer');
 
     var config = require('web.config');
     var core = require('web.core');

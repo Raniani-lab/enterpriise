@@ -140,6 +140,9 @@
     const MAX_HISTORY_STEPS = 99;
     // Id of the first revision
     const DEFAULT_REVISION_ID = "START_REVISION";
+    // Figure
+    const DEFAULT_FIGURE_HEIGHT = 335;
+    const DEFAULT_FIGURE_WIDTH = 536;
     // Chart
     const MAX_CHAR_LABEL = 20;
     const DEBOUNCE_TIME = 200;
@@ -154,6 +157,19 @@
     // Cells
     const NULL_FORMAT = undefined;
     const FORMULA_REF_IDENTIFIER = "|";
+    var ComponentsImportance;
+    (function (ComponentsImportance) {
+        ComponentsImportance[ComponentsImportance["Grid"] = 0] = "Grid";
+        ComponentsImportance[ComponentsImportance["Highlight"] = 5] = "Highlight";
+        ComponentsImportance[ComponentsImportance["Figure"] = 10] = "Figure";
+        ComponentsImportance[ComponentsImportance["ScrollBar"] = 15] = "ScrollBar";
+        ComponentsImportance[ComponentsImportance["Composer"] = 20] = "Composer";
+        ComponentsImportance[ComponentsImportance["Dropdown"] = 12] = "Dropdown";
+        ComponentsImportance[ComponentsImportance["ColorPicker"] = 25] = "ColorPicker";
+        ComponentsImportance[ComponentsImportance["IconPicker"] = 25] = "IconPicker";
+        ComponentsImportance[ComponentsImportance["Popover"] = 30] = "Popover";
+        ComponentsImportance[ComponentsImportance["ChartAnchor"] = 1000] = "ChartAnchor";
+    })(ComponentsImportance || (ComponentsImportance = {}));
 
     /**
      * Registry
@@ -486,10 +502,16 @@
      * ```
      */
     function removeStringQuotes(str) {
-        if (str[0] === '"' && str[str.length - 1] === '"') {
-            return str.slice(1).slice(0, str.length - 2);
+        if (str[0] === '"') {
+            str = str.slice(1);
+        }
+        if (str[str.length - 1] === '"' && str[str.length - 2] !== "\\") {
+            return str.slice(0, str.length - 1);
         }
         return str;
+    }
+    function isCloneable(obj) {
+        return "clone" in obj && obj.clone instanceof Function;
     }
     /**
      * Deep copy arrays, plain objects and primitive values.
@@ -502,6 +524,9 @@
             case "object": {
                 if (obj === null) {
                     return obj;
+                }
+                else if (isCloneable(obj)) {
+                    return obj.clone();
                 }
                 else if (!(isPlainObject(obj) || obj instanceof Array)) {
                     throw new Error("Unsupported type: only objects and arrays are supported");
@@ -920,11 +945,30 @@
         return { a, r, g, b };
     }
 
-    /**
-     * Regex that detect cell reference and a range reference (without the sheetName)
-     */
+    /** Reference of a cell (eg. A1, $B$5) */
     const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
-    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?[A-Z]{1,3}\$?[0-9]{1,7}(\s*:\s*\$?[A-Z]{1,3}\$?[0-9]{1,7})?$/, "i");
+    /** Reference of a column (eg. A, $CA, Sheet1!B) */
+    const colReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?([A-Z]{1,3})$/, "i");
+    /** Reference of a row (eg. 1, 59, Sheet1!9) */
+    const rowReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?([0-9]{1,7})$/, "i");
+    /** Reference of a normal range or a full row range (eg. A1:B1, 1:$5, $A2:5) */
+    const fullRowXc = /(\$?[A-Z]{1,3})?\$?[0-9]{1,7}\s*:\s*(\$?[A-Z]{1,3})?\$?[0-9]{1,7}\s*/i;
+    /** Reference of a normal range or a column row range (eg. A1:B1, A:$B, $A1:C) */
+    const fullColXc = /\$?[A-Z]{1,3}(\$?[0-9]{1,7})?\s*:\s*\$?[A-Z]{1,3}(\$?[0-9]{1,7})?\s*/i;
+    /** Reference of a cell or a range, it can be a bounded range, a full row or a full column */
+    const rangeReference = new RegExp(/^\s*('.+'!|[^']+!)?/.source +
+        "(" +
+        [cellReference.source, fullRowXc.source, fullColXc.source].join("|") +
+        ")" +
+        /$/.source, "i");
+    // Return true if the given xc is the reference of a column (eg. A or AC or Sheet1!A)
+    function isColReference(xc) {
+        return colReference.test(xc);
+    }
+    // Return true if the given xc is the reference of a column (eg. 1 or Sheet1!1)
+    function isRowReference(xc) {
+        return rowReference.test(xc);
+    }
 
     //------------------------------------------------------------------------------
     /**
@@ -1430,6 +1474,138 @@
         return n;
     }
 
+    class RangeImpl {
+        constructor(args, getSheetSize) {
+            this.getSheetSize = getSheetSize;
+            this.prefixSheet = false;
+            this._zone = args.zone;
+            this.parts = args.parts;
+            this.prefixSheet = args.prefixSheet;
+            this.invalidXc = args.invalidXc;
+            this.sheetId = args.sheetId;
+            this.invalidSheetName = args.invalidSheetName;
+        }
+        static fromRange(range, getters) {
+            if (range instanceof RangeImpl) {
+                return range;
+            }
+            return new RangeImpl(range, getters.getSheetSize);
+        }
+        get unboundedZone() {
+            return this._zone;
+        }
+        get zone() {
+            const { left, top, bottom, right } = this._zone;
+            if (right !== undefined && bottom !== undefined)
+                return { left, top, right, bottom };
+            else if (bottom === undefined && right !== undefined) {
+                return { right, top, left, bottom: this.getSheetSize(this.sheetId).height - 1 };
+            }
+            else if (right === undefined && bottom !== undefined) {
+                return { bottom, left, top, right: this.getSheetSize(this.sheetId).width - 1 };
+            }
+            throw new Error(_lt("Bad zone format"));
+        }
+        static getRangeParts(xc, zone) {
+            const parts = xc.split(":").map((p) => {
+                const isFullRow = isRowReference(p);
+                return {
+                    colFixed: isFullRow ? false : p.startsWith("$"),
+                    rowFixed: isFullRow ? p.startsWith("$") : p.includes("$", 1),
+                };
+            });
+            const isFullCol = zone.bottom === undefined;
+            const isFullRow = zone.right === undefined;
+            if (isFullCol) {
+                parts[0].rowFixed = parts[0].rowFixed || parts[1].rowFixed;
+                parts[1].rowFixed = parts[0].rowFixed || parts[1].rowFixed;
+                if (zone.left === zone.right) {
+                    parts[0].colFixed = parts[0].colFixed || parts[1].colFixed;
+                    parts[1].colFixed = parts[0].colFixed || parts[1].colFixed;
+                }
+            }
+            if (isFullRow) {
+                parts[0].colFixed = parts[0].colFixed || parts[1].colFixed;
+                parts[1].colFixed = parts[0].colFixed || parts[1].colFixed;
+                if (zone.top === zone.bottom) {
+                    parts[0].rowFixed = parts[0].rowFixed || parts[1].rowFixed;
+                    parts[1].rowFixed = parts[0].rowFixed || parts[1].rowFixed;
+                }
+            }
+            return parts;
+        }
+        get isFullCol() {
+            return this._zone.bottom === undefined;
+        }
+        get isFullRow() {
+            return this._zone.right === undefined;
+        }
+        get rangeData() {
+            return {
+                _zone: this._zone,
+                _sheetId: this.sheetId,
+            };
+        }
+        /**
+         * Check that a zone is valid regarding the order of top-bottom and left-right.
+         * Left should be smaller than right, top should be smaller than bottom.
+         * If it's not the case, simply invert them, and invert the linked parts
+         * (in place!)
+         */
+        orderZone() {
+            if (this._zone.right !== undefined && this._zone.right < this._zone.left) {
+                let right = this._zone.right;
+                this._zone.right = this._zone.left;
+                this._zone.left = right;
+                let rightFixed = this.parts[1].colFixed;
+                this.parts[1].colFixed = this.parts[0].colFixed;
+                this.parts[0].colFixed = rightFixed;
+            }
+            if (this._zone.bottom !== undefined && this._zone.bottom < this._zone.top) {
+                let bottom = this._zone.bottom;
+                this._zone.bottom = this._zone.top;
+                this._zone.top = bottom;
+                let bottomFixed = this.parts[1].rowFixed;
+                this.parts[1].rowFixed = this.parts[0].rowFixed;
+                this.parts[0].rowFixed = bottomFixed;
+            }
+        }
+        /**
+         *
+         * @param rangeParams optional, values to put in the cloned range instead of the current values of the range
+         */
+        clone(rangeParams) {
+            return new RangeImpl({
+                zone: (rangeParams === null || rangeParams === void 0 ? void 0 : rangeParams.zone) ? rangeParams.zone : { ...this._zone },
+                sheetId: (rangeParams === null || rangeParams === void 0 ? void 0 : rangeParams.sheetId) ? rangeParams.sheetId : this.sheetId,
+                invalidSheetName: rangeParams && "invalidSheetName" in rangeParams // 'attr in obj' instead of just 'obj.attr' because we accept undefined values
+                    ? rangeParams.invalidSheetName
+                    : this.invalidSheetName,
+                invalidXc: rangeParams && "invalidXc" in rangeParams ? rangeParams.invalidXc : this.invalidXc,
+                parts: (rangeParams === null || rangeParams === void 0 ? void 0 : rangeParams.parts)
+                    ? rangeParams.parts
+                    : this.parts.map((part) => {
+                        return { rowFixed: part.rowFixed, colFixed: part.colFixed };
+                    }),
+                prefixSheet: (rangeParams === null || rangeParams === void 0 ? void 0 : rangeParams.prefixSheet) ? rangeParams.prefixSheet : this.prefixSheet,
+            }, this.getSheetSize);
+        }
+    }
+    /**
+     * Copy a range. If the range is on the sheetIdFrom, the range will target
+     * sheetIdTo.
+     */
+    function copyRangeWithNewSheetId(sheetIdFrom, sheetIdTo, range) {
+        const sheetId = range.sheetId === sheetIdFrom ? sheetIdTo : range.sheetId;
+        return range.clone({ sheetId });
+    }
+    /**
+     * Create a range from a xc. If the xc is empty, this function returns undefined.
+     */
+    function createRange(getters, sheetId, range) {
+        return range ? getters.getRangeFromSheetXC(sheetId, range) : undefined;
+    }
+
     function createDefaultRows(rowNumber) {
         const rows = [];
         for (let i = 0; i < rowNumber; i++) {
@@ -1481,27 +1657,105 @@
      *    "B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
      *    "Sheet1!A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
      *    "Sheet1!B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
-     *    "C3:A1" ==> Top 2, Bottom 0, Left 2, Right 0}
+     *    "C3:A1" ==> Top 2, Bottom 0, Left 2, Right 0
+     *    "A:A" ==> Top 0, Bottom undefined, Left 0, Right 0
+     *    "A:B3" or "B3:A" ==> Top 2, Bottom undefined, Left 0, Right 1
      *
      * @param xc the string reference to convert
      *
      */
     function toZoneWithoutBoundaryChanges(xc) {
         xc = xc.split("!").pop();
-        const ranges = xc.replace(/\$/g, "").split(":");
+        const ranges = xc
+            .replace(/\$/g, "")
+            .split(":")
+            .map((x) => x.trim());
         let top, bottom, left, right;
-        let c = toCartesian(ranges[0].trim());
-        left = right = c.col;
-        top = bottom = c.row;
-        if (ranges.length === 2) {
-            let d = toCartesian(ranges[1].trim());
-            right = d.col;
-            bottom = d.row;
+        let fullCol = false;
+        let fullRow = false;
+        let hasHeader = false;
+        const firstRangePart = ranges[0];
+        const secondRangePart = ranges[1] && ranges[1];
+        if (isColReference(firstRangePart)) {
+            left = right = lettersToNumber(firstRangePart);
+            top = bottom = 0;
+            fullCol = true;
         }
-        return { top, bottom, left, right };
+        else if (isRowReference(firstRangePart)) {
+            top = bottom = parseInt(firstRangePart, 10) - 1;
+            left = right = 0;
+            fullRow = true;
+        }
+        else {
+            const c = toCartesian(firstRangePart);
+            left = right = c.col;
+            top = bottom = c.row;
+            hasHeader = true;
+        }
+        if (ranges.length === 2) {
+            if (isColReference(secondRangePart)) {
+                right = lettersToNumber(secondRangePart);
+                fullCol = true;
+            }
+            else if (isRowReference(secondRangePart)) {
+                bottom = parseInt(secondRangePart, 10) - 1;
+                fullRow = true;
+            }
+            else {
+                const c = toCartesian(secondRangePart);
+                right = c.col;
+                bottom = c.row;
+                top = fullCol ? bottom : top;
+                left = fullRow ? right : left;
+                hasHeader = true;
+            }
+        }
+        if (fullCol && fullRow) {
+            throw new Error("Wrong zone xc. The zone cannot be at the same time a full column and a full row");
+        }
+        const zone = {
+            top,
+            left,
+            bottom: fullCol ? undefined : bottom,
+            right: fullRow ? undefined : right,
+        };
+        hasHeader = hasHeader && (fullRow || fullCol);
+        if (hasHeader) {
+            zone.hasHeader = hasHeader;
+        }
+        return zone;
     }
     /**
-     * Convert from a cartesian reference to a Zone
+     * Convert from a cartesian reference to a (possibly unbounded) Zone
+     *
+     * Examples:
+     *    "A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
+     *    "B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
+     *    "B:B" ==> Top 0, Bottom undefined, Left: 1, Right: 1
+     *    "B2:B" ==> Top 1, Bottom undefined, Left: 1, Right: 1, hasHeader: 1
+     *    "Sheet1!A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
+     *    "Sheet1!B1:B3" ==> Top 0, Bottom 3, Left: 1, Right: 1
+     *
+     * @param xc the string reference to convert
+     *
+     */
+    function toUnboundedZone(xc) {
+        const zone = toZoneWithoutBoundaryChanges(xc);
+        if (zone.right !== undefined && zone.right < zone.left) {
+            const tmp = zone.left;
+            zone.left = zone.right;
+            zone.right = tmp;
+        }
+        if (zone.bottom !== undefined && zone.bottom < zone.top) {
+            const tmp = zone.top;
+            zone.top = zone.bottom;
+            zone.bottom = tmp;
+        }
+        return zone;
+    }
+    /**
+     * Convert from a cartesian reference to a Zone.
+     * Will return throw an error if given a unbounded zone (eg : A:A).
      *
      * Examples:
      *    "A1" ==> Top 0, Bottom 0, Left: 0, Right: 0
@@ -1513,27 +1767,30 @@
      *
      */
     function toZone(xc) {
-        let { top, bottom, left, right } = toZoneWithoutBoundaryChanges(xc);
-        if (right < left) {
-            [right, left] = [left, right];
+        const zone = toUnboundedZone(xc);
+        if (zone.bottom === undefined || zone.right === undefined) {
+            throw new Error("This does not support unbounded ranges");
         }
-        if (bottom < top) {
-            [bottom, top] = [top, bottom];
-        }
-        return { top, bottom, left, right };
+        return zone;
     }
     /**
      * Check that the zone has valid coordinates and in
      * the correct order.
      */
     function isZoneValid(zone) {
-        const { bottom, top, left, right } = zone;
         // Typescript *should* prevent this kind of errors but
         // it's better to be on the safe side at runtime as well.
-        if (isNaN(bottom) || isNaN(top) || isNaN(left) || isNaN(right)) {
+        const { bottom, top, left, right } = zone;
+        if ((bottom !== undefined && isNaN(bottom)) ||
+            isNaN(top) ||
+            isNaN(left) ||
+            (right !== undefined && isNaN(right))) {
             return false;
         }
-        return bottom >= top && right >= left && bottom >= 0 && top >= 0 && right >= 0 && left >= 0;
+        return ((zone.bottom === undefined || (zone.bottom >= zone.top && zone.bottom >= 0)) &&
+            (zone.right === undefined || (zone.right >= zone.left && zone.right >= 0)) &&
+            zone.top >= 0 &&
+            zone.left >= 0);
     }
     /**
      * Convert from zone to a cartesian reference
@@ -1541,8 +1798,22 @@
      */
     function zoneToXc(zone) {
         const { top, bottom, left, right } = zone;
+        const hasHeader = "hasHeader" in zone ? zone.hasHeader : false;
         const isOneCell = top === bottom && left === right;
-        return isOneCell ? toXC(left, top) : `${toXC(left, top)}:${toXC(right, bottom)}`;
+        if (bottom === undefined && right !== undefined) {
+            return top === 0 && !hasHeader
+                ? `${numberToLetters(left)}:${numberToLetters(right)}`
+                : `${toXC(left, top)}:${numberToLetters(right)}`;
+        }
+        else if (right === undefined && bottom !== undefined) {
+            return left === 0 && !hasHeader
+                ? `${top + 1}:${bottom + 1}`
+                : `${toXC(left, top)}:${bottom + 1}`;
+        }
+        else if (bottom !== undefined && right !== undefined) {
+            return isOneCell ? toXC(left, top) : `${toXC(left, top)}:${toXC(right, bottom)}`;
+        }
+        throw new Error(_lt("Bad zone format"));
     }
     /**
      * Expand a zone after inserting columns or rows.
@@ -1551,7 +1822,11 @@
         const dimension = start === "left" ? "columns" : "rows";
         const baseElement = position === "before" ? base - 1 : base;
         const end = start === "left" ? "right" : "bottom";
-        const shouldIncludeEnd = position === "before" ? zone[end] > baseElement : zone[end] >= baseElement;
+        const zoneEnd = zone[end];
+        let shouldIncludeEnd = false;
+        if (zoneEnd) {
+            shouldIncludeEnd = position === "before" ? zoneEnd > baseElement : zoneEnd >= baseElement;
+        }
         if (zone[start] <= baseElement && shouldIncludeEnd) {
             return createAdaptedZone(zone, dimension, "RESIZE", quantity);
         }
@@ -1600,16 +1875,21 @@
         const end = start === "left" ? "right" : "bottom";
         let newStart = zone[start];
         let newEnd = zone[end];
+        const zoneEnd = zone[end];
         for (let removedElement of elements.sort((a, b) => b - a)) {
             if (zone[start] > removedElement) {
                 newStart--;
-                newEnd--;
+                if (newEnd !== undefined)
+                    newEnd--;
             }
-            if (zone[start] <= removedElement && zone[end] >= removedElement) {
+            if (zoneEnd !== undefined &&
+                newEnd !== undefined &&
+                zone[start] <= removedElement &&
+                zoneEnd >= removedElement) {
                 newEnd--;
             }
         }
-        if (newStart > newEnd) {
+        if (newEnd !== undefined && newStart > newEnd) {
             return undefined;
         }
         return { ...zone, [start]: newStart, [end]: newEnd };
@@ -1671,145 +1951,113 @@
     /**
      * Recompute the ranges of the zone to contain all the cells in zones, without the cells in toRemoveZones
      * Also regroup zones together to shorten the string
-     * (A1, A2, B1, B2, [C1:C2], C3 => [A1:B2],[C1:C3])
-     * To do so, the cells are separated and remerged in zones by columns, and then
-     * if possible zones in adjacent columns are merged together.
      */
-    function recomputeZones(zones, toRemoveZones) {
-        const zonesPerColumn = {};
-        //separate the existing zones per column
-        for (let z of zones) {
-            if (z) {
-                const zone = toZone(z);
-                for (let col = zone.left; col <= zone.right; col++) {
-                    if (zonesPerColumn[col] === undefined) {
-                        zonesPerColumn[col] = [];
-                    }
-                    zonesPerColumn[col].push({
-                        top: zone.top,
-                        bottom: zone.bottom,
-                        remove: false,
-                    });
-                }
-            }
-        }
-        //separate the to deleted zones per column
-        for (let z of toRemoveZones) {
-            const zone = toZone(z);
-            for (let col = zone.left; col <= zone.right; col++) {
-                if (zonesPerColumn[col] === undefined) {
-                    zonesPerColumn[col] = [];
-                }
-                zonesPerColumn[col].push({
-                    top: zone.top,
-                    bottom: zone.bottom,
-                    remove: true,
-                });
-            }
-        }
-        const OptimizedZonePerColumn = [];
-        //regroup zones per column
-        for (let [col, zones] of Object.entries(zonesPerColumn)) {
-            OptimizedZonePerColumn.push({
-                col: parseInt(col),
-                ranges: optimiseColumn(zones),
-            });
-        }
-        //merge zones that spread over multiple columns that can be merged
-        const result = mergeColumns(OptimizedZonePerColumn);
-        return result.map(zoneToXc);
+    function recomputeZones(zonesXc, toRemoveZonesXc) {
+        const zones = zonesXc.map(toUnboundedZone);
+        const zonesToRemove = toRemoveZonesXc.map(toZone);
+        // Compute the max to replace the bottom of full columns and right of full rows by something
+        // bigger than any other col/row to be able to apply the algorithm while keeping tracks of what
+        // zones are full cols/rows
+        const maxBottom = Math.max(...zones.concat(zonesToRemove).map((zone) => zone.bottom || 0));
+        const maxRight = Math.max(...zones.concat(zonesToRemove).map((zone) => zone.right || 0));
+        const expandedZones = zones.map((zone) => ({
+            ...zone,
+            bottom: zone.bottom === undefined ? maxBottom + 1 : zone.bottom,
+            right: zone.right === undefined ? maxRight + 1 : zone.right,
+        }));
+        const expandedZonesToRemove = zonesToRemove.map((zone) => ({
+            ...zone,
+            bottom: zone.bottom === undefined ? maxBottom + 1 : zone.bottom,
+            right: zone.right === undefined ? maxRight + 1 : zone.right,
+        }));
+        const zonePositions = expandedZones.map(positions).flat();
+        const positionsToRemove = expandedZonesToRemove.map(positions).flat();
+        const positionToKeep = positionsDifference(zonePositions, positionsToRemove);
+        const columns = mergePositionsIntoColumns(positionToKeep);
+        return mergeAlignedColumns(columns)
+            .map((zone) => ({
+            ...zone,
+            bottom: zone.bottom === maxBottom + 1 ? undefined : zone.bottom,
+            right: zone.right === maxRight + 1 ? undefined : zone.right,
+        }))
+            .map(zoneToXc);
     }
     /**
-     * Recompute the ranges of a column, without the remove cells.
-     * takes as input a array of {top, bottom, remove} where top and bottom
-     * are the start and end of ranges in the column and remove expresses if the
-     * cell should be kept or not.
+     * Merge aligned adjacent columns into single zones
+     * e.g. A1:A5 and B1:B5 are merged into A1:B5
      */
-    function optimiseColumn(zones) {
-        const toKeep = new Set();
-        const toRemove = new Set();
-        for (let zone of zones) {
-            for (let x = zone.top; x <= zone.bottom; x++) {
-                zone.remove ? toRemove.add(x) : toKeep.add(x);
-            }
+    function mergeAlignedColumns(columns) {
+        if (columns.length === 0) {
+            return [];
         }
-        const finalElements = [...toKeep]
-            .filter((x) => !toRemove.has(x))
-            .sort((a, b) => {
-            return a - b;
-        });
-        const newZones = [];
-        let currentZone;
-        for (let x of finalElements) {
-            if (!currentZone) {
-                currentZone = { top: x, bottom: x };
-            }
-            else if (x === currentZone.bottom + 1) {
-                currentZone.bottom = x;
-            }
-            else {
-                newZones.push({ top: currentZone.top, bottom: currentZone.bottom });
-                currentZone = { top: x, bottom: x };
-            }
+        if (columns.some((zone) => zone.left !== zone.right)) {
+            throw new Error("only columns can be merged");
         }
-        if (currentZone) {
-            newZones.push({ top: currentZone.top, bottom: currentZone.bottom });
+        const done = [];
+        const cols = removeRedundantZones(columns);
+        const isAdjacentAndAligned = (zone, nextZone) => zone.top === nextZone.top &&
+            zone.bottom === nextZone.bottom &&
+            zone.right + 1 === nextZone.left;
+        while (cols.length) {
+            const merged = cols.reduce((zone, nextZone) => (isAdjacentAndAligned(zone, nextZone) ? union(zone, nextZone) : zone), cols.shift());
+            done.push(merged);
         }
-        return newZones;
+        return removeRedundantZones(done);
     }
     /**
-     * Verify if ranges in two adjacent columns can be merged in one in one range,
-     * and if they can, merge them in the same range.
+     * Remove redundant zones in the list.
+     * i.e. zones included in another zone.
      */
-    function mergeColumns(zonePerCol) {
-        const orderedZones = zonePerCol.sort((a, b) => {
-            return a.col - b.col;
-        });
-        const finalZones = [];
-        let inProgressZones = [];
-        let currentCol = 0;
-        for (let index = 0; index <= orderedZones.length - 1; index++) {
-            let newInProgress = [];
-            if (currentCol + 1 === orderedZones[index].col) {
-                for (let z1 of orderedZones[index].ranges) {
-                    let merged = false;
-                    for (let z2 of inProgressZones) {
-                        //extend existing zone with the adjacent col
-                        if (z1.top == z2.top && z1.bottom == z2.bottom) {
-                            newInProgress.push(z2);
-                            merged = true;
-                        }
-                    }
-                    // create new zone as it could not be merged with a previous one
-                    if (!merged) {
-                        newInProgress.push({ top: z1.top, bottom: z1.bottom, startCol: orderedZones[index].col });
-                    }
-                }
+    function removeRedundantZones(zones) {
+        const sortedZones = [...zones]
+            .sort((a, b) => b.right - a.right)
+            .sort((a, b) => b.bottom - a.bottom)
+            .sort((a, b) => a.top - b.top)
+            .sort((a, b) => a.left - b.left)
+            .reverse();
+        const checked = [];
+        while (sortedZones.length !== 0) {
+            const zone = sortedZones.shift();
+            const isIncludedInOther = sortedZones.some((otherZone) => isZoneInside(zone, otherZone));
+            if (!isIncludedInOther) {
+                checked.push(zone);
+            }
+        }
+        return checked.reverse();
+    }
+    /**
+     * Merge adjacent positions into vertical zones (columns)
+     */
+    function mergePositionsIntoColumns(positions) {
+        if (positions.length === 0) {
+            return [];
+        }
+        const [startingPosition, ...sortedPositions] = [...positions]
+            .sort((a, b) => a.row - b.row)
+            .sort((a, b) => a.col - b.col);
+        const done = [];
+        let active = positionToZone(startingPosition);
+        for (const { col, row } of sortedPositions) {
+            if (isInside(col, row, active)) {
+                continue;
+            }
+            else if (col === active.left && row === active.bottom + 1) {
+                const bottom = active.bottom + 1;
+                active = { ...active, bottom };
             }
             else {
-                // create new zone as it was not adjacent to the previous zones
-                newInProgress = orderedZones[index].ranges.map((zone) => {
-                    return {
-                        top: zone.top,
-                        bottom: zone.bottom,
-                        startCol: orderedZones[index].col,
-                    };
-                });
+                done.push(active);
+                active = positionToZone({ col, row });
             }
-            //All the zones from inProgressZones that are not transferred in newInProgress
-            //are zones that were not extended and are therefore final.
-            const difference = inProgressZones.filter((x) => !newInProgress.includes(x));
-            for (let x of difference) {
-                finalZones.push({ top: x.top, bottom: x.bottom, left: x.startCol, right: currentCol });
-            }
-            currentCol = orderedZones[index].col;
-            inProgressZones = newInProgress;
         }
-        //after the last iteration, the unfinished zones need to be finalized to.
-        for (let x of inProgressZones) {
-            finalZones.push({ top: x.top, bottom: x.bottom, left: x.startCol, right: currentCol });
-        }
-        return finalZones;
+        return [...done, active];
+    }
+    /**
+     * Returns positions in the first array which are not in the second array.
+     */
+    function positionsDifference(positions, toRemove) {
+        const forbidden = new Set(toRemove.map(({ col, row }) => `${col}-${row}`));
+        return positions.filter(({ col, row }) => !forbidden.has(`${col}-${row}`));
     }
     function zoneToDimension(zone) {
         return {
@@ -1851,13 +2099,32 @@
     function createAdaptedZone(zone, dimension, operation, by) {
         const offsetX = dimension === "both" ? by[0] : dimension === "columns" ? by : 0;
         const offsetY = dimension === "both" ? by[1] : dimension === "rows" ? by : 0;
+        // For full columns/rows, we have to make the distinction between the one that have a header and
+        // whose start should be moved (eg. A2:A), and those who don't (eg. A:A)
+        // The only time we don't want to move the start of the zone is if the zone is a full column (or a full row)
+        // without header and that we are adding/removing a row (or a column)
+        const hasHeader = "hasHeader" in zone ? zone.hasHeader : false;
+        let shouldStartBeMoved;
+        if (isFullCol(zone) && !hasHeader) {
+            shouldStartBeMoved = dimension !== "rows";
+        }
+        else if (isFullRow(zone) && !hasHeader) {
+            shouldStartBeMoved = dimension !== "columns";
+        }
+        else {
+            shouldStartBeMoved = true;
+        }
         const newZone = { ...zone };
-        if (operation === "MOVE") {
+        if (shouldStartBeMoved && operation === "MOVE") {
             newZone["left"] += offsetX;
             newZone["top"] += offsetY;
         }
-        newZone["right"] += offsetX;
-        newZone["bottom"] += offsetY;
+        if (newZone["right"] !== undefined) {
+            newZone["right"] += offsetX;
+        }
+        if (newZone["bottom"] !== undefined) {
+            newZone["bottom"] += offsetY;
+        }
         return newZone;
     }
     /**
@@ -1930,6 +2197,15 @@
     }
     function positionToZone(position) {
         return { left: position.col, right: position.col, top: position.row, bottom: position.row };
+    }
+    function isFullRow(zone) {
+        return zone.right === undefined;
+    }
+    function isFullCol(zone) {
+        return zone.bottom === undefined;
+    }
+    function getZoneArea(zone) {
+        return (zone.bottom - zone.top + 1) * (zone.right - zone.left + 1);
     }
 
     /**
@@ -2024,13 +2300,16 @@
         return "sheetId" in cmd;
     }
     function isGridDependent(cmd) {
-        return "dimension" in cmd;
+        return "dimension" in cmd && "sheetId" in cmd;
     }
     function isTargetDependent(cmd) {
-        return "target" in cmd;
+        return "target" in cmd && "sheetId" in cmd;
+    }
+    function isRangeDependant(cmd) {
+        return "ranges" in cmd;
     }
     function isPositionDependent(cmd) {
-        return "col" in cmd && "row" in cmd;
+        return "col" in cmd && "row" in cmd && "sheetId" in cmd;
     }
     const invalidateEvaluationCommands = new Set([
         "RENAME_SHEET",
@@ -2169,49 +2448,46 @@
         CommandResult[CommandResult["InputAlreadyFocused"] = 25] = "InputAlreadyFocused";
         CommandResult[CommandResult["MaximumRangesReached"] = 26] = "MaximumRangesReached";
         CommandResult[CommandResult["InvalidChartDefinition"] = 27] = "InvalidChartDefinition";
-        CommandResult[CommandResult["EmptyDataSet"] = 28] = "EmptyDataSet";
-        CommandResult[CommandResult["InvalidDataSet"] = 29] = "InvalidDataSet";
-        CommandResult[CommandResult["EmptyScorecardKeyValue"] = 30] = "EmptyScorecardKeyValue";
-        CommandResult[CommandResult["InvalidLabelRange"] = 31] = "InvalidLabelRange";
-        CommandResult[CommandResult["InvalidScorecardKeyValue"] = 32] = "InvalidScorecardKeyValue";
-        CommandResult[CommandResult["InvalidScorecardBaseline"] = 33] = "InvalidScorecardBaseline";
-        CommandResult[CommandResult["EmptyGaugeDataRange"] = 34] = "EmptyGaugeDataRange";
-        CommandResult[CommandResult["InvalidGaugeDataRange"] = 35] = "InvalidGaugeDataRange";
-        CommandResult[CommandResult["EmptyGaugeRangeMin"] = 36] = "EmptyGaugeRangeMin";
-        CommandResult[CommandResult["GaugeRangeMinNaN"] = 37] = "GaugeRangeMinNaN";
-        CommandResult[CommandResult["EmptyGaugeRangeMax"] = 38] = "EmptyGaugeRangeMax";
-        CommandResult[CommandResult["GaugeRangeMaxNaN"] = 39] = "GaugeRangeMaxNaN";
-        CommandResult[CommandResult["GaugeRangeMinBiggerThanRangeMax"] = 40] = "GaugeRangeMinBiggerThanRangeMax";
-        CommandResult[CommandResult["GaugeLowerInflectionPointNaN"] = 41] = "GaugeLowerInflectionPointNaN";
-        CommandResult[CommandResult["GaugeUpperInflectionPointNaN"] = 42] = "GaugeUpperInflectionPointNaN";
-        CommandResult[CommandResult["GaugeLowerBiggerThanUpper"] = 43] = "GaugeLowerBiggerThanUpper";
-        CommandResult[CommandResult["InvalidAutofillSelection"] = 44] = "InvalidAutofillSelection";
-        CommandResult[CommandResult["WrongComposerSelection"] = 45] = "WrongComposerSelection";
-        CommandResult[CommandResult["MinBiggerThanMax"] = 46] = "MinBiggerThanMax";
-        CommandResult[CommandResult["LowerBiggerThanUpper"] = 47] = "LowerBiggerThanUpper";
-        CommandResult[CommandResult["MidBiggerThanMax"] = 48] = "MidBiggerThanMax";
-        CommandResult[CommandResult["MinBiggerThanMid"] = 49] = "MinBiggerThanMid";
-        CommandResult[CommandResult["FirstArgMissing"] = 50] = "FirstArgMissing";
-        CommandResult[CommandResult["SecondArgMissing"] = 51] = "SecondArgMissing";
-        CommandResult[CommandResult["MinNaN"] = 52] = "MinNaN";
-        CommandResult[CommandResult["MidNaN"] = 53] = "MidNaN";
-        CommandResult[CommandResult["MaxNaN"] = 54] = "MaxNaN";
-        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 55] = "ValueUpperInflectionNaN";
-        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 56] = "ValueLowerInflectionNaN";
-        CommandResult[CommandResult["MinInvalidFormula"] = 57] = "MinInvalidFormula";
-        CommandResult[CommandResult["MidInvalidFormula"] = 58] = "MidInvalidFormula";
-        CommandResult[CommandResult["MaxInvalidFormula"] = 59] = "MaxInvalidFormula";
-        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 60] = "ValueUpperInvalidFormula";
-        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 61] = "ValueLowerInvalidFormula";
-        CommandResult[CommandResult["InvalidSortZone"] = 62] = "InvalidSortZone";
-        CommandResult[CommandResult["WaitingSessionConfirmation"] = 63] = "WaitingSessionConfirmation";
-        CommandResult[CommandResult["MergeOverlap"] = 64] = "MergeOverlap";
-        CommandResult[CommandResult["TooManyHiddenElements"] = 65] = "TooManyHiddenElements";
-        CommandResult[CommandResult["Readonly"] = 66] = "Readonly";
-        CommandResult[CommandResult["InvalidOffset"] = 67] = "InvalidOffset";
-        CommandResult[CommandResult["InvalidViewportSize"] = 68] = "InvalidViewportSize";
-        CommandResult[CommandResult["FigureDoesNotExist"] = 69] = "FigureDoesNotExist";
-        CommandResult[CommandResult["InvalidConditionalFormatId"] = 70] = "InvalidConditionalFormatId";
+        CommandResult[CommandResult["InvalidDataSet"] = 28] = "InvalidDataSet";
+        CommandResult[CommandResult["InvalidLabelRange"] = 29] = "InvalidLabelRange";
+        CommandResult[CommandResult["InvalidScorecardKeyValue"] = 30] = "InvalidScorecardKeyValue";
+        CommandResult[CommandResult["InvalidScorecardBaseline"] = 31] = "InvalidScorecardBaseline";
+        CommandResult[CommandResult["InvalidGaugeDataRange"] = 32] = "InvalidGaugeDataRange";
+        CommandResult[CommandResult["EmptyGaugeRangeMin"] = 33] = "EmptyGaugeRangeMin";
+        CommandResult[CommandResult["GaugeRangeMinNaN"] = 34] = "GaugeRangeMinNaN";
+        CommandResult[CommandResult["EmptyGaugeRangeMax"] = 35] = "EmptyGaugeRangeMax";
+        CommandResult[CommandResult["GaugeRangeMaxNaN"] = 36] = "GaugeRangeMaxNaN";
+        CommandResult[CommandResult["GaugeRangeMinBiggerThanRangeMax"] = 37] = "GaugeRangeMinBiggerThanRangeMax";
+        CommandResult[CommandResult["GaugeLowerInflectionPointNaN"] = 38] = "GaugeLowerInflectionPointNaN";
+        CommandResult[CommandResult["GaugeUpperInflectionPointNaN"] = 39] = "GaugeUpperInflectionPointNaN";
+        CommandResult[CommandResult["GaugeLowerBiggerThanUpper"] = 40] = "GaugeLowerBiggerThanUpper";
+        CommandResult[CommandResult["InvalidAutofillSelection"] = 41] = "InvalidAutofillSelection";
+        CommandResult[CommandResult["WrongComposerSelection"] = 42] = "WrongComposerSelection";
+        CommandResult[CommandResult["MinBiggerThanMax"] = 43] = "MinBiggerThanMax";
+        CommandResult[CommandResult["LowerBiggerThanUpper"] = 44] = "LowerBiggerThanUpper";
+        CommandResult[CommandResult["MidBiggerThanMax"] = 45] = "MidBiggerThanMax";
+        CommandResult[CommandResult["MinBiggerThanMid"] = 46] = "MinBiggerThanMid";
+        CommandResult[CommandResult["FirstArgMissing"] = 47] = "FirstArgMissing";
+        CommandResult[CommandResult["SecondArgMissing"] = 48] = "SecondArgMissing";
+        CommandResult[CommandResult["MinNaN"] = 49] = "MinNaN";
+        CommandResult[CommandResult["MidNaN"] = 50] = "MidNaN";
+        CommandResult[CommandResult["MaxNaN"] = 51] = "MaxNaN";
+        CommandResult[CommandResult["ValueUpperInflectionNaN"] = 52] = "ValueUpperInflectionNaN";
+        CommandResult[CommandResult["ValueLowerInflectionNaN"] = 53] = "ValueLowerInflectionNaN";
+        CommandResult[CommandResult["MinInvalidFormula"] = 54] = "MinInvalidFormula";
+        CommandResult[CommandResult["MidInvalidFormula"] = 55] = "MidInvalidFormula";
+        CommandResult[CommandResult["MaxInvalidFormula"] = 56] = "MaxInvalidFormula";
+        CommandResult[CommandResult["ValueUpperInvalidFormula"] = 57] = "ValueUpperInvalidFormula";
+        CommandResult[CommandResult["ValueLowerInvalidFormula"] = 58] = "ValueLowerInvalidFormula";
+        CommandResult[CommandResult["InvalidSortZone"] = 59] = "InvalidSortZone";
+        CommandResult[CommandResult["WaitingSessionConfirmation"] = 60] = "WaitingSessionConfirmation";
+        CommandResult[CommandResult["MergeOverlap"] = 61] = "MergeOverlap";
+        CommandResult[CommandResult["TooManyHiddenElements"] = 62] = "TooManyHiddenElements";
+        CommandResult[CommandResult["Readonly"] = 63] = "Readonly";
+        CommandResult[CommandResult["InvalidOffset"] = 64] = "InvalidOffset";
+        CommandResult[CommandResult["InvalidViewportSize"] = 65] = "InvalidViewportSize";
+        CommandResult[CommandResult["FigureDoesNotExist"] = 66] = "FigureDoesNotExist";
+        CommandResult[CommandResult["InvalidConditionalFormatId"] = 67] = "InvalidConditionalFormatId";
     })(exports.CommandResult || (exports.CommandResult = {}));
 
     var ReturnFormatType;
@@ -2601,7 +2877,7 @@
                 });
             }
         }
-        if (result.isCancelledBecause(62 /* InvalidSortZone */)) {
+        if (result.isCancelledBecause(59 /* InvalidSortZone */)) {
             const { col, row } = anchor;
             env.model.selection.selectZone({ cell: { col, row }, zone });
             env.notifyUser(_lt("Cannot sort. To sort, select only cells or only merges that have the same size."));
@@ -3123,10 +3399,15 @@
         }
         const dataSets = [zoneToXc(dataSetZone)];
         const sheetId = env.model.getters.getActiveSheetId();
+        const viewport = env.model.getters.getActiveViewport();
+        const left = env.model.getters.getColDimensions(sheetId, viewport.left).start;
+        const top = env.model.getters.getRowDimensions(sheetId, viewport.top).start;
+        const { width, height } = env.model.getters.getViewportDimension();
+        const size = { width: DEFAULT_FIGURE_WIDTH, height: DEFAULT_FIGURE_HEIGHT };
         const position = {
-            x: env.model.getters.getColDimensions(sheetId, zone.right + 1).start,
-            y: env.model.getters.getRowDimensions(sheetId, zone.top).start,
-        };
+            x: left + Math.max(0, (width - DEFAULT_FIGURE_WIDTH) / 2),
+            y: top + Math.max(0, (height - DEFAULT_FIGURE_HEIGHT) / 2),
+        }; // Position at the center of the viewport
         let dataSetsHaveTitle = false;
         for (let x = dataSetZone.left; x <= dataSetZone.right; x++) {
             const cell = env.model.getters.getCell(sheetId, x, zone.top);
@@ -3146,6 +3427,7 @@
             sheetId,
             id,
             position,
+            size,
             definition: {
                 title: "",
                 dataSets,
@@ -3656,22 +3938,22 @@
     const CfTerms = {
         Errors: {
             [22 /* InvalidRange */]: _lt("The range is invalid"),
-            [50 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
-            [51 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
-            [52 /* MinNaN */]: _lt("The minpoint must be a number"),
-            [53 /* MidNaN */]: _lt("The midpoint must be a number"),
-            [54 /* MaxNaN */]: _lt("The maxpoint must be a number"),
-            [55 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
-            [56 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
-            [46 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
-            [49 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
-            [48 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
-            [47 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller than upper inflection point"),
-            [57 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
-            [59 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
-            [58 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
-            [60 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
-            [61 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
+            [47 /* FirstArgMissing */]: _lt("The argument is missing. Please provide a value"),
+            [48 /* SecondArgMissing */]: _lt("The second argument is missing. Please provide a value"),
+            [49 /* MinNaN */]: _lt("The minpoint must be a number"),
+            [50 /* MidNaN */]: _lt("The midpoint must be a number"),
+            [51 /* MaxNaN */]: _lt("The maxpoint must be a number"),
+            [52 /* ValueUpperInflectionNaN */]: _lt("The first value must be a number"),
+            [53 /* ValueLowerInflectionNaN */]: _lt("The second value must be a number"),
+            [43 /* MinBiggerThanMax */]: _lt("Minimum must be smaller then Maximum"),
+            [46 /* MinBiggerThanMid */]: _lt("Minimum must be smaller then Midpoint"),
+            [45 /* MidBiggerThanMax */]: _lt("Midpoint must be smaller then Maximum"),
+            [44 /* LowerBiggerThanUpper */]: _lt("Lower inflection point must be smaller than upper inflection point"),
+            [54 /* MinInvalidFormula */]: _lt("Invalid Minpoint formula"),
+            [56 /* MaxInvalidFormula */]: _lt("Invalid Maxpoint formula"),
+            [55 /* MidInvalidFormula */]: _lt("Invalid Midpoint formula"),
+            [57 /* ValueUpperInvalidFormula */]: _lt("Invalid upper inflection point formula"),
+            [58 /* ValueLowerInvalidFormula */]: _lt("Invalid lower inflection point formula"),
             [21 /* EmptyRange */]: _lt("A range needs to be defined"),
             Unexpected: _lt("The rule is invalid for an unknown reason"),
         },
@@ -3699,23 +3981,20 @@
         Errors: {
             Unexpected: _lt("The chart definition is invalid for an unknown reason"),
             // BASIC CHART ERRORS (LINE | BAR | PIE)
-            [28 /* EmptyDataSet */]: _lt("A dataset needs to be defined"),
-            [29 /* InvalidDataSet */]: _lt("The dataset is invalid"),
-            [31 /* InvalidLabelRange */]: _lt("Labels are invalid"),
+            [28 /* InvalidDataSet */]: _lt("The dataset is invalid"),
+            [29 /* InvalidLabelRange */]: _lt("Labels are invalid"),
             // SCORECARD CHART ERRORS
-            [30 /* EmptyScorecardKeyValue */]: _lt("A key value must be defined"),
-            [32 /* InvalidScorecardKeyValue */]: _lt("The key value is invalid"),
-            [33 /* InvalidScorecardBaseline */]: _lt("The baseline value is invalid"),
+            [30 /* InvalidScorecardKeyValue */]: _lt("The key value is invalid"),
+            [31 /* InvalidScorecardBaseline */]: _lt("The baseline value is invalid"),
             // GAUGE CHART ERRORS
-            [34 /* EmptyGaugeDataRange */]: _lt("A data range must be defined"),
-            [35 /* InvalidGaugeDataRange */]: _lt("The data range is invalid"),
-            [36 /* EmptyGaugeRangeMin */]: _lt("A minimum range limit value is needed"),
-            [37 /* GaugeRangeMinNaN */]: _lt("The minimum range limit value must be a number"),
-            [38 /* EmptyGaugeRangeMax */]: _lt("A maximum range limit value is needed"),
-            [39 /* GaugeRangeMaxNaN */]: _lt("The maximum range limit value must be a number"),
-            [40 /* GaugeRangeMinBiggerThanRangeMax */]: _lt("Minimum range limit must be smaller than maximum range limit"),
-            [41 /* GaugeLowerInflectionPointNaN */]: _lt("The lower inflection point value must be a number"),
-            [42 /* GaugeUpperInflectionPointNaN */]: _lt("The upper inflection point value must be a number"),
+            [32 /* InvalidGaugeDataRange */]: _lt("The data range is invalid"),
+            [33 /* EmptyGaugeRangeMin */]: _lt("A minimum range limit value is needed"),
+            [34 /* GaugeRangeMinNaN */]: _lt("The minimum range limit value must be a number"),
+            [35 /* EmptyGaugeRangeMax */]: _lt("A maximum range limit value is needed"),
+            [36 /* GaugeRangeMaxNaN */]: _lt("The maximum range limit value must be a number"),
+            [37 /* GaugeRangeMinBiggerThanRangeMax */]: _lt("Minimum range limit must be smaller than maximum range limit"),
+            [38 /* GaugeLowerInflectionPointNaN */]: _lt("The lower inflection point value must be a number"),
+            [39 /* GaugeUpperInflectionPointNaN */]: _lt("The upper inflection point value must be a number"),
         },
     };
     const NumberFormatTerms = {
@@ -4336,13 +4615,12 @@
             return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
         }
         get isDatasetInvalid() {
-            var _a, _b;
-            return !!(((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(28 /* EmptyDataSet */)) ||
-                ((_b = this.state.datasetDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(29 /* InvalidDataSet */)));
+            var _a;
+            return !!((_a = this.state.datasetDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(28 /* InvalidDataSet */));
         }
         get isLabelInvalid() {
             var _a;
-            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(31 /* InvalidLabelRange */));
+            return !!((_a = this.state.labelsDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(29 /* InvalidLabelRange */));
         }
         onUpdateDataSetsHaveTitle(ev) {
             this.props.updateChart({
@@ -4497,7 +4775,7 @@
   .o-color-picker {
     position: absolute;
     top: calc(100% + 5px);
-    z-index: 10;
+    z-index: ${ComponentsImportance.ColorPicker};
     box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
     background-color: white;
     padding: ${PICKER_VERTICAL_PADDING}px 0px;
@@ -4593,9 +4871,8 @@
             return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
         }
         get isDataRangeInvalid() {
-            var _a, _b;
-            return !!(((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(34 /* EmptyGaugeDataRange */)) ||
-                ((_b = this.state.dataRangeDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(35 /* InvalidGaugeDataRange */)));
+            var _a;
+            return !!((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(32 /* InvalidGaugeDataRange */));
         }
         onDataRangeChanged(ranges) {
             this.dataRange = ranges[0];
@@ -4676,28 +4953,28 @@
         }
         isRangeMinInvalid() {
             var _a, _b, _c;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(36 /* EmptyGaugeRangeMin */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(37 /* GaugeRangeMinNaN */)) ||
-                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(40 /* GaugeRangeMinBiggerThanRangeMax */)));
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(33 /* EmptyGaugeRangeMin */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(34 /* GaugeRangeMinNaN */)) ||
+                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(37 /* GaugeRangeMinBiggerThanRangeMax */)));
         }
         isRangeMaxInvalid() {
             var _a, _b, _c;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(38 /* EmptyGaugeRangeMax */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(39 /* GaugeRangeMaxNaN */)) ||
-                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(40 /* GaugeRangeMinBiggerThanRangeMax */)));
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(35 /* EmptyGaugeRangeMax */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(36 /* GaugeRangeMaxNaN */)) ||
+                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(37 /* GaugeRangeMinBiggerThanRangeMax */)));
         }
         // ---------------------------------------------------------------------------
         // COLOR_SECTION_TEMPLATE
         // ---------------------------------------------------------------------------
         get isLowerInflectionPointInvalid() {
             var _a, _b;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(41 /* GaugeLowerInflectionPointNaN */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(43 /* GaugeLowerBiggerThanUpper */)));
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(38 /* GaugeLowerInflectionPointNaN */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(40 /* GaugeLowerBiggerThanUpper */)));
         }
         get isUpperInflectionPointInvalid() {
             var _a, _b;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(42 /* GaugeUpperInflectionPointNaN */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(43 /* GaugeLowerBiggerThanUpper */)));
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(39 /* GaugeUpperInflectionPointNaN */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(40 /* GaugeLowerBiggerThanUpper */)));
         }
         updateInflectionPointValue(attr, ev) {
             const sectionRule = deepCopy(this.props.definition.sectionRule);
@@ -4792,23 +5069,6 @@
             return color.slice(6) + color.slice(0, 6);
         }
         return color;
-    }
-
-    /**
-     * Copy a range. If the range is on the sheetIdFrom, the range will target
-     * sheetIdTo.
-     */
-    function copyRangeWithNewSheetId(sheetIdFrom, sheetIdTo, range) {
-        return {
-            ...range,
-            sheetId: range.sheetId === sheetIdFrom ? sheetIdTo : range.sheetId,
-        };
-    }
-    /**
-     * Create a range from a xc. If the xc is empty, this function returns undefined.
-     */
-    function createRange(getters, sheetId, range) {
-        return range ? getters.getRangeFromSheetXC(sheetId, range) : undefined;
     }
 
     function transformZone(zone, executed) {
@@ -5412,18 +5672,21 @@
         const dataSets = [];
         for (const sheetXC of dataSetsString) {
             const dataRange = getters.getRangeFromSheetXC(sheetId, sheetXC);
-            const { zone, sheetId: dataSetSheetId, invalidSheetName } = dataRange;
+            const { unboundedZone: zone, sheetId: dataSetSheetId, invalidSheetName } = dataRange;
             if (invalidSheetName) {
                 continue;
             }
+            // It's a rectangle. We treat all columns (arbitrary) as different data series.
             if (zone.left !== zone.right && zone.top !== zone.bottom) {
-                // It's a rectangle. We treat all columns (arbitrary) as different data series.
+                if (zone.right === undefined) {
+                    // Should never happens because of the allowDispatch of charts, but just making sure
+                    continue;
+                }
                 for (let column = zone.left; column <= zone.right; column++) {
                     const columnZone = {
+                        ...zone,
                         left: column,
                         right: column,
-                        top: zone.top,
-                        bottom: zone.bottom,
                     };
                     dataSets.push(createDataSet(getters, dataSetSheetId, columnZone, dataSetsHaveTitle
                         ? {
@@ -5490,10 +5753,7 @@
                 dataZone = { ...dataZone, top: dataZone.top + 1 };
             }
         }
-        const dataRange = {
-            ...ds.dataRange,
-            zone: dataZone,
-        };
+        const dataRange = ds.dataRange.clone({ zone: dataZone });
         return {
             label: ds.labelCell ? getters.getRangeString(ds.labelCell, "forceSheetReference") : undefined,
             range: getters.getRangeString(dataRange, "forceSheetReference"),
@@ -5504,18 +5764,19 @@
      * with an executed command
      */
     function transformChartDefinitionWithDataSetsWithZone(definition, executed) {
-        let labelZone;
+        let labelRange;
         if (definition.labelRange) {
-            labelZone = transformZone(toZone(definition.labelRange), executed);
+            const labelZone = transformZone(toUnboundedZone(definition.labelRange), executed);
+            labelRange = labelZone ? zoneToXc(labelZone) : undefined;
         }
         const dataSets = definition.dataSets
-            .map(toZone)
+            .map(toUnboundedZone)
             .map((zone) => transformZone(zone, executed))
             .filter(isDefined$1)
             .map(zoneToXc);
         return {
             ...definition,
-            labelRange: labelZone ? zoneToXc(labelZone) : undefined,
+            labelRange,
             dataSets,
         };
     }
@@ -5560,16 +5821,15 @@
         }
         return relativeLuminance(backgroundColor) < 0.3 ? "#FFFFFF" : "#000000";
     }
-    function checkDatasetNotEmpty(definition) {
-        return definition.dataSets && definition.dataSets.length === 0
-            ? 28 /* EmptyDataSet */
-            : 0 /* Success */;
-    }
     function checkDataset(definition) {
         if (definition.dataSets) {
             const invalidRanges = definition.dataSets.find((range) => !rangeReference.test(range)) !== undefined;
             if (invalidRanges) {
-                return 29 /* InvalidDataSet */;
+                return 28 /* InvalidDataSet */;
+            }
+            const zones = definition.dataSets.map(toUnboundedZone);
+            if (zones.some((zone) => zone.top !== zone.bottom && isFullRow(zone))) {
+                return 28 /* InvalidDataSet */;
             }
         }
         return 0 /* Success */;
@@ -5578,7 +5838,7 @@
         if (definition.labelRange) {
             const invalidLabels = !rangeReference.test(definition.labelRange || "");
             if (invalidLabels) {
-                return 31 /* InvalidLabelRange */;
+                return 29 /* InvalidLabelRange */;
             }
         }
         return 0 /* Success */;
@@ -5799,7 +6059,7 @@
             return transformChartDefinitionWithDataSetsWithZone(definition, executed);
         }
         static validateChartDefinition(validator, definition) {
-            return validator.checkValidations(definition, validator.chainValidations(checkDatasetNotEmpty, checkDataset), checkLabelRange);
+            return validator.checkValidations(definition, checkDataset, checkLabelRange);
         }
         static getDefinitionFromContextCreation(context) {
             return {
@@ -5811,7 +6071,7 @@
                 title: context.title || "",
                 type: "bar",
                 verticalAxisPosition: "left",
-                labelRange: undefined,
+                labelRange: context.auxiliaryRange || undefined,
             };
         }
         getContextCreation() {
@@ -5820,6 +6080,9 @@
                 title: this.title,
                 range: this.dataSets.length > 0
                     ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
+                    : undefined,
+                auxiliaryRange: this.labelRange
+                    ? this.getters.getRangeString(this.labelRange, this.sheetId)
                     : undefined,
             };
         }
@@ -6022,12 +6285,9 @@
         getChartDefinitionFromContextCreation: (context) => GaugeChart.getDefinitionFromContextCreation(context),
         name: "Gauge",
     });
-    function checkEmptyDataRange(definition) {
-        return !definition.dataRange ? 34 /* EmptyGaugeDataRange */ : 0 /* Success */;
-    }
     function isDataRangeValid(definition) {
         return definition.dataRange && !rangeReference.test(definition.dataRange)
-            ? 35 /* InvalidGaugeDataRange */
+            ? 32 /* InvalidGaugeDataRange */
             : 0 /* Success */;
     }
     function checkRangeLimits(check, batchValidations) {
@@ -6059,7 +6319,7 @@
     function checkRangeMinBiggerThanRangeMax(definition) {
         if (definition.sectionRule) {
             if (Number(definition.sectionRule.rangeMin) >= Number(definition.sectionRule.rangeMax)) {
-                return 40 /* GaugeRangeMinBiggerThanRangeMax */;
+                return 37 /* GaugeRangeMinBiggerThanRangeMax */;
             }
         }
         return 0 /* Success */;
@@ -6068,9 +6328,9 @@
         if (value === "") {
             switch (valueName) {
                 case "rangeMin":
-                    return 36 /* EmptyGaugeRangeMin */;
+                    return 33 /* EmptyGaugeRangeMin */;
                 case "rangeMax":
-                    return 38 /* EmptyGaugeRangeMax */;
+                    return 35 /* EmptyGaugeRangeMax */;
             }
         }
         return 0 /* Success */;
@@ -6079,13 +6339,13 @@
         if (isNaN(value)) {
             switch (valueName) {
                 case "rangeMin":
-                    return 37 /* GaugeRangeMinNaN */;
+                    return 34 /* GaugeRangeMinNaN */;
                 case "rangeMax":
-                    return 39 /* GaugeRangeMaxNaN */;
+                    return 36 /* GaugeRangeMaxNaN */;
                 case "lowerInflectionPointValue":
-                    return 41 /* GaugeLowerInflectionPointNaN */;
+                    return 38 /* GaugeLowerInflectionPointNaN */;
                 case "upperInflectionPointValue":
-                    return 42 /* GaugeUpperInflectionPointNaN */;
+                    return 39 /* GaugeUpperInflectionPointNaN */;
             }
         }
         return 0 /* Success */;
@@ -6099,12 +6359,12 @@
             this.background = definition.background;
         }
         static validateChartDefinition(validator, definition) {
-            return validator.checkValidations(definition, validator.chainValidations(checkEmptyDataRange, isDataRangeValid), validator.chainValidations(checkRangeLimits(checkEmpty, validator.batchValidations), checkRangeLimits(checkNaN, validator.batchValidations), checkRangeMinBiggerThanRangeMax), validator.chainValidations(checkInflectionPointsValue(checkNaN, validator.batchValidations)));
+            return validator.checkValidations(definition, isDataRangeValid, validator.chainValidations(checkRangeLimits(checkEmpty, validator.batchValidations), checkRangeLimits(checkNaN, validator.batchValidations), checkRangeMinBiggerThanRangeMax), validator.chainValidations(checkInflectionPointsValue(checkNaN, validator.batchValidations)));
         }
         static transformDefinition(definition, executed) {
             let dataRangeZone;
             if (definition.dataRange) {
-                dataRangeZone = transformZone(toZone(definition.dataRange), executed);
+                dataRangeZone = transformZone(toUnboundedZone(definition.dataRange), executed);
             }
             return {
                 ...definition,
@@ -6424,7 +6684,7 @@
             this.labelsAsText = definition.labelsAsText;
         }
         static validateChartDefinition(validator, definition) {
-            return validator.checkValidations(definition, validator.chainValidations(checkDatasetNotEmpty, checkDataset), checkLabelRange);
+            return validator.checkValidations(definition, checkDataset, checkLabelRange);
         }
         static transformDefinition(definition, executed) {
             return transformChartDefinitionWithDataSetsWithZone(definition, executed);
@@ -6439,7 +6699,7 @@
                 title: context.title || "",
                 type: "line",
                 verticalAxisPosition: "left",
-                labelRange: undefined,
+                labelRange: context.auxiliaryRange || undefined,
             };
         }
         getDefinition() {
@@ -6464,6 +6724,9 @@
                 title: this.title,
                 range: this.dataSets.length > 0
                     ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
+                    : undefined,
+                auxiliaryRange: this.labelRange
+                    ? this.getters.getRangeString(this.labelRange, this.sheetId)
                     : undefined,
             };
         }
@@ -6667,7 +6930,7 @@
             return transformChartDefinitionWithDataSetsWithZone(definition, executed);
         }
         static validateChartDefinition(validator, definition) {
-            return validator.checkValidations(definition, validator.chainValidations(checkDatasetNotEmpty, checkDataset), checkLabelRange);
+            return validator.checkValidations(definition, checkDataset, checkLabelRange);
         }
         static getDefinitionFromContextCreation(context) {
             return {
@@ -6677,7 +6940,7 @@
                 legendPosition: "top",
                 title: context.title || "",
                 type: "pie",
-                labelRange: undefined,
+                labelRange: context.auxiliaryRange || undefined,
             };
         }
         getDefinition() {
@@ -6689,6 +6952,9 @@
                 title: this.title,
                 range: this.dataSets.length > 0
                     ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
+                    : undefined,
+                auxiliaryRange: this.labelRange
+                    ? this.getters.getRangeString(this.labelRange, this.sheetId)
                     : undefined,
             };
         }
@@ -6808,17 +7074,14 @@
         getChartDefinitionFromContextCreation: (context) => ScorecardChart$1.getDefinitionFromContextCreation(context),
         name: "Scorecard",
     });
-    function checkEmptyKeyValue(definition) {
-        return !definition.keyValue ? 30 /* EmptyScorecardKeyValue */ : 0 /* Success */;
-    }
     function checkKeyValue(definition) {
         return definition.keyValue && !rangeReference.test(definition.keyValue)
-            ? 32 /* InvalidScorecardKeyValue */
+            ? 30 /* InvalidScorecardKeyValue */
             : 0 /* Success */;
     }
     function checkBaseline(definition) {
         return definition.baseline && !rangeReference.test(definition.baseline)
-            ? 33 /* InvalidScorecardBaseline */
+            ? 31 /* InvalidScorecardBaseline */
             : 0 /* Success */;
     }
     class ScorecardChart$1 extends AbstractChart {
@@ -6835,7 +7098,7 @@
             this.fontColor = definition.fontColor;
         }
         static validateChartDefinition(validator, definition) {
-            return validator.checkValidations(definition, validator.chainValidations(checkEmptyKeyValue, checkKeyValue), checkBaseline);
+            return validator.checkValidations(definition, checkKeyValue, checkBaseline);
         }
         static getDefinitionFromContextCreation(context) {
             return {
@@ -6846,16 +7109,17 @@
                 baselineMode: "absolute",
                 baselineColorUp: "#00A04A",
                 baselineColorDown: "#DC6965",
+                baseline: context.auxiliaryRange || "",
             };
         }
         static transformDefinition(definition, executed) {
             let baselineZone;
             let keyValueZone;
             if (definition.baseline) {
-                baselineZone = transformZone(toZone(definition.baseline), executed);
+                baselineZone = transformZone(toUnboundedZone(definition.baseline), executed);
             }
             if (definition.keyValue) {
-                keyValueZone = transformZone(toZone(definition.keyValue), executed);
+                keyValueZone = transformZone(toUnboundedZone(definition.keyValue), executed);
             }
             return {
                 ...definition,
@@ -6877,6 +7141,9 @@
                 background: this.background,
                 title: this.title,
                 range: this.keyValue ? this.getters.getRangeString(this.keyValue, this.sheetId) : undefined,
+                auxiliaryRange: this.baseline
+                    ? this.getters.getRangeString(this.baseline, this.sheetId)
+                    : undefined,
             };
         }
         getSheetIdsUsedInChartRanges() {
@@ -6978,13 +7245,12 @@
             return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
         }
         get isKeyValueInvalid() {
-            var _a, _b;
-            return !!(((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(30 /* EmptyScorecardKeyValue */)) ||
-                ((_b = this.state.keyValueDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(32 /* InvalidScorecardKeyValue */)));
+            var _a;
+            return !!((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(30 /* InvalidScorecardKeyValue */));
         }
         get isBaselineInvalid() {
             var _a;
-            return !!((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(33 /* InvalidScorecardBaseline */));
+            return !!((_a = this.state.keyValueDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(31 /* InvalidScorecardBaseline */));
         }
         onKeyValueRangeChanged(ranges) {
             this.keyValue = ranges[0];
@@ -7257,7 +7523,7 @@
     css /* scss */ `
   .o-icon-picker {
     position: absolute;
-    z-index: 10;
+    z-index: ${ComponentsImportance.IconPicker};
     box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
     background-color: white;
     padding: 2px 1px;
@@ -7665,6 +7931,7 @@
                     this.state.errors = [22 /* InvalidRange */];
                     return;
                 }
+                const sheetId = this.env.model.getters.getActiveSheetId();
                 const result = this.env.model.dispatch("ADD_CONDITIONAL_FORMAT", {
                     cf: {
                         rule: this.getEditorRule(),
@@ -7672,8 +7939,8 @@
                             ? this.state.currentCF.id
                             : this.env.model.uuidGenerator.uuidv4(),
                     },
-                    target: this.state.currentCF.ranges.map(toZone),
-                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    ranges: this.state.currentCF.ranges.map((xc) => this.env.model.getters.getRangeDataFromXc(sheetId, xc)),
+                    sheetId,
                 });
                 if (!result.isSuccessful) {
                     this.state.errors = result.reasons;
@@ -7817,11 +8084,11 @@
          ****************************************************************************/
         get isValue1Invalid() {
             var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(50 /* FirstArgMissing */));
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(47 /* FirstArgMissing */));
         }
         get isValue2Invalid() {
             var _a;
-            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(51 /* SecondArgMissing */));
+            return !!((_a = this.state.errors) === null || _a === void 0 ? void 0 : _a.includes(48 /* SecondArgMissing */));
         }
         toggleStyle(tool) {
             const style = this.state.rules.cellIs.style;
@@ -7838,17 +8105,17 @@
         isValueInvalid(threshold) {
             switch (threshold) {
                 case "minimum":
-                    return (this.state.errors.includes(57 /* MinInvalidFormula */) ||
-                        this.state.errors.includes(49 /* MinBiggerThanMid */) ||
-                        this.state.errors.includes(46 /* MinBiggerThanMax */) ||
-                        this.state.errors.includes(52 /* MinNaN */));
+                    return (this.state.errors.includes(54 /* MinInvalidFormula */) ||
+                        this.state.errors.includes(46 /* MinBiggerThanMid */) ||
+                        this.state.errors.includes(43 /* MinBiggerThanMax */) ||
+                        this.state.errors.includes(49 /* MinNaN */));
                 case "midpoint":
-                    return (this.state.errors.includes(58 /* MidInvalidFormula */) ||
-                        this.state.errors.includes(53 /* MidNaN */) ||
-                        this.state.errors.includes(48 /* MidBiggerThanMax */));
+                    return (this.state.errors.includes(55 /* MidInvalidFormula */) ||
+                        this.state.errors.includes(50 /* MidNaN */) ||
+                        this.state.errors.includes(45 /* MidBiggerThanMax */));
                 case "maximum":
-                    return (this.state.errors.includes(59 /* MaxInvalidFormula */) ||
-                        this.state.errors.includes(54 /* MaxNaN */));
+                    return (this.state.errors.includes(56 /* MaxInvalidFormula */) ||
+                        this.state.errors.includes(51 /* MaxNaN */));
                 default:
                     return false;
             }
@@ -7897,13 +8164,13 @@
         isInflectionPointInvalid(inflectionPoint) {
             switch (inflectionPoint) {
                 case "lowerInflectionPoint":
-                    return (this.state.errors.includes(56 /* ValueLowerInflectionNaN */) ||
-                        this.state.errors.includes(61 /* ValueLowerInvalidFormula */) ||
-                        this.state.errors.includes(47 /* LowerBiggerThanUpper */));
+                    return (this.state.errors.includes(53 /* ValueLowerInflectionNaN */) ||
+                        this.state.errors.includes(58 /* ValueLowerInvalidFormula */) ||
+                        this.state.errors.includes(44 /* LowerBiggerThanUpper */));
                 case "upperInflectionPoint":
-                    return (this.state.errors.includes(55 /* ValueUpperInflectionNaN */) ||
-                        this.state.errors.includes(60 /* ValueUpperInvalidFormula */) ||
-                        this.state.errors.includes(47 /* LowerBiggerThanUpper */));
+                    return (this.state.errors.includes(52 /* ValueUpperInflectionNaN */) ||
+                        this.state.errors.includes(57 /* ValueUpperInvalidFormula */) ||
+                        this.state.errors.includes(44 /* LowerBiggerThanUpper */));
                 default:
                     return true;
             }
@@ -8481,7 +8748,7 @@
             const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
             return `
       position: absolute;
-      z-index: 5;
+      z-index: ${ComponentsImportance.Popover};
       ${verticalPosition}px;
       ${horizontalPosition}px;
       ${height}px;
@@ -13944,7 +14211,7 @@
         throw new Error(_lt("Unknown token: %s", token.value));
     }
     function parsePrefix(current, tokens) {
-        var _a, _b;
+        var _a, _b, _c;
         switch (current.type) {
             case "DEBUGGER":
                 const next = parseExpression(tokens, 1000);
@@ -13960,20 +14227,21 @@
                 }
                 else {
                     const args = [];
-                    if (tokens[0].type !== "RIGHT_PAREN") {
+                    if (tokens[0] && tokens[0].type !== "RIGHT_PAREN") {
                         if (tokens[0].type === "COMMA") {
                             args.push({ type: "UNKNOWN", value: "" });
                         }
                         else {
                             args.push(parseExpression(tokens, FUNCTION_BP));
                         }
-                        while (tokens[0].type === "COMMA") {
+                        while (((_a = tokens[0]) === null || _a === void 0 ? void 0 : _a.type) === "COMMA") {
                             tokens.shift();
-                            if (tokens[0].type === "RIGHT_PAREN") {
+                            const token = tokens[0];
+                            if ((token === null || token === void 0 ? void 0 : token.type) === "RIGHT_PAREN") {
                                 args.push({ type: "UNKNOWN", value: "" });
                                 break;
                             }
-                            if (tokens[0].type === "COMMA") {
+                            else if ((token === null || token === void 0 ? void 0 : token.type) === "COMMA") {
                                 args.push({ type: "UNKNOWN", value: "" });
                             }
                             else {
@@ -13981,7 +14249,8 @@
                             }
                         }
                     }
-                    if (tokens.shift().type !== "RIGHT_PAREN") {
+                    const closingToken = tokens.shift();
+                    if (!closingToken || closingToken.type !== "RIGHT_PAREN") {
                         throw new Error(_lt("Wrong function call"));
                     }
                     return { type: "FUNCALL", value: current.value, args };
@@ -13989,7 +14258,7 @@
             case "INVALID_REFERENCE":
                 throw new InvalidReferenceError();
             case "REFERENCE":
-                if (((_a = tokens[0]) === null || _a === void 0 ? void 0 : _a.value) === ":" && ((_b = tokens[1]) === null || _b === void 0 ? void 0 : _b.type) === "REFERENCE") {
+                if (((_b = tokens[0]) === null || _b === void 0 ? void 0 : _b.value) === ":" && ((_c = tokens[1]) === null || _c === void 0 ? void 0 : _c.type) === "REFERENCE") {
                     tokens.shift();
                     const rightReference = tokens.shift();
                     return {
@@ -14185,30 +14454,45 @@
      *  ?spaces symbol ?spaces operator: ?spaces symbol ?spaces
      */
     function mergeSymbolsIntoRanges(result, removeSpace = false) {
-        let operator = undefined;
-        let refStart = undefined;
-        let refEnd = undefined;
-        let startIncludingSpaces = undefined;
+        let operator = undefined; // Index of operator ":" in range
+        let refStart = undefined; // Index of start of range
+        let refEnd = undefined; // Index of end of range
+        let startIncludingSpaces = undefined; // Index of start of range, including spaces before range
+        let isRefOfFullRow = false; // If we work on a range of a full row (eg. 1:1)
+        let isRefOfFullCol = false; // If we work on a range of a full column (eg. A2:A)
         const reset = () => {
             startIncludingSpaces = undefined;
             refStart = undefined;
             operator = undefined;
             refEnd = undefined;
+            isRefOfFullRow = false;
+            isRefOfFullCol = false;
         };
         for (let i = 0; i < result.length; i++) {
             const token = result[i];
+            // If we already have a token that could be the start of a range, or a SPACE token
             if (startIncludingSpaces) {
+                // If we already have a token that could be the start of a range
                 if (refStart) {
+                    // Skip spaces
                     if (token.type === "SPACE") {
                         continue;
                     }
+                    // Find the ":" operator of a range
                     else if (token.type === "OPERATOR" && token.value === ":") {
                         operator = i;
                     }
-                    else if (operator && token.type === "REFERENCE") {
+                    // Find the second symbol of a range
+                    // Be careful not to build a range A:1 or A:1. A2:3 and A:A2 are both valid ranges.
+                    else if (operator &&
+                        (token.type === "REFERENCE" ||
+                            (token.type === "SYMBOL" && !isRefOfFullRow && isColReference(token.value)) ||
+                            (token.type === "NUMBER" && !isRefOfFullCol))) {
                         refEnd = i;
                     }
+                    // Cannot add the current token to the range we're currently building
                     else {
+                        // We have all the token needed to build a new range
                         if (startIncludingSpaces && refStart && operator && refEnd) {
                             const newToken = {
                                 type: "REFERENCE",
@@ -14221,11 +14505,19 @@
                             i = startIncludingSpaces + 1;
                             reset();
                         }
+                        // Cannot build a range with the current tokens
                         else {
-                            if (token.type === "REFERENCE") {
+                            // Start building a new range beginning with the current token if possible, else reset
+                            if (["REFERENCE", "NUMBER", "SYMBOL"].includes(token.type)) {
                                 startIncludingSpaces = i;
-                                refStart = i;
                                 operator = undefined;
+                                isRefOfFullRow = isRowReference(token.value);
+                                isRefOfFullCol = isColReference(token.value);
+                                if (token.type === "REFERENCE" || isRefOfFullRow || isRefOfFullCol) {
+                                    refStart = i;
+                                }
+                                else
+                                    reset();
                             }
                             else {
                                 reset();
@@ -14233,27 +14525,41 @@
                         }
                     }
                 }
+                // If we only have found a SPACE token
                 else {
-                    if (token.type === "REFERENCE") {
-                        refStart = i;
+                    // Start building a new range beginning with the current token if possible, else reset
+                    if (["REFERENCE", "NUMBER", "SYMBOL"].includes(token.type)) {
                         operator = refEnd = undefined;
+                        isRefOfFullRow = isRowReference(token.value);
+                        isRefOfFullCol = isColReference(token.value);
+                        if (token.type === "REFERENCE" || isRefOfFullRow || isRefOfFullCol) {
+                            refStart = i;
+                        }
+                        else
+                            reset();
                     }
                     else {
                         reset();
                     }
                 }
             }
+            // We found nothing yet, try to find a token that could be the beginning of a range
             else {
-                if (["SPACE", "REFERENCE"].includes(token.type)) {
-                    startIncludingSpaces = i;
-                    refStart = token.type === "REFERENCE" ? i : undefined;
+                if (["SPACE", "REFERENCE", "NUMBER", "SYMBOL"].includes(token.type)) {
                     operator = refEnd = undefined;
+                    startIncludingSpaces = i;
+                    isRefOfFullRow = isRowReference(token.value);
+                    isRefOfFullCol = isColReference(token.value);
+                    if (token.type === "REFERENCE" || isRefOfFullRow || isRefOfFullCol) {
+                        refStart = i;
+                    }
                 }
                 else {
                     reset();
                 }
             }
         }
+        // Try to build a range with the last tokens we used
         const i = result.length - 1;
         if (startIncludingSpaces && refStart && operator && refEnd) {
             const newToken = {
@@ -16557,7 +16863,7 @@
             var _a;
             switch (cmd.type) {
                 case "CREATE_CHART":
-                    this.addFigure(cmd.id, cmd.sheetId, cmd.position);
+                    this.addFigure(cmd.id, cmd.sheetId, cmd.position, cmd.size);
                     this.addChart(cmd.id, cmd.sheetId, cmd.definition);
                     break;
                 case "UPDATE_CHART": {
@@ -16685,13 +16991,19 @@
         /**
          * Add a figure with tag chart with the given id at the given position
          */
-        addFigure(id, sheetId, position = { x: 0, y: 0 }) {
+        addFigure(id, sheetId, position = { x: 0, y: 0 }, size = {
+            width: DEFAULT_FIGURE_WIDTH,
+            height: DEFAULT_FIGURE_HEIGHT,
+        }) {
+            if (this.getters.getFigure(sheetId, id)) {
+                return;
+            }
             const figure = {
                 id,
                 x: position.x,
                 y: position.y,
-                height: 335,
-                width: 536,
+                width: size.width,
+                height: size.height,
                 tag: "chart",
             };
             this.dispatch("CREATE_FIGURE", { sheetId, figure });
@@ -16790,7 +17102,7 @@
                 case "ADD_CONDITIONAL_FORMAT":
                     const cf = {
                         ...cmd.cf,
-                        ranges: cmd.target.map(zoneToXc),
+                        ranges: cmd.ranges.map((rangeData) => this.getters.getRangeString(this.getters.getRangeFromRangeData(rangeData), cmd.sheetId)),
                     };
                     this.addConditionalFormatting(cf, cmd.sheetId);
                     break;
@@ -16903,15 +17215,15 @@
                 return 24 /* InvalidSheetId */;
             const ruleIndex = this.cfRules[sheetId].findIndex((cf) => cf.id === cfId);
             if (ruleIndex === -1)
-                return 70 /* InvalidConditionalFormatId */;
+                return 67 /* InvalidConditionalFormatId */;
             const cfIndex2 = direction === "up" ? ruleIndex - 1 : ruleIndex + 1;
             if (cfIndex2 < 0 || cfIndex2 >= this.cfRules[sheetId].length) {
-                return 70 /* InvalidConditionalFormatId */;
+                return 67 /* InvalidConditionalFormatId */;
             }
             return 0 /* Success */;
         }
         checkEmptyRange(cmd) {
-            return cmd.target.length ? 0 /* Success */ : 21 /* EmptyRange */;
+            return cmd.ranges.length ? 0 /* Success */ : 21 /* EmptyRange */;
         }
         checkCFRule(cmd) {
             const rule = cmd.cf.rule;
@@ -16947,10 +17259,10 @@
                     const errors = [];
                     const isEmpty = (value) => value === undefined || value === "";
                     if (expectedNumber >= 1 && isEmpty(rule.values[0])) {
-                        errors.push(50 /* FirstArgMissing */);
+                        errors.push(47 /* FirstArgMissing */);
                     }
                     if (expectedNumber >= 2 && isEmpty(rule.values[1])) {
-                        errors.push(51 /* SecondArgMissing */);
+                        errors.push(48 /* SecondArgMissing */);
                     }
                     return errors.length ? errors : 0 /* Success */;
                 }
@@ -16962,15 +17274,15 @@
                 (threshold.value === "" || isNaN(threshold.value))) {
                 switch (thresholdName) {
                     case "min":
-                        return 52 /* MinNaN */;
+                        return 49 /* MinNaN */;
                     case "max":
-                        return 54 /* MaxNaN */;
+                        return 51 /* MaxNaN */;
                     case "mid":
-                        return 53 /* MidNaN */;
+                        return 50 /* MidNaN */;
                     case "upperInflectionPoint":
-                        return 55 /* ValueUpperInflectionNaN */;
+                        return 52 /* ValueUpperInflectionNaN */;
                     case "lowerInflectionPoint":
-                        return 56 /* ValueLowerInflectionNaN */;
+                        return 53 /* ValueLowerInflectionNaN */;
                 }
             }
             return 0 /* Success */;
@@ -16984,15 +17296,15 @@
             catch (error) {
                 switch (thresholdName) {
                     case "min":
-                        return 57 /* MinInvalidFormula */;
+                        return 54 /* MinInvalidFormula */;
                     case "max":
-                        return 59 /* MaxInvalidFormula */;
+                        return 56 /* MaxInvalidFormula */;
                     case "mid":
-                        return 58 /* MidInvalidFormula */;
+                        return 55 /* MidInvalidFormula */;
                     case "upperInflectionPoint":
-                        return 60 /* ValueUpperInvalidFormula */;
+                        return 57 /* ValueUpperInvalidFormula */;
                     case "lowerInflectionPoint":
-                        return 61 /* ValueLowerInvalidFormula */;
+                        return 58 /* ValueLowerInvalidFormula */;
                 }
             }
             return 0 /* Success */;
@@ -17009,7 +17321,7 @@
             if (["number", "percentage", "percentile"].includes(rule.lowerInflectionPoint.type) &&
                 rule.lowerInflectionPoint.type === rule.upperInflectionPoint.type &&
                 Number(minValue) > Number(maxValue)) {
-                return 47 /* LowerBiggerThanUpper */;
+                return 44 /* LowerBiggerThanUpper */;
             }
             return 0 /* Success */;
         }
@@ -17019,7 +17331,7 @@
             if (["number", "percentage", "percentile"].includes(rule.minimum.type) &&
                 rule.minimum.type === rule.maximum.type &&
                 stringToNumber(minValue) >= stringToNumber(maxValue)) {
-                return 46 /* MinBiggerThanMax */;
+                return 43 /* MinBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -17031,7 +17343,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.midpoint.type === rule.maximum.type &&
                 stringToNumber(midValue) >= stringToNumber(maxValue)) {
-                return 48 /* MidBiggerThanMax */;
+                return 45 /* MidBiggerThanMax */;
             }
             return 0 /* Success */;
         }
@@ -17043,7 +17355,7 @@
                 ["number", "percentage", "percentile"].includes(rule.midpoint.type) &&
                 rule.minimum.type === rule.midpoint.type &&
                 stringToNumber(minValue) >= stringToNumber(midValue)) {
-                return 49 /* MinBiggerThanMid */;
+                return 46 /* MinBiggerThanMid */;
             }
             return 0 /* Success */;
         }
@@ -17142,7 +17454,7 @@
         checkFigureExists(sheetId, figureId) {
             var _a;
             if (((_a = this.figures[sheetId]) === null || _a === void 0 ? void 0 : _a[figureId]) === undefined) {
-                return 69 /* FigureDoesNotExist */;
+                return 66 /* FigureDoesNotExist */;
             }
             return 0 /* Success */;
         }
@@ -17349,7 +17661,7 @@
                         : this.getters.getNumberRows(cmd.sheetId);
                     return (hiddenGroup || []).flat().concat(cmd.elements).length < elements
                         ? 0 /* Success */
-                        : 65 /* TooManyHiddenElements */;
+                        : 62 /* TooManyHiddenElements */;
                 }
             }
             return 0 /* Success */;
@@ -17757,7 +18069,7 @@
             for (const zone of target) {
                 for (const zone2 of target) {
                     if (zone !== zone2 && overlap(zone, zone2)) {
-                        return 64 /* MergeOverlap */;
+                        return 61 /* MergeOverlap */;
                     }
                 }
             }
@@ -18232,6 +18544,12 @@
             }
             return name;
         }
+        getSheetSize(sheetId) {
+            return {
+                height: this.getNumberRows(sheetId),
+                width: this.getNumberCols(sheetId),
+            };
+        }
         // ---------------------------------------------------------------------------
         // Row/Col manipulation
         // ---------------------------------------------------------------------------
@@ -18673,6 +18991,9 @@
             if ("target" in cmd && Array.isArray(cmd.target)) {
                 zones.push(...cmd.target);
             }
+            if ("ranges" in cmd && Array.isArray(cmd.ranges)) {
+                zones.push(...cmd.ranges.map((rangeData) => this.getters.getRangeFromRangeData(rangeData).zone));
+            }
             if (!zones.every(isZoneValid)) {
                 return 22 /* InvalidRange */;
             }
@@ -18714,6 +19035,7 @@
         "getGridLinesVisibility",
         "getNextSheetName",
         "isEmpty",
+        "getSheetSize",
     ];
 
     /**
@@ -18811,7 +19133,7 @@
                     if (this.lastCellSelected.col !== undefined && this.lastCellSelected.row !== undefined) {
                         return 0 /* Success */;
                     }
-                    return 44 /* InvalidAutofillSelection */;
+                    return 41 /* InvalidAutofillSelection */;
                 case "AUTOFILL_AUTO":
                     const zone = this.getters.getSelectedZone();
                     return zone.top === zone.bottom
@@ -20209,6 +20531,7 @@
                     break;
                 case "START_CHANGE_HIGHLIGHT":
                     this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+                    const range = this.getters.getRangeFromRangeData(cmd.range);
                     const previousRefToken = this.currentTokens
                         .filter((token) => token.type === "REFERENCE")
                         .find((token) => {
@@ -20216,15 +20539,19 @@
                         const [xc, sheet] = value.split("!").reverse();
                         const sheetName = sheet || this.getters.getSheetName(this.sheetId);
                         const activeSheetId = this.getters.getActiveSheetId();
-                        return (isEqual(this.getters.expandZone(activeSheetId, toZone(xc)), cmd.zone) &&
-                            this.getters.getSheetName(activeSheetId) === sheetName);
+                        if (this.getters.getSheetName(activeSheetId) !== sheetName) {
+                            return false;
+                        }
+                        const refRange = this.getters.getRangeFromSheetXC(activeSheetId, xc);
+                        return isEqual(this.getters.expandZone(activeSheetId, refRange.zone), range.zone);
                     });
                     this.previousRef = previousRefToken.value;
                     this.previousRange = this.getters.getRangeFromSheetXC(this.getters.getActiveSheetId(), this.previousRef);
                     this.selectionInitialStart = previousRefToken.start;
                     break;
                 case "CHANGE_HIGHLIGHT":
-                    const newRef = this.getZoneReference(cmd.zone, this.previousRange.parts);
+                    const cmdRange = this.getters.getRangeFromRangeData(cmd.range);
+                    const newRef = this.getRangeReference(cmdRange, this.previousRange.parts);
                     this.selectionStart = this.selectionInitialStart;
                     this.selectionEnd = this.selectionInitialStart + this.previousRef.length;
                     this.replaceSelection(newRef);
@@ -20333,7 +20660,7 @@
         validateSelection(length, start, end) {
             return start >= 0 && start <= length && end >= 0 && end <= length
                 ? 0 /* Success */
-                : 45 /* WrongComposerSelection */;
+                : 42 /* WrongComposerSelection */;
         }
         onColumnsRemoved(cmd) {
             if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
@@ -20510,6 +20837,16 @@
                 selectedXc = `${sheetName}!${selectedXc}`;
             }
             return selectedXc;
+        }
+        getRangeReference(range, fixedParts = [{ colFixed: false, rowFixed: false }]) {
+            if (fixedParts.length === 1 && getZoneArea(range.zone) > 1) {
+                fixedParts.push({ ...fixedParts[0] });
+            }
+            else if (fixedParts.length === 2 && getZoneArea(range.zone) === 1) {
+                fixedParts.pop();
+            }
+            const newRange = range.clone({ parts: this.previousRange.parts });
+            return this.getters.getSelectionRangeString(newRange, this.getters.getEditionSheet());
         }
         /**
          * Replace the current selection by a new text.
@@ -20862,7 +21199,8 @@
              */
             function refFn(range, isMeta, functionName, paramNumber) {
                 if (isMeta) {
-                    return evalContext.getters.getRangeString(range, range.sheetId);
+                    // Use zoneToXc of zone instead of getRangeString to avoid sending unbounded ranges
+                    return zoneToXc(range.zone);
                 }
                 if (!isZoneValid(range.zone)) {
                     throw new InvalidReferenceError();
@@ -21127,7 +21465,7 @@
                             break;
                         default:
                             for (let ref of cf.ranges) {
-                                const zone = toZone(ref);
+                                const zone = this.getters.getRangeFromSheetXC(activeSheetId, ref).zone;
                                 for (let row = zone.top; row <= zone.bottom; row++) {
                                     for (let col = zone.left; col <= zone.right; col++) {
                                         const pr = this.rulePredicate[cf.rule.type];
@@ -21177,8 +21515,8 @@
                 lowerInflectionPoint > upperInflectionPoint) {
                 return;
             }
-            const zone = toZone(range);
             const activeSheetId = this.getters.getActiveSheetId();
+            const zone = this.getters.getRangeFromSheetXC(activeSheetId, range).zone;
             const computedIcons = this.computedIcons[activeSheetId];
             const iconSet = [rule.icons.upper, rule.icons.middle, rule.icons.lower];
             for (let row = zone.top; row <= zone.bottom; row++) {
@@ -21217,8 +21555,8 @@
                 (midValue && (minValue >= midValue || midValue >= maxValue))) {
                 return;
             }
-            const zone = toZone(range);
             const activeSheetId = this.getters.getActiveSheetId();
+            const zone = this.getters.getRangeFromSheetXC(activeSheetId, range).zone;
             const computedStyle = this.computedStyles[activeSheetId];
             const colorCellArgs = [];
             if (rule.midpoint && midValue) {
@@ -21294,14 +21632,14 @@
                 currentRanges = rules[replaceIndex].ranges;
             }
             currentRanges = currentRanges.concat(toAdd);
-            const newRange = recomputeZones(currentRanges, toRemove);
+            const newRangesXC = recomputeZones(currentRanges, toRemove);
             this.dispatch("ADD_CONDITIONAL_FORMAT", {
                 cf: {
                     id: cf.id,
                     rule: cf.rule,
                     stopIfTrue: cf.stopIfTrue,
                 },
-                target: newRange.map(toZone),
+                ranges: newRangesXC.map((xc) => this.getters.getRangeDataFromXc(sheetId, xc)),
                 sheetId,
             });
         }
@@ -21309,7 +21647,7 @@
             const xc = toXC(target.col, target.row);
             for (let rule of this.getters.getConditionalFormats(origin.sheetId)) {
                 for (let range of rule.ranges) {
-                    if (isInside(origin.col, origin.row, toZone(range))) {
+                    if (isInside(origin.col, origin.row, this.getters.getRangeFromSheetXC(origin.sheetId, range).zone)) {
                         const cf = rule;
                         const toRemoveRange = [];
                         if (operation === "CUT") {
@@ -21718,9 +22056,6 @@
     HighlightPlugin.layers = [1 /* Highlights */];
     HighlightPlugin.getters = ["getHighlights"];
 
-    // -----------------------------------------------------------------------------
-    // Constants, types, helpers, ...
-    // -----------------------------------------------------------------------------
     class RendererPlugin extends UIPlugin {
         constructor() {
             super(...arguments);
@@ -21951,18 +22286,22 @@
         }
         drawCellBackground(renderingContext) {
             const { ctx, thinLineWidth } = renderingContext;
-            ctx.lineWidth = 0.3 * thinLineWidth;
-            const inset = 0.1 * thinLineWidth;
+            const areGridLinesVisible = !this.getters.isDashboard() &&
+                this.getters.getGridLinesVisibility(this.getters.getActiveSheetId());
+            ctx.lineWidth = areGridLinesVisible ? 0.3 * thinLineWidth : thinLineWidth;
+            const inset = areGridLinesVisible ? 0.1 * thinLineWidth : 0;
             ctx.strokeStyle = "#111";
-            const areGridLinesVisible = this.getters.getGridLinesVisibility(this.getters.getActiveSheetId());
             for (let box of this.boxes) {
                 // fill color
                 let style = box.style;
                 if ((style.fillColor && style.fillColor !== "#ffffff") || box.isMerge) {
                     ctx.fillStyle = style.fillColor || "#ffffff";
-                    ctx.fillRect(box.x, box.y, box.width, box.height);
                     if (areGridLinesVisible) {
+                        ctx.fillRect(box.x, box.y, box.width, box.height);
                         ctx.strokeRect(box.x + inset, box.y + inset, box.width - 2 * inset, box.height - 2 * inset);
+                    }
+                    else {
+                        ctx.fillRect(box.x - thinLineWidth, box.y - thinLineWidth, box.width + 2 * thinLineWidth, box.height + 2 * thinLineWidth);
                     }
                 }
                 if (box.error) {
@@ -23162,7 +23501,7 @@
                 .filter((range) => this.getters.isRangeValid(range))
                 .filter((reference) => this.shouldBeHighlighted(this.activeSheet, reference));
             return XCs.map((xc) => ({
-                zone: toZone(xc),
+                zone: this.getters.getRangeFromSheetXC(this.activeSheet, xc).zone,
                 sheetId: this.activeSheet,
                 color,
             }));
@@ -23866,7 +24205,7 @@
             for (let row = zone.top; row <= zone.bottom; row++) {
                 for (let col = zone.left; col <= zone.right; col++) {
                     if (!this.getters.isInMerge(sheetId, col, row)) {
-                        return 62 /* InvalidSortZone */;
+                        return 59 /* InvalidSortZone */;
                     }
                 }
             }
@@ -23887,7 +24226,7 @@
                 ];
                 return widthCurrent === widthFirst && heightCurrent === heightFirst;
             })) {
-                return 62 /* InvalidSortZone */;
+                return 59 /* InvalidSortZone */;
             }
             return 0 /* Success */;
         }
@@ -24283,7 +24622,7 @@
                     return this.checkOffsetValidity(cmd.offsetX, cmd.offsetY);
                 case "RESIZE_VIEWPORT":
                     if (cmd.width < 0 || cmd.height < 0) {
-                        return 68 /* InvalidViewportSize */;
+                        return 65 /* InvalidViewportSize */;
                     }
                     return 0 /* Success */;
                 default:
@@ -24456,7 +24795,7 @@
             const sheet = this.getters.getActiveSheet();
             const { maxOffsetX, maxOffsetY } = this.getMaximumViewportOffset(sheet);
             if (offsetX < 0 || offsetY < 0 || offsetY > maxOffsetY || offsetX > maxOffsetX) {
-                return 67 /* InvalidOffset */;
+                return 64 /* InvalidOffset */;
             }
             return 0 /* Success */;
         }
@@ -25449,7 +25788,7 @@
     padding: 0;
     margin: 0;
     border: 0;
-    z-index: 5;
+    z-index: ${ComponentsImportance.Composer};
     flex-grow: 1;
     max-height: inherit;
     .o-composer {
@@ -25809,7 +26148,8 @@
             const highlight = highlights.find((highlight) => {
                 if (highlight.sheetId !== refSheet)
                     return false;
-                let zone = toZone(xc);
+                const range = this.env.model.getters.getRangeFromSheetXC(refSheet, xc);
+                let zone = range.zone;
                 const { height, width } = zoneToDimension(zone);
                 zone = height * width === 1 ? this.env.model.getters.expandZone(refSheet, zone) : zone;
                 return isEqual(zone, highlight.zone);
@@ -25894,7 +26234,7 @@
     const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
     css /* scss */ `
   div.o-grid-composer {
-    z-index: 5;
+    z-index: ${ComponentsImportance.Composer};
     box-sizing: border-box;
     position: absolute;
     border: ${COMPOSER_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
@@ -26010,12 +26350,13 @@
     position: absolute;
     bottom: 3px;
     right: 3px;
+    z-index: ${ComponentsImportance.Figure};
     &:focus {
       outline: none;
     }
     &.active {
       border: ${ACTIVE_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
-      z-index: 1;
+      z-index: ${ComponentsImportance.Figure + 1};
     }
 
     &.o-dragging {
@@ -26024,7 +26365,7 @@
     }
 
     .o-anchor {
-      z-index: 1000;
+      z-index: ${ComponentsImportance.ChartAnchor};
       position: absolute;
       outline: ${BORDER_WIDTH}px solid white;
       width: ${ANCHOR_SIZE}px;
@@ -26533,7 +26874,7 @@
       top: calc(${HEADER_HEIGHT}px / 2 - ${UNHIDE_ICON_EDGE_LENGTH}px / 2);
     }
     .o-unhide:hover {
-      z-index: 1;
+      z-index: ${ComponentsImportance.Grid + 1};
       background-color: lightgrey;
     }
     .o-unhide > svg {
@@ -26716,7 +27057,7 @@
       top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
     }
     .o-unhide:hover {
-      z-index: 1;
+      z-index: ${ComponentsImportance.Grid + 1};
       background-color: lightgrey;
     }
   }
@@ -26952,6 +27293,11 @@
     }
     Corner.template = "o-spreadsheet-Corner";
 
+    css /*SCSS*/ `
+  .o-highlight {
+    z-index: ${ComponentsImportance.Highlight};
+  }
+`;
     class Highlight extends owl.Component {
         constructor() {
             super(...arguments);
@@ -26961,6 +27307,7 @@
             });
         }
         onResizeHighlight(isLeft, isTop) {
+            const activeSheet = this.env.model.getters.getActiveSheet();
             this.highlightState.shiftingMode = "isResizing";
             const z = this.props.zone;
             const pivotCol = isLeft ? z.right : z.left;
@@ -26968,7 +27315,9 @@
             let lastCol = isLeft ? z.left : z.right;
             let lastRow = isTop ? z.top : z.bottom;
             let currentZone = z;
-            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
+            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", {
+                range: this.env.model.getters.getRangeDataFromZone(activeSheet.id, currentZone),
+            });
             const mouseMove = (col, row) => {
                 if (lastCol !== col || lastRow !== row) {
                     const activeSheetId = this.env.model.getters.getActiveSheetId();
@@ -26982,7 +27331,9 @@
                     };
                     newZone = this.env.model.getters.expandZone(activeSheetId, newZone);
                     if (!isEqual(newZone, currentZone)) {
-                        this.env.model.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
+                        this.env.model.dispatch("CHANGE_HIGHLIGHT", {
+                            range: this.env.model.getters.getRangeDataFromZone(activeSheet.id, newZone),
+                        });
                         currentZone = newZone;
                     }
                 }
@@ -27009,7 +27360,9 @@
             const deltaRowMin = -z.top;
             const deltaRowMax = this.env.model.getters.getNumberRows(activeSheetId) - z.bottom - 1;
             let currentZone = z;
-            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", { zone: currentZone });
+            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", {
+                range: this.env.model.getters.getRangeDataFromZone(activeSheetId, currentZone),
+            });
             let lastCol = initCol;
             let lastRow = initRow;
             const mouseMove = (col, row) => {
@@ -27026,7 +27379,9 @@
                     };
                     newZone = this.env.model.getters.expandZone(activeSheetId, newZone);
                     if (!isEqual(newZone, currentZone)) {
-                        this.env.model.dispatch("CHANGE_HIGHLIGHT", { zone: newZone });
+                        this.env.model.dispatch("CHANGE_HIGHLIGHT", {
+                            range: this.env.model.getters.getRangeDataFromZone(activeSheetId, newZone),
+                        });
                         currentZone = newZone;
                     }
                 }
@@ -27411,7 +27766,7 @@
     .o-scrollbar {
       position: absolute;
       overflow: auto;
-      z-index: 2;
+      z-index: ${ComponentsImportance.ScrollBar};
       &.vertical {
         right: 0;
         bottom: ${SCROLLBAR_WIDTH$1}px;
@@ -27715,6 +28070,18 @@
                 left: col.end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
                 top: row.end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
             };
+        }
+        isAutoFillActive() {
+            const zone = this.env.model.getters.getSelectedZone();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const { width, height } = this.env.model.getters.getViewportDimension();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const rightCol = this.env.model.getters.getColDimensions(sheetId, zone.right);
+            const bottomRow = this.env.model.getters.getRowDimensions(sheetId, zone.bottom);
+            return (rightCol.end <= offsetX + width &&
+                rightCol.end > offsetX &&
+                bottomRow.end <= offsetY + height &&
+                bottomRow.end > offsetY);
         }
         drawGrid() {
             //reposition scrollbar
@@ -28239,7 +28606,7 @@
         position: absolute;
         top: calc(100% + 5px);
         left: 0;
-        z-index: 10;
+        z-index: ${ComponentsImportance.Dropdown};
         box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
         background-color: #f6f6f6;
 
@@ -28482,7 +28849,7 @@
             position: absolute;
             top: calc(100% + 5px);
             left: 0;
-            z-index: 10;
+            z-index: ${ComponentsImportance.Dropdown};
             box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
             background-color: white;
 
@@ -29020,6 +29387,7 @@
         { match: isTargetDependent, fn: transformTarget },
         { match: isPositionDependent, fn: transformPosition },
         { match: isGridDependent, fn: transformDimension },
+        { match: isRangeDependant, fn: transformRangeData },
     ];
     /**
      * Get the result of applying the operation transformations on the given command
@@ -29055,7 +29423,7 @@
         return transformedCommands;
     }
     /**
-     * Apply a generic transformation based on the characteristic of the given commands.
+     * Apply all generic transformation based on the characteristic of the given commands.
      */
     function genericTransform(cmd, executed) {
         for (const { match, fn } of transformations) {
@@ -29067,7 +29435,7 @@
                 if (result === "IGNORE_COMMAND") {
                     return undefined;
                 }
-                return result;
+                cmd = result;
             }
         }
         return cmd;
@@ -29085,6 +29453,10 @@
         return "SKIP_TRANSFORMATION";
     }
     function transformTarget(cmd, executed) {
+        const transformSheetResult = transformSheetId(cmd, executed);
+        if (transformSheetResult !== "SKIP_TRANSFORMATION") {
+            return transformSheetResult === "IGNORE_COMMAND" ? "IGNORE_COMMAND" : cmd;
+        }
         const target = [];
         for (const zone of cmd.target) {
             const newZone = transformZone(zone, executed);
@@ -29097,7 +29469,30 @@
         }
         return { ...cmd, target };
     }
+    function transformRangeData(cmd, executed) {
+        const ranges = [];
+        const deletedSheet = executed.type === "DELETE_SHEET" && executed.sheetId;
+        for (const range of cmd.ranges) {
+            if (range._sheetId !== executed.sheetId) {
+                ranges.push({ ...range, _zone: range._zone });
+            }
+            else {
+                const newZone = transformZone(range._zone, executed);
+                if (newZone && deletedSheet !== range._sheetId) {
+                    ranges.push({ ...range, _zone: newZone });
+                }
+            }
+        }
+        if (!ranges.length) {
+            return "IGNORE_COMMAND";
+        }
+        return { ...cmd, ranges };
+    }
     function transformDimension(cmd, executed) {
+        const transformSheetResult = transformSheetId(cmd, executed);
+        if (transformSheetResult !== "SKIP_TRANSFORMATION") {
+            return transformSheetResult === "IGNORE_COMMAND" ? "IGNORE_COMMAND" : cmd;
+        }
         if (executed.type === "ADD_COLUMNS_ROWS" || executed.type === "REMOVE_COLUMNS_ROWS") {
             const isUnique = cmd.type === "ADD_COLUMNS_ROWS";
             const field = isUnique ? "base" : "elements";
@@ -29137,6 +29532,10 @@
      * (Add/remove cols/rows) and a merge
      */
     function transformPosition(cmd, executed) {
+        const transformSheetResult = transformSheetId(cmd, executed);
+        if (transformSheetResult !== "SKIP_TRANSFORMATION") {
+            return transformSheetResult === "IGNORE_COMMAND" ? "IGNORE_COMMAND" : cmd;
+        }
         if (executed.type === "ADD_COLUMNS_ROWS" || executed.type === "REMOVE_COLUMNS_ROWS") {
             return transformPositionWithGrid(cmd, executed);
         }
@@ -30007,7 +30406,7 @@
         }
         allowDispatch(cmd) {
             if (this.isWaitingForUndoRedo) {
-                return 63 /* WaitingSessionConfirmation */;
+                return 60 /* WaitingSessionConfirmation */;
             }
             switch (cmd.type) {
                 case "REQUEST_UNDO":
@@ -30182,12 +30581,9 @@
                         if (range.sheetId !== cmd.sheetId) {
                             return { changeType: "NONE" };
                         }
-                        range = {
-                            ...range,
-                            zone: { ...range.zone },
-                            invalidSheetName: this.getters.getSheetName(cmd.sheetId),
-                            sheetId: "",
-                        };
+                        const invalidSheetName = this.getters.getSheetName(cmd.sheetId);
+                        const sheetId = "";
+                        range = range.clone({ sheetId, invalidSheetName });
                         return { changeType: "REMOVE", range };
                     }, cmd.sheetId);
                     break;
@@ -30198,9 +30594,9 @@
                             return { changeType: "CHANGE", range };
                         }
                         if (cmd.name && range.invalidSheetName === cmd.name) {
-                            const newRange = { ...range, zone: { ...range.zone } };
-                            newRange.invalidSheetName = undefined;
-                            newRange.sheetId = cmd.sheetId;
+                            const invalidSheetName = undefined;
+                            const sheetId = cmd.sheetId;
+                            const newRange = range.clone({ sheetId, invalidSheetName });
                             return { changeType: "CHANGE", range: newRange };
                         }
                         return { changeType: "NONE" };
@@ -30220,7 +30616,7 @@
                         const prefixSheet = cmd.sheetId === targetSheetId ? adaptedRange.prefixSheet : true;
                         return {
                             changeType: "MOVE",
-                            range: { ...adaptedRange, sheetId: targetSheetId, prefixSheet },
+                            range: adaptedRange.clone({ sheetId: targetSheetId, prefixSheet }),
                         };
                     });
                     break;
@@ -30244,10 +30640,9 @@
             };
         }
         createAdaptedRange(range, dimension, operation, by) {
-            return {
-                ...range,
-                zone: createAdaptedZone(range.zone, dimension, operation, by),
-            };
+            const zone = createAdaptedZone(range.unboundedZone, dimension, operation, by);
+            const adaptedRange = range.clone({ zone });
+            return adaptedRange;
         }
         executeOnAllRanges(adaptRange, sheetId) {
             const func = this.verifyRangeRemoved(adaptRange);
@@ -30266,49 +30661,39 @@
         addRangeProvider(provider) {
             this.providers.push(provider);
         }
-        /**
-         * Check that a zone is valid regarding the order of top-bottom and left-right.
-         * Left should be smaller than right, top should be smaller than bottom.
-         * If it's not the case, simply invert them, and invert the linked parts
-         * (in place!)
-         */
-        orderZone(zone, parts) {
-            if (zone.right < zone.left) {
-                let right = zone.right;
-                zone.right = zone.left;
-                zone.left = right;
-                let rightFixed = parts[1].colFixed;
-                parts[1].colFixed = parts[0].colFixed;
-                parts[0].colFixed = rightFixed;
-            }
-            if (zone.bottom < zone.top) {
-                let bottom = zone.bottom;
-                zone.bottom = zone.top;
-                zone.top = bottom;
-                let bottomFixed = parts[1].rowFixed;
-                parts[1].rowFixed = parts[0].rowFixed;
-                parts[0].rowFixed = bottomFixed;
-            }
-        }
         // ---------------------------------------------------------------------------
         // Getters
         // ---------------------------------------------------------------------------
         createAdaptedRanges(ranges, offsetX, offsetY, sheetId) {
-            return ranges.map((range) => {
+            const rangesImpl = ranges.map((range) => RangeImpl.fromRange(range, this.getters));
+            return rangesImpl.map((range) => {
                 if (!isZoneValid(range.zone)) {
                     return range;
                 }
-                range = {
-                    ...range,
-                    sheetId: range.prefixSheet ? range.sheetId : sheetId,
-                    zone: {
-                        left: range.zone.left + (range.parts[0].colFixed ? 0 : offsetX),
-                        right: range.zone.right + ((range.parts[1] || range.parts[0]).colFixed ? 0 : offsetX),
-                        top: range.zone.top + (range.parts[0].rowFixed ? 0 : offsetY),
-                        bottom: range.zone.bottom + ((range.parts[1] || range.parts[0]).rowFixed ? 0 : offsetY),
-                    },
+                const copySheetId = range.prefixSheet ? range.sheetId : sheetId;
+                const unboundZone = {
+                    ...range.unboundedZone,
+                    // Don't shift left if the range is a full row without header
+                    left: range.isFullRow && !range.unboundedZone.hasHeader
+                        ? range.unboundedZone.left
+                        : range.unboundedZone.left + (range.parts[0].colFixed ? 0 : offsetX),
+                    // Don't shift right if the range is a full row
+                    right: range.isFullRow
+                        ? range.unboundedZone.right
+                        : range.unboundedZone.right +
+                            ((range.parts[1] || range.parts[0]).colFixed ? 0 : offsetX),
+                    // Don't shift up if the range is a column row without header
+                    top: range.isFullCol && !range.unboundedZone.hasHeader
+                        ? range.unboundedZone.top
+                        : range.unboundedZone.top + (range.parts[0].rowFixed ? 0 : offsetY),
+                    // Don't shift down if the range is a full column
+                    bottom: range.isFullCol
+                        ? range.unboundedZone.bottom
+                        : range.unboundedZone.bottom +
+                            ((range.parts[1] || range.parts[0]).rowFixed ? 0 : offsetY),
                 };
-                this.orderZone(range.zone, range.parts);
+                range = range.clone({ sheetId: copySheetId, zone: unboundZone });
+                range.orderZone();
                 return range;
             });
         }
@@ -30318,42 +30703,46 @@
          * @param sheetXC the string description of a range, in the form SheetName!XC:XC
          */
         getRangeFromSheetXC(defaultSheetId, sheetXC) {
-            let xc = sheetXC;
-            let sheetName = "";
-            let sheetId;
-            let invalidSheetName;
-            let prefixSheet = false;
             if (!rangeReference.test(sheetXC)) {
-                return this.buildInvalidRange(sheetXC);
+                return new RangeImpl({
+                    sheetId: "",
+                    zone: { left: -1, top: -1, right: -1, bottom: -1 },
+                    parts: [],
+                    invalidXc: sheetXC,
+                    prefixSheet: false,
+                }, this.getters.getSheetSize);
             }
+            let sheetName = "";
+            let prefixSheet = false;
             if (sheetXC.includes("!")) {
-                [xc, sheetName] = sheetXC.split("!").reverse();
+                [sheetName, sheetXC] = sheetXC.split("!");
                 if (sheetName) {
-                    sheetId = this.getters.getSheetIdByName(sheetName);
                     prefixSheet = true;
-                    if (!sheetId) {
-                        invalidSheetName = sheetName;
-                    }
-                }
-                else {
-                    invalidSheetName = sheetName;
                 }
             }
-            const zone = toZoneWithoutBoundaryChanges(xc);
-            let rangeParts = xc.split(":").map((p) => {
-                return {
-                    colFixed: p.startsWith("$"),
-                    rowFixed: p.includes("$", 1),
-                };
+            const zone = toUnboundedZone(sheetXC);
+            const parts = RangeImpl.getRangeParts(sheetXC, zone);
+            const invalidSheetName = sheetName && !this.getters.getSheetIdByName(sheetName) ? sheetName : undefined;
+            const sheetId = this.getters.getSheetIdByName(sheetName) || defaultSheetId;
+            const rangeInterface = { prefixSheet, zone, sheetId, invalidSheetName, parts };
+            const range = new RangeImpl(rangeInterface, this.getters.getSheetSize);
+            range.orderZone();
+            return range;
+        }
+        /**
+         * Same as `getRangeString` but add all necessary merge to the range to make it a valid selection
+         */
+        getSelectionRangeString(range, forSheetId) {
+            const rangeImpl = RangeImpl.fromRange(range, this.getters);
+            const expandedZone = this.getters.expandZone(rangeImpl.sheetId, rangeImpl.zone);
+            const expandedRange = rangeImpl.clone({
+                zone: {
+                    ...expandedZone,
+                    bottom: rangeImpl.isFullCol ? undefined : expandedZone.bottom,
+                    right: rangeImpl.isFullRow ? undefined : expandedZone.right,
+                },
             });
-            this.orderZone(zone, rangeParts);
-            return {
-                sheetId: sheetId || defaultSheetId,
-                zone: zone,
-                parts: rangeParts,
-                invalidSheetName,
-                prefixSheet,
-            };
+            return this.getRangeString(expandedRange, forSheetId);
         }
         /**
          * Gets the string that represents the range as it is at the moment of the call.
@@ -30376,55 +30765,97 @@
             if (range.zone.left < 0 || range.zone.top < 0) {
                 return INCORRECT_RANGE_STRING;
             }
-            let prefixSheet = range.sheetId !== forSheetId || range.invalidSheetName || range.prefixSheet;
+            const rangeImpl = RangeImpl.fromRange(range, this.getters);
+            let prefixSheet = rangeImpl.sheetId !== forSheetId || rangeImpl.invalidSheetName || rangeImpl.prefixSheet;
             let sheetName = "";
             if (prefixSheet) {
-                if (range.invalidSheetName) {
-                    sheetName = range.invalidSheetName;
+                if (rangeImpl.invalidSheetName) {
+                    sheetName = rangeImpl.invalidSheetName;
                 }
                 else {
-                    sheetName = getComposerSheetName(this.getters.getSheetName(range.sheetId));
+                    sheetName = getComposerSheetName(this.getters.getSheetName(rangeImpl.sheetId));
                 }
             }
             if (prefixSheet && !sheetName) {
                 return INCORRECT_RANGE_STRING;
             }
-            let ref = Array(9).fill("");
-            ref[0] = range.parts && range.parts[0].colFixed ? "$" : "";
-            ref[1] = numberToLetters(range.zone.left);
-            ref[2] = range.parts && range.parts[0].rowFixed ? "$" : "";
-            ref[3] = String(range.zone.top + 1);
-            if (range.parts && range.parts.length === 2) {
+            let rangeString = this.getRangePartString(rangeImpl, 0);
+            if (rangeImpl.parts && rangeImpl.parts.length === 2) {
                 // this if converts A2:A2 into A2 except if any part of the original range had fixed row or column (with $)
-                if (range.zone.top !== range.zone.bottom ||
-                    range.zone.left !== range.zone.right ||
-                    range.parts[0].rowFixed ||
-                    range.parts[0].colFixed ||
-                    range.parts[1].rowFixed ||
-                    range.parts[1].colFixed) {
-                    ref[4] = ":";
-                    ref[5] = range.parts[1].colFixed ? "$" : "";
-                    ref[6] = numberToLetters(range.zone.right);
-                    ref[7] = range.parts[1].rowFixed ? "$" : "";
-                    ref[8] = String(range.zone.bottom + 1);
+                if (rangeImpl.zone.top !== rangeImpl.zone.bottom ||
+                    rangeImpl.zone.left !== rangeImpl.zone.right ||
+                    rangeImpl.parts[0].rowFixed ||
+                    rangeImpl.parts[0].colFixed ||
+                    rangeImpl.parts[1].rowFixed ||
+                    rangeImpl.parts[1].colFixed) {
+                    rangeString += ":";
+                    rangeString += this.getRangePartString(rangeImpl, 1);
                 }
             }
-            return `${prefixSheet ? sheetName + "!" : ""}${concat(ref)}`;
+            return `${prefixSheet ? sheetName + "!" : ""}${rangeString}`;
+        }
+        getRangeDataFromXc(sheetId, xc) {
+            return this.getters.getRangeFromSheetXC(sheetId, xc).rangeData;
+        }
+        getRangeDataFromZone(sheetId, zone) {
+            return { _sheetId: sheetId, _zone: zone };
+        }
+        getRangeFromRangeData(data) {
+            const rangeInterface = {
+                prefixSheet: false,
+                zone: data._zone,
+                sheetId: data._sheetId,
+                invalidSheetName: undefined,
+                parts: [
+                    { colFixed: false, rowFixed: false },
+                    { colFixed: false, rowFixed: false },
+                ],
+            };
+            return new RangeImpl(rangeInterface, this.getters.getSheetSize);
         }
         // ---------------------------------------------------------------------------
         // Private
         // ---------------------------------------------------------------------------
-        buildInvalidRange(invalidXc) {
-            return {
-                parts: [],
-                prefixSheet: false,
-                zone: { left: -1, top: -1, right: -1, bottom: -1 },
-                sheetId: "",
-                invalidXc,
-            };
+        /**
+         * Get a Xc string that represent a part of a range
+         */
+        getRangePartString(range, part) {
+            const colFixed = range.parts && range.parts[part].colFixed ? "$" : "";
+            const col = part === 0 ? numberToLetters(range.zone.left) : numberToLetters(range.zone.right);
+            const rowFixed = range.parts && range.parts[part].rowFixed ? "$" : "";
+            const row = part === 0 ? String(range.zone.top + 1) : String(range.zone.bottom + 1);
+            let str = "";
+            if (range.isFullCol) {
+                if (part === 0 && range.unboundedZone.hasHeader) {
+                    str = colFixed + col + rowFixed + row;
+                }
+                else {
+                    str = colFixed + col;
+                }
+            }
+            else if (range.isFullRow) {
+                if (part === 0 && range.unboundedZone.hasHeader) {
+                    str = colFixed + col + rowFixed + row;
+                }
+                else {
+                    str = rowFixed + row;
+                }
+            }
+            else {
+                str = colFixed + col + rowFixed + row;
+            }
+            return str;
         }
     }
-    RangeAdapter.getters = ["getRangeString", "getRangeFromSheetXC", "createAdaptedRanges"];
+    RangeAdapter.getters = [
+        "getRangeString",
+        "getSelectionRangeString",
+        "getRangeFromSheetXC",
+        "createAdaptedRanges",
+        "getRangeDataFromXc",
+        "getRangeDataFromZone",
+        "getRangeFromRangeData",
+    ];
 
     /**
      * Stateless sequence of events that can be processed by consumers.
@@ -31363,6 +31794,29 @@
         const DPI = 96;
         return Math.round((value * 914400) / DPI);
     }
+    function getRangeSize(xc, defaultSheetIndex, data) {
+        const xcSplit = xc.split("!");
+        let rangeSheetIndex;
+        if (xcSplit.length > 1) {
+            const index = data.sheets.findIndex((sheet) => sheet.name === xcSplit[0]);
+            if (index < 0) {
+                throw new Error("Unable to find a sheet with the name " + xcSplit[0]);
+            }
+            rangeSheetIndex = index;
+            xc = xcSplit[1];
+        }
+        else {
+            rangeSheetIndex = Number(defaultSheetIndex);
+        }
+        const zone = toUnboundedZone(xc);
+        if (zone.right === undefined) {
+            zone.right = data.sheets[rangeSheetIndex].colNumber;
+        }
+        if (zone.bottom === undefined) {
+            zone.bottom = data.sheets[rangeSheetIndex].rowNumber;
+        }
+        return (zone.right - zone.left + 1) * (zone.bottom - zone.top + 1);
+    }
 
     /**
      * Represent a raw XML string
@@ -31473,7 +31927,7 @@
      */
     const catAxId = 17781237;
     const valAxId = 88853993;
-    function createChart(chart) {
+    function createChart(chart, chartSheetIndex, data) {
         const namespaces = [
             ["xmlns:r", RELATIONSHIP_NSR],
             ["xmlns:a", DRAWING_NS_A],
@@ -31503,7 +31957,7 @@
                 plot = addLineChart(chart.data);
                 break;
             case "pie":
-                plot = addDoughnutChart(chart.data, { holeSize: 0 });
+                plot = addDoughnutChart(chart.data, chartSheetIndex, data, { holeSize: 0 });
                 break;
         }
         let position = "t";
@@ -31704,21 +32158,16 @@
     ${addAx(axisPos, "c:valAx", valAxId, catAxId, { fontColor: chart.fontColor })}
   `;
     }
-    function addDoughnutChart(chart, { holeSize } = { holeSize: 50 }) {
+    function addDoughnutChart(chart, chartSheetIndex, data, { holeSize } = { holeSize: 50 }) {
         const colors = new ChartColors();
-        const maxLength = Math.max(...chart.dataSets.map((ds) => {
-            const zone = toZone(ds.range);
-            const { height, width } = zoneToDimension(zone);
-            return height * width;
-        }));
+        const maxLength = Math.max(...chart.dataSets.map((ds) => getRangeSize(ds.range, chartSheetIndex, data)));
         const doughnutColors = range(0, maxLength).map(() => toXlsxHexColor(colors.next()));
         const dataSetsNodes = [];
         for (const [dsIndex, dataset] of Object.entries(chart.dataSets).reverse()) {
             //dataset slice labels
-            const zone = toZone(dataset.range);
-            const { height, width } = zoneToDimension(zone);
+            const dsSize = getRangeSize(dataset.range, chartSheetIndex, data);
             const dataPoints = [];
-            for (const index of range(0, height * width)) {
+            for (const index of range(0, dsSize)) {
                 const pointShapeProperty = shapeProperty({
                     backgroundColor: doughnutColors[index],
                     line: { color: "FFFFFF", width: 1.5 },
@@ -32661,7 +33110,7 @@
                         type: "http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart",
                     });
                     chartRelIds.push(chartRelId);
-                    files.push(createXMLFile(createChart(chart), `xl/charts/chart${xlsxChartId}.xml`, "chart"));
+                    files.push(createXMLFile(createChart(chart, sheetIndex, data), `xl/charts/chart${xlsxChartId}.xml`, "chart"));
                 }
                 const drawingRelId = addRelsToFile(construct.relsFiles, `xl/worksheets/_rels/sheet${sheetIndex}.xml.rels`, {
                     target: `../drawings/drawing${sheetIndex}.xml`,
@@ -32822,7 +33271,7 @@
                 const command = { type, ...payload };
                 let status = this.status;
                 if (this.getters.isReadonly() && !canExecuteInReadonly(command)) {
-                    return new DispatchResult(66 /* Readonly */);
+                    return new DispatchResult(63 /* Readonly */);
                 }
                 switch (status) {
                     case 0 /* Ready */:
@@ -32895,6 +33344,10 @@
             this.getters.getRangeString = this.range.getRangeString.bind(this.range);
             this.getters.getRangeFromSheetXC = this.range.getRangeFromSheetXC.bind(this.range);
             this.getters.createAdaptedRanges = this.range.createAdaptedRanges.bind(this.range);
+            this.getters.getRangeDataFromXc = this.range.getRangeDataFromXc.bind(this.range);
+            this.getters.getRangeDataFromZone = this.range.getRangeDataFromZone.bind(this.range);
+            this.getters.getRangeFromRangeData = this.range.getRangeFromRangeData.bind(this.range);
+            this.getters.getSelectionRangeString = this.range.getSelectionRangeString.bind(this.range);
             this.uuidGenerator.setIsFastStrategy(true);
             // Initiate stream processor
             this.selection = new SelectionStreamProcessor(this.getters);
@@ -33216,8 +33669,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-06-27T09:48:33.439Z';
-    exports.__info__.hash = '9579a2a';
+    exports.__info__.date = '2022-07-01T07:03:33.794Z';
+    exports.__info__.hash = 'e42ced7';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

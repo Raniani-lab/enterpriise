@@ -32,7 +32,7 @@
         <field name="name">hr.referral.reward.employee.referral.kanban</field>
         <field name="model">hr.referral.reward</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_referral" js_class="employee_referral_dashboard">
+            <kanban class="oe_background_grey o_kanban_referral" js_class="referral_kanban">
                 <field name="id"/>
                 <field name="name"/>
                 <field name="cost"/>
@@ -43,7 +43,7 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card">
-                            <div class="ratio ratio-16x9 mb-3">
+                            <div class="ratio ratio-16x9 overflow-hidden mb-3">
                                 <div class="embed-responsive-item d-flex align-items-center">
                                     <img t-att-src="kanban_image('hr.referral.reward', 'image', record.id.raw_value)" class="img w-100" alt="Product"/>
                                 </div>

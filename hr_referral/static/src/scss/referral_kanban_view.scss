@@ -1,5 +1,5 @@
-.o_referral_kanban{
-    > div.o_legacy_kanban_view {
+.o_referral_kanban {
+    &.o_kanban_renderer {
         background: none !important;
     }
     .o_nocontent_help {
@@ -45,13 +45,13 @@
 }
 
 // ------- Kanban View Layout -------
-.o_legacy_kanban_view.o_kanban_ungrouped.o_kanban_referral .o_kanban_record{
+.o_kanban_renderer.o_kanban_ungrouped.o_kanban_referral .o_kanban_record{
     @include media-breakpoint-down(md) {
         margin: .5rem;
         flex: 1 1 auto;
     }
 }
-.o_legacy_kanban_view.o_kanban_referral {
+.o_kanban_renderer.o_kanban_referral {
     position: initial;
 
     // ---------- Kanban Record, fill image design ----------
@@ -86,7 +86,6 @@
     &.o_kanban_ungrouped.o_kanban_referral_job {
         .o_kanban_record {
             max-width: 450px;
-            padding: 1.5rem 1.5rem 1rem;
             @include media-breakpoint-up(sm) {
                 min-width: 450px;
             }
@@ -94,6 +93,8 @@
     }
     .o_kanban_referral_top_right{
         @include o-position-absolute($top: 0, $right: 0);
+        margin-top: 1px;
+        margin-right: 1px;
         display: flex;
         align-items: center;
         padding: $o-kanban-inside-vgutter $o-kanban-inside-hgutter;

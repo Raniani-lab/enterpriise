@@ -37,15 +37,16 @@
     'post_init_hook': '_update_stage',
     'assets': {
         'web.assets_backend': [
+            'hr_referral/static/src/views/*.js',
             'hr_referral/static/src/scss/referral_kanban_view.scss',
             'hr_referral/static/src/scss/_fonts.scss',
             'hr_referral/static/src/scss/hr_referral.scss',
             'hr_referral/static/src/scss/hr_onboarding.scss',
             'hr_referral/static/src/scss/progress_bar.scss',
-            'hr_referral/static/src/js/hr_referral_dashboard.js',
             'hr_referral/static/src/js/hr_referral_welcome.js',
         ],
         'web.assets_qweb': [
+            'hr_referral/static/src/views/*.xml',
             'hr_referral/static/src/xml/**/*',
         ],
     },

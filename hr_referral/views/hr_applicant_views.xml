@@ -33,7 +33,7 @@
         <field name="model">hr.applicant</field>
         <field name="priority">1000</field>
         <field name="arch" type="xml">
-            <kanban create="false" class="oe_background_grey o_kanban_dashboard o_kanban_referral" js_class="employee_referral_dashboard">
+            <kanban create="false" class="oe_background_grey o_kanban_dashboard o_kanban_referral" js_class="referral_kanban">
                 <field name="name"/>
                 <field name="partner_name"/>
                 <field name="job_id"/>
@@ -97,7 +97,7 @@
                             <div class="progress" style="z-index: 0;">
                                 <div class="progress-bar" role="progressbar" t-att-style="'width: ' + record.earned_points.value / record.max_points.value * 100 + '%;'" t-att-aria-valuenow="record.earned_points.value" aria-valuemin="0" t-att-aria-valuemax="record.max_points.value"/>                     </div>
                             <table class="table">
-                                <tr t-foreach="JSON.parse(record.shared_item_infos.raw_value)" t-as="stage">
+                                <tr t-foreach="JSON.parse(record.shared_item_infos.raw_value)" t-as="stage" t-key="stage">
                                     <td>
                                         <t t-if="stage.done"><i class="text-success fa fa-check" title="Done"></i></t>
                                         <t t-elif="record.referral_state.raw_value == 'closed'"><i class="text-danger fa fa-times" title="Closed"></i></t>

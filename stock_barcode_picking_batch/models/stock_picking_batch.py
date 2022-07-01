@@ -48,8 +48,7 @@ class StockPickingBatch(models.Model):
         :return: see `action_client_action`
         """
         new_picking_batch = self.env['stock.picking.batch'].create({})
-        action = new_picking_batch.action_client_action()
-        return {'action': action}
+        return new_picking_batch.action_client_action()
 
     def action_cancel_from_barcode(self):
         self.ensure_one()

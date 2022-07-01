@@ -26,22 +26,6 @@ FormRenderer.include({
     init: function () {
         this._super.apply(this, arguments);
         this.attachmentViewer = undefined;
-        /**
-         * Tracked thread of rendered attachments by attachment viewer.
-         *
-         * Useful for updating attachment viewer in case the thread linked to
-         * the attachments has been changed.
-         *
-         * Note that attachment viewer only requires attachments, but attachment
-         * viewer is not that well designed to update its content solely based
-         * on provided list attachments (until rewritten using OWL).
-         *
-         * In the meantime, it updates its content on change of thread and on
-         * change of amount of attachments. This doesn't cover some corner cases
-         * (like new list with same length and same thread), but it's good enough
-         * for the time being.
-         */
-        this._attachmentViewerThread = undefined;
         this._onResizeWindow = _.debounce(this._onResizeWindow.bind(this), 200);
     },
     /**
@@ -154,7 +138,7 @@ FormRenderer.include({
             if (this.attachmentViewer) {
                 // FIXME should be improved : what if somehow an attachment is replaced in a thread ?
                 if (
-                    this._attachmentViewerThread !== thread ||
+                    this.attachmentViewer.thread !== thread ||
                     this.attachmentViewer.attachments.length !== attachments.length
                 ) {
                     if (!attachments.length) {
@@ -182,7 +166,6 @@ FormRenderer.include({
                 });
             }
         }
-        this._attachmentViewerThread = thread;
     },
     /**
      * Reflects the move of chatter (from aside to underneath of form sheet or

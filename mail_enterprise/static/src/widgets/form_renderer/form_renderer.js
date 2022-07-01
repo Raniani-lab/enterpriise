@@ -25,7 +25,6 @@ FormRenderer.include({
      */
     init: function () {
         this._super.apply(this, arguments);
-        this.attachmentPreviewResID = undefined;
         this.attachmentViewer = undefined;
         /**
          * Tracked thread of rendered attachments by attachment viewer.
@@ -81,10 +80,17 @@ FormRenderer.include({
      * @override
      */
     hasAttachmentViewer() {
+        if (!this.messaging || !this.state.res_id) {
+            return false;
+        }
+        const thread = this.messaging.models['Thread'].insert({
+            id: this.state.res_id,
+            model: this.state.model,
+        });
         return (
             config.device.size_class >= config.device.SIZES.XXL &&
             this.attachmentViewerTarget && !$(this.attachmentViewerTarget).hasClass('o_invisible_modifier') &&
-            this.attachmentPreviewResID && this.attachmentPreviewResID === this.state.res_id
+            thread.attachmentsInWebClientView.length > 0
         );
     },
     /**
@@ -154,7 +160,6 @@ FormRenderer.include({
                     if (!attachments.length) {
                         this.attachmentViewer.destroy();
                         this.attachmentViewer = undefined;
-                        this.attachmentPreviewResID = undefined;
                         this._interchangeChatter();
                     } else {
                         this.attachmentViewer.updateContents(thread);
@@ -170,7 +175,6 @@ FormRenderer.include({
                 this.trigger_up('preview_attachment_validation');
                 this._updateChatterContainerTarget();
             } else {
-                this.attachmentPreviewResID = this.state.res_id;
                 this.attachmentViewer = new AttachmentViewer(this, thread);
                 this.attachmentViewer.appendTo($(this.attachmentViewerTarget)).then(function () {
                     self.trigger_up('preview_attachment_validation');

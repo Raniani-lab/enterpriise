@@ -364,4 +364,37 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         assert.equal(B4.evaluated.error.message, `There is no list with id "1"`);
         assert.equal(B4.evaluated.value, `#ERROR`);
     });
+
+    QUnit.test("can edit list domain", async (assert) => {
+        const { model } = await createSpreadsheetWithList();
+        const [listId] = model.getters.getListIds();
+        assert.deepEqual(model.getters.getListDefinition(listId).domain, []);
+        assert.strictEqual(getCellValue(model, "B2"), "TRUE");
+        model.dispatch("UPDATE_ODOO_LIST_DOMAIN", {
+            listId,
+            domain: [["foo", "in", [55]]],
+        });
+        assert.deepEqual(model.getters.getListDefinition(listId).domain, [["foo", "in", [55]]]);
+        await nextTick();
+        assert.strictEqual(getCellValue(model, "B2"), "");
+        model.dispatch("REQUEST_UNDO");
+        await nextTick();
+        assert.deepEqual(model.getters.getListDefinition(listId).domain, []);
+        await nextTick();
+        assert.strictEqual(getCellValue(model, "B2"), "TRUE");
+        model.dispatch("REQUEST_REDO");
+        assert.deepEqual(model.getters.getListDefinition(listId).domain, [["foo", "in", [55]]]);
+        await nextTick();
+        assert.strictEqual(getCellValue(model, "B2"), "");
+    });
+
+    QUnit.test("edited domain is exported", async (assert) => {
+        const { model } = await createSpreadsheetWithList();
+        const [listId] = model.getters.getListIds();
+        model.dispatch("UPDATE_ODOO_LIST_DOMAIN", {
+            listId,
+            domain: [["foo", "in", [55]]],
+        });
+        assert.deepEqual(model.exportData().lists["1"].domain, [["foo", "in", [55]]]);
+    });
 });

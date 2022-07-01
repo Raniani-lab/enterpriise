@@ -288,6 +288,22 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         assert.equal(model.getters.getListName(listA3), "new name");
     });
 
+    QUnit.test("Update the list domain from the side panel", async function (assert) {
+        const { model, env } = await createSpreadsheetFromListView();
+        const [listId] = model.getters.getListIds();
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        env.openSidePanel("LIST_PROPERTIES_PANEL", {
+            listId,
+        });
+        await nextTick();
+        const fixture = getFixture();
+        await click(fixture.querySelector(".o_edit_domain"));
+        await click(fixture.querySelector(".o_domain_add_first_node_button"));
+        await click(fixture.querySelector(".modal-footer .btn-primary"));
+        assert.deepEqual(model.getters.getListDefinition(listId).domain, [["id", "=", 1]]);
+        assert.equal(fixture.querySelector(".o_domain_selector_row").innerText, "ID\n= 1");
+    });
+
     QUnit.test(
         "Inserting a list preserves the ascending sorting from the list",
         async function (assert) {

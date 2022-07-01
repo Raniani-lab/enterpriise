@@ -110,7 +110,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
 
     /**
      * Get the computed domain of a pivot
-     *
+     * CLEAN ME not used outside of tests
      * @param {string} pivotId Id of the pivot
      * @returns {Array}
      */

@@ -93,6 +93,30 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
                 this.history.update("lists", lists);
                 break;
             }
+            case "UPDATE_ODOO_LIST_DOMAIN": {
+                this.history.update(
+                    "lists",
+                    cmd.listId,
+                    "definition",
+                    "searchParams",
+                    "domain",
+                    cmd.domain
+                );
+                const list = this.lists[cmd.listId];
+                this.dataSources.add(list.dataSourceId, ListDataSource, list.definition);
+                break;
+            }
+            case "UNDO":
+            case "REDO": {
+                const domainEditionCommands = cmd.commands.filter(
+                    (cmd) => cmd.type === "UPDATE_ODOO_LIST_DOMAIN"
+                );
+                for (const cmd of domainEditionCommands) {
+                    const list = this.lists[cmd.listId];
+                    this.dataSources.add(list.dataSourceId, ListDataSource, list.definition);
+                }
+                break;
+            }
         }
     }
 

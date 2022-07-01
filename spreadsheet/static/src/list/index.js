@@ -16,7 +16,7 @@ function identity(cmd) {
     return [cmd];
 }
 
-const { coreTypes, readonlyAllowedCommands } = spreadsheet;
+const { coreTypes, readonlyAllowedCommands, invalidateEvaluationCommands } = spreadsheet;
 const { corePluginRegistry, uiPluginRegistry, cellMenuRegistry } = spreadsheet.registries;
 
 corePluginRegistry.add("odooListPlugin", ListPlugin);
@@ -27,6 +27,9 @@ coreTypes.add("INSERT_ODOO_LIST");
 coreTypes.add("RENAME_ODOO_LIST");
 coreTypes.add("REMOVE_ODOO_LIST");
 coreTypes.add("RE_INSERT_ODOO_LIST");
+coreTypes.add("UPDATE_ODOO_LIST_DOMAIN");
+
+invalidateEvaluationCommands.add("UPDATE_ODOO_LIST_DOMAIN");
 
 readonlyAllowedCommands.add("ADD_LIST_DOMAIN");
 
@@ -39,7 +42,7 @@ cellMenuRegistry.add("list_see_record", {
 
 inverseCommandRegistry
     .add("INSERT_ODOO_LIST", identity)
+    .add("UPDATE_ODOO_LIST_DOMAIN", identity)
     .add("RE_INSERT_ODOO_LIST", identity)
     .add("RENAME_ODOO_LIST", identity)
     .add("REMOVE_ODOO_LIST", identity);
-

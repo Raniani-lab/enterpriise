@@ -2,6 +2,8 @@
 
 import { Domain } from "@web/core/domain";
 import { DomainSelector } from "@web/core/domain_selector/domain_selector";
+import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
+import { useService } from "@web/core/utils/hooks";
 import { _t } from "web.core";
 import { time_to_str } from "web.time";
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
@@ -11,30 +13,32 @@ const { Component, onWillStart } = owl;
 export default class PivotDetailsSidePanel extends Component {
     setup() {
         this.spreadsheetModel = undefined;
-        this.pivotDefinition = {};
+        this.dialog = useService("dialog");
 
         onWillStart(async () => {
             this.spreadsheetModel = await this.env.model.getters.getAsyncSpreadsheetPivotModel(
                 this.props.pivotId
             );
-            const definition = this.env.model.getters.getPivotDefinition(this.props.pivotId);
-            const modelDisplayName = await this.env.model.getters
+            this.modelDisplayName = await this.env.model.getters
                 .getSpreadsheetPivotDataSource(this.props.pivotId)
                 .getModelLabel();
-            this.pivotDefinition = {
-                model: definition.model,
-                modelDisplayName,
-                domain: new Domain(definition.domain).toString(),
-                dimensions: [
-                    ...definition.rowGroupBys,
-                    ...definition.colGroupBys,
-                ].map((fieldName) => this.spreadsheetModel.getFormattedGroupBy(fieldName)),
-                measures: definition.measures.map((measure) =>
-                    this.spreadsheetModel.getGroupByDisplayLabel("measure", measure)
-                ),
-                sortedColumn: definition.sortedColumn,
-            };
         });
+    }
+
+    get pivotDefinition() {
+        const definition = this.env.model.getters.getPivotDefinition(this.props.pivotId);
+        return {
+            model: definition.model,
+            modelDisplayName: this.modelDisplayName,
+            domain: new Domain(definition.domain).toString(),
+            dimensions: [...definition.rowGroupBys, ...definition.colGroupBys].map((fieldName) =>
+                this.spreadsheetModel.getFormattedGroupBy(fieldName)
+            ),
+            measures: definition.measures.map((measure) =>
+                this.spreadsheetModel.getGroupByDisplayLabel("measure", measure)
+            ),
+            sortedColumn: definition.sortedColumn,
+        };
     }
 
     onNameChanged(name) {
@@ -74,6 +78,21 @@ export default class PivotDetailsSidePanel extends Component {
      */
     refresh() {
         this.env.model.dispatch("REFRESH_PIVOT", { id: this.props.pivotId });
+    }
+
+    openDomainEdition() {
+        const definition = this.env.model.getters.getPivotDefinition(this.props.pivotId);
+        this.dialog.add(DomainSelectorDialog, {
+            resModel: definition.model,
+            initialValue: new Domain(definition.domain).toString(),
+            readonly: false,
+            isDebugMode: !!this.env.debug,
+            onSelected: (domain) =>
+                this.env.model.dispatch("UPDATE_ODOO_PIVOT_DOMAIN", {
+                    pivotId: this.props.pivotId,
+                    domain: new Domain(domain).toList(),
+                }),
+        });
     }
 }
 PivotDetailsSidePanel.template = "spreadsheet_edition.PivotDetailsSidePanel";

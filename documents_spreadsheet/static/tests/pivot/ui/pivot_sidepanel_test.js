@@ -246,5 +246,21 @@ QUnit.module(
             await click(document.body.querySelector(".o_sp_en_save"));
             assert.equal(model.getters.getPivotName(pivotA3), "new name");
         });
+
+        QUnit.test("Update the pivot domain from the side panel", async function (assert) {
+            const { model, env } = await createSpreadsheetFromPivotView();
+            const [pivotId] = model.getters.getPivotIds();
+            model.dispatch("SELECT_PIVOT", { pivotId });
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
+                pivot: pivotId,
+            });
+            await nextTick();
+            const fixture = getFixture();
+            await click(fixture.querySelector(".o_edit_domain"));
+            await click(fixture.querySelector(".o_domain_add_first_node_button"));
+            await click(fixture.querySelector(".modal-footer .btn-primary"));
+            assert.deepEqual(model.getters.getPivotDefinition(pivotId).domain, [["id", "=", 1]]);
+            assert.equal(fixture.querySelector(".o_domain_selector_row").innerText, "ID\n= 1");
+        });
     }
 );

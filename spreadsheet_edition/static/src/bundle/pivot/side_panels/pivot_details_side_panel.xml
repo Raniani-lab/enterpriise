@@ -15,6 +15,9 @@
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Domain</div>
             <DomainSelector resModel="def.model" value="def.domain" t-key="'pivot_' + props.pivotId"/>
+            <div class="btn btn-link o_edit_domain" t-on-click="openDomainEdition">
+                <i class="fa fa-arrow-right me-1"/>Edit domain
+            </div>
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">Dimensions</div>

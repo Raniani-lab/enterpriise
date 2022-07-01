@@ -93,6 +93,30 @@ export default class PivotPlugin extends CorePlugin {
                 this.history.update("pivots", pivots);
                 break;
             }
+            case "UPDATE_ODOO_PIVOT_DOMAIN": {
+                this.history.update(
+                    "pivots",
+                    cmd.pivotId,
+                    "definition",
+                    "searchParams",
+                    "domain",
+                    cmd.domain
+                );
+                const pivot = this.pivots[cmd.pivotId];
+                this.dataSources.add(pivot.dataSourceId, PivotDataSource, pivot.definition);
+                break;
+            }
+            case "UNDO":
+            case "REDO": {
+                const domainEditionCommands = cmd.commands.filter(
+                    (cmd) => cmd.type === "UPDATE_ODOO_PIVOT_DOMAIN"
+                );
+                for (const cmd of domainEditionCommands) {
+                    const pivot = this.pivots[cmd.pivotId];
+                    this.dataSources.add(pivot.dataSourceId, PivotDataSource, pivot.definition);
+                }
+                break;
+            }
         }
     }
 
@@ -436,11 +460,13 @@ export default class PivotPlugin extends CorePlugin {
                         rowGroupBys: pivot.rowGroupBys,
                         activeMeasures: pivot.measures.map((elt) => elt.field),
                         resModel: pivot.model,
-                        sortedColumn: !pivot.sortedColumn ? undefined : {
-                            groupId: pivot.sortedColumn.groupId,
-                            measure: pivot.sortedColumn.measure,
-                            order: pivot.sortedColumn.order,
-                        }
+                        sortedColumn: !pivot.sortedColumn
+                            ? undefined
+                            : {
+                                  groupId: pivot.sortedColumn.groupId,
+                                  measure: pivot.sortedColumn.measure,
+                                  order: pivot.sortedColumn.order,
+                              },
                     },
                     searchParams: {
                         groupBy: [],

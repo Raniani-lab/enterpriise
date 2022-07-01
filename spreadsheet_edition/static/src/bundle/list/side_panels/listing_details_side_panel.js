@@ -2,6 +2,8 @@
 
 import { Domain } from "@web/core/domain";
 import { DomainSelector } from "@web/core/domain_selector/domain_selector";
+import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
+import { useService } from "@web/core/utils/hooks";
 import { _t } from "web.core";
 import { time_to_str } from "web.time";
 
@@ -10,9 +12,9 @@ import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 const { Component, onWillStart } = owl;
 
 export class ListingDetailsSidePanel extends Component {
-    constructor() {
-        super(...arguments);
+    setup() {
         this.getters = this.env.model.getters;
+        this.dialog = useService("dialog");
         onWillStart(async () => {
             const name = await this.getters
                 .getSpreadsheetListDataSource(this.props.listId)
@@ -56,6 +58,20 @@ export class ListingDetailsSidePanel extends Component {
     async refresh() {
         this.env.model.dispatch("REFRESH_ODOO_LIST", { listId: this.props.listId });
         this.env.model.dispatch("EVALUATE_CELLS", { sheetId: this.getters.getActiveSheetId() });
+    }
+
+    openDomainEdition() {
+        this.dialog.add(DomainSelectorDialog, {
+            resModel: this.listDefinition.model,
+            initialValue: this.listDefinition.domain,
+            readonly: false,
+            isDebugMode: !!this.env.debug,
+            onSelected: (domain) =>
+                this.env.model.dispatch("UPDATE_ODOO_LIST_DOMAIN", {
+                    listId: this.props.listId,
+                    domain: new Domain(domain).toList(),
+                }),
+        });
     }
 }
 ListingDetailsSidePanel.template = "spreadsheet_edition.ListingDetailsSidePanel";

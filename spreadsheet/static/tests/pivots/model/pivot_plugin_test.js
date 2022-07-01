@@ -553,4 +553,37 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
             assert.strictEqual(getCell(model, "B2").evaluated.format, undefined);
         }
     );
+
+    QUnit.test("can edit pivot domain", async (assert) => {
+        const { model } = await createSpreadsheetWithPivot();
+        const [pivotId] = model.getters.getPivotIds();
+        assert.deepEqual(model.getters.getPivotDefinition(pivotId).domain, []);
+        assert.strictEqual(getCellValue(model, "B4"), 11);
+        model.dispatch("UPDATE_ODOO_PIVOT_DOMAIN", {
+            pivotId,
+            domain: [["foo", "in", [55]]],
+        });
+        assert.deepEqual(model.getters.getPivotDefinition(pivotId).domain, [["foo", "in", [55]]]);
+        await nextTick();
+        assert.strictEqual(getCellValue(model, "B4"), "");
+        model.dispatch("REQUEST_UNDO");
+        await nextTick();
+        assert.deepEqual(model.getters.getPivotDefinition(pivotId).domain, []);
+        await nextTick();
+        assert.strictEqual(getCellValue(model, "B4"), 11);
+        model.dispatch("REQUEST_REDO");
+        assert.deepEqual(model.getters.getPivotDefinition(pivotId).domain, [["foo", "in", [55]]]);
+        await nextTick();
+        assert.strictEqual(getCellValue(model, "B4"), "");
+    });
+
+    QUnit.test("edited domain is exported", async (assert) => {
+        const { model } = await createSpreadsheetWithPivot();
+        const [pivotId] = model.getters.getPivotIds();
+        model.dispatch("UPDATE_ODOO_PIVOT_DOMAIN", {
+            pivotId,
+            domain: [["foo", "in", [55]]],
+        });
+        assert.deepEqual(model.exportData().pivots["1"].domain, [["foo", "in", [55]]]);
+    });
 });

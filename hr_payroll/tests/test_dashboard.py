@@ -98,11 +98,12 @@ class TestDashboard(TransactionCase):
                 'company_id': self.company.id,
             },
         ])
-        batches_to_return = payslip_runs.filtered(lambda r: r.date_start.month >= 6)
-        dashboard = self.env['hr.payslip'].with_user(self.user).get_payroll_dashboard_data(sections=['batches'])
-        self.assertTrue('batches' in dashboard)
-        self.assertEqual(len(dashboard['batches']), len(batches_to_return))
-        self.assertEqual(set(read['id'] for read in dashboard['batches']), set(batches_to_return.ids))
+        with freeze_time(date(2021, 12, 31)):
+            batches_to_return = payslip_runs.filtered(lambda r: r.date_start.month >= 6)
+            dashboard = self.env['hr.payslip'].with_user(self.user).get_payroll_dashboard_data(sections=['batches'])
+            self.assertTrue('batches' in dashboard)
+            self.assertEqual(len(dashboard['batches']), len(batches_to_return))
+            self.assertEqual(set(read['id'] for read in dashboard['batches']), set(batches_to_return.ids))
 
     def test_dashboard_notes(self):
         #Test that we only get readable notes with the payroll note tag

@@ -361,8 +361,9 @@ class AEATAccountFinancialReport(models.Model):
             parsed_generated_id = self._parse_line_id(generated_line['id'])
             if parsed_generated_id[-1][0] != 'total' and generated_line['level'] >= report_line.level and generated_line.get('caret_options') == 'partner_id':
                 rslt += fun_to_call({'line_data': generated_line, 'line_xml_id': line_xml_id, 'report_options': report_options})
-                if generated_line['id'] in required_ids_set:
-                    required_ids_set.remove(generated_line['id'])
+                partner_id = parsed_generated_id[-1][2]
+                if partner_id in required_ids_set:
+                    required_ids_set.remove(partner_id)
 
         for element in required_ids_set: # These elements are the ones for wich no line was generated, but that were into the original required ids set. So, we still treat them.
             rslt += fun_to_call({'line_data': {'id':element}, 'line_xml_id': line_xml_id, 'report_options': report_options})

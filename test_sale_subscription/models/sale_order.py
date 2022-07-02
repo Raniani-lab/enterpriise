@@ -48,7 +48,7 @@ class SaleOrder(models.Model):
             subs_to_invoice.action_confirm()
             subs_to_invoice._create_recurring_invoice()
             subs_to_invoice._test_demo_create_invoices()
-            self._test_demo_create_invoices(subs_to_invoice)
+            self._test_demo_create_invoices(bool(subs_to_invoice))
             self._test_demo_flush_tracking()
 
         time_start = fields.Date.today() - relativedelta(months=11)

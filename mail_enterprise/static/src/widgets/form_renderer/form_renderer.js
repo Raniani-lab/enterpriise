@@ -65,14 +65,10 @@ FormRenderer.include({
      * @override
      */
     _isChatterAside() {
-        const parent = this._chatterContainerTarget && this._chatterContainerTarget.parentNode;
         return (
             config.device.size_class >= config.device.SIZES.XXL &&
             !this.hasAttachmentViewer() &&
-            // We also test the existance of parent.classList. At start of the
-            // form_renderer, parent is a DocumentFragment and not the parent of
-            // the chatter. DocumentFragment doesn't have a classList property.
-            !(parent && parent.classList && (parent.classList.contains('o_form_sheet') || parent.classList.contains('tab-pane')))
+            !this.isChatterInSheet
         );
     },
     /**

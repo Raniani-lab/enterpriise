@@ -3,12 +3,13 @@
 from collections import defaultdict
 
 from odoo import api, fields, models
+from odoo.tools import float_round
 
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
-    fsm_quantity = fields.Integer('Material Quantity', compute="_compute_fsm_quantity", inverse="_inverse_fsm_quantity", search="_search_fsm_quantity")
+    fsm_quantity = fields.Float('Material Quantity', compute="_compute_fsm_quantity", inverse="_inverse_fsm_quantity", search="_search_fsm_quantity")
 
     @api.depends_context('fsm_task_id')
     def _compute_fsm_quantity(self):
@@ -134,7 +135,7 @@ class ProductProduct(models.Model):
         wizard_product_lot = self.action_assign_serial()
         if wizard_product_lot:
             return wizard_product_lot
-        self.fsm_quantity = quantity
+        self.fsm_quantity = float_round(quantity, precision_rounding=self.uom_id.rounding)
         return True
 
     # Is override by fsm_stock to manage lot
@@ -145,4 +146,6 @@ class ProductProduct(models.Model):
         return self.set_fsm_quantity(self.sudo().fsm_quantity + 1)
 
     def fsm_remove_quantity(self):
-        return self.set_fsm_quantity(self.sudo().fsm_quantity - 1)
+        fsm_product_qty = self.sudo().fsm_quantity
+        fsm_product_qty = fsm_product_qty - 1 if fsm_product_qty > 1 else 0
+        return self.set_fsm_quantity(fsm_product_qty)

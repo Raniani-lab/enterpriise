@@ -26,9 +26,9 @@ export const fsmProductMakeViewParams = {
                     fsm_quantity: { string: "Material Quantity", type: 'integer' },
                 },
                 records: [
-                    { id: 1, fsm_quantity: 0 },
-                    { id: 2, fsm_quantity: 0 },
-                    { id: 3, fsm_quantity: 1 },
+                    { id: 1, fsm_quantity: 0.00 },
+                    { id: 2, fsm_quantity: 0.00 },
+                    { id: 3, fsm_quantity: 1.00 },
                 ],
             },
         },
@@ -89,7 +89,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
                     const [id, quantity] = args;
                     assert.step('set_fsm_quantity');
                     assert.deepEqual(id, 3);
-                    assert.strictEqual(quantity, 0);
+                    assert.strictEqual(quantity, 0.00);
                     return true;
                 }
             },
@@ -111,9 +111,9 @@ QUnit.module('industry_fsm_sale', {}, function () {
                     const [id, quantity] = args;
                     assert.step('set_fsm_quantity');
                     if ([1, 2].includes(id)) {
-                        assert.strictEqual(quantity, 1);
+                        assert.strictEqual(quantity, 1.00);
                     } else if (id === 3) {
-                        assert.strictEqual(quantity, 2);
+                        assert.strictEqual(quantity, 2.00);
                     }
                     return true;
                 }
@@ -140,7 +140,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
                     const [id, quantity] = args;
                     assert.step('set_fsm_quantity');
                     assert.strictEqual(id, 1);
-                    assert.strictEqual(quantity, 12);
+                    assert.strictEqual(quantity, 12.00);
                     return true;
                 }
             },
@@ -172,7 +172,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
                     const [id, quantity] = args;
                     assert.step('set_fsm_quantity');
                     assert.strictEqual(id, 1);
-                    assert.strictEqual(quantity, 12);
+                    assert.strictEqual(quantity, 12.00);
                     return true;
                 }
             },
@@ -180,7 +180,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
 
         assert.containsN(target, '.o_kanban_record:not(.o_kanban_ghost)', 3, "The number of kanban record should be equal to 3 records.");
         const firstFsmQuantityWidget = target.querySelector('.o_kanban_record:nth-child(1) div[name="fsm_quantity"]');
-        assert.deepEqual(getNodesTextContent(firstFsmQuantityWidget.getElementsByTagName('span')), ["0"], "The content of the span tag should be equal to 0.");
+        assert.deepEqual(getNodesTextContent(firstFsmQuantityWidget.getElementsByTagName('span')), ["0.00"], "The content of the span tag should be equal to 0.");
         assert.containsNone(firstFsmQuantityWidget, 'input', "The product quantity should not be editable.");
 
         await click(firstFsmQuantityWidget, 'span');
@@ -203,7 +203,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
                     const [id, quantity] = args;
                     assert.step('set_fsm_quantity');
                     assert.strictEqual(id, 1);
-                    assert.strictEqual(quantity, 42);
+                    assert.strictEqual(quantity, 42.00);
                     return true;
                 }
             },
@@ -226,7 +226,7 @@ QUnit.module('industry_fsm_sale', {}, function () {
     });
 
     QUnit.test('fsm_product_quantity: check when the quantity in a product contains more than 5 digits, a class should be added to the span and also the input one displaying this quantity', async function (assert) {
-        this.data.models['product.product'].records.push({id: 4, fsm_quantity: 123456}, {id: 5, fsm_quantity: 12345});
+        this.data.models['product.product'].records.push({id: 4, fsm_quantity: 123456.00}, {id: 5, fsm_quantity: 12345.00});
 
         await makeView(this.makeViewParams);
 

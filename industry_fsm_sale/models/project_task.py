@@ -104,7 +104,7 @@ class Task(models.Model):
         for task in self:
             material_sale_lines = sols_by_so[task.sudo().sale_order_id.id].sudo().filtered(lambda sol: if_fsm_material_line(sol, task, employee_mapping_timesheet_product_ids.get(task.project_id.id)))
             task.material_line_total_price = sum(material_sale_lines.mapped('price_total'))
-            task.material_line_product_count = sum(material_sale_lines.mapped('product_uom_qty'))
+            task.material_line_product_count = round(sum(material_sale_lines.mapped('product_uom_qty')))
 
     @api.depends(
         'is_fsm', 'fsm_done', 'allow_billable', 'timer_start',

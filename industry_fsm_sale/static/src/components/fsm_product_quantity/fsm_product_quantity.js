@@ -3,12 +3,12 @@
 import { registry } from "@web/core/registry";
 import { useAutofocus } from "@web/core/utils/hooks";
 import { archParseBoolean } from '@web/views/utils';
-import { formatInteger } from "@web/views/fields/formatters";
-import { IntegerField } from '@web/views/fields/integer/integer_field';
+import { formatFloat } from "@web/views/fields/formatters";
+import { FloatField } from '@web/views/fields/float/float_field';
 
 const { useState, useRef, useEffect } = owl;
 
-export class FsmProductQuantity extends IntegerField {
+export class FsmProductQuantity extends FloatField {
     setup() {
         super.setup(...arguments);
         const refName = 'numpadDecimal';
@@ -35,7 +35,7 @@ export class FsmProductQuantity extends IntegerField {
         if (!this.state.readonly && this.props.inputType === "number") {
             return this.props.value;
         }
-        return formatInteger(this.props.value);
+        return formatFloat(this.props.value, { noTrailingZeros: true });
     }
 
     toggleMode() {
@@ -49,7 +49,7 @@ export class FsmProductQuantity extends IntegerField {
     }
 
     removeQuantity() {
-        this.props.update(this.props.value - 1);
+        this.props.update(this.props.value > 1 ? this.props.value - 1 : 0);
     }
 
     addQuantity() {
@@ -74,18 +74,18 @@ export class FsmProductQuantity extends IntegerField {
 }
 
 FsmProductQuantity.props = {
-    ...IntegerField.props,
+    ...FloatField.props,
     hideButtons: { type: Boolean, optional: true }
 };
 FsmProductQuantity.defaultProps = {
-    ...IntegerField.defaultProps,
+    ...FloatField.defaultProps,
     hideButtons: false,
 };
 
 FsmProductQuantity.template = 'industry_fsm_sale.FsmProductQuantity';
 FsmProductQuantity.extractProps = (props) => {
     return {
-        ...IntegerField.extractProps(props),
+        ...FloatField.extractProps(props),
         hideButtons: archParseBoolean(props.attrs.hide_buttons),
     };
 };

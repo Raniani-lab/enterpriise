@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import config from 'web.config';
-import dom from 'web.dom';
 import FormRenderer from 'web.FormRenderer';
 import { AttachmentViewer } from '@mail/widgets/attachment_viewer/attachment_viewer';
 
@@ -34,19 +33,6 @@ FormRenderer.include({
     start() {
         window.addEventListener('resize', this._onResizeWindow);
         return this._super(...arguments);
-    },
-    /**
-     * Overrides the function to interchange the chatter and the preview once
-     * the chatter is in the dom.
-     *
-     * @override
-     */
-    async _renderView() {
-        await this._super(...arguments);
-        if (!this.hasChatter) {
-            return;
-        }
-        this._interchangeChatter();
     },
     /**
      * @override
@@ -90,29 +76,6 @@ FormRenderer.include({
             // the chatter. DocumentFragment doesn't have a classList property.
             !(parent && parent.classList && (parent.classList.contains('o_form_sheet') || parent.classList.contains('tab-pane')))
         );
-    },
-    /**
-     * Interchange the position of the chatter and the attachment preview.
-     *
-     * @private
-     */
-     _interchangeChatter() {
-        const $sheetBg = this.$('.o_form_sheet_bg');
-        this._updateChatterContainerTarget();
-        if (this.hasAttachmentViewer()) {
-            $(this.attachmentViewerTarget).insertAfter($sheetBg);
-            dom.append($sheetBg, $(this._chatterContainerTarget), {
-                callbacks: [{ widget: this.chatter }],
-                in_DOM: this._isInDom,
-            });
-        } else {
-            $(this._chatterContainerTarget).insertAfter($sheetBg);
-            dom.append($sheetBg, $(this.attachmentViewerTarget), {
-                callbacks: [],
-                in_DOM: this._isInDom,
-            });
-        }
-        this._updateChatterContainerComponent();
     },
     /**
      * Triggered from the mail chatter, send attachments data for preview

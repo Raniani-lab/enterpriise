@@ -24,30 +24,16 @@
             </field>
         </record>
 
-        <record id="purchase_report_action_dashboard" model="ir.actions.act_window">
-            <field name="name">Dashboard</field>
-            <field name="res_model">purchase.report</field>
-            <field name="view_mode">dashboard,pivot,graph</field>
-            <field name="search_view_id" ref="purchase.view_purchase_order_search"/>
+        <!-- Add dashboard to purchase reporting -->
+        <record id="purchase.action_purchase_order_report_all" model="ir.actions.act_window">
+            <field name="view_mode">dashboard,graph,pivot</field>
             <field name="context" eval="{
                 'search_default_orders': 1,
                 'search_default_filter_date_approve': 1}"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    No data yet!
-                </p><p>
-                    Create a new purchase order
-                </p>
-            </field>
-        </record>
-
-        <!-- Add dashboard to purchase reporting -->
-        <record id="purchase.action_purchase_order_report_all" model="ir.actions.act_window">
-            <field name="view_mode">graph,pivot,dashboard</field>
         </record>
 
         <!-- Dashboard reporting view -->
-        <menuitem id="purchase_report_menu_dashboard" name="Dashboard" action="purchase_report_action_dashboard" parent="purchase.purchase_report_main" sequence="0"/>
+        <menuitem id="purchase.purchase_report" name="Dashboard" parent="purchase.purchase_report_main" sequence="0" groups="purchase.group_purchase_manager" action="purchase.action_purchase_order_report_all"/>
 
     </data>
 </odoo>

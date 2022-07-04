@@ -33,7 +33,8 @@ class ResPartner(models.Model):
     def _compute_avalara_show_address_validation(self):
         valid_country_ids = self.env.ref('base.us') | self.env.ref('base.ca')
         for partner in self:
-            partner.avalara_show_address_validation = partner.street and (not partner.country_id or partner.country_id in valid_country_ids)
+            company = partner.company_id or self.env.company
+            partner.avalara_show_address_validation = company.avalara_address_validation and partner.street and (not partner.country_id or partner.country_id in valid_country_ids)
 
     def _get_avatax_description(self):
         return 'Contact'

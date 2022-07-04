@@ -30,9 +30,6 @@ class AvataxValidateAddress(models.TransientModel):
     def _compute_validated_address(self):
         for wizard in self:
             company = wizard.partner_id.company_id or wizard.env.company
-            if not company.avalara_address_validation:
-                raise UserError(_("Address validation is currently disabled, please enable it in the Accounting settings."))
-
             country = wizard.partner_id.country_id
             if country.code not in ('US', 'CA', False):
                 raise ValidationError(_("Address validation is only supported for North American addresses."))

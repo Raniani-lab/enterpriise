@@ -125,10 +125,12 @@ FormRenderer.include({
      * @param {Thread} ev.data.thread
      */
     _onChatterRendered(ev) {
-        if (config.device.size_class < config.device.SIZES.XXL) {
-            return;
-        }
-        if (!this.attachmentViewerTarget || $(this.attachmentViewerTarget).hasClass('o_invisible_modifier')) {
+        if (!this.hasAttachmentViewer()) {
+            if (this.attachmentViewer) {
+                this.attachmentViewer.destroy();
+                this.attachmentViewer = undefined;
+                this._interchangeChatter();
+            }
             return;
         }
         var self = this;
@@ -141,11 +143,7 @@ FormRenderer.include({
                     this.attachmentViewer.thread !== thread ||
                     this.attachmentViewer.attachments.length !== attachments.length
                 ) {
-                    if (!attachments.length) {
-                        this.attachmentViewer.destroy();
-                        this.attachmentViewer = undefined;
-                        this._interchangeChatter();
-                    } else {
+                    if (attachments.length) {
                         this.attachmentViewer.updateContents(thread);
                     }
                 } else {

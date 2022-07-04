@@ -3,12 +3,13 @@ odoo.define('pos_iot.IoTLongpolling', function (require) {
 'use strict';
 
 var core = require('web.core');
-var IoTLongpolling = require('iot.IoTLongpolling');
+var { IoTLongpolling } = require('@iot/js/iot_longpolling');
+const { patch } = require('@web/core/utils/patch');
 const { Gui } = require('point_of_sale.Gui');
 
 var _t = core._t;
 
-IoTLongpolling.include({
+patch(IoTLongpolling.prototype, 'pos_iot.IotLongpolling', {
     _doWarnFail: function (url) {
         Gui.showPopup('IoTErrorPopup', {
             title: _t('Connection to IoT Box failed'),

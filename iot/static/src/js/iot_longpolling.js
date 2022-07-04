@@ -1,35 +1,37 @@
-odoo.define('iot.IoTLongpolling', function (require) {
-'use strict';
+/** @odoo-module **/
 
-var core = require('web.core');
-var BusService = require('bus.BusService');
-var IoTConnectionMixin = require('iot.mixins').IoTConnectionMixin;
+import { registry } from '@web/core/registry';
 
-var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
-    // constants
-    POLL_TIMEOUT: 60000,
-    POLL_ROUTE: '/hw_drivers/event',
-    ACTION_TIMEOUT: 6000,
-    ACTION_ROUTE: '/hw_drivers/action',
+import { BusService } from '@bus/services/bus_service';
 
-    RPC_DELAY: 1500,
-    MAX_RPC_DELAY: 1500 * 10,
+import { IoTConnectionMixin } from 'iot.mixins';
 
-    _retries: 0,
+export class IoTLongpolling extends BusService {
+    constructor() {
+        super(...arguments);
+        Object.assign(this, IoTConnectionMixin);
 
-    /**
-     * @override
-     */
-    init: function () {
-        this._super.apply(this, arguments);
+        // CONSTANTS
+        this.POLL_TIMEOUT = 60000;
+        this.POLL_ROUTE = '/hw_drivers/event';
+        this.ACTION_TIMEOUT = 6000;
+        this.ACTION_ROUTE = '/hw_drivers/action';
+
+        this.RPC_DELAY = 1500;
+        this.MAX_RPC_DELAY = 1500 * 10;
+
+        // PROPERTIES
+        this._retries = 0;
+
         this._session_id = this._createUUID();
         this._listeners = {};
         this._delayedStartPolling(this.RPC_DELAY);
-    },
+    }
 
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+
     /**
      * Add a device_identifier to listeners[iot_ip] and restart polling
      *
@@ -37,7 +39,7 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
      * @param {Array} devices list of devices
      * @param {Callback} callback
      */
-    addListener: function (iot_ip, devices, listener_id, callback) {
+    addListener(iot_ip, devices, listener_id, callback) {
         if (!this._listeners[iot_ip]) {
             this._listeners[iot_ip] = {
                 last_event: 0,
@@ -56,17 +58,19 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
         this.stopPolling(iot_ip);
         this.startPolling(iot_ip);
         return Promise.resolve();
-    },
+    }
+
     /**
      * Stop listening to iot device with id `device_identifier`
      * @param {string} iot_ip
      * @param {string} device_identifier
      */
-    removeListener: function(iot_ip, device_identifier, listener_id) {
+    removeListener(iot_ip, device_identifier, listener_id) {
         if (this._listeners[iot_ip].devices[device_identifier].listener_id === listener_id) {
             delete this._listeners[iot_ip].devices[device_identifier];
         }
-    },
+    }
+
     /**
      * Execute a action on device_identifier
      * Action depend of driver that support the device
@@ -75,7 +79,7 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
      * @param {String} device_identifier
      * @param {Object} data contains the information needed to perform an action on this device_identifier
      */
-    action: function (iot_ip, device_identifier, data) {
+    action(iot_ip, device_identifier, data) {
         this.protocol = window.location.protocol;
         var self = this;
         var data = {
@@ -88,19 +92,19 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
         var options = {
             timeout: this.ACTION_TIMEOUT,
         };
-        var prom = new Promise(function(resolve, reject) {
+        var prom = new Promise(function (resolve, reject) {
             self._rpcIoT(iot_ip, self.ACTION_ROUTE, data, options)
                 .then(resolve)
                 .fail(reject);
         });
         return prom;
-    },
+    }
 
     /**
      * Start a long polling, i.e. it continually opens a long poll
      * connection as long as it is not stopped (@see `stopPolling`)
      */
-    startPolling: function (iot_ip) {
+    startPolling(iot_ip) {
         if (iot_ip) {
             if (!this._listeners[iot_ip].rpc) {
                 this._poll(iot_ip);
@@ -111,31 +115,33 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
                 self.startPolling(ip);
             });
         }
-    },
+    }
+
     /**
      * Stops any started long polling
      *
      * Aborts a pending longpoll so that we immediately remove ourselves
      * from listening on notifications on this channel.
      */
-    stopPolling: function (iot_ip) {
+    stopPolling(iot_ip) {
         if (this._listeners[iot_ip].rpc) {
             this._listeners[iot_ip].rpc.abort();
             this._listeners[iot_ip].rpc = false;
         }
-    },
+    }
 
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
-    _delayedStartPolling: function (delay){
+
+    _delayedStartPolling(delay) {
         var self = this;
-        setTimeout(function (){
+        setTimeout(function () {
             self.startPolling();
         }, delay);
-    },
+    }
 
-    _createUUID: function () {
+    _createUUID() {
         var s = [];
         var hexDigits = "0123456789abcdef";
         for (var i = 0; i < 36; i++) {
@@ -145,7 +151,8 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
         s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
         s[8] = s[13] = s[18] = s[23] = "-";
         return s.join("");
-    },
+    }
+
     /**
      * Execute a RPC to the box
      * Used to do polling or an action
@@ -155,7 +162,7 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
      * @param {Object} data information needed to perform an action or the listener for the polling
      * @param {Object} options.timeout
      */
-    _rpcIoT: function (iot_ip, route, data, options) {
+    _rpcIoT(iot_ip, route, data, options) {
         this.protocol = window.location.protocol;
         var port = this.protocol === 'http:' ? ':8069' : '';
         var url = this.protocol + '//' + iot_ip + port;
@@ -173,13 +180,14 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
         } else {
             return request;
         }
-    },
+    }
+
     /**
      * Make a request to an IoT Box
      *
      * @param {String} iot_ip
      */
-    _poll: function (iot_ip) {
+    _poll(iot_ip) {
         var self = this;
         var listener = this._listeners[iot_ip];
         var data = {
@@ -210,9 +218,9 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
                     self._onError();
                 }
             });
-    },
+    }
 
-    _onSuccess: function (iot_ip, result){
+    _onSuccess(iot_ip, result) {
         this._listeners[iot_ip].last_event = result.time;
 
         var devices = this._listeners[iot_ip].devices;
@@ -223,16 +231,20 @@ var IoTLongpolling = BusService.extend(IoTConnectionMixin, {
             this._poll(iot_ip);
         }
         this._retries = 0;
-    },
+    }
 
-    _onError: function (){
+    _onError() {
         this._retries++;
         this._delayedStartPolling(Math.min(this.RPC_DELAY * this._retries, this.MAX_RPC_DELAY));
-    },
-});
+    }
+}
 
-core.serviceRegistry.add('iot_longpolling', IoTLongpolling);
+export const iotLongpollingService = {
+    dependencies: ['notification'],
+    start() {
+        return new IoTLongpolling(...arguments);
+    }
+};
 
-return IoTLongpolling;
 
-});
+registry.category('services').add('iot_longpolling', iotLongpollingService);

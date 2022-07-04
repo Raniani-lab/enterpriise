@@ -392,7 +392,7 @@ class HrContractSalary(main.HrContractSalary):
         result['double_holiday_wage'] = round(new_contract.double_holiday_wage, 2)
         # Horrible hack: Add a sequence / display condition fields on salary resume model in master
         resume = result['resume_lines_mapped']['Monthly Salary']
-        if 'SALARY' in resume and resume['wage_with_holidays'][1] != resume['SALARY'][1]:
+        if 'SALARY' in resume and resume.get('wage_with_holidays') and resume['wage_with_holidays'][1] != resume['SALARY'][1]:
             ordered_fields = ['wage_with_holidays', 'SALARY', 'NET']
         else:
             ordered_fields = ['wage_with_holidays', 'NET']

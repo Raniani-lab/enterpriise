@@ -2,7 +2,6 @@
 
 import config from 'web.config';
 import FormRenderer from 'web.FormRenderer';
-import { AttachmentViewer } from '@mail/widgets/attachment_viewer/attachment_viewer';
 
 // ensure `.include()` on `mail` is applied before `mail_enterprise`
 import '@mail/widgets/form_renderer/form_renderer';
@@ -24,7 +23,6 @@ FormRenderer.include({
      */
     init: function () {
         this._super.apply(this, arguments);
-        this.attachmentViewer = undefined;
         this._onResizeWindow = _.debounce(this._onResizeWindow.bind(this), 200);
     },
     /**
@@ -76,57 +74,6 @@ FormRenderer.include({
             // the chatter. DocumentFragment doesn't have a classList property.
             !(parent && parent.classList && (parent.classList.contains('o_form_sheet') || parent.classList.contains('tab-pane')))
         );
-    },
-    /**
-     * Triggered from the mail chatter, send attachments data for preview
-     *
-     * @override
-     * @private
-     * @param {OdooEvent} ev
-     * @param {Object} ev.data
-     * @param {Attachment[]} ev.data.attachments
-     * @param {Thread} ev.data.thread
-     */
-    _onChatterRendered(ev) {
-        if (!this.hasAttachmentViewer()) {
-            if (this.attachmentViewer) {
-                this.attachmentViewer.destroy();
-                this.attachmentViewer = undefined;
-                this._interchangeChatter();
-            }
-            return;
-        }
-        var self = this;
-        const thread = ev.data.thread;
-        const attachments = thread.attachmentsInWebClientView;
-        if (attachments.length || this.attachmentViewer) {
-            if (this.attachmentViewer) {
-                // FIXME should be improved : what if somehow an attachment is replaced in a thread ?
-                if (
-                    this.attachmentViewer.thread !== thread ||
-                    this.attachmentViewer.attachments.length !== attachments.length
-                ) {
-                    if (attachments.length) {
-                        this.attachmentViewer.updateContents(thread);
-                    }
-                } else {
-                    // The attachmentViewer lose its event listeners when it is reused,
-                    // we just need to reregister them.
-                    if (this.attachmentViewer.$el) {
-                        this.attachmentViewer._undelegateEvents();
-                        this.attachmentViewer._delegateEvents();
-                    }
-                }
-                this.trigger_up('preview_attachment_validation');
-                this._updateChatterContainerTarget();
-            } else {
-                this.attachmentViewer = new AttachmentViewer(this, thread);
-                this.attachmentViewer.appendTo($(this.attachmentViewerTarget)).then(function () {
-                    self.trigger_up('preview_attachment_validation');
-                    self._interchangeChatter();
-                });
-            }
-        }
     },
     /**
      * Reflects the move of chatter (from aside to underneath of form sheet or

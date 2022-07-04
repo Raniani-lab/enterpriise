@@ -61,6 +61,18 @@ export default class OdooGraphPlugin extends CorePlugin {
         return this.dataSources.get(dataSourceId);
     }
 
+    import(data) {
+        for (let sheet of data.sheets) {
+            if (sheet.figures) {
+                for (let figure of sheet.figures) {
+                    if (figure.tag === "chart" && figure.data.type.startsWith("odoo_")) {
+                        this._addGraphDataSource(figure.id, this.uuidGenerator.uuidv4());
+                    }
+                }
+            }
+        }
+    }
+
     // -------------------------------------------------------------------------
     // Private
     // -------------------------------------------------------------------------

@@ -60,6 +60,7 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         const sheetId = m1.getters.getActiveSheetId();
         assert.strictEqual(m1.getters.getChartIds(sheetId).length, 1);
         const chartId = m1.getters.getChartIds(sheetId)[0];
+        assert.ok(m1.getters.getSpreadsheetGraphDataSource(chartId));
         assert.strictEqual(m1.getters.getChartRuntime(chartId).type, "line");
     });
 

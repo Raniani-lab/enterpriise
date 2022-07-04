@@ -269,7 +269,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
             )
         else:  # Validation transaction
             kwargs['reference_prefix'] = payment_utils.singularize_reference_prefix(
-                prefix='validation'  # Validation transactions use their own reference prefix
+                prefix='V'  # Validation transactions use their own reference prefix
             )
             tx_sudo = self._create_transaction(
                 custom_create_values={

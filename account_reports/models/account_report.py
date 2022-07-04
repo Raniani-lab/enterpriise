@@ -1925,6 +1925,7 @@ class AccountReport(models.AbstractModel):
                 }
 
     def get_xlsx(self, options, response=None):
+        self = self.with_context(self._set_context(options))
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {
             'in_memory': True,

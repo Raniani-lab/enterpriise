@@ -96,11 +96,13 @@ class TestResPartner(AccountTestInvoicingCommon):
         return invoice
 
     @classmethod
-    def pay_bill(cls, bill, amount, date):
+    def pay_bill(cls, bill, amount, date, currency=None):
+        if not currency:
+            currency = bill.currency_id
         payment = cls.env['account.payment'].create({
             'payment_type': 'outbound',
             'amount': amount,
-            'currency_id': bill.currency_id.id,
+            'currency_id': currency.id,
             'journal_id': cls.company_data['default_journal_bank'].id,
             'date': fields.Date.from_string(date),
             'partner_id': bill.partner_id.id,
@@ -930,3 +932,39 @@ class TestResPartner(AccountTestInvoicingCommon):
                 'paid_amount': 3000.0,
             }
         ])
+
+
+def test_281_50_bill_in_currency(self):
+    foreign_currency = self.currency_data['currency']
+    bill = self.env['account.move'].create({
+        'move_type': 'in_invoice',
+        'partner_id': self.partner_b.id,
+        'invoice_date': fields.Date.from_string('2018-06-01'),  # 2018 because first rate of gold coin is in 2017
+        'currency_id': foreign_currency.id,
+        'invoice_line_ids': [
+            Command.create({
+                'product_id': self.product_b.id,
+                'account_id': self.product_b.property_account_expense_id.id,
+                'product_uom_id': self.product_b.uom_id.id,
+                'quantity': 1.0,
+                'discount': 0.0,
+                'price_unit': 1000.0,  # 1000 Gold coin -> 500 USD
+            }),
+        ],
+    })
+    bill.action_post()
+    self.pay_bill(bill, 1000, '2018-06-01', currency=foreign_currency)
+
+    form_325 = self.create_325_form(ref_year=2018)
+    form_281_50_from_form_325_ids = form_325.form_281_50_ids
+    self.assertRecordValues(form_325.form_281_50_ids, [
+        # pylint: disable=C0326
+        {
+            'partner_id': self.partner_b.id, 'commissions': 0.0, 'fees': 500.0, 'atn': 0.0, 'exposed_expenses': 0.0,
+            'total_remuneration': 500.0, 'paid_amount': 500.0, 'partner_is_natural_person': False,
+        },
+    ])
+    self.assertRecordValues(form_325, [{
+        'form_281_50_total_amount': 500.0,
+        'form_281_50_ids': form_281_50_from_form_325_ids.ids,
+    }])

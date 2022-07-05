@@ -7,7 +7,7 @@ from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSub
 class TestSaleSubscriptionAvalara(TestAccountAvataxCommon, TestSubscriptionCommon):
     def test_01_subscription_avatax_called(self):
         partner = self.user_portal.partner_id
-        partner.property_account_position_id = self.fp_avatax
+        partner.with_company(self.fp_avatax.company_id).property_account_position_id = self.fp_avatax
         partner.country_id = self.env.ref('base.us')
         partner.zip = '94134'
         partner.state_id = self.env.ref('base.state_us_5') # California

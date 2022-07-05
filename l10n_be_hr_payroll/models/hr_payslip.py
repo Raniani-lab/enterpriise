@@ -1085,6 +1085,8 @@ def compute_onss_restructuring(payslip, categories, worked_days, inputs):
     # - low salary reduction = 100 €
 
     # The total amount of reductions exceeds the contributions due. We must therefore first reduce the restructuring reduction and then the balance of the low wage reduction.
+    if not payslip.worked_days_line_ids:
+        return 0
 
     employee = payslip.dict.contract_id.employee_id
     first_contract_date = employee.first_contract_date

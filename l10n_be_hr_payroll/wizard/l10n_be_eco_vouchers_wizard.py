@@ -102,6 +102,8 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
                 for contracts, occupation_from, occupation_to in occupations:
                     contract = contracts[0]
                     occupation_from = max(date_from, occupation_from)
+                    if occupation_from.day < 7:
+                        occupation_from = occupation_from + relativedelta(day=1)
                     occupation_to = min(date_to, occupation_to if occupation_to else date_to)
                     # So that 1/1/2020 to 28/02/2020 -> 2 months
                     occupation_to = occupation_to + relativedelta(days=1)

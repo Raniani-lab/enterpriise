@@ -70,14 +70,12 @@ class AccountMove(models.Model):
     def _set_purchase_orders(self, purchase_orders, ocr_vendor_ref):
         try:
             with self.env.cr.savepoint():
-                patched_process_fvg, move_form = self.get_form_context_manager()
-                with patched_process_fvg, move_form:
+                with self.get_form_context_manager() as move_form:
                     for purchase_order in purchase_orders:
                         move_form.purchase_id = purchase_order
         except ValidationError:
             # In case of ValidationError due to a duplicated vendor reference, set it to False and display a warning message
-            patched_process_fvg, move_form = self.get_form_context_manager()
-            with patched_process_fvg, move_form:
+            with self.get_form_context_manager() as move_form:
                 for purchase_order in purchase_orders:
                     move_form.purchase_id = purchase_order
                 move_form.ref = False
@@ -127,8 +125,7 @@ class AccountMove(models.Model):
                     if il_subset:
                         self._set_purchase_orders(set(line['purchase_order'] for line in il_subset), invoice_id_ocr)
                         subset_purchase_order_line_ids = set(line['line'] for line in il_subset)
-                        patched_process_fvg, move_form = self.get_form_context_manager()
-                        with patched_process_fvg, move_form:
+                        with self.get_form_context_manager() as move_form:
                             for i in range(len(move_form.invoice_line_ids)):
                                 with move_form.invoice_line_ids.edit(i) as line:
                                     if line.purchase_line_id and line.purchase_line_id not in subset_purchase_order_line_ids:

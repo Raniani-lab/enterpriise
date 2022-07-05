@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from contextlib import contextmanager
 from unittest.mock import patch
 
 from odoo import api, fields, models, tools, _, _lt
@@ -776,8 +777,7 @@ class AccountMove(models.Model):
         iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
 
-        patched_process_fvg, move_form = self.get_form_context_manager()
-        with patched_process_fvg, move_form:
+        with self.get_form_context_manager() as move_form:
             move_form.date = datetime.strptime(move_form.date, tools.DEFAULT_SERVER_DATE_FORMAT).date()
             if not move_form.partner_id:
                 if vat_number_ocr:
@@ -910,6 +910,7 @@ class AccountMove(models.Model):
                         if line.price_total == amount_before:
                             line.tax_ids.add(tax_info['tax_record'])
 
+    @contextmanager
     def get_form_context_manager(self):
         if 'default_journal_id' in self._context:
             self_ctx = self
@@ -918,7 +919,8 @@ class AccountMove(models.Model):
             self_ctx = self.with_context(default_move_type=self.move_type) if 'default_move_type' not in self._context else self
             self_ctx = self_ctx.with_company(self.company_id.id)
             self_ctx = self_ctx.with_context(default_journal_id=self_ctx.journal_id.id)
-        return patch('odoo.tests.common.Form._process_fvg', _process_fvg), Form(self_ctx)
+        with patch.object(Form, '_process_fvg', side_effect=_process_fvg, autospec=True), Form(self_ctx) as move_form:
+            yield move_form
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')

@@ -46,7 +46,7 @@ result = is_next_year and to_recover and not already_done and hours_per_week and
 
     <record id="cp200_employees_salary_fixed_commission" model="hr.salary.rule">
         <field name="category_id" ref="hr_payroll.ALW"/>
-        <field name="name">Fixed Commission</field>
+        <field name="name">Commission</field>
         <field name="code">COMMISSION</field>
         <field name="sequence">15</field>
         <field name="condition_select">python</field>

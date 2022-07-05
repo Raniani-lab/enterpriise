@@ -113,7 +113,9 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
                     # ‐ The first month of incapacity covered by a guaranteed salary as provided
                     #   for by the law of 03/07/1978 on employment contracts.
                     employee_payslips = all_payslips.filtered(
-                        lambda p: p.employee_id == employee and p.date_from >= occupation_from and p.date_to <= occupation_to)
+                        lambda p: p.employee_id == employee \
+                                  and p.date_from >= occupation_from + relativedelta(day=1) \
+                                  and p.date_to <= occupation_to + relativedelta(day=31))
                     employee_worked_days = employee_payslips.mapped('worked_days_line_ids').filtered(
                         lambda wd: wd.work_entry_type_id in unpaid_work_entry_types)
                     invalid_hours = sum(employee_worked_days.mapped('number_of_hours'))

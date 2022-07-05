@@ -65,6 +65,21 @@
         </field>
     </record>
 
+    <record id="project_sharing_project_task_view_form_inherit" model="ir.ui.view">
+        <field name="name">project.sharing.project.task.view.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_sharing_project_task_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <field name="project_use_documents" invisible="1" groups="documents.group_documents_user"/>
+                <field name="shared_document_ids" invisible="1" groups="documents.group_documents_user"/>
+                <button class="oe_stat_button" name="action_open_shared_documents" type="object" icon="fa-file-text-o" attrs="{'invisible': ['|', ('project_use_documents', '=', False), ('shared_document_ids', '=', [])]}" groups="documents.group_documents_user">
+                    <field string="Documents" name="document_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
     <record id="project_view_kanban_inherit_documents" model="ir.ui.view">
         <field name="name">project.kanban.inherit.documents</field>
         <field name="model">project.project</field>

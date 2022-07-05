@@ -3,7 +3,7 @@
 
 import ast
 
-from odoo import fields, models
+from odoo import fields, models, _
 from odoo.osv import expression
 
 
@@ -16,6 +16,7 @@ class ProjectTask(models.Model):
     document_ids = fields.One2many('documents.document', 'res_id', string='Documents', domain=lambda self: [('res_model', '=', self._name)])
     shared_document_ids = fields.One2many('documents.document', string='Shared Documents', compute='_compute_shared_document_ids')
     document_count = fields.Integer(compute='_compute_attached_document_count', string="Number of documents in Task", groups='documents.group_documents_user')
+    shared_document_count = fields.Integer("Shared Documents Count", compute='_compute_shared_document_ids')
 
     def _get_task_document_data(self):
         domain = [('res_model', '=', 'project.task'), ('res_id', 'in', self.ids)]
@@ -39,9 +40,9 @@ class ProjectTask(models.Model):
             ['ids:array_agg(id)'],
             ['res_id'],
         )
-        document_ids_per_task_id = {documents['res_id']: documents['ids'] for documents in documents_read_group}
+        document_ids_and_count_per_task_id = {documents['res_id']: (documents['ids'], documents['res_id_count']) for documents in documents_read_group}
         for task in self:
-            task.shared_document_ids = document_ids_per_task_id.get(task.id, False)
+            task.shared_document_ids, task.shared_document_count = document_ids_and_count_per_task_id.get(task.id, (False, 0))
 
     def unlink(self):
         # unlink documents.document directly so mail.activity.mixin().unlink is called
@@ -72,3 +73,11 @@ class ProjectTask(models.Model):
             'default_tag_ids': self.project_id.documents_tag_ids.ids,
         }
         return action
+
+    def action_open_shared_documents(self):
+        self.ensure_one()
+        return {
+            'name': _("Task's Documents"),
+            'type': 'ir.actions.act_url',
+            'url': f"/my/tasks/{self.id}/documents/",
+        }

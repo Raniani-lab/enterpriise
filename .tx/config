@@ -612,11 +612,6 @@ file_filter = marketing_automation_sms/i18n/<lang>.po
 source_file = marketing_automation_sms/i18n/marketing_automation_sms.pot
 source_lang = en
 
-[odoo-s15-3.mass_mailing_themes]
-file_filter = mass_mailing_themes/i18n/<lang>.po
-source_file = mass_mailing_themes/i18n/mass_mailing_themes.pot
-source_lang = en
-
 [odoo-s15-3.mrp_account_enterprise]
 file_filter = mrp_account_enterprise/i18n/<lang>.po
 source_file = mrp_account_enterprise/i18n/mrp_account_enterprise.pot

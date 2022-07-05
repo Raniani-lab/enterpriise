@@ -4,6 +4,7 @@ from . import account_move
 from . import account_move_line
 from . import payment
 from . import product
+from . import product_pricing
 from . import res_partner
 from . import sale_order_alert
 from . import sale_order_close_reason

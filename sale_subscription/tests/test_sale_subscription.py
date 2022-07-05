@@ -1487,7 +1487,7 @@ class TestSubscription(TestSubscriptionCommon):
         # set pricing for variants. make sure the cheaper one is not for the variant we're testing
         cheaper_pricing = Pricing.create({
             'duration': 1,
-            'unit': 'day',
+            'unit': 'week',
             'price': 10,
             'product_template_id': product.id,
             'product_variant_ids': [Command.link(product.product_variant_ids[0].id)],
@@ -1495,7 +1495,7 @@ class TestSubscription(TestSubscriptionCommon):
 
         pricing2 = Pricing.create({
             'duration': 1,
-            'unit': 'day',
+            'unit': 'week',
             'price': 25,
             'product_template_id': product.id,
             'product_variant_ids': [Command.link(product.product_variant_ids[-1].id)],

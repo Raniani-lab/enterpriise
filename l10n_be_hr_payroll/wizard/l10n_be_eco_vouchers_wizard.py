@@ -60,7 +60,7 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
         # € 125 x 7/12 + € 250 x 5/12 = € 177.07
         unpaid_work_entry_types = self.env.ref(
             'l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary'
-        ).unpaid_work_entry_type_ids.filtered(lambda wet: wet.code not in ['LEAVE210', 'LEAVE230'])
+        ).unpaid_work_entry_type_ids.filtered(lambda wet: wet.code not in ['LEAVE210', 'LEAVE230', 'LEAVE250'])
 
 
         for wizard in self:

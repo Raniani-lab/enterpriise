@@ -1154,12 +1154,14 @@ var ManualModel = BasicModel.extend({
      */
     _amountCompare: function (value1, value2, currency_id) {
         const currency = session.get_currency(currency_id);
-        const epsilon = Math.pow(10, -currency.digits[1]);
-        const delta = value1 - value2;
-        if (Math.abs(delta) < epsilon) {
+        const delta = parseFloat((value1 - value2).toFixed(currency.digits[1]));
+        if (delta > 0) {
+            return 1;
+        } else if (delta < 0) {
+            return -1;
+        } else {
             return 0;
         }
-        return delta < 0 ? -1 : 1;
     },
     /**
      * overridden in ManualModel

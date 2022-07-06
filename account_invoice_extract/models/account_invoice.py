@@ -776,6 +776,7 @@ class AccountMove(models.Model):
         payment_ref_ocr = ocr_results['payment_ref']['selected_value']['content'] if 'payment_ref' in ocr_results else ""
         iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
+        qr_bill_ocr = ocr_results['qr-bill']['selected_value']['content'] if 'qr-bill' in ocr_results else None
 
         with self.get_form_context_manager() as move_form:
             if not move_form._get_modifier('date', 'invisible'):
@@ -826,6 +827,47 @@ class AccountMove(models.Model):
                                         if country_id.exists():
                                             vals['bank_id'] = self.env['res.bank'].create({'name': SWIFT_code_ocr['name'], 'country': country_id.id, 'city': SWIFT_code_ocr['city'], 'bic': SWIFT_code_ocr['bic']}).id
                                 move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create(vals)
+
+            if qr_bill_ocr:
+                qr_content_list = qr_bill_ocr.splitlines()
+
+                if not move_form.partner_id:
+                    move_form.partner_id = self.env["res.partner"].with_context(clean_context(self.env.context)).create({
+                        'name': qr_content_list[5],
+                        'is_company': True,
+                    })
+
+                partner = move_form.partner_id
+                supplier_address_type = qr_content_list[4]
+                if supplier_address_type == 'S':
+                    if not partner.street:
+                        street = qr_content_list[6]
+                        house_nb = qr_content_list[7]
+                        partner.street = " ".join((street, house_nb))
+
+                    if not partner.zip:
+                        partner.zip = qr_content_list[8]
+
+                    if not partner.city:
+                        partner.city = qr_content_list[9]
+                elif supplier_address_type == 'K':
+                    if not partner.street:
+                        partner.street = qr_content_list[6]
+                        partner.street2 = qr_content_list[7]
+
+                supplier_country_code = qr_content_list[10]
+                if not partner.country_id and supplier_country_code:
+                    country = self.env['res.country'].search([('code', '=', supplier_country_code)])
+                    partner.country_id = country and country.id
+
+                iban = qr_content_list[3]
+                if iban and not self.env['res.partner.bank'].search([('acc_number', '=ilike', iban)]):
+                    self.env['res.partner.bank'].create({
+                        'acc_number': iban,
+                        'company_id': move_form.company_id.id,
+                        'currency_id': move_form.currency_id.id,
+                        'partner_id': partner.id,
+                    })
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
             context_create_date = str(fields.Date.context_today(self, self.create_date))

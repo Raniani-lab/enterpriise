@@ -76,6 +76,7 @@
                 <field name="priority" invisible="1"/>
                 <field name="rating_last_text"/>
                 <field name="company_id" groups="base.group_multi_company" invisible="context.get('default_team_id', False)"/>
+                <field name="description"/>
 
                 <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>
                 <filter string="Followed" domain="[('message_is_follower', '=', True)]" name="my_follow_ticket"/>
@@ -188,7 +189,7 @@
                     decoration-warning="rating_last_text == 'ok'" decoration-success="rating_last_text == 'top'"
                     attrs="{'invisible': [('rating_last_text', '=', 'none')]}"
                     class="fw-bold" widget="badge" optional="hide"/>
-                <field name="kanban_state" optional="hide" readonly="1" widget="state_selection"/>
+                <field name="kanban_state" nolabel="1" optional="show" widget="state_selection" options="{'hide_label': True}"/>
                 <field name="stage_id" optional="show" readonly="not context.get('default_team_id', False)"/>
             </tree>
         </field>

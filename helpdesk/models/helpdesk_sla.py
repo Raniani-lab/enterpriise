@@ -52,6 +52,11 @@ class HelpdeskSLA(models.Model):
         for sla in self:
             sla.ticket_count = sla_data.get(sla.id, 0)
 
+    def name_get(self):
+        if not self._context.get('with_team_name'):
+            return super().name_get()
+        return [(sla.id, f'{sla.name} - {sla.team_id.name}') for sla in self]
+
     def copy(self, default=None):
         default = dict(default or {})
         if not default.get('name'):

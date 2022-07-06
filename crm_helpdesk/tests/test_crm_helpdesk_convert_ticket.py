@@ -120,8 +120,8 @@ class TestLeadConvertToTicket(crm_common.TestCrmCommon):
         })
         action = convert.action_lead_to_helpdesk_ticket()
 
-        # salesmen redirected to leads
-        self.assertEqual(action['res_model'], lead._name)
+        # salesmen redirected to ticket
+        self.assertEqual(action['res_model'], 'helpdesk.ticket')
 
         # check created ticket coherency
         ticket = self.env['helpdesk.ticket'].sudo().search([('name', '=', lead.name)])

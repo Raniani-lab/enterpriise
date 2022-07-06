@@ -19,7 +19,7 @@
             </div>
             <field name="industry_id" position="after">
                 <t groups="helpdesk.group_helpdesk_user">
-                    <field name="sla_ids" widget="many2many_tags" groups="helpdesk.group_use_sla"/>
+                    <field name="sla_ids" widget="many2many_tags" groups="helpdesk.group_use_sla" context="{'with_team_name': True}"/>
                 </t>
             </field>
         </field>

@@ -15,6 +15,9 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
     company_id = fields.Many2one(related="ticket_id.company_id")
     program = fields.Many2one('loyalty.program', string="Coupon Program", default=_get_default_program,
         domain=lambda self: [('applies_on', '=', 'current'), ('trigger', '=', 'with_code'), '|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)])
+    points_granted = fields.Float('Coupon Value', default=1)
+    points_name = fields.Char(related='program.portal_point_name')
+    valid_until = fields.Date("Valid Until")
 
     def generate_coupon(self):
         """Generates a coupon for the selected program and the partner linked
@@ -23,7 +26,8 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
         vals = {
             'partner_id': self.ticket_id.partner_id.id,
             'program_id': self.program.id,
-            'points': max(self.program.reward_ids.mapped('required_points')) if self.program.applies_on == 'future' else 0,
+            'points': self.points_granted,
+            'expiration_date': self.valid_until,
         }
         coupon = self.env['loyalty.card'].sudo().create(vals)
         self.ticket_id.coupon_ids |= coupon
@@ -34,6 +38,7 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
             subtype_xmlid='mail.mt_note',
         )
         return {
+            'name': _('Coupons'),
             'type': 'ir.actions.act_window',
             'res_model': 'loyalty.card',
             'res_id': coupon.id,

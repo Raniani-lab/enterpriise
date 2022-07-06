@@ -417,7 +417,7 @@ class Document(models.Model):
                         record.previous_attachment_ids = [(3, attachment_id, False)]
                     record.previous_attachment_ids = [(4, record.attachment_id.id, False)]
                 if 'datas' in vals:
-                    old_attachment = record.attachment_id.copy()
+                    old_attachment = record.attachment_id.with_context(no_document=True).copy()
                     # removes the link between the old attachment and the record.
                     old_attachment.write({
                         'res_model': 'documents.document',

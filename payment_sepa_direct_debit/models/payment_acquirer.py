@@ -98,16 +98,14 @@ class PaymentAcquirer(models.Model):
 
     #=== BUSINESS METHODS ===#
 
-    @api.model
-    def _is_tokenization_required(self, provider=None, **kwargs):
+    def _is_tokenization_required(self, **kwargs):
         """ Override of payment to hide the "Save my payment details" input in checkout forms.
 
-        :param str provider: The provider of the acquirer handling the transaction
         :return: Whether the provider is SEPA
         :rtype: bool
         """
-        res = super()._is_tokenization_required(provider=provider, **kwargs)
-        if provider != 'sepa_direct_debit':
+        res = super()._is_tokenization_required(**kwargs)
+        if len(self) != 1 or self.provider != 'sepa_direct_debit':
             return res
 
         return True

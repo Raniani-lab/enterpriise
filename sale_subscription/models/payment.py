@@ -8,7 +8,6 @@ class PaymentAcquirer(models.Model):
 
     _inherit = 'payment.acquirer'
 
-    @api.model
     def _is_tokenization_required(self, sale_order_id=None, **kwargs):
         """ Override of payment to return whether confirming the order will create a subscription.
 

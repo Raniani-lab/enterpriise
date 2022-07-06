@@ -102,6 +102,10 @@
                                 <field name="onss_company_id"/>
                                 <field name="onss_registration_number"/>
                                 <field name="dmfa_employer_class"/>
+                                <field name="onss_expeditor_number"/>
+                                <field name="onss_pem_certificate" filename="'PEM Certificate'"/>
+                                <field name="onss_pem_passphrase" filename="'KEY File'"/>
+                                <field name="onss_key"/>
                             </group>
                             <button name="%(l10n_be_hr_payroll.l10n_be_hr_payroll_action_work_address_codes)d" icon="fa-arrow-right" type="action" string="Work address DMFA codes" class="btn-link"/>
                         </div>

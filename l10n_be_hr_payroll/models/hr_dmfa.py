@@ -1,20 +1,20 @@
-
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
-import re
 
 from collections import defaultdict
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
+from cryptography import x509
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.backends import default_backend
 from lxml import etree
 
 from odoo import api, fields, models, _
 from odoo.tools import date_utils
 from odoo.exceptions import ValidationError, UserError
 from odoo.modules.module import get_resource_path
-
 
 def format_amount(amount, width=11, hundredth=True):
     """
@@ -879,6 +879,10 @@ class HrDMFAReport(models.Model):
     ], default='R', required=True)
     dmfa_xml = fields.Binary(string="XML file")
     dmfa_xml_filename = fields.Char(compute='_compute_xml_filename', store=True)
+    dmfa_signature = fields.Binary(string="Signature file")
+    dmfa_signature_filename = fields.Char(compute='_compute_xml_filename', store=True)
+    dmfa_go = fields.Binary(string="Go file")
+    dmfa_go_filename = fields.Char(compute='_compute_xml_filename', store=True)
     dmfa_pdf = fields.Binary(string="PDF file")
     dmfa_pdf_filename = fields.Char(compute='_compute_pdf_filename', store=True)
     quarter_start = fields.Date(compute='_compute_dates')
@@ -938,6 +942,7 @@ class HrDMFAReport(models.Model):
             raise UserError(_('There is no defined expeditor number for the company.'))
 
         for dmfa in self:
+            # Declaration File
             if not dmfa._origin.dmfa_xml_filename:
                 num_suite = 0
             else:
@@ -946,8 +951,16 @@ class HrDMFAReport(models.Model):
             num_suite = str(num_suite).zfill(5)
             file_type = dmfa.file_type
 
-            filename = 'FI.DMFA.%s.%s.%s.%s.1.1' % (num_expedition, now.strftime('%Y%m%d'), num_suite, file_type)
+            filename_common = '.DMFA.%s.%s.%s.%s.1' % (num_expedition, now.strftime('%Y%m%d'), num_suite, file_type)
+
+            filename = 'FI' + filename_common + '.1'
             dmfa.dmfa_xml_filename = filename
+
+            filename = 'FS'  + filename_common + '.1'
+            dmfa.dmfa_signature_filename = filename
+
+            filename = 'GO' + filename_common
+            dmfa.dmfa_go_filename = filename
 
     @api.depends('dmfa_pdf')
     def _compute_pdf_filename(self):
@@ -986,6 +999,8 @@ class HrDMFAReport(models.Model):
         # PDF History: https://www.socialsecurity.be/lambda/portail/glossaires/dmfa.nsf/consult/fr/ImprPDF
         # Most related documentation: https://www.socialsecurity.be/lambda/portail/glossaires/dmfa.nsf/web/glossary_home_fr
 
+        # Declaration File
+        # ================
         xml_str = self.env['ir.qweb']._render('l10n_be_hr_payroll.dmfa_xml_report', self._get_rendering_data())
 
         # Prettify xml string
@@ -993,6 +1008,51 @@ class HrDMFAReport(models.Model):
         xml_formatted_str = etree.tostring(root, pretty_print=True, encoding='UTF-8', xml_declaration=True)
 
         self.dmfa_xml = base64.encodebytes(xml_formatted_str)
+
+        if self.env.context.get('dmfa_skip_signature'):
+            return
+
+        # Signature File
+        # ==============
+        company_sudo = self.company_id.sudo()
+
+        # Load certificate
+        pem = company_sudo.onss_pem_certificate
+        passphrase = company_sudo.onss_pem_passphrase
+        if passphrase:
+            passphrase = passphrase.encode()
+        else:
+            passphrase = None
+        if not pem:
+            raise UserError(_('No PEM Certificate defined on the Payroll Configuration'))
+        pem = base64.b64decode(pem, validate=True)
+
+        # Load key
+        ca_key = company_sudo.onss_key
+        if not ca_key:
+            raise UserError(_('No KEY file defined on the Payroll Configuration'))
+
+        # The PKCS7 signature builder can create both basic PKCS7 signed messages as well as
+        # S/MIME messages, which are commonly used in email. S/MIME has multiple versions,
+        # but this implements a subset of RFC 2632, also known as S/MIME Version 3.
+        # See: https://cryptography.io/en/3.4.8/hazmat/primitives/asymmetric/serialization.html#cryptography.hazmat.primitives.serialization.pkcs7.PKCS7SignatureBuilder
+        cert = x509.load_pem_x509_certificate(pem, backend=default_backend())
+        key = serialization.load_pem_private_key(pem, password=passphrase, backend=default_backend())
+        options = [serialization.pkcs7.PKCS7Options.DetachedSignature]
+        sign = serialization.pkcs7.PKCS7SignatureBuilder().set_data(
+            self.dmfa_xml
+        ).add_signer(
+            cert, key, hashes.SHA256()
+        ).sign(
+            serialization.Encoding.PEM, options
+        )
+        # Remove -----BEGIN PKCS7-----, -----END PKCS7----- and final new line
+        sign = (b'\n').join(sign.split(b'\n')[1:-2])
+        self.dmfa_signature = sign
+
+        # GO File
+        # =======
+        self.dmfa_go = base64.b64encode('go')
 
     def generate_dmfa_pdf_report(self):
         dmfa_pdf, dummy = self.env.ref('l10n_be_hr_payroll.action_report_dmfa').sudo()._render_qweb_pdf(

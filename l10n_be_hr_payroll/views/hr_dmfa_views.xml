@@ -21,6 +21,10 @@
                             <field name="file_type" attrs="{'invisible': [('declaration_type', '=', 'web')]}"/>
                             <field name="dmfa_xml_filename" invisible="1"/>
                             <field name="dmfa_xml" readonly="1" filename="dmfa_xml_filename" attrs="{'invisible': [('declaration_type', '=', 'web')]}"/>
+                            <field name="dmfa_signature_filename" invisible="1"/>
+                            <field name="dmfa_signature" readonly="1" filename="dmfa_signature_filename" attrs="{'invisible': [('declaration_type', '=', 'web')]}"/>
+                            <field name="dmfa_go_filename" invisible="1"/>
+                            <field name="dmfa_go" readonly="1" filename="dmfa_go_filename" attrs="{'invisible': [('declaration_type', '=', 'web')]}"/>
                             <field name="dmfa_pdf_filename" invisible="1"/>
                             <field name="dmfa_pdf" readonly="1" filename="dmfa_pdf_filename" attrs="{'invisible': [('declaration_type', '=', 'batch')]}"/>
                         </group>

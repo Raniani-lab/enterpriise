@@ -20,6 +20,18 @@ class ResCompany(models.Model):
         ('non_commercial', 'Employers without industrial or commercial purposes'),
     ], default='commercial')
     sdworx_code = fields.Char("SDWorx code", groups="hr.group_hr_user")
+    onss_expeditor_number = fields.Char(
+        string="ONSS Expeditor Number", groups="base.group_system",
+        help="ONSS Expeditor Number provided when registering service on the technical user")
+    onss_pem_certificate = fields.Binary(
+        string="PEM Certificate", groups="base.group_system",
+        help="Certificate to allow access to batch declarations")
+    onss_key = fields.Binary(
+        string="KEY file", groups="base.group_system",
+        help="Key to allow access to batch declarations")
+    onss_pem_passphrase = fields.Char(
+        string="PEM Passphrase", groups="base.group_system",
+        help="Certificate to allow access to batch declarations")
 
     @ormcache('self.id')
     def _get_workers_count(self):
@@ -65,3 +77,13 @@ class ResCompany(models.Model):
                 ],
             })
         return vals
+
+    def _neutralize(self):
+        super()._neutralize()
+        self.flush_model()
+        self.invalidate_model()
+        self.env.cr.execute("""
+            UPDATE res_company
+            SET onss_expeditor_number = 'dummy',
+                onss_pem_passphrase = 'dummy'
+        """)

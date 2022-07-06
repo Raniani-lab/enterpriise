@@ -50,6 +50,6 @@ class TestDMFA(common.TransactionCase):
             'reference': 'TESTDMFA',
             'company_id': belgian_company.id
         })
-        dmfa.generate_dmfa_xml_report()
+        dmfa.with_context(dmfa_skip_signature=True).generate_dmfa_xml_report()
         self.assertFalse(dmfa.error_message)
         self.assertEqual(dmfa.validation_state, 'done')

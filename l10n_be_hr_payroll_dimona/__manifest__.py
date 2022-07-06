@@ -51,7 +51,6 @@ Prerequisites:
         'security/ir.model.access.csv',
         'data/ir_cron_data.xml',
         'views/hr_contract_views.xml',
-        'views/res_config_settings_views.xml',
         'wizard/l10n_be_dimona_wizard_views.xml',
     ],
     'demo':[],

@@ -149,7 +149,7 @@ class DataMergeModel(models.Model):
         ])
         if num_records:
             partner_ids = self.notify_user_ids.partner_id.ids
-            menu_id = self.env.ref('data_cleaning.menu_data_cleaning_root').id
+            menu_id = self.env.ref('data_recycle.menu_data_cleaning_root').id
             self.env['mail.thread'].with_context(mail_notify_author=True).sudo().message_notify(
                 body=self.env['ir.qweb']._render(
                     'data_merge.data_merge_duplicate',

@@ -10,7 +10,7 @@
                 <div class="o_row" col="4" attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund'))]}">
                     <field name="release_to_pay" attrs="{'invisible': True}" />
                     <field name="release_to_pay_manual"/>
-                    <label class="font-weight-bold" for="force_release_to_pay" attrs="{'invisible': [('force_release_to_pay', '=', False)]}"/>
+                    <label class="fw-bold" for="force_release_to_pay" attrs="{'invisible': [('force_release_to_pay', '=', False)]}"/>
                     <field name="force_release_to_pay" attrs="{'invisible': [('force_release_to_pay', '=', False)]}"/>
                 </div>
             </xpath>

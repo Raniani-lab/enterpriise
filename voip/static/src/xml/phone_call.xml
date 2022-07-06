@@ -35,7 +35,7 @@
                             <span><t t-esc="widget.partnerName"/></span>
                         </div>
                         <div t-if="widget.partnerName != widget.name and widget.name">
-                            <small><span t-attf-class="{{ !widget.isContact and !widget.isRecent ? 'font-italic' : '' }}" t-esc="widget.name"/></small>
+                            <small><span t-attf-class="{{ !widget.isContact and !widget.isRecent ? 'fst-italic' : '' }}" t-esc="widget.name"/></small>
                         </div>
                         <span class="o_dial_status_span" t-if="!widget.isContact and !widget.isRecent">
                             <i aria-label="Pending" class="fa fa-stack o_dial_state_icon o_dial_state_icon_pending"

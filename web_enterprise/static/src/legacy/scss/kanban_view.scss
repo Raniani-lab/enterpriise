@@ -4,7 +4,7 @@
         input {
             &, &:focus, &:hover {
                 background: transparent;
-                border-bottom: 1px solid gray('600');
+                border-bottom: 1px solid map-get($grays, '600');
             }
         }
     }

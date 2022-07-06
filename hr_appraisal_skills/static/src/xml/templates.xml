@@ -2,7 +2,7 @@
 <templates>
     <t t-name="hr_appraisal_skills_row_title">
         <tr class="o_group_header o_group_has_content o_group_open">
-            <th class="o_group_name border-0 pr-2 font-weight-bold" colspan="5" tabindex="-1">
+            <th class="o_group_name border-0 pe-2 fw-bold" colspan="5" tabindex="-1">
                 <t t-esc="name" />
                 <t t-if="isEditable">
                     <div class="o_field_x2many_list_row_add d-inline">

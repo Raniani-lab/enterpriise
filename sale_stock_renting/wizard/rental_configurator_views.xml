@@ -7,7 +7,7 @@
     <field name="arch" type="xml">
       <xpath expr="//div[@name='qty_to_reserve']" position="replace">
           <div name="qty_to_reserve">
-            <field name="quantity" class="oe_inline col-lg-3 text-left pl-0"/>
+            <field name="quantity" class="oe_inline col-lg-3 text-start ps-0"/>
             <field name="uom_id" class="oe_inline" options="{'no_open':1}" attrs="{'invisible': [('is_product_storable', '=', True)]}"/>
             <span class="oe_inline" attrs="{'invisible': [('is_product_storable', '=', False)]}">
               (<field name="qty_available_during_period" class="oe_inline" nolabel="1"/>

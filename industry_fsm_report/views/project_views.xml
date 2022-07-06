@@ -151,7 +151,7 @@
             </field>
             <xpath expr="//span[hasclass('o_text_overflow') and @t-if='record.partner_id.value']" position="before">
                 <span t-if="record.worksheet_template_id.value" class="text-muted o_text_overflow" invisible="not context.get('fsm_mode', False)">
-                    <span class="fa fa-pencil mr-1" aria-label="Worksheet Template" title="Worksheet Template"/><t t-esc="record.worksheet_template_id.value"/>
+                    <span class="fa fa-pencil me-1" aria-label="Worksheet Template" title="Worksheet Template"/><t t-esc="record.worksheet_template_id.value"/>
                 </span>
             </xpath>
         </field>
@@ -305,7 +305,7 @@
                                 </div>
                             </div>
                             <div class="o_dropdown_kanban dropdown" t-if="!selection_mode" groups="base.group_user">
-                                <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                <a role="button" class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">

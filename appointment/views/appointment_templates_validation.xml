@@ -28,7 +28,7 @@
                                 <div t-out="event.appointment_type_id.message_confirmation" class="mb-2"/>
                             </t>
                             <div class="col-lg-8 row">
-                                <div class="col-4 col-md-3 pl-2 pr-1 px-sm-3">
+                                <div class="col-4 col-md-3 ps-2 pe-1 px-sm-3">
                                     <label class="form-label">When:</label>
                                 </div>
                                 <div class="col-8 col-md-9 mx-0 px-1">
@@ -37,7 +37,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-8 row">
-                                <div class="col-4 col-md-3 pl-2 pr-1 px-sm-3">
+                                <div class="col-4 col-md-3 ps-2 pe-1 px-sm-3">
                                     <label class="form-label">Duration:</label>
                                 </div>
                                 <div class="col-8 col-md-9 mx-0 px-1">
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div t-if="event.location" class="col-lg-8 row">
-                                <div class="col-4 col-md-3 pl-2 pr-1 px-sm-3">
+                                <div class="col-4 col-md-3 ps-2 pe-1 px-sm-3">
                                     <label class="form-label">Location:</label>
                                 </div>
                                 <div class="col-8 col-md-9 mx-0 px-1">
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             <div class="col-lg-8 row">
-                                <div class="col-4 col-md-3 pl-2 pr-1 px-sm-3">
+                                <div class="col-4 col-md-3 ps-2 pe-1 px-sm-3">
                                     <label class="form-label">Attendees:</label>
                                 </div>
                                 <div class="col-8 col-md-9 mx-0 px-1">
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                             <div t-if="not is_html_empty(event.description)" class="col-lg-8 row">
-                                <div class="col-4 col-md-3 pl-2 pr-1 px-sm-3">
+                                <div class="col-4 col-md-3 ps-2 pe-1 px-sm-3">
                                     <label class="form-label">Description:</label>
                                 </div>
                                 <div class="col-8 col-md-9 mx-0 px-1">
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                     <div class="row mb-5">
-                        <div class="col-md-4 text-left">
+                        <div class="col-md-4 text-start">
                             <a role="button" class="btn btn-block btn-primary" t-attf-href="/calendar/ics/#{event.access_token}.ics">
                                 <i class="fa fa-fw fa-arrow-right"></i>Add to iCal/Outlook
                             </a>
@@ -86,7 +86,7 @@
                                 <i class="fa fa-fw fa-arrow-right"></i>Add to Google Calendar
                             </a>
                         </div>
-                        <div class="col-md-4 text-right">
+                        <div class="col-md-4 text-end">
                             <a t-if="event.appointment_type_id" role="button" class="btn btn-danger btn-block"
                                 t-attf-href="/calendar/#{event.access_token}/cancel?partner_id=#{partner_id}&amp;#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids')}">
                                 <i class="fa fa-fw fa-times"></i>Cancel / Reschedule

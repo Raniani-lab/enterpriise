@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="hr_payroll.ActionBox" owl="1">
-        <div class="o_hr_payroll_dashboard_block p-2 pl-4">
+        <div class="o_hr_payroll_dashboard_block p-2 ps-4">
             <div class="row">
                 <div class="col">
                     <h2 class="btn btn-link p-0 disabled text-black">
@@ -11,10 +11,10 @@
             </div>
             <t t-foreach="props.actions" t-as="action" t-key="action_index">
                 <a t-if="action.count > 0" class="row w-100" href="#" t-on-click="() => this.actionService.doAction(action.action)">
-                    <span class="col-1 text-right p-0 mr-1">
+                    <span class="col-1 text-end p-0 me-1">
                         <t t-esc="action.count"/>
                     </span>
-                    <span class="col text-left p-0">
+                    <span class="col text-start p-0">
                         <t t-esc="action.string"/>
                     </span>
                 </a>

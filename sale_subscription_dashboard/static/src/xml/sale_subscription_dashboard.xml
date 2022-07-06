@@ -247,7 +247,7 @@
         <div class="btn-group dropdown o_subscription_dashboard_filter_date"></div>
         <!-- Subscriptions -->
         <div t-if="widget.contract_templates &amp;&amp; widget.contract_templates.length > 1" class="dropdown btn-group">
-            <button class="dropdown-toggle btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button class="dropdown-toggle btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                 <span class="fa fa-file-o"/> Subscriptions
             </button>
             <div class="dropdown-menu o_filter_menu" role="menu">
@@ -259,7 +259,7 @@
 
         <!-- Tags -->
         <div t-if="widget.tags &amp;&amp; widget.tags.length > 1" class="dropdown btn-group">
-            <a class="dropdown-toggle" data-toggle="dropdown">
+            <a class="dropdown-toggle" data-bs-toggle="dropdown">
                 <span class="fa fa-bar-chart"/> Categories
             </a>
             <div class="dropdown-menu o_filter_menu" role="menu">
@@ -271,7 +271,7 @@
 
         <!-- Companies -->
         <div t-if="widget.companies &amp;&amp; widget.companies.length > 1" class="dropdown btn-group">
-            <button class="dropdown-toggle btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button class="dropdown-toggle btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                 <span class="fa fa-building"/> Companies
             </button>
             <div class="dropdown-menu o_filter_menu" role="menu">
@@ -283,7 +283,7 @@
 
         <!-- Sales Team -->
         <div t-if="widget.sales_team &amp;&amp; widget.sales_team.length > 1" class="dropdown btn-group">
-            <button class="dropdown-toggle btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button class="dropdown-toggle btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                 <span class="fa fa-users"/> Sales Team
             </button>
             <div class="dropdown-menu o_filter_menu" role="menu">
@@ -367,7 +367,7 @@
             <span t-if="widget.tooltip" class="o_kpi_definition" data-bs-toggle="popover" t-att-data-bs-content="widget.tooltip"><i class="fa fa-question-circle"/></span>
         </div>
         <div t-if="!widget.has_mrr">
-            <span class="badge badge-warning o_demo_label">Sample data</span>
+            <span class="badge text-bg-warning o_demo_label">Sample data</span>
         </div>
     </div>
 
@@ -382,7 +382,7 @@
             <h4 class="text-center o_chart_title"><t t-esc="widget.box_name"/></h4>
         </div>
         <div t-if="!widget.has_mrr">
-            <span class="badge badge-warning o_demo_label">Sample data</span>
+            <span class="badge text-bg-warning o_demo_label">Sample data</span>
         </div>
     </div>
 
@@ -455,7 +455,7 @@
     </t>
 
     <t t-name="sale_subscription_dashboard.date_filter">
-        <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+        <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown">
             <span class="fa fa-calendar" title="Dates" role="img" aria-label="Dates"/>
             From:
             <span class="js_format_date">

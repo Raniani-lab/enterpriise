@@ -4,8 +4,8 @@
     <div t-name="stock_barcode.MainComponent" class="o_content o_barcode_client_action" owl="1">
         <div class="o_barcode_header bg-odoo">
             <div class="navbar navbar-expand navbar-dark">
-                <nav class="navbar-nav mr-auto">
-                    <button t-on-click="exit" class="o_exit btn nav-link mr-4">
+                <nav class="navbar-nav me-auto">
+                    <button t-on-click="exit" class="o_exit btn nav-link me-4">
                         <i class="fa fa-chevron-left"/>
                     </button>
                     <span class="o_title navbar-text text-white" t-esc="env.model.name"/>
@@ -28,7 +28,7 @@
                 </nav>
             </div>
             <t t-if="displayBarcodeApplication">
-                <div t-if="displayNote" class="alert alert-warning text-left mb-0">
+                <div t-if="displayNote" class="alert alert-warning text-start mb-0">
                     <button type="button" class="close" title="Close" aria-label="Close" t-on-click="hideNote">&#215;</button>
                     <t t-esc="env.model.record.note"/>
                 </div>
@@ -36,7 +36,7 @@
                     t-attf-class="{{displayHeaderInfoAsColumn ? 'flex-column justify-content-center align-items-center' : 'justify-content-between'}}">
                     <div t-if="displayLocations" class="col-12 col-md-8">
                         <div class="o_barcode_locations">
-                            <span class="o_barcode_move_number mr-1 font-weight-bold"
+                            <span class="o_barcode_move_number me-1 fw-bold"
                                 t-esc="currentPageIndex + '/' + numberOfPages"/>
                             <t t-if="displaySourceLocation">
                                 <span t-if="isTransfer" class="o_barcode_location_label">From </span>
@@ -70,9 +70,9 @@
                     <div t-if="info.warning" class="o_barcode_pic position-relative text-center mt-2 mb-1">
                         <i class="fa fa-5x fa-exclamation-triangle"/>
                     </div>
-                    <div name="barcode_messages" class="col-12 text-left text-md-right" t-attf-class="{{displayLocations? 'col-md-4' : ''}}">
+                    <div name="barcode_messages" class="col-12 text-start text-md-end" t-attf-class="{{displayLocations? 'col-md-4' : ''}}">
                         <span class="o_scan_message" t-attf-class="o_scan_message_{{info.class}}">
-                            <span t-if="info.warning" name="warning" class="fa fa-exclamation-triangle mr-1"/>
+                            <span t-if="info.warning" name="warning" class="fa fa-exclamation-triangle me-1"/>
                             <t t-esc="info.message"/>
                         </span>
                     </div>
@@ -113,33 +113,33 @@
         <div t-if="displayBarcodeLines" class="fixed-bottom"> <!-- Footer -->
             <div class="o_barcode_control o_action_buttons d-flex">
                 <button class="o_add_line btn btn-secondary text-uppercase" t-on-click="openProductPage">
-                    <i class="fa fa-plus mr-1"/> Add Product
+                    <i class="fa fa-plus me-1"/> Add Product
                 </button>
                 <button t-if="env.model.displayPutInPackButton" t-on-click="putInPack" class="o_put_in_pack btn btn-secondary text-uppercase">
-                    <i class="fa fa-cube mr-1"/> Put In Pack
+                    <i class="fa fa-cube me-1"/> Put In Pack
                 </button>
             </div>
             <div class="o_barcode_control o_navigation_buttons d-flex">
                 <button t-if="numberOfPages > 1" t-on-click="previousPage"
                     class="btn btn-secondary text-uppercase o_previous_page">
-                    <i class="fa fa-angle-left mr-1"/> Previous
+                    <i class="fa fa-angle-left me-1"/> Previous
                 </button>
                 <button t-if="displayNextButton" t-on-click="nextPage"
                     class="btn text-uppercase o_next_page"
                     t-attf-class="{{highlightNextButton ? 'btn-primary' : 'btn-secondary'}}">
-                    Next <i class="fa fa-angle-right ml-1"/>
+                    Next <i class="fa fa-angle-right ms-1"/>
                 </button>
                 <button t-if="env.model.displayValidateButton" t-on-click="validate"
                     class="btn text-uppercase o_validate_page"
                     t-att-disabled="!env.model.canBeValidate"
                     t-attf-class="{{highlightValidateButton ? 'btn-success' : 'btn-secondary'}}">
-                    <i class="fa fa-check mr-1"/> Validate
+                    <i class="fa fa-check me-1"/> Validate
                 </button>
                 <button t-if="env.model.displayApplyButton" t-on-click="() => this.env.model.apply()"
                     class="btn text-uppercase o_apply_page"
                     t-att-disabled="env.model.applyOn === 0"
                     t-attf-class="{{highlightValidateButton ? 'btn-success' : 'btn-secondary'}}">
-                    <i class="fa fa-check mr-1"/> Apply
+                    <i class="fa fa-check me-1"/> Apply
                     <span t-attf-class="{{highlightValidateButton ? '' : 'text-muted'}}">
                         (<t t-esc="env.model.applyOn"/>)
                     </span>

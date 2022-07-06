@@ -196,7 +196,7 @@ var KanbanRecordEditor = KanbanRecord.extend(EditorMixin, {
                 .addClass('o_web_studio_add_dropdown o_dropdown_kanban dropdown')
                 .append($('<a>', {
                     class: 'dropdown-toggle o-no-caret btn',
-                    'data-toggle': 'dropdown',
+                    'data-bs-toggle': 'dropdown',
                     href: '#',
                 }).append($('<span>', {
                     class: 'fa fa-ellipsis-v',

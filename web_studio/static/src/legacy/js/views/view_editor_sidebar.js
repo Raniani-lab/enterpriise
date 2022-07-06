@@ -602,7 +602,7 @@ return Widget.extend(StandaloneFieldManagerMixin, {
             const $sectionTitle = $('<h3>', {
                 text: _t('Existing Fields'),
                 class: 'o_web_studio_existing_fields_header',
-            }).append($('<i/>', {class: `o_web_studio_existing_fields_icon fa fa-caret-right ml-2`}));
+            }).append($('<i/>', {class: `o_web_studio_existing_fields_icon fa fa-caret-right ms-2`}));
             const $sectionSubtitle = $('<h6>', {
                 class: 'small text-white',
                 text: _t('The following fields are currently not in the view.'),

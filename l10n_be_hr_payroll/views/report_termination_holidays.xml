@@ -121,8 +121,8 @@
                         </tbody>
                     </table>
 
-                    <p class="text-right"><strong>Established on <span t-field="o.compute_date"/></strong></p>
-                    <p class="text-right"><strong>Authorized signature</strong></p>
+                    <p class="text-end"><strong>Established on <span t-field="o.compute_date"/></strong></p>
+                    <p class="text-end"><strong>Authorized signature</strong></p>
                 </div>
                 <div class="page">
                 <p style="page-break-after:always;"/>
@@ -281,8 +281,8 @@
                         </tbody>
                     </table>
 
-                    <p class="text-right"><strong>Established on <span t-field="o.compute_date"/></strong></p>
-                    <p class="text-right"><strong>Authorized signature</strong></p>
+                    <p class="text-end"><strong>Established on <span t-field="o.compute_date"/></strong></p>
+                    <p class="text-end"><strong>Authorized signature</strong></p>
                 </div>
                 <div class="page">
                 <p style="page-break-after:always;"/>

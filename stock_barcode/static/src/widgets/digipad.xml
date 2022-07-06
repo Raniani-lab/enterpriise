@@ -3,7 +3,7 @@
 
     <t t-name="stock_barcode.DigipadTemplate">
         <div class="o_digipad_widget">
-            <div class="o_digipad_digit_buttons mr-2">
+            <div class="o_digipad_digit_buttons me-2">
                 <t t-foreach="widget.buttons" t-as="button"
                     t-call="stock_barcode.DigipadButtonsTemplate"/>
             </div>

@@ -221,7 +221,7 @@ QUnit.module('Studio', {}, function () {
                 "the last node should be the span");
 
             // expand the first node
-            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:first [data-toggle="collapse"]:first'));
+            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:first [data-bs-toggle="collapse"]:first'));
             // BS4 collapsing is asynchronous
             setTimeout(function () {
                 assert.doesNotHaveClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse:first'), 'show',
@@ -230,7 +230,7 @@ QUnit.module('Studio', {}, function () {
                     "the 'div' node should be expanded");
 
                 // reexpand the second node
-                testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:last [data-toggle="collapse"]:first'));
+                testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:last [data-bs-toggle="collapse"]:first'));
                 setTimeout(function () {
                     assert.hasClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse:first'),'show',
                         "the 'span' node should be expanded again");

@@ -22,7 +22,8 @@
 
                 .tab {
                     display: block;
-                    @include size(auto, $o-base-settings-mobile-tabs-height);
+                    width: auto;
+                    height: $o-base-settings-mobile-tabs-height;
                     padding: $o-base-settings-mobile-tabs-height*0.25 $o-base-settings-mobile-tabs-height*0.4;
                     text-align: center;
                     font-size: 14px;
@@ -42,7 +43,8 @@
                         background: $o-brand-primary;
                         opacity: 0;
                         @include o-position-absolute(auto, 0, 0, 0);
-                        @include size(100%, 3px);
+                        width: 100%;
+                        height: 3px;
                         transition: 0.2s all ease 0s;
                     }
 

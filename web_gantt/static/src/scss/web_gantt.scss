@@ -48,7 +48,8 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
 
 @mixin gantt-ribbon-decoration($color) {
     content: '';
-    @include size(20px, 16px);
+    width: 20px;
+    height: 16px;
     @include o-position-absolute(-11px, $left: -13px);
     box-shadow: 1px 1px 0 white;
     background: $color;

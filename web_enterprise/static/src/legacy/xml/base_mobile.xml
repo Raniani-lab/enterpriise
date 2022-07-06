@@ -5,14 +5,14 @@
     <div class="o_statusbar_buttons">
         <div t-attf-class="btn-group #{open ? 'show' : ''}">
             <a role="button" class="btn btn-primary dropdown-toggle" href="#"
-                data-toggle="dropdown" aria-expanded="false">Action</a>
+                data-bs-toggle="dropdown" aria-expanded="false">Action</a>
             <div t-attf-class="dropdown-menu #{open ? 'show' : ''}" role="menu"/>
         </div>
     </div>
 </t>
 
 <t t-name="FieldStatus.content.mobile">
-    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
         <t t-if="status" t-esc="status.display_name"/>
     </button>
     <div class="dropdown-menu" role="menu">

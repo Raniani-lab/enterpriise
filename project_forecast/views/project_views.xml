@@ -60,7 +60,7 @@
                     type="object" icon="fa-tasks" help="Forecasts" attrs="{'invisible': [('allow_forecast', '=', False)]}">
                     <div class="o_stat_info">
                         <div class="oe_inline">
-                            <span class="o_stat_value mr-1">
+                            <span class="o_stat_value me-1">
                                 <field name="total_forecast_time" widget="statinfo" nolabel="1"/>
                             </span>
                             <span class="o_stat_value">Hours</span>
@@ -85,8 +85,8 @@
                     type="object" icon="fa-tasks" context="{'default_task_id': id, 'default_project_id': project_id}" attrs="{'invisible': [('allow_forecast', '=', False)]}">
                     <div class="o_stat_info">
                         <div class="oe_inline">
-                            <span class="o_stat_value mr-1">
-                                <field name="forecast_hours" nolabel="1" class="mr-1"/>
+                            <span class="o_stat_value me-1">
+                                <field name="forecast_hours" nolabel="1" class="me-1"/>
                             </span>
                             <span class="o_stat_value">Hours</span>
                         </div>

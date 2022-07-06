@@ -23,7 +23,7 @@
                             <a t-attf-href="/web#view_type=form&amp;model=hr.appraisal&amp;id=#{appraisal_id}&amp;action=hr_appraisal.open_view_hr_appraisal_tree" class="">Back to the appraisal</a>
                         </t>
                     </div>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"> &#215; </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </t>
         </xpath>

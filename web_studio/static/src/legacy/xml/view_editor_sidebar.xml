@@ -19,24 +19,24 @@
     <div class="o_web_studio_sidebar_content o_display_view" t-if="!(widget.mode === 'properties')">
         <t t-if="widget.state.mode === 'view'">
             <div t-if="_.contains(['list', 'form', 'kanban', 'gantt'], widget.view_type)" class="o_web_studio_sidebar_checkbox">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" id="create" name="create" class="custom-control-input"
+                <div class="custom-control form-check">
+                    <input type="checkbox" id="create" name="create" class="form-check-input"
                         t-att-checked="widget.isTrue(widget.state.attrs.create) ? 'checked' : undefined"/>
-                    <label for="create" class="custom-control-label">Can Create</label>
+                    <label for="create" class="form-check-label">Can Create</label>
                 </div>
             </div>
             <div t-if="_.contains(['list', 'form', 'gantt'], widget.view_type)" class="o_web_studio_sidebar_checkbox">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" id="edit" name="edit" class="custom-control-input"
+                <div class="custom-control form-check">
+                    <input type="checkbox" id="edit" name="edit" class="form-check-input"
                         t-att-checked="widget.isTrue(widget.state.attrs.edit) ? 'checked' : undefined"/>
-                    <label for="edit" class="custom-control-label">Can Edit</label>
+                    <label for="edit" class="form-check-label">Can Edit</label>
                 </div>
             </div>
             <div t-if="_.contains(['list', 'form'], widget.view_type)" class="o_web_studio_sidebar_checkbox">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" id="delete" name="delete" class="custom-control-input"
+                <div class="custom-control form-check">
+                    <input type="checkbox" id="delete" name="delete" class="form-check-input"
                         t-att-checked="widget.isTrue(widget.state.attrs.delete) ? 'checked' : undefined"/>
-                    <label for="delete" class="custom-control-label">Can Delete</label>
+                    <label for="delete" class="form-check-label">Can Delete</label>
                 </div>
             </div>
             <t t-if="_.contains(['list', 'form', 'search'], widget.view_type)">
@@ -51,9 +51,9 @@
                         <option t-att-selected="widget.state.attrs.editable === 'bottom' ? 'selected' : undefined" value="bottom">New record at the bottom</option>
                     </select>
                 </div>
-                <div class="custom-control custom-checkbox">
-                   <input type="checkbox" id="multi_edit" name="multi_edit" class="custom-control-input" t-att-checked="widget.isTrue(widget.state.attrs.multi_edit or 'false') ? 'checked' : undefined"/>
-                   <label for="multi_edit" class="custom-control-label">Enable Mass Editing</label>
+                <div class="custom-control form-check">
+                   <input type="checkbox" id="multi_edit" name="multi_edit" class="form-check-input" t-att-checked="widget.isTrue(widget.state.attrs.multi_edit or 'false') ? 'checked' : undefined"/>
+                   <label for="multi_edit" class="form-check-label">Enable Mass Editing</label>
                 </div>
                 <div class="o_web_studio_sidebar_select">
                     <label for="sort_field">Sort By</label>
@@ -80,10 +80,10 @@
             <!-- Kanban view settings -->
             <t t-if="widget.view_type === 'kanban'">
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="quick_create" name="quick_create" class="custom-control-input" data-leave-empty='checked'
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="quick_create" name="quick_create" class="form-check-input" data-leave-empty='checked'
                             t-att-checked="widget.state.attrs.quick_create ? undefined : 'checked'"/>
-                        <label for="quick_create" class="custom-control-label">Quick Create</label>
+                        <label for="quick_create" class="form-check-label">Quick Create</label>
                     </div>
                 </div>
                 <t t-call="web_studio.ShowInvisibleElements"/>
@@ -112,17 +112,17 @@
                     </select>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="hide_name" name="hide_name" class="custom-control-input" data-leave-empty='unchecked'
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="hide_name" name="hide_name" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.hide_name ? 'checked' : undefined"/>
-                        <label for="hide_name" class="custom-control-label">Hide Name</label>
+                        <label for="hide_name" class="form-check-label">Hide Name</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="hide_address" name="hide_address" class="custom-control-input" data-leave-empty='unchecked'
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="hide_address" name="hide_address" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.hide_address ? 'checked' : undefined"/>
-                        <label for="hide_address" class="custom-control-label">Hide Address</label>
+                        <label for="hide_address" class="form-check-label">Hide Address</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_tags">
@@ -130,10 +130,10 @@
                     <div class="o_map_popup_fields"/>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="routing" name="routing" class="custom-control-input" data-leave-empty='unchecked'
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="routing" name="routing" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.routing ? 'checked' : undefined"/>
-                        <label for="routing" class="custom-control-label">Enable Routing</label>
+                        <label for="routing" class="form-check-label">Enable Routing</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_select mt-0" t-if="widget.state.attrs.routing">
@@ -149,10 +149,10 @@
             <!-- Calendar view settings -->
             <t t-if="widget.view_type === 'calendar'">
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="quick_add" name="quick_add" class="custom-control-input" data-leave-empty='checked'
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="quick_add" name="quick_add" class="form-check-input" data-leave-empty='checked'
                             t-att-checked="widget.isTrue(widget.state.attrs.quick_add) ? 'checked' : undefined"/>
-                        <label for="quick_add" class="custom-control-label">Quick Create</label>
+                        <label for="quick_add" class="form-check-label">Quick Create</label>
                     </div>
                 </div>
                 <div
@@ -227,24 +227,24 @@
             <!-- Gantt view settings -->
             <t t-if="widget.view_type === 'gantt'">
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="display_unavailability" name="display_unavailability" class="custom-control-input" data-leave-empty='unchecked'
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="display_unavailability" name="display_unavailability" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.display_unavailability ? 'checked' : undefined"/>
-                        <label for="display_unavailability" class="custom-control-label">Display Unavailability</label>
+                        <label for="display_unavailability" class="form-check-label">Display Unavailability</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="total_row" name="total_row" class="custom-control-input" data-leave-empty='unchecked'
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="total_row" name="total_row" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.total_row ? 'checked' : undefined"/>
-                        <label for="total_row" class="custom-control-label">Display Total row</label>
+                        <label for="total_row" class="form-check-label">Display Total row</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="collapse_first_level" name="collapse_first_level" class="custom-control-input" data-leave-empty='unchecked'
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="collapse_first_level" name="collapse_first_level" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.collapse_first_level ? 'checked' : undefined"/>
-                        <label for="collapse_first_level" class="custom-control-label">Collapse First Level</label>
+                        <label for="collapse_first_level" class="form-check-label">Collapse First Level</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_select">
@@ -395,16 +395,16 @@
                     </select>
                 </div>
                 <div t-if="widget.state.attrs.type != 'line'" class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
+                    <div class="custom-control form-check">
                         <!-- Disable linking is presented as a positive sentence for easier understanding (hence inverse) -->
-                        <input type="checkbox" id="disable_linking" name="disable_linking" class="custom-control-input" data-inverse="1" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.disable_linking ? undefined : 'checked'"/>
-                        <label for="disable_linking" class="custom-control-label">Access records from graph</label>
+                        <input type="checkbox" id="disable_linking" name="disable_linking" class="form-check-input" data-inverse="1" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.disable_linking ? undefined : 'checked'"/>
+                        <label for="disable_linking" class="form-check-label">Access records from graph</label>
                     </div>
                 </div>
                 <div t-if="!['pie','line'].includes(widget.state.attrs.type)" class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="stacked" name="stacked" class="custom-control-input" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.stacked != 'False' ? 'checked' : undefined"/>
-                        <label for="stacked" class="custom-control-label">Stacked graph</label>
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="stacked" name="stacked" class="form-check-input" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.stacked != 'False' ? 'checked' : undefined"/>
+                        <label for="stacked" class="form-check-label">Stacked graph</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_select">
@@ -443,11 +443,11 @@
             <t t-if="widget.view_type === 'pivot'">
 
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
+                    <div class="custom-control form-check">
                         <!-- Disable linking is presented as a positive sentence for easier understanding (hence inverse) -->
-                        <input type="checkbox" id="disable_linking" name="disable_linking" class="custom-control-input" data-inverse="1" data-leave-empty='unchecked'
+                        <input type="checkbox" id="disable_linking" name="disable_linking" class="form-check-input" data-inverse="1" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.disable_linking ? undefined : 'checked'"/>
-                        <label for="disable_linking" class="custom-control-label">Access records from cell</label>
+                        <label for="disable_linking" class="form-check-label">Access records from cell</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_select">
@@ -485,23 +485,23 @@
                     <div class="o_pivot_measures_fields"/>
                 </div>
                 <div t-if="widget.state.attrs.studio_pivot_measure_field_ids" class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control custom-checkbox">
-                        <input type="checkbox" id="display_quantity" name="display_quantity" class="custom-control-input" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.display_quantity ? 'checked' : undefined"/>
-                        <label for="display_quantity" class="custom-control-label">Display count</label>
+                    <div class="custom-control form-check">
+                        <input type="checkbox" id="display_quantity" name="display_quantity" class="form-check-input" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.display_quantity ? 'checked' : undefined"/>
+                        <label for="display_quantity" class="form-check-label">Display count</label>
                     </div>
                 </div>
             </t>
             <t t-call="web_studio.Sidebar.Toolbox" t-if="widget.debug">
                 <div>
                     <t t-call="web_studio.Sidebar.Parameters"/>
-                    <t t-if="!widget.isEditingX2m" class="ml-1 mr-1">
+                    <t t-if="!widget.isEditingX2m" class="ms-1 me-1">
                         <t t-call="web_studio.Sidebar.XMLEditor"/>
                     </t>
                     <t t-if="_.contains(['list', 'form'], widget.view_type)">
                         <button class="btn btn-secondary btn-lg o_web_studio_defaults">Default Values</button>
                     </t>
                 </div>
-                <button class="btn btn-danger btn-lg float-right o_web_studio_restore">Restore Default View</button>
+                <button class="btn btn-danger btn-lg float-end o_web_studio_restore">Restore Default View</button>
             </t>
         </t>
     </div>
@@ -564,10 +564,10 @@
 <t t-name="web_studio.ViewEditorSidebar.InvisibleCheckbox">
     <div class="clearfix o_web_studio_sidebar_checkbox">
         <t t-set="attrs_invisible" t-value="widget.state.attrs.modifiers.invisible and widget.state.attrs.modifiers.invisible !== true"/>
-        <div t-attf-class="custom-control custom-checkbox{{attrs_invisible ? ' o_web_studio_checkbox_inactive' : ''}}">
-            <input type="checkbox" id="invisible" name="invisible" class="custom-control-input" data-type="attributes"
+        <div t-attf-class="custom-control form-check{{attrs_invisible ? ' o_web_studio_checkbox_inactive' : ''}}">
+            <input type="checkbox" id="invisible" name="invisible" class="form-check-input" data-type="attributes"
                 t-att-checked="widget.state.attrs.invisible ? 'checked' : undefined"/>
-            <label for="invisible" class="custom-control-label">Invisible</label>
+            <label for="invisible" class="form-check-label">Invisible</label>
             <a role="button" href="#" data-type="invisible" class="btn btn-link o_web_studio_attrs">Conditional</a>
         </div>
     </div>
@@ -580,20 +580,20 @@
         <t t-if="_.contains(['list', 'form'], widget.view_type)">
             <div class="clearfix o_web_studio_sidebar_checkbox">
                 <t t-set="attrs_required" t-value="widget.state.modifiers.required and widget.state.modifiers.required !== true"/>
-                <div t-attf-class="custom-control custom-checkbox#{attrs_required ? ' o_web_studio_checkbox_inactive' : ''}">
-                    <input type="checkbox" id="required" name="required" class="custom-control-input" data-type="attributes"
+                <div t-attf-class="custom-control form-check#{attrs_required ? ' o_web_studio_checkbox_inactive' : ''}">
+                    <input type="checkbox" id="required" name="required" class="form-check-input" data-type="attributes"
                         t-att-checked="widget.state.attrs.required ? 'checked' : undefined"
                         t-att-disabled="widget.state.field.required ? 'disabled' : undefined"/>
-                    <label for="required" class="custom-control-label">Required</label>
+                    <label for="required" class="form-check-label">Required</label>
                     <a role="button" href="#" data-type="required" class="btn btn-link o_web_studio_attrs">Conditional</a>
                 </div>
             </div>
             <div class="clearfix o_web_studio_sidebar_checkbox">
                 <t t-set="attrs_readonly" t-value="widget.state.modifiers.readonly and widget.state.modifiers.readonly !== true"/>
-                <div t-attf-class="custom-control custom-checkbox#{attrs_readonly ? ' o_web_studio_checkbox_inactive' : ''}">
-                    <input type="checkbox" id="readonly" name="readonly" class="custom-control-input" data-type="attributes"
+                <div t-attf-class="custom-control form-check#{attrs_readonly ? ' o_web_studio_checkbox_inactive' : ''}">
+                    <input type="checkbox" id="readonly" name="readonly" class="form-check-input" data-type="attributes"
                         t-att-checked="widget.state.attrs.readonly ? 'checked' : undefined"/>
-                    <label for="readonly" class="custom-control-label">Read only</label>
+                    <label for="readonly" class="form-check-label">Read only</label>
                     <a role="button" href="#" data-type="readonly" class="btn btn-link o_web_studio_attrs">Conditional</a>
                 </div>
             </div>
@@ -607,10 +607,10 @@
             </div>
         </t>
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_checkbox">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" id="bold" name="bold" class="custom-control-input" data-type="attributes"
+            <div class="custom-control form-check">
+                <input type="checkbox" id="bold" name="bold" class="form-check-input" data-type="attributes"
                     data-leave-empty="unchecked" t-att-checked="widget.state.attrs.bold ? 'checked' : undefined"/>
-                <label for="bold" class="custom-control-label">Bold</label>
+                <label for="bold" class="form-check-label">Bold</label>
             </div>
         </div>
         <div t-if="widget.view_type === 'kanban' and widget.showDisplay" class="o_web_studio_sidebar_select">
@@ -675,10 +675,10 @@
             <t t-if="widget.OPTIONS_BY_WIDGET[widget.widgetKey]">
                 <t t-foreach="widget.OPTIONS_BY_WIDGET[widget.widgetKey]" t-as="option" t-key="option_index">
                     <div t-if="option.type === 'boolean'" class="o_web_studio_sidebar_checkbox">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name" class="custom-control-input"
+                        <div class="custom-control form-check">
+                            <input type="checkbox" data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name" class="form-check-input"
                                 t-att-data-leave-empty='option.leaveEmpty' t-att-checked="widget.state.attrs.options[option.name] ? 'checked' : undefined"/>
-                            <label t-attf-for="option_#{option.name}" class="custom-control-label" t-esc="option.string"/>
+                            <label t-attf-for="option_#{option.name}" class="form-check-label" t-esc="option.string"/>
                         </div>
                     </div>
                     <div t-if="option.type === 'text'" class="o_web_studio_sidebar_text">
@@ -841,15 +841,15 @@
     <h3>Approvals</h3>
     <t t-set="studio_approval" t-value="widget.state.attrs.studio_approval &amp;&amp; widget.isTrue(widget.state.attrs.studio_approval)"/>
     <div class="o_web_studio_sidebar_checkbox">
-        <div class="custom-control custom-checkbox">
+        <div class="custom-control form-check">
             <input type="checkbox"
                    id="studio_approval"
                    name="studio_approval"
-                   class="custom-control-input"
+                   class="form-check-input"
                    t-att-checked="studio_approval ? 'checked' : undefined"
                    data-leave-empty='unchecked'
             />
-            <label for="studio_approval" class="custom-control-label">Set approval rules</label>
+            <label for="studio_approval" class="form-check-label">Set approval rules</label>
         </div>
     </div>
     <t t-if="studio_approval">
@@ -879,9 +879,9 @@
         <h3>Rainbow Man</h3>
         <t t-set="rainbow" t-value="widget.state.attrs.effect"/>
         <div class="o_web_studio_sidebar_checkbox">
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" id="rainbow" name="rainbow" class="custom-control-input" t-att-checked="rainbow ? 'checked' : undefined"/>
-                <label for="rainbow" class="custom-control-label">Rainbow Effect</label>
+            <div class="custom-control form-check">
+                <input type="checkbox" id="rainbow" name="rainbow" class="form-check-input" t-att-checked="rainbow ? 'checked' : undefined"/>
+                <label for="rainbow" class="form-check-label">Rainbow Effect</label>
             </div>
         </div>
         <t t-if="rainbow">
@@ -939,9 +939,9 @@
 <!-- DivEditor -->
 <t t-name="web_studio.ViewEditorSidebar.div">
     <div t-if="widget.view_type === 'kanban' and widget.state.$node and widget.state.$node.hasClass('o_dropdown_kanban')" class="o_web_studio_sidebar_checkbox">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" id="set_cover" name="set_cover" class="custom-control-input" t-att-checked="widget.state.$node.find('a[data-type=set_cover]').length ? 'checked' : undefined"/>
-            <label for="set_cover" class="custom-control-label">Set Cover Image</label>
+        <div class="custom-control form-check">
+            <input type="checkbox" id="set_cover" name="set_cover" class="form-check-input" t-att-checked="widget.state.$node.find('a[data-type=set_cover]').length ? 'checked' : undefined"/>
+            <label for="set_cover" class="form-check-label">Set Cover Image</label>
         </div>
     </div>
     <t t-call="web_studio.Sidebar.Toolbox">
@@ -972,10 +972,10 @@
 <t t-name="web_studio.ShowInvisibleElements">
     <div class="o_web_studio_sidebar_separator"/>
     <div class="o_web_studio_sidebar_checkbox">
-        <div class="custom-control custom-checkbox">
-            <input type="checkbox" id="show_invisible" class="custom-control-input"
+        <div class="custom-control form-check">
+            <input type="checkbox" id="show_invisible" class="form-check-input"
                 t-att-checked="widget.state.show_invisible ? 'checked' : undefined"/>
-            <label for="show_invisible" class="custom-control-label">Show Invisible Elements</label>
+            <label for="show_invisible" class="form-check-label">Show Invisible Elements</label>
         </div>
     </div>
 </t>
@@ -1004,16 +1004,16 @@
             t-att-value="rule.message || null" placeholder="Add a description..."/>
     </div>
     <div class="o_web_studio_sidebar_checkbox mt4">
-        <div class="custom-control custom-checkbox">
+        <div class="custom-control form-check">
             <input
                 type="checkbox"
                 t-attf-id="exclusive_user_{{rule.id}}"
                 t-attf-name="exclusive_user_{{rule.id}}"
-                class="custom-control-input"
+                class="form-check-input"
                 t-att-data-rule-id="rule.id"
                 t-att-checked="rule.exclusive_user ? 'checked' : undefined"/>
             <label t-attf-for="exclusive_user_{{rule.id}}"
-                    class="custom-control-label"
+                    class="form-check-label"
                     title="The user who approves this rule will not be able to approve other rules for the same record.">
                 Limit approver to this rule
             </label>

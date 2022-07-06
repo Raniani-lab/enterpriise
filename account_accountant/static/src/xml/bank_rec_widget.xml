@@ -66,7 +66,7 @@
         <t t-set="i" t-value="0"/>
         <t t-foreach="tag_names" t-as="tag_name" t-key="i">
             <t t-set="i" t-value="i + 1"/>
-            <div class="badge badge-pill o_tag_color_0">
+            <div class="badge rounded-pill o_tag_color_0">
                 <span>
                     <span class="o_badge_text" t-att-title="tag_name">
                         <span role="img"/>
@@ -86,7 +86,7 @@
                     <thead>
                         <t t-foreach="data.columns" t-as="column" t-key="column[0]">
                             <t t-if="['amount_currency', 'debit', 'credit'].includes(column[0])">
-                                <th class="o_list_number_th text-right" t-esc="column[1]"/>
+                                <th class="o_list_number_th text-end" t-esc="column[1]"/>
                             </t>
                             <t t-elif="column[0] === '__trash'">
                                 <th class="o_list_record_remove_header"/>
@@ -133,7 +133,7 @@
                                     <t t-if="column[0] === 'date'">
                                         <t t-if="['manual', 'auto_balance', 'tax_line'].includes(line.flag.value)">
                                             <td class="o_data_cell o_field_cell" field="date">
-                                                <span class="badge badge-secondary">New</span>
+                                                <span class="badge text-bg-secondary">New</span>
                                             </td>
                                         </t>
                                         <t t-else="">

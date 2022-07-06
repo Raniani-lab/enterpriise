@@ -30,11 +30,11 @@
                                             <a type="object" name="toggle_favorited" aria-label="In favorites, remove it" title="In favorites, remove it"
                                                 class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button"/>
                                         </t>
-                                        <span class="pl-4"><field name="display_name"/></span>
+                                        <span class="ps-4"><field name="display_name"/></span>
                                     </div>
                                 </div>
                                 <div class="o_dropdown_kanban dropdown">
-                                    <a role="button" class="dropdown-toggle o_kanban_manage_toggle_button o_left o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <a role="button" class="dropdown-toggle o_kanban_manage_toggle_button o_left o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                         <span class="fa fa-ellipsis-v"/>
                                     </a>
                                     <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
@@ -64,7 +64,7 @@
                                     <button name="open_shared_sign_request" type="object" class="btn btn-secondary btn-sm mt8" attrs="{'invisible': ['|', ('active', '=', False), ('responsible_count', '&gt;', 1)]}">Share</button>
                                 </div>
                                 <div class="oe_kanban_bottom_left w-50 mobile-xs-show">
-                                    <button name="dropdown" class="btn btn-primary btn-sm mt8 dropdown-toggle" type="button" data-toggle="dropdown">Action</button>
+                                    <button name="dropdown" class="btn btn-primary btn-sm mt8 dropdown-toggle" type="button" data-bs-toggle="dropdown">Action</button>
                                     <div class="dropdown-menu" role="menu">
                                         <button name="%(sign.action_sign_send_request)d" type="action" class="btn btn-primary btn-sm dropdown-item" context="{'sign_directly_without_mail': 0}">Send</button>
                                         <button name="%(sign.action_sign_send_request)d" type="action" class="btn btn-primary btn-sm dropdown-item" context="{'sign_directly_without_mail': 1}">Sign Now</button>
@@ -72,13 +72,13 @@
                                     </div>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
-                                    <div class="float-right mt8">
-                                        <span class="mr-2" title="Number of documents in progress for this template.">
+                                    <div class="float-end mt8">
+                                        <span class="me-2" title="Number of documents in progress for this template.">
                                             <span class="fa fa-hourglass-half"/>
                                             <field name="in_progress_count"/>
                                         </span>
-                                        <span class="mr-2" title="Number of documents signed for this template.">
-                                            <span class="fa fa-check ml-1"/>
+                                        <span class="me-2" title="Number of documents signed for this template.">
+                                            <span class="fa fa-check ms-1"/>
                                             <field name="signed_count"/>
                                         </span>
                                     </div>

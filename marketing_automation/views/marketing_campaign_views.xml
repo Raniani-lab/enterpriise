@@ -11,7 +11,7 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click o_marketing_automation_campaign_kanban">
-                            <div class="row no-gutters o_ma_campaign_header">
+                            <div class="row g-0 o_ma_campaign_header">
                                 <span t-att-title="record.name.raw_value" class="text-primary o_text_overflow">
                                     <t t-esc="record.name.raw_value"/>
                                 </span>
@@ -97,7 +97,7 @@
                                         context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
                                 </div>
                                 <div class="col-xs-12 col-md-9 o_td_label">
-                                    <label for="mailing_filter_id" string="Filter" class="oe_read_only mr-4"/>
+                                    <label for="mailing_filter_id" string="Filter" class="oe_read_only me-4"/>
                                     <field name="mailing_filter_id"
                                         widget="mailing_filter"
                                         options="{'no_create': '1', 'no_open': '1', 'domain_field': 'domain', 'model_field': 'model_id'}"
@@ -162,7 +162,7 @@
                                                         <div class="o_ma_desc"><t t-esc="record.activity_type.value" /></div>
                                                     </div>
                                                     <div class="o_ma_switch">
-                                                        <div t-if="!read_only_mode" class="float-left mt8 mr4">
+                                                        <div t-if="!read_only_mode" class="float-start mt8 mr4">
                                                             <a type="edit" role="button" class="btn btn-primary btn-sm">Edit</a><a type="delete" role="button" class="btn btn-link btn-sm">Delete</a>
                                                         </div>
                                                         <span data-mode="graph" class="active" role="img" title="Graph" aria-label="Graph"><i class="fa fa-pie-chart" /></span><span data-mode="filter" title="Filter" role="img" aria-label="Filter"><i class="fa fa-filter" /></span>

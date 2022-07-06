@@ -10,7 +10,7 @@
                 <button class="oe_stat_button" icon="fa-clock-o icon" type="object" name="action_view_timesheets" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}" groups="hr_timesheet.group_hr_timesheet_user">
                     <div class="o_field_widget o_stat_info">
                         <div class="oe_inline">
-                            <span class="o_stat_value mr-1">
+                            <span class="o_stat_value me-1">
                                 <field name="total_timesheet_time" widget="statinfo" nolabel="1"/>
                             </span>
                             <span class="o_stat_value">
@@ -57,11 +57,11 @@
                         attrs="{'invisible': ['|', ('display_timer_pause', '=', False), ('display_timer', '=', False)]}"/>
                     <button class="btn-secondary" name="action_timer_resume" type="object" string="Resume" data-hotkey="w" title="Resume timer"
                         attrs="{'invisible': ['|', ('display_timer_resume', '=', False), ('display_timer', '=', False)]}"/>
-                    <field name="timer_start" widget="timer_timer" class="text-secondary mr-auto h2 ml-2 ml-sm-0 font-weight-bold"
+                    <field name="timer_start" widget="timer_timer" class="text-secondary me-auto h2 ms-2 ms-sm-0 fw-bold"
                         attrs="{'invisible': [('display_timer', '=', False)]}"/>
                 </button>
                 <xpath expr="//field[@name='stage_id']" position="attributes">
-                    <attribute name="class">ml-2</attribute>
+                    <attribute name="class">ms-2</attribute>
                 </xpath>
             <xpath expr="//field[@name='email_cc']" position="after">
                 <field name="use_helpdesk_timesheet" invisible="1"/>
@@ -103,7 +103,7 @@
                                                 <div class="col-6">
                                                     <strong><span><t t-esc="record.employee_id.value"/></span></strong>
                                                 </div>
-                                                <div class="col-6 float-end text-right">
+                                                <div class="col-6 float-end text-end">
                                                     <strong><t t-esc="record.date.value"/></strong>
                                                 </div>
                                             </div>
@@ -112,7 +112,7 @@
                                                     <span><t t-esc="record.name.value"/></span>
                                                 </div>
                                                 <div class="col-6">
-                                                    <span class="float-end text-right">
+                                                    <span class="float-end text-end">
                                                         <field name="unit_amount" widget="float_time" decoration-danger="unit_amount &gt; 24"/>
                                                     </span>
                                                 </div>
@@ -138,9 +138,9 @@
                         <group>
                             <group class="oe_subtotal_footer oe_right" name="ticket_hours">
                                 <span>
-                                    <label class="font-weight-bold" for="total_hours_spent" string="Hours Spent"
+                                    <label class="fw-bold" for="total_hours_spent" string="Hours Spent"
                                         attrs="{'invisible': [('encode_uom_in_days', '=', True)]}"/>
-                                    <label class="font-weight-bold" for="total_hours_spent" string="Days Spent"
+                                    <label class="fw-bold" for="total_hours_spent" string="Days Spent"
                                         attrs="{'invisible': [('encode_uom_in_days', '=', False)]}"/>
                                 </span>
                                 <field name="total_hours_spent" widget="timesheet_uom" nolabel="1" />

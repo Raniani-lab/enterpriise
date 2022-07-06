@@ -27,7 +27,7 @@
                     <label for="hours_per_week" string="Total"/>
                     <div class="d-flex">
                         <field name="hours_per_week" nolabel="1"/>
-                        <span class="ml-2"> hours/week</span>
+                        <span class="ms-2"> hours/week</span>
                     </div>
                 </group>
             </xpath>

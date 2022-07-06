@@ -15,7 +15,7 @@
                 <field name="quantity_decreasable"/>
             </xpath>
             <xpath expr="//div[hasclass('oe_kanban_details')]" position="after">
-                <div class="o_kanban_record_bottom position-absolute fixed-bottom mr-2" attrs="{'invisible': ['|', ('tracking', '=', 'none'), ('fsm_quantity', '=', 0)]}">
+                <div class="o_kanban_record_bottom position-absolute fixed-bottom me-2" attrs="{'invisible': ['|', ('tracking', '=', 'none'), ('fsm_quantity', '=', 0)]}">
                     <div class="oe_kanban_bottom_left"/>
                     <div class="oe_kanban_bottom_right">
                         <button class="btn" type="object" name="action_assign_serial">

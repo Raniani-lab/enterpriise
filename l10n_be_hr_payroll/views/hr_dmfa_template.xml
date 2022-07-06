@@ -1688,7 +1688,7 @@
                 <t t-call="web.internal_layout">
                     <t t-set="wizard" t-value="wizard.with_context(lang=wizard.env.lang)"/>
                     <div class="page container-fluid">
-                        <div class="row text-center font-weight-bold">
+                        <div class="row text-center fw-bold">
                             <div class="col-12">
                                 <div><h1 style="font-size: 3em;">DmfA Declaration (<t t-esc="data['quarter_display']"/>)</h1></div>
                             </div>
@@ -1697,7 +1697,7 @@
                     <t t-set="pretty_format" t-value="data['pretty_format']"/>
                     <div class="mt-4 row">
                         <div class="col-12">
-                            <div class="font-weight-bold">Global Information</div>
+                            <div class="fw-bold">Global Information</div>
                         </div>
                     </div>
                     <div class="row">
@@ -1752,7 +1752,7 @@
                     </div>
                     <div class="mt-4 row" name="employees_information">
                         <div class="col-12">
-                            <div class="font-weight-bold">Employees Information</div>
+                            <div class="fw-bold">Employees Information</div>
                         </div>
                     </div>
                     <t t-foreach="data['natural_persons']" t-as="natural_person">

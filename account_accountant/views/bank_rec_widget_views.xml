@@ -95,14 +95,14 @@
                                             <div class="o_field_many2manytags o_field_widget d-flex flex-row flex-nowrap"
                                                  t-if="record.to_check.raw_value || record.is_reconciled.raw_value">
                                                 <div t-if="record.to_check.raw_value"
-                                                     class="badge badge-pill"
+                                                     class="badge rounded-pill"
                                                      style="background-color: #FFAB4A; margin-right: 0px !important">
                                                     <span class="o_badge_text">
                                                         <span class="o_tag_badge_text">To check</span>
                                                     </span>
                                                 </div>
                                                 <div t-if="record.is_reconciled.raw_value"
-                                                     class="badge badge-pill"
+                                                     class="badge rounded-pill"
                                                      style="background-color: #28a745; margin-right: 0px !important">
                                                     <span class="o_badge_text">
                                                         <span class="o_tag_badge_text" style="color: white">Matched</span>

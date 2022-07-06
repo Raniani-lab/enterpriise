@@ -67,7 +67,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
             font-size: 1.2rem;
 
             .o_social_preview_icon_wrapper {
-                @include size(2em);
+                width: 2em;
+                height: 2em;
             }
 
             .o_social_stream_post_image img {
@@ -148,7 +149,7 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 
     .o_kanban_group {
         border-top: 1px solid $border-color;
-        background-color: gray('100');
+        background-color: map-get($grays, '100');
         padding: 1rem 8px 0 16px;
 
         &:not(.o_column_folded) {
@@ -190,7 +191,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 // ===================================================
 .oe_kanban_global_click {
     .oe_kanban_avatar {
-        @include size(1.6em);
+        width: 1.6em;
+        height: 1.6em;
     }
 
     #post-stats {
@@ -202,7 +204,7 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 
 .o_social_post_kanban {
     &.o_social_post_kanban_error {
-        border-color: theme-color('danger');
+        border-color: map-get($theme-colors, 'danger');
     }
 }
 
@@ -231,7 +233,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     }
 
     img {
-        @include size(2em);
+        width: 2em;
+        height: 2em;
     }
 }
 
@@ -243,7 +246,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     border-radius: $o-social-border-radius-base;
 
     img {
-        @include size(2.6em);
+        width: 2.6em;
+        height: 2.6em;
     }
 
     .o_social_stream_post_link_text {
@@ -255,7 +259,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
 .o_social_stream_post_image {
     img {
         cursor: pointer;
-        @include size(100%, auto);
+        width: 100%;
+        height: auto;
         max-width: 100%;
         max-height: 50px;
         object-fit: cover;
@@ -309,7 +314,7 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
         }
     }
 
-    select.custom-select.o_social_add_stream_form_select {
+    select.form-select.o_social_add_stream_form_select {
         background: str-replace(url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='175' height='100' fill='#000'><polygon points='0,0 100,0 50,50'/></svg>"), "#", "%23") ;
         background-color: #fff;
         background-size: 20px;
@@ -412,7 +417,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     }
 
     .o_social_author_image img {
-        @include size(32px);
+        width: 32px;
+        height: 32px;
     }
 
     .o_social_comment_user_likes{
@@ -422,7 +428,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
     // Original Post
     .o_social_comments_modal_original_post {
         .o_social_author_image img {
-            @include size(42px);
+            width: 42px;
+            height: 42px;
         }
 
         .o_social_original_post_message_text {
@@ -452,7 +459,8 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
         }
 
         .o_social_stream_post_link img {
-            @include size(4em);
+            width: 4em;
+            height: 4em;
         }
     }
 

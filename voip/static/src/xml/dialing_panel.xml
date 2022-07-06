@@ -18,7 +18,7 @@
         o_in_home_menu"
     t-name="voip.DialingPanel">
     <div
-        class="o_dial_fold position-relative rounded-lg-top overflow-hidden text-bg-odoo">
+        class="o_dial_fold position-relative rounded-top-3 overflow-hidden text-bg-odoo">
         <div
             class="o_dial_window_title d-flex align-items-center justify-content-between o_cursor_pointer">
             <t t-call="voip.DialingPanel.HeaderContent">
@@ -62,7 +62,7 @@
                         class="
                             nav-link
                             o_dial_tab"
-                        data-toggle="tab"
+                        data-bs-toggle="tab"
                         href="#recent"
                         role="tab">RECENT</a>
                     </li>
@@ -79,7 +79,7 @@
                                 active
                                 nav-link
                                 o_dial_tab"
-                            data-toggle="tab"
+                            data-bs-toggle="tab"
                             href="#nextActivities"
                             role="tab">NEXT ACTIVITIES</a>
                     </li>
@@ -94,7 +94,7 @@
                             class="
                                 nav-link
                                 o_dial_tab"
-                            data-toggle="tab"
+                            data-bs-toggle="tab"
                             href="#contacts"
                             role="tab">CONTACTS</a>
                     </li>
@@ -254,7 +254,7 @@
 -->
 <t t-name="voip.DialingPanel.HeaderContent">
     <i class="oi oi-large oi-voip mx-2" role="img"/>
-    <div class="o_dial_text flex-grow-1 text-left">
+    <div class="o_dial_text flex-grow-1 text-start">
         <t t-esc="title"/>
     </div>
     <a aria-label="Close" class="o_dial_window_close btn btn-odoo border-0" href="#" title="Close">

@@ -16,11 +16,11 @@
                         <tr style="border-top: 1px solid black">
                             <th>Name</th>
                             <t t-foreach="get_periods" t-as="month">
-                                    <th class="text-right">
+                                    <th class="text-end">
                                         <span t-esc="month"/>
                                     </th>
                             </t>
-                            <th class="text-right">Total</th>
+                            <th class="text-end">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,11 +28,11 @@
                             <tr>
                                 <td><span t-esc="e[0]"/></td>
                                 <t t-foreach="e[1:month_len]" t-as="month_sal">
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         <span t-esc="month_sal"/>
                                     </td>
                                 </t>
-                                <td class="text-right">
+                                <td class="text-end">
                                     <span t-esc="e[month_len]" t-options="{'widget': 'monetary', 'display_currency': o.env.user.company_id.currency_id}"/>
                                 </td>
                             </tr>
@@ -43,11 +43,11 @@
                             <t t-foreach="get_months_tol" t-as="t">
                                 <td><strong>Total</strong></td>
                                 <t t-foreach="t" t-as="tdata">
-                                    <td class="text-right">
+                                    <td class="text-end">
                                         <strong><span t-esc="tdata" t-options="{'widget': 'monetary', 'display_currency': o.env.user.company_id.currency_id}"/></strong>
                                     </td>
                                 </t>
-                                <td class="text-right"><strong><span t-esc="get_total" t-options="{'widget': 'monetary', 'display_currency': o.env.user.company_id.currency_id}"/></strong></td>
+                                <td class="text-end"><strong><span t-esc="get_total" t-options="{'widget': 'monetary', 'display_currency': o.env.user.company_id.currency_id}"/></strong></td>
                             </t>
                         </tr>
                     </tfoot>

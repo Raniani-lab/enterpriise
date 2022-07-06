@@ -10,7 +10,7 @@
                     <button class="btn btn-primary o_save">Confirm</button>
                 </div>
                 <div t-if="widget.canBeDeleted === true" class="o_barcode_control d-flex">
-                    <button class="btn btn-danger text-uppercase o_delete"><i class="fa fa-trash-o mr-1"/>Delete</button>
+                    <button class="btn btn-danger text-uppercase o_delete"><i class="fa fa-trash-o me-1"/>Delete</button>
                 </div>
             </div>
         </div>

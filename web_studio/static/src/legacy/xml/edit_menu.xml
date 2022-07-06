@@ -18,7 +18,7 @@
                 <span class="js_menu_label">
                     <t t-esc="submenu.name"/>
                 </span>
-                <i t-if="_.contains(widget.roots, submenu)" class="float-right fa fa-home" style="margin-top: 3px" role="img" aria-label="Home" title="Home"/>
+                <i t-if="_.contains(widget.roots, submenu)" class="float-end fa fa-home" style="margin-top: 3px" role="img" aria-label="Home" title="Home"/>
             </span>
             <button type="button" class="btn btn-primary js_edit_menu fa fa-pencil-square-o" aria-label="Edit Menu Item" title="Edit Menu Item"/>
             <button type="button" class="btn btn-danger js_delete_menu fa fa-trash-o" aria-label="Delete Menu Item" title="Delete Menu Item"/>
@@ -39,7 +39,7 @@
                 <t t-call="studio.contentMenu.dialog.submenu"/>
             </t>
         </ul>
-        <div class="o_web_studio_edit_menu_desc small float-right">
+        <div class="o_web_studio_edit_menu_desc small float-end">
             <i class="fa fa-info-circle"/> Drag a menu to the right to create a sub-menu
         </div>
     </div>

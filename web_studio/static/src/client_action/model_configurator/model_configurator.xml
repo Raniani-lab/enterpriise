@@ -42,9 +42,9 @@
 
 <t t-name="web_studio.ModelConfiguratorOption" owl="1">
     <div class="col-6">
-        <div class="custom-control custom-checkbox o_web_studio_model_configurator_option">
-            <input type="checkbox" class="custom-control-input" t-att-id="props.name" t-att-name="props.name" t-model="props.option.value"/>
-            <label t-att-for="props.name" class="custom-control-label">
+        <div class="custom-control form-check o_web_studio_model_configurator_option">
+            <input type="checkbox" class="form-check-input" t-att-id="props.name" t-att-name="props.name" t-model="props.option.value"/>
+            <label t-att-for="props.name" class="form-check-label">
                 <strong t-esc="props.option.label"/>
                 <div class="form-text text-muted" t-esc="props.option.help"/>
             </label>

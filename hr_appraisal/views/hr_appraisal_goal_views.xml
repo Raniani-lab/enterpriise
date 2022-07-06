@@ -24,7 +24,7 @@
                             <field name="employee_autocomplete_ids" invisible="1"/>
                             <field name="is_implicit_manager" invisible="1"/>
                             <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]" attrs="{'readonly': [('is_manager', '=', False), ('is_implicit_manager', '=', False)]}"/>
-                            <field name="progression" class="pr-3" widget="selection_badge"/>
+                            <field name="progression" class="pe-3" widget="selection_badge"/>
                         </group>
                         <group>
                             <field name="manager_id"/>
@@ -51,7 +51,7 @@
         <field name="model">hr.appraisal.goal</field>
         <field name="arch" type="xml">
             <tree sample="1" class="o_goal_list">
-                <field name="name" class="font-weight-bold"/>
+                <field name="name" class="fw-bold"/>
                 <field name="deadline" widget="remaining_days"/>
                 <field name="activity_ids" widget="list_activity"/>
                 <field name="progression" widget="badge" decoration-success="progression == '100'"/>
@@ -75,7 +75,7 @@
                                 <span class="bg-success">Done</span>
                             </div>
                             <div class="o_dropdown_kanban dropdown" groups="base.group_user">
-                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
@@ -87,7 +87,7 @@
                                     <span><field name="name"/></span>
                                 </div>
                                 <t t-if="record.progression.raw_value != 100">
-                                    <div class="o_kanban_top_right mr-2 font-weight-bold">
+                                    <div class="o_kanban_top_right me-2 fw-bold">
                                         <t t-esc="record.progression.value"/>
                                     </div>
                                 </t>

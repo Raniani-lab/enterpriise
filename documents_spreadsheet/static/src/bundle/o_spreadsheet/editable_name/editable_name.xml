@@ -8,7 +8,7 @@
     </t>
     <t t-else="">
         <div class="o_sp_en_display_name" t-esc="props.displayName"/>
-        <div class="btn btn-link o_sp_en_rename" t-on-click="rename"><i class="fa fa-pencil mr-1"/>Rename</div><br/>
+        <div class="btn btn-link o_sp_en_rename" t-on-click="rename"><i class="fa fa-pencil me-1"/>Rename</div><br/>
     </t>
 </t>
 

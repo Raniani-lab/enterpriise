@@ -72,7 +72,7 @@
                     <div class="o_stat_info">
                         <div>Time</div>
                         <span class="o_stat_value">
-                            <field name="total_hours_spent" widget="float_time" nolabel="1" class="mr-1" />
+                            <field name="total_hours_spent" widget="float_time" nolabel="1" class="me-1" />
                         </span>
                     </div>
                 </button>
@@ -95,7 +95,7 @@
                 <label for="is_fsm" invisible="1"/>
                 <div class="oe_read_only">
                     <button
-                        name="action_fsm_navigate" type="object" class="btn btn-link pl-0 pt-0 pb-2"
+                        name="action_fsm_navigate" type="object" class="btn btn-link ps-0 pt-0 pb-2"
                         icon="fa-arrow-right" string="Navigate To" colspan="2"
                         attrs="{'invisible': [('is_fsm', '=', False)]}"/>
                 </div>

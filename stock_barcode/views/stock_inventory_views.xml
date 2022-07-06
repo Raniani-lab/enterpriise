@@ -10,7 +10,7 @@
                     <field name="quantity" invisible="1"/>
                     <field name="product_uom_id" invisible="1"/>
                     <div class="col-12 my-2 d-flex align-items-baseline">
-                        <i class="fa fa-fw fa-lg fa-tags mr-3" title="Product"/>
+                        <i class="fa fa-fw fa-lg fa-tags me-3" title="Product"/>
                         <field name="product_id" placeholder="Product"
                             attrs="{'readonly': [('id', '!=', False)]}"
                             context="{'default_detailed_type': 'product'}"
@@ -20,21 +20,21 @@
                 </div>
                 <div class="row">
                     <div class="col-6 my-2 d-flex align-items-baseline">
-                        <i class="fa fa-fw fa-lg fa-cube mr-3" title="Counted Quantity"/>
-                        <field name="inventory_quantity" class="w-50 w-md-100 text-right" options="{'type': 'number'}" placeholder="Counted Quantity"/>
+                        <i class="fa fa-fw fa-lg fa-cube me-3" title="Counted Quantity"/>
+                        <field name="inventory_quantity" class="w-50 w-md-100 text-end" options="{'type': 'number'}" placeholder="Counted Quantity"/>
                         <widget name="set_reserved_qty_button"
                             field_to_set="inventory_quantity" quantity="quantity"/>
                     </div>
                 </div>
                 <div class="row justify-content-center justify-content-md-start">
-                    <div class="col-10 col-md-8 my-2 ml-md-5 align-items-baseline"
+                    <div class="col-10 col-md-8 my-2 ms-md-5 align-items-baseline"
                         attrs="{'invisible': [('tracking', '=', 'serial')]}">
                         <widget name="digipad" quantity_field="inventory_quantity"/>
                     </div>
                 </div>
                 <div class="row" groups="stock.group_stock_multi_locations">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
-                        <i class="fa fa-fw fa-lg fa-map-marker mr-3" title="Location"/>
+                        <i class="fa fa-fw fa-lg fa-map-marker me-3" title="Location"/>
                         <field name="location_id" placeholder="Location"
                             options="{'no_create': True}" force_save="1"
                             attrs="{'readonly': [('id', '!=', False)]}"/>
@@ -43,7 +43,7 @@
                 <div class="row" groups="stock.group_production_lot"
                     attrs="{'invisible': ['&amp;', ('id', '!=', False), ('lot_id', '=', False)]}">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline" attrs="{'invisible': ['|',('tracking', '=','none'), ('product_id','=', False)]}">
-                        <i class="fa fa-fw fa-lg fa-barcode mr-3" title="Serial/Lot Number"/>
+                        <i class="fa fa-fw fa-lg fa-barcode me-3" title="Serial/Lot Number"/>
                         <field name="lot_id"
                             attrs="{
                                 'required': [('tracking', '!=', 'none')],
@@ -55,7 +55,7 @@
                 <div class="row" groups="stock.group_tracking_lot"
                     attrs="{'invisible': ['&amp;', ('id', '!=', False), ('package_id', '=', False)]}">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
-                        <i class="fa fa-fw fa-lg fa-archive mr-3" title="Package"/>
+                        <i class="fa fa-fw fa-lg fa-archive me-3" title="Package"/>
                         <field name="package_id" placeholder="Package"
                             attrs="{'readonly': [('id', '!=', False)]}"
                             domain="[('location_id', '=', location_id)]"/>
@@ -63,7 +63,7 @@
                 </div>
                 <div class="row" groups="stock.group_tracking_owner">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
-                        <i class="fa fa-fw fa-lg fa-user-o mr-3" title="Owner"/>
+                        <i class="fa fa-fw fa-lg fa-user-o me-3" title="Owner"/>
                         <field name="owner_id" placeholder="Owner" attrs="{'readonly': [('id', '!=', False)]}"/>
                     </div>
                 </div>

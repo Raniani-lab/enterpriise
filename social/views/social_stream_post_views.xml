@@ -54,7 +54,7 @@
                                 <div class="d-flex justify-content-between mb-2 px-2">
                                     <t t-set="author_info">
                                         <span class="o_social_stream_post_author_image o_social_author_image position-relative rounded-circle overflow-hidden"/>
-                                        <span class="o_social_stream_post_author_name text-truncate ml-2" t-esc="record.author_name.value or 'Unknown'" t-att-title="record.author_name.value or 'Unknown'"/>
+                                        <span class="o_social_stream_post_author_name text-truncate ms-2" t-esc="record.author_name.value or 'Unknown'" t-att-title="record.author_name.value or 'Unknown'"/>
                                     </t>
 
                                     <div class="o_social_author_information d-flex align-items-center">
@@ -87,9 +87,9 @@
                                         class="o_social_stream_post_link p-2 d-flex bg-100"
                                         t-att-href="record.link_url.raw_value"
                                         target="_blank">
-                                        <img t-if="record.link_image_url.raw_value" class="mr-2 flex-shrink-0" t-att-src="record.link_image_url.raw_value" alt="Link Image"/>
+                                        <img t-if="record.link_image_url.raw_value" class="me-2 flex-shrink-0" t-att-src="record.link_image_url.raw_value" alt="Link Image"/>
                                         <div class="o_social_stream_post_link_text">
-                                            <div class="o_social_stream_post_link_title font-weight-bold text-truncate" t-esc="record.link_title.value"/>
+                                            <div class="o_social_stream_post_link_title fw-bold text-truncate" t-esc="record.link_title.value"/>
                                             <div class="o_social_stream_post_link_description text-truncate" t-esc="record.link_description.value"/>
                                         </div>
                                     </a>
@@ -100,7 +100,7 @@
 
                                         <t t-foreach="image_urls_json.length > 2 ? image_urls_json.slice(0, 2) : image_urls_json" t-as="image_url">
                                             <t t-if="image_url_index == 1 &amp; record.stream_post_image_ids.raw_value.length > 2">
-                                                <a class="o_social_stream_post_image_more position-relative d-flex ml-1" t-att-data-current-index="1">
+                                                <a class="o_social_stream_post_image_more position-relative d-flex ms-1" t-att-data-current-index="1">
                                                     <img class="o_social_stream_post_image_click" t-att-src="image_urls_json[1]" alt="Post Image" />
                                                     <div class="o_social_stream_post_image_more_overlay d-flex align-items-center h-100 w-100 text-white justify-content-center position-absolute h1 m-0" style="user-select: none;">
                                                         +<t t-esc="image_urls_json.length - 2"/>

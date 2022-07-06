@@ -91,8 +91,8 @@
                  </button>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="after">
-                <div class="px-2 badge-pill badge-warning float-right" attrs="{'invisible': ['|', '|', ('is_subscription', '=', False), ('to_renew', '=', False), ('invoice_count', '=', 0)]}">To Renew</div>
-                <div class="px-2 badge-pill badge-danger float-right" attrs="{'invisible': [('payment_exception', '=', False)]}">Payment Failure</div>
+                <div class="px-2 rounded-pill text-bg-warning float-end" attrs="{'invisible': ['|', '|', ('is_subscription', '=', False), ('to_renew', '=', False), ('invoice_count', '=', 0)]}">To Renew</div>
+                <div class="px-2 rounded-pill text-bg-danger float-end" attrs="{'invisible': [('payment_exception', '=', False)]}">Payment Failure</div>
             </xpath>
             <xpath expr="//header" position="after">
                 <div role="alert" class="alert alert-warning mb-0 p-3 text-center" attrs="{'invisible': [('archived_product_count', '=', 0)]}">
@@ -111,13 +111,13 @@
                 <attribute name="attrs">{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('subscription_management', '=', 'upsell')]}</attribute>
             </field>
             <xpath expr="//div[@name='button_box']" position="after">
-                <div name="subscription_pill" class="px-2 badge-pill badge-info float-right"
+                <div name="subscription_pill" class="px-2 rounded-pill text-bg-info float-end"
                      attrs="{'invisible': [('is_subscription', '=', False)]}">Recurring
                 </div>
-                <div name="upsell_pill" class="px-2 badge-pill badge-success float-right"
+                <div name="upsell_pill" class="px-2 rounded-pill text-bg-success float-end"
                      attrs="{'invisible': [('subscription_management', '!=', 'upsell')]}">Upsell
                 </div>
-                <div name="upsell_pill" class="px-2 badge-pill badge-default float-right border border-primary"
+                <div name="upsell_pill" class="px-2 rounded-pill badge-default float-end border border-primary"
                      attrs="{'invisible': [('subscription_management', '!=', 'renew')]}">Renewal
                 </div>
             </xpath>

@@ -37,7 +37,7 @@
                     <input type="hidden" name="rental_duration_unit" t-att-value="combination_info['rental_duration_unit']"/>
                     <strong class="attribute_name">Rental Period</strong>
                     <div class="oe_unremovable w-100">
-                        <div class="s_website_form_datetime input-group date col-md-8 pl-0"
+                        <div class="s_website_form_datetime input-group date col-md-8 ps-0"
                                 data-target-input="nearest"
                                 id="rentingDates">
                             <input type="text" name="renting_dates"
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="o_renting_details my-2 col-md-8 pl-0 d-flex justify-content-between">
+                <div class="o_renting_details my-2 col-md-8 ps-0 d-flex justify-content-between">
                     <div>
                         <strong>
                             <span class="o_renting_duration" t-esc="combination_info['current_rental_duration']"/>

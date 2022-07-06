@@ -12,7 +12,7 @@
             <xpath expr="//field[@name='marital']" position="after">
                 <field name="spouse_fiscal_status" attrs="{'invisible': ['|', ('marital', 'not in', ['married', 'cohabitant']), ('company_country_code', '!=', 'BE')], 'required': [('marital', 'in', ['married', 'cohabitant'])]}" help="if spouse has professionnel income or not"/>
                 <p colspan="2" class="p-0 m-0 " attrs="{'invisible': ['|', ('marital', 'not in', ['married', 'cohabitant']), ('company_country_code', '!=', 'BE')]}">
-                    <a class="btn btn-link p-0 mb-1" data-toggle="collapse" href="#spouse_status_explanation" role="button" aria-expanded="false" aria-controls="#spouse_status_explanation">Toggle Explanation</a>
+                    <a class="btn btn-link p-0 mb-1" data-bs-toggle="collapse" href="#spouse_status_explanation" role="button" aria-expanded="false" aria-controls="#spouse_status_explanation">Toggle Explanation</a>
                 </p>
                 <div class="collapse" id="spouse_status_explanation" colspan="2" attrs="{'invisible': ['|', ('marital', 'not in', ['married', 'cohabitant']), ('company_country_code', '!=', 'BE')]}">
                   <div class="card card-body">

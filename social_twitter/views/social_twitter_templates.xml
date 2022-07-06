@@ -3,7 +3,7 @@
     <data>
         <template id="twitter_preview" t-name="Twitter Preview">
             <div class="o_social_preview o_social_twitter_preview bg-white p-3 border rounded overflow-hidden d-flex">
-                <span class="o_social_preview_icon_wrapper mr-2">
+                <span class="o_social_preview_icon_wrapper me-2">
                     <i class="fa fa-twitter fa-2x"/>
                 </span>
                 <div>
@@ -20,7 +20,7 @@
                     </div>
                     <div class="o_social_stream_post_image d-flex rounded overflow-hidden">
                         <t t-foreach="images" t-as="image">
-                            <a t-if="image_index == 1 and len(images) > 2" class="o_social_stream_post_image_more position-relative d-flex ml-1 mt-2">
+                            <a t-if="image_index == 1 and len(images) > 2" class="o_social_stream_post_image_more position-relative d-flex ms-1 mt-2">
                                 <img t-attf-src="data:image/png;base64, #{image}" alt="Post Image" />
                                 <div class="o_social_stream_post_image_more_overlay d-flex align-items-center h-100 w-100 text-white justify-content-center position-absolute h1 m-0" style="user-select: none;">
                                     +<t t-esc="len(images) - 2"/>

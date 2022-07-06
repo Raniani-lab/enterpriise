@@ -28,11 +28,11 @@ div.page {
 }
 
 .o_no_content_helper {
-    border: 2px dashed gray('400');
+    border: 2px dashed map-get($grays, '400');
     margin-top: 10px;
     padding: 112px 0px;
     text-align: center;
-    color: gray('400');
+    color: map-get($grays, '400');
     font-size: 20px;
 }
 

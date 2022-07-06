@@ -183,27 +183,27 @@
                                 At each stage, employees can block tickets or mark them as ready for the next step.
                                 You can customize the meaning of each state.
                             </p>
-                            <div class="row ml-1" colspan="2">
+                            <div class="row ms-1" colspan="2">
                                 <label for="legend_normal" string=" " class="o_status mt4"
                                     title="Task in progress. Click to block or set as done."
                                     aria-label="Task in progress. Click to block or set as done." role="img"/>
-                                <div class="col-11 pl-0">
+                                <div class="col-11 ps-0">
                                     <field name="legend_normal"/>
                                 </div>
                             </div>
-                            <div class="row ml-1" colspan="2">
+                            <div class="row ms-1" colspan="2">
                                 <label for="legend_blocked" string=" " class="o_status o_status_red mt4"
                                     title="Task is blocked. Click to unblock or set as done."
                                     aria-label="Task is blocked. Click to unblock or set as done." role="img"/>
-                                <div class="col-11 pl-0">
+                                <div class="col-11 ps-0">
                                     <field name="legend_blocked"/>
                                 </div>
                             </div>
-                            <div class="row ml-1" colspan="2">
+                            <div class="row ms-1" colspan="2">
                                 <label for="legend_done" string=" " class="o_status o_status_green mt4"
                                     title="This step is done. Click to block or set in progress."
                                     aria-label="This step is done. Click to block or set in progress." role="img"/>
-                                <div class="col-11 pl-0">
+                                <div class="col-11 ps-0">
                                     <field name="legend_done"/>
                                 </div>
                             </div>
@@ -551,7 +551,7 @@
                 <field name="rating_last_text" string="Rating" decoration-danger="rating_last_text == 'ko'"
                     decoration-warning="rating_last_text == 'ok'" decoration-success="rating_last_text == 'top'"
                     attrs="{'invisible': [('rating_last_text', '=', 'none')]}"
-                    class="font-weight-bold" widget="badge" optional="hide"/>
+                    class="fw-bold" widget="badge" optional="hide"/>
                 <field name="kanban_state" optional="hide" readonly="1" widget="state_selection"/>
                 <field name="stage_id" optional="show" readonly="not context.get('default_team_id', False)"/>
             </tree>
@@ -608,7 +608,7 @@
                         <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div class="o_dropdown_kanban dropdown">
-                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
@@ -643,9 +643,9 @@
                                         <field name="priority" widget="priority"/>
                                         <field name="activity_ids" widget="kanban_activity"/>
                                         <b t-if="record.use_rating.raw_value and record.rating_count.raw_value &gt; 0" groups="helpdesk.group_use_rating">
-                                            <strong class="fa fa-fw mt4 fa-smile-o text-success font-weight-bolder" t-if="record.rating_avg.raw_value &gt;= 3.66" title="Average Rating: Satisfied" role="img" aria-label="Happy face"/>
-                                            <strong class="fa fa-fw mt4 fa-meh-o text-warning font-weight-bolder" t-elif="record.rating_avg.raw_value &gt;= 2.33" title="Average Rating: Okay" role="img" aria-label="Neutral face"/>
-                                            <strong class="fa fa-fw mt4 fa-frown-o text-danger font-weight-bolder" t-else="" title="Average Rating: Dissatisfied" role="img" aria-label="Sad face"/>
+                                            <strong class="fa fa-fw mt4 fa-smile-o text-success fw-bolder" t-if="record.rating_avg.raw_value &gt;= 3.66" title="Average Rating: Satisfied" role="img" aria-label="Happy face"/>
+                                            <strong class="fa fa-fw mt4 fa-meh-o text-warning fw-bolder" t-elif="record.rating_avg.raw_value &gt;= 2.33" title="Average Rating: Okay" role="img" aria-label="Neutral face"/>
+                                            <strong class="fa fa-fw mt4 fa-frown-o text-danger fw-bolder" t-else="" title="Average Rating: Dissatisfied" role="img" aria-label="Sad face"/>
                                         </b>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
@@ -701,7 +701,7 @@
                         <h1><field name="name" class="field_name" placeholder="e.g. Product arrived damaged"/></h1>
                         <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
                         <span attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted">
-                            <i class="fa fa-lg fa-clock-o mr-2" aria-label="Sla Deadline" title="Sla Deadline"/>
+                            <i class="fa fa-lg fa-clock-o me-2" aria-label="Sla Deadline" title="Sla Deadline"/>
                             <field name="sla_deadline" widget="remaining_days"/>
                         </span>
                     </div>

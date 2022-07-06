@@ -16,7 +16,7 @@
                                 </t>
                                 <t t-else="">
                                     <t t-esc="(noteData.name || 'untitled').substring(0, 30)"/>
-                                    <span class="fa fa-times ml-2 p-1" t-if="noteData.user_id[0] == this.userId &amp;&amp; noteData.id == state.activeNoteId" t-on-click="onNoteDelete"/>
+                                    <span class="fa fa-times ms-2 p-1" t-if="noteData.user_id[0] == this.userId &amp;&amp; noteData.id == state.activeNoteId" t-on-click="onNoteDelete"/>
                                 </t>
                             </h3>
                         </div>

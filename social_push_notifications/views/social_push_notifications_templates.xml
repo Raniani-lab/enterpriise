@@ -2,7 +2,7 @@
 <odoo>
     <template id="push_notifications_preview" t-name="Push Notification Preview">
         <div class="o_social_preview o_social_push_notification_preview o_home_menu_background pt-5">
-            <div class="o_social_push_notification_preview_content bg-black-75 d-flex align-items-start mr-3 mb-3 ml-5 p-3">
+            <div class="o_social_push_notification_preview_content bg-black-75 d-flex align-items-start me-3 mb-3 ms-5 p-3">
 
                 <img t-if="icon" t-attf-class="o_social_push_notification_preview_image"
                     t-attf-src="data:image/png;base64, #{icon}" />
@@ -11,7 +11,7 @@
                 <div t-else="" class="bg-white p-1 rounded-circle">
                     <img src="/mail/static/src/img/odoobot_transparent.png" />
                 </div>
-                <div class="o_social_push_notification_preview_content_body pl-4">
+                <div class="o_social_push_notification_preview_content_body ps-4">
                     <strong class="o_social_push_notification_preview_content_title" t-esc="title"/>
                     <div class="o_social_push_notification_preview_content_message text-white-75" t-esc="message" />
                     <div class="o_social_push_notification_preview_content_info text-white-75 small pt-3">

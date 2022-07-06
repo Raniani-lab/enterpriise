@@ -13,7 +13,7 @@
                     <field name="letters_qty" invisible="1"/>
                     <field name="invalid_addresses" invisible="1"/>
                     <!-- visible fields -->
-                    <div class="text-left d-inline-block" name='cost'>
+                    <div class="text-start d-inline-block" name='cost'>
                         <span attrs="{'invisible': [('letters_qty', '>', 1)]}"> Sending this document will cost </span>
                         <span attrs="{'invisible': [('letters_qty', '=', 1)]}"> Sending these <field name="letters_qty" nolabel="1"/> documents will cost </span>
                         <b>

@@ -123,7 +123,7 @@ const PlanningGanttController = GanttController.extend(PlanningControllerMixin, 
                     const message = _t("This shift was successfully saved as a template.")
                     self.displayNotification({
                         type: 'success',
-                        message: Markup`<i class="fa fa-fw fa-check"></i><span class="ml-1">${message}</span>`,
+                        message: Markup`<i class="fa fa-fw fa-check"></i><span class="ms-1">${message}</span>`,
                     });
                 }
 

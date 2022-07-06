@@ -21,7 +21,7 @@
                 <field name="account_ids" string="Related Account(s)" widget="many2many_tags" domain="[('internal_group', 'in', ('expense', 'income')), ('disallowed_expenses_category_id', '=', None)]" options="{'no_create': True}"/>
                 <field name="company_id" optional="hide"/>
                 <field name="current_rate" attrs="{'invisible': [('current_rate', '=', False)]}"/>
-                <button name="action_read_category" type="object" string="Set Rates" class="float-right btn-secondary"/>
+                <button name="action_read_category" type="object" string="Set Rates" class="float-end btn-secondary"/>
             </tree>
         </field>
     </record>

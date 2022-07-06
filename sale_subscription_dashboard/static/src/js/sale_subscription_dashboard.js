@@ -1059,7 +1059,7 @@ var SaleSubscriptionDashboardStatBox = Widget.extend({
         await this.compute_graph();
         const display_tooltip = '<b>' + this.box_name + '</b><br/>' + _t('Current Value: ') + this.format_number(this.value);
         this.$el.tooltip({title: display_tooltip, trigger: 'hover'});
-        this.$('[data-toggle="popover"]').popover({trigger: 'hover'});
+        this.$('[data-bs-toggle="popover"]').popover({trigger: 'hover'});
         const options = {
             has_mrr: this.has_mrr, format_number: this.format_number,
             value: this.value, demo_values: this.demo_values,

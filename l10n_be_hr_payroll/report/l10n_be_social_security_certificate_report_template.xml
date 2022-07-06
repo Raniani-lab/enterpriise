@@ -6,14 +6,14 @@
                 <t t-call="web.external_layout">
                     <t t-set="wizard" t-value="wizard.with_context(lang=wizard.env.lang)"/>
                     <div class="page container-fluid">
-                        <div class="mt-4 row text-center font-weight-bold">
+                        <div class="mt-4 row text-center fw-bold">
                             <div class="col-12">
                                 <div>SOCIAL SECURITY CERTIFICATE</div>
                             </div>
                         </div>
                          <div class="mt-4 row">
                             <div class="col-12">
-                                <div class="font-weight-bold">Identification of the company</div>
+                                <div class="fw-bold">Identification of the company</div>
                             </div>
                         </div>
                         <div class="row">

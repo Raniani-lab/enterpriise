@@ -35,7 +35,7 @@
           $o-web-studio-bg-medium,
           $o-web-studio-bg-dark,
           white,
-          gray("600")
+          map-get($grays, "600")
         );
       }
 

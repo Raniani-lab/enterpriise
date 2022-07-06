@@ -63,7 +63,7 @@
     <div class="o_reconciliation_line" t-att-data-mode="state.mode" tabindex="0">
         <table class="accounting_view">
             <caption style="caption-side: top;">
-                <div class="float-right o_buttons">
+                <div class="float-end o_buttons">
                     <button t-attf-class="o_validate btn btn-secondary #{!state.balance.type ? '' : 'd-none'}">Reconcile</button>
                     <button t-attf-class="o_reconcile btn btn-primary #{state.balance.type &gt; 0 ? '' : 'd-none'}">Reconcile</button>
                     <button t-attf-class="o_no_valid btn btn-secondary #{state.balance.type &lt; 0 ? '' : 'd-none'}">Skip</button>
@@ -89,9 +89,9 @@
         </table>
         <div class="o_notebook">
             <div class="o_notebook_headers">
-                <ul class="nav nav-tabs ml-0 mr-0">
-                    <li class="nav-item" title="Match with entries that are not from receivable/payable accounts" data-toggle="tooltip"><a data-toggle="tab" disable_anchor="true" t-attf-href="#notebook_page_match_other_#{state.st_line.id}" class="nav-link nav-match_other" role="tab" aria-selected="false">Miscellaneous Matching</a></li>
-                    <li class="nav-item" title="Create a counterpart" data-toggle="tooltip"><a data-toggle="tab" disable_anchor="true" t-attf-href="#notebook_page_create_#{state.st_line.id}" class="nav-link nav-create" role="tab" aria-selected="false">Manual Operations</a></li>
+                <ul class="nav nav-tabs ms-0 me-0">
+                    <li class="nav-item" title="Match with entries that are not from receivable/payable accounts" data-bs-toggle="tooltip"><a data-bs-toggle="tab" disable_anchor="true" t-attf-href="#notebook_page_match_other_#{state.st_line.id}" class="nav-link nav-match_other" role="tab" aria-selected="false">Miscellaneous Matching</a></li>
+                    <li class="nav-item" title="Create a counterpart" data-bs-toggle="tooltip"><a data-bs-toggle="tab" disable_anchor="true" t-attf-href="#notebook_page_create_#{state.st_line.id}" class="nav-link nav-create" role="tab" aria-selected="false">Manual Operations</a></li>
                 </ul>
             </div>
             <div class="tab-content">
@@ -153,9 +153,9 @@
             </t>
             <p t-if="!state.reconcileModels.length" style="color: #bbb;">To speed up reconciliation, define <a style="cursor: pointer;" class="reconcile_model_create">reconciliation models</a>.</p>
         </div>
-        <div class="dropdown float-right">
-            <a data-toggle="dropdown" href="#"><span class="fa fa-cog" role="img" aria-label="Settings"/></a>
-            <div class="dropdown-menu dropdown-menu-right" role="menu" aria-label="Presets config">
+        <div class="dropdown float-end">
+            <a data-bs-toggle="dropdown" href="#"><span class="fa fa-cog" role="img" aria-label="Settings"/></a>
+            <div class="dropdown-menu dropdown-menu-end" role="menu" aria-label="Presets config">
                 <a role="menuitem" class="dropdown-item reconcile_model_create" href="#">Create model</a>
                 <a role="menuitem" class="dropdown-item reconcile_model_edit" href="#">Modify models</a>
             </div>
@@ -232,7 +232,7 @@
         </span>
         <t t-if="(line.is_move_line || line.is_liquidity_line) &amp;&amp; proposition == true">
             <i class="fa fa-pencil edit_amount"></i>
-            <input class="edit_amount_input text-right d-none"/>
+            <input class="edit_amount_input text-end d-none"/>
         </t>
         <span class="line_amount">
             <t t-if="!line.partial_amount_str" t-out="line.amount_str"/>
@@ -247,14 +247,14 @@
         <td class="cell_account_code"><t t-esc="line.account_code"/>&#8203;</td> <!-- zero width space to make empty lines the height of the text -->
         <td class="cell_due_date">
             <t t-if="typeof(line.id) != 'number' &amp;&amp; line.id">
-                <span class="badge badge-secondary">New</span>
+                <span class="badge text-bg-secondary">New</span>
             </t>
             <t t-else="" t-esc="line.date || line.date_maturity"/>
         </td>
         <td class="cell_label">
             <t t-if="line.partner_id &amp;&amp; line.partner_id !== state.st_line.partner_id">
                 <t t-if="line.partner_name &amp;&amp; line.partner_name.length">
-                    <span class="font-weight-bold" t-esc="line.partner_name"/>:
+                    <span class="fw-bold" t-esc="line.partner_name"/>:
                 </t>
             </t>
             <span class="o_form_uri entry_view" t-if="line.name" t-att-data-line_id="line.id" t-esc="line.name.move_name"/>
@@ -309,7 +309,7 @@
 
 <t t-name="reconciliation.notification">
     <div t-att-class="'notification alert-dismissible alert alert-' + type" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span title="Close" class="fa fa-times"></span></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         <t t-if="template">
             <t t-call="{{template}}"/>
         </t>

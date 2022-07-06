@@ -84,7 +84,7 @@ var EditMenuDialog = Dialog.extend({
             }, {
                 icon: 'fa-plus-circle',
                 text: _t("New Menu"),
-                classes: 'btn-secondary js_add_menu ml-auto',
+                classes: 'btn-secondary js_add_menu ms-auto',
                 click: this._onAddMenu.bind(this),
             }],
         };

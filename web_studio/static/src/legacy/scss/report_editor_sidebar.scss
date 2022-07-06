@@ -39,7 +39,7 @@
                     .card-header {
                         background: $o-web-studio-bg-darker;
 
-                        button[data-toggle="collapse"] {
+                        button[data-bs-toggle="collapse"] {
                             color: white;
                         }
                     }
@@ -71,12 +71,13 @@
                         width: 1px;
                     }
                     &:after {
-                        @include size(auto, 1px);
+                        width: auto;
+                        height: 1px;
                     }
                     > h5 {
                         margin-bottom: 0px;
                     }
-                    button[data-toggle="collapse"] {
+                    button[data-bs-toggle="collapse"] {
                         display: block;
                         padding: 3px 8px 6px 10px;
                         color: $o-web-studio-text-inactive;
@@ -208,7 +209,8 @@
                                     height: 20px;
                                 }
                                 button {
-                                    @include size(20px, 18px);
+                                    width: 20px;
+                                    height: 18px;
                                     border: 0px solid black;
                                     margin: 0 1px;
 

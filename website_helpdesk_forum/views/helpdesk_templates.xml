@@ -11,7 +11,7 @@
                 <p>
                     <span style="font-size: 18px;">Ask questions and discuss tips with fellow members in a forum</span>
                 </p>
-                <a href="/forum" class="btn btn-outline-primary" data-original-title="" title="">Ask the Community</a>
+                <a href="/forum" class="btn btn-outline-primary" data-bs-original-title="" title="">Ask the Community</a>
             </div>
         </xpath>
     </template>
@@ -21,18 +21,18 @@
             <p class="mt-1 text-400">
                 <i class="fa fa-fw fa-2x fa-comments" title="Forum Post"/>
             </p>
-            <div class="w-100 ml-3">
+            <div class="w-100 ms-3">
                 <h5>
-                    <a t-att-href="url" t-out="record.name" class="font-weight-bold"/> 
+                    <a t-att-href="url" t-out="record.name" class="fw-bold"/> 
                     <i t-if="record.has_validated_answer" class="fa fa-check-circle text-success" title="Solved"/>
                 </h5>
                 <small>
                     <t t-call="website_forum.vote">
                         <t t-set="post" t-value="record"/>
                     </t>
-                    <time t-field="record.create_date" class="pl-2 border-left" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/forum/{{slug(record.forum_id)}}/user/{{record.create_uid.id}}?forum_origin={{team.website_url}}" class="font-weight-bold" t-out="record.create_uid.name"/>
+                    <time t-field="record.create_date" class="ps-2 border-start" t-options='{"format": "d MMM yyyy"}'/>, by <a t-attf-href="/forum/{{slug(record.forum_id)}}/user/{{record.create_uid.id}}?forum_origin={{team.website_url}}" class="fw-bold" t-out="record.create_uid.name"/>
                     <t t-if="record.child_count">
-                    | <a t-att-href="url" class="font-weight-bold"><t t-out="record.child_count"/> Answers</a>
+                    | <a t-att-href="url" class="fw-bold"><t t-out="record.child_count"/> Answers</a>
                     </t>
                     <t t-else="">
                     | 0 Answer
@@ -49,7 +49,7 @@
 
     <template id="website_helpdesk_forum.question_dropdown" inherit_id="website_forum.question_dropdown">
         <xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
-            <a groups="helpdesk.group_helpdesk_user" t-if="question and question.show_ticket" class="dropdown-item pl-3" t-attf-href="/web#id=#{question.ticket_id.id}&amp;view_type=form&amp;model=helpdesk.ticket&amp;menu_id=#{question.env.ref('helpdesk.menu_helpdesk_root').id}">
+            <a groups="helpdesk.group_helpdesk_user" t-if="question and question.show_ticket" class="dropdown-item ps-3" t-attf-href="/web#id=#{question.ticket_id.id}&amp;view_type=form&amp;model=helpdesk.ticket&amp;menu_id=#{question.env.ref('helpdesk.menu_helpdesk_root').id}">
                 <i class="fa fa-life-ring fa-fw text-muted" />
                 View Ticket
             </a>

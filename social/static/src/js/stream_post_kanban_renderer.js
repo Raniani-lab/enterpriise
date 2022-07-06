@@ -90,7 +90,7 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
             href: '#',
             text: _t('New content available.')
         }).append($('<i>', {
-            class: 'fa fa-refresh ml-2 mr-1'
+            class: 'fa fa-refresh ms-2 me-1'
         })).append($('<b>', {
             text: _t('Click to refresh.')
         })).on('click', function (ev) {
@@ -162,7 +162,7 @@ var StreamPostKanbanRenderer = KanbanRenderer.extend({
             // This DOM element is periodically refreshed (removed/re-rendered) by the kanban view (when refreshing statistics).
             // If the element is removed while its popover is open, the popover will not be closed automatically anymore.
             // That's why we need to listen to the "remove" event and dispose the popover accordingly.
-            var $popoverElement = this.$before.find('[data-toggle="popover"]');
+            var $popoverElement = this.$before.find('[data-bs-toggle="popover"]');
             $popoverElement.popover({
                 trigger: 'hover',
                 delay: { "show": 500, "hide": 0 },

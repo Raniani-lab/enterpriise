@@ -48,7 +48,7 @@
         <t t-set="bubble_design" t-value="false"/>
 
         <div class="o_social_comment_wrapper d-flex align-items-start">
-            <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 mr-2 overflow-hidden">
+            <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 me-2 overflow-hidden">
                 <t t-set="authorPicture" t-value="widget.getAuthorPictureSrc(comment)"/>
                 <img t-if="authorPicture" t-att-src="authorPicture" t-att-title="comment.from.name" />
             </div>
@@ -57,7 +57,7 @@
                 <div class="o_social_comment_content">
                     <div class="o_social_comment_message">
                         <a t-att-href="widget.getAuthorLink(comment)"
-                            class="o_social_comment_author_name font-weight-bold"
+                            class="o_social_comment_author_name fw-bold"
                             t-esc="comment.from.name"
                             target="_blank"/>
                         <span class="mx-1 o_social_comment_published_date">&#183;</span>
@@ -67,26 +67,26 @@
                             <small t-att-title="widget._formatDateTime(comment.created_time)"
                                 t-esc="comment.formatted_created_time"/>
                         </a>
-                        <span t-attf-class="o_social_comment_likes_total badge badge-pill bg-white border-0 py-1 ml-1 #{comment.likes.summary.total_count === 0 ? 'd-none' : ''}">
+                        <span t-attf-class="o_social_comment_likes_total badge rounded-pill bg-white border-0 py-1 ms-1 #{comment.likes.summary.total_count === 0 ? 'd-none' : ''}">
                             <i t-attf-class="fa #{widget.getLikesClass()}" title="Likes"/>
                             <span class="o_social_likes_count" t-esc="comment.likes.summary.total_count"/>
                         </span>
 
                         <div class="d-flex">
                             <t t-set="originalMessage" t-value="widget._htmlEscape(comment.message)"/>
-                            <div t-attf-class="d-flex flex-grow-1 #{bubble_design? 'bg-200 py-1 pl-3 pr-1 mr-2 o_social_bubble_radius' : ''}">
+                            <div t-attf-class="d-flex flex-grow-1 #{bubble_design? 'bg-200 py-1 ps-3 pe-1 me-2 o_social_bubble_radius' : ''}">
                                 <div class="o_social_comment_text text-break"
                                 t-att-data-original-message="originalMessage"
                                 t-out="widget._formatCommentStreamPost(comment.message)"/>
                                 <div t-attf-class="o_social_icon_dropdown o_social_manage_comment dropdown #{widget.isCommentManageable(comment) ? '' : 'd-none'}">
                                     <button t-attf-class="btn dropdown-toggle #{bubble_design? 'bg-200 px-3 rounded-pill border-0' : ''}"
                                         type="button" t-attf-id="post_actions_#{comment.id}"
-                                        data-toggle="dropdown"
+                                        data-bs-toggle="dropdown"
                                         aria-haspopup="true"
                                         aria-expanded="false">
                                         <i class="fa fa-ellipsis-v"/>
                                     </button>
-                                    <div class="dropdown-menu dropdown-menu-right" t-attf-aria-labelledby="post_actions_#{comment.id}">
+                                    <div class="dropdown-menu dropdown-menu-end" t-attf-aria-labelledby="post_actions_#{comment.id}">
                                         <a t-if="widget.isCommentEditable(comment)" class="o_social_edit_comment dropdown-item text-decoration-none" href="#">Edit Comment</a>
                                         <a t-if="widget.isCommentDeletable(comment)" class="o_social_delete_comment dropdown-item text-decoration-none" href="#">Delete Comment</a>
                                     </div>
@@ -125,7 +125,7 @@
                             <span t-if="comment.comments" class="o_social_comment_load_replies" t-att-data-inner-comments="JSON.stringify(comment.comments.data)">
                                 <span t-if="comment.comments">&#183;</span>
                                 <a class="btn btn-sm btn-link px-0" href="#">
-                                    <i class="fa fa-comments mr-1"/>View <t t-esc="comment.comments.data.length"/> replies...
+                                    <i class="fa fa-comments me-1"/>View <t t-esc="comment.comments.data.length"/> replies...
                                 </a>
                             </span>
                         </div>
@@ -133,13 +133,13 @@
                 </div>
             </div>
         </div>
-        <div t-if="!isSubComment" class="pl-5 mt-2">
+        <div t-if="!isSubComment" class="ps-5 mt-2">
             <div class="o_social_comment_replies mt-4 d-none">
             </div>
             <div class="o_social_write_comment_reply d-none">
                 <t t-call="social.StreamPostReply">
                     <t t-set="isCommentReply" t-value="true"></t>
-                    <t t-set="classes" t-value="'pr-5 mb-5'"/>
+                    <t t-set="classes" t-value="'pe-5 mb-5'"/>
                 </t>
             </div>
         </div>
@@ -147,7 +147,7 @@
 
     <div class="o_social_write_reply" t-name="social.StreamPostReply">
         <form t-attf-class="d-flex flex-nowrap align-items-start #{classes ? classes : ''}">
-            <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 overflow-hidden mr-2">
+            <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 overflow-hidden me-2">
                 <t t-set="authorPicture" t-value="widget.getAuthorPictureSrc()"/>
                 <img t-if="authorPicture" t-att-src="authorPicture" t-att-title="isCommentReply ? ('Write a reply as ' + widget.accountName) : ('Write comment as ' + widget.accountName)" />
             </div>
@@ -161,7 +161,7 @@
                         t-att-data-is-comment-edit="isCommentEdit"
                         t-att-data-is-comment-reply="isCommentReply"
                         t-att-data-comment-id="isCommentReply || isCommentEdit ? comment.id : null"
-                        t-attf-class="o_social_add_comment o_social_comment_message form-control pr-5 #{bubble_design? 'bg-200 o_social_bubble_radius' : ''}"
+                        t-attf-class="o_social_add_comment o_social_comment_message form-control pe-5 #{bubble_design? 'bg-200 o_social_bubble_radius' : ''}"
                         t-att-placeholder="isCommentReply ? write_reply_text : write_comment_text"><t t-esc="initialValue || ''"></t></textarea>
                     <div class="o_social_comment_controls mt-2">
                         <div t-attf-class="o_social_comment_add_image o_social_subtle_btn px-3 py-1 #{widget.canAddImage() ? '' : 'invisible'}">
@@ -173,7 +173,7 @@
                 <div t-attf-class="o_social_comment_image_preview py-4 #{existingAttachmentId &amp;&amp; existingAttachmentSrc ? '' : 'd-none'}">
                     <div class="d-inline-block position-relative">
                         <img class="border shadow" style="max-height: 150px" t-att-src="existingAttachmentSrc"/>
-                        <span class="o_social_comment_remove_image position-absolute btn btn-dark rounded-circle mt-2 mr-2" style="right: 0">
+                        <span class="o_social_comment_remove_image position-absolute btn btn-dark rounded-circle mt-2 me-2" style="right: 0">
                             <i class="fa fa-times"/>
                         </span>
                     </div>
@@ -182,7 +182,7 @@
                     <small class="o_social_textarea_message text-600">
                         Press Enter to post. Press Shift+Enter to insert a Line Break.
                     </small>
-                    <div t-if="isCommentEdit" class="o_social_comment_commands ml-3">
+                    <div t-if="isCommentEdit" class="o_social_comment_commands ms-3">
                         <a t-attf-class="o_social_edit_comment_cancel btn btn-sm btn-outline-secondary"
                             href="#"
                             t-att-data-comment-id="comment.id">
@@ -197,7 +197,7 @@
 
     <t t-name="social.StreamPostCommentsOriginalPost">
     <div class="o_social_comments_modal_original_post d-flex bg-white pt-3 px-3">
-        <div class="mr-3">
+        <div class="me-3">
             <span class="o_social_original_post_author_image o_social_author_image d-block position-relative rounded-circle overflow-hidden"/>
         </div>
         <div class="o_social_comments_modal_original_post_content flex-grow-1">
@@ -228,7 +228,7 @@
                     class="o_social_stream_post_image mt-3 d-flex overflow-hidde">
                     <t t-foreach="originalPost.postImages.length > 2 ? originalPost.postImages.slice(0, 2) : originalPost.postImages" t-as="image_url">
                         <t t-if="image_url_index == 1 &amp;&amp; originalPost.postImages.length > 2">
-                            <a class="o_social_original_post_image_more position-relative d-flex ml-1" data-current-index="1">
+                            <a class="o_social_original_post_image_more position-relative d-flex ms-1" data-current-index="1">
                                 <img class="o_social_original_post_image_click" t-att-src="originalPost.postImages[1]" alt="Post Image" />
                                 <div class="o_social_stream_post_image_more_overlay d-flex align-items-center h-100 w-100 text-white justify-content-center position-absolute h1 m-0" style="user-select: none;">
                                     +<t t-esc="originalPost.postImages.length - 2"/>
@@ -243,7 +243,7 @@
                     t-att-href="originalPost.linkUrl"
                     target="_blank">
                     <img t-if="originalPost.linkImage"
-                        class="mr-3 flex-shrink-0"
+                        class="me-3 flex-shrink-0"
                         t-att-src="originalPost.linkImage"
                         alt="Link Image"/>
                     <div class="o_social_stream_post_link_text">
@@ -267,7 +267,7 @@
 
     <div t-name="social.AddStreamMedia" class="o_social_media_cards d-flex">
         <t t-foreach="widget.socialMedia" t-as="media">
-            <div class="o_social_media card text-center justify-content-center align-items-center mr-3 p-3" t-att-data-media-id="media.id" style="min-width: 90px;">
+            <div class="o_social_media card text-center justify-content-center align-items-center me-3 p-3" t-att-data-media-id="media.id" style="min-width: 90px;">
                 <img width="48" height="48" t-attf-src="/web/image/social.media/#{media.id}/image/48x48" />
                 <h5 t-esc="media.name" class="o_social_media_name mb-0 mt-2" />
             </div>
@@ -276,7 +276,7 @@
 
     <t t-name="social.AddStreamCompany" t-if="widget.companies &amp;&amp; widget.companies.length &gt; 1">
         for
-        <select class="o_social_add_stream_form_select custom-select w-25 ml-1" name="company_id">
+        <select class="o_social_add_stream_form_select form-select w-25 ms-1" name="company_id">
             <option t-att-value="widget.companies[0].id" t-esc="widget.companies[0].name" selected="1"/>
             <option t-foreach="widget.companies.slice(1)" t-as="company" t-att-value="company.id" t-esc="company.name"/>
             <option value="0">All Companies</option>
@@ -294,9 +294,9 @@
                 <div class="o_social_add_stream_accounts list-group">
                     <button t-foreach="widget.socialAccounts" t-as="socialAccount" class="list-group-item list-group-item-action">
                         <div class="o_social_account_card d-flex align-items-center" t-att-data-media-id="socialAccount.media_id[0]" t-att-data-account-id="socialAccount.id">
-                            <img width="24" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/24x24" class="mr-4"/>
-                            <img t-if="socialAccount.image" t-attf-src="/web/image/social.account/#{socialAccount.id}/image/32x32" class="o_social_account_image rounded-circle border mr-2" />
-                            <h4 t-esc="socialAccount.name" class="o_social_account_name font-weight-bold flex-grow-1 m-0"/>
+                            <img width="24" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/24x24" class="me-4"/>
+                            <img t-if="socialAccount.image" t-attf-src="/web/image/social.account/#{socialAccount.id}/image/32x32" class="o_social_account_image rounded-circle border me-2" />
+                            <h4 t-esc="socialAccount.name" class="o_social_account_name fw-bold flex-grow-1 m-0"/>
                         </div>
                     </button>
                 </div>
@@ -312,11 +312,11 @@
         <t t-set="multi_images" t-value="widget.images.length > 1"/>
         <div id="o_stream_post_images_carousel"
             t-attf-class="o_stream_post_images_carousel carousel slide #{multi_images? 'o_stream_post_images_carousel_multi' : ''} "
-            data-interval="false">
+            data-bs-interval="false">
             <ol t-if="multi_images" class="carousel-indicators">
                 <t t-foreach="widget.images" t-as="image_url">
                     <li t-attf-data-target="#o_stream_post_images_carousel"
-                        t-att-data-slide-to="image_url_index"
+                        t-att-data-bs-slide-to="image_url_index"
                         t-attf-class="#{image_url_index === widget.activeIndex ? 'active' : ''}"/>
                 </t>
             </ol>
@@ -327,13 +327,13 @@
                     </div>
                 </t>
             </div>
-            <a t-if="multi_images" class="carousel-control-prev" href="#o_stream_post_images_carousel" role="button" data-slide="prev">
+            <a t-if="multi_images" class="carousel-control-prev" href="#o_stream_post_images_carousel" role="button" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
-                <span class="sr-only">Previous</span>
+                <span class="visually-hidden">Previous</span>
             </a>
-            <a t-if="multi_images" class="carousel-control-next" href="#o_stream_post_images_carousel" role="button" data-slide="next">
+            <a t-if="multi_images" class="carousel-control-next" href="#o_stream_post_images_carousel" role="button" data-bs-slide="next">
                 <span class="carousel-control-next-icon"></span>
-                <span class="sr-only">Next</span>
+                <span class="visually-hidden">Next</span>
             </a>
         </div>
     </div>
@@ -352,20 +352,20 @@
 
     <t t-name="social.AccountsStats">
         <div t-foreach="socialAccounts" t-as="socialAccount"
-            class="o_social_stream_stat_box flex-shrink-0 w-auto d-flex flex-column bg-white border-bottom border-right">
+            class="o_social_stream_stat_box flex-shrink-0 w-auto d-flex flex-column bg-white border-bottom border-end">
             <div class="pt-3 pb-2 px-4 d-flex justify-content-between">
                 <div class="d-flex align-items-center">
-                    <img class="mr-2" width="16" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/16x16" alt="Social Media"/>
+                    <img class="me-2" width="16" t-attf-src="/web/image/social.media/#{socialAccount.media_id[0]}/image/16x16" alt="Social Media"/>
                     <h5 class="o_social_stream_post_author_name d-block text-truncate m-0" t-esc="socialAccount.name" t-att-title="socialAccount.name"/>
                 </div>
-                <div class="d-flex align-items-center ml-4">
+                <div class="d-flex align-items-center ms-4">
                     <a t-if="socialAccount.stats_link" t-att-href="socialAccount.stats_link" class="small" target="_blank">
                         Insights
                     </a>
                     <t t-set="connecting_problem_content">It appears there is an issue with the Social Media link, click here to link the account again</t>
                     <a t-if="socialAccount.is_media_disconnected"
                         href="#"
-                        class="o_social_account_link_disconnected text-danger ml-4"
+                        class="o_social_account_link_disconnected text-danger ms-4"
                         t-att-data-media-id="socialAccount.media_id[0]"
                         data-bs-toggle="popover" title="Connecting Problem"
                         t-att-data-bs-content="connecting_problem_content">
@@ -377,7 +377,7 @@
             <div class="d-flex flex-nowrap flex-grow-1 px-4 pt-2 pb-3">
                 <t t-set="audience_content">Number of Followers of your channel</t>
                 <div t-if="widget._hasAudience(socialAccount)"
-                    class="d-flex align-items-center flex-grow-1 pr-3"
+                    class="d-flex align-items-center flex-grow-1 pe-3"
                     data-bs-toggle="popover" title="Audience"
                     t-att-data-bs-content="audience_content">
                     <t t-call="social.AccountsStatsValue">
@@ -388,7 +388,7 @@
                 </div>
                 <t t-set="engagement_content">Number of times people have engaged with your posts (likes, comments, shares,...)</t>
                 <div t-if="widget._hasEngagement(socialAccount)"
-                    t-attf-class="d-flex align-items-center justify-content-center flex-grow-1 #{widget._hasStories(socialAccount) ? 'px-3' : 'pl-3'}"
+                    t-attf-class="d-flex align-items-center justify-content-center flex-grow-1 #{widget._hasStories(socialAccount) ? 'px-3' : 'ps-3'}"
                     data-bs-toggle="popover" title="Engagement"
                     t-att-data-bs-content="engagement_content">
                     <t t-call="social.AccountsStatsValue">
@@ -415,12 +415,12 @@
 
     <t t-name="social.AccountsStatsValue">
         <div class="d-flex align-items-center">
-            <i t-attf-class="text-600 mr-1 fa {{icon}}" style="line-height: 1"/>
+            <i t-attf-class="text-600 me-1 fa {{icon}}" style="line-height: 1"/>
             <b class="social_account_stat_value" t-esc="value" style="line-height: 1"/>
             <t t-if="socialAccount.has_trends">
                 <t t-set="isNeutral" t-value="trend == 0"/>
                 <t t-set="isUp" t-value="trend > 0"/>
-                <small t-attf-class="ml-2 font-weight-bold #{isNeutral? '' : isUp ? 'text-success' : 'text-danger'}" style="line-height: 1">
+                <small t-attf-class="ms-2 fw-bold #{isNeutral? '' : isUp ? 'text-success' : 'text-danger'}" style="line-height: 1">
                     <t t-esc="trend"/>%
                     <t t-if="!isNeutral"><i t-attf-class="fa fa-caret-#{isUp ? 'up' : 'down'}" style="line-height: 1"/></t>
                 </small>

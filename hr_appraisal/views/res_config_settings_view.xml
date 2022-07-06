@@ -20,13 +20,13 @@
                                 <group>
                                     <group>
                                         <div>
-                                            <label for="appraisal_employee_feedback_template" class="font-weight-bold" string="Employee Feedback Template"/>
+                                            <label for="appraisal_employee_feedback_template" class="fw-bold" string="Employee Feedback Template"/>
                                             <field name="appraisal_employee_feedback_template" class="w-100" nolabel="1"/>
                                         </div>
                                     </group>
                                     <group>
                                         <div>
-                                            <label for="appraisal_manager_feedback_template" class="font-weight-bold" string="Manager Feedback Template"/>
+                                            <label for="appraisal_manager_feedback_template" class="fw-bold" string="Manager Feedback Template"/>
                                             <field name="appraisal_manager_feedback_template" class="w-100" nolabel="1"/>
                                         </div>
                                     </group>

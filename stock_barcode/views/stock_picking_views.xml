@@ -59,7 +59,7 @@
                                             <div class="col-6 o_kanban_record_title">
                                                 <field name="product_id"/>
                                             </div>
-                                            <div class="col-6 text-right">
+                                            <div class="col-6 text-end">
                                                 <field name="product_uom_qty"/>
                                             </div>
                                         </div>
@@ -67,7 +67,7 @@
                                             <div class="col-6">
                                                 <field name="description_picking"/>
                                             </div>
-                                            <div class="col-6 text-right">
+                                            <div class="col-6 text-end">
                                                 <field name="state"/>
                                             </div>
                                         </div>

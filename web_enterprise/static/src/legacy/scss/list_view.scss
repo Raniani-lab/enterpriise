@@ -121,14 +121,14 @@
     // -------   Grouped list views -------
     &.o_list_table_grouped {
         > tbody > tr.o_group_header {
-            background-color: rgba(gray('200'), 0.9);
+            background-color: rgba(map-get($grays, '200'), 0.9);
 
             &.o_group_has_content {
-                @include o-hover-text-color($gray-600, theme-color('primary'));
+                @include o-hover-text-color($gray-600, map-get($theme-colors, 'primary'));
 
                 &.o_group_open {
                     font-weight: bold;
-                    @include o-hover-text-color($headings-color, theme-color('primary'));
+                    @include o-hover-text-color($headings-color, map-get($theme-colors, 'primary'));
                 }
             }
             &, &.o_group_has_content {

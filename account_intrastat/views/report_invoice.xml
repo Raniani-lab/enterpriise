@@ -2,10 +2,10 @@
 <odoo>
     <template id="report_invoice_document_intrastat_2019" inherit_id="account.report_invoice_document">
         <xpath expr="//th[3]" position="before">
-            <th class="text-right">Origin Country</th>
+            <th class="text-end">Origin Country</th>
         </xpath>
         <xpath expr="//td[3]" position="before">
-            <td class="text-right">
+            <td class="text-end">
                 <span t-field="line.intrastat_product_origin_country_id"/>
             </td>
         </xpath>

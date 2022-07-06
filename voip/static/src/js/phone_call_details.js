@@ -107,7 +107,7 @@ const PhoneCallDetails = Widget.extend({
         });
         $('.o_dial_transfer_button').on('shown.bs.popover', function () {
             $('#input_transfer').focus();
-            $('.popover button.close').click(function() {
+            $('.popover button.btn-close').click(function() {
                 $('.o_dial_transfer_button').popover('hide');
              });
         })

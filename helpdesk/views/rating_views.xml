@@ -158,7 +158,7 @@
             <div name="rating_image_container" position="replace">
                 <label for="rating_text"/>
                 <div name="rating_image_container">
-                    <field name="rating_text" decoration-danger="rating_text == 'ko'" decoration-warning="rating_text == 'ok'" decoration-success="rating_text == 'top'" class="font-weight-bold"/>
+                    <field name="rating_text" decoration-danger="rating_text == 'ko'" decoration-warning="rating_text == 'ok'" decoration-success="rating_text == 'top'" class="fw-bold"/>
                 </div>
             </div>
             <xpath expr="//sheet/group" position="inside">

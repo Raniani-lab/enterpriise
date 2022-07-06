@@ -89,7 +89,7 @@
                                 <img t-att-src="image_data_uri(o.signature)"
                                      style="max-height: 4cm; max-width: 8cm;"/>
                             </div>
-                            <div class="text-left">
+                            <div class="text-start">
                                 <p t-field="o.signed_by"/>
                             </div>
                         </div>

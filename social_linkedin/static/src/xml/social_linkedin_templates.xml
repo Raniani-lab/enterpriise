@@ -5,9 +5,9 @@
             <img t-if="originalPost.authorImage" t-att-src="originalPost.authorImage" alt="Author Image"/>
         </t>
          <t t-jquery="div.o_social_comments_modal_original_post_content" t-operation="append">
-            <div class="text-left"
+            <div class="text-start"
                 t-if="originalPost.mediaType === 'linkedin'">
-                <div t-attf-class="o_social_linkedin_likes pl-2 pr-3"
+                <div t-attf-class="o_social_linkedin_likes ps-2 pe-3"
                     t-att-data-post-id="originalPost.postId" t-if="originalPost.likesCount !== 0">
                     <i class="fa fa-thumbs-up" title="Likes"/>
                     <b class="o_social_likes_count" t-esc="originalPost.likesCount"/>

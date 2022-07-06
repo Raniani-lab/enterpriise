@@ -48,7 +48,7 @@ export const PlanningControllerMixin = {
             const message = _t("The shifts from the previous week have successfully been copied.");
             this.displayNotification({
                 type: 'success',
-                message: Markup`<i class="fa fa-fw fa-check"></i><span class="ml-1">${message}</span>`,
+                message: Markup`<i class="fa fa-fw fa-check"></i><span class="ms-1">${message}</span>`,
             });
         } else {
             this.displayNotification({

@@ -105,7 +105,8 @@ table > tbody.o_grid_section > tr {
         display: none;
 
         > button {
-            @include size(33px, 23px);
+            width: 33px;
+            height: 23px;
             text-align: center;
             &[aria-pressed="true"] {
                 background-color: $danger;

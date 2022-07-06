@@ -1,6 +1,6 @@
 .o_web_studio_field_modal {
     .modal-header, .modal-footer {
-        background-color: lighten(gray('200'), 5%);
+        background-color: lighten(map-get($grays, '200'), 5%);
     }
 
     .o_web_studio_field_dialog_form {

@@ -1,5 +1,5 @@
 .o_dial {
-    $o-mid-gray: darken(gray('200'), 30%);
+    $o-mid-gray: darken(map-get($grays, '200'), 30%);
 
     /* Dialing Panel */
     $o-dial-panel-bg: white;
@@ -134,7 +134,7 @@
             cursor: pointer;
             font-size: 13px;
             width: 100%;
-            border-bottom: 1px solid gray('200');
+            border-bottom: 1px solid map-get($grays, '200');
             min-height: 45px;
             table {
                 min-height: 45px;
@@ -157,7 +157,7 @@
             display: none;
         }
         .o_voip_row_header {
-            border-bottom: 1px solid gray('200');
+            border-bottom: 1px solid map-get($grays, '200');
             color: $o-mid-gray;
             @include media-breakpoint-down(md) {
                 padding: 5px;
@@ -304,7 +304,7 @@
         }
     }
     .o_dial_main_buttons {
-        background-color: gray('200');
+        background-color: map-get($grays, '200');
         border-top: 1px solid $o-mid-gray;
         display: flex;
         @include media-breakpoint-down(md) {

@@ -11,7 +11,7 @@
                 <label for="planning_enabled" attrs="{'invisible': [('type', '!=', 'service')]}"/>
                 <div attrs="{'invisible': [('type', '!=', 'service')]}">
                     <field name="planning_enabled" class="oe_inline"/>
-                    <span attrs="{'invisible': [('planning_enabled', '=', False)]}" class="oe_inline mr-2">
+                    <span attrs="{'invisible': [('planning_enabled', '=', False)]}" class="oe_inline me-2">
                         as
                     </span>
                     <field name="planning_role_id"

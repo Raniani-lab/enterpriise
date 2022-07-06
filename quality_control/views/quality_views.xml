@@ -310,7 +310,7 @@
                                     <strong><span><t t-esc="record.name.value"/></span></strong>
                                 </div>
                                 <div class="col-6">
-                                    <strong><span t-attf-class="float-right text-right badge #{['none'].indexOf(record.quality_state.raw_value) > -1 ? 'badge-secondary' : ['fail'].indexOf(record.quality_state.raw_value) > -1 ? 'badge-danger' : ['done'].indexOf(record.quality_state.raw_value) > -1 ? 'badge-primary' : 'badge-success'}"><t t-esc="record.quality_state.value"/></span></strong>
+                                    <strong><span t-attf-class="float-end text-end badge #{['none'].indexOf(record.quality_state.raw_value) > -1 ? 'text-bg-secondary' : ['fail'].indexOf(record.quality_state.raw_value) > -1 ? 'text-bg-danger' : ['done'].indexOf(record.quality_state.raw_value) > -1 ? 'text-bg-primary' : 'text-bg-success'}"><t t-esc="record.quality_state.value"/></span></strong>
                                 </div>
                             </div>
                             <div class="row text-muted">
@@ -321,7 +321,7 @@
                                     <span><t t-esc="record.lot_id.value"/></span>
                                 </div>
                             </div>
-                            <div class="oe_kanban_bottom_right float-right">
+                            <div class="oe_kanban_bottom_right float-end">
                                 <field name="user_id" widget="many2one_avatar_user"/>
                             </div>
                         </div>
@@ -579,7 +579,7 @@
                             </div>
                             <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
                                 <div t-if="widget.editable" role="menuitem">
-                                    <a class="dropdown-item pl-0" type="edit">Configuration</a>
+                                    <a class="dropdown-item ps-0" type="edit">Configuration</a>
                                 </div>
                                 <div t-if="widget.editable" role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
                                     <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>

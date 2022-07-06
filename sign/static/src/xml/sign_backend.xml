@@ -54,15 +54,15 @@
     </t>
     <t t-name="sign.template_cp_buttons">
         <t t-if="action_type===''||action_type==='sign_send_request'">
-            <button type="button" class="btn btn-primary mr-2 o_sign_template_send">Send</button>
-            <button type="button" class="btn btn-primary mr-2 o_sign_template_sign_now">Sign Now</button>
+            <button type="button" class="btn btn-primary me-2 o_sign_template_send">Send</button>
+            <button type="button" class="btn btn-primary me-2 o_sign_template_sign_now">Sign Now</button>
             <t t-if="action_type!=='sign_send_request' &amp;&amp; widget.sign_template.responsible_count &lt;=1">
-                <button type="button" class="btn btn-secondary mr-2 o_sign_template_share">Share</button>
+                <button type="button" class="btn btn-secondary me-2 o_sign_template_share">Share</button>
             </t>
         </t>
         <t t-elif="action_type==='sign_template_edit'">
-            <button type="button" class="btn btn-primary mr-2 o_sign_template_save">Save</button>
-            <button t-if="widget.nextTemplate &amp;&amp; widget.nextTemplate.template" type="button" class="btn btn-primary mr-2 o_sign_template_next" t-att-template-id="widget.nextTemplate.template" t-att-template-name="widget.nextTemplate.name">Next Document</button>
+            <button type="button" class="btn btn-primary me-2 o_sign_template_save">Save</button>
+            <button t-if="widget.nextTemplate &amp;&amp; widget.nextTemplate.template" type="button" class="btn btn-primary me-2 o_sign_template_next" t-att-template-id="widget.nextTemplate.template" t-att-template-name="widget.nextTemplate.name">Next Document</button>
         </t>
         <t t-if="widget.has_sign_requests &amp;&amp; widget.isPDF">
             <div class="alert o_duplicate d-inline">
@@ -73,27 +73,27 @@
     <t t-name="sign.template">
         <div t-att-class="(widget.has_sign_requests &amp;&amp; widget.isPDF) ? 'd-none' : ''">
             <div class="o_sign_template_header_wrapper px-4 py-2 align-items-center d-flex">
-                <div class="o_sign_template_header_document_name align-items-center d-flex mr-auto">
-                    <span t-if="!widget.has_sign_requests" class="fa fa-pencil mr-2" title="Edit template name" role="img" aria-label="Edit template name"/>
+                <div class="o_sign_template_header_document_name align-items-center d-flex me-auto">
+                    <span t-if="!widget.has_sign_requests" class="fa fa-pencil me-2" title="Edit template name" role="img" aria-label="Edit template name"/>
                     <input type="text" class="o_sign_template_name_input o_input" t-att-value="widget.sign_template.display_name"/>
                 </div>
 
                 <div t-if="widget.debug" class="o_sign_template_privacy_and_save align-items-center d-flex">
-                    <label for="o_sign_template_privacy" class="p-0 m-0 mr-2">Who can Sign:</label>
+                    <label for="o_sign_template_privacy" class="p-0 m-0 me-2">Who can Sign:</label>
                     <div id="o_sign_template_privacy" class="o_sign_template_privacy"/>
-                    <div class="o_sign_template_saved_info alert alert-success m-0 ml-2" role="status"><span class="fa fa-check"/>Saved</div>
+                    <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
                 </div>
 
                 <div t-if="widget.debug" class="o_sign_template_group_id_and_save align-items-center d-flex">
-                    <label for="o_sign_template_group_id" class="p-0 m-0 mr-2">Template Access Group:</label>
+                    <label for="o_sign_template_group_id" class="p-0 m-0 me-2">Template Access Group:</label>
                     <div id="o_sign_template_groupe_id" class="o_sign_template_group_id"/>
-                    <div class="o_sign_template_saved_info alert alert-success m-0 ml-2" role="status"><span class="fa fa-check"/>Saved</div>
+                    <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
                 </div>
 
                 <div class="o_sign_template_tags_and_save align-items-center d-flex">
-                    <label for="o_sign_template_tags" class="p-0 m-0 mr-2">Tags:</label>
+                    <label for="o_sign_template_tags" class="p-0 m-0 me-2">Tags:</label>
                     <div id="o_sign_template_tags" class="o_sign_template_tags"/>
-                    <div class="o_sign_template_saved_info alert alert-success m-0 ml-2" role="status"><span class="fa fa-check"/>Saved</div>
+                    <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
                 </div>
             </div>
         </div>

@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
             	<page name="statement_line_ids" position="after">
             		<page string="CODA Notes" name="coda_note" groups="base.group_no_one">
-                    	<field name="coda_note" class="text-monospace"/>
+                    	<field name="coda_note" class="font-monospace"/>
                 	</page>
                 </page>
             </field>
@@ -23,7 +23,7 @@
                 </xpath>
                 <xpath expr="//group[last()]" position="after">
                     <separator string="Notes"/>
-                    <field name="narration" class="text-monospace"/>
+                    <field name="narration" class="font-monospace"/>
                 </xpath>
             </field>
         </record>

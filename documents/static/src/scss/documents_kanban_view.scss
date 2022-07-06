@@ -33,7 +33,7 @@
 
             .o_kanban_image .o_kanban_image_wrapper {
                 background-color: $gray-200;
-                border-right: 1px solid gray('400');
+                border-right: 1px solid map-get($grays, '400');
             }
 
             .o_request_image .o_kanban_image_wrapper {
@@ -54,7 +54,7 @@
                 height: 100%;
 
                 .o_documents_lock {
-                    color: gray('700');
+                    color: map-get($grays, '700');
                 }
 
                 .o_kanban_details_wrapper {

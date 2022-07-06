@@ -191,11 +191,11 @@
     .o_sign_create_partner {
         .fa-exclamation-circle {
             padding: 0 10px;
-            color: theme-color('danger');
+            color: map-get($theme-colors, 'danger');
         }
         .fa-check-circle {
             padding-left: 10px;
-            color: theme-color('success');
+            color: map-get($theme-colors, 'success');
         }
     }
 
@@ -300,7 +300,7 @@
                 position: absolute;
                 bottom: 0.5rem;
                 width: 100%;
-                @extend .pr-4;
+                @extend .pe-4;
             }
         }
     }

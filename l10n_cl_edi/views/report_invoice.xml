@@ -3,7 +3,7 @@
 
     <template id="custom_header" inherit_id="l10n_cl.custom_header">
         <span name="company_activity" position="replace">
-            <span name="company_activity" class="font-italic" t-field="o.company_id.l10n_cl_activity_description"/>
+            <span name="company_activity" class="fst-italic" t-field="o.company_id.l10n_cl_activity_description"/>
         </span>
         <xpath expr="//div[@name='regional-office']" position="inside">
             <span t-field="o.company_id.l10n_cl_sii_regional_office"/>
@@ -20,20 +20,20 @@
                 <thead>
                     <tr>
                         <th name="th_reference_origin" class="text-center"><span>Origin Ref</span></th>
-                        <th name="th_reference_doc_type" class="text-left"><span>Reference Doc Type</span></th>
+                        <th name="th_reference_doc_type" class="text-start"><span>Reference Doc Type</span></th>
                         <th name="th_reference_code" class="text-center"><span>Doc Code</span></th>
-                        <th name="th_reference_reason" class="text-left"><span>Reason</span></th>
-                        <th name="th_reference_date" class="text-left"><span>Date</span></th>
+                        <th name="th_reference_reason" class="text-start"><span>Reason</span></th>
+                        <th name="th_reference_date" class="text-start"><span>Date</span></th>
                     </tr>
                 </thead>
                 <tbody class="invoice_tbody">
                 <t t-foreach="o.l10n_cl_reference_ids" t-as="refs">
                     <tr>
-                        <td class="text-left" name="td_reference_origin"><span t-field="refs.origin_doc_number"/></td>
-                        <td class="text-left" name="td_reference_doc_type"><span t-field="refs.l10n_cl_reference_doc_type_id.code"/></td>
-                        <td class="text-left" name="td_reference_code"><span t-field="refs.reference_doc_code"/></td>
-                        <td class="text-left" name="td_reference_reason"><span t-field="refs.reason"/></td>
-                        <td class="text-left" name="td_reference_date"><span t-field="refs.date"/></td>
+                        <td class="text-start" name="td_reference_origin"><span t-field="refs.origin_doc_number"/></td>
+                        <td class="text-start" name="td_reference_doc_type"><span t-field="refs.l10n_cl_reference_doc_type_id.code"/></td>
+                        <td class="text-start" name="td_reference_code"><span t-field="refs.reference_doc_code"/></td>
+                        <td class="text-start" name="td_reference_reason"><span t-field="refs.reason"/></td>
+                        <td class="text-start" name="td_reference_date"><span t-field="refs.date"/></td>
                     </tr>
                 </t>
                 </tbody>

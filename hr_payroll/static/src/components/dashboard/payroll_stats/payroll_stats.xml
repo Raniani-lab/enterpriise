@@ -2,14 +2,14 @@
 <odoo>
     <t t-name="hr_payroll.DashboardStats" owl="1">
         <div class="o_hr_payroll_dashboard_block o_hr_payroll_dashboard_block_stats d-flex align-items-end align-items-stretch flex-column">
-            <div class="stats-header row p-2 pl-4">
+            <div class="stats-header row p-2 ps-4">
                 <div class="col w-100">
                     <h2 class="btn btn-link p-0 disabled text-black">
                         <t t-esc="props.title"/>
                     </h2>
                     <i class="fa fa-question-circle-o" t-if="props.help"
                         data-tooltip-template="hr_payroll.Tooltip" t-att-data-tooltip-info="tooltipInfo"/>
-                    <div class="d-flex float-right" id="period_selection_toggle">
+                    <div class="d-flex float-end" id="period_selection_toggle">
                         Annually
                         <div class="o_boolean_toggle ms-2 form-check form-switch" t-on-click.stop.prevent="toggle">
                             <input type="checkbox" class="form-check-input" id="test" role="switch" t-att-checked="state.monthly"/>
@@ -18,12 +18,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row ml-0 mb-2">
+            <div class="row ms-0 mb-2">
                 <div class="col">
                     <t t-foreach="props.actions" t-as="action" t-key="action.action">
                         <a t-if="action.count > 0" class="row w-100" href="#" t-on-click="() => this.actionService.doAction(action.action)">
-                            <span class="col-1 text-right p-0 mr-1"><t t-esc="action.count"/></span>
-                            <span class="col text-left p-0"><t t-esc="action.string"/></span>
+                            <span class="col-1 text-end p-0 me-1"><t t-esc="action.count"/></span>
+                            <span class="col text-start p-0"><t t-esc="action.string"/></span>
                         </a>
                     </t>
                 </div>

@@ -137,9 +137,9 @@
         }
     }
     .o_appraisal_manager_feedback {
-        background-color: gray('200');
+        background-color: map-get($grays, '200');
         .note-editable {
-            background-color: gray('200');
+            background-color: map-get($grays, '200');
         }
     }
     @include media-breakpoint-down(lg) {

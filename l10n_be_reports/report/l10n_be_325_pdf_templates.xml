@@ -58,9 +58,9 @@
                             <div class="row mt-5 border border-dark">
                                 <div class="col">
                                     <div class="row border border-dark">
-                                        <div class="col-7 border-right border-dark">
+                                        <div class="col-7 border-end border-dark">
                                             <div class="row">
-                                                <div class="col-4 font-weight-bold">
+                                                <div class="col-4 fw-bold">
                                                     1. NN ou NE:
                                                 </div>
                                                 <div class="col-8">
@@ -86,7 +86,7 @@
                                     </div>
                                     <div class="row border border-dark">
                                         <div class="col-12">
-                                            <div class="font-weight-bold">
+                                            <div class="fw-bold">
                                                 3. Identity of the debtor of the income
                                             </div>
                                             <div class="row">
@@ -113,7 +113,7 @@
                                     </div>
                                     <div class="row border border-dark">
                                         <div class="col">
-                                            <div class="font-weight-bold">
+                                            <div class="fw-bold">
                                                 4. Domicile (natural persons), registered office or main administrative
                                                 office (companies and other institutions)
                                             </div>
@@ -137,7 +137,7 @@
                                     </div>
                                     <div class="row border border-dark">
                                         <div class="col">
-                                            <div class="font-weight-bold">
+                                            <div class="fw-bold">
                                                 5. Administrative or operating headquarters (companies and other
                                                 institutions)
                                                 or operating headquarters (natural persons who have more than one such
@@ -250,7 +250,7 @@
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td class="font-weight-bold text-center">TOTAUX</td>
+                                                <td class="fw-bold text-center">TOTAUX</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>

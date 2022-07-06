@@ -171,19 +171,19 @@
     <field name="arch" type="xml">
       <form string="Rental Order">
         <sheet>
-          <div class="badge-pill badge-info float-right"
+          <div class="rounded-pill text-bg-info float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'reserved'), ('late', '=', True)]}">Reserved</div>
-          <div class="badge-pill badge-info float-right"
+          <div class="rounded-pill text-bg-info float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'reserved'), ('late', '=', False)]}">Late Delivery</div>
-          <div class="badge-pill badge-warning float-right"
+          <div class="rounded-pill text-bg-warning float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', True)]}">Picked-up</div>
-          <div class="badge-pill badge-danger float-right"
+          <div class="rounded-pill text-bg-danger float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', False)]}">Late Return</div>
-          <div class="badge-pill badge-success float-right"
+          <div class="rounded-pill text-bg-success float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']), ('report_line_status', '!=', 'returned')]}">Returned</div>
           <h1><field name="order_line_id" options="{'no_open':1}"/></h1>

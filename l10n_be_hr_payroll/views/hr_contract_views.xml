@@ -146,20 +146,20 @@
                     </group>
                     <group name="transportation_right">
                         <field name="transport_mode_train" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
-                        <label class="font-weight-normal"
+                        <label class="fw-normal"
                             attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_train', '=', False)]}"
                             for="train_transport_employee_amount"/>
                         <field class="w-50" name="train_transport_employee_amount" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_train', '=', False)]}" nolabel="1"/>
-                        <label class="font-weight-normal"
+                        <label class="fw-normal"
                             attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_train', '=', False)]}"
                             for="train_transport_reimbursed_amount"/>
                         <field class="w-50" name="train_transport_reimbursed_amount" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_train', '=', False)]}" nolabel="1"/>
                         <field name="transport_mode_public" attrs="{'invisible': [('wage_type', '=', 'hourly')]}"/>
-                        <label class="font-weight-normal"
+                        <label class="fw-normal"
                             attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_public', '=', False)]}"
                             for="public_transport_employee_amount"/>
                         <field class="w-50" name="public_transport_employee_amount" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_public', '=', False)]}" nolabel="1"/>
-                        <label class="font-weight-normal"
+                        <label class="fw-normal"
                             attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_public', '=', False)]}"
                             for="public_transport_reimbursed_amount"/>
                         <field class="w-50" name="public_transport_reimbursed_amount" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_public', '=', False)]}" nolabel="1"/>

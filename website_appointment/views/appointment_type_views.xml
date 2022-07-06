@@ -22,23 +22,23 @@
             </xpath>
             <xpath expr="//div[hasclass('o_appointment_kanban_box')]/div[1]" position="inside">
                 <span>
-                    <a t-attf-href="#{record.website_url.raw_value}" class="mr-2">Published</a>
+                    <a t-attf-href="#{record.website_url.raw_value}" class="me-2">Published</a>
                     <field name="is_published" widget='boolean_toggle'/>
                 </span>
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]/button[@name='action_customer_preview']" position="replace">
                 <button name="open_website_url" string="View availabilities" type="object"
-                        class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': [('active', '=', False)]}">
+                        class="btn btn-secondary border me-2 text-nowrap" attrs="{'invisible': [('active', '=', False)]}">
                     View availabilities
                 </button>
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]/button[last()]" position="after">
                 <button name="action_toggle_published" string="Publish" type="object"
-                    class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', True), ('active', '=', False)]}">
+                    class="btn btn-secondary border me-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', True), ('active', '=', False)]}">
                     Publish
                 </button>
                 <button name="action_toggle_published" string="Unpublish" type="object"
-                        class="btn btn-secondary border mr-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
+                        class="btn btn-secondary border me-2 text-nowrap" attrs="{'invisible': ['|', ('is_published', '=', False), ('active', '=', False)]}">
                     Unpublish
                 </button>
             </xpath>

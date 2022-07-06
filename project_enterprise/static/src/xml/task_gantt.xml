@@ -35,7 +35,7 @@
             h
         </t>
         <t t-jquery="*[t-esc='widget.name']" t-operation="replace">
-            <div t-if="widget.showUserAvatar" t-attf-class="o_gantt_row_user_avatar d-inline-flex #{widget.isGroup ? 'ml-1' : ''}" />
+            <div t-if="widget.showUserAvatar" t-attf-class="o_gantt_row_user_avatar d-inline-flex #{widget.isGroup ? 'ms-1' : ''}" />
             <t t-else="" t-esc="widget.name"/>
         </t>
         <t t-jquery="*[t-attf-class~='o_gantt_row_title']" t-operation="attributes">
@@ -53,10 +53,10 @@
                     <div><u><t t-out="milestone.project_id[1]"/></u></div>
                 </t>
                 <t t-if="milestone.is_deadline_exceeded">
-                    <i t-attf-class="fa fa-square-o fa-fw text-left o_unreached_milestones"></i>
+                    <i t-attf-class="fa fa-square-o fa-fw text-start o_unreached_milestones"></i>
                 </t>
                 <t t-else="">
-                    <i t-attf-class="fa fa-fw text-left {{milestone.is_reached ? 'fa-check-square-o o_milestones_reached' : 'fa-square-o'}}"></i>
+                    <i t-attf-class="fa fa-fw text-start {{milestone.is_reached ? 'fa-check-square-o o_milestones_reached' : 'fa-square-o'}}"></i>
                 </t>
                 <strong><t t-out="milestone.name"/></strong>
                 <span t-if="display_milestone_dates"><t t-out="milestone.deadlineUserFormatted"/></span>

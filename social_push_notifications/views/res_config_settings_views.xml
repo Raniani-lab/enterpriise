@@ -27,12 +27,12 @@
                                     placeholder="Enable push notifications to be notified about new features."/>
                             </div>
                             <div class="mt16">
-                                <label for="notification_request_delay" string="Delay" class="o_form_label pr-2"/>
+                                <label for="notification_request_delay" string="Delay" class="o_form_label pe-2"/>
                                 <field name="notification_request_delay" class="oe_inline"/>
-                                <span class="pl-2">seconds</span>
+                                <span class="ps-2">seconds</span>
                             </div>
                             <div class="mt16">
-                                <label for="notification_request_icon" string="Icon" class="o_form_label pr-2"/>
+                                <label for="notification_request_icon" string="Icon" class="o_form_label pe-2"/>
                                 <field name="notification_request_icon" class="oe_inline"/>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                 <field name="firebase_sender_id" class="w-100" placeholder='e.g. "280765099157"'/>
                             </div>
                             <div class="mt16">
-                                <label for="firebase_admin_key_file" string="Key File" class="o_form_label pr-2"/>
+                                <label for="firebase_admin_key_file" string="Key File" class="o_form_label pe-2"/>
                                 <field name="firebase_admin_key_file"/>
                             </div>
                         </div>

@@ -195,7 +195,7 @@ Budgets
                                     </strong>
                                 </div>
                                 <div class="col-4">
-                                    <span class="float-right">
+                                    <span class="float-end">
                                         <field name="state" widget="label_selection"
                                                options="{'classes': {'draft': 'default', 'done': 'success'}}"/>
                                     </span>
@@ -208,7 +208,7 @@ Budgets
                                     <t t-esc="record.date_to.value"/>
                                 </div>
                                 <div class="col-2">
-                                    <span class="float-right">
+                                    <span class="float-end">
                                         <field name="user_id" widget="many2one_avatar_user"/>
                                     </span>
                                 </div>

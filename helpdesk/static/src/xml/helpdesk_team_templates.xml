@@ -42,12 +42,12 @@
 
                 <table class="o_helpdesk_banner_table table table-sm table-borderless h-100 px-3 mb-0 text-center">
                     <tr class="h-100">
-                        <td class="o_text py-2 text-left align-middle">
+                        <td class="o_text py-2 text-start align-middle">
                             <h3 class="o_highlight">My Tickets</h3>
                             Open Tickets
                         </td>
                         <td t-attf-class="{{demo_class}} o_dashboard_action p-0" title="My Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="t">
-                            <a href="#" t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize font-weight-normal {{widget.values['my_all']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{widget.values['my_all']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="p-2">
                                     <h2 class="mb-0" t-out="widget.values['my_all']['count']"/>
                                     Tickets
@@ -55,7 +55,7 @@
                             </a>
                         </td>
                         <td t-attf-class="{{demo_class}} o_dashboard_action p-0" title="My Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_high_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="p">
-                            <a href="#" t-attf-class="position-relative btn w-100 h-100 p-0 border-0 text-capitalize font-weight-normal {{widget.values['my_high']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="position-relative btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{widget.values['my_high']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="p-2">
                                     <h2 class="mb-0" t-out="widget.values['my_high']['count']"/>
                                     High Priority
@@ -72,7 +72,7 @@
                             </a>
                         </td>
                         <td t-attf-class="{{demo_class}} o_dashboard_action p-0" title="My Tickets" name="helpdesk.helpdesk_my_ticket_action_no_create" context="{'search_default_urgent_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="u">
-                            <a href="#" t-attf-class="position-relative btn w-100 h-100 p-0 border-0 text-capitalize font-weight-normal {{widget.values['my_urgent']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="position-relative btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{widget.values['my_urgent']['count'] > 0 ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="p-2">
                                     <h2 class="mb-0" t-out="widget.values['my_urgent']['count']"/>
                                     Urgent
@@ -91,29 +91,29 @@
                         </td>
                     </tr>
                     <tr class="h-100">
-                        <td class="o_text py-2 text-left align-middle">Avg Open Hours</td>
+                        <td class="o_text py-2 text-start align-middle">Avg Open Hours</td>
                         <td title="Tickets Analysis" t-attf-class="{{demo_class}} o_dashboard_action p-0" name="helpdesk.helpdesk_ticket_action_dashboard" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="a">
-                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 font-weight-normal align-middle {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 fw-normal align-middle {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="w-100 p-2" t-out="widget._format_time(widget.values['my_all']['hours'])"/>
                             </a>
                         </td>
                         <td title="Tickets Analysis" t-attf-class="{{demo_class}} o_dashboard_action p-0" name="helpdesk.helpdesk_ticket_action_dashboard" context="{'search_default_high_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="b">
-                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 font-weight-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 fw-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="w-100 p-2" t-out="widget._format_time(widget.values['my_high']['hours'])"/>
                             </a>
                         </td>
                         <td title="Tickets Analysis" t-attf-class="{{demo_class}} o_dashboard_action p-0" name="helpdesk.helpdesk_ticket_action_dashboard" context="{'search_default_urgent_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="y">
-                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 bg-100 p-0 border-0 font-weight-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 bg-100 p-0 border-0 fw-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="w-100 p-2" t-out="widget._format_time(widget.values['my_urgent']['hours'])"/>
                             </a>
                         </td>
                     </tr>
                     <tr class="h-100">
-                        <td class="o_text py-2 text-left align-middle" t-if="widget.success_rate_enable">Failed Tickets</td>
+                        <td class="o_text py-2 text-start align-middle" t-if="widget.success_rate_enable">Failed Tickets</td>
                         <td t-if="widget.success_rate_enable" t-attf-class="{{demo_class}} o_dashboard_action p-0" name="helpdesk.helpdesk_ticket_action_sla" title="My Tickets" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="d">
                             <a 
                                 href="#"
-                                t-attf-class="o_dashboard_action btn align-items-center d-flex w-100 h-100 p-0 border-0 font-weight-normal {{widget.values['my_all']['failed'] ? 'btn-warning' : 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}"
+                                t-attf-class="o_dashboard_action btn align-items-center d-flex w-100 h-100 p-0 border-0 fw-normal {{widget.values['my_all']['failed'] ? 'btn-warning' : 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}"
                                 name="helpdesk.helpdesk_ticket_action_sla"
                                 data-extra="overdue"
                                 t-attr-show_demo="{{widget.show_demo}}"
@@ -124,7 +124,7 @@
                         <td t-if="widget.success_rate_enable" t-attf-class="{{demo_class}} o_dashboard_action p-0" name="helpdesk.helpdesk_ticket_action_sla" title="My Tickets" context="{'search_default_high_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="e">
                             <a
                                 href="#"
-                                t-attf-class="btn align-items-center d-flex w-100 h-100 p-0 border-0 font-weight-normal {{widget.values['my_high']['failed'] ? 'btn-warning' : 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}"
+                                t-attf-class="btn align-items-center d-flex w-100 h-100 p-0 border-0 fw-normal {{widget.values['my_high']['failed'] ? 'btn-warning' : 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}"
                                 data-extra="overdue"
                             >
                                 <div class="w-100 p-2" t-out="widget.values['my_high']['failed']"/>
@@ -133,7 +133,7 @@
                         <td t-if="widget.success_rate_enable" t-attf-class="{{demo_class}} o_dashboard_action p-0" name="helpdesk.helpdesk_ticket_action_sla" title="My Tickets" context="{'search_default_urgent_priority': True}" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="f">
                             <a
                                 href="#"
-                                t-attf-class="btn align-items-center d-flex w-100 h-100 p-0 border-0 font-weight-normal {{widget.values['my_urgent']['failed'] ? 'btn-warning' : 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}"
+                                t-attf-class="btn align-items-center d-flex w-100 h-100 p-0 border-0 fw-normal {{widget.values['my_urgent']['failed'] ? 'btn-warning' : 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}"
                                 data-extra="overdue"
                             >
                                 <div class="w-100 p-2" t-out="widget.values['my_urgent']['failed']"/>
@@ -145,7 +145,7 @@
             <div class="w-100 mt-3 mt-lg-0">
                 <table class="o_helpdesk_banner_table table table-sm table-borderless h-100 px-3 mb-0 text-center">
                     <tr class="h-100">
-                        <td class="o_text py-2 text-left align-middle">
+                        <td class="o_text py-2 text-start align-middle">
                             <h3 class="o_highlight">My Performance</h3>
                             Today
                         </td>
@@ -153,7 +153,7 @@
                             t-attf-class="{{demo_class}} o_dashboard_action p-0"
                             name="helpdesk.helpdesk_ticket_action_close_analysis"
                             t-attr-show_demo="{{widget.show_demo}}" data-hotkey="i">
-                            <a href="#" t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize font-weight-normal {{widget.values and widget.values['helpdesk_target_closed'] and widget.values['today']['count'] >= widget.values['helpdesk_target_closed'] ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{widget.values and widget.values['helpdesk_target_closed'] and widget.values['today']['count'] >= widget.values['helpdesk_target_closed'] ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="p-2">
                                     <h2 class="mb-0" t-out="widget.values['today']['count']"/>
                                     Closed Tickets
@@ -166,7 +166,7 @@
                             t-attf-class="{{demo_class}} o_dashboard_action p-0"
                             name="helpdesk.helpdesk_ticket_action_success"
                             t-attr-show_demo="{{widget.show_demo}}" data-hotkey="k">
-                            <a href="#" t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize font-weight-normal {{(widget.values and widget.values['helpdesk_target_success'] and widget.values['helpdesk_target_success'] &lt;= widget.values['today']['success']) ? 'btn-primary': 'btn-light bg-100' }} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{(widget.values and widget.values['helpdesk_target_success'] and widget.values['helpdesk_target_success'] &lt;= widget.values['today']['success']) ? 'btn-primary': 'btn-light bg-100' }} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="p-2">
                                     <h2 class="mb-0" t-out="widget._format_float(widget.values['today']['success']) + ' %'"/>
                                     Success Rate
@@ -179,7 +179,7 @@
                             name="action_view_rating_today"
                             type="object"
                             t-attr-show_demo="{{widget.show_demo}}" data-hotkey="j">
-                            <a href="#" t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize font-weight-normal {{(widget.values and widget.values['helpdesk_target_rating'] and widget.values['helpdesk_target_rating'] &lt;= widget.values['today']['rating']) ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{(widget.values and widget.values['helpdesk_target_rating'] and widget.values['helpdesk_target_rating'] &lt;= widget.values['today']['rating']) ? 'btn-primary': 'btn-light bg-100'}} {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="p-2">
                                     <h2 class="mb-0" t-out="widget._format_float(widget.values['today']['rating']) + ' %'"/>
                                     Average Rating
@@ -188,27 +188,27 @@
                         </td>
                     </tr>
                     <tr class="h-100">
-                        <td class="o_text py-2 text-left align-middle">Avg Last 7 days</td>
+                        <td class="o_text py-2 text-start align-middle">Avg Last 7 days</td>
                         <td title="Tickets Analysis" t-attf-class="{{demo_class}} o_dashboard_action p-0" name="helpdesk.helpdesk_ticket_action_7days_analysis" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="l">
-                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 font-weight-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 fw-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="w-100 p-2" t-out="widget.values['7days']['count']"/>
                             </a>
                         </td>
                         <td t-if="widget.success_rate_enable" data-action-title="Tickets Analysis" title="Percentage of tickets that were closed without failing any SLAs." t-attf-class="{{demo_class}} o_dashboard_action p-0" name="helpdesk.helpdesk_ticket_action_7dayssuccess" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="n">
-                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 font-weight-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 fw-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="w-100 p-2" t-out="widget._format_float(widget.values['7days']['success']) + ' %'"/>
                             </a>
                         </td>
                         <td t-if="widget.rating_enable" title="Avg 7 Days Customer Satisfaction" t-attf-class="{{demo_class}} o_dashboard_action p-0" name="action_view_rating_7days" t-attr-show_demo="{{widget.show_demo}}" data-hotkey="m">
-                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 font-weight-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
+                            <a href="#" t-attf-class="btn btn-light align-items-center d-flex w-100 h-100 p-0 border-0 bg-100 fw-normal {{demo_class != ' ' ? 'o_cursor_default' : ''}}">
                                 <div class="w-100 p-2" t-out="widget._format_float(widget.values['7days']['rating']) + ' %'"/>
                             </a>
                         </td>
                     </tr>
                     <tr class="h-100">
-                        <td class="o_text py-2 text-left align-middle">Daily Target</td>
+                        <td class="o_text py-2 text-start align-middle">Daily Target</td>
                         <td t-attf-class="{{demo_class}} p-0 align-middle">
-                            <span t-attf-class="{{widget.show_demo ? '' : 'o_target_to_set'}} btn btn-light justify-content-center align-items-center d-flex h-100 p-0 border-0 bg-100 font-weight-normal" name='helpdesk_target_closed' t-att-value="widget.values['helpdesk_target_closed'] ? widget.values['helpdesk_target_closed'] : undefined" t-att-title=" widget.show_demo ? 'Tickets closed daily target' : 'Click to set'" data-hotkey="v">
+                            <span t-attf-class="{{widget.show_demo ? '' : 'o_target_to_set'}} btn btn-light justify-content-center align-items-center d-flex h-100 p-0 border-0 bg-100 fw-normal" name='helpdesk_target_closed' t-att-value="widget.values['helpdesk_target_closed'] ? widget.values['helpdesk_target_closed'] : undefined" t-att-title=" widget.show_demo ? 'Tickets closed daily target' : 'Click to set'" data-hotkey="v">
                                 <div t-if="widget.values['helpdesk_target_closed']" class="position-relative p-2">
                                     <t t-out="widget.values['helpdesk_target_closed']"/>
                                     <i class="fa fa-pencil position-absolute ms-2 mt-1 opacity-0"/>
@@ -219,7 +219,7 @@
                             </span>
                         </td>
                         <td t-attf-class="{{demo_class}} p-0" t-if="widget.success_rate_enable">
-                            <span t-attf-class="{{widget.show_demo ? '' : 'o_target_to_set'}} btn btn-light justify-content-center align-items-center d-flex h-100 p-0 border-0 bg-100 font-weight-normal" name='helpdesk_target_success' t-att-value="widget.values['helpdesk_target_success'] ? widget._format_float(widget.values['helpdesk_target_success']) : undefined" t-att-title="widget.show_demo ? 'Success rate daily target' : 'Click to set'" data-hotkey="x">
+                            <span t-attf-class="{{widget.show_demo ? '' : 'o_target_to_set'}} btn btn-light justify-content-center align-items-center d-flex h-100 p-0 border-0 bg-100 fw-normal" name='helpdesk_target_success' t-att-value="widget.values['helpdesk_target_success'] ? widget._format_float(widget.values['helpdesk_target_success']) : undefined" t-att-title="widget.show_demo ? 'Success rate daily target' : 'Click to set'" data-hotkey="x">
                                 <div t-if="widget.values['helpdesk_target_success']" class="position-relative p-2">
                                     <t t-out="widget._format_float(widget.values['helpdesk_target_success'])"/> %
                                     <i class="fa fa-pencil position-absolute ms-2 mt-1 opacity-0"/>
@@ -230,7 +230,7 @@
                             </span>
                         </td>
                         <td t-attf-class="{{demo_class}} p-0" t-if="widget.rating_enable">
-                            <span t-attf-class="{{widget.show_demo ? '' : 'o_target_to_set'}} btn btn-light justify-content-center align-items-center d-flex h-100 p-0 border-0 bg-100 font-weight-normal" name='helpdesk_target_rating' t-att-value="widget.values['helpdesk_target_rating'] ? widget._format_float(widget.values['helpdesk_target_rating']) : undefined" t-att-title=" widget.show_demo ? 'Average rating daily target' : 'Click to set'" data-hotkey="w">
+                            <span t-attf-class="{{widget.show_demo ? '' : 'o_target_to_set'}} btn btn-light justify-content-center align-items-center d-flex h-100 p-0 border-0 bg-100 fw-normal" name='helpdesk_target_rating' t-att-value="widget.values['helpdesk_target_rating'] ? widget._format_float(widget.values['helpdesk_target_rating']) : undefined" t-att-title=" widget.show_demo ? 'Average rating daily target' : 'Click to set'" data-hotkey="w">
                                 <div t-if="widget.values['helpdesk_target_rating']" class="position-relative p-2">
                                     <t t-out="widget._format_float(widget.values['helpdesk_target_rating'])"/> %
                                     <i class="fa fa-pencil position-absolute ms-2 mt-1 opacity-0"/>

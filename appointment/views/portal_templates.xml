@@ -40,19 +40,19 @@
                 <thead>
                     <tr>
                         <th>Appointment Name</th>
-                        <th class="text-right">Date</th>
+                        <th class="text-end">Date</th>
                     </tr>
                 </thead>
                 <t t-foreach="appointments" t-as="appts">
                     <tbody t-if="grouped_appointments and not groupby == 'none'">
                         <t t-set="groupby_record" t-value="appts[0]"/>
                         <t t-set="appts" t-value="appts[1]"/>
-                        <tr class="thead-light">
+                        <tr class="table-light">
                             <th>
-                                <em class="font-weight-normal text-muted">Appointments by <t t-out="searchbar_groupby[groupby]['label']"/>:</em>
+                                <em class="fw-normal text-muted">Appointments by <t t-out="searchbar_groupby[groupby]['label']"/>:</em>
                                 <span t-field="groupby_record.name"/>
                             </th>
-                            <th class="text-right">
+                            <th class="text-end">
                                 Total: <span class="text-muted" t-out="len(appts)"/>
                             </th>
                         </tr>
@@ -65,7 +65,7 @@
                                         <t t-out="appointment.appointment_type_id.name"/> with <t t-out="appointment.user_id.name"/>
                                     </a>
                                 </td>
-                                <td class="text-right"><span t-field="appointment.start"/></td>
+                                <td class="text-end"><span t-field="appointment.start"/></td>
                             </tr>
                         </t>
                     </tbody>

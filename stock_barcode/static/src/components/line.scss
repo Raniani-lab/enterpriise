@@ -36,10 +36,10 @@
     }
 
     &.o_faulty {
-        background-color: rgba(theme-color('danger'), 0.25);
+        background-color: rgba(map-get($theme-colors, 'danger'), 0.25);
 
         &.o_selected {
-            box-shadow: inset 0px 0px 0px 3px theme-color('danger');
+            box-shadow: inset 0px 0px 0px 3px map-get($theme-colors, 'danger');
         }
     }
 

@@ -30,7 +30,7 @@
             </xpath>
             <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
                 <div class="py-2" t-if="record.media_type.raw_value === 'youtube'">
-                    <div class="font-weight-bold px-2"><field name="link_title"/></div>
+                    <div class="fw-bold px-2"><field name="link_title"/></div>
                     <a t-att-href="record.post_link.raw_value">
                         <img t-att-src="record.youtube_thumbnail_url.raw_value" alt="YouTube Thumbnail"
                             class="w-100 py-2 o_social_youtube_thumbnail"/>
@@ -42,14 +42,14 @@
 
                 <div class="o_social_stream_post_youtube_stats d-flex justify-content-around px-2" t-if="record.media_type.raw_value === 'youtube'">
                     <div class="d-flex justify-content-around">
-                        <div class="o_social_subtle_btn_disabled pl-2">
+                        <div class="o_social_subtle_btn_disabled ps-2">
                             <i class="fa fa-thumbs-up" title="Likes"/>
                             <b>
                                 <field name="youtube_likes_ratio"/>
                                 %
                             </b>
                         </div>
-                        <div class="o_social_youtube_comments o_social_comments o_social_subtle_btn pl-3"
+                        <div class="o_social_youtube_comments o_social_comments o_social_subtle_btn ps-3"
                             t-att-data-stream-id="record.stream_id.raw_value"
                             t-att-data-post-id="record.id.raw_value"
                             t-att-data-youtube-account-id="record.account_id.raw_value"
@@ -76,8 +76,8 @@
                         </div>
                     </div>
 
-                    <div class="flex-grow-1 text-right text-muted">
-                        <div class="o_social_subtle_btn_disabled pr-2 d-inline-block font-weight-bold">
+                    <div class="flex-grow-1 text-end text-muted">
+                        <div class="o_social_subtle_btn_disabled pe-2 d-inline-block fw-bold">
                             Views
                             <t t-esc="record.youtube_views_count.value"/>
                         </div>

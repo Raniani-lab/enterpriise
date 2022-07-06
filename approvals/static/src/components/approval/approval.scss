@@ -1,9 +1,9 @@
 .o_Approval_toolButton {
     opacity: 0.5;
-    color: gray('500');
+    color: map-get($grays, '500');
 
     &:hover {
         opacity: 1;
-        color: gray('600');
+        color: map-get($grays, '600');
     }
 }

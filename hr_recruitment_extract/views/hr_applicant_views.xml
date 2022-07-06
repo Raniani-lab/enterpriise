@@ -25,7 +25,7 @@
                             ('is_first_stage', '=', False),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary float-end mb0"/>
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 mr-1" string="Resend For Digitalization" type="object"
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitalization" type="object"
                         attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="q"/>
                     You don't have enough credit to extract data from your CV.
                     <div class="clearfix"/>
@@ -54,7 +54,7 @@
                             '&amp;',
                             ('extract_status_code', '&gt;', 99),
                             ('extract_status_code', '&lt;', 200)]}">
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 mr-1" string="Resend For Digitalization" type="object" data-hotkey="q"/>
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitalization" type="object" data-hotkey="q"/>
                     <field name="extract_error_message" class="oe_inline"/>
                     <div class="clearfix"/>
                 </div>

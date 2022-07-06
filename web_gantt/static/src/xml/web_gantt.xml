@@ -3,10 +3,10 @@
 <templates>
 
     <div t-name="GanttView.buttons">
-        <button t-if="widget.is_action_enabled('create')" class="o_gantt_button_add btn btn-primary mr-3" title="Add record" data-hotkey="r">
+        <button t-if="widget.is_action_enabled('create')" class="o_gantt_button_add btn btn-primary me-3" title="Add record" data-hotkey="r">
             Add
         </button>
-        <div class="d-inline-block mr-3">
+        <div class="d-inline-block me-3">
             <button class="o_gantt_button_prev btn btn-primary" title="Previous">
                 <span class="fa fa-arrow-left"/>
             </button>
@@ -40,7 +40,7 @@
     </t>
 
     <t t-name="GanttView.RangeButtons.Mobile">
-        <a class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+        <a class="btn btn-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
             <t t-esc="SCALES[activateScale].string"/>
         </a>
         <ul class="dropdown-menu" role="menu">
@@ -60,11 +60,11 @@
         <div class="o_gantt_view_container container-fluid p-0">
             <div class="row g-0 o_gantt_header_container position-sticky bg-white">
                 <div class="col-2 position-relative o_gantt_row_sidebar text-center" t-if="widget.state.groupedBy.length">
-                    <span class="font-weight-bold" t-esc="widget.string"/>
+                    <span class="fw-bold" t-esc="widget.string"/>
                 </div>
                 <div class="col position-relative o_gantt_header_slots">
                     <div class="row g-0">
-                        <div class="col text-center p-2 font-weight-bold">
+                        <div class="col text-center p-2 fw-bold">
                             <t t-esc="widget._getFocusDateFormat()"/>
                         </div>
                     </div>
@@ -138,12 +138,12 @@
                     </span>
                 </t>
             </t>
-            <div t-attf-class="o_gantt_row_title text-truncate pr-1 #{widget.isTotal ? 'text-right pr-3 h4 my-0 font-weight-bold' : ''}" t-att-title="widget.name or ''"
+            <div t-attf-class="o_gantt_row_title text-truncate pe-1 #{widget.isTotal ? 'text-end pe-3 h4 my-0 fw-bold' : ''}" t-att-title="widget.name or ''"
                 t-att-style="widget.cellHeight ? 'line-height: ' + widget.cellHeight + 'px;' : ''">
                 <i t-if="!widget.isTotal &amp; widget.isGroup"
                     t-attf-class="fa small #{widget.isOpen ? 'fa-minus' : 'fa-plus'}"/>
                 <div t-if="widget.thumbnailUrl and widget.resId"
-                    t-attf-class="o_gantt_row_thumbnail_wrapper d-inline #{!widget.options.isGroup ? 'mr-1' : ''}">
+                    t-attf-class="o_gantt_row_thumbnail_wrapper d-inline #{!widget.options.isGroup ? 'me-1' : ''}">
                     <img t-att-src="widget.thumbnailUrl" class="rounded-circle o_gantt_row_thumbnail"/>
                 </div>
                 <t t-esc="widget.name"/>
@@ -159,7 +159,7 @@
                     <!-- plan and add buttons -->
                     <div t-if="slot.hasButtons" class="o_gantt_cell_buttons justify-content-center">
                         <div class="position-absolute d-flex">
-                            <i t-if="widget.options.canCreate and widget.options.canCellCreate" title="Create" t-attf-class="o_gantt_cell_add fa fa-plus d-flex justify-content-center #{widget.options.canPlan ? 'pr-1' : ''}"/>
+                            <i t-if="widget.options.canCreate and widget.options.canCellCreate" title="Create" t-attf-class="o_gantt_cell_add fa fa-plus d-flex justify-content-center #{widget.options.canPlan ? 'pe-1' : ''}"/>
                             <i t-if="widget.options.canPlan" title="Plan existing" class="o_gantt_cell_plan fa fa-search-plus d-flex justify-content-center"/>
                         </div>
                     </div>
@@ -230,13 +230,13 @@
     </div>
 
     <t t-name="GanttView.ResizeBadge">
-        <span t-if="diff === 0" class="o_gantt_pill_resize_badge badge badge-pill border-0" t-attf-style="#{direction}: 0px;">
+        <span t-if="diff === 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('%s %s', diff, time)"/>
         </span>
-        <span t-elif="diff &gt; 0" class="o_gantt_pill_resize_badge badge badge-pill border-0 text-success" t-attf-style="#{direction}: 0px;">
+        <span t-elif="diff &gt; 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0 text-success" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('+%s %s', diff, time)"/>
         </span>
-        <span t-else="diff &lt; 0" class="o_gantt_pill_resize_badge badge badge-pill border-0 text-danger" t-attf-style="#{direction}: 0px;">
+        <span t-else="diff &lt; 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0 text-danger" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('%s %s', diff, time)"/>
         </span>
     </t>
@@ -244,7 +244,7 @@
     <!-- Default popover template used if none is defined in the Gantt view arch -->
     <div t-name="gantt-popover">
         <ul class="p-0 mb-0 list-unstyled d-flex flex-row">
-            <li class="d-flex flex-column pr-2">
+            <li class="d-flex flex-column pe-2">
                 <strong>Name:</strong>
                 <strong>Start:</strong>
                 <strong>Stop:</strong>

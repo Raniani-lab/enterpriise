@@ -35,23 +35,23 @@
             }"/>
         </xpath>
         <xpath expr="//div[@name='button_box']" position="after">
-          <div class="badge-pill badge-info float-right"
+          <div class="rounded-pill text-bg-info float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),
               '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>
-          <div class="badge-pill badge-info float-right"
+          <div class="rounded-pill text-bg-info float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),
               '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>
-          <div class="badge-pill badge-warning float-right"
+          <div class="rounded-pill text-bg-warning float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),
               '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>
-          <div class="badge-pill badge-danger float-right"
+          <div class="rounded-pill text-bg-danger float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']),
               '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>
-          <div class="badge-pill badge-success float-right"
+          <div class="rounded-pill text-bg-success float-end"
             attrs="{'invisible': [
               '|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>
         </xpath>

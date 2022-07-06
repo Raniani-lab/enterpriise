@@ -52,7 +52,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                                <div class="d-inline-block"><t t-esc="record.author_name.value or \'Unknown\'"></t></div>' +
     '                            </t>' +
     '                        </div>' +
-    '                        <div class="o_social_stream_post_published_date col-md-4 m-0 p-0 text-right">' +
+    '                        <div class="o_social_stream_post_published_date col-md-4 m-0 p-0 text-end">' +
     '                            <small>' +
     '                                <span t-esc="record.published_date.value and record.published_date.value.split(\' \')[0] or \'\'"' +
     '                                    t-att-title="record.published_date.value">' +
@@ -94,7 +94,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                    </div>' +
     '                </div>' +
     '                <div class="o_social_stream_post_facebook_stats col-md-12 row m-0 p-0" t-if="record.media_type.raw_value === \'facebook\'">' +
-    '                    <div t-attf-class="o_social_facebook_likes #{record.facebook_user_likes.raw_value ? \'o_social_facebook_user_likes\' : \'\'} col-md-3 border border-left-0 border-bottom-0 m-0 p-0 text-center"' +
+    '                    <div t-attf-class="o_social_facebook_likes #{record.facebook_user_likes.raw_value ? \'o_social_facebook_user_likes\' : \'\'} col-md-3 border border-start-0 border-bottom-0 m-0 p-0 text-center"' +
     '                        t-att-data-user-likes="record.facebook_user_likes.raw_value"' +
     '                        t-att-data-post-id="record.id.raw_value">' +
     '                        <span class="o_social_kanban_likes_count" t-esc="record.facebook_likes_count.raw_value !== 0 ? record.facebook_likes_count.raw_value : \'\'"></span>' +
@@ -123,11 +123,11 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '                        <i class="fa fa-comments" title="Comments"></i>' +
     '                        <b t-esc="record.facebook_comments_count.value !== \'0\' ? record.facebook_comments_count.value : \'\'"/>' +
     '                    </div>' +
-    '                    <div class="col-md-3 border border-left-0 border-bottom-0 m-0 p-0 text-center">' +
+    '                    <div class="col-md-3 border border-start-0 border-bottom-0 m-0 p-0 text-center">' +
     '                        <t t-esc="record.facebook_shares_count.value"></t>' +
     '                        <i class="fa fa-share-alt" title="Shares"></i>' +
     '                    </div>' +
-    '                    <div class="col-md-3 border border-left-0 border-bottom-0 border-right-0 m-0 p-0 text-center">' +
+    '                    <div class="col-md-3 border border-start-0 border-bottom-0 border-end-0 m-0 p-0 text-center">' +
     '                        <t t-esc="record.facebook_reach.value"></t>' +
     '                        <i class="fa fa-eye" title="Reach"></i>' +
     '                    </div>' +

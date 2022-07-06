@@ -1,6 +1,6 @@
 
 .o_invoice_extract_button {
-  color: gray('600');
+  color: map-get($grays, '600');
 
   &:hover, &.active {
     color: $o-brand-primary;

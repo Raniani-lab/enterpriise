@@ -44,9 +44,9 @@
                 <header class="mt8">
                     <span class="o_company_logo" t-field="res_company.logo" t-options="{'widget': 'image'}" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
 
-                    <ul class="list-inline mt8 float-right">
+                    <ul class="list-inline mt8 float-end">
                         <li class="dropdown hidden-sm hidden-xs" t-ignore="true" t-if="not user_id._is_public()">
-                            <a href="#" class="dropdown-toggle o_docs_btn" data-toggle="dropdown">
+                            <a href="#" class="dropdown-toggle o_docs_btn" data-bs-toggle="dropdown">
                                 <img class="o_object_fit_cover rounded-circle" width="13" height="13" t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id=#{json.dumps(request.env.user.id)}" alt=""/>
                                 <span t-esc="user_id.name[:23] + '...' if user_id.name and len(user_id.name) &gt; 25 else user_id.name"/><span class="caret"/>
                             </a>
@@ -86,9 +86,9 @@
                         <t t-esc="author"/>
                     </span>
                 </div>
-                <div class="col-sm-6 text-right">
-                    <div class="row no-gutters justify-content-end">
-                        <div class="col mr-3">
+                <div class="col-sm-6 text-end">
+                    <div class="row g-0 justify-content-end">
+                        <div class="col me-3">
                             <form class="o_docs_upload_wrapper position-relative d-inline-block" t-if="upload" enctype="multipart/form-data" t-attf-action="/document/upload/#{share_id}/#{token}" method="POST">
                                 <button title="Upload" class="btn btn-primary"><i class="fa fa-upload"/>  Upload</button>
                                 <input name="files" multiple="multiple" type="file" onchange="form.submit()"/>
@@ -135,7 +135,7 @@
                                     </small>
                                 </div>
                             </div>
-                            <div class="o_card_right d-flex flex-column flex-nowrap justify-content-between text-right">
+                            <div class="o_card_right d-flex flex-column flex-nowrap justify-content-between text-end">
                                 <img t-attf-title="Owner: #{document.owner_id.name}" t-att-alt="document.owner_id.name" class="o_object_fit_cover rounded-circle" width="15" height="15" t-attf-src="/document/avatar/#{share_id}/#{token}/#{document.id}"/>
                                 <a t-if="not document_request" t-att-href="download_URL" target="new" t-att-title="'Download ' + document.name"><i t-attf-class="fa #{'url' not in document.type and 'fa-download' or 'fa-link'}"/></a>
                             </div>
@@ -144,8 +144,8 @@
                 </t>
             </div>
             <div class="text-center col-sm-12 d-sm-none">
-                <div class="row no-gutters justify-content-center">
-                    <div class="mr-3">
+                <div class="row g-0 justify-content-center">
+                    <div class="me-3">
                         <form class="o_docs_upload_wrapper position-relative d-inline-block" t-if="upload" enctype="multipart/form-data" t-attf-action="/document/upload/#{share_id}/#{token}" method="POST">
                             <button title="Upload" class="btn btn-primary"><i class="fa fa-upload"/>  Upload</button>
                             <input name="files" multiple="multiple" type="file" onchange="form.submit()"/>
@@ -180,7 +180,7 @@
                     <i class="fa fa-circle-o-notch fa-spin text-white fa-3x mb8" role="img" aria-label="Loading" title="Loading"/><div>Loading</div>
                 </div>
                 <img class="img-responsive" t-att-alt="document.name" t-att-title="document.name" t-attf-src="#{document.mimetype and 'gif' in document.mimetype and normal_preview_URL + file_token or preview_URL + file_token}"/>
-                <div class="o_docs_single_actions col-sm-12 row no-gutters justify-content-between flex-row flex-wrap align-items-baseline text-left mt68">
+                <div class="o_docs_single_actions col-sm-12 row g-0 justify-content-between flex-row flex-wrap align-items-baseline text-start mt68">
                     <figcaption class="mb8">
                         <span t-if="'url' not in document.type"><b t-esc="document.name"/> • <small><t t-call="documents.format_file_size"/></small></span>
                         <span t-else="">URL</span>

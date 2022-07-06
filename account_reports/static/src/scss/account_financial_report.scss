@@ -648,7 +648,7 @@
     padding-top: 10px;
 
     textarea {
-        border: 1px solid gray('600');
+        border: 1px solid map-get($grays, '600');
         resize: vertical;
         width: 100%;
     }

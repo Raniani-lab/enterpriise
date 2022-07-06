@@ -21,7 +21,7 @@
                             <p class="m-0">Use the top button '<b>+ New</b>' to create an appointment type.</p>
                         </div>
                     </div>
-                    <div t-else="" class="pr-0">
+                    <div t-else="" class="pe-0">
                         <form class="form o_website_appointment_form"
                             t-attf-action="/appointment/#{appointment_types[0].id}?#{keep_query('*')}"
                             method="POST">
@@ -44,8 +44,8 @@
     <template id="appointment_type_select" name="Website Appointment: Appointment Select Form Input">
         <div id="appointment_type_select" class="form-group row col">
             <label for="calendarType" class="col-form-label">Appointment Type</label>
-            <div t-att-class="'col-lg-9 col-md-7 ml-auto pl-0 ' + (len(appointment_types) == 1 and 'o_appointment_selection' or '')">
-                <select name="appointment_type_id" class="form-control" id="calendarType" t-att-disabled="len(appointment_types)==1 and '1' or None">
+            <div t-att-class="'col-lg-9 col-md-7 ms-auto ps-0 ' + (len(appointment_types) == 1 and 'o_appointment_selection' or '')">
+                <select name="appointment_type_id" class="form-select" id="calendarType" t-att-disabled="len(appointment_types)==1 and '1' or None">
                     <t t-foreach="appointment_types" t-as="appointment_type">
                         <option t-att-value="appointment_type.id" t-att-selected="appointment_type.id == appointment_types[0].id and 'selected'">
                             <t t-out="appointment_type.name"/>
@@ -68,7 +68,7 @@
                     <t t-call="appointment.appointment_edit_in_backend"/>
                 </t>
                 <div class="container mb64 o_appointment">
-                    <ul class="wizard mt32 float-right d-none d-md-block">
+                    <ul class="wizard mt32 float-end d-none d-md-block">
                         <li class="text-primary">Time<span class="chevron"></span></li>
                         <li class="text-muted">Confirmation<span class="chevron"></span></li>
                     </ul>
@@ -101,7 +101,7 @@
                         </p>
                     </div>
                     <div class="clearfix"/>
-                    <div class="col pr-0">
+                    <div class="col pe-0">
                         <form id="slots_form" class="form o_website_appointment_form" autocomplete="off">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <input type="hidden" name="appointment_type_id" t-att-value="appointment_type.id"/>
@@ -111,17 +111,17 @@
                             <t t-call="appointment.staff_user_select"/>
                         </form>
                     </div>
-                    <div t-if="appointment_type.category != 'custom'" class="d-lg-flex col pl-0 my-4">
-                        <div class="col-3 pl-0 o_not_editable">
-                            <strong class="mr-2">Duration:</strong>
+                    <div t-if="appointment_type.category != 'custom'" class="d-lg-flex col ps-0 my-4">
+                        <div class="col-3 ps-0 o_not_editable">
+                            <strong class="me-2">Duration:</strong>
                             <span t-out="appointment_type.appointment_duration" t-options="{'widget': 'float_time'}"/>
                             hour<t t-if="appointment_type.appointment_duration>=2">s</t>
                         </div>
-                        <div class="col-12 col-lg-9 pl-0 pl-lg-2 d-flex">
-                            <strong class="mr-2">Location: </strong>
+                        <div class="col-12 col-lg-9 ps-0 ps-lg-2 d-flex">
+                            <strong class="me-2">Location: </strong>
                             <span t-if="not appointment_type.location_id" class="o_not_editable">Online</span>
                             <div t-if="appointment_type.location_id" class="d-flex">
-                                <div t-field="appointment_type.location_id" class="mr-3" t-options="{'widget': 'contact', 'fields': ['name']}"/>
+                                <div t-field="appointment_type.location_id" class="me-3" t-options="{'widget': 'contact', 'fields': ['name']}"/>
                                 <div class="flex-grow" t-field="appointment_type.location_id" t-options="{'widget': 'contact', 'fields': ['address'], 'separator': ', ', 'no_marker': True}"/>
                             </div>
                         </div>
@@ -139,7 +139,7 @@
         <div name="staff_user_select" t-att-class="'row ' + ('o_hidden' if not suggested_staff_users else '')">
             <label for="selectStaffUser" class="col-lg-3 col-md-5 col-form-label">With</label>
             <div t-att-class="'col-lg-9 col-md-7 ' + (len(suggested_staff_users) == 1 and 'o_appointment_selection' or '')">
-                <select class="form-control" name="staff_user_id" id="selectStaffUser" t-att-disabled="len(suggested_staff_users) == 1 and '1' or None">
+                <select class="form-select" name="staff_user_id" id="selectStaffUser" t-att-disabled="len(suggested_staff_users) == 1 and '1' or None">
                     <t t-foreach="suggested_staff_users" t-as="staff_user">
                         <option t-att-value="staff_user.id" t-att-selected="staff_user.id == suggested_staff_users[0].id and 'selected'">
                             <t t-out="staff_user.name"/>
@@ -163,7 +163,7 @@
                             class="badge bg-o-color-2 rounded-circle align-self-start mt-n1 ml-n2"
                             t-out="month['nb_slots_previous_months']"/>
                         <h3 t-out="month['month']" class="col text-center"/>
-                        <button t-if="len(slots) > month['id'] + 1" type="button" id="nextCal" t-attf-class="btn btn-primary o_js_calendar_navigate ml-1">
+                        <button t-if="len(slots) > month['id'] + 1" type="button" id="nextCal" t-attf-class="btn btn-primary o_js_calendar_navigate ms-1">
                             <i class="fa fa-arrow-right"/>
                         </button>
                         <span t-if="month['nb_slots_next_months'] and appointment_type.category == 'custom'"
@@ -195,7 +195,7 @@
                     <div class="d-flex">
                         <label for="timezone" class="col-form-label">Timezone: </label>
                         <form autocomplete="off">
-                            <select class="text-primary form-control border-0 px-1" id="timezone" name="timezone" style="cursor: pointer; appearance:none">
+                            <select class="text-primary form-select border-0 px-1" id="timezone" name="timezone" style="cursor: pointer; appearance:none">
                                 <t t-foreach="appointment_type._fields['appointment_tz'].selection(appointment_type)" t-as="tz">
                                     <option t-att-value="tz[0]" t-out="tz[1]" t-att-selected="(tz[0] == timezone) or None" />
                                 </t>

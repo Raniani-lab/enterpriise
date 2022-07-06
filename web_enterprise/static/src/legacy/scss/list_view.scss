@@ -180,7 +180,7 @@
     }
 }
 // Restore on mobile the scroll on list view
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .o_view_controller > .o_content > .o_list_view > .table-responsive {
         overflow: auto;
 

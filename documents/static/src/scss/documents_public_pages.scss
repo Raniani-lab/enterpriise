@@ -133,7 +133,7 @@ body.o_docs_share_page {
         }
 
         .o_card {
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 justify-content: center;
                 flex-flow: row wrap;
             }

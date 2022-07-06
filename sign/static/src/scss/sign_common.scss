@@ -179,7 +179,7 @@
         flex: none;
     }
 }
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
 
     .o_sign_item_bottom_sheet {
         display: none;

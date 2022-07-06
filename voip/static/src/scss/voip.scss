@@ -20,7 +20,7 @@
     box-shadow: 4px 0 17px -2px rgba(0, 0, 0, 0.42);
 
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
         width: 100%;
         height: 100%!important;
         z-index: $zindex-modal;
@@ -51,7 +51,7 @@
         }
 
         .o_dial_window_title {
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 height: $o-navbar-height;
                 font-size: 15px;
             }
@@ -62,7 +62,7 @@
     }
     .details_in_call {
         padding-top: 45px;
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             padding: 5px;
         }
     }
@@ -159,7 +159,7 @@
         .o_voip_row_header {
             border-bottom: 1px solid gray('200');
             color: $o-mid-gray;
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 padding: 5px;
             }
         }
@@ -184,7 +184,7 @@
                 justify-content: space-around;
                 margin-bottom: 10px;
                 margin-top: 10px;
-                @include media-breakpoint-down(sm) {
+                @include media-breakpoint-down(md) {
                     margin-top: 5px;
                     margin-bottom: 5px;
                 }
@@ -307,7 +307,7 @@
         background-color: gray('200');
         border-top: 1px solid $o-mid-gray;
         display: flex;
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             height: $o-navbar-height;
         }
         .fa {

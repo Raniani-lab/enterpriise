@@ -30,7 +30,7 @@
     }
 
     .o_highlight {
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             font-size: 1em;
         }
     }

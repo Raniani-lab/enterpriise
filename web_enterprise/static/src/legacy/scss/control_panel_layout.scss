@@ -18,7 +18,7 @@
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .o_control_panel {
         padding-right: 0;
         width: 100%;

@@ -127,7 +127,7 @@ $o-pdf-manager-border-color: #b7b7b7;
     border: 1px solid;
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .o_documents_pdf_page_viewer {
         flex-flow: column;
         align-items: center;

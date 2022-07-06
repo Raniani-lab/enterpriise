@@ -81,7 +81,7 @@
                 flex-shrink: 1;
             }
 
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 justify-content: flex-start;
                 &.workorder_bar_left {
                     flex-flow: wrap;
@@ -90,7 +90,7 @@
 
             &.o_workorder_bar_content_right {
                 justify-content: flex-end;
-                @include media-breakpoint-down(sm) {
+                @include media-breakpoint-down(md) {
                     justify-content: flex-start;
                     .o_actions {
                         display: flex;
@@ -113,7 +113,7 @@
             flex-flow: row wrap;
             padding: $o-wo-tablet-padding*0.5 $o-wo-tablet-padding;
             padding-left: $o-wo-tablet-padding - $o-wo-tablet-btn-margin;
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 flex-flow: column;
             }
         }
@@ -122,7 +122,7 @@
         .workorder_actions {
             display: flex;
             flex-flow: row nowrap;
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 flex-flow: column;
             }
             padding: $o-wo-tablet-padding*0.5 $o-wo-tablet-padding - $o-wo-tablet-btn-margin $o-wo-tablet-padding;
@@ -149,7 +149,7 @@
             .o_workorder_form {
                 padding-bottom: $o-wo-tablet-padding*0.5;
                 justify-content: space-between;
-                @include media-breakpoint-down(sm) {
+                @include media-breakpoint-down(md) {
                     flex-flow: column;
                     align-items: flex-start;
                 }

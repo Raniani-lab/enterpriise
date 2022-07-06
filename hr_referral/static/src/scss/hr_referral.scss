@@ -218,7 +218,7 @@ $font-family-sans-serif;
         display: flex;
         @include centerer(true, false);
         margin-top: 1.5rem;
-        @include media-breakpoint-down(xs) {
+        @include media-breakpoint-down(sm) {
             margin-top: 0;
             transform: translateX(-50%) scale(.8);
         }
@@ -406,7 +406,7 @@ $font-family-sans-serif;
         }
     }
     div:first-child.space_restart {
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             margin-top: 4rem;
         }
     }

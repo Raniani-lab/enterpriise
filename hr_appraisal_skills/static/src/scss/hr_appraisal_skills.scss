@@ -26,7 +26,7 @@
         }
         .o_group_name>.o_field_x2many_list_row_add {
             float: right;
-            @include media-breakpoint-down(lg) {
+            @include media-breakpoint-down(xl) {
                 float: none;
                 margin-left: 16px;
             }

@@ -139,7 +139,7 @@ b, strong {
 }
 
 //== Titles
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
   h1 {
     font-size: $h1-font-size * 3 / 4;
   }

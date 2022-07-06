@@ -5,7 +5,7 @@
     align-items: center;
     min-height: 100%;
 
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
         @include o-position-absolute(0, 0, 0, 0);
         overflow-y: auto;
         min-height: 0;
@@ -61,7 +61,7 @@
         img {
             width: 200px;
 
-            @include media-breakpoint-down(xs) {
+            @include media-breakpoint-down(sm) {
                 width: 140px;
                 height: 94px;
             }
@@ -92,7 +92,7 @@
         }
     }
 
-    @include media-breakpoint-down(xs) {
+    @include media-breakpoint-down(sm) {
         .row .col {
             min-width: 100%;
         }

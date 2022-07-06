@@ -74,7 +74,7 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
 .o_gantt_view {
     box-shadow: 0 5px 20px -15px rgba(black, .3);
     user-select: none;
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
         .o_gantt_view_container {
             width: max-content;
         }
@@ -148,7 +148,7 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
             color: $headings-color;
 
 
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 min-width: 0;
             }
         }

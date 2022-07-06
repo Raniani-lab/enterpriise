@@ -11,7 +11,7 @@ $o-social-font-family-reset: -apple-system, BlinkMacSystemFont, "Segoe UI", Robo
         position: relative;
 
         .o_social_post_empty_preview {
-            @include media-breakpoint-down(md) {
+            @include media-breakpoint-down(lg) {
                 display: none;
             }
 

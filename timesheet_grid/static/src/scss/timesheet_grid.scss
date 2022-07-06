@@ -50,7 +50,7 @@ table > tbody.o_grid_section > tr {
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .timesheet-timer .o_timer_discard {
         @include o-position-absolute($top: 0.5rem, $right: 2rem);
     }

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields
+from odoo import Command, fields
 from odoo.tests import common
 from odoo.exceptions import UserError
 
@@ -115,3 +115,19 @@ class TestRequest(common.TransactionCase):
         self.assertEqual(record.request_status, 'pending')
         record.action_approve(second_approver)
         self.assertEqual(record.request_status, 'approved')
+
+    def test_product_line_compute_uom(self):
+        category_test = self.env['approval.category'].browse(1)
+        uom = self.env.ref('uom.product_uom_dozen')
+        product = self.env['product.product'].create({
+            'name': 'foo',
+            'uom_id': uom.id,
+        })
+        approval = self.env['approval.request'].create({
+            'category_id': category_test.id,
+            'product_line_ids': [
+                Command.create({'product_id': product.id})
+            ],
+        })
+        self.assertEqual(approval.product_line_ids.description, 'foo')
+        self.assertEqual(approval.product_line_ids.product_uom_id, uom)

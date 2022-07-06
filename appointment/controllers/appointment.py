@@ -35,7 +35,7 @@ def _formated_weekdays(locale):
     formated_days = list(formated_days[first_weekday_index:] + formated_days)[:7]
     return formated_days
 
-class Appointment(http.Controller):
+class AppointmentController(http.Controller):
 
     # ------------------------------------------------------------
     # APPOINTMENT INVITATION
@@ -84,7 +84,8 @@ class Appointment(http.Controller):
     # Tools / Data preparation
     # ------------------------------------------------------------
 
-    def _fetch_available_appointments(self, appointment_types, staff_users, invite_token, search=None):
+    @staticmethod
+    def _fetch_available_appointments(appointment_types, staff_users, invite_token, search=None):
         """Fetch the available appointment types
 
         :param recordset appointment_types: Record set of appointment types for
@@ -94,9 +95,9 @@ class Appointment(http.Controller):
         :param str invite_token: token of the appointment invite
         :param str search: search bar value used to compute the search domain
         """
-        return self._fetch_and_check_private_appointment_types(
+        return AppointmentController._fetch_and_check_private_appointment_types(
             appointment_types, staff_users, invite_token,
-            domain=self._appointments_base_domain(
+            domain=AppointmentController._appointments_base_domain(
                 appointment_types, search, invite_token
             )
         )
@@ -107,25 +108,27 @@ class Appointment(http.Controller):
         :param recordset appointment_types: Record set of appointments to show.
             If not provided, fetch them using _fetch_available_appointments
         """
+        appointment_types = appointment_types or self._fetch_available_appointments(
+            kwargs.get('filter_appointment_type_ids'),
+            kwargs.get('filter_staff_user_ids'),
+            kwargs.get('invite_token'),
+        )
         return {
-            'appointment_types': appointment_types if appointment_types
-            else self._fetch_available_appointments(
-                kwargs.get('filter_appointment_type_ids'),
-                kwargs.get('filter_staff_user_ids'),
-                kwargs.get('invite_token'),
-            ),
+            'appointment_types': appointment_types,
             'invite_token': kwargs.get('invite_token'),
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
         }
 
-    def _appointments_base_domain(self, filter_appointment_type_ids, search=False, invite_token=False):
+    @staticmethod
+    def _appointments_base_domain(filter_appointment_type_ids, search=False, invite_token=False):
         domain = [('category', '=', 'website')]
 
         if filter_appointment_type_ids:
             domain = expression.AND([domain, [('id', 'in', json.loads(filter_appointment_type_ids))]])
-        else:
-            country = self._get_customer_country()
+
+        if not invite_token:
+            country = AppointmentController._get_customer_country()
             if country:
                 country_domain = ['|', ('country_ids', '=', False), ('country_ids', 'in', [country.id])]
                 domain = expression.AND([domain, country_domain])
@@ -288,7 +291,8 @@ class Appointment(http.Controller):
     # Tools / Data preparation
     # ------------------------------------------------------------
 
-    def _fetch_and_check_private_appointment_types(self, appointment_type_ids, staff_user_ids, invite_token, current_appointment_type_id=False, domain=False):
+    @staticmethod
+    def _fetch_and_check_private_appointment_types(appointment_type_ids, staff_user_ids, invite_token, current_appointment_type_id=False, domain=False):
         """
         When an invite_token is in the params, we need to check if the params used and the ones in the invitation are
         the same.
@@ -436,7 +440,7 @@ class Appointment(http.Controller):
         else:
             Partner = Partner.create({
                 'name': name,
-                'mobile': Partner._phone_format(phone, country=self._get_customer_country()),
+                'mobile': Partner._phone_format(phone, country=AppointmentController._get_customer_country()),
                 'email': email,
                 'lang': request.lang.code,
             })
@@ -521,7 +525,8 @@ class Appointment(http.Controller):
             partner = request.env.user.partner_id
         return partner
 
-    def _get_customer_country(self):
+    @staticmethod
+    def _get_customer_country():
         """
             Find the country from the geoip lib or fallback on the user or the visitor
         """

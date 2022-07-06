@@ -21,3 +21,9 @@ class Website(models.Model):
                 'cta_btn_href': '/appointment',
             })
         return cta_data
+
+    def _search_get_details(self, search_type, order, options):
+        result = super()._search_get_details(search_type, order, options)
+        if search_type in ['appointments', 'all']:
+            result.append(self.env['appointment.type']._search_get_detail(self, order, options))
+        return result

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.addons.appointment.controllers.appointment import AppointmentController
 
 
 class AppointmentType(models.Model):
@@ -11,6 +12,7 @@ class AppointmentType(models.Model):
         'website.seo.metadata',
         'website.published.mixin',
         'website.cover_properties.mixin',
+        'website.searchable.mixin',
     ]
 
     @api.model
@@ -68,3 +70,33 @@ class AppointmentType(models.Model):
 
     def get_backend_menu_id(self):
         return self.env.ref('calendar.mail_menu_calendar').id
+
+    @api.model
+    def _search_get_detail(self, website, order, options):
+        invite_token = options.get('invite_token')
+        allowed_appointment_type_ids = AppointmentController._fetch_available_appointments(
+            options.get('filter_appointment_type_ids'),
+            options.get('filter_staff_user_ids'),
+            invite_token).ids
+        domain = [[('id', 'in', allowed_appointment_type_ids)]]
+
+        search_fields = ['name']
+        mapping = {
+            'name': {'name': 'name', 'type': 'text', 'match': True},
+            'website_url': {'name': 'website_url', 'type': 'url', 'truncate': False, 'html': False},
+        }
+
+        if options['displayDetail']:
+            mapping['detail'] = {'name': 'appointment_duration_formatted', 'type': 'text', 'html': True}
+        if options['displayDescription']:
+            mapping['description'] = {'name': 'message_intro', 'type': 'text', 'html': True, 'truncate': True}
+
+        return {
+            'base_domain': domain,
+            'fetch_fields': [value['name'] for _, value in mapping.items()],
+            'icon': 'fa-calendar',
+            'mapping': mapping,
+            'model': 'appointment.type',
+            'requires_sudo': bool(invite_token),
+            'search_fields': search_fields,
+        }

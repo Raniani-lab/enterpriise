@@ -3,14 +3,12 @@
 
 from odoo import http
 from odoo.http import request
-from odoo.osv import expression
 
 from odoo.addons.base.models.ir_qweb import keep_query
-from odoo.addons.appointment.controllers.appointment import Appointment
-from odoo.addons.website.controllers.main import QueryURL
+from odoo.addons.appointment.controllers.appointment import AppointmentController
 
 
-class WebsiteAppointment(Appointment):
+class WebsiteAppointment(AppointmentController):
 
     # ------------------------------------------------------------
     # APPOINTMENT INDEX PAGE
@@ -155,6 +153,7 @@ class WebsiteAppointment(Appointment):
             'filter_appointment_type_ids': appointment_type_ids,
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
             'invite_token': kwargs.get('invite_token'),
+            'search_count': appointment_count,
         }
 
     def _get_customer_partner(self):
@@ -163,7 +162,8 @@ class WebsiteAppointment(Appointment):
             partner = request.env['website.visitor']._get_visitor_from_request().partner_id
         return partner
 
-    def _get_customer_country(self):
+    @staticmethod
+    def _get_customer_country():
         """
             Find the country from the geoip lib or fallback on the user or the visitor
         """

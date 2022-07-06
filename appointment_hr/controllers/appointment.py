@@ -3,11 +3,11 @@
 
 import json
 
-from odoo.addons.appointment.controllers.appointment import Appointment
+from odoo.addons.appointment.controllers.appointment import AppointmentController
 from odoo.http import request, route
 
 
-class AppointmentHr(Appointment):
+class AppointmentHr(AppointmentController):
 
     # ------------------------------------------------------------
     # APPOINTMENT TYPE PAGE VIEW

@@ -5,7 +5,7 @@
         <field name="name">sign.request.kanban</field>
         <field name="model">sign.request</field>
         <field name="arch" type="xml">
-            <kanban quick_create="false" class="o_sign_request_kanban" default_order="create_date desc" sample="1">
+            <kanban quick_create="false" class="o_sign_request_kanban" default_order="create_date desc" sample="1" js_class="sign_kanban">
                 <field name="active"/>
                 <field name="color"/>
                 <field name="create_uid"/>
@@ -87,7 +87,7 @@
         <field name="name">sign.request.tree</field>
         <field name="model">sign.request</field>
         <field name="arch" type="xml">
-            <tree sample="1">
+            <tree sample="1" js_class="sign_list">
                 <field name="reference"/>
                 <field name="template_id" optional="hide"/>
                 <field name="state"/>

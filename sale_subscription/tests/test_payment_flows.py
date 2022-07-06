@@ -98,7 +98,7 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
 
         # correct token
         dumb_token_so_user = self._create_token(
-            name=f'token {self.user_with_so_access.name}',
+            payment_details=f'token {self.user_with_so_access.name}',
             partner_id=self.user_with_so_access.partner_id.id,
         )
         _response = self._my_sub_assign_token(token_id=dumb_token_so_user.id)
@@ -109,7 +109,7 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
 
         # token of other user --> forbidden
         other_user_token = self._create_token(
-            name=f'token {self.user_without_so_access.name}',
+            payment_details=f'token {self.user_without_so_access.name}',
             partner_id=self.user_without_so_access.partner_id.id,
         )
         with self.assertRaises(AccessError):
@@ -122,7 +122,7 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
 
         # archived token --> forbidden
         archived_token = self._create_token(
-            name=f"archived token {self.user_with_so_access.name}",
+            payment_details=f"archived token {self.user_with_so_access.name}",
             partner_id=self.user_with_so_access.partner_id.id,
         )
         archived_token.action_archive()

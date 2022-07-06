@@ -226,7 +226,7 @@ class TestSubscriptionCommon(TestSaleCommon):
              'state': 'test',
              'redirect_form_view_id': cls.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})
         cls.payment_method = cls.env['payment.token'].create(
-            {'name': 'Jimmy McNulty',
+            {'payment_details': 'Jimmy McNulty',
              'partner_id': cls.partner.id,
              'acquirer_id': cls.acquirer.id,
              'acquirer_ref': 'Omar Little'})

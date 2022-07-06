@@ -247,7 +247,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon):
         subscription.action_quotation_sent()
 
         test_payment_token = self.env['payment.token'].create({
-            'name': 'Test',
+            'payment_details': 'Test',
             'partner_id': portal_partner.id,
             'acquirer_id': self.dummy_acquirer.id,
             'acquirer_ref': 'test'

@@ -75,13 +75,9 @@ class PaymentTransaction(models.Model):
                                 as a `payment.token` record
         :return: None
         """
-        iban = token.sdd_mandate_id.partner_bank_id.acc_number.replace(' ', '')
-        obfuscated_iban = payment_utils.build_token_name(
-            payment_details_short=iban[-4:], final_length=len(iban)
-        )
         ctx = self.env.context.copy()
         ctx.update({
-            'iban': obfuscated_iban,
+            'iban_last_4': token.payment_details[:4],
             'mandate_ref': token.sdd_mandate_id.name,
             'creditor_identifier': self.env.company.sdd_creditor_identifier,
         })

@@ -28,8 +28,7 @@
                                         Change plan
                                 </a>
                                 <div t-if="subscription.payment_token_id">Payment method:
-                                    <t t-if="subscription.payment_token_id.name" t-esc="subscription.payment_token_id.name"/>
-                                    <t t-else="">Unknown token</t>
+                                    <t t-esc="subscription.payment_token_id._build_display_name(max_length=14)"/>
                                 </div>
                                 <t t-if="not subscription.to_renew and subscription.stage_category == 'progress'">
                                     <!-- User is logged in under the partner set on the subscription -->

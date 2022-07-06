@@ -1288,7 +1288,7 @@ class SaleOrder(models.Model):
             invoicing_periods = [next_date + get_timedelta(pricing_id.duration, pricing_id.unit) for pricing_id in self.order_line.pricing_id]
             next_date = invoicing_periods and min(invoicing_periods) or current_date
         email_context = {**self.env.context.copy(),
-                         **{'payment_token': self.payment_token_id.name,
+                         **{'payment_token': self.payment_token_id.payment_details,
                             'renewed': True,
                             'total_amount': tx.amount,
                             'next_date': next_date,

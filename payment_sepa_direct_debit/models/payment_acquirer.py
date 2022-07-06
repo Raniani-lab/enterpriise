@@ -194,12 +194,9 @@ class PaymentAcquirer(models.Model):
         if mandate.partner_id != partner.commercial_partner_id:
             raise AccessError("SEPA: " + _("The mandate owner and customer do not match."))
 
-        obfuscated_iban = payment_utils.build_token_name(
-            payment_details_short=iban[-4:], final_length=len(iban)
-        )
         token = self.env['payment.token'].create({
             'acquirer_id': self.id,
-            'name': _("Direct Debit: %s", obfuscated_iban),
+            'payment_details': iban,
             'partner_id': partner_id,
             'acquirer_ref': mandate.name,
             'verified': True,

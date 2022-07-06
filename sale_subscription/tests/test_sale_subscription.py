@@ -78,7 +78,7 @@ class TestSubscription(TestSubscriptionCommon):
              'redirect_form_view_id': self.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})
 
         self.payment_method = self.env['payment.token'].create(
-            {'name': 'Jimmy McNulty',
+            {'payment_details': 'Jimmy McNulty',
              'partner_id': sub.partner_id.id,
              'acquirer_id': self.acquirer.id,
              'acquirer_ref': 'Omar Little'})

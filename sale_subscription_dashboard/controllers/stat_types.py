@@ -321,7 +321,7 @@ def compute_mrr_growth_values(start_date, end_date, filters):
 
     if filters.get('sale_team_ids'):
         conditions.append("sale_order_log.team_id IN %(team_ids)s")
-        conditions.append("sale_order_template_id.team_id IN %(team_ids)s")
+        conditions.append("sale_order.team_id IN %(team_ids)s")
         query_args['team_ids'] = tuple(filters.get('sale_team_ids'))
 
     if filters.get('tag_ids'):

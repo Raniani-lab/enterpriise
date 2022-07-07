@@ -172,10 +172,7 @@ class IntrastatReport(models.AbstractModel):
                 ) AS quantity,
                 inv_line.quantity AS line_quantity,
                 CASE WHEN inv_line.price_subtotal = 0 THEN inv_line.price_unit * inv_line.quantity ELSE inv_line.price_subtotal END AS value,
-                CASE WHEN inv_line.intrastat_product_origin_country_id IS NULL
-                     THEN \'QU\'  -- If you don't know the country of origin of the goods, as an exception you may replace the country code by "QU".
-                     ELSE product_country.code
-                END AS intrastat_product_origin_country,
+                COALESCE(product_country.code, 'QV') AS intrastat_product_origin_country, -- If you don't know the country of origin of the goods, as an exception you may replace the country code by "QV".
                 product_country.name AS intrastat_product_origin_country_name,
                 CASE WHEN partner_country.id IS NULL
                      THEN \'QV999999999999\'  -- For VAT numbers of companies outside the European Union, for example in the case of triangular trade, you always have to use the code "QV999999999999".

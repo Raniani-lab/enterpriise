@@ -97,9 +97,9 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             #    country code,  transaction code,  origin country
             [    2,             3,                 7   ],
             [
-                ('DE',          '103',             'QU'),
-                ('DE',          '104',             'QU'),
-                ('DE',          '105',             'QU'),
+                ('DE',          '103',             'QV'),
+                ('DE',          '104',             'QV'),
+                ('DE',          '105',             'QV'),
             ],
         )
         self.assertEqual(options['warnings'], {
@@ -125,9 +125,9 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             #    country code,  transaction code,  commodity code,  origin country
             [    2,             3,                 5,               7  ],
             [
-                ('DE',          11,                '100',          'QU'),
-                ('DE',          11,                '101',          'QU'),
-                ('DE',          11,                '102',          'QU'),
+                ('DE',          11,                '100',          'QV'),
+                ('DE',          11,                '101',          'QV'),
+                ('DE',          11,                '102',          'QV'),
             ],
         )
         self.assertEqual(options['warnings'], {
@@ -162,9 +162,9 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             #    country code,  transaction code,  commodity code,  origin country
             [    2,             3,                 5,               7  ],
             [
-                ('DE',          11,                '100',          'QU'),
-                ('DE',          11,                '101',          'QU'),
-                ('DE',          11,                '102',          'QU'),
+                ('DE',          11,                '100',          'QV'),
+                ('DE',          11,                '101',          'QV'),
+                ('DE',          11,                '102',          'QV'),
             ],
         )
         self.assertEqual(options['warnings'], {

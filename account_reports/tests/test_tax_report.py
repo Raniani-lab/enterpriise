@@ -1147,6 +1147,7 @@ class TestTaxReport(TestAccountReportsCommon):
         """ Tests mixing taxes with different tax exigibilities displays correct amounts
         in the generic tax report.
         """
+        self.env.company.tax_exigibility = True
         # Create taxes
         regular_tax = self.env['account.tax'].create({
             'name': 'Regular',
@@ -1233,6 +1234,7 @@ class TestTaxReport(TestAccountReportsCommon):
         """ Tests mixing caba and non-caba taxes with one of them affecting the base
         of the other worcs properly on invoices for generic report.
         """
+        self.env.company.tax_exigibility = True
         # Create taxes
         regular_tax = self.env['account.tax'].create({
             'name': 'Regular',
@@ -1322,6 +1324,7 @@ class TestTaxReport(TestAccountReportsCommon):
         """ Tests mixing caba and non-caba taxes with one of them affecting the base
         of the other worcs properly on invoices for tax report.
         """
+        self.env.company.tax_exigibility = True
         # Create taxes
         tax_report = self.env['account.report'].create({
             'name': "Sokovia Accords",
@@ -1663,6 +1666,7 @@ class TestTaxReport(TestAccountReportsCommon):
             'tax_exigibility': 'on_payment',
             # We use default repartition: 1 base line, 1 100% tax line
         })
+        self.env.company.tax_exigibility = True
 
         # Make one invoice of 2 lines for each of our taxes
         invoice_date = fields.Date.from_string('2021-04-01')
@@ -2048,6 +2052,8 @@ class TestTaxReport(TestAccountReportsCommon):
         """ Cancelling the reconciliation of an invoice using cash basis taxes should reverse the cash basis move
         in such a way that the original cash basis move lines' impact falls down to 0.
         """
+        self.env.company.tax_exigibility = True
+
         tax_report = self.env['account.report'].create({
             'name': 'CABA test',
             'country_id': self.fiscal_country.id,

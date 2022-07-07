@@ -354,20 +354,6 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
 
         # take membership as sudo to really have access to unlink feature
         membership_sudo = article_private.sudo().article_member_ids
-        # cannot remove last writer
-        with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
-            membership_sudo.unlink()
-        with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
-            article_private.sudo()._remove_member(membership_sudo)
-        with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
-            article_private.sudo().write({
-                'article_member_ids': self.env['knowledge.article.member']
-            })
-        with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
-            article_private.sudo().write({
-                'article_member_ids': [(2, membership_sudo.id)]
-            })
-
         # cannot transform last writer into rejected
         with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
             article_private.sudo().write({
@@ -379,6 +365,21 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
             })
         with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
             article_private._add_members(membership_sudo.partner_id, 'none')
+        # cannot remove last writer
+        with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
+            membership_sudo.unlink()
+        with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
+            article_private.sudo().write({
+                'article_member_ids': self.env['knowledge.article.member']
+            })
+        with self.assertRaises(exceptions.ValidationError, msg='Cannot remove the last writer on an article'):
+            article_private.sudo().write({
+                'article_member_ids': [(2, membership_sudo.id)]
+            })
+        # Special Case: can leave own private article via _remove_member: will archive the article.
+        article_private.sudo()._remove_member(membership_sudo)
+        self.assertFalse(article_private.active)
+        self.assertMembers(article_private, 'none', {self.env.user.partner_id: 'write'})
 
         # moving the article to private will remove the second member
         # but should not trigger an error since we also add 'employee' as a write member

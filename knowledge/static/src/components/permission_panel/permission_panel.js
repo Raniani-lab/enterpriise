@@ -116,7 +116,7 @@ class PermissionPanel extends Component {
             this.loadPanel();
         };
         const loseAccessMessage = _t('Are you sure you want to set the internal permission to "none" ? If you do, you will no longer have access to the article.');
-        this._showConfirmDialog(willLoseAccess ? loseAccessMessage : restrictMessage, confirm, discard);
+        this._showConfirmDialog(willLoseAccess ? loseAccessMessage : restrictMessage, false, confirm, discard);
     }
 
     /**
@@ -163,7 +163,8 @@ class PermissionPanel extends Component {
         };
         const loseAccessMessage = _t('Are you sure you want to set your permission to "none"? If you do, you will no longer have access to the article.');
         const message = willLoseAccess ? loseAccessMessage : willLoseWrite ? loseWriteMessage : loseAccessMessage;
-        this._showConfirmDialog(message, confirm, discard);
+        const title = willLoseAccess ? _t('Leave Article') : _t('Change Permission');
+        this._showConfirmDialog(message, title, confirm, discard);
     }
 
     /**
@@ -184,8 +185,9 @@ class PermissionPanel extends Component {
         if (!this.state.members.includes(member)) {
             return;
         }
+
         const willRestrict = member.based_on ? true : false;
-        const willLoseAccess = this.isLoggedUser(member);
+        const willLoseAccess = this.isLoggedUser(member) && member.permission !== "none";
         const confirm = () => {
             this.rpc({
                 route: '/knowledge/article/remove_member',
@@ -206,12 +208,21 @@ class PermissionPanel extends Component {
             return;
         }
 
-        const loseAccessMessage = _t('Are you sure you want to leave this article? If you do, you will no longer have access to the article.');
-        const message = willLoseAccess ? loseAccessMessage : restrictMessage;
         const discard = () => {
             this.loadPanel();
         };
-        this._showConfirmDialog(message, confirm, discard);
+
+        let message = restrictMessage;
+        let title = _t('Restrict Access');
+        if (this.isLoggedUser(member) && this.state.category === 'private') {
+            message = _t('Are you sure you want to leave this private article? By doing so, the article and all its descendants will be archived.');
+            title = _t('Archive Article');
+        } else if (willLoseAccess) {
+            message = _t('Are you sure you want to remove your member? By leaving an article, you may lose access to it.');
+            title = _t('Leave Article');
+        }
+
+        this._showConfirmDialog(message, title, confirm, discard);
     }
 
     /**
@@ -235,7 +246,8 @@ class PermissionPanel extends Component {
         };
 
         const message = _t('Are you sure you want to restore access? This means this article will now inherit any access set on its parent articles.');
-        this._showConfirmDialog(message, confirm);
+        const title = _t('Restore Access');
+        this._showConfirmDialog(message, title, confirm);
     }
 
     /**
@@ -268,11 +280,12 @@ class PermissionPanel extends Component {
     * @param {function} confirm
     * @param {function} discard
     */
-    _showConfirmDialog (message, confirm, discard) {
+    _showConfirmDialog (message, title, confirm, discard) {
         if (discard === undefined) {
             discard = this.loadPanel;
         }
         Dialog.confirm(this, message, {
+            title: title || _t("Confirmation"),
             buttons: [{
                 text: _t('confirm'),
                 classes: 'btn-primary',

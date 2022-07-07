@@ -56,12 +56,31 @@
                     </div>
                     <div class="flex-shrink-0">
                         <div class="input-group">
-                            <div t-if="!(member.based_on &amp;&amp; member.permission === 'none') &amp;&amp; !member.is_unique_writer
-                                        &amp;&amp; (state.user_is_admin || props.user_permission === 'write' || state.partner_id === member.partner_id)"
-                                 class="d-flex align-items-center me-2">
-                                <i class="fa fa-w fa-times o_delete text-danger" title="Remove Member"
+                            <div t-if="!(member.based_on &amp;&amp; member.permission === 'none')
+                                        &amp;&amp; (state.user_is_admin || props.user_permission === 'write' || this.isLoggedUser(member))"
+                                 class="d-flex align-items-center me-2 fs-4">
+                                <!-- Special cases if self member -->
+                                <i t-if="this.isLoggedUser(member) &amp;&amp; ((state.category === 'shared' &amp;&amp; !member.is_unique_writer) || state.category !== 'shared')"
+                                   class="fa fa-w fa-sign-out o_delete text-danger" title="Leave Article"
                                    t-on-click="event => this._onRemoveMember(event, member)" type="button">
                                 </i>
+                                <i t-elif="this.isLoggedUser(member) &amp;&amp; props.user_permission === 'read' &amp;&amp; state.category === 'workspace' &amp;&amp; !state.user_is_admin"
+                                   class="fa fa-w fa-sign-out o_delete" disabled="True" type="button"
+                                   title="As a reader, you can't leave a Workspace article" >
+                                </i>
+                                <i t-elif="this.isLoggedUser(member) &amp;&amp; member.is_unique_writer"
+                                   class="fa fa-w fa-sign-out o_delete" disabled="True" type="button"
+                                   title="You can't leave an article for which you are the last writer">
+                                </i>
+                                <!-- Normal case: can remove member (unique writer)? -->
+                                <i t-elif="member.is_unique_writer"
+                                   class="fa fa-w fa-times o_delete" disabled="True" type="button"
+                                   title="You can't remove the last writer of the article">
+                                </i>
+                                <i t-else="" class="fa fa-w fa-times o_delete text-danger" title="Remove Member"
+                                   t-on-click="event => this._onRemoveMember(event, member)" type="button">
+                                </i>
+
                             </div>
                             <select t-attf-class="o_permission form-select rounded {{ member.partner_share ? 'o_knowledge_share_partner' : '' }}"
                                 t-att-value="member.permission"
@@ -79,7 +98,7 @@
                 </div>
             </t>
             <div t-if="state.show_admin_tip" class="d-flex align-items-center px-3 py-1 my-1 bg-light text-muted">
-                <i><i class="fa fa-cog me-2"/>As an administrator, you can always modify this article.</i>
+                <i><i class="fa fa-cog me-2"/>As an administrator, you can always modify this article and its members.</i>
             </div>
         </t>
     </t>

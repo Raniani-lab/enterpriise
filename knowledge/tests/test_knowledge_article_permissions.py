@@ -299,6 +299,22 @@ class TestKnowledgeArticlePermissionsTools(KnowledgeArticlePermissionsCase):
         self.assertFalse(writable.is_desynchronized)
         self.assertMembers(writable, False, {})
 
+    @mute_logger('odoo.addons.base.models.ir_rule', 'odoo.models.unlink')
+    @users('employee')
+    def test_remove_member_leave_shared_article(self):
+        # Can remove self if no write access only if does not gain higher access rights while doing so.
+        # AKA: allow to leave shared articles.
+        shared_article = self.article_roots[2]
+        self.assertMembers(shared_article, 'none',
+                           {self.env.user.partner_id: 'read',
+                            self.partner_employee_manager: 'write'})
+
+        my_member = shared_article.article_member_ids.filtered(
+            lambda m: m.partner_id == self.env.user.partner_id)
+        shared_article._remove_member(my_member)
+
+        self.assertMembers(shared_article, 'none', {self.partner_employee_manager: 'write'})
+
     @mute_logger('odoo.models.unlink')
     @users('employee')
     def test_set_member_permission(self):
@@ -409,17 +425,20 @@ class TestKnowledgeArticlePermissionsTools(KnowledgeArticlePermissionsCase):
 
         other_member = readonly.article_member_ids.filtered(lambda m: m.partner_id == self.partner_portal)
         with self.assertRaises(exceptions.AccessError,
-                               msg='Permission: do not allow to remove members when having only read access'):
+                               msg='Permission: do not allow to remove other members when having only read access'):
             readonly._remove_member(other_member)
         self.assertMembers(readonly, 'write',
                            {self.env.user.partner_id: 'read',
                             self.partner_portal: 'read'})
 
-        # cannot gain privilege: setting none if I remove myself to ensure no gain is performed
-        my_member = readonly.article_member_ids.filtered(lambda m: m.partner_id == self.env.user.partner_id)
-        readonly._remove_member(my_member)
+        # cannot remove self if no write access.
+        my_member = readonly.article_member_ids.filtered(
+            lambda m: m.partner_id == self.env.user.partner_id)
+        with self.assertRaises(exceptions.AccessError,
+                               msg='Permission: do not allow to remove yourself when having only read access'):
+            readonly._remove_member(my_member)
         self.assertMembers(readonly, 'write',
-                           {self.env.user.partner_id: 'none',
+                           {self.env.user.partner_id: 'read',
                             self.partner_portal: 'read'})
 
 

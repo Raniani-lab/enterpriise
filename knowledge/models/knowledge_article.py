@@ -1008,8 +1008,6 @@ class Article(models.Model):
             share_partner_ids = partners.filtered(lambda partner: partner.partner_share)
             self._add_members(share_partner_ids, 'read')
             self._add_members(partners - share_partner_ids, permission)
-
-        if permission != 'none':
             self._send_invite_mail(partners)
 
         return True
@@ -1090,6 +1088,8 @@ class Article(models.Model):
         parent article, the current article will be desynchronized form its parent.
         We also ensure the partner to remove is removed after the desynchronization
         if was copied from parent.
+        If the user remove its own member on a private article, the article is
+        archived instead.
 
         Security note
           * when removing themselves: users need only read access on the article
@@ -1105,30 +1105,30 @@ class Article(models.Model):
 
         # belongs to current article members
         current_membership = self.article_member_ids.filtered(lambda m: m == member)
-        current_user_partner = self.env.user.partner_id
 
-        # If remove self member, set member permission to 'none' (= leave article) to hide the article for the user.
-        if member.partner_id == current_user_partner:
-            if current_membership:
-                members_command = [(1, current_membership.id, {'permission': 'none'})]
-            else:
-                members_command = [(0, 0, {'partner_id': current_user_partner.id, 'permission': 'none'})]
-            self.sudo().write({'article_member_ids': members_command})
+        # Archive private article if remove self member.
+        remove_self = member.partner_id == self.env.user.partner_id
+        if remove_self and self.category == 'private' and current_membership:
+            return self.action_archive()
+
+        # If user doesn't gain higher access when removing own member,
+        # we should allow to do it.
+        self_escalation = not (remove_self and \
+                             ARTICLE_PERMISSION_LEVEL[member.permission] > ARTICLE_PERMISSION_LEVEL[self.inherited_permission])
+        if not self.env.su and not self.env.user._is_system() and self_escalation and not self.user_has_write_access:
+            raise AccessError(
+                _("You have to be editor on %(article_name)s to remove or exclude member %(member_name)s.",
+                  article_name=self.display_name,
+                  member_name=member.display_name))
+        # member is on current article: remove member
+        if current_membership:
+            self.sudo().write({'article_member_ids': [(2, current_membership.id)]})
+        # inherited rights from parent: desync and remove member
         else:
-            if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
-                raise AccessError(
-                    _("You have to be editor on %(article_name)s to remove or exclude member %(member_name)s.",
-                      article_name=self.display_name,
-                      member_name=member.display_name))
-            # member is on current article: remove member
+            self._desync_access_from_parents(force_partners=self.article_member_ids.partner_id)
+            current_membership = self.article_member_ids.filtered(lambda m: m.partner_id == member.partner_id)
             if current_membership:
                 self.sudo().write({'article_member_ids': [(2, current_membership.id)]})
-            # inherited rights from parent: desync and remove member
-            else:
-                self._desync_access_from_parents(force_partners=self.article_member_ids.partner_id)
-                current_membership = self.article_member_ids.filtered(lambda m: m.partner_id == member.partner_id)
-                if current_membership:
-                    self.sudo().write({'article_member_ids': [(2, current_membership.id)]})
 
     def _add_members(self, partners, permission, force_update=True):
         """ Adds new members to the current article with the given permission.

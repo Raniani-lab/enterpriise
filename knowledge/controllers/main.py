@@ -238,6 +238,7 @@ class KnowledgeController(http.Controller):
         return {
             'internal_permission_options': internal_permission_field.get_description(request.env).get('selection', []),
             'internal_permission': article.inherited_permission,
+            'category': article.category,
             'parent_permission': parent_article_sudo.inherited_permission,
             'based_on': inherited_permission_parent_sudo.display_name,
             'based_on_id': inherited_permission_parent_sudo.id,
@@ -279,7 +280,7 @@ class KnowledgeController(http.Controller):
         try:
             article._set_member_permission(member, permission, bool(inherited_member_id))
         except (AccessError, ValidationError):
-            return {'error': _("You cannot change the permission if this member.")}
+            return {'error': _("You cannot change the permission of this member.")}
 
         if article.category != previous_category:
             return {'reload_tree': True}
@@ -316,7 +317,12 @@ class KnowledgeController(http.Controller):
         except (AccessError, ValidationError) as e:
             return {'error': e}
 
-        if article.category != previous_category:
+        if member.partner_id == request.env.user.partner_id and article.category == 'private':
+            # When leaving private article, the article will be archived instead
+            # As a result, user won't see the article anymore and the home page
+            # should be fully reloaded to open the first 'available' article.
+            return {'reload_all': True}
+        elif article.category != previous_category:
             return {'reload_tree': True}
 
         return {}

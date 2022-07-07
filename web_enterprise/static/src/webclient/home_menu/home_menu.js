@@ -248,14 +248,15 @@ export class HomeMenu extends Component {
             this._focusInput();
         }
     }
+
     _onInputSearch() {
         const onClose = () => {
             this._focusInput();
+            this.inputRef.el.value = "";
         };
         const searchValue = this.compositionStart ? "/" : `/${this.inputRef.el.value.trim()}`;
         this.compositionStart = false;
         this.command.openMainPalette({ searchValue, FooterComponent }, onClose);
-        this.inputRef.el.value = "";
     }
 
     _onInputBlur() {

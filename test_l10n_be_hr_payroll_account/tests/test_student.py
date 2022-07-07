@@ -61,6 +61,7 @@ class TestStudent(AccountTestInvoicingCommon):
             'internet': 0,
             'mobile': 0,
         })
+        cls.env.invalidate_all()
 
     def test_student(self):
         # CASE: Worked 6 days

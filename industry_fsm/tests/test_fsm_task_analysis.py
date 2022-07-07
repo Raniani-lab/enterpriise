@@ -8,11 +8,12 @@ from odoo import Command
 from odoo.exceptions import AccessError
 from odoo.tests import tagged
 from odoo.tests.common import users
+from odoo.tools import float_compare
 
 from .common import TestIndustryFsmCommon
 
 @tagged('post_install', '-at_install')
-class TestFsmFlow(TestIndustryFsmCommon):
+class TestFsmTaskAnalysis(TestIndustryFsmCommon):
     def test_tasks_analysis(self):
         self.task.write({
             'user_ids': [Command.set([self.george_user.id])],
@@ -51,7 +52,9 @@ class TestFsmFlow(TestIndustryFsmCommon):
         # flush before accessing an SQL view...
         self.env.flush_all()
         task_report = self.env['report.project.task.user'].search_read([('project_id', '=', self.fsm_project.id), ('task_id', '=', self.task.id)], ['remaining_hours', 'progress', 'hours_planned', 'hours_effective', 'working_days_close', 'working_hours_close', 'working_days_open', 'working_hours_open'])[0]
-        self.assertDictEqual(task_report, values)
+        for field_name, actual_value in task_report.items():
+            expected_value = values[field_name]
+            self.assertEqual(float_compare(actual_value, expected_value, 2), 0, f'The value of {field_name} in the report should equal to the one in the task')
 
     @users('Base user')
     def test_base_user_no_read_report_project_task_user(self):

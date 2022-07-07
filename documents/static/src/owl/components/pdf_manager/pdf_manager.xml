@@ -7,22 +7,22 @@
                 <span t-else="" class="o_pdf_global_buttons">
                     <div>
                         <t t-call="documents.component.PdfManager.GlobalButtons"/>
-                        <span t-if="state.lShiftKeyDown or state.rShiftKeyDown" class="ml-3 text-muted o_pdf_shortcut_helper">Select All: Shift + A</span>
+                        <span t-if="state.lShiftKeyDown or state.rShiftKeyDown" class="ms-3 text-muted o_pdf_shortcut_helper">Select All: Shift + A</span>
                     </div>
                 </span>
                 <span class="pdf_manager_topbar_buttons_right">
-                    <span class="o_pdf_archive_menu mr-2" t-on-click="_onClickArchive" t-if="env.isDebug()">
+                    <span class="o_pdf_archive_menu me-2" t-on-click="_onClickArchive" t-if="env.isDebug()">
                         <span>Archive original file(s) </span>
-                        <input class="ml-2" id="pdf_archive" type="checkbox" name="archive" t-att-checked="state.archive"/>
+                        <input class="ms-2" id="pdf_archive" type="checkbox" name="archive" t-att-checked="state.archive"/>
                     </span>
-                    <button class="btn btn-secondary o_pdf_manager_button mr-2"
+                    <button class="btn btn-secondary o_pdf_manager_button me-2"
                         aria-label="Add new file"
                         title="Add new file"
                         t-att-disabled="state.uploadingLock"
                         t-on-click="_onClickGlobalAdd" t-if="!env.device.isMobile">
                         <span>Add File</span>
                     </button>
-                    <button class="btn btn-danger mr-2 text-uppercase"
+                    <button class="btn btn-danger me-2 text-uppercase"
                         t-att-class="{'o_pdf_manager_button': !env.device.isMobile}"
                         aria-label="Discard"
                         title="Discard"
@@ -88,7 +88,7 @@
                     'btn-secondary': isMobile,
                     'o_pdf_rule_buttons': !isMobile,
                     'dropdown-item': isMobile,
-                    'ml-3': !isMobile &amp;&amp; rule_index === 0}"
+                    'ms-3': !isMobile &amp;&amp; rule_index === 0}"
                 t-on-click="(ev) => this._onClickRule(rule.id, ev)"
                 t-esc="rule.display_name"
                 t-att-disabled="state.uploadingLock"/>
@@ -96,7 +96,7 @@
     </t>
 
     <div t-name="documents.component.PdfManager.ButtonsMobile" class="dropdown" owl="1">
-        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" t-on-click="_onClickDropdown">Action</button>
+        <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" t-on-click="_onClickDropdown">Action</button>
         <div class="dropdown-menu" role="menu">
             <t t-call="documents.component.PdfManager.GlobalButtons"/>
             <button class="btn btn-secondary dropdown-item"

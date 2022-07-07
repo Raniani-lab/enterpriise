@@ -33,17 +33,17 @@
                 <div class="o_web_studio_paperformat_id"/>
             </div>
             <div class="o_web_studio_sidebar_checkbox">
-                <div class="custom-control custom-checkbox">
-                    <input id="display_in_print" name="display_in_print" type="checkbox" class="custom-control-input" t-att-checked="widget.report.binding_model_id ? 'checked' : undefined"/>
+                <div class="custom-control form-check">
+                    <input id="display_in_print" name="display_in_print" type="checkbox" class="form-check-input" t-att-checked="widget.report.binding_model_id ? 'checked' : undefined"/>
                     <span/>
-                    <label for="display_in_print" class="custom-control-label">Add in the print menu</label>
+                    <label for="display_in_print" class="form-check-label">Add in the print menu</label>
                 </div>
             </div>
             <div class="o_web_studio_sidebar_checkbox" t-if="widget.debug">
-                <div class="custom-control custom-checkbox">
-                    <input id="attachment_use" name="attachment_use" type="checkbox" class="custom-control-input" t-att-checked="widget.report.attachment_use ? 'checked' : undefined"/>
+                <div class="custom-control form-check">
+                    <input id="attachment_use" name="attachment_use" type="checkbox" class="form-check-input" t-att-checked="widget.report.attachment_use ? 'checked' : undefined"/>
                     <span/>
-                    <label for="attachment_use" class="custom-control-label">Reload from attachment</label>
+                    <label for="attachment_use" class="form-check-label">Reload from attachment</label>
                 </div>
             </div>
             <t t-call="web_studio.Sidebar.Groups"/>
@@ -71,7 +71,7 @@
 <div t-name="web_studio.AccordionSection" class="card">
     <div class="card-header" t-att-id="header">
         <h5>
-            <button class="btn btn-link text-left w-100" data-toggle="collapse" t-attf-data-target="##{id}" aria-expanded="false" t-att-aria-controls="id">
+            <button class="btn btn-link text-start w-100" data-bs-toggle="collapse" t-attf-data-bs-target="##{id}" aria-expanded="false" t-att-aria-controls="id">
                 <small t-attf-class="fa mt4 #{nodeIcon}"></small>
                 <span class="o_text">
                     <b class="text-white"><t t-esc="nodeName"/></b>
@@ -81,7 +81,7 @@
             </button>
         </h5>
     </div>
-    <div t-att-id="id" class="collapse card-body" t-att-aria-labelledby="header" data-parent="#accordion">
+    <div t-att-id="id" class="collapse card-body" t-att-aria-labelledby="header" data-bs-parent="#accordion">
     <!-- dynamically inserted here -->
     </div>
 </div>
@@ -104,7 +104,7 @@
 </div>
 
 <div t-name="web_studio.ReportDirectiveTElse" class="o_web_studio_sidebar_text">
-    <label for="o_web_studio_telse_elseexpression">Else <span class="float-left o_web_studio_telse_elseexpression"/> (t-if="<t t-esc="widget.tIf"/>")</label>
+    <label for="o_web_studio_telse_elseexpression">Else <span class="float-start o_web_studio_telse_elseexpression"/> (t-if="<t t-esc="widget.tIf"/>")</label>
 </div>
 
 <div t-name="web_studio.ReportDirectiveTEsc" class="o_web_studio_sidebar_text">
@@ -153,7 +153,7 @@
 </div>
 
 <div t-name="web_studio.ReportColumn">
-    <div class="row no-gutters">
+    <div class="row g-0">
         <div class="o_web_studio_sidebar_text col-6">
             <label for="o_web_studio_size">Size</label>
             <div class="input-group o_web_studio_size">
@@ -190,7 +190,7 @@
 </div>
 
 <div t-name="web_studio.ReportLayoutEditable" class="o_web_studio_layout">
-    <div class="row no-gutters">
+    <div class="row g-0">
         <div class="col-9 o_web_studio_sidebar_text o_web_studio_margin">
             <label>Margins</label>
             <input type="text" t-att-value="widget['margin-top']"
@@ -209,7 +209,7 @@
             <span class="text-muted"> px</span>
         </div>
     </div>
-    <div class="row no-gutters">
+    <div class="row g-0">
         <div t-if="!widget.isNodeText" class="col-4 o_web_studio_sidebar_text o_web_studio_text_decoration">
             <label>Text decoration</label>
             <button type="button" title="Bold" data-property="bold" t-att-class="widget.bold ? 'btn btn-secondary o_bold active' : 'btn btn-secondary o_bold'"><i class="fa fa-bold"/></button>
@@ -218,16 +218,17 @@
         </div>
         <div t-if="widget.displayAlignment" class="col-4 o_web_studio_sidebar_text o_web_studio_text_alignment">
             <label>Alignment</label>
-            <t t-foreach="['left', 'center', 'right']" t-as="alignment" t-key="alignment_index">
+            <t t-set="class_map" t-value="{'start': 'left', 'center': 'center', 'end': 'right'}" />
+            <t t-foreach="['start', 'center', 'end']" t-as="alignment" t-key="alignment_index">
                 <button type="button" t-att-title="alignment" t-attf-data-property="text-#{alignment}" t-attf-class="btn btn-secondary #{widget.alignment === 'text-' + alignment ? 'active' : ''}">
-                    <i t-attf-class="fa fa-align-#{alignment}"/>
+                    <i t-attf-class="fa fa-align-#{class_map[alignment]}"/>
                 </button>
             </t>
         </div>
         <div t-if="!widget.isNodeText" class="col-4 o_web_studio_font_size">
             <label>Font style</label>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-magic"/></button>
+                <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-magic"/></button>
                 <div class="dropdown-menu" role="menu">
                     <div t-attf-class="dropdown-item-text #{!widget.fontSize ? 'active' : null}">Normal</div>
                     <div t-attf-class="dropdown-item-text #{widget.fontSize == 'small' ? 'active' : null}" data-value="small">
@@ -255,11 +256,11 @@
             </div>
         </div>
     </div>
-    <div class="row no-gutters">
+    <div class="row g-0">
         <div t-if="!widget.isNodeText" class="col-6 o_web_studio_sidebar_text o_web_studio_colors">
             <label>Colors</label>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-font"/></button>
+                <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-font"/></button>
                 <div class="dropdown-menu" role="menu">
                     <div role="menuitem" class="dropdown-item o_web_studio_font_colorpicker">
                         <button data-target="font" class="btn btn-block o_web_studio_reset_color">reset color</button>
@@ -270,7 +271,7 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"><i class="fa fa-paint-brush"/></button>
+                <button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-paint-brush"/></button>
                 <div class="dropdown-menu" role="menu">
                     <div role="menuitem" class="dropdown-item o_web_studio_background_colorpicker">
                         <button data-target="background" class="btn btn-block o_web_studio_reset_color">reset color</button>
@@ -292,7 +293,7 @@
             </select>
         </div>
     </div>
-    <div t-if="widget.debug" class="row no-gutters">
+    <div t-if="widget.debug" class="row g-0">
         <div class="col o_web_studio_sidebar_text o_web_studio_classes">
             <label>Class</label>
             <input type="text" t-att-value="widget.allClasses" />

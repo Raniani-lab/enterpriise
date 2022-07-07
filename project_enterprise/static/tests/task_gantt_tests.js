@@ -24,6 +24,10 @@ const ganttViewParams = {
 
 QUnit.module("Views > GanttView > TaskGantt", {
     beforeEach() {
+        // Avoid animation to not have to wait until the tooltip is removed
+        this.initialPopoverDefaultAnimation = Popover.Default.animation;
+        Popover.Default.animation = false;
+
         ganttViewParams.data = {
             task: {
                 fields: {
@@ -94,6 +98,9 @@ QUnit.module("Views > GanttView > TaskGantt", {
                 records: [{ id: 1, name: "My Project" }],
             },
         };
+    },
+    afterEach: async function() {
+        Popover.Default.animation = this.initialPopoverDefaultAnimation;
     },
 });
 

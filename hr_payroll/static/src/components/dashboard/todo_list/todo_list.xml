@@ -4,7 +4,7 @@
     <t t-name="hr_payroll.TodoList" owl="1">
         <div class="o_hr_payroll_dashboard_block o_hr_payroll_dashboard_todo">
             <div class="content">
-                <div class="o_hr_payroll_todo_tabs row flex-wrap m-0">
+                <div class="o_hr_payroll_todo_tabs d-flex flex-wrap m-0">
                     <t t-foreach="props.notes" t-as="noteData" t-key="noteData.id">
                         <div class="o_hr_payroll_todo_tab"
                             t-att-class="' oe_kanban_color_' + noteData.color + ((noteData.id == state.activeNoteId) ? ' active' : '')"
@@ -16,7 +16,7 @@
                                 </t>
                                 <t t-else="">
                                     <t t-esc="(noteData.name || 'untitled').substring(0, 30)"/>
-                                    <span class="fa fa-times ml-2 p-1" t-if="noteData.user_id[0] == this.userId &amp;&amp; noteData.id == state.activeNoteId" t-on-click="onNoteDelete"/>
+                                    <span class="fa fa-times ms-2 p-1" t-if="noteData.user_id[0] == this.userId &amp;&amp; noteData.id == state.activeNoteId" t-on-click="onNoteDelete"/>
                                 </t>
                             </h3>
                         </div>

@@ -28,7 +28,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary float-end mb0"/>
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 mr-1" string="Resend For Digitization" type="object"
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object"
                     attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="v"/>
                     You don't have enough credit to extract data from your invoice.
                     <div class="clearfix"/>
@@ -58,7 +58,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['error_status']),
                             ('extract_status_code', '&gt;', 99)]}">
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 mr-1" string="Resend For Digitization" type="object" data-hotkey="v"/>
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object" data-hotkey="v"/>
                     <field name="extract_error_message" class="oe_inline"/>
                     <div class="clearfix"/>
                 </div>

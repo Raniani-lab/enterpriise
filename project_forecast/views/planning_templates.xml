@@ -6,8 +6,8 @@
             <span class="has_task" t-att-value="has_task"/>
         </xpath>
         <xpath expr="//th[@id='o_role']" position="after">
-            <th t-if="has_project" class="text-left">Project</th>
-            <th t-if="has_task" class="text-left">Task</th>
+            <th t-if="has_project" class="text-start">Project</th>
+            <th t-if="has_task" class="text-start">Task</th>
         </xpath>
         <xpath expr="//td[@name='role_id']" position="after">
             <td t-if="has_project" class="align-middle"><t t-esc="shift.project_id.name"/></td>

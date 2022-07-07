@@ -130,8 +130,8 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                         <label for="product_id" string=""/>
                         <field name="product_id" options="{'no_open': True}" readonly="1"/>
                         <label for="qty_producing" string=":"/>
-                        <field name="qty_producing" class="oe_inline text-left" attrs="{'readonly': ['|', '|', ('allow_producing_quantity_change', '=', False), ('product_tracking', '=', 'serial'), ('state', 'in', ('done', 'cancel'))]}" required="1"/>
-                        / <field name="qty_remaining" class="oe_inline text-left" attrs="{'invisible': [('state', '=', 'done')]}"/> <field name="qty_production" class="oe_inline text-left" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                        <field name="qty_producing" class="oe_inline text-start" attrs="{'readonly': ['|', '|', ('allow_producing_quantity_change', '=', False), ('product_tracking', '=', 'serial'), ('state', 'in', ('done', 'cancel'))]}" required="1"/>
+                        / <field name="qty_remaining" class="oe_inline text-start" attrs="{'invisible': [('state', '=', 'done')]}"/> <field name="qty_production" class="oe_inline text-start" attrs="{'invisible': [('state', '!=', 'done')]}"/>
                         <label for="product_uom_id" string="" class="oe_inline"/>
                         <field name="product_uom_id" options="{'no_open': True}" class="oe_inline" readonly="1"/>
                     </div>
@@ -155,13 +155,13 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                         <button name="button_unblock" type="object" context="{'default_workcenter_id': workcenter_id}" attrs="{'invisible': [('working_state', '!=', 'blocked')]}" string="Unblock" class="btn-danger"/>
                         <button name="action_previous" type="object" class="btn-secondary" string="Previous" icon="fa-chevron-left o_workorder_btn_icon_small" attrs="{'invisible': [('is_first_step', '=', True)]}" barcode_trigger="prev"/>
                         <button disabled="1" class="btn-secondary" string="Previous" icon="fa-chevron-left o_workorder_btn_icon_small" attrs="{'invisible': [('is_first_step', '=', False)]}"/>
-                        <button name="action_skip" type="object" class="btn-secondary" string="Skip" icon="fa-chevron-right float-right o_workorder_btn_icon_small" attrs="{'invisible': [('is_last_step', '=', True)]}" barcode_trigger="skip"/>
-                        <button disabled="1" class="btn-secondary" string="Skip" icon="fa-chevron-right float-right o_workorder_btn_icon_small" attrs="{'invisible': [('is_last_step', '=', False)]}"/>
+                        <button name="action_skip" type="object" class="btn-secondary" string="Skip" icon="fa-chevron-right float-end o_workorder_btn_icon_small" attrs="{'invisible': [('is_last_step', '=', True)]}" barcode_trigger="skip"/>
+                        <button disabled="1" class="btn-secondary" string="Skip" icon="fa-chevron-right float-end o_workorder_btn_icon_small" attrs="{'invisible': [('is_last_step', '=', False)]}"/>
                     </div>
                     <div class="o_workorder_bar_content o_workorder_bar_content_right">
                         <div class="o_actions" attrs="{'invisible': [('working_state', '=', 'blocked')]}">
-                            <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="mr-3 my-3 text-center">
-                                <field name="duration" widget="mrp_time_counter" readonly="1" class="mr-3"/>
+                            <span groups="mrp_workorder.group_mrp_wo_tablet_timer" class="me-3 my-3 text-center">
+                                <field name="duration" widget="mrp_time_counter" readonly="1" class="me-3"/>
                                 <i class="fa fa-clock-o" attrs="{'invisible': [('is_user_working', '=', False)]}" title="User is working"/>
                                 <i class="fa fa-clock-o text-warning" attrs="{'invisible': [('is_user_working', '=', True)]}" title="User is not working"/>
                             </span>
@@ -261,7 +261,7 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                                 <field name="lot_id" class="text-center o_lot_number" context="{'default_product_id': component_id, 'default_company_id': company_id, 'active_mo_id': test_type == 'register_consumed_materials' and production_id or False}" attrs="{'invisible': [('component_tracking', '=', 'none')]}" domain="[('product_id', '=', component_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
                             </div>
                         </div>
-                        <div class="o_workorder_field text-right">
+                        <div class="o_workorder_field text-end">
                             <label for="qty_done" string="Quantity"/>
                             <div>
                                 <field name="qty_done" attrs="{'readonly': [('component_tracking', '=', 'serial')]}" string="Quantity" class="oe_inline"/>
@@ -295,18 +295,18 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                 <field name="workcenter_id" invisible="1"/>
                 <field name="consumption" invisible="1"/>
                 <div class="row workorder_menu">
-                    <div class="col-6">
-                        <button name="%(mrp.act_mrp_block_workcenter_wo)d" type="action" context="{'default_workcenter_id': workcenter_id}" attrs="{'invisible': [('working_state', '=', 'blocked')]}" string="Block" class="btn-danger btn-block btn-lg"/>
-                        <button name="button_unblock" type="object" context="{'default_workcenter_id': workcenter_id}" attrs="{'invisible': [('working_state', '!=', 'blocked')]}" string="Unblock" class="btn-danger btn-block btn-lg"/>
+                    <div class="col-6 d-grid">
+                        <button name="%(mrp.act_mrp_block_workcenter_wo)d" type="action" context="{'default_workcenter_id': workcenter_id}" attrs="{'invisible': [('working_state', '=', 'blocked')]}" string="Block" class="btn-danger btn-lg"/>
+                        <button name="button_unblock" type="object" context="{'default_workcenter_id': workcenter_id}" attrs="{'invisible': [('working_state', '!=', 'blocked')]}" string="Unblock" class="btn-danger btn-lg"/>
                     </div>
-                    <div class="col-6">
-                        <button name="button_scrap" type="object" class="btn-primary btn-block btn btn-lg" string="Scrap"/>
+                    <div class="col-6 d-grid">
+                        <button name="button_scrap" type="object" class="btn-primary btn btn-lg" string="Scrap"/>
                     </div>
-                    <div class="col-6" attrs="{'invisible': [('consumption', '=', 'strict')]}">
-                        <button name="action_add_component" type="object" string="Add Component" class="btn-primary btn-block btn-lg"/>
+                    <div class="col-6 d-grid" attrs="{'invisible': [('consumption', '=', 'strict')]}">
+                        <button name="action_add_component" type="object" string="Add Component" class="btn-primary btn-lg"/>
                     </div>
-                    <div class="col-6" groups="mrp.group_mrp_byproducts">
-                        <button name="action_add_byproduct" type="object" string="Add By-product" class="btn-primary btn-block btn-lg"/>
+                    <div class="col-6 d-grid" groups="mrp.group_mrp_byproducts">
+                        <button name="action_add_byproduct" type="object" string="Add By-product" class="btn-primary btn-lg"/>
                     </div>
                 </div>
                 <footer></footer>

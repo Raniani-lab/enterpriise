@@ -71,10 +71,10 @@ odoo.define('web.action_menus_mobile_tests', function (require) {
                 },
             });
             await testUtils.controlPanel.toggleActionMenu(actionMenus, "Print");
-            assert.containsOnce(actionMenus.el, '.dropdown-menu-left',
+            assert.containsOnce(actionMenus.el, '.dropdown-menu-start',
                 "should display the dropdown menu");
             await testUtils.controlPanel.toggleMenuItem(actionMenus, "Po-ta-toes");
-            assert.containsNone(actionMenus.el, '.dropdown-menu-left',
+            assert.containsNone(actionMenus.el, '.dropdown-menu-start',
                 "should not display the dropdown menu");
             assert.verifySteps(['load-action', 'do-action']);
         });

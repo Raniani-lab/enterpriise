@@ -24,7 +24,7 @@
     a:not(.btn-outline-secondary):not(.o_social_comment_published_date):not(.o_social_post_published_date):not(.dropdown-item) {
         color: #385898;
 
-        @include hover-focus () {
+        &:hover, &:focus {
             color: #385898;
             text-decoration: underline;
         }

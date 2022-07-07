@@ -67,9 +67,9 @@
                 <field name="create_date" optional="show"/>
                 <field name="data" widget="binary" optional="show"/>
                 <field name="thumbnail" widget="image" options="{'size':[0,90]}" optional="hide"/>
-                <button string="Make a copy" class="float-right" name="copy" type="object" icon="fa-clone"/>
-                <button string="Edit" class="float-right" name="edit_template" icon="fa-pencil"/>
-                <button string="New spreadsheet" class="o-new-spreadsheet float-right" name="create_spreadsheet" icon="fa-plus"/>
+                <button string="Make a copy" class="float-end" name="copy" type="object" icon="fa-clone"/>
+                <button string="Edit" class="float-end" name="edit_template" icon="fa-pencil"/>
+                <button string="New spreadsheet" class="o-new-spreadsheet float-end" name="create_spreadsheet" icon="fa-plus"/>
             </tree>
         </field>
     </record>

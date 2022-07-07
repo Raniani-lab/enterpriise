@@ -12,7 +12,7 @@
 .dropdown {
     &.show .dropdown-toggle.btn-light,
     .dropdown-toggle.o_dropdown_active.btn-light {
-        @include plain-hover-focus() {
+        &, &:hover, &:focus {
             position: relative;
             z-index: $zindex-dropdown + 1;
             border-color: $dropdown-border-color;

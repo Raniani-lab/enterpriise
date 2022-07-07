@@ -50,7 +50,7 @@
     // HTML fields
     &.oe_form_field_html.oe_form_field_html { // Make rules more important
         .note-editor {
-            border-color: gray('400');
+            border-color: map-get($grays, '400');
         }
         >.note-editable {
             border-radius: 0;
@@ -60,8 +60,8 @@
             padding: 3px 0 5px;
         }
         .note-toolbar.panel-heading, .popover-body {
-            border-color: gray('400');
-            background: gray('100');
+            border-color: map-get($grays, '400');
+            background: map-get($grays, '100');
 
             .btn-secondary {
                 background: transparent;
@@ -71,12 +71,12 @@
             .show .btn-secondary, .btn-secondary.active, .btn-secondary:focus {
                 background: white !important;
                 color: $body-color !important;
-                border-color: gray('400');
+                border-color: map-get($grays, '400');
             }
             .dropdown-menu {
                 margin-top: 0;
                 border-top: none;
-                border-color: gray('400');
+                border-color: map-get($grays, '400');
                 background-color: white;
                 box-shadow: none;
 
@@ -85,7 +85,7 @@
                     color: $body-color;
 
                     &:hover {
-                        background-color: gray('200');
+                        background-color: map-get($grays, '200');
                     }
                 }
                 &.show .btn-secondary, .btn-secondary.active, .btn-secondary:focus {

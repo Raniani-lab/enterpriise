@@ -158,7 +158,7 @@
                         <t t-name="analysis_period_title">
                             <div t-attf-class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
-                                    <div class="float-end mr-3">
+                                    <div class="float-end me-3">
                                         <field name="state" widget="label_selection"
                                                attrs="{'invisible': [('state', '!=', 'closed')]}"
                                                options="{'classes': {'draft': 'default', 'closed': 'danger'}}"/>
@@ -182,7 +182,7 @@
                         </t>
 
                         <t t-name="analysis_period_body">
-                            <div class="col-5 o_kanban_primary_left pl-3 pr-0">
+                            <div class="col-5 o_kanban_primary_left ps-3 pe-0">
                                 <button name="%(trial_balance_report_action)d" type="action" role="button"
                                         class="btn btn-primary" context="{'default_period_id': active_id}">
                                     Consolidated Balance

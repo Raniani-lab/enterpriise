@@ -81,7 +81,7 @@
     }
 
     // iOS iPhone list layout due to Apple AppStore review
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
         &.o_ios_app {
             .o_apps {
                 flex-direction: column;

@@ -35,7 +35,7 @@
                                     <strong><field name="employee_id"/></strong>
                                 </div>
                                 <div class="col-6">
-                                    <span class="float-right badge badge-secondary">
+                                    <span class="float-end badge text-bg-secondary">
                                         <field name="state"/>
                                     </span>
                                 </div>

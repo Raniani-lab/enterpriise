@@ -227,7 +227,8 @@
         }
         .o_web_studio_component {
             @include o-text-overflow;
-            @include size(49%, 32px);
+            width: 49%;
+            height: 32px;
             position: relative;
             margin-bottom: 5px;
             padding: 3px 5px 0 0;
@@ -255,7 +256,8 @@
                 font: bold 10px/1 $o-web-studio-font-family-monospace;
             }
             &:before {
-                @include size(33px, 150%);
+                width: 33px;
+                height: 150%;
                 display: block;
                 float: left;
                 margin: -3px 5px 0 0;
@@ -273,7 +275,8 @@
         .o_web_studio_existing_fields {
             margin-top: inherit;
             .o_web_studio_component {
-                @include size(100%, 32px);
+                width: 100%;
+                height: 32px;
                 max-width: $o-web-studio-sidebar-width;
             }
         }

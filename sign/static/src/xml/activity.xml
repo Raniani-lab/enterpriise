@@ -11,7 +11,7 @@
                 t-att-data-activity-id="log.id"
                 t-attf-href="#o_mark_done_form{{log.id}}"
                 class="o_mark_as_done_request_sign o_activity_link o_activity_link_kanban fa fa-pencil-square-o"
-                data-toggle="collapse" title="Request Signature" role="img" aria-label="Request Signature"/>
+                data-bs-toggle="collapse" title="Request Signature" role="img" aria-label="Request Signature"/>
         </t>
     </t>
 </templates>

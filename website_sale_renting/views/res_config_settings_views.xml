@@ -19,8 +19,8 @@
                                 <div class="row mt16">
                                     <div class="col-12">
                                         <label for="renting_minimal_time_duration"/>
-                                        <field class="col-2" name="renting_minimal_time_duration"/>
-                                        <field class="col-2" name="renting_minimal_time_unit"/>
+                                        <field class="w-25" name="renting_minimal_time_duration"/>
+                                        <field class="w-25" name="renting_minimal_time_unit"/>
                                     </div>
                                 </div>
                             </div>
@@ -33,23 +33,21 @@
                             <div class="text-muted">
                                 Days during which pickup and return are not possible.
                             </div>
-                            <div class="content-group">
-                                <div class="row mt16 col-12">
-                                    <label for="renting_forbidden_mon"/>
-                                    <field class="col-2" name="renting_forbidden_mon"/>
-                                    <label for="renting_forbidden_tue"/>
-                                    <field class="col-2" name="renting_forbidden_tue"/>
-                                    <label for="renting_forbidden_wed"/>
-                                    <field class="col-2" name="renting_forbidden_wed"/>
-                                    <label for="renting_forbidden_thu"/>
-                                    <field class="col-2" name="renting_forbidden_thu"/>
-                                    <label for="renting_forbidden_fri"/>
-                                    <field class="col-2" name="renting_forbidden_fri"/>
-                                    <label for="renting_forbidden_sat"/>
-                                    <field class="col-2" name="renting_forbidden_sat"/>
-                                    <label for="renting_forbidden_sun"/>
-                                    <field class="col-2" name="renting_forbidden_sun"/>
-                                </div>
+                            <div class="mt16 col-12">
+                                <label for="renting_forbidden_mon"/>
+                                <field name="renting_forbidden_mon"/>
+                                <label for="renting_forbidden_tue"/>
+                                <field name="renting_forbidden_tue"/>
+                                <label for="renting_forbidden_wed"/>
+                                <field name="renting_forbidden_wed"/>
+                                <label for="renting_forbidden_thu"/>
+                                <field name="renting_forbidden_thu"/>
+                                <label for="renting_forbidden_fri"/>
+                                <field name="renting_forbidden_fri"/>
+                                <label for="renting_forbidden_sat"/>
+                                <field name="renting_forbidden_sat"/>
+                                <label for="renting_forbidden_sun"/>
+                                <field name="renting_forbidden_sun"/>
                             </div>
                         </div>
                     </div>

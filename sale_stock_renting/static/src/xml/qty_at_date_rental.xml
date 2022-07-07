@@ -15,7 +15,7 @@
                 </tr>
             </tbody>
         </table>
-        <button class="text-left btn btn-link action_open_renting" type="button">
+        <button class="text-start btn btn-link action_open_renting" type="button">
             <i class="fa fa-fw o_button_icon fa-arrow-right"/>
             View Rentals
         </button>

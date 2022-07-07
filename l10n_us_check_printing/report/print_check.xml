@@ -22,24 +22,24 @@
 <template id="ckus_stub">
     <div t-attf-class="ckus_stub ckus_stub_{{ stub_num }}">
         <div class="row summary_line">
-            <div class="col-xs-4 text-left">
+            <div class="col-xs-4 text-start">
                 <span t-esc="page['partner_name']"/>
             </div>
             <div class="col-xs-4 text-middle">
                 <span t-esc="page['date']"/>
             </div>
-            <div class="col-xs-4 text-right sequence_number">
+            <div class="col-xs-4 text-end sequence_number">
                 <span t-if="page['sequence_number']" t-esc="page['sequence_number']"/>
             </div>
         </div>
 
         <table class="table table-bordered table-sm stub_lines" t-if="page['stub_lines']">
             <thead><tr>
-                <th class="text-left">Due Date</th>
-                <th class="text-left">Description</th>
-                <th class="text-right">Invoice Amount</th>
-                <th class="text-right">Balance Due</th>
-                <th class="text-right">Payment</th>
+                <th class="text-start">Due Date</th>
+                <th class="text-start">Description</th>
+                <th class="text-end">Invoice Amount</th>
+                <th class="text-end">Balance Due</th>
+                <th class="text-end">Payment</th>
             </tr></thead>
             <tbody>
                 <t t-foreach="page['stub_lines']" t-as="stub_line">
@@ -47,16 +47,16 @@
                         <tr><th colspan="6"><t t-esc="stub_line['name']"/></th></tr>
                     </t>
                     <t t-if="not stub_line.get('header')"><tr>
-                        <td class="text-left"><t t-if="stub_line['due_date']" t-esc="stub_line['due_date']"/></td>
-                        <td class="text-left text-truncate" style="max-width: 500px;"><t t-esc="stub_line['number']"/></td>
-                        <td class="text-right"><t t-esc="stub_line['amount_total']"/></td>
-                        <td class="text-right">
+                        <td class="text-start"><t t-if="stub_line['due_date']" t-esc="stub_line['due_date']"/></td>
+                        <td class="text-start text-truncate" style="max-width: 500px;"><t t-esc="stub_line['number']"/></td>
+                        <td class="text-end"><t t-esc="stub_line['amount_total']"/></td>
+                        <td class="text-end">
                             <t t-esc="stub_line['amount_residual']"/>
                         </td>
-                        <td class="text-right"><t t-esc="stub_line['amount_paid']"/></td>
+                        <td class="text-end"><t t-esc="stub_line['amount_paid']"/></td>
                     </tr></t>
                 </t>
-                <tr t-if="page['stub_cropped']"><td colspan="6" class="text-right">...</td></tr>
+                <tr t-if="page['stub_cropped']"><td colspan="6" class="text-end">...</td></tr>
             </tbody>
         </table>
         <div class="stub_total_amount">Check Amount:

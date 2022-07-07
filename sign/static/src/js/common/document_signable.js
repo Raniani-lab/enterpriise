@@ -555,11 +555,11 @@ const PublicSignerDialog = SignInfoDialog.extend({
     if (!name || isEmailInvalid) {
       this.inputs[0]
         .closest(".form-group")
-        .querySelector(".form-control, .custom-select")
+        .querySelector(".form-control, .form-select")
         .classList.toggle("is-invalid", !name);
       this.inputs[1]
         .closest(".form-group")
-        .querySelector(".form-control, .custom-select")
+        .querySelector(".form-control, .form-select")
         .classList.toggle("is-invalid", isEmailInvalid);
       return false;
     }
@@ -636,7 +636,7 @@ const SMSSignerDialog = SignInfoDialog.extend({
     if (!validationCodeInput.value) {
       validationCodeInput
         .closest(".form-group")
-        .querySelector(".form-control, .custom-select")
+        .querySelector(".form-control, .form-select")
         .classList.toggle("is-invalid");
       return false;
     }
@@ -693,7 +693,7 @@ const EncryptedDialog = SignInfoDialog.extend({
       input
         .closest(".form-group")
         .toggleClass("o_has_error")
-        .find(".form-control, .custom-select")
+        .find(".form-control, .form-select")
         .toggleClass("is-invalid");
       return false;
     }
@@ -733,7 +733,7 @@ const EncryptedDialog = SignInfoDialog.extend({
    */
   renderElement: function () {
     this._super.apply(this, arguments);
-    this.$modal.find("button.close").addClass("invisible");
+    this.$modal.find("button.btn-close").addClass("invisible");
   },
   addDefaultButtons() {
     return [
@@ -808,7 +808,7 @@ export const ThankYouDialog = Dialog.extend({
     this._super.apply(this, arguments);
     // this trigger the adding of a custom css
     this.$modal.addClass("o_sign_thank_you_dialog");
-    this.$modal.find("button.close").addClass("invisible");
+    this.$modal.find("button.btn-close").addClass("invisible");
     this.$modal.find(".modal-header .o_subtitle").before("<br/>");
   },
 
@@ -869,7 +869,7 @@ const NextDirectSignDialog = Dialog.extend({
   renderElement: function () {
     this._super.apply(this, arguments);
     this.$modal.addClass("o_sign_next_dialog");
-    this.$modal.find("button.close").addClass("invisible");
+    this.$modal.find("button.btn-close").addClass("invisible");
     this.$modal.find(".modal-header .o_subtitle").before("<br/>");
   },
 

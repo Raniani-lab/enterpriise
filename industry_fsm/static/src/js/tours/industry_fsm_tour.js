@@ -69,7 +69,7 @@ tour.register('industry_fsm_tour', {
     content: _t('<b>Review and sign</b> the <b>task report</b> with your customer.'),
     position: 'bottom',
 }, {
-    trigger: 'a[data-target="#modalaccept"]',
+    trigger: 'a[data-bs-target="#modalaccept"]',
     extra_trigger: '.o_project_portal_sidebar',
     content: _t('Invite your customer to <b>validate and sign your task report</b>.'),
     position: 'right',

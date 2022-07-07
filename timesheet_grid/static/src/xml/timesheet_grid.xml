@@ -31,19 +31,19 @@
         </xpath>
     </t>
 
-    <div t-name="timesheet_grid.timer_header" class="row px-5 align-items-center timesheet-timer py-2 mr-0" owl="1" t-on-timer-started="props.onTimerStarted" t-on-timer-stopped="props.onTimerStopped"
+    <div t-name="timesheet_grid.timer_header" class="d-flex mx-n4 px-5 align-items-center timesheet-timer py-2 me-0" owl="1" t-on-timer-started="props.onTimerStarted" t-on-timer-stopped="props.onTimerStopped"
                 t-on-timer-unlink="props.onTimerUnlink" t-on-timer-edit-project="props.onTimerEditProject"
                 t-on-timer-edit-task="props.onTimerEditTask" t-on-new-timer-value="props.onNewTimerValue"
                 t-on-new-description="props.onNewDescription">
         <t t-if="_timerIsRunning">
-            <button class="my-2 mr-2 btn btn-primary btn_stop_timer" t-on-click="_onClickStopTimer" t-ref="stopButton" data-hotkey="z">
+            <button class="my-2 me-2 btn btn-primary btn_stop_timer" t-on-click="_onClickStopTimer" t-ref="stopButton" data-hotkey="z">
                 Stop
             </button>
             <div class="p-2 input_timer">
                 <input class="o_field_float o_field_number o_field_widget o_input input_manual_time" t-att-class="{'o_field_invalid': state.errorManualTimeInput === true}" type="text" t-att-value="timeInput"
                 t-on-keydown="_onKeydown" t-on-input="_onInputTimer" t-on-focusout="_onFocusoutTimer" t-ref="manualTimerInput"
                 t-if="_manualTimeInput"/>
-                <span class="px-auto font-weight-bold" id="display_timer" t-else="" t-on-click="_onClickManualTime">
+                <span class="px-auto fw-bold" id="display_timer" t-else="" t-on-click="_onClickManualTime">
                     <t t-esc="_timerString"/>
                 </span>
             </div>
@@ -63,13 +63,13 @@
             <div t-else="" class="p-md-2 px-0 input_m2o">
                 <TimerHeaderM2OAdapter Component="TimerHeaderM2O" widgetArgs="[props.projectId, props.taskId, props.projectWarning]"/>
             </div>
-            <div class="pl-md-2 py-2 o_timer_discard">
+            <div class="ps-md-2 py-2 o_timer_discard">
                 <button class="btn btn-muted px-0 stop-timer fa fa-times" t-on-click="_onUnlinkTimer" title="Press Esc to discard"/>
             </div>
         </t>
         <t t-else="">
-            <div class="d-flex col-sm-12 pl-0 align-items-center">
-                <div class="my-2 pr-2" id="start">
+            <div class="d-flex col-sm-12 ps-0 align-items-center">
+                <div class="my-2 pe-2" id="start">
                     <button class="btn_start_timer btn btn-odoo text-uppercase" t-on-click="_onClickStartTimer" t-ref="startButton"><i class="fa fa-play"></i> Start</button>
                 </div>
                 <div class="p-2">
@@ -119,7 +119,7 @@
     <t t-name="timesheet_grid.AddLineRow" t-inherit="web_grid.AddLineRow" t-inherit-mode="extension" owl="1">
         <xpath expr="//tr[@class='o_grid_add_line_row']/th[2]/div" position="attributes">
             <attribute name="class"></attribute>
-            <attribute name="t-attf-class">{{showEmployeeAvatar ? '' : 'ml-3'}}</attribute>
+            <attribute name="t-attf-class">{{showEmployeeAvatar ? '' : 'ms-3'}}</attribute>
         </xpath>
     </t>
 

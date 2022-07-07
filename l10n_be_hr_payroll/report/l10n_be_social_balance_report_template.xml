@@ -6,7 +6,7 @@
                 <t t-call="web.external_layout">
                     <t t-set="wizard" t-value="wizard.with_context(lang=wizard.env.lang)"/>
                     <div class="page container-fluid">
-                        <div class="mt-4 row text-center font-weight-bold">
+                        <div class="mt-4 row text-center fw-bold">
                             <div class="col-12">
                                 <div>SOCIAL BALANCE SHEET -  COMPLETE SCHEME</div>
                                 <div class="mt-2">Please find attached some data that will be useful to you to establish the Social Report for the accounting year noted below. The Social Report for the previous year may be useful for you to complete information concerning the previous accounting year.</div>
@@ -14,7 +14,7 @@
                         </div>
                         <div class="mt-4 row">
                             <div class="col-12">
-                                <div class="font-weight-bold">Identification of the company</div>
+                                <div class="fw-bold">Identification of the company</div>
                             </div>
                         </div>
                         <div class="row">
@@ -29,7 +29,7 @@
                         </div>
                         <div class="mt-4 row">
                             <div class="col-12">
-                                <div class="font-weight-bold">Status of employed persons</div>
+                                <div class="fw-bold">Status of employed persons</div>
                                 <div>Workers for whom the company has submitted a DIMONA declaration or who are registered in the general staff register</div>
                             </div>
                         </div>
@@ -487,7 +487,7 @@
                         </table>
                         <div class="mt-4 row">
                             <div class="col-12">
-                                <div class="font-weight-bold">Staff movements during the exercise</div>
+                                <div class="fw-bold">Staff movements during the exercise</div>
                             </div>
                         </div>
                         <table class="table table-sm table-striped" style="page-break-after: always;">
@@ -623,7 +623,7 @@
                         </table>
                         <div class="mt-4 row">
                             <div class="col-12">
-                                <div class="font-weight-bold">Information on training for workers during the exercise</div>
+                                <div class="fw-bold">Information on training for workers during the exercise</div>
                             </div>
                         </div>
                         <table class="table table-sm table-striped">

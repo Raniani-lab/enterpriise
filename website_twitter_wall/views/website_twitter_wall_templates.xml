@@ -95,7 +95,7 @@
                             </div>
                         </div>
                         <div class="col-4">
-                            <b><img src="/website_twitter_wall/static/src/img/odoo.png" class="o-tw-powered mt16 float-right" /></b>
+                            <b><img src="/website_twitter_wall/static/src/img/odoo.png" class="o-tw-powered mt16 float-end" /></b>
                         </div>
                     </div>
                 </div>

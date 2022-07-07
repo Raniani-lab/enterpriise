@@ -19,13 +19,13 @@
                 <img t-if="record.facebook_author_id.raw_value" t-attf-src="https://graph.facebook.com/v10.0/#{record.facebook_author_id.raw_value}/picture" alt="Author Image"/>
             </xpath>
             <xpath expr="//div[hasclass('o_social_author_information')]" position="inside">
-                <span t-if="record.facebook_is_event_post.raw_value" class="text-muted ml-2">added an event</span>
+                <span t-if="record.facebook_is_event_post.raw_value" class="text-muted ms-2">added an event</span>
             </xpath>
 
             <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
                 <div class="o_social_stream_post_facebook_stats px-2 d-flex justify-content-around"
                     t-if="record.media_type.raw_value === 'facebook'">
-                    <div t-attf-class="o_social_facebook_likes o_social_subtle_btn pl-2 pr-3 #{record.facebook_user_likes.raw_value ? 'o_social_facebook_user_likes' : ''}"
+                    <div t-attf-class="o_social_facebook_likes o_social_subtle_btn ps-2 pe-3 #{record.facebook_user_likes.raw_value ? 'o_social_facebook_user_likes' : ''}"
                         t-att-data-user-likes="record.facebook_user_likes.raw_value"
                         t-att-data-post-id="record.id.raw_value">
                         <t t-if="record.facebook_likes_count.raw_value !== 0">
@@ -61,7 +61,7 @@
                             <t t-esc="record.facebook_shares_count.value"/>
                             Shares
                         </div>
-                        <div class="ml-3">
+                        <div class="ms-3">
                             <t t-esc="record.facebook_reach.value"/>
                             Views
                         </div>

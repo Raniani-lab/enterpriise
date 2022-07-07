@@ -71,10 +71,10 @@
             }
         }
         &.o_approval_success {
-            @include alert-variant(theme-color-level('success', -10), theme-color-level('success', -9), theme-color-level('success', 6));
+            @include alert-variant(scale-color($success, -10), scale-color($success, -9), scale-color($success, 6));
         }
         &.o_approval_danger {
-            @include alert-variant(theme-color-level('danger', -10), theme-color-level('danger', -9), theme-color-level('danger', 6));
+            @include alert-variant(scale-color($danger, -10), scale-color($danger, -9), scale-color($danger, 6));
         }
     }
 }

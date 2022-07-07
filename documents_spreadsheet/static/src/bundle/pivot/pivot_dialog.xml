@@ -3,9 +3,9 @@
     <t t-name="documents_spreadsheet.PivotDialog" owl="1">
         <Dialog footer="false" title="props.title">
             <div class="o_missing_values_dialog">
-                <div class="custom-control custom-checkbox">
-                    <input id="missing_values" type="checkbox" t-model="state.showMissingValuesOnly" class="custom-control-input " />
-                    <label for="missing_values" class="custom-control-label">Display missing cells only</label>
+                <div class="custom-control form-check">
+                    <input id="missing_values" type="checkbox" t-model="state.showMissingValuesOnly" class="form-check-input " />
+                    <label for="missing_values" class="form-check-label">Display missing cells only</label>
                 </div>
                 <t t-set="tableData" t-value="getTableData()"/>
                 <PivotDialogTable  t-if="tableData.values.length > 0 or tableData.rows.length > 0"

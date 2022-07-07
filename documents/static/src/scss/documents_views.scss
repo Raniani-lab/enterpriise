@@ -212,7 +212,8 @@ $o-dms-inspector-width-model-button: 30px;
                 padding: $o-dms-p-small;
 
                 .o_mimetype_icon {
-                    @include size(46px);
+                    width: 46px;
+                    height: 46px;
                 }
             }
 
@@ -230,7 +231,8 @@ $o-dms-inspector-width-model-button: 30px;
                 animation: none;
 
                 > img {
-                    @include size(auto, 100%);
+                    width: auto;
+                    height: 100%;
                     object-fit: contain;
                 }
 
@@ -239,7 +241,8 @@ $o-dms-inspector-width-model-button: 30px;
                     padding: 10px;
 
                     .o_mimetype_icon {
-                        @include size(80px);
+                        width: 80px;
+                        height: 80px;
                     }
                 }
             }
@@ -539,7 +542,8 @@ $o-dms-inspector-width-model-button: 30px;
 
 .o_inspector_open_chatter {
     @include o-position-absolute($right: 5px, $top: 5px);
-    @include size(34px);
+    width: 34px;
+    height: 34px;
     @include o-hover-text-color($o-dms-inspector-txt-lighter, $white);
     padding: $o-dms-p-small;
     font-size: 16px;

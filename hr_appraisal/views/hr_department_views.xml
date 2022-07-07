@@ -45,13 +45,13 @@
                         <group>
                             <group>
                                 <div class="col-12">
-                                    <h3 class="col-6 pl-0">Employee</h3>
+                                    <h3 class="col-6 ps-0">Employee</h3>
                                     <field name="employee_feedback_template" nolabel="1"/>
                                 </div>
                             </group>
                             <group>
                                 <div class="col-12">
-                                    <h3 class="col-6 pl-0">Manager</h3>
+                                    <h3 class="col-6 ps-0">Manager</h3>
                                     <field name="manager_feedback_template" nolabel="1"/>
                                 </div>
                             </group>

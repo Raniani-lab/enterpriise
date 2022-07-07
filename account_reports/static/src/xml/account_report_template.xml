@@ -97,9 +97,9 @@
                <td style="text-align:center;"
                    colspan="2">
                    <button t-att-data-id="id"
-                           class="btn btn-sm btn-secondary float-left js_view_coa">Accounts</button>
+                           class="btn btn-sm btn-secondary float-start js_view_coa">Accounts</button>
                    <button t-att-data-id="id"
-                           class="btn btn-sm btn-secondary float-right js_view_line_computation">Report Line Computation</button>
+                           class="btn btn-sm btn-secondary float-end js_view_line_computation">Report Line Computation</button>
                </td>
             </tr>
         </table>

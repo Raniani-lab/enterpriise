@@ -108,7 +108,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
             }
         }
         calRender.el.classList.add('o_cursor_pointer');
-        calRender.el.childNodes[0].classList.add('font-weight-bold');
+        calRender.el.childNodes[0].classList.add('fw-bold');
     },
     formatDateAsBackend: function (date) {
         const weekday = moment(date).format('ddd.');

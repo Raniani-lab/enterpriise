@@ -107,7 +107,7 @@
                             >
                             <span class="fa-lg" t-att-class="props.views.find(v => v.type === props.view.type).icon"/>
                         </button>
-                        <ul t-if="state.showViewSwitcher" class="dropdown-menu dropdown-menu-right list-inline"
+                        <ul t-if="state.showViewSwitcher" class="dropdown-menu dropdown-menu-end list-inline"
                             t-att-class="{ show: state.showViewSwitcher }"
                             >
                             <li t-foreach="props.views" t-as="view" t-key="view.type">

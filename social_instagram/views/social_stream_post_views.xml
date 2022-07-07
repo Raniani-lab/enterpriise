@@ -16,7 +16,7 @@
             </xpath>
             <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
                 <div class="o_social_stream_post_instagram_stats d-flex justify-content-around" t-if="record.media_type.raw_value === 'instagram'">
-                    <div t-attf-class="o_social_subtle_btn_readonly pl-2 pr-3"
+                    <div t-attf-class="o_social_subtle_btn_readonly ps-2 pe-3"
                         t-att-data-user-likes="False"
                         t-att-data-post-id="record.id.raw_value">
                         <i class="fa fa-heart" title="Likes"></i>

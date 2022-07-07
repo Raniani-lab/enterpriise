@@ -10,7 +10,7 @@
                 <div role="alert" class="alert alert-warning p-3 text-center alert-overflow"
                     attrs="{'invisible': [('planning_overlap', '=', 0)]}">
                     <span name="planning_overlap" attrs="{'invisible': [('planning_overlap', '=', 0)]}">
-                        <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pr-1" >
+                        <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pe-1" >
                             <field name="planning_overlap"/> other task<span attrs="{'invisible': [('planning_overlap', '=', 1)]}">s</span>
                         </button>
                         <span class="align-middle">for this employee at the same time.</span>
@@ -71,7 +71,7 @@
                         <div name="project_id">
                             <strong>Project — </strong>
                             <t t-if="project_id" t-esc="project_id[1]"/>
-                            <t t-else=""><span class="font-italic text-muted"><i class="fa fa-lock"></i> Private</span></t>
+                            <t t-else=""><span class="fst-italic text-muted"><i class="fa fa-lock"></i> Private</span></t>
                         </div>
                         <div t-if="allow_milestones and milestone_id" groups="project.group_project_milestone">
                             <strong>Milestone — </strong> <t t-out="milestone_id[1]"/>

@@ -449,7 +449,7 @@ var LayoutEditable = AbstractEditComponent.extend({
         this.bold =_.contains(this.classesArray, 'o_bold');
         this.underline = _.contains(this.classesArray, 'o_underline');
 
-        this.alignment = _.intersection(this.classesArray, ['text-left', 'text-center', 'text-right'])[0];
+        this.alignment = _.intersection(this.classesArray, ['text-start', 'text-center', 'text-end'])[0];
         this.displayAlignment = !_.contains(['inline', 'float'], this.node.$nodes.css('display'));
 
         this.allClasses = params.node.attrs.class || "";

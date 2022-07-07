@@ -5,13 +5,13 @@
             {{isSelected ? 'o_selected o_highlight' : ''}}
             {{props.additionalClass}}">
         <div>
-            <i class="fa fa-fw fa-truck mr-2 text-muted"/>
-            <span class="o_barcode_line_title mr-2" t-esc="props.line.name"/>
+            <i class="fa fa-fw fa-truck me-2 text-muted"/>
+            <span class="o_barcode_line_title me-2" t-esc="props.line.name"/>
             <span t-if="props.line.state" t-esc="props.line.state"
-                class="badge badge-pill text-capitalize font-weight-bold"/>
+                class="badge rounded-pill text-capitalize fw-bold"/>
         </div>
         <div t-if="props.responsible" name="Responsible">
-            <i class="fa fa-fw fa-user mr-2 text-muted"/>
+            <i class="fa fa-fw fa-user me-2 text-muted"/>
             <span class="o_barcode_picking_user" t-esc="props.responsible"/>
         </div>
     </div>

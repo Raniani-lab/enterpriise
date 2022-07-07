@@ -39,7 +39,7 @@
             }
         }
 
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             overflow: auto;
         }
     }
@@ -198,7 +198,7 @@
                 width: 100%;
             }
 
-            @include media-breakpoint-down(xs) {
+            @include media-breakpoint-down(sm) {
                 .o_dashboard_subview_buttons {
                     .btn-group {
                         .o_graph_button {

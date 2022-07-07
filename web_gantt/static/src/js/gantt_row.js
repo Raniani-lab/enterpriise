@@ -130,7 +130,10 @@ var GanttRow = Widget.extend({
      */
     destroy: function () {
         if (this.$el) {
-            this.$('.o_gantt_pill').popover('dispose');
+            const popover = Popover.getInstance(this.$('.o_gantt_pill')[0]);
+            if (popover) {
+                popover.dispose();
+            }
         }
         this._super();
     },
@@ -881,9 +884,11 @@ var GanttRow = Widget.extend({
                     // we have to delay a bit the moment where we mark the pill as no longer being
                     // updated, to prevent the dialog from opening when the user ends its resize
                     setTimeout(() => {
-                        self.trigger_up('updating_pill_stopped');
-                        self.$el.removeClass('o_gantt_dragging');
-                        self.$('.o_gantt_pill').popover('enable').popover('dispose');
+                        if (!self.isDestroyed()) {
+                            self.trigger_up('updating_pill_stopped');
+                            self.$el.removeClass('o_gantt_dragging');
+                            self.$('.o_gantt_pill').popover('enable').popover('dispose');
+                        }
                     });
                     var diff = Math.round((ui.size.width - ui.originalSize.width) / resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
                     var direction = ui.position.left ? 'left' : 'right';

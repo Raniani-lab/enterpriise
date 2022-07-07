@@ -4,26 +4,12 @@
     .stats-header {
         height: 60px;
 
-        .custom-control {
+        .o_boolean_toggle {
             cursor: pointer;
-
-            // Always primary color
-            input.custom-control-input + label.custom-control-label {
-                &::before {
-                  background-color: $o-brand-primary !important;
-                }
-            }
-
-            input.custom-control-input:checked + label.custom-control-label {
-                i {
-                    right: 7px;
-                }
-            }
-
-            input.custom-control-input:not(checked) + label.custom-control-label {
-                i {
-                    right: 15px;
-                }
+            .form-check-input {
+                background-color: $o-brand-primary;
+                border-color: $o-brand-primary;
+                background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='white'/></svg>");
             }
         }
     }

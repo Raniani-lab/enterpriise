@@ -15,13 +15,13 @@ const FsmDateWidget = AbstractField.extend({
         const precision = wholeDate ? "day" : "second";
         const dateFormat = wholeDate ? time.getLangDateFormat() : time.getLangTimeFormat().search('H') !== -1 ? 'HH:mm' : 'hh:mm A';
         if (this.recordData.fsm_done) {
-            className = "font-weight-bold";
+            className = "fw-bold";
         } else {
             if ((!wholeDate || this.recordData.is_fsm) && valueMoment.isBefore(moment(), precision)) {
                 className = "oe_kanban_text_red";
             }
             if (wholeDate && this.recordData.is_fsm && valueMoment.isSame(moment(), precision)) {
-                className = "text-warning font-weight-bold";
+                className = "text-warning fw-bold";
             }
         }
         this.$el.text(valueMoment.format(dateFormat));

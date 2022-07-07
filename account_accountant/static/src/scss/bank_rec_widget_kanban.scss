@@ -78,6 +78,6 @@
 }
 
 .o_bank_rec_selected_st_line{
-    outline: thin solid mix(theme-color('primary'), gray('400'));
+    outline: thin solid mix(map-get($theme-colors, 'primary'), map-get($grays, '400'));
     outline-offset: -1px;
 }

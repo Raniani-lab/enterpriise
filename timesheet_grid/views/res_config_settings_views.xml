@@ -16,10 +16,10 @@
                         </div>
                         <div class="mt16">
                             <div class="o_row w-30">
-                                <span class="o_light_label"><label class="font-weight-bold" for="timesheet_min_duration"/><field name="timesheet_min_duration" class="col-lg-2 text-center"/> minutes</span>
+                                <span class="o_light_label"><label class="fw-bold" for="timesheet_min_duration"/><field name="timesheet_min_duration" class="col-lg-2 text-center"/> minutes</span>
                             </div>
                             <div class="o_row">
-                                <span class="o_light_label"><label class="font-weight-bold" for="timesheet_rounding"/><field name="timesheet_rounding" class="col-lg-2 text-center"/> minutes</span>
+                                <span class="o_light_label"><label class="fw-bold" for="timesheet_rounding"/><field name="timesheet_rounding" class="col-lg-2 text-center"/> minutes</span>
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                     <div class="o_setting_left_pane">
                         <field name="prevent_old_timesheets_encoding"/>
                     </div>
-                    <div class="o_setting_right_pane" id="prevent_old_timesheets_encoding" data-toggle="tooltip" title="After a certain date, users will not be able to create, modify, or delete their timesheets. However, managers will still be able to do so.">
+                    <div class="o_setting_right_pane" id="prevent_old_timesheets_encoding" data-bs-toggle="tooltip" title="After a certain date, users will not be able to create, modify, or delete their timesheets. However, managers will still be able to do so.">
                         <label for="prevent_old_timesheets_encoding"/>
                         <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." groups="base.group_multi_company"/>
                         <div class="row">
@@ -44,25 +44,17 @@
                 </div>
             </xpath>
             <xpath expr="//div[@id='reminder_user_allow']" position="inside">
-                <div class="content-group" attrs="{'invisible': [('reminder_user_allow', '=', False)]}">
-                    <div class="row mt16" id="user_mail_alias_domain">
-                        <span class="ml16">
-                            <label for="reminder_user_interval" string="Frequency"/>
-                            <field name="reminder_user_delay" class="col-lg-2 text-center"/> days
-                            <field name="reminder_user_interval" class="oe_inline ml-2 pr-2"/>
-                        </span>
-                    </div>
+                <div class="mt16" id="user_mail_alias_domain" attrs="{'invisible': [('reminder_user_allow', '=', False)]}">
+                    <label for="reminder_user_interval" string="Frequency"/>
+                    <field name="reminder_user_delay" class="w-25 text-center"/> days
+                    <field name="reminder_user_interval" class="oe_inline ms-2 pe-2"/>
                 </div>
             </xpath>
             <xpath expr="//div[@id='reminder_manager_allow']" position="inside">
-                <div class="content-group" attrs="{'invisible': [('reminder_manager_allow', '=', False)]}">
-                    <div class="row mt16" id="manager_mail_alias_domain">
-                        <span class="ml16">
-                            <label for="reminder_manager_interval" string="Frequency"/>
-                            <field name="reminder_manager_delay" class="col-lg-2 text-center"/> days
-                            <field name="reminder_manager_interval" class="oe_inline ml-2 pr-2"/>
-                        </span>
-                    </div>
+                <div class="mt16" id="manager_mail_alias_domain" attrs="{'invisible': [('reminder_manager_allow', '=', False)]}">
+                    <label for="reminder_manager_interval" string="Frequency"/>
+                    <field name="reminder_manager_delay" class="w-25 text-center"/> days
+                    <field name="reminder_manager_interval" class="oe_inline ms-2 pe-2"/>
                 </div>
             </xpath>
         </field>

@@ -4,7 +4,7 @@
         <t t-foreach="rendering_values" t-as="val">
             <div class="pb-2">
                 <div style="white-space: nowrap;display: inline;">
-                    <span class="font-weight-bold">Untaxed /
+                    <span class="fw-bold">Untaxed /
                         <span><t t-out="val['periodicity']"/> <t t-out="val['unit']"/></span>:
                     </span>
                     <span>
@@ -12,10 +12,10 @@
                     </span>
                 </div>
                 <div style="white-space: nowrap;display: inline;">
-                    <span class="font-weight-bold text-left">Total /
+                    <span class="fw-bold text-start">Total /
                         <span><t t-out="val['periodicity']"/> <t t-out="val['unit']"/></span>:
                     </span>
-                    <span class="text-right">
+                    <span class="text-end">
                         <t t-out="val['total_amount']"/>
                     </span>
                 </div>
@@ -38,10 +38,10 @@
 
     <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document" priority="50">
         <xpath expr="//th[@name='th_description']" position="after">
-                <th name="th_recurrency" t-if="doc.is_subscription" class="text-left">Recurrency</th>
+                <th name="th_recurrency" t-if="doc.is_subscription" class="text-start">Recurrency</th>
         </xpath>
         <xpath expr="//td[@name='td_name']" position="after">
-            <td name="td_recurrency" t-if="doc.is_subscription" class="text-left"><span t-field="line.pricing_id"/></td>
+            <td name="td_recurrency" t-if="doc.is_subscription" class="text-start"><span t-field="line.pricing_id"/></td>
         </xpath>
     </template>
 

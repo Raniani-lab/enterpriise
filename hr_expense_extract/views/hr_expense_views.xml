@@ -25,7 +25,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary float-end mb0"/>
-                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 mr-1" string="Resend For Digitization" type="object"
+                    <button name="retry_ocr" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object"
                         attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="q"/>
                     You don't have enough credit to extract data from your expense.
                     <div class="clearfix"/>

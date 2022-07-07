@@ -24,8 +24,8 @@
                 <th t-if="is_cfdi_signed and o.l10n_mx_edi_external_trade">Customs Unit</th>
             </xpath>
             <xpath expr="//table[@name='invoice_line_table']/tbody//tr[1]//td[last()]" position="after">
-                <td t-if="is_cfdi_signed and o.l10n_mx_edi_external_trade" class="text-right"><span t-field="line.product_id.l10n_mx_edi_tariff_fraction_id.code"/></td>
-                <td t-if="is_cfdi_signed and o.l10n_mx_edi_external_trade" class="text-right"><span t-field="line.l10n_mx_edi_qty_umt"/></td>
+                <td t-if="is_cfdi_signed and o.l10n_mx_edi_external_trade" class="text-end"><span t-field="line.product_id.l10n_mx_edi_tariff_fraction_id.code"/></td>
+                <td t-if="is_cfdi_signed and o.l10n_mx_edi_external_trade" class="text-end"><span t-field="line.l10n_mx_edi_qty_umt"/></td>
                 <td t-if="is_cfdi_signed and o.l10n_mx_edi_external_trade"><span t-field="line.l10n_mx_edi_umt_aduana_id.name"/></td>
             </xpath>
 

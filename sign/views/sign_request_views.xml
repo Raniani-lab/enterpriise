@@ -31,11 +31,11 @@
                                             <a type="object" name="toggle_favorited" title="In favorites, remove it" aria-label="In favorites, remove it"
                                                class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button"/>
                                         </t>
-                                        <span class="pl-4"><field name="reference"/></span>
+                                        <span class="ps-4"><field name="reference"/></span>
                                     </div>
                                 </div>
                                 <div class="o_dropdown_kanban dropdown">
-                                    <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <a role="button" class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                         <span class="fa fa-ellipsis-v"/>
                                     </a>
                                     <div class="dropdown-menu" role="menu">
@@ -55,12 +55,12 @@
                                 <field name="template_tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 <div class="o_signers container-fluid mt-2">
                                     <div t-foreach="record.request_item_infos.raw_value || []" t-as="request_item_info" t-key="request_item_info.id"
-                                         t-att-class="(request_item_info.state === 'completed') ? 'o_sign_completed text-success row' :
-                                                      (request_item_info.state === 'refused') ? 'o_sign_refused text-danger row' : 'o_sign_waiting row'">
-                                        <div t-if="request_item_info.state === 'refused'" class="mt-1 mr-1 fa fa-times" title="Refused"/>
-                                        <input t-else="" t-att-checked="(request_item_info.state === 'completed') ? 'checked' : undefined" class="mt-1 mr-1" type="checkbox" disabled="True"/>
+                                         t-att-class="(request_item_info.state === 'completed') ? 'o_sign_completed text-success d-flex' :
+                                                      (request_item_info.state === 'refused') ? 'o_sign_refused text-danger d-flex' : 'o_sign_waiting d-flex'">
+                                        <div t-if="request_item_info.state === 'refused'" class="mt-1 me-1 fa fa-times" title="Refused"/>
+                                        <input t-else="" t-att-checked="(request_item_info.state === 'completed') ? 'checked' : undefined" class="mt-1 me-1" type="checkbox" disabled="True"/>
                                         <span>
-                                            <t t-esc="request_item_info.partner_name"/><t t-if="request_item_info.signing_date" class="ml-1" t-esc="' ' + request_item_info.signing_date"/>
+                                            <t t-esc="request_item_info.partner_name"/><t t-if="request_item_info.signing_date" class="ms-1" t-esc="' ' + request_item_info.signing_date"/>
                                         </span>
                                     </div>
                                 </div>
@@ -255,8 +255,8 @@
                 <field name="role_id"/>
                 <field name="state"/>
                 <field name="is_mail_sent" invisible="1"/>
-                <button name="send_signature_accesses" string="Send" type="object" icon="fa-square-o pr-2" attrs="{'invisible': ['|', '|', ('signer_email', '=', False), ('state', '!=', 'sent'), ('is_mail_sent', '!=', False)]}"/>
-                <button name="send_signature_accesses" string="Resend" type="object" icon="fa-check-square-o pr-2" attrs="{'invisible': ['|', '|', ('signer_email', '=', False), ('state', '!=', 'sent'), ('is_mail_sent', '=', False)]}"/>
+                <button name="send_signature_accesses" string="Send" type="object" icon="fa-square-o pe-2" attrs="{'invisible': ['|', '|', ('signer_email', '=', False), ('state', '!=', 'sent'), ('is_mail_sent', '!=', False)]}"/>
+                <button name="send_signature_accesses" string="Resend" type="object" icon="fa-check-square-o pe-2" attrs="{'invisible': ['|', '|', ('signer_email', '=', False), ('state', '!=', 'sent'), ('is_mail_sent', '=', False)]}"/>
             </tree>
         </field>
     </record>

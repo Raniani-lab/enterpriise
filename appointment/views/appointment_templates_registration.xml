@@ -8,7 +8,7 @@
                     <t t-call="appointment.appointment_edit_in_backend"/>
                 </t>
                 <div class="oe_structure container o_appointment mb64">
-                    <ul class="wizard mt32 float-right d-none d-md-block">
+                    <ul class="wizard mt32 float-end d-none d-md-block">
                         <li class="text-muted">Time<span class="chevron"></span></li>
                         <li class="text-primary">Confirmation<span class="chevron"></span></li>
                     </ul>
@@ -25,7 +25,7 @@
                     <div class="oe_structure container mb64 o_appointment_attendee_form">
                         <div groups="appointment.group_appointment_manager" class="alert alert-info rounded-0 o_not_editable" role="status">
                             <a t-attf-href="/web#id=#{appointment_type.id}&amp;view_type=form&amp;model=#{appointment_type._name}">
-                                <i class="fa fa-pencil mr-2" role="img" aria-label="Edit" title="Create custom questions in backend"/><em>Add Custom Questions</em>
+                                <i class="fa fa-pencil me-2" role="img" aria-label="Edit" title="Create custom questions in backend"/><em>Add Custom Questions</em>
                             </a>
                         </div>
                         <form class="mt32 appointment_submit_form"
@@ -35,19 +35,19 @@
                             <input type="hidden" name="datetime_str" t-att-value="datetime_str"/>
                             <input type="hidden" name="duration_str" t-att-value="duration_str"/>
                             <input type="hidden" name="staff_user_id" t-att-value="staff_user_id"/>
-                            <div class="form-group row col-xl-8 mx-auto">
+                            <div class="mb-3 row col-xl-8 mx-auto">
                                 <label for="name" class="col-md-4 col-form-label">Your Name *</label>
                                 <div class="col-md-8">
                                     <input type="char" class="form-control" name="name" required="1" t-att-value="'name' in partner_data and partner_data['name']"/>
                                 </div>
                             </div>
-                            <div class="form-group row col-xl-8 mx-auto">
+                            <div class="mb-3 row col-xl-8 mx-auto">
                                 <label for="email" class="col-md-4 col-form-label">Your Email *</label>
                                 <div class="col-md-8">
                                     <input type="email" class="form-control" name="email" t-att-value="'email' in partner_data and partner_data['email']" required="1"/>
                                 </div>
                             </div>
-                            <div class="form-group row col-xl-8 mx-auto">
+                            <div class="mb-3 row col-xl-8 mx-auto">
                                 <label for="phone" class="col-md-4 col-form-label">Your Phone *</label>
                                 <div class="col-md-8">
                                     <input type="tel" class="form-control" name="phone" required="1" id="phone_field" t-att-value="'mobile' in partner_data and partner_data['mobile']"/>
@@ -55,7 +55,7 @@
                             </div>
 
                             <t t-foreach="appointment_type.question_ids" t-as="question">
-                                <div class="form-group row col-xl-8 mx-auto" t-if="question.question_type!='text'">
+                                <div class="mb-3 row col-xl-8 mx-auto" t-if="question.question_type!='text'">
                                     <label t-attf-for="question_#{question.id}" class="col-md-4 col-form-label" t-out="' '.join([question.name, '*' if question.question_required else ''])"/>
                                     <div class="col-md-8">
                                         <t t-if="question.question_type == 'char'">
@@ -65,7 +65,7 @@
                                                 t-att-placeholder="question.placeholder"/>
                                         </t>
                                         <t t-if="question.question_type == 'select'">
-                                            <select t-attf-name="question_#{question.id}" class="form-control"
+                                            <select t-attf-name="question_#{question.id}" class="form-select"
                                                 t-att-required="question.question_required or None"
                                                 t-att-placeholder="question.placeholder">
                                                 <t t-foreach="question.answer_ids or []" t-as="answer">
@@ -78,7 +78,7 @@
                                                 <label>
                                                     <input type="radio" t-attf-name="question_#{question.id}"
                                                         t-att-required="question.question_required or None"
-                                                        t-att-value="answer.id" class="mr-1"/> <t t-out="answer.name"/>
+                                                        t-att-value="answer.id" class="me-1"/> <t t-out="answer.name"/>
                                                 </label>
                                             </div>
                                         </t>
@@ -87,14 +87,14 @@
                                                 <div class="checkbox" t-foreach="question.answer_ids or []" t-as="answer">
                                                     <label>
                                                         <input type="checkbox" t-attf-name="question_#{question.id}_answer_#{answer.id}"
-                                                            t-att-value="answer.name" class="mr-2"/><t t-out="answer.name"/>
+                                                            t-att-value="answer.name" class="me-2"/><t t-out="answer.name"/>
                                                     </label>
                                                 </div>
                                             </div>
                                         </t>
                                     </div>
                                 </div>
-                                <div class="form-group row col-xl-8 mx-auto" t-if="question.question_type == 'text'">
+                                <div class="mb-3 row col-xl-8 mx-auto" t-if="question.question_type == 'text'">
                                     <label t-attf-for="question_#{question.id}" class="col-md-4 col-form-label" t-out="' '.join([question.name, '*' if question.question_required else ''])"/>
                                     <div class="col-md-8">
                                         <textarea class="form-control" rows="8"

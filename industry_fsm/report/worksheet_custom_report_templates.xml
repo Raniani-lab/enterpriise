@@ -33,11 +33,11 @@
                             <table class="table table-sm o_main_table">
                                 <thead>
                                     <tr>
-                                        <th class="text-left">Date</th>
-                                        <th class="text-left">Worker</th>
-                                        <th class="text-left">Description</th>
-                                        <th t-if="is_uom_day" class="text-right">Days Spent</th>
-                                        <th t-else="" class="text-right">Hours Spent</th>
+                                        <th class="text-start">Date</th>
+                                        <th class="text-start">Worker</th>
+                                        <th class="text-start">Description</th>
+                                        <th t-if="is_uom_day" class="text-end">Days Spent</th>
+                                        <th t-else="" class="text-end">Hours Spent</th>
                                     </tr>
                                 </thead>
                                 <tbody class="sale_tbody">
@@ -49,10 +49,10 @@
                                             <td>
                                                 <span t-field="line.employee_id.name"/>
                                             </td>
-                                            <td class="text-left">
+                                            <td class="text-start">
                                                 <span t-field="line.display_name"/>
                                             </td>
-                                            <td class="text-right">
+                                            <td class="text-end">
                                                 <t t-if="is_uom_day">
                                                     <span t-out="line._convert_hours_to_days(line.unit_amount)" t-options='{"widget": "timesheet_uom"}'/>
                                                 </t>
@@ -68,8 +68,8 @@
                                 <div t-attf-class="#{'col-auto' if report_type != 'html' else 'col-sm-2'}">
                                     <table class="table table-sm">
                                         <tr class="border-black o_total">
-                                            <td colspan="4" class="text-right">
-                                                <strong class="mr-2">Total</strong>
+                                            <td colspan="4" class="text-end">
+                                                <strong class="me-2">Total</strong>
                                                 <t t-if="is_uom_day">
                                                     <t t-out="line._convert_hours_to_days(doc.effective_hours)"/>
                                                 </t>
@@ -115,7 +115,7 @@
                                 Signed
                             </span>
                         </div>
-                        <div t-attf-class="#{'col-12 col-lg-3' if report_type != 'html' else 'col-sm-7 col-md-4'} ml-auto text-right" style="page-break-inside: avoid">
+                        <div t-attf-class="#{'col-12 col-lg-3' if report_type != 'html' else 'col-sm-7 col-md-4'} ms-auto text-end" style="page-break-inside: avoid">
                             <h5>Signature</h5>
                             <img t-att-src="image_data_uri(doc.worksheet_signature)" style="max-height: 6rem; max-width: 100%; color:black;"/><br/>
                             <span t-field="doc.worksheet_signed_by"/>

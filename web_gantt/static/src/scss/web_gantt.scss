@@ -26,13 +26,13 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
 // Generate background and text for each color.
 @mixin o-gantt-hoverable-colors($color) {
     $color-subdle: mix($color, white, 60%);
-    color: color-yiq($color-subdle);
+    color: color-contrast($color-subdle);
     background-color: $color-subdle;
     cursor: pointer;
 
     @include o-gantt-hover() {
         background-color: $color;
-        color: color-yiq($color);
+        color: color-contrast($color);
     }
 }
 
@@ -48,7 +48,8 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
 
 @mixin gantt-ribbon-decoration($color) {
     content: '';
-    @include size(20px, 16px);
+    width: 20px;
+    height: 16px;
     @include o-position-absolute(-11px, $left: -13px);
     box-shadow: 1px 1px 0 white;
     background: $color;
@@ -74,7 +75,7 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
 .o_gantt_view {
     box-shadow: 0 5px 20px -15px rgba(black, .3);
     user-select: none;
-    @include media-breakpoint-down(sm) {
+    @include media-breakpoint-down(md) {
         .o_gantt_view_container {
             width: max-content;
         }
@@ -148,7 +149,7 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
             color: $headings-color;
 
 
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 min-width: 0;
             }
         }
@@ -636,7 +637,7 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
                         $color: nth($o-colors-complete, $index);
                         &.highlight {
                             background-color: $color;
-                            color: color-yiq($color);
+                            color: color-contrast($color);
                         }
                         .o_gantt_progress {
                             opacity: 0.2;
@@ -649,7 +650,7 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
                         $color: nth($o-colors-complete, $index);
                         .o_connector_creator_bullet {
                             background-color: $color;
-                            color: color-yiq($color);
+                            color: color-contrast($color);
                             @include o-grab-cursor;
                         }
                         .o_connector_creator_top {

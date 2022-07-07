@@ -178,7 +178,7 @@ $grid-pill-height: 3rem;
         // row of the tbody) and the row labels of both title and regular rows
         &.o_grid_section {
             tr th {
-                padding-left: 6 * $table-cell-padding-sm;
+                padding-left: 6 * $table-cell-padding-x-sm;
                 text-align: left;
             }
             tr:first-child {
@@ -188,7 +188,7 @@ $grid-pill-height: 3rem;
                     background-color: rgba($o-brand-secondary, 0.30);
                 }
                 th {
-                    padding-left: $table-cell-padding-sm;
+                    padding-left: $table-cell-padding-x-sm;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -251,7 +251,7 @@ $grid-pill-height: 3rem;
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .o_grid_range.show > .dropdown-menu {
         display: inline-flex;
         min-width: 0px;

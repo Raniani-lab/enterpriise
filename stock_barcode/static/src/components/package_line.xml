@@ -13,8 +13,8 @@
             </div>
             <div name="quantity">
                 <i class="fa fa-fw fa-cube"/>
-                <span class="o_barcode_scanner_qty text-monospace badge">
-                    <span class="d-inline-block text-left" t-esc="qtyDone"/>
+                <span class="o_barcode_scanner_qty font-monospace badge">
+                    <span class="d-inline-block text-start" t-esc="qtyDone"/>
                     <span t-if="line.reservedPackage">/ 1</span>
                 </span>
             </div>
@@ -23,7 +23,7 @@
                 <t t-esc="line.owner_id.display_name"/>
             </div>
         </div>
-        <button t-on-click="openPackage" class="o_line_button o_package_content btn btn-secondary ml-2 ml-sm-4">
+        <button t-on-click="openPackage" class="o_line_button o_package_content btn btn-secondary ms-2 ms-sm-4">
             <i class="fa fa-2x fa-dropbox"/>
         </button>
     </div>

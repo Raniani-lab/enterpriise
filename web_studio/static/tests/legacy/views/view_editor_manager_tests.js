@@ -2679,7 +2679,7 @@ QUnit.module('ViewEditorManager', {
                                         "<field name='display_name'/>" +
                                         "<div class='oe_kanban_bottom_right'>" +
                                             "<div>test</div>" + // dummy div to make sure img is deleted (otherwise parent div of only child will be deleted)
-                                            "<img t-att-src='kanban_image(\"res.partner\", \"avatar_128\", 1)' class='oe_kanban_avatar float-right' width='24' height='24'/>" +
+                                            "<img t-att-src='kanban_image(\"res.partner\", \"avatar_128\", 1)' class='oe_kanban_avatar float-end' width='24' height='24'/>" +
                                         "</div>" +
                                     "</div>" +
                                 "</t>" +
@@ -2829,7 +2829,7 @@ QUnit.module('ViewEditorManager', {
                                 '<field name="display_name"/>' +
                             '</div>' +
                             '<div class="o_dropdown_kanban dropdown">' +
-                                '<a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#">' +
+                                '<a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#">' +
                                     '<span class="fa fa-bars fa-lg"/>' +
                                 '</a>' +
                                 '<div class="dropdown-menu" role="menu">' +

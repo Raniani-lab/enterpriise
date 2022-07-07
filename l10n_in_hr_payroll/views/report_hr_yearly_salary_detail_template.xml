@@ -75,7 +75,7 @@
                             <span t-esc="get_employee_detail(data['form'], employee)"/>
                                 <th>Title</th>
                                 <t t-foreach="months[0:12]" t-as="month_sal">
-                                    <th class="text-right">
+                                    <th class="text-end">
                                         <span t-esc="month_sal"/>
                                     </th>
                                 </t>

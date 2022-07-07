@@ -88,7 +88,7 @@
             <xpath expr="//span[@name='tags']" position="before">
                 <div class="o_kanban_record_title mb-2">
                     <field name="project_id"/>
-                    <div class="font-italic font-weight-normal"><field name="task_id"/></div>
+                    <div class="fst-italic fw-normal"><field name="task_id"/></div>
                 </div>
             </xpath>
         </field>

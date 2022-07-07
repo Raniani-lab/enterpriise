@@ -144,7 +144,7 @@
                                   <span>From: </span><field name="date_start" class="oe_inline" attrs="{'required': [('has_period','==','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}"/>
                                 </div>
                                 <div>
-                                  <span>to: </span><field name="date_end" class="oe_inline ml-4" attrs="{'required': [('has_period','==','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}"/>
+                                  <span>to: </span><field name="date_end" class="oe_inline ms-4" attrs="{'required': [('has_period','==','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}"/>
                                 </div>
                             </div>
                             <field name="location" attrs="{'invisible':[('has_location','==','no')], 'required': [('has_location','==','required')], 'readonly': [('request_status','not in',('new', 'pending'))]}" placeholder="e.g. Brussels" />
@@ -190,8 +190,8 @@
                                                 <div class="o_kanban_content">
                                                     <t t-esc="record.user_id.value"/>
                                                     <t t-if="record.status.raw_value">
-                                                        <t t-set="classname" t-value="{'approved': 'badge-success', 'pending': 'badge-warning', 'refused': 'badge-danger'}[record.status.raw_value] || 'badge-light'"/>
-                                                        <span t-esc="record.status.raw_value" t-attf-class="float-right badge-pill {{ classname }}"/>
+                                                        <t t-set="classname" t-value="{'approved': 'text-bg-success', 'pending': 'text-bg-warning', 'refused': 'text-bg-danger'}[record.status.raw_value] || 'text-bg-light'"/>
+                                                        <span t-esc="record.status.raw_value" t-attf-class="float-end rounded-pill {{ classname }}"/>
                                                     </t>
                                                 </div>
                                             </div>
@@ -236,7 +236,7 @@
                         <div class="oe_kanban_global_click container">
                             <div class="o_dropdown_kanban dropdown" t-if="!selection_mode">
 
-                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
@@ -252,13 +252,13 @@
                             </div>
                             <div class="oe_kanban_content">
                                 <t t-if="record.user_status.raw_value == 'pending'">
-                                    <span class="badge badge-pill float-right badge-warning mt4 mr16"><t t-esc="record.user_status.value"/></span>
+                                    <span class="badge rounded-pill float-end text-bg-warning mt4 mr16"><t t-esc="record.user_status.value"/></span>
                                 </t>
                                 <t t-if="record.user_status.raw_value == 'approved'">
-                                    <span class="badge badge-pill float-right badge-success mt4 mr16"><t t-esc="record.user_status.value"/></span>
+                                    <span class="badge rounded-pill float-end text-bg-success mt4 mr16"><t t-esc="record.user_status.value"/></span>
                                 </t>
                                 <t t-if="record.user_status.raw_value == 'refused'">
-                                    <span class="badge badge-pill float-right badge-danger mt4 mr16"><t t-esc="record.user_status.value"/></span>
+                                    <span class="badge rounded-pill float-end text-bg-danger mt4 mr16"><t t-esc="record.user_status.value"/></span>
                                 </t>
                                 <div>
                                     <strong class="o_kanban_record_title"><field name="name"/></strong>

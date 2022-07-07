@@ -146,7 +146,7 @@ var ManualAction = AbstractAction.extend({
                 self.renderer._renderNotifications(self.model.statement.notifications);
             }
             self._openFirstLine();
-            self.renderer.$('[data-toggle="tooltip"]').tooltip();
+            self.renderer.$('[data-bs-toggle="tooltip"]').tooltip();
             self.do_show();
             }
         );

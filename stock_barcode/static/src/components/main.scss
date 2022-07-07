@@ -44,7 +44,7 @@
         font-size: 16px;
         color: white;
 
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             font-size: 14px;
         }
 
@@ -59,7 +59,7 @@
             position: relative;
             padding: 1px 4px 0 2px;
 
-            @include media-breakpoint-down(xs) {
+            @include media-breakpoint-down(sm) {
                 // Used to display the location list on all width on small
                 // screen instead of below the current location.
                 position: initial;
@@ -94,7 +94,7 @@
                 max-height: 50vh;
                 overflow: auto;
 
-                @include media-breakpoint-down(xs) {
+                @include media-breakpoint-down(sm) {
                     width: 100%;
                 }
             }
@@ -238,14 +238,14 @@
         margin-left: 24px;
         font-size: 1.4em;
 
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             margin: 0;
         }
 
         .row {
             width: 700px;
 
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 width: 100vw;
             }
 

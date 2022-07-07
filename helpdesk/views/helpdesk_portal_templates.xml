@@ -42,14 +42,14 @@
                     <thead>
                         <tr>
                             <th>Ticket</th>
-                            <th class="text-right" t-if="groupby != 'create_date'">Reported on</th>
+                            <th class="text-end" t-if="groupby != 'create_date'">Reported on</th>
                             <th id="ticket_user_header" t-if="groupby != 'user'">Assigned to</th>
-                            <th t-if="groupby != 'stage'" colspan="5" class="text-right">Stage</th>
+                            <th t-if="groupby != 'stage'" colspan="5" class="text-end">Stage</th>
                         </tr>
                     </thead>
                     <t t-foreach="grouped_tickets" t-as="tickets">
                         <tbody>
-                            <tr t-if="not groupby =='none'" class="thead-light">
+                            <tr t-if="not groupby =='none'" class="table-light">
                                 <th t-if="groupby == 'stage'" colspan="5">
                                     <span t-field="tickets[0].stage_id.name"/>
                                 </th>
@@ -64,16 +64,16 @@
                         </tbody>
                         <t t-foreach="tickets" t-as="ticket">
                             <tr>
-                                <td class="text-left"><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><small>#</small><t t-out="ticket.id"/><span class="ml-2" t-field="ticket.name"/></a></td>
-                                <td class="text-right" t-if="groupby != 'create_date'">
+                                <td class="text-start"><a t-attf-href="/helpdesk/ticket/#{ticket.id}"><small>#</small><t t-out="ticket.id"/><span class="ms-2" t-field="ticket.name"/></a></td>
+                                <td class="text-end" t-if="groupby != 'create_date'">
                                     <span t-field="ticket.create_date" t-options='{"widget": "datetime", "hide_seconds": True}'/>
                                 </td>
                                 <td id="ticket_user_body" t-if="groupby != 'user'">
                                     <img t-if="ticket.user_id" class="rounded-circle o_portal_contact_img" t-attf-src="#{image_data_uri(ticket.user_id.sudo().avatar_1024)}" alt="Contact" style="width: 20px; height: 20px;"/>
                                     <span t-field="ticket.user_id"/>
                                 </td>
-                                <td t-if="groupby != 'stage'" class="text-right">
-                                    <span t-attf-class="badge badge-pill #{'badge-info' if ticket.stage_id.fold else 'badge-light'}" t-esc="ticket.stage_id.name"/>
+                                <td t-if="groupby != 'stage'" class="text-end">
+                                    <span t-attf-class="badge rounded-pill #{'text-bg-info' if ticket.stage_id.fold else 'text-bg-light'}" t-esc="ticket.stage_id.name"/>
                                 </td>
                             </tr>
                         </t>
@@ -101,7 +101,7 @@
                         <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
                             <li t-if="ticket.team_id.allow_portal_ticket_closing and not ticket.stage_id.is_close and not ticket.closed_by_partner" class="list-group-item flex-grow-1">
                                 <div class="btn-toolbar flex-sm-nowrap">
-                                    <button class="btn btn-secondary pt-1 btn-block" data-target="#helpdesk_ticket_close_modal" data-toggle="modal">
+                                    <button class="btn btn-secondary pt-1 btn-block" data-bs-target="#helpdesk_ticket_close_modal" data-bs-toggle="modal">
                                         Close Ticket
                                     </button>
                                 </div>
@@ -111,38 +111,38 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Close ticket</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <p>Are you sure you wish to proceed?</p>
                                             </div>
                                             <div class="modal-footer">
                                                 <a role="button" class="btn btn-primary" t-att-href="'/my/ticket/close/%s/%s' % (ticket.id, ticket.access_token)">Close the ticket</a>
-                                                <button type="button" class="btn btn-light" data-dismiss="modal">Discard</button>
+                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Discard</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            <li id="ticket-nav" class="list-group-item pl-0 flex-grow-1" t-ignore="true" role="complementary">
+                            <li id="ticket-nav" class="list-group-item ps-0 flex-grow-1" t-ignore="true" role="complementary">
                                 <ul class="nav flex-column">
                                     <li class="nav-item" id="nav-header">
-                                        <a class="nav-link pl-3" href="#card_header" style="max-width: 200px;">
+                                        <a class="nav-link ps-3" href="#card_header" style="max-width: 200px;">
                                             Ticket
                                         </a>
                                     </li>
                                     <li class="nav-item" id="nav-chat">
-                                        <a class="nav-link pl-3" href="#ticket_chat">
+                                        <a class="nav-link ps-3" href="#ticket_chat">
                                             History
                                         </a>
                                     </li>
                                 </ul>
                             </li>
-                            <li id="ticket-links" t-if="ticket_link_section" class="list-group-item pl-0 flex-grow-1" t-ignore="true" role="complementary" invisible="1">
+                            <li id="ticket-links" t-if="ticket_link_section" class="list-group-item ps-0 flex-grow-1" t-ignore="true" role="complementary" invisible="1">
                                 <ul class="nav flex-column">
                                     <t t-foreach="sorted(ticket_link_section, key=lambda r: r['sequence'])" t-as="ticket_link">
                                         <li class="nav-item">
-                                            <a class="nav-link pl-3" t-att-href="ticket_link['access_url']">
+                                            <a class="nav-link ps-3" t-att-href="ticket_link['access_url']">
                                                 <t t-out="ticket_link['title']"/>
                                             </a>
                                         </li>
@@ -150,21 +150,21 @@
                                 </ul>
                             </li>
 
-                            <li t-if="ticket.user_id or ticket.partner_id" class="list-group-item flex-grow-1 pl-0">
+                            <li t-if="ticket.user_id or ticket.partner_id" class="list-group-item flex-grow-1 ps-0">
                                 <div class="col-12 col-md-12 pb-2" t-if="ticket.user_id">
                                     <strong>Assigned to</strong>
-                                    <div class="row pl-3 flex-nowrap">
+                                    <div class="row ps-3 flex-nowrap">
                                         <img class="rounded-circle mt-1 o_portal_contact_img" t-att-src="image_data_uri(ticket.user_id.avatar_1024)" alt="Contact"/>
-                                        <div class="ml-2">
+                                        <div class="ms-2">
                                             <div t-out="ticket.user_id" t-options='{"widget": "contact", "fields": ["name"]}' class="mt-2"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-12 pb-2" t-if="ticket.partner_id">
                                     <strong>Customer</strong>
-                                    <div class="row pl-3 flex-nowrap">
+                                    <div class="row ps-3 flex-nowrap">
                                         <img class="rounded-circle mt-1 o_portal_contact_img" t-att-src="image_data_uri(ticket.partner_id.avatar_1024)" alt="Contact"/>
-                                        <div class="ml-2">
+                                        <div class="ms-2">
                                             <div t-field="ticket.partner_id" t-options='{"widget": "contact", "fields": ["name"]}'/>
                                             <a t-attf-href="mailto:{{ticket.partner_id.email}}" t-if="ticket.partner_id.email"><div t-field="ticket.partner_id" t-options='{"widget": "contact", "fields": ["email"]}'/></a>
                                             <a t-attf-href="tel:{{ticket.partner_id.phone}}" t-if="ticket.partner_id.phone"><div t-field="ticket.partner_id" t-options='{"widget": "contact", "fields": ["phone"]}'/></a>
@@ -178,16 +178,16 @@
                 <div id="ticket_content" class="col-12 col-lg justify-content-end">
                     <div id="card" class="card">
                         <div id="card_header" class="card-header container" data-anchor="true">
-                            <div class="row no-gutters ml-1">
+                            <div class="row g-0 ms-1">
                                 <div class="col-md">
                                     <h5 class="d-flex mb-1 mb-md-0">
                                         <div class="col-9 text-truncate">
                                             <span t-field="ticket.name"/>
                                             <small class="text-muted "> (#<span t-field="ticket.id"/>)</small>
                                         </div>
-                                        <div class="col-3 text-right">
-                                            <small class="text-right">Stage:</small>
-                                            <span t-field="ticket.stage_id.name" class=" badge badge-pill badge-info" title="Current stage of this ticket"/>
+                                        <div class="col-3 text-end">
+                                            <small class="text-end">Stage:</small>
+                                            <span t-field="ticket.stage_id.name" class=" badge rounded-pill text-bg-info" title="Current stage of this ticket"/>
                                         </div>
                                     </h5>
                                 </div>
@@ -272,7 +272,7 @@
         <t t-call="portal.portal_layout">
             <h1 class="o_page_header p-4">Our Customer Satisfaction</h1>
             <t t-if="teams">
-                <div id="wrap" class="pl-4">
+                <div id="wrap" class="ps-4">
                     <t t-foreach="teams" t-as="t">
                         <t t-set="team" t-value="t['team']"/>
                         <t t-set="ratings" t-value="t['ratings']"/>

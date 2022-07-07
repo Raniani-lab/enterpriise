@@ -17,7 +17,7 @@
                 <field name="picking_code" invisible="1"/>
                 <field name="picking_id" invisible="1"/>
                 <div class="col-12 d-flex align-items-baseline">
-                    <i class="fa fa-fw fa-lg fa-tags mr-3" title="Product"/>
+                    <i class="fa fa-fw fa-lg fa-tags me-3" title="Product"/>
                     <field name="product_id" placeholder="Product"
                         context="{'default_detailed_type': 'product'}"
                         attrs="{'readonly': ['|', ('state', '=', 'done'), ('move_id', '!=', False)]}"
@@ -27,24 +27,24 @@
             </div>
             <div class="row">
                 <div class="col-6 my-2 d-flex align-items-baseline">
-                    <i class="fa fa-fw fa-lg fa-cube mr-3" title="Quantity"/>
+                    <i class="fa fa-fw fa-lg fa-cube me-3" title="Quantity"/>
                     <field name="is_completed" invisible="1"/>
-                    <field name="qty_done" class="w-50 w-md-100 text-right o_qty_done_field_completed" attrs="{'invisible': [('is_completed', '=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>
-                    <field name="qty_done" class="w-50 w-md-100 text-right o_qty_done_field_not_completed" attrs="{'invisible':[('is_completed', '!=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>
+                    <field name="qty_done" class="w-50 w-md-100 text-end o_qty_done_field_completed" attrs="{'invisible': [('is_completed', '=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>
+                    <field name="qty_done" class="w-50 w-md-100 text-end o_qty_done_field_not_completed" attrs="{'invisible':[('is_completed', '!=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>
                     <widget name="set_reserved_qty_button"
                         field_to_set="qty_done" quantity="reserved_uom_qty"
                         attrs="{'invisible': [('reserved_uom_qty', '=', 0)]}"/>
                 </div>
                 <div class="col-6 my-2 d-flex align-items-baseline" groups="uom.group_uom"
                     attrs="{'invisible': [('reserved_uom_qty', '!=', 0)]}">
-                    <i class="fa mr-3" attrs="{'invisible': [('reserved_uom_qty', '!=', 0.0)]}"/>
+                    <i class="fa me-3" attrs="{'invisible': [('reserved_uom_qty', '!=', 0.0)]}"/>
                     <field name="product_uom_id" placeholder="Unit of Measure"
                         options="{'no_open': True}"
                         attrs="{'readonly': [('reserved_uom_qty', '!=', 0.0)]}"/>
                 </div>
             </div>
             <div class="row justify-content-center justify-content-md-start">
-                <div class="col-12 col-sm-10 col-md-8 my-2 ml-md-5 align-items-baseline"
+                <div class="col-12 col-sm-10 col-md-8 my-2 ms-md-5 align-items-baseline"
                     attrs="{'invisible': [('tracking', '=', 'serial')]}">
                     <widget name="digipad" quantity_field="qty_done"/>
                 </div>
@@ -52,13 +52,13 @@
             <div class="row" groups="stock.group_stock_multi_locations">
                 <div class="col-12 col-md-6 my-2 d-flex align-items-baseline"
                     attrs="{'invisible': [('picking_code', '=', 'incoming')]}">
-                    <i class="fa fa-fw fa-lg fa-map-marker text-center mr-3" title="Source Location"/>
+                    <i class="fa fa-fw fa-lg fa-map-marker text-center me-3" title="Source Location"/>
                     <field name="location_id" placeholder="Source Location"
                         domain="[('id', 'child_of', picking_location_id)]"
                         options="{'no_create': True}"/>
                 </div>
                 <div class="col-12 col-md-6 my-2 d-flex align-items-baseline" attrs="{'invisible': [('picking_code', '=', 'outgoing')]}">
-                    <i class="fa fa-fw fa-lg fa-long-arrow-right mr-3" title="Destination Location"/>
+                    <i class="fa fa-fw fa-lg fa-long-arrow-right me-3" title="Destination Location"/>
                     <field name="location_dest_id" placeholder="Source Location"
                         domain="[('id', 'child_of', picking_location_dest_id)]"
                         options="{'no_create': True}"/>
@@ -66,18 +66,18 @@
             </div>
             <div class="row" groups="stock.group_tracking_lot">
                 <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
-                    <i class="fa fa-fw fa-lg fa-archive mr-3" title="Source Package"/>
+                    <i class="fa fa-fw fa-lg fa-archive me-3" title="Source Package"/>
                     <field name="package_id" placeholder="Source Package"/>
                 </div>
                 <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
-                    <i class="fa fa-fw fa-lg fa-long-arrow-right mr-3" title="Destination Package"/>
+                    <i class="fa fa-fw fa-lg fa-long-arrow-right me-3" title="Destination Package"/>
                     <field name="result_package_id" placeholder="Destination Package"
                     context="{'picking_id': picking_id}"/>
                 </div>
             </div>
             <div class="row" groups="stock.group_tracking_owner">
                 <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
-                    <i class="fa fa-fw fa-lg fa-user-o text-center mr-3" title="Owner"/>
+                    <i class="fa fa-fw fa-lg fa-user-o text-center me-3" title="Owner"/>
                     <field name="owner_id" placeholder="Owner"/>
                 </div>
             </div>
@@ -90,7 +90,7 @@
             <field name="picking_location_dest_id" invisible="1"/>
             <div class="row" groups="stock.group_production_lot">
                 <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
-                    <i class="fa fa-fw fa-lg fa-barcode mr-3" title="Serial/Lot Number" attrs="{'invisible': [('tracking', 'not in', ['serial', 'lot'])]}"/>
+                    <i class="fa fa-fw fa-lg fa-barcode me-3" title="Serial/Lot Number" attrs="{'invisible': [('tracking', 'not in', ['serial', 'lot'])]}"/>
                     <field name="lot_name" placeholder="Serial/Lot Number"
                         attrs="{'invisible': ['|', '|', ('tracking', '=', 'none'), ('picking_type_use_create_lots', '=', False), ('picking_type_use_existing_lots', '=', True)]}"
                         />
@@ -103,7 +103,7 @@
 
             <div class="row row-long">
                 <div class="col-12 my-2 d-flex">
-                    <i class="fa fa-fw fa-lg fa-cubes mr-3" title="Locations"/>
+                    <i class="fa fa-fw fa-lg fa-cubes me-3" title="Locations"/>
                     <field name="product_stock_quant_ids" context="{'kanban_view_ref': 'stock_barcode.stock_quant_barcode_kanban_2', 'tree_view_ref': 'stock_barcode.view_stock_quant_tree'}"/>
                 </div>
             </div>
@@ -151,7 +151,7 @@
                         </div>
                         <div class="mb4">
                             <field name="quantity"/> <field name="product_uom_id" groups="uom.group_uom"/>
-                            <span class="ml-4" attrs="{'invisible': [('lot_id', '=', False)]}" groups="stock.group_production_lot">
+                            <span class="ms-4" attrs="{'invisible': [('lot_id', '=', False)]}" groups="stock.group_production_lot">
                                 <field name="lot_id"/>
                             </span>
                         </div>

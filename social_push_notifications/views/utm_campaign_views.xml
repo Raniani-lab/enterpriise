@@ -10,7 +10,7 @@
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button name="action_redirect_to_push_notifications"
-                    type="object" class="oe_stat_button order-11 border-right" icon="fa-bell"
+                    type="object" class="oe_stat_button order-11 border-end" icon="fa-bell"
                     attrs="{'invisible': [('social_push_notifications_count', '=', 0)]}" groups="social.group_social_user">
                     <field name="social_push_notifications_count" widget="statinfo" string="Notifications"/>
                 </button>

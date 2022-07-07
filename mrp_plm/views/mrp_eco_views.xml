@@ -196,7 +196,7 @@
                             </div>
                             <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
                                 <div t-if="widget.editable" role="menuitem">
-                                    <a class="dropdown-item pl-0" type="edit">Configuration</a>
+                                    <a class="dropdown-item ps-0" type="edit">Configuration</a>
                                 </div>
                                 <div t-if="widget.editable" role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
                                     <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
@@ -336,7 +336,7 @@
                          <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                             <div class="o_dropdown_kanban dropdown" groups="base.group_user">
-                                <a role="button" class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                <a role="button" class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
@@ -369,7 +369,7 @@
                                     <field name="priority" widget="priority"/>
                                 </div>
                                 <div class="oe_kanban_bottom_right">
-                                    <div class="float-left mr4" groups="base.group_user">
+                                    <div class="float-start mr4" groups="base.group_user">
                                         <field name="activity_ids" widget="kanban_activity"/>
                                         <field name="kanban_state" widget="state_selection" attrs="{'readonly': [('allow_change_kanban_state', '=', False)]}"/>
                                     </div>

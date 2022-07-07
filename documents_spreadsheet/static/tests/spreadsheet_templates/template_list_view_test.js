@@ -13,7 +13,7 @@ QUnit.module("documents_spreadsheet > template list view", {}, () => {
             arch: /*xml*/ `
                 <tree>
                     <field name="name"/>
-                    <button string="Edit" class="float-right" name="edit_template" icon="fa-pencil" />
+                    <button string="Edit" class="float-end" name="edit_template" icon="fa-pencil" />
                 </tree>
             `,
             intercepts: {
@@ -43,7 +43,7 @@ QUnit.module("documents_spreadsheet > template list view", {}, () => {
             arch: /*xml*/`
                 <tree>
                     <field name="name"/>
-                    <button string="Make a copy" class="float-right" name="copy" type="object" icon="fa-clone" />
+                    <button string="Make a copy" class="float-end" name="copy" type="object" icon="fa-clone" />
                 </tree>
             `,
             intercepts: {

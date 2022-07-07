@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='appraisal']" position="after">
                 <page string="Skills">
-                    <div class="o_hr_skills_group o_group_skills col-lg-12 pl-0 pr-0">
+                    <div class="o_hr_skills_group o_group_skills col-lg-12 ps-0 pe-0">
                         <span class="o_appraisal_overlay" attrs="{'invisible': [('state', '!=', 'new')]}">
                             Skills tab will be active once the appraisal is confirmed.
                         </span>

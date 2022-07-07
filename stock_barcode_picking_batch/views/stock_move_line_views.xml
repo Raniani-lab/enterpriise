@@ -9,7 +9,7 @@
             <xpath expr="//field[@name='picking_id']" position="replace">
                 <div class="row" groups="stock.group_production_lot">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
-                        <i class="fa fa-fw fa-lg fa-truck mr-3" title="Transfer"/>
+                        <i class="fa fa-fw fa-lg fa-truck me-3" title="Transfer"/>
                         <field name="picking_id" placeholder="Transfer"
                             required="1" options="{'no_create_edit': True}"/>
                     </div>

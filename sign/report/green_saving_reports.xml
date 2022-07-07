@@ -15,9 +15,7 @@
                 <div class="modal-content">
                     <div class="modal-header bg-200 align-items-center shadow">
                         <h3 class="mb-0">How do we calculate?</h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <i class="fa fa-times" aria-hidden="true"/>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <section class="p-3">
@@ -144,8 +142,8 @@
                 </t>
 
                 <!-- Modal Trigger -->
-                <div class="col-12 col-lg-4 pb-5 pt-4 text-center text-lg-left pl-lg-3">
-                    <a href="#" name='modal_green_savings' data-toggle="modal" data-target=".modal_green_savings" aria-label="Green Savings Summary">
+                <div class="col-12 col-lg-4 pb-5 pt-4 text-center text-lg-start ps-lg-3">
+                    <a href="#" name='modal_green_savings' data-bs-toggle="modal" data-bs-target=".modal_green_savings" aria-label="Green Savings Summary">
                         How are these results calculated?
                     </a>
                 </div>
@@ -255,11 +253,11 @@
                         </div>
                     </div>
                     <div class="col-7 p-0">
-                        <div class="card-body justify-content-center text-left h-100">
+                        <div class="card-body justify-content-center text-start h-100">
                             <h3 class="card-title" t-out="green_report_el_title"/>
                             <p class="card-text"><t t-out="green_report_el_type"/> <t t-out="green_report_el_text"/></p>
                             <t t-if="green_report_el_waste">
-                                <p class="font-weight-light">
+                                <p class="fw-light">
                                     <t t-if="green_report_el_waste > 1">
                                         like <t t-out="green_report_el_waste"/> <t t-out="green_report_el_waste_text_1"/>
                                     </t>
@@ -277,7 +275,7 @@
 
     <template id="green_report_el">
         <div t-attf-id="{{green_report_el_id}}" class="col-12 col-md-4 py-4">
-            <div t-attf-class="green-savings-card card card-default p-3 d-flex align-items-stretch h-100" name='modal_green_savings' data-toggle="modal" data-target=".modal_green_savings" t-attf-aria-label="{{green_report_el_title}} Summary">
+            <div t-attf-class="green-savings-card card card-default p-3 d-flex align-items-stretch h-100" name='modal_green_savings' data-bs-toggle="modal" data-bs-target=".modal_green_savings" t-attf-aria-label="{{green_report_el_title}} Summary">
                 <div class="row m-0 w-100 h-100">
                     <div class="col-lg-5 p-0">
                         <div t-attf-class="d-flex w-100 h-100 align-items-center justify-content-center display-3 text-{{green_report_el_color}} rounded-circle p-3">
@@ -285,11 +283,11 @@
                         </div>
                     </div>
                     <div class="col-lg-7 p-0">
-                        <div class="card-body d-flex flex-column text-center justify-content-start text-lg-left h-100">
+                        <div class="card-body d-flex flex-column text-center justify-content-start text-lg-start h-100">
                             <h3 class="card-title" t-out="green_report_el_title"/>
                             <p class="card-text"><t t-out="green_report_el_type"/> <t t-out="green_report_el_text"/></p>
                             <t t-if="green_report_el_waste">
-                                <p class="font-italic">
+                                <p class="fst-italic">
                                     <t t-if="green_report_el_waste > 1">
                                         like <t t-out="green_report_el_waste"/> <t t-out="green_report_el_waste_text_1"/>
                                     </t>

@@ -3,7 +3,7 @@
     <t t-name="HrReferralWelcome">
         <div class="o_hr_referral_wrapper">
             <t t-if="widget.dashboardData.onboarding_screen">
-                <div id="carouselOnboarding" class="carousel slide o_hr_referral_intro_carousel" data-interval="false">
+                <div id="carouselOnboarding" class="carousel slide o_hr_referral_intro_carousel" data-bs-interval="false">
                     <div class="carousel-header text-center">
                         <div class="o_hr_referral_logo">
                             <img src="/hr_referral/static/src/img/circle.svg" alt="Gather your team" class="img-fluid"/>
@@ -28,14 +28,14 @@
                     <div class="carousel-outer pb-sm-3">
                         <ol class="carousel-indicators">
                             <t t-foreach="widget.dashboardData.onboarding" t-as="item">
-                                <li data-target="#carouselOnboarding" t-att-data-slide-to="item_index" t-att-class="item_first and 'active'"></li>
+                                <li data-bs-target="#carouselOnboarding" t-att-data-bs-slide-to="item_index" t-att-class="item_first and 'active'"></li>
                             </t>
                         </ol>
                         <div class="carousel-controls">
-                            <a type="button" id="btn_skip" class="o_hr_referral_btn btn mr-1 btn-lg side-btn o_hr_referral_start" completed="true" aria-label="Start" title="Skip and Start">
+                            <a type="button" id="btn_skip" class="o_hr_referral_btn btn me-1 btn-lg side-btn o_hr_referral_start" completed="true" aria-label="Start" title="Skip and Start">
                                 Skip
                             </a>
-                            <a id="btn_next" class="o_hr_referral_btn btn ml-1 btn-lg btn-primary" href="#carouselOnboarding" role="button" data-slide="next">
+                            <a id="btn_next" class="o_hr_referral_btn btn ms-1 btn-lg btn-primary" href="#carouselOnboarding" role="button" data-bs-slide="next">
                                 Next
                                 <i class="fa fa-chevron-right"/>
                             </a>
@@ -71,12 +71,12 @@
                     <t t-foreach="widget.dashboardData.message" t-as="message">
                         <a t-if="message.url" class="message" style="display:block" t-att-href="message.url" t-att-title="message.url" target="_blank">
                             <img src="/hr_referral/static/src/img/new.png" class="img align-self-start mx-2"/>
-                            <button class="btn float-right fa fa-times o_hr_referral_btn_dismiss" t-att-message-id="message.id"/>
+                            <button class="btn float-end fa fa-times o_hr_referral_btn_dismiss" t-att-message-id="message.id"/>
                             <span><t t-esc="message.text"/></span>
                         </a>
                         <div t-else="" t-att-class="message.action and 'message o_referral_action' or 'message'" t-att-name="message.action" t-att-title="message.action and 'View Jobs' or ''">
                             <img src="/hr_referral/static/src/img/new.png" class="img align-self-start mx-2"/>
-                            <button class="btn float-right fa fa-times o_hr_referral_btn_dismiss" t-att-message-id="message.id"/>
+                            <button class="btn float-end fa fa-times o_hr_referral_btn_dismiss" t-att-message-id="message.id"/>
                             <span><t t-esc="message.text"/></span>
                         </div>
                     </t>

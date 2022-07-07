@@ -11,7 +11,7 @@
                     <div class="col-md-9">
                         <h2 class="o_page_header mt0 d-none" id="team-page"/>
                     </div>
-                    <div class="col-md-8 pl-4">
+                    <div class="col-md-8 ps-4">
                         <div t-if="team.use_website_helpdesk_form">
                             <t t-set="template_xmlid" t-value="team.website_form_view_id.xml_id"/>
                             <t t-call="#{template_xmlid}"/>
@@ -54,7 +54,7 @@
                             <t t-set="ticket" t-value="request.website._website_form_last_record()"/>
                         </t>
                         <h1 class="text-center">
-                            <i class="fa fa-check-circle fa-1x text-success mr-2" role="img" aria-label="Success" title="Success"/>
+                            <i class="fa fa-check-circle fa-1x text-success me-2" role="img" aria-label="Success" title="Success"/>
                             <t t-if="ticket">
                                 <span>Your Ticket Number is <a t-if="request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">#<span t-field="ticket.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="ticket.id"/></t>.</span>
                             </t>
@@ -175,9 +175,9 @@
         <nav class="navbar navbar-light border-top shadow-sm d-print-none">
             <div class="container">
                 <div class="d-flex flex-column flex-sm-row justify-content-between w-100 align-items-center">
-                    <span class="navbar-brand h4 my-0 mr-auto">Help Center</span>
+                    <span class="navbar-brand h4 my-0 me-auto">Help Center</span>
                     <ul class="o_whelpdesk_topbar_filters nav"/>
-                    <div class="d-flex align-items-center flex-wrap pl-sm-3 pr-0">
+                    <div class="d-flex align-items-center flex-wrap ps-sm-3 pe-0">
                         <t t-call="website_helpdesk.search_box">
                             <t t-set="search" t-value="search" />
                             <t t-set="display_detail" t-value="'false'" />
@@ -190,9 +190,9 @@
 
     <template id="navbar_search_date" inherit_id="website_helpdesk.navbar" name="Filter by Date" active="True">
         <xpath expr="//ul[hasclass('o_whelpdesk_topbar_filters')]" position="inside">
-            <li class="nav-item dropdown mr-2 my-1 border rounded">
-                <a href="#" role="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-calendar text-primary mr-2"/>
+            <li class="nav-item dropdown me-2 my-1 border rounded">
+                <a href="#" role="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fa fa-calendar text-primary me-2"/>
                     <t t-if="current_date" t-out="current_date" />
                     <t t-else="">
                         By Date
@@ -214,9 +214,9 @@
 
     <template id="navbar_search_type" inherit_id="website_helpdesk.navbar" name="Filter by Type" active="True">
         <xpath expr="//ul[hasclass('o_whelpdesk_topbar_filters')]" position="inside">
-            <li class="nav-item dropdown mr-2 my-1 border rounded" t-if="len(available_types) > 1">
-                <a href="#" role="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-folder-open text-primary mr-2"/>
+            <li class="nav-item dropdown me-2 my-1 border rounded" t-if="len(available_types) > 1">
+                <a href="#" role="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fa fa-folder-open text-primary me-2"/>
                     <t t-if="current_type" t-out="current_type" />
                     <t t-else="">
                         By Type
@@ -238,9 +238,9 @@
 
     <template id="navbar_search_tag" inherit_id="website_helpdesk.navbar" name="Filter by Tags" active="True">
         <xpath expr="//ul[hasclass('o_whelpdesk_topbar_filters')]" position="inside">
-            <li class="nav-item dropdown mr-2 my-1 border rounded" t-if="len(available_tags) > 1">
-                <a href="#" role="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-tag text-primary mr-2"/>
+            <li class="nav-item dropdown me-2 my-1 border rounded" t-if="len(available_tags) > 1">
+                <a href="#" role="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fa fa-tag text-primary me-2"/>
                     <t t-if="current_tag" t-out="current_tag" />
                     <t t-else="">
                         By Tags

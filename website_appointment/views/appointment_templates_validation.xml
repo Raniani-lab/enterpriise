@@ -15,8 +15,8 @@
             <nav t-if="appointment_type and appointment_type.category == 'website'" class="navbar navbar-light border-top shadow-sm d-print-none">
                 <div class="container">
                     <a t-attf-href="/appointment?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}"
-                        class="navbar-brand h4 my-0 mr-auto">
-                        <i class="fa fa-long-arrow-left text-primary mr-2"/>All Appointments
+                        class="navbar-brand h4 my-0 me-auto">
+                        <i class="fa fa-long-arrow-left text-primary me-2"/>All Appointments
                     </a>
                 </div>
             </nav>

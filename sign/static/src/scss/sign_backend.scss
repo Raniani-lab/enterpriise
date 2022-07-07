@@ -42,7 +42,7 @@
                     width: initial !important;
                 }
                 padding-left: 0px;
-                @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
+                @include media-breakpoint-down(sm, $o-extra-grid-breakpoints) {
                     font-weight: 400;
                     color: $o-brand-secondary !important;
                     &:nth-child(1) {
@@ -81,10 +81,10 @@
                 border: none !important;
             }
             tbody > tr > td.o_list_many2one:nth-child(1) {
-                @include media-breakpoint-down(md) {
+                @include media-breakpoint-down(lg) {
                     width: 100px !important;
                 }
-                @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
+                @include media-breakpoint-down(sm, $o-extra-grid-breakpoints) {
                     display: block;
                     font-weight: normal;
                     color: $o-brand-secondary!important;
@@ -109,7 +109,7 @@
                     border-color: #017e84 !important;
                 }
                 &:nth-child(2) {
-                    @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
+                    @include media-breakpoint-down(sm, $o-extra-grid-breakpoints) {
                         display: block !important;
                         min-height: 47px;
                     }
@@ -117,7 +117,7 @@
                 &:nth-child(3) {
                     width: 80px !important;
                     text-align:right;
-                    @include media-breakpoint-down(xs, $o-extra-grid-breakpoints) {
+                    @include media-breakpoint-down(sm, $o-extra-grid-breakpoints) {
                         vertical-align: bottom !important;
                         padding-bottom: 20px;
                         input {
@@ -144,7 +144,7 @@
         display: flex;
         flex-flow: column nowrap;
         @include o-position-absolute(0, 0, 0, 0);
-        @include media-breakpoint-down(sm) {
+        @include media-breakpoint-down(md) {
             position: static;
             .o_sign_pdf_iframe {
                 flex: 0 0 100%;
@@ -191,11 +191,11 @@
     .o_sign_create_partner {
         .fa-exclamation-circle {
             padding: 0 10px;
-            color: theme-color('danger');
+            color: map-get($theme-colors, 'danger');
         }
         .fa-check-circle {
             padding-left: 10px;
-            color: theme-color('success');
+            color: map-get($theme-colors, 'success');
         }
     }
 
@@ -300,7 +300,7 @@
                 position: absolute;
                 bottom: 0.5rem;
                 width: 100%;
-                @extend .pr-4;
+                @extend .pe-4;
             }
         }
     }
@@ -338,7 +338,7 @@
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .o_kanban_view {
         .o_kanban_record {
             &.o_sign_sticky_bottom {
@@ -367,7 +367,7 @@
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .o_sign_signer_status_wrapper {
         padding-right: 16px;
     }

@@ -95,7 +95,7 @@ const PhoneCallDetails = Widget.extend({
         $('.o_dial_transfer_button').popover({
             placement: 'top',
             delay: {show: 0, hide: 100},
-            title: 'Transfer to' + '<button class="close">&times;</button>',
+            title: 'Transfer to' + '<button class="btn-close"></button>',
             container: 'body',
             html: true,
             content: function(){
@@ -107,7 +107,7 @@ const PhoneCallDetails = Widget.extend({
         });
         $('.o_dial_transfer_button').on('shown.bs.popover', function () {
             $('#input_transfer').focus();
-            $('.popover button.close').click(function() {
+            $('.popover button.btn-close').click(function() {
                 $('.o_dial_transfer_button').popover('hide');
              });
         })

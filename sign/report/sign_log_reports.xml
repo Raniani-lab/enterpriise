@@ -38,13 +38,13 @@
                         <t t-set="has_sms_validation" t-value="o.sudo().request_item_ids.filtered(lambda i: i.sms_token)"/>
                         <thead>
                             <tr>
-                                <th class="text-left">Action</th>
-                                <th class="text-left">By</th>
-                                <th class="text-left">Date (UTC)</th>
-                                <th class="text-left">Email Validation</th>
-                                <th class="text-left" t-if="has_sms_validation">SMS Validation</th>
-                                <th class="text-left" groups="sign.group_sign_manager">Geolocation</th>
-                                <th class="text-left" groups="sign.group_sign_manager">IP</th>
+                                <th class="text-start">Action</th>
+                                <th class="text-start">By</th>
+                                <th class="text-start">Date (UTC)</th>
+                                <th class="text-start">Email Validation</th>
+                                <th class="text-start" t-if="has_sms_validation">SMS Validation</th>
+                                <th class="text-start" groups="sign.group_sign_manager">Geolocation</th>
+                                <th class="text-start" groups="sign.group_sign_manager">IP</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,7 +52,7 @@
                                 <tr>
                                     <td>
                                         <span t-field="log.action"/>
-                                        <img t-if="log.action == 'sign' and log.sign_request_item_id.signature" class="text-left" t-att-src="image_data_uri(log.sign_request_item_id.signature)" style="max-height: 40px"/>
+                                        <img t-if="log.action == 'sign' and log.sign_request_item_id.signature" class="text-start" t-att-src="image_data_uri(log.sign_request_item_id.signature)" style="max-height: 40px"/>
                                     </td>
                                     <td> <span t-field="log.partner_id"/>
                                     <t t-if="log.partner_id.email">
@@ -97,17 +97,17 @@
                                     <td groups="sign.group_sign_manager"> <span t-field="log.ip"/> </td>
                                 </tr>
                                 <tr t-if="log.log_hash">
-                                    <td colspan="7" class="text-right text-muted small" style="border-right-style:hidden;border-left-style:hidden;">
+                                    <td colspan="7" class="text-end text-muted small" style="border-end-style:hidden;border-start-style:hidden;">
                                          Signature: <pre style="display:inline" t-field="log.log_hash"/>
                                     </td>
                                 </tr>
                             </t>
                         </tbody>
                     </table>
-                    <div t-if="o.integrity" class="small text-right text-success">
+                    <div t-if="o.integrity" class="small text-end text-success">
                         <p><i class="fa fa-check"/> The document's integrity is valid.</p>
                     </div>
-                    <div t-else="" class="small text-right text-muted">
+                    <div t-else="" class="small text-end text-muted">
                         <p><i class="fa fa-exclamation-circle"/> The document's integrity could not be verified.</p>
                     </div>
                     <div class="small" t-if="o.state == 'signed'">
@@ -117,11 +117,11 @@
                     <table class="table table-sm o_main_table small">
                         <thead>
                             <tr>
-                                <th class="text-left">Viewed/downloaded by</th>
-                                <th class="text-left">Date (UTC)</th>
-                                <th class="text-left">State</th>
-                                <th class="text-left" groups="sign.group_sign_manager">Geolocation</th>
-                                <th class="text-left" groups="sign.group_sign_manager">ip</th>
+                                <th class="text-start">Viewed/downloaded by</th>
+                                <th class="text-start">Date (UTC)</th>
+                                <th class="text-start">State</th>
+                                <th class="text-start" groups="sign.group_sign_manager">Geolocation</th>
+                                <th class="text-start" groups="sign.group_sign_manager">ip</th>
                             </tr>
                         </thead>
                         <tbody>

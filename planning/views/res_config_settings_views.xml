@@ -24,7 +24,7 @@
                                 <div attrs="{'invisible': [('planning_allow_self_unassign', '=', False)]}">
                                     <br/>
                                     <label for="planning_self_unassign_days_before" class="o_dark_label" string="Deadline"/>
-                                    <field class="oe_inline col-4 col-lg-2 mr-1 text-center" name="planning_self_unassign_days_before"/> days before the beginning of the shift
+                                    <field class="oe_inline col-4 col-lg-2 me-1 text-center" name="planning_self_unassign_days_before"/> days before the beginning of the shift
                                 </div>
                             </div>
                         </div>
@@ -36,7 +36,7 @@
                                  <div class="content-group">
                                     <div class="mt16">
                                         <label for="planning_generation_interval" class="o_light_label" string="Generate shifts"/>
-                                        <field name="planning_generation_interval" class="oe_inline col-4 col-lg-2 mr-1 text-center"/>
+                                        <field name="planning_generation_interval" class="oe_inline col-4 col-lg-2 me-1 text-center"/>
                                         <span>months ahead</span>
                                     </div>
                                 </div>

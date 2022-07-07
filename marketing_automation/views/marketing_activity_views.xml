@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="row">
                                     <span class="col-2 px-0 pt-1">after</span>
-                                    <field name="trigger_type" class="col-10 pt-1 pr-1"/>
+                                    <field name="trigger_type" class="col-10 pt-1 pe-1"/>
                                 </div>
                             </div>
                             <label for="parent_id" attrs="{'invisible': [('trigger_type', '=', 'begin')]}"/>

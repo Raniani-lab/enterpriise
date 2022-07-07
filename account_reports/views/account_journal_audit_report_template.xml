@@ -67,8 +67,8 @@
                             <tr>
                                 <th t-if="len(taxes) > 1">Country</th>
                                 <th>Name</th>
-                                <th class="o_account_report_column_header text-right">Base Amount</th>
-                                <th class="o_account_report_column_header text-right">Tax Amount</th>
+                                <th class="o_account_report_column_header text-end">Base Amount</th>
+                                <th class="o_account_report_column_header text-end">Tax Amount</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,10 +84,10 @@
                                     </t>
 
                                     <td class="account_report_line_name"><a t-att-data-date_from="line.get('date_from')" t-att-data-date_to="line.get('date_to')"  t-att-data-args="tax['data_args']" t-esc="tax['name']" action="action_dropdown_audit_default_tax_report"/></td>
-                                    <td class="text-right text-monospace">
+                                    <td class="text-end font-monospace">
                                         <span t-esc="tax['base_amount']"/>
                                     </td>
-                                    <td class="text-right text-monospace">
+                                    <td class="text-end font-monospace">
                                         <span t-esc="tax['tax_amount']"/>
                                     </td>
                                 </tr>
@@ -115,9 +115,9 @@
                             <tr>
                                 <th class="o_account_report_column_header" t-if="len(grids) > 1">Country</th>
                                 <th>Grid</th>
-                                <th class="o_account_report_column_header text-right">+</th>
-                                <th class="o_account_report_column_header text-right">-</th>
-                                <th class="o_account_report_column_header text-right">Impact On Grid</th>
+                                <th class="o_account_report_column_header text-end">+</th>
+                                <th class="o_account_report_column_header text-end">-</th>
+                                <th class="o_account_report_column_header text-end">Impact On Grid</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -132,13 +132,13 @@
                                         </t>
                                     </t>
                                     <td class="account_report_line_name"><a t-esc="grid_name" t-att-data-date_from="line.get('date_from')" t-att-data-date_to="line.get('date_to')"  t-att-data-tag_id="grids[country_name][grid_name]['tag_id']" action="tax_tag_template_open_aml"/></td>
-                                    <td class="text-right text-monospace">
+                                    <td class="text-end font-monospace">
                                         <span t-esc="grids[country_name][grid_name].get('+', 0)"/>
                                     </td>
-                                    <td class="text-right text-monospace">
+                                    <td class="text-end font-monospace">
                                         <span t-esc="grids[country_name][grid_name].get('-', 0)"/>
                                     </td>
-                                    <td class="text-right text-monospace">
+                                    <td class="text-end font-monospace">
                                         <span t-esc="grids[country_name][grid_name]['impact']"/>
                                     </td>
                                 </tr>

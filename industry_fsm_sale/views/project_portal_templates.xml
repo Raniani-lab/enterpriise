@@ -30,14 +30,14 @@
                 <table class="table table-sm o_main_table">
                     <thead>
                         <tr>
-                            <th class="text-left">Description</th>
-                            <th class="text-right">Quantity</th>
-                            <th t-if="final_subtotal != 0 or is_any_total_discount_line" class="text-right">Unit Price</th>
-                            <th t-if="final_tax" class="text-right">Taxes</th>
-                            <th t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                            <th class="text-start">Description</th>
+                            <th class="text-end">Quantity</th>
+                            <th t-if="final_subtotal != 0 or is_any_total_discount_line" class="text-end">Unit Price</th>
+                            <th t-if="final_tax" class="text-end">Taxes</th>
+                            <th t-if="display_discount" class="text-end" groups="product.group_discount_per_so_line">
                                 <span>Disc.%</span>
                             </th>
-                            <th class="text-right">
+                            <th class="text-end">
                                 <span t-if="final_subtotal != 0 or is_any_total_discount_line" groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
                                 <span t-if="final_subtotal != 0 or is_any_total_discount_line" groups="account.group_show_line_subtotals_tax_included">Total Price</span>
                             </th>
@@ -65,24 +65,24 @@
                                     <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
                                 </t>
 
-                                <tr t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
                                     <t t-if="not line.display_type and not line.is_downpayment">
                                         <td><span t-field="line.name"/></td>
-                                        <td class="text-right">
+                                        <td class="text-end">
                                             <span t-if="is_task" t-field="line.qty_delivered"/>
                                             <span t-else="" t-field="line.product_uom_qty"/>
                                             <span t-field="line.product_uom" groups="uom.group_uom"/>
                                         </td>
-                                        <td class="text-right">
+                                        <td class="text-end">
                                             <span t-if="(is_task and line.delivered_price_total != 0) or (not is_task and line.price_total != 0) or is_total_discount" t-field="line.price_unit"/>
                                         </td>
-                                        <td t-if="final_tax" class="text-right">
+                                        <td t-if="final_tax" class="text-end">
                                             <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
                                         </td>
-                                        <td t-if="display_discount" class="text-right" groups="product.group_discount_per_so_line">
+                                        <td t-if="display_discount" class="text-end" groups="product.group_discount_per_so_line">
                                             <span t-field="line.discount"/>
                                         </td>
-                                        <td class="text-right o_price_total">
+                                        <td class="text-end o_price_total">
                                             <t t-if="is_task">
                                                 <span t-if="line.delivered_price_subtotal != 0 or is_total_discount" t-field="line.delivered_price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
                                                 <span t-if="line.delivered_price_total != 0 or is_total_discount" t-field="line.delivered_price_total" groups="account.group_show_line_subtotals_tax_included"/>
@@ -108,7 +108,7 @@
                                 </tr>
                             </t>
                             <t t-if="current_section and (line_last or doc.sale_order_id.order_line[line_index+1].display_type == 'line_section')">
-                                <tr class="is-subtotal text-right">
+                                <tr class="is-subtotal text-end">
                                     <td colspan="99">
                                         <strong class="mr16">Subtotal</strong>
                                         <span
@@ -129,19 +129,19 @@
                         <table t-if="final_subtotal != 0 or is_any_total_discount_line" class="table table-sm">
                             <tr t-if="final_tax" class="border-black o_subtotal" style="">
                                 <td><strong>Untaxed amount</strong></td>
-                                <td class="text-right">
+                                <td class="text-end">
                                     <span t-esc="final_subtotal" t-options='{"widget": "monetary", "display_currency": doc.sale_order_id.pricelist_id.currency_id}'/>
                                 </td>
                             </tr>
                             <tr t-if="final_tax">
                                 <td><strong>Taxes</strong></td>
-                                <td class="text-right">
+                                <td class="text-end">
                                     <span t-esc="final_tax" t-options='{"widget": "monetary", "display_currency": doc.sale_order_id.pricelist_id.currency_id}'/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><strong>Total</strong></td>
-                                <td class="text-right">
+                                <td class="text-end">
                                     <span t-esc="final_total" t-options='{"widget": "monetary", "display_currency": doc.sale_order_id.pricelist_id.currency_id}'/>
                                 </td>
                             </tr>
@@ -155,7 +155,7 @@
     <template id="portal_my_task" inherit_id="hr_timesheet.portal_my_task">
         <xpath expr="//li[@id='nav-header']" position="after">
             <li t-if="task.allow_material and task.allow_billable and task.sale_order_id and task.is_fsm" class="nav-item">
-                <a class="nav-link pl-3" href="#time_and_material">
+                <a class="nav-link ps-3" href="#time_and_material">
                     Time &amp; Material
                 </a>
             </li>

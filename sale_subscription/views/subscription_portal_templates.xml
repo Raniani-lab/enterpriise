@@ -34,7 +34,7 @@
                                 <t t-if="not subscription.to_renew and subscription.stage_category == 'progress'">
                                     <!-- User is logged in under the partner set on the subscription -->
                                     <t t-if="user.partner_id == subscription.partner_id">
-                                        <a t-if="acquirers or tokens" role="button" class="btn btn-secondary btn-block mb-2 w-100" data-toggle="modal" data-target="#payment_managing" href="#">
+                                        <a t-if="acquirers or tokens" role="button" class="btn btn-secondary btn-block mb-2 w-100" data-bs-toggle="modal" data-bs-target="#payment_managing" href="#">
                                             <t t-if="subscription.payment_token_id">Manage Payment Method</t>
                                             <t t-else="">Set Payment Method</t>
                                         </a>
@@ -63,7 +63,7 @@
                                 </a>
                                 <!-- Download -->
                                 <div class="o_download_pdf btn-toolbar flex-sm-nowrap mt-2">
-                                    <div class="btn-group flex-grow-1 mr-1 mb-1">
+                                    <div class="btn-group flex-grow-1 me-1 mb-1">
                                         <a class="btn btn-secondary btn-block o_download_btn" t-att-href="subscription.get_portal_url(report_type='pdf', download=True)" title="Download"><i class="fa fa-download"/> Download</a>
                                     </div>
                                     <div class="btn-group flex-grow-1 mb-1">
@@ -72,15 +72,15 @@
                                 </div>
                             </li>
                             <li t-if="display_close" class="list-group-item flex-grow-1">
-                                <a role="button" data-toggle="modal" data-target="#wc-modal-close" href="#">Close Subscription</a>
+                                <a role="button" data-bs-toggle="modal" data-bs-target="#wc-modal-close" href="#">Close Subscription</a>
                             </li>
                             <li t-if="subscription.user_id" class="list-group-item flex-grow-1">
                                 <div class="small mb-1"><strong class="text-muted">Subscription Manager:</strong></div>
                                 <div class="row flex-nowrap">
-                                    <div class="col flex-grow-0 pr-2">
-                                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-attf-src="#{image_data_uri(subscription.user_id.avatar_1024)}" alt="Contact"/>
+                                    <div class="col flex-grow-0 pe-2">
+                                        <img class="rounded-circle mr4 float-start o_portal_contact_img" t-attf-src="#{image_data_uri(subscription.user_id.avatar_1024)}" alt="Contact"/>
                                     </div>
-                                    <div class="col pl-0" style="min-width: 150px">
+                                    <div class="col ps-0" style="min-width: 150px">
                                         <span t-field="subscription.user_id" t-options='{"widget": "contact", "fields": ["name", "phone"], "no_marker": True}'/>
                                         <div><a t-if="is_follower" href="#discussion" class="small"><i class="fa fa-comment"></i> Send message</a></div>
                                     </div>
@@ -98,10 +98,10 @@
                                 <div class="col-12 col-lg flex-grow-1 mb-1 mb-lg-0">
                                     <h4 class="mb-0"><small class="text-muted">Subscription -</small> <span t-field="subscription.display_name"/></h4>
                                 </div>
-                                <div class="col-12 col-lg flex-grow-0 text-lg-right mb-1 mb-lg-0">
-                                    <span t-if="subscription.stage_category == 'progress' and not subscription.to_renew" class="badge badge-pill badge-success"><i class="fa fa-fw fa-check"/> In Progress</span>
-                                    <span t-if="subscription.to_renew and subscription.stage_category == 'progress'" class="badge badge-pill badge-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
-                                    <span t-if="subscription.stage_category == 'closed'" class="badge badge-pill badge-default"><i class="fa fa-fw fa-remove"/> Closed</span>
+                                <div class="col-12 col-lg flex-grow-0 text-lg-end mb-1 mb-lg-0">
+                                    <span t-if="subscription.stage_category == 'progress' and not subscription.to_renew" class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
+                                    <span t-if="subscription.to_renew and subscription.stage_category == 'progress'" class="badge rounded-pill text-bg-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
+                                    <span t-if="subscription.stage_category == 'closed'" class="badge rounded-pill badge-default"><i class="fa fa-fw fa-remove"/> Closed</span>
                                 </div>
                             </div>
                         </div>
@@ -118,23 +118,23 @@
                                     <table class="table table-borderless table-sm">
                                         <tbody style="white-space:nowrap">
                                             <tr>
-                                                <th class="text-right pb-0">Current Plan:</th>
+                                                <th class="text-end pb-0">Current Plan:</th>
                                                 <td class="w-100 pb-0 text-wrap"><span t-field="template.name"/></td>
                                             </tr>
                                             <tr>
-                                                <th class="text-right pb-0">Reference:</th>
+                                                <th class="text-end pb-0">Reference:</th>
                                                 <td class="w-100 pb-0"><span t-field="subscription.client_order_ref"/></td>
                                             </tr>
                                             <tr t-if="subscription.end_date">
-                                                <th class="text-right pb-0">Valid Until:</th>
+                                                <th class="text-end pb-0">Valid Until:</th>
                                                 <td class="w-100 pb-0"><span t-field="subscription.end_date"/></td>
                                             </tr>
                                             <tr>
-                                                <th class="text-right pb-0">Start Date:</th>
+                                                <th class="text-end pb-0">Start Date:</th>
                                                 <td class="w-100 pb-0"><span t-field="subscription.start_date"/></td>
                                             </tr>
                                             <tr>
-                                                <th class="text-right pb-0">Next Invoice:</th>
+                                                <th class="text-end pb-0">Next Invoice:</th>
                                                 <td class="w-100 pb-0"><span t-field="subscription.next_invoice_date"/></td>
                                             </tr>
                                         </tbody>
@@ -163,12 +163,12 @@
                                             <tr>
                                                 <th>Product</th>
                                                 <th>Recurrency</th>
-                                                <th class="text-right">Quantity</th>
-                                                <th class="text-right d-none d-sm-table-cell">Unit Price</th>
-                                                <th t-if="display_discount" class="text-right d-none d-sm-table-cell">
+                                                <th class="text-end">Quantity</th>
+                                                <th class="text-end d-none d-sm-table-cell">Unit Price</th>
+                                                <th t-if="display_discount" class="text-end d-none d-sm-table-cell">
                                                     <span>Disc.%</span>
                                                 </th>
-                                                <th class="text-right">
+                                                <th class="text-end">
                                                     <span>Total Price</span>
                                                 </th>
                                             </tr>
@@ -177,39 +177,39 @@
                                             <tr t-foreach="subscription.order_line" t-as="line">
                                                 <td class="line-description"><span t-field="line.name"/></td>
                                                 <td class="line-description"><span t-field="line.pricing_id.duration"/> <span t-field="line.pricing_id.unit"/></td>
-                                                <td class="text-right"><t t-esc="line.product_uom_qty"/> <span t-field="line.product_uom" data-oe-readonly="1"/></td>
-                                                <td class="text-right d-none d-sm-table-cell" t-if="not line.discount">
+                                                <td class="text-end"><t t-esc="line.product_uom_qty"/> <span t-field="line.product_uom" data-oe-readonly="1"/></td>
+                                                <td class="text-end d-none d-sm-table-cell" t-if="not line.discount">
                                                     <span t-esc="line.price_unit" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
                                                 </td>
-                                                <td class="text-right d-none d-sm-table-cell" t-if="line.discount">
+                                                <td class="text-end d-none d-sm-table-cell" t-if="line.discount">
                                                     <div
                                                         t-if="line.discount &gt;= 0"
                                                         t-field="line.price_unit"
                                                         t-options='{"widget": "monetary", "display_currency": subscription.pricelist_id.currency_id}'
                                                         t-att-style="line.discount and 'text-decoration: line-through' or None"
-                                                        t-att-class="(line.discount and 'text-danger' or '') + ' text-right'"
+                                                        t-att-class="(line.discount and 'text-danger' or '') + ' text-end'"
                                                     />
                                                     <div t-if="line.discount">
                                                         <t t-esc="(1-line.discount / 100.0) * line.price_unit" t-options='{"widget": "monetary", "display_currency": subscription.pricelist_id.currency_id}'/>
                                                     </div>
                                                 </td>
-                                                <td class="text-right d-none d-sm-table-cell" t-if="display_discount">
+                                                <td class="text-end d-none d-sm-table-cell" t-if="display_discount">
                                                     <strong t-if="line.discount &gt; 0" class="text-info">
                                                         <t t-esc="((line.discount % 1) and '%s' or '%d') % line.discount"/>%
                                                     </strong>
                                                 </td>
-                                                <td class="text-right">
+                                                <td class="text-end">
                                                     <span t-field="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": pricelist.currency_id}'/>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <div id="total" class="row" name="total" style="page-break-inside: avoid;">
-                                        <div class="col-sm-7 col-md-5 ml-auto">
+                                        <div class="col-sm-7 col-md-5 ms-auto">
                                             <table class="table table-sm">
                                                 <tr class="border-black" style="border-bottom:1px solid #dddddd;">
                                                     <td><strong>Subtotal</strong></td>
-                                                    <td class="text-right">
+                                                    <td class="text-end">
                                                         <span
                                                             data-id="amount_untaxed"
                                                             t-field="subscription.amount_untaxed"
@@ -219,7 +219,7 @@
                                                 </tr>
                                                 <tr class="border-black" style="border-bottom:1px solid #dddddd;">
                                                     <td>Taxes</td>
-                                                    <td class="text-right">
+                                                    <td class="text-end">
                                                         <span
                                                             data-id="amount_tax"
                                                             t-field="subscription.amount_tax"
@@ -229,14 +229,14 @@
                                                 </tr>
                                                 <tr class="border-black">
                                                     <td><strong>Next Billing Amount:</strong></td>
-                                                    <td class="text-right">
+                                                    <td class="text-end">
                                                         <span data-id="amount_total" t-field="subscription.amount_total" t-options='{"widget": "monetary", "display_currency": subscription.pricelist_id.currency_id}'/>
                                                     </td>
                                                 </tr>
                                                 <tr class="border-black" style="border-bottom:1px solid #dddddd;">
                                                     <td><strong>Details:</strong></td>
-                                                    <td class="text-right">
-                                                       <span data-id="recurring_pricing_details" t-field="subscription.recurring_pricing_details" class="text-align-right"/>
+                                                    <td class="text-end">
+                                                       <span data-id="recurring_pricing_details" t-field="subscription.recurring_pricing_details" class="text-align-end"/>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -269,11 +269,11 @@
                                     <div class="modal-content">
                                         <header class="modal-header">
                                             <h4 class="modal-title">Pay With</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </header>
                                         <main class="modal-body">
                                             <!-- ======  Manage Payment methods ====== -->
-                                            <div id="payment_method" class="text-left">
+                                            <div id="payment_method" class="text-start">
                                                 <t t-call="payment.manage">
                                                     <t t-set="assign_token_route"
                                                        t-value="'/my/subscription/assign_token/' + str(subscription.id)"/>
@@ -317,7 +317,7 @@
                                     <p>If you confirm, your subscription will be closed right away. Your current invoicing period is valid until <span t-field="subscription.next_invoice_date"/>.</p>
                                     <p>We always listen to our customer. Could you specify the reason for cancelling your subscription?</p>
                                     <div class="form-group">
-                                        <select class="form-control" name="close_reason_id">
+                                        <select class="form-select" name="close_reason_id">
                                             <t t-foreach="close_reasons" t-as="close_reason">
                                                 <option  t-att-value="close_reason.id" t-esc="close_reason.name"/>
                                             </t>
@@ -328,7 +328,7 @@
                                     </div>
                                 </main>
                                 <footer class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                     <button class="btn btn-primary contract-submit">Confirm</button>
                                 </footer>
                             </form>
@@ -378,7 +378,7 @@
                     <tr class="active">
                         <th class="w-75">Subscription</th>
                         <th class="text-center">Status</th>
-                        <th class="text-right">Total</th>
+                        <th class="text-end">Total</th>
                     </tr>
                 </thead>
                 <t t-foreach="subscriptions" t-as="subscription">
@@ -388,16 +388,16 @@
                         </td>
                         <td class="text-center" id="subscription_state">
                             <t t-if="subscription.stage_category == 'progress' and not subscription.to_renew">
-                                <span class="badge badge-pill badge-success"><i class="fa fa-fw fa-check"/> In Progress</span>
+                                <span class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
                             </t>
                             <t t-if="subscription.to_renew">
-                                <span class="badge badge-pill badge-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
+                                <span class="badge rounded-pill text-bg-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
                             </t>
                             <t t-if="subscription.stage_category == 'closed'">
-                                <span class="badge badge-pill badge-danger"><i class="fa fa-fw fa-remove"/> Closed</span>
+                                <span class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-remove"/> Closed</span>
                             </t>
                         </td>
-                        <td class="text-right"><span t-esc="subscription.amount_total" t-options="{'widget': 'monetary', 'display_currency': subscription.currency_id}"/></td>
+                        <td class="text-end"><span t-esc="subscription.amount_total" t-options="{'widget': 'monetary', 'display_currency': subscription.currency_id}"/></td>
                     </tr>
                 </t>
             </t>

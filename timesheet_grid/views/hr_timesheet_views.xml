@@ -72,7 +72,7 @@
                 </xpath>
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
                     <div>
-                        <span t-att-class="'o_status_bubble mx-0 float-right mt-1 o_color_bubble_' + (record.validated.raw_value ? 10 : 0)"
+                        <span t-att-class="'o_status_bubble mx-0 float-end mt-1 o_color_bubble_' + (record.validated.raw_value ? 10 : 0)"
                             class="o_timesheet_status_bubble" t-att-title="record.validated.raw_value ? 'Validated': 'Draft'"/>
                     </div>
                 </xpath>
@@ -448,10 +448,10 @@
                         attrs="{'invisible': ['|', ('display_timer_resume', '=', False), ('encode_uom_in_days', '=', True)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
                 </xpath>
                 <xpath expr="//field[@name='stage_id']" position="attributes">
-                    <attribute name="class">ml-2</attribute>
+                    <attribute name="class">ms-2</attribute>
                 </xpath>
                 <xpath expr="//field[@name='stage_id']" position="before">
-                    <field name="timer_start" widget="timer_timer" class="text-secondary mr-auto h2 ml-2 ml-sm-0 font-weight-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
+                    <field name="timer_start" widget="timer_timer" class="text-secondary me-auto h2 ms-2 ms-sm-0 fw-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
                 </xpath>
             </field>
         </record>

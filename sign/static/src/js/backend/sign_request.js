@@ -34,7 +34,7 @@ const EditableDocumentAction = DocumentAction.extend({
       const $signButton = $("<button/>", {
         html: _t("Sign Document"),
         type: "button",
-        class: "btn btn-primary mr-2",
+        class: "btn btn-primary me-2",
       });
       $signButton.on("click", () => {
         this._rpc({
@@ -59,7 +59,7 @@ const EditableDocumentAction = DocumentAction.extend({
       const nextDocumentButton = $("<button/>", {
         html: _t("Next Document"),
         type: "button",
-        class: "btn btn-primary mr-2",
+        class: "btn btn-primary me-2",
       });
       nextDocumentButton.on("click", () => {
         multiFileUpload.removeFile(nextTemplate.template);
@@ -100,7 +100,7 @@ const EditableDocumentAction = DocumentAction.extend({
                 this.requestStates && this.requestStates[el.dataset.id]
                   ? _t("Resend")
                   : _t("Send"),
-              class: "o_sign_resend_access_button btn btn-link ml-2 mr-2",
+              class: "o_sign_resend_access_button btn btn-link ms-2 me-2",
               style: "vertical-align: baseline;",
             })
           );

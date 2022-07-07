@@ -32,7 +32,7 @@
                         </button>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-                    <div class="oe_button_box text-left oe_edit_only" name="model_box" attrs="{'invisible': [('display_model_choice', '!=', True)]}">
+                    <div class="oe_button_box text-start oe_edit_only" name="model_box" attrs="{'invisible': [('display_model_choice', '!=', True)]}">
                         <div class="o_radio_hide_bullet overflow-auto">
                             <field name="model_id" string="Asset Model" help="Category of asset" nolabel="1" widget="radio" options="{'horizontal': true}" domain="[('state', '=', 'model'), ('user_type_id', '=?', user_type_id), ('asset_type', '=', asset_type)]"/>
                         </div>
@@ -70,7 +70,7 @@
                             <div colspan="2" class="o_checkbox_optional_field" attrs="{'invisible': [('state', 'not in', ('draft', 'model')), ('prorata', '=', False)]}">
                                 <label for="prorata"/>
                                 <field name="prorata"/>
-                                <div attrs="{'invisible': ['|', ('prorata', '=', False), ('state', '=', 'model')]}" class="row no-gutters flex-grow-1 align-items-baseline">
+                                <div attrs="{'invisible': ['|', ('prorata', '=', False), ('state', '=', 'model')]}" class="row g-0 flex-grow-1 align-items-baseline">
                                     <label class="col-12 col-sm-auto" for="prorata_date"/>
                                     <field name="prorata_date" class="oe_inline col-12 col-sm-auto flex-grow-1" attrs="{'required': [('prorata', '=', True), ('state', '!=', 'model')]}"/>
                                 </div>
@@ -186,7 +186,7 @@
                                     <strong><span><field name="name"/></span></strong>
                                 </div>
                                 <div class="col-2">
-                                    <span class="float-right text-right">
+                                    <span class="float-end text-end">
                                         <field name="state" widget="label_selection" options="{'classes': {'draft': 'primary', 'open': 'success', 'close': 'default'}}"/>
                                     </span>
                                 </div>
@@ -195,7 +195,7 @@
                                 <div class="col-5">
                                     Original Value
                                 </div>
-                                <div class="col-7 text-right">
+                                <div class="col-7 text-end">
                                     <span><field name="original_value" widget='monetary'/></span>
                                     <span><field name="currency_id" invisible="1"/></span>
                                 </div>
@@ -204,7 +204,7 @@
                                 <div class="col-5">
                                     Acquisition Date
                                 </div>
-                                <div class="col-7 text-right">
+                                <div class="col-7 text-end">
                                     <span><field name="acquisition_date"/></span>
                                 </div>
                             </div>
@@ -212,7 +212,7 @@
                                 <div class="col-5">
                                     Duration
                                 </div>
-                                <div class="col-7 text-right">
+                                <div class="col-7 text-end">
                                     <field name="method_number"/> <field name="method_period"/>
                                 </div>
                             </div>
@@ -220,7 +220,7 @@
                                 <div class="col-5">
                                     Model
                                 </div>
-                                <div class="col-7 text-right">
+                                <div class="col-7 text-end">
                                     <field name="model_id"/>
                                 </div>
                             </div>

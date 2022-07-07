@@ -1314,8 +1314,8 @@ QUnit.module('ReportEditorManager', {
                                     '<td/>' +
                                     '<td/>' +
                                     '<td/>' +
-                                    '<td class="text-right" colspan="2"><span class="o_bold">Total</span></td>' +
-                                    '<td class="text-right"><span class="o_bold"><t t-esc="sum(docs.mapped(\'total\'))"/></span></td>' +
+                                    '<td class="text-end" colspan="2"><span class="o_bold">Total</span></td>' +
+                                    '<td class="text-end"><span class="o_bold"><t t-esc="sum(docs.mapped(\'total\'))"/></span></td>' +
                                 '</tr>' +
                             '</tbody>' +
                         '</table>' +
@@ -1615,8 +1615,8 @@ QUnit.module('ReportEditorManager', {
                                     '<td/>' +
                                     '<td/>' +
                                     '<td/>' +
-                                    '<td class="text-right" colspan="2"><span class="o_bold">Total</span></td>' +
-                                    '<td class="text-right"><span class="o_bold"><t t-esc="sum(docs.mapped(\'total\'))"/></span></td>' +
+                                    '<td class="text-end" colspan="2"><span class="o_bold">Total</span></td>' +
+                                    '<td class="text-end"><span class="o_bold"><t t-esc="sum(docs.mapped(\'total\'))"/></span></td>' +
                                 '</tr>' +
                             '</tbody>' +
                         '</table>' +
@@ -1879,7 +1879,7 @@ QUnit.module('ReportEditorManager', {
         await rem.editorIframeDef.then(async function () {
             await testUtils.dom.click(rem.$('iframe').contents().find('main th'));
             var $card = rem.$('.o_web_studio_sidebar .card:has(.o_text:contains(table))');
-            await testUtils.dom.click($card.find('[data-toggle="collapse"]'));
+            await testUtils.dom.click($card.find('[data-bs-toggle="collapse"]'));
             $card = rem.$('.o_web_studio_sidebar .card.o_web_studio_active');
             assert.strictEqual($card.find('.o_text').text().trim(), 'table',
                 'Correct card should be active after sidebar updation');
@@ -1974,6 +1974,7 @@ QUnit.module('ReportEditorManager', {
             assert.strictEqual($('.o_technical_modal h4:contains(Alert)').length, 1, "Should display an alert because the selected field is wrong");
 
             await testUtils.dom.click($('.o_technical_modal:contains(Alert) .btn-primary'));
+            $('.o_web_studio_field_modal .o_field_selector').trigger('focusin');
             await testUtils.dom.click($('.o_web_studio_field_modal .o_field_selector_item[data-name="children"]'));
             await testUtils.dom.click($('.o_web_studio_field_modal .btn-primary'));
 

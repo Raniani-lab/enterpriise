@@ -85,7 +85,7 @@ tour.register('project_enterprise_tour', {
         content: 'Assign the task to you',
     }, {
         trigger: 'button span:contains("Save")',
-        extra_trigger: '.o_field_many2manytags .badge-pill',
+        extra_trigger: '.o_field_many2manytags .rounded-pill',
         content: 'Save task',
     }, {
         trigger: ".o_gantt_progressbar",

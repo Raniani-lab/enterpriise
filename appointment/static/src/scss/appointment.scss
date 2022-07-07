@@ -11,7 +11,7 @@
         header {
             a {
                 transition: all .25s ease-in-out;
-                @include hover-focus {
+                &:hover, &:focus {
                     transform: scale(1.05);
                 }
             }
@@ -47,11 +47,11 @@
     font-size: 16px;
     height: 40px;
     .o_weekend {
-        background-color: mix(theme-color('primary'), $body-bg, 30%);
-        color: color-yiq(mix(theme-color('primary'), $body-bg, 30%));
+        background-color: mix(map-get($theme-colors, 'primary'), $body-bg, 30%);
+        color: color-yiq(mix(map-get($theme-colors, 'primary'), $body-bg, 30%));
     }
     .o_day{
-        border: 2px solid theme-color('primary');
+        border: 2px solid map-get($theme-colors, 'primary');
         border-radius: 0.5rem;
         cursor: pointer;
         &.dropdown{
@@ -62,8 +62,8 @@
         }
     }
     .o_day:hover, .o_slot_selected {
-        color: color-yiq(theme-color('primary'));
-        background-color: theme-color('primary');
+        color: color-yiq(map-get($theme-colors, 'primary'));
+        background-color: map-get($theme-colors, 'primary');
     }
     .o_mute_day {
         opacity: 0.5
@@ -102,7 +102,7 @@
                 color: $body-color;
             }
             a:hover {
-                color: color-yiq(theme-color('primary'));
+                color: color-yiq(map-get($theme-colors, 'primary'));
             }
         }
     }
@@ -153,19 +153,19 @@
     }
 
     ul.wizard li.text-muted {
-        background: mix(theme-color('primary'), $body-bg, 10%);
+        background: mix(map-get($theme-colors, 'primary'), $body-bg, 10%);
     }
 
     ul.wizard li.text-muted .chevron:before {
-        border-left: 10px solid mix(theme-color('primary'), $body-bg, 10%);
+        border-left: 10px solid mix(map-get($theme-colors, 'primary'), $body-bg, 10%);
     }
 
     ul.wizard li.text-primary {
-        background-color: mix(theme-color('primary'), $body-bg, 20%);
+        background-color: mix(map-get($theme-colors, 'primary'), $body-bg, 20%);
     }
 
     ul.wizard li.text-primary .chevron:before {
-        border-left: 10px solid mix(theme-color('primary'), $body-bg, 20%);
+        border-left: 10px solid mix(map-get($theme-colors, 'primary'), $body-bg, 20%);
     }
 
     ul.wizard li:first-child {
@@ -199,7 +199,7 @@
             color: $body-color;
         }
         &:disabled {
-            background-color: mix(theme-color('primary'), $body-bg, 30%);
+            background-color: mix(map-get($theme-colors, 'primary'), $body-bg, 30%);
             color: $text-muted;
         }
     }

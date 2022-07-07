@@ -105,7 +105,7 @@
                             <button string="Unlink account"
                                 type="object"
                                 name="action_reset_refresh_token"
-                                class="btn-secondary pl-0"
+                                class="btn-secondary ps-0"
                                 groups="base.group_no_one"
                                 attrs="{'invisible': [('refresh_token', '=', False)]}"
                                 confirm="This action will disconnect your account with Amazon and

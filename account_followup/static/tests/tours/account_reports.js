@@ -41,7 +41,7 @@ Tour.register('account_followup_reports_widgets', {
         },
         {
             content: 'dismiss alert',
-            trigger: '.alert .close',
+            trigger: '.alert .btn-close',
             run: 'click'
         },
         {

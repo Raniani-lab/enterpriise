@@ -1,7 +1,7 @@
 <?xml version ="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="web_map.legacy.MapRenderer" owl="1">
-        <div class="o_map_view o_legacy row no-gutters">
+        <div class="o_map_view o_legacy row g-0">
             <t t-if="props.routingError">
                 <t t-call="web_map.legacy.MapRenderer.RountingUnavailable"/>
             </t>
@@ -17,23 +17,21 @@
     </t>
 
     <t t-name="web_map.legacy.MapRenderer.FetchingCoordinates" owl="1">
-        <div class="alert alert-info col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert"
+        <div class="alert alert-info col-md-12 col-lg-10 pe-5 ps-5 mb-0 text-center o-map-alert"
             role="status">
             <i class="fa fa-spin fa-circle-o-notch"/> Locating new addresses...
         </div>
     </t>
 
     <t t-name="web_map.legacy.MapRenderer.NoMapToken" owl="1">
-        <div class="alert alert-info alert-dismissible col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert"
+        <div class="alert alert-info alert-dismissible col-md-12 col-lg-10 pe-5 ps-5 mb-0 text-center o-map-alert"
              role="status">
             To get routing on your map, you first need to setup your Mapbox token.
             <a href="/web#action=base_setup.action_general_configuration" class="ml8">
                 <i class="fa fa-arrow-right"/>
                 Set up token
             </a>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span>×</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </t>
 
@@ -104,7 +102,7 @@
                         </t>
                         <t t-esc="record.display_name"/>
                     </span>
-                    <span class="ml-auto" t-if="record.partner and record.partner.fetchingCoordinate">
+                    <span class="ms-auto" t-if="record.partner and record.partner.fetchingCoordinate">
                         <i class="fa fa-spin fa-circle-o-notch"/>
                     </span>
                 </div>
@@ -113,13 +111,11 @@
     </t>
 
     <t t-name="web_map.legacy.MapRenderer.RountingUnavailable" owl="1">
-        <div class="alert alert-warning alert-dismissible col-md-12 col-lg-10 pr-5 pl-5 mb-0 text-center o-map-alert"
+        <div class="alert alert-warning alert-dismissible col-md-12 col-lg-10 pe-5 ps-5 mb-0 text-center o-map-alert"
              role="status">
             <strong>Unsuccessful routing request: </strong>
             <t t-esc="props.routingError"/>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span>×</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     </t>
 
@@ -132,7 +128,7 @@
     </t>
 
     <t t-name="web_map.legacy.markerBadge" owl="1">
-        <span class="badge badge-danger badge-pill border-0 o_map_marker_badge">
+        <span class="badge text-bg-danger rounded-pill border-0 o_map_marker_badge">
             <t t-esc="count"/>
         </span>
     </t>

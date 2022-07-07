@@ -1053,7 +1053,7 @@ odoo.define('project_timeshee.ui', function (require ) {
             var activity = _.findWhere(this.getParent().data.account_analytic_lines,  {id: event.currentTarget.dataset.activity_id});
             if (activity.unit_amount <= 0) {
                 self.modal_activity = activity;
-                self.$('.pt_deletion_from_list_modal').modal();
+                self.$('.pt_deletion_from_list_modal').modal('show');
             } else {
                 if (_.isUndefined(this.getParent().data.settings.time_unit)) {
                     activity.unit_amount = parseFloat(activity.unit_amount) - DEFAULT_TIME_UNIT;
@@ -1272,7 +1272,7 @@ odoo.define('project_timeshee.ui', function (require ) {
                 });
             } else {
                 this.$('.pt_settings_alert').show(0).delay(5000).hide(0);
-                this.$("div.pt_duration_fg").addClass('o_has_error').find('.form-control, .custom-select').addClass('is-invalid');
+                this.$("div.pt_duration_fg").addClass('o_has_error').find('.form-control, .form-select').addClass('is-invalid');
                 this.$("input.pt_minimal_duration").val('').focus();
             }
         },
@@ -1286,7 +1286,7 @@ odoo.define('project_timeshee.ui', function (require ) {
                 });
             } else {
                 this.$('.pt_settings_alert').show(0).delay(5000).hide(0);
-                this.$("div.pt_time_unit_fg").addClass('o_has_error').find('.form-control, .custom-select').addClass('is-invalid');
+                this.$("div.pt_time_unit_fg").addClass('o_has_error').find('.form-control, .form-select').addClass('is-invalid');
                 this.$("input.pt_time_unit").val('').focus();
             }
         },
@@ -1864,7 +1864,7 @@ odoo.define('project_timeshee.ui', function (require ) {
             session.rpc('/web/session/modules').then(function(response){
                 if (response.length > 0 && _.contains(response, 'project_timesheet_synchro')) {
                     self.getParent().syncable = true;
-                    self.$('.pt_keep_guest_data').modal();
+                    self.$('.pt_keep_guest_data').modal('show');
                 } else {
                     self.getParent().syncable = false;
                     session.rpc('/jsonrpc',  { method : 'server_version' , service : 'db', args : []}).then(function(result) {

@@ -20,7 +20,7 @@ const PlanningFormController = FormController.extend({
                 const message = _t("The recurring shifts have successfully been created.");
                 this.displayNotification({
                     type: 'success',
-                    message: Markup`<i class="fa fa-fw fa-check"></i><span class="ml-1">${message}</span>`,
+                    message: Markup`<i class="fa fa-fw fa-check"></i><span class="ms-1">${message}</span>`,
                 });
             }
         }

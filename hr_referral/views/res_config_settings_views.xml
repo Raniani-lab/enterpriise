@@ -17,7 +17,7 @@
                                         <field name="hr_referral_background" widget="image" string="Background Image" />
                                     </div>
                                     <div>
-                                        <button name="restore_default_referral_background" type="object" string="Restore Default" icon="fa-arrow-right" class="ml-4 btn-link" />
+                                        <button name="restore_default_referral_background" type="object" string="Restore Default" icon="fa-arrow-right" class="ms-4 btn-link" />
                                     </div>
                                 </div>
                             </div>

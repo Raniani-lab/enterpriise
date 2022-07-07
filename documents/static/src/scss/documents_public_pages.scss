@@ -60,7 +60,8 @@ body.o_docs_share_page {
             }
 
             .o_request_icon {
-                @include size(50px, 59px);
+                width: 50px;
+                height: 59px;
                 position: relative;
                 margin: -$o-docs-gap 0 (-$o-docs-gap) (-$o-docs-gap);
 
@@ -108,7 +109,8 @@ body.o_docs_share_page {
 
         .o_image {
             margin-top: 2px;
-            @include size(43px);
+            width: 43px;
+            height: 43px;
         }
 
         .o_image_preview {
@@ -133,13 +135,14 @@ body.o_docs_share_page {
         }
 
         .o_card {
-            @include media-breakpoint-down(sm) {
+            @include media-breakpoint-down(md) {
                 justify-content: center;
                 flex-flow: row wrap;
             }
 
             .o_image {
-                @include size(55px);
+                width: 55px;
+                height: 55px;
             }
 
             .o_card_title {
@@ -148,7 +151,8 @@ body.o_docs_share_page {
 
             &.o_request_card {
                 .o_request_icon {
-                    @include size(60px, 75px);
+                    width: 60px;
+                    height: 75px;
                 }
             }
         }

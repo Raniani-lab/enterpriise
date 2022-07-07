@@ -370,7 +370,7 @@ var FormEditor =  FormRenderer.extend(EditorMixin, {
             if (self.$('.oe_title').length & !self.$('.oe_title').siblings('.oe_avatar').length && !self.$('.oe_title > h1 > .oe_avatar').length) {
                 const $avatar = $('<div>', {
                     text: _t("Add Picture"),
-                    class: self.$('.oe_title > h1.d-flex.flex-row').length ? 'oe_avatar ml-3 p-3 o_web_studio_avatar h4': 'oe_avatar ml-3 mr-3 o_web_studio_avatar',
+                    class: self.$('.oe_title > h1.d-flex.flex-row').length ? 'oe_avatar ms-3 p-3 o_web_studio_avatar h4': 'oe_avatar ms-3 me-3 o_web_studio_avatar',
                 }).click(function () {
                     const compatibleFields = _.pick(self.state.fields, function (e) {
                         return e.type === 'binary';

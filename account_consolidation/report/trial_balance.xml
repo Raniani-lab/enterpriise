@@ -71,7 +71,7 @@
             <t t-set="has_a_selected_period"
                t-value="options.get('periods', False) and any(period.get('selected') for period in options['periods'])"/>
             <t t-if="not has_a_selected_period">
-                <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+                <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown">
                     <span class="fa fa-book"/>
                     Journals:
                     <t t-set="selected_journals"
@@ -97,7 +97,7 @@
         <!-- Template for comparison filter -->
         <template id="search_template_consolidation_period_comparisons">
             <t t-if="len(options.get('periods', [])) > 0">
-                <a type="button" class="dropdown-toggle" data-toggle="dropdown">
+                <a type="button" class="dropdown-toggle" data-bs-toggle="dropdown">
                     <span class="fa fa-bar-chart"/>
                     Comparison
                     <t t-set="selected_periods"
@@ -174,7 +174,7 @@
                             t-att-style="column.get('style', lines.get('columns_header')[-1][column_index+line.get('colspan', 1)].get('style', ''))">
                             <t t-if="column.get('journal_id')">
                                 <div class="dropdown">
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href='#'>
+                                    <a class="dropdown-toggle" data-bs-toggle="dropdown" href='#'>
                                         <span t-att-data-line-id="line['id']" t-att-data-id="column['journal_id']"
                                               t-att-class="domainClass" t-att-title="line.get('title_hover')">
                                             <t t-esc="column.get('name')"/>

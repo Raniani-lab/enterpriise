@@ -64,7 +64,7 @@
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .o_control_panel {
         > div.o_cp_bottom {
             min-height: auto;

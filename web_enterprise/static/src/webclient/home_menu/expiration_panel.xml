@@ -7,7 +7,7 @@
         t-attf-class="alert-{{alertType}}"
         >
         <!-- t-translation="off" should be on next a element below -->
-        <a t-if="subscription.daysLeft &gt; 0" href="#" class="oe_instance_hide_panel float-right alert-link" t-on-click.prevent="() => subscription.hideWarning()" aria-label="Dismiss">×</a>
+        <a t-if="subscription.daysLeft &gt; 0" href="#" class="oe_instance_hide_panel float-end alert-link" t-on-click.prevent="() => subscription.hideWarning()" aria-label="Dismiss">×</a>
         <span t-if="!subscription.lastRequestStatus" class="oe_instance_register">
             <t t-if="!subscription.hasInstalledApps">You will be able to register your database once you have installed your first app.</t>
             <t t-else="">
@@ -48,7 +48,7 @@
         <span t-elif="subscription.lastRequestStatus === 'link'" class="oe_instance_register oe_database_already_linked">
             Your subscription is already linked to a database.<br/>
             To unlink it you can either:<br/>
-            <ul class="text-left d-inline-block">
+            <ul class="text-start d-inline-block">
                 <li>Login to your Odoo.com dashboard then unlink your previous database: <a t-att-href="subscription.linkedSubscriptionUrl"> <t t-esc="subscription.linkedSubscriptionUrl"/></a></li>
                 <li t-if="subscription.linkedEmail" class="oe_contract_email_block">
                     <a href="#" class="oe_contract_send_mail" t-on-click.prevent="() => subscription.sendUnlinkEmail()">Click here to send an email</a> to the subscription owner (email: <strong t-esc="subscription.linkedEmail"/>) with the instructions to follow

@@ -39,7 +39,7 @@
                             <div class="modal-content">
                                 <header class="modal-header">
                                     <h3 class="modal-title">Net calculation</h3>
-                                    <a role="button" class="btn btn-secondary close" data-dismiss="modal" aria-label="close"><span t-translation="off">&amp;times</span></a>
+                                    <a role="button" class="btn btn-secondary close" data-bs-dismiss="modal" aria-label="close"><span t-translation="off">&amp;times</span></a>
                                 </header>
                                 <main class="modal-body"/>
                             </div>
@@ -79,7 +79,7 @@
                                 </t>
                                 <div t-att-class="'folded_content ' + ('d-none' if (advantage.res_field_id and 'fold_' + advantage.field in initial_values and not initial_values['fold_' + advantage.field]) else '')">
                                     <t t-if="advantage.display_type == 'slider'">
-                                        <span class="badge badge-secondary"><t t-esc="advantage.slider_min"/></span>
+                                        <span class="badge text-bg-secondary"><t t-esc="advantage.slider_min"/></span>
                                         <!-- YTI TODO master: Add step field on slider advantages -->
                                         <input
                                             type="range"
@@ -91,7 +91,7 @@
                                             t-att-value="initial_values[advantage.field]"
                                             t-att-list="advantage.field + '_range'"
                                             t-att-name="advantage.field + '_slider'"/>
-                                        <span class="badge badge-secondary"><t t-esc="advantage.slider_max"/></span>
+                                        <span class="badge text-bg-secondary"><t t-esc="advantage.slider_max"/></span>
                                         <datalist t-att-id="advantage.field + '_range'">
                                             <t t-set="step" t-value="(advantage.slider_max - advantage.slider_min) / 10.0"/>
                                             <t t-foreach="range(1, 10)" t-as="i">
@@ -137,7 +137,7 @@
                                     </t>
                                     <t t-if="advantage.display_type == 'dropdown'">
                                         <select
-                                            class="form-control form-control-primary mt16 mb8 advantage_input"
+                                            class="form-select form-select-primary mt16 mb8 advantage_input"
                                             applies-on="contract"
                                             t-att-name="'select_' + advantage.field">
                                             <t t-set="options" t-value="dropdown_options[advantage.field]"/>
@@ -148,7 +148,7 @@
                                     </t>
                                     <t t-if="advantage.display_type == 'dropdown-group'">
                                         <select
-                                            class="form-control form-control-primary mt16 mb8 advantage_input"
+                                            class="form-select form-select-primary mt16 mb8 advantage_input"
                                             applies-on="contract"
                                             t-att-name="'select_' + advantage.field">
                                             <t t-set="groups" t-value="dropdown_group_options[advantage.field]"/>
@@ -178,12 +178,10 @@
                                         t-att-name="advantage.field"
                                         t-att-value="initial_values[advantage.field]"
                                         applies-on="contract"/>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <t t-if="advantage.uom == 'days'">Days</t>
-                                            <t t-if="advantage.uom == 'percent'">%</t>
-                                            <t t-if="advantage.uom == 'currency'"><t t-esc="contract.company_id.currency_id.symbol"/></t>
-                                        </div>
+                                    <div class="input-group-text">
+                                        <t t-if="advantage.uom == 'days'">Days</t>
+                                        <t t-if="advantage.uom == 'percent'">%</t>
+                                        <t t-if="advantage.uom == 'currency'"><t t-esc="contract.company_id.currency_id.symbol"/></t>
                                     </div>
                                 </div>
                                 </t>
@@ -335,7 +333,7 @@
             <select
                 t-att-name="personal_info.field"
                 t-att-applies-on="personal_info.applies_on"
-                t-att-class="'form-control personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
+                t-att-class="'form-select personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
                 t-att-data-placeholder="personal_info.placeholder"
                 t-att-required="personal_info.is_required and not hidden_children">
                 <option/>

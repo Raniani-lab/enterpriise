@@ -81,6 +81,9 @@ const CSS = {
 
 QUnit.module('LegacyViews > GanttView (legacy) > Gantt Dependency', {
     async beforeEach() {
+        this.initialPopoverDefaultAnimation = Popover.Default.animation;
+        Popover.Default.animation = false;
+
         testPromise = testUtils.makeTestPromise();
         ganttViewParams.data = {
             'project.task': {
@@ -147,7 +150,10 @@ QUnit.module('LegacyViews > GanttView (legacy) > Gantt Dependency', {
             }
         };
         ganttViewParams.View = TestGanttView;
-    }
+    },
+    async afterEach() {
+        Popover.Default.animation = this.initialPopoverDefaultAnimation;
+    },
 });
 
 QUnit.test('Connectors are correctly computed and rendered.', async function (assert) {

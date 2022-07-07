@@ -36,10 +36,10 @@ odoo.define("web_enterprise.Dialog", function(require) {
             const prom = await this._super.apply(this, arguments);
             if (this.renderHeader && this.fullscreen) {
                 const $modalHeader = this.$modal.find(".modal-header");
-                $modalHeader.find("button.close").remove();
+                $modalHeader.find("button.btn-close").remove();
                 const $navigationBtn = $("<button>", {
                     class: "btn fa fa-arrow-left",
-                    "data-dismiss": "modal",
+                    "data-bs-dismiss": "modal",
                     "aria-label": "close",
                 });
                 $modalHeader.prepend($navigationBtn);

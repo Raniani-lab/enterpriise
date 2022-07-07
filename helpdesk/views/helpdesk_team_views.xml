@@ -301,14 +301,14 @@
                                     <field name="stage_ids" invisible="1"/>
                                     <div class="mt16">
                                         <label for="to_stage_id"/>
-                                        <field name="to_stage_id" class="ml-2 oe_inline" attrs="{'required': [('auto_close_ticket', '=', True)]}" context="{'default_team_id': active_id}"/>
+                                        <field name="to_stage_id" class="ms-2 oe_inline" attrs="{'required': [('auto_close_ticket', '=', True)]}" context="{'default_team_id': active_id}"/>
                                     </div>
                                     <div class="mt8">
                                         <strong>After</strong><field name="auto_close_day" class="mx-2 oe_inline text-center" required="1"/><span>days of inactivity</span>
                                     </div>
                                     <div class="mt8">
                                         <label for="from_stage_ids"/>
-                                        <field name="from_stage_ids" widget="many2many_tags" class="ml-2 oe_inline" context="{'default_team_id': active_id}"/>
+                                        <field name="from_stage_ids" widget="many2many_tags" class="ms-2 oe_inline" context="{'default_team_id': active_id}"/>
                                     </div>
                                 </div>
                             </div>
@@ -499,9 +499,9 @@
                                                 <span>Average Rating</span>
                                                 <span class="ms-3">
                                                     <b>
-                                                        <strong class="fa fa-fw mt4 fa-smile-o text-success font-weight-bolder" t-if="record.rating_avg.raw_value &gt;= 3.66" title="Average Rating: Satisfied" role="img" aria-label="Happy face"/>
-                                                        <strong class="fa fa-fw mt4 fa-meh-o text-warning font-weight-bolder" t-elif="record.rating_avg.raw_value &gt;= 2.33" title="Average Rating: Okay" role="img" aria-label="Neutral face"/>
-                                                        <strong class="fa fa-fw mt4 fa-frown-o text-danger font-weight-bolder" t-else="" title="Average Rating: Dissatisfied" role="img" aria-label="Sad face"/>
+                                                        <strong class="fa fa-fw mt4 fa-smile-o text-success fw-bolder" t-if="record.rating_avg.raw_value &gt;= 3.66" title="Average Rating: Satisfied" role="img" aria-label="Happy face"/>
+                                                        <strong class="fa fa-fw mt4 fa-meh-o text-warning fw-bolder" t-elif="record.rating_avg.raw_value &gt;= 2.33" title="Average Rating: Okay" role="img" aria-label="Neutral face"/>
+                                                        <strong class="fa fa-fw mt4 fa-frown-o text-danger fw-bolder" t-else="" title="Average Rating: Dissatisfied" role="img" aria-label="Sad face"/>
                                                     </b>
                                                     <field name="rating_avg_percentage" nolabel="1" widget="percentage"/>
                                                 </span>
@@ -512,25 +512,25 @@
                                 <div class="row pt-5">
                                     <div class="col">
                                         <a name="action_view_open_ticket" type="object" class="d-flex flex-column align-items-center">
-                                            <span class="font-weight-bold"><field name="open_ticket_count"/></span>
+                                            <span class="fw-bold"><field name="open_ticket_count"/></span>
                                             <span class="text-muted">Open</span>
                                         </a>
                                     </div>
-                                    <div class="col border-left">
+                                    <div class="col border-start">
                                         <a name="%(helpdesk.helpdesk_ticket_action_unassigned)d" type="action" class="d-flex flex-column align-items-center">
-                                            <span class="font-weight-bold"><field name="unassigned_tickets"/></span>
+                                            <span class="fw-bold"><field name="unassigned_tickets"/></span>
                                             <span class="text-muted">Unassigned</span>
                                         </a>
                                     </div>
-                                    <div class="col border-left">
+                                    <div class="col border-start">
                                         <a name="action_view_urgent" type="object" class="d-flex flex-column align-items-center">
-                                            <span class="font-weight-bold"><field name="urgent_ticket"/></span>
+                                            <span class="fw-bold"><field name="urgent_ticket"/></span>
                                             <span class="text-muted">Urgent</span>
                                         </a>
                                     </div>
-                                    <div class="col border-left" groups="helpdesk.group_use_sla" attrs="{'invisible': [('use_sla', '=', False)]}">
+                                    <div class="col border-start" groups="helpdesk.group_use_sla" attrs="{'invisible': [('use_sla', '=', False)]}">
                                         <a name="action_view_sla_failed" type="object" class="d-flex flex-column align-items-center" title="Number of open tickets with at least one SLA failed.">
-                                            <span class="font-weight-bold"><field name="sla_failed"/></span>
+                                            <span class="fw-bold"><field name="sla_failed"/></span>
                                             <span class="text-muted">Failed</span>
                                         </a>
                                     </div>

@@ -19,9 +19,7 @@
                     <div class="col-md-3">
                         <div class="input-group">
                             <input class="form-control" type="text" t-att-value="data[1]" disabled="disabled" t-att-name="data[2]"/>
-                            <div class="input-group-append">
-                                <div class="input-group-text"> €</div>
-                            </div>
+                            <div class="input-group-text"> €</div>
                         </div>
                     </div>
                 </div>

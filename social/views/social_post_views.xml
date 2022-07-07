@@ -47,13 +47,13 @@
                                 <div class="o_social_post_media d-flex align-items-center">
                                     <t t-foreach="record.media_ids.raw_value" t-as="media_id">
                                         <t t-if="record.live_posts_by_media.raw_value"> <!-- unset in sample mode -->
-                                            <img class="img mr-1" width="16" t-att-title="title" t-attf-src="/web/image/social.media/#{media_id}/image/16x16" alt="Media"/>
+                                            <img class="img me-1" width="16" t-att-title="title" t-attf-src="/web/image/social.media/#{media_id}/image/16x16" alt="Media"/>
                                         </t>
                                     </t>
                                 </div>
                                 <div>
                                     <field t-if="!record.has_post_errors.raw_value" name="state" widget="label_selection" options="{'classes': {'draft': 'secondary', 'posting': 'warning', 'posted': 'success'}}"/>
-                                    <span t-else="" class="badge badge-danger">Failed</span> <!-- OPW-2161231 -->
+                                    <span t-else="" class="badge text-bg-danger">Failed</span> <!-- OPW-2161231 -->
                                 </div>
                             </div>
 
@@ -71,7 +71,7 @@
 
                                     <t t-foreach="image_urls_json.length > 2 ? image_urls_json.slice(0, 2) : image_urls_json" t-as="image_url">
                                         <t t-if="image_url_index == 1 &amp; record.image_ids.raw_value.length > 2">
-                                            <a class="o_social_stream_post_image_more position-relative d-flex ml-1" t-att-data-current-index="1">
+                                            <a class="o_social_stream_post_image_more position-relative d-flex ms-1" t-att-data-current-index="1">
                                                 <img class="o_social_stream_post_image_click" t-att-src="image_urls_json[1]" alt="Post Image" />
                                                 <div class="o_social_stream_post_image_more_overlay d-flex align-items-center h-100 w-100 text-white justify-content-center position-absolute h1 m-0" style="user-select: none;">
                                                     +<t t-esc="image_urls_json.length - 2"/>
@@ -85,22 +85,22 @@
                             <div id="post-stats" class="d-flex bg-100 px-3 py-1 border-bottom">
                                 <div class="px-2 text-center">
                                     <small>Clicks:</small>
-                                    <small class="font-weight-bold" t-esc="record.click_count.raw_value"/>
+                                    <small class="fw-bold" t-esc="record.click_count.raw_value"/>
                                 </div>
                             </div>
                             <div class="d-flex flex-grow-0 align-items-center px-3 py-2">
-                                <time class="flex-grow-1 small font-weight-bold">
+                                <time class="flex-grow-1 small fw-bold">
                                     <t t-set="state" t-value="record.state.raw_value"/>
                                     <t t-if="state === 'posted'">
-                                        <i class="fa fa-calendar-check-o mr-1" />
+                                        <i class="fa fa-calendar-check-o me-1" />
                                         <t t-esc="record.published_date.value"/>
                                     </t>
                                     <t t-if="state === 'scheduled'">
-                                        <i class="fa fa-calendar mr-1" />
+                                        <i class="fa fa-calendar me-1" />
                                         <t t-esc="record.scheduled_date.value"/>
                                     </t>
                                 </time>
-                                <div class="ml-2 mr-3" title="Engagement">
+                                <div class="ms-2 me-3" title="Engagement">
                                     <i class="fa fa-heart" />
                                     <span t-esc="record.engagement.raw_value"/>
                                 </div>
@@ -249,20 +249,20 @@
                             <field name="live_post_link" />
                             <templates>
                                 <t t-name="kanban-box">
-                                    <div class="o_social_live_post_kanban ml-0 mr-3">
+                                    <div class="o_social_live_post_kanban ms-0 me-3">
                                         <div class="row">
                                             <div class="col-md-8 o_social_live_post_kanban_account">
                                                 <field name="account_id" />
                                                 <t t-if="record.live_post_link.raw_value"><a t-att-href="record.live_post_link.raw_value" target="blank"><i class="fa fa-globe" title="See the post"/></a></t>
                                             </div>
-                                            <div class="col-md-4 text-right">
+                                            <div class="col-md-4 text-end">
                                                 <field name="state" widget="label_selection" options="{'classes': {'ready': 'info', 'posting': 'warning', 'posted': 'success', 'failed': 'danger'}}"/>
                                             </div>
                                         </div>
                                         <div class="o_social_live_post_kanban_failure_reason mt-2" t-att-title="record.failure_reason.raw_value">
                                             <field name="failure_reason" />
                                         </div>
-                                        <div class="text-right mt-4">
+                                        <div class="text-end mt-4">
                                             <button name="action_retry_post" string="Retry" type="object" class="btn btn-primary"
                                                 attrs="{'invisible': [('state', '!=', 'failed')]}">
                                                 Retry

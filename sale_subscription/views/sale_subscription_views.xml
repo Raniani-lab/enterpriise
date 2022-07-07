@@ -245,17 +245,17 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                             <div class="oe_kanban_content">
-                                <strong class="float-right">
+                                <strong class="float-end">
                                     <field name="amount_untaxed" widget="monetary"/>
                                 </strong>
                                 <div class="o_kanban_record_title">
                                     <field name="partner_id"/>
                                 </div>
                                 <div class="o_kanban_record_body">
-                                    <div t-if="record.to_renew.raw_value" class="badge badge-warning border-0 float-right mt4">
+                                    <div t-if="record.to_renew.raw_value" class="badge text-bg-warning border-0 float-end mt4">
                                         To Renew
                                     </div>
-                                    <div t-if="record.payment_exception.raw_value" class="badge badge-danger border-0 float-right mt4">
+                                    <div t-if="record.payment_exception.raw_value" class="badge text-bg-danger border-0 float-end mt4">
                                         Payment Failure
                                     </div>
                                     <field name="name"/>
@@ -679,7 +679,7 @@
                                     <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice', 'validate_send'])]}"/>
                                     <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice', 'validate_send'])]}">
                                         <field name="auto_close_limit"/>
-                                        <span class="ml-1">days</span>
+                                        <span class="ms-1">days</span>
                                     </div>
                                     <field name="tag_ids" string="Account Tags" widget="many2many_tags" options="{'color_field': 'color'}" />
                                     <field name="journal_id" options="{'no_create': True}" groups="account.group_account_manager"/>

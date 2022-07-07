@@ -3,7 +3,7 @@
 
     <t t-name="CohortView.buttons">
         <div class="btn-group" role="group">
-            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+            <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
                 Measures <span class="caret" />
             </button>
             <div class="dropdown-menu o_cohort_measures_list">
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="btn-group" t-if="isMobile">
-            <a class="btn btn-link dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="false">
+            <a class="btn btn-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="dropdown_cohort_content mr4"></span>
             </a>
             <div class="dropdown-menu" role="menu">

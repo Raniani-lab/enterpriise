@@ -88,7 +88,7 @@
                             <th>Name</th>
                             <th>Number of Hours</th>
                             <th>Number of Days</th>
-                            <th class="text-right">Amount</th>
+                            <th class="text-end">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,7 +100,7 @@
                                     </td>
                                     <td><span t-field="worked_days.number_of_hours"/></td>
                                     <td><span t-field="worked_days.number_of_days"/></td>
-                                    <td class="text-right"><span t-esc="worked_days.amount" digits="[42, 2]"
+                                    <td class="text-end"><span t-esc="worked_days.amount" digits="[42, 2]"
                                             t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
                                 </tr>
                             </t>
@@ -110,7 +110,7 @@
                             <t t-set="line_class"/>
                             <t t-if="line.code == 'NET'">
                                 <t t-set="line_style" t-value="'color:#875A7B;'"/>
-                                <t t-set="line_class" t-value="'o_total o_border_bottom font-weight-bold'"/>
+                                <t t-set="line_class" t-value="'o_total o_border_bottom fw-bold'"/>
                             </t>
                             <t t-if="(line.code == 'BASIC') or (line.code == 'GROSS')">
                                 <t t-set="line_style" t-value="'color:#00A09D;'"/>
@@ -120,7 +120,7 @@
                                 <td><span t-field="line.name"/></td>
                                 <td></td>
                                 <td><span t-if="line.quantity > 1" t-esc="line.quantity"/></td>
-                                <td class="text-right"><span t-esc="line.total"
+                                <td class="text-end"><span t-esc="line.total"
                                         t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'
                                         t-att-style="'color:#875A7B;' if line.total &lt; 0 else ''"/></td>
                             </tr>

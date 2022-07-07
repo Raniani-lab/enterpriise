@@ -18,14 +18,14 @@
     }
 }
 
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(md) {
     .o_control_panel {
         padding-right: 0;
         width: 100%;
 
         .o_cp_action_menus {
             .o_dropdown_title {
-                @include sr-only;
+                @include visually-hidden;
             }
             .o_dropdown_chevron, .o_dropdown_caret {
                 display: none;

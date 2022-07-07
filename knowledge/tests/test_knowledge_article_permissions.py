@@ -427,6 +427,54 @@ class TestKnowledgeArticlePermissionsTools(KnowledgeArticlePermissionsCase):
 class TestKnowledgeArticleSearch(KnowledgeArticlePermissionsCase):
 
     @users('admin')
+    def test_article_business_flow_search_admin(self):
+        """ For business flows (move_to, command palette search, ...), we want
+        to limit the articles based on what the user has a real access to (as
+        opposed to ACL access).
+
+        This is especially true for the admin that has access to everything in
+        terms of ACLs, but should not see other users' private articles when
+        getting 'move_to' suggestions. """
+
+        Article = self.env['knowledge.article']
+        private_employee_root = self.article_roots[-1]
+        article_header = self.article_headers[0]
+        # Creates article with explicit no access to admin
+        explicit_no_access = Article.create({
+            'name': 'Explicit No Access Article',
+            'body': '<p>Content</p>',
+            'internal_permission': 'write',
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.partner_admin.id,
+                'permission': 'none',
+            })],
+        })
+        self.assertFalse(private_employee_root.user_has_access)
+        self.assertFalse(explicit_no_access.user_has_access)
+
+        accessible_articles = Article.search([])
+        # admin should have access to all articles, even the other users' private ones
+        # and the ones he has explicit member with no access.
+        self.assertTrue(article_header in accessible_articles)
+        self.assertTrue(private_employee_root in accessible_articles)
+        self.assertTrue(explicit_no_access in accessible_articles)
+
+        # Articles found via command palette should not include those articles
+        command_palette_articles = Article.get_user_sorted_articles('', limit=30)
+        command_palette_article_ids = [article['id'] for article in command_palette_articles]
+        self.assertTrue(article_header.id in command_palette_article_ids)
+        self.assertFalse(private_employee_root.id in command_palette_article_ids)
+        self.assertFalse(explicit_no_access.id in command_palette_article_ids)
+
+        # Potential parents for move To should not include those articles (nor the child of the article to move)
+        move_to_candidates = self.article_write_contents_children[1].with_env(self.env).get_valid_parent_options()
+        move_to_candidate_ids = [article['id'] for article in move_to_candidates]
+        self.assertTrue(article_header.id in move_to_candidate_ids)
+        self.assertFalse(private_employee_root.id in move_to_candidate_ids)
+        self.assertFalse(private_employee_root.id in move_to_candidate_ids)
+        self.assertFalse(explicit_no_access.id in move_to_candidate_ids)
+
+    @users('admin')
     def test_article_search_admin(self):
         """ Test admin: can read / write everything but user_has_access and
         user_has_write_access should still be based on real permissions. """

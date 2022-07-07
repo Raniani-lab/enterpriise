@@ -872,7 +872,11 @@ class Article(models.Model):
             - Favorite count
         and returned result mimic a search_read result structure.
         """
-        search_domain = ["|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query)]
+        search_domain = [
+            "&",
+                ('user_has_access', '=', True), # Admins won't see other's private articles.
+                "|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query)
+        ]
         articles = self.search(
             expression.AND([search_domain, [("is_user_favorite", "=", True)]]),
             limit=None,
@@ -1664,10 +1668,13 @@ class Article(models.Model):
         """ Returns the list of articles that can be set as parent for the
         current article (to avoid recursions) """
         return self.search_read(
-            domain=['&',
-                    ['name', 'ilike', search_term],
-                    ['id', 'not in', (self._get_descendants() + self).ids]
-                    ],
+            domain=[
+                '&',
+                    ('name', 'ilike', search_term),
+                    '&',
+                        ('id', 'not in', (self._get_descendants() + self).ids),
+                        ('user_has_access', '=', True),
+            ],
             fields=['id', 'display_name', 'root_article_id'],
             limit=15,
         )

@@ -144,7 +144,6 @@ export class MapModel extends Model {
             fetchingCoordinates: false,
             groupByKey: metaData.groupBy.length ? metaData.groupBy[0] : false,
             isGrouped: metaData.groupBy.length > 0,
-            mapBoxToken: this.data.mapBoxToken || "",
             numberOfLocatedRecords: 0,
             partnerIds: [],
             partners: [],
@@ -229,7 +228,7 @@ export class MapModel extends Model {
      */
     _fetchCoordinatesFromAddressMB(metaData, data, record) {
         const address = encodeURIComponent(record.contact_address_complete);
-        const token = data.mapBoxToken;
+        const token = metaData.mapBoxToken;
         const encodedUrl = `https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${token}&cachebuster=1552314159970&autocomplete=true`;
         return this.http.get(encodedUrl);
     }
@@ -280,7 +279,7 @@ export class MapModel extends Model {
             .filter((record) => record.partner.partner_latitude && record.partner.partner_longitude)
             .map(({ partner }) => `${partner.partner_longitude},${partner.partner_latitude}`);
         const address = encodeURIComponent(coordinatesParam.join(";"));
-        const token = data.mapBoxToken;
+        const token = metaData.mapBoxToken;
         const encodedUrl = `https://api.mapbox.com/directions/v5/mapbox/driving/${address}?access_token=${token}&steps=true&geometries=geojson`;
         return this.http.get(encodedUrl);
     }

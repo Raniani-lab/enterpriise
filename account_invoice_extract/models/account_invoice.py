@@ -912,12 +912,9 @@ class AccountMove(models.Model):
 
     @contextmanager
     def get_form_context_manager(self):
-        if 'default_journal_id' in self._context:
-            self_ctx = self
-        else:
-            # we need to make sure the type is in the context as _get_default_journal uses it
-            self_ctx = self.with_context(default_move_type=self.move_type) if 'default_move_type' not in self._context else self
-            self_ctx = self_ctx.with_company(self.company_id.id)
+        self_ctx = self.with_context(default_move_type=self.move_type) if 'default_move_type' not in self._context else self
+        self_ctx = self_ctx.with_company(self.company_id.id)
+        if 'default_journal_id' not in self_ctx._context:
             self_ctx = self_ctx.with_context(default_journal_id=self_ctx.journal_id.id)
         with patch.object(Form, '_process_fvg', side_effect=_process_fvg, autospec=True), Form(self_ctx) as move_form:
             yield move_form

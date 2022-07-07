@@ -243,6 +243,9 @@ class HelpdeskTicket(models.Model):
         'res.users', string='Assigned to', compute='_compute_user_and_stage_ids', store=True,
         readonly=False, tracking=True,
         domain=lambda self: [('groups_id', 'in', self.env.ref('helpdesk.group_helpdesk_user').id)])
+    properties = fields.Properties(
+        'Properties', definition='team_id.ticket_properties',
+        copy=True)
     partner_id = fields.Many2one('res.partner', string='Customer', tracking=True)
     partner_ticket_ids = fields.Many2many('helpdesk.ticket', compute='_compute_partner_ticket_count', string="Partner Tickets")
     partner_ticket_count = fields.Integer('Number of other tickets from the same partner', compute='_compute_partner_ticket_count')

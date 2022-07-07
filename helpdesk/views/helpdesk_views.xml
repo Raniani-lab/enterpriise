@@ -706,7 +706,7 @@
                             <field name="sla_deadline" widget="remaining_days"/>
                         </span>
                     </div>
-                    <group>
+                    <group class="mb-0">
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="team_id" required="1" context="{'default_use_sla': True}"/>
@@ -737,6 +737,9 @@
                             <field name="email_cc" groups="base.group_no_one"/>
                         </group>
                     </group>
+                    <div colspan="8" attrs="{'invisible': [('team_id', '=', False)]}">
+                        <field name="properties" nolabel="1" columns="2"/>
+                    </div>
                     <field name="description" class="oe-bordered-editor field_description" placeholder="Description of the ticket..."/>
                 </sheet>
                 <div class="oe_chatter">

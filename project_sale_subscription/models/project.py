@@ -133,9 +133,10 @@ class Project(models.Model):
             'to_invoice': amount_to_invoice,
         }
         if with_action and all_subscription_ids and self.user_has_groups('sales_team.group_sale_salesman'):
-            action = {'name': 'action_profitability_items', 'type': 'object', 'section': section_id, 'domain': json.dumps([('id', 'in', all_subscription_ids)])}
+            args = [section_id, [('id', 'in', all_subscription_ids)]]
             if len(all_subscription_ids) == 1:
-                action['res_id'] = all_subscription_ids[0]
+                args.append(all_subscription_ids[0])
+            action = {'name': 'action_profitability_items', 'type': 'object', 'args': json.dumps(args)}
             subscription_revenue['action'] = action
         revenues['data'].append(subscription_revenue)
         revenues['total']['invoiced'] += amount_invoiced

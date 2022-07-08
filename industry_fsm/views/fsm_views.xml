@@ -308,7 +308,6 @@
             'search_default_my_tasks': True,
             'search_default_planned_future': True,
             'search_default_planned_today': True,
-            'fsm_task_kanban_whole_date': False,
             'default_user_ids': [(4, uid)],
             'default_scale': 'day',
         }</field>
@@ -385,7 +384,6 @@
             'fsm_mode': True,
             'search_default_my_tasks': True,
             'search_default_planned_today': True,
-            'fsm_task_kanban_whole_date':False,
             'default_user_ids': [(4, uid)],
             'default_scale': 'day',
         }</field>
@@ -489,7 +487,6 @@
             'fsm_mode': True,
             'default_scale': 'week',
             'default_user_ids': False,
-            'fsm_task_kanban_whole_date': True,
             'graph_measure': '__count__',
             'graph_groupbys': ['project_id'],
             'pivot_measures': ['__count__'],

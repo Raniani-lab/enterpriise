@@ -10,36 +10,4 @@
         </xpath>
     </t>
 
-    <t t-name="project_enterprise.ProjectRightPanel" owl="1">
-        <div class="o_rightpanel">
-            <t t-call="project.StatButtonsSection"/>
-            <t t-call="project_enterprise.ProfitabilitySection"/>
-            <t t-call="project_enterprise.MilestoneSection"/>
-        </div>
-    </t>
-
-    <t t-name="project_enterprise.ProfitabilitySection" t-inherit="project.ProfitabilitySection" t-inherit-mode="primary" owl="1">
-        <xpath expr="//div[hasclass('o_rightpanel_title')]" position="before">
-            <span t-on-click="_onClickSection"><i t-attf-class="fa {{section.profitability.closed ? 'fa-caret-right' : 'fa-caret-down'}}"></i></span>
-        </xpath>
-        <xpath expr="//div[hasclass('o_rightpanel_header')]" position="attributes">
-            <attribute name="t-on-click">_onClickSection</attribute>
-        </xpath>
-        <xpath expr="//div[hasclass('o_rightpanel_data')]" position="attributes">
-            <attribute name="t-attf-class" separator=" " add="{{section.profitability.closed ? 'o_rightpanel_hidden' : ''}}"/>
-        </xpath>
-    </t>
-
-    <t t-name="project_enterprise.MilestoneSection" t-inherit="project.MilestoneSection" t-inherit-mode="primary" owl="1">
-        <xpath expr="//div[hasclass('o_rightpanel_title')]" position="before">
-            <span t-on-click="_onClickSection"><i t-attf-class="fa {{section.milestone.closed ? 'fa-caret-right' : 'fa-caret-down'}}"></i></span>
-        </xpath>
-        <xpath expr="//div[hasclass('o_rightpanel_header')]" position="attributes">
-            <attribute name="t-on-click">_onClickSection</attribute>
-        </xpath>
-        <xpath expr="//div[hasclass('o_rightpanel_data')]" position="attributes">
-            <attribute name="t-attf-class" separator=" " add="{{section.milestone.closed ? 'o_rightpanel_hidden' : ''}}"/>
-        </xpath>
-    </t>
-
 </templates>

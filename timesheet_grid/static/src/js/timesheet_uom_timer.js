@@ -143,8 +143,8 @@ const FieldTimesheetTimeTimer = TimesheetUomDisplayTimer.extend({
 });
 
 const timesheetUomTimerService = {
-    dependencies: ["timesheet_uom"],
-    start(env, { timesheet_uom }) {
+    dependencies: ["legacy_timesheet_uom"],
+    start(env, { legacy_timesheet_uom: timesheet_uom }) {
         /**
          * Binding depending on Company Preference
          *

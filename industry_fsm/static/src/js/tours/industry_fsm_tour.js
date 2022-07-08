@@ -20,13 +20,13 @@ tour.register('industry_fsm_tour', {
     content: _t('Let\'s create your first <b>task</b>.'),
     position: 'bottom',
 }, {
-    trigger: 'input.o_task_name',
+    trigger: 'h1 div[name="name"] > input',
     extra_trigger: '.o_form_editable',
     content: Markup(_t('Give it a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning installation, etc.).</i>')),
     position: 'right',
     width: 200,
 }, {
-    trigger: ".o_legacy_form_view .o_task_customer_field",
+    trigger: ".o_form_view .o_task_customer_field",
     extra_trigger: '.o_form_project_tasks.o_form_editable',
     content: _t('Select the <b>customer</b> for your task.'),
     position: "bottom",

@@ -1,6 +1,7 @@
 odoo.define('timer.timer', function (require) {
 "use strict";
 
+// TODO: [XBO] remove this file when the form view in legacy will be no longer used.
 var fieldRegistry = require('web.field_registry');
 var AbstractField = require('web.AbstractField');
 var Timer = require('timer.Timer');
@@ -67,6 +68,6 @@ var TimerFieldWidget = AbstractField.extend({
     }
 });
 
-fieldRegistry.add('timer_timer', TimerFieldWidget);
+fieldRegistry.add('timer_start_field', TimerFieldWidget);
 
 });

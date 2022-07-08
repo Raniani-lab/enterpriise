@@ -16,7 +16,6 @@ odoo.define('timesheet_grid.timesheet_uom', function (require) {
             });
         }
     };
-
     /**
      * Extend the float toggle widget to set default value for timesheet
      * use case. The 'range' is different from the default one of the
@@ -63,8 +62,8 @@ odoo.define('timesheet_grid.timesheet_uom', function (require) {
     }
 
     const timesheetUomGridService = {
-        dependencies: ["timesheet_uom"],
-        start(env, { timesheet_uom }) {
+        dependencies: ["legacy_timesheet_uom"],
+        start(env, { legacy_timesheet_uom: timesheet_uom }) {
             const widgetName = timesheet_uom.widget || 'float_factor';
 
             /**

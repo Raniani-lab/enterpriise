@@ -16,10 +16,10 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'project_account_budget/static/src/right_panel/project_right_panel.js',
+            'project_account_budget/static/src/components/**/*',
         ],
         'web.assets_qweb': [
-            'project_account_budget/static/src/right_panel/project_right_panel.xml',
+            'project_account_budget/static/src/components/**/*.xml',
         ],
     },
     'auto_install': True,

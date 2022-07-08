@@ -192,7 +192,8 @@
                     type="object" icon="fa-cart-plus" attrs="{'invisible': ['|', '&amp;', ('partner_id', '=', False), ('is_fsm', '=', False), ('allow_material', '=', False)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
-                            <field name="material_line_product_count" widget="statinfo" string="Products" class="me-1"/>
+                            <field name="material_line_product_count" widget="statinfo" string="Products" nolabel="1" class="me-1"/>
+                            <span>Products</span>
                         </span>
                         <field name="material_line_total_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                         <field name="currency_id" invisible="True"/>

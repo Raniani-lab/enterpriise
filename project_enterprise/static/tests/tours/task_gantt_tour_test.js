@@ -20,7 +20,7 @@ function openProjectUpdateAndReturnToTasks(view, viewClass) {
         }, {
             trigger: '.o_back_button',
             content: 'Go back to the task view : ' + view,
-            extra_trigger: '.o_list_table',
+            // extra_trigger: '.o_list_table', // FIXME: [XBO] uncomment it when sample data will be displayed after discarding creation of project update record.
         },
     ];
 }
@@ -64,7 +64,7 @@ tour.register('project_enterprise_tour', {
         trigger: '.o-kanban-button-new',
         extra_trigger: '.o_kanban_group:eq(0)'
     }, {
-        trigger: '.o_kanban_quick_create input.o_field_char[name=name]',
+        trigger: '.o_kanban_quick_create div.o_field_char[name=name] input',
         extra_trigger: '.o_kanban_project_tasks',
         run: 'text New task'
     }, {

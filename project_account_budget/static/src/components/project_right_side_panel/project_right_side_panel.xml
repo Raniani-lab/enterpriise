@@ -1,32 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-inherit="project.ProjectRightPanel" t-inherit-mode="extension" owl="1">
-        <xpath expr="//t[@t-call='project.MilestoneSection']" position="before">
-            <t t-call="project_account_budget.BudgetSection"/>
-        </xpath>
-    </t>
-
-    <t t-inherit="project_enterprise.ProjectRightPanel" t-inherit-mode="extension" owl="1">
-        <xpath expr="//t[@t-call='project_enterprise.ProfitabilitySection']" position="after">
-            <t t-call="project_account_budget.BudgetSectionMobile"/>
-        </xpath>
-    </t>
-
-    <t t-name="project_account_budget.BudgetSection" owl="1">
-        <t t-set="budget" t-value="state.data.budget_items"/>
-        <div name="budget" class="o_rightpanel_section" t-if="budget">
-            <t t-set="budget_items" t-value="state.data.budget_items.data"/>
-            <t t-set="budget_total" t-value="state.data.budget_items.total"/>
-            <div class="o_rightpanel_header">
-                <div class="o_rightpanel_title">
+    <t t-name="project_account_budget.ProjectRightSidePanel" t-inherit="project.ProjectRightSidePanel" t-inherit-mode="extension" owl="1">
+        <xpath expr="//ProjectRightSidePanelSection[@name=&quot;'milestones'&quot;]" position="before">
+            <t t-set="showBudget" t-value="!!state.data.budget_items and !!state.data.budget_items.data"/>
+            <ProjectRightSidePanelSection
+                name="'budgets'"
+                show="showBudget"
+                showData="showBudget and state.data.budget_items.data.length > 0"
+            >
+                <t t-set-slot="title">
                     Budgets
-                </div>
-                <div class="o_rightpanel_button" t-if="budget.can_add_budget">
-                    <AddBudget form_view_id="budget.form_view_id" analytic_account_id="state.data.analytic_account_id" context="context" onBudgetUpdate.bind="_loadQwebContext"/>
-                </div>
-            </div>
-            <div class="o_rightpanel_data" t-if="budget and budget_items.length > 0">
+                </t>
+                <t t-set-slot="header">
+                    <div class="o_rightpanel_button" t-if="state.data.budget_items.can_add_budget">
+                        <a t-on-click="addBudget">Add Budget</a>
+                    </div>
+                </t>
                 <table class="w-100 table-striped">
                     <thead>
                         <tr>
@@ -37,13 +27,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr t-foreach="budget_items" t-as="budget" t-key="budget.name">
+                        <tr t-foreach="state.data.budget_items.data" t-as="budget" t-key="budget.name">
                             <td>
                                 <a t-if="budget.action" class="o_rightpanel_button"
-                                    t-on-click="onProjectActionClick"
-                                    t-att-data-action="budget.action.name"
-                                    t-att-data-type="budget.action.type"
-                                    t-att-data-domain="budget.action.domain"
+                                    t-on-click="() => this.onProjectActionClick(budget.action)"
                                 >
                                     <t t-call="project_account_budget.BudgetName"/>
                                 </a>
@@ -59,9 +46,10 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tfoot t-if="budget_items.length > 0">
+                    <tfoot>
                         <tr>
                             <td>Total</td>
+                            <t t-set="budget_total" t-value="state.data.budget_items.total"/>
                             <td align="right" t-att-class="budget_total.allocated === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget_total.allocated)"/></td>
                             <td align="right" t-att-class="budget_total.spent === 0 ? 'text-muted' : ''"><t t-esc="formatMonetary(budget_total.spent)"/></td>
                             <t t-set="budget_total_remaining" t-value="budget_total.allocated - budget_total.spent"/>
@@ -71,24 +59,8 @@
                         </tr>
                     </tfoot>
                 </table>
-            </div>
-        </div>
-    </t>
-
-    <t t-name="project_account_budget.BudgetSectionMobile" t-inherit="project_account_budget.BudgetSection" t-inherit-mode="primary" owl="1">
-        <xpath expr="//div[hasclass('o_rightpanel_title')]" position="before">
-            <span t-on-click="_onClickSection"><i t-attf-class="fa {{section.budget.closed ? 'fa-caret-right' : 'fa-caret-down'}}"></i></span>
+            </ProjectRightSidePanelSection>
         </xpath>
-        <xpath expr="//div[hasclass('o_rightpanel_header')]" position="attributes">
-            <attribute name="t-on-click">_onClickSection</attribute>
-        </xpath>
-        <xpath expr="//div[hasclass('o_rightpanel_data')]" position="attributes">
-            <attribute name="t-attf-class" separator=" " add="{{section.budget.closed ? 'o_rightpanel_hidden' : ''}}"/>
-        </xpath>
-    </t>
-
-    <t t-name="project_account_budget.AddBudget" owl="1">
-        <a t-on-click="onAddBudgetClick">Add Budget</a>
     </t>
 
     <t t-name="project_account_budget.BudgetName" owl="1">

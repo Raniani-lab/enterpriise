@@ -39,10 +39,16 @@ class Project(models.Model):
         panel_data['budget_items'] = self._get_budget_items()
         return panel_data
 
+    def get_budget_items(self):
+        self.ensure_one()
+        if self.analytic_account_id and self.user_has_groups('project.group_project_user'):
+            return self._get_budget_items(True)
+        return {}
+
     def _get_budget_items(self, with_action=True):
         self.ensure_one()
         if not self.analytic_account_id:
-            return
+            return {}
         budget_line_read_group = self.env['crossovered.budget.lines'].sudo()._read_group(
             [('analytic_account_id', '=', self.analytic_account_id.id), ('crossovered_budget_id', '!=', False), ('crossovered_budget_id.state', 'not in', ['draft', 'cancel'])],
             ['general_budget_id', 'planned_amount', 'practical_amount', 'ids:array_agg(id)'],
@@ -59,7 +65,7 @@ class Project(models.Model):
             total_spent += spent
             budget_item = {'name': name, 'allocated': allocated, 'spent': spent}
             if res['ids'] and can_see_budget_items:
-                budget_item['action'] = {'name': 'action_view_budget_lines', 'type': 'object', 'domain': json.dumps([('id', 'in', res['ids'])])}
+                budget_item['action'] = {'name': 'action_view_budget_lines', 'type': 'object', 'args': [json.dumps([('id', 'in', res['ids'])])]}
             budget_data.append(budget_item)
         can_add_budget = with_action and self.user_has_groups('account.group_account_user')
         budget_items = {

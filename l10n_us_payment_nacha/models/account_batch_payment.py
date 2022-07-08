@@ -67,7 +67,7 @@ class AccountBatchPayment(models.Model):
     def _generate_nacha_batch_header_record(self, payment, batch_nr):
         batch = []
         batch.append("5")  # Record Type Code
-        batch.append("225")  # Service Class Code (debits only)
+        batch.append("220")  # Service Class Code (credits only)
         batch.append("{:16.16}".format(self.journal_id.company_id.name))  # Company Name
         batch.append("{:20.20}".format(""))  # Company Discretionary Data (optional)
         batch.append("{:0>10.10}".format(self.journal_id.nacha_company_identification))  # Company Identification
@@ -109,11 +109,11 @@ class AccountBatchPayment(models.Model):
         bank = payment.partner_bank_id
         control = []
         control.append("8")  # Record Type Code
-        control.append("225")  # Service Class Code
+        control.append("220")  # Service Class Code (credits only)
         control.append("{:06d}".format(1))  # Entry/Addenda Count
         control.append("{:010d}".format(self._calculate_aba_hash(bank.aba_routing)))  # Entry Hash
-        control.append("{:012d}".format(round(payment.amount * 100)))  # Total Debit Entry Dollar Amount in Batch
-        control.append("{:012d}".format(0))  # Total Credit Entry Dollar Amount in Batch
+        control.append("{:012d}".format(0))  # Total Debit Entry Dollar Amount in Batch
+        control.append("{:012d}".format(round(payment.amount * 100)))  # Total Credit Entry Dollar Amount in Batch
         control.append("{:0>10.10}".format(self.journal_id.nacha_company_identification))  # Company Identification
         control.append("{:19.19}".format(""))  # Message Authentication Code (leave blank)
         control.append("{:6.6}".format(""))  # Reserved (leave blank)
@@ -132,8 +132,8 @@ class AccountBatchPayment(models.Model):
         hashes = (self._calculate_aba_hash(payment.partner_bank_id.aba_routing) for payment in payments)
         control.append("{:010d}".format(sum(hashes)))  # Entry Hash
 
-        control.append("{:012d}".format(sum(round(payment.amount * 100) for payment in payments)))  # Total Debit Entry Dollar Amount in File
-        control.append("{:012d}".format(0))  # Total Credit Entry Dollar Amount in File
+        control.append("{:012d}".format(0))  # Total Debit Entry Dollar Amount in File
+        control.append("{:012d}".format(sum(round(payment.amount * 100) for payment in payments)))  # Total Credit Entry Dollar Amount in File
         control.append("{:39.39}".format(""))  # Blank
 
         return "".join(control)

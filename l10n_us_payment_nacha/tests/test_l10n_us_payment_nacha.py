@@ -64,8 +64,13 @@ class TestNacha(AccountTestInvoicingCommon):
             # batch control record for payment "test2"
             "82200000010000000036000000000000000000045678COMPANY_ID                         ORIGINAT0000001",
             # file control record
-            "9000002000004000000020000000072000000000000000000058023                                       ",
+            "9000002000001000000020000000072000000000000000000058023                                       ",
+            "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+            "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
         ]
 
-        for generated, expected in zip(batch._generate_nacha_file().splitlines(), expected):
-            self.assertEqual(generated, expected, "Generated line in NACHA file does not match expected.")
+        generated = batch._generate_nacha_file().splitlines()
+        self.assertEqual(len(generated), len(expected), "The generated NACHA file has an incorrect amount of records.")
+
+        for generated_line, expected_line in zip(generated, expected):
+            self.assertEqual(generated_line, expected_line, "Generated line in NACHA file does not match expected.")

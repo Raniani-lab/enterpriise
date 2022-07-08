@@ -5,7 +5,6 @@ import {
     afterNextRender,
     dragenterFiles,
     dropFiles,
-    nextTick,
     start,
     startServer,
 } from '@mail/../tests/helpers/test_utils';
@@ -65,7 +64,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
     });
 
     QUnit.test('Attachment on side', async function (assert) {
-        assert.expect(10);
+        assert.expect(9);
 
         const pyEnv = await startServer();
         const resPartnerId1 = pyEnv['res.partner'].create({});
@@ -92,26 +91,19 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 '</form>',
         };
         patchUiSize({ size: SIZES.XXL });
-        let env;
-        await afterNextRender(async () => { // because of chatter container
-            const { env: environment, openView } = await start({
-                mockRPC(route, args) {
-                    if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
-                        var canvas = document.createElement('canvas');
-                        return canvas.toDataURL();
-                    }
-                    if (args.method === 'register_as_main_attachment') {
-                        return true;
-                    }
-                },
-                serverData: { views },
-            });
-            env = environment;
-            await openView({
-                res_id: resPartnerId1,
-                res_model: 'res.partner',
-                views: [[false, 'form']],
-            });
+        const { click, env, openView } = await start({
+            mockRPC(route, args) {
+                if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
+                    var canvas = document.createElement('canvas');
+                    return canvas.toDataURL();
+                }
+            },
+            serverData: { views },
+        });
+        await openView({
+            res_id: resPartnerId1,
+            res_model: 'res.partner',
+            views: [[false, 'form']],
         });
 
         assert.containsOnce(document.body, '.o_attachment_preview_img > img',
@@ -131,9 +123,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             "Don't display arrow if there is no previous/next attachment");
 
         // send a message with attached PDF file
-        await afterNextRender(() =>
-            document.querySelector('.o_ChatterTopbar_buttonSendMessage').click()
-        );
+        await click('.o_ChatterTopbar_buttonSendMessage');
         const files = [
             await createFile({ name: 'invoice.pdf', contentType: 'application/pdf' }),
         ];
@@ -142,23 +132,20 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         await afterNextRender(() =>
             inputFiles(chatter.composerView.fileUploader.fileInput, files)
         );
-        await afterNextRender(() =>
-            document.querySelector('.o_Composer_buttonSend').click()
-        );
-        await nextTick();
 
+        await click('.o_Composer_buttonSend');
         assert.containsN(document.body, '.arrow', 2,
             "Display arrows if there multiple attachments");
+
+        await click('.o_move_next');
         assert.containsNone(document.body, '.o_attachment_preview_img > img',
             "Preview image should be removed");
         assert.containsOnce(document.body, '.o_attachment_preview_container > iframe',
             "There should be iframe for pdf viewer");
-        await testUtils.dom.click(document.querySelector('.o_move_next'), { allowInvisible: true });
+
+        await click('.o_move_previous');
         assert.containsOnce(document.body, '.o_attachment_preview_img > img',
             "Display next attachment");
-        await testUtils.dom.click(document.querySelector('.o_move_previous'), { allowInvisible: true });
-        assert.containsOnce(document.body, '.o_attachment_preview_container > iframe',
-            "Display preview attachment");
     });
 
     QUnit.test('After switching record with the form pager, when using the attachment preview navigation, the attachment should be switched',
@@ -218,9 +205,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     if (route.includes('/web/static/lib/pdfjs/web/viewer.html')) {
                         return document.createElement('canvas').toDataURL();
                     }
-                    if (args.method === 'register_as_main_attachment') {
-                        return true;
-                    }
                 },
             });
             await openView(
@@ -253,7 +237,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         });
 
     QUnit.test('Attachment on side on new record', async function (assert) {
-        assert.expect(3);
+        assert.expect(2);
 
         const views = {
             'res.partner,false,form':
@@ -268,20 +252,16 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 '</form>',
         };
         patchUiSize({ size: SIZES.XXL });
-        await afterNextRender(async () => { // because of chatter container
-            const { openView } = await start({
-                serverData: { views },
-            });
-            await openView({
-                res_model: 'res.partner',
-                views: [[false, 'form']],
-            });
+        const { openView } = await start({
+            serverData: { views },
+        });
+        await openView({
+            res_model: 'res.partner',
+            views: [[false, 'form']],
         });
 
-        assert.containsOnce(document.body, '.o_form_sheet_bg .o_attachment_preview',
+        assert.containsNone(document.body, '.o_attachment_preview',
             "the preview should not be displayed");
-        assert.strictEqual(document.querySelector('.o_form_sheet_bg .o_attachment_preview').children.length, 0,
-            "the preview should be empty");
         assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
     });
@@ -314,18 +294,14 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 '</form>',
         };
         patchUiSize({ size: SIZES.XL });
-        await afterNextRender(async () => { // because of chatter container
-            const { openView } = await start({
-                serverData: { views },
-            });
-            await openView({
-                res_id: resPartnerId1,
-                res_model: 'res.partner',
-                views: [[false, 'form']],
-            });
+        const { openFormView } = await start({
+            serverData: { views },
         });
-        assert.strictEqual(document.querySelector('.o_attachment_preview').children.length, 0,
-            "there should be nothing previewed");
+        await openFormView({
+            res_id: resPartnerId1,
+            res_model: 'res.partner',
+        });
+        assert.containsNone(document.body, '.o_attachment_preview', "there should be nothing previewed");
         assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
     });
@@ -356,12 +332,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         };
         patchUiSize({ size: SIZES.XXL });
         const { openView } = await start({
-            async mockRPC(route, { method }) {
-                switch (method) {
-                    case 'register_as_main_attachment':
-                        return true;
-                }
-            },
             serverData: { views },
         });
         await openView({

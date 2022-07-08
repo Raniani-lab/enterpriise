@@ -56,9 +56,6 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
                     if (route.indexOf('/web/static/lib/pdfjs/web/viewer.html') !== -1) {
                         throw new Error('the pdf should not be loaded on small screens');
                     }
-                    if (args.method === 'register_as_main_attachment') {
-                        return Promise.resolve(true);
-                    }
                     var method = args.method || route;
                     assert.step(method + '/' + args.model);
                     if (args.model === 'ir.attachment' && args.method === 'read') {
@@ -86,7 +83,7 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
         });
 
         QUnit.test('Fetch and preview of attachments on big devices', async function (assert) {
-            assert.expect(21);
+            assert.expect(23);
 
             const pyEnv = await startServer();
             const accountMoveLineIds = pyEnv['account.move.line'].create([
@@ -129,9 +126,6 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
                     }
                     if (route.indexOf('/web/static/lib/pdfjs/web/viewer.html') !== -1) {
                         return Promise.resolve();
-                    }
-                    if (args.method === 'register_as_main_attachment') {
-                        return Promise.resolve(true);
                     }
                     var method = args.method || route;
                     assert.step(method + '/' + args.model);
@@ -185,6 +179,8 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
             await testUtils.dom.click(document.querySelectorAll('.o_group_header')[1]);
             // clicking on group header line should not do read call to ir.attachment
             assert.verifySteps([
+                'register_as_main_attachment/ir.attachment',
+                'register_as_main_attachment/ir.attachment',
                 "web_read_group/account.move.line",
                 "web_read_group/account.move.line",
                 "web_read_group/account.move.line",

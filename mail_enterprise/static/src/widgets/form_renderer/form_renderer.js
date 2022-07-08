@@ -55,10 +55,15 @@ FormRenderer.include({
             id: this.state.res_id,
             model: this.state.model,
         });
+        // simulate legacy form view widget having useModels() to ensure
+        // attachment view gets displayed again when attachments change
+        owl.Component.env.services.messaging.modelManager.startListening(this.modelsListener);
+        const hasAttachments = thread.attachmentsInWebClientView.length > 0;
+        owl.Component.env.services.messaging.modelManager.stopListening(this.modelsListener);
         return (
             config.device.size_class >= config.device.SIZES.XXL &&
             this.attachmentViewerTarget && !$(this.attachmentViewerTarget).hasClass('o_invisible_modifier') &&
-            thread.attachmentsInWebClientView.length > 0
+            hasAttachments
         );
     },
     /**

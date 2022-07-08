@@ -3,7 +3,6 @@
 import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
     afterNextRender,
-    nextAnimationFrame,
     start,
     startServer,
 } from '@mail/../tests/helpers/test_utils';
@@ -42,7 +41,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         legacyViewRegistry.add("form", InvoiceExtractFormView);
         registerCleanup(() => {
             legacyViewRegistry.add("form", FormView);
-        })
+        });
     },
     afterEach: function () {
         testUtils.mock.unpatch(FormRenderer);
@@ -87,8 +86,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
-                } else if (args.method === 'register_as_main_attachment') {
-                    return Promise.resolve(true);
                 }
             },
         });
@@ -218,6 +215,9 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         const views = {
             'account.move,false,form':
                 '<form string="Account Invoice">' +
+                    '<sheet>' +
+                        '<field name="name"/>' +
+                    '</sheet>' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
@@ -225,37 +225,18 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                     '</div>' +
                 '</form>',
         };
-        const { afterEvent, openView } = await start({
+        const { click, openFormView } = await start({
             serverData: { views },
             mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
-                } else if (args.method === 'register_as_main_attachment') {
-                    return Promise.resolve(true);
                 }
             },
         });
-        await afterEvent({
-            eventName: 'o-thread-view-hint-processed',
-            async func() {
-                await openView({
-                    res_id: accountMoveId1,
-                    res_model: 'account.move',
-                    views: [[false, 'form']],
-                });
-            },
-            message: "should wait until account.move thread displayed its messages",
-            predicate: ({ hint, threadViewer }) => {
-                return (
-                    hint.type === 'messages-loaded' &&
-                    threadViewer.thread.model === 'account.move' &&
-                    threadViewer.thread.id === accountMoveId1
-                );
-            },
+        await openFormView({
+            res_id: accountMoveId1,
+            res_model: 'account.move',
         });
-
-        await nextAnimationFrame();
-
         let attachmentPreview = document.querySelectorAll('.o_attachment_preview_img');
         assert.strictEqual(attachmentPreview.length, 1,
             "should display attachment preview");
@@ -270,10 +251,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
 
         // Need to load form view before going to edit mode, otherwise
         // 'o_success_ocr' is not loaded.
-        await afterNextRender(() => {
-            testUtils.dom.click($('.o_form_button_edit'));
-        });
-
+        await click('.o_form_button_edit');
         attachmentPreview = document.querySelectorAll('.o_attachment_preview_img');
         assert.strictEqual(attachmentPreview.length, 1,
             "should still display an attachment preview in edit mode");
@@ -286,10 +264,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         assert.strictEqual($('.o_invoice_extract_box').length, 5,
             "should now display boxes in edit mode");
 
-        await afterNextRender(() => {
-            testUtils.dom.click($('.o_form_button_save'));
-        });
-
+        await click('.o_form_button_save');
         attachmentPreview = document.querySelectorAll('.o_attachment_preview_img');
         assert.strictEqual(attachmentPreview.length, 1,
             "should still display attachment preview in readonly mode");
@@ -341,8 +316,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return Promise.resolve(invoiceExtractTestUtils.createBoxesData());
-                } else if (args.method === 'register_as_main_attachment') {
-                    return Promise.resolve(true);
                 }
             },
         });
@@ -441,8 +414,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             async mockRPC(route, args) {
                 if (args.method === 'get_boxes') {
                     return invoiceExtractTestUtils.createBoxesData();
-                } else if (args.method === 'register_as_main_attachment') {
-                    return true;
                 }
             },
         });

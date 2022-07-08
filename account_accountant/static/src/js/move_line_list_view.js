@@ -2,7 +2,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
 "use strict";
 
     const { insert } = require('@mail/model/model_field_command');
-    const { AttachmentViewer } = require('@mail/widgets/attachment_viewer/attachment_viewer');
+    const { WebClientViewAttachmentViewContainer } = require('@mail/components/web_client_view_attachment_view_container/web_client_view_attachment_view_container');
 
     var config = require('web.config');
     var core = require('web.core');
@@ -12,6 +12,7 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
     var localStorage = require('web.local_storage');
     var ListView = require('web.ListView');
     var viewRegistry = require('web.view_registry');
+    const { ComponentWrapper } = require('web.OwlCompatibility');
 
     var _t = core._t;
 
@@ -120,18 +121,25 @@ odoo.define('account_accountant.MoveLineListView', function (require) {
                 model: record.model,
             });
             const attachments = thread.attachmentsInWebClientView;
-            var prom;
-            if (!_.isEqual(_.pluck(this.currentAttachments, 'id'), _.pluck(attachments, 'id'))) {
-                if (this.attachmentViewer) {
-                    this.attachmentViewer.updateContents(thread);
-                } else {
-                    this.attachmentViewer = new AttachmentViewer(this, thread);
-                }
-                prom = this.attachmentViewer.appendTo(this.$attachmentPreview.empty());
+            if (!this.webClientViewAttachmentViewContainer) {
+                this.webClientViewAttachmentViewContainer = new ComponentWrapper(this, WebClientViewAttachmentViewContainer, {
+                    threadId: thread.id,
+                    threadModel: thread.model,
+                });
+                await this.webClientViewAttachmentViewContainer.mount(this.$attachmentPreview.empty()[0]);
+            } else {
+                await this.webClientViewAttachmentViewContainer.update({
+                    threadId: thread.id,
+                    threadModel: thread.model,
+                });
             }
-            return Promise.resolve(prom).then(function () {
+            return Promise.resolve().then(() => {
                 self.currentAttachments = attachments;
                 if (!attachments.length) {
+                    if (this.webClientViewAttachmentViewContainer) {
+                        this.webClientViewAttachmentViewContainer.destroy();
+                        this.webClientViewAttachmentViewContainer = undefined;
+                    }
                     var $empty = $('<p>', {
                         class: 'o_move_line_without_attachment',
                         text: _t("No attachments linked."),

@@ -190,7 +190,7 @@ odoo.define('web_studio.ApprovalComponent', function (require) {
         }
     }
 
-    ApprovalComponent.template = 'Studio.ApprovalComponent';
+    ApprovalComponent.template = 'Studio.ApprovalComponent.Legacy';
     ApprovalComponent.components = { Dialog, Popover };
     ApprovalComponent.props = {
         action: [Number, Boolean],

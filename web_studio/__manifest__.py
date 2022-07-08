@@ -60,6 +60,7 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/studio_legacy_service.js',
             'web_studio/static/src/home_menu/**/*.js',
             'web_studio/static/src/views/**/*.js',
+            'web_studio/static/src/approval/**/*',
         ],
         'web.assets_backend_prod_only': [
             'web_studio/static/src/client_action/studio_action_loader.js',

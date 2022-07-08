@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="Studio.ApprovalComponent" owl="1">
+<t t-name="Studio.ApprovalComponent.Legacy" owl="1">
     <t t-set="num_rules" t-value="state.rules.length"/>
     <!-- should display if it's still loading or if there are rules -->
     <t t-set="should_display" t-value="state.init || state.rules.length"/>
@@ -14,21 +14,21 @@
         propagateClick="this.props.inStudio"
         title="'Approval'">
         <t t-set-slot="opened">
-            <t t-call="Studio.ApprovalComponentInfo"/>
+            <t t-call="Studio.ApprovalComponentInfo.Legacy"/>
         </t>
-        <t t-call="Studio.ApprovalIcons"/>
+        <t t-call="Studio.ApprovalIcons.Legacy"/>
     </Popover>
 
     <t t-if="env.device.isMobile and should_display">
         <!-- Mobile: display a dialog fullscreen -->
         <div class="o_web_studio_approval" t-on-click.stop="_toggleInfo">
-            <t t-call="Studio.ApprovalIcons"/>
+            <t t-call="Studio.ApprovalIcons.Legacy"/>
         </div>
         <Dialog t-if="state.showInfo"
                 onClosed.bind="_toggleInfo"
                 fullscreen="true"
                 title="'Approval'">
-            <t t-call="Studio.ApprovalComponentInfo"/>
+            <t t-call="Studio.ApprovalComponentInfo.Legacy"/>
             <t t-set-slot="buttons">
                 <button class="btn btn-secondary" t-on-click.stop="_toggleInfo">Close</button>
             </t>
@@ -40,7 +40,7 @@
     </t>
 </t>
 
-<t t-name="Studio.ApprovalIcons" owl="1">
+<t t-name="Studio.ApprovalIcons.Legacy" owl="1">
     <!-- no rules list: first fetch not done, display spinner -->
     <t t-if="state.rules === null">
         <i class="fa fa-circle-o-notch fa-spin"/>
@@ -85,7 +85,7 @@
     <!-- no rules in db: nothing to display -->
 </t>
 
-<t t-name="Studio.ApprovalComponentInfo" owl="1">
+<t t-name="Studio.ApprovalComponentInfo.Legacy" owl="1">
     <h3 t-if="env.device.isMobile and props.actionName">
         <strong>Action to approve:</strong> <t t-esc="props.actionName"/>
     </h3>

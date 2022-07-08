@@ -9,7 +9,9 @@
                     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
                 </head>
                 <body class="o_sale_subscription_dashboard_reports_body_print">
-                    <t t-out="body_html"/>
+                    <t t-call="web.html_container">
+                        <t t-out="body_html"/>
+                    </t>
                 </body>
             </html>
         </template>
@@ -58,10 +60,7 @@
                                     </th>
                                     <th>Delta</th>
                                 </tr>
-                                <tr t-foreach="sm['contract_modifications']" t-as="modification"
-                                    class="o_subscription_row"
-                                    t-att-data-model="modification['model']"
-                                    t-att-data-id="modification['subscription_id']">
+                                <tr t-foreach="sm['contract_modifications']" t-as="modification" class="o_subscription_row">
                                     <td>
                                         <i t-att-class="modification['class_type']"/>
                                     </td>

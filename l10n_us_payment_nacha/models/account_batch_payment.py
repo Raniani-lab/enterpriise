@@ -108,7 +108,9 @@ class AccountBatchPayment(models.Model):
         return "".join(entry)
 
     def _calculate_aba_hash(self, aba_routing):
-        return sum(int(c) for c in aba_routing[:-1])
+        # [:-1]: remove check digit
+        # [-8:]: lower 8 digits
+        return int(aba_routing[:-1][-8:])
 
     def _generate_nacha_batch_control_record(self, payment, batch_nr):
         bank = payment.partner_bank_id
@@ -148,8 +150,9 @@ class AccountBatchPayment(models.Model):
 
         control.append("{:08d}".format(len(payments)))  # Entry/ Addenda Count
 
-        hashes = (self._calculate_aba_hash(payment.partner_bank_id.aba_routing) for payment in payments)
-        control.append("{:010d}".format(sum(hashes)))  # Entry Hash
+        hashes = sum(self._calculate_aba_hash(payment.partner_bank_id.aba_routing) for payment in payments)
+        hashes = str(hashes)[-10:] # take the rightmost 10 characters
+        control.append("{:0>10}".format(hashes))  # Entry Hash
 
         control.append("{:012d}".format(0))  # Total Debit Entry Dollar Amount in File
         control.append("{:012d}".format(sum(round(payment.amount * 100) for payment in payments)))  # Total Credit Entry Dollar Amount in File

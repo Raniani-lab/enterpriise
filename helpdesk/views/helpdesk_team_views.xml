@@ -98,13 +98,13 @@
                                 </div>
                                 <div>
                                     <span colspan="2" class="text-muted" attrs="{'invisible':[('access_instruction_message', '=', '')]}">
-                                        <i class="fa fa-lightbulb-o"/>&amp;nbsp;<field class="align-top" name="access_instruction_message" nolabel="1"/>  
+                                        <i class="fa fa-lightbulb-o"/>&amp;nbsp;<field class="align-top" name="access_instruction_message" nolabel="1"/>
                                     </span>
                                 </div>
                                 <div>
                                     <span colspan="2" class="text-muted" attrs="{'invisible':[('privacy_visibility_warning', '=', '')]}">
                                         <i class="fa fa-warning">&amp;nbsp;</i>
-                                        <field class="align-top" name="privacy_visibility_warning" nolabel="1"/>  
+                                        <field class="align-top" name="privacy_visibility_warning" nolabel="1"/>
                                     </span>
                                 </div>
                             </div>
@@ -264,6 +264,22 @@
                     </div>
                     <h2>Self-Service</h2>
                     <div class="row mt16 o_settings_container" id="self-Service">
+                        <div class="col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="use_website_helpdesk_knowledge"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="use_website_helpdesk_knowledge"/>
+                                <div class="text-muted">
+                                    Centralize, manage, share and grow your knowledge library
+                                </div>
+                                <div id="use_website_helpdesk_knowledge" attrs="{'invisible': [('use_website_helpdesk_knowledge', '=', False)]}">
+                                    <div class="text-warning mb4 mt16">
+                                        Save this page and refresh to activate the feature.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-lg-6 o_setting_box">
                             <div class="o_setting_left_pane">
                                 <field name="use_website_helpdesk_forum"/>
@@ -572,7 +588,7 @@
                                         <ul class="oe_kanban_colorpicker" data-field="color" role="menu"/>
                                     </div>
                                     <div role="menuitem" class="col-4">
-                                        <a class="dropdown-item" role="menuitem" type="edit">Edit</a>
+                                        <a class="dropdown-item" role="menuitem" type="edit">Settings</a>
                                     </div>
                                 </div>
                             </div>

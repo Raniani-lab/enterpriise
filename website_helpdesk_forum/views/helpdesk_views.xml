@@ -26,7 +26,12 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='use_website_helpdesk_forum']" position="replace" />
+            <xpath expr="//div[@id='use_website_helpdesk_forum']" position="replace">
+                <div class="mt16" attrs="{'invisible': [('use_website_helpdesk_forum', '=', False)]}">
+                    <label for="website_forum_ids"/>
+                    <field name="website_forum_ids" widget="many2many_tags"/>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

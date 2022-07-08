@@ -29,6 +29,9 @@ class ForumPost(models.Model):
 
         domain = website.website_domain()
         domain += [('state', '=', 'active'), ('can_view', '=', True)]
+        website_forum_ids = team.sudo().website_forum_ids
+        if website_forum_ids:
+            domain += [('forum_id', 'in', website_forum_ids.ids)]
 
         if options.get('max_date'):
             domain = [('create_date', '>=', options['max_date'])] + domain

@@ -2,7 +2,7 @@
 <odoo>
     <template id="knowledge_base_slides_card" inherit_id="website_helpdesk.knowledge_base">
         <xpath expr="//div[@id='o_knowledge_base_sections']" position="inside">
-            <div class="col-lg-4 pt32 pb32 text-center o_colored_level" t-if="team.use_website_helpdesk_slides">
+            <div class="col-lg-4 pt32 pb32 text-center o_colored_level" t-if="team.show_knowledge_base_slide_channel">
                 <i class="fa fa-3x rounded bg-o-color-5 m-3 fa-mortar-board fa-3x rounded bg-o-color-5 m-3">​</i>
                 <h3>
                     <span style="font-weight: bolder; font-size: 18px;">Courses</span>
@@ -10,7 +10,7 @@
                 <p>
                     <span style="font-size: 18px;">Level up your skills with training videos and tutorials</span>
                 </p>
-                <a href="/slides" class="btn btn-outline-primary" data-bs-original-title="" title="">Take Courses</a>
+                <a t-attf-href="/helpdesk/{{ slug(team) }}/slides" class="btn btn-outline-primary" data-bs-original-title="" title="">Take Courses</a>
             </div>
         </xpath>
     </template>
@@ -60,5 +60,9 @@
                 </p> 
             </div>
         </div>
+    </template>
+
+    <template id="website_helpdesk_slides.helpdesk_courses" inherit_id="website_slides.courses_all" primary="True">
+        <xpath expr="//nav" position="replace"/>
     </template>
 </odoo>

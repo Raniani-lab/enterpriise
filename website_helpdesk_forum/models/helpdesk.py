@@ -2,34 +2,54 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from odoo.addons.http_routing.models.ir_http import slug
 from odoo.exceptions import UserError
 
 
 class HelpdeskTeam(models.Model):
     _inherit = "helpdesk.team"
 
+    show_knowledge_base_forum = fields.Boolean(compute="_compute_show_knowledge_base_forum")
+    website_forum_ids = fields.Many2many('forum.forum', string='Forums', help="In the help center, customers will only be able to see posts from the selected forums.")
+
+    @api.depends('website_forum_ids')
+    def _compute_show_knowledge_base_forum(self):
+        # 'show_knowledge_base_forum' determines whether the help page of the website displays a link to forums.
+        # It should be true
+        # if the team has forums and the user has access to at least one of them,
+        # or the team has no forum and the user has access to at least one of all.
+        accessible_forums = self.env['forum.forum'].search_count([], limit=1)
+        accessible_all_teams_forums = set(self.sudo().website_forum_ids.sudo(False)._filter_access_rules_python('read').ids)
+        for team in self:
+            team_sudo = team.sudo()
+            if not team_sudo.use_website_helpdesk_forum:
+                team_sudo.sudo().show_knowledge_base_forum = False
+                continue
+            team_forums = set(team_sudo.sudo().website_forum_ids.ids)
+            accessible_team_forums = team_forums & accessible_all_teams_forums
+            team_sudo.sudo().show_knowledge_base_forum =\
+                bool(team_forums and accessible_team_forums) or bool(not team_forums and accessible_forums)
+
     def _ensure_help_center_is_activated(self):
         self.ensure_one()
-        if not self.use_website_helpdesk_forum:
+        if not self.show_knowledge_base_forum:
             raise UserError(_('Help Center not active for this team.'))
         return True
 
     @api.model
     def _get_knowledge_base_fields(self):
-        return super()._get_knowledge_base_fields() + ['use_website_helpdesk_forum']
+        return super()._get_knowledge_base_fields() + ['show_knowledge_base_forum']
 
     def _helpcenter_filter_types(self):
         res = super()._helpcenter_filter_types()
-        if not self.use_website_helpdesk_forum:
+        if not self.show_knowledge_base_forum:
             return res
 
         res['forum_posts_only'] = _('Forum Posts')
         return res
 
-    def _helpcenter_filter_tags(self):
-        res = super()._helpcenter_filter_tags()
-        if not self.use_website_helpdesk_forum:
+    def _helpcenter_filter_tags(self, search_type):
+        res = super()._helpcenter_filter_tags(search_type)
+        if not self.show_knowledge_base_forum or (search_type and search_type != 'forum_posts_only'):
             return res
 
         tags = self.env['forum.tag'].search([

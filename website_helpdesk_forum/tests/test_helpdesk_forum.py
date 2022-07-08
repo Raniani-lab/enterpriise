@@ -35,3 +35,27 @@ class TestHelpdeskForum(HelpdeskCommon, TestForumCommon):
         self.assertEqual(post.plain_content, self.ticket_description, 'The created post should have the same description as the ticket.')
         self.assertEqual(post.ticket_id, self.ticket, 'The created post should point to the ticket.')
         self.assertEqual(len(post.tag_ids), 2, 'The created post should have the tags defined in the wizard.')
+
+    def test_show_knowledge_base_forum(self):
+        # see /website_helpdesk_forum:HelpdeskTeam._compute_show_knowledge_base_forum() for more info
+        test_team_public = self.test_team.with_user(self.env.ref('base.public_user'))
+        forums = self.env['forum.forum'].search([])
+
+        self.test_team.use_website_helpdesk_forum = False
+        self.assertFalse(test_team_public.show_knowledge_base_forum, 'This team does not use Forums')
+
+        self.test_team.use_website_helpdesk_forum = True
+        self.test_team.website_forum_ids = False
+        forums.privacy = 'private'
+        self.assertFalse(test_team_public.show_knowledge_base_forum, 'User does not have access to any forum')
+
+        self.test_team.website_forum_ids = False
+        forums[0].privacy = 'public'
+        self.assertTrue(test_team_public.show_knowledge_base_forum, 'User has access to a forum')
+
+        self.test_team.website_forum_ids = forums
+        self.assertTrue(test_team_public.show_knowledge_base_forum, 'User has access to one of the help forums')
+
+        self.test_team.website_forum_ids = forums[1]
+        forums[1].privacy = 'private'
+        self.assertFalse(test_team_public.show_knowledge_base_forum, 'User does not have access to any of the help forums')

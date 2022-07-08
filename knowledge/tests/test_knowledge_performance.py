@@ -96,6 +96,6 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @warmup
     def test_article_move_to(self):
         before_id = self.workspace_children[0].id
-        with self.assertQueryCount(employee=30):
+        with self.assertQueryCount(employee=31):
             writable_article = self.workspace_children[1].with_env(self.env)
             writable_article.move_to(parent_id=writable_article.parent_id.id, before_article_id=before_id)

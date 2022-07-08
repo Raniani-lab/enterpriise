@@ -7,6 +7,11 @@ patch(WebsitePreview.prototype, 'website_knowledge_website_preview', {
      * @override
      */
     _isTopWindowURL({ pathname }) {
-        return (pathname && pathname.startsWith('/knowledge/article/')) || this._super(...arguments);
+        return (
+            pathname && (
+                pathname.startsWith('/knowledge/article/')
+                || pathname.includes('/knowledge/home')
+            )
+        ) || this._super(...arguments);
     }
 });

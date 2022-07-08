@@ -12,7 +12,7 @@
 
 import tour from 'web_tour.tour';
 
-const moveArticle = ($element, $target) => {
+export const moveArticle = ($element, $target) => {
     const elementCenter = $element.offset();
     elementCenter.left += $element.outerWidth() / 2;
     elementCenter.top += $element.outerHeight() / 2;

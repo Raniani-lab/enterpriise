@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models
+from odoo.osv import expression
 
 from odoo.addons.http_routing.models.ir_http import unslug
 
@@ -23,6 +24,9 @@ class SlideChannel(models.Model):
         extra_domain = []
         if options.get('tag'):
             extra_domain = [('tag_ids.name', 'ilike', options['tag'])]
+        website_slide_channel_ids = team.sudo().website_slide_channel_ids
+        if website_slide_channel_ids:
+            extra_domain = expression.AND([[('id', 'in', website_slide_channel_ids.ids)], extra_domain])
         res['base_domain'] = [res['base_domain'][0] + extra_domain]
 
         return res

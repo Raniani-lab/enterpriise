@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.website_helpdesk.controllers import main
+from odoo.addons.website_helpdesk.controllers.main import WebsiteHelpdesk
+from odoo.addons.website_slides.controllers.main import WebsiteSlides
+from odoo.http import route, request
+
+from odoo.addons.http_routing.models.ir_http import slug
 
 
-class WebsiteHelpdesk(main.WebsiteHelpdesk):
+class WebsiteHelpdeskSlides(WebsiteHelpdesk):
 
     def _format_search_results(self, search_type, records, options):
         if search_type != 'slides':
@@ -26,3 +30,16 @@ class WebsiteHelpdesk(main.WebsiteHelpdesk):
             'url': channel.website_url,
             'icon': 'fa-graduation-cap',
         } for channel in records]
+
+class WebsiteSlidesHelpdesk(WebsiteSlides):
+
+    @route('/helpdesk/<model("helpdesk.team"):team>/slides', type='http', auth="public", website=True, sitemap=True)
+    def helpdesk_slides_channel(self, team=None, **post):
+        if not team or not team.website_slide_channel_ids:
+            return request.redirect('/slides')
+        channels = team.website_slide_channel_ids
+        if len(channels) == 1:
+            return request.redirect('/slides/%s' % slug(channels[0]), code=302)
+        render_values = super().slides_channel_all_values(self, **post)
+        render_values['channels'] = channels
+        return request.render('website_helpdesk_slides.helpdesk_courses', render_values)

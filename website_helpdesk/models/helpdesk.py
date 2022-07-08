@@ -42,9 +42,9 @@ class HelpdeskTeam(models.Model):
         for team in self:
             team.website_url = "/helpdesk/%s" % slug(team)
 
-    @api.onchange('use_website_helpdesk_form', 'use_website_helpdesk_forum', 'use_website_helpdesk_slides')
+    @api.onchange('use_website_helpdesk_form', 'use_website_helpdesk_forum', 'use_website_helpdesk_slides', 'use_website_helpdesk_knowledge')
     def _onchange_use_website_helpdesk(self):
-        if not (self.use_website_helpdesk_form or self.use_website_helpdesk_forum or self.use_website_helpdesk_slides) and self.website_published:
+        if not (self.use_website_helpdesk_form or self.use_website_helpdesk_forum or self.use_website_helpdesk_slides or self.use_website_helpdesk_knowledge) and self.website_published:
             self.is_published = False
         elif self.use_website_helpdesk_form and not self.website_published:
             self.is_published = True
@@ -142,7 +142,7 @@ class HelpdeskTeam(models.Model):
     def _helpcenter_filter_types(self):
         return {}
 
-    def _helpcenter_filter_tags(self):
+    def _helpcenter_filter_tags(self, search_type):
         return []
 
     def _helpcenter_date_from_search(self, searches):

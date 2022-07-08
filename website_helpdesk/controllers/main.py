@@ -38,6 +38,9 @@ class WebsiteHelpdesk(http.Controller):
             result['partner'] = request.env.user.partner_id
         return request.render("website_helpdesk.team", result)
 
+    def _get_knowledge_base_values(self, team):
+        return {'team': team}
+
     @http.route(['/helpdesk/<model("helpdesk.team"):team>/knowledgebase'], type='http', auth="public", website=True, sitemap=True)
     def website_helpdesk_knowledge_base(self, team, **kwargs):
         if not team.show_knowledge_base:
@@ -56,7 +59,7 @@ class WebsiteHelpdesk(http.Controller):
             search_types = [searches['type']] if searches.get('type') else types.keys()
             results = self._get_search_results(search, search_types, options)
 
-            tags = sorted(set(team._helpcenter_filter_tags()))
+            tags = sorted(set(team._helpcenter_filter_tags(kwargs.get('type'))))
             dates = {
                 '7days': _('Last Week'),
                 '30days': _('Last Month'),
@@ -76,7 +79,7 @@ class WebsiteHelpdesk(http.Controller):
                 'results': results,
             })
 
-        return request.render("website_helpdesk.knowledge_base", {'team': team})
+        return request.render("website_helpdesk.knowledge_base", self._get_knowledge_base_values(team))
 
     @http.route(['/helpdesk/<model("helpdesk.team"):team>/knowledgebase/autocomplete'], type='json', auth="public", website=True, sitemap=True)
     def website_helpdesk_autocomplete(self, team, **kwargs):

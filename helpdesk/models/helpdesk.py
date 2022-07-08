@@ -83,11 +83,12 @@ class HelpdeskTeam(models.Model):
     use_alias = fields.Boolean('Email Alias', default=True)
     has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
     allow_portal_ticket_closing = fields.Boolean('Closure by Customers')
-    use_website_helpdesk_form = fields.Boolean('Website Form')
+    use_website_helpdesk_form = fields.Boolean('Website Form', compute='_compute_use_website_helpdesk_form', readonly=False, store=True)
     use_website_helpdesk_livechat = fields.Boolean('Live Chat',
         help="In Channel: You can create a new ticket by typing /helpdesk [ticket title]. You can search ticket by typing /helpdesk_search [keyword],[ticket number],.")
     use_website_helpdesk_forum = fields.Boolean('Community Forum')
-    use_website_helpdesk_slides = fields.Boolean('Enable eLearning')
+    use_website_helpdesk_slides = fields.Boolean('Enable eLearning', compute='_compute_use_website_helpdesk_slides', readonly=False, store=True)
+    use_website_helpdesk_knowledge = fields.Boolean('Knowledge', compute='_compute_use_website_helpdesk_knowledge', readonly=False, store=True)
     use_helpdesk_timesheet = fields.Boolean(
         'Timesheets', compute='_compute_use_helpdesk_timesheet',
         store=True, readonly=False, help="This requires to have project module installed.")
@@ -252,6 +253,21 @@ class HelpdeskTeam(models.Model):
     def _onchange_use_alias(self):
         if not self.use_alias:
             self.alias_name = False
+
+    @api.depends('use_website_helpdesk_knowledge', 'use_website_helpdesk_slides')
+    def _compute_use_website_helpdesk_form(self):
+        teams = self.filtered(lambda team: not team.use_website_helpdesk_form and (team.use_website_helpdesk_knowledge or team.use_website_helpdesk_slides))
+        teams.use_website_helpdesk_form = True
+
+    @api.depends('use_website_helpdesk_form')
+    def _compute_use_website_helpdesk_slides(self):
+        teams = self.filtered(lambda team: not team.use_website_helpdesk_form and team.use_website_helpdesk_slides)
+        teams.use_website_helpdesk_slides = False
+
+    @api.depends('use_website_helpdesk_form')
+    def _compute_use_website_helpdesk_knowledge(self):
+        teams = self.filtered(lambda team: not team.use_website_helpdesk_form and team.use_website_helpdesk_knowledge)
+        teams.use_website_helpdesk_knowledge = False
 
     @api.depends('use_helpdesk_sale_timesheet')
     def _compute_use_helpdesk_timesheet(self):
@@ -448,6 +464,7 @@ class HelpdeskTeam(models.Model):
             'use_website_helpdesk_livechat': 'website_helpdesk_livechat',
             'use_website_helpdesk_forum': 'website_helpdesk_forum',
             'use_website_helpdesk_slides': 'website_helpdesk_slides',
+            'use_website_helpdesk_knowledge': 'website_helpdesk_knowledge',
             'use_helpdesk_timesheet': 'helpdesk_timesheet',
             'use_helpdesk_sale_timesheet': 'helpdesk_sale_timesheet',
             'use_credit_notes': 'helpdesk_account',

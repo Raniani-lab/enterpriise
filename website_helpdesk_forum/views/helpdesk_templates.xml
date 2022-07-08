@@ -3,7 +3,7 @@
     <template id="knowledge_base_forum_card" inherit_id="website_helpdesk.knowledge_base">
         <xpath expr="//div[@id='o_knowledge_base_sections']" position="inside">
             <t t-set="hide_community_button" t-value="True"/>
-            <div class="col-lg-4 pt32 pb32 text-center o_colored_level" t-if="team.use_website_helpdesk_forum">
+            <div class="col-lg-4 pt32 pb32 text-center o_colored_level" t-if="team.show_knowledge_base_forum">
                 <i class="fa fa-3x rounded bg-secondary m-3 fa-comments fa-3x rounded bg-secondary m-3">​</i>
                 <h3>
                     <span style="font-weight: bolder; font-size: 18px;">Community</span>
@@ -11,7 +11,7 @@
                 <p>
                     <span style="font-size: 18px;">Ask questions and discuss tips with fellow members in a forum</span>
                 </p>
-                <a href="/forum" class="btn btn-outline-primary" data-bs-original-title="" title="">Ask the Community</a>
+                <a t-attf-href="/helpdesk/{{ slug(team) }}/forums" class="btn btn-outline-primary" data-bs-original-title="" title="">Ask the Community</a>
             </div>
         </xpath>
     </template>
@@ -23,7 +23,7 @@
             </p>
             <div class="w-100 ms-3">
                 <h5>
-                    <a t-att-href="url" t-out="record.name" class="fw-bold"/> 
+                    <a t-att-href="url" t-out="record.name" class="fw-bold"/>
                     <i t-if="record.has_validated_answer" class="fa fa-check-circle text-success" title="Solved"/>
                 </h5>
                 <small>

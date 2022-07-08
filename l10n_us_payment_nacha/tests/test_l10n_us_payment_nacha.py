@@ -14,7 +14,7 @@ class TestNacha(AccountTestInvoicingCommon):
 
         cls.company_data["default_journal_bank"].write({
             "nacha_immediate_destination": "IMM_DESTINATION",
-            "nacha_immediate_origin": "IMM_ORIGIN",
+            "nacha_immediate_origin": "IMM_ORIG",
             "nacha_destination": "DESTINATION",
             "nacha_company_identification": "COMPANY_ID",
             "nacha_origination_dfi_identification": "ORIGINATION_DFI",
@@ -50,7 +50,7 @@ class TestNacha(AccountTestInvoicingCommon):
 
         expected = [
             # header
-            "101IMM_DESTINIMM_ORIGIN2011301945A094101DESTINATION            company_1_data         {:8d}".format(batch.id),
+            "101IMM_DESTIN  IMM_ORIG2011301945A094101DESTINATION            company_1_data         {:8d}".format(batch.id),
             # batch header for payment "test1"
             "5225company_1_data                      COMPANY_IDPPDtest1     201130201130   1ORIGINAT0000000",
             # entry detail for payment "test1"

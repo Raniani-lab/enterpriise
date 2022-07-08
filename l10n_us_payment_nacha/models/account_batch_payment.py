@@ -43,8 +43,8 @@ class AccountBatchPayment(models.Model):
         header = []
         header.append("1")  # Record Type Code
         header.append("01")  # Priority Code
-        header.append("{:10.10}".format(self.journal_id.nacha_immediate_destination))  # Immediate Destination
-        header.append("{:10.10}".format(self.journal_id.nacha_immediate_origin))  # Immediate Origin
+        header.append("{:>10.10}".format(self.journal_id.nacha_immediate_destination))  # Immediate Destination
+        header.append("{:>10.10}".format(self.journal_id.nacha_immediate_origin))  # Immediate Origin
         header.append("{:6.6}".format(fields.Date.today().strftime("%y%m%d")))  # File Creation Date
 
         now_in_client_tz = fields.Datetime.context_timestamp(self, fields.Datetime.now())

@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
-from odoo import fields, models
+from odoo import _, fields, models
 
 
 class ProductProduct(models.Model):
@@ -13,6 +13,59 @@ class ProductProduct(models.Model):
         for product in self:
             if product.rent_ok and not product.sale_ok:
                 product.show_forecasted_qty_status_button = False
+
+    def name_get(self):
+        res = super().name_get()
+        if self.env.context.get('sale_stock_renting_show_total_qty'):
+            updated_res = []
+            storable_rental_products = self.filtered(
+                lambda product: product.rent_ok and product.type == 'product'
+            )
+            if not storable_rental_products:
+                return res
+
+            # Rental/Stock qties only have to be computed on the current date to know the current
+            # total qty (in stock + in rental)
+            ctxt = {
+                'from_date': self.env.cr.now(),
+                'to_date': self.env.cr.now(),
+            }
+
+            # Compute qties in batch on all storable rental products
+            prefetch_products = storable_rental_products.with_context(**ctxt)
+            prefetch_products.mapped('qty_available')
+            prefetch_products.mapped('qty_in_rent')
+
+            # Generate new name_get results
+            ProductProduct = self.env['product.product']
+            for product_id, product_display_name in res:
+                product = ProductProduct.browse(product_id)
+                if product in storable_rental_products:
+                    product = product.with_context(**ctxt)
+                    total_qty = product.qty_available + product.qty_in_rent
+                    if int(total_qty) == total_qty:
+                        # Display as integer if float has no decimal value
+                        total_qty = int(total_qty)
+                    if total_qty in (0, 1):
+                        updated_res.append(
+                            (product_id, _(
+                                "%(product)s (%(qty)s item)",
+                                product=product_display_name,
+                                qty=total_qty,
+                            ))
+                        )
+                    else:
+                        updated_res.append(
+                            (product_id, _(
+                                "%(product)s (%(qty)s items)",
+                                product=product_display_name,
+                                qty=total_qty,
+                            ))
+                        )
+                else:
+                    updated_res.append((product_id, product_display_name))
+            return updated_res
+        return res
 
     def _get_qty_in_rent_domain(self):
         """Allow precising the warehouse_id to get qty currently in rent."""

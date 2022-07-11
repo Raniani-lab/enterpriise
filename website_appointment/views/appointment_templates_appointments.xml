@@ -142,7 +142,7 @@
                 </a>
             </article>
         </div>
-        <div class="container form-inline w-100 justify-content-center my-3">
+        <div class="d-flex justify-content-center my-3">
             <t t-call="website.pager"/>
         </div>
     </template>

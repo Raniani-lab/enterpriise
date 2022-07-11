@@ -285,38 +285,6 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
             }
             row++;
         }
-        col = anchor[0];
-        for (const column of columns) {
-            let format;
-            switch (column.type) {
-                case "integer":
-                case "float":
-                case "monetary":
-                    format = "#,##0.00";
-                    break;
-                case "date":
-                    format = "m/d/yyyy";
-                    break;
-                case "datetime":
-                    format = "m/d/yyyy hh:mm:ss";
-                    break;
-            }
-            if (format) {
-                this.dispatch("SET_FORMATTING", {
-                    sheetId,
-                    format,
-                    target: [
-                        {
-                            top: anchor[1],
-                            bottom: anchor[1] + linesNumber,
-                            left: col,
-                            right: col,
-                        },
-                    ],
-                });
-            }
-            col++;
-        }
     }
 
     /**

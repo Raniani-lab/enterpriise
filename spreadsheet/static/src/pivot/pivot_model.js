@@ -4,6 +4,8 @@ import { _t } from "@web/core/l10n/translation";
 import { Domain } from "@web/core/domain";
 import { sprintf } from "@web/core/utils/strings";
 import { PivotModel } from "@web/views/pivot/pivot_model";
+import { computeReportMeasures } from "@web/views/utils";
+
 import { formats } from "../helpers/constants";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
@@ -205,6 +207,10 @@ export class SpreadsheetPivotModel extends PivotModel {
     getFormattedGroupBy(fieldName) {
         const { field, aggregateOperator } = this.parseGroupField(fieldName);
         return field.string + (aggregateOperator ? ` (${PERIODS[aggregateOperator]})` : "");
+    }
+
+    getReportMeasures() {
+        return computeReportMeasures(this.metaData.fields, this.metaData.fieldAttrs, [])
     }
 
     //--------------------------------------------------------------------------

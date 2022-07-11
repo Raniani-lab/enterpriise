@@ -229,6 +229,7 @@ export function getBasicData() {
                 foo: {
                     string: "Foo",
                     type: "integer",
+                    store: true,
                     searchable: true,
                     group_operator: "sum",
                 },
@@ -258,8 +259,9 @@ export function getBasicData() {
                 },
                 probability: {
                     string: "Probability",
-                    type: "integer",
+                    type: "float",
                     searchable: true,
+                    store: true,
                     group_operator: "avg",
                 },
                 field_with_array_agg: {

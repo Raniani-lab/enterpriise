@@ -42,7 +42,6 @@ const { Model } = spreadsheet;
 
 QUnit.module("spreadsheet pivot view", {}, () => {
     QUnit.test("simple pivot export", async (assert) => {
-        assert.expect(8);
         const { model } = await createSpreadsheetFromPivotView({
             serverData: {
                 models: getBasicData(),
@@ -62,11 +61,9 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         assert.strictEqual(getCellContent(model, "B1"), "=ODOO.PIVOT.HEADER(1)");
         assert.strictEqual(getCellContent(model, "B2"), '=ODOO.PIVOT.HEADER(1,"measure","foo")');
         assert.strictEqual(getCellContent(model, "B3"), '=ODOO.PIVOT(1,"foo")');
-        assert.strictEqual(getCell(model, "B3").format, "#,##0.00");
     });
 
     QUnit.test("simple pivot export with two measures", async (assert) => {
-        assert.expect(10);
         const { model } = await createSpreadsheetFromPivotView({
             serverData: {
                 models: getBasicData(),
@@ -89,9 +86,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
             '=ODOO.PIVOT.HEADER(1,"measure","probability")'
         );
         assert.strictEqual(getCellContent(model, "B3"), '=ODOO.PIVOT(1,"foo")');
-        assert.strictEqual(getCell(model, "B3").format, "#,##0.00");
         assert.strictEqual(getCellContent(model, "C3"), '=ODOO.PIVOT(1,"probability")');
-        assert.strictEqual(getCell(model, "C3").format, "#,##0.00");
         assert.deepEqual(getMerges(model), ["B1:C1"]);
     });
 

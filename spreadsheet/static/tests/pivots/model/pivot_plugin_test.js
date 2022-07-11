@@ -519,4 +519,21 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         assert.equal(getCellValue(model, "C4"), "15");
         assert.equal(getCellValue(model, "C5"), "");
     });
+
+    QUnit.test(
+        "Pivot formulas are correctly formatted at evaluation",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /* xml */ `
+                <pivot>
+                    <field name="product_id" type="col"/>
+                    <field name="name" type="row"/>
+                    <field name="foo" type="measure"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            });
+            assert.strictEqual(getCell(model, "B3").evaluated.format, "0");
+            assert.strictEqual(getCell(model, "C3").evaluated.format, "#,##0.00");
+        }
+    );
 });

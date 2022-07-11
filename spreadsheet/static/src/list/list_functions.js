@@ -18,6 +18,11 @@ function assertListsExists(listId, getters) {
 
 functionRegistry.add("ODOO.LIST", {
     description: _t("Get the value from a list."),
+    args: args(`
+        list_id (string) ${_t("ID of the list.")}
+        index (string) ${_t("Position of the record in the list.")}
+        field_name (string) ${_t("Name of the field.")}
+    `),
     compute: function (listId, index, fieldName) {
         const id = toString(listId);
         const position = toNumber(index) - 1;
@@ -25,25 +30,37 @@ functionRegistry.add("ODOO.LIST", {
         assertListsExists(id, this.getters);
         return this.getters.getListCellValue(id, position, field);
     },
-    args: args(`
-        list_id (string) ${_t("ID of the list.")}
-        index (string) ${_t("Position of the record in the list.")}
-        field_name (string) ${_t("Name of the field.")}
-    `),
+    computeFormat: function (listId, index, fieldName) {
+        const id = toString(listId.value);
+        const field = this.getters.getSpreadsheetListModel(id).getField((toString(fieldName.value)));
+        switch (field.type) {
+            case "integer":
+                return "0";
+            case "float":
+            case "monetary":
+                return "#,##0.00";
+            case "date":
+                return "m/d/yyyy";
+            case "datetime":
+                return "m/d/yyyy hh:mm:ss";
+            default:
+                return undefined;
+        }
+    },
     returns: ["NUMBER", "STRING"],
 });
 
 functionRegistry.add("ODOO.LIST.HEADER", {
     description: _t("Get the header of a list."),
+    args: args(`
+        list_id (string) ${_t("ID of the list.")}
+        field_name (string) ${_t("Name of the field.")}
+    `),
     compute: function (listId, fieldName) {
         const id = toString(listId);
         const field = toString(fieldName);
         assertListsExists(id, this.getters);
         return this.getters.getListHeaderValue(id, field);
     },
-    args: args(`
-        list_id (string) ${_t("ID of the list.")}
-        field_name (string) ${_t("Name of the field.")}
-    `),
     returns: ["NUMBER", "STRING"],
 });

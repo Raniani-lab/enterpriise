@@ -38,16 +38,22 @@ function assertDomainLength(domain) {
 functionRegistry
     .add("ODOO.FILTER.VALUE", {
         description: _t("Return the current value of a spreadsheet filter."),
-        compute: function (filterName) {
-            return this.getters.getFilterDisplayValue(filterName);
-        },
         args: args(`
             filter_name (string) ${_t("The label of the filter whose value to return.")}
         `),
+        compute: function (filterName) {
+            return this.getters.getFilterDisplayValue(filterName);
+        },
         returns: ["STRING"],
     })
     .add("ODOO.PIVOT", {
         description: _t("Get the value from a pivot."),
+        args: args(`
+            pivot_id (string) ${_t("ID of the pivot.")}
+            measure_name (string) ${_t("Name of the measure.")}
+            domain_field_name (string,optional,repeating) ${_t("Field name.")}
+            domain_value (string,optional,repeating) ${_t("Value.")}
+        `),
         compute: function (pivotId, measureName, ...domain) {
             pivotId = toString(pivotId);
             const measure = toString(measureName);
@@ -55,18 +61,34 @@ functionRegistry
             assertPivotsExists(pivotId, this.getters);
             assertMeasureExist(pivotId, measure, this.getters);
             assertDomainLength(args);
-            return this.getters.getPivotCellValue(pivotId, measure, args, this);
+            return this.getters.getPivotCellValue(pivotId, measure, args);
         },
-        args: args(`
-        pivot_id (string) ${_t("ID of the pivot.")}
-        measure_name (string) ${_t("Name of the measure.")}
-        domain_field_name (string,optional,repeating) ${_t("Field name.")}
-        domain_value (string,optional,repeating) ${_t("Value.")}
-    `),
+        computeFormat: function (pivotId, measureName, ...domain) {
+            pivotId = toString(pivotId.value);
+            const measure = toString(measureName.value);
+            const field = this.getters.getSpreadsheetPivotModel(pivotId).getReportMeasures()[measure];
+            if (!field) {
+                return undefined;
+            }
+            switch (field.type) {
+                case "integer":
+                    return "0";
+                case "float":
+                case "monetary":
+                    return "#,##0.00";
+                default:
+                    return undefined
+            }
+        },
         returns: ["NUMBER", "STRING"],
     })
     .add("ODOO.PIVOT.HEADER", {
         description: _t("Get the header of a pivot."),
+        args: args(`
+            pivot_id (string) ${_t("ID of the pivot.")}
+            domain_field_name (string,optional,repeating) ${_t("Field name.")}
+            domain_value (string,optional,repeating) ${_t("Value.")}
+        `),
         compute: function (pivotId, ...domain) {
             pivotId = toString(pivotId);
             const args = domain.map(toString);
@@ -74,22 +96,17 @@ functionRegistry
             assertDomainLength(args);
             return this.getters.getPivotHeaderValue(pivotId, args);
         },
-        args: args(`
-        pivot_id (string) ${_t("ID of the pivot.")}
-        domain_field_name (string,optional,repeating) ${_t("Field name.")}
-        domain_value (string,optional,repeating) ${_t("Value.")}
-    `),
         returns: ["NUMBER", "STRING"],
     })
     .add("ODOO.PIVOT.POSITION", {
         description: _t("Get the absolute ID of an element in the pivot"),
-        compute: function () {
-            throw new Error(_t(`[[FUNCTION_NAME]] cannot be called from the spreadsheet.`));
-        },
         args: args(`
             pivot_id (string) ${_t("ID of the pivot.")}
             field_name (string) ${_t("Name of the field.")}
             position (number) ${_t("Position in the pivot")}
         `),
+        compute: function () {
+            throw new Error(_t(`[[FUNCTION_NAME]] cannot be called from the spreadsheet.`));
+        },
         returns: ["STRING"],
     });

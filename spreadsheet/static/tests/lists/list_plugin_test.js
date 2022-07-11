@@ -67,34 +67,23 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
     });
 
     QUnit.test(
-        "List is correctly formatted at insertion and re-insertion",
+        "List formulas are correctly formatted at evaluation",
         async function (assert) {
             const { model } = await createSpreadsheetWithList({
-                columns: ["foo", "bar", "date", "create_date", "product_id"],
+                columns: ["foo", "probability", "bar", "date", "create_date", "product_id"],
             });
-            assert.strictEqual(getCell(model, "A2").format, "#,##0.00");
-            assert.strictEqual(getCell(model, "B2").format, undefined);
-            assert.strictEqual(getCell(model, "C2").format, "m/d/yyyy");
-            assert.strictEqual(getCell(model, "D2").format, "m/d/yyyy hh:mm:ss");
             await waitForDataSourcesLoaded(model);
-            const listModel = await model.getters.getAsyncSpreadsheetListModel("1");
-            const list = model.getters.getListDefinition("1");
-            const columns = list.columns.map((name) => ({
-                name,
-                type: listModel.getField(name).type,
-            }));
-            model.dispatch("RE_INSERT_ODOO_LIST", {
-                sheetId: model.getters.getActiveSheetId(),
-                col: 0,
-                row: 10,
-                id: "1",
-                linesNumber: 10,
-                columns,
-            });
-            assert.strictEqual(getCell(model, "A12").format, "#,##0.00");
-            assert.strictEqual(getCell(model, "B12").format, undefined);
-            assert.strictEqual(getCell(model, "C12").format, "m/d/yyyy");
-            assert.strictEqual(getCell(model, "D12").format, "m/d/yyyy hh:mm:ss");
+            assert.strictEqual(getCell(model, "A2").format, undefined);
+            assert.strictEqual(getCell(model, "B2").format, undefined);
+            assert.strictEqual(getCell(model, "C2").format, undefined);
+            assert.strictEqual(getCell(model, "D2").format, undefined);
+            assert.strictEqual(getCell(model, "E2").format, undefined);
+
+            assert.strictEqual(getCell(model, "A2").evaluated.format, "0");
+            assert.strictEqual(getCell(model, "B2").evaluated.format, "#,##0.00");
+            assert.strictEqual(getCell(model, "C2").evaluated.format, undefined);
+            assert.strictEqual(getCell(model, "D2").evaluated.format, "m/d/yyyy");
+            assert.strictEqual(getCell(model, "E2").evaluated.format, "m/d/yyyy hh:mm:ss");
         }
     );
 

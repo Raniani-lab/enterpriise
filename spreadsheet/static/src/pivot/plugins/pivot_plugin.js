@@ -400,13 +400,6 @@ export default class PivotPlugin extends CorePlugin {
             }
             x++;
         }
-        const bodyZone = {
-            top: anchor[1] + table.getColHeight(),
-            bottom: anchor[1] + table.getColHeight() + table.getRowHeight() - 1,
-            left: anchor[0] + 1,
-            right: x - 1,
-        };
-        this.dispatch("SET_FORMATTING", { sheetId, target: [bodyZone], format: "#,##0.00" });
     }
 
     /**

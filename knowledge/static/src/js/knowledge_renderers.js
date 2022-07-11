@@ -444,7 +444,13 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
                         $(child).data('category', data.newCategory);
                         $(child).attr('data-category', data.newCategory);
                     });
-                    $('section[data-section="shared"]').removeClass('o_no_root_placeholder');
+                    const $sharedSection = this.$('section[data-section="shared"]');
+                    if ($sharedSection.length) {
+                        $sharedSection.removeClass('o_no_root_placeholder');
+                        if (!$sharedSection.find('.o_article').length) {
+                            $sharedSection.addClass('d-none');
+                        }
+                    }
                     $sortable.sortable('enable');
                 };
                 const rejectMove = () => {

@@ -865,6 +865,14 @@ class AccountMove(models.Model):
                 self._set_invoice_lines(move_form, vals_invoice_lines)
 
                 # if the total on the invoice doesn't match the total computed by Odoo, adjust the taxes so that it matches
+
+                # if the user has not the `account.group_account_readonly`,
+                # `line_ids` is supposed to be invisible in the form view and therefore you shouldn't be able to edit it
+                # <page id="aml_tab" string="Journal Items" groups="account.group_account_readonly">
+                #     <field name="line_ids"
+                # Here as it's not a test checking how the interface behaves, we bypass this invisible mecanism.
+                move_form._view['modifiers']['line_ids']['invisible'] = False
+
                 for i in range(len(move_form.line_ids)):
                     with move_form.line_ids.edit(i) as line:
                         if line.tax_repartition_line_id and total_ocr:

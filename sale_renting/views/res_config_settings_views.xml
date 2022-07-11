@@ -75,10 +75,4 @@
         <field name="context">{'module' : 'sale_renting', 'bin_size': False}</field>
     </record>
 
-    <menuitem id="menu_rental_settings"
-              name="Settings"
-              parent="menu_rental_config"
-              sequence="0"
-              action="action_rental_config_settings"
-              groups="base.group_system"/>
 </odoo>

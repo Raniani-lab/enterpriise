@@ -20,18 +20,23 @@
 
     'data': [
         'security/ir.model.access.csv',
-        'security/renting_security.xml',
+        'security/ir_rules.xml',
+
         'data/rental_data.xml',
-        'views/product_views.xml',
-        'views/sale_views.xml',
-        'views/rental_views.xml',
+
+        'views/product_template_views.xml',
+        'views/sale_order_views.xml',
         'views/res_config_settings_views.xml',
-        'wizard/rental_configurator_views.xml',
-        'wizard/rental_processing_views.xml',
+
         'report/rental_order_report_templates.xml',
         'report/rental_report_views.xml',
         'report/rental_schedule_views.xml',
-        ],
+
+        'wizard/rental_configurator_views.xml',
+        'wizard/rental_processing_views.xml',
+
+        'views/sale_renting_menus.xml',
+    ],
     'demo': [
         'data/rental_demo.xml',
     ],

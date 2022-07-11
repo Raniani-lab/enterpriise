@@ -6,16 +6,14 @@
                 type="text"
                 class="o_input"
                 readonly=""
-                t-att-value="state.autocompleteValue"
+                t-att-value="props.value"
             />
             <AutoComplete t-else=""
-                value="state.autocompleteValue"
+                value="props.value || ''"
                 sources="sources"
                 placeholder="placeholder"
                 autoSelect="props.autoSelect"
                 onSelect.bind="onSelect"
-                onInput.bind="onInput"
-                onChange.bind="onInput"
             />
             <a role="button" class="o_dropdown_button" draggable="false" />
         </div>

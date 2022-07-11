@@ -5,14 +5,11 @@ import { useService } from "@web/core/utils/hooks";
 import { fuzzyLookup } from "@web/core/utils/search";
 import { _t } from "@web/core/l10n/translation";
 
-const { Component, useState, onWillStart, onWillUpdateProps } = owl;
+const { Component, onWillStart } = owl;
 
 export class ModelSelector extends Component {
     setup() {
         this.orm = useService("orm");
-        this.state = useState({
-            autocompleteValue: this.props.value || "",
-        });
 
         onWillStart(async () => {
             this.models = await this.orm.call("ir.model", "display_name_for", [this.props.models]);
@@ -23,10 +20,6 @@ export class ModelSelector extends Component {
                     [`o_sp_selector_${record.model}`]: 1,
                 },
             }));
-        });
-
-        onWillUpdateProps((nextProps) => {
-            this.state.autocompleteValue = nextProps.value || this.state.autocompleteValue;
         });
     }
 
@@ -45,15 +38,10 @@ export class ModelSelector extends Component {
     }
 
     onSelect(option) {
-        this.state.autocompleteValue = "";
         this.props.onModelSelected({
             label: option.label,
             technical: option.technical,
         });
-    }
-
-    onInput({ inputValue }) {
-        this.state.autocompleteValue = inputValue;
     }
 
     filterModels(name) {

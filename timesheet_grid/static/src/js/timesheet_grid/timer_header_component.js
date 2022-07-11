@@ -186,6 +186,7 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
             } catch (_) {
                 this.state.errorManualTimeInput = true;
             }
+            this.manualTimerAmount = ev.target.value;
         }
         /**
          * @private

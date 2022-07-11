@@ -2,7 +2,7 @@
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 
-const { Component, onMounted, useState, useRef } = owl;
+const { Component, onMounted, useState, useRef, onWillUpdateProps } = owl;
 
 const WIDTH_MARGIN = 3;
 const PADDING_RIGHT = 5;
@@ -14,11 +14,18 @@ export class SpreadsheetName extends Component {
     this.state = useState({
       inputSize: 1,
       isUntitled: this._isUntitled(this.props.name),
+      name: this.props.name,
     });
     this.input = useRef("speadsheetNameInput");
 
     onMounted(() => {
-      this._setInputSize(this.props.name);
+      this._setInputSize(this.state.name);
+    });
+    onWillUpdateProps(nextProps => {
+      if (nextProps.name !== this.props.name) {
+        this.state.name = nextProps.name;
+        this.state.isUntitled = this._isUntitled(nextProps.name);
+      }
     });
   }
 
@@ -82,6 +89,7 @@ export class SpreadsheetName extends Component {
   _onInput(ev) {
     const value = ev.target.value;
     this.state.isUntitled = this._isUntitled(value);
+    this.state.name = value
     this._setInputSize(value);
   }
 

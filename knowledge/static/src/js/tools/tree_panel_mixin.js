@@ -121,7 +121,12 @@ export default {
                         parent_id: $li.data('articleId')
                     }
                 });
-                $li.append($('<ul/>').append(children));
+                const $newUl = $('<ul/>').append(children);
+                $li.append($newUl);
+                const portalReadonlyMode = this.$('.o_knowledge_tree').data('portalReadonlyMode');
+                if (!portalReadonlyMode) {
+                    this._setEmojiPickerListener($newUl);
+                }
             }
             if (unfoldedArticles.indexOf(articleId) === -1) {
                 unfoldedArticles.push(articleId);

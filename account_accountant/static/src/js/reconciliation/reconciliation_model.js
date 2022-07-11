@@ -379,7 +379,7 @@ var ManualModel = BasicModel.extend({
                 return p.id !== prop.id && p.id !== prop.link && p.link !== prop.id && (!p.link || p.link !== prop.link);
             });
             if (!isNaN(id)) {
-                if (['receivable', 'payable', 'liquidity'].includes(prop.account_type)) {
+                if (['asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card'].includes(prop.account_type)) {
                     line.mv_lines_match_rp.unshift(prop);
                 } else {
                     line.mv_lines_match_other.unshift(prop);
@@ -592,7 +592,7 @@ var ManualModel = BasicModel.extend({
             switch(context.mode) {
                 case 'customers':
                 case 'suppliers':
-                    var mode = context.mode === 'customers' ? 'receivable' : 'payable';
+                    var mode = context.mode === 'customers' ? 'asset_receivable' : 'liability_payable';
                     var args = ['partner', context.partner_ids || null, mode];
                     return self._rpc({
                             model: 'account.reconciliation.widget',

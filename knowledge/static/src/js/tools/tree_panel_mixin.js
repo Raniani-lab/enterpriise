@@ -30,7 +30,7 @@ export default {
             $container.append(htmlTree);
             if (!portalReadonlyMode) {
                 this._setTreeListener();
-                this._renderEmojiPicker();
+                this._setEmojiPickerListener();
             }
             this._setTreeFavoriteListener();
         }).catch(error => {
@@ -54,10 +54,16 @@ export default {
         const $sortable = this.$('.o_tree_favorite');
         $sortable.sortable({
             axis: 'y',
+            handle: '.o_article_handle',
             items: 'li',
+            opacity: 0.6,
+            placeholder: 'ui-sortable-placeholder',
+            tolerance: 'intersect',
+            helper: 'clone',
             cursor: 'grabbing',
-            forcePlaceholderSize: true,
-            placeholder: 'o_placeholder',
+            scrollSpeed: 6,
+            delay: 150,
+            distance: 10,
             /**
              * @param {Event} event
              * @param {Object} ui

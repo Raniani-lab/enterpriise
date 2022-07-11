@@ -26,6 +26,8 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
         'click .o_section_create': '_onBtnSectionCreateClick',
         'click .o_knowledge_share_panel': '_preventDropdownClose',
         'click .o_knowledge_more_options_panel': '_preventDropdownClose',
+        'show.bs.dropdown a.o_article_emoji': '_onEmojiPickerShow',
+        'hide.bs.dropdown a.o_article_emoji': '_onEmojiPickerHide',
     }),
     /**
      * @override
@@ -149,6 +151,42 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
         this._closeChatter();
     },
     /**
+     * Hide the container of the emoji picker since it also contains a page
+     * blocker (to force the user to close the emoji picker before continuing
+     * to use the page).
+     *
+     * @private
+     */
+    _onEmojiPickerHide: function () {
+        this.emojiPickerContainer.classList.remove('show');
+    },
+    /**
+     * Unlike Bootstrap 4, Bootstrap 5 requires that the dropdown-menu be inside
+     * a direct sibling of the dropdown toggle even though the real condition
+     * technically is that the dropdown-menu and the dropdown toggle must have a
+     * common ancestor with position: relative.
+     *
+     * In our case, we want to display a page blocker which will prevent the
+     * user to drag an article while the emoji picker is open, along with the
+     * emoji picker itself.
+     *
+     * To circumvent the harsher Bootstrap 5 limitation, the dropdown-menu
+     * element is set manually if the default selector did not find it.
+     *
+     * @see bootstrap.dropdown._getMenuElement
+     * @see bootstrap.selector-engine.next
+     *
+     * @private
+     */
+    _onEmojiPickerShow: function (ev) {
+        const dropdown = globalThis.Dropdown.getInstance(ev.currentTarget);
+        // the show class on the container allows to display the page blocker
+        this.emojiPickerContainer.classList.add('show');
+        if (!dropdown._menu) {
+            dropdown._menu = this.emojiPickerContainer.querySelector('.dropdown-menu');
+        }
+    },
+    /**
      * Opens the selected record.
      * @param {Event} event
      */
@@ -222,22 +260,14 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
         const target = this.el.querySelector('.o_knowledge_chatter_container');
         await this._chatterContainerComponent.mount(target);
     },
-
     /**
-     * Attaches an emoji picker widget to every emoji dropdown of the container.
-     * Note: The widget will be attached to the view when the user clicks on
-     * the dropdown menu for the first time.
-     * @param {JQuery} [$container]
+     * @private
+     * @returns {Promise}
      */
-    _renderEmojiPicker: function ($container) {
-        $container = $container || this.$el;
-        $container.find('.o_article_emoji_dropdown').one('click', event => {
-            const $dropdown = $(event.currentTarget);
-            const picker = new EmojiPickerWidget(this, {
-                article_id: $dropdown.data('article-id')
-            });
-            picker.attachTo($dropdown);
-        });
+    _renderEmojiPicker: function () {
+        this.emojiPickerContainer = this.el.querySelector('.o_knowledge_emoji_picker_container');
+        this.emojiPicker = new EmojiPickerWidget(this);
+        return this.emojiPicker.appendTo($(this.emojiPickerContainer));
     },
     /**
      * Renders the permission panel
@@ -263,6 +293,7 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
         this._renderArticleEmoji();
         this._renderPermissionPanel();
         this._setResizeListener();
+        await this._renderEmojiPicker();
         return result;
     },
     /**
@@ -272,6 +303,18 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
     _setEmoji: function (id, emoji) {
         const emojis = this.$(`.o_article_emoji_dropdown[data-article-id="${id}"] > .o_article_emoji`);
         emojis.text(emoji || '📄');
+    },
+    /**
+     * Setup the emoji picker listener(s) to open it when clicking on an emoji
+     *
+     * @param {JQuery} $emojiContainer element containing emoji_dropdown
+     *                 which need a click handler to open the
+     */
+    _setEmojiPickerListener: function ($emojiContainer) {
+        $emojiContainer = $emojiContainer || this.$el;
+        $emojiContainer.find('.o_article_emoji_dropdown').on('click', async event => {
+            this.emojiPicker.setArticleId(parseInt(event.currentTarget.dataset.articleId));
+        });
     },
     /**
      * Enables the user to resize the aside block.
@@ -317,17 +360,19 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
         const $sortable = this.$('.o_tree');
         $sortable.nestedSortable({
             axis: 'y',
-            handle: 'div',
+            handle: '.o_article_handle',
             items: 'li',
             listType: 'ul',
-            toleranceElement: '> div',
-            forcePlaceholderSize: true,
+            toleranceElement: '> .o_article_handle',
             opacity: 0.6,
-            placeholder: 'bg-info',
-            tolerance: 'pointer',
+            placeholder: 'ui-sortable-placeholder',
+            tolerance: 'intersect',
             helper: 'clone',
             cursor: 'grabbing',
             cancel: '.readonly',
+            scrollSpeed: 6,
+            delay: 150,
+            distance: 10,
             /**
              * @param {Event} event
              * @param {Object} ui

@@ -1,12 +1,7 @@
 .o_knowledge_form_view {
     --default-sidebar-size: 300px;
     --sidebar-size: clamp(300px, var(--default-sidebar-size), 50vw);
-
-    $o-knowledge-bg--active: #cceaf9; // TMP -> should match $o-searchpanel-active-bg
-
-    a.o_article_emoji:hover {
-        background-color: rgba(#000, .1);
-    }
+    --knowledge-bg--active: 27, 161, 228;
 
     // = Navbar
     // --------------------------------------------------------------------------
@@ -22,6 +17,26 @@
         &.fa-star, &:hover {
             color: $o-main-favorite-color;
         }
+    }
+
+    .o_knowledge_emoji_picker_blocker {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100vw;
+        height: 100vh;
+        display: none;
+    }
+
+    .o_knowledge_emoji_picker_container.show {
+        .o_knowledge_emoji_picker_blocker {
+            display: block;
+        }
+    }
+
+    .o_article_emoji_dropdown_panel {
+        user-select: none;
+        max-width: 70vw;
     }
 
     .o_knowledge_add_icon, .o_knowledge_add_cover {
@@ -49,12 +64,78 @@
         min-height: 2rem;
     }
 
+    .ui-sortable-placeholder {
+        height: 5px;
+        background-color: rgba(var(--knowledge-bg--active), 0.7);
+    }
+
+    .ui-sortable-handle {
+        display: block;
+    }
+
+    .o_article_emoji {
+        height: 100%;
+        display: inline-block;
+        &:hover {
+            background-color: rgba(var(--knowledge-bg--active), 0.2);
+        }
+        &:active {
+            background-color: rgba(var(--knowledge-bg--active), 0.3);
+        }
+    }
+
     .o_knowledge_aside {
         width: var(--sidebar-size);
         transition: width 0.15s linear;
 
-        .o_article_active, .o_article_emoji_active {
-            background-color: $o-knowledge-bg--active;
+        .o_knowledge_tree {
+            user-select: none;
+        }
+
+        .o_article:not(.ui-sortable-helper) {
+            .o_article_handle {
+                &.o_article_active {
+                    background-color: rgba(var(--knowledge-bg--active), 0.2);
+                    &:hover {
+                        background-color: rgba(var(--knowledge-bg--active), 0.3);
+                    }
+                    .o_article_name:active::before, .o_article_emoji:hover, .o_article_create:hover, .o_article_caret:hover {
+                        background-color: rgba(var(--knowledge-bg--active), 0.4);
+                    }
+                    .o_article_emoji:active, .o_article_create:active, .o_article_caret:active {
+                        background-color: rgba(var(--knowledge-bg--active), 0.5);
+                    }
+                }
+                &:hover {
+                    background-color: rgba(var(--knowledge-bg--active), 0.2);
+                }
+                .o_article_name:active::before, .o_article_emoji:hover, .o_article_create:hover, .o_article_caret:hover {
+                    background-color: rgba(var(--knowledge-bg--active), 0.3);
+                }
+                .o_article_emoji:active, .o_article_create:active, .o_article_caret:active {
+                    background-color: rgba(var(--knowledge-bg--active), 0.4);
+                }
+                .o_article_name:active::before {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    z-index: -1;
+                    content: '';
+                }
+            }
+        }
+
+        .o_article.ui-sortable-helper {
+            .o_article_handle {
+                background-color: transparent !important;
+            }
+        }
+
+        .o_article_handle {
+            position: relative;
+            z-index: 0;
         }
 
         ul {
@@ -100,6 +181,9 @@
         .o_article_handle:not(:hover) .o_article_create {
             visibility: hidden;
         }
+        .o_article_create, .o_article_caret {
+            border: none;
+        }
         .o_article_name a {
             color: inherit;
         }
@@ -131,9 +215,6 @@
         }
     }
 
-    .dropdown-menu.o_article_emoji_dropdown_panel {
-        width: 200px;
-    }
     .dropdown-menu.o_knowledge_more_options_panel {
         width: 250px;
     }

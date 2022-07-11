@@ -43,14 +43,12 @@
                                     <ol class="breadcrumb align-items-center p-3" role="navigation">
                                         <li class="breadcrumb-item d-flex align-items-center">
                                             <div class="o_knowledge_icon pe-1" attrs="{'invisible': [('icon', '=', False)]}">
-                                                <div class="o_article_emoji_dropdown dropdown">
-                                                    <a href="#" class="o_article_editable_emoji o_article_emoji dropdown-toggle o-no-caret"
-                                                       type="button" data-bs-toggle="dropdown" aria-expanded="true"
+                                                <div class="o_article_emoji_dropdown">
+                                                    <a href="#" class="o_article_editable_emoji o_article_emoji o-no-caret"
+                                                       type="button" data-bs-toggle="dropdown"
                                                        attrs="{'invisible': ['|', ('is_locked', '=', True), ('user_has_write_access', '=', False)]}"/>
                                                     <span class="o_article_editable_emoji o_article_emoji o-no-caret"
                                                        attrs="{'invisible': [('is_locked', '=', False), ('user_has_write_access', '=', True)]}"/>
-                                                    <div class="o_article_emoji_dropdown_panel dropdown-menu rounded p-0" role="menu"
-                                                        aria-labelledby="o_article_emoji" />
                                                 </div>
                                             </div>
                                             <field attrs="{'readonly': ['|', ('is_locked', '=', True), ('user_has_write_access', '=', False)]}"
@@ -183,14 +181,12 @@
                                                     <!-- Article Icon -->
                                                     <span class="d-none" attrs="{'invisible': [('cover', '!=', False)]}" />
                                                     <div class="o_knowledge_icon o_large" attrs="{'invisible': [('icon', '=', False)]}">
-                                                        <div class="o_article_emoji_dropdown dropdown">
-                                                            <a href="#" class="o_article_emoji dropdown-toggle o-no-caret"
-                                                               type="button" data-bs-toggle="dropdown" aria-expanded="true"
+                                                        <div class="o_article_emoji_dropdown">
+                                                            <a href="#" class="o_article_emoji o-no-caret"
+                                                               type="button" data-bs-toggle="dropdown"
                                                                attrs="{'invisible': ['|', ('is_locked', '=', True), ('user_has_write_access', '=', False)]}"/>
                                                             <p class="o_article_emoji o-no-caret"
                                                                attrs="{'invisible': [('is_locked', '=', False), ('user_has_write_access', '=', True)]}"/>
-                                                            <div class="o_article_emoji_dropdown_panel dropdown-menu rounded p-0" role="menu"
-                                                                 aria-labelledby="o_article_emoji" />
                                                         </div>
                                                     </div>
                                                     <!-- No article helper -->
@@ -226,6 +222,7 @@
                             <span class="bg-300 ps-1"/>
                         </div>
                     </div>
+                    <div class="o_knowledge_emoji_picker_container"/>
                 </div>
             </form>
         </field>

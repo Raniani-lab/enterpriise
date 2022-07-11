@@ -12,13 +12,17 @@
 
 import tour from 'web_tour.tour';
 
-const moveArticle = ($element, $target, offsetX, offsetY) => {
+const moveArticle = ($element, $target) => {
     const elementCenter = $element.offset();
     elementCenter.left += $element.outerWidth() / 2;
     elementCenter.top += $element.outerHeight() / 2;
     const targetCenter = $target.offset();
     targetCenter.left += $target.outerWidth() / 2;
     targetCenter.top += $target.outerHeight() / 2;
+    const sign = Math.sign(targetCenter.top - elementCenter.top);
+    // The mouse needs to be above (or below) the target depending on element
+    // position (below (or above)) to consistently trigger the correct move.
+    const offsetY = sign * $target.outerHeight() / 2;
 
     $element.trigger($.Event("mouseenter"));
     $element.trigger($.Event("mousedown", {
@@ -27,17 +31,29 @@ const moveArticle = ($element, $target, offsetX, offsetY) => {
         pageY: elementCenter.top,
     }));
 
+    // The initial movement distance should be greater than the minimal movement
+    // distance before the drag event starts on the (nested)sortable element
     $element.trigger($.Event("mousemove", {
         which: 1,
-        pageX: targetCenter.left + (offsetX || 0),
-        pageY: targetCenter.top + (offsetY || 0),
+        pageX: elementCenter.left,
+        pageY: elementCenter.top + sign * 11,
     }));
 
-    $element.trigger($.Event("mouseup", {
-        which: 1,
-        pageX: targetCenter.left + (offsetX || 0),
-        pageY: targetCenter.top + (offsetY || 0),
-    }));
+    // The timeout should be greater than the value of the delay before
+    // the drag event starts on the (nested)sortable element
+    setTimeout(() => {
+        $element.trigger($.Event("mousemove", {
+            which: 1,
+            pageX: targetCenter.left,
+            pageY: targetCenter.top + offsetY,
+        }));
+
+        $element.trigger($.Event("mouseup", {
+            which: 1,
+            pageX: targetCenter.left,
+            pageY: targetCenter.top + offsetY,
+        }));
+    }, 151);
 };
 
 tour.register('knowledge_main_flow_tour', {
@@ -116,6 +132,10 @@ tour.register('knowledge_main_flow_tour', {
         );
     },
 }, {
+    // verify that the move was done
+    trigger: '.o_article:has(.o_article_name:contains("My Workspace Article")) ul > :eq(0):contains("Child Article 2")',
+    run: () => {},
+}, {
     // go back to main workspace article
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("My Workspace Article")',
 }, {
@@ -169,16 +189,17 @@ tour.register('knowledge_main_flow_tour', {
     run: () => {},
 }, {
     // move private article above workspace article in the favorite section
-    // the mouse needs to be slightly above to actually move the element correctly, hence the offset
     trigger: 'section.o_favorite_container .o_article_handle:contains("My Private Article")',
     run: () => {
         moveArticle(
             $('section.o_favorite_container .o_article_handle:contains("My Private Article")'),
             $('section.o_favorite_container .o_article_handle:contains("My Workspace Article")'),
-            0,
-            -1,
         );
     },
+}, {
+    // verify that the move was done
+    trigger: 'section.o_favorite_container ul > :eq(0):contains("My Private Article")',
+    run: () => {},
 }, {
     // go back to main workspace article
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("My Workspace Article")',

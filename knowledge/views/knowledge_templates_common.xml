@@ -26,7 +26,7 @@
                 t-att-data-category="article.category">
                 <t t-set="isActive" t-value="article.id == active_article.id if active_article else False"/>
                 <div t-attf-class="#{ '' if readonly else 'o_article_handle' } d-flex align-items-center #{ 'o_article_active fw-bold' if isActive else 'text-muted' }">
-                    <button t-if="not hideChildren and article.child_ids" class="o_article_caret btn btn-link text-muted p-0" type="button">
+                    <button t-if="not hideChildren and article.child_ids" class="o_article_caret btn btn-link text-muted px-0 py-1" type="button">
                         <i t-if="article.child_ids" t-att-class="'align-self-center fa fa-fw fa-caret-' + ('down' if article.id in unfolded_articles else 'right')"/>
                         <i t-else="" class="ps-3 align-self-center"/>
                     </button>
@@ -43,9 +43,9 @@
 
     <template id="articles_template_name">
         <t t-if="not portal_readonly_mode">
-            <div class="o_article_emoji_dropdown dropdown" t-att-data-article-id="article.id">
+            <div class="o_article_emoji_dropdown" t-att-data-article-id="article.id">
                 <a t-attf-class="o_article_emoji p-1 {{'o_article_emoji_active text-900' if isActive else ''}}" type="button"
-                    t-attf-id="o_article_emoji_dropdown_#{article.id}" data-bs-toggle="dropdown" aria-expanded="true"
+                    data-bs-toggle="dropdown"
                     t-if="not readonly and not article.is_locked">
                     <t t-if="article.icon" t-out="article.icon"/>
                     <t t-else="">📄</t>
@@ -54,15 +54,13 @@
                     <t t-if="article.icon" t-out="article.icon"/>
                     <t t-else="">📄</t>
                 </a>
-                <div class="o_article_emoji_dropdown_panel dropdown-menu rounded p-0" role="menu"
-                    t-attf-aria-labelledby="o_article_emoji_dropdown_#{article.id}"/>
             </div>
-            <div class="o_article_name flex-grow-1 text-truncate o_cursor_pointer" t-out="article.name"/>
-            <button t-if="not hideChildren and not readonly" class="o_article_create btn p-0 opacity-75 opacity-100-hover" type="button">
+            <div class="o_article_name p-1 flex-grow-1 text-truncate o_cursor_pointer" t-out="article.name"/>
+            <button t-if="not hideChildren and not readonly" class="o_article_create btn p-1 opacity-75 opacity-100-hover" type="button">
                 <i class="fa fa-fw fa-plus" title="Create a nested article" />
             </button>
         </t>
-        <div class="o_article_name flex-grow-1 text-truncate o_cursor_pointer" t-else="">
+        <div class="o_article_name p-1 flex-grow-1 text-truncate o_cursor_pointer" t-else="">
             <a t-out="article.display_name" t-attf-href="/knowledge/article/{{article.id}}" class="text-decoration-none"/>
         </div>
     </template>

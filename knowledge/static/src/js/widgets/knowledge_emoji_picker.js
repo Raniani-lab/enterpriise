@@ -5,22 +5,9 @@ import { ComponentWrapper, WidgetAdapterMixin } from 'web.OwlCompatibility';
 import EmojiPicker from '../../components/emoji_picker/emoji_picker.js';
 
 const EmojiPickerWidget = Widget.extend(WidgetAdapterMixin, {
-    events: {
-        'click .dropdown-menu': '_onDropdownClick'
-    },
-
     /**
-     * @override
-     * @param {Object} parent
-     * @param {Object} options
-     * @param {integer} options.article_id
-     */
-    init: function (parent, options) {
-        this._super.apply(this, arguments);
-        this.options = options;
-    },
-
-    /**
+     * Mount the component and setup the Emoji click handler.
+     *
      * @override
      */
     start: function () {
@@ -30,29 +17,20 @@ const EmojiPickerWidget = Widget.extend(WidgetAdapterMixin, {
              */
             onClickEmoji: unicode => {
                 this.trigger_up('emoji_click', {
-                    articleId: this.options.article_id,
+                    articleId: this.articleId || false,
                     unicode: unicode || false,
                 });
-                this.close();
             },
         });
-        const menu = this.el.querySelector('.dropdown-menu');
-        return this.component.mount(menu);
+        return this.component.mount(this.el);
     },
-
     /**
-     * Closes the dropdown
+     * Show the emojiPicker on target
+     *
+     * @param {integer} articleId article id
      */
-    close: function () {
-        this.$('.dropdown-menu').removeClass('show');
-    },
-
-    /**
-     * @param {Event} event
-     */
-    _onDropdownClick: function (event) {
-        event.preventDefault();
-        event.stopPropagation();
+    setArticleId: function (articleId) {
+        this.articleId = articleId;
     },
 });
 

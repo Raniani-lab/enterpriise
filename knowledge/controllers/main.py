@@ -105,8 +105,21 @@ class KnowledgeController(http.Controller):
 
         root_articles = self._get_root_articles()
 
+        # Fetch all visible articles at once instead of going down the hierarchy in the template
+        # using successive 'child_ids' field calls.
+        # This allows to benefit from batch computation (ACLs, computes, ...).
+        # We filter within the template based on the "parent_id" field to get the article children.
+        all_visible_articles = request.env['knowledge.article']
+        all_visible_articles_ids = unfolded_articles | set(root_articles.ids)
+        if all_visible_articles_ids:
+            all_visible_articles = request.env['knowledge.article'].search([
+                ('is_article_item', '=', False),
+                ('id', 'child_of', all_visible_articles_ids)
+            ])
+
         values = {
             "active_article": active_article,
+            "all_visible_articles": all_visible_articles,
             "workspace_articles": root_articles.filtered(lambda article: article.category == 'workspace'),
             "shared_articles": root_articles.filtered(lambda article: article.category == 'shared'),
             "private_articles": root_articles.filtered(

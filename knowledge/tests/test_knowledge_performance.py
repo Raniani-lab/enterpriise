@@ -77,6 +77,12 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
             shared_article = self.shared_children[0].with_env(self.env)
             shared_article.action_toggle_favorite()
 
+    @users('employee')
+    @warmup
+    def test_article_home_page(self):
+        with self.assertQueryCount(employee=22):
+            self.env['knowledge.article'].action_home_page()
+
     @mute_logger('odoo.addons.base.models.ir_rule', 'odoo.addons.mail.models.mail_mail', 'odoo.models.unlink', 'odoo.tests')
     @users('employee')
     @warmup

@@ -790,8 +790,8 @@ class AmazonAccount(models.Model):
                 description = _(
                     "[%s] %s\nCondition: %s - %s", sku, item_title, main_condition, sub_condition
                 )
-            sales_price = float(item_data['ItemPrice']['Amount'])
-            tax_amount = float(item_data['ItemTax']['Amount'])
+            sales_price = float(item_data.get('ItemPrice', {}).get('Amount', 0.0))
+            tax_amount = float(item_data.get('ItemTax', {}).get('Amount', 0.0))
             original_subtotal = sales_price - tax_amount \
                 if marketplace.tax_included else sales_price
             taxes = fiscal_pos.map_tax(product_taxes) if fiscal_pos else product_taxes

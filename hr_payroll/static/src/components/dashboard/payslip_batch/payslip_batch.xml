@@ -17,7 +17,7 @@
                         </span>
                     </div>
                     <div class="col col btn btn-link text-start" t-on-click="() => this.onClickLine(batch.id, batch.name)">
-                        <t t-esc="batch.name"/>
+                        <t t-esc="batch.name"/> <span t-esc="batch.payslip_count" class="text-nowrap"/>
                     </div>
                 </div>
             </t>

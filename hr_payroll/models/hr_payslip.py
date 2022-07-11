@@ -1482,7 +1482,8 @@ class HrPayslip(models.Model):
             translated_states = dict(self.env['hr.payslip.run']._fields['state']._description_selection(self.env))
             for batch_read in batches_read_result:
                 batch_read.update({
-                    'name': f"{batch_read['name']} ({format_date(self.env, batch_read['date_start'], date_format='MM/y')}) {_('(%s Payslips)', batch_read['payslip_count'])}",
+                    'name': f"{batch_read['name']} ({format_date(self.env, batch_read['date_start'], date_format='MM/y')})",
+                    'payslip_count': _('(%s Payslips)', batch_read['payslip_count']),
                     'state': translated_states.get(batch_read['state'], _('Unknown State')),
                 })
             result['batches'] = batches_read_result

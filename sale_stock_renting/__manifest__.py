@@ -26,7 +26,7 @@ Allows use of stock application to manage rentals inventory
         'report/rental_order_report_templates.xml',
         'views/res_config_settings_views.xml',
         'views/sale_views.xml',
-        'views/product_views.xml',
+        'views/product_template_views.xml',
     ],
     'demo': [
         'data/rental_stock_demo.xml',

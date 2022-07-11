@@ -358,6 +358,42 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
             delay: 150,
             distance: 10,
             /**
+             * Prevent a non-root shared article from becoming one, because the
+             * access rights cannot be inferred in that case.
+             *
+             * @param {jQuery} placeholder jQuery element which represents the
+             *                 destination position (may be the placeholder or
+             *                 the nestedSortableItem if it already moved)
+             * @param {jQuery} placeholderParent undefined, required by the
+             *                 library (mjs.nestedSortable) function signature
+             * @param {jQuery} currentItem jQuery nestedSortableItem element
+             * @returns {boolean}
+             */
+            isAllowed: (placeholder, placeholderParent, currentItem) => {
+                const section = currentItem.data('nestedSortableItem').offsetParent[0].parentElement;
+                return (
+                    // destination is under another article
+                    placeholder[0].parentElement.closest('.o_article') ||
+                    // destination is not within the shared section
+                    !placeholder[0].closest('section[data-section="shared"]') ||
+                    // starting position was a root of the shared section
+                    section.getAttribute('data-section') === "shared"
+                );
+            },
+            /**
+             * Prevent the display of a placeholder in the root shared section
+             * if the current item cannot be dragged there.
+             *
+             * @param {Event} event
+             * @param {Object} ui
+             */
+            start: (event, ui) => {
+                const section = ui.item.data('nestedSortableItem').offsetParent[0].parentElement;
+                if (section.getAttribute('data-section') !== 'shared') {
+                    this.$('section[data-section="shared"]').addClass('o_no_root_placeholder');
+                }
+            },
+            /**
              * @param {Event} event
              * @param {Object} ui
              */
@@ -383,67 +419,77 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
                 }
                 $li.siblings('.o_knowledge_empty_info').addClass('d-none');
                 this.$('.o_knowledge_empty_info:only-child').removeClass('d-none');
-                this.trigger_up('move', {...data,
-                    onSuccess: () => {
-                        const id = $li.data('parent-id');
-                        if (typeof id !== 'undefined') {
-                            const $parent = this.$(`.o_article[data-article-id="${id}"]`);
-                            if (!$parent.children('ul').is(':parent')) {
-                                const $caret = $parent.find('> .o_article_handle > .o_article_caret');
-                                $caret.remove();
-                            }
+                const confirmMove = () => {
+                    const id = $li.data('parent-id');
+                    if (typeof id !== 'undefined') {
+                        const $parent = this.$(`.o_article[data-article-id="${id}"]`);
+                        if (!$parent.children('ul').is(':parent')) {
+                            const $caret = $parent.find('> .o_article_handle > .o_article_caret');
+                            $caret.remove();
                         }
-                        if ($parent.length > 0) {
-                            const $handle = $parent.children('.o_article_handle:first');
-                            if ($handle.children('.o_article_caret').length === 0) {
-                                const $caret = $(QWeb.render('knowledge.knowledge_article_caret', {}));
-                                $handle.prepend($caret);
-                            }
-                        }
-                        $li.data('parent-id', $parent.data('article-id'));
-                        $li.attr('data-parent-id', $parent.data('article-id'));
-                        $li.data('category', data.newCategory);
-                        $li.attr('data-category', data.newCategory);
-                        let $children = $li.find('.o_article');
-                        $children.each((_, child) => {
-                            $(child).data('category', data.newCategory);
-                            $(child).attr('data-category', data.newCategory);
-                        });
-                        $sortable.sortable('enable');
-                    },
-                    onReject: () => {
-                        /**
-                         * When a move between two connected nestedSortable
-                         * trees is canceled, more than one operation may be
-                         * undone (library bug). To bypass sortable('cancel'),
-                         * the last moved $item is returned at its original
-                         * location (which may have to be restored too if it was
-                         * cleaned), and a 'change' event is triggered from that
-                         * rectified position for consistency (see the
-                         * nestedSortable library).
-                         */
-                        const $item = ui.item.data('nestedSortableItem');
-                        if ($item.domPosition.prev) {
-                            // Restore $item position after its previous sibling
-                            $item.domPosition.prev.after($item.currentItem[0]);
-                        } else {
-                            // Restore $item as the first child of the parent ul
-                            $item.domPosition.parent.prepend($item.currentItem[0]);
-                            if (!$item.domPosition.parent.parentElement) {
-                                // The ul was cleaned from the document since it
-                                // was empty, so it has to be restored too
-                                const offsetParent = $item.offsetParent[0];
-                                offsetParent.append($item.domPosition.parent);
-                            }
-                        }
-                        // For consistency with the nestedSortable library,
-                        // trigger the 'change' event from the moved $item
-                        $item._trigger('change', null, $item._uiHash());
-                        $sortable.sortable('enable');
-                        this.$('.o_knowledge_empty_info').addClass('d-none');
-                        this.$('.o_knowledge_empty_info:only-child').removeClass('d-none');
                     }
-                });
+                    if ($parent.length > 0) {
+                        const $handle = $parent.children('.o_article_handle:first');
+                        if ($handle.children('.o_article_caret').length === 0) {
+                            const $caret = $(QWeb.render('knowledge.knowledge_article_caret', {}));
+                            $handle.prepend($caret);
+                        }
+                    }
+                    $li.data('parent-id', $parent.data('article-id'));
+                    $li.attr('data-parent-id', $parent.data('article-id'));
+                    $li.data('category', data.newCategory);
+                    $li.attr('data-category', data.newCategory);
+                    let $children = $li.find('.o_article');
+                    $children.each((_, child) => {
+                        $(child).data('category', data.newCategory);
+                        $(child).attr('data-category', data.newCategory);
+                    });
+                    $('section[data-section="shared"]').removeClass('o_no_root_placeholder');
+                    $sortable.sortable('enable');
+                };
+                const rejectMove = () => {
+                    /**
+                     * When a move between two connected nestedSortable
+                     * trees is canceled, more than one operation may be
+                     * undone (library bug). To bypass sortable('cancel'),
+                     * the last moved $item is returned at its original
+                     * location (which may have to be restored too if it was
+                     * cleaned), and a 'change' event is triggered from that
+                     * rectified position for consistency (see the
+                     * nestedSortable library).
+                     */
+                    const $item = ui.item.data('nestedSortableItem');
+                    if ($item.domPosition.prev) {
+                        // Restore $item position after its previous sibling
+                        $item.domPosition.prev.after($item.currentItem[0]);
+                    } else {
+                        // Restore $item as the first child of the parent ul
+                        $item.domPosition.parent.prepend($item.currentItem[0]);
+                        if (!$item.domPosition.parent.parentElement) {
+                            // The ul was cleaned from the document since it
+                            // was empty, so it has to be restored too
+                            const offsetParent = $item.offsetParent[0];
+                            offsetParent.append($item.domPosition.parent);
+                        }
+                    }
+                    // For consistency with the nestedSortable library,
+                    // trigger the 'change' event from the moved $item
+                    $item._trigger('change', null, $item._uiHash());
+                    this.$('section[data-section="shared"]').removeClass('o_no_root_placeholder');
+                    $sortable.sortable('enable');
+                    this.$('.o_knowledge_empty_info').addClass('d-none');
+                    this.$('.o_knowledge_empty_info:only-child').removeClass('d-none');
+                };
+                // The stop method may be called before the library calls
+                // isAllowed (bug), so it has to be called again as a failsafe.
+                if ($sortable.data('mjsNestedSortable').options.isAllowed(ui.item, undefined, ui.item)) {
+                    this.trigger_up('move', {...data,
+                        onSuccess: confirmMove,
+                        onReject: rejectMove,
+                    });
+                } else {
+                    rejectMove();
+                }
             },
         });
 
@@ -452,12 +498,12 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
         this.$('section[data-section="workspace"] .o_tree').nestedSortable(
             'option',
             'connectWith',
-            'section[data-section="private"] .o_tree'
+            'section[data-section="private"] .o_tree, section[data-section="shared"] .o_tree'
         );
         this.$('section[data-section="private"] .o_tree').nestedSortable(
             'option',
             'connectWith',
-            'section[data-section="workspace"] .o_tree'
+            'section[data-section="workspace"] .o_tree, section[data-section="shared"] .o_tree'
         );
         // connectWith both workspace and private sections:
         this.$('section[data-section="shared"] .o_tree').nestedSortable(

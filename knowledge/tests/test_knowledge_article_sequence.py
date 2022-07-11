@@ -153,13 +153,10 @@ class TestKnowledgeArticleSequence(KnowledgeCommon):
         article_root_noise = self.article_root_noise.with_env(self.env)
 
         self.assertEqual(article_private_child.sequence, 0)
-        article_private_child.move_to(parent_id=False)
+        article_private_child.move_to(category='private')
         self.assertEqual(article_private_child.sequence, 6)
         self.assertSortedSequence(article_root_noise + article_private + article_private2 + article_private_child)
-        article_private_child.move_to(
-            parent_id=False,
-            before_article_id=self.article_root_noise[0].id
-        )
+        article_private_child.move_to(before_article_id=self.article_root_noise[0].id)
         self.assertEqual(article_private_child.sequence, 1)
         self.assertSortedSequence(article_private_child + article_root_noise + article_private + article_private2)
 

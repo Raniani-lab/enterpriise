@@ -718,21 +718,33 @@ class Article(models.Model):
     # SEQUENCE / ORDERING
     # ------------------------------------------------------------
 
-    def move_to(self, parent_id=False, before_article_id=False, is_private=False):
+    def move_to(self, parent_id=False, before_article_id=False, category=False):
         """ Move an article in the tree.
 
         :param int parent_id: id of an article that will be the new parent;
         :param int before_article_id: id of an article before which the article
           should be moved. Otherwise it is put as last parent children;
-        :param bool is_private: set as private;
+        :param str category: target category ('workspace', 'private', 'shared')
+          can be omitted if the destination can be deduced from parent_id or
+          before_article_id;
 
         :return: True
         """
         self.ensure_one()
         before_article = self.env['knowledge.article'].browse(before_article_id) if before_article_id else self.env['knowledge.article']
         parent = self.env['knowledge.article'].browse(parent_id) if parent_id else self.env['knowledge.article']
+        # deduce category if not specified
+        category = category or parent.category or before_article.category
+        if not category:
+            raise ValidationError(
+                _("Move to target of %(article_name)s is ambiguous, you should specify the category.")
+            )
+        if category == 'shared' and not parent and (self.parent_id or self.category != 'shared'):
+            raise ValidationError(
+                _("Cannot move %(article_name)s as a root of the 'shared' section since access rights can not be inferred without a parent.")
+            )
 
-        if is_private:
+        if category == 'private':
             # making an article private requires a lot of extra-processing, use specific method
             return self._move_and_make_private(parent=parent, before_article=before_article)
 
@@ -742,7 +754,7 @@ class Article(models.Model):
         if parent_id and not self.parent_id:
             # be sure to reset internal permission when moving a root article under a parent
             values['internal_permission'] = False
-        if not parent_id:
+        if not parent_id and category == 'workspace':
             # be sure to have an internal permission on the article if moved outside
             # of an hierarchy
             values.update({

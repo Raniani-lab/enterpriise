@@ -742,7 +742,7 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
             article_shared[0].move_to(parent_id=article_workspace.id)
         with self.assertRaises(exceptions.AccessError,
                                msg='Cannot move a readonly article (even out of any hierarchy)'):
-            article_shared[0].move_to(parent_id=False)
+            article_shared[0].move_to(category='workspace')
 
         # valid move: put second child of workspace under the first one
         workspace_children[1].move_to(parent_id=workspace_children[0].id)
@@ -758,7 +758,7 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
         self.assertTrue(workspace_children[0].is_desynchronized)
 
         # other valid move: first child is moved to private section
-        workspace_children[0].move_to(parent_id=False, is_private=True)
+        workspace_children[0].move_to(category='private')
         workspace_children.flush_model()
         self.assertMembers(workspace_children[0], 'none', {self.partner_employee: 'write'})
         self.assertEqual(workspace_children[0].category, 'private')
@@ -766,6 +766,61 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
         self.assertFalse(workspace_children[0].is_desynchronized)
         self.assertFalse(workspace_children[0].parent_id)
         self.assertEqual(workspace_children.root_article_id, workspace_children[0])
+
+    @mute_logger('odoo.addons.base.models.ir_rule')
+    @users('employee')
+    def test_article_move_to_shared(self):
+        """ Testing the valid moves to the shared section. """
+        article_private = self.env['knowledge.article'].sudo().create({
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.partner_employee.id,
+                'permission': 'write',
+            })],
+            'internal_permission': 'none',
+            'name': 'Employee Priv.',
+            'sequence': self._base_sequence - 3,
+        })
+        article_shared_employee = self.env['knowledge.article'].sudo().create({
+            'article_member_ids': [
+                (0, 0, {
+                    'partner_id': self.partner_employee.id,
+                    'permission': 'write',
+                }),
+                (0, 0, {
+                    'partner_id': self.partner_employee2.id,
+                    'permission': 'read',
+                }),
+            ],
+            'internal_permission': 'none',
+            'name': 'Employee Shared',
+            'sequence': self._base_sequence - 4,
+        })
+        article_workspace = self.article_workspace.with_env(self.env)
+        shared_child = self.shared_children[0].with_env(self.env)
+
+        # valid move: shared root -> shared root (resequence)
+        article_shared_employee.move_to(category='shared')
+        article_shared_employee.flush_model()
+        self.assertTrue(article_shared_employee.sequence > self.article_shared.sequence)
+        self.assertEqual(article_shared_employee.category, 'shared')
+        self.assertFalse(article_shared_employee.parent_id)
+
+        # valid move: workspace -> shared child
+        article_workspace.move_to(parent_id=article_shared_employee.id)
+        article_workspace.flush_model()
+        self.assertEqual(article_workspace.inherited_permission_parent_id, article_shared_employee)
+        self.assertFalse(article_workspace.internal_permission)
+
+        # valid move: private -> shared child
+        article_private.move_to(parent_id=article_shared_employee.id)
+        article_private.flush_model()
+        self.assertEqual(article_private.inherited_permission_parent_id, article_shared_employee)
+        self.assertFalse(article_workspace.internal_permission)
+
+        # valid move: shared child -> shared child
+        shared_child.move_to(parent_id=article_shared_employee.id)
+        shared_child.flush_model()
+        self.assertEqual(shared_child.inherited_permission_parent_id, article_shared_employee)
 
     @users('employee')
     def test_article_sort_for_user(self):

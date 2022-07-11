@@ -83,6 +83,14 @@
         }
     }
 
+    .ui-sortable-handle:not(.dropdown-menu) {
+        display: block;
+    }
+
+    .o_no_root_placeholder .o_tree > .ui-sortable-placeholder {
+        display: none;
+    }
+
     .o_knowledge_aside {
         width: var(--sidebar-size);
         transition: width 0.15s linear;

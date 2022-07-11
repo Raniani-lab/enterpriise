@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class ProductTemplate(models.Model):
@@ -12,13 +13,14 @@ class ProductTemplate(models.Model):
     preparation_time = fields.Float(string="Security Time", company_dependent=True,
                                     help="Temporarily make this product unavailable before pickup.")
 
-    # TODO replace by UI greying of unselectable conflicting choices ?
     @api.constrains('rent_ok', 'tracking')
     def _lot_not_supported_rental(self):
         for template in self:
             if template.rent_ok and template.tracking == 'lot':
-                raise exceptions.ValidationError("Tracking by lots isn't supported for rental products. \
-                    \n You should rather change the tracking mode to unique serial numbers.")
+                raise ValidationError(_(
+                    "Tracking by lots isn't supported for rental products."
+                    "\nYou should rather change the tracking mode to unique serial numbers."
+                ))
 
     def _compute_show_qty_status_button(self):
         super()._compute_show_qty_status_button()

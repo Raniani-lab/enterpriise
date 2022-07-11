@@ -3,6 +3,7 @@
 
 import publicWidget from 'web.public.widget';
 import KnowledgeTreePanelMixin from './tools/tree_panel_mixin.js'
+import { fetchValidHeadings } from './tools/knowledge_tools.js';
 
 
 publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTreePanelMixin, {
@@ -11,6 +12,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
         'keyup .knowledge_search_bar': '_searchArticles',
         'click .o_article_caret': '_onFold',
         'click .o_favorites_toggle_button': '_toggleFavorite',
+        'click .o_knowledge_toc_link': '_onTocLinkClick',
     },
 
     /**
@@ -85,5 +87,26 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
                 this._setTreeFavoriteListener();
             });
         });
+    },
+
+    /**
+     * Scroll through the view to display the matching heading.
+     * Adds a small highlight in/out animation using a class.
+     *
+     * @param {Event} event
+     */
+    _onTocLinkClick: function (event) {
+        event.preventDefault();
+        const headingIndex = parseInt(event.target.getAttribute('data-oe-nodeid'));
+        const targetHeading = fetchValidHeadings(this.$el[0])[headingIndex];
+        if (targetHeading){
+            targetHeading.scrollIntoView({
+                behavior: 'smooth',
+            });
+            targetHeading.classList.add('o_knowledge_header_highlight');
+            setTimeout(() => {
+                targetHeading.classList.remove('o_knowledge_header_highlight');
+            }, 2000);
+        }
     },
 });

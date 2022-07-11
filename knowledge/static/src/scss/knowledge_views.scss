@@ -1,7 +1,6 @@
 .o_knowledge_form_view {
     --default-sidebar-size: 300px;
     --sidebar-size: clamp(300px, var(--default-sidebar-size), 50vw);
-    --knowledge-bg--active: 27, 161, 228;
 
     // = Navbar
     // --------------------------------------------------------------------------
@@ -66,7 +65,7 @@
 
     .ui-sortable-placeholder {
         height: 5px;
-        background-color: rgba(var(--knowledge-bg--active), 0.7);
+        background-color: rgba($knowledge-bg--active, 0.7);
     }
 
     .ui-sortable-handle {
@@ -77,10 +76,10 @@
         height: 100%;
         display: inline-block;
         &:hover {
-            background-color: rgba(var(--knowledge-bg--active), 0.2);
+            background-color: rgba($knowledge-bg--active, 0.2);
         }
         &:active {
-            background-color: rgba(var(--knowledge-bg--active), 0.3);
+            background-color: rgba($knowledge-bg--active, 0.3);
         }
     }
 
@@ -94,35 +93,35 @@
 
         .o_article:not(.ui-sortable-helper) > div {
             &.o_article_active {
-                background-color: rgba(var(--knowledge-bg--active), 0.2);
+                background-color: rgba($knowledge-bg--active, 0.2);
                 &:hover {
-                    background-color: rgba(var(--knowledge-bg--active), 0.3);
+                    background-color: rgba($knowledge-bg--active, 0.3);
                 }
                 .o_article_name:active::before,
                 .o_article_caret:hover,
                 &.o_article_handle .o_article_emoji:hover,
                 &.o_article_handle .o_article_create:hover {
-                    background-color: rgba(var(--knowledge-bg--active), 0.4);
+                    background-color: rgba($knowledge-bg--active, 0.4);
                 }
                 .o_article_caret:active,
                 &.o_article_handle .o_article_emoji:active,
                 &.o_article_handle .o_article_create:active {
-                    background-color: rgba(var(--knowledge-bg--active), 0.5);
+                    background-color: rgba($knowledge-bg--active, 0.5);
                 }
             }
             &:hover {
-                background-color: rgba(var(--knowledge-bg--active), 0.2);
+                background-color: rgba($knowledge-bg--active, 0.2);
             }
             .o_article_name:active::before,
             .o_article_caret:hover,
             &.o_article_handle .o_article_emoji:hover,
             &.o_article_handle .o_article_create:hover {
-                background-color: rgba(var(--knowledge-bg--active), 0.3);
+                background-color: rgba($knowledge-bg--active, 0.3);
             }
             .o_article_caret:active,
             &.o_article_handle .o_article_emoji:active,
             &.o_article_handle .o_article_create:active {
-                background-color: rgba(var(--knowledge-bg--active), 0.4);
+                background-color: rgba($knowledge-bg--active, 0.4);
             }
             .o_article_name:active::before {
                 @include o-position-absolute(0, 0, 0, 0);
@@ -283,6 +282,13 @@
     .o_knowledge_form_view {
         .o_scroll_view {
             @include o-position-absolute(0, 0, 0, 0);
+            h1, h2, h3, h4, h5, h6 {
+                transition: background-color 0.5s ease;
+                &.o_knowledge_header_highlight {
+                    border-radius: 0.25rem;
+                    background-color: rgba($knowledge-bg--active, 0.2);
+                }
+            }
             overflow-y: auto;
             overflow-x: hidden;
         }

@@ -11,15 +11,28 @@
                     </span>
                 </h1>
                 <hr />
+                <div class="o_knowledge_toc o_knowledge_behavior_anchor o_knowledge_behavior_type_toc" contenteditable="false">
+                    <div class="o_knowledge_toc_content">
+                        <a data-oe-nodeid="0" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_0">HR FAQ</a>
+                        <a data-oe-nodeid="1" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_1">Expense Policy</a>
+                        <a data-oe-nodeid="2" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_2">Who do I need to address if I need office supplies</a>
+                        <a data-oe-nodeid="3" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_2">Why has my expense not been reimbursed? It has been accepted.</a>
+                        <a data-oe-nodeid="4" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_1">Car Policy</a>
+                        <a data-oe-nodeid="5" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_2">How do I know which model I can order or not?</a>
+                        <a data-oe-nodeid="6" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_2">Who can drive my car?</a>
+                        <a data-oe-nodeid="7" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_1">Leaves &amp; Time Off</a>
+                        <a data-oe-nodeid="8" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_2">What do I have to do if I cannot work?</a>
+                    </div>
+                </div>
                 <p><br /></p>
-                <h5>
+                <h2>
                     <span style="font-weight: bolder; text-decoration-line: underline; font-size: 24px;">
                         <font class="text-o-color-1">Expense Policy</font>
                     </span>
-                </h5>
-                <blockquote data-o-mail-quote="1">
-                    <span style="font-size: 18px;">Who do I need to address if I need office supplies?</span>
-                </blockquote>
+                </h2>
+                <h3>
+                    <span style="font-weight: bolder; font-style: italic;">Who do I need to address if I need office supplies?</span>
+                </h3>
                 <p>
                     <span style="font-size: 14px;">
                         Instead of setting up complicated processes,
@@ -28,23 +41,23 @@
                     </span>
                 </p>
                 <p><br /></p>
-                <blockquote data-o-mail-quote="1">
-                    <span style="font-size: 18px;">Why has my expense not been reimbursed? It has been accepted.</span>
-                </blockquote>
+                <h3>
+                    <span style="font-weight: bolder; font-style: italic;">Why has my expense not been reimbursed? It has been accepted.</span>
+                </h3>
                 <p>
                     <span style="font-size: 14px;">The Accounting team handles all payments on Fridays afternoon.</span>
                     <br />
                     <span style="font-size: 14px;">If 2 weeks have passed and you are still waiting to be paid, get in touch with them.</span>
                 </p>
                 <p><br /></p>
-                <h5>
+                <h2>
                     <span style="font-weight: bolder; text-decoration-line: underline; font-size: 24px;">
                         <font class="text-o-color-1">Car Policy</font>
                     </span>
-                </h5>
-                <blockquote data-o-mail-quote="1">
-                    <span style="font-size: 18px;">How do I know which model I can order or not?</span>
-                </blockquote>
+                </h2>
+                <h3>
+                    <span style="font-weight: bolder; font-style: italic;">How do I know which model I can order or not?</span>
+                </h3>
                 <p>
                     <span style="font-size: 14px;">
                         Our catalog can be found here and is updated every 2 years.
@@ -65,9 +78,9 @@
                     <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_file mt-auto ms-auto"></div>
                 </div>
                 <p><br /></p>
-                <blockquote data-o-mail-quote="1">
-                    <span style="font-size: 18px;">Who can drive my car?</span>
-                </blockquote>
+                <h3>
+                    <span style="font-weight: bolder; font-style: italic;">Who can drive my car?</span>
+                </h3>
                 <p>
                     <span style="font-size: 14px;">
                         Your car can be driven by
@@ -76,14 +89,14 @@
                     </span>
                 </p>
                 <p><br /></p>
-                <h5>
+                <h2>
                     <span style="font-size: 24px; font-weight: bolder; text-decoration-line: underline;">
                         <font class="text-o-color-1">Leaves &amp; Time Off</font>
                     </span>
-                </h5>
-                <blockquote data-o-mail-quote="1">
-                    <span style="font-size: 18px;">What do I have to do if I cannot work?</span>
-                </blockquote>
+                </h2>
+                <h3>
+                    <span style="font-weight: bolder; font-style: italic;">What do I have to do if I cannot work?</span>
+                </h3>
                 <p>
                     <span style="font-size: 14px;">Please refer to the chart below.</span>
                 </p>

@@ -32,4 +32,21 @@
             </div>
         </form>
     </t>
+    <t t-name="knowledge.knowledge_table_of_content_wrapper">
+        <div class="o_knowledge_toc o_knowledge_behavior_anchor o_knowledge_behavior_type_toc">
+            <div class="o_knowledge_toc_content">
+                <i>No heading found in this document.</i>
+            </div>
+        </div><br/>
+    </t>
+    <t t-name="knowledge.knowledge_table_of_content">
+        <i contenteditable="false" t-if="!headings or headings.length === 0">
+            Add headings in this Article to create a Table of Content
+        </i>
+        <t t-foreach="headings" t-as="heading">
+            <!-- Use 'data-oe-nodeid' as we need something that is not removed during sanitizing -->
+            <a t-out="heading.name" t-att-data-oe-nodeid="heading.index" href="#" contenteditable="false"
+                t-attf-class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link #{'o_knowledge_toc_link_depth_' + depth}"/>
+        </t>
+    </t>
 </templates>

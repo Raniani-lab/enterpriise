@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { qweb as QWeb } from 'web.core';
+import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
 import { KnowledgeArticleLinkModal } from './wysiwyg/knowledge_article_link.js';
 import { preserveCursor, setCursorStart } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
@@ -86,6 +86,15 @@ Wysiwyg.include({
                 callback: () => {
                     this._insertTemplate();
                 },
+            }, {
+                category: 'Knowledge',
+                name: _t('Table Of Content'),
+                priority: 30,
+                description: _t('Add a table of content.'),
+                fontawesome: 'fa-bookmark',
+                callback: () => {
+                    this._insertTableOfContent();
+                }
             });
         }
         return {...options, commands, categories};
@@ -126,6 +135,16 @@ Wysiwyg.include({
             });
         }
         this.$editable.trigger('refresh_behaviors', { behaviorsData: behaviorsData});
+    },
+    /**
+     * Insert a /toc block (table of content)
+     */
+    _insertTableOfContent: function () {
+        const tableOfContentFragment = new DocumentFragment();
+        const tableOfContentBlock = $(QWeb.render('knowledge.knowledge_table_of_content_wrapper', {}))[0];
+        tableOfContentFragment.append(tableOfContentBlock);
+        const [container] = this.odooEditor.execCommand('insertFragment', tableOfContentFragment);
+        this._notifyNewBehaviors(container);
     },
     /**
      * Insert a /template block

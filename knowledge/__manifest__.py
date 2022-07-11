@@ -37,6 +37,7 @@
     'assets': {
         'web.assets_backend': [
             'web/static/fonts/fonts.scss',
+            'knowledge/static/src/scss/knowledge_common.scss',
             'knowledge/static/src/components/*/*.scss',
             'knowledge/static/src/components/*/*.js',
             'knowledge/static/src/scss/knowledge_views.scss',
@@ -47,7 +48,6 @@
             'knowledge/static/src/js/knowledge_renderers.js',
             'knowledge/static/src/js/knowledge_views.js',
             'knowledge/static/src/js/widgets/knowledge_dialogs.js',
-            'knowledge/static/src/js/tools/tree_panel_mixin.js',
             'knowledge/static/src/js/widgets/knowledge_permission_panel.js',
             'knowledge/static/src/js/widgets/knowledge_emoji_picker.js',
             'knowledge/static/src/webclient/commands/*.js',
@@ -56,6 +56,7 @@
             'knowledge/static/src/js/form_renderer.js',
             'knowledge/static/src/js/knowledge_macros.js',
             'knowledge/static/src/js/knowledge_behaviors.js',
+            'knowledge/static/src/js/knowledge_behavior_table_of_content.js',
             'knowledge/static/src/js/knowledge_toolbars.js',
             'knowledge/static/src/js/knowledge_field_html_injector.js',
             'knowledge/static/src/js/knowledge_plugin.js',
@@ -63,9 +64,13 @@
             'knowledge/static/src/js/knowledge_service.js',
         ],
         'web.assets_frontend': [
+            'knowledge/static/src/scss/knowledge_common.scss',
             'knowledge/static/src/scss/knowledge_frontend.scss',
             'knowledge/static/src/scss/knowledge_blocks.scss',
             'knowledge/static/src/js/knowledge_frontend.js',
+        ],
+        'web.assets_common': [
+            'knowledge/static/src/js/tools/knowledge_tools.js',
             'knowledge/static/src/js/tools/tree_panel_mixin.js',
         ],
         'web_editor.assets_wysiwyg': [
@@ -86,6 +91,7 @@
             'knowledge/static/tests/tours/*.js',
         ],
         'web.qunit_suite_tests': [
+            'knowledge/static/tests/knowledge_article_command_toc.js',
             'knowledge/static/tests/test_services.js',
         ],
         'web.qunit_mobile_suite_tests': [

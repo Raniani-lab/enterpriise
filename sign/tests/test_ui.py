@@ -50,3 +50,18 @@ class TestUi(odoo.tests.HttpCase, SignRequestCommon):
         sign_request = self.create_sign_request_1_role(customer=self.partner_1, cc_partners=self.env['res.partner'])
         url = f"/sign/document/{sign_request.id}/{sign_request.request_item_ids.access_token}"
         self.start_tour(url, 'translate_sign_instructions', login=None)
+
+    def test_sign_flow(self):
+        flow_template = self.template_1_role.copy()
+        self.env['sign.item'].create({
+            'type_id': self.env.ref('sign.sign_item_type_signature').id,
+            'required': True,
+            'responsible_id': self.env.ref('sign.sign_item_role_customer').id,
+            'page': 1,
+            'posX': 0.144,
+            'posY': 0.716,
+            'template_id': flow_template.id,
+            'width': 0.200,
+            'height': 0.050,
+        })
+        self.start_tour("/web", 'test_sign_flow_tour', login='admin')

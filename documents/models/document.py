@@ -231,6 +231,13 @@ class Document(models.Model):
         subject = msg_dict.get('subject', '')
         if custom_values is None:
             custom_values = {}
+
+        # Remove non existing tags to allow saving document with the mail alias
+        tags = custom_values.get('tag_ids')
+        if tags and isinstance(tags, (list, tuple)) and isinstance(tags[0], (list, tuple)):
+            custom_values['tag_ids'] = [(tags[0][0], tags[0][1],
+                                             self.env['documents.tag'].browse(tags[0][2]).exists().ids)]
+
         defaults = {
             'name': "Mail: %s" % subject,
             'active': False,

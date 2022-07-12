@@ -72,11 +72,11 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                     );
                     assert(
                         modelWidgetInputs.length,
-                        2,
+                        1,
                         "There should be a default value in the filter..."
                     );
                     assert(
-                        modelWidgetInputs[0].querySelector("input").value,
+                        document.querySelector(".o_side_panel_related_model input").value,
                         "Contact",
                         "Wrong model selected"
                     );

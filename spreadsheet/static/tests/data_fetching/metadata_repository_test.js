@@ -29,17 +29,16 @@ QUnit.module("spreadsheet > Metadata Repository", {}, () => {
         assert.verifySteps(["fields_get-A", "fields_get-B"]);
     });
 
-    QUnit.test("Search read on ir.model are only loaded once", async function (assert) {
+    QUnit.test("display_name_for on ir.model are only loaded once", async function (assert) {
         assert.expect(6);
 
         const orm = {
             silent: {
                 call: async (model, method, args) => {
-                    if (method === "search_read" && model === "ir.model") {
-                        const [domain, fields] = args;
-                        const modelName = domain[0][2];
-                        assert.step(`${modelName}-${fields[0]}`);
-                        return [{ name: modelName }];
+                    if (method === "display_name_for" && model === "ir.model") {
+                        const [modelName] = args[0];
+                        assert.step(`${modelName}`);
+                        return [{ display_name: modelName, model: modelName }];
                     }
                 },
             },
@@ -55,7 +54,7 @@ QUnit.module("spreadsheet > Metadata Repository", {}, () => {
         assert.strictEqual(second, "A");
         assert.strictEqual(third, "B");
 
-        assert.verifySteps(["A-name", "B-name"]);
+        assert.verifySteps(["A", "B"]);
     });
 
     QUnit.test("Register label correctly memorize labels", function (assert) {

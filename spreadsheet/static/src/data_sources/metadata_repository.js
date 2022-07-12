@@ -9,7 +9,7 @@ const { EventBus } = owl;
 /**
  * This class is used to provide facilities to fetch some common data. It's
  * used in the data sources to obtain the fields (fields_get) and the display
- * name of the models (search_read on ir.model).
+ * name of the models (display_name_for on ir.model).
  *
  * It also manages the labels of all the spreadsheet models (labels of basic
  * fields or display name of relational fields).
@@ -52,11 +52,8 @@ export class MetadataRepository extends EventBus {
      * @returns {Promise<string>} Display name of the model
      */
     async modelDisplayName(model) {
-        const result = await this.serverData.fetch("ir.model", "search_read", [
-            [["model", "=", model]],
-            ["name"],
-        ]);
-        return (result[0] && result[0].name) || "";
+        const result = await this.serverData.fetch("ir.model", "display_name_for", [[model]]);
+        return (result[0] && result[0].display_name) || "";
     }
 
     /**

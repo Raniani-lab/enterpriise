@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import {_t, _lt} from "@web/core/l10n/translation";
+import { _t, _lt } from "@web/core/l10n/translation";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import DateFilterValue from "@spreadsheet_edition/assets/components/filter_date_value";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
@@ -8,20 +8,19 @@ import {
     FieldSelectorWidget,
     FieldSelectorAdapter,
 } from "spreadsheet_edition.field_selector_widget";
-import { ModelSelectorWidgetAdapter } from "spreadsheet_edition.model_selector_widget";
-import { StandaloneMany2OneField } from "@spreadsheet_edition/assets/widgets/standalone_many2one_field";
 import { X2ManyTagSelector } from "@spreadsheet_edition/assets/widgets/tag_selector_widget";
 import { useService } from "@web/core/utils/hooks";
 import { LegacyComponent } from "@web/legacy/legacy_component";
+import { ModelSelector } from "@spreadsheet_edition/assets/components/model_selector/model_selector";
 
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const RANGE_TYPES = [
-    { type: 'year', description: _lt('Year') },
-    { type: 'quarter', description: _lt('Quarter') },
-    { type: 'month', description: _lt('Month') },
-]
+    { type: "year", description: _lt("Year") },
+    { type: "quarter", description: _lt("Quarter") },
+    { type: "month", description: _lt("Month") },
+];
 
 /**
  * @typedef {import("../o_spreadsheet/basic_data_source").Field} Field
@@ -54,8 +53,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             relation: {
                 defaultValue: [],
                 displayNames: [],
-                relatedModelID: undefined,
-                relatedModelName: undefined,
+                relatedModel: {
+                    label: undefined,
+                    technical: undefined,
+                },
             },
         });
         this.modelDisplayNames = {
@@ -68,7 +69,6 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.loadValues();
         // Widgets
         this.FieldSelectorWidget = FieldSelectorWidget;
-        this.StandaloneMany2OneField = StandaloneMany2OneField;
         this.orm = useService("orm");
         this.notification = useService("notification");
 
@@ -99,7 +99,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         return (
             this.state.saved &&
             this.state.type === "relation" &&
-            !this.state.relation.relatedModelID
+            !this.state.relation.relatedModel.technical
         );
     }
 
@@ -145,7 +145,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         if (globalFilter) {
             this.state[this.state.type].defaultValue = globalFilter.defaultValue;
             if (this.state.type === "relation") {
-                this.state.relation.relatedModelName = globalFilter.modelName;
+                this.state.relation.relatedModel.technical = globalFilter.modelName;
             }
         }
     }
@@ -185,29 +185,30 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * @param {{Object.<string, Field>}} fields Fields to look in
      * @returns {Array<string, Field>|undefined}
      */
-     _findRelation(fields) {
+    _findRelation(fields) {
         return (
             Object.entries(fields).find(
                 ([, fieldDesc]) =>
                     fieldDesc.type === "many2one" &&
-                    fieldDesc.relation === this.state.relation.relatedModelName
+                    fieldDesc.relation === this.state.relation.relatedModel.technical
             ) || []
         );
     }
 
-    async onModelSelected(value) {
-        if (this.state.relation.relatedModelID !== value) {
+    async onModelSelected({ technical, label }) {
+        if (!this.state.label) {
+            this.state.label = label;
+        }
+        if (this.state.relation.relatedModel.technical !== technical) {
             this.state.relation.defaultValue = [];
         }
-        this.state.relation.relatedModelID = value;
-        await this.fetchModelFromId();
+        this.state.relation.relatedModel.technical = technical;
+        this.state.relation.relatedModel.label = label;
         for (const pivotId of this.pivotIds) {
             const [field, fieldDesc] = this._findRelation(
                 this.getters.getSpreadsheetPivotModel(pivotId).getFields()
             );
-            this.state.pivotFields[pivotId] = field
-                ? { field, type: fieldDesc.type }
-                : undefined;
+            this.state.pivotFields[pivotId] = field ? { field, type: fieldDesc.type } : undefined;
         }
         for (const listId of this.listIds) {
             const [field, fieldDesc] = this._findRelation(
@@ -218,35 +219,15 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     }
 
     async fetchModelFromName() {
-        if (!this.state.relation.relatedModelName) {
-            this.state.relation.relatedModelID = undefined;
+        if (!this.state.relation.relatedModel.technical) {
             return;
         }
-        const result = await this.orm.searchRead(
-            "ir.model",
-            [["model", "=", this.state.relation.relatedModelName]],
-            ["id", "name"]
-        );
-        this.state.relation.relatedModelID = result[0] && result[0].id;
+        const result = await this.orm.call("ir.model", "display_name_for", [
+            [this.state.relation.relatedModel.technical],
+        ]);
+        this.state.relation.relatedModel.label = result[0] && result[0].display_name;
         if (!this.state.label) {
-            this.state.label = result[0] && result[0].name;
-        }
-    }
-
-    async fetchModelFromId() {
-        if (!this.state.relation.relatedModelID) {
-            this.state.relation.relatedModelName = undefined;
-            return;
-        }
-        const result = await this.orm.searchRead(
-            "ir.model",
-            [["id", "=", this.state.relation.relatedModelID]],
-            ["model", "name"]
-        );
-
-        this.state.relation.relatedModelName = result[0] && result[0].model;
-        if (!this.state.label) {
-            this.state.label = result[0] && result[0].name;
+            this.state.label = this.state.relation.relatedModel.label;
         }
     }
 
@@ -290,7 +271,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             id,
             type: this.state.type,
             label: this.state.label,
-            modelName: this.state.relation.relatedModelName,
+            modelName: this.state.relation.relatedModel.technical,
             defaultValue: this.state[this.state.type].defaultValue,
             defaultValueDisplayNames: this.state[this.state.type].displayNames,
             rangeType: this.state.date.type,
@@ -337,7 +318,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 FilterEditorSidePanel.template = "spreadsheet_edition.FilterEditorSidePanel";
 FilterEditorSidePanel.components = {
     FieldSelectorAdapter,
-    ModelSelectorWidgetAdapter,
+    ModelSelector,
     X2ManyTagSelector,
     DateFilterValue,
 };

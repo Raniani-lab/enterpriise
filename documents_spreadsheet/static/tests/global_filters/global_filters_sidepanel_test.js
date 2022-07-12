@@ -141,11 +141,10 @@ QUnit.module(
             await testUtils.dom.click(searchIcon);
             const newRelation = $(target).find(".o_global_filter_new_relation")[0];
             await testUtils.dom.click(newRelation);
-            let selector = `.o_field_many2one[name="ir.model"] input`;
+            let selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            let $dropdown = $(selector).autocomplete("widget");
-            let $target = $dropdown.find(`li:contains(Product)`).first();
-            await testUtils.dom.click($target);
+            let item = target.querySelector(".o_sp_selector_product");
+            await click(item);
 
             let save = $(target).find(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
@@ -186,13 +185,12 @@ QUnit.module(
                 });
                 await testUtils.dom.click(".o_topbar_filter_icon");
                 await testUtils.dom.click(".o_global_filter_new_relation");
-                let relatedModelSelector = `.o_field_many2one[name="ir.model"] input`;
+                let relatedModelSelector = `.o_side_panel_related_model input`;
                 let fieldMatchingSelector = `.o_pivot_field_matching`;
                 assert.containsNone(target, fieldMatchingSelector);
                 await testUtils.dom.click(target.querySelector(relatedModelSelector));
-                let $dropdown = $(relatedModelSelector).autocomplete("widget");
-                let $target = $dropdown.find(`li:contains(Product)`).first();
-                await testUtils.dom.click($target);
+                let item = target.querySelector(".o_sp_selector_product");
+                await click(item);
                 assert.containsOnce(target, fieldMatchingSelector);
             }
         );
@@ -227,7 +225,7 @@ QUnit.module(
             assert.ok(target.querySelectorAll(".o_spreadsheet_filter_editor_side_panel"));
             assert.equal(target.querySelector(".o_global_filter_label").value, label);
             assert.equal(
-                target.querySelector(`.o_field_many2one[name="ir.model"] input`).value,
+                target.querySelector(`.o_side_panel_related_model input`).value,
                 "Product"
             );
             const fieldsMatchingElements = target.querySelectorAll(
@@ -276,10 +274,9 @@ QUnit.module(
             await testUtils.dom.click(searchIcon);
             const newRelation = $(target).find(".o_global_filter_new_relation")[0];
             await testUtils.dom.click(newRelation);
-            const selector = `.o_field_many2one[name="ir.model"] input`;
+            const selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            const $dropdown = $(selector).autocomplete("widget");
-            const [model1, model2] = $dropdown.find(`li`);
+            const [model1, model2] = target.querySelectorAll(".o-autocomplete--dropdown-item a");
             assert.equal(model1.innerText, "Product");
             assert.equal(model2.innerText, "Document");
         });
@@ -408,11 +405,10 @@ QUnit.module(
             await click(searchIcon);
             const newRelation = target.querySelector(".o_global_filter_new_relation");
             await click(newRelation);
-            let selector = `.o_field_many2one[name="ir.model"] input`;
-            await click(target.querySelector(selector));
-            let $dropdown = $(selector).autocomplete("widget");
-            let $target = $dropdown.find(`li:contains(Product)`).first();
-            await click($target[0]);
+            let selector = `.o_side_panel_related_model input`;
+            await testUtils.dom.click($(target).find(selector)[0]);
+            let item = target.querySelector(".o_sp_selector_product");
+            await click(item);
 
             let save = target.querySelector(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
@@ -461,11 +457,10 @@ QUnit.module(
                 await click(searchIcon);
                 const newRelation = target.querySelector(".o_global_filter_new_relation");
                 await click(newRelation);
-                let selector = `.o_field_many2one[name="ir.model"] input`;
-                await click(target.querySelector(selector));
-                let $dropdown = $(selector).autocomplete("widget");
-                let $target = $dropdown.find(`li:contains(Product)`).first();
-                await click($target[0]);
+                let selector = `.o_side_panel_related_model input`;
+                await testUtils.dom.click($(target).find(selector)[0]);
+                let item = target.querySelector(".o_sp_selector_product");
+                await click(item);
 
                 let save = target.querySelector(
                     ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"

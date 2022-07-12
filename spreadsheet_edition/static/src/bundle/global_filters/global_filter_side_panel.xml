@@ -80,11 +80,10 @@
         <div class="o_side_panel_section o_side_panel_related_model" t-if="state.type === 'relation'">
             <div class="o_side_panel_title">Related Model</div>
             <div t-att-class="missingModel ? 'o_field_invalid' : ''" class="o_required_modifier">
-                <ModelSelectorWidgetAdapter
-                    Component="StandaloneMany2OneField"
-                    modelID="state.relation.relatedModelID"
+                <ModelSelector
+                    value="state.relation.relatedModel.label"
                     models="relatedModels"
-                    onValueChanged.bind="onModelSelected"
+                    onModelSelected.bind="onModelSelected"
                 />
             </div>
         </div>
@@ -104,7 +103,7 @@
                     </t>
             </select>
         </div>
-        <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModelName">
+        <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModel.technical">
             <div class="o_side_panel_title">Default Value</div>
             <DateFilterValue
                 t-if="state.type === 'date'"
@@ -117,14 +116,14 @@
                 class="o_input o_global_filter_default_value"
                 t-model="state.text.defaultValue"/>
             <X2ManyTagSelector
-                t-if="state.type === 'relation' and state.relation.relatedModelName"
-                relatedModel="state.relation.relatedModelName"
+                t-if="state.type === 'relation' and state.relation.relatedModel.technical"
+                relatedModel="state.relation.relatedModel.technical"
                 selectedValues="state.relation.defaultValue"
-                t-key="state.relation.relatedModelName"
+                t-key="state.relation.relatedModel.technical"
                 onValueChanged.bind="onValuesSelected"
             />
         </div>
-        <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModelName">
+        <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModel.technical">
             <div class="o_side_panel_title o_field_matching_title">Field Matching</div>
             <div class="text-muted">
                 Match this filter to a field for each pivot/list
@@ -138,9 +137,9 @@
                         model="getters.getPivotDefinition(pivotId).model"
                         fields="pivotModel.getFields()"
                         type="state.type"
-                        relatedModel="state.relation.relatedModelName"
+                        relatedModel="state.relation.relatedModel.technical"
                         selected="state.pivotFields[pivotId]"
-                        t-key="pivotId + (state.relation.relatedModelName or 'not_defined')"
+                        t-key="pivotId + (state.relation.relatedModel.technical or 'not_defined')"
                         onFieldChainChanged="chain => this.onSelectedPivotField(pivotId, chain)"
                     />
                 </t>
@@ -152,9 +151,9 @@
                     model="getters.getListDefinition(listId).model"
                     fields="getters.getSpreadsheetListModel(listId).getFields()"
                     type="state.type"
-                    relatedModel="state.relation.relatedModelName"
+                    relatedModel="state.relation.relatedModel.technical"
                     selected="state.listFields[listId]"
-                    t-key="listId + (state.relation.relatedModelName or 'not_defined')"
+                    t-key="listId + (state.relation.relatedModel.technical or 'not_defined')"
                     onFieldChainChanged="chain => this.onSelectedListField(listId, chain)"
                     />
             </div>

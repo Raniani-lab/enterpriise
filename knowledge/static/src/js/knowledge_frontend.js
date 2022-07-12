@@ -22,6 +22,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
         return this._super.apply(this, arguments).then(() => {
             const id = this.$el.data('article-id');
             this._renderTree(id, '/knowledge/tree_panel/portal');
+            this._setResizeListener();
         });
     },
 
@@ -41,6 +42,18 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
                 return false;
             }
         });
+    },
+
+    /**
+     * Enables the user to resize the aside block.
+     * Note: When the user grabs the resizer, a new listener will be attached
+     * to the document. The listener will be removed as soon as the user releases
+     * the resizer to free some resources.
+     */
+    _setResizeListener: function () {
+        this.el.querySelector('.o_knowledge_article_form_resizer span').addEventListener(
+            'pointerdown', () => this.resizeSidebar(this.el)
+        );
     },
 
     /**

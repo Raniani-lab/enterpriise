@@ -67,6 +67,35 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     //--------------------------------------------------------------------------
 
     /**
+     * Adds a random cover using unsplash. If unsplash throws an error (service
+     * down/keys unset), opens the cover selector instead.
+     * @param {Event} event
+     */
+    async addCover(event) {
+        // Disable button to prevent multiple calls
+        event.target.classList.add('disabled');
+        if (this.props.record.data.name === this.env._t('Untitled')) {
+            // Rename the article if there is a title in the body
+            await this._rename(this._getFallbackTitle());
+        }
+        const articleName = this.props.record.data.name;
+        try {
+            const res = await this.rpc(`/knowledge/article/${this.resId}/add_random_cover`, {
+                query: articleName === this.env._t('Untitled') ? '' : articleName,
+                orientation: 'landscape',
+            });
+            if (res.cover_id) {
+                await this.props.record.update({cover_image_id: [res.cover_id]});
+            } else {
+                this.openCoverSelector();
+            }
+        } catch {
+            this.openCoverSelector();
+        }
+        event.target.classList.remove('disabled');
+    }
+
+    /**
      * Add a random icon to the article.
      */
     addIcon() {
@@ -218,7 +247,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     // Handlers
     //--------------------------------------------------------------------------
 
-    async onAddCoverClick() {
+    async onChangeCoverClick() {
         if (this.props.record.data.name === this.env._t('Untitled')) {
             // Rename the article if there is a title in the body
             await this._rename(this._getFallbackTitle());

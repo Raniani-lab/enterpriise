@@ -238,12 +238,12 @@
                                                         </div>
                                                         <span class="o_knowledge_edit_cover_buttons position-absolute bottom-0 end-0 mb-2 me-3 text-muted d-print-none"
                                                             attrs="{'invisible': ['|', '|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('cover_image_id', '=', False), ('active', '=', False)]}">
-                                                            <a role="button" t-on-click="openCoverSelector"
-                                                               class="btn btn-light text-capitalize o_knowledge_select_cover me-3">
+                                                            <a role="button" t-on-click="onChangeCoverClick"
+                                                               class="btn btn-light text-capitalize me-3 o_knowledge_change_cover o_knowledge_option_button">
                                                                 <i class="fa fa-fw fa-lg fa-picture-o" title="Change cover"/> Change cover
                                                             </a>
                                                             <a role="button" t-on-click="() => this.props.record.update({cover_image_id: false})"
-                                                               class="btn btn-light text-capitalize o_knowledge_remove_cover">
+                                                               class="btn btn-light text-capitalize o_knowledge_remove_cover o_knowledge_option_button">
                                                                 <i class="fa fa-fw fa-lg fa-trash-o" title="Remove cover"/> Remove cover
                                                             </a>
                                                         </span>
@@ -261,9 +261,9 @@
                                                            class="btn btn-light text-capitalize me-2 ps-1 o_knowledge_add_icon o_knowledge_option_button">
                                                             <i class="fa fa-fw fa-lg fa-smile-o" title="Add icon"/> Add icon
                                                         </a>
-                                                        <a role="button" t-on-click="onAddCoverClick"
+                                                        <a role="button" t-on-click="addCover"
                                                            attrs="{'invisible': [('cover_image_id', '!=', False)]}"
-                                                           class="btn btn-light text-capitalize me-2 ps-1 o_knowledge_select_cover o_knowledge_option_button">
+                                                           class="btn btn-light text-capitalize me-2 ps-1 o_knowledge_add_cover o_knowledge_option_button">
                                                             <i class="fa fa-fw fa-lg fa-picture-o" title="Add cover"/> Add cover
                                                         </a>
                                                         <a role="button" attrs="{'invisible': ['|', ('is_article_item', '=', False), ('article_properties_is_empty', '=', False)]}"

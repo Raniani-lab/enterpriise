@@ -4,7 +4,7 @@
     <template id="knowledge_article_tree_favorites">
         <!-- Go through 'all_visible_articles' if available to avoid extra ACL queries -->
         <section class="o_favorite_container" t-if="all_visible_articles.filtered(lambda article: article in favorites_sudo.article_id)">
-            <div class="h4 mb-0">Favorites</div>
+            <div class="o_section_header h4 mb-0">Favorites</div>
             <ul class="o_tree_favorite">
                 <!-- We loop on favorites_sudo and not filtered visible_articles to ensure the
                 articles are shown based on knowledge.article.favorite's sequence field -->
@@ -34,15 +34,15 @@
                 ))"/>
             <t t-set="isActive" t-value="article.id == active_article_id if active_article_id else False"/>
             <!-- readonly is used to for the drag and drop cancel.-->
-            <li t-attf-class="o_article #{ 'readonly' if readonly else '' } #{ 'o_article_tree_child' if is_child else ''}"
+            <li t-attf-class="o_article #{ 'readonly' if readonly else '' } #{ 'o_article_tree_child' if is_child else ''} #{'o_article_has_children' if children else ''}"
                 t-attf-id="article_#{article.id}"
                 t-att-data-article-id="article.id" t-att-data-parent-id="article.parent_id.id"
                 t-att-data-favorite-article-id="favorite.id if favorite else False"
                 t-att-data-category="article.category">
                 <div t-attf-class="#{ '' if readonly else 'o_article_handle' } d-flex align-items-center #{ 'o_article_active fw-bold' if isActive else 'text-muted' }">
-                    <button t-if="children" class="o_article_caret btn btn-link text-muted px-0 py-1" type="button">
-                        <i t-if="children" t-att-class="'align-self-center fa fa-fw fa-caret-' + ('down' if unfoldChildren else 'right')"/>
-                        <i t-else="" class="ps-3 align-self-center"/>
+                    <button type="button"
+                            class="flex-shrink-1 o_article_caret btn btn-link text-muted p-0 border-0 invisible" >
+                        <i t-att-class="'align-self-center fa fa-fw fa-caret-' + ('down' if unfoldChildren or not children else 'right')"/>
                     </button>
                     <t t-call="knowledge.articles_template_name"/>
                 </div>
@@ -57,25 +57,27 @@
     </template>
 
     <template id="articles_template_name">
-        <t t-if="not portal_readonly_mode">
-            <div class="o_article_emoji_dropdown" t-att-data-article-id="article.id">
-                <a t-attf-class="o_article_emoji p-1 {{'o_article_emoji_active text-900' if isActive else ''}}" type="button"
-                    t-if="not readonly and not article.is_locked">
-                    <t t-if="article.icon" t-out="article.icon"/>
-                    <t t-else="" t-out="article._get_no_icon_placeholder()"></t>
-                </a>
-                <a t-else="" class="p-1">
-                    <t t-if="article.icon" t-out="article.icon"/>
-                    <t t-else="" t-out="article._get_no_icon_placeholder()"></t>
-                </a>
+        <div class="w-100 min-w-0 d-flex">
+            <t t-if="not portal_readonly_mode">
+                <div class="o_article_emoji_dropdown" t-att-data-article-id="article.id">
+                    <a t-attf-class="o_article_emoji py-1 text-center {{'o_article_emoji_active text-900' if isActive else ''}}" type="button"
+                        t-if="not readonly and not article.is_locked">
+                        <t t-if="article.icon" t-out="article.icon"/>
+                        <t t-else="" t-out="article._get_no_icon_placeholder()"></t>
+                    </a>
+                    <a t-else="" class="py-1 d-inline-block text-center">
+                        <t t-if="article.icon" t-out="article.icon"/>
+                        <t t-else="" t-out="article._get_no_icon_placeholder()"></t>
+                    </a>
+                </div>
+                <div class="o_article_name p-1 flex-grow-1 text-truncate cursor-pointer" t-out="article.name"/>
+                <button t-if="not readonly" class="o_article_create btn p-1 opacity-75 opacity-100-hover" type="button">
+                    <i class="fa fa-fw fa-plus" title="Create a nested article" />
+                </button>
+            </t>
+            <div class="o_article_name p-1 flex-grow-1 text-truncate cursor-pointer" t-else="">
+                <a t-out="article.display_name" t-attf-href="/knowledge/article/{{article.id}}" class="text-decoration-none"/>
             </div>
-            <div class="o_article_name p-1 flex-grow-1 text-truncate cursor-pointer" t-out="article.name"/>
-            <button t-if="not readonly" class="o_article_create btn p-1 opacity-75 opacity-100-hover" type="button">
-                <i class="fa fa-fw fa-plus" title="Create a nested article" />
-            </button>
-        </t>
-        <div class="o_article_name p-1 flex-grow-1 text-truncate cursor-pointer" t-else="">
-            <a t-out="article.display_name" t-attf-href="/knowledge/article/{{article.id}}" class="text-decoration-none"/>
         </div>
     </template>
 

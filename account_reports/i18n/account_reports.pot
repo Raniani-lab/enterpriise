@@ -678,7 +678,10 @@ msgid "Analytic Tags:"
 msgstr ""
 
 #. module: account_reports
+#. openerp-web
+#: code:addons/account_reports/static/src/js/account_reports.js:0
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template
+#, python-format
 msgid "Annotate"
 msgstr ""
 

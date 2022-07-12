@@ -948,7 +948,22 @@ var accountReportsWidget = AbstractAction.extend({
                     });
             }
         };
-        new Dialog(this, {title: 'Annotate', size: 'medium', $content: $content, buttons: [{text: 'Save', classes: 'btn-primary', close: true, click: save}, {text: 'Cancel', close: true}]}).open();
+        new Dialog(this, {
+            title: _t('Annotate'),
+            size: 'medium',
+            $content: $content,
+            buttons: [
+                {
+                    text: _t('Save'),
+                    classes: 'btn-primary',
+                    close: true,
+                    click: save,
+                }, {
+                    text: _t('Cancel'),
+                    close: true,
+                }
+            ]
+        }).open();
     },
     delete_footnote: function(e) {
         var self = this;

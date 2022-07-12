@@ -39,7 +39,7 @@
 
         .form-text {
             display: inline-block;
-            margin: 0;
+            margin: 0.25rem 0;
             font-weight: 400;
         }
 
@@ -70,6 +70,10 @@
                 border: none;
                 background-color: transparent;
             }
+
+            .folded_content > span:empty {
+                display: none;
+            }
         }
 
         #hr_cs_configurator {
@@ -77,15 +81,10 @@
                 padding: 20px 0;
                 .col-form-label {
                     padding-left: 55px;
+                    padding-top: 0;
                     .fa {
-                        @include o-position-absolute($top: -20px, $left: 15px);
-                        width: 30px;
-                        height: 45px;
-                        line-height: 58px;
-
                         &.fa-lg {
                             font-size: 1.5em;
-                            line-height: 55px;
                         }
                     }
                 }
@@ -122,6 +121,11 @@
             .form-group {
                 border: 0;
                 margin-bottom: 15px;
+
+                input::file-selector-button {
+                    @extend .btn-primary;
+                }
+
                 .form-control {
                     &:hover,
                     &:focus {

@@ -65,7 +65,7 @@
                             </label>
                             <div class="col-md-7">
                                 <t t-if="advantage.folded">
-                                    <label class="hr_cs_control hr_cs_control_checkbox">
+                                    <label class="hr_cs_control hr_cs_control_checkbox mb-2">
                                         <t t-esc="advantage.fold_label"/>
                                         <input
                                             type="checkbox"
@@ -137,7 +137,7 @@
                                     </t>
                                     <t t-if="advantage.display_type == 'dropdown'">
                                         <select
-                                            class="form-select form-select-primary mt16 mb8 advantage_input"
+                                            class="form-control form-select form-select-primary mt16 mb8 advantage_input"
                                             applies-on="contract"
                                             t-att-name="'select_' + advantage.field">
                                             <t t-set="options" t-value="dropdown_options[advantage.field]"/>
@@ -148,7 +148,7 @@
                                     </t>
                                     <t t-if="advantage.display_type == 'dropdown-group'">
                                         <select
-                                            class="form-select form-select-primary mt16 mb8 advantage_input"
+                                            class="form-control form-select form-select-primary mt16 mb8 advantage_input"
                                             applies-on="contract"
                                             t-att-name="'select_' + advantage.field">
                                             <t t-set="groups" t-value="dropdown_group_options[advantage.field]"/>
@@ -197,12 +197,12 @@
         <div id="hr_cs_sidebar" class="col-lg-3 offset-xl-1">
             <t t-if="redirect_to_job">
                 <a t-att-href="'https://www.odoo.com/jobs/detail/' + redirect_to_job" target="_new">
-                    <button type="button" id="apply_now" class="hr_cs_btn_submit btn btn-odoo">Apply Now</button>
+                    <button type="button" id="apply_now" class="hr_cs_btn_submit btn btn-primary">Apply Now</button>
                 </a>
             </t>
             <div name="salary_package_resume"/>
             <t t-if="submit">
-                <button type="button" id="hr_cs_submit" class="btn btn-odoo hr_cs_btn_submit" name="submit1">Review Contract &amp; Sign</button>
+                <button type="button" id="hr_cs_submit" class="btn btn-primary hr_cs_btn_submit" name="submit1">Review Contract &amp; Sign</button>
             </t>
         </div>
     </template>
@@ -333,7 +333,7 @@
             <select
                 t-att-name="personal_info.field"
                 t-att-applies-on="personal_info.applies_on"
-                t-att-class="'form-select personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
+                t-att-class="'form-control form-select personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
                 t-att-data-placeholder="personal_info.placeholder"
                 t-att-required="personal_info.is_required and not hidden_children">
                 <option/>
@@ -394,7 +394,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3 mb8">
-                        <a t-att-href="'https://www.odoo.com/jobs/detail/' + redirect_to_job" target="_new"><button type="button" id="apply_now" class="hr_cs_btn_submit btn btn-odoo">Apply Now</button></a>
+                        <a t-att-href="'https://www.odoo.com/jobs/detail/' + redirect_to_job" target="_new"><button type="button" id="apply_now" class="hr_cs_btn_submit btn btn-primary">Apply Now</button></a>
                     </div>
                 </div>
             </div>
@@ -403,7 +403,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
-                        <button type="button" id="hr_cs_submit" class="hr_cs_btn_submit btn btn-odoo" name="submit2">Review Contract &amp; Sign</button>
+                        <button type="button" id="hr_cs_submit" class="hr_cs_btn_submit btn btn-primary" name="submit2">Review Contract &amp; Sign</button>
                     </div>
                 </div>
             </div>

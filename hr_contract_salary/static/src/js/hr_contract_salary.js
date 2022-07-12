@@ -25,6 +25,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         "input input[type='range']": "onchangeSlider",
         "change select[name='country_id']": "onchangeCountry",
         "keydown input[type='number']": "onkeydownInput",
+        "change input[name='children']": "onchangeChildren",
     },
 
     init(parent, options) {
@@ -57,6 +58,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         }
         this.stateElements = $("select[name='state_id']").find('option');
         this.onchangeCountry();
+        this.onchangeChildren();
 
         // When user use back button, unfold previously unfolded items.
         $('#hr_cs_configurator .hr_cs_control input.folded:checked').closest('div').find('.folded_content').removeClass('d-none')
@@ -203,6 +205,23 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             }
         });
         stateElement.attr('disabled', enableState);
+    },
+
+    onchangeChildren(event) {
+        const disabledChildren = $("input[name='disabled_children_bool']");
+        const disabledChildrenNumber = $("input[name='disabled_children_number']");
+        const childCount = parseInt(event && event.currentTarget && event.currentTarget.value);
+
+        if (isNaN(childCount) || childCount === 0) {
+            disabledChildrenNumber.val(0);
+
+            if (disabledChildren[0].checked) {
+                disabledChildren.click();
+            }
+            disabledChildren.parent().addClass('d-none');
+        } else {
+            disabledChildren.parent().removeClass('d-none');
+        }
     },
 
     onkeydownInput(event) {

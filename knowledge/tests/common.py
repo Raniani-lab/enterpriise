@@ -103,6 +103,11 @@ class KnowledgeCommon(MailCommon):
             })
         return self.env['knowledge.article'].sudo().create(vals).with_user(self.env.user)
 
+    def _create_cover(self):
+        pixel = 'R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs='
+        attachment = self.env['ir.attachment'].create({'name': 'pixel', 'datas': pixel, 'res_model': 'knowledge.cover', 'res_id': 0})
+        return self.env['knowledge.cover'].create({'attachment_id': attachment.id})
+
 
 class KnowledgeCommonWData(KnowledgeCommon):
     """ Light setup of articles for knowledge tests. It holds data for the

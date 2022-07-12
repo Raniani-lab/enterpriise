@@ -94,8 +94,6 @@ QUnit.module(
         });
 
         QUnit.test("Create a new global filter", async function (assert) {
-            assert.expect(4);
-
             const { model } = await createSpreadsheetFromPivotView();
             const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
             await testUtils.dom.click(searchIcon);
@@ -109,7 +107,7 @@ QUnit.module(
             // Can't make it work with the DOM API :(
             // await testUtils.dom.triggerEvent($(target).find(".o_field_selector_value"), "focusin");
             $($(target).find(".o_field_selector_value")).focusin();
-            await testUtils.dom.click($(target).find(".o_field_selector_select_button")[0]);
+            await testUtils.dom.click($(target).find(".o_field_selector_select_button[data-name='display_name']"));
             const save = $(target).find(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             )[0];
@@ -282,8 +280,6 @@ QUnit.module(
         });
 
         QUnit.test("Edit an existing global filter", async function (assert) {
-            assert.expect(4);
-
             const { model } = await createSpreadsheetFromPivotView();
             const label = "This year";
             const defaultValue = "value";
@@ -301,7 +297,7 @@ QUnit.module(
             assert.equal(value.value, defaultValue);
             await testUtils.fields.editInput(input, "New Label");
             $($(target).find(".o_field_selector_value")).focusin();
-            await testUtils.dom.click($(target).find(".o_field_selector_select_button")[0]);
+            await testUtils.dom.click($(target).find(".o_field_selector_select_button[data-name='display_name']"));
             const save = $(target).find(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             )[0];

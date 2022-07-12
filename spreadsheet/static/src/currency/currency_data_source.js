@@ -5,6 +5,14 @@ import { DataSource } from "../data_sources/data_source";
 import { ServerData } from "../data_sources/server_data";
 const { EventBus } = owl;
 
+/**
+ * @typedef Currency
+ * @property {string} name
+ * @property {string} code
+ * @property {string} symbol
+ * @property {number} decimalPlaces
+ * @property {"before" | "after"} position
+ */
 export class CurrencyDataSource extends DataSource {
     async _load() {
         return true;
@@ -26,6 +34,15 @@ export class CurrencyDataSource extends DataSource {
     getCurrencyRate(from, to, date) {
         return this._model && this._model.getCurrencyRate(from, to, date);
     }
+
+    /**
+     * Get all currencies from the server
+     * @param {string} currencyName
+     * @returns {Currency}
+     */
+    getCurrency(currencyName) {
+        return this._model && this._model.getCurrency(currencyName);
+    }
 }
 
 class CurrencyModel extends EventBus {
@@ -36,7 +53,6 @@ class CurrencyModel extends EventBus {
         /**
          * Rates values
          */
-        this._rates = {};
         this.serverData = new ServerData(this._orm, {
             whenDataIsFetched: () => this.trigger("currency-fetched"),
         });
@@ -60,5 +76,17 @@ class CurrencyModel extends EventBus {
             throw new Error(_t("Currency rate unavailable."));
         }
         return rate;
+    }
+
+    /**
+     * @param {string} currencyName
+     * @returns {Currency}
+     */
+    getCurrency(currencyName) {
+        return  this.serverData.batch.get(
+            "res.currency",
+            "get_currencies_for_spreadsheet",
+            currencyName
+        );
     }
 }

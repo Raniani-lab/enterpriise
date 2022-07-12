@@ -224,6 +224,35 @@ export function getBasicData() {
                 { id: 2, name: "Template 2", data: btoa("{}") },
             ],
         },
+        "currency": {
+            fields: {
+                name: { string: "Code", type: "char" },
+                symbol: {string: "Symbol", type: "char"},
+                position: {
+                    string: "Position",
+                    type: "selection",
+                    selection: [['after', 'A'], ['before', 'B']],
+                },
+                decimal_places : { string: "decimal", type: "integer" },
+            },
+            records: [
+                {
+                    id: 1,
+                    name: "EUR",
+                    symbol: "€",
+                    position: "after",
+                    decimal_places: 2,
+                },
+                {
+                    id: 2,
+                    name: "USD",
+                    symbol: "$",
+                    position: "before",
+                    decimal_places: 2,
+                },
+            ],
+        }
+        ,
         partner: {
             fields: {
                 foo: {
@@ -270,6 +299,20 @@ export function getBasicData() {
                     searchable: true,
                     group_operator: "array_agg",
                 },
+                currency_id: {
+                    string: "Currency",
+                    type: "many2one",
+                    relation: "currency",
+                    store: true,
+                    sortable: true,
+                },
+                pognon: {
+                    string: "Money!",
+                    type: "monetary",
+                    currency_field: "currency_id",
+                    store: true,
+                    sortable: true,
+                },
             },
             records: [
                 {
@@ -282,6 +325,8 @@ export function getBasicData() {
                     probability: 10,
                     field_with_array_agg: 1,
                     tag_ids: [42, 67],
+                    currency_id: 1,
+                    pognon: 74.4,
                 },
                 {
                     id: 2,
@@ -293,6 +338,8 @@ export function getBasicData() {
                     probability: 11,
                     field_with_array_agg: 2,
                     tag_ids: [42, 67],
+                    currency_id: 2,
+                    pognon: 74.8,
                 },
                 {
                     id: 3,
@@ -304,6 +351,8 @@ export function getBasicData() {
                     probability: 95,
                     field_with_array_agg: 3,
                     tag_ids: [],
+                    currency_id: 1,
+                    pognon: 4,
                 },
                 {
                     id: 4,
@@ -315,6 +364,8 @@ export function getBasicData() {
                     probability: 15,
                     field_with_array_agg: 4,
                     tag_ids: [42],
+                    currency_id: 2,
+                    pognon: 1000,
                 },
             ],
         },

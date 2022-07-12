@@ -12,7 +12,7 @@
         <field name="model">knowledge.article</field>
         <field name="type">form</field>
         <field name="arch" type="xml">
-            <form class="h-100 o_knowledge_form_view" js_class="knowledge_article_view_form" disable_autofocus="1">
+            <form class="h-100 p-0" js_class="knowledge_article_view_form" disable_autofocus="1">
                 <field name="active" invisible="1"/>
                 <field name="article_properties_is_empty" invisible="1"/>
                 <field name="category" invisible="1"/>
@@ -24,7 +24,7 @@
                 <field name="user_permission" invisible="1"/>
                 <field name="to_delete" invisible="1"/>
                 <field name="cover_image_id" invisible="1"/>
-                <div class="d-sm-flex h-100 bg-white" t-ref="root">
+                <div class="o_knowledge_form_view d-sm-flex h-100 bg-white" t-ref="root" t-att-style="sidebarSize ? `--knowledge-article-sidebar-size: ${sidebarSize}px` : ''">
                     <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0">
                         <div class="d-flex flex-column h-100">
                             <!-- Search bar -->
@@ -55,7 +55,6 @@
                         </div>
                     </aside>
                     <div class="flex-grow-1 position-relative min-w-0">
-                        <div class="o_knowledge_article_form_resizer d-none d-sm-block" />
                         <div class="d-flex flex-column h-100">
                             <!-- Article header -->
                             <div class="o_knowledge_header d-sm-flex border-bottom justify-content-between d-print-none">
@@ -341,8 +340,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="o_knowledge_article_form_resizer d-print-none d-none d-sm-block px-3 opacity-75 opacity-100-hover"
-                             t-on-pointerdown.prevent="resizeSidebar">
+                        <div class="o_knowledge_article_form_resizer d-print-none d-none d-sm-block px-1 opacity-75 opacity-100-hover"
+                             t-on-pointerdown.prevent="ev => this.resizeSidebar(this.root.el, true)">
                             <span class="bg-300 ps-1"/>
                         </div>
                     </div>

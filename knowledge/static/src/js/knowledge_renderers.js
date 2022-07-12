@@ -35,6 +35,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this.messagingService.get().then(messaging => this.messaging = messaging);
         this._onAddEmoji = this._onAddEmoji.bind(this);
         this._onRemoveEmoji = this._onRemoveEmoji.bind(this);
+        
+        this.sidebarSize = localStorage.getItem('knowledgeArticleSidebarSize');
+
         // ADSC: Remove when tree component
         onMounted(() => {
             this.messaging.messagingBus.addEventListener('knowledge_add_emoji', this._onAddEmoji);
@@ -177,19 +180,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
     get resId() {
         return this.props.record.resId;
-    }
-
-    /**
-     * Resize the sidebar when the resizer is grabbed.
-     */
-    resizeSidebar() {
-        const onPointerMove = _.throttle(event => {
-            event.preventDefault();
-            document.querySelector('.o_knowledge_form_view').style.setProperty('--default-sidebar-size', `${event.pageX}px`);
-        }, 100);
-
-        this.root.el.addEventListener('pointermove', onPointerMove);
-        this.root.el.addEventListener('pointerup', () => this.root.el.removeEventListener('pointermove', onPointerMove), {once: true});
     }
 
     /**

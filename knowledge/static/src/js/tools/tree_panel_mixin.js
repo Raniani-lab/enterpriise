@@ -5,6 +5,32 @@ export default {
     // Handlers
     //--------------------------------------------------------------------------
     /**
+     * Resize the sidebar when the resizer is grabbed.
+     * @param {DOM.Element} el - Element on which the sidebarSize style is set
+     * @param {boolean} saveSize - Save new width in localStorage if True
+     */
+    resizeSidebar: function (el, saveSize) {
+        const onPointerMove = _.throttle(event => {
+            event.preventDefault();
+            el.style.setProperty('--knowledge-article-sidebar-size', `${event.pageX}px`);
+            if (saveSize) {
+                localStorage.setItem('knowledgeArticleSidebarSize', event.pageX);
+            }
+        }, 100);
+        const onPointerUp = () => {
+            el.removeEventListener('pointermove', onPointerMove);
+            document.body.style.cursor = "auto";
+            document.body.style.userSelect = "auto";
+        };
+        // Add style to root element because resizing has a transition delay,
+        // meaning that the cursor is not always on top of the resizer.
+        document.body.style.cursor = "col-resize";
+        document.body.style.userSelect = "none";
+        el.addEventListener('pointermove', onPointerMove);
+        el.addEventListener('pointerup', onPointerUp, {once: true});
+    },
+
+    /**
      * Initializes the drag-and-drop behavior of the favorite.
      * Once this function is called, the user will be able to reorder their favorites.
      * When a favorite is reordered, `this.resequenceFavorites` will be called

@@ -232,17 +232,20 @@ class KnowledgeController(http.Controller):
         internal_permission_field = request.env['knowledge.article']._fields['internal_permission']
         permission_field = request.env['knowledge.article.member']._fields['permission']
         user_is_admin = request.env.user._is_admin()
+        parent_article_sudo = article.parent_id.sudo()
+        inherited_permission_parent_sudo = article.inherited_permission_parent_id.sudo()
+
         return {
             'internal_permission_options': internal_permission_field.get_description(request.env).get('selection', []),
             'internal_permission': article.inherited_permission,
-            'parent_permission': article.parent_id.inherited_permission,
-            'based_on': article.inherited_permission_parent_id.display_name,
-            'based_on_id': article.inherited_permission_parent_id.id,
+            'parent_permission': parent_article_sudo.inherited_permission,
+            'based_on': inherited_permission_parent_sudo.display_name,
+            'based_on_id': inherited_permission_parent_sudo.id,
             'members_options': permission_field.get_description(request.env).get('selection', []),
             'members': members_values,
             'is_sync': is_sync,
-            'parent_id': article.parent_id.id,
-            'parent_name': article.parent_id.display_name,
+            'parent_id': parent_article_sudo.id,
+            'parent_name': parent_article_sudo.display_name,
             'user_is_admin': user_is_admin,
             'show_admin_tip': user_is_admin and article.user_permission != 'write',
         }

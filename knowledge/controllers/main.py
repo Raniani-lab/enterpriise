@@ -71,19 +71,20 @@ class KnowledgeController(http.Controller):
         ))
 
     def _redirect_to_portal_view(self, article, hide_side_bar=False):
+        root_articles_count = request.env["knowledge.article"].search_count(
+            [("parent_id", "=", False)],
+            limit=1,
+        )
+
         return request.render('knowledge.knowledge_article_view_frontend', {
             'article': article,
             'portal_readonly_mode': True,  # used to bypass access check (to speed up loading)
-            'show_sidebar': not hide_side_bar and bool(self._get_root_articles(limit=1))
+            'show_sidebar': not hide_side_bar and bool(root_articles_count)
         })
 
     # ------------------------
     # Articles tree generation
     # ------------------------
-
-    def _get_root_articles(self, limit=None):
-        """ Meant to be overriden by website_knowledge to search in sudo with adapted domain."""
-        return request.env["knowledge.article"].search([("parent_id", "=", False)], limit=limit, order='sequence, id')
 
     def _prepare_articles_tree_html(self, template, active_article, unfolded_articles=False):
         """ Prepares all the info needed to render the article tree view side panel
@@ -112,19 +113,26 @@ class KnowledgeController(http.Controller):
             if active_article.root_article_id in ancestors:
                 unfolded_articles |= set(ancestors.ids)
 
-        root_articles = self._get_root_articles()
+        # fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
+        # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
+        root_article_ids = request.env["knowledge.article"].sudo().search([("parent_id", "=", False)]).ids
 
         # Fetch all visible articles at once instead of going down the hierarchy in the template
         # using successive 'child_ids' field calls.
         # This allows to benefit from batch computation (ACLs, computes, ...).
         # We filter within the template based on the "parent_id" field to get the article children.
         all_visible_articles = request.env['knowledge.article']
-        all_visible_articles_ids = unfolded_articles | set(root_articles.ids)
+        all_visible_articles_ids = unfolded_articles | set(root_article_ids)
         if all_visible_articles_ids:
-            all_visible_articles = request.env['knowledge.article'].search([
-                ('is_article_item', '=', False),
-                ('id', 'child_of', all_visible_articles_ids)
-            ])
+            all_visible_articles = request.env['knowledge.article'].search(
+                [
+                    ('is_article_item', '=', False),
+                    ('id', 'child_of', all_visible_articles_ids)
+                ],
+                order='sequence, id'
+            )
+
+        root_articles = all_visible_articles.filtered(lambda article: not article.parent_id)
 
         user_write_access_by_article = {
             article.id: article.user_has_write_access

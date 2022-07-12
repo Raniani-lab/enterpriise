@@ -20,7 +20,6 @@ export class KnowledgeArticleController extends ListController {
      */
     getActionMenuItems() {
         const actionMenuItems = super.getActionMenuItems();
-        console.log(actionMenuItems, this.userService.isAdmin);
         if (actionMenuItems && this.userService.isAdmin) {
             actionMenuItems.other.splice(1, 0, {
                 description: this.env._t("Duplicate"),

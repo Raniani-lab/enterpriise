@@ -67,7 +67,6 @@
             'knowledge/static/src/js/field_html.js',
             'knowledge/static/src/js/knowledge_service.js',
             'knowledge/static/src/views/*.js',
-            'knowledge/static/src/xml/knowledge_templates.xml',
             'knowledge/static/src/xml/chatter_topbar.xml',
             'knowledge/static/src/xml/knowledge_command_palette.xml',
             'knowledge/static/src/xml/knowledge_toolbars.xml',

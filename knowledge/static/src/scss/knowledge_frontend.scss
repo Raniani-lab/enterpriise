@@ -58,7 +58,18 @@
         width: var(--sidebar-size);
         transition: width 0.15s linear;
 
-        .o_article_active {
+        // Force same style in portal and website
+        font-size: 1rem;
+
+        .o_section_header {
+            font-size: 1.3125rem;
+        }
+
+        .knowledge_search_bar {
+            font-size: 0.875rem;
+        }
+            
+        .o_article_active > div {
             background-color: rgba($knowledge-bg--active, 0.2);
             &:hover {
                 background-color: rgba($knowledge-bg--active, 0.3);
@@ -86,9 +97,15 @@
 
             &:before {
                 @include o-position-absolute($top: 1em, $left: 0);
-                width: .6em;
+                width: 1.8em;
                 height: 1px;
                 margin: auto;
+            }
+
+            &.o_article_has_children:before {
+                @include o-position-absolute($top: 1em, $left: 0);
+                width: .6em;
+                height: 1px;
             }
 
             &:after {

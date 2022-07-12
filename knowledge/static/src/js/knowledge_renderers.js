@@ -8,7 +8,6 @@ import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
 import { patch } from "@web/core/utils/patch";
 import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_article_dialog";
 import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
-import { qweb as QWeb } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 
@@ -29,7 +28,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this.messagingService = useService("messaging");
         this.orm = useService("orm");
         this.rpc = useService("rpc");
-        
+
         this.root = useRef('root');
         this.tree = useRef('tree');
         
@@ -363,16 +362,28 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         if (data.newCategory === data.oldCategory) {
             await this._confirmMoveArticle(data.article_id, newPosition, data.onSuccess, data.onReject);
         } else {
+            const article = document.querySelector(`[data-article-id='${data.article_id}']`);
+            const emoji = article.querySelector('.o_article_emoji').textContent || '';
+            const name = article.querySelector('.o_article_name').textContent || '';
             let message;
             if (data.newCategory === 'workspace') {
-                message = this.env._t("Are you sure you want to move this article to the Workspace? It will be shared with all internal users.");
+                message = sprintf(
+                    this.env._t('Are you sure you want to move "%s%s" to the Workspace? It will be shared with all internal users.'),
+                    emoji, name
+                );
             } else if (data.newCategory === 'private') {
-                message = this.env._t("Are you sure you want to move this to private? Only you will be able to access it.");
+                message = sprintf(
+                    this.env._t('Are you sure you want to move "%s%s" to private? Only you will be able to access it.'),
+                    emoji, name
+                );
             } else if (data.newCategory === 'shared' && data.target_parent_id) {
-                const article = document.querySelector(`[data-article-id='${data.target_parent_id}']`);
-                const emoji = article.querySelector('.o_article_emoji').textContent || '';
-                const name = article.querySelector('.o_article_name').textContent || '';
-                message = sprintf(this.env._t('Are you sure you want to move this article under "%s%s"? It will be shared with the same persons.'), emoji, name);
+                const parent = document.querySelector(`[data-article-id='${data.target_parent_id}']`);
+                const parentEmoji = parent.querySelector('.o_article_emoji').textContent || '';
+                const parentName = parent.querySelector('.o_article_name').textContent || '';
+                message = sprintf(
+                    this.env._t('Are you sure you want to move "%s%s" under "%s%s"? It will be shared with the same persons.'),
+                    emoji, name, parentEmoji, parentName
+                );
             }
             this.dialog.add(ConfirmationDialog, {
                 body: message,
@@ -416,9 +427,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         } else if (name !== this.props.record.data.name) {
             await this.props.record.update({'name': name});
         }
+        this._resizeNameInput(name);
         // ADSC: Remove when tree component
         // Updates the name in the sidebar
-        const selector = `.o_article[data-article-id="${this.resId}"] > .o_article_handle > .o_article_name`;
+        const selector = `.o_article[data-article-id="${this.resId}"] > .o_article_handle > div > .o_article_name`;
         this.tree.el.querySelectorAll(selector).forEach(function(articleName) {
           articleName.textContent = name;
         });
@@ -517,6 +529,14 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     }
 
     /**
+     * Resize the name input by updating the value of the span hidden behind
+     * the input.
+     */
+    _resizeNameInput(name) {
+        this.root.el.querySelector('.o_breadcrumb_article_name_container > span').innerText = name;
+    }
+
+    /**
      * Setup the emoji picker listener(s) to open it when clicking on an emoji
      */
     _setEmojiPickerListener() {
@@ -559,6 +579,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             scrollSpeed: 6,
             delay: 150,
             distance: 10,
+            isTree: true,
             /**
              * Prevent a non-root shared article from becoming one, because the
              * access rights cannot be inferred in that case.
@@ -624,19 +645,17 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 const confirmMove = async () => {
                     const id = $li.data('parent-id');
                     if (typeof id !== 'undefined') {
-                        const $parent = $(`.o_article[data-article-id="${id}"]`);
+                        const $parent = $(`.o_tree .o_article[data-article-id="${id}"]`);
                         if (!$parent.children('ul').is(':parent')) {
-                            const $caret = $parent.find('> .o_article_handle > .o_article_caret');
-                            $caret.remove();
+                            $parent.removeClass('o_article_has_children');
                             this._removeUnfolded(id.toString());
                         }
                     }
                     if ($parent.length > 0) {
                         const $firstParent = $parent.first();
-                        const $caret = $firstParent.find('> .o_article_handle > .o_article_caret');
                         // Show other children if parent already had any
-                        if ($caret.length > 0) {
-                            const $icon = $caret.find("> i");
+                        if ($firstParent.closest('.o_article').hasClass('o_article_has_children')) {
+                            const $icon = $firstParent.find('> .o_article_handle > .o_article_caret > i');
                             if ($icon.hasClass("fa-caret-right")) {
                                 const $ul = $firstParent.find('> div > ul');
                                 if ($ul.length) {
@@ -658,9 +677,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                                 }
                             }
                         } else {
-                            const $handle = $parent.children('.o_article_handle:first');
-                            const $caret = $(QWeb.render('knowledge.knowledge_article_caret', {}));
-                            $handle.prepend($caret);
                             this._addUnfolded($firstParent.data('article-id').toString());
                         }
                     }
@@ -765,7 +781,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @private
      */
     _showEmojiPicker(ev) {
-        this.root.el.querySelector('.o_knowledge_emoji_picker_container').classList.add('show');
         const articleId = Number(ev.target.closest('.o_article_emoji_dropdown').dataset.articleId) || this.resId;
         this.messaging.knowledge.update({
             currentArticle: { id: articleId },

@@ -54,26 +54,26 @@
                             </div>
                         </div>
                     </aside>
-                    <div class="flex-grow-1 position-relative">
+                    <div class="flex-grow-1 position-relative min-w-0">
                         <div class="o_knowledge_article_form_resizer d-none d-sm-block" />
                         <div class="d-flex flex-column h-100">
                             <!-- Article header -->
                             <div class="o_knowledge_header d-sm-flex border-bottom justify-content-between d-print-none">
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex align-items-center min-w-0">
                                     <!-- Breadcrumbs -->
-                                    <ol class="breadcrumb align-items-center p-3" role="navigation">
+                                    <ol class="breadcrumb align-items-center p-3 min-w-0" role="navigation">
                                         <t t-foreach="env.config.breadcrumbs" t-as="breadcrumb" t-key="breadcrumb.jsId">
                                             <!-- Add back hotkey on penultimate breadcrumb item -->
                                             <t t-set="isPenultimate" t-value="breadcrumb_index === env.config.breadcrumbs.length - 2"/>
-                                            <li t-if="!breadcrumb_last" class="breadcrumb-item d-flex align-items-center"
+                                            <li t-if="!breadcrumb_last" class="breadcrumb-item d-flex align-items-center min-w-0 text-nowrap"
                                                 t-att-data-hotkey="isPenultimate and 'b'"
                                                 t-att-class="{ o_back_button: isPenultimate}"
                                                 t-on-click.prevent="() => this.actionService.restore(breadcrumb.jsId)">
-                                                <a href="#">
+                                                <a class="text-truncate" href="#">
                                                     <t t-esc="breadcrumb.name"/>
                                                 </a>
                                             </li>
-                                            <li t-else="" class="breadcrumb-item d-flex align-items-center active">
+                                            <li t-else="" class="breadcrumb-item d-flex align-items-center active min-w-0 text-nowrap">
                                                 <div class="o_knowledge_icon pe-1" attrs="{'invisible': [('icon', '=', False)]}">
                                                     <div class="o_article_emoji_dropdown">
                                                         <a class="o_article_emoji o-no-caret"
@@ -87,30 +87,25 @@
                                                         <field name="icon" attrs="{'readonly': True }" class="mb-0"/>
                                                     </span>
                                                 </div>
-                                                <div t-on-input="ev => ev.target.setAttribute('size', ev.target.value.length)"
+                                                <div class="o_breadcrumb_article_name_container position-relative text-truncate mx-1"
+                                                     t-on-input="ev => this._resizeNameInput(ev.target.value)"
                                                      t-on-change="ev => this._rename(ev.target.value)"
                                                      t-on-click="ev => this._onNameClick(ev)">
+                                                    <!-- span forces the input to match the length of its value -->
+                                                    <span t-attf-class="pe-2 #{this.props.record.data.is_locked ? 'o_article_locked' : ''}"
+                                                          t-esc="this.props.record.data.name" t-att-title="this.props.record.data.name" />
                                                     <field attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"
                                                            class="o_breadcrumb_article_name mb-0" name="name"/>
                                                 </div>
+                                                <i class="fa fa-fw fa-lock" title="This article is locked"
+                                                   attrs="{'invisible': ['|', '|', ('is_locked', '=', False), ('user_can_write', '=', False), ('active', '=', False)]}" />
                                             </li>
                                         </t>
                                     </ol>
-                                    <i class="fa fa-star o_toggle_favorite cursor-pointer"
-                                       t-on-click="toggleFavorite"
-                                       title="Remove from favorites"
-                                       attrs="{'invisible': [('is_user_favorite', '=', False)]}"/>
-                                    <i class="fa fa-star-o o_toggle_favorite cursor-pointer"
-                                       t-on-click="toggleFavorite"
-                                       title="Add to favorites"
-                                       attrs="{'invisible': [('is_user_favorite', '=', True)]}"/>
-                                    <div attrs="{'invisible': ['|', ('is_locked', '=', False), ('user_can_write', '=', False)]}">
-                                        <i class="fa fa-fw fa-lock" title="This article is locked"/>
-                                    </div>
                                 </div>
                                 <!-- Buttons -->
-                                <div class="d-flex flex-shrink-0 align-items-center pe-2">
-                                    <a role="button" t-on-click="() => this.createArticle('private')" class="btn btn-light btn-create text-capitalize me-1" data-hotkey="c">
+                                <div class="d-flex align-items-center pe-2">
+                                    <a role="button" t-on-click="() => this.createArticle('private')" class="btn btn-light btn-create text-nowrap me-1" data-hotkey="c">
                                         <i class="fa fa-plus-circle"/> Create
                                     </a>
                                     <div class="o-dropdown dropdown o-dropdown--no-caret">
@@ -120,9 +115,12 @@
                                             <i class="fa fa-share-alt"/> Share
                                         </a>
                                         <div class="o_knowledge_share_panel dropdown-menu user-select-none" role="menu" t-on-click.stop="">
-                                            <div class="input-group px-3 pb-2" attrs="{'invisible': [('user_can_write', '=', False)]}">
+                                            <div class="d-flex align-items-center ps-3 py-1" attrs="{'invisible': [('user_can_write', '=', False)]}">
+                                                <div class="o_knowledge_share_panel_icon rounded-circle d-flex flex-shrink-0 justify-content-center align-items-center bg-light">
+                                                    <i class="fa fa-user-plus fs-3" title="Invite People"/>
+                                                </div>
                                                 <button type="action" name="%(knowledge_invite_action_from_article)d"
-                                                        class="input-group o_cursor_pointer px-3 pb-2 d-flex"
+                                                        class="input-group o_cursor_pointer pe-3 pb-2 d-flex flex-grow-1"
                                                         attrs="{'invisible': [('user_can_write', '=', False)]}">
                                                     <div class="form-control text-start">Add people or email addresses...</div>
                                                     <button class="btn btn-primary">Invite</button>
@@ -137,9 +135,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <a role="button" class="btn btn-light o_toggle_favorite me-1" t-on-click="toggleFavorite">
+                                        <i class="fa fa-lg fa-star"
+                                           title="Remove from favorites"
+                                           attrs="{'invisible': [('is_user_favorite', '=', False)]}"/>
+                                        <i class="fa fa-lg fa-star-o"
+                                           title="Add to favorites"
+                                           attrs="{'invisible': [('is_user_favorite', '=', True)]}"/>
+                                    </a>
                                     <a role="button" class="btn btn-light btn-chatter me-1" data-hotkey="d"
                                         attrs="{'invisible': [('id', '=', False)]}" t-on-click="toggleChatter">
-                                        <i class="rounded-circle text-center fa fa-comments" title="Open chatter"/>
+                                        <i class="rounded-circle text-center fa fa-fw fa-comments" title="Open chatter"/>
                                     </a>
                                     <a role="button" class="btn btn-light btn-properties me-1" data-hotkey="d"
                                         attrs="{'invisible': ['|', ('id', '=', False), ('is_article_item', '=', False)]}"
@@ -149,42 +155,43 @@
                                     <div class="o-dropdown dropdown o-dropdown--no-caret" attrs="{'invisible': [('id', '=', False)]}">
                                         <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
                                            aria-haspopup="true" aria-expanded="false" data-hotkey="p">
-                                            <i class="fa fa-ellipsis-v" title="Open kebab menu"/>
+                                            <i class="fa fa-fw fa-ellipsis-v" title="Open kebab menu"/>
                                         </a>
                                         <div class="o_knowledge_more_options_panel dropdown-menu" role="menu">
                                             <div attrs="{'invisible': [('user_can_write', '=', False)]}">
                                                 <a role="button" class="dropdown-item btn-move" t-on-click="onMoveArticleClick"
                                                    attrs="{'invisible': [('active', '=', False)]}">
-                                                    <i class="fa fa-fw fa-angle-double-right"/> Move To
+                                                    <i class="fa fa-fw fa-lg fa-angle-double-right"/> Move To
                                                 </a>
                                                 <button class="dropdown-item btn-lock" href="#" type="object" name="action_set_lock"
                                                     attrs="{'invisible': ['|', ('is_locked', '=', True), ('active', '=', False)]}">
-                                                    <i class="fa fa-fw fa-lock"/> Lock
+                                                    <i class="fa fa-fw fa-lg fa-lock"/> Lock
                                                 </button>
                                                 <a  role="button" class="dropdown-item btn-lock" href="#" type="object"
                                                     name="action_set_unlock"
                                                     attrs="{'invisible': ['|', ('is_locked', '=', False), ('active', '=', False)]}">
-                                                    <i class="fa fa-fw fa-unlock"/> Unlock
+                                                    <i class="fa fa-fw fa-lg fa-unlock"/> Unlock
                                                 </a>
                                                 <button class="dropdown-item" type="object" name="action_send_to_trash"
                                                         attrs="{'invisible': [('active', '=', False)]}">
-                                                    <i class="fa fa-fw fa-archive"/> Delete
+                                                    <i class="fa fa-fw fa-lg fa-trash"/> Delete
                                                 </button>
                                                 <button class="dropdown-item" type="object" name="action_unarchive_article"
                                                         attrs="{'invisible': ['|',  ('to_delete', '=', False), ('user_can_write', '=', False)]}">
-                                                    <i class="fa fa-fw fa-trash-o"/> Remove from Trash
+                                                    <i class="fa fa-fw fa-lg fa-trash-o"/> Remove from Trash
                                                 </button>
                                                 <button class="dropdown-item" type="object" name="action_unarchive_article"
                                                         attrs="{'invisible': ['|', ('active', '=', True), ('to_delete', '=', True)]}">
-                                                    <i class="fa fa-fw fa-archive"/> Unarchive
+                                                    <i class="fa fa-fw fa-lg fa-archive"/> Unarchive
                                                 </button>
                                                 <a role="button" class="dropdown-item" t-on-click="copyArticleAsPrivate">
-                                                    <i class="fa fa-fw fa-copy"/> Create a Copy
+                                                    <i class="fa fa-fw fa-lg fa-copy"/> Create a Copy
                                                 </a>
                                                 <div class="dropdown-divider" attrs="{'invisible': [('active', '=', False)]}"/>
-                                                <div class="px-3" attrs="{'invisible': [('active', '=', False)]}">
-                                                    <field name="full_width" widget="boolean_toggle" force_save="1" class="d-inline-block"/>
-                                                    <label for="full_width" class="m-0"/>
+                                                <div class="dropdown-item user-select-none" attrs="{'invisible': [('active', '=', False)]}"
+                                                     t-on-click.stop="() => this.props.record.update({full_width: !this.props.record.data.full_width})">
+                                                    <i class="fa fa-fw fa-lg fa-arrows-h" /> Full Width
+                                                    <field name="full_width" widget="boolean_toggle" force_save="1" class="my-0 mx-1"/>
                                                 </div>
                                                 <div class="dropdown-divider"
                                                      attrs="{'invisible': [('last_edition_uid', '=', False), ('last_edition_date', '=', False)]}"/>
@@ -340,7 +347,6 @@
                         </div>
                     </div>
                     <field name="icon" invisible="1" attrs="{'readonly': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)] }"/>
-                    <div class="o_knowledge_emoji_picker_container"/>
                 </div>
             </form>
         </field>

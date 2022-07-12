@@ -271,7 +271,7 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
      */
     _setEmoji: function (id, emoji) {
         const emojis = this.$(`.o_article_emoji_dropdown[data-article-id="${id}"] > .o_article_emoji`);
-        emojis.text(emoji || '');
+        emojis.text(emoji || '📄');
     },
     /**
      * Enables the user to resize the aside block.

@@ -39,6 +39,27 @@ class TestKnowledgeArticleFields(KnowledgeCommonWData):
         self.assertEqual(favorites.article_id, playground_articles[2])
         self.assertEqual(favorites.sequence, 1, 'Favorite: should not be impacted by other people sequence')
 
+    @users('admin')  # test as admin as this is a technical sync done as sudo
+    def test_favorites_active_sync(self):
+        """ Make sure the 'is_article_active' is synchronized with the article 'active' field. """
+
+        article_favorites = self.env['knowledge.article.favorite'].create([{
+            'user_id': user_id,
+            'article_id': self.article_workspace.id,
+        } for user_id in (self.user_employee | self.user_employee2).ids])
+
+        self.assertEqual(len(article_favorites), 2)
+        self.assertTrue(article_favorites[0].is_article_active)
+        self.assertTrue(article_favorites[1].is_article_active)
+
+        self.article_workspace.action_archive()
+        self.assertFalse(article_favorites[0].is_article_active)
+        self.assertFalse(article_favorites[1].is_article_active)
+
+        self.article_workspace.action_unarchive()
+        self.assertTrue(article_favorites[0].is_article_active)
+        self.assertTrue(article_favorites[1].is_article_active)
+
     @users('employee')
     def test_fields_edition(self):
         _reference_dt = datetime(2022, 5, 31, 10, 0, 0)

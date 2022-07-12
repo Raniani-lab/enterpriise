@@ -16,6 +16,8 @@ class ArticleFavorite(models.Model):
     user_id = fields.Many2one(
         'res.users', 'User',
         index=True, required=True, ondelete='cascade')
+    is_article_active = fields.Boolean('Is Article Active', related='article_id.active',
+        store=True, readonly=True)
     sequence = fields.Integer(default=0)
 
     _sql_constraints = [

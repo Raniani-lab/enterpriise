@@ -145,7 +145,7 @@ class KnowledgeController(http.Controller):
         favorites = request.env['knowledge.article.favorite']
         if not request.env.user._is_public():
             favorites = request.env['knowledge.article.favorite'].search([
-                ("user_id", "=", request.env.user.id), ('article_id.active', '=', True)
+                ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
             ])
         values["favorites"] = favorites
 
@@ -187,7 +187,7 @@ class KnowledgeController(http.Controller):
     @http.route('/knowledge/tree_panel/favorites', type='json', auth='user')
     def get_tree_panel_favorites(self, active_article_id=False):
         favorite_articles = request.env['knowledge.article.favorite'].search([
-            ("user_id", "=", request.env.user.id), ('article_id.active', '=', True)
+            ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
         ])
         return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_favorites', {
             'favorites': favorite_articles,

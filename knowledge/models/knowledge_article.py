@@ -1700,7 +1700,7 @@ class Article(models.Model):
         article = self.env['knowledge.article']
         if not self.env.user._is_public():
             article = self.env['knowledge.article.favorite'].search([
-                ('user_id', '=', self.env.uid), ('article_id.active', '=', True)
+                ('user_id', '=', self.env.uid), ('is_article_active', '=', True)
             ], limit=1).article_id
         if not article:
             # retrieve workspace articles first, then private/shared ones.

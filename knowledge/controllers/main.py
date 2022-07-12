@@ -86,12 +86,11 @@ class KnowledgeController(http.Controller):
     # Articles tree generation
     # ------------------------
 
-    def _prepare_articles_tree_html(self, template, active_article, unfolded_articles=False):
+    def _prepare_articles_tree_html(self, template, active_article_id, unfolded_articles=False):
         """ Prepares all the info needed to render the article tree view side panel
         and returns the rendered given template with those values.
 
-        :param <knowledge.article> active_article: used to highlight the given
-          article_id in the template;
+        :param int active_article_id: used to highlight the given article_id in the template;
         :param list unfolded_articles: List of IDs used to display the children
           of the given article ids. Unfolded articles are saved into local storage.
           When reloading/opening the article page, previously unfolded articles
@@ -104,14 +103,17 @@ class KnowledgeController(http.Controller):
             # -> make sure we filter out children of existing articles
             unfolded_articles = set(request.env['knowledge.article'].sudo().browse(unfolded_articles).exists().ids)
 
-        if active_article:
-            # root articles = starting point of the tree view : unfold only if root_article in (accessible) parents
-            ancestors = request.env['knowledge.article'].sudo().search([
-                ('id', 'parent_of', active_article.id),
-                ('id', '!=', active_article.id)
-            ])._filter_access_rules_python('read').with_env(request.env)
-            if active_article.root_article_id in ancestors:
-                unfolded_articles |= set(ancestors.ids)
+        if active_article_id:
+            # determine the hierarchy to unfold based on parent_path and as sudo
+            # this helps avoiding to actually fetch ancestors
+            # this will not leak anything as it's just a set of IDS
+            # displayed articles ACLs are correctly checked here below
+            # e.g of parent_path for article id 8 with parent 4 that has itself a parent 2: '2/4/8/'
+            # the python split will make it [2,4,8,''], so we want everything but the last 2 items
+            active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
+            ancestors_ids = set([int(ancestor_id) for ancestor_id in active_article.parent_path.split('/')[:-2]])
+            if ancestors_ids:
+                unfolded_articles |= set(ancestors_ids)
 
         # fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
         # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
@@ -140,7 +142,7 @@ class KnowledgeController(http.Controller):
         }
 
         values = {
-            "active_article": active_article,
+            "active_article_id": active_article_id,
             "all_visible_articles": all_visible_articles,
             "user_write_access_by_article": user_write_access_by_article,
             "workspace_articles": root_articles.filtered(lambda article: article.category == 'workspace'),
@@ -163,7 +165,7 @@ class KnowledgeController(http.Controller):
     def get_tree_panel_all(self, active_article_id=False, unfolded_articles=False):
         return self._prepare_articles_tree_html(
             'knowledge.knowledge_article_tree',
-            request.env['knowledge.article'].search([('id', '=', active_article_id)]),
+            active_article_id,
             unfolded_articles=unfolded_articles
         )
 
@@ -172,7 +174,7 @@ class KnowledgeController(http.Controller):
         """ Frontend access for left panel. """
         return self._prepare_articles_tree_html(
             'knowledge.knowledge_article_tree_frontend',
-            request.env['knowledge.article'].search([('id', '=', active_article_id)]),
+            active_article_id,
             unfolded_articles=unfolded_articles
         )
 
@@ -199,7 +201,7 @@ class KnowledgeController(http.Controller):
         ])
         return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_favorites', {
             'favorites': favorite_articles,
-            "active_article": request.env['knowledge.article'].browse(active_article_id),
+            "active_article_id": active_article_id,
             "user_write_access_by_article": {
                 article.id: article.user_has_write_access
                 for article in favorite_articles.article_id

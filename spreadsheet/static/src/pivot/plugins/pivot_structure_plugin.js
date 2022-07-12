@@ -75,11 +75,6 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      */
     handle(cmd) {
         switch (cmd.type) {
-            case "REMOVE_PIVOT":
-                this.dispatch("EVALUATE_CELLS", {
-                    sheetId: this.getters.getActiveSheetId(),
-                });
-                break;
             case "SELECT_PIVOT":
                 this.selectedPivotId = cmd.pivotId;
                 break;

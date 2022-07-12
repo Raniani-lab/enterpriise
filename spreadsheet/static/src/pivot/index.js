@@ -33,6 +33,7 @@ coreTypes.add("RE_INSERT_PIVOT");
 coreTypes.add("UPDATE_ODOO_PIVOT_DOMAIN");
 
 invalidateEvaluationCommands.add("UPDATE_ODOO_PIVOT_DOMAIN");
+invalidateEvaluationCommands.add("REMOVE_PIVOT");
 
 readonlyAllowedCommands.add("ADD_PIVOT_DOMAIN");
 

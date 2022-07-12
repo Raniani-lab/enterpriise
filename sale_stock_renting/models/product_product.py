@@ -2,33 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
-from odoo import api, fields, models, exceptions
+from odoo import fields, models
 
 
-class ProductTemplate(models.Model):
-    _inherit = 'product.template'
-
-    # Padding Time
-
-    preparation_time = fields.Float(string="Security Time", company_dependent=True,
-                                    help="Temporarily make this product unavailable before pickup.")
-
-    # TODO replace by UI greying of unselectable conflicting choices ?
-    @api.constrains('rent_ok', 'tracking')
-    def _lot_not_supported_rental(self):
-        for template in self:
-            if template.rent_ok and template.tracking == 'lot':
-                raise exceptions.ValidationError("Tracking by lots isn't supported for rental products. \
-                    \n You should rather change the tracking mode to unique serial numbers.")
-
-    def _compute_show_qty_status_button(self):
-        super()._compute_show_qty_status_button()
-        for template in self:
-            if template.rent_ok and not template.sale_ok:
-                template.show_forecasted_qty_status_button = False
-
-
-class Product(models.Model):
+class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     def _compute_show_qty_status_button(self):
@@ -40,9 +17,11 @@ class Product(models.Model):
     def _get_qty_in_rent_domain(self):
         """Allow precising the warehouse_id to get qty currently in rent."""
         if self.env.context.get('warehouse_id', False):
-            return super(Product, self)._get_qty_in_rent_domain() + [('order_id.warehouse_id', '=', int(self.env.context.get('warehouse_id')))]
+            return super()._get_qty_in_rent_domain() + [
+                ('order_id.warehouse_id', '=', int(self.env.context.get('warehouse_id')))
+            ]
         else:
-            return super(Product, self)._get_qty_in_rent_domain()
+            return super()._get_qty_in_rent_domain()
 
     def _unavailability_period(self, fro, to):
         """Give unavailability period given rental period."""

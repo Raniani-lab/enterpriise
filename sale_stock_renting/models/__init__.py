@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from . import stock_lot
-from . import sale_rental
-from . import product
+from . import account_move
+from . import product_product
+from . import product_template
 from . import res_company
 from . import res_config_settings
-from . import account_move
+from . import sale_order_line
+from . import stock_lot

@@ -179,10 +179,7 @@ def compute_nb_contracts(start_date, end_date, filters):
 
 
 def compute_mrr(start_date, end_date, filters):
-    # Old refund records may have positive subscription_mrr, because of the bug that was fixed later.
-    # So, change the sign in that case
-    # TODO: remove this patch in master and fix the data via odoo/upgrade tool
-    fields = ["(CASE WHEN account_move.move_type = 'out_refund' and account_move_line.subscription_mrr > 0 THEN -1 ELSE 1 END) * account_move_line.subscription_mrr as subscription_mrr",
+    fields = ["account_move_line.subscription_mrr as subscription_mrr",
               'account_move_line.currency_id', 'account_move_line.company_currency_id', 'account_move_line.company_id']
     tables = ['account_move_line', 'account_move']
     conditions = [

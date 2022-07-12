@@ -201,7 +201,6 @@ QUnit.module('voip', {
                 }
             },
             serverData: { views },
-            useWowlListForm: true,
         });
 
         registry.category("services").add("voip", voipService);

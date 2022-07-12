@@ -23,6 +23,9 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         const views = {
             'res.partner,false,form':
                 '<form string="Partners">' +
+                    '<sheet>' +
+                        '<field name="name"/>' +
+                    '</sheet>' +
                     '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
                         '<field name="message_ids"/>' +
@@ -30,24 +33,20 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 '</form>',
         };
         patchUiSize({ size: SIZES.XXL });
-        await afterNextRender(async () => { // because of chatter container
-            const { openView } = await start({
-                async mockRPC(route, args) {
-                    if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
-                        assert.step("pdf viewer");
-                    }
-                    if (route === '/mail/attachment/upload') {
-                        await new Promise(() => {});
-                    }
-                },
-                serverData: { views },
-            });
-            await openView({
-                res_id: resPartnerId1,
-                res_model: 'res.partner',
-                views: [[false, 'form']],
-            });
-
+        const { openFormView } = await start({
+            async mockRPC(route, args) {
+                if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
+                    assert.step("pdf viewer");
+                }
+                if (route === '/mail/attachment/upload') {
+                    await new Promise(() => {});
+                }
+            },
+            serverData: { views },
+        });
+        await openFormView({
+            res_id: resPartnerId1,
+            res_model: 'res.partner',
         });
 
         await afterNextRender(() =>
@@ -91,7 +90,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 '</form>',
         };
         patchUiSize({ size: SIZES.XXL });
-        const { click, env, openView } = await start({
+        const { click, messaging, openFormView } = await start({
             mockRPC(route, args) {
                 if (_.str.contains(route, '/web/static/lib/pdfjs/web/viewer.html')) {
                     var canvas = document.createElement('canvas');
@@ -100,10 +99,9 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             },
             serverData: { views },
         });
-        await openView({
+        await openFormView({
             res_id: resPartnerId1,
             res_model: 'res.partner',
-            views: [[false, 'form']],
         });
 
         assert.containsOnce(document.body, '.o_attachment_preview_img > img',
@@ -127,7 +125,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         const files = [
             await createFile({ name: 'invoice.pdf', contentType: 'application/pdf' }),
         ];
-        const messaging = await env.services.messaging.get();
         const chatter = messaging.models['Chatter'].all()[0];
         await afterNextRender(() =>
             inputFiles(chatter.composerView.fileUploader.fileInput, files)
@@ -199,7 +196,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     </form>`,
             };
             patchUiSize({ size: SIZES.XXL });
-            const { click, openView } = await start({
+            const { click, openFormView } = await start({
                 serverData: { views },
                 async mockRPC(route, args) {
                     if (route.includes('/web/static/lib/pdfjs/web/viewer.html')) {
@@ -207,16 +204,16 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                     }
                 },
             });
-            await openView(
+            await openFormView(
                 {
                     res_id: resPartnerId1,
                     res_model: 'res.partner',
-                    views: [[false, 'form']]
                 },
                 {
-                    resIds: [resPartnerId1, resPartnerId2],
-                    index: 0,
-                }
+                    props: {
+                        resIds: [resPartnerId1, resPartnerId2],
+                    },
+                },
             );
 
             assert.strictEqual($('.o_pager_counter').text(), '1 / 2',
@@ -252,12 +249,14 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
                 '</form>',
         };
         patchUiSize({ size: SIZES.XXL });
-        const { openView } = await start({
+        const { openFormView } = await start({
             serverData: { views },
         });
-        await openView({
+        await openFormView({
             res_model: 'res.partner',
-            views: [[false, 'form']],
+        }, {
+            waitUntilDataLoaded: false,
+            waitUntilMessagesLoaded: false,
         });
 
         assert.containsNone(document.body, '.o_attachment_preview',
@@ -304,63 +303,6 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         assert.containsNone(document.body, '.o_attachment_preview', "there should be nothing previewed");
         assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
-    });
-
-    QUnit.test('Attachment triggers list resize', async function (assert) {
-        assert.expect(3);
-
-        const pyEnv = await startServer();
-        const mailChannelId1 = pyEnv['mail.channel'].create({
-            name: new Array(100).fill().map(_ => 'name').join(),
-        });
-        const resPartnerId1 = pyEnv['res.partner'].create({ channel_ids: [mailChannelId1] });
-        const views = {
-            'res.partner,false,form':
-                `<form string="Whatever">
-                    <sheet>
-                        <field name="channel_ids"/>
-                    </sheet>
-                    <div class="o_attachment_preview"/>
-                    <div class="oe_chatter">
-                        <field name="message_ids"/>
-                    </div>
-                </form>`,
-            'mail.channel,false,list':
-                `<tree>
-                    <field name="name"/>
-                </tree>`,
-        };
-        patchUiSize({ size: SIZES.XXL });
-        const { openView } = await start({
-            serverData: { views },
-        });
-        await openView({
-            res_id: resPartnerId1,
-            res_model: 'res.partner',
-            views: [[false, 'form']],
-        });
-
-        // Sets an arbitrary width to check if it is correctly overriden.
-        document.querySelector('table th').style.width = '0px';
-
-        assert.containsNone(document.body, 'img#attachment_img');
-
-        await afterNextRender(() =>
-            dragenterFiles(document.querySelector('.o_Chatter'))
-        );
-        const files = [
-            await createFile({
-                content: 'hello, world',
-                contentType: 'image/jpeg',
-                name: 'image.jpeg',
-            }),
-        ];
-        await afterNextRender(() =>
-            dropFiles(document.querySelector('.o_Chatter_dropZone'), files)
-        );
-        assert.containsOnce(document.body, 'img#attachment_img');
-        assert.notEqual(document.querySelector('table th').style.width, '0px',
-            "List should have been resized after the attachment has been appended.");
     });
 });
 });

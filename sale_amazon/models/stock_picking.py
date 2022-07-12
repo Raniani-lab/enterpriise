@@ -214,9 +214,7 @@ class StockPicking(models.Model):
                 ElementTree.SubElement(order_fulfillment_, 'FulfillmentDate').text = shipping_date_
 
                 # Add the fulfillment data.
-                fulfillment_data_ = ElementTree.SubElement(
-                    order_fulfillment_, 'FulfillmentData'
-                )
+                fulfillment_data_ = ElementTree.SubElement(order_fulfillment_, 'FulfillmentData')
                 ElementTree.SubElement(
                     fulfillment_data_, 'CarrierName'
                 ).text = picking_._get_formatted_carrier_name()
@@ -233,6 +231,13 @@ class StockPicking(models.Model):
                     item_ = ElementTree.SubElement(order_fulfillment_, 'Item')
                     ElementTree.SubElement(item_, 'AmazonOrderItemCode').text = amazon_item_ref_
                     ElementTree.SubElement(item_, 'Quantity').text = str(int(item_quantity_))
+
+                # Add the shipping location.
+                location_ = account.location_id.warehouse_id.partner_id
+                ship_from_ = ElementTree.SubElement(order_fulfillment_, 'ShipFromAddress')
+                ElementTree.SubElement(ship_from_, 'Name').text = location_.name[:30]
+                ElementTree.SubElement(ship_from_, 'AddressFieldOne').text = location_.street[:180]
+                ElementTree.SubElement(ship_from_, 'CountryCode').text = location_.country_id.code
 
         amazon_utils.ensure_account_is_set_up(account)
         xml_feed = amazon_utils.build_feed(account, 'OrderFulfillment', build_feed_messages)

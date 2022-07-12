@@ -186,7 +186,7 @@ class TestHR(common.TransactionCase):
         leave_form.request_unit_half = True
         leave_form.request_date_from = Date.today() + relativedelta(days=1)
         leave_form.request_date_from_period = 'am'
-        self.assertEqual(leave_form.number_of_days, 0.5, "Onchange should have computed 0.5 days")
+        self.assertEqual(leave_form.number_of_days_display, 0.5, "Onchange should have computed 0.5 days")
         leave = leave_form.save()
         self.assertEqual(leave.state, 'validate', "Should be automatically validated")
 

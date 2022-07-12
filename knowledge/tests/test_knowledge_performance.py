@@ -25,7 +25,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @warmup
     def test_article_creation_single_shared_grandchild(self):
         """ Test with 2 levels of hierarchy in a private/shared environment """
-        with self.assertQueryCount(employee=24):
+        with self.assertQueryCount(employee=25):
             _article = self.env['knowledge.article'].create({
                 'body': '<p>Hello</p>',
                 'name': 'Article in shared',
@@ -37,7 +37,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_creation_single_workspace(self):
-        with self.assertQueryCount(employee=21):
+        with self.assertQueryCount(employee=22):
             _article = self.env['knowledge.article'].create({
                 'body': '<p>Hello</p>',
                 'name': 'Article in workspace',
@@ -49,7 +49,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_creation_multi_roots(self):
-        with self.assertQueryCount(employee=22):
+        with self.assertQueryCount(employee=23):
             _article = self.env['knowledge.article'].create([
                 {'body': '<p>Hello</p>',
                  'internal_permission': 'write',
@@ -61,7 +61,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_creation_multi_shared_grandchild(self):
-        with self.assertQueryCount(employee=51):
+        with self.assertQueryCount(employee=52):
             _article = self.env['knowledge.article'].create([
                 {'body': '<p>Hello</p>',
                  'name': f'Article {index} in workspace',

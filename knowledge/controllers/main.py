@@ -97,9 +97,18 @@ class KnowledgeController(http.Controller):
           nodes must be opened;
         """
         unfolded_articles = set() if not unfolded_articles else set(unfolded_articles)
+        if unfolded_articles:
+            # we might get IDs from the localstorage that are not real records anymore (unlink, ...)
+            # the 'child_of' operator using parent_path does not like that (will throw MissingRecord errors)
+            # -> make sure we filter out children of existing articles
+            unfolded_articles = set(request.env['knowledge.article'].sudo().browse(unfolded_articles).exists().ids)
+
         if active_article:
             # root articles = starting point of the tree view : unfold only if root_article in (accessible) parents
-            ancestors = active_article._get_readable_ancetors()
+            ancestors = request.env['knowledge.article'].sudo().search([
+                ('id', 'parent_of', active_article.id),
+                ('id', '!=', active_article.id)
+            ])._filter_access_rules_python('read').with_env(request.env)
             if active_article.root_article_id in ancestors:
                 unfolded_articles |= set(ancestors.ids)
 

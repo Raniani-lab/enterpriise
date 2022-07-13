@@ -154,11 +154,13 @@ class AccountJournal(models.Model):
             PmtInf.append(self._get_DbtrAcct())
             DbtrAgt = etree.SubElement(PmtInf, "DbtrAgt")
             FinInstnId = etree.SubElement(DbtrAgt, "FinInstnId")
-            if pain_version in ['pain.001.001.03.se', 'pain.001.001.03.ch.02'] and not self.bank_account_id.bank_bic:
-                raise UserError(_("Bank account %s 's bank does not have any BIC number associated. Please define one.") % self.bank_account_id.sanitized_acc_number)
-            if self.bank_account_id.bank_bic:
+            bank_account = self.bank_account_id
+            bic_code = self._get_cleaned_bic_code(bank_account)
+            if pain_version in ['pain.001.001.03.se', 'pain.001.001.03.ch.02'] and not bic_code:
+                raise UserError(_("Bank account %s 's bank does not have any BIC number associated. Please define one.") % bank_account.sanitized_acc_number)
+            if bic_code:
                 BIC = etree.SubElement(FinInstnId, "BIC")
-                BIC.text = self.bank_account_id.bank_bic.replace(' ', '').upper()
+                BIC.text = bic_code
             else:
                 Othr = etree.SubElement(FinInstnId, "Othr")
                 Id = etree.SubElement(Othr, "Id")
@@ -377,9 +379,10 @@ class AccountJournal(models.Model):
     def _get_CdtrAgt(self, bank_account, sct_generic, pain_version):
         CdtrAgt = etree.Element("CdtrAgt")
         FinInstnId = etree.SubElement(CdtrAgt, "FinInstnId")
-        if bank_account.bank_bic:
+        bic_code = self._get_cleaned_bic_code(bank_account)
+        if bic_code:
             BIC = etree.SubElement(FinInstnId, "BIC")
-            BIC.text = bank_account.bank_bic.replace(' ', '').upper()
+            BIC.text = bic_code
         else:
             if pain_version in ['pain.001.001.03.austrian.004', 'pain.001.001.03.ch.02']:
                 # Othr and NOTPROVIDED are not supported in CdtrAgt by those flavours
@@ -482,3 +485,22 @@ class AccountJournal(models.Model):
         ):
             return 'CH01'
         return None
+
+    def _get_cleaned_bic_code(self, bank_account):
+        """ Checks if the BIC code is matching the pattern from the XSD to avoid
+            having files generated here that are refused by banks after.
+            It also returns a cleaned version of the BIC as a convenient use.
+        """
+        if not bank_account.bank_bic:
+            return
+        if not re.match('[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}', bank_account.bank_bic):
+            raise UserError(_("The BIC code '%s' associated to the bank '%s' of bank account '%s' "
+                              "of partner '%s' does not respect the required convention.\n"
+                              "It must contain 8 or 11 characters and match the following structure:\n"
+                              "- 4 letters: institution code or bank code\n"
+                              "- 2 letters: country code\n"
+                              "- 2 letters or digits: location code\n"
+                              "- 3 letters or digits: branch code, optional\n",
+                              bank_account.bank_bic, bank_account.bank_id.name,
+                              bank_account.sanitized_acc_number, bank_account.partner_id.name))
+        return bank_account.bank_bic.replace(' ', '').upper()

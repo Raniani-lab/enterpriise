@@ -12,6 +12,11 @@ class AnalyticLine(models.Model):
 
     has_so_access = fields.Boolean(compute="_compute_has_so_access", help="Check that user has a sales access right or not.")
 
+    def _compute_display_timer(self):
+        invoiced_timesheets = self.filtered('timesheet_invoice_id')
+        invoiced_timesheets.display_timer = False
+        super(AnalyticLine, self - invoiced_timesheets)._compute_display_timer()
+
     @api.depends_context('uid')
     @api.depends('order_id')
     def _compute_has_so_access(self):

@@ -41,14 +41,9 @@ class AnalyticLine(models.Model):
     display_timer = fields.Boolean(
         compute='_compute_display_timer',
         help="Technical field used to display the timer if the encoding unit is 'Hours'.")
-    can_edit = fields.Boolean(compute='_compute_can_edit')
 
-    @api.depends('validated')
-    @api.depends_context('uid')
-    def _compute_can_edit(self):
-        is_approver = self.env.user.has_group('hr_timesheet.group_hr_timesheet_approver')
-        for line in self:
-            line.can_edit = is_approver or not line.validated
+    def _is_readonly(self):
+        return super()._is_readonly() or self.validated
 
     def _should_not_display_timer(self):
         self.ensure_one()

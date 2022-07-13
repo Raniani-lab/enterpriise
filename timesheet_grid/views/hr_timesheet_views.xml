@@ -9,35 +9,21 @@
             <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="/tree" position="attributes">
-                    <attribute name="decoration-muted">validated</attribute>
                     <attribute name="sample">1</attribute>
                     <attribute name="js_class">timesheet_timer_list</attribute>
                 </xpath>
                 <xpath expr="/tree" position="inside">
-                    <field name="id" invisible="1"/>
-                    <field name="validated" invisible="1"/>
+                    <field name="readonly_timesheet" invisible="1"/>
                     <field name="is_timer_running" invisible="1"/>
                     <field name="timer_start" invisible="1"/>
                     <field name="display_timer" invisible="1"/>
-                </xpath>
-                <xpath expr="//field[@name='date']" position="attributes">
-                    <attribute name="attrs">{'readonly': [('id', '!=', False), ('validated', '=', True)]}</attribute>
-                </xpath>
-                <xpath expr="//field[@name='name']" position="attributes">
-                    <attribute name="attrs">{'readonly': [('id', '!=', False), ('validated', '=', True)]}</attribute>
-                </xpath>
-                <xpath expr="//field[@name='project_id']" position="attributes">
-                    <attribute name="attrs">{'readonly': [('id', '!=', False), ('validated', '=', True)]}</attribute>
-                </xpath>
-                <xpath expr="//field[@name='task_id']" position="attributes">
-                    <attribute name="attrs">{'readonly': [('id', '!=', False), ('validated', '=', True)]}</attribute>
                 </xpath>
                 <xpath expr="//field[@name='unit_amount']" position="attributes">
                     <attribute name="attrs">{
                         'readonly': [
                             ('id', '!=', False),
                             '|',
-                                ('validated', '=', True),
+                                ('readonly_timesheet', '=', True),
                                 ('timer_start', '!=', False)
                         ]}
                     </attribute>
@@ -106,21 +92,21 @@
                     <attribute name="sample">1</attribute>
                 </kanban>
                 <xpath expr="/kanban" position="inside">
-                    <field name="validated" invisible="1"/>
+                    <field name="readonly_timesheet" invisible="1"/>
                     <field name="timer_start" invisible="1"/>
                     <field name="display_timer" invisible="1"/>
                     <field name="is_timer_running" invisible="1"/>
                 </xpath>
                 <xpath expr="//div/span[@name='duration']" position="replace"/>
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
-                    <div attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '!=', False)]}">
+                    <div attrs="{ 'invisible': ['|', ('readonly_timesheet', '=', True), ('display_timer', '!=', False)]}">
                         <field name="unit_amount" widget="timesheet_uom" options="{'force_button': true}"/>
                     </div>
                     <div class="ms-1">
-                        <div attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '=', False)] }">
+                        <div attrs="{ 'invisible': ['|', ('readonly_timesheet', '=', True), ('display_timer', '=', False)] }">
                             <field name="duration_unit_amount" widget="timesheet_uom_timer" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"/>
                         </div>
-                        <div attrs="{'invisible': [('validated', '=', False)]}">
+                        <div attrs="{'invisible': [('readonly_timesheet', '=', False)]}">
                             <field name="unit_amount_validate" widget="timesheet_uom"/>
                         </div>
                     </div>
@@ -147,7 +133,7 @@
                     <field name="timer_start" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='unit_amount']" position="attributes">
-                    <attribute name="attrs">{'readonly': [('id', '!=', False), ('timer_start', '!=', False)]}</attribute>
+                    <attribute name="attrs">{'readonly': ['|', ('id', '!=', False), ('readonly_timesheet', '=', True) ('timer_start', '!=', False)]}</attribute>
                 </xpath>
                 <xpath expr="//sheet" position="before">
                     <header>
@@ -178,24 +164,25 @@
                     <sheet>
                         <group>
                             <group>
-                                <field name="validated" invisible="1"/>
+                                <field name="readonly_timesheet" invisible="1"/>
                                 <field name="user_can_validate" invisible="1"/>
                                 <field name="company_id" invisible="1"/>
-                                <field name="can_edit" invisible="1"/>
                                 <field name="validated" invisible="1"/>
                                 <field name="timer_start" invisible="1"/>
-                                <field name="project_id" required="1" options="{'no_create_edit': True}" class="o_timesheet_tour_project_name" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
-                                <field name="task_id" options="{'no_create_edit': True}" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="task_with_hours"/>
+                                <field name="project_id" required="1" options="{'no_create_edit': True}" class="o_timesheet_tour_project_name" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}"/>
+                                <field name="task_id" options="{'no_create_edit': True}" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}" widget="task_with_hours"/>
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
                             </group>
                             <group>
-                                <field name="employee_id" required="1" groups="hr_timesheet.group_hr_timesheet_approver" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="many2one_avatar_employee" context="{'active_test': True}"/>
-                                <field name="date" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
-                                <field name="unit_amount" widget="timesheet_uom" attrs="{'readonly': [('id', '!=', False), '|', ('validated', '=', True), ('timer_start', '!=', False)]}" decoration-danger="unit_amount &gt; 24"/>
+                                <field name="employee_id" required="1" groups="hr_timesheet.group_hr_timesheet_approver" context="{'active_test': True}"
+                                    attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}" widget="many2one_avatar_employee"/>
+                                <field name="date" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}"/>
+                                <field name="unit_amount" widget="timesheet_uom" adecoration-danger="unit_amount &gt; 24"
+                                    attrs="{'readonly': [('id', '!=', False), '|', ('readonly_timesheet', '=', True), ('timer_start', '!=', False)]}"/>
                             </group>
                         </group>
                         <group col="2">
-                            <field name="name" placeholder="Describe your activity" widget="text" required="0" nolabel="1" attrs="{'readonly':[('can_edit', '=', False)]}" colspan="2"/>
+                            <field name="name" placeholder="Describe your activity" widget="text" required="0" nolabel="1" attrs="{'readonly':[('readonly_timesheet', '=', True)]}" colspan="2"/>
                         </group>
                     </sheet>
                 </form>

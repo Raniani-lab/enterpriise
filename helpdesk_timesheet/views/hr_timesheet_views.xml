@@ -6,13 +6,13 @@
         <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='task_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('helpdesk_ticket_id', '!=', False)]}</attribute>
+                <attribute name="attrs">{'invisible': [('helpdesk_ticket_id', '!=', False)], 'readonly': [('readonly_timesheet', '=', True)]}</attribute>
             </xpath>
             <xpath expr="//field[@name='task_id']" position="after">
                 <field name="has_helpdesk_team" invisible="1"/>
                 <field name="helpdesk_ticket_id" invisible="1"/>
                 <field name="helpdesk_ticket_id" string="Ticket"
-                    attrs="{'invisible': ['|', ('has_helpdesk_team', '=', False), ('task_id', '!=', False)]}"
+                    attrs="{'invisible': ['|', ('has_helpdesk_team', '=', False), ('task_id', '!=', False)], 'readonly': [('readonly_timesheet', '=', True)]}"
                     optional="hide" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
             </xpath>
         </field>
@@ -75,11 +75,11 @@
             <xpath expr="//field[@name='task_id']" position="after">
                 <field name="display_task" invisible="1"/>
                 <field name="helpdesk_ticket_id" string="Ticket"
-                    attrs="{'invisible': [('display_task', '=', True)]}"
+                    attrs="{'invisible': [('display_task', '=', True)], 'readonly': [('readonly_timesheet', '=', True)]}"
                     groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
             </xpath>
             <xpath expr="//field[@name='task_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('display_task', '!=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': [('display_task', '!=', True)], 'readonly': [('readonly_timesheet', '=', True)]}</attribute>
             </xpath>
         </field>
     </record>
@@ -97,11 +97,11 @@
             <xpath expr="//field[@name='task_id']" position="after">
                 <field name="display_task" invisible="1"/>
                 <field name="helpdesk_ticket_id" string="Ticket"
-                    attrs="{'invisible': [('display_task', '=', True)]}"
+                    attrs="{'invisible': [('display_task', '=', True)], 'readonly': [('readonly_timesheet', '=', True)]}"
                     groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
             </xpath>
             <xpath expr="//field[@name='task_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('display_task', '!=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': [('display_task', '!=', True)], 'readonly': [('readonly_timesheet', '=', True)]}</attribute>
             </xpath>
         </field>
     </record>

@@ -62,7 +62,7 @@ class AccountMove(models.Model):
                     'folder_id': setting.folder_id.id,
                     'partner_id': self.partner_id.id,
                     'owner_id': self.create_uid.id,
-                    'tag_ids': [(6, 0, setting.tag_ids.ids if setting.tag_ids else [])],
+                    'tag_ids': [(4, tag.id) for tag in setting.tag_ids],
                 }
                 Documents = self.env['documents.document'].with_context(default_type='empty').sudo()
                 doc = Documents.search([('attachment_id', '=', attachment_id)], limit=1)

@@ -657,7 +657,7 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
         self.assertEqual(workspace_children[0].parent_id, article_workspace)
 
         # Test that desynced articles are resynced when moved to root
-        workspace_children[0]._desync_access_from_parents()
+        workspace_children[0].sudo().write(workspace_children[0]._desync_access_from_parents_values())
         self.assertTrue(workspace_children[0].is_desynchronized)
 
         # other valid move: first child is moved to private section
@@ -890,9 +890,11 @@ class TestKnowledgeArticleRemoval(KnowledgeCommonBusinessCase):
     @users('employee')
     def test_archive(self):
         """ Testing archive that should also archive children. """
-        self._test_archive()
+        self._test_archive(test_trash=False)
 
-    def _test_archive(self):
+    def _test_archive(self, test_trash=False):
+        archive_method_name = 'action_send_to_trash' if test_trash else 'action_archive'
+
         article_shared = self.article_shared.with_env(self.env)
         article_workspace = self.article_workspace.with_env(self.env)
         wkspace_children = self.workspace_children.with_env(self.env)
@@ -903,37 +905,44 @@ class TestKnowledgeArticleRemoval(KnowledgeCommonBusinessCase):
         # no write access -> cracboum
         with self.assertRaises(exceptions.AccessError,
                                msg='Employee can read thus not archive'):
-            article_shared.action_archive()
+            getattr(article_shared, archive_method_name)()
 
         # set the root + children inactive
-        article_workspace.action_archive()
+        getattr(article_workspace, archive_method_name)()
         self.assertFalse(article_workspace.active)
+        self.assertEqual(article_workspace.to_delete, test_trash)
         for article in wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren:
             self.assertFalse(article.active, 'Archive: should propagate to children')
             self.assertEqual(article.root_article_id, article_workspace,
                              'Archive: does not change hierarchy when archiving without breaking hierarchy')
+            self.assertEqual(article.to_delete, test_trash)
 
         # reset as active
         articles_to_restore = article_workspace + wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren
-        articles_to_restore.toggle_active()
+        articles_to_restore.action_unarchive()
         for article in articles_to_restore:
             self.assertTrue(article.active)
+            self.assertFalse(article.to_delete)
 
         # set only part of tree inactive
-        wkspace_children.action_archive()
+        getattr(wkspace_children, archive_method_name)()
         self.assertTrue(article_workspace.active)
+        self.assertFalse(article_workspace.to_delete)
         for article in wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren:
             self.assertFalse(article.active, 'Archive: should propagate to children')
+            self.assertEqual(article.to_delete, test_trash, 'Trash: should propagate to children')
 
     @mute_logger('odoo.addons.base.models.ir_rule')
     @users('employee')
     def test_archive_mixed_rights(self):
-        self._test_archive_mixed_rights()
+        self._test_archive_mixed_rights(test_trash=False)
 
-    def _test_archive_mixed_rights(self):
+    def _test_archive_mixed_rights(self, test_trash=False):
         """ Test archive in case of mixed rights """
         # give write access to shared section, but have children in read or none
         # and add a customer on top of shared articles to check propagation
+        archive_method_name = 'action_send_to_trash' if test_trash else 'action_archive'
+
         self.article_shared.write({
             'article_member_ids': [(0, 0, {
                 'partner_id': self.customer.id,
@@ -967,12 +976,16 @@ class TestKnowledgeArticleRemoval(KnowledgeCommonBusinessCase):
         self.assertEqual(shared_children, writable_child + readonly_child,
                          'Should see only two first children')
 
-        article_shared.action_archive()
+        getattr(article_shared, archive_method_name)()
         # check writable articles have been archived, readonly or hidden not
         self.assertFalse(article_shared.active)
+        self.assertEqual(article_shared.to_delete, test_trash)
         self.assertFalse(writable_child.active)
+        self.assertEqual(writable_child.to_delete, test_trash)
         self.assertTrue(readonly_child.active)
+        self.assertFalse(readonly_child.to_delete)
         self.assertTrue(hidden_child_su.active)
+        self.assertFalse(hidden_child_su.to_delete)
 
         # check hierarchy
         self.assertEqual(writable_child.parent_id, article_shared,
@@ -998,6 +1011,31 @@ class TestKnowledgeArticleRemoval(KnowledgeCommonBusinessCase):
              self.customer: 'read',
             }
         )
+
+        # Test that articles removed from trash are made roots if their parent are still in the Trash.
+        if test_trash:
+            writable_child.action_unarchive()
+            self.assertFalse(writable_child.to_delete)
+            self.assertFalse(writable_child.parent_id)
+            self.assertTrue(article_shared.to_delete)
+            self.assertTrue(writable_child not in article_shared.with_context(
+                active_test=False).child_ids)
+            self.assertEqual(writable_child.internal_permission,
+                             article_shared.internal_permission)
+            # Note: could be different if writable_child had custom partners. Not the case here so we can use '=='.
+            self.assertTrue(article_shared.article_member_ids.partner_id == writable_child.article_member_ids.partner_id)
+
+    @mute_logger('odoo.addons.base.models.ir_rule')
+    @users('employee')
+    def test_trashed(self):
+        """ Testing 'send to trash' that should also trash children. """
+        self._test_archive(test_trash=True)
+
+    @mute_logger('odoo.addons.base.models.ir_rule')
+    @users('employee')
+    def test_trashed_mixed_rights(self):
+        """ Test Trash in case of mixed rights """
+        self._test_archive_mixed_rights(test_trash=True)
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule', 'odoo.models.unlink')
     @users('admin')

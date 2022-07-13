@@ -407,6 +407,37 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
 
     @mute_logger('odoo.sql_db')
     @users('employee')
+    def test_article_trashed_should_be_archived(self):
+        """ Ensure that a trashed article is archived."""
+        article = self.env['knowledge.article'].create({
+            'name': 'Article',
+            'parent_id': False,
+        })
+
+        with self.assertRaises(IntegrityError, msg='Trashed articles must be archived.'):
+            with self.cr.savepoint():
+                article.write({'to_delete': True})
+
+        article.write({
+            'to_delete': True,
+            'active': False,
+        })
+        self.assertTrue(article.to_delete)
+        self.assertFalse(article.active)
+
+        with self.assertRaises(IntegrityError, msg='Trashed articles must be archived.'):
+            with self.cr.savepoint():
+                article.write({'active': True})
+
+        article.write({
+            'to_delete': False,
+            'active': True,
+        })
+        self.assertTrue(article.active)
+        self.assertFalse(article.to_delete)
+
+    @mute_logger('odoo.sql_db')
+    @users('employee')
     def test_favourite_uniqueness(self):
         """ Check there is at most one 'knowledge.article.favourite' entry per
         article and user. """

@@ -107,6 +107,10 @@
         width: var(--sidebar-size);
         transition: width 0.15s linear;
 
+        .o_scroll_view {
+            max-height: calc(100% - 50px);
+        }
+
         .o_knowledge_tree {
             user-select: none;
         }
@@ -209,6 +213,10 @@
         }
         .o_article_name a {
             color: inherit;
+        }
+        .o_knowledge_management_tools {
+            bottom: 0px;
+            left: 1rem;
         }
     }
 

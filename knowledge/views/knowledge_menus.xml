@@ -40,4 +40,11 @@
         parent="knowledge_menu_configuration"
         groups="base.group_system"
         sequence="2"/>
+    <menuitem
+        id="knowledge_article_menu_trashed"
+        name="Trashed"
+        action="knowledge.knowledge_article_action_trashed"
+        parent="knowledge_menu_configuration"
+        groups="base.group_system"
+        sequence="3"/>
 </odoo>

@@ -4,6 +4,7 @@
 import ast
 
 from collections import defaultdict
+from datetime import datetime, timedelta
 from markupsafe import Markup
 from werkzeug.urls import url_join
 
@@ -120,6 +121,13 @@ class Article(models.Model):
     favorite_count = fields.Integer(
         string="#Is Favorite",
         compute="_compute_favorite_count", store=True, copy=False, default=0)
+    # Trash management
+    to_delete = fields.Boolean(string="Trashed", tracking=100,
+        help="""When sent to trash, articles are flagged to be deleted
+                days after last edit. knowledge_article_trash_limit_days config
+                parameter can be used to modify the number of days. 
+                (default is 30)""")
+    deletion_date = fields.Date(string="Deletion Date", compute="_compute_deletion_date")
 
     _sql_constraints = [
         ('check_permission_on_root',
@@ -137,6 +145,10 @@ class Article(models.Model):
         ('check_article_item_parent',
          'check(is_article_item IS NOT TRUE OR parent_id IS NOT NULL)',
          'Article items must have a parent.'
+         ),
+        ('check_trash',
+         'check(to_delete IS NOT TRUE or active IS NOT TRUE)',
+         'Trashed articles must be archived.'
         ),
     ]
 
@@ -180,9 +192,6 @@ class Article(models.Model):
         for article in self:
             if article.parent_id.has_item_children and article.parent_id.has_article_children:
                 raise ValidationError(_('Article %s can only contain one type of article.', article.parent_id.display_name))
-
-    def name_get(self):
-        return [(rec.id, "%s %s" % (rec.icon or "📄", rec.name)) for rec in self]
 
     # ------------------------------------------------------------
     # COMPUTED FIELDS
@@ -503,6 +512,18 @@ class Article(models.Model):
             [('user_id', '=', self.env.uid)]
         ))]
 
+    @api.depends('to_delete', 'write_date')
+    def _compute_deletion_date(self):
+        trashed_articles = self.filtered(lambda article: article.to_delete)
+        (self - trashed_articles).deletion_date = False
+        if trashed_articles:
+            days = int(self.env["ir.config_parameter"].sudo().get_param(
+                "knowledge.knowledge_article_trash_limit_days",
+                '30',
+            ))
+            for article in trashed_articles:
+                article.deletion_date = article.write_date + timedelta(days=days)
+
     # ------------------------------------------------------------
     # CRUD
     # ------------------------------------------------------------
@@ -729,24 +750,32 @@ class Article(models.Model):
             duplicates += article.copy(default)
         return duplicates
 
-    def action_archive(self):
-        """ When archiving
+    # ------------------------------------------------------------
+    # LOW-LEVEL MODELS
+    # ------------------------------------------------------------
 
-          * archive the current article and all its writable descendants;
-          * unreachable descendants (none, read) are set as free articles without
-            root;
-        """
-        # _detach_unwritable_descendants calls _filter_access_rules_python which returns
-        # a sudo-ed recordset
-        writable_descendants = self._detach_unwritable_descendants().with_env(self.env)
-        return super(Article, self + writable_descendants).action_archive()
+    @api.autovacuum
+    def _gc_trashed_articles(self):
+        days = int(self.env["ir.config_parameter"].sudo().get_param(
+            "knowledge.knowledge_article_trash_limit_days",
+            '30',
+        ))
+        timeout_ago = datetime.utcnow() - timedelta(days=days)
+        domain = [("write_date", "<", timeout_ago), ("to_delete", "=", True)]
+        return self.search(domain).unlink()
+
+    def action_archive(self):
+        return self._action_archive_articles()
+
+    def name_get(self):
+        return [(rec.id, "%s %s" % (rec.icon or "📄", rec.name)) for rec in self]
 
     # ------------------------------------------------------------
     # ACTIONS
     # ------------------------------------------------------------
 
     @api.returns('self', lambda value: value.id)
-    def action_make_private_copy(self, **upd_values):
+    def action_make_private_copy(self):
         """ Creates a copy of an article. != duplicate article (see `copy`).
         Creates a new private article with the same body, icon and cover,
         but drops other fields such as members, childs, permissions etc.
@@ -767,8 +796,6 @@ class Article(models.Model):
             "is_locked": False,
             "parent_id": False,
         }
-        if upd_values:
-            article_vals.update(upd_values)
         return self.create(article_vals)
 
     def action_home_page(self):
@@ -814,15 +841,66 @@ class Article(models.Model):
         return self[0].is_user_favorite if self else False
 
     def action_article_archive(self):
-        """ Article specific archive: after archive, redirect to the home page
-        displaying accessible articles, instead of doing nothing. """
         self.action_archive()
         return self.env["knowledge.article"].action_home_page()
 
+    def action_send_to_trash(self):
+        return self._action_archive_articles(send_to_trash=True)
+
+    def _action_archive_articles(self, send_to_trash=False):
+        """ When archiving
+                  * archive the current article and all its writable descendants;
+                  * unreachable descendants (none, read) are set as free articles without
+                    root;
+        :param bool send_to_trash: Article specific archive:
+            after archive, redirect to the home page displaying accessible
+            articles, instead of doing nothing.
+        """
+        # _detach_unwritable_descendants calls _filter_access_rules_python which returns
+        # a sudo-ed recordset
+        writable_descendants = self._detach_unwritable_descendants().with_env(self.env)
+        (self + writable_descendants).toggle_active()
+        if send_to_trash:
+            (self + writable_descendants).to_delete = True
+            (self + writable_descendants)._send_trash_notifications()
+            self.with_context(res_id=False).action_home_page()
+        return True
+
+    def action_unarchive_article(self):
+        """ Called by the archive action from the form view action menu.
+        When restoring an article, we need to reload the form view (to refresh
+        the hierarchy tree) on the target article."""
+        self.ensure_one()
+        self.action_unarchive()
+        return self.action_home_page()
+
     def action_unarchive(self):
-        res = super(Article, self).action_unarchive()
-        if len(self) == 1:
-            return self.action_home_page()
+        """ When unarchiving
+
+          * unarchive the current article and all its writable descendants;
+          * unreachable descendants (none, read) are set as free articles without
+            root; Side note: the main use case that we support is to be able to
+            undo an archive by mistake. So the unarchiving should unarchive all
+            the article archived by the user. If, in some other cases, there are
+            unreachable descendant for the current user, some of the original
+            archived articles won't be restored.
+          * To avoid 'restoring' an article that will not appear anywhere on
+            the knowledge home page, make the article a root article.
+        """
+        writable_descendants = self.with_context(active_test=False)._detach_unwritable_descendants().with_env(self.env)
+        res = super(Article, self + writable_descendants).action_unarchive()
+        # Trash management: unarchive removes the article from the trash
+        articles_to_restore = (self + writable_descendants).filtered(lambda article: article.to_delete)
+        articles_to_restore.write({'to_delete': False})
+        for article in self.filtered(lambda article: article.parent_id.to_delete):
+            write_values = article._desync_access_from_parents_values()
+            # Make it root
+            write_values.update({
+                'parent_id': False,
+                'is_desynchronized': False
+            })
+            # sudo to write on members
+            article.sudo().write(write_values)
         return res
 
     # ------------------------------------------------------------
@@ -1118,7 +1196,12 @@ class Article(models.Model):
                 raise AccessError(
                     _('You have to be editor on %(article_name)s to change its internal permission.',
                       article_name=self.display_name))
-            return self._desync_access_from_parents(force_internal_permission=permission)
+            # sudo to write on members
+            return self.sudo().write(
+                self._desync_access_from_parents_values(
+                    force_internal_permission=permission
+                )
+            )
 
         values = {'internal_permission': permission}
         if permission == self.parent_id.inherited_permission and not self.article_member_ids:
@@ -1155,7 +1238,13 @@ class Article(models.Model):
         if is_based_on:
             downgrade = ARTICLE_PERMISSION_LEVEL[member.permission] > ARTICLE_PERMISSION_LEVEL[permission]
             if downgrade:
-                self._desync_access_from_parents(force_partners=member.partner_id, force_member_permission=permission)
+                # sudo to write on members
+                self.sudo().write(
+                    self._desync_access_from_parents_values(
+                        force_partners=member.partner_id,
+                        force_member_permission=permission
+                    )
+                )
             else:
                 self._add_members(member.partner_id, permission)
         else:
@@ -1205,7 +1294,11 @@ class Article(models.Model):
             self.sudo().write({'article_member_ids': [(2, current_membership.id)]})
         # inherited rights from parent: desync and remove member
         else:
-            self._desync_access_from_parents(force_partners=self.article_member_ids.partner_id)
+            self.sudo().write(
+                self._desync_access_from_parents_values(
+                    force_partners=self.article_member_ids.partner_id
+                )
+            )
             current_membership = self.article_member_ids.filtered(lambda m: m.partner_id == member.partner_id)
             if current_membership:
                 self.sudo().write({'article_member_ids': [(2, current_membership.id)]})
@@ -1245,22 +1338,20 @@ class Article(models.Model):
 
         return self.sudo().write({'article_member_ids': members_command})
 
-    def _desync_access_from_parents(self, force_internal_permission=False,
-                                    force_partners=False, force_member_permission=False):
-        """ Copies all inherited accesses from parents on the article and desynchronize
-        the article from its parent, allowing custom access management. We allow
-        to force permission of given partners.
-
-        Security note: this method does not check accesses. Caller has to ensure
-        access is granted, depending on the business flow.
+    def _desync_access_from_parents_values(self, force_internal_permission=False,
+                                           force_partners=False, force_member_permission=False):
+        """ Get the necessary values to copy all inherited accesses from parents
+        on the article and desynchronize the article from its parent,
+        allowing custom access management. We allow to force permission of
+        given partners.
 
         :param string force_internal_permission: force a new internal permission
           for the article. Otherwise fallback on inherited computed internal
           permission;
         :param <res.partner> force_partners: force permission of new members
           related to those partners;
-        :param string force_member_permission: used with force_partners to specify
-          the custom permission to give. One of 'none', 'read', 'write';
+        :param string force_member_permission: used with force_partners to
+          specify the custom permission to give. One of 'none', 'read', 'write';
         """
         self.ensure_one()
         new_internal_permission = force_internal_permission or self.inherited_permission
@@ -1269,11 +1360,11 @@ class Article(models.Model):
             force_member_permission=force_member_permission
         )
 
-        return self.sudo().write({
+        return {
             'article_member_ids': members_commands,
             'internal_permission': new_internal_permission,
             'is_desynchronized': True,
-        })
+        }
 
     def _copy_access_from_parents_commands(self, force_partners=False, force_member_permission=False):
         """ Prepares commands for all inherited accesses from parents on the given
@@ -1760,6 +1851,68 @@ class Article(models.Model):
                 partner_ids=partner.ids,
                 subject=subject,
             )
+
+    def _send_trash_notifications(self):
+        """ This method searches all the partners that should be notified about
+        articles have been trashed. As each partner to notify may have different
+        accessible articles depending on their rights, for each partner, we need
+        to retrieve the first accessible article that will be considered for
+        them as the root trashed article. A notification is sent to each partner
+        to notify with the list of their own accessible articles."""
+        partners_to_notify = self.article_member_ids.filtered(
+            lambda member: member.permission in ['read', 'write']
+        ).partner_id
+
+        KnowledgeArticle = self.env["knowledge.article"].with_context(active_test=False)
+        sent_messages = self.env['mail.message']
+        for partner in partners_to_notify.filtered(lambda p: not p.partner_share):
+            # if only one article, all the partner_to_notify have access to the article.
+            if len(self) == 1:
+                main_articles, children = self, KnowledgeArticle
+            else:
+                # Current partner may have no access to some of the articles_to_notify.
+                # Get all accessible articles for the current partner
+                partner_user = partner.user_ids.filtered(lambda u: not u.share)[0]
+                accessible_articles = KnowledgeArticle.with_user(partner_user).search(
+                    [('id', 'in', self.ids)]
+                )
+
+                # "Main articles" are articles that:
+                #   - has no parent
+                #   - OR the current partner as no access to their parent
+                #   - OR the parent article can be accessed but is not archived.
+                main_articles = accessible_articles.sudo().filtered(
+                    lambda a: a.parent_id not in accessible_articles
+                )
+                children = accessible_articles - main_articles
+
+            # Set the partner lang in context to send mail in partner lang.
+            partner_lang = get_lang(self.env, lang_code=partner.lang).code
+            self = self.with_context(lang=partner_lang)  # force translation of subject
+
+            if len(main_articles) == 1:
+                subject = _("%s has been sent to Trash", main_articles.name)
+            else:
+                subject = _("Some articles have been sent to Trash")
+
+            body = self.env['ir.qweb'].with_context(lang=partner_lang)._render(
+                'knowledge.knowledge_article_trash_notification', {
+                    'articles': main_articles,
+                    'recipient': partner,
+                    'child_articles': children,
+                })
+
+            # If multiple "main articles", to keep sending only one mail,
+            # don't link the notification to any document.
+            document_to_notify = main_articles if len(main_articles) == 1 else self.env['mail.thread']
+            sent_messages += document_to_notify.with_context(lang=partner_lang).message_notify(
+                body=body,
+                email_layout_xmlid='mail.mail_notification_light',
+                partner_ids=partner.ids,
+                subject=subject,
+            )
+
+        return sent_messages
 
     # ------------------------------------------------------------
     # TOOLS

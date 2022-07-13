@@ -342,7 +342,7 @@ class FedexRequest():
         customs_value.Amount = delivery_commodity.qty * delivery_commodity.monetary_value
         commodity.CustomsValue = customs_value
 
-        commodity.HarmonizedCode = delivery_commodity.product_id.hs_code or ''
+        commodity.HarmonizedCode = delivery_commodity.product_id.hs_code.replace(".", "") if delivery_commodity.product_id.hs_code else ''
 
         self.listCommodities.append(commodity)
 

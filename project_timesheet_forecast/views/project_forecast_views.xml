@@ -113,7 +113,20 @@
         <field name="arch" type="xml">
             <field name="allocated_hours" position="after">
                 <field name="effective_hours" type="measure" widget="float_time"/>
+                <field name="percentage_hours" widget="timesheet_uom"/>
             </field>
+        </field>
+    </record>
+
+    <record id="planning_view_pivot_view_inherit_timesheet" model="ir.ui.view">
+        <field name="name">planning.action.schedule.project.view.pivot.inherit.update</field>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="project_forecast.planning_action_schedule_by_project_pivot_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='percentage_hours']" position="attributes">
+                <attribute name="type">measure</attribute>
+            </xpath>
         </field>
     </record>
 

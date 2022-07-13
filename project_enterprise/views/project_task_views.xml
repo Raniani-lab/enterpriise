@@ -163,13 +163,24 @@
         <field name="view_mode">kanban,tree,form,calendar,pivot,graph,gantt,activity,map</field>
     </record>
 
+    <record id="project.action_view_my_task" model="ir.actions.act_window">
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form,gantt,calendar,map,pivot,graph,activity</field>
+    </record>
+
+    <record id="open_view_my_task_list_gantt" model="ir.actions.act_window.view">
+        <field name="sequence" eval="30"/>
+        <field name="view_mode">gantt</field>
+        <field name="act_window_id" ref="project.action_view_my_task"/>
+    </record>
+
     <record id="project.action_view_all_task" model="ir.actions.act_window">
         <field name="res_model">project.task</field>
         <field name="view_mode">kanban,tree,form,gantt,calendar,map,pivot,graph,activity</field>
     </record>
 
     <record id="open_view_all_task_list_gantt" model="ir.actions.act_window.view">
-        <field name="sequence" eval="30"/>
+        <field name="sequence" eval="40"/>
         <field name="view_mode">gantt</field>
         <field name="act_window_id" ref="project.action_view_all_task"/>
     </record>

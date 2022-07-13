@@ -87,6 +87,28 @@
         </field>
     </record>
 
+    <record id="planning_view_form_in_gantt_inherit_project_forecast" model="ir.ui.view">
+        <field name="name">planning.slot.form.gantt</field>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="planning.planning_view_form_in_gantt"/>
+        <field name="arch" type="xml">
+            <xpath expr="//footer/button[@name='action_self_unassign']" position="replace"/>
+        </field>
+    </record>
+
+    <record id="planning_view_gantt_inherit" model="ir.ui.view">
+        <field name="name">planning.slot.gantt</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="planning_view_gantt"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="/gantt" position="attributes">
+                <attribute name="form_view_id">%(planning_view_form_in_gantt_inherit_project_forecast)d</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="planning_view_gantt_group_by_project" model="ir.ui.view">
         <field name="name">planning.slot.gantt.inherit.project.project.forecast</field>
         <field name="model">planning.slot</field>

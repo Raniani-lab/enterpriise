@@ -39,6 +39,7 @@ class Project(models.Model):
             'default_project_id': self.id,
             'search_default_project_id': [self.id],
             **ast.literal_eval(action['context']),
+            'search_default_group_by_resource': False,
         }
         if first_slot:
             context['initialDate'] = first_slot.start_datetime

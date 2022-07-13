@@ -81,10 +81,10 @@ class StockPicking(models.Model):
         products = move_lines.product_id
         packagings = products.packaging_ids
 
-        uoms = products.uom_id
+        uoms = products.uom_id | move_lines.product_uom_id
         # If UoM setting is active, fetch all UoM's data.
         if self.env.user.has_group('uom.group_uom'):
-            uoms = self.env['uom.uom'].search([])
+            uoms |= self.env['uom.uom'].search([])
 
         # Fetch `stock.quant.package` and `stock.package.type` if group_tracking_lot.
         packages = self.env['stock.quant.package']

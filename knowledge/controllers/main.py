@@ -117,9 +117,15 @@ class KnowledgeController(http.Controller):
                 ('id', 'child_of', all_visible_articles_ids)
             ])
 
+        user_write_access_by_article = {
+            article.id: article.user_has_write_access
+            for article in all_visible_articles
+        }
+
         values = {
             "active_article": active_article,
             "all_visible_articles": all_visible_articles,
+            "user_write_access_by_article": user_write_access_by_article,
             "workspace_articles": root_articles.filtered(lambda article: article.category == 'workspace'),
             "shared_articles": root_articles.filtered(lambda article: article.category == 'shared'),
             "private_articles": root_articles.filtered(
@@ -158,9 +164,15 @@ class KnowledgeController(http.Controller):
         parent = request.env['knowledge.article'].search([('id', '=', parent_id)])
         if not parent:
             return werkzeug.exceptions.NotFound()
+
+        articles = parent.child_ids.sorted("sequence") if parent.has_article_children else self.env['knowledge.article']
         return request.env['ir.qweb']._render('knowledge.articles_template', {
-            'articles': parent.child_ids.sorted("sequence") if parent.has_article_children else self.env['knowledge.article'],
+            'articles': articles,
             'portal_readonly_mode': not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
+            "user_write_access_by_article": {
+                article.id: article.user_has_write_access
+                for article in articles
+            },
         })
 
     @http.route('/knowledge/tree_panel/favorites', type='json', auth='user')
@@ -171,6 +183,10 @@ class KnowledgeController(http.Controller):
         return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_favorites', {
             'favorites': favorite_articles,
             "active_article": request.env['knowledge.article'].browse(active_article_id),
+            "user_write_access_by_article": {
+                article.id: article.user_has_write_access
+                for article in favorite_articles.article_id
+            },
         })
 
     # ------------------------

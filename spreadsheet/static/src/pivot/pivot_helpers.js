@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { _t } from "web.core";
-import { formats } from "../helpers/constants";
+import { FORMATS } from "../helpers/constants";
 import { getOdooFunctions } from "../helpers/odoo_functions_helpers";
 
 export const pivotFormulaRegex = /^=.*PIVOT/;
@@ -17,8 +17,8 @@ export const pivotFormulaRegex = /^=.*PIVOT/;
  * @param {string} value
  */
 export function formatDate(interval, value) {
-    const output = formats[interval].display;
-    const input = formats[interval].out;
+    const output = FORMATS[interval].display;
+    const input = FORMATS[interval].out;
     const date = moment(value, input);
     return date.isValid() ? date.format(output) : _t("None");
 }

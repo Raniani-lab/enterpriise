@@ -2,7 +2,7 @@
 
 import core from "web.core";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { formats } from "@spreadsheet/helpers/constants";
+import { FORMATS } from "@spreadsheet/helpers/constants";
 import {
     getFirstPivotFunction,
     getNumberOfPivotFormulas,
@@ -502,8 +502,8 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
      * @returns {string}
      */
     _incrementDate(date, group, increment) {
-        const format = formats[group].out;
-        const interval = formats[group].interval;
+        const format = FORMATS[group].out;
+        const interval = FORMATS[group].interval;
         const dateMoment = moment(date, format);
         return dateMoment.isValid() ? dateMoment.add(increment, interval).format(format) : date;
     }

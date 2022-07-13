@@ -227,15 +227,15 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         });
         assert.strictEqual(
             getPivotAutofillValue(model, "B1", { direction: "right", steps: 1 }),
-            getCellFormula(model, "B1").replace("20/01/2016", "21/01/2016")
+            getCellFormula(model, "B1").replace("01/20/2016", "01/21/2016")
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "B2", { direction: "right", steps: 1 }),
-            getCellFormula(model, "B2").replace("20/01/2016", "21/01/2016")
+            getCellFormula(model, "B2").replace("01/20/2016", "01/21/2016")
         );
         assert.strictEqual(
             getPivotAutofillValue(model, "B3", { direction: "right", steps: 1 }),
-            getCellFormula(model, "B3").replace("20/01/2016", "21/01/2016")
+            getCellFormula(model, "B3").replace("01/20/2016", "01/21/2016")
         );
     });
 
@@ -252,7 +252,7 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         });
         assert.strictEqual(
             getPivotAutofillValue(model, "A3", { direction: "bottom", steps: 1 }),
-            getCellFormula(model, "A3").replace("20/01/2016", "21/01/2016")
+            getCellFormula(model, "A3").replace("01/20/2016", "01/21/2016")
         );
     });
 

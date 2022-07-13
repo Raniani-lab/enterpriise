@@ -6,7 +6,7 @@ import { sprintf } from "@web/core/utils/strings";
 import { PivotModel } from "@web/views/pivot/pivot_model";
 import { computeReportMeasures } from "@web/views/utils";
 
-import { formats } from "../helpers/constants";
+import { FORMATS } from "../helpers/constants";
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import { formatDate } from "./pivot_helpers";
@@ -535,8 +535,8 @@ export class SpreadsheetPivotModel extends PivotModel {
     _sanitizeValue(value, groupBy) {
         const { aggregateOperator, field } = this.parseGroupField(groupBy);
         if (this._isDateField(field)) {
-            const fIn = formats[aggregateOperator]["in"];
-            const fOut = formats[aggregateOperator]["out"];
+            const fIn = FORMATS[aggregateOperator]["in"];
+            const fOut = FORMATS[aggregateOperator]["out"];
             // eslint-disable-next-line no-undef
             const date = moment(value, fIn);
             return date.isValid() ? date.format(fOut) : false;

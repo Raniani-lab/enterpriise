@@ -4,8 +4,8 @@ import { _lt } from "@web/core/l10n/translation";
 
 export const DEFAULT_LINES_NUMBER = 20;
 
-export const formats = {
-    day: { in: "DD MMM YYYY", out: "DD/MM/YYYY", display: "DD MMM YYYY", interval: "d" },
+export const FORMATS = {
+    day: { in: "DD MMM YYYY", out: "MM/DD/YYYY", display: "DD MMM YYYY", interval: "d" },
     week: { in: "[W]W YYYY", out: "WW/YYYY", display: "[W]W YYYY", interval: "w" },
     month: { in: "MMMM YYYY", out: "MM/YYYY", display: "MMMM YYYY", interval: "M" },
     quarter: { in: "Q YYYY", out: "Q/YYYY", display: "[Q]Q YYYY", interval: "Q" },

@@ -336,6 +336,6 @@ QUnit.module("spreadsheet > positional pivot formula", {}, () => {
                 </pivot>`,
         });
         setCellContent(model, "A1", `=ODOO.PIVOT.HEADER(1,"#date:day",1)`);
-        assert.strictEqual(getCellValue(model, "A1"), "20 Jan 2016");
+        assert.strictEqual(getCell(model, "A1").formattedValue, "01/20/2016");
     });
 });

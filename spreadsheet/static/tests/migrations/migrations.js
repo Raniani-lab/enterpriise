@@ -7,7 +7,7 @@ const { Model } = spreadsheet;
 
 QUnit.module("spreadsheet > migrations");
 
-QUnit.test("Formulas are migrated", (assert) => {
+QUnit.test("Odoo formulas are migrated", (assert) => {
     const data = {
         sheets: [
             {
@@ -31,6 +31,29 @@ QUnit.test("Formulas are migrated", (assert) => {
     assert.strictEqual(migratedData.sheets[0].cells.A5.content, `=ODOO.LIST.HEADER("1")`);
     assert.strictEqual(migratedData.sheets[0].cells.A6.content, `=ODOO.PIVOT.POSITION("1")`);
     assert.strictEqual(migratedData.sheets[0].cells.A7.content, `=ODOO.PIVOT("1")`);
+});
+
+QUnit.test("Pivot 'day' arguments are migrated", (assert) => {
+    const data = {
+        odooVersion: 1,
+        sheets: [
+            {
+                cells: {
+                    A1: { content: `=ODOO.PIVOT("1","21/07/2022")` },
+                    A2: { content: `=ODOO.PIVOT.HEADER("1","11/12/2022")` },
+                    A3: { content: `=odoo.pivot("1","21/07/2021")` },
+                    A4: { content: `=ODOO.PIVOT("1","test")` },
+                    A5: { content: `=odoo.pivot("1","21/07/2021")+"21/07/2021"` },
+                },
+            },
+        ],
+    };
+    const migratedData = migrate(data);
+    assert.strictEqual(migratedData.sheets[0].cells.A1.content, `=ODOO.PIVOT("1","07/21/2022")`);
+    assert.strictEqual(migratedData.sheets[0].cells.A2.content, `=ODOO.PIVOT.HEADER("1","12/11/2022")`);
+    assert.strictEqual(migratedData.sheets[0].cells.A3.content, `=odoo.pivot("1","07/21/2021")`);
+    assert.strictEqual(migratedData.sheets[0].cells.A4.content, `=ODOO.PIVOT("1","test")`);
+    assert.strictEqual(migratedData.sheets[0].cells.A5.content, `=odoo.pivot("1","07/21/2021")+"21/07/2021"`);
 });
 
 QUnit.test("Odoo version is exported", (assert) => {

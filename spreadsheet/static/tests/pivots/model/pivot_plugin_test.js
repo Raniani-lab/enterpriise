@@ -521,7 +521,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
     });
 
     QUnit.test(
-        "Pivot formulas are correctly formatted at evaluation",
+        "PIVOT formulas are correctly formatted at evaluation",
         async function (assert) {
             const { model } = await createSpreadsheetWithPivot({
                 arch: /* xml */ `

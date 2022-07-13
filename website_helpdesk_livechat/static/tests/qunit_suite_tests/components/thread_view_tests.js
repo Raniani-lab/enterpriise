@@ -18,8 +18,8 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
         model: 'mail.channel',
         res_id: mailChannelId1,
     });
-    const [mailChannelPartnerId] = pyEnv['mail.channel.partner'].search([['channel_id', '=', mailChannelId1], ['partner_id', '=', pyEnv.currentPartnerId]]);
-    pyEnv['mail.channel.partner'].write([mailChannelPartnerId], { seen_message_id: mailMessageId1 });
+    const [mailChannelMemberId] = pyEnv['mail.channel.member'].search([['channel_id', '=', mailChannelId1], ['partner_id', '=', pyEnv.currentPartnerId]]);
+    pyEnv['mail.channel.member'].write([mailChannelMemberId], { seen_message_id: mailMessageId1 });
     const { click, insertText, openDiscuss } = await start({
         discuss: {
             params: {

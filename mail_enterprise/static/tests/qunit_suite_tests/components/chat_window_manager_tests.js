@@ -26,7 +26,7 @@ QUnit.test("'backbutton' event should close chat window", async function (assert
 
     const pyEnv = await startServer();
     pyEnv['mail.channel'].create({
-        channel_last_seen_partner_ids: [[0, 0, {
+        channel_member_ids: [[0, 0, {
             is_minimized: true,
             partner_id: pyEnv.currentPartnerId,
         }]],

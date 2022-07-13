@@ -38,7 +38,7 @@ class MailChannel(models.Model):
     def execute_command_helpdesk(self, **kwargs):
         key = kwargs.get('body').split()
         msg = _('Something is missing or wrong in command')
-        channel_partners = self.channel_partner_ids.filtered(lambda partner: partner != self.env.user.partner_id)
+        partners = self.channel_partner_ids.filtered(lambda partner: partner != self.env.user.partner_id)
         if key[0].lower() == '/helpdesk':
             if len(key) == 1:
                 if self.channel_type == 'channel':
@@ -47,14 +47,14 @@ class MailChannel(models.Model):
                         msg += _(" This channel is private. People must be invited to join it.")
                 else:
                     msg = _("You are in a private conversation with <b>%(mentions)s</b>.",
-                            mentions=", ".join(html_escape("@%s" % p.name) for p in channel_partners)
+                            mentions=", ".join(html_escape("@%s" % p.name) for p in partners)
                            )
                 msg += _("""<br><br>
                     You can create a new ticket by typing <b>/helpdesk <i>ticket title</i></b>.<br>
                     You can search tickets by typing <b>/helpdesk_search <i>keyword</i></b> or <b><i>ticket number</i></b><br>
                     """)
             else:
-                customer = channel_partners[:1]
+                customer = partners[:1]
                 list_value = key[1:]
                 description = ''
                 for message in self.message_ids.sorted(key=lambda r: r.id):

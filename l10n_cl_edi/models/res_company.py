@@ -88,8 +88,6 @@ class ResCompany(models.Model):
     l10n_cl_dte_resolution_date = fields.Date('SII Exempt Resolution Date')
     l10n_cl_sii_regional_office = fields.Selection(
         L10N_CL_SII_REGIONAL_OFFICES_ITEMS, translate=False, string='SII Regional Office')
-    l10n_cl_activity_description = fields.Char(
-        string='Glosa Giro', related='partner_id.l10n_cl_activity_description', readonly=False)
     l10n_cl_company_activity_ids = fields.Many2many('l10n_cl.company.activities', string='Activities Names',
         help='Please select the SII registered economic activities codes for the company', readonly=False)
     l10n_cl_sii_taxpayer_type = fields.Selection(

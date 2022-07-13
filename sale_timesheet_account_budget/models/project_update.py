@@ -13,7 +13,7 @@ class ProjectUpdate(models.Model):
         if project.analytic_account_id and self.user_has_groups('account.group_account_readonly'):
             profitability = vals['profitability']
             vals['budget'] = {
-                'percentage': round((-profitability['costs'] / project.budget) * 100 if project.budget != 0 else 0, 0),
+                'percentage': round((-profitability.get('costs', 0) / project.budget) * 100 if project.budget != 0 else 0, 0),
                 'amount': format_amount(self.env, project.budget, project.currency_id)
             }
         return vals

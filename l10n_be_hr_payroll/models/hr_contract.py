@@ -414,6 +414,12 @@ class HrContract(models.Model):
 
         return super(HrContract, self).update_state()
 
+    def _preprocess_work_hours_data_split_half(self, work_data, date_from, date_to):
+        """
+        Method is meant to be overriden, see l10n_be_hr_payroll_attendance
+        """
+        return
+
     def _get_work_hours_split_half(self, date_from, date_to, domain=None):
         """
         Returns the amount (expressed in hours) of work

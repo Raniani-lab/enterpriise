@@ -76,6 +76,7 @@ class HelpdeskTeam(models.Model):
             "Portal users can only access the tickets they are following. "
             "This access can be modified on each ticket individually by adding or removing the portal user as follower.")
     privacy_visibility_warning = fields.Char('Privacy Visibility Warning', compute='_compute_privacy_visibility_warning')
+    access_instruction_message = fields.Char('Access Instruction Message', compute='_compute_access_instruction_message')
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
     use_alias = fields.Boolean('Email Alias', default=True)
@@ -281,6 +282,16 @@ class HelpdeskTeam(models.Model):
                 team.privacy_visibility_warning = _('Portal users will be removed from the followers of the team and its tickets.')
             else:
                 team.privacy_visibility_warning = ''
+
+    @api.depends('privacy_visibility')
+    def _compute_access_instruction_message(self):
+        for team in self:
+            if team.privacy_visibility == 'portal':
+                team.access_instruction_message = _('Grant portal users access to your helpdesk team or tickets by adding them as followers.')
+            elif team.privacy_visibility == 'invited_internal':
+                team.access_instruction_message = _('Grant employees access to your helpdesk team or tickets by adding them as followers.')
+            else:
+                team.access_instruction_message = ''
 
     def get_knowledge_base_url(self):
         self.ensure_one()

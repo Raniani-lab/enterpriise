@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { OnboardingBanner } from "@web/views/onboarding_banner";
 import { DashboardArchParser } from "./dashboard_arch_parser";
 import { DashboardCompiler } from "./dashboard_compiler/dashboard_compiler";
 import { DashboardModel } from "./dashboard_model";
@@ -17,7 +16,6 @@ export const dashboardView = {
     Controller: DashboardController,
     ArchParser: DashboardArchParser,
     Compiler: DashboardCompiler,
-    Banner: OnboardingBanner,
 
     props: (genericProps, view) => {
         return {

@@ -688,7 +688,8 @@ class HrContractSalary(http.Controller):
             if resume_line.value_type == 'contract':
                 value = new_contract[resume_line.code] if resume_line.code in new_contract else 0
             if resume_line.value_type == 'sum':
-                resume_explanation = _('Equals to the sum of the following values:\n\n%s', '\n+ '.join(resume_line.advantage_ids.res_field_id.mapped('field_description')))
+                resume_explanation = _('Equals to the sum of the following values:\n\n%s',
+                    '\n+ '.join(resume_line.advantage_ids.res_field_id.sudo().mapped('field_description')))
                 for advantage in resume_line.advantage_ids:
                     if not advantage.fold_field or (advantage.fold_field and new_contract[advantage.fold_field]):
                         field = advantage.field

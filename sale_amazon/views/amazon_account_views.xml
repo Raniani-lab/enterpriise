@@ -52,6 +52,15 @@
                             <field name="order_count" widget="statinfo" string="Orders"/>
                         </button>
                     </div>
+                    <field name="refresh_token" invisible="1"/>
+                    <div class="badge rounded-pill text-bg-warning fs-6 float-end"
+                         attrs="{'invisible': ['|', ('id', '=', False), ('refresh_token', '!=', False)]}">
+                        Unlinked Account
+                    </div>
+                    <div class="badge rounded-pill text-bg-success fs-6 float-end"
+                         attrs="{'invisible': [('refresh_token', '=', False)]}">
+                        Linked Account
+                    </div>
                     <div class="oe_title" id="title">
                         <label for="name" string="Account Name"/>
                         <h1>
@@ -60,7 +69,6 @@
                     </div>
                     <notebook>
                         <page string="Credentials" name="credentials">
-                            <field name="refresh_token" invisible="1"/>
                             <p class="text-muted"
                                attrs="{'invisible': [('refresh_token', '!=', False)]}">
                                 Link your Amazon account with Odoo to start synchronizing your

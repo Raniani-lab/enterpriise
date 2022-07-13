@@ -1,23 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">amazon.order.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="amazon_order_ref" groups="base.group_no_one" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_quotation_tree" model="ir.ui.view">
+        <field name="name">amazon.quotation.tree</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="amazon_order_ref" groups="base.group_no_one" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
     <record id="amazon_order_view_form" model="ir.ui.view">
         <field name="name">amazon.order.form</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
+            <header position="inside">
                 <field name="amazon_channel" invisible="1"/>
-            </xpath>
-            <xpath expr="//div[@name='button_box']" position="after">
-                <div class="rounded-pill text-bg-info float-end"
+            </header>
+            <div name="button_box" position="after">
+                <div class="badge rounded-pill text-bg-info fs-6 float-end"
                      attrs="{'invisible': [('amazon_channel', '!=', 'fbm')]}">
                     Fulfilled by Merchant
                 </div>
-                <div class="rounded-pill text-bg-info float-end"
+                <div class="badge rounded-pill text-bg-info fs-6 float-end"
                      attrs="{'invisible': [('amazon_channel', '!=', 'fba')]}">
                     Fulfilled by Amazon
                 </div>
-            </xpath>
+            </div>
+            <group name="order_details" position="inside">
+                <field name="amazon_order_ref"
+                       attrs="{'invisible': [('amazon_order_ref', '=', False)]}"
+                       groups="base.group_no_one"/>
+            </group>
         </field>
     </record>
+
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">amazon.order.search</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="amazon_order_ref" groups="base.group_no_one"/>
+            </field>
+        </field>
+    </record>
+
 </odoo>

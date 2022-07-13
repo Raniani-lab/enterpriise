@@ -11,11 +11,15 @@ class StockMove(models.Model):
 
     def _action_confirm(self, merge=True, merge_into=False):
         moves = super(StockMove, self)._action_confirm(merge=merge, merge_into=merge_into)
+        moves._create_quality_checks_for_mo()
 
+        return moves
+
+    def _create_quality_checks_for_mo(self):
         # Groupby move by production order. Use it in order to generate missing quality checks.
         mo_moves = defaultdict(lambda: self.env['stock.move'])
         check_vals_list = []
-        for move in moves:
+        for move in self:
             if move.production_id and not move.scrapped:
                 mo_moves[move.production_id] |= move
         for production, moves in mo_moves.items():
@@ -32,5 +36,3 @@ class StockMove(models.Model):
                 })
             check_vals_list += mo_check_vals_list
         self.env['quality.check'].sudo().create(check_vals_list)
-
-        return moves

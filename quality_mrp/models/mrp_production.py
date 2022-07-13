@@ -95,3 +95,7 @@ class MrpProduction(models.Model):
         res = super(MrpProduction, self).action_cancel()
         self.sudo().mapped('check_ids').filtered(lambda x: x.quality_state == 'none').unlink()
         return res
+
+    def _action_confirm_mo_backorders(self):
+        super()._action_confirm_mo_backorders()
+        (self.move_raw_ids | self.move_finished_ids)._create_quality_checks_for_mo()

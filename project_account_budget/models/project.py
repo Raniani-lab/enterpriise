@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
 import json
 
-from odoo import fields, models, _, api
+from odoo import api, fields, models, _
 from odoo.osv import expression
 
 class Project(models.Model):
@@ -13,6 +12,16 @@ class Project(models.Model):
     total_planned_amount = fields.Monetary(compute="_compute_total_planned_amount")
     total_practical_amount = fields.Monetary(related='analytic_account_id.total_practical_amount')
     total_budget_progress = fields.Monetary(compute="_compute_total_budget_progress")
+    budget = fields.Integer('Total planned amount', compute='_compute_budget', default=0)
+
+    @api.depends('analytic_account_id')
+    def _compute_budget(self):
+        budget_items = self.env['crossovered.budget.lines'].sudo()._read_group([
+            ('analytic_account_id', 'in', self.analytic_account_id.ids),
+        ], ['analytic_account_id'], ['planned_amount:sum'])
+        budget_items_by_account_analytic = {analytic_account.id: planned_amount_sum for analytic_account, planned_amount_sum in budget_items}
+        for project in self:
+            project.budget = budget_items_by_account_analytic.get(project.analytic_account_id.id, 0.0)
 
     def _compute_total_planned_amount(self):
         budget_read_group = self.env['crossovered.budget.lines'].sudo()._read_group(

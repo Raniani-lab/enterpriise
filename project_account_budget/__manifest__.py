@@ -10,6 +10,7 @@
     'data': [
         'views/project_views.xml',
         'views/account_budget_views.xml',
+        'views/project_update_templates.xml',
     ],
     'demo': [
         'data/account_budget_demo.xml',

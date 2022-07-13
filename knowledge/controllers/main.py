@@ -6,6 +6,7 @@ import werkzeug
 from odoo import http, tools, _
 from odoo.exceptions import AccessError, ValidationError
 from odoo.http import request
+from odoo.osv import expression
 
 
 class KnowledgeController(http.Controller):
@@ -119,21 +120,31 @@ class KnowledgeController(http.Controller):
         # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
         root_article_ids = request.env["knowledge.article"].sudo().search([("parent_id", "=", False)]).ids
 
+        favorites_sudo = request.env['knowledge.article.favorite'].sudo()
+        if not request.env.user._is_public():
+            favorites_sudo = request.env['knowledge.article.favorite'].sudo().search([
+                ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
+            ])
+
         # Fetch all visible articles at once instead of going down the hierarchy in the template
         # using successive 'child_ids' field calls.
         # This allows to benefit from batch computation (ACLs, computes, ...).
         # We filter within the template based on the "parent_id" field to get the article children.
         all_visible_articles = request.env['knowledge.article']
         all_visible_articles_ids = unfolded_articles | set(root_article_ids)
+        visible_favorite_article_ids = favorites_sudo.article_id.ids
+        all_visible_article_domains = expression.OR([
+            [
+                ('id', 'child_of', all_visible_articles_ids),
+                ('is_article_item', '=', False),
+            ],
+            [('id', 'in', visible_favorite_article_ids)],
+        ])
         if all_visible_articles_ids:
             all_visible_articles = request.env['knowledge.article'].search(
-                [
-                    ('is_article_item', '=', False),
-                    ('id', 'child_of', all_visible_articles_ids)
-                ],
-                order='sequence, id'
+                all_visible_article_domains,
+                order='sequence, id',
             )
-
         root_articles = all_visible_articles.filtered(lambda article: not article.parent_id)
 
         user_write_access_by_article = {
@@ -151,13 +162,8 @@ class KnowledgeController(http.Controller):
                 lambda article: article.category == "private" and article.user_has_write_access),
             "unfolded_articles": unfolded_articles,
             'portal_readonly_mode': not request.env.user.has_group('base.group_user'),
+            "favorites_sudo": favorites_sudo,
         }
-        favorites = request.env['knowledge.article.favorite']
-        if not request.env.user._is_public():
-            favorites = request.env['knowledge.article.favorite'].search([
-                ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
-            ])
-        values["favorites"] = favorites
 
         return request.env['ir.qweb']._render(template, values)
 
@@ -196,15 +202,21 @@ class KnowledgeController(http.Controller):
 
     @http.route('/knowledge/tree_panel/favorites', type='json', auth='user')
     def get_tree_panel_favorites(self, active_article_id=False):
-        favorite_articles = request.env['knowledge.article.favorite'].search([
+        favorites_sudo = request.env['knowledge.article.favorite'].sudo().search([
             ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
         ])
+
+        all_visible_articles = request.env['knowledge.article'].search([
+            ('id', 'in', favorites_sudo.article_id.ids)
+        ])
+
         return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_favorites', {
-            'favorites': favorite_articles,
+            "favorites_sudo": favorites_sudo,
             "active_article_id": active_article_id,
+            "all_visible_articles": all_visible_articles,
             "user_write_access_by_article": {
                 article.id: article.user_has_write_access
-                for article in favorite_articles.article_id
+                for article in all_visible_articles
             },
         })
 

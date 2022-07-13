@@ -2,13 +2,18 @@
 <odoo>
 <data>
     <template id="knowledge_article_tree_favorites">
-        <section class="o_favorite_container" t-if="favorites">
+        <!-- Go through 'all_visible_articles' if available to avoid extra ACL queries -->
+        <section class="o_favorite_container" t-if="all_visible_articles.filtered(lambda article: article in favorites_sudo.article_id)">
             <div class="h4 mb-0">Favorites</div>
             <ul class="o_tree_favorite">
-                <t t-call="knowledge.articles_template">
-                    <t t-set="articles" t-value="favorites.mapped('article_id')"/>
-                    <t t-set="hideChildren" t-value="true"/>
-                    <t t-set="isFavoriteTree" t-value="true"/>
+                <!-- We loop on favorites_sudo and not filtered visible_articles to ensure the
+                articles are shown based on knowledge.article.favorite's sequence field -->
+                <t t-foreach="favorites_sudo" t-as="favorite_sudo">
+                    <t t-call="knowledge.articles_template">
+                        <t t-set="articles" t-value="all_visible_articles.filtered(lambda article: article == favorite_sudo.article_id)"/>
+                        <t t-set="hideChildren" t-value="true"/>
+                        <t t-set="isFavoriteTree" t-value="true"/>
+                    </t>
                 </t>
             </ul>
         </section>
@@ -19,7 +24,7 @@
         <t t-set="unfolded_articles" t-value="unfolded_articles or []"/>
         <t t-foreach="articles" t-as="article">
             <t t-set="readonly" t-value="portal_readonly_mode or not user_write_access_by_article.get(article.id)"/>
-            <t t-set="favorite" t-value="favorites.filtered(lambda f: f.article_id == article) if favorites else False"/>
+            <t t-set="favorite" t-value="favorites_sudo.filtered(lambda f: f.article_id == article) if favorites_sudo else False"/>
             <!-- readonly is used to for the drag and drop cancel.-->
             <li t-attf-class="o_article #{ 'readonly' if readonly else '' }" t-attf-id="article_#{article.id}"
                 t-att-data-article-id="article.id" t-att-data-parent-id="article.parent_id.id"

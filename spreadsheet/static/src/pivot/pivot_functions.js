@@ -1,6 +1,8 @@
 /** @odoo-module **/
 
-import { _t } from "web.core";
+import { _t } from "@web/core/l10n/translation";
+import { sprintf } from "@web/core/utils/strings";
+
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 const { args, toString } = spreadsheet.helpers;
 const { functionRegistry } = spreadsheet.registries;
@@ -11,7 +13,7 @@ const { functionRegistry } = spreadsheet.registries;
 
 function assertPivotsExists(pivotId, getters) {
     if (!getters.isExistingPivot(pivotId)) {
-        throw new Error(_.str.sprintf(_t('There is no pivot with id "%s"'), pivotId));
+        throw new Error(sprintf(_t('There is no pivot with id "%s"'), pivotId));
     }
 }
 
@@ -20,7 +22,7 @@ function assertMeasureExist(pivotId, measure, getters) {
     if (!measures.includes(measure)) {
         const validMeasures = `(${measures})`;
         throw new Error(
-            _.str.sprintf(
+            sprintf(
                 _t("The argument %s is not a valid measure. Here are the measures: %s"),
                 measure,
                 validMeasures
@@ -66,7 +68,9 @@ functionRegistry
         computeFormat: function (pivotId, measureName, ...domain) {
             pivotId = toString(pivotId.value);
             const measure = toString(measureName.value);
-            const field = this.getters.getSpreadsheetPivotModel(pivotId).getReportMeasures()[measure];
+            const field = this.getters.getSpreadsheetPivotModel(pivotId).getReportMeasures()[
+                measure
+            ];
             if (!field) {
                 return undefined;
             }
@@ -77,7 +81,7 @@ functionRegistry
                 case "monetary":
                     return "#,##0.00";
                 default:
-                    return undefined
+                    return undefined;
             }
         },
         returns: ["NUMBER", "STRING"],
@@ -95,6 +99,34 @@ functionRegistry
             assertPivotsExists(pivotId, this.getters);
             assertDomainLength(args);
             return this.getters.getPivotHeaderValue(pivotId, args);
+        },
+        computeFormat: function (pivotId, ...domain) {
+            pivotId = toString(pivotId.value);
+            const pivot = this.getters.getSpreadsheetPivotModel(pivotId);
+            const len = domain.length;
+            if (!len) {
+                return undefined;
+            }
+            const fieldName = toString(domain[len - 2].value);
+            const value = toString(domain[len - 1].value);
+            if (fieldName === "measure" || value === "false") {
+                return undefined;
+            }
+            const { aggregateOperator, field } = pivot.parseGroupField(fieldName, value);
+            switch (field.type) {
+                case "integer":
+                    return "0";
+                case "float":
+                case "monetary":
+                    return "#,##0.00";
+                case "date":
+                case "datetime":
+                    if (aggregateOperator === "day") {
+                        return "mm/dd/yyyy";
+                    }
+                default:
+                    return undefined;
+            }
         },
         returns: ["NUMBER", "STRING"],
     })

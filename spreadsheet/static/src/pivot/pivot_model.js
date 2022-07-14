@@ -406,6 +406,9 @@ export class SpreadsheetPivotModel extends PivotModel {
         const value = parsePivotFormulaFieldValue(field, groupValueString);
         const undef = _t("None");
         if (this._isDateField(field)) {
+            if (value && aggregateOperator === "day") {
+                return toNumber(value);
+            }
             return formatDate(aggregateOperator, value);
         }
         if (field.relation) {

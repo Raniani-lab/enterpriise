@@ -536,4 +536,21 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
             assert.strictEqual(getCell(model, "C3").evaluated.format, "#,##0.00");
         }
     );
+
+    QUnit.test(
+        "PIVOT.HEADER formulas are correctly formatted at evaluation",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /* xml */ `
+                <pivot>
+                    <field name="date" interval="day" type="col"/>
+                    <field name="probability" type="row"/>
+                    <field name="foo" type="measure"/>
+                </pivot>`,
+            });
+            assert.strictEqual(getCell(model, "A3").evaluated.format, "#,##0.00");
+            assert.strictEqual(getCell(model, "B1").evaluated.format, "mm/dd/yyyy");
+            assert.strictEqual(getCell(model, "B2").evaluated.format, undefined);
+        }
+    );
 });

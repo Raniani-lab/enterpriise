@@ -148,6 +148,9 @@ class AccountMove(models.Model):
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
 
+    def _domain_company(self):
+        return ['|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)]
+
     @api.model
     def _contact_iap_extract(self, local_endpoint, params):
         params['version'] = CLIENT_OCR_VERSION
@@ -459,19 +462,19 @@ class AccountMove(models.Model):
                 return 0
             return ""
         if new_word.field == "VAT_Number":
-            partner_vat = self.env["res.partner"].search([("vat", "=", new_word.word_text)], limit=1)
-            if partner_vat.exists():
+            partner_vat = self.find_partner_id_with_vat(new_word.word_text)
+            if partner_vat:
                 return partner_vat.id
             return 0
         if new_word.field == "supplier":
-            partner_names = self.env["res.partner"].search([("name", "ilike", new_word.word_text)])
+            partner_names = self.env["res.partner"].search([("name", "ilike", new_word.word_text), *self._domain_company()])
             if partner_names.exists():
                 partner = min(partner_names, key=len)
                 return partner.id
             else:
                 partners = {}
                 for single_word in new_word.word_text.split(" "):
-                    partner_names = self.env["res.partner"].search([("name", "ilike", single_word)], limit=30)
+                    partner_names = self.env["res.partner"].search([("name", "ilike", single_word), *self._domain_company()], limit=30)
                     for partner in partner_names:
                         partners[partner.id] = partners[partner.id] + 1 if partner.id in partners else 1
                 if len(partners) > 0:
@@ -508,7 +511,7 @@ class AccountMove(models.Model):
         if word.field == "VAT_Number":
             partner_vat = False
             if word.word_text != "":
-                partner_vat = self.env["res.partner"].search([("vat", "=", word.word_text)], limit=1)
+                partner_vat = self.find_partner_id_with_vat(word.word_text)
             if partner_vat:
                 return partner_vat.id
             else:
@@ -519,6 +522,20 @@ class AccountMove(models.Model):
         if word.field == "supplier":
             return self.find_partner_id_with_name(word.word_text)
         return word.word_text
+
+    def find_partner_id_with_vat(self, vat_number_ocr):
+        partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr), *self._domain_company()], limit=1)
+        if not partner_vat:
+            partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr[2:]), *self._domain_company()], limit=1)
+        if not partner_vat:
+            for partner in self.env["res.partner"].search([("vat", "!=", False), *self._domain_company()], limit=1000):
+                vat = partner.vat.upper()
+                vat_cleaned = vat.replace("BTW", "").replace("MWST", "").replace("ABN", "")
+                vat_cleaned = re.sub(r'[^A-Z0-9]', '', vat_cleaned)
+                if vat_cleaned == vat_number_ocr or vat_cleaned == vat_number_ocr[2:]:
+                    partner_vat = partner
+                    break
+        return partner_vat
 
     def _create_supplier_from_vat(self, vat_number_ocr):
         try:
@@ -566,11 +583,18 @@ class AccountMove(models.Model):
         if not partner_name:
             return 0
 
-        partner = self.env["res.partner"].search([("name", "=", partner_name)], limit=1)
+        partner = self.env["res.partner"].search([("name", "=", partner_name), *self._domain_company()], limit=1)
         if partner:
             return partner.id if partner.id != self.company_id.partner_id.id else 0
 
-        self.env.cr.execute("SELECT id, name FROM res_partner WHERE active = true AND supplier_rank > 0 AND name IS NOT NULL")
+        self.env.cr.execute("""
+            SELECT id, name
+            FROM res_partner
+            WHERE active = true 
+              AND supplier_rank > 0 
+              AND name IS NOT NULL
+              AND (company_id IS NULL OR company_id = %s)
+        """, [self.company_id.id])
 
         partners_dict = {name.lower().replace('-', ' '): partner_id for partner_id, name in self.env.cr.fetchall()}
         partner_name = partner_name.lower().strip()
@@ -602,6 +626,7 @@ class AccountMove(models.Model):
                     ('state', '!=', 'draft'),
                     ('move_type', '=', self.move_type),
                     ('partner_id', '=', self.partner_id.id),
+                    *self._domain_company(),
                 ], limit=100, order='id desc')
                 lines = related_documents.mapped('invoice_line_ids')
                 taxes_ids = related_documents.mapped('invoice_line_ids.tax_ids')
@@ -621,7 +646,12 @@ class AccountMove(models.Model):
                     if self.company_id.account_purchase_tax_id and self.company_id.account_purchase_tax_id.amount == taxes and self.company_id.account_purchase_tax_id.amount_type == taxes_type:
                         taxes_found |= self.company_id.account_purchase_tax_id
                     else:
-                        taxes_records = self.env['account.tax'].search([('amount', '=', taxes), ('amount_type', '=', taxes_type), ('type_tax_use', '=', type_tax_use), ('company_id', '=', self.company_id.id)])
+                        taxes_records = self.env['account.tax'].search([
+                            ('amount', '=', taxes),
+                            ('amount_type', '=', taxes_type),
+                            ('type_tax_use', '=', type_tax_use),
+                            *self._domain_company(),
+                        ])
                         if taxes_records:
                             # prioritize taxes based on db setting
                             line_tax_type = self.env['ir.config_parameter'].sudo().get_param('account.show_line_subtotals_tax_selection')
@@ -803,21 +833,11 @@ class AccountMove(models.Model):
         with self._get_edi_creation() as move_form:
             if not move_form.partner_id:
                 if vat_number_ocr:
-                    partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr)], limit=1)
-                    if not partner_vat:
-                        partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr[2:])], limit=1)
-                    if not partner_vat:
-                        for partner in self.env["res.partner"].search([("vat", "!=", False)], limit=1000):
-                            vat = partner.vat.upper()
-                            vat_cleaned = vat.replace("BTW", "").replace("MWST", "").replace("ABN", "")
-                            vat_cleaned = re.sub(r'[^A-Z0-9]', '', vat_cleaned)
-                            if vat_cleaned == vat_number_ocr or vat_cleaned == vat_number_ocr[2:]:
-                                partner_vat = partner
-                                break
+                    partner_vat = self.find_partner_id_with_vat(vat_number_ocr)
                     if partner_vat:
                         move_form.partner_id = partner_vat
                 if self.move_type in {'in_invoice', 'in_refund'} and not move_form.partner_id and iban_ocr:
-                    bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr)])
+                    bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
                     if len(bank_account) == 1:
                         move_form.partner_id = bank_account.partner_id
                 if not move_form.partner_id:
@@ -829,7 +849,7 @@ class AccountMove(models.Model):
                     if created_supplier:
                         move_form.partner_id = created_supplier
                         if iban_ocr and not move_form.partner_bank_id and self.is_purchase_document():
-                            bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr)])
+                            bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
                             if bank_account.exists():
                                 if bank_account.partner_id == move_form.partner_id.id:
                                     move_form.partner_bank_id = bank_account

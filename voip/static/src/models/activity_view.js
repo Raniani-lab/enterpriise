@@ -11,7 +11,7 @@ addRecordMethods("ActivityView", {
      */
     onClickLandlineNumber(ev) {
         ev.preventDefault();
-        this.component.trigger("voip_activity_call", {
+        this.component.trigger("voip-activity-call", {
             activityId: this.activity.id,
             number: this.activity.phone,
         });
@@ -24,7 +24,7 @@ addRecordMethods("ActivityView", {
             return;
         }
         ev.preventDefault();
-        this.component.trigger("voip_activity_call", {
+        this.component.trigger("voip-activity-call", {
             activityId: this.activity.id,
             number: this.activity.mobile,
         });

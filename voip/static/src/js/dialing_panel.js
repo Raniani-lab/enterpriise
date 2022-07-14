@@ -136,7 +136,7 @@ const DialingPanel = Widget.extend({
             this._onToggleDisplay();
         });
 
-        this.call('bus_service', 'onNotification', this, this._onLongpollingNotifications);
+        this.call('bus_service', 'onNotification', this._onLongpollingNotifications.bind(this));
 
         for (const tab of Object.values(this._tabs)) {
             tab.on('callNumber', this, ev => this._makeCall(ev.data.number));

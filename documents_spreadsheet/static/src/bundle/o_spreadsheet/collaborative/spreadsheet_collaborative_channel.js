@@ -36,7 +36,7 @@ export default class SpreadsheetCollaborativeChannel {
         // The user can listen to this channel only if he has the required read access.
         this._channel = `spreadsheet_collaborative_session:${this.resModel}:${this.resId}`;
         this.env.services.bus_service.addChannel(this._channel);
-        this.env.services.bus_service.onNotification(this, (notifs) =>
+        this.env.services.bus_service.onNotification(notifs =>
             this._handleNotifications(this._filterSpreadsheetNotifs(notifs))
         );
     }

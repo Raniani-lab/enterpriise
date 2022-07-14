@@ -15,8 +15,8 @@ class MockBusService {
         this.channels.push(name);
     }
 
-    onNotification(parent, handler) {
-        this._bus.on("notif", parent, handler);
+    onNotification(handler) {
+        this._bus.addEventListener("notif", ({ detail }) => handler(detail));
     }
 
     notify(message) {

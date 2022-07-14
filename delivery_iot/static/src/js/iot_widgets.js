@@ -91,7 +91,7 @@ var DeliveryIoTNotificationManager = AbstractService.extend({
     start: function () {
         this._super.apply(this, arguments);
         core.bus.on('web_client_ready', this, () => {
-            this.call('bus_service', 'onNotification', this, this._onNotification);
+            this.call('bus_service', 'onNotification', this._onNotification.bind(this));
         });
     },
 

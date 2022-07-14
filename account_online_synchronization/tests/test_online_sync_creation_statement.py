@@ -4,7 +4,8 @@
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.account_accountant.tests.test_bank_rec_widget import WizardForm
 from odoo.tests import tagged
-from odoo import fields
+from odoo import fields, Command
+from unittest.mock import patch
 
 
 @tagged('post_install', '-at_install')
@@ -655,3 +656,61 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         # Validate and check that partner has no vendor_name set
         self.confirm_bank_statement(created_bnk_stmt)
         self.assertEqual(agrolait.online_partner_information, False)
+
+    def test_automatic_journal_assignment(self):
+        def create_online_account(name, link_id, iban, currency_id):
+            return self.env['account.online.account'].create({
+                'name': name,
+                'account_online_link_id': link_id,
+                'account_number': iban,
+                'currency_id' : currency_id,
+            })
+
+        def create_bank_account(account_number, partner_id):
+            return self.env['res.partner.bank'].create({
+                'acc_number': account_number,
+                'partner_id': partner_id,
+            })
+
+        def create_journal(name, journal_type, code, currency_id=False, bank_account_id=False):
+            return self.env['account.journal'].create({
+                'name': name,
+                'type': journal_type,
+                'code': code,
+                'currency_id': currency_id,
+                'bank_account_id': bank_account_id,
+                'bank_statement_creation_groupby': 'none',
+            })
+
+        eur_currency = self.env.ref('base.EUR')
+        bank_account_1 = create_bank_account('BE48485444456727', self.company_data['company'].partner_id.id)
+        bank_account_2 = create_bank_account('Coucou--.BE619-.--5-----4856342317yocestmoi-', self.company_data['company'].partner_id.id)
+        bank_account_3 = create_bank_account('BE23798242487491', self.company_data['company'].partner_id.id)
+
+        bank_journal_with_account_eur = create_journal('Bank with account', 'bank', 'BJWA1', eur_currency.id, bank_account_1.id)
+        bank_journal_with_badly_written_account_eur = create_journal('Bank with errors in account name', 'bank', 'BJWA2', eur_currency.id, bank_account_2.id)
+        bank_journal_with_account_usd = create_journal('Bank with account USD', 'bank', 'BJWA3', self.env.ref('base.USD').id, bank_account_3.id)
+        bank_journal_simple = create_journal('Bank without account and currency', 'bank', 'BJWOA2')
+
+        online_account_1 = create_online_account('OnlineAccount1', self.link_account.id, 'BE48485444456727', eur_currency.id)
+        online_account_2 = create_online_account('OnlineAccount2', self.link_account.id, 'BE61954856342317', eur_currency.id)
+        online_account_3 = create_online_account('OnlineAccount3', self.link_account.id, 'BE23798242487491', eur_currency.id)
+        online_account_4 = create_online_account('OnlineAccount4', self.link_account.id, 'BE31812561129155', eur_currency.id)
+        online_accounts = [online_account_1, online_account_2, online_account_3, online_account_4]
+
+        account_link_journal_wizard = self.env['account.link.journal'].create({
+            'number_added': len(online_accounts),
+            'account_ids': [Command.create({
+                'online_account_id': online_account.id,
+                'journal_id': online_account.journal_ids[0].id if online_account.journal_ids else None
+            }) for online_account in online_accounts]
+        })
+        with patch('odoo.addons.account_online_synchronization.models.account_online.AccountOnlineLink.action_fetch_transactions', return_value=True):
+            account_link_journal_wizard.sync_now()
+
+        self.assertEqual(online_account_1.id, bank_journal_with_account_eur.account_online_account_id.id, "The wizard should have linked the first online account to the journal with the same account.")
+        self.assertEqual(online_account_2.id, bank_journal_with_badly_written_account_eur.account_online_account_id.id, "The wizard should have linked the second online account to the journal with the same account, after sanitization.")
+        self.assertNotEqual(online_account_3.id, bank_journal_with_account_usd.account_online_account_id.id, "As the currency in the journal is different than the one specified in the online account, they should not be linked to each other.")
+        self.assertEqual(online_account_3.id, bank_journal_simple.account_online_account_id.id, "The next empty journal should be linked to the online account, when no journal exists with the corresponding currency and account number.")
+        previously_created_journals = [bank_journal_with_account_eur, bank_journal_with_badly_written_account_eur, bank_journal_with_account_usd, bank_journal_simple, self.bank_journal]
+        self.assertTrue(online_account_4.journal_ids and online_account_4.journal_ids[0] not in previously_created_journals, "A new journal should be created for the remaining online account.")

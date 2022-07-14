@@ -31,6 +31,7 @@ class AccountOnlineAccount(models.Model):
     journal_ids = fields.One2many('account.journal', 'account_online_account_id', string='Journal', domain=[('type', '=', 'bank')])
     last_sync = fields.Date("Last synchronization")
     company_id = fields.Many2one('res.company', related='account_online_link_id.company_id')
+    currency_id = fields.Many2one('res.currency')
 
     inverse_balance_sign = fields.Boolean(
         string="Inverse Balance Sign",
@@ -348,7 +349,11 @@ class AccountOnlineLink(models.Model):
             resp_json = self._fetch_odoo_fin('/proxy/v1/accounts', data)
             for acc in resp_json.get('accounts', []):
                 acc['account_online_link_id'] = self.id
-                acc.pop('currency_code', '')  # We now return the currency code along the other accounts' info. But this field won't exist before v16, so it will be unused until then.
+                currency_id = self.env['res.currency'].with_context(active_test=False).search([('name', '=', acc.pop('currency_code', ''))], limit=1)
+                if currency_id:
+                    if not currency_id.active:
+                        currency_id.active = True
+                    acc['currency_id'] = currency_id.id
                 accounts[str(acc.get('online_identifier'))] = acc
             if not resp_json.get('next_data'):
                 break

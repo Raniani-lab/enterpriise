@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, _
+from odoo import models, api, _, fields
 from odoo.exceptions import UserError
 from odoo.tools.misc import formatLang
-from odoo.tools import pycompat
-
-from time import strptime
+from odoo.tools import pycompat, date_utils
 
 import json
 import io
@@ -146,10 +144,11 @@ class ECSalesReport(models.AbstractModel):
         return '%s_%s' % (self.env.company.vat, self._get_se_period(options))
 
     def _get_se_period(self, options):
+        date_to = fields.Date.from_string(options['date'].get('date_to'))
         if options['date']['period_type'] == 'month':
-            return '%s%02d' % (options['date']['string'][-2:], strptime(options['date']['string'][:3], '%b').tm_mon)
+            return date_to.strftime('%y%m')
         elif options['date']['period_type'] == 'quarter':
-            return '%s-%s' % (options['date']['string'][-2:], options['date']['string'][1:2])
+            return '%s-%s' % (date_to.strftime('%y'), date_utils.get_quarter_number(date_to))
         else:
             raise UserError(_('You can only export Monthly or Quarterly reports.'))
 

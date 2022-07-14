@@ -6,9 +6,8 @@ from datetime import datetime
 from pytz import utc
 
 from odoo import api, fields, models, _
-from odoo.osv import expression
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare, float_round, float_is_zero
+from odoo.tools import float_compare, float_is_zero
 from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 
 
@@ -516,7 +515,7 @@ class MrpProductionWorkcenterLine(models.Model):
         data = {
             'mrp.workorder': self.read(self._get_fields_for_tablet(), load=False)[0],
             'quality.check': self.check_ids._get_fields_for_tablet(sorted_check_list),
-            'operation': self.operation_id.read(self.operation_id._get_fields_for_tablet())[0],
+            'operation': self.operation_id.read(self.operation_id._get_fields_for_tablet())[0] if self.operation_id else {},
             'working_state': self.workcenter_id.working_state,
         }
         return data

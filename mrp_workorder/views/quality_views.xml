@@ -17,7 +17,8 @@
             </field>
             <field name="user_id" position="after">
                 <field name="operation_id" invisible="1"/>
-                <field name="worksheet_page" attrs="{'invisible': ['|', ('is_workorder_step', '=', False), ('operation_id', '=', False)]}"/>
+                <field name="source_document" widget="radio"/>
+                <field name="worksheet_page" attrs="{'invisible': ['|', '|', ('is_workorder_step', '=', False), ('operation_id', '=', False), ('source_document', '=', 'step')]}"/>
             </field>
             <field name="product_category_ids" position="attributes">
                 <attribute name="attrs">{
@@ -28,7 +29,7 @@
                 </attribute>
             </field>
             <xpath expr="//field[@name='note']" position="after">
-                <field name="worksheet_document" help="Upload your PDF file." widget="pdf_viewer"/>
+                <field name="worksheet_document" help="Upload your PDF file." widget="pdf_viewer" attrs="{'invisible': [('source_document', '=', 'operation')]}"/>
                 <field name="worksheet_url" placeholder="Google Slide Link" widget="embed_viewer"/>
             </xpath>
         </field>

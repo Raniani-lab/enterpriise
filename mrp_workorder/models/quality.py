@@ -103,7 +103,11 @@ class QualityPoint(models.Model):
         'quality.point.test_type',
         domain="[('allow_registration', '=', operation_id and is_workorder_step)]")
     test_report_type = fields.Selection([('pdf', 'PDF'), ('zpl', 'ZPL')], string="Report Type", default="pdf", required=True)
-    worksheet_page = fields.Integer('Worksheet Page')
+    source_document = fields.Selection(
+        selection=[('operation', 'Specific Page of Operation Worksheet'), ('step', 'Custom')],
+        string="Step Document",
+        default='operation')
+    worksheet_page = fields.Integer('Worksheet Page', default=1)
     worksheet_document = fields.Binary('Image/PDF')
     worksheet_url = fields.Char('Google doc URL')
     # Used with type register_consumed_materials the product raw to encode.

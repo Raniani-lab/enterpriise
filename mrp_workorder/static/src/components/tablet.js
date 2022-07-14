@@ -4,11 +4,12 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import core from "web.core";
 import ViewsWidget from '@mrp_workorder/widgets/views_widget';
+import DocumentViewer from '@mrp_workorder/components/viewer';
 import StepComponent from '@mrp_workorder/components/step';
 import ViewsWidgetAdapter from '@mrp_workorder/components/views_widget_adapter';
 import MenuPopup from '@mrp_workorder/components/menuPopup';
 
-const {useState, useRef, useEffect, onWillStart, EventBus, Component, markup} = owl;
+const {useState, useEffect, onWillStart, EventBus, Component, markup} = owl;
 
 /**
  * Main Component
@@ -22,8 +23,6 @@ class Tablet extends Component {
     setup() {
         this.rpc = useService('rpc');
         this.orm = useService('orm');
-        this.notification = useService('notification');
-        this.pdfIFrame = useRef("o_tablet_document_iframe");
         this.state = useState({
             selectedStepId: 0,
             workingState: "",
@@ -53,7 +52,6 @@ class Tablet extends Component {
         });
 
         useEffect(() => {
-            this.updatePdf();
             this._scrollToHighlighted();
         });
     }
@@ -118,46 +116,38 @@ class Tablet extends Component {
         this.state.selectedStepId = newId;
     }
 
-    updatePdf() {
-        let page = 0;
-        let queryObj = {};
-        if (this.selectedStep.worksheet_document) {
-            page = 1;
-            queryObj = {
-                model: 'quality.check',
-                field: 'worksheet_document',
-                id: this.state.selectedStepId,
-            };
-        } else if (this.data.operation.worksheet && this.selectedStep.worksheet_page) {
-            page = this.selectedStep.worksheet_page;
-            queryObj = {
-                model: 'mrp.routing.workcenter',
-                field: 'worksheet',
-                id: this.data.operation.id,
-            };
-        }
-        if (page && queryObj) {
-            const queryString = new URLSearchParams(queryObj).toString()
-            const fileURI = encodeURIComponent('/web/content?' + queryString);
-            const viewerURL = '/web/static/lib/pdfjs/web/viewer.html?file=';
-            const src = viewerURL + fileURI + '#page=' + page;
-            this.pdfIFrame.el.setAttribute('src', src);
-            this.pdfIFrame.el.removeAttribute('style');
-            // Once the PDF viewer is loaded, hides everything except the page.
-            this.pdfIFrame.el.addEventListener('load', () => {
-                this.pdfIFrame.el.contentDocument.querySelector('.toolbar').style.display = 'none';
-                this.pdfIFrame.el.contentDocument.querySelector('#viewerContainer').style.top = '0';
-                this.pdfIFrame.el.contentDocument.querySelector('body').style.background = 'none';
-                this.pdfIFrame.el.contentDocument.querySelector('#viewerContainer').style.boxShadow = 'none';
-            });
-        }
-    }
-
-    get worksheet() {
+    get worksheetData() {
         if (this.selectedStep) {
-            return this.selectedStep.worksheet_document || (this.selectedStep.worksheet_page && this.data.operation.worksheet);
+            if (this.selectedStep.worksheet_document) {
+                return {
+                    resModel: 'quality.check',
+                    resId: this.state.selectedStepId,
+                    resField: 'worksheet_document',
+                    value: this.selectedStep.worksheet_document,
+                    page: 1,
+                };
+            } else if (this.data.operation !== undefined && this.selectedStep.worksheet_page) {
+                return {
+                    resModel: 'mrp.routing.workcenter',
+                    resId: this.data.operation.id,
+                    resField: 'worksheet',
+                    value: this.data.operation.worksheet,
+                    page: this.selectedStep.worksheet_page,
+                };
+            } else {
+                return false;
+            }
+
+        } else if (this.data.operation.worksheet) {
+            return {
+                resModel: 'mrp.routing.workcenter',
+                resId: this.data.operation.id,
+                resField: 'worksheet',
+                value: this.data.operation.worksheet,
+                page: 1,
+            };
         } else {
-            return this.data.operation.worksheet;
+            return false;
         }
     }
 
@@ -255,6 +245,7 @@ Tablet.props = ['action', '*'];
 Tablet.template = 'mrp_workorder.Tablet';
 Tablet.components = {
     StepComponent,
+    DocumentViewer,
     ViewsWidgetAdapter,
     MenuPopup,
 };

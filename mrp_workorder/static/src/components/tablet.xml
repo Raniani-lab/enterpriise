@@ -5,7 +5,7 @@
         <div class="o_workorder_blocking_screen" t-if="isBlocked"/>
         <ViewsWidgetAdapter Component="ViewsWidget" data="viewsWidgetData['workorder']"/>
         <div class="o_tablet_bottom_content">
-            <div class="o_tablet_timeline" t-on-select-step="selectStep">
+            <div t-if="steps.length" class="o_tablet_timeline" t-on-select-step="selectStep">
                 <t t-foreach="steps" t-as="step" t-key="step.id">
                     <StepComponent step="step"
                         selectedStepId="state.selectedStepId"
@@ -15,12 +15,21 @@
             <div class="o_tablet_instructions_content">
                 <t t-if="state.selectedStepId">
                     <ViewsWidgetAdapter Component="ViewsWidget" data="viewsWidgetData['check']"/>
+                    <div t-if="checkInstruction" class="o_tablet_instruction_note">
+                        <t t-out="checkInstruction"/>
+                    </div>
+                    <t t-if="worksheetData">
+                        <DocumentViewer t-props="worksheetData"/>
+                    </t>
+                </t>
+                <t t-else="">
+                    <SummaryStep workorder="workorderId"/>
                 </t>
                 <div t-if="checkInstruction" class="o_tablet_instruction_note">
                     <t t-out="checkInstruction"/>
                 </div>
-                <div t-if="worksheet" class="o_tablet_document">
-                    <iframe t-ref="o_tablet_document_iframe"/>
+                <div t-if="worksheetData" class="o_tablet_document">
+                    <DocumentViewer t-props="worksheetData"/>
                 </div>
             </div>
         </div>

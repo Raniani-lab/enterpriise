@@ -96,7 +96,7 @@ class ReportAccountAgedPartner(models.AbstractModel):
         query = ("""
             SELECT
                 {move_line_fields},
-                account_move_line.amount_currency as amount_currency,
+                (account_move_line.amount_currency * %(sign)s) as amount_currency,
                 account_move_line.partner_id AS partner_id,
                 partner.name AS partner_name,
                 COALESCE(trust_property.value_text, 'normal') AS partner_trust,

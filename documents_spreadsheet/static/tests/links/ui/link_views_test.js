@@ -38,6 +38,9 @@ const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+const { Grid } = spreadsheet.components;
+
 let serverData;
 async function openView(viewType, options = {}) {
     legacyFavoriteMenuRegistry.add(
@@ -70,11 +73,16 @@ async function openView(viewType, options = {}) {
 
 async function insertInSpreadsheetAndClickLink(target) {
     await loadJS("/web/static/lib/Chart/Chart.js");
+    patchWithCleanup(Grid.prototype, {
+        setup() {
+            this._super();
+            this.hoveredCell = {col : 0, row : 0};
+        },
+    });
     await click(target, ".o_favorite_menu button");
     await click(target, ".o_insert_action_spreadsheet_menu");
     await click(document, ".modal-footer button.btn-primary");
     await nextTick();
-    await legacyExtraNextTick();
     await click(target, ".o-link-tool a");
     await nextTick();
     await legacyExtraNextTick();

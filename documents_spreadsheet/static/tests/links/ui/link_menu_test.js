@@ -5,13 +5,14 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 import { registry } from "@web/core/registry";
 import { createSpreadsheet } from "../../spreadsheet_test_utils";
-import { click, getFixture, legacyExtraNextTick, nextTick } from "@web/../tests/helpers/utils";
+import { click, getFixture, legacyExtraNextTick, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { getCell } from "@spreadsheet/../tests/utils/getters";
 import { setCellContent, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { getMenuServerData } from "@spreadsheet/../tests/links/menu_data_utils";
 
-const { registries } = spreadsheet;
+const { registries, components } = spreadsheet;
 const { cellMenuRegistry } = registries;
+const { Grid } = components;
 
 let target;
 
@@ -45,6 +46,12 @@ async function openMenuSelector(params = {}) {
 function beforeEach() {
     target = getFixture();
     registry.category("services").add("spreadsheetLinkMenuCell", spreadsheetLinkMenuCellService);
+    patchWithCleanup(Grid.prototype, {
+        setup() {
+            this._super();
+            this.hoveredCell = {col : 0, row : 0};
+        },
+    });
 }
 
 QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {

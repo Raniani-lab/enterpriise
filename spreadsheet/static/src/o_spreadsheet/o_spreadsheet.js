@@ -577,6 +577,21 @@
     function clip(val, min, max) {
         return val < min ? min : val > max ? max : val;
     }
+    /** Get the default height of the cell. The height depends on the font size */
+    function getDefaultCellHeight(cell) {
+        var _a;
+        if (!((_a = cell === null || cell === void 0 ? void 0 : cell.style) === null || _a === void 0 ? void 0 : _a.fontSize)) {
+            return DEFAULT_CELL_HEIGHT;
+        }
+        return fontSizeInPixels(cell.style) + 2 * PADDING_AUTORESIZE;
+    }
+    function fontSizeInPixels(style) {
+        const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
+        if (!fontSizeMap[sizeInPt]) {
+            throw new Error("Size of the font is not supported");
+        }
+        return fontSizeMap[sizeInPt];
+    }
     function computeTextWidth(context, text, style) {
         const italic = style.italic ? "italic " : "";
         const weight = style.bold ? "bold" : DEFAULT_FONT_WEIGHT;
@@ -947,6 +962,10 @@
 
     /** Reference of a cell (eg. A1, $B$5) */
     const cellReference = new RegExp(/\$?([A-Z]{1,3})\$?([0-9]{1,7})/, "i");
+    // Same as above, but matches the exact string (nothing before or after)
+    const singleCellReference = new RegExp(/^\$?([A-Z]{1,3})\$?([0-9]{1,7})$/, "i");
+    /** Reference of a column header (eg. A, AB) */
+    const colHeader = new RegExp(/^([A-Z]{1,3})+$/, "i");
     /** Reference of a column (eg. A, $CA, Sheet1!B) */
     const colReference = new RegExp(/^\s*('.+'!|[^']+!)?\$?([A-Z]{1,3})$/, "i");
     /** Reference of a row (eg. 1, 59, Sheet1!9) */
@@ -961,13 +980,27 @@
         [cellReference.source, fullRowXc.source, fullColXc.source].join("|") +
         ")" +
         /$/.source, "i");
-    // Return true if the given xc is the reference of a column (eg. A or AC or Sheet1!A)
+    /**
+     * Return true if the given xc is the reference of a column (e.g. A or AC or Sheet1!A)
+     */
     function isColReference(xc) {
         return colReference.test(xc);
     }
-    // Return true if the given xc is the reference of a column (eg. 1 or Sheet1!1)
+    /**
+     * Return true if the given xc is the reference of a column (e.g. 1 or Sheet1!1)
+     */
     function isRowReference(xc) {
         return rowReference.test(xc);
+    }
+    function isColHeader(str) {
+        return colHeader.test(str);
+    }
+    /**
+     * Return true if the given xc is the reference of a single cell,
+     * without any specified sheet (e.g. A1)
+     */
+    function isSingleCellReference(xc) {
+        return singleCellReference.test(xc);
     }
 
     //------------------------------------------------------------------------------
@@ -2488,12 +2521,8 @@
         CommandResult[CommandResult["InvalidViewportSize"] = 65] = "InvalidViewportSize";
         CommandResult[CommandResult["FigureDoesNotExist"] = 66] = "FigureDoesNotExist";
         CommandResult[CommandResult["InvalidConditionalFormatId"] = 67] = "InvalidConditionalFormatId";
+        CommandResult[CommandResult["InvalidCellPopover"] = 68] = "InvalidCellPopover";
     })(exports.CommandResult || (exports.CommandResult = {}));
-
-    var ReturnFormatType;
-    (function (ReturnFormatType) {
-        ReturnFormatType["FormatFromArgument"] = "FormatFromArgument";
-    })(ReturnFormatType || (ReturnFormatType = {}));
 
     var DIRECTION;
     (function (DIRECTION) {
@@ -2596,6 +2625,821 @@
         },
         sequence: 40,
     });
+
+    /**
+     * This file is largely inspired by owl 1.
+     * `css` tag has been removed from owl 2 without workaround to manage css.
+     * So, the solution was to import the behavior of owl 1 directly in our
+     * codebase, with one difference: the css is added to the sheet as soon as the
+     * css tag is executed. In owl 1, the css was added as soon as a Component was
+     * created for the first time.
+     */
+    const STYLESHEETS = {};
+    let nextId = 0;
+    /**
+     * CSS tag helper for defining inline stylesheets.  With this, one can simply define
+     * an inline stylesheet with just the following code:
+     * ```js
+     *     css`.component-a { color: red; }`;
+     * ```
+     */
+    function css(strings, ...args) {
+        const name = `__sheet__${nextId++}`;
+        const value = String.raw(strings, ...args);
+        registerSheet(name, value);
+        activateSheet(name);
+        return name;
+    }
+    function processSheet(str) {
+        const tokens = str.split(/(\{|\}|;)/).map((s) => s.trim());
+        const selectorStack = [];
+        const parts = [];
+        let rules = [];
+        function generateSelector(stackIndex, parentSelector) {
+            const parts = [];
+            for (const selector of selectorStack[stackIndex]) {
+                let part = (parentSelector && parentSelector + " " + selector) || selector;
+                if (part.includes("&")) {
+                    part = selector.replace(/&/g, parentSelector || "");
+                }
+                if (stackIndex < selectorStack.length - 1) {
+                    part = generateSelector(stackIndex + 1, part);
+                }
+                parts.push(part);
+            }
+            return parts.join(", ");
+        }
+        function generateRules() {
+            if (rules.length) {
+                parts.push(generateSelector(0) + " {");
+                parts.push(...rules);
+                parts.push("}");
+                rules = [];
+            }
+        }
+        while (tokens.length) {
+            let token = tokens.shift();
+            if (token === "}") {
+                generateRules();
+                selectorStack.pop();
+            }
+            else {
+                if (tokens[0] === "{") {
+                    generateRules();
+                    selectorStack.push(token.split(/\s*,\s*/));
+                    tokens.shift();
+                }
+                if (tokens[0] === ";") {
+                    rules.push("  " + token + ";");
+                }
+            }
+        }
+        return parts.join("\n");
+    }
+    function registerSheet(id, css) {
+        const sheet = document.createElement("style");
+        sheet.textContent = processSheet(css);
+        STYLESHEETS[id] = sheet;
+    }
+    function activateSheet(id) {
+        const sheet = STYLESHEETS[id];
+        sheet.setAttribute("component", id);
+        document.head.appendChild(sheet);
+    }
+
+    const ERROR_TOOLTIP_HEIGHT = 40;
+    const ERROR_TOOLTIP_WIDTH = 180;
+    css /* scss */ `
+  .o-error-tooltip {
+    font-size: 13px;
+    background-color: white;
+    border-left: 3px solid red;
+    padding: 10px;
+  }
+`;
+    class ErrorToolTip extends owl.Component {
+    }
+    ErrorToolTip.size = { width: ERROR_TOOLTIP_WIDTH, height: ERROR_TOOLTIP_HEIGHT };
+    ErrorToolTip.template = "o-spreadsheet-ErrorToolTip";
+    ErrorToolTip.components = {};
+    const ErrorToolTipPopoverBuilder = {
+        onHover: (position, getters) => {
+            const cell = getters.getCell(getters.getActiveSheetId(), position.col, position.row);
+            if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.error &&
+                cell.evaluated.error.logLevel > CellErrorLevel.silent) {
+                return {
+                    isOpen: true,
+                    props: { text: cell.evaluated.error.message },
+                    Component: ErrorToolTip,
+                    cellCorner: "TopRight",
+                };
+            }
+            return { isOpen: false };
+        },
+    };
+
+    function getMenuChildren(node, env) {
+        if (typeof node.children === "function") {
+            return node.children(env).sort((a, b) => a.sequence - b.sequence);
+        }
+        return node.children.sort((a, b) => a.sequence - b.sequence);
+    }
+    function getMenuName(node, env) {
+        if (typeof node.name === "function") {
+            return node.name(env);
+        }
+        return node.name;
+    }
+    function getMenuDescription(node) {
+        return node.description ? node.description : "";
+    }
+
+    /**
+     * Return true if the event was triggered from
+     * a child element.
+     */
+    function isChildEvent(parent, ev) {
+        return !!ev.target && parent.contains(ev.target);
+    }
+    function getTextDecoration({ strikethrough, underline, }) {
+        if (!strikethrough && !underline) {
+            return "none";
+        }
+        return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
+    }
+
+    /**
+     * Return the o-spreadsheet element position relative
+     * to the browser viewport.
+     */
+    function useSpreadsheetPosition() {
+        const position = owl.useState({ x: 0, y: 0 });
+        let spreadsheetElement = document.querySelector(".o-spreadsheet");
+        updatePosition();
+        function updatePosition() {
+            if (!spreadsheetElement) {
+                spreadsheetElement = document.querySelector(".o-spreadsheet");
+            }
+            if (spreadsheetElement) {
+                const { top, left } = spreadsheetElement.getBoundingClientRect();
+                position.x = left;
+                position.y = top;
+            }
+        }
+        owl.onMounted(updatePosition);
+        owl.onPatched(updatePosition);
+        return position;
+    }
+    /**
+     * Return the component (or ref's component) top left position (in pixels) relative
+     * to the upper left corner of the screen (<body> element).
+     *
+     * Note: when used with a <Portal/> component, it will
+     * return the portal position, not the teleported position.
+     */
+    function useAbsolutePosition(ref) {
+        const position = owl.useState({ x: 0, y: 0 });
+        function updateElPosition() {
+            const el = ref.el;
+            if (el === null) {
+                return;
+            }
+            const { top, left } = el.getBoundingClientRect();
+            if (left !== position.x || top !== position.y) {
+                position.x = left;
+                position.y = top;
+            }
+        }
+        owl.onMounted(updateElPosition);
+        owl.onPatched(updateElPosition);
+        return position;
+    }
+
+    class Popover extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.spreadsheetPosition = useSpreadsheetPosition();
+        }
+        get style() {
+            // the props's position is expressed relative to the "body" element
+            // but we teleport the element in ".o-spreadsheet" to keep everything
+            // within our control and to avoid leaking into external DOM
+            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetPosition.x}`;
+            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetPosition.y}`;
+            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
+            return `
+      position: absolute;
+      z-index: ${ComponentsImportance.Popover};
+      ${verticalPosition}px;
+      ${horizontalPosition}px;
+      ${height}px;
+      width:${this.props.childWidth}px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
+    `;
+        }
+        get viewportDimension() {
+            return this.env.model.getters.getViewportDimensionWithHeaders();
+        }
+        get shouldRenderRight() {
+            const { x } = this.props.position;
+            return x + this.props.childWidth < this.viewportDimension.width;
+        }
+        get shouldRenderBottom() {
+            const { y } = this.props.position;
+            return (y + this.props.childHeight <
+                this.viewportDimension.height + (this.env.isDashboard() ? 0 : TOPBAR_HEIGHT));
+        }
+        horizontalPosition() {
+            const { x } = this.props.position;
+            if (this.shouldRenderRight) {
+                return x;
+            }
+            return x - this.props.childWidth - this.props.flipHorizontalOffset;
+        }
+        verticalPosition() {
+            const { y } = this.props.position;
+            if (this.shouldRenderBottom) {
+                return y;
+            }
+            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
+        }
+    }
+    Popover.template = "o-spreadsheet-Popover";
+    Popover.defaultProps = {
+        flipHorizontalOffset: 0,
+        flipVerticalOffset: 0,
+        verticalOffset: 0,
+        marginTop: 0,
+    };
+
+    //------------------------------------------------------------------------------
+    // Context Menu Component
+    //------------------------------------------------------------------------------
+    css /* scss */ `
+  .o-menu {
+    background-color: white;
+    padding: 5px 0px;
+    .o-menu-item {
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+      height: ${MENU_ITEM_HEIGHT}px;
+      padding: 4px 16px;
+      cursor: pointer;
+      user-select: none;
+
+      .o-menu-item-name {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &.o-menu-root {
+        display: flex;
+        justify-content: space-between;
+      }
+      .o-menu-item-icon {
+        margin-top: auto;
+        margin-bottom: auto;
+      }
+      .o-icon {
+        width: 10px;
+      }
+
+      &:not(.disabled) {
+        &:hover {
+          background-color: #ebebeb;
+        }
+        .o-menu-item-description {
+          color: grey;
+        }
+      }
+      &.disabled {
+        color: ${MENU_ITEM_DISABLED_COLOR};
+        cursor: not-allowed;
+      }
+    }
+
+    .o-separator {
+      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
+      margin-top: ${MENU_SEPARATOR_PADDING}px;
+      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
+    }
+  }
+`;
+    class Menu extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.MENU_WIDTH = MENU_WIDTH;
+            this.subMenu = owl.useState({
+                isOpen: false,
+                position: null,
+                scrollOffset: 0,
+                menuItems: [],
+            });
+            this.menuRef = owl.useRef("menu");
+            this.position = useAbsolutePosition(this.menuRef);
+        }
+        setup() {
+            owl.useExternalListener(window, "click", this.onClick);
+            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
+            owl.onWillUpdateProps((nextProps) => {
+                if (nextProps.menuItems !== this.props.menuItems) {
+                    this.subMenu.isOpen = false;
+                }
+            });
+        }
+        get subMenuPosition() {
+            const position = Object.assign({}, this.subMenu.position);
+            position.y -= this.subMenu.scrollOffset || 0;
+            return position;
+        }
+        get menuHeight() {
+            return this.menuComponentHeight(this.props.menuItems);
+        }
+        get subMenuHeight() {
+            return this.menuComponentHeight(this.subMenu.menuItems);
+        }
+        get popover() {
+            const isRoot = this.props.depth === 1;
+            let marginTop = 6;
+            if (!this.env.isDashboard()) {
+                marginTop += TOPBAR_HEIGHT + HEADER_HEIGHT;
+            }
+            return {
+                // some margin between the header and the component
+                marginTop,
+                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
+                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
+            };
+        }
+        getColor(menu) {
+            return menu.textColor ? `color: ${menu.textColor}` : undefined;
+        }
+        async activateMenu(menu) {
+            var _a, _b;
+            const result = await menu.action(this.env);
+            this.close();
+            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
+        }
+        close() {
+            this.subMenu.isOpen = false;
+            this.props.onClose();
+        }
+        /**
+         * Return the number of pixels between the top of the menu
+         * and the menu item at a given index.
+         */
+        subMenuVerticalPosition(position) {
+            const menusAbove = this.props.menuItems.slice(0, position);
+            return this.menuComponentHeight(menusAbove) + this.position.y;
+        }
+        onClick(ev) {
+            // Don't close a root menu when clicked to open the submenus.
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
+                return;
+            }
+            this.close();
+        }
+        onContextMenu(ev) {
+            // Don't close a root menu when clicked to open the submenus.
+            const el = this.menuRef.el;
+            if (el && isChildEvent(el, ev)) {
+                return;
+            }
+            this.subMenu.isOpen = false;
+        }
+        /**
+         * Return the total height (in pixels) needed for some
+         * menu items
+         */
+        menuComponentHeight(menuItems) {
+            const separators = menuItems.filter((m) => m.separator);
+            const others = menuItems;
+            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
+        }
+        getName(menu) {
+            return getMenuName(menu, this.env);
+        }
+        getDescription(menu) {
+            return getMenuDescription(menu);
+        }
+        isRoot(menu) {
+            return !menu.action;
+        }
+        isEnabled(menu) {
+            if (menu.isEnabled(this.env)) {
+                return this.env.model.getters.isReadonly() ? menu.isReadonlyAllowed : true;
+            }
+            return false;
+        }
+        onScroll(ev) {
+            this.subMenu.scrollOffset = ev.target.scrollTop;
+        }
+        /**
+         * If the given menu is not disabled, open it's submenu at the
+         * correct position according to available surrounding space.
+         */
+        openSubMenu(menu, position) {
+            const y = this.subMenuVerticalPosition(position);
+            this.subMenu.position = {
+                x: this.position.x + MENU_WIDTH,
+                y: y - (this.subMenu.scrollOffset || 0),
+            };
+            this.subMenu.menuItems = getMenuChildren(menu, this.env);
+            this.subMenu.isOpen = true;
+        }
+        onClickMenu(menu, position) {
+            if (this.isEnabled(menu)) {
+                if (this.isRoot(menu)) {
+                    this.openSubMenu(menu, position);
+                }
+                else {
+                    this.activateMenu(menu);
+                }
+            }
+        }
+        onMouseOver(menu, position) {
+            if (menu.isEnabled(this.env)) {
+                if (this.isRoot(menu)) {
+                    this.openSubMenu(menu, position);
+                }
+                else {
+                    this.subMenu.isOpen = false;
+                }
+            }
+        }
+    }
+    Menu.template = "o-spreadsheet-Menu";
+    Menu.components = { Menu, Popover };
+    Menu.defaultProps = {
+        depth: 1,
+    };
+
+    const LINK_TOOLTIP_HEIGHT = 43;
+    const LINK_TOOLTIP_WIDTH = 220;
+    css /* scss */ `
+  .o-link-tool {
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+
+    img {
+      margin-right: 3px;
+      width: 16px;
+      height: 16px;
+    }
+
+    a.o-link {
+      color: #007bff;
+      flex-grow: 2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    a.o-link:hover {
+      text-decoration: underline;
+      color: #0056b3;
+      cursor: pointer;
+    }
+  }
+  .o-link-icon {
+    float: right;
+    padding-left: 4%;
+    .o-icon {
+      height: 16px;
+    }
+  }
+  .o-link-icon.o-unlink .o-icon {
+    padding-top: 1px;
+    height: 14px;
+  }
+  .o-link-icon:hover {
+    cursor: pointer;
+    color: #000;
+  }
+`;
+    class LinkDisplay extends owl.Component {
+        get cell() {
+            const { col, row } = this.props.cellPosition;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cell = this.env.model.getters.getCell(sheetId, col, row);
+            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
+                return cell;
+            }
+            throw new Error(`LinkDisplay Component can only be used with link cells. ${toXC(col, row)} is not a link.`);
+        }
+        openLink() {
+            this.cell.action(this.env);
+        }
+        edit() {
+            const { col, row } = this.props.cellPosition;
+            this.env.model.dispatch("OPEN_CELL_POPOVER", {
+                col,
+                row,
+                popoverType: "LinkEditor",
+            });
+        }
+        unlink() {
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const { col, row } = this.props.cellPosition;
+            const style = this.cell.style;
+            const textColor = (style === null || style === void 0 ? void 0 : style.textColor) === LINK_COLOR ? undefined : style === null || style === void 0 ? void 0 : style.textColor;
+            this.env.model.dispatch("UPDATE_CELL", {
+                col,
+                row,
+                sheetId,
+                content: this.cell.link.label,
+                style: { ...style, textColor, underline: undefined },
+            });
+        }
+    }
+    LinkDisplay.components = { Menu };
+    LinkDisplay.template = "o-spreadsheet-LinkDisplay";
+    LinkDisplay.size = { width: LINK_TOOLTIP_WIDTH, height: LINK_TOOLTIP_HEIGHT };
+    const LinkCellPopoverBuilder = {
+        onHover: (position, getters) => {
+            const cell = getters.getCell(getters.getActiveSheetId(), position.col, position.row);
+            const shouldDisplayLink = (cell === null || cell === void 0 ? void 0 : cell.isLink()) &&
+                getters.isVisibleInViewport(position.col, position.row, getters.getActiveViewport());
+            if (!shouldDisplayLink)
+                return { isOpen: false };
+            return {
+                isOpen: true,
+                Component: LinkDisplay,
+                props: { cellPosition: position },
+                cellCorner: "BottomLeft",
+            };
+        },
+    };
+
+    const DEFAULT_MENU_ITEM = (key) => ({
+        isVisible: () => true,
+        isEnabled: () => true,
+        isReadonlyAllowed: false,
+        description: "",
+        action: false,
+        children: [],
+        separator: false,
+        icon: false,
+        id: key,
+    });
+    function createFullMenuItem(key, value) {
+        return Object.assign({}, DEFAULT_MENU_ITEM(key), value);
+    }
+    /**
+     * The class Registry is extended in order to add the function addChild
+     *
+     */
+    class MenuItemRegistry extends Registry {
+        /**
+         * @override
+         */
+        add(key, value) {
+            this.content[key] = createFullMenuItem(key, value);
+            return this;
+        }
+        /**
+         * Add a subitem to an existing item
+         * @param path Path of items to add this subitem
+         * @param value Subitem to add
+         */
+        addChild(key, path, value) {
+            const root = path.splice(0, 1)[0];
+            let node = this.content[root];
+            if (!node) {
+                throw new Error(`Path ${root + ":" + path.join(":")} not found`);
+            }
+            for (let p of path) {
+                if (typeof node.children === "function") {
+                    node = undefined;
+                }
+                else {
+                    node = node.children.find((elt) => elt.id === p);
+                }
+                if (!node) {
+                    throw new Error(`Path ${root + ":" + path.join(":")} not found`);
+                }
+            }
+            node.children.push(createFullMenuItem(key, value));
+            return this;
+        }
+        /**
+         * Get a list of all elements in the registry, ordered by sequence
+         * @override
+         */
+        getAll() {
+            return super.getAll().sort((a, b) => a.sequence - b.sequence);
+        }
+    }
+
+    //------------------------------------------------------------------------------
+    // Link Menu Registry
+    //------------------------------------------------------------------------------
+    const linkMenuRegistry = new MenuItemRegistry();
+    linkMenuRegistry.add("sheet", {
+        name: _lt("Link sheet"),
+        sequence: 10,
+        children: (env) => {
+            const sheets = env.model.getters
+                .getSheetIds()
+                .map((sheetId) => env.model.getters.getSheet(sheetId));
+            return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
+                name: sheet.name,
+                sequence: i,
+                action: () => ({
+                    link: { label: sheet.name, url: buildSheetLink(sheet.id) },
+                    urlRepresentation: sheet.name,
+                    isUrlEditable: false,
+                }),
+            }));
+        },
+    });
+
+    const MENU_OFFSET_X = 320;
+    const MENU_OFFSET_Y = 100;
+    const PADDING = 12;
+    const LINK_EDITOR_WIDTH = 340;
+    const LINK_EDITOR_HEIGHT = 180;
+    css /* scss */ `
+  .o-link-editor {
+    font-size: 13px;
+    background-color: white;
+    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
+    padding: ${PADDING}px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    .o-section {
+      .o-section-title {
+        font-weight: bold;
+        color: dimgrey;
+        margin-bottom: 5px;
+      }
+    }
+    .o-buttons {
+      padding-left: 16px;
+      padding-top: 16px;
+      padding-bottom: 16px;
+      text-align: right;
+      .o-button {
+        border: 1px solid lightgrey;
+        padding: 0px 20px 0px 20px;
+        border-radius: 4px;
+        font-weight: 500;
+        font-size: 14px;
+        height: 30px;
+        line-height: 16px;
+        background: white;
+        margin-right: 8px;
+        &:hover:enabled {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+      .o-button:enabled {
+        cursor: pointer;
+      }
+      .o-button:last-child {
+        margin-right: 0px;
+      }
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 4px;
+      padding: 4px 23px 4px 10px;
+      border: none;
+      height: 24px;
+      border: 1px solid lightgrey;
+    }
+    .o-link-url {
+      position: relative;
+      flex-grow: 1;
+      button {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        border: none;
+        height: 20px;
+        width: 20px;
+        background-color: #fff;
+        margin: 2px 3px 1px 0px;
+        padding: 0px 1px 0px 0px;
+      }
+      button:hover {
+        cursor: pointer;
+      }
+    }
+  }
+`;
+    class LinkEditor extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.menuItems = linkMenuRegistry.getAll();
+            this.state = owl.useState(this.defaultState);
+            this.menu = owl.useState({
+                isOpen: false,
+            });
+            this.linkEditorRef = owl.useRef("linkEditor");
+            this.position = useAbsolutePosition(this.linkEditorRef);
+            this.urlInput = owl.useRef("urlInput");
+        }
+        setup() {
+            owl.onMounted(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
+        }
+        get defaultState() {
+            const { col, row } = this.props.cellPosition;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const cell = this.env.model.getters.getCell(sheetId, col, row);
+            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
+                return {
+                    link: { url: cell.link.url, label: cell.formattedValue },
+                    urlRepresentation: cell.urlRepresentation,
+                    isUrlEditable: cell.isUrlEditable,
+                };
+            }
+            return {
+                link: { url: "", label: (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "" },
+                isUrlEditable: true,
+                urlRepresentation: "",
+            };
+        }
+        get menuPosition() {
+            return {
+                x: this.position.x + MENU_OFFSET_X - PADDING - 2,
+                y: this.position.y + MENU_OFFSET_Y,
+            };
+        }
+        onSpecialLink(ev) {
+            const { detail } = ev;
+            this.state.link.url = detail.link.url;
+            this.state.link.label = detail.link.label;
+            this.state.isUrlEditable = detail.isUrlEditable;
+            this.state.urlRepresentation = detail.urlRepresentation;
+        }
+        openMenu() {
+            this.menu.isOpen = true;
+        }
+        removeLink() {
+            this.state.link.url = "";
+            this.state.urlRepresentation = "";
+            this.state.isUrlEditable = true;
+        }
+        save() {
+            var _a, _b;
+            const { col, row } = this.props.cellPosition;
+            const label = this.state.link.label || this.state.link.url;
+            this.env.model.dispatch("UPDATE_CELL", {
+                col: col,
+                row: row,
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                content: markdownLink(label, this.state.link.url),
+            });
+            (_b = (_a = this.props).onClosed) === null || _b === void 0 ? void 0 : _b.call(_a);
+        }
+        cancel() {
+            var _a, _b;
+            (_b = (_a = this.props).onClosed) === null || _b === void 0 ? void 0 : _b.call(_a);
+        }
+        onKeyDown(ev) {
+            switch (ev.key) {
+                case "Enter":
+                    if (this.state.link.url) {
+                        this.save();
+                    }
+                    break;
+                case "Escape":
+                    this.cancel();
+                    break;
+            }
+        }
+    }
+    LinkEditor.template = "o-spreadsheet-LinkEditor";
+    LinkEditor.size = { width: LINK_EDITOR_WIDTH, height: LINK_EDITOR_HEIGHT };
+    LinkEditor.components = { Menu };
+    const LinkEditorPopoverBuilder = {
+        onOpen: (position, getters) => {
+            return {
+                isOpen: true,
+                props: { cellPosition: position },
+                Component: LinkEditor,
+                cellCorner: "BottomLeft",
+            };
+        },
+    };
+
+    const cellPopoverRegistry = new Registry();
+    cellPopoverRegistry
+        .add("ErrorToolTip", ErrorToolTipPopoverBuilder)
+        .add("LinkCell", LinkCellPopoverBuilder)
+        .add("LinkEditor", LinkEditorPopoverBuilder);
 
     /**
      * This registry is intended to map a cell content (raw string) to
@@ -2709,81 +3553,6 @@
                 elements: cmd.elements,
             },
         ];
-    }
-
-    const DEFAULT_MENU_ITEM = (key) => ({
-        isVisible: () => true,
-        isEnabled: () => true,
-        isReadonlyAllowed: false,
-        description: "",
-        action: false,
-        children: [],
-        separator: false,
-        icon: false,
-        id: key,
-    });
-    function createFullMenuItem(key, value) {
-        return Object.assign({}, DEFAULT_MENU_ITEM(key), value);
-    }
-    /**
-     * The class Registry is extended in order to add the function addChild
-     *
-     */
-    class MenuItemRegistry extends Registry {
-        /**
-         * @override
-         */
-        add(key, value) {
-            this.content[key] = createFullMenuItem(key, value);
-            return this;
-        }
-        /**
-         * Add a subitem to an existing item
-         * @param path Path of items to add this subitem
-         * @param value Subitem to add
-         */
-        addChild(key, path, value) {
-            const root = path.splice(0, 1)[0];
-            let node = this.content[root];
-            if (!node) {
-                throw new Error(`Path ${root + ":" + path.join(":")} not found`);
-            }
-            for (let p of path) {
-                if (typeof node.children === "function") {
-                    node = undefined;
-                }
-                else {
-                    node = node.children.find((elt) => elt.id === p);
-                }
-                if (!node) {
-                    throw new Error(`Path ${root + ":" + path.join(":")} not found`);
-                }
-            }
-            node.children.push(createFullMenuItem(key, value));
-            return this;
-        }
-        getChildren(node, env) {
-            if (typeof node.children === "function") {
-                return node.children(env).sort((a, b) => a.sequence - b.sequence);
-            }
-            return node.children.sort((a, b) => a.sequence - b.sequence);
-        }
-        getName(node, env) {
-            if (typeof node.name === "function") {
-                return node.name(env);
-            }
-            return node.name;
-        }
-        getDescription(node) {
-            return node.description ? node.description : "";
-        }
-        /**
-         * Get a list of all elements in the registry, ordered by sequence
-         * @override
-         */
-        getAll() {
-            return super.getAll().sort((a, b) => a.sequence - b.sequence);
-        }
     }
 
     const SORT_TYPES = [
@@ -2945,6 +3714,17 @@
             style,
         });
     }
+    async function readOsClipboard(env) {
+        try {
+            return await env.clipboard.readText();
+        }
+        catch (e) {
+            // Permission is required to read the clipboard.
+            console.warn("The OS clipboard could not be read.");
+            console.error(e);
+            return undefined;
+        }
+    }
     //------------------------------------------------------------------------------
     // Simple actions
     //------------------------------------------------------------------------------
@@ -2960,15 +3740,7 @@
     };
     const PASTE_ACTION = async (env) => {
         const spreadsheetClipboard = env.model.getters.getClipboardContent();
-        let osClipboard;
-        try {
-            osClipboard = await env.clipboard.readText();
-        }
-        catch (e) {
-            // Permission is required to read the clipboard.
-            console.warn("The OS clipboard could not be read.");
-            console.error(e);
-        }
+        const osClipboard = await readOsClipboard(env);
         const target = env.model.getters.getSelectedZones();
         if (osClipboard && osClipboard !== spreadsheetClipboard) {
             env.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
@@ -2980,10 +3752,23 @@
             interactivePaste(env, target);
         }
     };
-    const PASTE_VALUE_ACTION = (env) => env.model.dispatch("PASTE", {
-        target: env.model.getters.getSelectedZones(),
-        pasteOption: "onlyValue",
-    });
+    const PASTE_VALUE_ACTION = async (env) => {
+        const spreadsheetClipboard = env.model.getters.getClipboardContent();
+        const osClipboard = await readOsClipboard(env);
+        const target = env.model.getters.getSelectedZones();
+        if (osClipboard && osClipboard !== spreadsheetClipboard) {
+            env.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
+                target,
+                text: osClipboard,
+            });
+        }
+        else {
+            env.model.dispatch("PASTE", {
+                target: env.model.getters.getSelectedZones(),
+                pasteOption: "onlyValue",
+            });
+        }
+    };
     const PASTE_FORMAT_ACTION = (env) => env.model.dispatch("PASTE", {
         target: env.model.getters.getSelectedZones(),
         pasteOption: "onlyFormat",
@@ -3445,7 +4230,7 @@
     //------------------------------------------------------------------------------
     // Style/Format
     //------------------------------------------------------------------------------
-    const FORMAT_GENERAL_ACTION = (env) => setFormatter(env, "");
+    const FORMAT_AUTOMATIC_ACTION = (env) => setFormatter(env, "");
     const FORMAT_NUMBER_ACTION = (env) => setFormatter(env, "#,##0.00");
     const FORMAT_PERCENT_ACTION = (env) => setFormatter(env, "0.00%");
     const FORMAT_CURRENCY_ACTION = (env) => setFormatter(env, "[$$]#,##0.00");
@@ -3477,7 +4262,8 @@
         env.openSidePanel("CustomCurrency", {});
     };
     const INSERT_LINK = (env) => {
-        env.openLinkEditor();
+        let { col, row } = env.model.getters.getPosition();
+        env.model.dispatch("OPEN_CELL_POPOVER", { col, row, popoverType: "LinkEditor" });
     };
     //------------------------------------------------------------------------------
     // Sorting action
@@ -3736,29 +4522,6 @@
 
     const dashboardMenuRegistry = new MenuItemRegistry();
 
-    //------------------------------------------------------------------------------
-    // Link Menu Registry
-    //------------------------------------------------------------------------------
-    const linkMenuRegistry = new MenuItemRegistry();
-    linkMenuRegistry.add("sheet", {
-        name: _lt("Link sheet"),
-        sequence: 10,
-        children: (env) => {
-            const sheets = env.model.getters
-                .getSheetIds()
-                .map((sheetId) => env.model.getters.getSheet(sheetId));
-            return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
-                name: sheet.name,
-                sequence: i,
-                action: () => ({
-                    link: { label: sheet.name, url: buildSheetLink(sheet.id) },
-                    urlRepresentation: sheet.name,
-                    isUrlEditable: false,
-                }),
-            }));
-        },
-    });
-
     const rowMenuRegistry = new MenuItemRegistry();
     rowMenuRegistry
         .add("cut", {
@@ -3998,7 +4761,7 @@
         },
     };
     const NumberFormatTerms = {
-        General: _lt("General"),
+        Automatic: _lt("Automatic"),
         Number: _lt("Number"),
         Percent: _lt("Percent"),
         Currency: _lt("Currency"),
@@ -4209,34 +4972,34 @@
         sequence: 10,
         separator: true,
     })
-        .addChild("format_number_general", ["format", "format_number"], {
-        name: NumberFormatTerms.General,
+        .addChild("format_number_automatic", ["format", "format_number"], {
+        name: NumberFormatTerms.Automatic,
         sequence: 10,
         separator: true,
-        action: FORMAT_GENERAL_ACTION,
+        action: FORMAT_AUTOMATIC_ACTION,
     })
         .addChild("format_number_number", ["format", "format_number"], {
         name: NumberFormatTerms.Number,
-        description: "(1,000.12)",
+        description: "1,000.12",
         sequence: 20,
         action: FORMAT_NUMBER_ACTION,
     })
         .addChild("format_number_percent", ["format", "format_number"], {
         name: NumberFormatTerms.Percent,
-        description: "(10.12%)",
+        description: "10.12%",
         sequence: 30,
         separator: true,
         action: FORMAT_PERCENT_ACTION,
     })
         .addChild("format_number_currency", ["format", "format_number"], {
         name: NumberFormatTerms.Currency,
-        description: "($1,000.12)",
+        description: "$1,000.12",
         sequence: 37,
         action: FORMAT_CURRENCY_ACTION,
     })
         .addChild("format_number_currency_rounded", ["format", "format_number"], {
         name: NumberFormatTerms.CurrencyRounded,
-        description: "($1,000)",
+        description: "$1,000",
         sequence: 38,
         action: FORMAT_CURRENCY_ROUNDED_ACTION,
     })
@@ -4248,25 +5011,25 @@
     })
         .addChild("format_number_date", ["format", "format_number"], {
         name: NumberFormatTerms.Date,
-        description: "(9/26/2008)",
+        description: "9/26/2008",
         sequence: 40,
         action: FORMAT_DATE_ACTION,
     })
         .addChild("format_number_time", ["format", "format_number"], {
         name: NumberFormatTerms.Time,
-        description: "(10:43:00 PM)",
+        description: "10:43:00 PM",
         sequence: 50,
         action: FORMAT_TIME_ACTION,
     })
         .addChild("format_number_date_time", ["format", "format_number"], {
         name: NumberFormatTerms.DateTime,
-        description: "(9/26/2008 22:43:00)",
+        description: "9/26/2008 22:43:00",
         sequence: 60,
         action: FORMAT_DATE_TIME_ACTION,
     })
         .addChild("format_number_duration", ["format", "format_number"], {
         name: NumberFormatTerms.Duration,
-        description: "(27:51:38)",
+        description: "27:51:38",
         sequence: 70,
         separator: true,
         action: FORMAT_DURATION_ACTION,
@@ -4345,87 +5108,6 @@
         }
     }
     const otRegistry = new OTRegistry();
-
-    /**
-     * This file is largely inspired by owl 1.
-     * `css` tag has been removed from owl 2 without workaround to manage css.
-     * So, the solution was to import the behavior of owl 1 directly in our
-     * codebase, with one difference: the css is added to the sheet as soon as the
-     * css tag is executed. In owl 1, the css was added as soon as a Component was
-     * created for the first time.
-     */
-    const STYLESHEETS = {};
-    let nextId = 0;
-    /**
-     * CSS tag helper for defining inline stylesheets.  With this, one can simply define
-     * an inline stylesheet with just the following code:
-     * ```js
-     *     css`.component-a { color: red; }`;
-     * ```
-     */
-    function css(strings, ...args) {
-        const name = `__sheet__${nextId++}`;
-        const value = String.raw(strings, ...args);
-        registerSheet(name, value);
-        activateSheet(name);
-        return name;
-    }
-    function processSheet(str) {
-        const tokens = str.split(/(\{|\}|;)/).map((s) => s.trim());
-        const selectorStack = [];
-        const parts = [];
-        let rules = [];
-        function generateSelector(stackIndex, parentSelector) {
-            const parts = [];
-            for (const selector of selectorStack[stackIndex]) {
-                let part = (parentSelector && parentSelector + " " + selector) || selector;
-                if (part.includes("&")) {
-                    part = selector.replace(/&/g, parentSelector || "");
-                }
-                if (stackIndex < selectorStack.length - 1) {
-                    part = generateSelector(stackIndex + 1, part);
-                }
-                parts.push(part);
-            }
-            return parts.join(", ");
-        }
-        function generateRules() {
-            if (rules.length) {
-                parts.push(generateSelector(0) + " {");
-                parts.push(...rules);
-                parts.push("}");
-                rules = [];
-            }
-        }
-        while (tokens.length) {
-            let token = tokens.shift();
-            if (token === "}") {
-                generateRules();
-                selectorStack.pop();
-            }
-            else {
-                if (tokens[0] === "{") {
-                    generateRules();
-                    selectorStack.push(token.split(/\s*,\s*/));
-                    tokens.shift();
-                }
-                if (tokens[0] === ";") {
-                    rules.push("  " + token + ";");
-                }
-            }
-        }
-        return parts.join("\n");
-    }
-    function registerSheet(id, css) {
-        const sheet = document.createElement("style");
-        sheet.textContent = processSheet(css);
-        STYLESHEETS[id] = sheet;
-    }
-    function activateSheet(id) {
-        const sheet = STYLESHEETS[id];
-        sheet.setAttribute("component", id);
-        document.head.appendChild(sheet);
-    }
 
     const uuidGenerator$1 = new UuidGenerator();
     css /* scss */ `
@@ -5465,7 +6147,7 @@
      * - [3, 6, undefined, undefined, undefined, 10], 2 => -1
      */
     function dichotomicPredecessorSearch(range, target) {
-        if (target === undefined) {
+        if (target === null) {
             return -1;
         }
         const targetType = typeof target;
@@ -6064,7 +6746,7 @@
         static getDefinitionFromContextCreation(context) {
             return {
                 background: context.background || BACKGROUND_CHART_COLOR,
-                dataSets: context.range ? [context.range] : [],
+                dataSets: context.range ? context.range : [],
                 dataSetsHaveTitle: false,
                 stackedBar: false,
                 legendPosition: "top",
@@ -6078,9 +6760,7 @@
             return {
                 background: this.background,
                 title: this.title,
-                range: this.dataSets.length > 0
-                    ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
-                    : undefined,
+                range: this.dataSets.map((ds) => this.getters.getRangeString(ds.dataRange, this.sheetId)),
                 auxiliaryRange: this.labelRange
                     ? this.getters.getRangeString(this.labelRange, this.sheetId)
                     : undefined,
@@ -6376,7 +7056,7 @@
                 background: context.background || BACKGROUND_CHART_COLOR,
                 title: context.title || "",
                 type: "gauge",
-                dataRange: context.range,
+                dataRange: context.range ? context.range[0] : undefined,
                 sectionRule: {
                     colors: {
                         lowerColor: DEFAULT_GAUGE_LOWER_COLOR,
@@ -6424,7 +7104,9 @@
             return {
                 background: this.background,
                 title: this.title,
-                range: this.dataRange ? this.getters.getRangeString(this.dataRange, this.sheetId) : undefined,
+                range: this.dataRange
+                    ? [this.getters.getRangeString(this.dataRange, this.sheetId)]
+                    : undefined,
             };
         }
         updateRanges(applyChange) {
@@ -6692,7 +7374,7 @@
         static getDefinitionFromContextCreation(context) {
             return {
                 background: context.background || BACKGROUND_CHART_COLOR,
-                dataSets: context.range ? [context.range] : [],
+                dataSets: context.range ? context.range : [],
                 dataSetsHaveTitle: false,
                 labelsAsText: false,
                 legendPosition: "top",
@@ -6722,9 +7404,7 @@
             return {
                 background: this.background,
                 title: this.title,
-                range: this.dataSets.length > 0
-                    ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
-                    : undefined,
+                range: this.dataSets.map((ds) => this.getters.getRangeString(ds.dataRange, this.sheetId)),
                 auxiliaryRange: this.labelRange
                     ? this.getters.getRangeString(this.labelRange, this.sheetId)
                     : undefined,
@@ -6935,7 +7615,7 @@
         static getDefinitionFromContextCreation(context) {
             return {
                 background: context.background || BACKGROUND_CHART_COLOR,
-                dataSets: context.range ? [context.range] : [],
+                dataSets: context.range ? context.range : [],
                 dataSetsHaveTitle: false,
                 legendPosition: "top",
                 title: context.title || "",
@@ -6950,9 +7630,7 @@
             return {
                 background: this.background,
                 title: this.title,
-                range: this.dataSets.length > 0
-                    ? this.getters.getRangeString(this.dataSets[0].dataRange, this.sheetId)
-                    : undefined,
+                range: this.dataSets.map((ds) => this.getters.getRangeString(ds.dataRange, this.sheetId)),
                 auxiliaryRange: this.labelRange
                     ? this.getters.getRangeString(this.labelRange, this.sheetId)
                     : undefined,
@@ -7104,7 +7782,7 @@
             return {
                 background: context.background || BACKGROUND_CHART_COLOR,
                 type: "scorecard",
-                keyValue: context.range,
+                keyValue: context.range ? context.range[0] : undefined,
                 title: context.title || "",
                 baselineMode: "absolute",
                 baselineColorUp: "#00A04A",
@@ -7140,7 +7818,7 @@
             return {
                 background: this.background,
                 title: this.title,
-                range: this.keyValue ? this.getters.getRangeString(this.keyValue, this.sheetId) : undefined,
+                range: this.keyValue ? [this.getters.getRangeString(this.keyValue, this.sheetId)] : undefined,
                 auxiliaryRange: this.baseline
                     ? this.getters.getRangeString(this.baseline, this.sheetId)
                     : undefined,
@@ -7430,20 +8108,6 @@
         }
     }
     ChartPanel.template = "o-spreadsheet-ChartPanel";
-
-    /**
-     * Return true if the event was triggered from
-     * a child element.
-     */
-    function isChildEvent(parent, ev) {
-        return !!ev.target && parent.contains(ev.target);
-    }
-    function getTextDecoration({ strikethrough, underline, }) {
-        if (!strikethrough && !underline) {
-            return "none";
-        }
-        return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
-    }
 
     // -----------------------------------------------------------------------------
     // We need here the svg of the icons that we need to convert to images for the renderer
@@ -7915,7 +8579,14 @@
         getDescription(cf) {
             switch (cf.rule.type) {
                 case "CellIsRule":
-                    return CellIsOperators[cf.rule.operator];
+                    const description = CellIsOperators[cf.rule.operator];
+                    if (cf.rule.values.length === 1) {
+                        return `${description} ${cf.rule.values[0]}`;
+                    }
+                    if (cf.rule.values.length === 2) {
+                        return _t("%s %s and %s", description, cf.rule.values[0], cf.rule.values[1]);
+                    }
+                    return description;
                 case "ColorScaleRule":
                     return CfTerms.ColorScale;
                 case "IconSetRule":
@@ -8367,14 +9038,19 @@
         constructor() {
             super(...arguments);
             this.state = owl.useState(this.initialState());
+            this.showFormulaState = false;
             this.findAndReplaceRef = owl.useRef("findAndReplace");
         }
         get hasSearchResult() {
             return this.env.model.getters.getCurrentSelectedMatchIndex() !== null;
         }
         setup() {
+            this.showFormulaState = this.env.model.getters.shouldShowFormulas();
             owl.onMounted(() => this.focusInput());
-            owl.onWillUnmount(() => this.env.model.dispatch("CLEAR_SEARCH"));
+            owl.onWillUnmount(() => {
+                this.env.model.dispatch("CLEAR_SEARCH");
+                this.env.model.dispatch("SET_FORMULA_VISIBILITY", { show: this.showFormulaState });
+            });
         }
         onInput(ev) {
             this.state.toSearch = ev.target.value;
@@ -8517,6 +9193,8 @@
 
     .o-key-text {
       line-height: 1em;
+      overflow: hidden;
+      white-space: nowrap;
     }
 
     .o-cf-icon {
@@ -8531,6 +9209,8 @@
     .o-baseline-text {
       color: #757575;
       line-height: 1em;
+      overflow: hidden;
+      white-space: nowrap;
     }
   }
 `;
@@ -8654,8 +9334,9 @@
             if (!runtime)
                 return 0;
             const baselineStr = runtime.baselineDisplay;
-            // Put mock text to simulate the width of the up/down arrow
-            const largeText = runtime.baselineArrow !== "neutral" ? "A " + baselineStr : baselineStr;
+            // Put mock text to simulate the width of the up/down arrow + 2 spaces to overshoot a bit the size
+            // to make sure that the text doesn't overflow
+            const largeText = runtime.baselineArrow !== "neutral" ? "A  " + baselineStr : baselineStr;
             ctx.font = `${fontSize}px ${DEFAULT_FONT}`;
             let textWidth = ctx.measureText(largeText).width;
             // Baseline descr font size should be smaller than baseline font size
@@ -8686,317 +9367,6 @@
         }
     }
     chartComponentRegistry.add("scorecard", ScorecardChart);
-
-    /**
-     * Return the o-spreadsheet element position relative
-     * to the browser viewport.
-     */
-    function useSpreadsheetPosition() {
-        const position = owl.useState({ x: 0, y: 0 });
-        let spreadsheetElement = document.querySelector(".o-spreadsheet");
-        updatePosition();
-        function updatePosition() {
-            if (!spreadsheetElement) {
-                spreadsheetElement = document.querySelector(".o-spreadsheet");
-            }
-            if (spreadsheetElement) {
-                const { top, left } = spreadsheetElement.getBoundingClientRect();
-                position.x = left;
-                position.y = top;
-            }
-        }
-        owl.onMounted(updatePosition);
-        owl.onPatched(updatePosition);
-        return position;
-    }
-    /**
-     * Return the component (or ref's component) top left position (in pixels) relative
-     * to the upper left corner of the screen (<body> element).
-     *
-     * Note: when used with a <Portal/> component, it will
-     * return the portal position, not the teleported position.
-     */
-    function useAbsolutePosition(ref) {
-        const position = owl.useState({ x: 0, y: 0 });
-        function updateElPosition() {
-            const el = ref.el;
-            if (el === null) {
-                return;
-            }
-            const { top, left } = el.getBoundingClientRect();
-            if (left !== position.x || top !== position.y) {
-                position.x = left;
-                position.y = top;
-            }
-        }
-        owl.onMounted(updateElPosition);
-        owl.onPatched(updateElPosition);
-        return position;
-    }
-
-    class Popover extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.spreadsheetPosition = useSpreadsheetPosition();
-        }
-        get style() {
-            // the props's position is expressed relative to the "body" element
-            // but we teleport the element in ".o-spreadsheet" to keep everything
-            // within our control and to avoid leaking into external DOM
-            const horizontalPosition = `left:${this.horizontalPosition() - this.spreadsheetPosition.x}`;
-            const verticalPosition = `top:${this.verticalPosition() - this.spreadsheetPosition.y}`;
-            const height = `max-height:${this.viewportDimension.height - BOTTOMBAR_HEIGHT - SCROLLBAR_WIDTH$1}`;
-            return `
-      position: absolute;
-      z-index: ${ComponentsImportance.Popover};
-      ${verticalPosition}px;
-      ${horizontalPosition}px;
-      ${height}px;
-      width:${this.props.childWidth}px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 1px 2px 5px 2px rgb(51 51 51 / 15%);
-    `;
-        }
-        get viewportDimension() {
-            return this.env.model.getters.getViewportDimensionWithHeaders();
-        }
-        get shouldRenderRight() {
-            const { x } = this.props.position;
-            return x + this.props.childWidth < this.viewportDimension.width;
-        }
-        get shouldRenderBottom() {
-            const { y } = this.props.position;
-            return (y + this.props.childHeight <
-                this.viewportDimension.height + (this.env.isDashboard() ? 0 : TOPBAR_HEIGHT));
-        }
-        horizontalPosition() {
-            const { x } = this.props.position;
-            if (this.shouldRenderRight) {
-                return x;
-            }
-            return x - this.props.childWidth - this.props.flipHorizontalOffset;
-        }
-        verticalPosition() {
-            const { y } = this.props.position;
-            if (this.shouldRenderBottom) {
-                return y;
-            }
-            return Math.max(y - this.props.childHeight + this.props.flipVerticalOffset, this.props.marginTop);
-        }
-    }
-    Popover.template = "o-spreadsheet-Popover";
-    Popover.defaultProps = {
-        flipHorizontalOffset: 0,
-        flipVerticalOffset: 0,
-        verticalOffset: 0,
-        marginTop: 0,
-    };
-
-    //------------------------------------------------------------------------------
-    // Context Menu Component
-    //------------------------------------------------------------------------------
-    css /* scss */ `
-  .o-menu {
-    background-color: white;
-    padding: 5px 0px;
-    .o-menu-item {
-      display: flex;
-      justify-content: space-between;
-      box-sizing: border-box;
-      height: ${MENU_ITEM_HEIGHT}px;
-      padding: 4px 16px;
-      cursor: pointer;
-      user-select: none;
-
-      .o-menu-item-name {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-
-      &.o-menu-root {
-        display: flex;
-        justify-content: space-between;
-      }
-      .o-menu-item-icon {
-        margin-top: auto;
-        margin-bottom: auto;
-      }
-      .o-icon {
-        width: 10px;
-      }
-
-      &:not(.disabled) {
-        &:hover {
-          background-color: #ebebeb;
-        }
-        .o-menu-item-description {
-          color: grey;
-        }
-      }
-      &.disabled {
-        color: ${MENU_ITEM_DISABLED_COLOR};
-        cursor: not-allowed;
-      }
-    }
-
-    .o-separator {
-      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
-      margin-top: ${MENU_SEPARATOR_PADDING}px;
-      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
-    }
-  }
-`;
-    class Menu extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.MENU_WIDTH = MENU_WIDTH;
-            this.subMenu = owl.useState({
-                isOpen: false,
-                position: null,
-                scrollOffset: 0,
-                menuItems: [],
-            });
-            this.menuRef = owl.useRef("menu");
-            this.position = useAbsolutePosition(this.menuRef);
-        }
-        setup() {
-            owl.useExternalListener(window, "click", this.onClick);
-            owl.useExternalListener(window, "contextmenu", this.onContextMenu);
-            owl.onWillUpdateProps((nextProps) => {
-                if (nextProps.menuItems !== this.props.menuItems) {
-                    this.subMenu.isOpen = false;
-                }
-            });
-        }
-        get subMenuPosition() {
-            const position = Object.assign({}, this.subMenu.position);
-            position.y -= this.subMenu.scrollOffset || 0;
-            return position;
-        }
-        get menuHeight() {
-            return this.menuComponentHeight(this.props.menuItems);
-        }
-        get subMenuHeight() {
-            return this.menuComponentHeight(this.subMenu.menuItems);
-        }
-        get popover() {
-            const isRoot = this.props.depth === 1;
-            let marginTop = 6;
-            if (!this.env.isDashboard()) {
-                marginTop += TOPBAR_HEIGHT + HEADER_HEIGHT;
-            }
-            return {
-                // some margin between the header and the component
-                marginTop,
-                flipHorizontalOffset: MENU_WIDTH * (this.props.depth - 1),
-                flipVerticalOffset: isRoot ? 0 : MENU_ITEM_HEIGHT,
-            };
-        }
-        getColor(menu) {
-            return menu.textColor ? `color: ${menu.textColor}` : undefined;
-        }
-        async activateMenu(menu) {
-            var _a, _b;
-            const result = await menu.action(this.env);
-            this.close();
-            (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
-        }
-        close() {
-            this.subMenu.isOpen = false;
-            this.props.onClose();
-        }
-        /**
-         * Return the number of pixels between the top of the menu
-         * and the menu item at a given index.
-         */
-        subMenuVerticalPosition(position) {
-            const menusAbove = this.props.menuItems.slice(0, position);
-            return this.menuComponentHeight(menusAbove) + this.position.y;
-        }
-        onClick(ev) {
-            // Don't close a root menu when clicked to open the submenus.
-            const el = this.menuRef.el;
-            if (el && isChildEvent(el, ev)) {
-                return;
-            }
-            this.close();
-        }
-        onContextMenu(ev) {
-            // Don't close a root menu when clicked to open the submenus.
-            const el = this.menuRef.el;
-            if (el && isChildEvent(el, ev)) {
-                return;
-            }
-            this.subMenu.isOpen = false;
-        }
-        /**
-         * Return the total height (in pixels) needed for some
-         * menu items
-         */
-        menuComponentHeight(menuItems) {
-            const separators = menuItems.filter((m) => m.separator);
-            const others = menuItems;
-            return MENU_ITEM_HEIGHT * others.length + separators.length * MENU_SEPARATOR_HEIGHT;
-        }
-        getName(menu) {
-            return cellMenuRegistry.getName(menu, this.env);
-        }
-        getDescription(menu) {
-            return cellMenuRegistry.getDescription(menu);
-        }
-        isRoot(menu) {
-            return !menu.action;
-        }
-        isEnabled(menu) {
-            if (menu.isEnabled(this.env)) {
-                return this.env.model.getters.isReadonly() ? menu.isReadonlyAllowed : true;
-            }
-            return false;
-        }
-        onScroll(ev) {
-            this.subMenu.scrollOffset = ev.target.scrollTop;
-        }
-        /**
-         * If the given menu is not disabled, open it's submenu at the
-         * correct position according to available surrounding space.
-         */
-        openSubMenu(menu, position) {
-            const y = this.subMenuVerticalPosition(position);
-            this.subMenu.position = {
-                x: this.position.x + MENU_WIDTH,
-                y: y - (this.subMenu.scrollOffset || 0),
-            };
-            this.subMenu.menuItems = cellMenuRegistry.getChildren(menu, this.env);
-            this.subMenu.isOpen = true;
-        }
-        onClickMenu(menu, position) {
-            if (this.isEnabled(menu)) {
-                if (this.isRoot(menu)) {
-                    this.openSubMenu(menu, position);
-                }
-                else {
-                    this.activateMenu(menu);
-                }
-            }
-        }
-        onMouseOver(menu, position) {
-            if (menu.isEnabled(this.env)) {
-                if (this.isRoot(menu)) {
-                    this.openSubMenu(menu, position);
-                }
-                else {
-                    this.subMenu.isOpen = false;
-                }
-            }
-        }
-    }
-    Menu.template = "o-spreadsheet-Menu";
-    Menu.components = { Menu, Popover };
-    Menu.defaultProps = {
-        depth: 1,
-    };
 
     // -----------------------------------------------------------------------------
     // STYLE
@@ -9102,6 +9472,215 @@
     }
     ChartFigure.template = "o-spreadsheet-ChartFigure";
     ChartFigure.components = { Menu };
+
+    function startDnd(onMouseMove, onMouseUp) {
+        const _onMouseUp = (ev) => {
+            onMouseUp(ev);
+            window.removeEventListener("mouseup", _onMouseUp);
+            window.removeEventListener("dragstart", _onDragStart);
+            window.removeEventListener("mousemove", onMouseMove);
+            window.removeEventListener("wheel", onMouseMove);
+        };
+        function _onDragStart(ev) {
+            ev.preventDefault();
+        }
+        window.addEventListener("mouseup", _onMouseUp);
+        window.addEventListener("dragstart", _onDragStart);
+        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("wheel", onMouseMove);
+    }
+    /**
+     * Function to be used during a mousedown event, this function allows to
+     * perform actions related to the mousemove and mouseup events and adjusts the viewport
+     * when the new position related to the mousemove event is outside of it.
+     * Among inputs are two callback functions. First intended for actions performed during
+     * the mousemove event, it receives as parameters the current position of the mousemove
+     * (occurrence of the current column and the current row). Second intended for actions
+     * performed during the mouseup event.
+     */
+    function dragAndDropBeyondTheViewport(element, env, cbMouseMove, cbMouseUp) {
+        const position = element.getBoundingClientRect();
+        let timeOutId = null;
+        let currentEv;
+        const onMouseMove = (ev) => {
+            currentEv = ev;
+            if (timeOutId) {
+                return;
+            }
+            const offsetX = currentEv.clientX - position.left;
+            const offsetY = currentEv.clientY - position.top;
+            const edgeScrollInfoX = env.model.getters.getEdgeScrollCol(offsetX - HEADER_WIDTH);
+            const edgeScrollInfoY = env.model.getters.getEdgeScrollRow(offsetY - HEADER_HEIGHT);
+            const { top, left, bottom, right } = env.model.getters.getActiveViewport();
+            let colIndex;
+            if (edgeScrollInfoX.canEdgeScroll) {
+                colIndex = edgeScrollInfoX.direction > 0 ? right : left - 1;
+            }
+            else {
+                colIndex = env.model.getters.getColIndex(offsetX - HEADER_WIDTH);
+            }
+            let rowIndex;
+            if (edgeScrollInfoY.canEdgeScroll) {
+                rowIndex = edgeScrollInfoY.direction > 0 ? bottom : top - 1;
+            }
+            else {
+                rowIndex = env.model.getters.getRowIndex(offsetY - HEADER_HEIGHT);
+            }
+            cbMouseMove(colIndex, rowIndex);
+            const sheetId = env.model.getters.getActiveSheetId();
+            if (edgeScrollInfoX.canEdgeScroll) {
+                const { left, offsetY } = env.model.getters.getActiveViewport();
+                const offsetX = env.model.getters.getColDimensions(sheetId, left + edgeScrollInfoX.direction).start;
+                env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                timeOutId = setTimeout(() => {
+                    timeOutId = null;
+                    onMouseMove(currentEv);
+                }, Math.round(edgeScrollInfoX.delay));
+            }
+            if (edgeScrollInfoY.canEdgeScroll) {
+                const { top, offsetX } = env.model.getters.getActiveViewport();
+                const offsetY = env.model.getters.getRowDimensions(sheetId, top + edgeScrollInfoY.direction).start;
+                env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                timeOutId = setTimeout(() => {
+                    timeOutId = null;
+                    onMouseMove(currentEv);
+                }, Math.round(edgeScrollInfoY.delay));
+            }
+        };
+        const onMouseUp = () => {
+            clearTimeout(timeOutId);
+            cbMouseUp();
+        };
+        startDnd(onMouseMove, onMouseUp);
+    }
+
+    // -----------------------------------------------------------------------------
+    // Autofill
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-autofill {
+    height: 6px;
+    width: 6px;
+    border: 1px solid white;
+    position: absolute;
+    background-color: #1a73e8;
+
+    .o-autofill-handler {
+      position: absolute;
+      height: ${AUTOFILL_EDGE_LENGTH}px;
+      width: ${AUTOFILL_EDGE_LENGTH}px;
+
+      &:hover {
+        cursor: crosshair;
+      }
+    }
+
+    .o-autofill-nextvalue {
+      position: absolute;
+      background-color: white;
+      border: 1px solid black;
+      padding: 5px;
+      font-size: 12px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+  }
+`;
+    class Autofill extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                position: { left: 0, top: 0 },
+                handler: false,
+            });
+        }
+        get style() {
+            const { left, top } = this.props.position;
+            return `top:${top}px;left:${left}px`;
+        }
+        get styleHandler() {
+            let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
+            return `top:${position.top}px;left:${position.left}px;`;
+        }
+        get styleNextvalue() {
+            let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
+            return `top:${position.top + 5}px;left:${position.left + 15}px;`;
+        }
+        getTooltip() {
+            const tooltip = this.env.model.getters.getAutofillTooltip();
+            if (tooltip && !tooltip.component) {
+                tooltip.component = TooltipComponent;
+            }
+            return tooltip;
+        }
+        onMouseDown(ev) {
+            this.state.handler = true;
+            this.state.position = { left: 0, top: 0 };
+            const { offsetY, offsetX } = this.env.model.getters.getActiveViewport();
+            const start = {
+                left: ev.clientX + offsetX,
+                top: ev.clientY + offsetY,
+            };
+            let lastCol;
+            let lastRow;
+            const onMouseUp = () => {
+                this.state.handler = false;
+                this.env.model.dispatch("AUTOFILL");
+            };
+            const onMouseMove = (ev) => {
+                const position = this.props.getGridBoundingClientRect();
+                const { offsetY, offsetX } = this.env.model.getters.getActiveViewport();
+                this.state.position = {
+                    left: ev.clientX - start.left + offsetX,
+                    top: ev.clientY - start.top + offsetY,
+                };
+                const col = this.env.model.getters.getColIndex(ev.clientX - position.left - HEADER_WIDTH);
+                const row = this.env.model.getters.getRowIndex(ev.clientY - position.top - HEADER_HEIGHT);
+                if (lastCol !== col || lastRow !== row) {
+                    const activeSheetId = this.env.model.getters.getActiveSheetId();
+                    const numberOfCols = this.env.model.getters.getNumberCols(activeSheetId);
+                    const numberOfRows = this.env.model.getters.getNumberRows(activeSheetId);
+                    lastCol = col === -1 ? lastCol : clip(col, 0, numberOfCols);
+                    lastRow = row === -1 ? lastRow : clip(row, 0, numberOfRows);
+                    if (lastCol !== undefined && lastRow !== undefined) {
+                        this.env.model.dispatch("AUTOFILL_SELECT", { col: lastCol, row: lastRow });
+                    }
+                }
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onDblClick() {
+            this.env.model.dispatch("AUTOFILL_AUTO");
+        }
+    }
+    Autofill.template = "o-spreadsheet-Autofill";
+    class TooltipComponent extends owl.Component {
+    }
+    TooltipComponent.template = owl.xml /* xml */ `
+    <div t-esc="props.content"/>
+  `;
+
+    css /* scss */ `
+  .o-client-tag {
+    position: absolute;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    font-size: ${DEFAULT_FONT_SIZE};
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+  }
+`;
+    class ClientTag extends owl.Component {
+        get tagStyle() {
+            const { col, row, color } = this.props;
+            const viewport = this.env.model.getters.getActiveViewport();
+            const { height } = this.env.model.getters.getViewportDimensionWithHeaders();
+            const { x, y } = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
+            return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
+        }
+    }
+    ClientTag.template = "o-spreadsheet-ClientTag";
 
     //------------------------------------------------------------------------------
     // Arg description DSL
@@ -9453,7 +10032,7 @@
     factor (number, default=${DEFAULT_FACTOR}) ${_lt("The number to whose multiples value will be rounded.")}
   `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         compute: function (value, factor = DEFAULT_FACTOR) {
             const _value = toNumber(value);
             const _factor = toNumber(factor);
@@ -9473,7 +10052,7 @@
     mode (number, default=${DEFAULT_MODE}) ${_lt("If number is negative, specifies the rounding direction. If 0 or blank, it is rounded towards zero. Otherwise, it is rounded away from zero.")}
   `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (number) => number === null || number === void 0 ? void 0 : number.format,
         compute: function (number, significance = DEFAULT_SIGNIFICANCE, mode = DEFAULT_MODE) {
             let _significance = toNumber(significance);
             if (_significance === 0) {
@@ -9502,7 +10081,7 @@
     significance (number, default=${DEFAULT_SIGNIFICANCE}) ${_lt("The number to whose multiples number will be rounded.")}
   `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (number) => number === null || number === void 0 ? void 0 : number.format,
         compute: function (number, significance) {
             return CEILING_MATH.compute(number, significance, 0);
         },
@@ -9773,7 +10352,7 @@
     factor (number, default=${DEFAULT_FACTOR}) ${_lt("The number to whose multiples value will be rounded.")}
   `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         compute: function (value, factor = DEFAULT_FACTOR) {
             const _value = toNumber(value);
             const _factor = toNumber(factor);
@@ -9793,7 +10372,7 @@
     mode (number, default=${DEFAULT_MODE}) ${_lt("If number is negative, specifies the rounding direction. If 0 or blank, it is rounded away from zero. Otherwise, it is rounded towards zero.")}
   `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (number) => number === null || number === void 0 ? void 0 : number.format,
         compute: function (number, significance = DEFAULT_SIGNIFICANCE, mode = DEFAULT_MODE) {
             let _significance = toNumber(significance);
             if (_significance === 0) {
@@ -9822,7 +10401,7 @@
     significance (number, default=${DEFAULT_SIGNIFICANCE}) ${_lt("The number to whose multiples number will be rounded.")}
   `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (number) => number === null || number === void 0 ? void 0 : number.format,
         compute: function (number, significance = DEFAULT_SIGNIFICANCE) {
             return FLOOR_MATH.compute(number, significance, 0);
         },
@@ -9853,7 +10432,7 @@
       significance (number, default=${DEFAULT_SIGNIFICANCE}) ${_lt("The number to whose multiples number will be rounded.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (number) => number === null || number === void 0 ? void 0 : number.format,
         compute: function (number, significance = DEFAULT_SIGNIFICANCE) {
             return CEILING_MATH.compute(number, significance, 0);
         },
@@ -9900,7 +10479,7 @@
       divisor (number) ${_lt("The number to divide by.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (dividend) => dividend === null || dividend === void 0 ? void 0 : dividend.format,
         compute: function (dividend, divisor) {
             const _divisor = toNumber(divisor);
             assert(() => _divisor !== 0, _lt("The divisor must be different from 0."));
@@ -9923,7 +10502,7 @@
       value (number) ${_lt("The value to round to the next greatest odd number.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (number) => number === null || number === void 0 ? void 0 : number.format,
         compute: function (value) {
             const _value = toNumber(value);
             let temp = Math.ceil(Math.abs(_value));
@@ -9954,7 +10533,7 @@
       exponent (number) ${_lt("The exponent to raise base to.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (base) => base === null || base === void 0 ? void 0 : base.format,
         compute: function (base, exponent) {
             const _base = toNumber(base);
             const _exponent = toNumber(exponent);
@@ -9973,7 +10552,10 @@
       factor2 (number, range<number>, repeating) ${_lt("More numbers or ranges to calculate for the product.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (factor1) => {
+            var _a;
+            return Array.isArray(factor1) ? (_a = factor1[0][0]) === null || _a === void 0 ? void 0 : _a.format : factor1 === null || factor1 === void 0 ? void 0 : factor1.format;
+        },
         compute: function (...factors) {
             let count = 0;
             let acc = 1;
@@ -10022,7 +10604,7 @@
       high (number) ${_lt("The high end of the random range.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (low) => low === null || low === void 0 ? void 0 : low.format,
         compute: function (low, high) {
             let _low = toNumber(low);
             if (!Number.isInteger(_low)) {
@@ -10047,7 +10629,7 @@
       places (number, default=${DEFAULT_PLACES}) ${_lt("The number of decimal places to which to round.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         compute: function (value, places = DEFAULT_PLACES) {
             const _value = toNumber(value);
             let _places = toNumber(places);
@@ -10076,7 +10658,7 @@
       places (number, default=${DEFAULT_PLACES}) ${_lt("The number of decimal places to which to round.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         compute: function (value, places = DEFAULT_PLACES) {
             const _value = toNumber(value);
             let _places = toNumber(places);
@@ -10105,7 +10687,7 @@
       places (number, default=${DEFAULT_PLACES}) ${_lt("The number of decimal places to which to round.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         compute: function (value, places = DEFAULT_PLACES) {
             const _value = toNumber(value);
             let _places = toNumber(places);
@@ -10189,7 +10771,7 @@
       value (number) ${_lt("The number for which to calculate the positive square root.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         compute: function (value) {
             const _value = toNumber(value);
             assert(() => _value >= 0, _lt("The value (%s) must be positive or null.", _value.toString()));
@@ -10207,7 +10789,10 @@
       value2 (number, range<number>, repeating) ${_lt("Additional numbers or ranges to add to value1.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1) => {
+            var _a;
+            return Array.isArray(value1) ? (_a = value1[0][0]) === null || _a === void 0 ? void 0 : _a.format : value1 === null || value1 === void 0 ? void 0 : value1.format;
+        },
         compute: function (...values) {
             return reduceNumbers(values, (acc, a) => acc + a, 0);
         },
@@ -10302,7 +10887,7 @@
       places (number, default=${DEFAULT_PLACES}) ${_lt("The number of significant digits to the right of the decimal point to retain.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         compute: function (value, places = DEFAULT_PLACES) {
             const _value = toNumber(value);
             let _places = toNumber(places);
@@ -10488,7 +11073,10 @@
       value2 (number, range<number>, repeating) ${_lt("Additional values or ranges to consider when calculating the average value.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1) => {
+            var _a;
+            return Array.isArray(value1) ? (_a = value1[0][0]) === null || _a === void 0 ? void 0 : _a.format : value1 === null || value1 === void 0 ? void 0 : value1.format;
+        },
         compute: function (...values) {
             let count = 0;
             const sum = reduceNumbers(values, (acc, a) => {
@@ -10514,7 +11102,10 @@
       additional_weights (number, range<number>, repeating) ${_lt("Additional weights.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (values) => {
+            var _a;
+            return Array.isArray(values) ? (_a = values[0][0]) === null || _a === void 0 ? void 0 : _a.format : values === null || values === void 0 ? void 0 : values.format;
+        },
         compute: function (...values) {
             let sum = 0;
             let count = 0;
@@ -10570,7 +11161,10 @@
       value2 (number, range<number>, repeating) ${_lt("Additional values or ranges to consider when calculating the average value.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1) => {
+            var _a;
+            return Array.isArray(value1) ? (_a = value1[0][0]) === null || _a === void 0 ? void 0 : _a.format : value1 === null || value1 === void 0 ? void 0 : value1.format;
+        },
         compute: function (...values) {
             let count = 0;
             const sum = reduceNumbersTextAs0(values, (acc, a) => {
@@ -10593,7 +11187,7 @@
       average_range (range, default=criteria_range) ${_lt("The range to average. If not included, criteria_range is used for the average instead.")}
     `),
         returns: ["NUMBER"],
-        compute: function (criteriaRange, criterion, averageRange = undefined) {
+        compute: function (criteriaRange, criterion, averageRange) {
             if (averageRange === undefined || averageRange === null) {
                 averageRange = criteriaRange;
             }
@@ -10741,7 +11335,10 @@
       n (number) ${_lt("The rank from largest to smallest of the element to return.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (data) => {
+            var _a;
+            return Array.isArray(data) ? (_a = data[0][0]) === null || _a === void 0 ? void 0 : _a.format : data === null || data === void 0 ? void 0 : data.format;
+        },
         compute: function (data, n) {
             const _n = Math.trunc(toNumber(n));
             let largests = [];
@@ -10775,7 +11372,10 @@
       value2 (number, range<number>, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1) => {
+            var _a;
+            return Array.isArray(value1) ? (_a = value1[0][0]) === null || _a === void 0 ? void 0 : _a.format : value1 === null || value1 === void 0 ? void 0 : value1.format;
+        },
         compute: function (...values) {
             const result = reduceNumbers(values, (acc, a) => (acc < a ? a : acc), -Infinity);
             return result === -Infinity ? 0 : result;
@@ -10792,7 +11392,10 @@
       value2 (any, range, repeating) ${_lt("Additional values or ranges to consider when calculating the maximum value.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1) => {
+            var _a;
+            return Array.isArray(value1) ? (_a = value1[0][0]) === null || _a === void 0 ? void 0 : _a.format : value1 === null || value1 === void 0 ? void 0 : value1.format;
+        },
         compute: function (...values) {
             const maxa = reduceNumbersTextAs0(values, (acc, a) => {
                 return Math.max(a, acc);
@@ -10836,7 +11439,10 @@
       value2 (any, range, repeating) ${_lt("Additional values or ranges to consider when calculating the median value.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1) => {
+            var _a;
+            return Array.isArray(value1) ? (_a = value1[0][0]) === null || _a === void 0 ? void 0 : _a.format : value1 === null || value1 === void 0 ? void 0 : value1.format;
+        },
         compute: function (...values) {
             let data = [];
             visitNumbers(values, (arg) => {
@@ -10856,7 +11462,10 @@
       value2 (number, range<number>, repeating) ${_lt("Additional values or ranges to consider when calculating the minimum value.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1) => {
+            var _a;
+            return Array.isArray(value1) ? (_a = value1[0][0]) === null || _a === void 0 ? void 0 : _a.format : value1 === null || value1 === void 0 ? void 0 : value1.format;
+        },
         compute: function (...values) {
             const result = reduceNumbers(values, (acc, a) => (a < acc ? a : acc), Infinity);
             return result === Infinity ? 0 : result;
@@ -10873,7 +11482,10 @@
       value2 (number, range<number>, repeating) ${_lt("Additional values or ranges to consider when calculating the minimum value.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1) => {
+            var _a;
+            return Array.isArray(value1) ? (_a = value1[0][0]) === null || _a === void 0 ? void 0 : _a.format : value1 === null || value1 === void 0 ? void 0 : value1.format;
+        },
         compute: function (...values) {
             const mina = reduceNumbersTextAs0(values, (acc, a) => {
                 return Math.min(a, acc);
@@ -10917,7 +11529,10 @@
       percentile (number) ${_lt("The percentile whose value within data will be calculated and returned.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (data) => {
+            var _a;
+            return Array.isArray(data) ? (_a = data[0][0]) === null || _a === void 0 ? void 0 : _a.format : data === null || data === void 0 ? void 0 : data.format;
+        },
         compute: function (data, percentile) {
             return PERCENTILE_INC.compute(data, percentile);
         },
@@ -10933,7 +11548,10 @@
       percentile (number) ${_lt("The percentile, exclusive of 0 and 1, whose value within 'data' will be calculated and returned.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (data) => {
+            var _a;
+            return Array.isArray(data) ? (_a = data[0][0]) === null || _a === void 0 ? void 0 : _a.format : data === null || data === void 0 ? void 0 : data.format;
+        },
         compute: function (data, percentile) {
             return centile([data], percentile, false);
         },
@@ -10949,7 +11567,10 @@
       percentile (number) ${_lt("The percentile whose value within data will be calculated and returned.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (data) => {
+            var _a;
+            return Array.isArray(data) ? (_a = data[0][0]) === null || _a === void 0 ? void 0 : _a.format : data === null || data === void 0 ? void 0 : data.format;
+        },
         compute: function (data, percentile) {
             return centile([data], percentile, true);
         },
@@ -10965,7 +11586,10 @@
       quartile_number (number) ${_lt("Which quartile value to return.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (data) => {
+            var _a;
+            return Array.isArray(data) ? (_a = data[0][0]) === null || _a === void 0 ? void 0 : _a.format : data === null || data === void 0 ? void 0 : data.format;
+        },
         compute: function (data, quartileNumber) {
             return QUARTILE_INC.compute(data, quartileNumber);
         },
@@ -10981,7 +11605,10 @@
       quartile_number (number) ${_lt("Which quartile value, exclusive of 0 and 4, to return.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (data) => {
+            var _a;
+            return Array.isArray(data) ? (_a = data[0][0]) === null || _a === void 0 ? void 0 : _a.format : data === null || data === void 0 ? void 0 : data.format;
+        },
         compute: function (data, quartileNumber) {
             const _quartileNumber = Math.trunc(toNumber(quartileNumber));
             return centile([data], 0.25 * _quartileNumber, false);
@@ -10998,7 +11625,10 @@
       quartile_number (number) ${_lt("Which quartile value to return.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (data) => {
+            var _a;
+            return Array.isArray(data) ? (_a = data[0][0]) === null || _a === void 0 ? void 0 : _a.format : data === null || data === void 0 ? void 0 : data.format;
+        },
         compute: function (data, quartileNumber) {
             const _quartileNumber = Math.trunc(toNumber(quartileNumber));
             return centile([data], 0.25 * _quartileNumber, true);
@@ -11015,7 +11645,10 @@
       n (number) ${_lt("The rank from smallest to largest of the element to return.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (data) => {
+            var _a;
+            return Array.isArray(data) ? (_a = data[0][0]) === null || _a === void 0 ? void 0 : _a.format : data === null || data === void 0 ? void 0 : data.format;
+        },
         compute: function (data, n) {
             const _n = Math.trunc(toNumber(n));
             let largests = [];
@@ -11545,7 +12178,7 @@
     day (number) ${_lt("The day component of the date.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (year, month, day) {
             let _year = Math.trunc(toNumber(year));
             const _month = Math.trunc(toNumber(month));
@@ -11622,7 +12255,7 @@
     months (number) ${_lt("The number of months before (negative) or after (positive) 'start_date' to calculate.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (startDate, months) {
             const _startDate = toJsDate(startDate);
             const _months = Math.trunc(toNumber(months));
@@ -11644,7 +12277,7 @@
     months (number) ${_lt("The number of months before (negative) or after (positive) 'start_date' to consider.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (startDate, months) {
             const _startDate = toJsDate(startDate);
             const _months = Math.trunc(toNumber(months));
@@ -11782,7 +12415,7 @@
       holidays (date, range<date>, optional) ${_lt("A range or array constant containing the date serial numbers to consider holidays.")}
     `),
         returns: ["NUMBER"],
-        compute: function (startDate, endDate, holidays = undefined) {
+        compute: function (startDate, endDate, holidays) {
             return NETWORKDAYS_INTL.compute(startDate, endDate, 1, holidays);
         },
         isExported: true,
@@ -11851,7 +12484,7 @@
             // 17 = Saturday is the only weekend.
             return [weekend - 11];
         }
-        throw Error(_lt("The weekend (%s) must be a number or a string.", weekend.toString()));
+        throw Error(_lt("The weekend must be a number or a string."));
     }
     const NETWORKDAYS_INTL = {
         description: _lt("Net working days between two dates (specifying weekends)."),
@@ -11862,7 +12495,7 @@
       holidays (date, range<date>, optional) ${_lt("A range or array constant containing the dates to consider as holidays.")}
     `),
         returns: ["NUMBER"],
-        compute: function (startDate, endDate, weekend = DEFAULT_WEEKEND, holidays = undefined) {
+        compute: function (startDate, endDate, weekend = DEFAULT_WEEKEND, holidays) {
             const _startDate = toJsDate(startDate);
             const _endDate = toJsDate(endDate);
             const daysWeekend = weekendToDayNumber(weekend);
@@ -11897,7 +12530,7 @@
         description: _lt("Current date and time as a date value."),
         args: [],
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy hh:mm:ss" },
+        computeFormat: () => "m/d/yyyy hh:mm:ss",
         compute: function () {
             let today = new Date();
             today.setMilliseconds(0);
@@ -11932,7 +12565,7 @@
     second (number) ${_lt("The second component of the time.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "hh:mm:ss a" },
+        computeFormat: () => "hh:mm:ss a",
         compute: function (hour, minute, second) {
             let _hour = Math.trunc(toNumber(hour));
             let _minute = Math.trunc(toNumber(minute));
@@ -11972,7 +12605,7 @@
         description: _lt("Current date as a date value."),
         args: [],
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function () {
             const today = new Date();
             const jsDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -12047,14 +12680,14 @@
     // WORKDAY
     // -----------------------------------------------------------------------------
     const WORKDAY = {
-        description: _lt("Number of working days from start date."),
+        description: _lt("Date after a number of workdays."),
         args: args(`
       start_date (date) ${_lt("The date from which to begin counting.")}
       num_days (number) ${_lt("The number of working days to advance from start_date. If negative, counts backwards.")}
       holidays (date, range<date>, optional) ${_lt("A range or array constant containing the dates to consider holidays.")}
       `),
         returns: ["NUMBER"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (startDate, numDays, holidays = undefined) {
             return WORKDAY_INTL.compute(startDate, numDays, 1, holidays);
         },
@@ -12064,7 +12697,7 @@
     // WORKDAY.INTL
     // -----------------------------------------------------------------------------
     const WORKDAY_INTL = {
-        description: _lt("Net working days between two dates (specifying weekends)."),
+        description: _lt("Date after a number of workdays (specifying weekends)."),
         args: args(`
       start_date (date) ${_lt("The date from which to begin counting.")}
       num_days (number) ${_lt("The number of working days to advance from start_date. If negative, counts backwards.")}
@@ -12072,8 +12705,8 @@
       holidays (date, range<date>, optional) ${_lt("A range or array constant containing the dates to consider holidays.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
-        compute: function (startDate, numDays, weekend = DEFAULT_WEEKEND, holidays = undefined) {
+        computeFormat: () => "m/d/yyyy",
+        compute: function (startDate, numDays, weekend = DEFAULT_WEEKEND, holidays) {
             let _startDate = toJsDate(startDate);
             let _numDays = Math.trunc(toNumber(numDays));
             if (typeof weekend === "string") {
@@ -12254,7 +12887,7 @@
     date (date) ${_lt("The date from which to calculate the result.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (date) {
             const _startDate = toJsDate(date);
             const yStart = _startDate.getFullYear();
@@ -12272,7 +12905,7 @@
     date (date) ${_lt("The date from which to calculate the result.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (date) {
             return EOMONTH.compute(date, 0);
         },
@@ -12299,7 +12932,7 @@
     date (date) ${_lt("The date from which to calculate the start of quarter.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (date) {
             const quarter = QUARTER.compute(date);
             const year = YEAR.compute(date);
@@ -12316,7 +12949,7 @@
     date (date) ${_lt("The date from which to calculate the end of quarter.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (date) {
             const quarter = QUARTER.compute(date);
             const year = YEAR.compute(date);
@@ -12333,7 +12966,7 @@
     date (date) ${_lt("The date from which to calculate the start of the year.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (date) {
             const year = YEAR.compute(date);
             const jsDate = new Date(year, 0, 1);
@@ -12349,7 +12982,7 @@
     date (date) ${_lt("The date from which to calculate the end of the year.")}
     `),
         returns: ["DATE"],
-        returnFormat: { specificFormat: "m/d/yyyy" },
+        computeFormat: () => "m/d/yyyy",
         compute: function (date) {
             const year = YEAR.compute(date);
             const jsDate = new Date(year + 1, 0, 0);
@@ -12449,7 +13082,7 @@
     `),
         returns: ["NUMBER"],
         // to do: replace by dollar format
-        returnFormat: { specificFormat: "#,##0.00" },
+        computeFormat: () => "#,##0.00",
         compute: function (cost, salvage, life, period, ...args) {
             const _cost = toNumber(cost);
             const _salvage = toNumber(salvage);
@@ -12539,7 +13172,7 @@
   `),
         returns: ["NUMBER"],
         // to do: replace by dollar format
-        returnFormat: { specificFormat: "#,##0.00" },
+        computeFormat: () => "#,##0.00",
         compute: function (rate, numberOfPeriods, paymentAmount, presentValue = DEFAULT_PRESENT_VALUE, endOrBeginning = DEFAULT_END_OR_BEGINNING) {
             presentValue = presentValue || 0;
             endOrBeginning = endOrBeginning || 0;
@@ -12562,7 +13195,7 @@
   rate_guess (number, default=${DEFAULT_RATE_GUESS}) ${_lt("An estimate for what the internal rate of return will be.")}
   `),
         returns: ["NUMBER"],
-        returnFormat: { specificFormat: "0%" },
+        computeFormat: () => "0%",
         compute: function (cashFlowAmounts, rateGuess = DEFAULT_RATE_GUESS) {
             const _rateGuess = toNumber(rateGuess);
             assert(() => _rateGuess > -1, _lt("The rate_guess (%s) must be strictly greater than -1.", _rateGuess.toString()));
@@ -12649,7 +13282,7 @@
   `),
         returns: ["NUMBER"],
         // to do: replace by dollar format
-        returnFormat: { specificFormat: "#,##0.00" },
+        computeFormat: () => "#,##0.00",
         compute: function (discount, ...values) {
             const _discount = toNumber(discount);
             assert(() => _discount !== -1, _lt("The discount (%s) must be different from -1.", _discount.toString()));
@@ -12692,7 +13325,7 @@
   `),
         returns: ["NUMBER"],
         // to do: replace by dollar format
-        returnFormat: { specificFormat: "#,##0.00" },
+        computeFormat: () => "#,##0.00",
         compute: function (rate, numberOfPeriods, paymentAmount, futureValue = DEFAULT_FUTURE_VALUE, endOrBeginning = DEFAULT_END_OR_BEGINNING) {
             futureValue = futureValue || 0;
             endOrBeginning = endOrBeginning || 0;
@@ -13084,7 +13717,8 @@
             assert(() => values.length % 2 === 0, _lt(`Wrong number of arguments. Expected an even number of arguments.`));
             for (let n = 0; n < values.length - 1; n += 2) {
                 if (toBoolean(values[n]())) {
-                    return values[n + 1]();
+                    const returnValue = values[n + 1]();
+                    return returnValue !== null ? returnValue : "";
                 }
             }
             throw new Error(_lt(`No match.`));
@@ -13192,9 +13826,9 @@
         returns: ["NUMBER"],
         compute: function (cellReference) {
             var _a;
-            cellReference = cellReference || ((_a = this.__originCellXC) === null || _a === void 0 ? void 0 : _a.call(this));
-            assert(() => !!cellReference, "In this context, the function [[FUNCTION_NAME]] needs to have a cell or range in parameter.");
-            const zone = toZone(cellReference);
+            const _cellReference = cellReference || ((_a = this.__originCellXC) === null || _a === void 0 ? void 0 : _a.call(this));
+            assert(() => !!_cellReference, "In this context, the function [[FUNCTION_NAME]] needs to have a cell or range in parameter.");
+            const zone = toZone(_cellReference);
             return zone.left + 1;
         },
         isExported: true,
@@ -13260,7 +13894,7 @@
             const index = dichotomicPredecessorSearch(searchRange, searchKey);
             assert(() => index >= 0, _lt("Did not find value '%s' in [[FUNCTION_NAME]] evaluation.", toString(searchKey)));
             if (resultRange === undefined) {
-                return verticalSearch ? searchArray[nbCol - 1][index] : searchArray[index][nbRow - 1];
+                return (verticalSearch ? searchArray[nbCol - 1][index] : searchArray[index][nbRow - 1]);
             }
             nbCol = resultRange.length;
             nbRow = resultRange[0].length;
@@ -13391,7 +14025,7 @@
       value2 (number) ${_lt("The second addend.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1, value2) => (value1 === null || value1 === void 0 ? void 0 : value1.format) || (value2 === null || value2 === void 0 ? void 0 : value2.format),
         compute: function (value1, value2) {
             return toNumber(value1) + toNumber(value2);
         },
@@ -13421,7 +14055,7 @@
       divisor (number) ${_lt("The number to divide by.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (dividend, divisor) => (dividend === null || dividend === void 0 ? void 0 : dividend.format) || (divisor === null || divisor === void 0 ? void 0 : divisor.format),
         compute: function (dividend, divisor) {
             const _divisor = toNumber(divisor);
             assert(() => _divisor !== 0, _lt("The divisor must be different from zero."));
@@ -13543,7 +14177,7 @@
       value2 (number) ${_lt("The subtrahend, or number to subtract from value1.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value1, value2) => (value1 === null || value1 === void 0 ? void 0 : value1.format) || (value2 === null || value2 === void 0 ? void 0 : value2.format),
         compute: function (value1, value2) {
             return toNumber(value1) - toNumber(value2);
         },
@@ -13558,7 +14192,7 @@
       factor2 (number) ${_lt("The second multiplicand.")}
     `),
         returns: ["NUMBER"],
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (factor1, factor2) => (factor1 === null || factor1 === void 0 ? void 0 : factor1.format) || (factor2 === null || factor2 === void 0 ? void 0 : factor2.format),
         compute: function (factor1, factor2) {
             return toNumber(factor1) * toNumber(factor2);
         },
@@ -13599,7 +14233,7 @@
         args: args(`
       value (number) ${_lt("The number to have its sign reversed. Equivalently, the number to multiply by -1.")}
     `),
-        returnFormat: ReturnFormatType.FormatFromArgument,
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         returns: ["NUMBER"],
         compute: function (value) {
             return -toNumber(value);
@@ -13626,10 +14260,10 @@
         args: args(`
       value (any) ${_lt("The number to return.")}
     `),
-        returnFormat: ReturnFormatType.FormatFromArgument,
         returns: ["ANY"],
+        computeFormat: (value) => value === null || value === void 0 ? void 0 : value.format,
         compute: function (value) {
-            return value;
+            return value === null ? "" : value;
         },
     };
 
@@ -13859,7 +14493,7 @@
       occurrence_number (number, optional) ${_lt("The instance of search_for within text_to_search to replace with replace_with. By default, all occurrences of search_for are replaced; however, if occurrence_number is specified, only the indicated instance of search_for is replaced.")}
   `),
         returns: ["NUMBER"],
-        compute: function (textToSearch, searchFor, replaceWith, occurrenceNumber = undefined) {
+        compute: function (textToSearch, searchFor, replaceWith, occurrenceNumber) {
             const _occurrenceNumber = toNumber(occurrenceNumber);
             assert(() => _occurrenceNumber >= 0, _lt("The occurrenceNumber (%s) must be positive or null.", _occurrenceNumber.toString()));
             const _textToSearch = toString(textToSearch);
@@ -13974,10 +14608,35 @@
             }
             const descr = addMetaInfoFromArg(addDescr);
             validateArguments(descr.args);
-            this.mapping[name] = descr.compute;
+            function computeValueAndFormat(...args) {
+                const computeValue = descr.compute.bind(this);
+                const computeFormat = descr.computeFormat ? descr.computeFormat.bind(this) : () => undefined;
+                return {
+                    value: computeValue(...extractArgValuesFromArgs(args)),
+                    format: computeFormat(...args),
+                };
+            }
+            this.mapping[name] = computeValueAndFormat;
             super.add(name, descr);
             return this;
         }
+    }
+    function extractArgValuesFromArgs(args) {
+        return args.map((arg) => {
+            if (arg === undefined) {
+                return undefined;
+            }
+            if (typeof arg === "function") {
+                return () => _extractArgValuesFromArgs(arg());
+            }
+            return _extractArgValuesFromArgs(arg);
+        });
+    }
+    function _extractArgValuesFromArgs(arg) {
+        if (Array.isArray(arg)) {
+            return arg.map((col) => col.map((simpleArg) => simpleArg === null || simpleArg === void 0 ? void 0 : simpleArg.value));
+        }
+        return arg === null || arg === void 0 ? void 0 : arg.value;
     }
     const functionRegistry = new FunctionRegistry();
     for (let category in functions$4) {
@@ -14448,130 +15107,130 @@
         return needParenthesis ? `(${astToFormula(rightOperation)})` : astToFormula(rightOperation);
     }
 
+    var State;
+    (function (State) {
+        /**
+         * Initial state.
+         * Expecting any reference for the left part of a range
+         * e.g. "A1", "1", "A", "Sheet1!A1", "Sheet1!A"
+         */
+        State[State["LeftRef"] = 0] = "LeftRef";
+        /**
+         * Expecting any reference for the right part of a range
+         * e.g. "A1", "1", "A", "Sheet1!A1", "Sheet1!A"
+         */
+        State[State["RightRef"] = 1] = "RightRef";
+        /**
+         * Expecting the separator without any constraint on the right part
+         */
+        State[State["Separator"] = 2] = "Separator";
+        /**
+         * Expecting the separator for a full column range
+         */
+        State[State["FullColumnSeparator"] = 3] = "FullColumnSeparator";
+        /**
+         * Expecting the separator for a full row range
+         */
+        State[State["FullRowSeparator"] = 4] = "FullRowSeparator";
+        /**
+         * Expecting the right part of a full column range
+         * e.g. "1", "A1"
+         */
+        State[State["RightColumnRef"] = 5] = "RightColumnRef";
+        /**
+         * Expecting the right part of a full row range
+         * e.g. "A", "A1"
+         */
+        State[State["RightRowRef"] = 6] = "RightRowRef";
+        /**
+         * Final state. A range has been matched
+         */
+        State[State["Found"] = 7] = "Found";
+    })(State || (State = {}));
+    const goTo = (state, guard = () => true) => [
+        {
+            goTo: state,
+            guard,
+        },
+    ];
+    const goToMulti = (state, guard = () => true) => ({
+        goTo: state,
+        guard,
+    });
+    const machine = {
+        [State.LeftRef]: {
+            REFERENCE: goTo(State.Separator),
+            NUMBER: goTo(State.FullRowSeparator),
+            SYMBOL: [
+                goToMulti(State.FullColumnSeparator, (token) => isColReference(token.value)),
+                goToMulti(State.FullRowSeparator, (token) => isRowReference(token.value)),
+            ],
+        },
+        [State.FullColumnSeparator]: {
+            SPACE: goTo(State.FullColumnSeparator),
+            OPERATOR: goTo(State.RightColumnRef, (token) => token.value === ":"),
+        },
+        [State.FullRowSeparator]: {
+            SPACE: goTo(State.FullRowSeparator),
+            OPERATOR: goTo(State.RightRowRef, (token) => token.value === ":"),
+        },
+        [State.Separator]: {
+            SPACE: goTo(State.Separator),
+            OPERATOR: goTo(State.RightRef, (token) => token.value === ":"),
+        },
+        [State.RightRef]: {
+            SPACE: goTo(State.RightRef),
+            NUMBER: goTo(State.Found),
+            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
+            SYMBOL: goTo(State.Found, (token) => isColHeader(token.value)),
+        },
+        [State.RightColumnRef]: {
+            SPACE: goTo(State.RightColumnRef),
+            SYMBOL: goTo(State.Found, (token) => isColHeader(token.value)),
+            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
+        },
+        [State.RightRowRef]: {
+            SPACE: goTo(State.RightRowRef),
+            NUMBER: goTo(State.Found),
+            REFERENCE: goTo(State.Found, (token) => isSingleCellReference(token.value)),
+        },
+        [State.Found]: {},
+    };
     /**
-     * finds a sequence of token that represent a range and replace them with a single token
-     * The range can be
-     *  ?spaces symbol ?spaces operator: ?spaces symbol ?spaces
+     * Check if the list of tokens starts with a sequence of tokens representing
+     * a range.
+     * If a range is found, the sequence is removed from the list and is returned
+     * as a single token.
      */
-    function mergeSymbolsIntoRanges(result, removeSpace = false) {
-        let operator = undefined; // Index of operator ":" in range
-        let refStart = undefined; // Index of start of range
-        let refEnd = undefined; // Index of end of range
-        let startIncludingSpaces = undefined; // Index of start of range, including spaces before range
-        let isRefOfFullRow = false; // If we work on a range of a full row (eg. 1:1)
-        let isRefOfFullCol = false; // If we work on a range of a full column (eg. A2:A)
-        const reset = () => {
-            startIncludingSpaces = undefined;
-            refStart = undefined;
-            operator = undefined;
-            refEnd = undefined;
-            isRefOfFullRow = false;
-            isRefOfFullCol = false;
-        };
-        for (let i = 0; i < result.length; i++) {
-            const token = result[i];
-            // If we already have a token that could be the start of a range, or a SPACE token
-            if (startIncludingSpaces) {
-                // If we already have a token that could be the start of a range
-                if (refStart) {
-                    // Skip spaces
-                    if (token.type === "SPACE") {
-                        continue;
-                    }
-                    // Find the ":" operator of a range
-                    else if (token.type === "OPERATOR" && token.value === ":") {
-                        operator = i;
-                    }
-                    // Find the second symbol of a range
-                    // Be careful not to build a range A:1 or A:1. A2:3 and A:A2 are both valid ranges.
-                    else if (operator &&
-                        (token.type === "REFERENCE" ||
-                            (token.type === "SYMBOL" && !isRefOfFullRow && isColReference(token.value)) ||
-                            (token.type === "NUMBER" && !isRefOfFullCol))) {
-                        refEnd = i;
-                    }
-                    // Cannot add the current token to the range we're currently building
-                    else {
-                        // We have all the token needed to build a new range
-                        if (startIncludingSpaces && refStart && operator && refEnd) {
-                            const newToken = {
-                                type: "REFERENCE",
-                                value: concat(result
-                                    .slice(startIncludingSpaces, i)
-                                    .filter((x) => !removeSpace || x.type !== "SPACE")
-                                    .map((x) => x.value)),
-                            };
-                            result.splice(startIncludingSpaces, i - startIncludingSpaces, newToken);
-                            i = startIncludingSpaces + 1;
-                            reset();
-                        }
-                        // Cannot build a range with the current tokens
-                        else {
-                            // Start building a new range beginning with the current token if possible, else reset
-                            if (["REFERENCE", "NUMBER", "SYMBOL"].includes(token.type)) {
-                                startIncludingSpaces = i;
-                                operator = undefined;
-                                isRefOfFullRow = isRowReference(token.value);
-                                isRefOfFullCol = isColReference(token.value);
-                                if (token.type === "REFERENCE" || isRefOfFullRow || isRefOfFullCol) {
-                                    refStart = i;
-                                }
-                                else
-                                    reset();
-                            }
-                            else {
-                                reset();
-                            }
-                        }
-                    }
-                }
-                // If we only have found a SPACE token
-                else {
-                    // Start building a new range beginning with the current token if possible, else reset
-                    if (["REFERENCE", "NUMBER", "SYMBOL"].includes(token.type)) {
-                        operator = refEnd = undefined;
-                        isRefOfFullRow = isRowReference(token.value);
-                        isRefOfFullCol = isColReference(token.value);
-                        if (token.type === "REFERENCE" || isRefOfFullRow || isRefOfFullCol) {
-                            refStart = i;
-                        }
-                        else
-                            reset();
-                    }
-                    else {
-                        reset();
-                    }
-                }
+    function matchReference(tokens) {
+        var _a;
+        let head = 0;
+        let transitions = machine[State.LeftRef];
+        const matchedTokens = [];
+        while (transitions !== undefined) {
+            const token = tokens[head++];
+            if (!token) {
+                return null;
             }
-            // We found nothing yet, try to find a token that could be the beginning of a range
-            else {
-                if (["SPACE", "REFERENCE", "NUMBER", "SYMBOL"].includes(token.type)) {
-                    operator = refEnd = undefined;
-                    startIncludingSpaces = i;
-                    isRefOfFullRow = isRowReference(token.value);
-                    isRefOfFullCol = isColReference(token.value);
-                    if (token.type === "REFERENCE" || isRefOfFullRow || isRefOfFullCol) {
-                        refStart = i;
-                    }
-                }
-                else {
-                    reset();
-                }
+            const transition = (_a = transitions[token.type]) === null || _a === void 0 ? void 0 : _a.find((transition) => transition.guard(token));
+            const nextState = transition ? transition.goTo : undefined;
+            switch (nextState) {
+                case undefined:
+                    return null;
+                case State.Found:
+                    matchedTokens.push(token);
+                    tokens.splice(0, head);
+                    return {
+                        type: "REFERENCE",
+                        value: concat(matchedTokens.map((token) => token.value)),
+                    };
+                default:
+                    transitions = machine[nextState];
+                    matchedTokens.push(token);
+                    break;
             }
         }
-        // Try to build a range with the last tokens we used
-        const i = result.length - 1;
-        if (startIncludingSpaces && refStart && operator && refEnd) {
-            const newToken = {
-                type: "REFERENCE",
-                value: concat(result
-                    .slice(startIncludingSpaces, i + 1)
-                    .filter((x) => !removeSpace || x.type !== "SPACE")
-                    .map((x) => x.value)),
-            };
-            result.splice(startIncludingSpaces, i - startIncludingSpaces + 1, newToken);
-        }
-        return result;
+        return null;
     }
     /**
      * Take the result of the tokenizer and transform it to be usable in the
@@ -14581,7 +15240,11 @@
      */
     function rangeTokenize(formula) {
         const tokens = tokenize(formula);
-        return mergeSymbolsIntoRanges(tokens, true);
+        const result = [];
+        while (tokens.length) {
+            result.push(matchReference(tokens) || tokens.shift());
+        }
+        return result;
     }
 
     const functions$2 = functionRegistry.content;
@@ -14648,7 +15311,6 @@
             functionCache[cacheKey] = {
                 // @ts-ignore
                 execute: baseFunction,
-                dependenciesFormat: formatAST(ast),
             };
             /**
              * This function compile the function arguments. It is mostly straightforward,
@@ -14744,18 +15406,18 @@
                 switch (ast.type) {
                     case "BOOLEAN":
                         if (!isLazy) {
-                            return { id: `${ast.value}`, code: "" };
+                            return { id: `{ value: ${ast.value} }`, code: "" };
                         }
                         id = nextId++;
-                        statement = `${ast.value}`;
+                        statement = `{ value: ${ast.value} }`;
                         break;
                     case "NUMBER":
                         id = nextId++;
-                        statement = `this.constantValues.numbers[${constantValues.numbers.indexOf(ast.value)}]`;
+                        statement = `{ value: this.constantValues.numbers[${constantValues.numbers.indexOf(ast.value)}] }`;
                         break;
                     case "STRING":
                         id = nextId++;
-                        statement = `this.constantValues.strings[${constantValues.strings.indexOf(ast.value)}]`;
+                        statement = `{ value: this.constantValues.strings[${constantValues.strings.indexOf(ast.value)}] }`;
                         break;
                     case "REFERENCE":
                         const referenceIndex = dependencies.indexOf(ast.value);
@@ -14783,7 +15445,7 @@
                         });
                         codeBlocks.push(operand.code);
                         codeBlocks.push(`ctx.__lastFnCalled = '${fnName}';`);
-                        statement = `ctx['${fnName}']( ${operand.id})`;
+                        statement = `ctx['${fnName}'](${operand.id})`;
                         break;
                     }
                     case "BIN_OPERATION": {
@@ -14821,66 +15483,8 @@
                     return { id: `_${id}`, code: codeBlocks.join("\n") };
                 }
             }
-            /** Return a stack of formats corresponding to the priorities in which
-             * formats should be tested.
-             *
-             * If the value of the stack is a number it corresponds to a dependency from
-             * which the format can be inferred.
-             *
-             * If the value is a string it corresponds to a literal format which can be
-             * applied directly.
-             * */
-            function formatAST(ast) {
-                let fnDef;
-                switch (ast.type) {
-                    case "REFERENCE":
-                        return [dependencies.indexOf(ast.value)];
-                    case "FUNCALL":
-                        fnDef = functions$2[ast.value.toUpperCase()];
-                        if (fnDef.returnFormat) {
-                            if (fnDef.returnFormat === "FormatFromArgument") {
-                                if (ast.args.length > 0) {
-                                    const argPosition = 0;
-                                    const argType = fnDef.args[argPosition].type;
-                                    if (!argType.includes("META")) {
-                                        return formatAST(ast.args[argPosition]);
-                                    }
-                                }
-                            }
-                            else {
-                                return [fnDef.returnFormat.specificFormat];
-                            }
-                        }
-                        break;
-                    case "UNARY_OPERATION":
-                        return formatAST(ast.operand);
-                    case "BIN_OPERATION":
-                        // the BIN_OPERATION ast is the only function case where we will look
-                        // at the following argument when the current argument has't format.
-                        // So this is the only place where the stack can grow.
-                        fnDef = functions$2[OPERATOR_MAP[ast.value]];
-                        if (fnDef.returnFormat) {
-                            if (fnDef.returnFormat === "FormatFromArgument") {
-                                const left = formatAST(ast.left);
-                                // as a string represents a safe format, we don't need to know the
-                                // format of the following arguments.
-                                if (typeof left[left.length - 1] === "string") {
-                                    return left;
-                                }
-                                const right = formatAST(ast.right);
-                                return left.concat(right);
-                            }
-                            else {
-                                return [fnDef.returnFormat.specificFormat];
-                            }
-                        }
-                        break;
-                }
-                return [];
-            }
         }
         const compiledFormula = {
-            dependenciesFormat: functionCache[cacheKey].dependenciesFormat,
             execute: functionCache[cacheKey].execute,
             dependencies,
             constantValues,
@@ -15036,9 +15640,3512 @@
      * @param formula
      */
     function composerTokenize(formula) {
-        const tokens = tokenize(formula);
-        return mapParentFunction(mapParenthesis(enrichTokens(mergeSymbolsIntoRanges(tokens))));
+        const tokens = rangeTokenize(formula);
+        return mapParentFunction(mapParenthesis(enrichTokens(tokens)));
     }
+
+    /**
+     * Change the reference types inside the given token, if the token represent a range or a cell
+     *
+     * Eg. :
+     *   A1 => $A$1 => A$1 => $A1 => A1
+     *   A1:$B$1 => $A$1:B$1 => A$1:$B1 => $A1:B1 => A1:$B$1
+     */
+    function loopThroughReferenceType(token) {
+        if (token.type !== "REFERENCE")
+            return token;
+        const [range, sheet] = token.value.split("!").reverse();
+        const [left, right] = range.split(":");
+        const sheetRef = sheet ? `${sheet}!` : "";
+        const updatedLeft = getTokenNextReferenceType(left);
+        const updatedRight = right ? `:${getTokenNextReferenceType(right)}` : "";
+        return { ...token, value: sheetRef + updatedLeft + updatedRight };
+    }
+    /**
+     * Get a new token with a changed type of reference from the given cell token symbol.
+     * Undefined behavior if given a token other than a cell or if the Xc contains a sheet reference
+     *
+     * A1 => $A$1 => A$1 => $A1 => A1
+     */
+    function getTokenNextReferenceType(xc) {
+        switch (getReferenceType(xc)) {
+            case "none":
+                xc = setXcToReferenceType(xc, "colrow");
+                break;
+            case "colrow":
+                xc = setXcToReferenceType(xc, "row");
+                break;
+            case "row":
+                xc = setXcToReferenceType(xc, "col");
+                break;
+            case "col":
+                xc = setXcToReferenceType(xc, "none");
+                break;
+        }
+        return xc;
+    }
+    /**
+     * Returns the given XC with the given reference type.
+     */
+    function setXcToReferenceType(xc, referenceType) {
+        xc = xc.replace(/\$/g, "");
+        let indexOfNumber;
+        switch (referenceType) {
+            case "col":
+                return "$" + xc;
+            case "row":
+                indexOfNumber = xc.search(/[0-9]/);
+                return xc.slice(0, indexOfNumber) + "$" + xc.slice(indexOfNumber);
+            case "colrow":
+                indexOfNumber = xc.search(/[0-9]/);
+                xc = xc.slice(0, indexOfNumber) + "$" + xc.slice(indexOfNumber);
+                return "$" + xc;
+            case "none":
+                return xc;
+        }
+    }
+    /**
+     * Return the type of reference used in the given XC of a cell.
+     * Undefined behavior if the XC have a sheet reference
+     */
+    function getReferenceType(xcCell) {
+        if (isColAndRowFixed(xcCell)) {
+            return "colrow";
+        }
+        else if (isColFixed(xcCell)) {
+            return "col";
+        }
+        else if (isRowFixed(xcCell)) {
+            return "row";
+        }
+        return "none";
+    }
+    function isColFixed(xc) {
+        return xc.startsWith("$");
+    }
+    function isRowFixed(xc) {
+        return xc.includes("$", 1);
+    }
+    function isColAndRowFixed(xc) {
+        return xc.startsWith("$") && xc.length > 1 && xc.slice(1).includes("$");
+    }
+
+    /**
+     * BasePlugin
+     *
+     * Since the spreadsheet internal state is quite complex, it is split into
+     * multiple parts, each managing a specific concern.
+     *
+     * This file introduce the BasePlugin, which is the common class that defines
+     * how each of these model sub parts should interact with each other.
+     * There are two kind of plugins: core plugins handling persistent data
+     * and UI plugins handling transient data.
+     */
+    class BasePlugin {
+        constructor(stateObserver, dispatch, config) {
+            this.history = Object.assign(Object.create(stateObserver), {
+                update: stateObserver.addChange.bind(stateObserver, this),
+                selectCell: () => { },
+            });
+            this.dispatch = dispatch;
+        }
+        // ---------------------------------------------------------------------------
+        // Command handling
+        // ---------------------------------------------------------------------------
+        /**
+         * Before a command is accepted, the model will ask each plugin if the command
+         * is allowed.  If all of then return true, then we can proceed. Otherwise,
+         * the command is cancelled.
+         *
+         * There should not be any side effects in this method.
+         */
+        allowDispatch(command) {
+            return 0 /* Success */;
+        }
+        /**
+         * This method is useful when a plugin need to perform some action before a
+         * command is handled in another plugin. This should only be used if it is not
+         * possible to do the work in the handle method.
+         */
+        beforeHandle(command) { }
+        /**
+         * This is the standard place to handle any command. Most of the plugin
+         * command handling work should take place here.
+         */
+        handle(command) { }
+        /**
+         * Sometimes, it is useful to perform some work after a command (and all its
+         * subcommands) has been completely handled.  For example, when we paste
+         * multiple cells, we only want to reevaluate the cell values once at the end.
+         */
+        finalize() { }
+        /**
+         * Combine multiple validation functions into a single function
+         * returning the list of result of every validation.
+         */
+        batchValidations(...validations) {
+            return (toValidate) => validations.map((validation) => validation.call(this, toValidate)).flat();
+        }
+        /**
+         * Combine multiple validation functions. Every validation is executed one after
+         * the other. As soon as one validation fails, it stops and the cancelled reason
+         * is returned.
+         */
+        chainValidations(...validations) {
+            return (toValidate) => {
+                for (const validation of validations) {
+                    let results = validation.call(this, toValidate);
+                    if (!Array.isArray(results)) {
+                        results = [results];
+                    }
+                    const cancelledReasons = results.filter((result) => result !== 0 /* Success */);
+                    if (cancelledReasons.length) {
+                        return cancelledReasons;
+                    }
+                }
+                return 0 /* Success */;
+            };
+        }
+        checkValidations(command, ...validations) {
+            return this.batchValidations(...validations)(command);
+        }
+    }
+    BasePlugin.getters = [];
+
+    /**
+     * UI plugins handle any transient data required to display a spreadsheet.
+     * They can draw on the grid canvas.
+     */
+    class UIPlugin extends BasePlugin {
+        constructor(getters, state, dispatch, config, selection) {
+            super(state, dispatch, config);
+            this.getters = getters;
+            this.ui = config;
+            this.selection = selection;
+        }
+        // ---------------------------------------------------------------------------
+        // Grid rendering
+        // ---------------------------------------------------------------------------
+        drawGrid(ctx, layer) { }
+    }
+    UIPlugin.layers = [];
+
+    const CELL_DELETED_MESSAGE = _lt("The cell you are trying to edit has been deleted.");
+    const SelectionIndicator = "␣";
+    class EditionPlugin extends UIPlugin {
+        constructor() {
+            super(...arguments);
+            this.col = 0;
+            this.row = 0;
+            this.mode = "inactive";
+            this.sheetId = "";
+            this.currentContent = "";
+            this.currentTokens = [];
+            this.selectionStart = 0;
+            this.selectionEnd = 0;
+            this.selectionInitialStart = 0;
+            this.initialContent = "";
+            this.previousRef = "";
+            this.previousRange = undefined;
+            this.colorIndexByRange = {};
+        }
+        // ---------------------------------------------------------------------------
+        // Command Handling
+        // ---------------------------------------------------------------------------
+        allowDispatch(cmd) {
+            switch (cmd.type) {
+                case "CHANGE_COMPOSER_CURSOR_SELECTION":
+                    return this.validateSelection(this.currentContent.length, cmd.start, cmd.end);
+                case "SET_CURRENT_CONTENT":
+                    if (cmd.selection) {
+                        return this.validateSelection(cmd.content.length, cmd.selection.start, cmd.selection.end);
+                    }
+                    else {
+                        return 0 /* Success */;
+                    }
+                case "START_EDITION":
+                    if (cmd.selection) {
+                        const cell = this.getters.getActiveCell();
+                        const content = cmd.text || (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
+                        return this.validateSelection(content.length, cmd.selection.start, cmd.selection.end);
+                    }
+                    else {
+                        return 0 /* Success */;
+                    }
+                default:
+                    return 0 /* Success */;
+            }
+        }
+        handleEvent(event) {
+            if (this.mode !== "selecting") {
+                return;
+            }
+            switch (event.mode) {
+                case "newAnchor":
+                    this.insertSelectedRange(event.anchor.zone);
+                    break;
+                default:
+                    this.replaceSelectedRanges(event.anchor.zone);
+                    break;
+            }
+        }
+        handle(cmd) {
+            switch (cmd.type) {
+                case "CHANGE_COMPOSER_CURSOR_SELECTION":
+                    this.selectionStart = cmd.start;
+                    this.selectionEnd = cmd.end;
+                    break;
+                case "STOP_COMPOSER_RANGE_SELECTION":
+                    if (this.isSelectingForComposer()) {
+                        this.mode = "editing";
+                    }
+                    break;
+                case "START_EDITION":
+                    this.startEdition(cmd.text, cmd.selection);
+                    this.updateRangeColor();
+                    break;
+                case "STOP_EDITION":
+                    if (cmd.cancel) {
+                        this.cancelEdition();
+                        this.resetContent();
+                    }
+                    else {
+                        this.stopEdition();
+                    }
+                    this.colorIndexByRange = {};
+                    break;
+                case "SET_CURRENT_CONTENT":
+                    this.setContent(cmd.content, cmd.selection);
+                    this.updateRangeColor();
+                    break;
+                case "REPLACE_COMPOSER_CURSOR_SELECTION":
+                    this.replaceSelection(cmd.text);
+                    break;
+                case "SELECT_FIGURE":
+                    this.cancelEdition();
+                    this.resetContent();
+                    break;
+                case "ADD_COLUMNS_ROWS":
+                    this.onAddElements(cmd);
+                    break;
+                case "REMOVE_COLUMNS_ROWS":
+                    if (cmd.dimension === "COL") {
+                        this.onColumnsRemoved(cmd);
+                    }
+                    else {
+                        this.onRowsRemoved(cmd);
+                    }
+                    break;
+                case "START_CHANGE_HIGHLIGHT":
+                    this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+                    const range = this.getters.getRangeFromRangeData(cmd.range);
+                    const previousRefToken = this.currentTokens
+                        .filter((token) => token.type === "REFERENCE")
+                        .find((token) => {
+                        let value = token.value;
+                        const [xc, sheet] = value.split("!").reverse();
+                        const sheetName = sheet || this.getters.getSheetName(this.sheetId);
+                        const activeSheetId = this.getters.getActiveSheetId();
+                        if (this.getters.getSheetName(activeSheetId) !== sheetName) {
+                            return false;
+                        }
+                        const refRange = this.getters.getRangeFromSheetXC(activeSheetId, xc);
+                        return isEqual(this.getters.expandZone(activeSheetId, refRange.zone), range.zone);
+                    });
+                    this.previousRef = previousRefToken.value;
+                    this.previousRange = this.getters.getRangeFromSheetXC(this.getters.getActiveSheetId(), this.previousRef);
+                    this.selectionInitialStart = previousRefToken.start;
+                    break;
+                case "CHANGE_HIGHLIGHT":
+                    const cmdRange = this.getters.getRangeFromRangeData(cmd.range);
+                    const newRef = this.getRangeReference(cmdRange, this.previousRange.parts);
+                    this.selectionStart = this.selectionInitialStart;
+                    this.selectionEnd = this.selectionInitialStart + this.previousRef.length;
+                    this.replaceSelection(newRef);
+                    this.previousRef = newRef;
+                    this.selectionStart = this.currentContent.length;
+                    this.selectionEnd = this.currentContent.length;
+                    break;
+                case "ACTIVATE_SHEET":
+                    if (cmd.sheetIdFrom !== cmd.sheetIdTo) {
+                        const { col, row } = this.getters.getNextVisibleCellPosition(cmd.sheetIdTo, 0, 0);
+                        const zone = this.getters.expandZone(cmd.sheetIdTo, positionToZone({ col, row }));
+                        this.selection.resetAnchor(this, { cell: { col, row }, zone });
+                    }
+                    break;
+                case "DELETE_SHEET":
+                case "UNDO":
+                case "REDO":
+                    const sheetIdExists = !!this.getters.tryGetSheet(this.sheetId);
+                    if (!sheetIdExists && this.mode !== "inactive") {
+                        this.sheetId = this.getters.getActiveSheetId();
+                        this.cancelEdition();
+                        this.resetContent();
+                        this.ui.notifyUI({
+                            type: "NOTIFICATION",
+                            text: CELL_DELETED_MESSAGE,
+                        });
+                    }
+                    break;
+                case "CYCLE_EDITION_REFERENCES":
+                    this.cycleReferences();
+                    break;
+            }
+        }
+        unsubscribe() {
+            this.mode = "inactive";
+        }
+        // ---------------------------------------------------------------------------
+        // Getters
+        // ---------------------------------------------------------------------------
+        getEditionMode() {
+            return this.mode;
+        }
+        getCurrentContent() {
+            if (this.mode === "inactive") {
+                const cell = this.getters.getActiveCell();
+                return (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
+            }
+            return this.currentContent;
+        }
+        getEditionSheet() {
+            return this.sheetId;
+        }
+        getComposerSelection() {
+            return {
+                start: this.selectionStart,
+                end: this.selectionEnd,
+            };
+        }
+        isSelectingForComposer() {
+            return this.mode === "selecting";
+        }
+        showSelectionIndicator() {
+            return this.isSelectingForComposer() && this.canStartComposerRangeSelection();
+        }
+        getCurrentTokens() {
+            return this.currentTokens;
+        }
+        /**
+         * Return the (enriched) token just before the cursor.
+         */
+        getTokenAtCursor() {
+            const start = Math.min(this.selectionStart, this.selectionEnd);
+            const end = Math.max(this.selectionStart, this.selectionEnd);
+            if (start === end && end === 0) {
+                return undefined;
+            }
+            else {
+                return this.currentTokens.find((t) => t.start <= start && t.end >= end);
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Misc
+        // ---------------------------------------------------------------------------
+        cycleReferences() {
+            const tokens = this.getTokensInSelection();
+            const refTokens = tokens.filter((token) => token.type === "REFERENCE");
+            if (refTokens.length === 0)
+                return;
+            const updatedReferences = tokens
+                .map(loopThroughReferenceType)
+                .map((token) => token.value)
+                .join("");
+            const content = this.currentContent;
+            const start = tokens[0].start;
+            const end = tokens[tokens.length - 1].end;
+            const newContent = content.slice(0, start) + updatedReferences + content.slice(end);
+            const lengthDiff = newContent.length - content.length;
+            this.dispatch("SET_CURRENT_CONTENT", {
+                content: newContent,
+                selection: {
+                    start: refTokens[0].start,
+                    end: refTokens[refTokens.length - 1].end + lengthDiff,
+                },
+            });
+        }
+        validateSelection(length, start, end) {
+            return start >= 0 && start <= length && end >= 0 && end <= length
+                ? 0 /* Success */
+                : 42 /* WrongComposerSelection */;
+        }
+        onColumnsRemoved(cmd) {
+            if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
+                this.dispatch("STOP_EDITION", { cancel: true });
+                this.ui.notifyUI({
+                    type: "NOTIFICATION",
+                    text: CELL_DELETED_MESSAGE,
+                });
+                return;
+            }
+            const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "left", [...cmd.elements]);
+            this.col = left;
+            this.row = top;
+        }
+        onRowsRemoved(cmd) {
+            if (cmd.elements.includes(this.row) && this.mode !== "inactive") {
+                this.dispatch("STOP_EDITION", { cancel: true });
+                this.ui.notifyUI({
+                    type: "NOTIFICATION",
+                    text: CELL_DELETED_MESSAGE,
+                });
+                return;
+            }
+            const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "top", [...cmd.elements]);
+            this.col = left;
+            this.row = top;
+        }
+        onAddElements(cmd) {
+            const { top, left } = updateSelectionOnInsertion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, cmd.dimension === "COL" ? "left" : "top", cmd.base, cmd.position, cmd.quantity);
+            this.col = left;
+            this.row = top;
+        }
+        /**
+         * Enable the selecting mode
+         */
+        startComposerRangeSelection() {
+            if (this.sheetId === this.getters.getActiveSheetId()) {
+                const zone = positionToZone({ col: this.col, row: this.row });
+                this.selection.resetAnchor(this, { cell: { col: this.col, row: this.row }, zone });
+            }
+            this.mode = "selecting";
+            this.selectionInitialStart = this.selectionStart;
+        }
+        /**
+         * start the edition of a cell
+         * @param str the key that is used to start the edition if it is a "content" key like a letter or number
+         * @param selection
+         * @private
+         */
+        startEdition(str, selection) {
+            var _a;
+            const cell = this.getters.getActiveCell();
+            if (str && ((_a = cell === null || cell === void 0 ? void 0 : cell.format) === null || _a === void 0 ? void 0 : _a.includes("%")) && isNumber(str)) {
+                selection = selection || { start: str.length, end: str.length };
+                str = `${str}%`;
+            }
+            this.initialContent = (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
+            this.mode = "editing";
+            const { col, row } = this.getters.getPosition();
+            this.col = col;
+            this.row = row;
+            this.sheetId = this.getters.getActiveSheetId();
+            this.setContent(str || this.initialContent, selection);
+            this.colorIndexByRange = {};
+            const zone = positionToZone({ col: this.col, row: this.row });
+            this.selection.capture(this, { cell: { col: this.col, row: this.row }, zone }, {
+                handleEvent: this.handleEvent.bind(this),
+                release: () => (this.mode = "inactive"),
+            });
+        }
+        stopEdition() {
+            if (this.mode !== "inactive") {
+                const activeSheetId = this.getters.getActiveSheetId();
+                this.cancelEdition();
+                const { col, row } = this.getters.getMainCellPosition(this.sheetId, this.col, this.row);
+                let content = this.currentContent;
+                const didChange = this.initialContent !== content;
+                if (!didChange) {
+                    return;
+                }
+                if (content) {
+                    const cell = this.getters.getCell(activeSheetId, col, row);
+                    if (content.startsWith("=")) {
+                        const left = this.currentTokens.filter((t) => t.type === "LEFT_PAREN").length;
+                        const right = this.currentTokens.filter((t) => t.type === "RIGHT_PAREN").length;
+                        const missing = left - right;
+                        if (missing > 0) {
+                            content += concat(new Array(missing).fill(")"));
+                        }
+                    }
+                    else if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
+                        content = markdownLink(content, cell.link.url);
+                    }
+                    this.dispatch("UPDATE_CELL", {
+                        sheetId: this.sheetId,
+                        col,
+                        row,
+                        content,
+                    });
+                }
+                else {
+                    this.dispatch("UPDATE_CELL", {
+                        sheetId: this.sheetId,
+                        content: "",
+                        col,
+                        row,
+                    });
+                }
+                this.setContent("");
+            }
+        }
+        cancelEdition() {
+            if (this.mode === "inactive") {
+                return;
+            }
+            this.mode = "inactive";
+            this.selection.release(this);
+            const sheetId = this.getters.getActiveSheetId();
+            if (sheetId !== this.sheetId) {
+                this.dispatch("ACTIVATE_SHEET", {
+                    sheetIdFrom: this.getters.getActiveSheetId(),
+                    sheetIdTo: this.sheetId,
+                });
+            }
+        }
+        /**
+         * Reset the current content to the active cell content
+         */
+        resetContent() {
+            this.setContent(this.initialContent || "");
+        }
+        setContent(text, selection) {
+            const isNewCurrentContent = this.currentContent !== text;
+            this.currentContent = text;
+            if (selection) {
+                this.selectionStart = selection.start;
+                this.selectionEnd = selection.end;
+            }
+            else {
+                this.selectionStart = this.selectionEnd = text.length;
+            }
+            if (isNewCurrentContent || this.mode !== "inactive") {
+                this.currentTokens = text.startsWith("=") ? composerTokenize(text) : [];
+            }
+            if (this.canStartComposerRangeSelection()) {
+                this.startComposerRangeSelection();
+            }
+        }
+        insertSelectedRange(zone) {
+            // infer if range selected or selecting range from cursor position
+            const start = Math.min(this.selectionStart, this.selectionEnd);
+            const ref = this.getZoneReference(zone);
+            if (this.canStartComposerRangeSelection()) {
+                this.insertText(ref, start);
+                this.selectionInitialStart = start;
+            }
+            else {
+                this.insertText("," + ref, start);
+                this.selectionInitialStart = start + 1;
+            }
+        }
+        /**
+         * Replace the current reference selected by the new one.
+         * */
+        replaceSelectedRanges(zone) {
+            const ref = this.getZoneReference(zone);
+            this.replaceText(ref, this.selectionInitialStart, this.selectionEnd);
+        }
+        getZoneReference(zone, fixedParts = [{ colFixed: false, rowFixed: false }]) {
+            const sheetId = this.getters.getActiveSheetId();
+            let selectedXc = this.getters.zoneToXC(sheetId, zone, fixedParts);
+            if (this.getters.getEditionSheet() !== this.getters.getActiveSheetId()) {
+                const sheetName = getComposerSheetName(this.getters.getSheetName(this.getters.getActiveSheetId()));
+                selectedXc = `${sheetName}!${selectedXc}`;
+            }
+            return selectedXc;
+        }
+        getRangeReference(range, fixedParts = [{ colFixed: false, rowFixed: false }]) {
+            if (fixedParts.length === 1 && getZoneArea(range.zone) > 1) {
+                fixedParts.push({ ...fixedParts[0] });
+            }
+            else if (fixedParts.length === 2 && getZoneArea(range.zone) === 1) {
+                fixedParts.pop();
+            }
+            const newRange = range.clone({ parts: this.previousRange.parts });
+            return this.getters.getSelectionRangeString(newRange, this.getters.getEditionSheet());
+        }
+        /**
+         * Replace the current selection by a new text.
+         * The cursor is then set at the end of the text.
+         */
+        replaceSelection(text) {
+            const start = Math.min(this.selectionStart, this.selectionEnd);
+            const end = Math.max(this.selectionStart, this.selectionEnd);
+            this.replaceText(text, start, end);
+        }
+        replaceText(text, start, end) {
+            this.currentContent =
+                this.currentContent.slice(0, start) +
+                    this.currentContent.slice(end, this.currentContent.length);
+            this.insertText(text, start);
+        }
+        /**
+         * Insert a text at the given position.
+         * The cursor is then set at the end of the text.
+         */
+        insertText(text, start) {
+            const content = this.currentContent.slice(0, start) + text + this.currentContent.slice(start);
+            const end = start + text.length;
+            this.dispatch("SET_CURRENT_CONTENT", {
+                content,
+                selection: { start: end, end },
+            });
+        }
+        updateRangeColor() {
+            if (!this.currentContent.startsWith("=") || this.mode === "inactive") {
+                return;
+            }
+            const editionSheetId = this.getters.getEditionSheet();
+            const XCs = this.getReferencedRanges().map((range) => this.getters.getRangeString(range, editionSheetId));
+            const colorsToKeep = {};
+            for (const xc of XCs) {
+                if (this.colorIndexByRange[xc] !== undefined) {
+                    colorsToKeep[xc] = this.colorIndexByRange[xc];
+                }
+            }
+            const usedIndexes = new Set(Object.values(colorsToKeep));
+            let currentIndex = 0;
+            const nextIndex = () => {
+                while (usedIndexes.has(currentIndex))
+                    currentIndex++;
+                usedIndexes.add(currentIndex);
+                return currentIndex;
+            };
+            for (const xc of XCs) {
+                const colorIndex = xc in colorsToKeep ? colorsToKeep[xc] : nextIndex();
+                colorsToKeep[xc] = colorIndex;
+            }
+            this.colorIndexByRange = colorsToKeep;
+        }
+        /**
+         * Highlight all ranges that can be found in the composer content.
+         */
+        getComposerHighlights() {
+            if (!this.currentContent.startsWith("=") || this.mode === "inactive") {
+                return [];
+            }
+            const editionSheetId = this.getters.getEditionSheet();
+            const rangeColor = (rangeString) => {
+                const colorIndex = this.colorIndexByRange[rangeString];
+                return colors$1[colorIndex % colors$1.length];
+            };
+            return this.getReferencedRanges().map((range) => {
+                const rangeString = this.getters.getRangeString(range, editionSheetId);
+                return {
+                    zone: range.zone,
+                    color: rangeColor(rangeString),
+                    sheetId: range.sheetId,
+                };
+            });
+        }
+        /**
+         * Return ranges currently referenced in the composer
+         */
+        getReferencedRanges() {
+            const editionSheetId = this.getters.getEditionSheet();
+            return this.currentTokens
+                .filter((token) => token.type === "REFERENCE")
+                .map((token) => this.getters.getRangeFromSheetXC(editionSheetId, token.value));
+        }
+        /**
+         * Function used to determine when composer selection can start.
+         * Three conditions are necessary:
+         * - the previous token is among ["COMMA", "LEFT_PAREN", "OPERATOR"], and is not a postfix unary operator
+         * - the next token is missing or is among ["COMMA", "RIGHT_PAREN", "OPERATOR"]
+         * - Previous and next tokens can be separated by spaces
+         */
+        canStartComposerRangeSelection() {
+            if (this.currentContent.startsWith("=")) {
+                const tokenAtCursor = this.getTokenAtCursor();
+                if (!tokenAtCursor) {
+                    return false;
+                }
+                const tokenIdex = this.currentTokens.map((token) => token.start).indexOf(tokenAtCursor.start);
+                let count = tokenIdex;
+                let currentToken = tokenAtCursor;
+                // check previous token
+                while (!["COMMA", "LEFT_PAREN", "OPERATOR"].includes(currentToken.type) ||
+                    POSTFIX_UNARY_OPERATORS.includes(currentToken.value)) {
+                    if (currentToken.type !== "SPACE" || count < 1) {
+                        return false;
+                    }
+                    count--;
+                    currentToken = this.currentTokens[count];
+                }
+                count = tokenIdex + 1;
+                currentToken = this.currentTokens[count];
+                // check next token
+                while (currentToken && !["COMMA", "RIGHT_PAREN", "OPERATOR"].includes(currentToken.type)) {
+                    if (currentToken.type !== "SPACE") {
+                        return false;
+                    }
+                    count++;
+                    currentToken = this.currentTokens[count];
+                }
+                return true;
+            }
+            return false;
+        }
+        /**
+         * Return all the tokens between selectionStart and selectionEnd.
+         * Includes token that begin right on selectionStart or end right on selectionEnd.
+         */
+        getTokensInSelection() {
+            const start = Math.min(this.selectionStart, this.selectionEnd);
+            const end = Math.max(this.selectionStart, this.selectionEnd);
+            return this.currentTokens.filter((t) => (t.start <= start && t.end >= start) || (t.start >= start && t.start < end));
+        }
+    }
+    EditionPlugin.getters = [
+        "getEditionMode",
+        "isSelectingForComposer",
+        "showSelectionIndicator",
+        "getCurrentContent",
+        "getEditionSheet",
+        "getComposerSelection",
+        "getCurrentTokens",
+        "getTokenAtCursor",
+        "getComposerHighlights",
+    ];
+
+    const functions$1 = functionRegistry.content;
+    const providerRegistry = new Registry();
+    providerRegistry.add("functions", () => {
+        return Object.keys(functions$1).map((key) => {
+            return {
+                text: key,
+                description: functions$1[key].description,
+            };
+        });
+    });
+    // -----------------------------------------------------------------------------
+    // Autocomplete DropDown component
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-autocomplete-dropdown {
+    pointer-events: auto;
+    background-color: #fff;
+    & > div:hover {
+      background-color: #f2f2f2;
+    }
+    .o-autocomplete-value-focus {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      padding: 1px 0 5px 5px;
+      .o-autocomplete-description {
+        padding: 0 0 0 5px;
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+`;
+    class TextValueProvider extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                values: [],
+                selectedIndex: 0,
+            });
+        }
+        setup() {
+            owl.onMounted(() => this.filter(this.props.search));
+            owl.onWillUpdateProps((nextProps) => this.checkUpdateProps(nextProps));
+            this.props.exposeAPI({
+                getValueToFill: () => this.getValueToFill(),
+                moveDown: () => this.moveDown(),
+                moveUp: () => this.moveUp(),
+            });
+        }
+        checkUpdateProps(nextProps) {
+            if (nextProps.search !== this.props.search) {
+                this.filter(nextProps.search);
+            }
+        }
+        async filter(searchTerm) {
+            const provider = providerRegistry.get(this.props.provider);
+            let values = provider();
+            if (this.props.filter) {
+                values = this.props.filter(searchTerm, values);
+            }
+            else {
+                values = values
+                    .filter((t) => t.text.toUpperCase().startsWith(searchTerm.toUpperCase()))
+                    .sort((l, r) => (l.text < r.text ? -1 : l.text > r.text ? 1 : 0));
+            }
+            this.state.values = values.slice(0, 10);
+            this.state.selectedIndex = 0;
+        }
+        fillValue(index) {
+            this.state.selectedIndex = index;
+            this.props.onCompleted(this.getValueToFill());
+        }
+        moveDown() {
+            this.state.selectedIndex = (this.state.selectedIndex + 1) % this.state.values.length;
+        }
+        moveUp() {
+            this.state.selectedIndex--;
+            if (this.state.selectedIndex < 0) {
+                this.state.selectedIndex = this.state.values.length - 1;
+            }
+        }
+        getValueToFill() {
+            if (this.state.values.length) {
+                return this.state.values[this.state.selectedIndex].text;
+            }
+            return undefined;
+        }
+    }
+    TextValueProvider.template = "o-spreadsheet-TextValueProvider";
+
+    class ContentEditableHelper {
+        constructor(el) {
+            this.el = el;
+        }
+        updateEl(el) {
+            this.el = el;
+        }
+        /**
+         * select the text at position start to end, no matter the children
+         */
+        selectRange(start, end) {
+            let selection = window.getSelection();
+            this.removeSelection();
+            let range = document.createRange();
+            if (start == end && start === 0) {
+                range.setStart(this.el, 0);
+                range.setEnd(this.el, 0);
+                selection.addRange(range);
+            }
+            else {
+                if (start < 0 || end > this.el.textContent.length) {
+                    console.warn(`wrong selection asked start ${start}, end ${end}, text content length ${this.el.textContent.length}`);
+                    if (start < 0)
+                        start = 0;
+                    if (end > this.el.textContent.length)
+                        end = this.el.textContent.length;
+                }
+                let startNode = this.findChildAtCharacterIndex(start);
+                let endNode = this.findChildAtCharacterIndex(end);
+                range.setStart(startNode.node, startNode.offset);
+                selection.addRange(range);
+                selection.extend(endNode.node, endNode.offset);
+            }
+        }
+        /**
+         * finds the dom element that contains the character at `offset`
+         */
+        findChildAtCharacterIndex(offset) {
+            let it = this.iterateChildren(this.el);
+            let current, previous;
+            let usedCharacters = offset;
+            do {
+                current = it.next();
+                if (!current.done && !current.value.hasChildNodes()) {
+                    if (current.value.textContent && current.value.textContent.length < usedCharacters) {
+                        usedCharacters -= current.value.textContent.length;
+                    }
+                    else {
+                        it.return(current.value);
+                    }
+                    previous = current.value;
+                }
+            } while (!current.done);
+            if (current.value) {
+                return { node: current.value, offset: usedCharacters };
+            }
+            return { node: previous, offset: usedCharacters };
+        }
+        /**
+         * Iterate over the dom tree starting at `el` and over all the children depth first.
+         * */
+        *iterateChildren(el) {
+            yield el;
+            if (el.hasChildNodes()) {
+                for (let child of el.childNodes) {
+                    yield* this.iterateChildren(child);
+                }
+            }
+        }
+        /**
+         * Sets (or Replaces all) the text inside the root element in the form of distinctive
+         * span for each element provided in `contents`.
+         *
+         * Each span will have its own fontcolor and specific class if provided in the HtmlContent object.
+         */
+        setText(contents) {
+            if (contents.length === 0) {
+                return;
+            }
+            for (const content of contents) {
+                const span = document.createElement("span");
+                span.innerText = content.value;
+                if (content.color) {
+                    span.style.color = content.color;
+                }
+                if (content.class) {
+                    span.classList.add(content.class);
+                }
+                this.el.appendChild(span);
+            }
+        }
+        /**
+         * remove the current selection of the user
+         * */
+        removeSelection() {
+            let selection = window.getSelection();
+            selection.removeAllRanges();
+        }
+        removeAll() {
+            if (this.el) {
+                while (this.el.firstChild) {
+                    this.el.removeChild(this.el.firstChild);
+                }
+            }
+        }
+        /**
+         * finds the indexes of the current selection.
+         * */
+        getCurrentSelection() {
+            let { startElement, endElement, startSelectionOffset, endSelectionOffset } = this.getStartAndEndSelection();
+            let startSizeBefore = this.findSizeBeforeElement(startElement);
+            let endSizeBefore = this.findSizeBeforeElement(endElement);
+            return {
+                start: startSizeBefore + startSelectionOffset,
+                end: endSizeBefore + endSelectionOffset,
+            };
+        }
+        findSizeBeforeElement(nodeToFind) {
+            let it = this.iterateChildren(this.el);
+            let usedCharacters = 0;
+            let current = it.next();
+            while (!current.done && current.value !== nodeToFind) {
+                if (!current.value.hasChildNodes()) {
+                    if (current.value.textContent) {
+                        usedCharacters += current.value.textContent.length;
+                    }
+                }
+                current = it.next();
+            }
+            return usedCharacters;
+        }
+        getStartAndEndSelection() {
+            const selection = document.getSelection();
+            return {
+                startElement: selection.anchorNode || this.el,
+                startSelectionOffset: selection.anchorOffset,
+                endElement: selection.focusNode || this.el,
+                endSelectionOffset: selection.focusOffset,
+            };
+        }
+    }
+
+    // -----------------------------------------------------------------------------
+    // Formula Assistant component
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-formula-assistant {
+    white-space: normal;
+    background-color: #fff;
+    .o-formula-assistant-head {
+      background-color: #f2f2f2;
+      padding: 10px;
+    }
+    .o-formula-assistant-core {
+      padding: 0px 0px 10px 0px;
+      margin: 10px;
+      border-bottom: 1px solid gray;
+    }
+    .o-formula-assistant-arg {
+      padding: 0px 10px 10px 10px;
+      display: flex;
+      flex-direction: column;
+    }
+    .o-formula-assistant-arg-description {
+      font-size: 85%;
+    }
+    .o-formula-assistant-focus {
+      div:first-child,
+      span {
+        color: purple;
+        text-shadow: 0px 0px 1px purple;
+      }
+      div:last-child {
+        color: black;
+      }
+    }
+    .o-formula-assistant-gray {
+      color: gray;
+    }
+  }
+  .o-formula-assistant-container {
+    user-select: none;
+  }
+  .o-formula-assistant-event-none {
+    pointer-events: none;
+  }
+  .o-formula-assistant-event-auto {
+    pointer-events: auto;
+  }
+  .o-formula-assistant-transparency {
+    opacity: 0.3;
+  }
+`;
+    class FunctionDescriptionProvider extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.assistantState = owl.useState({
+                allowCellSelectionBehind: false,
+            });
+            this.timeOutId = 0;
+        }
+        setup() {
+            owl.onWillUnmount(() => {
+                if (this.timeOutId) {
+                    clearTimeout(this.timeOutId);
+                }
+            });
+        }
+        getContext() {
+            return this.props;
+        }
+        onMouseMove() {
+            this.assistantState.allowCellSelectionBehind = true;
+            if (this.timeOutId) {
+                clearTimeout(this.timeOutId);
+            }
+            this.timeOutId = setTimeout(() => {
+                this.assistantState.allowCellSelectionBehind = false;
+            }, 2000);
+        }
+    }
+    FunctionDescriptionProvider.template = "o-spreadsheet-FunctionDescriptionProvider";
+
+    const functions = functionRegistry.content;
+    const ASSISTANT_WIDTH = 300;
+    const FunctionColor = "#4a4e4d";
+    const OperatorColor = "#3da4ab";
+    const StringColor = "#00a82d";
+    const SelectionIndicatorColor = "darkgrey";
+    const NumberColor = "#02c39a";
+    const MatchingParenColor = "black";
+    const SelectionIndicatorClass = "selector-flag";
+    const tokenColor = {
+        OPERATOR: OperatorColor,
+        NUMBER: NumberColor,
+        STRING: StringColor,
+        FUNCTION: FunctionColor,
+        DEBUGGER: OperatorColor,
+        LEFT_PAREN: FunctionColor,
+        RIGHT_PAREN: FunctionColor,
+        COMMA: FunctionColor,
+    };
+    css /* scss */ `
+  .o-composer-container {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    z-index: ${ComponentsImportance.Composer};
+    flex-grow: 1;
+    max-height: inherit;
+    .o-composer {
+      caret-color: black;
+      padding-left: 3px;
+      padding-right: 3px;
+      word-break: break-all;
+      &:focus {
+        outline: none;
+      }
+      &.unfocusable {
+        pointer-events: none;
+      }
+      span {
+        white-space: pre;
+        &.${SelectionIndicatorClass}:after {
+          content: "${SelectionIndicator}";
+          color: ${SelectionIndicatorColor};
+        }
+      }
+    }
+    .o-composer-assistant {
+      position: absolute;
+      margin: 4px;
+      pointer-events: none;
+    }
+  }
+
+  /* Custom css to highlight topbar composer on focus */
+  .o-topbar-toolbar .o-composer-container:focus-within {
+    border: 1px solid ${SELECTION_BORDER_COLOR};
+  }
+`;
+    class Composer extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.composerRef = owl.useRef("o_composer");
+            this.contentHelper = new ContentEditableHelper(this.composerRef.el);
+            this.composerState = owl.useState({
+                positionStart: 0,
+                positionEnd: 0,
+            });
+            this.autoCompleteState = owl.useState({
+                showProvider: false,
+                provider: "functions",
+                search: "",
+            });
+            this.functionDescriptionState = owl.useState({
+                showDescription: false,
+                functionName: "",
+                functionDescription: {},
+                argToFocus: 0,
+            });
+            this.isKeyStillDown = false;
+            this.borderStyle = `box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);`;
+            // we can't allow input events to be triggered while we remove and add back the content of the composer in processContent
+            this.shouldProcessInputEvents = false;
+            this.tokens = [];
+            this.keyMapping = {
+                ArrowUp: this.processArrowKeys,
+                ArrowDown: this.processArrowKeys,
+                ArrowLeft: this.processArrowKeys,
+                ArrowRight: this.processArrowKeys,
+                Enter: this.processEnterKey,
+                Escape: this.processEscapeKey,
+                F2: () => console.warn("Not implemented"),
+                F4: this.processF4Key,
+                Tab: (ev) => this.processTabKey(ev),
+            };
+        }
+        get assistantStyle() {
+            if (this.props.delimitation && this.props.rect) {
+                const { x: cellX, y: cellY, height: cellHeight } = this.props.rect;
+                const remainingHeight = this.props.delimitation.height - (cellY + cellHeight);
+                let assistantStyle = "";
+                if (cellY > remainingHeight) {
+                    // render top
+                    assistantStyle += `
+          top: -8px;
+          transform: translate(0, -100%);
+        `;
+                }
+                if (cellX + ASSISTANT_WIDTH > this.props.delimitation.width) {
+                    // render left
+                    assistantStyle += `right:0px;`;
+                }
+                return (assistantStyle += `width:${ASSISTANT_WIDTH}px;`);
+            }
+            return `width:${ASSISTANT_WIDTH}px;`;
+        }
+        setup() {
+            owl.onMounted(() => {
+                const el = this.composerRef.el;
+                this.contentHelper.updateEl(el);
+                this.processContent();
+            });
+            owl.onWillUnmount(() => {
+                var _a, _b;
+                (_b = (_a = this.props).onComposerUnmounted) === null || _b === void 0 ? void 0 : _b.call(_a);
+            });
+            owl.onPatched(() => {
+                if (!this.isKeyStillDown) {
+                    this.processContent();
+                }
+            });
+        }
+        // ---------------------------------------------------------------------------
+        // Handlers
+        // ---------------------------------------------------------------------------
+        processArrowKeys(ev) {
+            if (this.env.model.getters.isSelectingForComposer()) {
+                this.functionDescriptionState.showDescription = false;
+                // Prevent the default content editable behavior which moves the cursor
+                // but don't stop the event and let it bubble to the grid which will
+                // update the selection accordingly
+                ev.preventDefault();
+                return;
+            }
+            const content = this.env.model.getters.getCurrentContent();
+            if (this.props.focus === "cellFocus" &&
+                !this.autoCompleteState.showProvider &&
+                !content.startsWith("=")) {
+                this.env.model.dispatch("STOP_EDITION");
+                return;
+            }
+            ev.stopPropagation();
+            // only for arrow up and down
+            if (["ArrowUp", "ArrowDown"].includes(ev.key) &&
+                this.autoCompleteState.showProvider &&
+                this.autocompleteAPI) {
+                ev.preventDefault();
+                if (ev.key === "ArrowUp") {
+                    this.autocompleteAPI.moveUp();
+                }
+                else {
+                    this.autocompleteAPI.moveDown();
+                }
+            }
+        }
+        processTabKey(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
+                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
+                if (autoCompleteValue) {
+                    this.autoComplete(autoCompleteValue);
+                    return;
+                }
+            }
+            else {
+                // when completing with tab, if there is no value to complete, the active cell will be moved to the right.
+                // we can't let the model think that it is for a ref selection.
+                // todo: check if this can be removed someday
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            }
+            const direction = ev.shiftKey ? "left" : "right";
+            this.env.model.dispatch("STOP_EDITION");
+            this.env.model.selection.moveAnchorCell(direction, "one");
+        }
+        processEnterKey(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            this.isKeyStillDown = false;
+            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
+                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
+                if (autoCompleteValue) {
+                    this.autoComplete(autoCompleteValue);
+                    return;
+                }
+            }
+            this.env.model.dispatch("STOP_EDITION");
+            const direction = ev.shiftKey ? "up" : "down";
+            this.env.model.selection.moveAnchorCell(direction, "one");
+        }
+        processEscapeKey() {
+            this.env.model.dispatch("STOP_EDITION", { cancel: true });
+        }
+        processF4Key() {
+            this.env.model.dispatch("CYCLE_EDITION_REFERENCES");
+            this.processContent();
+        }
+        onKeydown(ev) {
+            let handler = this.keyMapping[ev.key];
+            if (handler) {
+                handler.call(this, ev);
+            }
+            else {
+                ev.stopPropagation();
+            }
+            const { start, end } = this.contentHelper.getCurrentSelection();
+            if (!this.env.model.getters.isSelectingForComposer()) {
+                this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", { start, end });
+                this.isKeyStillDown = true;
+            }
+        }
+        /*
+         * Triggered automatically by the content-editable between the keydown and key up
+         * */
+        onInput() {
+            if (this.props.focus === "inactive" || !this.shouldProcessInputEvents) {
+                return;
+            }
+            this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            const el = this.composerRef.el;
+            this.env.model.dispatch("SET_CURRENT_CONTENT", {
+                content: el.childNodes.length ? el.textContent : "",
+                selection: this.contentHelper.getCurrentSelection(),
+            });
+        }
+        onKeyup(ev) {
+            this.isKeyStillDown = false;
+            if (this.props.focus === "inactive" ||
+                ["Control", "Shift", "Tab", "Enter", "F4"].includes(ev.key)) {
+                return;
+            }
+            if (this.autoCompleteState.showProvider && ["ArrowUp", "ArrowDown"].includes(ev.key)) {
+                return; // already processed in keydown
+            }
+            if (this.env.model.getters.isSelectingForComposer() &&
+                ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
+                return; // already processed in keydown
+            }
+            ev.preventDefault();
+            ev.stopPropagation();
+            this.autoCompleteState.showProvider = false;
+            if (ev.ctrlKey && ev.key === " ") {
+                this.autoCompleteState.search = "";
+                this.autoCompleteState.showProvider = true;
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+                return;
+            }
+            const { start: oldStart, end: oldEnd } = this.env.model.getters.getComposerSelection();
+            const { start, end } = this.contentHelper.getCurrentSelection();
+            if (start !== oldStart || end !== oldEnd) {
+                this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", this.contentHelper.getCurrentSelection());
+            }
+            this.processTokenAtCursor();
+            this.processContent();
+        }
+        onMousedown(ev) {
+            if (ev.button > 0) {
+                // not main button, probably a context menu
+                return;
+            }
+            this.contentHelper.removeSelection();
+        }
+        onClick() {
+            if (this.env.model.getters.isReadonly()) {
+                return;
+            }
+            const newSelection = this.contentHelper.getCurrentSelection();
+            this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            if (this.props.focus === "inactive") {
+                this.props.onComposerContentFocused(newSelection);
+            }
+            this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", newSelection);
+            this.processTokenAtCursor();
+        }
+        onBlur() {
+            this.isKeyStillDown = false;
+        }
+        onCompleted(text) {
+            text && this.autoComplete(text);
+        }
+        // ---------------------------------------------------------------------------
+        // Private
+        // ---------------------------------------------------------------------------
+        processContent() {
+            this.contentHelper.removeAll(); // removes the content of the composer, to be added just after
+            this.shouldProcessInputEvents = false;
+            if (this.props.focus !== "inactive") {
+                this.contentHelper.selectRange(0, 0); // move the cursor inside the composer at 0 0.
+            }
+            const content = this.getContent();
+            if (content.length !== 0) {
+                this.contentHelper.setText(content);
+                const { start, end } = this.env.model.getters.getComposerSelection();
+                if (this.props.focus !== "inactive") {
+                    // Put the cursor back where it was before the rendering
+                    this.contentHelper.selectRange(start, end);
+                }
+            }
+            this.shouldProcessInputEvents = true;
+        }
+        getContent() {
+            let content;
+            let value = this.env.model.getters.getCurrentContent();
+            if (value === "") {
+                content = [];
+            }
+            else if (value.startsWith("=") && this.props.focus !== "inactive") {
+                content = this.getColoredTokens();
+            }
+            else {
+                content = [{ value }];
+            }
+            return content;
+        }
+        getColoredTokens() {
+            const tokens = this.env.model.getters.getCurrentTokens();
+            const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
+            const result = [];
+            const { end, start } = this.env.model.getters.getComposerSelection();
+            for (let token of tokens) {
+                switch (token.type) {
+                    case "OPERATOR":
+                    case "NUMBER":
+                    case "FUNCTION":
+                    case "COMMA":
+                    case "STRING":
+                        result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
+                        break;
+                    case "REFERENCE":
+                        const [xc, sheet] = token.value.split("!").reverse();
+                        result.push({ value: token.value, color: this.rangeColor(xc, sheet) || "#000" });
+                        break;
+                    case "SYMBOL":
+                        let value = token.value;
+                        if (["TRUE", "FALSE"].includes(value.toUpperCase())) {
+                            result.push({ value: token.value, color: NumberColor });
+                        }
+                        else {
+                            result.push({ value: token.value, color: "#000" });
+                        }
+                        break;
+                    case "LEFT_PAREN":
+                    case "RIGHT_PAREN":
+                        // Compute the matching parenthesis
+                        if (tokenAtCursor &&
+                            ["LEFT_PAREN", "RIGHT_PAREN"].includes(tokenAtCursor.type) &&
+                            tokenAtCursor.parenIndex &&
+                            tokenAtCursor.parenIndex === token.parenIndex) {
+                            result.push({ value: token.value, color: MatchingParenColor  });
+                        }
+                        else {
+                            result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
+                        }
+                        break;
+                    default:
+                        result.push({ value: token.value, color: "#000" });
+                        break;
+                }
+                if (this.env.model.getters.showSelectionIndicator() && end === start && end === token.end) {
+                    result[result.length - 1].class = SelectionIndicatorClass;
+                }
+            }
+            return result;
+        }
+        rangeColor(xc, sheetName) {
+            if (this.props.focus === "inactive") {
+                return undefined;
+            }
+            const highlights = this.env.model.getters.getHighlights();
+            const refSheet = sheetName
+                ? this.env.model.getters.getSheetIdByName(sheetName)
+                : this.env.model.getters.getEditionSheet();
+            const highlight = highlights.find((highlight) => {
+                if (highlight.sheetId !== refSheet)
+                    return false;
+                const range = this.env.model.getters.getRangeFromSheetXC(refSheet, xc);
+                let zone = range.zone;
+                const { height, width } = zoneToDimension(zone);
+                zone = height * width === 1 ? this.env.model.getters.expandZone(refSheet, zone) : zone;
+                return isEqual(zone, highlight.zone);
+            });
+            return highlight && highlight.color ? highlight.color : undefined;
+        }
+        /**
+         * Compute the state of the composer from the tokenAtCursor.
+         * If the token is a function or symbol (that isn't a cell/range reference) we have to initialize
+         * the autocomplete engine otherwise we initialize the formula assistant.
+         */
+        processTokenAtCursor() {
+            let content = this.env.model.getters.getCurrentContent();
+            this.autoCompleteState.showProvider = false;
+            this.functionDescriptionState.showDescription = false;
+            if (content.startsWith("=")) {
+                const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
+                if (tokenAtCursor) {
+                    const [xc] = tokenAtCursor.value.split("!").reverse();
+                    if (tokenAtCursor.type === "FUNCTION" ||
+                        (tokenAtCursor.type === "SYMBOL" && !rangeReference.test(xc))) {
+                        // initialize Autocomplete Dropdown
+                        this.autoCompleteState.search = tokenAtCursor.value;
+                        this.autoCompleteState.showProvider = true;
+                    }
+                    else if (tokenAtCursor.functionContext && tokenAtCursor.type !== "UNKNOWN") {
+                        // initialize Formula Assistant
+                        const tokenContext = tokenAtCursor.functionContext;
+                        const parentFunction = tokenContext.parent.toUpperCase();
+                        const description = functions[parentFunction];
+                        const argPosition = tokenContext.argPosition;
+                        this.functionDescriptionState.functionName = parentFunction;
+                        this.functionDescriptionState.functionDescription = description;
+                        this.functionDescriptionState.argToFocus = description.getArgToFocus(argPosition + 1) - 1;
+                        this.functionDescriptionState.showDescription = true;
+                    }
+                }
+            }
+        }
+        autoComplete(value) {
+            if (value) {
+                const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
+                if (tokenAtCursor) {
+                    let start = tokenAtCursor.end;
+                    let end = tokenAtCursor.end;
+                    // shouldn't it be REFERENCE ?
+                    if (["SYMBOL", "FUNCTION"].includes(tokenAtCursor.type)) {
+                        start = tokenAtCursor.start;
+                    }
+                    const tokens = this.env.model.getters.getCurrentTokens();
+                    if (this.autoCompleteState.provider && tokens.length) {
+                        value += "(";
+                        const currentTokenIndex = tokens.map((token) => token.start).indexOf(tokenAtCursor.start);
+                        if (currentTokenIndex + 1 < tokens.length) {
+                            const nextToken = tokens[currentTokenIndex + 1];
+                            if (nextToken.type === "LEFT_PAREN") {
+                                end++;
+                            }
+                        }
+                    }
+                    this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", {
+                        start,
+                        end,
+                    });
+                }
+                this.env.model.dispatch("REPLACE_COMPOSER_CURSOR_SELECTION", {
+                    text: value,
+                });
+            }
+            this.processTokenAtCursor();
+        }
+    }
+    Composer.template = "o-spreadsheet-Composer";
+    Composer.components = { TextValueProvider, FunctionDescriptionProvider };
+    Composer.defaultProps = {
+        inputStyle: "",
+        focus: "inactive",
+    };
+
+    const SCROLLBAR_WIDTH = 14;
+    const SCROLLBAR_HIGHT = 15;
+    const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
+    css /* scss */ `
+  div.o-grid-composer {
+    z-index: ${ComponentsImportance.Composer};
+    box-sizing: border-box;
+    position: absolute;
+    border: ${COMPOSER_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
+  }
+`;
+    /**
+     * This component is a composer which positions itself on the grid at the anchor cell.
+     * It also applies the style of the cell to the composer input.
+     */
+    class GridComposer extends owl.Component {
+        setup() {
+            this.gridComposerRef = owl.useRef("gridComposer");
+            this.composerState = owl.useState({
+                rect: null,
+                delimitation: null,
+            });
+            const { col, row } = this.env.model.getters.getPosition();
+            this.zone = this.env.model.getters.expandZone(this.env.model.getters.getActiveSheetId(), {
+                left: col,
+                right: col,
+                top: row,
+                bottom: row,
+            });
+            this.rect = this.env.model.getters.getRect(this.zone, this.env.model.getters.getActiveViewport());
+            owl.onMounted(() => {
+                const el = this.gridComposerRef.el;
+                //TODO Should be more correct to have a props that give the parent's clientHeight and clientWidth
+                const maxHeight = el.parentElement.clientHeight - this.rect.y - SCROLLBAR_HIGHT;
+                el.style.maxHeight = (maxHeight + "px");
+                const maxWidth = el.parentElement.clientWidth - this.rect.x - SCROLLBAR_WIDTH;
+                el.style.maxWidth = (maxWidth + "px");
+                this.composerState.rect = {
+                    x: this.rect.x,
+                    y: this.rect.y,
+                    width: el.clientWidth,
+                    height: el.clientHeight,
+                };
+                this.composerState.delimitation = {
+                    width: el.parentElement.clientWidth,
+                    height: el.parentElement.clientHeight,
+                };
+            });
+        }
+        get containerStyle() {
+            const isFormula = this.env.model.getters.getCurrentContent().startsWith("=");
+            const style = this.env.model.getters.getCurrentStyle();
+            // position style
+            const { x: left, y: top, width, height } = this.rect;
+            // color style
+            const background = (!isFormula && style.fillColor) || "#ffffff";
+            const color = (!isFormula && style.textColor) || "#000000";
+            // font style
+            const fontSize = (!isFormula && style.fontSize) || 10;
+            const fontWeight = !isFormula && style.bold ? "bold" : 500;
+            const fontStyle = !isFormula && style.italic ? "italic" : "normal";
+            const textDecoration = !isFormula ? getTextDecoration(style) : "none";
+            // align style
+            let textAlign = "left";
+            if (!isFormula) {
+                const cell = this.env.model.getters.getActiveCell();
+                textAlign = style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign) || "left";
+            }
+            return `
+      left: ${left - 1}px;
+      top: ${top}px;
+      min-width: ${width + 2}px;
+      min-height: ${height + 1}px;
+
+      background: ${background};
+      color: ${color};
+
+      font-size: ${fontSizeMap[fontSize]}px;
+      font-weight: ${fontWeight};
+      font-style: ${fontStyle};
+      text-decoration: ${textDecoration};
+
+      text-align: ${textAlign};
+    `;
+        }
+        get composerStyle() {
+            return `
+      line-height: ${DEFAULT_CELL_HEIGHT}px;
+      max-height: inherit;
+      overflow: hidden;
+    `;
+        }
+    }
+    GridComposer.template = "o-spreadsheet-GridComposer";
+    GridComposer.components = { Composer };
+
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    const ANCHOR_SIZE = 8;
+    const BORDER_WIDTH = 1;
+    const ACTIVE_BORDER_WIDTH = 2;
+    const MIN_FIG_SIZE = 80;
+    css /*SCSS*/ `
+  .o-figure-wrapper {
+    overflow: hidden;
+  }
+
+  div.o-figure {
+    border: 1px solid black;
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    z-index: ${ComponentsImportance.Figure};
+    &:focus {
+      outline: none;
+    }
+    &.active {
+      border: ${ACTIVE_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
+      z-index: ${ComponentsImportance.Figure + 1};
+    }
+
+    &.o-dragging {
+      opacity: 0.9;
+      cursor: grabbing;
+    }
+
+    .o-anchor {
+      z-index: ${ComponentsImportance.ChartAnchor};
+      position: absolute;
+      outline: ${BORDER_WIDTH}px solid white;
+      width: ${ANCHOR_SIZE}px;
+      height: ${ANCHOR_SIZE}px;
+      background-color: #1a73e8;
+      &.o-top {
+        top: -${ANCHOR_SIZE / 2}px;
+        right: calc(50% - 4px);
+        cursor: n-resize;
+      }
+      &.o-topRight {
+        top: -${ANCHOR_SIZE / 2}px;
+        right: -${ANCHOR_SIZE / 2}px;
+        cursor: ne-resize;
+      }
+      &.o-right {
+        right: -${ANCHOR_SIZE / 2}px;
+        top: calc(50% - 4px);
+        cursor: e-resize;
+      }
+      &.o-bottomRight {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        right: -${ANCHOR_SIZE / 2}px;
+        cursor: se-resize;
+      }
+      &.o-bottom {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        right: calc(50% - 4px);
+        cursor: s-resize;
+      }
+      &.o-bottomLeft {
+        bottom: -${ANCHOR_SIZE / 2}px;
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: sw-resize;
+      }
+      &.o-left {
+        bottom: calc(50% - 4px);
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: w-resize;
+      }
+      &.o-topLeft {
+        top: -${ANCHOR_SIZE / 2}px;
+        left: -${ANCHOR_SIZE / 2}px;
+        cursor: nw-resize;
+      }
+    }
+  }
+`;
+    class FiguresContainer extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.figureRegistry = figureRegistry;
+            this.dnd = owl.useState({
+                figureId: "",
+                x: 0,
+                y: 0,
+                width: 0,
+                height: 0,
+            });
+        }
+        getVisibleFigures() {
+            const selectedId = this.env.model.getters.getSelectedFigureId();
+            return this.env.model.getters.getVisibleFigures().map((f) => {
+                let figure = f;
+                // Returns current state of drag&drop figure instead of its stored state
+                if (this.dnd.figureId === f.id) {
+                    figure = {
+                        ...f,
+                        x: this.dnd.x,
+                        y: this.dnd.y,
+                        width: this.dnd.width,
+                        height: this.dnd.height,
+                    };
+                }
+                return {
+                    id: f.id,
+                    isSelected: f.id === selectedId,
+                    figure: figure,
+                };
+            });
+        }
+        getDims(info) {
+            const { figure, isSelected } = info;
+            const borders = 2 * (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
+            const { width, height } = isSelected && this.dnd.figureId ? this.dnd : figure;
+            return `width:${width + borders}px;height:${height + borders}px`;
+        }
+        getStyle(info) {
+            const { figure, isSelected } = info;
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
+            const { width, height } = target;
+            let x = target.x - offsetX - 1;
+            let y = target.y - offsetY - 1;
+            // width and height of wrapper need to be adjusted so we do not overlap
+            // with headers
+            const correctionX = this.env.isDashboard() ? 0 : Math.max(0, -x);
+            x += correctionX;
+            const correctionY = this.env.isDashboard() ? 0 : Math.max(0, -y);
+            y += correctionY;
+            if (width < 0 || height < 0) {
+                return `position:absolute;display:none;`;
+            }
+            const offset = ANCHOR_SIZE + ACTIVE_BORDER_WIDTH + (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
+            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px`;
+        }
+        setup() {
+            owl.onMounted(() => {
+                // horrible, but necessary
+                // the following line ensures that we render the figures with the correct
+                // viewport.  The reason is that whenever we initialize the grid
+                // component, we do not know yet the actual size of the viewport, so the
+                // first owl rendering is done with an empty viewport.  Only then we can
+                // compute which figures should be displayed, so we have to force a
+                // new rendering
+                this.render();
+            });
+        }
+        resize(figure, dirX, dirY, ev) {
+            ev.stopPropagation();
+            const initialX = ev.clientX;
+            const initialY = ev.clientY;
+            this.dnd.figureId = figure.id;
+            this.dnd.x = figure.x;
+            this.dnd.y = figure.y;
+            this.dnd.width = figure.width;
+            this.dnd.height = figure.height;
+            const onMouseMove = (ev) => {
+                const deltaX = dirX * (ev.clientX - initialX);
+                const deltaY = dirY * (ev.clientY - initialY);
+                this.dnd.width = Math.max(figure.width + deltaX, MIN_FIG_SIZE);
+                this.dnd.height = Math.max(figure.height + deltaY, MIN_FIG_SIZE);
+                if (dirX < 0) {
+                    this.dnd.x = figure.x - deltaX;
+                }
+                if (dirY < 0) {
+                    this.dnd.y = figure.y - deltaY;
+                }
+            };
+            const onMouseUp = (ev) => {
+                this.dnd.figureId = "";
+                const update = {
+                    x: this.dnd.x,
+                    y: this.dnd.y,
+                };
+                if (dirX) {
+                    update.width = this.dnd.width;
+                }
+                if (dirY) {
+                    update.height = this.dnd.height;
+                }
+                this.env.model.dispatch("UPDATE_FIGURE", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    id: figure.id,
+                    ...update,
+                });
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onMouseDown(figure, ev) {
+            if (ev.button > 0 || this.env.model.getters.isReadonly()) {
+                // not main button, probably a context menu
+                return;
+            }
+            const selectResult = this.env.model.dispatch("SELECT_FIGURE", { id: figure.id });
+            if (!selectResult.isSuccessful) {
+                return;
+            }
+            if (this.props.sidePanelIsOpen) {
+                this.env.openSidePanel("ChartPanel", { figureId: figure.id });
+            }
+            const initialX = ev.clientX;
+            const initialY = ev.clientY;
+            this.dnd.figureId = figure.id;
+            this.dnd.x = figure.x;
+            this.dnd.y = figure.y;
+            this.dnd.width = figure.width;
+            this.dnd.height = figure.height;
+            const onMouseMove = (ev) => {
+                this.dnd.x = Math.max(figure.x - initialX + ev.clientX, 0);
+                this.dnd.y = Math.max(figure.y - initialY + ev.clientY, 0);
+            };
+            const onMouseUp = (ev) => {
+                this.dnd.figureId = "";
+                this.env.model.dispatch("UPDATE_FIGURE", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    id: figure.id,
+                    x: this.dnd.x,
+                    y: this.dnd.y,
+                });
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onKeyDown(figure, ev) {
+            ev.preventDefault();
+            switch (ev.key) {
+                case "Delete":
+                    this.env.model.dispatch("DELETE_FIGURE", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        id: figure.id,
+                    });
+                    this.props.onFigureDeleted();
+                    break;
+                case "ArrowDown":
+                case "ArrowLeft":
+                case "ArrowRight":
+                case "ArrowUp":
+                    const deltaMap = {
+                        ArrowDown: [0, 1],
+                        ArrowLeft: [-1, 0],
+                        ArrowRight: [1, 0],
+                        ArrowUp: [0, -1],
+                    };
+                    const delta = deltaMap[ev.key];
+                    this.env.model.dispatch("UPDATE_FIGURE", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        id: figure.id,
+                        x: figure.x + delta[0],
+                        y: figure.y + delta[1],
+                    });
+            }
+        }
+    }
+    FiguresContainer.template = "o-spreadsheet-FiguresContainer";
+    FiguresContainer.components = {};
+    figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
+
+    class AbstractResizer extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.PADDING = 0;
+            this.MAX_SIZE_MARGIN = 0;
+            this.MIN_ELEMENT_SIZE = 0;
+            this.lastSelectedElementIndex = null;
+            this.state = owl.useState({
+                resizerIsActive: false,
+                isResizing: false,
+                isMoving: false,
+                isSelecting: false,
+                waitingForMove: false,
+                activeElement: 0,
+                draggerLinePosition: 0,
+                draggerShadowPosition: 0,
+                draggerShadowThickness: 0,
+                delta: 0,
+                base: 0,
+            });
+        }
+        _computeHandleDisplay(ev) {
+            const position = this._getEvOffset(ev);
+            const elementIndex = this._getElementIndex(position);
+            if (elementIndex < 0) {
+                return;
+            }
+            const dimensions = this._getDimensionsInViewport(elementIndex);
+            if (position - dimensions.start < this.PADDING && elementIndex !== this._getViewportOffset()) {
+                this.state.resizerIsActive = true;
+                this.state.draggerLinePosition = dimensions.start;
+                this.state.activeElement = this._getPreviousVisibleElement(elementIndex);
+            }
+            else if (dimensions.end - position < this.PADDING) {
+                this.state.resizerIsActive = true;
+                this.state.draggerLinePosition = dimensions.end;
+                this.state.activeElement = elementIndex;
+            }
+            else {
+                this.state.resizerIsActive = false;
+            }
+        }
+        _computeGrabDisplay(ev) {
+            const index = this._getElementIndex(this._getEvOffset(ev));
+            const activeElements = this._getActiveElements();
+            const selectedZoneStart = this._getSelectedZoneStart();
+            const selectedZoneEnd = this._getSelectedZoneEnd();
+            if (activeElements.has(selectedZoneStart)) {
+                if (selectedZoneStart <= index && index <= selectedZoneEnd) {
+                    this.state.waitingForMove = true;
+                    return;
+                }
+            }
+            this.state.waitingForMove = false;
+        }
+        onMouseMove(ev) {
+            if (this.state.isResizing || this.state.isMoving || this.state.isSelecting) {
+                return;
+            }
+            this._computeHandleDisplay(ev);
+            this._computeGrabDisplay(ev);
+        }
+        onMouseLeave() {
+            this.state.resizerIsActive = this.state.isResizing;
+            this.state.waitingForMove = false;
+        }
+        onDblClick() {
+            this._fitElementSize(this.state.activeElement);
+            this.state.isResizing = false;
+        }
+        onMouseDown(ev) {
+            this.state.isResizing = true;
+            this.state.delta = 0;
+            const initialPosition = this._getClientPosition(ev);
+            const styleValue = this.state.draggerLinePosition;
+            const size = this._getElementSize(this.state.activeElement);
+            const minSize = styleValue - size + this.MIN_ELEMENT_SIZE;
+            const maxSize = this._getMaxSize();
+            const onMouseUp = (ev) => {
+                this.state.isResizing = false;
+                if (this.state.delta !== 0) {
+                    this._updateSize();
+                }
+            };
+            const onMouseMove = (ev) => {
+                this.state.delta = this._getClientPosition(ev) - initialPosition;
+                this.state.draggerLinePosition = styleValue + this.state.delta;
+                if (this.state.draggerLinePosition < minSize) {
+                    this.state.draggerLinePosition = minSize;
+                    this.state.delta = this.MIN_ELEMENT_SIZE - size;
+                }
+                if (this.state.draggerLinePosition > maxSize) {
+                    this.state.draggerLinePosition = maxSize;
+                    this.state.delta = maxSize - styleValue;
+                }
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        select(ev) {
+            if (ev.button > 0) {
+                // not main button, probably a context menu
+                return;
+            }
+            const index = this._getElementIndex(this._getEvOffset(ev));
+            if (index < 0) {
+                return;
+            }
+            if (this.state.waitingForMove === true) {
+                this.startMovement(ev);
+                return;
+            }
+            this.startSelection(ev, index);
+        }
+        startMovement(ev) {
+            this.state.waitingForMove = false;
+            this.state.isMoving = true;
+            const startDimensions = this._getDimensionsInViewport(this._getSelectedZoneStart());
+            const endDimensions = this._getDimensionsInViewport(this._getSelectedZoneEnd());
+            const initialPosition = this._getClientPosition(ev);
+            const defaultPosition = startDimensions.start;
+            this.state.draggerLinePosition = defaultPosition;
+            this.state.base = this._getSelectedZoneStart();
+            this.state.draggerShadowPosition = defaultPosition;
+            this.state.draggerShadowThickness = endDimensions.end - startDimensions.start;
+            const mouseMoveMovement = (elementIndex, currentEv) => {
+                if (elementIndex >= 0) {
+                    // define draggerLinePosition
+                    const dimensions = this._getDimensionsInViewport(elementIndex);
+                    if (elementIndex <= this._getSelectedZoneStart()) {
+                        this.state.draggerLinePosition = dimensions.start;
+                        this.state.base = elementIndex;
+                    }
+                    else if (this._getSelectedZoneEnd() < elementIndex) {
+                        this.state.draggerLinePosition = dimensions.end;
+                        this.state.base = elementIndex + 1;
+                    }
+                    else {
+                        this.state.draggerLinePosition = startDimensions.start;
+                        this.state.base = this._getSelectedZoneStart();
+                    }
+                    // define draggerShadowPosition
+                    const delta = this._getClientPosition(currentEv) - initialPosition;
+                    this.state.draggerShadowPosition = Math.max(defaultPosition + delta, 0);
+                }
+            };
+            const mouseUpMovement = (finalEv) => {
+                this.state.isMoving = false;
+                if (this.state.base !== this._getSelectedZoneStart()) {
+                    this._moveElements();
+                }
+                this._computeGrabDisplay(finalEv);
+            };
+            this.dragOverlayBeyondTheViewport(ev, mouseMoveMovement, mouseUpMovement);
+        }
+        startSelection(ev, index) {
+            this.state.isSelecting = true;
+            if (ev.shiftKey) {
+                this._increaseSelection(index);
+            }
+            else {
+                this._selectElement(index, ev.ctrlKey);
+            }
+            this.lastSelectedElementIndex = index;
+            const mouseMoveSelect = (elementIndex) => {
+                if (elementIndex !== this.lastSelectedElementIndex && elementIndex !== -1) {
+                    this._increaseSelection(elementIndex);
+                    this.lastSelectedElementIndex = elementIndex;
+                }
+            };
+            const mouseUpSelect = () => {
+                this.state.isSelecting = false;
+                this.lastSelectedElementIndex = null;
+                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
+                this._computeGrabDisplay(ev);
+            };
+            this.dragOverlayBeyondTheViewport(ev, mouseMoveSelect, mouseUpSelect);
+        }
+        dragOverlayBeyondTheViewport(ev, cbMouseMove, cbMouseUp) {
+            let timeOutId = null;
+            let currentEv;
+            const initialPosition = this._getClientPosition(ev);
+            const initialOffset = this._getEvOffset(ev);
+            const onMouseMove = (ev) => {
+                // currentEv.target can be any DOM element
+                currentEv = ev;
+                if (timeOutId) {
+                    return;
+                }
+                const delta = this._getClientPosition(currentEv) - initialPosition;
+                const position = initialOffset + delta;
+                const EdgeScrollInfo = this._getEdgeScroll(position);
+                const { first, last } = this._getBoundaries();
+                let elementIndex;
+                if (EdgeScrollInfo.canEdgeScroll) {
+                    elementIndex = EdgeScrollInfo.direction > 0 ? last : first - 1;
+                }
+                else {
+                    elementIndex = this._getElementIndex(position);
+                }
+                cbMouseMove(elementIndex, currentEv);
+                // adjust viewport if necessary
+                if (EdgeScrollInfo.canEdgeScroll) {
+                    this._adjustViewport(EdgeScrollInfo.direction);
+                    timeOutId = setTimeout(() => {
+                        timeOutId = null;
+                        onMouseMove(currentEv);
+                    }, Math.round(EdgeScrollInfo.delay));
+                }
+            };
+            const onMouseUp = (finalEv) => {
+                clearTimeout(timeOutId);
+                cbMouseUp(finalEv);
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onMouseUp(ev) {
+            this.lastSelectedElementIndex = null;
+        }
+        onContextMenu(ev) {
+            ev.preventDefault();
+            const index = this._getElementIndex(this._getEvOffset(ev));
+            if (index < 0)
+                return;
+            if (!this._getActiveElements().has(index)) {
+                this._selectElement(index, false);
+            }
+            const type = this._getType();
+            this.props.onOpenContextMenu(type, ev.clientX, ev.clientY);
+        }
+    }
+    css /* scss */ `
+  .o-col-resizer {
+    position: absolute;
+    top: 0;
+    left: ${HEADER_WIDTH}px;
+    right: 0;
+    height: ${HEADER_HEIGHT}px;
+    &.o-dragging {
+      cursor: grabbing;
+    }
+    &.o-grab {
+      cursor: grab;
+    }
+    .dragging-col-line {
+      top: ${HEADER_HEIGHT}px;
+      position: absolute;
+      width: 2px;
+      height: 10000px;
+      background-color: black;
+    }
+    .dragging-col-shadow {
+      top: ${HEADER_HEIGHT}px;
+      position: absolute;
+      height: 10000px;
+      background-color: black;
+      opacity: 0.1;
+    }
+    .o-handle {
+      position: absolute;
+      height: ${HEADER_HEIGHT}px;
+      width: 4px;
+      cursor: e-resize;
+      background-color: ${SELECTION_BORDER_COLOR};
+    }
+    .dragging-resizer {
+      top: ${HEADER_HEIGHT}px;
+      position: absolute;
+      margin-left: 2px;
+      width: 1px;
+      height: 10000px;
+      background-color: ${SELECTION_BORDER_COLOR};
+    }
+    .o-unhide {
+      width: ${UNHIDE_ICON_EDGE_LENGTH}px;
+      height: ${UNHIDE_ICON_EDGE_LENGTH}px;
+      position: absolute;
+      overflow: hidden;
+      border-radius: 2px;
+      top: calc(${HEADER_HEIGHT}px / 2 - ${UNHIDE_ICON_EDGE_LENGTH}px / 2);
+    }
+    .o-unhide:hover {
+      z-index: ${ComponentsImportance.Grid + 1};
+      background-color: lightgrey;
+    }
+    .o-unhide > svg {
+      position: relative;
+      top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
+    }
+  }
+`;
+    class ColResizer extends AbstractResizer {
+        setup() {
+            super.setup();
+            this.colResizerRef = owl.useRef("colResizer");
+            this.PADDING = 15;
+            this.MAX_SIZE_MARGIN = 90;
+            this.MIN_ELEMENT_SIZE = MIN_COL_WIDTH;
+        }
+        _getEvOffset(ev) {
+            return ev.offsetX;
+        }
+        _getViewportOffset() {
+            return this.env.model.getters.getActiveViewport().left;
+        }
+        _getClientPosition(ev) {
+            return ev.clientX;
+        }
+        _getElementIndex(position) {
+            return this.env.model.getters.getColIndex(position);
+        }
+        _getSelectedZoneStart() {
+            return this.env.model.getters.getSelectedZone().left;
+        }
+        _getSelectedZoneEnd() {
+            return this.env.model.getters.getSelectedZone().right;
+        }
+        _getEdgeScroll(position) {
+            return this.env.model.getters.getEdgeScrollCol(position);
+        }
+        _getBoundaries() {
+            const { left, right } = this.env.model.getters.getActiveViewport();
+            return { first: left, last: right };
+        }
+        _getDimensionsInViewport(index) {
+            return this.env.model.getters.getColDimensionsInViewport(this.env.model.getters.getActiveSheetId(), index);
+        }
+        _getElementSize(index) {
+            return this.env.model.getters.getColSize(this.env.model.getters.getActiveSheetId(), index);
+        }
+        _getMaxSize() {
+            return this.colResizerRef.el.clientWidth;
+        }
+        _updateSize() {
+            const index = this.state.activeElement;
+            const size = this.state.delta + this._getElementSize(index);
+            const cols = this.env.model.getters.getActiveCols();
+            this.env.model.dispatch("RESIZE_COLUMNS_ROWS", {
+                dimension: "COL",
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                elements: cols.has(index) ? [...cols] : [index],
+                size,
+            });
+        }
+        _moveElements() {
+            const elements = [];
+            const start = this._getSelectedZoneStart();
+            const end = this._getSelectedZoneEnd();
+            for (let colIndex = start; colIndex <= end; colIndex++) {
+                elements.push(colIndex);
+            }
+            const result = this.env.model.dispatch("MOVE_COLUMNS_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                dimension: "COL",
+                base: this.state.base,
+                elements,
+            });
+            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
+                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
+            }
+        }
+        _selectElement(index, ctrlKey) {
+            this.env.model.selection.selectColumn(index, ctrlKey ? "newAnchor" : "overrideSelection");
+        }
+        _increaseSelection(index) {
+            this.env.model.selection.selectColumn(index, "updateAnchor");
+        }
+        _adjustViewport(direction) {
+            const { left, offsetY } = this.env.model.getters.getActiveViewport();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const offsetX = this.env.model.getters.getColDimensions(sheetId, left + direction).start;
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+        }
+        _fitElementSize(index) {
+            const cols = this.env.model.getters.getActiveCols();
+            this.env.model.dispatch("AUTORESIZE_COLUMNS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                cols: cols.has(index) ? [...cols] : [index],
+            });
+        }
+        _getType() {
+            return "COL";
+        }
+        _getActiveElements() {
+            return this.env.model.getters.getActiveCols();
+        }
+        _getPreviousVisibleElement(index) {
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            let row;
+            for (row = index - 1; row >= 0; row--) {
+                if (!this.env.model.getters.isColHidden(sheetId, row)) {
+                    break;
+                }
+            }
+            return row;
+        }
+        unhide(hiddenElements) {
+            this.env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                elements: hiddenElements,
+                dimension: "COL",
+            });
+        }
+        unhideStyleValue(hiddenIndex) {
+            return this._getDimensionsInViewport(hiddenIndex).start;
+        }
+    }
+    ColResizer.template = "o-spreadsheet-ColResizer";
+    css /* scss */ `
+  .o-row-resizer {
+    position: absolute;
+    top: ${HEADER_HEIGHT}px;
+    left: 0;
+    right: 0;
+    width: ${HEADER_WIDTH}px;
+    height: 100%;
+    &.o-dragging {
+      cursor: grabbing;
+    }
+    &.o-grab {
+      cursor: grab;
+    }
+    .dragging-row-line {
+      left: ${HEADER_WIDTH}px;
+      position: absolute;
+      width: 10000px;
+      height: 2px;
+      background-color: black;
+    }
+    .dragging-row-shadow {
+      left: ${HEADER_WIDTH}px;
+      position: absolute;
+      width: 10000px;
+      background-color: black;
+      opacity: 0.1;
+    }
+    .o-handle {
+      position: absolute;
+      height: 4px;
+      width: ${HEADER_WIDTH}px;
+      cursor: n-resize;
+      background-color: ${SELECTION_BORDER_COLOR};
+    }
+    .dragging-resizer {
+      left: ${HEADER_WIDTH}px;
+      position: absolute;
+      margin-top: 2px;
+      width: 10000px;
+      height: 1px;
+      background-color: ${SELECTION_BORDER_COLOR};
+    }
+    .o-unhide {
+      width: ${UNHIDE_ICON_EDGE_LENGTH}px;
+      height: ${UNHIDE_ICON_EDGE_LENGTH}px;
+      position: absolute;
+      overflow: hidden;
+      border-radius: 2px;
+      left: calc(${HEADER_WIDTH}px - ${UNHIDE_ICON_EDGE_LENGTH}px - 2px);
+    }
+    .o-unhide > svg {
+      position: relative;
+      left: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
+      top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
+    }
+    .o-unhide:hover {
+      z-index: ${ComponentsImportance.Grid + 1};
+      background-color: lightgrey;
+    }
+  }
+`;
+    class RowResizer extends AbstractResizer {
+        setup() {
+            super.setup();
+            this.rowResizerRef = owl.useRef("rowResizer");
+            this.PADDING = 5;
+            this.MAX_SIZE_MARGIN = 60;
+            this.MIN_ELEMENT_SIZE = MIN_ROW_HEIGHT;
+        }
+        _getEvOffset(ev) {
+            return ev.offsetY;
+        }
+        _getViewportOffset() {
+            return this.env.model.getters.getActiveViewport().top;
+        }
+        _getClientPosition(ev) {
+            return ev.clientY;
+        }
+        _getElementIndex(position) {
+            return this.env.model.getters.getRowIndex(position);
+        }
+        _getSelectedZoneStart() {
+            return this.env.model.getters.getSelectedZone().top;
+        }
+        _getSelectedZoneEnd() {
+            return this.env.model.getters.getSelectedZone().bottom;
+        }
+        _getEdgeScroll(position) {
+            return this.env.model.getters.getEdgeScrollRow(position);
+        }
+        _getBoundaries() {
+            const { top, bottom } = this.env.model.getters.getActiveViewport();
+            return { first: top, last: bottom };
+        }
+        _getDimensionsInViewport(index) {
+            return this.env.model.getters.getRowDimensionsInViewport(this.env.model.getters.getActiveSheetId(), index);
+        }
+        _getElementSize(index) {
+            return this.env.model.getters.getRowSize(this.env.model.getters.getActiveSheetId(), index);
+        }
+        _getMaxSize() {
+            return this.rowResizerRef.el.clientHeight;
+        }
+        _updateSize() {
+            const index = this.state.activeElement;
+            const size = this.state.delta + this._getElementSize(index);
+            const rows = this.env.model.getters.getActiveRows();
+            this.env.model.dispatch("RESIZE_COLUMNS_ROWS", {
+                dimension: "ROW",
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                elements: rows.has(index) ? [...rows] : [index],
+                size,
+            });
+        }
+        _moveElements() {
+            const elements = [];
+            const start = this._getSelectedZoneStart();
+            const end = this._getSelectedZoneEnd();
+            for (let rowIndex = start; rowIndex <= end; rowIndex++) {
+                elements.push(rowIndex);
+            }
+            const result = this.env.model.dispatch("MOVE_COLUMNS_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                dimension: "ROW",
+                base: this.state.base,
+                elements,
+            });
+            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
+                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
+            }
+        }
+        _selectElement(index, ctrlKey) {
+            this.env.model.selection.selectRow(index, ctrlKey ? "newAnchor" : "overrideSelection");
+        }
+        _increaseSelection(index) {
+            this.env.model.selection.selectRow(index, "updateAnchor");
+        }
+        _adjustViewport(direction) {
+            const { top, offsetX } = this.env.model.getters.getActiveViewport();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const offsetY = this.env.model.getters.getRowDimensions(sheetId, top + direction).start;
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+        }
+        _fitElementSize(index) {
+            const rows = this.env.model.getters.getActiveRows();
+            this.env.model.dispatch("AUTORESIZE_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                rows: rows.has(index) ? [...rows] : [index],
+            });
+        }
+        _getType() {
+            return "ROW";
+        }
+        _getActiveElements() {
+            return this.env.model.getters.getActiveRows();
+        }
+        _getPreviousVisibleElement(index) {
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            let row;
+            for (row = index - 1; row >= 0; row--) {
+                if (!this.env.model.getters.isRowHidden(sheetId, row)) {
+                    break;
+                }
+            }
+            return row;
+        }
+        unhide(hiddenElements) {
+            this.env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
+                sheetId: this.env.model.getters.getActiveSheetId(),
+                dimension: "ROW",
+                elements: hiddenElements,
+            });
+        }
+        unhideStyleValue(hiddenIndex) {
+            return this._getDimensionsInViewport(hiddenIndex).start;
+        }
+    }
+    RowResizer.template = "o-spreadsheet-RowResizer";
+    css /* scss */ `
+  .o-overlay {
+    .all {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: ${HEADER_WIDTH}px;
+      height: ${HEADER_HEIGHT}px;
+    }
+  }
+`;
+    class HeadersOverlay extends owl.Component {
+        selectAll() {
+            this.env.model.selection.selectAll();
+        }
+    }
+    HeadersOverlay.template = "o-spreadsheet-HeadersOverlay";
+    HeadersOverlay.components = { ColResizer, RowResizer };
+
+    /**
+     * Repeatedly calls a callback function with a time delay between calls.
+     */
+    function useInterval(callback, delay) {
+        let intervalId;
+        const { setInterval, clearInterval } = window;
+        owl.useEffect(() => {
+            intervalId = setInterval(callback, delay);
+            return () => clearInterval(intervalId);
+        }, () => [delay]);
+        return {
+            pause: () => {
+                clearInterval(intervalId);
+                intervalId = undefined;
+            },
+            resume: () => {
+                if (intervalId === undefined) {
+                    intervalId = setInterval(callback, delay);
+                }
+            },
+        };
+    }
+
+    css /* scss */ `
+  .o-border {
+    position: absolute;
+    &:hover {
+      cursor: grab;
+    }
+  }
+  .o-moving {
+    cursor: grabbing;
+  }
+`;
+    class Border extends owl.Component {
+        get style() {
+            const isTop = ["n", "w", "e"].includes(this.props.orientation);
+            const isLeft = ["n", "w", "s"].includes(this.props.orientation);
+            const isHorizontal = ["n", "s"].includes(this.props.orientation);
+            const isVertical = ["w", "e"].includes(this.props.orientation);
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const z = this.props.zone;
+            const margin = 2;
+            const left = this.env.model.getters.getColDimensions(sheetId, z.left).start + margin;
+            const right = this.env.model.getters.getColDimensions(sheetId, z.right).end - 2 * margin;
+            const top = this.env.model.getters.getRowDimensions(sheetId, z.top).start + margin;
+            const bottom = this.env.model.getters.getRowDimensions(sheetId, z.bottom).end - 2 * margin;
+            const lineWidth = 4;
+            const leftValue = isLeft ? left : right;
+            const topValue = isTop ? top : bottom;
+            const widthValue = isHorizontal ? right - left : lineWidth;
+            const heightValue = isVertical ? bottom - top : lineWidth;
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            return `
+        left:${leftValue + HEADER_WIDTH - offsetX}px;
+        top:${topValue + HEADER_HEIGHT - offsetY}px;
+        width:${widthValue}px;
+        height:${heightValue}px;
+    `;
+        }
+        onMouseDown(ev) {
+            this.props.onMoveHighlight(ev.clientX, ev.clientY);
+        }
+    }
+    Border.template = "o-spreadsheet-Border";
+
+    css /* scss */ `
+  .o-corner {
+    position: absolute;
+    height: 6px;
+    width: 6px;
+    border: 1px solid white;
+  }
+  .o-corner-nw,
+  .o-corner-se {
+    &:hover {
+      cursor: nwse-resize;
+    }
+  }
+  .o-corner-ne,
+  .o-corner-sw {
+    &:hover {
+      cursor: nesw-resize;
+    }
+  }
+  .o-resizing {
+    cursor: grabbing;
+  }
+`;
+    class Corner extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.isTop = this.props.orientation[0] === "n";
+            this.isLeft = this.props.orientation[1] === "w";
+        }
+        get style() {
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const z = this.props.zone;
+            const leftValue = this.isLeft
+                ? this.env.model.getters.getColDimensions(sheetId, z.left).start
+                : this.env.model.getters.getColDimensions(sheetId, z.right).end;
+            const topValue = this.isTop
+                ? this.env.model.getters.getRowDimensions(sheetId, z.top).start
+                : this.env.model.getters.getRowDimensions(sheetId, z.bottom).end;
+            return `
+      left:${leftValue + HEADER_WIDTH - offsetX - AUTOFILL_EDGE_LENGTH / 2}px;
+      top:${topValue + HEADER_HEIGHT - offsetY - AUTOFILL_EDGE_LENGTH / 2}px;
+      background-color:${this.props.color};
+    `;
+        }
+        onMouseDown(ev) {
+            this.props.onResizeHighlight(this.isLeft, this.isTop);
+        }
+    }
+    Corner.template = "o-spreadsheet-Corner";
+
+    css /*SCSS*/ `
+  .o-highlight {
+    z-index: ${ComponentsImportance.Highlight};
+  }
+`;
+    class Highlight extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.highlightRef = owl.useRef("highlight");
+            this.highlightState = owl.useState({
+                shiftingMode: "none",
+            });
+        }
+        onResizeHighlight(isLeft, isTop) {
+            const activeSheet = this.env.model.getters.getActiveSheet();
+            this.highlightState.shiftingMode = "isResizing";
+            const z = this.props.zone;
+            const pivotCol = isLeft ? z.right : z.left;
+            const pivotRow = isTop ? z.bottom : z.top;
+            let lastCol = isLeft ? z.left : z.right;
+            let lastRow = isTop ? z.top : z.bottom;
+            let currentZone = z;
+            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", {
+                range: this.env.model.getters.getRangeDataFromZone(activeSheet.id, currentZone),
+            });
+            const mouseMove = (col, row) => {
+                if (lastCol !== col || lastRow !== row) {
+                    const activeSheetId = this.env.model.getters.getActiveSheetId();
+                    lastCol = clip(col === -1 ? lastCol : col, 0, this.env.model.getters.getNumberCols(activeSheetId) - 1);
+                    lastRow = clip(row === -1 ? lastRow : row, 0, this.env.model.getters.getNumberRows(activeSheetId) - 1);
+                    let newZone = {
+                        left: Math.min(pivotCol, lastCol),
+                        top: Math.min(pivotRow, lastRow),
+                        right: Math.max(pivotCol, lastCol),
+                        bottom: Math.max(pivotRow, lastRow),
+                    };
+                    newZone = this.env.model.getters.expandZone(activeSheetId, newZone);
+                    if (!isEqual(newZone, currentZone)) {
+                        this.env.model.dispatch("CHANGE_HIGHLIGHT", {
+                            range: this.env.model.getters.getRangeDataFromZone(activeSheet.id, newZone),
+                        });
+                        currentZone = newZone;
+                    }
+                }
+            };
+            const mouseUp = () => {
+                this.highlightState.shiftingMode = "none";
+                // To do:
+                // Command used here to restore focus to the current composer,
+                // to be changed when refactoring the 'edition' plugin
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            };
+            dragAndDropBeyondTheViewport(this.highlightRef.el.parentElement, this.env, mouseMove, mouseUp);
+        }
+        onMoveHighlight(clientX, clientY) {
+            this.highlightState.shiftingMode = "isMoving";
+            const z = this.props.zone;
+            const parent = this.highlightRef.el.parentElement;
+            const position = parent.getBoundingClientRect();
+            const activeSheetId = this.env.model.getters.getActiveSheetId();
+            const initCol = this.env.model.getters.getColIndex(clientX - position.left - HEADER_WIDTH);
+            const initRow = this.env.model.getters.getRowIndex(clientY - position.top - HEADER_HEIGHT);
+            const deltaColMin = -z.left;
+            const deltaColMax = this.env.model.getters.getNumberCols(activeSheetId) - z.right - 1;
+            const deltaRowMin = -z.top;
+            const deltaRowMax = this.env.model.getters.getNumberRows(activeSheetId) - z.bottom - 1;
+            let currentZone = z;
+            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", {
+                range: this.env.model.getters.getRangeDataFromZone(activeSheetId, currentZone),
+            });
+            let lastCol = initCol;
+            let lastRow = initRow;
+            const mouseMove = (col, row) => {
+                if (lastCol !== col || lastRow !== row) {
+                    lastCol = col === -1 ? lastCol : col;
+                    lastRow = row === -1 ? lastRow : row;
+                    const deltaCol = clip(lastCol - initCol, deltaColMin, deltaColMax);
+                    const deltaRow = clip(lastRow - initRow, deltaRowMin, deltaRowMax);
+                    let newZone = {
+                        left: z.left + deltaCol,
+                        top: z.top + deltaRow,
+                        right: z.right + deltaCol,
+                        bottom: z.bottom + deltaRow,
+                    };
+                    newZone = this.env.model.getters.expandZone(activeSheetId, newZone);
+                    if (!isEqual(newZone, currentZone)) {
+                        this.env.model.dispatch("CHANGE_HIGHLIGHT", {
+                            range: this.env.model.getters.getRangeDataFromZone(activeSheetId, newZone),
+                        });
+                        currentZone = newZone;
+                    }
+                }
+            };
+            const mouseUp = () => {
+                this.highlightState.shiftingMode = "none";
+                // To do:
+                // Command used here to restore focus to the current composer,
+                // to be changed when refactoring the 'edition' plugin
+                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
+            };
+            dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
+        }
+    }
+    Highlight.template = "o-spreadsheet-Highlight";
+    Highlight.components = {
+        Corner,
+        Border,
+    };
+
+    class ScrollBar {
+        constructor(el, direction) {
+            this.el = el;
+            this.direction = direction;
+        }
+        get scroll() {
+            return this.direction === "horizontal" ? this.el.scrollLeft : this.el.scrollTop;
+        }
+        set scroll(value) {
+            if (this.direction === "horizontal") {
+                this.el.scrollLeft = value;
+            }
+            else {
+                this.el.scrollTop = value;
+            }
+        }
+    }
+
+    const registries$1 = {
+        ROW: rowMenuRegistry,
+        COL: colMenuRegistry,
+        CELL: cellMenuRegistry,
+        DASHBOARD: dashboardMenuRegistry,
+    };
+    // copy and paste are specific events that should not be managed by the keydown event,
+    // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
+    // and also should not result in typing the character C or V in the composer
+    const keyDownMappingIgnore = ["CTRL+C", "CTRL+V"];
+    // -----------------------------------------------------------------------------
+    // Error Tooltip Hook
+    // -----------------------------------------------------------------------------
+    function useCellHovered(env) {
+        const hoveredPosition = owl.useState({});
+        const { Date } = window;
+        const gridRef = owl.useRef("gridOverlay");
+        let x = 0;
+        let y = 0;
+        let lastMoved = 0;
+        function getPosition() {
+            const col = env.model.getters.getColIndex(x);
+            const row = env.model.getters.getRowIndex(y);
+            return { col, row };
+        }
+        const { pause, resume } = useInterval(checkTiming, 200);
+        function checkTiming() {
+            const { col, row } = getPosition();
+            const delta = Date.now() - lastMoved;
+            if (delta > 300 && (col !== hoveredPosition.col || row !== hoveredPosition.row)) {
+                hoveredPosition.col = undefined;
+                hoveredPosition.row = undefined;
+            }
+            if (delta > 300) {
+                if (col < 0 || row < 0) {
+                    return;
+                }
+                hoveredPosition.col = col;
+                hoveredPosition.row = row;
+            }
+        }
+        function updateMousePosition(e) {
+            x = e.offsetX;
+            y = e.offsetY;
+            lastMoved = Date.now();
+        }
+        function reset() {
+            const { col, row } = getPosition();
+            if (col !== hoveredPosition.col || row !== hoveredPosition.row) {
+                hoveredPosition.col = undefined;
+                hoveredPosition.row = undefined;
+            }
+        }
+        owl.onMounted(() => {
+            const grid = gridRef.el;
+            grid.addEventListener("mousemove", updateMousePosition);
+            grid.addEventListener("mouseleave", pause);
+            grid.addEventListener("mouseenter", resume);
+            grid.addEventListener("mousedown", reset);
+        });
+        owl.onWillUnmount(() => {
+            const grid = gridRef.el;
+            grid.removeEventListener("mousemove", updateMousePosition);
+            grid.removeEventListener("mouseleave", pause);
+            grid.removeEventListener("mouseenter", resume);
+            grid.removeEventListener("mousedown", reset);
+        });
+        return hoveredPosition;
+    }
+    function useTouchMove(handler, canMoveUp) {
+        const canvasRef = owl.useRef("canvas");
+        let x = null;
+        let y = null;
+        function onTouchStart(ev) {
+            if (ev.touches.length !== 1)
+                return;
+            x = ev.touches[0].clientX;
+            y = ev.touches[0].clientY;
+        }
+        function onTouchEnd() {
+            x = null;
+            y = null;
+        }
+        function onTouchMove(ev) {
+            if (ev.touches.length !== 1)
+                return;
+            // On mobile browsers, swiping down is often associated with "pull to refresh".
+            // We only want this behavior if the grid is already at the top.
+            // Otherwise we only want to move the canvas up, without triggering any refresh.
+            if (canMoveUp()) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+            const currentX = ev.touches[0].clientX;
+            const currentY = ev.touches[0].clientY;
+            handler(x - currentX, y - currentY);
+            x = currentX;
+            y = currentY;
+        }
+        owl.onMounted(() => {
+            canvasRef.el.addEventListener("touchstart", onTouchStart);
+            canvasRef.el.addEventListener("touchend", onTouchEnd);
+            canvasRef.el.addEventListener("touchmove", onTouchMove);
+        });
+        owl.onWillUnmount(() => {
+            canvasRef.el.removeEventListener("touchstart", onTouchStart);
+            canvasRef.el.removeEventListener("touchend", onTouchEnd);
+            canvasRef.el.removeEventListener("touchmove", onTouchMove);
+        });
+    }
+    // -----------------------------------------------------------------------------
+    // TEMPLATE
+    // -----------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------
+    // STYLE
+    // -----------------------------------------------------------------------------
+    css /* scss */ `
+  .o-grid {
+    position: relative;
+    overflow: hidden;
+    background-color: ${BACKGROUND_GRAY_COLOR};
+
+    > canvas {
+      border-top: 1px solid #e2e3e3;
+      border-bottom: 1px solid #e2e3e3;
+
+      &:focus {
+        outline: none;
+      }
+    }
+    .o-scrollbar {
+      position: absolute;
+      overflow: auto;
+      z-index: ${ComponentsImportance.ScrollBar};
+      &.vertical {
+        right: 0;
+        bottom: ${SCROLLBAR_WIDTH$1}px;
+        width: ${SCROLLBAR_WIDTH$1}px;
+        overflow-x: hidden;
+      }
+      &.horizontal {
+        bottom: 0;
+        height: ${SCROLLBAR_WIDTH$1}px;
+        right: ${SCROLLBAR_WIDTH$1}px;
+        overflow-y: hidden;
+      }
+    }
+
+    .o-grid-overlay {
+      position: absolute;
+      outline: none;
+    }
+  }
+`;
+    // -----------------------------------------------------------------------------
+    // JS
+    // -----------------------------------------------------------------------------
+    class Grid extends owl.Component {
+        constructor() {
+            super(...arguments);
+            // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
+            // down itself
+            this.keyDownMapping = {
+                ENTER: () => {
+                    const cell = this.env.model.getters.getActiveCell();
+                    !cell || cell.isEmpty()
+                        ? this.props.onGridComposerCellFocused()
+                        : this.props.onComposerContentFocused();
+                },
+                TAB: () => this.env.model.selection.moveAnchorCell("right", "one"),
+                "SHIFT+TAB": () => this.env.model.selection.moveAnchorCell("left", "one"),
+                F2: () => {
+                    const cell = this.env.model.getters.getActiveCell();
+                    !cell || cell.isEmpty()
+                        ? this.props.onGridComposerCellFocused()
+                        : this.props.onComposerContentFocused();
+                },
+                DELETE: () => {
+                    this.env.model.dispatch("DELETE_CONTENT", {
+                        sheetId: this.env.model.getters.getActiveSheetId(),
+                        target: this.env.model.getters.getSelectedZones(),
+                    });
+                },
+                "CTRL+A": () => this.env.model.selection.selectAll(),
+                "CTRL+S": () => {
+                    var _a, _b;
+                    (_b = (_a = this.props).onSaveRequested) === null || _b === void 0 ? void 0 : _b.call(_a);
+                },
+                "CTRL+Z": () => this.env.model.dispatch("REQUEST_UNDO"),
+                "CTRL+Y": () => this.env.model.dispatch("REQUEST_REDO"),
+                "CTRL+B": () => this.env.model.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    target: this.env.model.getters.getSelectedZones(),
+                    style: { bold: !this.env.model.getters.getCurrentStyle().bold },
+                }),
+                "CTRL+I": () => this.env.model.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    target: this.env.model.getters.getSelectedZones(),
+                    style: { italic: !this.env.model.getters.getCurrentStyle().italic },
+                }),
+                "CTRL+U": () => this.env.model.dispatch("SET_FORMATTING", {
+                    sheetId: this.env.model.getters.getActiveSheetId(),
+                    target: this.env.model.getters.getSelectedZones(),
+                    style: { underline: !this.env.model.getters.getCurrentStyle().underline },
+                }),
+                "ALT+=": () => {
+                    var _a;
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const mainSelectedZone = this.env.model.getters.getSelectedZone();
+                    const { anchor } = this.env.model.getters.getSelection();
+                    const sums = this.env.model.getters.getAutomaticSums(sheetId, mainSelectedZone, anchor.cell);
+                    if (this.env.model.getters.isSingleCellOrMerge(sheetId, mainSelectedZone) ||
+                        (this.env.model.getters.isEmpty(sheetId, mainSelectedZone) && sums.length <= 1)) {
+                        const zone = (_a = sums[0]) === null || _a === void 0 ? void 0 : _a.zone;
+                        const zoneXc = zone ? this.env.model.getters.zoneToXC(sheetId, sums[0].zone) : "";
+                        const formula = `=SUM(${zoneXc})`;
+                        this.props.onGridComposerCellFocused(formula, { start: 5, end: 5 + zoneXc.length });
+                    }
+                    else {
+                        this.env.model.dispatch("SUM_SELECTION");
+                    }
+                },
+                "CTRL+HOME": () => {
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const { col, row } = this.env.model.getters.getNextVisibleCellPosition(sheetId, 0, 0);
+                    this.env.model.selection.selectCell(col, row);
+                },
+                "CTRL+END": () => {
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const col = this.env.model.getters.findVisibleHeader(sheetId, "COL", range(0, this.env.model.getters.getNumberCols(sheetId)).reverse());
+                    const row = this.env.model.getters.findVisibleHeader(sheetId, "ROW", range(0, this.env.model.getters.getNumberRows(sheetId)).reverse());
+                    this.env.model.selection.selectCell(col, row);
+                },
+                "SHIFT+ ": () => {
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const newZone = {
+                        ...this.env.model.getters.getSelectedZone(),
+                        left: 0,
+                        right: this.env.model.getters.getNumberCols(sheetId) - 1,
+                    };
+                    const position = this.env.model.getters.getPosition();
+                    this.env.model.selection.selectZone({ cell: position, zone: newZone });
+                },
+                "CTRL+ ": () => {
+                    const sheetId = this.env.model.getters.getActiveSheetId();
+                    const newZone = {
+                        ...this.env.model.getters.getSelectedZone(),
+                        top: 0,
+                        bottom: this.env.model.getters.getNumberRows(sheetId) - 1,
+                    };
+                    const position = this.env.model.getters.getPosition();
+                    this.env.model.selection.selectZone({ cell: position, zone: newZone });
+                },
+                "CTRL+SHIFT+ ": () => {
+                    this.env.model.selection.selectAll();
+                },
+                "SHIFT+PAGEDOWN": () => {
+                    this.env.model.dispatch("ACTIVATE_NEXT_SHEET");
+                },
+                "SHIFT+PAGEUP": () => {
+                    this.env.model.dispatch("ACTIVATE_PREVIOUS_SHEET");
+                },
+                PAGEDOWN: () => this.env.model.dispatch("SHIFT_VIEWPORT_DOWN"),
+                PAGEUP: () => this.env.model.dispatch("SHIFT_VIEWPORT_UP"),
+            };
+        }
+        setup() {
+            this.menuState = owl.useState({
+                isOpen: false,
+                position: null,
+                menuItems: [],
+            });
+            this.vScrollbarRef = owl.useRef("vscrollbar");
+            this.hScrollbarRef = owl.useRef("hscrollbar");
+            this.gridRef = owl.useRef("grid");
+            this.gridOverlay = owl.useRef("gridOverlay");
+            this.canvas = owl.useRef("canvas");
+            this.canvasPosition = useAbsolutePosition(this.canvas);
+            this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
+            this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
+            this.currentSheet = this.env.model.getters.getActiveSheetId();
+            this.clickedCol = 0;
+            this.clickedRow = 0;
+            this.clipBoardString = "";
+            this.hoveredCell = useCellHovered(this.env);
+            owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
+            owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
+            owl.useExternalListener(document.body, "paste", this.paste);
+            useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
+            owl.onMounted(() => this.initGrid());
+            owl.onPatched(() => {
+                this.drawGrid();
+                this.resizeGrid();
+            });
+            this.props.exposeFocus(() => this.focus());
+        }
+        initGrid() {
+            this.vScrollbar.el = this.vScrollbarRef.el;
+            this.hScrollbar.el = this.hScrollbarRef.el;
+            this.focus();
+            this.resizeGrid();
+            this.drawGrid();
+        }
+        get gridOverlayStyle() {
+            return `
+      top: ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px;
+      left: ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px;
+      height: calc(100% - ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px);
+      width: calc(100% - ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px);
+    `;
+        }
+        get vScrollbarStyle() {
+            return `
+      top: ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px;`;
+        }
+        get hScrollbarStyle() {
+            return `
+      left: ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px;`;
+        }
+        get cellPopover() {
+            if (this.menuState.isOpen) {
+                return { isOpen: false };
+            }
+            const popover = this.env.model.getters.getCellPopover(this.hoveredCell);
+            if (!popover.isOpen) {
+                return { isOpen: false };
+            }
+            const coordinates = popover.coordinates;
+            return {
+                ...popover,
+                // transform from the "canvas coordinate system" to the "body coordinate system"
+                coordinates: {
+                    x: coordinates.x + this.canvasPosition.x,
+                    y: coordinates.y + this.canvasPosition.y,
+                },
+            };
+        }
+        get activeCellPosition() {
+            const { col, row } = this.env.model.getters.getPosition();
+            return this.env.model.getters.getMainCellPosition(this.env.model.getters.getActiveSheetId(), col, row);
+        }
+        onClosePopover() {
+            this.closeOpenedPopover();
+            this.focus();
+        }
+        focus() {
+            if (!this.env.model.getters.getSelectedFigureId()) {
+                this.gridOverlay.el.focus();
+            }
+        }
+        get gridEl() {
+            if (!this.gridRef.el) {
+                throw new Error("Grid el is not defined.");
+            }
+            return this.gridRef.el;
+        }
+        getGridBoundingClientRect() {
+            return this.gridEl.getBoundingClientRect();
+        }
+        resizeGrid() {
+            const currentHeight = this.gridEl.clientHeight - SCROLLBAR_WIDTH$1;
+            const currentWidth = this.gridEl.clientWidth - SCROLLBAR_WIDTH$1;
+            const { height: viewportHeight, width: viewportWidth } = this.env.model.getters.getViewportDimensionWithHeaders();
+            if (currentHeight != viewportHeight || currentWidth !== viewportWidth) {
+                this.env.model.dispatch("RESIZE_VIEWPORT", {
+                    height: currentHeight - (this.env.isDashboard() ? 0 : HEADER_HEIGHT),
+                    width: currentWidth - (this.env.isDashboard() ? 0 : HEADER_WIDTH),
+                });
+            }
+        }
+        onScroll() {
+            const { offsetScrollbarX, offsetScrollbarY } = this.env.model.getters.getActiveViewport();
+            if (offsetScrollbarX !== this.hScrollbar.scroll ||
+                offsetScrollbarY !== this.vScrollbar.scroll) {
+                const { maxOffsetX, maxOffsetY } = this.env.model.getters.getMaximumViewportOffset(this.env.model.getters.getActiveSheet());
+                this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
+                    offsetX: Math.min(this.hScrollbar.scroll, maxOffsetX),
+                    offsetY: Math.min(this.vScrollbar.scroll, maxOffsetY),
+                });
+            }
+        }
+        checkSheetChanges() {
+            const currentSheet = this.env.model.getters.getActiveSheetId();
+            if (currentSheet !== this.currentSheet) {
+                this.focus();
+                this.currentSheet = currentSheet;
+            }
+        }
+        getAutofillPosition() {
+            const zone = this.env.model.getters.getSelectedZone();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const col = this.env.model.getters.getColDimensions(sheetId, zone.right);
+            const row = this.env.model.getters.getRowDimensions(sheetId, zone.bottom);
+            return {
+                left: col.end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
+                top: row.end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
+            };
+        }
+        isAutoFillActive() {
+            const zone = this.env.model.getters.getSelectedZone();
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            const { width, height } = this.env.model.getters.getViewportDimension();
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const rightCol = this.env.model.getters.getColDimensions(sheetId, zone.right);
+            const bottomRow = this.env.model.getters.getRowDimensions(sheetId, zone.bottom);
+            return (rightCol.end <= offsetX + width &&
+                rightCol.end > offsetX &&
+                bottomRow.end <= offsetY + height &&
+                bottomRow.end > offsetY);
+        }
+        drawGrid() {
+            //reposition scrollbar
+            const { offsetScrollbarX, offsetScrollbarY } = this.env.model.getters.getActiveViewport();
+            this.hScrollbar.scroll = offsetScrollbarX;
+            this.vScrollbar.scroll = offsetScrollbarY;
+            // check for position changes
+            this.checkSheetChanges();
+            // drawing grid on canvas
+            const canvas = this.canvas.el;
+            const dpr = window.devicePixelRatio || 1;
+            const ctx = canvas.getContext("2d", { alpha: false });
+            const thinLineWidth = 0.4 * dpr;
+            const renderingContext = {
+                ctx,
+                dpr,
+                thinLineWidth,
+            };
+            const { width, height } = this.env.model.getters.getViewportDimensionWithHeaders();
+            canvas.style.width = `${width}px`;
+            canvas.style.height = `${height}px`;
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            canvas.setAttribute("style", `width:${width}px;height:${height}px;`);
+            ctx.translate(-0.5, -0.5);
+            ctx.scale(dpr, dpr);
+            this.env.model.drawGrid(renderingContext);
+        }
+        moveCanvas(deltaX, deltaY) {
+            this.vScrollbar.scroll = this.vScrollbar.scroll + deltaY;
+            this.hScrollbar.scroll = this.hScrollbar.scroll + deltaX;
+            this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
+                offsetX: this.hScrollbar.scroll,
+                offsetY: this.vScrollbar.scroll,
+            });
+        }
+        getClientPositionKey(client) {
+            var _a, _b, _c;
+            return `${client.id}-${(_a = client.position) === null || _a === void 0 ? void 0 : _a.sheetId}-${(_b = client.position) === null || _b === void 0 ? void 0 : _b.col}-${(_c = client.position) === null || _c === void 0 ? void 0 : _c.row}`;
+        }
+        onMouseWheel(ev) {
+            if (ev.ctrlKey) {
+                return;
+            }
+            function normalize(val) {
+                return val * (ev.deltaMode === 0 ? 1 : DEFAULT_CELL_HEIGHT);
+            }
+            const deltaX = ev.shiftKey ? ev.deltaY : ev.deltaX;
+            const deltaY = ev.shiftKey ? ev.deltaX : ev.deltaY;
+            this.moveCanvas(normalize(deltaX), normalize(deltaY));
+        }
+        isCellHovered(col, row) {
+            return this.hoveredCell.col === col && this.hoveredCell.row === row;
+        }
+        // ---------------------------------------------------------------------------
+        // Zone selection with mouse
+        // ---------------------------------------------------------------------------
+        /**
+         * Get the coordinates in pixels, with 0,0 being the top left of the grid itself
+         */
+        getCoordinates(ev) {
+            const rect = this.gridOverlay.el.getBoundingClientRect();
+            const x = ev.pageX - rect.left;
+            const y = ev.pageY - rect.top;
+            return [x, y];
+        }
+        getCartesianCoordinates(ev) {
+            const [x, y] = this.getCoordinates(ev);
+            const colIndex = this.env.model.getters.getColIndex(x);
+            const rowIndex = this.env.model.getters.getRowIndex(y);
+            return [colIndex, rowIndex];
+        }
+        onMouseDown(ev) {
+            if (ev.button > 0 || this.env.isDashboard()) {
+                // not main button, probably a context menu
+                return;
+            }
+            const [col, row] = this.getCartesianCoordinates(ev);
+            if (col < 0 || row < 0) {
+                return;
+            }
+            this.clickedCol = col;
+            this.clickedRow = row;
+            const sheetId = this.env.model.getters.getActiveSheetId();
+            this.closeOpenedPopover();
+            if (this.env.model.getters.getEditionMode() === "editing") {
+                this.env.model.dispatch("STOP_EDITION");
+            }
+            if (ev.shiftKey) {
+                this.env.model.selection.setAnchorCorner(col, row);
+            }
+            else if (ev.ctrlKey) {
+                this.env.model.selection.addCellToSelection(col, row);
+            }
+            else {
+                this.env.model.selection.selectCell(col, row);
+            }
+            this.checkSheetChanges();
+            let prevCol = col;
+            let prevRow = row;
+            let isEdgeScrolling = false;
+            let timeOutId = null;
+            let timeoutDelay = 0;
+            let currentEv;
+            const onMouseMove = (ev) => {
+                currentEv = ev;
+                if (timeOutId) {
+                    return;
+                }
+                const [x, y] = this.getCoordinates(currentEv);
+                isEdgeScrolling = false;
+                timeoutDelay = 0;
+                const colEdgeScroll = this.env.model.getters.getEdgeScrollCol(x);
+                const rowEdgeScroll = this.env.model.getters.getEdgeScrollRow(y);
+                const { left, right, top, bottom } = this.env.model.getters.getActiveViewport();
+                let col, row;
+                if (colEdgeScroll.canEdgeScroll) {
+                    col = colEdgeScroll.direction > 0 ? right : left - 1;
+                }
+                else {
+                    col = this.env.model.getters.getColIndex(x);
+                    col = col === -1 ? prevCol : col;
+                }
+                if (rowEdgeScroll.canEdgeScroll) {
+                    row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
+                }
+                else {
+                    row = this.env.model.getters.getRowIndex(y);
+                    row = row === -1 ? prevRow : row;
+                }
+                isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
+                timeoutDelay = Math.min(colEdgeScroll.canEdgeScroll ? colEdgeScroll.delay : MAX_DELAY, rowEdgeScroll.canEdgeScroll ? rowEdgeScroll.delay : MAX_DELAY);
+                if (col !== prevCol || row !== prevRow) {
+                    prevCol = col;
+                    prevRow = row;
+                    this.env.model.selection.setAnchorCorner(col, row);
+                }
+                if (isEdgeScrolling) {
+                    const offsetX = this.env.model.getters.getColDimensions(sheetId, left + colEdgeScroll.direction).start;
+                    const offsetY = this.env.model.getters.getRowDimensions(sheetId, top + rowEdgeScroll.direction).start;
+                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
+                    timeOutId = setTimeout(() => {
+                        timeOutId = null;
+                        onMouseMove(currentEv);
+                    }, Math.round(timeoutDelay));
+                }
+            };
+            const onMouseUp = (ev) => {
+                clearTimeout(timeOutId);
+                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
+                this.gridOverlay.el.removeEventListener("mousemove", onMouseMove);
+                if (this.env.model.getters.isPaintingFormat()) {
+                    this.env.model.dispatch("PASTE", {
+                        target: this.env.model.getters.getSelectedZones(),
+                    });
+                }
+            };
+            startDnd(onMouseMove, onMouseUp);
+        }
+        onDoubleClick(ev) {
+            const [col, row] = this.getCartesianCoordinates(ev);
+            if (this.clickedCol === col && this.clickedRow === row) {
+                const cell = this.env.model.getters.getActiveCell();
+                !cell || cell.isEmpty()
+                    ? this.props.onGridComposerCellFocused()
+                    : this.props.onComposerContentFocused();
+            }
+        }
+        closeOpenedPopover() {
+            this.env.model.dispatch("CLOSE_CELL_POPOVER");
+        }
+        // ---------------------------------------------------------------------------
+        // Keyboard interactions
+        // ---------------------------------------------------------------------------
+        processArrows(ev) {
+            ev.preventDefault();
+            ev.stopPropagation();
+            this.closeOpenedPopover();
+            const arrowMap = {
+                ArrowDown: { direction: "down", delta: [0, 1] },
+                ArrowLeft: { direction: "left", delta: [-1, 0] },
+                ArrowRight: { direction: "right", delta: [1, 0] },
+                ArrowUp: { direction: "up", delta: [0, -1] },
+            };
+            const { direction, delta } = arrowMap[ev.key];
+            if (ev.shiftKey) {
+                const oldZone = this.env.model.getters.getSelectedZone();
+                this.env.model.selection.resizeAnchorZone(direction, ev.ctrlKey ? "end" : "one");
+                const newZone = this.env.model.getters.getSelectedZone();
+                const viewport = this.env.model.getters.getActiveViewport();
+                const sheetId = this.env.model.getters.getActiveSheetId();
+                let { col, row } = findCellInNewZone(oldZone, newZone);
+                col = Math.min(col, this.env.model.getters.getNumberCols(sheetId) - 1);
+                row = Math.min(row, this.env.model.getters.getNumberRows(sheetId) - 1);
+                const { left, right, top, bottom, offsetX, offsetY } = viewport;
+                const newOffsetX = col < left || col > right - 1
+                    ? this.env.model.getters.getColDimensions(sheetId, left + delta[0]).start
+                    : offsetX;
+                const newOffsetY = row < top || row > bottom - 1
+                    ? this.env.model.getters.getRowDimensions(sheetId, top + delta[1]).start
+                    : offsetY;
+                if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
+                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
+                        offsetX: newOffsetX,
+                        offsetY: newOffsetY,
+                    });
+                }
+            }
+            else {
+                this.env.model.selection.moveAnchorCell(direction, ev.ctrlKey ? "end" : "one");
+            }
+            if (this.env.model.getters.isPaintingFormat()) {
+                this.env.model.dispatch("PASTE", {
+                    target: this.env.model.getters.getSelectedZones(),
+                });
+            }
+        }
+        onKeydown(ev) {
+            if (this.env.isDashboard()) {
+                return;
+            }
+            if (ev.key.startsWith("Arrow")) {
+                this.processArrows(ev);
+                return;
+            }
+            let keyDownString = "";
+            if (ev.ctrlKey)
+                keyDownString += "CTRL+";
+            if (ev.metaKey)
+                keyDownString += "CTRL+";
+            if (ev.altKey)
+                keyDownString += "ALT+";
+            if (ev.shiftKey)
+                keyDownString += "SHIFT+";
+            keyDownString += ev.key.toUpperCase();
+            let handler = this.keyDownMapping[keyDownString];
+            if (handler) {
+                ev.preventDefault();
+                ev.stopPropagation();
+                handler();
+                return;
+            }
+            if (!keyDownMappingIgnore.includes(keyDownString)) {
+                if (ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) {
+                    // if the user types a character on the grid, it means he wants to start composing the selected cell with that
+                    // character
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    this.props.onGridComposerCellFocused(ev.key);
+                }
+            }
+        }
+        // ---------------------------------------------------------------------------
+        // Context Menu
+        // ---------------------------------------------------------------------------
+        onCanvasContextMenu(ev) {
+            ev.preventDefault();
+            const [col, row] = this.getCartesianCoordinates(ev);
+            if (col < 0 || row < 0) {
+                return;
+            }
+            const zones = this.env.model.getters.getSelectedZones();
+            const lastZone = zones[zones.length - 1];
+            let type = "CELL";
+            if (!isInside(col, row, lastZone)) {
+                this.env.model.dispatch("UNFOCUS_SELECTION_INPUT");
+                this.env.model.dispatch("STOP_EDITION");
+                this.env.model.selection.selectCell(col, row);
+            }
+            else {
+                if (this.env.model.getters.getActiveCols().has(col)) {
+                    type = "COL";
+                }
+                else if (this.env.model.getters.getActiveRows().has(row)) {
+                    type = "ROW";
+                }
+            }
+            this.toggleContextMenu(type, ev.clientX, ev.clientY);
+        }
+        toggleContextMenu(type, x, y) {
+            this.closeOpenedPopover();
+            if (this.env.model.getters.isDashboard()) {
+                type = "DASHBOARD";
+            }
+            this.menuState.isOpen = true;
+            this.menuState.position = { x, y };
+            this.menuState.menuItems = registries$1[type]
+                .getAll()
+                .filter((item) => !item.isVisible || item.isVisible(this.env));
+        }
+        copy(cut, ev) {
+            if (!this.gridEl.contains(document.activeElement)) {
+                return;
+            }
+            /* If we are currently editing a cell, let the default behavior */
+            if (this.env.model.getters.getEditionMode() !== "inactive") {
+                return;
+            }
+            const target = this.env.model.getters.getSelectedZones();
+            if (cut) {
+                interactiveCut(this.env, target);
+            }
+            else {
+                this.env.model.dispatch("COPY", { target });
+            }
+            const content = this.env.model.getters.getClipboardContent();
+            this.clipBoardString = content;
+            ev.clipboardData.setData("text/plain", content);
+            ev.preventDefault();
+        }
+        paste(ev) {
+            if (!this.gridEl.contains(document.activeElement)) {
+                return;
+            }
+            const clipboardData = ev.clipboardData;
+            if (clipboardData.types.indexOf("text/plain") > -1) {
+                const content = clipboardData.getData("text/plain");
+                const target = this.env.model.getters.getSelectedZones();
+                if (this.clipBoardString === content) {
+                    // the paste actually comes from o-spreadsheet itself
+                    interactivePaste(this.env, target);
+                }
+                else {
+                    this.env.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
+                        target,
+                        text: content,
+                    });
+                }
+            }
+        }
+        closeMenu() {
+            this.menuState.isOpen = false;
+            this.focus();
+        }
+    }
+    Grid.template = "o-spreadsheet-Grid";
+    Grid.components = {
+        GridComposer,
+        HeadersOverlay,
+        Menu,
+        Autofill,
+        FiguresContainer,
+        ClientTag,
+        Highlight,
+        Popover,
+    };
 
     /**
      * Abstract base implementation of a cell.
@@ -15048,9 +19155,9 @@
     class AbstractCell {
         constructor(id, evaluated, properties) {
             this.id = id;
-            this.evaluated = evaluated;
             this.style = properties.style;
             this.format = properties.format;
+            this.evaluated = { ...evaluated, format: evaluated.format || properties.format };
         }
         isFormula() {
             return false;
@@ -15062,7 +19169,7 @@
             return false;
         }
         get formattedValue() {
-            return formatValue(this.evaluated.value, this.format);
+            return formatValue(this.evaluated.value, this.evaluated.format);
         }
         get composerContent() {
             return this.content;
@@ -15225,23 +19332,26 @@
         startEvaluation() {
             this.evaluated = { value: LOADING, type: CellValueType.text };
         }
-        assignValue(value) {
+        assignEvaluation(value, format) {
             switch (typeof value) {
                 case "number":
                     this.evaluated = {
                         value,
+                        format,
                         type: CellValueType.number,
                     };
                     break;
                 case "boolean":
                     this.evaluated = {
                         value,
+                        format,
                         type: CellValueType.boolean,
                     };
                     break;
                 case "string":
                     this.evaluated = {
                         value,
+                        format,
                         type: CellValueType.text,
                     };
                     break;
@@ -15251,12 +19361,14 @@
                 case "object": // null
                     this.evaluated = {
                         value,
+                        format,
                         type: CellValueType.empty,
                     };
                     break;
                 case "undefined":
                     this.evaluated = {
                         value,
+                        format,
                         type: CellValueType.empty,
                     };
                     break;
@@ -15298,11 +19410,7 @@
         createCell: (id, content, properties, sheetId, getters) => {
             const compiledFormula = compile(content);
             const dependencies = compiledFormula.dependencies.map((xc) => getters.getRangeFromSheetXC(sheetId, xc));
-            const format = properties.format || getters.inferFormulaFormat(compiledFormula, dependencies);
-            return new FormulaCell((cell) => getters.buildFormulaContent(sheetId, cell), id, content, compiledFormula, dependencies, {
-                ...properties,
-                format,
-            });
+            return new FormulaCell((cell) => getters.buildFormulaContent(sheetId, cell), id, content, compiledFormula, dependencies, properties);
         },
     })
         .add("Empty", {
@@ -15826,88 +19934,6 @@
             sheets: [createEmptyExcelSheet(INITIAL_SHEET_ID, "Sheet1")],
         };
     }
-
-    /**
-     * BasePlugin
-     *
-     * Since the spreadsheet internal state is quite complex, it is split into
-     * multiple parts, each managing a specific concern.
-     *
-     * This file introduce the BasePlugin, which is the common class that defines
-     * how each of these model sub parts should interact with each other.
-     * There are two kind of plugins: core plugins handling persistent data
-     * and UI plugins handling transient data.
-     */
-    class BasePlugin {
-        constructor(stateObserver, dispatch, config) {
-            this.history = Object.assign(Object.create(stateObserver), {
-                update: stateObserver.addChange.bind(stateObserver, this),
-                selectCell: () => { },
-            });
-            this.dispatch = dispatch;
-        }
-        // ---------------------------------------------------------------------------
-        // Command handling
-        // ---------------------------------------------------------------------------
-        /**
-         * Before a command is accepted, the model will ask each plugin if the command
-         * is allowed.  If all of then return true, then we can proceed. Otherwise,
-         * the command is cancelled.
-         *
-         * There should not be any side effects in this method.
-         */
-        allowDispatch(command) {
-            return 0 /* Success */;
-        }
-        /**
-         * This method is useful when a plugin need to perform some action before a
-         * command is handled in another plugin. This should only be used if it is not
-         * possible to do the work in the handle method.
-         */
-        beforeHandle(command) { }
-        /**
-         * This is the standard place to handle any command. Most of the plugin
-         * command handling work should take place here.
-         */
-        handle(command) { }
-        /**
-         * Sometimes, it is useful to perform some work after a command (and all its
-         * subcommands) has been completely handled.  For example, when we paste
-         * multiple cells, we only want to reevaluate the cell values once at the end.
-         */
-        finalize() { }
-        /**
-         * Combine multiple validation functions into a single function
-         * returning the list of result of every validation.
-         */
-        batchValidations(...validations) {
-            return (toValidate) => validations.map((validation) => validation.call(this, toValidate)).flat();
-        }
-        /**
-         * Combine multiple validation functions. Every validation is executed one after
-         * the other. As soon as one validation fails, it stops and the cancelled reason
-         * is returned.
-         */
-        chainValidations(...validations) {
-            return (toValidate) => {
-                for (const validation of validations) {
-                    let results = validation.call(this, toValidate);
-                    if (!Array.isArray(results)) {
-                        results = [results];
-                    }
-                    const cancelledReasons = results.filter((result) => result !== 0 /* Success */);
-                    if (cancelledReasons.length) {
-                        return cancelledReasons;
-                    }
-                }
-                return 0 /* Success */;
-            };
-        }
-        checkValidations(command, ...validations) {
-            return this.batchValidations(...validations)(command);
-        }
-    }
-    BasePlugin.getters = [];
 
     /**
      * Core plugins handle spreadsheet data.
@@ -16622,35 +20648,6 @@
             }
             return undefined;
         }
-        /**
-         * Try to infer the cell format based on the formula dependencies.
-         * e.g. if the formula is `=A1` and A1 has a given format, the
-         * same format will be used.
-         */
-        inferFormulaFormat(compiledFormula, dependencies) {
-            const dependenciesFormat = compiledFormula.dependenciesFormat;
-            for (let dependencyFormat of dependenciesFormat) {
-                switch (typeof dependencyFormat) {
-                    case "string":
-                        // dependencyFormat corresponds to a literal format which can be applied
-                        // directly.
-                        return dependencyFormat;
-                    case "number":
-                        // dependencyFormat corresponds to a dependency cell from which we must
-                        // find the cell and extract the associated format
-                        const ref = dependencies[dependencyFormat];
-                        if (this.getters.tryGetSheet(ref.sheetId)) {
-                            // if the reference is a range --> the first cell in the range
-                            // determines the format
-                            const cellRef = this.getters.getCell(ref.sheetId, ref.zone.left, ref.zone.top);
-                            if (cellRef && cellRef.format) {
-                                return cellRef.format;
-                            }
-                        }
-                }
-            }
-            return NULL_FORMAT;
-        }
         /*
          * Reconstructs the original formula string based on a normalized form and its dependencies
          */
@@ -16803,7 +20800,7 @@
                 // TODO this plugin should not care about evaluation
                 // and evaluation should not depend on implementation details here.
                 // Task 2813749
-                cell.assignValue(before.evaluated.value);
+                cell.assignEvaluation(before.evaluated.value, before.evaluated.format);
                 if (before.evaluated.type === CellValueType.error) {
                     cell.assignError(before.evaluated.value, before.evaluated.error);
                 }
@@ -16828,7 +20825,6 @@
         "zoneToXC",
         "getCells",
         "getFormulaCellContent",
-        "inferFormulaFormat",
         "getCellStyle",
         "buildFormulaContent",
         "getCellById",
@@ -17241,7 +21237,7 @@
                     ]), this.checkOperatorArgsNumber(0, ["IsEmpty", "IsNotEmpty"]));
                 case "ColorScaleRule": {
                     return this.checkValidations(rule, this.chainValidations(this.checkThresholds(this.checkFormulaCompilation)), this.chainValidations(this.checkThresholds(this.checkNaN), this.batchValidations(this.checkMinBiggerThanMax, this.checkMinBiggerThanMid, this.checkMidBiggerThanMax
-                    // ☝️ Those three validations can be factorized further
+                    // Those three validations can be factorized further
                     )));
                 }
                 case "IconSetRule": {
@@ -17498,8 +21494,10 @@
         constructor() {
             super(...arguments);
             this.sizes = {};
+            this.tallestCellInRows = {};
         }
         handle(cmd) {
+            var _a, _b, _c;
             switch (cmd.type) {
                 case "CREATE_SHEET": {
                     const computedSizes = this.computeSheetSizes(cmd.sheetId);
@@ -17514,40 +21512,87 @@
                         })),
                     };
                     this.history.update("sizes", cmd.sheetId, sizes);
+                    this.history.update("tallestCellInRows", cmd.sheetId, []);
                     break;
                 }
                 case "DUPLICATE_SHEET":
                     this.history.update("sizes", cmd.sheetIdTo, deepCopy(this.sizes[cmd.sheetId]));
+                    this.history.update("tallestCellInRows", cmd.sheetIdTo, deepCopy(this.tallestCellInRows[cmd.sheetId]));
                     break;
                 case "DELETE_SHEET":
                     const sizes = { ...this.sizes };
                     delete sizes[cmd.sheetId];
                     this.history.update("sizes", sizes);
+                    const tallestCellInRows = { ...this.tallestCellInRows };
+                    delete tallestCellInRows[cmd.sheetId];
+                    this.history.update("tallestCellInRows", tallestCellInRows);
                     break;
                 case "REMOVE_COLUMNS_ROWS": {
                     const sizes = [...this.sizes[cmd.sheetId][cmd.dimension]];
+                    const tallestCellInRows = [...this.tallestCellInRows[cmd.sheetId]];
                     for (let headerIndex of [...cmd.elements].sort().reverse()) {
                         sizes.splice(headerIndex, 1);
+                        if (cmd.dimension === "ROW") {
+                            tallestCellInRows.splice(headerIndex, 1);
+                        }
                     }
                     this.history.update("sizes", cmd.sheetId, cmd.dimension, sizes);
+                    if (cmd.dimension === "ROW") {
+                        this.history.update("tallestCellInRows", cmd.sheetId, tallestCellInRows);
+                    }
                     break;
                 }
                 case "ADD_COLUMNS_ROWS": {
                     const sizes = [...this.sizes[cmd.sheetId][cmd.dimension]];
                     const addIndex = getAddHeaderStartIndex(cmd.position, cmd.base);
+                    const tallestCellInRows = [...this.tallestCellInRows[cmd.sheetId]];
                     const baseSize = sizes[cmd.base];
                     for (let i = 0; i < cmd.quantity; i++) {
                         sizes.splice(addIndex, 0, baseSize);
+                        if (cmd.dimension === "ROW") {
+                            tallestCellInRows.splice(i, 1, undefined);
+                        }
                     }
                     this.history.update("sizes", cmd.sheetId, cmd.dimension, sizes);
+                    if (cmd.dimension === "ROW") {
+                        this.history.update("tallestCellInRows", cmd.sheetId, tallestCellInRows);
+                    }
                     break;
                 }
                 case "RESIZE_COLUMNS_ROWS":
                     for (let el of cmd.elements) {
-                        this.history.update("sizes", cmd.sheetId, cmd.dimension, el, {
-                            computedSize: cmd.size,
-                            manualSize: cmd.size,
-                        });
+                        if (cmd.dimension === "ROW") {
+                            const { cell: tallestCell, height } = this.getRowTallestCell(cmd.sheetId, el);
+                            const size = height;
+                            this.history.update("tallestCellInRows", cmd.sheetId, el, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
+                            this.history.update("sizes", cmd.sheetId, cmd.dimension, el, {
+                                manualSize: cmd.size || undefined,
+                                computedSize: size,
+                            });
+                        }
+                        else {
+                            this.history.update("sizes", cmd.sheetId, cmd.dimension, el, {
+                                manualSize: cmd.size || undefined,
+                                computedSize: cmd.size || DEFAULT_CELL_WIDTH,
+                            });
+                        }
+                    }
+                    break;
+                case "UPDATE_CELL":
+                    if (!((_c = (_b = (_a = this.sizes[cmd.sheetId]) === null || _a === void 0 ? void 0 : _a["ROW"]) === null || _b === void 0 ? void 0 : _b[cmd.row]) === null || _c === void 0 ? void 0 : _c.manualSize)) {
+                        this.adjustRowSizeWithCellFont(cmd.sheetId, cmd.col, cmd.row);
+                    }
+                    break;
+                case "ADD_MERGE":
+                case "REMOVE_MERGE":
+                    for (let target of cmd.target) {
+                        for (let row of range(target.top, target.bottom + 1)) {
+                            const { height: rowHeight, cell: tallestCell } = this.getRowTallestCell(cmd.sheetId, row);
+                            this.history.update("tallestCellInRows", cmd.sheetId, row, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
+                            if (rowHeight !== this.getRowSize(cmd.sheetId, row)) {
+                                this.history.update("sizes", cmd.sheetId, "ROW", row, "computedSize", rowHeight);
+                            }
+                        }
                     }
                     break;
             }
@@ -17559,6 +21604,33 @@
         getRowSize(sheetId, index) {
             return this.getHeaderSize(sheetId, "ROW", index);
         }
+        /**
+         * Change the size of a row to match the cell with the biggest font size.
+         */
+        adjustRowSizeWithCellFont(sheetId, col, row) {
+            var _a;
+            const currentCell = this.getters.getCell(sheetId, col, row);
+            const currentRowSize = this.getRowSize(sheetId, row);
+            const newCellHeight = this.getCellHeight(sheetId, col, row);
+            const tallestCell = (_a = this.tallestCellInRows[sheetId]) === null || _a === void 0 ? void 0 : _a[row];
+            let shouldRowBeUpdated = !tallestCell ||
+                !this.getters.getCellById(tallestCell) || // tallest cell was deleted
+                ((currentCell === null || currentCell === void 0 ? void 0 : currentCell.id) === tallestCell && newCellHeight < currentRowSize); // tallest cell is smaller than before;
+            let newRowHeight = undefined;
+            if (shouldRowBeUpdated) {
+                const { height: maxHeight, cell: tallestCell } = this.getRowTallestCell(sheetId, row);
+                newRowHeight = maxHeight;
+                this.history.update("tallestCellInRows", sheetId, row, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
+            }
+            else if (newCellHeight > currentRowSize) {
+                newRowHeight = newCellHeight;
+                const tallestCell = this.getters.getCell(sheetId, col, row);
+                this.history.update("tallestCellInRows", sheetId, row, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
+            }
+            if (newRowHeight !== undefined && newRowHeight !== currentRowSize) {
+                this.history.update("sizes", sheetId, "ROW", row, "computedSize", newRowHeight);
+            }
+        }
         getHeaderSize(sheetId, dimension, index) {
             var _a, _b, _c, _d;
             return (((_b = (_a = this.sizes[sheetId]) === null || _a === void 0 ? void 0 : _a[dimension][index]) === null || _b === void 0 ? void 0 : _b.manualSize) ||
@@ -17566,17 +21638,62 @@
                 this.getDefaultHeaderSize(dimension));
         }
         computeSheetSizes(sheetId) {
+            var _a, _b;
             const sizes = { COL: [], ROW: [] };
-            for (const col of range(0, this.getters.getNumberCols(sheetId))) {
+            for (let col of range(0, this.getters.getNumberCols(sheetId))) {
                 sizes.COL.push(this.getHeaderSize(sheetId, "COL", col));
             }
-            for (const row of range(0, this.getters.getNumberRows(sheetId))) {
-                sizes.ROW.push(this.getHeaderSize(sheetId, "ROW", row));
+            for (let row of range(0, this.getters.getNumberRows(sheetId))) {
+                let rowSize = (_b = (_a = this.sizes[sheetId]) === null || _a === void 0 ? void 0 : _a["ROW"]) === null || _b === void 0 ? void 0 : _b[row].manualSize;
+                if (!rowSize) {
+                    const { cell: tallestCell, height } = this.getRowTallestCell(sheetId, row);
+                    rowSize = height;
+                    this.history.update("tallestCellInRows", sheetId, row, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
+                }
+                sizes.ROW.push(rowSize);
             }
             return sizes;
         }
         getDefaultHeaderSize(dimension) {
             return dimension === "COL" ? DEFAULT_CELL_WIDTH : DEFAULT_CELL_HEIGHT;
+        }
+        /**
+         * Return the height the cell should have in the sheet, which is either DEFAULT_CELL_HEIGHT if the cell is in a multi-row
+         * merge, or the height of the cell computed based on its font size.
+         */
+        getCellHeight(sheetId, col, row) {
+            const merge = this.getters.getMerge(sheetId, col, row);
+            if (merge && merge.bottom !== merge.top) {
+                return DEFAULT_CELL_HEIGHT;
+            }
+            const cell = this.getters.getCell(sheetId, col, row);
+            return getDefaultCellHeight(cell);
+        }
+        /**
+         * Get the tallest cell of a row and its size.
+         *
+         * The tallest cell of the row correspond to the cell with the biggest font size,
+         * and that is not part of a multi-line merge.
+         */
+        getRowTallestCell(sheetId, row) {
+            const cellIds = this.getters.getRowCells(sheetId, row);
+            let maxHeight = 0;
+            let tallestCell = undefined;
+            for (let i = 0; i < cellIds.length; i++) {
+                const cell = this.getters.getCellById(cellIds[i]);
+                if (!cell)
+                    continue;
+                const { col, row } = this.getters.getCellPosition(cell.id);
+                const cellHeight = this.getCellHeight(sheetId, col, row);
+                if (cellHeight > maxHeight && cellHeight > DEFAULT_CELL_HEIGHT) {
+                    maxHeight = cellHeight;
+                    tallestCell = cell;
+                }
+            }
+            if (maxHeight <= DEFAULT_CELL_HEIGHT) {
+                return { height: DEFAULT_CELL_HEIGHT };
+            }
+            return { cell: tallestCell, height: maxHeight };
         }
         import(data) {
             for (let sheet of data.sheets) {
@@ -17593,13 +21710,13 @@
                 }
                 const computedSizes = this.computeSheetSizes(sheet.id);
                 this.sizes[sheet.id] = {
-                    COL: manualSizes.COL.map((size, i) => ({
-                        manualSize: size,
-                        computedSize: computedSizes.COL[i],
+                    COL: computedSizes.COL.map((size, i) => ({
+                        manualSize: manualSizes.COL[i],
+                        computedSize: size,
                     })),
-                    ROW: manualSizes.ROW.map((size, i) => ({
-                        manualSize: size,
-                        computedSize: computedSizes.ROW[i],
+                    ROW: computedSizes.ROW.map((size, i) => ({
+                        manualSize: manualSizes.ROW[i],
+                        computedSize: size,
                     })),
                 };
             }
@@ -19039,24 +23156,6 @@
     ];
 
     /**
-     * UI plugins handle any transient data required to display a spreadsheet.
-     * They can draw on the grid canvas.
-     */
-    class UIPlugin extends BasePlugin {
-        constructor(getters, state, dispatch, config, selection) {
-            super(state, dispatch, config);
-            this.getters = getters;
-            this.ui = config;
-            this.selection = selection;
-        }
-        // ---------------------------------------------------------------------------
-        // Grid rendering
-        // ---------------------------------------------------------------------------
-        drawGrid(ctx, layer) { }
-    }
-    UIPlugin.layers = [];
-
-    /**
      * This plugin manage the autofill.
      *
      * The way it works is the next one:
@@ -19430,8 +23529,9 @@
             if (!this.autofillZone) {
                 return;
             }
-            const { viewport, ctx, thinLineWidth } = renderingContext;
-            const [x, y, width, height] = this.getters.getRect(this.autofillZone, viewport);
+            const { ctx, thinLineWidth } = renderingContext;
+            const viewport = this.getters.getActiveViewport();
+            const { x, y, width, height } = this.getters.getRect(this.autofillZone, viewport);
             if (width > 0 && height > 0) {
                 ctx.strokeStyle = "black";
                 ctx.lineWidth = thinLineWidth;
@@ -19716,6 +23816,99 @@
         }
     }
     AutomaticSumPlugin.getters = ["getAutomaticSums"];
+
+    /**
+     * Plugin managing the display of components next to cells.
+     */
+    class CellPopoverPlugin extends UIPlugin {
+        allowDispatch(cmd) {
+            switch (cmd.type) {
+                case "OPEN_CELL_POPOVER":
+                    try {
+                        cellPopoverRegistry.get(cmd.popoverType);
+                    }
+                    catch (error) {
+                        return 68 /* InvalidCellPopover */;
+                    }
+                    return 0 /* Success */;
+                default:
+                    return 0 /* Success */;
+            }
+        }
+        handle(cmd) {
+            switch (cmd.type) {
+                case "ACTIVATE_SHEET":
+                    this.persistentPopover = undefined;
+                    break;
+                case "OPEN_CELL_POPOVER":
+                    this.persistentPopover = {
+                        col: cmd.col,
+                        row: cmd.row,
+                        type: cmd.popoverType,
+                    };
+                    break;
+                case "CLOSE_CELL_POPOVER":
+                    this.persistentPopover = undefined;
+                    break;
+            }
+        }
+        getCellPopover({ col, row }) {
+            var _a, _b;
+            const sheetId = this.getters.getActiveSheetId();
+            if (this.persistentPopover) {
+                const mainPosition = this.getters.getMainCellPosition(sheetId, this.persistentPopover.col, this.persistentPopover.row);
+                const popover = (_b = (_a = cellPopoverRegistry
+                    .get(this.persistentPopover.type)).onOpen) === null || _b === void 0 ? void 0 : _b.call(_a, mainPosition, this.getters);
+                return !(popover === null || popover === void 0 ? void 0 : popover.isOpen)
+                    ? { isOpen: false }
+                    : {
+                        ...popover,
+                        ...this.computePopoverProps(this.persistentPopover, popover.cellCorner),
+                    };
+            }
+            if (col === undefined || row === undefined)
+                return { isOpen: false };
+            const mainPosition = this.getters.getMainCellPosition(sheetId, col, row);
+            const popover = cellPopoverRegistry
+                .getAll()
+                .map((matcher) => { var _a; return (_a = matcher.onHover) === null || _a === void 0 ? void 0 : _a.call(matcher, mainPosition, this.getters); })
+                .find((popover) => popover === null || popover === void 0 ? void 0 : popover.isOpen);
+            return !(popover === null || popover === void 0 ? void 0 : popover.isOpen)
+                ? { isOpen: false }
+                : {
+                    ...popover,
+                    ...this.computePopoverProps(mainPosition, popover.cellCorner),
+                };
+        }
+        computePopoverProps({ col, row }, corner) {
+            const viewport = this.getters.getActiveViewport();
+            const { width, height } = this.getters.getRect(positionToZone({ col, row }), viewport);
+            return {
+                coordinates: this.computePopoverPosition({ col, row }, corner),
+                cellWidth: -width,
+                cellHeight: -height,
+            };
+        }
+        computePopoverPosition({ col, row }, corner) {
+            const sheetId = this.getters.getActiveSheetId();
+            const viewport = this.getters.getActiveViewport();
+            const merge = this.getters.getMerge(sheetId, col, row);
+            if (merge) {
+                col = corner === "TopRight" ? merge.right : merge.left;
+                row = corner === "TopRight" ? merge.top : merge.bottom;
+            }
+            // x, y are relative to the canvas
+            const { x, y, width, height } = this.getters.getRect(positionToZone({ col, row }), viewport);
+            switch (corner) {
+                case "BottomLeft":
+                    return { x, y: y + height };
+                case "TopRight":
+                    return { x: x + width, y: y };
+            }
+        }
+    }
+    CellPopoverPlugin.getters = ["getCellPopover"];
+    CellPopoverPlugin.modes = ["normal"];
 
     /**
      * Clipboard Plugin
@@ -20254,7 +24447,7 @@
                     this.dispatch("UPDATE_CELL", {
                         ...target,
                         style: origin.cell.style,
-                        format: origin.cell.format,
+                        format: origin.cell.evaluated.format || origin.cell.format,
                     });
                     return;
                 }
@@ -20315,7 +24508,8 @@
         // Grid rendering
         // ---------------------------------------------------------------------------
         drawGrid(renderingContext) {
-            const { viewport, ctx, thinLineWidth } = renderingContext;
+            const { ctx, thinLineWidth } = renderingContext;
+            const viewport = this.getters.getActiveViewport();
             if (this.status !== "visible" ||
                 !this.state ||
                 !this.state.zones ||
@@ -20327,7 +24521,7 @@
             ctx.strokeStyle = SELECTION_BORDER_COLOR;
             ctx.lineWidth = 3.3 * thinLineWidth;
             for (const zone of this.state.zones) {
-                const [x, y, width, height] = this.getters.getRect(zone, viewport);
+                const { x, y, width, height } = this.getters.getRect(zone, viewport);
                 if (width > 0 && height > 0) {
                     ctx.strokeRect(x, y, width, height);
                 }
@@ -20336,661 +24530,6 @@
     }
     ClipboardPlugin.layers = [2 /* Clipboard */];
     ClipboardPlugin.getters = ["getClipboardContent", "isCutOperation", "isPaintingFormat"];
-
-    /**
-     * Change the reference types inside the given token, if the token represent a range or a cell
-     *
-     * Eg. :
-     *   A1 => $A$1 => A$1 => $A1 => A1
-     *   A1:$B$1 => $A$1:B$1 => A$1:$B1 => $A1:B1 => A1:$B$1
-     */
-    function loopThroughReferenceType(token) {
-        if (token.type !== "REFERENCE")
-            return token;
-        const [range, sheet] = token.value.split("!").reverse();
-        const [left, right] = range.split(":");
-        const sheetRef = sheet ? `${sheet}!` : "";
-        const updatedLeft = getTokenNextReferenceType(left);
-        const updatedRight = right ? `:${getTokenNextReferenceType(right)}` : "";
-        return { ...token, value: sheetRef + updatedLeft + updatedRight };
-    }
-    /**
-     * Get a new token with a changed type of reference from the given cell token symbol.
-     * Undefined behavior if given a token other than a cell or if the Xc contains a sheet reference
-     *
-     * A1 => $A$1 => A$1 => $A1 => A1
-     */
-    function getTokenNextReferenceType(xc) {
-        switch (getReferenceType(xc)) {
-            case "none":
-                xc = setXcToReferenceType(xc, "colrow");
-                break;
-            case "colrow":
-                xc = setXcToReferenceType(xc, "row");
-                break;
-            case "row":
-                xc = setXcToReferenceType(xc, "col");
-                break;
-            case "col":
-                xc = setXcToReferenceType(xc, "none");
-                break;
-        }
-        return xc;
-    }
-    /**
-     * Returns the given XC with the given reference type.
-     */
-    function setXcToReferenceType(xc, referenceType) {
-        xc = xc.replace(/\$/g, "");
-        let indexOfNumber;
-        switch (referenceType) {
-            case "col":
-                return "$" + xc;
-            case "row":
-                indexOfNumber = xc.search(/[0-9]/);
-                return xc.slice(0, indexOfNumber) + "$" + xc.slice(indexOfNumber);
-            case "colrow":
-                indexOfNumber = xc.search(/[0-9]/);
-                xc = xc.slice(0, indexOfNumber) + "$" + xc.slice(indexOfNumber);
-                return "$" + xc;
-            case "none":
-                return xc;
-        }
-    }
-    /**
-     * Return the type of reference used in the given XC of a cell.
-     * Undefined behavior if the XC have a sheet reference
-     */
-    function getReferenceType(xcCell) {
-        if (isColAndRowFixed(xcCell)) {
-            return "colrow";
-        }
-        else if (isColFixed(xcCell)) {
-            return "col";
-        }
-        else if (isRowFixed(xcCell)) {
-            return "row";
-        }
-        return "none";
-    }
-    function isColFixed(xc) {
-        return xc.startsWith("$");
-    }
-    function isRowFixed(xc) {
-        return xc.includes("$", 1);
-    }
-    function isColAndRowFixed(xc) {
-        return xc.startsWith("$") && xc.length > 1 && xc.slice(1).includes("$");
-    }
-
-    const CELL_DELETED_MESSAGE = _lt("The cell you are trying to edit has been deleted.");
-    const SelectionIndicator = "␣";
-    class EditionPlugin extends UIPlugin {
-        constructor() {
-            super(...arguments);
-            this.col = 0;
-            this.row = 0;
-            this.mode = "inactive";
-            this.sheetId = "";
-            this.currentContent = "";
-            this.currentTokens = [];
-            this.selectionStart = 0;
-            this.selectionEnd = 0;
-            this.selectionInitialStart = 0;
-            this.initialContent = "";
-            this.previousRef = "";
-            this.previousRange = undefined;
-            this.colorIndexByRange = {};
-        }
-        // ---------------------------------------------------------------------------
-        // Command Handling
-        // ---------------------------------------------------------------------------
-        allowDispatch(cmd) {
-            switch (cmd.type) {
-                case "CHANGE_COMPOSER_CURSOR_SELECTION":
-                    return this.validateSelection(this.currentContent.length, cmd.start, cmd.end);
-                case "SET_CURRENT_CONTENT":
-                    if (cmd.selection) {
-                        return this.validateSelection(cmd.content.length, cmd.selection.start, cmd.selection.end);
-                    }
-                    else {
-                        return 0 /* Success */;
-                    }
-                case "START_EDITION":
-                    if (cmd.selection) {
-                        const cell = this.getters.getActiveCell();
-                        const content = cmd.text || (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
-                        return this.validateSelection(content.length, cmd.selection.start, cmd.selection.end);
-                    }
-                    else {
-                        return 0 /* Success */;
-                    }
-                default:
-                    return 0 /* Success */;
-            }
-        }
-        handleEvent(event) {
-            if (this.mode !== "selecting") {
-                return;
-            }
-            switch (event.mode) {
-                case "newAnchor":
-                    this.insertSelectedRange(event.anchor.zone);
-                    break;
-                default:
-                    this.replaceSelectedRanges(event.anchor.zone);
-                    break;
-            }
-        }
-        handle(cmd) {
-            switch (cmd.type) {
-                case "CHANGE_COMPOSER_CURSOR_SELECTION":
-                    this.selectionStart = cmd.start;
-                    this.selectionEnd = cmd.end;
-                    break;
-                case "STOP_COMPOSER_RANGE_SELECTION":
-                    if (this.isSelectingForComposer()) {
-                        this.mode = "editing";
-                    }
-                    break;
-                case "START_EDITION":
-                    this.startEdition(cmd.text, cmd.selection);
-                    this.updateRangeColor();
-                    break;
-                case "STOP_EDITION":
-                    if (cmd.cancel) {
-                        this.cancelEdition();
-                        this.resetContent();
-                    }
-                    else {
-                        this.stopEdition();
-                    }
-                    this.colorIndexByRange = {};
-                    break;
-                case "SET_CURRENT_CONTENT":
-                    this.setContent(cmd.content, cmd.selection);
-                    this.updateRangeColor();
-                    break;
-                case "REPLACE_COMPOSER_CURSOR_SELECTION":
-                    this.replaceSelection(cmd.text);
-                    break;
-                case "SELECT_FIGURE":
-                    this.cancelEdition();
-                    this.resetContent();
-                    break;
-                case "ADD_COLUMNS_ROWS":
-                    this.onAddElements(cmd);
-                    break;
-                case "REMOVE_COLUMNS_ROWS":
-                    if (cmd.dimension === "COL") {
-                        this.onColumnsRemoved(cmd);
-                    }
-                    else {
-                        this.onRowsRemoved(cmd);
-                    }
-                    break;
-                case "START_CHANGE_HIGHLIGHT":
-                    this.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-                    const range = this.getters.getRangeFromRangeData(cmd.range);
-                    const previousRefToken = this.currentTokens
-                        .filter((token) => token.type === "REFERENCE")
-                        .find((token) => {
-                        let value = token.value;
-                        const [xc, sheet] = value.split("!").reverse();
-                        const sheetName = sheet || this.getters.getSheetName(this.sheetId);
-                        const activeSheetId = this.getters.getActiveSheetId();
-                        if (this.getters.getSheetName(activeSheetId) !== sheetName) {
-                            return false;
-                        }
-                        const refRange = this.getters.getRangeFromSheetXC(activeSheetId, xc);
-                        return isEqual(this.getters.expandZone(activeSheetId, refRange.zone), range.zone);
-                    });
-                    this.previousRef = previousRefToken.value;
-                    this.previousRange = this.getters.getRangeFromSheetXC(this.getters.getActiveSheetId(), this.previousRef);
-                    this.selectionInitialStart = previousRefToken.start;
-                    break;
-                case "CHANGE_HIGHLIGHT":
-                    const cmdRange = this.getters.getRangeFromRangeData(cmd.range);
-                    const newRef = this.getRangeReference(cmdRange, this.previousRange.parts);
-                    this.selectionStart = this.selectionInitialStart;
-                    this.selectionEnd = this.selectionInitialStart + this.previousRef.length;
-                    this.replaceSelection(newRef);
-                    this.previousRef = newRef;
-                    this.selectionStart = this.currentContent.length;
-                    this.selectionEnd = this.currentContent.length;
-                    break;
-                case "ACTIVATE_SHEET":
-                    if (cmd.sheetIdFrom !== cmd.sheetIdTo) {
-                        const { col, row } = this.getters.getNextVisibleCellPosition(cmd.sheetIdTo, 0, 0);
-                        const zone = this.getters.expandZone(cmd.sheetIdTo, positionToZone({ col, row }));
-                        this.selection.resetAnchor(this, { cell: { col, row }, zone });
-                    }
-                    break;
-                case "DELETE_SHEET":
-                case "UNDO":
-                case "REDO":
-                    const sheetIdExists = !!this.getters.tryGetSheet(this.sheetId);
-                    if (!sheetIdExists && this.mode !== "inactive") {
-                        this.sheetId = this.getters.getActiveSheetId();
-                        this.cancelEdition();
-                        this.resetContent();
-                        this.ui.notifyUI({
-                            type: "NOTIFICATION",
-                            text: CELL_DELETED_MESSAGE,
-                        });
-                    }
-                    break;
-                case "CYCLE_EDITION_REFERENCES":
-                    this.cycleReferences();
-                    break;
-            }
-        }
-        unsubscribe() {
-            this.mode = "inactive";
-        }
-        // ---------------------------------------------------------------------------
-        // Getters
-        // ---------------------------------------------------------------------------
-        getEditionMode() {
-            return this.mode;
-        }
-        getCurrentContent() {
-            if (this.mode === "inactive") {
-                const cell = this.getters.getActiveCell();
-                return (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
-            }
-            return this.currentContent;
-        }
-        getEditionSheet() {
-            return this.sheetId;
-        }
-        getComposerSelection() {
-            return {
-                start: this.selectionStart,
-                end: this.selectionEnd,
-            };
-        }
-        isSelectingForComposer() {
-            return this.mode === "selecting";
-        }
-        showSelectionIndicator() {
-            return this.isSelectingForComposer() && this.canStartComposerRangeSelection();
-        }
-        getCurrentTokens() {
-            return this.currentTokens;
-        }
-        /**
-         * Return the (enriched) token just before the cursor.
-         */
-        getTokenAtCursor() {
-            const start = Math.min(this.selectionStart, this.selectionEnd);
-            const end = Math.max(this.selectionStart, this.selectionEnd);
-            if (start === end && end === 0) {
-                return undefined;
-            }
-            else {
-                return this.currentTokens.find((t) => t.start <= start && t.end >= end);
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Misc
-        // ---------------------------------------------------------------------------
-        cycleReferences() {
-            const tokens = this.getTokensInSelection();
-            const refTokens = tokens.filter((token) => token.type === "REFERENCE");
-            if (refTokens.length === 0)
-                return;
-            const updatedReferences = tokens
-                .map(loopThroughReferenceType)
-                .map((token) => token.value)
-                .join("");
-            const content = this.currentContent;
-            const start = tokens[0].start;
-            const end = tokens[tokens.length - 1].end;
-            const newContent = content.slice(0, start) + updatedReferences + content.slice(end);
-            const lengthDiff = newContent.length - content.length;
-            this.dispatch("SET_CURRENT_CONTENT", {
-                content: newContent,
-                selection: {
-                    start: refTokens[0].start,
-                    end: refTokens[refTokens.length - 1].end + lengthDiff,
-                },
-            });
-        }
-        validateSelection(length, start, end) {
-            return start >= 0 && start <= length && end >= 0 && end <= length
-                ? 0 /* Success */
-                : 42 /* WrongComposerSelection */;
-        }
-        onColumnsRemoved(cmd) {
-            if (cmd.elements.includes(this.col) && this.mode !== "inactive") {
-                this.dispatch("STOP_EDITION", { cancel: true });
-                this.ui.notifyUI({
-                    type: "NOTIFICATION",
-                    text: CELL_DELETED_MESSAGE,
-                });
-                return;
-            }
-            const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "left", [...cmd.elements]);
-            this.col = left;
-            this.row = top;
-        }
-        onRowsRemoved(cmd) {
-            if (cmd.elements.includes(this.row) && this.mode !== "inactive") {
-                this.dispatch("STOP_EDITION", { cancel: true });
-                this.ui.notifyUI({
-                    type: "NOTIFICATION",
-                    text: CELL_DELETED_MESSAGE,
-                });
-                return;
-            }
-            const { top, left } = updateSelectionOnDeletion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, "top", [...cmd.elements]);
-            this.col = left;
-            this.row = top;
-        }
-        onAddElements(cmd) {
-            const { top, left } = updateSelectionOnInsertion({ left: this.col, right: this.col, top: this.row, bottom: this.row }, cmd.dimension === "COL" ? "left" : "top", cmd.base, cmd.position, cmd.quantity);
-            this.col = left;
-            this.row = top;
-        }
-        /**
-         * Enable the selecting mode
-         */
-        startComposerRangeSelection() {
-            if (this.sheetId === this.getters.getActiveSheetId()) {
-                const zone = positionToZone({ col: this.col, row: this.row });
-                this.selection.resetAnchor(this, { cell: { col: this.col, row: this.row }, zone });
-            }
-            this.mode = "selecting";
-            this.selectionInitialStart = this.selectionStart;
-        }
-        /**
-         * start the edition of a cell
-         * @param str the key that is used to start the edition if it is a "content" key like a letter or number
-         * @param selection
-         * @private
-         */
-        startEdition(str, selection) {
-            var _a;
-            const cell = this.getters.getActiveCell();
-            if (str && ((_a = cell === null || cell === void 0 ? void 0 : cell.format) === null || _a === void 0 ? void 0 : _a.includes("%")) && isNumber(str)) {
-                selection = selection || { start: str.length, end: str.length };
-                str = `${str}%`;
-            }
-            this.initialContent = (cell === null || cell === void 0 ? void 0 : cell.composerContent) || "";
-            this.mode = "editing";
-            const { col, row } = this.getters.getPosition();
-            this.col = col;
-            this.row = row;
-            this.sheetId = this.getters.getActiveSheetId();
-            this.setContent(str || this.initialContent, selection);
-            this.colorIndexByRange = {};
-            const zone = positionToZone({ col: this.col, row: this.row });
-            this.selection.capture(this, { cell: { col: this.col, row: this.row }, zone }, {
-                handleEvent: this.handleEvent.bind(this),
-                release: () => (this.mode = "inactive"),
-            });
-        }
-        stopEdition() {
-            if (this.mode !== "inactive") {
-                const activeSheetId = this.getters.getActiveSheetId();
-                this.cancelEdition();
-                const { col, row } = this.getters.getMainCellPosition(this.sheetId, this.col, this.row);
-                let content = this.currentContent;
-                const didChange = this.initialContent !== content;
-                if (!didChange) {
-                    return;
-                }
-                if (content) {
-                    const cell = this.getters.getCell(activeSheetId, col, row);
-                    if (content.startsWith("=")) {
-                        const left = this.currentTokens.filter((t) => t.type === "LEFT_PAREN").length;
-                        const right = this.currentTokens.filter((t) => t.type === "RIGHT_PAREN").length;
-                        const missing = left - right;
-                        if (missing > 0) {
-                            content += concat(new Array(missing).fill(")"));
-                        }
-                    }
-                    else if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
-                        content = markdownLink(content, cell.link.url);
-                    }
-                    this.dispatch("UPDATE_CELL", {
-                        sheetId: this.sheetId,
-                        col,
-                        row,
-                        content,
-                    });
-                }
-                else {
-                    this.dispatch("UPDATE_CELL", {
-                        sheetId: this.sheetId,
-                        content: "",
-                        col,
-                        row,
-                    });
-                }
-                this.setContent("");
-            }
-        }
-        cancelEdition() {
-            if (this.mode === "inactive") {
-                return;
-            }
-            this.mode = "inactive";
-            this.selection.release(this);
-            const sheetId = this.getters.getActiveSheetId();
-            if (sheetId !== this.sheetId) {
-                this.dispatch("ACTIVATE_SHEET", {
-                    sheetIdFrom: this.getters.getActiveSheetId(),
-                    sheetIdTo: this.sheetId,
-                });
-            }
-        }
-        /**
-         * Reset the current content to the active cell content
-         */
-        resetContent() {
-            this.setContent(this.initialContent || "");
-        }
-        setContent(text, selection) {
-            const isNewCurrentContent = this.currentContent !== text;
-            this.currentContent = text;
-            if (selection) {
-                this.selectionStart = selection.start;
-                this.selectionEnd = selection.end;
-            }
-            else {
-                this.selectionStart = this.selectionEnd = text.length;
-            }
-            if (isNewCurrentContent || this.mode !== "inactive") {
-                this.currentTokens = text.startsWith("=") ? composerTokenize(text) : [];
-            }
-            if (this.canStartComposerRangeSelection()) {
-                this.startComposerRangeSelection();
-            }
-        }
-        insertSelectedRange(zone) {
-            // infer if range selected or selecting range from cursor position
-            const start = Math.min(this.selectionStart, this.selectionEnd);
-            const ref = this.getZoneReference(zone);
-            if (this.canStartComposerRangeSelection()) {
-                this.insertText(ref, start);
-                this.selectionInitialStart = start;
-            }
-            else {
-                this.insertText("," + ref, start);
-                this.selectionInitialStart = start + 1;
-            }
-        }
-        /**
-         * Replace the current reference selected by the new one.
-         * */
-        replaceSelectedRanges(zone) {
-            const ref = this.getZoneReference(zone);
-            this.replaceText(ref, this.selectionInitialStart, this.selectionEnd);
-        }
-        getZoneReference(zone, fixedParts = [{ colFixed: false, rowFixed: false }]) {
-            const sheetId = this.getters.getActiveSheetId();
-            let selectedXc = this.getters.zoneToXC(sheetId, zone, fixedParts);
-            if (this.getters.getEditionSheet() !== this.getters.getActiveSheetId()) {
-                const sheetName = getComposerSheetName(this.getters.getSheetName(this.getters.getActiveSheetId()));
-                selectedXc = `${sheetName}!${selectedXc}`;
-            }
-            return selectedXc;
-        }
-        getRangeReference(range, fixedParts = [{ colFixed: false, rowFixed: false }]) {
-            if (fixedParts.length === 1 && getZoneArea(range.zone) > 1) {
-                fixedParts.push({ ...fixedParts[0] });
-            }
-            else if (fixedParts.length === 2 && getZoneArea(range.zone) === 1) {
-                fixedParts.pop();
-            }
-            const newRange = range.clone({ parts: this.previousRange.parts });
-            return this.getters.getSelectionRangeString(newRange, this.getters.getEditionSheet());
-        }
-        /**
-         * Replace the current selection by a new text.
-         * The cursor is then set at the end of the text.
-         */
-        replaceSelection(text) {
-            const start = Math.min(this.selectionStart, this.selectionEnd);
-            const end = Math.max(this.selectionStart, this.selectionEnd);
-            this.replaceText(text, start, end);
-        }
-        replaceText(text, start, end) {
-            this.currentContent =
-                this.currentContent.slice(0, start) +
-                    this.currentContent.slice(end, this.currentContent.length);
-            this.insertText(text, start);
-        }
-        /**
-         * Insert a text at the given position.
-         * The cursor is then set at the end of the text.
-         */
-        insertText(text, start) {
-            const content = this.currentContent.slice(0, start) + text + this.currentContent.slice(start);
-            const end = start + text.length;
-            this.dispatch("SET_CURRENT_CONTENT", {
-                content,
-                selection: { start: end, end },
-            });
-        }
-        updateRangeColor() {
-            if (!this.currentContent.startsWith("=") || this.mode === "inactive") {
-                return;
-            }
-            const editionSheetId = this.getters.getEditionSheet();
-            const XCs = this.getReferencedRanges().map((range) => this.getters.getRangeString(range, editionSheetId));
-            const colorsToKeep = {};
-            for (const xc of XCs) {
-                if (this.colorIndexByRange[xc] !== undefined) {
-                    colorsToKeep[xc] = this.colorIndexByRange[xc];
-                }
-            }
-            const usedIndexes = new Set(Object.values(colorsToKeep));
-            let currentIndex = 0;
-            const nextIndex = () => {
-                while (usedIndexes.has(currentIndex))
-                    currentIndex++;
-                usedIndexes.add(currentIndex);
-                return currentIndex;
-            };
-            for (const xc of XCs) {
-                const colorIndex = xc in colorsToKeep ? colorsToKeep[xc] : nextIndex();
-                colorsToKeep[xc] = colorIndex;
-            }
-            this.colorIndexByRange = colorsToKeep;
-        }
-        /**
-         * Highlight all ranges that can be found in the composer content.
-         */
-        getComposerHighlights() {
-            if (!this.currentContent.startsWith("=") || this.mode === "inactive") {
-                return [];
-            }
-            const editionSheetId = this.getters.getEditionSheet();
-            const rangeColor = (rangeString) => {
-                const colorIndex = this.colorIndexByRange[rangeString];
-                return colors$1[colorIndex % colors$1.length];
-            };
-            return this.getReferencedRanges().map((range) => {
-                const rangeString = this.getters.getRangeString(range, editionSheetId);
-                return {
-                    zone: range.zone,
-                    color: rangeColor(rangeString),
-                    sheetId: range.sheetId,
-                };
-            });
-        }
-        /**
-         * Return ranges currently referenced in the composer
-         */
-        getReferencedRanges() {
-            const editionSheetId = this.getters.getEditionSheet();
-            return this.currentTokens
-                .filter((token) => token.type === "REFERENCE")
-                .map((token) => this.getters.getRangeFromSheetXC(editionSheetId, token.value));
-        }
-        /**
-         * Function used to determine when composer selection can start.
-         * Three conditions are necessary:
-         * - the previous token is among ["COMMA", "LEFT_PAREN", "OPERATOR"], and is not a postfix unary operator
-         * - the next token is missing or is among ["COMMA", "RIGHT_PAREN", "OPERATOR"]
-         * - Previous and next tokens can be separated by spaces
-         */
-        canStartComposerRangeSelection() {
-            if (this.currentContent.startsWith("=")) {
-                const tokenAtCursor = this.getTokenAtCursor();
-                if (!tokenAtCursor) {
-                    return false;
-                }
-                const tokenIdex = this.currentTokens.map((token) => token.start).indexOf(tokenAtCursor.start);
-                let count = tokenIdex;
-                let currentToken = tokenAtCursor;
-                // check previous token
-                while (!["COMMA", "LEFT_PAREN", "OPERATOR"].includes(currentToken.type) ||
-                    POSTFIX_UNARY_OPERATORS.includes(currentToken.value)) {
-                    if (currentToken.type !== "SPACE" || count < 1) {
-                        return false;
-                    }
-                    count--;
-                    currentToken = this.currentTokens[count];
-                }
-                count = tokenIdex + 1;
-                currentToken = this.currentTokens[count];
-                // check next token
-                while (currentToken && !["COMMA", "RIGHT_PAREN", "OPERATOR"].includes(currentToken.type)) {
-                    if (currentToken.type !== "SPACE") {
-                        return false;
-                    }
-                    count++;
-                    currentToken = this.currentTokens[count];
-                }
-                return true;
-            }
-            return false;
-        }
-        /**
-         * Return all the tokens between selectionStart and selectionEnd.
-         * Includes token that begin right on selectionStart or end right on selectionEnd.
-         */
-        getTokensInSelection() {
-            const start = Math.min(this.selectionStart, this.selectionEnd);
-            const end = Math.max(this.selectionStart, this.selectionEnd);
-            return this.currentTokens.filter((t) => (t.start <= start && t.end >= start) || (t.start >= start && t.start < end));
-        }
-    }
-    EditionPlugin.getters = [
-        "getEditionMode",
-        "isSelectingForComposer",
-        "showSelectionIndicator",
-        "getCurrentContent",
-        "getEditionSheet",
-        "getComposerSelection",
-        "getCurrentTokens",
-        "getTokenAtCursor",
-        "getComposerHighlights",
-    ];
 
     const functionMap = functionRegistry.mapping;
     class EvaluationPlugin extends UIPlugin {
@@ -21008,7 +24547,7 @@
             }
             switch (cmd.type) {
                 case "UPDATE_CELL":
-                    if ("content" in cmd) {
+                    if ("content" in cmd || "format" in cmd) {
                         this.isUpToDate.clear();
                     }
                     break;
@@ -21033,12 +24572,12 @@
         // ---------------------------------------------------------------------------
         evaluateFormula(formulaString, sheetId = this.getters.getActiveSheetId()) {
             const compiledFormula = compile(formulaString);
-            const params = this.getFormulaParameters(() => { });
+            const params = this.getCompilationParameters(() => { });
             const ranges = [];
             for (let xc of compiledFormula.dependencies) {
                 ranges.push(this.getters.getRangeFromSheetXC(sheetId, xc));
             }
-            return compiledFormula.execute(ranges, ...params);
+            return compiledFormula.execute(ranges, ...params).value;
         }
         /**
          * Return the value of each cell in the range as they are displayed in the grid.
@@ -21065,7 +24604,7 @@
         // ---------------------------------------------------------------------------
         evaluate(sheetId) {
             const cells = this.getters.getCells(sheetId);
-            const params = this.getFormulaParameters(computeValue);
+            const compilationParameters = this.getCompilationParameters(computeCell);
             const visited = {};
             for (let cell of Object.values(cells)) {
                 if (cell.isFormula()) {
@@ -21073,7 +24612,7 @@
                 }
             }
             for (let cell of Object.values(cells)) {
-                computeValue(cell);
+                computeCell(cell);
             }
             function handleError(e, cell) {
                 if (!(e instanceof Error)) {
@@ -21082,11 +24621,11 @@
                 if (cell.evaluated.type !== CellValueType.error) {
                     const msg = (e === null || e === void 0 ? void 0 : e.errorType) || CellErrorType.GenericError;
                     // apply function name
-                    const __lastFnCalled = params[2].__lastFnCalled || "";
+                    const __lastFnCalled = compilationParameters[2].__lastFnCalled || "";
                     cell.assignError(msg, new EvaluationError(msg, e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled), e.logLevel !== undefined ? e.logLevel : CellErrorLevel.error));
                 }
             }
-            function computeValue(cell) {
+            function computeCell(cell) {
                 if (!cell.isFormula()) {
                     return;
                 }
@@ -21099,12 +24638,13 @@
                 }
                 visited[cellId] = null;
                 try {
-                    params[2].__originCellXC = () => {
+                    compilationParameters[2].__originCellXC = () => {
                         // compute the value lazily for performance reasons
-                        const position = params[2].getters.getCellPosition(cellId);
+                        const position = compilationParameters[2].getters.getCellPosition(cellId);
                         return toXC(position.col, position.row);
                     };
-                    cell.assignValue(cell.compiledFormula.execute(cell.dependencies, ...params));
+                    const computedCell = cell.compiledFormula.execute(cell.dependencies, ...compilationParameters);
+                    cell.assignEvaluation(computedCell.value, cell.format || computedCell.format);
                     if (Array.isArray(cell.evaluated.value)) {
                         // if a value returns an array (like =A1:A3)
                         throw new Error(_lt("This formula depends on invalid values"));
@@ -21122,7 +24662,7 @@
          * - a range function to convert any reference to a proper value array
          * - an evaluation context
          */
-        getFormulaParameters(computeValue) {
+        getCompilationParameters(computeCell) {
             const evalContext = Object.assign(Object.create(functionMap), this.evalContext, {
                 getters: this.getters,
             });
@@ -21135,21 +24675,21 @@
                 cell = getters.getCell(range.sheetId, range.zone.left, range.zone.top);
                 if (!cell || cell.isEmpty()) {
                     // magic "empty" value
-                    // Returning null instead of undefined will ensure that we don't
+                    // Returning {value: null} instead of undefined will ensure that we don't
                     // fall back on the default value of the argument provided to the formula's compute function
-                    return null;
+                    return { value: null };
                 }
-                return getCellValue(cell);
+                return getEvaluatedCell(cell);
             }
-            function getCellValue(cell) {
+            function getEvaluatedCell(cell) {
                 if (cell.isFormula() && cell.evaluated.type === CellValueType.error) {
                     throw new EvaluationError(cell.evaluated.value, cell.evaluated.error.message, cell.evaluated.error.logLevel);
                 }
-                computeValue(cell);
+                computeCell(cell);
                 if (cell.evaluated.type === CellValueType.error) {
                     throw new EvaluationError(cell.evaluated.value, cell.evaluated.error.message, cell.evaluated.error.logLevel);
                 }
-                return cell.evaluated.value;
+                return cell.evaluated;
             }
             /**
              * Return the values of the cell(s) used in reference, but always in the format of a range even
@@ -21183,7 +24723,7 @@
                     const rowValues = [];
                     for (let row = zone.top; row <= zone.bottom; row++) {
                         const cell = evalContext.getters.getCell(range.sheetId, col, row);
-                        rowValues.push(cell ? getCellValue(cell) : undefined);
+                        rowValues.push(cell ? getEvaluatedCell(cell) : undefined);
                     }
                     result.push(rowValues);
                 }
@@ -21200,7 +24740,7 @@
             function refFn(range, isMeta, functionName, paramNumber) {
                 if (isMeta) {
                     // Use zoneToXc of zone instead of getRangeString to avoid sending unbounded ranges
-                    return zoneToXc(range.zone);
+                    return { value: zoneToXc(range.zone) };
                 }
                 if (!isZoneValid(range.zone)) {
                     throw new InvalidReferenceError();
@@ -21909,15 +25449,16 @@
         // Grid rendering
         // ---------------------------------------------------------------------------
         drawGrid(renderingContext) {
-            const { ctx, viewport } = renderingContext;
+            const { ctx } = renderingContext;
             const sheetId = this.getters.getActiveSheetId();
+            const viewport = this.getters.getActiveViewport();
             for (const match of this.searchMatches) {
                 const merge = this.getters.getMerge(sheetId, match.col, match.row);
                 const left = merge ? merge.left : match.col;
                 const right = merge ? merge.right : match.col;
                 const top = merge ? merge.top : match.row;
                 const bottom = merge ? merge.bottom : match.row;
-                const [x, y, width, height] = this.getters.getRect({ top, left, right, bottom }, viewport);
+                const { x, y, width, height } = this.getters.getRect({ top, left, right, bottom }, viewport);
                 if (width > 0 && height > 0) {
                     ctx.fillStyle = BACKGROUND_COLOR;
                     ctx.fillRect(x, y, width, height);
@@ -22028,7 +25569,8 @@
         // ---------------------------------------------------------------------------
         drawGrid(renderingContext) {
             // rendering selection highlights
-            const { ctx, viewport, thinLineWidth } = renderingContext;
+            const { ctx, thinLineWidth } = renderingContext;
+            const viewport = this.getters.getActiveViewport();
             const sheetId = this.getters.getActiveSheetId();
             const lineWidth = 3 * thinLineWidth;
             ctx.lineWidth = lineWidth;
@@ -22039,10 +25581,12 @@
              * In order to avoid superposing the same color layer and modifying the final
              * opacity, we filter highlights to remove duplicates.
              */
-            for (let h of this.getHighlights().filter((highlight, index) => 
+            const highlights = this.getHighlights();
+            for (let h of highlights.filter((highlight, index) => 
             // For every highlight in the sheet, deduplicated by zone
-            this.getHighlights().findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheetId === sheetId) === index)) {
-                const [x, y, width, height] = this.getters.getRect(h.zone, viewport);
+            highlights.findIndex((h) => isEqual(h.zone, highlight.zone) && h.sheetId === sheetId) ===
+                index)) {
+                const { x, y, width, height } = this.getters.getRect(h.zone, viewport);
                 if (width > 0 && height > 0) {
                     ctx.strokeStyle = h.color;
                     ctx.strokeRect(x + lineWidth / 2, y + lineWidth / 2, width - lineWidth, height - lineWidth);
@@ -22179,7 +25723,7 @@
             const width = this.getSizeBetweenHeaders("COL", zone.left, zone.right);
             const y = this.getHeaderOffset("ROW", top, zone.top);
             const height = this.getSizeBetweenHeaders("ROW", zone.top, zone.bottom);
-            return [x, y, width, height];
+            return { x, y, width, height };
         }
         /**
          * Check if a given position is visible in the viewport.
@@ -22248,7 +25792,8 @@
             }
         }
         drawBackground(renderingContext) {
-            const { ctx, thinLineWidth, viewport } = renderingContext;
+            const { ctx, thinLineWidth } = renderingContext;
+            const viewport = this.getters.getActiveViewport();
             const { width, height } = this.getters.getViewportDimensionWithHeaders();
             const sheetId = this.getters.getActiveSheetId();
             // white background
@@ -22268,7 +25813,7 @@
                     continue;
                 }
                 const zone = { top, bottom, left: i, right: i };
-                const [x, , colWidth, colHeight] = this.getRect(zone, viewport);
+                const { x, width: colWidth, height: colHeight } = this.getRect(zone, viewport);
                 ctx.moveTo(x + colWidth, 0);
                 ctx.lineTo(x + colWidth, Math.min(height, colHeight + (this.getters.isDashboard() ? 0 : HEADER_HEIGHT)));
             }
@@ -22278,7 +25823,7 @@
                     continue;
                 }
                 const zone = { left, right, top: i, bottom: i };
-                const [, y, rowWidth, rowHeight] = this.getRect(zone, viewport);
+                const { y, width: rowWidth, height: rowHeight } = this.getRect(zone, viewport);
                 ctx.moveTo(0, y + rowHeight);
                 ctx.lineTo(Math.min(width, rowWidth + (this.getters.isDashboard() ? 0 : HEADER_WIDTH)), y + rowHeight);
             }
@@ -22377,7 +25922,8 @@
                     if (box.clipRect) {
                         ctx.save();
                         ctx.beginPath();
-                        ctx.rect(...box.clipRect);
+                        const { x, y, width, height } = box.clipRect;
+                        ctx.rect(x, y, width, height);
                         ctx.clip();
                     }
                     ctx.fillText(box.content.text, Math.round(x), Math.round(y));
@@ -22412,7 +25958,8 @@
                     if (box.image.clipIcon) {
                         ctx.save();
                         ctx.beginPath();
-                        ctx.rect(...box.image.clipIcon);
+                        const { x, y, width, height } = box.image.clipIcon;
+                        ctx.rect(x, y, width, height);
                         ctx.clip();
                     }
                     ctx.drawImage(icon, box.x + MIN_CF_ICON_MARGIN, box.y + margin, size, size);
@@ -22423,7 +25970,8 @@
             }
         }
         drawHeaders(renderingContext) {
-            const { ctx, thinLineWidth, viewport } = renderingContext;
+            const { ctx, thinLineWidth } = renderingContext;
+            const viewport = this.getters.getActiveViewport();
             const { right, left, top, bottom } = viewport;
             const { width, height } = this.getters.getViewportDimensionWithHeaders();
             const selection = this.getters.getSelectedZones();
@@ -22446,7 +25994,7 @@
             for (let zone of selection) {
                 const colZone = intersection(zone, { ...viewport, top: 0, bottom: numberOfRows - 1 });
                 if (colZone) {
-                    const [x, , width] = this.getRect(colZone, viewport);
+                    const { x, width } = this.getRect(colZone, viewport);
                     ctx.fillStyle = activeCols.has(zone.left)
                         ? BACKGROUND_HEADER_ACTIVE_COLOR
                         : BACKGROUND_HEADER_SELECTED_COLOR;
@@ -22454,7 +26002,7 @@
                 }
                 const rowZone = intersection(zone, { ...viewport, left: 0, right: numberOfCols - 1 });
                 if (rowZone) {
-                    const [, y, , height] = this.getRect(rowZone, viewport);
+                    const { y, height } = this.getRect(rowZone, viewport);
                     ctx.fillStyle = activeRows.has(zone.top)
                         ? BACKGROUND_HEADER_ACTIVE_COLOR
                         : BACKGROUND_HEADER_SELECTED_COLOR;
@@ -22534,7 +26082,7 @@
             const row = zone.top;
             const cell = this.getters.getCell(sheetId, col, row);
             const showFormula = this.getters.shouldShowFormulas();
-            const [x, y, width, height] = this.getRect(zone, viewport);
+            const { x, y, width, height } = this.getRect(zone, viewport);
             const box = {
                 x,
                 y,
@@ -22558,7 +26106,7 @@
                 box.image = {
                     type: "icon",
                     size: fontSizePX,
-                    clipIcon: [box.x, box.y, Math.min(iconBoxWidth, width), height],
+                    clipIcon: { x: box.x, y: box.y, width: Math.min(iconBoxWidth, width), height },
                     image: ICONS[cfIcon].img,
                 };
             }
@@ -22580,7 +26128,12 @@
             /** ClipRect */
             const isOverflowing = contentWidth > width || fontSizeMap[fontSize] > height;
             if (cfIcon) {
-                box.clipRect = [box.x + iconBoxWidth, box.y, Math.max(0, width - iconBoxWidth), height];
+                box.clipRect = {
+                    x: box.x + iconBoxWidth,
+                    y: box.y,
+                    width: Math.max(0, width - iconBoxWidth),
+                    height,
+                };
             }
             else if (isOverflowing) {
                 let nextColIndex, previousColIndex;
@@ -22597,17 +26150,17 @@
                 switch (align) {
                     case "left": {
                         const emptyZoneOnTheLeft = positionToZone({ col: nextColIndex, row });
-                        const [x, y, width, height] = this.getRect(union(zone, emptyZoneOnTheLeft), viewport);
+                        const { x, y, width, height } = this.getRect(union(zone, emptyZoneOnTheLeft), viewport);
                         if (width < textWidth || fontSizePX > height) {
-                            box.clipRect = [x, y, width, height];
+                            box.clipRect = { x, y, width, height };
                         }
                         break;
                     }
                     case "right": {
                         const emptyZoneOnTheRight = positionToZone({ col: previousColIndex, row });
-                        const [x, y, width, height] = this.getRect(union(zone, emptyZoneOnTheRight), viewport);
+                        const { x, y, width, height } = this.getRect(union(zone, emptyZoneOnTheRight), viewport);
                         if (width < textWidth || fontSizePX > height) {
-                            box.clipRect = [x, y, width, height];
+                            box.clipRect = { x, y, width, height };
                         }
                         break;
                     }
@@ -22617,12 +26170,12 @@
                             right: nextColIndex,
                             left: previousColIndex,
                         };
-                        const [x, y, width, height] = this.getRect(emptyZone, viewport);
+                        const { x, y, width, height } = this.getRect(emptyZone, viewport);
                         if (width < textWidth ||
                             previousColIndex === col ||
                             nextColIndex === col ||
                             fontSizePX > height) {
-                            box.clipRect = [x, y, width, height];
+                            box.clipRect = { x, y, width, height };
                         }
                         break;
                     }
@@ -22632,7 +26185,7 @@
         }
         getGridBoxes(renderingContext) {
             const boxes = [];
-            const { viewport } = renderingContext;
+            const viewport = this.getters.getActiveViewport();
             const { right, left, top, bottom } = viewport;
             const sheet = this.getters.getActiveSheet();
             const { id: sheetId } = sheet;
@@ -23026,23 +26579,6 @@
         isSelected(zone) {
             return !!this.getters.getSelectedZones().find((z) => isEqual(z, zone));
         }
-        getVisibleFigures() {
-            const sheetId = this.getters.getActiveSheetId();
-            const result = [];
-            const figures = this.getters.getFigures(sheetId);
-            const { offsetX, offsetY } = this.getters.getActiveViewport();
-            const { width, height } = this.getters.getViewportDimensionWithHeaders();
-            for (let figure of figures) {
-                if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
-                    continue;
-                }
-                if (figure.y >= offsetY + height || figure.y + figure.height <= offsetY) {
-                    continue;
-                }
-                result.push(figure);
-            }
-            return result;
-        }
         /**
          * Returns a sorted array of indexes of all columns (respectively rows depending
          * on the dimension parameter) intersected by the currently selected zones.
@@ -23263,7 +26799,8 @@
             if (this.getters.isDashboard()) {
                 return;
             }
-            const { viewport, ctx, thinLineWidth } = renderingContext;
+            const { ctx, thinLineWidth } = renderingContext;
+            const viewport = this.getters.getActiveViewport();
             // selection
             const zones = this.getSelectedZones();
             ctx.fillStyle = "#f3f7fe";
@@ -23273,7 +26810,7 @@
             ctx.lineWidth = 1.5 * thinLineWidth;
             ctx.globalCompositeOperation = "multiply";
             for (const zone of zones) {
-                const [x, y, width, height] = this.getters.getRect(zone, viewport);
+                const { x, y, width, height } = this.getters.getRect(zone, viewport);
                 ctx.fillRect(x, y, width, height);
                 ctx.strokeRect(x, y, width, height);
             }
@@ -23295,7 +26832,7 @@
                     right: col,
                 };
             }
-            const [x, y, width, height] = this.getters.getRect(zone, viewport);
+            const { x, y, width, height } = this.getters.getRect(zone, viewport);
             if (width > 0 && height > 0) {
                 ctx.strokeRect(x, y, width, height);
             }
@@ -23314,7 +26851,6 @@
         "getStatisticFnResults",
         "getAggregate",
         "getSelectedFigureId",
-        "getVisibleFigures",
         "getSelection",
         "getPosition",
         "getSheetPosition",
@@ -23500,11 +27036,14 @@
             const XCs = this.cleanInputs([xc])
                 .filter((range) => this.getters.isRangeValid(range))
                 .filter((reference) => this.shouldBeHighlighted(this.activeSheet, reference));
-            return XCs.map((xc) => ({
-                zone: this.getters.getRangeFromSheetXC(this.activeSheet, xc).zone,
-                sheetId: this.activeSheet,
-                color,
-            }));
+            return XCs.map((xc) => {
+                const [, sheetName] = xc.split("!").reverse();
+                return {
+                    zone: this.getters.getRangeFromSheetXC(this.activeSheet, xc).zone,
+                    sheetId: (sheetName && this.getters.getSheetIdByName(sheetName)) || this.activeSheet,
+                    color,
+                };
+            });
         }
         cleanInputs(ranges) {
             return ranges
@@ -24146,7 +27685,8 @@
             if (this.getters.isDashboard()) {
                 return;
             }
-            const { viewport, ctx, thinLineWidth } = renderingContext;
+            const { ctx, thinLineWidth } = renderingContext;
+            const viewport = this.getters.getActiveViewport();
             const activeSheetId = this.getters.getActiveSheetId();
             for (const client of this.getClientsToDisplay()) {
                 const { row, col } = client.position;
@@ -24156,7 +27696,7 @@
                     left: col,
                     right: col,
                 });
-                const [x, y, width, height] = this.getters.getRect(zone, viewport);
+                const { x, y, width, height } = this.getters.getRect(zone, viewport);
                 if (width <= 0 || height <= 0) {
                     continue;
                 }
@@ -24533,15 +28073,12 @@
                     break;
                 case "AUTORESIZE_ROWS":
                     for (let row of cmd.rows) {
-                        const size = this.getRowMaxHeight(cmd.sheetId, row);
-                        if (size !== 0) {
-                            this.dispatch("RESIZE_COLUMNS_ROWS", {
-                                elements: [row],
-                                dimension: "ROW",
-                                size: size + 2 * PADDING_AUTORESIZE,
-                                sheetId: cmd.sheetId,
-                            });
-                        }
+                        this.dispatch("RESIZE_COLUMNS_ROWS", {
+                            elements: [row],
+                            dimension: "ROW",
+                            size: null,
+                            sheetId: cmd.sheetId,
+                        });
                     }
                     break;
             }
@@ -24562,11 +28099,6 @@
             const text = this.getters.getCellText(cell, this.getters.shouldShowFormulas());
             return computeTextWidth(this.ctx, text, this.getters.getCellStyle(cell));
         }
-        getCellHeight(cell) {
-            const style = this.getters.getCellStyle(cell);
-            const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
-            return fontSizeMap[sizeInPt];
-        }
         getCellText(cell, showFormula = false) {
             if (showFormula && (cell.isFormula() || cell.evaluated.type === CellValueType.error)) {
                 return cell.content;
@@ -24583,16 +28115,8 @@
             const sizes = cells.map((cell) => this.getCellWidth(cell));
             return Math.max(0, ...sizes);
         }
-        getRowMaxHeight(sheetId, index) {
-            const sheet = this.getters.getSheet(sheetId);
-            const cells = Object.values(sheet.rows[index].cells)
-                .filter(isDefined$1)
-                .map((cellId) => this.getters.getCellById(cellId));
-            const sizes = cells.map((cell) => this.getCellHeight(cell));
-            return Math.max(0, ...sizes);
-        }
     }
-    SheetUIPlugin.getters = ["getCellWidth", "getCellHeight", "getTextWidth", "getCellText"];
+    SheetUIPlugin.getters = ["getCellWidth", "getTextWidth", "getCellText"];
 
     /**
      * Viewport plugin.
@@ -24980,6 +28504,23 @@
             const deltaRow = this.getActiveViewport().top - top;
             this.selection.selectCell(anchor.cell.col, anchor.cell.row + deltaRow);
         }
+        getVisibleFigures() {
+            const sheetId = this.getters.getActiveSheetId();
+            const result = [];
+            const figures = this.getters.getFigures(sheetId);
+            const { offsetX, offsetY } = this.getters.getActiveViewport();
+            const { width, height } = this.getters.getViewportDimensionWithHeaders();
+            for (let figure of figures) {
+                if (figure.x >= offsetX + width || figure.x + figure.width <= offsetX) {
+                    continue;
+                }
+                if (figure.y >= offsetY + height || figure.y + figure.height <= offsetY) {
+                    continue;
+                }
+                result.push(figure);
+            }
+            return result;
+        }
     }
     ViewportPlugin.getters = [
         "getColIndex",
@@ -24989,14 +28530,15 @@
         "getViewportDimensionWithHeaders",
         "getMaxViewportSize",
         "getMaximumViewportOffset",
+        "getVisibleFigures",
     ];
 
     const corePluginRegistry = new Registry()
         .add("sheet", SheetPlugin)
-        .add("headerSize", HeaderSizePlugin)
         .add("header visibility", HeaderVisibilityPlugin)
         .add("cell", CellPlugin)
         .add("merge", MergePlugin)
+        .add("headerSize", HeaderSizePlugin)
         .add("borders", BordersPlugin)
         .add("conditional formatting", ConditionalFormatPlugin)
         .add("figures", FigurePlugin)
@@ -25019,6 +28561,7 @@
         .add("sort", SortPlugin)
         .add("automatic_sum", AutomaticSumPlugin)
         .add("format", FormatPlugin)
+        .add("cell_popovers", CellPopoverPlugin)
         .add("selection_multiuser", SelectionMultiUserPlugin);
 
     // -----------------------------------------------------------------------------
@@ -25235,3207 +28778,6 @@
     }
     BottomBar.template = "o-spreadsheet-BottomBar";
     BottomBar.components = { Menu };
-
-    function startDnd(onMouseMove, onMouseUp) {
-        const _onMouseUp = (ev) => {
-            onMouseUp(ev);
-            window.removeEventListener("mouseup", _onMouseUp);
-            window.removeEventListener("dragstart", _onDragStart);
-            window.removeEventListener("mousemove", onMouseMove);
-            window.removeEventListener("wheel", onMouseMove);
-        };
-        function _onDragStart(ev) {
-            ev.preventDefault();
-        }
-        window.addEventListener("mouseup", _onMouseUp);
-        window.addEventListener("dragstart", _onDragStart);
-        window.addEventListener("mousemove", onMouseMove);
-        window.addEventListener("wheel", onMouseMove);
-    }
-    /**
-     * Function to be used during a mousedown event, this function allows to
-     * perform actions related to the mousemove and mouseup events and adjusts the viewport
-     * when the new position related to the mousemove event is outside of it.
-     * Among inputs are two callback functions. First intended for actions performed during
-     * the mousemove event, it receives as parameters the current position of the mousemove
-     * (occurrence of the current column and the current row). Second intended for actions
-     * performed during the mouseup event.
-     */
-    function dragAndDropBeyondTheViewport(element, env, cbMouseMove, cbMouseUp) {
-        const position = element.getBoundingClientRect();
-        let timeOutId = null;
-        let currentEv;
-        const onMouseMove = (ev) => {
-            currentEv = ev;
-            if (timeOutId) {
-                return;
-            }
-            const offsetX = currentEv.clientX - position.left;
-            const offsetY = currentEv.clientY - position.top;
-            const edgeScrollInfoX = env.model.getters.getEdgeScrollCol(offsetX - HEADER_WIDTH);
-            const edgeScrollInfoY = env.model.getters.getEdgeScrollRow(offsetY - HEADER_HEIGHT);
-            const { top, left, bottom, right } = env.model.getters.getActiveViewport();
-            let colIndex;
-            if (edgeScrollInfoX.canEdgeScroll) {
-                colIndex = edgeScrollInfoX.direction > 0 ? right : left - 1;
-            }
-            else {
-                colIndex = env.model.getters.getColIndex(offsetX - HEADER_WIDTH);
-            }
-            let rowIndex;
-            if (edgeScrollInfoY.canEdgeScroll) {
-                rowIndex = edgeScrollInfoY.direction > 0 ? bottom : top - 1;
-            }
-            else {
-                rowIndex = env.model.getters.getRowIndex(offsetY - HEADER_HEIGHT);
-            }
-            cbMouseMove(colIndex, rowIndex);
-            const sheetId = env.model.getters.getActiveSheetId();
-            if (edgeScrollInfoX.canEdgeScroll) {
-                const { left, offsetY } = env.model.getters.getActiveViewport();
-                const offsetX = env.model.getters.getColDimensions(sheetId, left + edgeScrollInfoX.direction).start;
-                env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-                timeOutId = setTimeout(() => {
-                    timeOutId = null;
-                    onMouseMove(currentEv);
-                }, Math.round(edgeScrollInfoX.delay));
-            }
-            if (edgeScrollInfoY.canEdgeScroll) {
-                const { top, offsetX } = env.model.getters.getActiveViewport();
-                const offsetY = env.model.getters.getRowDimensions(sheetId, top + edgeScrollInfoY.direction).start;
-                env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-                timeOutId = setTimeout(() => {
-                    timeOutId = null;
-                    onMouseMove(currentEv);
-                }, Math.round(edgeScrollInfoY.delay));
-            }
-        };
-        const onMouseUp = () => {
-            clearTimeout(timeOutId);
-            cbMouseUp();
-        };
-        startDnd(onMouseMove, onMouseUp);
-    }
-
-    // -----------------------------------------------------------------------------
-    // Autofill
-    // -----------------------------------------------------------------------------
-    css /* scss */ `
-  .o-autofill {
-    height: 6px;
-    width: 6px;
-    border: 1px solid white;
-    position: absolute;
-    background-color: #1a73e8;
-
-    .o-autofill-handler {
-      position: absolute;
-      height: ${AUTOFILL_EDGE_LENGTH}px;
-      width: ${AUTOFILL_EDGE_LENGTH}px;
-
-      &:hover {
-        cursor: crosshair;
-      }
-    }
-
-    .o-autofill-nextvalue {
-      position: absolute;
-      background-color: white;
-      border: 1px solid black;
-      padding: 5px;
-      font-size: 12px;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-  }
-`;
-    class Autofill extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState({
-                position: { left: 0, top: 0 },
-                handler: false,
-            });
-        }
-        get style() {
-            const { left, top } = this.props.position;
-            return `top:${top}px;left:${left}px`;
-        }
-        get styleHandler() {
-            let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
-            return `top:${position.top}px;left:${position.left}px;`;
-        }
-        get styleNextvalue() {
-            let position = this.state.handler ? this.state.position : { left: 0, top: 0 };
-            return `top:${position.top + 5}px;left:${position.left + 15}px;`;
-        }
-        getTooltip() {
-            const tooltip = this.env.model.getters.getAutofillTooltip();
-            if (tooltip && !tooltip.component) {
-                tooltip.component = TooltipComponent;
-            }
-            return tooltip;
-        }
-        onMouseDown(ev) {
-            this.state.handler = true;
-            this.state.position = { left: 0, top: 0 };
-            const { offsetY, offsetX } = this.env.model.getters.getActiveViewport();
-            const start = {
-                left: ev.clientX + offsetX,
-                top: ev.clientY + offsetY,
-            };
-            let lastCol;
-            let lastRow;
-            const onMouseUp = () => {
-                this.state.handler = false;
-                this.env.model.dispatch("AUTOFILL");
-            };
-            const onMouseMove = (ev) => {
-                const position = this.props.getGridBoundingClientRect();
-                const { offsetY, offsetX } = this.env.model.getters.getActiveViewport();
-                this.state.position = {
-                    left: ev.clientX - start.left + offsetX,
-                    top: ev.clientY - start.top + offsetY,
-                };
-                const col = this.env.model.getters.getColIndex(ev.clientX - position.left - HEADER_WIDTH);
-                const row = this.env.model.getters.getRowIndex(ev.clientY - position.top - HEADER_HEIGHT);
-                if (lastCol !== col || lastRow !== row) {
-                    const activeSheetId = this.env.model.getters.getActiveSheetId();
-                    const numberOfCols = this.env.model.getters.getNumberCols(activeSheetId);
-                    const numberOfRows = this.env.model.getters.getNumberRows(activeSheetId);
-                    lastCol = col === -1 ? lastCol : clip(col, 0, numberOfCols);
-                    lastRow = row === -1 ? lastRow : clip(row, 0, numberOfRows);
-                    if (lastCol !== undefined && lastRow !== undefined) {
-                        this.env.model.dispatch("AUTOFILL_SELECT", { col: lastCol, row: lastRow });
-                    }
-                }
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onDblClick() {
-            this.env.model.dispatch("AUTOFILL_AUTO");
-        }
-    }
-    Autofill.template = "o-spreadsheet-Autofill";
-    class TooltipComponent extends owl.Component {
-    }
-    TooltipComponent.template = owl.xml /* xml */ `
-    <div t-esc="props.content"/>
-  `;
-
-    css /* scss */ `
-  .o-client-tag {
-    position: absolute;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
-    font-size: ${DEFAULT_FONT_SIZE};
-    color: white;
-    opacity: 0;
-    pointer-events: none;
-  }
-`;
-    class ClientTag extends owl.Component {
-        get tagStyle() {
-            const { col, row, color } = this.props;
-            const viewport = this.env.model.getters.getActiveViewport();
-            const { height } = this.env.model.getters.getViewportDimensionWithHeaders();
-            const [x, y, ,] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
-            return `bottom: ${height - y + 15}px;left: ${x - 1}px;border: 1px solid ${color};background-color: ${color};${this.props.active ? "opacity:1 !important" : ""}`;
-        }
-    }
-    ClientTag.template = "o-spreadsheet-ClientTag";
-
-    const functions$1 = functionRegistry.content;
-    const providerRegistry = new Registry();
-    providerRegistry.add("functions", () => {
-        return Object.keys(functions$1).map((key) => {
-            return {
-                text: key,
-                description: functions$1[key].description,
-            };
-        });
-    });
-    // -----------------------------------------------------------------------------
-    // Autocomplete DropDown component
-    // -----------------------------------------------------------------------------
-    css /* scss */ `
-  .o-autocomplete-dropdown {
-    pointer-events: auto;
-    background-color: #fff;
-    & > div:hover {
-      background-color: #f2f2f2;
-    }
-    .o-autocomplete-value-focus {
-      background-color: rgba(0, 0, 0, 0.08);
-    }
-
-    & > div {
-      display: flex;
-      flex-direction: column;
-      padding: 1px 0 5px 5px;
-      .o-autocomplete-description {
-        padding: 0 0 0 5px;
-        font-size: 11px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
-  }
-`;
-    class TextValueProvider extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState({
-                values: [],
-                selectedIndex: 0,
-            });
-        }
-        setup() {
-            owl.onMounted(() => this.filter(this.props.search));
-            owl.onWillUpdateProps((nextProps) => this.checkUpdateProps(nextProps));
-            this.props.exposeAPI({
-                getValueToFill: () => this.getValueToFill(),
-                moveDown: () => this.moveDown(),
-                moveUp: () => this.moveUp(),
-            });
-        }
-        checkUpdateProps(nextProps) {
-            if (nextProps.search !== this.props.search) {
-                this.filter(nextProps.search);
-            }
-        }
-        async filter(searchTerm) {
-            const provider = providerRegistry.get(this.props.provider);
-            let values = provider();
-            if (this.props.filter) {
-                values = this.props.filter(searchTerm, values);
-            }
-            else {
-                values = values
-                    .filter((t) => t.text.toUpperCase().startsWith(searchTerm.toUpperCase()))
-                    .sort((l, r) => (l.text < r.text ? -1 : l.text > r.text ? 1 : 0));
-            }
-            this.state.values = values.slice(0, 10);
-            this.state.selectedIndex = 0;
-        }
-        fillValue(index) {
-            this.state.selectedIndex = index;
-            this.props.onCompleted(this.getValueToFill());
-        }
-        moveDown() {
-            this.state.selectedIndex = (this.state.selectedIndex + 1) % this.state.values.length;
-        }
-        moveUp() {
-            this.state.selectedIndex--;
-            if (this.state.selectedIndex < 0) {
-                this.state.selectedIndex = this.state.values.length - 1;
-            }
-        }
-        getValueToFill() {
-            if (this.state.values.length) {
-                return this.state.values[this.state.selectedIndex].text;
-            }
-            return undefined;
-        }
-    }
-    TextValueProvider.template = "o-spreadsheet-TextValueProvider";
-
-    class ContentEditableHelper {
-        constructor(el) {
-            this.el = el;
-        }
-        updateEl(el) {
-            this.el = el;
-        }
-        /**
-         * select the text at position start to end, no matter the children
-         */
-        selectRange(start, end) {
-            let selection = window.getSelection();
-            this.removeSelection();
-            let range = document.createRange();
-            if (start == end && start === 0) {
-                range.setStart(this.el, 0);
-                range.setEnd(this.el, 0);
-                selection.addRange(range);
-            }
-            else {
-                if (start < 0 || end > this.el.textContent.length) {
-                    console.warn(`wrong selection asked start ${start}, end ${end}, text content length ${this.el.textContent.length}`);
-                    if (start < 0)
-                        start = 0;
-                    if (end > this.el.textContent.length)
-                        end = this.el.textContent.length;
-                }
-                let startNode = this.findChildAtCharacterIndex(start);
-                let endNode = this.findChildAtCharacterIndex(end);
-                range.setStart(startNode.node, startNode.offset);
-                selection.addRange(range);
-                selection.extend(endNode.node, endNode.offset);
-            }
-        }
-        /**
-         * finds the dom element that contains the character at `offset`
-         */
-        findChildAtCharacterIndex(offset) {
-            let it = this.iterateChildren(this.el);
-            let current, previous;
-            let usedCharacters = offset;
-            do {
-                current = it.next();
-                if (!current.done && !current.value.hasChildNodes()) {
-                    if (current.value.textContent && current.value.textContent.length < usedCharacters) {
-                        usedCharacters -= current.value.textContent.length;
-                    }
-                    else {
-                        it.return(current.value);
-                    }
-                    previous = current.value;
-                }
-            } while (!current.done);
-            if (current.value) {
-                return { node: current.value, offset: usedCharacters };
-            }
-            return { node: previous, offset: usedCharacters };
-        }
-        /**
-         * Iterate over the dom tree starting at `el` and over all the children depth first.
-         * */
-        *iterateChildren(el) {
-            yield el;
-            if (el.hasChildNodes()) {
-                for (let child of el.childNodes) {
-                    yield* this.iterateChildren(child);
-                }
-            }
-        }
-        /**
-         * Sets (or Replaces all) the text inside the root element in the form of distinctive
-         * span for each element provided in `contents`.
-         *
-         * Each span will have its own fontcolor and specific class if provided in the HtmlContent object.
-         */
-        setText(contents) {
-            if (contents.length === 0) {
-                return;
-            }
-            for (const content of contents) {
-                const span = document.createElement("span");
-                span.innerText = content.value;
-                if (content.color) {
-                    span.style.color = content.color;
-                }
-                if (content.class) {
-                    span.classList.add(content.class);
-                }
-                this.el.appendChild(span);
-            }
-        }
-        /**
-         * remove the current selection of the user
-         * */
-        removeSelection() {
-            let selection = window.getSelection();
-            selection.removeAllRanges();
-        }
-        removeAll() {
-            if (this.el) {
-                while (this.el.firstChild) {
-                    this.el.removeChild(this.el.firstChild);
-                }
-            }
-        }
-        /**
-         * finds the indexes of the current selection.
-         * */
-        getCurrentSelection() {
-            let { startElement, endElement, startSelectionOffset, endSelectionOffset } = this.getStartAndEndSelection();
-            let startSizeBefore = this.findSizeBeforeElement(startElement);
-            let endSizeBefore = this.findSizeBeforeElement(endElement);
-            return {
-                start: startSizeBefore + startSelectionOffset,
-                end: endSizeBefore + endSelectionOffset,
-            };
-        }
-        findSizeBeforeElement(nodeToFind) {
-            let it = this.iterateChildren(this.el);
-            let usedCharacters = 0;
-            let current = it.next();
-            while (!current.done && current.value !== nodeToFind) {
-                if (!current.value.hasChildNodes()) {
-                    if (current.value.textContent) {
-                        usedCharacters += current.value.textContent.length;
-                    }
-                }
-                current = it.next();
-            }
-            return usedCharacters;
-        }
-        getStartAndEndSelection() {
-            const selection = document.getSelection();
-            return {
-                startElement: selection.anchorNode || this.el,
-                startSelectionOffset: selection.anchorOffset,
-                endElement: selection.focusNode || this.el,
-                endSelectionOffset: selection.focusOffset,
-            };
-        }
-    }
-
-    // -----------------------------------------------------------------------------
-    // Formula Assistant component
-    // -----------------------------------------------------------------------------
-    css /* scss */ `
-  .o-formula-assistant {
-    white-space: normal;
-    background-color: #fff;
-    .o-formula-assistant-head {
-      background-color: #f2f2f2;
-      padding: 10px;
-    }
-    .o-formula-assistant-core {
-      padding: 0px 0px 10px 0px;
-      margin: 10px;
-      border-bottom: 1px solid gray;
-    }
-    .o-formula-assistant-arg {
-      padding: 0px 10px 10px 10px;
-      display: flex;
-      flex-direction: column;
-    }
-    .o-formula-assistant-arg-description {
-      font-size: 85%;
-    }
-    .o-formula-assistant-focus {
-      div:first-child,
-      span {
-        color: purple;
-        text-shadow: 0px 0px 1px purple;
-      }
-      div:last-child {
-        color: black;
-      }
-    }
-    .o-formula-assistant-gray {
-      color: gray;
-    }
-  }
-  .o-formula-assistant-container {
-    user-select: none;
-  }
-  .o-formula-assistant-event-none {
-    pointer-events: none;
-  }
-  .o-formula-assistant-event-auto {
-    pointer-events: auto;
-  }
-  .o-formula-assistant-transparency {
-    opacity: 0.3;
-  }
-`;
-    class FunctionDescriptionProvider extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.assistantState = owl.useState({
-                allowCellSelectionBehind: false,
-            });
-            this.timeOutId = 0;
-        }
-        setup() {
-            owl.onWillUnmount(() => {
-                if (this.timeOutId) {
-                    clearTimeout(this.timeOutId);
-                }
-            });
-        }
-        getContext() {
-            return this.props;
-        }
-        onMouseMove() {
-            this.assistantState.allowCellSelectionBehind = true;
-            if (this.timeOutId) {
-                clearTimeout(this.timeOutId);
-            }
-            this.timeOutId = setTimeout(() => {
-                this.assistantState.allowCellSelectionBehind = false;
-            }, 2000);
-        }
-    }
-    FunctionDescriptionProvider.template = "o-spreadsheet-FunctionDescriptionProvider";
-
-    const functions = functionRegistry.content;
-    const ASSISTANT_WIDTH = 300;
-    const FunctionColor = "#4a4e4d";
-    const OperatorColor = "#3da4ab";
-    const StringColor = "#00a82d";
-    const SelectionIndicatorColor = "darkgrey";
-    const NumberColor = "#02c39a";
-    const MatchingParenColor = "black";
-    const SelectionIndicatorClass = "selector-flag";
-    const tokenColor = {
-        OPERATOR: OperatorColor,
-        NUMBER: NumberColor,
-        STRING: StringColor,
-        FUNCTION: FunctionColor,
-        DEBUGGER: OperatorColor,
-        LEFT_PAREN: FunctionColor,
-        RIGHT_PAREN: FunctionColor,
-        COMMA: FunctionColor,
-    };
-    css /* scss */ `
-  .o-composer-container {
-    padding: 0;
-    margin: 0;
-    border: 0;
-    z-index: ${ComponentsImportance.Composer};
-    flex-grow: 1;
-    max-height: inherit;
-    .o-composer {
-      caret-color: black;
-      padding-left: 3px;
-      padding-right: 3px;
-      word-break: break-all;
-      &:focus {
-        outline: none;
-      }
-      &.unfocusable {
-        pointer-events: none;
-      }
-      span {
-        white-space: pre;
-        &.${SelectionIndicatorClass}:after {
-          content: "${SelectionIndicator}";
-          color: ${SelectionIndicatorColor};
-        }
-      }
-    }
-    .o-composer-assistant {
-      position: absolute;
-      margin: 4px;
-      pointer-events: none;
-    }
-  }
-
-  /* Custom css to highlight topbar composer on focus */
-  .o-topbar-toolbar .o-composer-container:focus-within {
-    border: 1px solid ${SELECTION_BORDER_COLOR};
-  }
-`;
-    class Composer extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.composerRef = owl.useRef("o_composer");
-            this.contentHelper = new ContentEditableHelper(this.composerRef.el);
-            this.composerState = owl.useState({
-                positionStart: 0,
-                positionEnd: 0,
-            });
-            this.autoCompleteState = owl.useState({
-                showProvider: false,
-                provider: "functions",
-                search: "",
-            });
-            this.functionDescriptionState = owl.useState({
-                showDescription: false,
-                functionName: "",
-                functionDescription: {},
-                argToFocus: 0,
-            });
-            this.isKeyStillDown = false;
-            this.borderStyle = `box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);`;
-            // we can't allow input events to be triggered while we remove and add back the content of the composer in processContent
-            this.shouldProcessInputEvents = false;
-            this.tokens = [];
-            this.keyMapping = {
-                ArrowUp: this.processArrowKeys,
-                ArrowDown: this.processArrowKeys,
-                ArrowLeft: this.processArrowKeys,
-                ArrowRight: this.processArrowKeys,
-                Enter: this.processEnterKey,
-                Escape: this.processEscapeKey,
-                F2: () => console.warn("Not implemented"),
-                F4: this.processF4Key,
-                Tab: (ev) => this.processTabKey(ev),
-            };
-        }
-        get assistantStyle() {
-            if (this.props.delimitation && this.props.rect) {
-                const [cellX, cellY, , cellHeight] = this.props.rect;
-                const remainingHeight = this.props.delimitation.height - (cellY + cellHeight);
-                let assistantStyle = "";
-                if (cellY > remainingHeight) {
-                    // render top
-                    assistantStyle += `
-          top: -8px;
-          transform: translate(0, -100%);
-        `;
-                }
-                if (cellX + ASSISTANT_WIDTH > this.props.delimitation.width) {
-                    // render left
-                    assistantStyle += `right:0px;`;
-                }
-                return (assistantStyle += `width:${ASSISTANT_WIDTH}px;`);
-            }
-            return `width:${ASSISTANT_WIDTH}px;`;
-        }
-        setup() {
-            owl.onMounted(() => {
-                const el = this.composerRef.el;
-                this.contentHelper.updateEl(el);
-                this.processContent();
-            });
-            owl.onWillUnmount(() => {
-                var _a, _b;
-                (_b = (_a = this.props).onComposerUnmounted) === null || _b === void 0 ? void 0 : _b.call(_a);
-            });
-            owl.onPatched(() => {
-                if (!this.isKeyStillDown) {
-                    this.processContent();
-                }
-            });
-        }
-        // ---------------------------------------------------------------------------
-        // Handlers
-        // ---------------------------------------------------------------------------
-        processArrowKeys(ev) {
-            if (this.env.model.getters.isSelectingForComposer()) {
-                this.functionDescriptionState.showDescription = false;
-                // Prevent the default content editable behavior which moves the cursor
-                // but don't stop the event and let it bubble to the grid which will
-                // update the selection accordingly
-                ev.preventDefault();
-                return;
-            }
-            const content = this.env.model.getters.getCurrentContent();
-            if (this.props.focus === "cellFocus" &&
-                !this.autoCompleteState.showProvider &&
-                !content.startsWith("=")) {
-                this.env.model.dispatch("STOP_EDITION");
-                return;
-            }
-            ev.stopPropagation();
-            // only for arrow up and down
-            if (["ArrowUp", "ArrowDown"].includes(ev.key) &&
-                this.autoCompleteState.showProvider &&
-                this.autocompleteAPI) {
-                ev.preventDefault();
-                if (ev.key === "ArrowUp") {
-                    this.autocompleteAPI.moveUp();
-                }
-                else {
-                    this.autocompleteAPI.moveDown();
-                }
-            }
-        }
-        processTabKey(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
-                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
-                if (autoCompleteValue) {
-                    this.autoComplete(autoCompleteValue);
-                    return;
-                }
-            }
-            else {
-                // when completing with tab, if there is no value to complete, the active cell will be moved to the right.
-                // we can't let the model think that it is for a ref selection.
-                // todo: check if this can be removed someday
-                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            }
-            const direction = ev.shiftKey ? "left" : "right";
-            this.env.model.dispatch("STOP_EDITION");
-            this.env.model.selection.moveAnchorCell(direction, "one");
-        }
-        processEnterKey(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            this.isKeyStillDown = false;
-            if (this.autoCompleteState.showProvider && this.autocompleteAPI) {
-                const autoCompleteValue = this.autocompleteAPI.getValueToFill();
-                if (autoCompleteValue) {
-                    this.autoComplete(autoCompleteValue);
-                    return;
-                }
-            }
-            this.env.model.dispatch("STOP_EDITION");
-            const direction = ev.shiftKey ? "up" : "down";
-            this.env.model.selection.moveAnchorCell(direction, "one");
-        }
-        processEscapeKey() {
-            this.env.model.dispatch("STOP_EDITION", { cancel: true });
-        }
-        processF4Key() {
-            this.env.model.dispatch("CYCLE_EDITION_REFERENCES");
-            this.processContent();
-        }
-        onKeydown(ev) {
-            let handler = this.keyMapping[ev.key];
-            if (handler) {
-                handler.call(this, ev);
-            }
-            else {
-                ev.stopPropagation();
-            }
-            const { start, end } = this.contentHelper.getCurrentSelection();
-            if (!this.env.model.getters.isSelectingForComposer()) {
-                this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", { start, end });
-                this.isKeyStillDown = true;
-            }
-        }
-        /*
-         * Triggered automatically by the content-editable between the keydown and key up
-         * */
-        onInput() {
-            if (this.props.focus === "inactive" || !this.shouldProcessInputEvents) {
-                return;
-            }
-            this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            const el = this.composerRef.el;
-            this.env.model.dispatch("SET_CURRENT_CONTENT", {
-                content: el.childNodes.length ? el.textContent : "",
-                selection: this.contentHelper.getCurrentSelection(),
-            });
-        }
-        onKeyup(ev) {
-            this.isKeyStillDown = false;
-            if (this.props.focus === "inactive" ||
-                ["Control", "Shift", "Tab", "Enter", "F4"].includes(ev.key)) {
-                return;
-            }
-            if (this.autoCompleteState.showProvider && ["ArrowUp", "ArrowDown"].includes(ev.key)) {
-                return; // already processed in keydown
-            }
-            if (this.env.model.getters.isSelectingForComposer() &&
-                ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
-                return; // already processed in keydown
-            }
-            ev.preventDefault();
-            ev.stopPropagation();
-            this.autoCompleteState.showProvider = false;
-            if (ev.ctrlKey && ev.key === " ") {
-                this.autoCompleteState.search = "";
-                this.autoCompleteState.showProvider = true;
-                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-                return;
-            }
-            const { start: oldStart, end: oldEnd } = this.env.model.getters.getComposerSelection();
-            const { start, end } = this.contentHelper.getCurrentSelection();
-            if (start !== oldStart || end !== oldEnd) {
-                this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", this.contentHelper.getCurrentSelection());
-            }
-            this.processTokenAtCursor();
-            this.processContent();
-        }
-        onMousedown(ev) {
-            if (ev.button > 0) {
-                // not main button, probably a context menu
-                return;
-            }
-            this.contentHelper.removeSelection();
-        }
-        onClick() {
-            if (this.env.model.getters.isReadonly()) {
-                return;
-            }
-            const newSelection = this.contentHelper.getCurrentSelection();
-            this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            if (this.props.focus === "inactive") {
-                this.props.onComposerContentFocused(newSelection);
-            }
-            this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", newSelection);
-            this.processTokenAtCursor();
-        }
-        onBlur() {
-            this.isKeyStillDown = false;
-        }
-        onCompleted(text) {
-            text && this.autoComplete(text);
-        }
-        // ---------------------------------------------------------------------------
-        // Private
-        // ---------------------------------------------------------------------------
-        processContent() {
-            this.contentHelper.removeAll(); // removes the content of the composer, to be added just after
-            this.shouldProcessInputEvents = false;
-            if (this.props.focus !== "inactive") {
-                this.contentHelper.selectRange(0, 0); // move the cursor inside the composer at 0 0.
-            }
-            const content = this.getContent();
-            if (content.length !== 0) {
-                this.contentHelper.setText(content);
-                const { start, end } = this.env.model.getters.getComposerSelection();
-                if (this.props.focus !== "inactive") {
-                    // Put the cursor back where it was before the rendering
-                    this.contentHelper.selectRange(start, end);
-                }
-            }
-            this.shouldProcessInputEvents = true;
-        }
-        getContent() {
-            let content;
-            let value = this.env.model.getters.getCurrentContent();
-            if (value === "") {
-                content = [];
-            }
-            else if (value.startsWith("=") && this.props.focus !== "inactive") {
-                content = this.getColoredTokens();
-            }
-            else {
-                content = [{ value }];
-            }
-            return content;
-        }
-        getColoredTokens() {
-            const tokens = this.env.model.getters.getCurrentTokens();
-            const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
-            const result = [];
-            const { end, start } = this.env.model.getters.getComposerSelection();
-            for (let token of tokens) {
-                switch (token.type) {
-                    case "OPERATOR":
-                    case "NUMBER":
-                    case "FUNCTION":
-                    case "COMMA":
-                    case "STRING":
-                        result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
-                        break;
-                    case "REFERENCE":
-                        const [xc, sheet] = token.value.split("!").reverse();
-                        result.push({ value: token.value, color: this.rangeColor(xc, sheet) || "#000" });
-                        break;
-                    case "SYMBOL":
-                        let value = token.value;
-                        if (["TRUE", "FALSE"].includes(value.toUpperCase())) {
-                            result.push({ value: token.value, color: NumberColor });
-                        }
-                        else {
-                            result.push({ value: token.value, color: "#000" });
-                        }
-                        break;
-                    case "LEFT_PAREN":
-                    case "RIGHT_PAREN":
-                        // Compute the matching parenthesis
-                        if (tokenAtCursor &&
-                            ["LEFT_PAREN", "RIGHT_PAREN"].includes(tokenAtCursor.type) &&
-                            tokenAtCursor.parenIndex &&
-                            tokenAtCursor.parenIndex === token.parenIndex) {
-                            result.push({ value: token.value, color: MatchingParenColor  });
-                        }
-                        else {
-                            result.push({ value: token.value, color: tokenColor[token.type] || "#000" });
-                        }
-                        break;
-                    default:
-                        result.push({ value: token.value, color: "#000" });
-                        break;
-                }
-                if (this.env.model.getters.showSelectionIndicator() && end === start && end === token.end) {
-                    result[result.length - 1].class = SelectionIndicatorClass;
-                }
-            }
-            return result;
-        }
-        rangeColor(xc, sheetName) {
-            if (this.props.focus === "inactive") {
-                return undefined;
-            }
-            const highlights = this.env.model.getters.getHighlights();
-            const refSheet = sheetName
-                ? this.env.model.getters.getSheetIdByName(sheetName)
-                : this.env.model.getters.getEditionSheet();
-            const highlight = highlights.find((highlight) => {
-                if (highlight.sheetId !== refSheet)
-                    return false;
-                const range = this.env.model.getters.getRangeFromSheetXC(refSheet, xc);
-                let zone = range.zone;
-                const { height, width } = zoneToDimension(zone);
-                zone = height * width === 1 ? this.env.model.getters.expandZone(refSheet, zone) : zone;
-                return isEqual(zone, highlight.zone);
-            });
-            return highlight && highlight.color ? highlight.color : undefined;
-        }
-        /**
-         * Compute the state of the composer from the tokenAtCursor.
-         * If the token is a function or symbol (that isn't a cell/range reference) we have to initialize
-         * the autocomplete engine otherwise we initialize the formula assistant.
-         */
-        processTokenAtCursor() {
-            let content = this.env.model.getters.getCurrentContent();
-            this.autoCompleteState.showProvider = false;
-            this.functionDescriptionState.showDescription = false;
-            if (content.startsWith("=")) {
-                const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
-                if (tokenAtCursor) {
-                    const [xc] = tokenAtCursor.value.split("!").reverse();
-                    if (tokenAtCursor.type === "FUNCTION" ||
-                        (tokenAtCursor.type === "SYMBOL" && !rangeReference.test(xc))) {
-                        // initialize Autocomplete Dropdown
-                        this.autoCompleteState.search = tokenAtCursor.value;
-                        this.autoCompleteState.showProvider = true;
-                    }
-                    else if (tokenAtCursor.functionContext && tokenAtCursor.type !== "UNKNOWN") {
-                        // initialize Formula Assistant
-                        const tokenContext = tokenAtCursor.functionContext;
-                        const parentFunction = tokenContext.parent.toUpperCase();
-                        const description = functions[parentFunction];
-                        const argPosition = tokenContext.argPosition;
-                        this.functionDescriptionState.functionName = parentFunction;
-                        this.functionDescriptionState.functionDescription = description;
-                        this.functionDescriptionState.argToFocus = description.getArgToFocus(argPosition + 1) - 1;
-                        this.functionDescriptionState.showDescription = true;
-                    }
-                }
-            }
-        }
-        autoComplete(value) {
-            if (value) {
-                const tokenAtCursor = this.env.model.getters.getTokenAtCursor();
-                if (tokenAtCursor) {
-                    let start = tokenAtCursor.end;
-                    let end = tokenAtCursor.end;
-                    // shouldn't it be REFERENCE ?
-                    if (["SYMBOL", "FUNCTION"].includes(tokenAtCursor.type)) {
-                        start = tokenAtCursor.start;
-                    }
-                    const tokens = this.env.model.getters.getCurrentTokens();
-                    if (this.autoCompleteState.provider && tokens.length) {
-                        value += "(";
-                        const currentTokenIndex = tokens.map((token) => token.start).indexOf(tokenAtCursor.start);
-                        if (currentTokenIndex + 1 < tokens.length) {
-                            const nextToken = tokens[currentTokenIndex + 1];
-                            if (nextToken.type === "LEFT_PAREN") {
-                                end++;
-                            }
-                        }
-                    }
-                    this.env.model.dispatch("CHANGE_COMPOSER_CURSOR_SELECTION", {
-                        start,
-                        end,
-                    });
-                }
-                this.env.model.dispatch("REPLACE_COMPOSER_CURSOR_SELECTION", {
-                    text: value,
-                });
-            }
-            this.processTokenAtCursor();
-        }
-    }
-    Composer.template = "o-spreadsheet-Composer";
-    Composer.components = { TextValueProvider, FunctionDescriptionProvider };
-    Composer.defaultProps = {
-        inputStyle: "",
-        focus: "inactive",
-    };
-
-    const SCROLLBAR_WIDTH = 14;
-    const SCROLLBAR_HIGHT = 15;
-    const COMPOSER_BORDER_WIDTH = 3 * 0.4 * window.devicePixelRatio || 1;
-    css /* scss */ `
-  div.o-grid-composer {
-    z-index: ${ComponentsImportance.Composer};
-    box-sizing: border-box;
-    position: absolute;
-    border: ${COMPOSER_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
-  }
-`;
-    /**
-     * This component is a composer which positions itself on the grid at the anchor cell.
-     * It also applies the style of the cell to the composer input.
-     */
-    class GridComposer extends owl.Component {
-        setup() {
-            this.gridComposerRef = owl.useRef("gridComposer");
-            this.composerState = owl.useState({
-                rect: null,
-                delimitation: null,
-            });
-            const { col, row } = this.env.model.getters.getPosition();
-            this.zone = this.env.model.getters.expandZone(this.env.model.getters.getActiveSheetId(), {
-                left: col,
-                right: col,
-                top: row,
-                bottom: row,
-            });
-            this.rect = this.env.model.getters.getRect(this.zone, this.env.model.getters.getActiveViewport());
-            owl.onMounted(() => {
-                const el = this.gridComposerRef.el;
-                //TODO Should be more correct to have a props that give the parent's clientHeight and clientWidth
-                const maxHeight = el.parentElement.clientHeight - this.rect[1] - SCROLLBAR_HIGHT;
-                el.style.maxHeight = (maxHeight + "px");
-                const maxWidth = el.parentElement.clientWidth - this.rect[0] - SCROLLBAR_WIDTH;
-                el.style.maxWidth = (maxWidth + "px");
-                this.composerState.rect = [this.rect[0], this.rect[1], el.clientWidth, el.clientHeight];
-                this.composerState.delimitation = {
-                    width: el.parentElement.clientWidth,
-                    height: el.parentElement.clientHeight,
-                };
-            });
-        }
-        get containerStyle() {
-            const isFormula = this.env.model.getters.getCurrentContent().startsWith("=");
-            const style = this.env.model.getters.getCurrentStyle();
-            // position style
-            const [left, top, width, height] = this.rect;
-            // color style
-            const background = (!isFormula && style.fillColor) || "#ffffff";
-            const color = (!isFormula && style.textColor) || "#000000";
-            // font style
-            const fontSize = (!isFormula && style.fontSize) || 10;
-            const fontWeight = !isFormula && style.bold ? "bold" : 500;
-            const fontStyle = !isFormula && style.italic ? "italic" : "normal";
-            const textDecoration = !isFormula ? getTextDecoration(style) : "none";
-            // align style
-            let textAlign = "left";
-            if (!isFormula) {
-                const cell = this.env.model.getters.getActiveCell();
-                textAlign = style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign) || "left";
-            }
-            return `
-      left: ${left - 1}px;
-      top: ${top}px;
-      min-width: ${width + 2}px;
-      min-height: ${height + 1}px;
-
-      background: ${background};
-      color: ${color};
-
-      font-size: ${fontSizeMap[fontSize]}px;
-      font-weight: ${fontWeight};
-      font-style: ${fontStyle};
-      text-decoration: ${textDecoration};
-
-      text-align: ${textAlign};
-    `;
-        }
-        get composerStyle() {
-            return `
-      line-height: ${DEFAULT_CELL_HEIGHT}px;
-      max-height: inherit;
-      overflow: hidden;
-    `;
-        }
-    }
-    GridComposer.template = "o-spreadsheet-GridComposer";
-    GridComposer.components = { Composer };
-
-    css /* scss */ `
-  .o-error-tooltip {
-    font-size: 13px;
-    background-color: white;
-    border-left: 3px solid red;
-    padding: 10px;
-  }
-`;
-    class ErrorToolTip extends owl.Component {
-    }
-    ErrorToolTip.template = "o-spreadsheet-ErrorToolTip";
-
-    // -----------------------------------------------------------------------------
-    // STYLE
-    // -----------------------------------------------------------------------------
-    const ANCHOR_SIZE = 8;
-    const BORDER_WIDTH = 1;
-    const ACTIVE_BORDER_WIDTH = 2;
-    const MIN_FIG_SIZE = 80;
-    css /*SCSS*/ `
-  .o-figure-wrapper {
-    overflow: hidden;
-  }
-
-  div.o-figure {
-    border: 1px solid black;
-    box-sizing: border-box;
-    position: absolute;
-    bottom: 3px;
-    right: 3px;
-    z-index: ${ComponentsImportance.Figure};
-    &:focus {
-      outline: none;
-    }
-    &.active {
-      border: ${ACTIVE_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
-      z-index: ${ComponentsImportance.Figure + 1};
-    }
-
-    &.o-dragging {
-      opacity: 0.9;
-      cursor: grabbing;
-    }
-
-    .o-anchor {
-      z-index: ${ComponentsImportance.ChartAnchor};
-      position: absolute;
-      outline: ${BORDER_WIDTH}px solid white;
-      width: ${ANCHOR_SIZE}px;
-      height: ${ANCHOR_SIZE}px;
-      background-color: #1a73e8;
-      &.o-top {
-        top: -${ANCHOR_SIZE / 2}px;
-        right: calc(50% - 4px);
-        cursor: n-resize;
-      }
-      &.o-topRight {
-        top: -${ANCHOR_SIZE / 2}px;
-        right: -${ANCHOR_SIZE / 2}px;
-        cursor: ne-resize;
-      }
-      &.o-right {
-        right: -${ANCHOR_SIZE / 2}px;
-        top: calc(50% - 4px);
-        cursor: e-resize;
-      }
-      &.o-bottomRight {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        right: -${ANCHOR_SIZE / 2}px;
-        cursor: se-resize;
-      }
-      &.o-bottom {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        right: calc(50% - 4px);
-        cursor: s-resize;
-      }
-      &.o-bottomLeft {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        left: -${ANCHOR_SIZE / 2}px;
-        cursor: sw-resize;
-      }
-      &.o-left {
-        bottom: calc(50% - 4px);
-        left: -${ANCHOR_SIZE / 2}px;
-        cursor: w-resize;
-      }
-      &.o-topLeft {
-        top: -${ANCHOR_SIZE / 2}px;
-        left: -${ANCHOR_SIZE / 2}px;
-        cursor: nw-resize;
-      }
-    }
-  }
-`;
-    class FiguresContainer extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.figureRegistry = figureRegistry;
-            this.dnd = owl.useState({
-                figureId: "",
-                x: 0,
-                y: 0,
-                width: 0,
-                height: 0,
-            });
-        }
-        getVisibleFigures() {
-            const selectedId = this.env.model.getters.getSelectedFigureId();
-            return this.env.model.getters.getVisibleFigures().map((f) => {
-                let figure = f;
-                // Returns current state of drag&drop figure instead of its stored state
-                if (this.dnd.figureId === f.id) {
-                    figure = {
-                        ...f,
-                        x: this.dnd.x,
-                        y: this.dnd.y,
-                        width: this.dnd.width,
-                        height: this.dnd.height,
-                    };
-                }
-                return {
-                    id: f.id,
-                    isSelected: f.id === selectedId,
-                    figure: figure,
-                };
-            });
-        }
-        getDims(info) {
-            const { figure, isSelected } = info;
-            const borders = 2 * (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            const { width, height } = isSelected && this.dnd.figureId ? this.dnd : figure;
-            return `width:${width + borders}px;height:${height + borders}px`;
-        }
-        getStyle(info) {
-            const { figure, isSelected } = info;
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
-            const { width, height } = target;
-            let x = target.x - offsetX - 1;
-            let y = target.y - offsetY - 1;
-            // width and height of wrapper need to be adjusted so we do not overlap
-            // with headers
-            const correctionX = this.env.isDashboard() ? 0 : Math.max(0, -x);
-            x += correctionX;
-            const correctionY = this.env.isDashboard() ? 0 : Math.max(0, -y);
-            y += correctionY;
-            if (width < 0 || height < 0) {
-                return `position:absolute;display:none;`;
-            }
-            const offset = ANCHOR_SIZE + ACTIVE_BORDER_WIDTH + (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px`;
-        }
-        setup() {
-            owl.onMounted(() => {
-                // horrible, but necessary
-                // the following line ensures that we render the figures with the correct
-                // viewport.  The reason is that whenever we initialize the grid
-                // component, we do not know yet the actual size of the viewport, so the
-                // first owl rendering is done with an empty viewport.  Only then we can
-                // compute which figures should be displayed, so we have to force a
-                // new rendering
-                this.render();
-            });
-        }
-        resize(figure, dirX, dirY, ev) {
-            ev.stopPropagation();
-            const initialX = ev.clientX;
-            const initialY = ev.clientY;
-            this.dnd.figureId = figure.id;
-            this.dnd.x = figure.x;
-            this.dnd.y = figure.y;
-            this.dnd.width = figure.width;
-            this.dnd.height = figure.height;
-            const onMouseMove = (ev) => {
-                const deltaX = dirX * (ev.clientX - initialX);
-                const deltaY = dirY * (ev.clientY - initialY);
-                this.dnd.width = Math.max(figure.width + deltaX, MIN_FIG_SIZE);
-                this.dnd.height = Math.max(figure.height + deltaY, MIN_FIG_SIZE);
-                if (dirX < 0) {
-                    this.dnd.x = figure.x - deltaX;
-                }
-                if (dirY < 0) {
-                    this.dnd.y = figure.y - deltaY;
-                }
-            };
-            const onMouseUp = (ev) => {
-                this.dnd.figureId = "";
-                const update = {
-                    x: this.dnd.x,
-                    y: this.dnd.y,
-                };
-                if (dirX) {
-                    update.width = this.dnd.width;
-                }
-                if (dirY) {
-                    update.height = this.dnd.height;
-                }
-                this.env.model.dispatch("UPDATE_FIGURE", {
-                    sheetId: this.env.model.getters.getActiveSheetId(),
-                    id: figure.id,
-                    ...update,
-                });
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onMouseDown(figure, ev) {
-            if (ev.button > 0 || this.env.model.getters.isReadonly()) {
-                // not main button, probably a context menu
-                return;
-            }
-            const selectResult = this.env.model.dispatch("SELECT_FIGURE", { id: figure.id });
-            if (!selectResult.isSuccessful) {
-                return;
-            }
-            if (this.props.sidePanelIsOpen) {
-                this.env.openSidePanel("ChartPanel", { figureId: figure.id });
-            }
-            const initialX = ev.clientX;
-            const initialY = ev.clientY;
-            this.dnd.figureId = figure.id;
-            this.dnd.x = figure.x;
-            this.dnd.y = figure.y;
-            this.dnd.width = figure.width;
-            this.dnd.height = figure.height;
-            const onMouseMove = (ev) => {
-                this.dnd.x = Math.max(figure.x - initialX + ev.clientX, 0);
-                this.dnd.y = Math.max(figure.y - initialY + ev.clientY, 0);
-            };
-            const onMouseUp = (ev) => {
-                this.dnd.figureId = "";
-                this.env.model.dispatch("UPDATE_FIGURE", {
-                    sheetId: this.env.model.getters.getActiveSheetId(),
-                    id: figure.id,
-                    x: this.dnd.x,
-                    y: this.dnd.y,
-                });
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onKeyDown(figure, ev) {
-            ev.preventDefault();
-            switch (ev.key) {
-                case "Delete":
-                    this.env.model.dispatch("DELETE_FIGURE", {
-                        sheetId: this.env.model.getters.getActiveSheetId(),
-                        id: figure.id,
-                    });
-                    this.props.onFigureDeleted();
-                    break;
-                case "ArrowDown":
-                case "ArrowLeft":
-                case "ArrowRight":
-                case "ArrowUp":
-                    const deltaMap = {
-                        ArrowDown: [0, 1],
-                        ArrowLeft: [-1, 0],
-                        ArrowRight: [1, 0],
-                        ArrowUp: [0, -1],
-                    };
-                    const delta = deltaMap[ev.key];
-                    this.env.model.dispatch("UPDATE_FIGURE", {
-                        sheetId: this.env.model.getters.getActiveSheetId(),
-                        id: figure.id,
-                        x: figure.x + delta[0],
-                        y: figure.y + delta[1],
-                    });
-            }
-        }
-    }
-    FiguresContainer.template = "o-spreadsheet-FiguresContainer";
-    FiguresContainer.components = {};
-    figureRegistry.add("chart", { Component: ChartFigure, SidePanelComponent: "ChartPanel" });
-
-    class AbstractResizer extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.PADDING = 0;
-            this.MAX_SIZE_MARGIN = 0;
-            this.MIN_ELEMENT_SIZE = 0;
-            this.lastSelectedElementIndex = null;
-            this.state = owl.useState({
-                resizerIsActive: false,
-                isResizing: false,
-                isMoving: false,
-                isSelecting: false,
-                waitingForMove: false,
-                activeElement: 0,
-                draggerLinePosition: 0,
-                draggerShadowPosition: 0,
-                draggerShadowThickness: 0,
-                delta: 0,
-                base: 0,
-            });
-        }
-        _computeHandleDisplay(ev) {
-            const position = this._getEvOffset(ev);
-            const elementIndex = this._getElementIndex(position);
-            if (elementIndex < 0) {
-                return;
-            }
-            const dimensions = this._getDimensionsInViewport(elementIndex);
-            if (position - dimensions.start < this.PADDING && elementIndex !== this._getViewportOffset()) {
-                this.state.resizerIsActive = true;
-                this.state.draggerLinePosition = dimensions.start;
-                this.state.activeElement = this._getPreviousVisibleElement(elementIndex);
-            }
-            else if (dimensions.end - position < this.PADDING) {
-                this.state.resizerIsActive = true;
-                this.state.draggerLinePosition = dimensions.end;
-                this.state.activeElement = elementIndex;
-            }
-            else {
-                this.state.resizerIsActive = false;
-            }
-        }
-        _computeGrabDisplay(ev) {
-            const index = this._getElementIndex(this._getEvOffset(ev));
-            const activeElements = this._getActiveElements();
-            const selectedZoneStart = this._getSelectedZoneStart();
-            const selectedZoneEnd = this._getSelectedZoneEnd();
-            if (activeElements.has(selectedZoneStart)) {
-                if (selectedZoneStart <= index && index <= selectedZoneEnd) {
-                    this.state.waitingForMove = true;
-                    return;
-                }
-            }
-            this.state.waitingForMove = false;
-        }
-        onMouseMove(ev) {
-            if (this.state.isResizing || this.state.isMoving || this.state.isSelecting) {
-                return;
-            }
-            this._computeHandleDisplay(ev);
-            this._computeGrabDisplay(ev);
-        }
-        onMouseLeave() {
-            this.state.resizerIsActive = this.state.isResizing;
-            this.state.waitingForMove = false;
-        }
-        onDblClick() {
-            this._fitElementSize(this.state.activeElement);
-            this.state.isResizing = false;
-        }
-        onMouseDown(ev) {
-            this.state.isResizing = true;
-            this.state.delta = 0;
-            const initialPosition = this._getClientPosition(ev);
-            const styleValue = this.state.draggerLinePosition;
-            const size = this._getElementSize(this.state.activeElement);
-            const minSize = styleValue - size + this.MIN_ELEMENT_SIZE;
-            const maxSize = this._getMaxSize();
-            const onMouseUp = (ev) => {
-                this.state.isResizing = false;
-                if (this.state.delta !== 0) {
-                    this._updateSize();
-                }
-            };
-            const onMouseMove = (ev) => {
-                this.state.delta = this._getClientPosition(ev) - initialPosition;
-                this.state.draggerLinePosition = styleValue + this.state.delta;
-                if (this.state.draggerLinePosition < minSize) {
-                    this.state.draggerLinePosition = minSize;
-                    this.state.delta = this.MIN_ELEMENT_SIZE - size;
-                }
-                if (this.state.draggerLinePosition > maxSize) {
-                    this.state.draggerLinePosition = maxSize;
-                    this.state.delta = maxSize - styleValue;
-                }
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        select(ev) {
-            if (ev.button > 0) {
-                // not main button, probably a context menu
-                return;
-            }
-            const index = this._getElementIndex(this._getEvOffset(ev));
-            if (index < 0) {
-                return;
-            }
-            if (this.state.waitingForMove === true) {
-                this.startMovement(ev);
-                return;
-            }
-            this.startSelection(ev, index);
-        }
-        startMovement(ev) {
-            this.state.waitingForMove = false;
-            this.state.isMoving = true;
-            const startDimensions = this._getDimensionsInViewport(this._getSelectedZoneStart());
-            const endDimensions = this._getDimensionsInViewport(this._getSelectedZoneEnd());
-            const initialPosition = this._getClientPosition(ev);
-            const defaultPosition = startDimensions.start;
-            this.state.draggerLinePosition = defaultPosition;
-            this.state.base = this._getSelectedZoneStart();
-            this.state.draggerShadowPosition = defaultPosition;
-            this.state.draggerShadowThickness = endDimensions.end - startDimensions.start;
-            const mouseMoveMovement = (elementIndex, currentEv) => {
-                if (elementIndex >= 0) {
-                    // define draggerLinePosition
-                    const dimensions = this._getDimensionsInViewport(elementIndex);
-                    if (elementIndex <= this._getSelectedZoneStart()) {
-                        this.state.draggerLinePosition = dimensions.start;
-                        this.state.base = elementIndex;
-                    }
-                    else if (this._getSelectedZoneEnd() < elementIndex) {
-                        this.state.draggerLinePosition = dimensions.end;
-                        this.state.base = elementIndex + 1;
-                    }
-                    else {
-                        this.state.draggerLinePosition = startDimensions.start;
-                        this.state.base = this._getSelectedZoneStart();
-                    }
-                    // define draggerShadowPosition
-                    const delta = this._getClientPosition(currentEv) - initialPosition;
-                    this.state.draggerShadowPosition = Math.max(defaultPosition + delta, 0);
-                }
-            };
-            const mouseUpMovement = (finalEv) => {
-                this.state.isMoving = false;
-                if (this.state.base !== this._getSelectedZoneStart()) {
-                    this._moveElements();
-                }
-                this._computeGrabDisplay(finalEv);
-            };
-            this.dragOverlayBeyondTheViewport(ev, mouseMoveMovement, mouseUpMovement);
-        }
-        startSelection(ev, index) {
-            this.state.isSelecting = true;
-            if (ev.shiftKey) {
-                this._increaseSelection(index);
-            }
-            else {
-                this._selectElement(index, ev.ctrlKey);
-            }
-            this.lastSelectedElementIndex = index;
-            const mouseMoveSelect = (elementIndex, currentEv) => {
-                if (elementIndex !== this.lastSelectedElementIndex && elementIndex !== -1) {
-                    this._increaseSelection(elementIndex);
-                    this.lastSelectedElementIndex = elementIndex;
-                }
-            };
-            const mouseUpSelect = () => {
-                this.state.isSelecting = false;
-                this.lastSelectedElementIndex = null;
-                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
-                this._computeGrabDisplay(ev);
-            };
-            this.dragOverlayBeyondTheViewport(ev, mouseMoveSelect, mouseUpSelect);
-        }
-        dragOverlayBeyondTheViewport(ev, cbMouseMove, cbMouseUp) {
-            let timeOutId = null;
-            let currentEv;
-            const initialPosition = this._getClientPosition(ev);
-            const initialOffset = this._getEvOffset(ev);
-            const onMouseMove = (ev) => {
-                // currentEv.target can be any DOM element
-                currentEv = ev;
-                if (timeOutId) {
-                    return;
-                }
-                const delta = this._getClientPosition(currentEv) - initialPosition;
-                const position = initialOffset + delta;
-                const EdgeScrollInfo = this._getEdgeScroll(position);
-                const { first, last } = this._getBoundaries();
-                let elementIndex;
-                if (EdgeScrollInfo.canEdgeScroll) {
-                    elementIndex = EdgeScrollInfo.direction > 0 ? last : first - 1;
-                }
-                else {
-                    elementIndex = this._getElementIndex(position);
-                }
-                cbMouseMove(elementIndex, currentEv);
-                // adjust viewport if necessary
-                if (EdgeScrollInfo.canEdgeScroll) {
-                    this._adjustViewport(EdgeScrollInfo.direction);
-                    timeOutId = setTimeout(() => {
-                        timeOutId = null;
-                        onMouseMove(currentEv);
-                    }, Math.round(EdgeScrollInfo.delay));
-                }
-            };
-            const onMouseUp = (finalEv) => {
-                clearTimeout(timeOutId);
-                cbMouseUp(finalEv);
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onMouseUp(ev) {
-            this.lastSelectedElementIndex = null;
-        }
-        onContextMenu(ev) {
-            ev.preventDefault();
-            const index = this._getElementIndex(this._getEvOffset(ev));
-            if (index < 0)
-                return;
-            if (!this._getActiveElements().has(index)) {
-                this._selectElement(index, false);
-            }
-            const type = this._getType();
-            this.props.onOpenContextMenu(type, ev.clientX, ev.clientY);
-        }
-    }
-    css /* scss */ `
-  .o-col-resizer {
-    position: absolute;
-    top: 0;
-    left: ${HEADER_WIDTH}px;
-    right: 0;
-    height: ${HEADER_HEIGHT}px;
-    &.o-dragging {
-      cursor: grabbing;
-    }
-    &.o-grab {
-      cursor: grab;
-    }
-    .dragging-col-line {
-      top: ${HEADER_HEIGHT}px;
-      position: absolute;
-      width: 2px;
-      height: 10000px;
-      background-color: black;
-    }
-    .dragging-col-shadow {
-      top: ${HEADER_HEIGHT}px;
-      position: absolute;
-      height: 10000px;
-      background-color: black;
-      opacity: 0.1;
-    }
-    .o-handle {
-      position: absolute;
-      height: ${HEADER_HEIGHT}px;
-      width: 4px;
-      cursor: e-resize;
-      background-color: ${SELECTION_BORDER_COLOR};
-    }
-    .dragging-resizer {
-      top: ${HEADER_HEIGHT}px;
-      position: absolute;
-      margin-left: 2px;
-      width: 1px;
-      height: 10000px;
-      background-color: ${SELECTION_BORDER_COLOR};
-    }
-    .o-unhide {
-      width: ${UNHIDE_ICON_EDGE_LENGTH}px;
-      height: ${UNHIDE_ICON_EDGE_LENGTH}px;
-      position: absolute;
-      overflow: hidden;
-      border-radius: 2px;
-      top: calc(${HEADER_HEIGHT}px / 2 - ${UNHIDE_ICON_EDGE_LENGTH}px / 2);
-    }
-    .o-unhide:hover {
-      z-index: ${ComponentsImportance.Grid + 1};
-      background-color: lightgrey;
-    }
-    .o-unhide > svg {
-      position: relative;
-      top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
-    }
-  }
-`;
-    class ColResizer extends AbstractResizer {
-        setup() {
-            super.setup();
-            this.colResizerRef = owl.useRef("colResizer");
-            this.PADDING = 15;
-            this.MAX_SIZE_MARGIN = 90;
-            this.MIN_ELEMENT_SIZE = MIN_COL_WIDTH;
-        }
-        _getEvOffset(ev) {
-            return ev.offsetX;
-        }
-        _getViewportOffset() {
-            return this.env.model.getters.getActiveViewport().left;
-        }
-        _getClientPosition(ev) {
-            return ev.clientX;
-        }
-        _getElementIndex(index) {
-            return this.env.model.getters.getColIndex(index);
-        }
-        _getSelectedZoneStart() {
-            return this.env.model.getters.getSelectedZone().left;
-        }
-        _getSelectedZoneEnd() {
-            return this.env.model.getters.getSelectedZone().right;
-        }
-        _getEdgeScroll(position) {
-            return this.env.model.getters.getEdgeScrollCol(position);
-        }
-        _getBoundaries() {
-            const { left, right } = this.env.model.getters.getActiveViewport();
-            return { first: left, last: right };
-        }
-        _getDimensionsInViewport(index) {
-            return this.env.model.getters.getColDimensionsInViewport(this.env.model.getters.getActiveSheetId(), index);
-        }
-        _getElementSize(index) {
-            return this.env.model.getters.getColSize(this.env.model.getters.getActiveSheetId(), index);
-        }
-        _getMaxSize() {
-            return this.colResizerRef.el.clientWidth;
-        }
-        _updateSize() {
-            const index = this.state.activeElement;
-            const size = this.state.delta + this._getElementSize(index);
-            const cols = this.env.model.getters.getActiveCols();
-            this.env.model.dispatch("RESIZE_COLUMNS_ROWS", {
-                dimension: "COL",
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                elements: cols.has(index) ? [...cols] : [index],
-                size,
-            });
-        }
-        _moveElements() {
-            const elements = [];
-            const start = this._getSelectedZoneStart();
-            const end = this._getSelectedZoneEnd();
-            for (let colIndex = start; colIndex <= end; colIndex++) {
-                elements.push(colIndex);
-            }
-            const result = this.env.model.dispatch("MOVE_COLUMNS_ROWS", {
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                dimension: "COL",
-                base: this.state.base,
-                elements,
-            });
-            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
-                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
-            }
-        }
-        _selectElement(index, ctrlKey) {
-            this.env.model.selection.selectColumn(index, ctrlKey ? "newAnchor" : "overrideSelection");
-        }
-        _increaseSelection(index) {
-            this.env.model.selection.selectColumn(index, "updateAnchor");
-        }
-        _adjustViewport(direction) {
-            const { left, offsetY } = this.env.model.getters.getActiveViewport();
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const offsetX = this.env.model.getters.getColDimensions(sheetId, left + direction).start;
-            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-        }
-        _fitElementSize(index) {
-            const cols = this.env.model.getters.getActiveCols();
-            this.env.model.dispatch("AUTORESIZE_COLUMNS", {
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                cols: cols.has(index) ? [...cols] : [index],
-            });
-        }
-        _getType() {
-            return "COL";
-        }
-        _getActiveElements() {
-            return this.env.model.getters.getActiveCols();
-        }
-        _getPreviousVisibleElement(index) {
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            let row;
-            for (row = index - 1; row >= 0; row--) {
-                if (!this.env.model.getters.isColHidden(sheetId, row)) {
-                    break;
-                }
-            }
-            return row;
-        }
-        unhide(hiddenElements) {
-            this.env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                elements: hiddenElements,
-                dimension: "COL",
-            });
-        }
-        unhideStyleValue(hiddenIndex) {
-            return this._getDimensionsInViewport(hiddenIndex).start;
-        }
-    }
-    ColResizer.template = "o-spreadsheet-ColResizer";
-    css /* scss */ `
-  .o-row-resizer {
-    position: absolute;
-    top: ${HEADER_HEIGHT}px;
-    left: 0;
-    right: 0;
-    width: ${HEADER_WIDTH}px;
-    height: 100%;
-    &.o-dragging {
-      cursor: grabbing;
-    }
-    &.o-grab {
-      cursor: grab;
-    }
-    .dragging-row-line {
-      left: ${HEADER_WIDTH}px;
-      position: absolute;
-      width: 10000px;
-      height: 2px;
-      background-color: black;
-    }
-    .dragging-row-shadow {
-      left: ${HEADER_WIDTH}px;
-      position: absolute;
-      width: 10000px;
-      background-color: black;
-      opacity: 0.1;
-    }
-    .o-handle {
-      position: absolute;
-      height: 4px;
-      width: ${HEADER_WIDTH}px;
-      cursor: n-resize;
-      background-color: ${SELECTION_BORDER_COLOR};
-    }
-    .dragging-resizer {
-      left: ${HEADER_WIDTH}px;
-      position: absolute;
-      margin-top: 2px;
-      width: 10000px;
-      height: 1px;
-      background-color: ${SELECTION_BORDER_COLOR};
-    }
-    .o-unhide {
-      width: ${UNHIDE_ICON_EDGE_LENGTH}px;
-      height: ${UNHIDE_ICON_EDGE_LENGTH}px;
-      position: absolute;
-      overflow: hidden;
-      border-radius: 2px;
-      left: calc(${HEADER_WIDTH}px - ${UNHIDE_ICON_EDGE_LENGTH}px - 2px);
-    }
-    .o-unhide > svg {
-      position: relative;
-      left: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
-      top: calc(${UNHIDE_ICON_EDGE_LENGTH}px / 2 - ${ICON_EDGE_LENGTH}px / 2);
-    }
-    .o-unhide:hover {
-      z-index: ${ComponentsImportance.Grid + 1};
-      background-color: lightgrey;
-    }
-  }
-`;
-    class RowResizer extends AbstractResizer {
-        setup() {
-            super.setup();
-            this.rowResizerRef = owl.useRef("rowResizer");
-            this.PADDING = 5;
-            this.MAX_SIZE_MARGIN = 60;
-            this.MIN_ELEMENT_SIZE = MIN_ROW_HEIGHT;
-        }
-        _getEvOffset(ev) {
-            return ev.offsetY;
-        }
-        _getViewportOffset() {
-            return this.env.model.getters.getActiveViewport().top;
-        }
-        _getClientPosition(ev) {
-            return ev.clientY;
-        }
-        _getElementIndex(index) {
-            return this.env.model.getters.getRowIndex(index);
-        }
-        _getSelectedZoneStart() {
-            return this.env.model.getters.getSelectedZone().top;
-        }
-        _getSelectedZoneEnd() {
-            return this.env.model.getters.getSelectedZone().bottom;
-        }
-        _getEdgeScroll(position) {
-            return this.env.model.getters.getEdgeScrollRow(position);
-        }
-        _getBoundaries() {
-            const { top, bottom } = this.env.model.getters.getActiveViewport();
-            return { first: top, last: bottom };
-        }
-        _getDimensionsInViewport(index) {
-            return this.env.model.getters.getRowDimensionsInViewport(this.env.model.getters.getActiveSheetId(), index);
-        }
-        _getElementSize(index) {
-            return this.env.model.getters.getRowSize(this.env.model.getters.getActiveSheetId(), index);
-        }
-        _getMaxSize() {
-            return this.rowResizerRef.el.clientHeight;
-        }
-        _updateSize() {
-            const index = this.state.activeElement;
-            const size = this.state.delta + this._getElementSize(index);
-            const rows = this.env.model.getters.getActiveRows();
-            this.env.model.dispatch("RESIZE_COLUMNS_ROWS", {
-                dimension: "ROW",
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                elements: rows.has(index) ? [...rows] : [index],
-                size,
-            });
-        }
-        _moveElements() {
-            const elements = [];
-            const start = this._getSelectedZoneStart();
-            const end = this._getSelectedZoneEnd();
-            for (let rowIndex = start; rowIndex <= end; rowIndex++) {
-                elements.push(rowIndex);
-            }
-            const result = this.env.model.dispatch("MOVE_COLUMNS_ROWS", {
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                dimension: "ROW",
-                base: this.state.base,
-                elements,
-            });
-            if (!result.isSuccessful && result.reasons.includes(2 /* WillRemoveExistingMerge */)) {
-                this.env.notifyUser(_lt("Merged cells are preventing this operation. Unmerge those cells and try again."));
-            }
-        }
-        _selectElement(index, ctrlKey) {
-            this.env.model.selection.selectRow(index, ctrlKey ? "newAnchor" : "overrideSelection");
-        }
-        _increaseSelection(index) {
-            this.env.model.selection.selectRow(index, "updateAnchor");
-        }
-        _adjustViewport(direction) {
-            const { top, offsetX } = this.env.model.getters.getActiveViewport();
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const offsetY = this.env.model.getters.getRowDimensions(sheetId, top + direction).start;
-            this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-        }
-        _fitElementSize(index) {
-            const rows = this.env.model.getters.getActiveRows();
-            this.env.model.dispatch("AUTORESIZE_ROWS", {
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                rows: rows.has(index) ? [...rows] : [index],
-            });
-        }
-        _getType() {
-            return "ROW";
-        }
-        _getActiveElements() {
-            return this.env.model.getters.getActiveRows();
-        }
-        _getPreviousVisibleElement(index) {
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            let row;
-            for (row = index - 1; row >= 0; row--) {
-                if (!this.env.model.getters.isRowHidden(sheetId, row)) {
-                    break;
-                }
-            }
-            return row;
-        }
-        unhide(hiddenElements) {
-            this.env.model.dispatch("UNHIDE_COLUMNS_ROWS", {
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                dimension: "ROW",
-                elements: hiddenElements,
-            });
-        }
-        unhideStyleValue(hiddenIndex) {
-            return this._getDimensionsInViewport(hiddenIndex).start;
-        }
-    }
-    RowResizer.template = "o-spreadsheet-RowResizer";
-    css /* scss */ `
-  .o-overlay {
-    .all {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      width: ${HEADER_WIDTH}px;
-      height: ${HEADER_HEIGHT}px;
-    }
-  }
-`;
-    class HeadersOverlay extends owl.Component {
-        selectAll() {
-            this.env.model.selection.selectAll();
-        }
-    }
-    HeadersOverlay.template = "o-spreadsheet-HeadersOverlay";
-    HeadersOverlay.components = { ColResizer, RowResizer };
-
-    css /* scss */ `
-  .o-border {
-    position: absolute;
-    &:hover {
-      cursor: grab;
-    }
-  }
-  .o-moving {
-    cursor: grabbing;
-  }
-`;
-    class Border extends owl.Component {
-        get style() {
-            const isTop = ["n", "w", "e"].includes(this.props.orientation);
-            const isLeft = ["n", "w", "s"].includes(this.props.orientation);
-            const isHorizontal = ["n", "s"].includes(this.props.orientation);
-            const isVertical = ["w", "e"].includes(this.props.orientation);
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const z = this.props.zone;
-            const margin = 2;
-            const left = this.env.model.getters.getColDimensions(sheetId, z.left).start + margin;
-            const right = this.env.model.getters.getColDimensions(sheetId, z.right).end - 2 * margin;
-            const top = this.env.model.getters.getRowDimensions(sheetId, z.top).start + margin;
-            const bottom = this.env.model.getters.getRowDimensions(sheetId, z.bottom).end - 2 * margin;
-            const lineWidth = 4;
-            const leftValue = isLeft ? left : right;
-            const topValue = isTop ? top : bottom;
-            const widthValue = isHorizontal ? right - left : lineWidth;
-            const heightValue = isVertical ? bottom - top : lineWidth;
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            return `
-        left:${leftValue + HEADER_WIDTH - offsetX}px;
-        top:${topValue + HEADER_HEIGHT - offsetY}px;
-        width:${widthValue}px;
-        height:${heightValue}px;
-    `;
-        }
-        onMouseDown(ev) {
-            this.props.onMoveHighlight(ev.clientX, ev.clientY);
-        }
-    }
-    Border.template = "o-spreadsheet-Border";
-
-    css /* scss */ `
-  .o-corner {
-    position: absolute;
-    height: 6px;
-    width: 6px;
-    border: 1px solid white;
-  }
-  .o-corner-nw,
-  .o-corner-se {
-    &:hover {
-      cursor: nwse-resize;
-    }
-  }
-  .o-corner-ne,
-  .o-corner-sw {
-    &:hover {
-      cursor: nesw-resize;
-    }
-  }
-  .o-resizing {
-    cursor: grabbing;
-  }
-`;
-    class Corner extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.isTop = this.props.orientation[0] === "n";
-            this.isLeft = this.props.orientation[1] === "w";
-        }
-        get style() {
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const z = this.props.zone;
-            const leftValue = this.isLeft
-                ? this.env.model.getters.getColDimensions(sheetId, z.left).start
-                : this.env.model.getters.getColDimensions(sheetId, z.right).end;
-            const topValue = this.isTop
-                ? this.env.model.getters.getRowDimensions(sheetId, z.top).start
-                : this.env.model.getters.getRowDimensions(sheetId, z.bottom).end;
-            return `
-      left:${leftValue + HEADER_WIDTH - offsetX - AUTOFILL_EDGE_LENGTH / 2}px;
-      top:${topValue + HEADER_HEIGHT - offsetY - AUTOFILL_EDGE_LENGTH / 2}px;
-      background-color:${this.props.color};
-    `;
-        }
-        onMouseDown(ev) {
-            this.props.onResizeHighlight(this.isLeft, this.isTop);
-        }
-    }
-    Corner.template = "o-spreadsheet-Corner";
-
-    css /*SCSS*/ `
-  .o-highlight {
-    z-index: ${ComponentsImportance.Highlight};
-  }
-`;
-    class Highlight extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.highlightRef = owl.useRef("highlight");
-            this.highlightState = owl.useState({
-                shiftingMode: "none",
-            });
-        }
-        onResizeHighlight(isLeft, isTop) {
-            const activeSheet = this.env.model.getters.getActiveSheet();
-            this.highlightState.shiftingMode = "isResizing";
-            const z = this.props.zone;
-            const pivotCol = isLeft ? z.right : z.left;
-            const pivotRow = isTop ? z.bottom : z.top;
-            let lastCol = isLeft ? z.left : z.right;
-            let lastRow = isTop ? z.top : z.bottom;
-            let currentZone = z;
-            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", {
-                range: this.env.model.getters.getRangeDataFromZone(activeSheet.id, currentZone),
-            });
-            const mouseMove = (col, row) => {
-                if (lastCol !== col || lastRow !== row) {
-                    const activeSheetId = this.env.model.getters.getActiveSheetId();
-                    lastCol = clip(col === -1 ? lastCol : col, 0, this.env.model.getters.getNumberCols(activeSheetId) - 1);
-                    lastRow = clip(row === -1 ? lastRow : row, 0, this.env.model.getters.getNumberRows(activeSheetId) - 1);
-                    let newZone = {
-                        left: Math.min(pivotCol, lastCol),
-                        top: Math.min(pivotRow, lastRow),
-                        right: Math.max(pivotCol, lastCol),
-                        bottom: Math.max(pivotRow, lastRow),
-                    };
-                    newZone = this.env.model.getters.expandZone(activeSheetId, newZone);
-                    if (!isEqual(newZone, currentZone)) {
-                        this.env.model.dispatch("CHANGE_HIGHLIGHT", {
-                            range: this.env.model.getters.getRangeDataFromZone(activeSheet.id, newZone),
-                        });
-                        currentZone = newZone;
-                    }
-                }
-            };
-            const mouseUp = () => {
-                this.highlightState.shiftingMode = "none";
-                // To do:
-                // Command used here to restore focus to the current composer,
-                // to be changed when refactoring the 'edition' plugin
-                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            };
-            dragAndDropBeyondTheViewport(this.highlightRef.el.parentElement, this.env, mouseMove, mouseUp);
-        }
-        onMoveHighlight(clientX, clientY) {
-            this.highlightState.shiftingMode = "isMoving";
-            const z = this.props.zone;
-            const parent = this.highlightRef.el.parentElement;
-            const position = parent.getBoundingClientRect();
-            const activeSheetId = this.env.model.getters.getActiveSheetId();
-            const initCol = this.env.model.getters.getColIndex(clientX - position.left - HEADER_WIDTH);
-            const initRow = this.env.model.getters.getRowIndex(clientY - position.top - HEADER_HEIGHT);
-            const deltaColMin = -z.left;
-            const deltaColMax = this.env.model.getters.getNumberCols(activeSheetId) - z.right - 1;
-            const deltaRowMin = -z.top;
-            const deltaRowMax = this.env.model.getters.getNumberRows(activeSheetId) - z.bottom - 1;
-            let currentZone = z;
-            this.env.model.dispatch("START_CHANGE_HIGHLIGHT", {
-                range: this.env.model.getters.getRangeDataFromZone(activeSheetId, currentZone),
-            });
-            let lastCol = initCol;
-            let lastRow = initRow;
-            const mouseMove = (col, row) => {
-                if (lastCol !== col || lastRow !== row) {
-                    lastCol = col === -1 ? lastCol : col;
-                    lastRow = row === -1 ? lastRow : row;
-                    const deltaCol = clip(lastCol - initCol, deltaColMin, deltaColMax);
-                    const deltaRow = clip(lastRow - initRow, deltaRowMin, deltaRowMax);
-                    let newZone = {
-                        left: z.left + deltaCol,
-                        top: z.top + deltaRow,
-                        right: z.right + deltaCol,
-                        bottom: z.bottom + deltaRow,
-                    };
-                    newZone = this.env.model.getters.expandZone(activeSheetId, newZone);
-                    if (!isEqual(newZone, currentZone)) {
-                        this.env.model.dispatch("CHANGE_HIGHLIGHT", {
-                            range: this.env.model.getters.getRangeDataFromZone(activeSheetId, newZone),
-                        });
-                        currentZone = newZone;
-                    }
-                }
-            };
-            const mouseUp = () => {
-                this.highlightState.shiftingMode = "none";
-                // To do:
-                // Command used here to restore focus to the current composer,
-                // to be changed when refactoring the 'edition' plugin
-                this.env.model.dispatch("STOP_COMPOSER_RANGE_SELECTION");
-            };
-            dragAndDropBeyondTheViewport(parent, this.env, mouseMove, mouseUp);
-        }
-    }
-    Highlight.template = "o-spreadsheet-Highlight";
-    Highlight.components = {
-        Corner,
-        Border,
-    };
-
-    css /* scss */ `
-  .o-link-tool {
-    font-size: 13px;
-    background-color: white;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    padding: 12px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    a.o-link {
-      color: #007bff;
-      flex-grow: 2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    a.o-link:hover {
-      text-decoration: underline;
-      color: #0056b3;
-      cursor: pointer;
-    }
-  }
-  .o-link-icon {
-    float: right;
-    padding-left: 4%;
-    .o-icon {
-      height: 16px;
-    }
-  }
-  .o-link-icon.o-unlink .o-icon {
-    padding-top: 1px;
-    height: 14px;
-  }
-  .o-link-icon:hover {
-    cursor: pointer;
-    color: #000;
-  }
-`;
-    class LinkDisplay extends owl.Component {
-        get cell() {
-            const { col, row } = this.props.cellPosition;
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const cell = this.env.model.getters.getCell(sheetId, col, row);
-            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
-                return cell;
-            }
-            throw new Error(`LinkDisplay Component can only be used with link cells. ${toXC(col, row)} is not a link.`);
-        }
-        openLink() {
-            this.cell.action(this.env);
-        }
-        edit() {
-            this.env.openLinkEditor();
-        }
-        unlink() {
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const { col, row } = this.env.model.getters.getPosition();
-            const { col: mainCol, row: mainRow } = this.env.model.getters.getMainCellPosition(sheetId, col, row);
-            const style = this.cell.style;
-            const textColor = (style === null || style === void 0 ? void 0 : style.textColor) === LINK_COLOR ? undefined : style === null || style === void 0 ? void 0 : style.textColor;
-            this.env.model.dispatch("UPDATE_CELL", {
-                col: mainCol,
-                row: mainRow,
-                sheetId,
-                content: this.cell.link.label,
-                style: { ...style, textColor, underline: undefined },
-            });
-        }
-    }
-    LinkDisplay.components = { Menu };
-    LinkDisplay.template = "o-spreadsheet-LinkDisplay";
-
-    const MENU_OFFSET_X = 320;
-    const MENU_OFFSET_Y = 100;
-    const PADDING = 12;
-    css /* scss */ `
-  .o-link-editor {
-    font-size: 13px;
-    background-color: white;
-    box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    padding: ${PADDING}px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 4px;
-    .o-section {
-      .o-section-title {
-        font-weight: bold;
-        color: dimgrey;
-        margin-bottom: 5px;
-      }
-    }
-    .o-buttons {
-      padding-left: 16px;
-      padding-top: 16px;
-      padding-bottom: 16px;
-      text-align: right;
-      .o-button {
-        border: 1px solid lightgrey;
-        padding: 0px 20px 0px 20px;
-        border-radius: 4px;
-        font-weight: 500;
-        font-size: 14px;
-        height: 30px;
-        line-height: 16px;
-        background: white;
-        margin-right: 8px;
-        &:hover:enabled {
-          background-color: rgba(0, 0, 0, 0.08);
-        }
-      }
-      .o-button:enabled {
-        cursor: pointer;
-      }
-      .o-button:last-child {
-        margin-right: 0px;
-      }
-    }
-    input {
-      box-sizing: border-box;
-      width: 100%;
-      border-radius: 4px;
-      padding: 4px 23px 4px 10px;
-      border: none;
-      height: 24px;
-      border: 1px solid lightgrey;
-    }
-    .o-link-url {
-      position: relative;
-      flex-grow: 1;
-      button {
-        position: absolute;
-        right: 0px;
-        top: 0px;
-        border: none;
-        height: 20px;
-        width: 20px;
-        background-color: #fff;
-        margin: 2px 3px 1px 0px;
-        padding: 0px 1px 0px 0px;
-      }
-      button:hover {
-        cursor: pointer;
-      }
-    }
-  }
-`;
-    class LinkEditor extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.menuItems = linkMenuRegistry.getAll();
-            this.state = owl.useState(this.defaultState);
-            this.menu = owl.useState({
-                isOpen: false,
-            });
-            this.linkEditorRef = owl.useRef("linkEditor");
-            this.position = useAbsolutePosition(this.linkEditorRef);
-            this.urlInput = owl.useRef("urlInput");
-        }
-        setup() {
-            owl.onMounted(() => { var _a; return (_a = this.urlInput.el) === null || _a === void 0 ? void 0 : _a.focus(); });
-        }
-        get defaultState() {
-            const { col, row } = this.props.cellPosition;
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const cell = this.env.model.getters.getCell(sheetId, col, row);
-            if (cell === null || cell === void 0 ? void 0 : cell.isLink()) {
-                return {
-                    link: { url: cell.link.url, label: cell.formattedValue },
-                    urlRepresentation: cell.urlRepresentation,
-                    isUrlEditable: cell.isUrlEditable,
-                };
-            }
-            return {
-                link: { url: "", label: (cell === null || cell === void 0 ? void 0 : cell.formattedValue) || "" },
-                isUrlEditable: true,
-                urlRepresentation: "",
-            };
-        }
-        get menuPosition() {
-            return {
-                x: this.position.x + MENU_OFFSET_X - PADDING - 2,
-                y: this.position.y + MENU_OFFSET_Y,
-            };
-        }
-        onSpecialLink(ev) {
-            const { detail } = ev;
-            this.state.link.url = detail.link.url;
-            this.state.link.label = detail.link.label;
-            this.state.isUrlEditable = detail.isUrlEditable;
-            this.state.urlRepresentation = detail.urlRepresentation;
-        }
-        openMenu() {
-            this.menu.isOpen = true;
-        }
-        removeLink() {
-            this.state.link.url = "";
-            this.state.urlRepresentation = "";
-            this.state.isUrlEditable = true;
-        }
-        save() {
-            const { col, row } = this.props.cellPosition;
-            const label = this.state.link.label || this.state.link.url;
-            this.env.model.dispatch("UPDATE_CELL", {
-                col: col,
-                row: row,
-                sheetId: this.env.model.getters.getActiveSheetId(),
-                content: markdownLink(label, this.state.link.url),
-            });
-            this.props.onLinkEditorClosed();
-        }
-        cancel() {
-            this.props.onLinkEditorClosed();
-        }
-        onKeyDown(ev) {
-            switch (ev.key) {
-                case "Enter":
-                    if (this.state.link.url) {
-                        this.save();
-                    }
-                    break;
-                case "Escape":
-                    this.cancel();
-                    break;
-            }
-        }
-    }
-    LinkEditor.template = "o-spreadsheet-LinkEditor";
-    LinkEditor.components = { Menu };
-
-    class ScrollBar {
-        constructor(el, direction) {
-            this.el = el;
-            this.direction = direction;
-        }
-        get scroll() {
-            return this.direction === "horizontal" ? this.el.scrollLeft : this.el.scrollTop;
-        }
-        set scroll(value) {
-            if (this.direction === "horizontal") {
-                this.el.scrollLeft = value;
-            }
-            else {
-                this.el.scrollTop = value;
-            }
-        }
-    }
-
-    const registries$1 = {
-        ROW: rowMenuRegistry,
-        COL: colMenuRegistry,
-        CELL: cellMenuRegistry,
-        DASHBOARD: dashboardMenuRegistry,
-    };
-    // copy and paste are specific events that should not be managed by the keydown event,
-    // but they shouldn't be preventDefault and stopped (else copy and paste events will not trigger)
-    // and also should not result in typing the character C or V in the composer
-    const keyDownMappingIgnore = ["CTRL+C", "CTRL+V"];
-    function useCellHovered(env) {
-        const hoveredPosition = owl.useState({});
-        const { Date, setInterval, clearInterval } = window;
-        const gridRef = owl.useRef("gridOverlay");
-        let x = 0;
-        let y = 0;
-        let lastMoved = 0;
-        let interval;
-        function getPosition() {
-            const col = env.model.getters.getColIndex(x);
-            const row = env.model.getters.getRowIndex(y);
-            return { col, row };
-        }
-        function checkTiming() {
-            const { col, row } = getPosition();
-            const delta = Date.now() - lastMoved;
-            if (col !== hoveredPosition.col || row !== hoveredPosition.row) {
-                hoveredPosition.col = undefined;
-                hoveredPosition.row = undefined;
-            }
-            if (400 < delta && delta < 600) {
-                if (col < 0 || row < 0) {
-                    return;
-                }
-                hoveredPosition.col = col;
-                hoveredPosition.row = row;
-            }
-        }
-        function updateMousePosition(e) {
-            x = e.offsetX;
-            y = e.offsetY;
-            lastMoved = Date.now();
-        }
-        owl.onMounted(() => {
-            gridRef.el.addEventListener("mousemove", updateMousePosition);
-            interval = setInterval(checkTiming, 200);
-        });
-        owl.onWillUnmount(() => {
-            gridRef.el.removeEventListener("mousemove", updateMousePosition);
-            clearInterval(interval);
-        });
-        return hoveredPosition;
-    }
-    function useTouchMove(handler, canMoveUp) {
-        const canvasRef = owl.useRef("canvas");
-        let x = null;
-        let y = null;
-        function onTouchStart(ev) {
-            if (ev.touches.length !== 1)
-                return;
-            x = ev.touches[0].clientX;
-            y = ev.touches[0].clientY;
-        }
-        function onTouchEnd() {
-            x = null;
-            y = null;
-        }
-        function onTouchMove(ev) {
-            if (ev.touches.length !== 1)
-                return;
-            // On mobile browsers, swiping down is often associated with "pull to refresh".
-            // We only want this behavior if the grid is already at the top.
-            // Otherwise we only want to move the canvas up, without triggering any refresh.
-            if (canMoveUp()) {
-                ev.preventDefault();
-                ev.stopPropagation();
-            }
-            const currentX = ev.touches[0].clientX;
-            const currentY = ev.touches[0].clientY;
-            handler(x - currentX, y - currentY);
-            x = currentX;
-            y = currentY;
-        }
-        owl.onMounted(() => {
-            canvasRef.el.addEventListener("touchstart", onTouchStart);
-            canvasRef.el.addEventListener("touchend", onTouchEnd);
-            canvasRef.el.addEventListener("touchmove", onTouchMove);
-        });
-        owl.onWillUnmount(() => {
-            canvasRef.el.removeEventListener("touchstart", onTouchStart);
-            canvasRef.el.removeEventListener("touchend", onTouchEnd);
-            canvasRef.el.removeEventListener("touchmove", onTouchMove);
-        });
-    }
-    // -----------------------------------------------------------------------------
-    // TEMPLATE
-    // -----------------------------------------------------------------------------
-    // -----------------------------------------------------------------------------
-    // STYLE
-    // -----------------------------------------------------------------------------
-    css /* scss */ `
-  .o-grid {
-    position: relative;
-    overflow: hidden;
-    background-color: ${BACKGROUND_GRAY_COLOR};
-
-    > canvas {
-      border-top: 1px solid #e2e3e3;
-      border-bottom: 1px solid #e2e3e3;
-
-      &:focus {
-        outline: none;
-      }
-    }
-    .o-scrollbar {
-      position: absolute;
-      overflow: auto;
-      z-index: ${ComponentsImportance.ScrollBar};
-      &.vertical {
-        right: 0;
-        bottom: ${SCROLLBAR_WIDTH$1}px;
-        width: ${SCROLLBAR_WIDTH$1}px;
-        overflow-x: hidden;
-      }
-      &.horizontal {
-        bottom: 0;
-        height: ${SCROLLBAR_WIDTH$1}px;
-        right: ${SCROLLBAR_WIDTH$1}px;
-        overflow-y: hidden;
-      }
-    }
-
-    .o-grid-overlay {
-      position: absolute;
-      outline: none;
-    }
-  }
-`;
-    // -----------------------------------------------------------------------------
-    // JS
-    // -----------------------------------------------------------------------------
-    class Grid extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.LINK_EDITOR_WIDTH = 340;
-            this.LINK_EDITOR_HEIGHT = 180;
-            this.ERROR_TOOLTIP_HEIGHT = 40;
-            this.ERROR_TOOLTIP_WIDTH = 180;
-            this.LINK_TOOLTIP_HEIGHT = 43;
-            this.LINK_TOOLTIP_WIDTH = 220;
-            // this map will handle most of the actions that should happen on key down. The arrow keys are managed in the key
-            // down itself
-            this.keyDownMapping = {
-                ENTER: () => {
-                    const cell = this.env.model.getters.getActiveCell();
-                    !cell || cell.isEmpty()
-                        ? this.props.onGridComposerCellFocused()
-                        : this.props.onComposerContentFocused();
-                },
-                TAB: () => this.env.model.selection.moveAnchorCell("right", "one"),
-                "SHIFT+TAB": () => this.env.model.selection.moveAnchorCell("left", "one"),
-                F2: () => {
-                    const cell = this.env.model.getters.getActiveCell();
-                    !cell || cell.isEmpty()
-                        ? this.props.onGridComposerCellFocused()
-                        : this.props.onComposerContentFocused();
-                },
-                DELETE: () => {
-                    this.env.model.dispatch("DELETE_CONTENT", {
-                        sheetId: this.env.model.getters.getActiveSheetId(),
-                        target: this.env.model.getters.getSelectedZones(),
-                    });
-                },
-                "CTRL+A": () => this.env.model.selection.selectAll(),
-                "CTRL+S": () => {
-                    var _a, _b;
-                    (_b = (_a = this.props).onSaveRequested) === null || _b === void 0 ? void 0 : _b.call(_a);
-                },
-                "CTRL+Z": () => this.env.model.dispatch("REQUEST_UNDO"),
-                "CTRL+Y": () => this.env.model.dispatch("REQUEST_REDO"),
-                "CTRL+B": () => this.env.model.dispatch("SET_FORMATTING", {
-                    sheetId: this.env.model.getters.getActiveSheetId(),
-                    target: this.env.model.getters.getSelectedZones(),
-                    style: { bold: !this.env.model.getters.getCurrentStyle().bold },
-                }),
-                "CTRL+I": () => this.env.model.dispatch("SET_FORMATTING", {
-                    sheetId: this.env.model.getters.getActiveSheetId(),
-                    target: this.env.model.getters.getSelectedZones(),
-                    style: { italic: !this.env.model.getters.getCurrentStyle().italic },
-                }),
-                "CTRL+U": () => this.env.model.dispatch("SET_FORMATTING", {
-                    sheetId: this.env.model.getters.getActiveSheetId(),
-                    target: this.env.model.getters.getSelectedZones(),
-                    style: { underline: !this.env.model.getters.getCurrentStyle().underline },
-                }),
-                "ALT+=": () => {
-                    var _a;
-                    const sheetId = this.env.model.getters.getActiveSheetId();
-                    const mainSelectedZone = this.env.model.getters.getSelectedZone();
-                    const { anchor } = this.env.model.getters.getSelection();
-                    const sums = this.env.model.getters.getAutomaticSums(sheetId, mainSelectedZone, anchor.cell);
-                    if (this.env.model.getters.isSingleCellOrMerge(sheetId, mainSelectedZone) ||
-                        (this.env.model.getters.isEmpty(sheetId, mainSelectedZone) && sums.length <= 1)) {
-                        const zone = (_a = sums[0]) === null || _a === void 0 ? void 0 : _a.zone;
-                        const zoneXc = zone ? this.env.model.getters.zoneToXC(sheetId, sums[0].zone) : "";
-                        const formula = `=SUM(${zoneXc})`;
-                        this.props.onGridComposerCellFocused(formula, { start: 5, end: 5 + zoneXc.length });
-                    }
-                    else {
-                        this.env.model.dispatch("SUM_SELECTION");
-                    }
-                },
-                "CTRL+HOME": () => {
-                    const sheetId = this.env.model.getters.getActiveSheetId();
-                    const { col, row } = this.env.model.getters.getNextVisibleCellPosition(sheetId, 0, 0);
-                    this.env.model.selection.selectCell(col, row);
-                },
-                "CTRL+END": () => {
-                    const sheetId = this.env.model.getters.getActiveSheetId();
-                    const col = this.env.model.getters.findVisibleHeader(sheetId, "COL", range(0, this.env.model.getters.getNumberCols(sheetId)).reverse());
-                    const row = this.env.model.getters.findVisibleHeader(sheetId, "ROW", range(0, this.env.model.getters.getNumberRows(sheetId)).reverse());
-                    this.env.model.selection.selectCell(col, row);
-                },
-                "SHIFT+ ": () => {
-                    const sheetId = this.env.model.getters.getActiveSheetId();
-                    const newZone = {
-                        ...this.env.model.getters.getSelectedZone(),
-                        left: 0,
-                        right: this.env.model.getters.getNumberCols(sheetId) - 1,
-                    };
-                    const position = this.env.model.getters.getPosition();
-                    this.env.model.selection.selectZone({ cell: position, zone: newZone });
-                },
-                "CTRL+ ": () => {
-                    const sheetId = this.env.model.getters.getActiveSheetId();
-                    const newZone = {
-                        ...this.env.model.getters.getSelectedZone(),
-                        top: 0,
-                        bottom: this.env.model.getters.getNumberRows(sheetId) - 1,
-                    };
-                    const position = this.env.model.getters.getPosition();
-                    this.env.model.selection.selectZone({ cell: position, zone: newZone });
-                },
-                "CTRL+SHIFT+ ": () => {
-                    this.env.model.selection.selectAll();
-                },
-                "SHIFT+PAGEDOWN": () => {
-                    this.env.model.dispatch("ACTIVATE_NEXT_SHEET");
-                },
-                "SHIFT+PAGEUP": () => {
-                    this.env.model.dispatch("ACTIVATE_PREVIOUS_SHEET");
-                },
-                PAGEDOWN: () => this.env.model.dispatch("SHIFT_VIEWPORT_DOWN"),
-                PAGEUP: () => this.env.model.dispatch("SHIFT_VIEWPORT_UP"),
-            };
-        }
-        setup() {
-            this.menuState = owl.useState({
-                isOpen: false,
-                position: null,
-                menuItems: [],
-            });
-            this.vScrollbarRef = owl.useRef("vscrollbar");
-            this.hScrollbarRef = owl.useRef("hscrollbar");
-            this.gridRef = owl.useRef("grid");
-            this.gridOverlay = owl.useRef("gridOverlay");
-            this.canvas = owl.useRef("canvas");
-            this.canvasPosition = useAbsolutePosition(this.canvas);
-            this.vScrollbar = new ScrollBar(this.vScrollbarRef.el, "vertical");
-            this.hScrollbar = new ScrollBar(this.hScrollbarRef.el, "horizontal");
-            this.currentSheet = this.env.model.getters.getActiveSheetId();
-            this.clickedCol = 0;
-            this.clickedRow = 0;
-            this.clipBoardString = "";
-            this.hoveredCell = useCellHovered(this.env);
-            owl.useExternalListener(document.body, "cut", this.copy.bind(this, true));
-            owl.useExternalListener(document.body, "copy", this.copy.bind(this, false));
-            owl.useExternalListener(document.body, "paste", this.paste);
-            useTouchMove(this.moveCanvas.bind(this), () => this.vScrollbar.scroll > 0);
-            owl.onMounted(() => this.initGrid());
-            owl.onPatched(() => {
-                this.drawGrid();
-                this.resizeGrid();
-            });
-            this.props.exposeFocus(() => this.focus());
-        }
-        initGrid() {
-            this.vScrollbar.el = this.vScrollbarRef.el;
-            this.hScrollbar.el = this.hScrollbarRef.el;
-            this.focus();
-            this.resizeGrid();
-            this.drawGrid();
-        }
-        get gridOverlayStyle() {
-            return `
-      top: ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px;
-      left: ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px;
-      height: calc(100% - ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px);
-      width: calc(100% - ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px);
-    `;
-        }
-        get vScrollbarStyle() {
-            return `
-      top: ${this.env.isDashboard() ? 0 : HEADER_HEIGHT}px;`;
-        }
-        get hScrollbarStyle() {
-            return `
-      left: ${this.env.isDashboard() ? 0 : HEADER_WIDTH}px;`;
-        }
-        get errorTooltip() {
-            const { col, row } = this.hoveredCell;
-            if (col === undefined || row === undefined) {
-                return { isOpen: false };
-            }
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const { col: mainCol, row: mainRow } = this.env.model.getters.getMainCellPosition(sheetId, col, row);
-            const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
-            if (cell &&
-                cell.evaluated.type === CellValueType.error &&
-                cell.evaluated.error.logLevel > CellErrorLevel.silent) {
-                const viewport = this.env.model.getters.getActiveViewport();
-                const [x, y, width] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
-                return {
-                    isOpen: true,
-                    position: {
-                        x: x + width + this.canvasPosition.x,
-                        y: y + this.canvasPosition.y,
-                    },
-                    text: cell.evaluated.error.message,
-                    cellWidth: width,
-                };
-            }
-            return { isOpen: false };
-        }
-        get activeCellPosition() {
-            const { col, row } = this.env.model.getters.getPosition();
-            return this.env.model.getters.getMainCellPosition(this.env.model.getters.getActiveSheetId(), col, row);
-        }
-        get shouldDisplayLink() {
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const { col, row } = this.activeCellPosition;
-            const viewport = this.env.model.getters.getActiveViewport();
-            const cell = this.env.model.getters.getCell(sheetId, col, row);
-            return (this.env.model.getters.isVisibleInViewport(col, row, viewport) &&
-                !!cell &&
-                cell.isLink() &&
-                !this.menuState.isOpen &&
-                !this.props.linkEditorIsOpen &&
-                !this.props.sidePanelIsOpen);
-        }
-        /**
-         * Get a reasonable position to display the popover, under the active cell.
-         * Used by link popover components.
-         */
-        get popoverPosition() {
-            const position = this.env.model.getters.getPosition();
-            const { col, row } = this.env.model.getters.getBottomLeftCell(this.env.model.getters.getActiveSheetId(), position.col, position.row);
-            const viewport = this.env.model.getters.getActiveViewport();
-            const [x, y, width, height] = this.env.model.getters.getRect({ left: col, top: row, right: col, bottom: row }, viewport);
-            return {
-                position: {
-                    x: x + this.canvasPosition.x,
-                    y: y + height + this.canvasPosition.y,
-                },
-                cellWidth: width,
-                cellHeight: height,
-            };
-        }
-        focus() {
-            if (!this.env.model.getters.getSelectedFigureId()) {
-                this.gridOverlay.el.focus();
-            }
-        }
-        get gridEl() {
-            if (!this.gridRef.el) {
-                throw new Error("Grid el is not defined.");
-            }
-            return this.gridRef.el;
-        }
-        getGridBoundingClientRect() {
-            return this.gridEl.getBoundingClientRect();
-        }
-        resizeGrid() {
-            const currentHeight = this.gridEl.clientHeight - SCROLLBAR_WIDTH$1;
-            const currentWidth = this.gridEl.clientWidth - SCROLLBAR_WIDTH$1;
-            const { height: viewportHeight, width: viewportWidth } = this.env.model.getters.getViewportDimensionWithHeaders();
-            if (currentHeight != viewportHeight || currentWidth !== viewportWidth) {
-                this.env.model.dispatch("RESIZE_VIEWPORT", {
-                    height: currentHeight - (this.env.isDashboard() ? 0 : HEADER_HEIGHT),
-                    width: currentWidth - (this.env.isDashboard() ? 0 : HEADER_WIDTH),
-                });
-            }
-        }
-        onScroll() {
-            const { offsetScrollbarX, offsetScrollbarY } = this.env.model.getters.getActiveViewport();
-            if (offsetScrollbarX !== this.hScrollbar.scroll ||
-                offsetScrollbarY !== this.vScrollbar.scroll) {
-                const { maxOffsetX, maxOffsetY } = this.env.model.getters.getMaximumViewportOffset(this.env.model.getters.getActiveSheet());
-                this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
-                    offsetX: Math.min(this.hScrollbar.scroll, maxOffsetX),
-                    offsetY: Math.min(this.vScrollbar.scroll, maxOffsetY),
-                });
-            }
-        }
-        checkSheetChanges() {
-            const currentSheet = this.env.model.getters.getActiveSheetId();
-            if (currentSheet !== this.currentSheet) {
-                this.focus();
-                this.currentSheet = currentSheet;
-            }
-        }
-        getAutofillPosition() {
-            const zone = this.env.model.getters.getSelectedZone();
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            const col = this.env.model.getters.getColDimensions(sheetId, zone.right);
-            const row = this.env.model.getters.getRowDimensions(sheetId, zone.bottom);
-            return {
-                left: col.end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_WIDTH - offsetX,
-                top: row.end - AUTOFILL_EDGE_LENGTH / 2 + HEADER_HEIGHT - offsetY,
-            };
-        }
-        isAutoFillActive() {
-            const zone = this.env.model.getters.getSelectedZone();
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const { width, height } = this.env.model.getters.getViewportDimension();
-            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
-            const rightCol = this.env.model.getters.getColDimensions(sheetId, zone.right);
-            const bottomRow = this.env.model.getters.getRowDimensions(sheetId, zone.bottom);
-            return (rightCol.end <= offsetX + width &&
-                rightCol.end > offsetX &&
-                bottomRow.end <= offsetY + height &&
-                bottomRow.end > offsetY);
-        }
-        drawGrid() {
-            //reposition scrollbar
-            const { offsetScrollbarX, offsetScrollbarY } = this.env.model.getters.getActiveViewport();
-            this.hScrollbar.scroll = offsetScrollbarX;
-            this.vScrollbar.scroll = offsetScrollbarY;
-            // check for position changes
-            this.checkSheetChanges();
-            // drawing grid on canvas
-            const canvas = this.canvas.el;
-            const dpr = window.devicePixelRatio || 1;
-            const ctx = canvas.getContext("2d", { alpha: false });
-            const thinLineWidth = 0.4 * dpr;
-            const renderingContext = {
-                ctx,
-                viewport: this.env.model.getters.getActiveViewport(),
-                dpr,
-                thinLineWidth,
-            };
-            const { width, height } = this.env.model.getters.getViewportDimensionWithHeaders();
-            canvas.style.width = `${width}px`;
-            canvas.style.height = `${height}px`;
-            canvas.width = width * dpr;
-            canvas.height = height * dpr;
-            canvas.setAttribute("style", `width:${width}px;height:${height}px;`);
-            ctx.translate(-0.5, -0.5);
-            ctx.scale(dpr, dpr);
-            this.env.model.drawGrid(renderingContext);
-        }
-        moveCanvas(deltaX, deltaY) {
-            this.vScrollbar.scroll = this.vScrollbar.scroll + deltaY;
-            this.hScrollbar.scroll = this.hScrollbar.scroll + deltaX;
-            this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
-                offsetX: this.hScrollbar.scroll,
-                offsetY: this.vScrollbar.scroll,
-            });
-        }
-        getClientPositionKey(client) {
-            var _a, _b, _c;
-            return `${client.id}-${(_a = client.position) === null || _a === void 0 ? void 0 : _a.sheetId}-${(_b = client.position) === null || _b === void 0 ? void 0 : _b.col}-${(_c = client.position) === null || _c === void 0 ? void 0 : _c.row}`;
-        }
-        onMouseWheel(ev) {
-            if (ev.ctrlKey) {
-                return;
-            }
-            function normalize(val) {
-                return val * (ev.deltaMode === 0 ? 1 : DEFAULT_CELL_HEIGHT);
-            }
-            const deltaX = ev.shiftKey ? ev.deltaY : ev.deltaX;
-            const deltaY = ev.shiftKey ? ev.deltaX : ev.deltaY;
-            this.moveCanvas(normalize(deltaX), normalize(deltaY));
-        }
-        isCellHovered(col, row) {
-            return this.hoveredCell.col === col && this.hoveredCell.row === row;
-        }
-        // ---------------------------------------------------------------------------
-        // Zone selection with mouse
-        // ---------------------------------------------------------------------------
-        /**
-         * Get the coordinates in pixels, with 0,0 being the top left of the grid itself
-         */
-        getCoordinates(ev) {
-            const rect = this.gridOverlay.el.getBoundingClientRect();
-            const x = ev.pageX - rect.left;
-            const y = ev.pageY - rect.top;
-            return [x, y];
-        }
-        getCartesianCoordinates(ev) {
-            const [x, y] = this.getCoordinates(ev);
-            const colIndex = this.env.model.getters.getColIndex(x);
-            const rowIndex = this.env.model.getters.getRowIndex(y);
-            return [colIndex, rowIndex];
-        }
-        onMouseDown(ev) {
-            if (ev.button > 0 || this.env.isDashboard()) {
-                // not main button, probably a context menu
-                return;
-            }
-            const [col, row] = this.getCartesianCoordinates(ev);
-            if (col < 0 || row < 0) {
-                return;
-            }
-            this.clickedCol = col;
-            this.clickedRow = row;
-            const sheetId = this.env.model.getters.getActiveSheetId();
-            const { col: mainCol, row: mainRow } = this.env.model.getters.getMainCellPosition(sheetId, col, row);
-            const cell = this.env.model.getters.getCell(sheetId, mainCol, mainRow);
-            if (!(cell === null || cell === void 0 ? void 0 : cell.isLink())) {
-                this.closeLinkEditor();
-            }
-            if (this.env.model.getters.getEditionMode() === "editing") {
-                this.env.model.dispatch("STOP_EDITION");
-            }
-            if (ev.shiftKey) {
-                this.env.model.selection.setAnchorCorner(col, row);
-            }
-            else if (ev.ctrlKey) {
-                this.env.model.selection.addCellToSelection(col, row);
-            }
-            else {
-                this.env.model.selection.selectCell(col, row);
-            }
-            this.checkSheetChanges();
-            let prevCol = col;
-            let prevRow = row;
-            let isEdgeScrolling = false;
-            let timeOutId = null;
-            let timeoutDelay = 0;
-            let currentEv;
-            const onMouseMove = (ev) => {
-                currentEv = ev;
-                if (timeOutId) {
-                    return;
-                }
-                const [x, y] = this.getCoordinates(currentEv);
-                isEdgeScrolling = false;
-                timeoutDelay = 0;
-                const colEdgeScroll = this.env.model.getters.getEdgeScrollCol(x);
-                const rowEdgeScroll = this.env.model.getters.getEdgeScrollRow(y);
-                const { left, right, top, bottom } = this.env.model.getters.getActiveViewport();
-                let col, row;
-                if (colEdgeScroll.canEdgeScroll) {
-                    col = colEdgeScroll.direction > 0 ? right : left - 1;
-                }
-                else {
-                    col = this.env.model.getters.getColIndex(x);
-                    col = col === -1 ? prevCol : col;
-                }
-                if (rowEdgeScroll.canEdgeScroll) {
-                    row = rowEdgeScroll.direction > 0 ? bottom : top - 1;
-                }
-                else {
-                    row = this.env.model.getters.getRowIndex(y);
-                    row = row === -1 ? prevRow : row;
-                }
-                isEdgeScrolling = colEdgeScroll.canEdgeScroll || rowEdgeScroll.canEdgeScroll;
-                timeoutDelay = Math.min(colEdgeScroll.canEdgeScroll ? colEdgeScroll.delay : MAX_DELAY, rowEdgeScroll.canEdgeScroll ? rowEdgeScroll.delay : MAX_DELAY);
-                if (col !== prevCol || row !== prevRow) {
-                    prevCol = col;
-                    prevRow = row;
-                    this.env.model.selection.setAnchorCorner(col, row);
-                }
-                if (isEdgeScrolling) {
-                    const offsetX = this.env.model.getters.getColDimensions(sheetId, left + colEdgeScroll.direction).start;
-                    const offsetY = this.env.model.getters.getRowDimensions(sheetId, top + rowEdgeScroll.direction).start;
-                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", { offsetX, offsetY });
-                    timeOutId = setTimeout(() => {
-                        timeOutId = null;
-                        onMouseMove(currentEv);
-                    }, Math.round(timeoutDelay));
-                }
-            };
-            const onMouseUp = (ev) => {
-                clearTimeout(timeOutId);
-                this.env.model.dispatch(ev.ctrlKey ? "PREPARE_SELECTION_INPUT_EXPANSION" : "STOP_SELECTION_INPUT");
-                this.gridOverlay.el.removeEventListener("mousemove", onMouseMove);
-                if (this.env.model.getters.isPaintingFormat()) {
-                    this.env.model.dispatch("PASTE", {
-                        target: this.env.model.getters.getSelectedZones(),
-                    });
-                }
-            };
-            startDnd(onMouseMove, onMouseUp);
-        }
-        onDoubleClick(ev) {
-            const [col, row] = this.getCartesianCoordinates(ev);
-            if (this.clickedCol === col && this.clickedRow === row) {
-                const cell = this.env.model.getters.getActiveCell();
-                !cell || cell.isEmpty()
-                    ? this.props.onGridComposerCellFocused()
-                    : this.props.onComposerContentFocused();
-            }
-        }
-        closeLinkEditor() {
-            this.props.onLinkEditorClosed();
-        }
-        // ---------------------------------------------------------------------------
-        // Keyboard interactions
-        // ---------------------------------------------------------------------------
-        processArrows(ev) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            this.closeLinkEditor();
-            const arrowMap = {
-                ArrowDown: { direction: "down", delta: [0, 1] },
-                ArrowLeft: { direction: "left", delta: [-1, 0] },
-                ArrowRight: { direction: "right", delta: [1, 0] },
-                ArrowUp: { direction: "up", delta: [0, -1] },
-            };
-            const { direction, delta } = arrowMap[ev.key];
-            if (ev.shiftKey) {
-                const oldZone = this.env.model.getters.getSelectedZone();
-                this.env.model.selection.resizeAnchorZone(direction, ev.ctrlKey ? "end" : "one");
-                const newZone = this.env.model.getters.getSelectedZone();
-                const viewport = this.env.model.getters.getActiveViewport();
-                const sheetId = this.env.model.getters.getActiveSheetId();
-                let { col, row } = findCellInNewZone(oldZone, newZone);
-                col = Math.min(col, this.env.model.getters.getNumberCols(sheetId) - 1);
-                row = Math.min(row, this.env.model.getters.getNumberRows(sheetId) - 1);
-                const { left, right, top, bottom, offsetX, offsetY } = viewport;
-                const newOffsetX = col < left || col > right - 1
-                    ? this.env.model.getters.getColDimensions(sheetId, left + delta[0]).start
-                    : offsetX;
-                const newOffsetY = row < top || row > bottom - 1
-                    ? this.env.model.getters.getRowDimensions(sheetId, top + delta[1]).start
-                    : offsetY;
-                if (newOffsetX !== offsetX || newOffsetY !== offsetY) {
-                    this.env.model.dispatch("SET_VIEWPORT_OFFSET", {
-                        offsetX: newOffsetX,
-                        offsetY: newOffsetY,
-                    });
-                }
-            }
-            else {
-                this.env.model.selection.moveAnchorCell(direction, ev.ctrlKey ? "end" : "one");
-            }
-            if (this.env.model.getters.isPaintingFormat()) {
-                this.env.model.dispatch("PASTE", {
-                    target: this.env.model.getters.getSelectedZones(),
-                });
-            }
-        }
-        onKeydown(ev) {
-            if (this.env.isDashboard()) {
-                return;
-            }
-            if (ev.key.startsWith("Arrow")) {
-                this.processArrows(ev);
-                return;
-            }
-            let keyDownString = "";
-            if (ev.ctrlKey)
-                keyDownString += "CTRL+";
-            if (ev.metaKey)
-                keyDownString += "CTRL+";
-            if (ev.altKey)
-                keyDownString += "ALT+";
-            if (ev.shiftKey)
-                keyDownString += "SHIFT+";
-            keyDownString += ev.key.toUpperCase();
-            let handler = this.keyDownMapping[keyDownString];
-            if (handler) {
-                ev.preventDefault();
-                ev.stopPropagation();
-                handler();
-                return;
-            }
-            if (!keyDownMappingIgnore.includes(keyDownString)) {
-                if (ev.key.length === 1 && !ev.ctrlKey && !ev.metaKey && !ev.altKey) {
-                    // if the user types a character on the grid, it means he wants to start composing the selected cell with that
-                    // character
-                    ev.preventDefault();
-                    ev.stopPropagation();
-                    this.props.onGridComposerCellFocused(ev.key);
-                }
-            }
-        }
-        // ---------------------------------------------------------------------------
-        // Context Menu
-        // ---------------------------------------------------------------------------
-        onCanvasContextMenu(ev) {
-            ev.preventDefault();
-            const [col, row] = this.getCartesianCoordinates(ev);
-            if (col < 0 || row < 0) {
-                return;
-            }
-            const zones = this.env.model.getters.getSelectedZones();
-            const lastZone = zones[zones.length - 1];
-            let type = "CELL";
-            if (!isInside(col, row, lastZone)) {
-                this.env.model.dispatch("UNFOCUS_SELECTION_INPUT");
-                this.env.model.dispatch("STOP_EDITION");
-                this.env.model.selection.selectCell(col, row);
-            }
-            else {
-                if (this.env.model.getters.getActiveCols().has(col)) {
-                    type = "COL";
-                }
-                else if (this.env.model.getters.getActiveRows().has(row)) {
-                    type = "ROW";
-                }
-            }
-            this.toggleContextMenu(type, ev.clientX, ev.clientY);
-        }
-        toggleContextMenu(type, x, y) {
-            this.closeLinkEditor();
-            if (this.env.model.getters.isDashboard()) {
-                type = "DASHBOARD";
-            }
-            this.menuState.isOpen = true;
-            this.menuState.position = { x, y };
-            this.menuState.menuItems = registries$1[type]
-                .getAll()
-                .filter((item) => !item.isVisible || item.isVisible(this.env));
-        }
-        copy(cut, ev) {
-            if (!this.gridEl.contains(document.activeElement)) {
-                return;
-            }
-            /* If we are currently editing a cell, let the default behavior */
-            if (this.env.model.getters.getEditionMode() !== "inactive") {
-                return;
-            }
-            const target = this.env.model.getters.getSelectedZones();
-            if (cut) {
-                interactiveCut(this.env, target);
-            }
-            else {
-                this.env.model.dispatch("COPY", { target });
-            }
-            const content = this.env.model.getters.getClipboardContent();
-            this.clipBoardString = content;
-            ev.clipboardData.setData("text/plain", content);
-            ev.preventDefault();
-        }
-        paste(ev) {
-            if (!this.gridEl.contains(document.activeElement)) {
-                return;
-            }
-            const clipboardData = ev.clipboardData;
-            if (clipboardData.types.indexOf("text/plain") > -1) {
-                const content = clipboardData.getData("text/plain");
-                const target = this.env.model.getters.getSelectedZones();
-                if (this.clipBoardString === content) {
-                    // the paste actually comes from o-spreadsheet itself
-                    interactivePaste(this.env, target);
-                }
-                else {
-                    this.env.model.dispatch("PASTE_FROM_OS_CLIPBOARD", {
-                        target,
-                        text: content,
-                    });
-                }
-            }
-        }
-        closeMenu() {
-            this.menuState.isOpen = false;
-            this.focus();
-        }
-    }
-    Grid.template = "o-spreadsheet-Grid";
-    Grid.components = {
-        GridComposer,
-        HeadersOverlay,
-        Menu,
-        Autofill,
-        FiguresContainer,
-        ClientTag,
-        Highlight,
-        ErrorToolTip,
-        LinkDisplay,
-        LinkEditor,
-        Popover,
-    };
 
     css /* scss */ `
   .o-sidePanel {
@@ -28685,33 +29027,33 @@
     SidePanel.template = "o-spreadsheet-SidePanel";
 
     const FORMATS = [
-        { name: "general", text: NumberFormatTerms.General },
-        { name: "number", text: NumberFormatTerms.Number, description: "(1,000.12)", value: "#,##0.00" },
-        { name: "percent", text: NumberFormatTerms.Percent, description: "(10.12%)", value: "0.00%" },
+        { name: "automatic", text: NumberFormatTerms.Automatic },
+        { name: "number", text: NumberFormatTerms.Number, description: "1,000.12", value: "#,##0.00" },
+        { name: "percent", text: NumberFormatTerms.Percent, description: "10.12%", value: "0.00%" },
         {
             name: "currency",
             text: NumberFormatTerms.Currency,
-            description: "($1,000.12)",
+            description: "$1,000.12",
             value: "[$$]#,##0.00",
         },
         {
             name: "currency_rounded",
             text: NumberFormatTerms.CurrencyRounded,
-            description: "($1,000)",
+            description: "$1,000",
             value: "[$$]#,##0",
         },
-        { name: "date", text: NumberFormatTerms.Date, description: "(9/26/2008)", value: "m/d/yyyy" },
-        { name: "time", text: NumberFormatTerms.Time, description: "(10:43:00 PM)", value: "hh:mm:ss a" },
+        { name: "date", text: NumberFormatTerms.Date, description: "9/26/2008", value: "m/d/yyyy" },
+        { name: "time", text: NumberFormatTerms.Time, description: "10:43:00 PM", value: "hh:mm:ss a" },
         {
             name: "datetime",
             text: NumberFormatTerms.DateTime,
-            description: "(9/26/2008 22:43:00)",
+            description: "9/26/2008 22:43:00",
             value: "m/d/yyyy hh:mm:ss",
         },
         {
             name: "duration",
             text: NumberFormatTerms.Duration,
-            description: "(27:51:38)",
+            description: "27:51:38",
             value: "hhhh:mm:ss",
         },
     ];
@@ -28913,9 +29255,9 @@
         constructor() {
             super(...arguments);
             this.DEFAULT_FONT_SIZE = DEFAULT_FONT_SIZE;
-            this.formats = FORMATS;
+            this.commonFormats = FORMATS;
             this.customFormats = CUSTOM_FORMATS;
-            this.currentFormat = "general";
+            this.currentFormatName = "automatic";
             this.fontSizes = fontSizes;
             this.style = {};
             this.state = owl.useState({
@@ -28982,9 +29324,7 @@
             const { left, top, height } = ev.target.getBoundingClientRect();
             this.state.menuState.isOpen = true;
             this.state.menuState.position = { x: left, y: top + height };
-            this.state.menuState.menuItems = topbarMenuRegistry
-                .getChildren(menu, this.env)
-                .filter((item) => !item.isVisible || item.isVisible(this.env));
+            this.state.menuState.menuItems = getMenuChildren(menu, this.env).filter((item) => !item.isVisible || item.isVisible(this.env));
             this.isSelectingMenu = true;
             this.openedEl = ev.target;
         }
@@ -29014,11 +29354,11 @@
             this.paintFormatTool = this.env.model.getters.isPaintingFormat();
             const cell = this.env.model.getters.getActiveCell();
             if (cell && cell.format) {
-                const format = this.formats.find((f) => f.value === cell.format);
-                this.currentFormat = format ? format.name : "";
+                const currentFormat = this.commonFormats.find((f) => f.value === cell.format);
+                this.currentFormatName = currentFormat ? currentFormat.name : "";
             }
             else {
-                this.currentFormat = "general";
+                this.currentFormatName = "automatic";
             }
             this.style = { ...this.env.model.getters.getCurrentStyle() };
             this.style.align = this.style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign);
@@ -29029,7 +29369,7 @@
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
         }
         getMenuName(menu) {
-            return topbarMenuRegistry.getName(menu, this.env);
+            return getMenuName(menu, this.env);
         }
         toggleMerge() {
             const zones = this.env.model.getters.getSelectedZones();
@@ -29157,7 +29497,6 @@
             (_b = (_a = this.props).exposeSpreadsheet) === null || _b === void 0 ? void 0 : _b.call(_a, this);
             this.model = this.props.model;
             this.sidePanel = owl.useState({ isOpen: false, panelProps: {} });
-            this.linkEditor = owl.useState({ isOpen: false });
             this.composer = owl.useState({
                 topBarFocus: "inactive",
                 gridFocusMode: "inactive",
@@ -29171,7 +29510,6 @@
                 isDashboard: () => this.model.getters.isDashboard(),
                 openSidePanel: this.openSidePanel.bind(this),
                 toggleSidePanel: this.toggleSidePanel.bind(this),
-                openLinkEditor: this.openLinkEditor.bind(this),
                 _t: Spreadsheet._t,
                 clipboard: navigator.clipboard,
             });
@@ -29213,13 +29551,6 @@
         }
         closeSidePanel() {
             this.sidePanel.isOpen = false;
-            this.focusGrid();
-        }
-        openLinkEditor() {
-            this.linkEditor.isOpen = true;
-        }
-        closeLinkEditor() {
-            this.linkEditor.isOpen = false;
             this.focusGrid();
         }
         toggleSidePanel(panel, panelProps) {
@@ -29303,7 +29634,7 @@
         }
     }
     Spreadsheet.template = "o-spreadsheet-Spreadsheet";
-    Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel, LinkEditor };
+    Spreadsheet.components = { TopBar, Grid, BottomBar, SidePanel };
     Spreadsheet._t = t;
 
     class LocalTransportService {
@@ -31372,7 +31703,7 @@
         }
         /** Computes the next cell position in the given direction by crossing through merges and skipping hidden cells.
          *
-         * This has the same behaviour as getNextAvailablePosition() for certains arguments, but use this method instead
+         * This has the same behaviour as getNextAvailablePosition() for certain arguments, but use this method instead
          * inside directionToDelta(), which is called in getNextAvailablePosition(), to avoid possible infinite
          * recursion.
          */
@@ -33502,7 +33833,6 @@
         drawGrid(context) {
             // we make sure here that the viewport is properly positioned: the offsets
             // correspond exactly to a cell
-            context.viewport = this.getters.getActiveViewport(); //snaped one
             for (let [renderer, layer] of this.renderers) {
                 context.ctx.save();
                 renderer.drawGrid(context, layer);
@@ -33595,6 +33925,7 @@
         otRegistry,
         inverseCommandRegistry,
         cellRegistry,
+        cellPopoverRegistry,
     };
     const cellTypes = {
         LinkCell,
@@ -33619,6 +33950,7 @@
         createEmptyWorkbookData,
         getDefaultChartJsRuntime,
         chartFontColor,
+        getMenuChildren,
         ChartColors,
         EvaluationError,
         CellErrorLevel,
@@ -33627,6 +33959,7 @@
         ChartPanel,
         ChartFigure,
         ChartJsComponent,
+        Grid,
         ScorecardChart,
         LineConfigPanel,
         LineBarPieDesignPanel,
@@ -33669,8 +34002,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-07-01T07:03:33.794Z';
-    exports.__info__.hash = 'e42ced7';
+    exports.__info__.date = '2022-07-14T09:23:06.908Z';
+    exports.__info__.hash = '6a2ac3b';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

@@ -8,6 +8,7 @@ import { getCellContent } from "@spreadsheet/../tests/utils/getters";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 const { cellMenuRegistry } = spreadsheet.registries;
+const { getMenuChildren } = spreadsheet.helpers;
 
 QUnit.module("documents_spreadsheet > menu", {}, () => {
     QUnit.test(
@@ -34,7 +35,7 @@ QUnit.module("documents_spreadsheet > menu", {}, () => {
             });
             selectCell(model, "A6");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot = cellMenuRegistry.getChildren(root, env)[0];
+            const reinsertPivot = getMenuChildren(root, env)[0];
             await reinsertPivot.action(env);
             await nextTick();
             assert.equal(getCellContent(model, "B6"), getCellContent(model, "B1"));

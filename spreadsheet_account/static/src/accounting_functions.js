@@ -184,7 +184,7 @@ functionRegistry.add("ODOO.FISCALYEAR.START", {
         company_id (number, optional) ${_t("The company.")}
     `),
     returns: ["NUMBER"],
-    returnFormat: { specificFormat: "m/d/yyyy" },
+    computeFormat: () => "m/d/yyyy",
     compute: function (date, companyId = null) {
         const startDate = this.getters.getFiscalStartDate(
             toJsDate(date),
@@ -201,7 +201,7 @@ functionRegistry.add("ODOO.FISCALYEAR.END", {
         company_id (number, optional) ${_t("The company.")}
     `),
     returns: ["NUMBER"],
-    returnFormat: { specificFormat: "m/d/yyyy" },
+    computeFormat: () => "m/d/yyyy",
     compute: function (date, companyId = null) {
         const endDate = this.getters.getFiscalEndDate(
             toJsDate(date),
@@ -217,7 +217,7 @@ functionRegistry.add("ODOO.ACCOUNT.GROUP", {
         type (string) ${_t("Account type.")}
     `),
     returns: ["NUMBER"],
-    returnFormat: { specificFormat: "m/d/yyyy" },
+    computeFormat: () => "m/d/yyyy",
     compute: function (accountType) {
         const accountTypes = this.getters.getAccountGroupCodes(toString(accountType));
         return accountTypes.join(",");

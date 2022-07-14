@@ -5,7 +5,7 @@ import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { click, mockDownload, nextTick } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 
-const { createEmptyWorkbookData } = spreadsheet.helpers;
+const { createEmptyWorkbookData, getMenuChildren } = spreadsheet.helpers;
 const { topbarMenuRegistry } = spreadsheet.registries;
 
 QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
@@ -98,11 +98,9 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
         });
         assert.verifySteps([]);
         const root = topbarMenuRegistry.getAll().find((item) => item.id === "format");
-        const numbers = topbarMenuRegistry
-            .getChildren(root, env)
+        const numbers = getMenuChildren(root, env)
             .find((item) => item.id === "format_number");
-        const customCurrencies = topbarMenuRegistry
-            .getChildren(numbers, env)
+        const customCurrencies = getMenuChildren(numbers, env)
             .find((item) => item.id === "format_custom_currency");
         await customCurrencies.action(env);
         await nextTick();

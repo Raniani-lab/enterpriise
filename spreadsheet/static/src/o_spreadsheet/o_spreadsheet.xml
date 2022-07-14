@@ -403,32 +403,15 @@
         />
       </t>
       <Popover
-        t-if="errorTooltip.isOpen"
-        position="errorTooltip.position"
-        flipHorizontalOffset="errorTooltip.cellWidth"
-        childWidth="ERROR_TOOLTIP_WIDTH"
-        childHeight="ERROR_TOOLTIP_HEIGHT">
-        <ErrorToolTip text="errorTooltip.text"/>
-      </Popover>
-      <Popover
-        t-if="shouldDisplayLink"
-        position="popoverPosition.position"
-        flipHorizontalOffset="-popoverPosition.cellWidth"
-        flipVerticalOffset="-popoverPosition.cellHeight"
-        childWidth="LINK_TOOLTIP_WIDTH"
-        childHeight="LINK_TOOLTIP_HEIGHT">
-        <LinkDisplay cellPosition="activeCellPosition"/>
-      </Popover>
-      <Popover
-        t-if="props.linkEditorIsOpen and !env.isDashboard()"
-        position="popoverPosition.position"
-        flipHorizontalOffset="-popoverPosition.cellWidth"
-        flipVerticalOffset="-popoverPosition.cellHeight"
-        childWidth="LINK_EDITOR_WIDTH"
-        childHeight="LINK_EDITOR_HEIGHT">
-        <LinkEditor
-          cellPosition="activeCellPosition"
-          onLinkEditorClosed="props.onLinkEditorClosed"
+        t-if="cellPopover.isOpen"
+        position="cellPopover.coordinates"
+        childWidth="cellPopover.Component.size.width"
+        childHeight="cellPopover.Component.size.height"
+        flipHorizontalOffset="cellPopover.cellWidth"
+        flipVerticalOffset="cellPopover.cellHeight">
+        <t
+          t-component="cellPopover.Component"
+          t-props="{...cellPopover.props, onClosed : () => onClosePopover()}"
         />
       </Popover>
       <t
@@ -1110,6 +1093,13 @@
   <t t-name="o-spreadsheet-LinkDisplay" owl="1">
     <div class="o-link-tool">
       <t t-set="link" t-value="cell.link"/>
+      <!-- t-key to prevent owl from re-using the previous img element when the link changes.
+    The wrong/previous image would be displayed while the new one loads -->
+      <img
+        t-if="link.isExternal"
+        t-key="link.url"
+        t-attf-src="https://www.google.com/s2/favicons?sz=16&amp;domain={{link.url}}"
+      />
       <a
         t-if="link.isExternal"
         class="o-link"
@@ -1233,7 +1223,7 @@
 
   <t t-name="o-spreadsheet-Popover" owl="1">
     <t t-portal="'.o-spreadsheet'">
-      <div t-att-style="style">
+      <div t-att-style="style" class="o-popover">
         <t t-slot="default"/>
       </div>
     </t>
@@ -1384,7 +1374,7 @@
       <div class="o-section o-data-series">
         <div class="o-section-title">Data range</div>
         <SelectionInput
-          ranges="[props.definition.dataRange]"
+          ranges="[props.definition.dataRange || '']"
           isInvalid="isDataRangeInvalid"
           hasSingleRange="true"
           required="true"
@@ -1804,7 +1794,7 @@
       <div class="o-section o-data-series">
         <div class="o-section-title">Key value</div>
         <SelectionInput
-          ranges="[props.definition.keyValue]"
+          ranges="[props.definition.keyValue || '']"
           isInvalid="isKeyValueInvalid"
           hasSingleRange="true"
           required="true"
@@ -2062,7 +2052,7 @@
         <div class="o-tool o-dropdown o-with-color" t-att-disabled="threshold === undefined">
           <span
             title="Fill Color"
-            t-attf-style="border-color:#{{getThresholdColor(threshold)}}"
+            t-attf-style="border-color:{{getThresholdColor(threshold)}}"
             t-on-click.stop="(ev) => this.toggleMenu('colorScale-'+thresholdType+'Color', ev)">
             <t t-call="o-spreadsheet-Icon.FILL_COLOR"/>
           </span>
@@ -2154,9 +2144,7 @@
                   name="ruleType"
                   value="CellIsRule"
                 />
-                <label for="cellIsRule" class="form-check-label o_form_label">
-                  Single color
-                </label>
+                <label for="cellIsRule" class="form-check-label o_form_label">Single color</label>
               </div>
               <div
                 class="custom-control form-check o_cf_radio_item"
@@ -2236,13 +2224,6 @@
         <div class="o-cf-preview-ruletype">
           <div class="o-cf-preview-description-rule">
             <t t-esc="getDescription(cf)"/>
-            <t t-if="cf.rule.values">
-              <t t-esc="' ' + cf.rule.values[0]"/>
-              <t t-if="cf.rule.values[1]">
-                <span style="white-space: pre;">and</span>
-                <t t-esc="cf.rule.values[1]"/>
-              </t>
-            </t>
           </div>
         </div>
         <div class="o-cf-preview-range" t-esc="cf.ranges"/>
@@ -2596,8 +2577,6 @@
       />
       <Grid
         sidePanelIsOpen="sidePanel.isOpen"
-        linkEditorIsOpen="linkEditor.isOpen"
-        onLinkEditorClosed="() => this.closeLinkEditor()"
         onSaveRequested="() => this.save()"
         focusComposer="focusGridComposer"
         exposeFocus="(focus) => this._focusGrid = focus"
@@ -2707,12 +2686,12 @@
               class="o-dropdown-content o-text-options  o-format-tool "
               t-if="state.activeTool === 'formatTool'"
               t-on-click="setFormat">
-              <t t-foreach="formats" t-as="format" t-key="format.name">
+              <t t-foreach="commonFormats" t-as="commonFormat" t-key="commonFormat.name">
                 <div
-                  t-att-data-format="format.name"
-                  t-att-class="{active: currentFormat === format.name}">
-                  <t t-esc="format.text"/>
-                  <span class="float-end text-muted" t-esc="format.description"/>
+                  t-att-data-format="commonFormat.name"
+                  t-att-class="{active: currentFormatName === commonFormat.name}">
+                  <t t-esc="commonFormat.text"/>
+                  <span class="float-end text-muted" t-esc="commonFormat.description"/>
                 </div>
               </t>
               <t t-foreach="customFormats" t-as="customFormat" t-key="customFormat.name">

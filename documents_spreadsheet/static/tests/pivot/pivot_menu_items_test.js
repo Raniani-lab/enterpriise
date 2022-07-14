@@ -19,6 +19,7 @@ import {
 
 const { toCartesian, toZone } = spreadsheet.helpers;
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
+const { getMenuChildren } = spreadsheet.helpers;
 
 let target;
 
@@ -34,7 +35,7 @@ QUnit.module(
             const { model, env } = await createSpreadsheetWithPivot();
             selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            const reinsertPivot1 = getMenuChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(
                 getCellFormula(model, "E10"),
@@ -53,7 +54,7 @@ QUnit.module(
             });
             selectCell(model, "A1");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            const reinsertPivot1 = getMenuChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(model.getters.getNumberCols("111"), 6);
             assert.equal(model.getters.getNumberRows("111"), 5);
@@ -87,7 +88,7 @@ QUnit.module(
             });
             selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            const reinsertPivot1 = getMenuChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(getCellFormula(model, "I8"), `=ODOO.PIVOT.HEADER(1,"foo",25)`);
             assert.equal(
@@ -114,7 +115,7 @@ QUnit.module(
             data.partner.records[0].probability = 88;
             data.partner.records[1].probability = 77;
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            const reinsertPivot1 = getMenuChildren(root, env)[0];
             await reinsertPivot1.action(env);
             await nextTick();
             assert.equal(getCellValue(model, "D1"), 99, "The header should have been updated");
@@ -154,7 +155,7 @@ QUnit.module(
                     spreadsheetId: 45,
                 });
                 const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-                const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+                const reinsertPivot1 = getMenuChildren(root, env)[0];
                 await reinsertPivot1.action(env);
                 assert.equal(getCellFormula(model, "C1"), `=ODOO.PIVOT.HEADER(1,"foo",2)`);
                 assert.equal(
@@ -203,7 +204,7 @@ QUnit.module(
             assert.equal(getCellValue(model, "B3"), "", "The value should have been filtered");
             assert.equal(getCellValue(model, "C3"), "", "The value should have been filtered");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            const reinsertPivot1 = getMenuChildren(root, env)[0];
             await reinsertPivot1.action(env);
             await nextTick();
             assert.equal(getCellValue(model, "B3"), "", "The value should still be filtered");
@@ -215,7 +216,7 @@ QUnit.module(
             const sheetId = model.getters.getActiveSheetId();
             selectCell(model, "D8");
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            const reinsertPivot1 = getMenuChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(
                 getCellFormula(model, "E10"),
@@ -245,7 +246,7 @@ QUnit.module(
             const { col, row } = toCartesian("A2");
             assert.ok(model.getters.isInMerge(sheetId, col, row));
             const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot1 = cellMenuRegistry.getChildren(root, env)[0];
+            const reinsertPivot1 = getMenuChildren(root, env)[0];
             await reinsertPivot1.action(env);
             assert.equal(
                 getCellFormula(model, "B2"),
@@ -280,7 +281,7 @@ QUnit.module(
                 );
 
                 const root = topbarMenuRegistry.getAll().find((item) => item.id === "data");
-                const children = topbarMenuRegistry.getChildren(root, env);
+                const children = getMenuChildren(root, env);
                 assert.equal(children.length, 6, "There should be 6 children in the menu");
                 assert.equal(children[0].name, "(#1) Partners by Foo");
                 assert.equal(children[1].name, "(#2) Partner Pivot");
@@ -297,7 +298,7 @@ QUnit.module(
             await insertPivotInSpreadsheet(model, { arch: getBasicPivotArch() });
 
             const root = topbarMenuRegistry.getAll().find((item) => item.id === "data");
-            const children = topbarMenuRegistry.getChildren(root, env);
+            const children = getMenuChildren(root, env);
 
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
             assert.notOk(model.getters.getSelectedPivotId(), "No pivot should be selected");

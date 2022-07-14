@@ -14,6 +14,7 @@ import {
 } from "@spreadsheet/../tests/utils/data";
 import { nextTick, getFixture, click } from "@web/../tests/helpers/utils";
 
+const { getMenuChildren } = spreadsheet.helpers;
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 const { toZone } = spreadsheet.helpers;
 
@@ -56,7 +57,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         const { model, env } = await createSpreadsheetFromListView();
 
         const dataRoot = topbarMenuRegistry.getAll().find((item) => item.id === "data");
-        const children = topbarMenuRegistry.getChildren(dataRoot, env);
+        const children = getMenuChildren(dataRoot, env);
         const openProperties = children.find((item) => item.id === "item_list_1");
         openProperties.action(env);
         await nextTick();
@@ -125,7 +126,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         const { model, env } = await createSpreadsheetFromListView();
         selectCell(model, "Z26");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_list");
-        const reinsertList = cellMenuRegistry.getChildren(root, env)[0];
+        const reinsertList = getMenuChildren(root, env)[0];
         await reinsertList.action(env);
         await nextTick();
         /** @type {HTMLInputElement} */

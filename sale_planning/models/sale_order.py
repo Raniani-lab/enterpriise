@@ -69,7 +69,6 @@ class SaleOrder(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("planning.planning_action_schedule_by_resource")
         action.update({
             'name': _('View Planning'),
-            'domain': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)],
             'context': {
                 'default_sale_line_id': self.planning_first_sale_line_id.id,
                 'search_default_group_by_role': 1,

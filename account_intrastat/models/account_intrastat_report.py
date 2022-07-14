@@ -6,12 +6,14 @@ from .supplementary_unit_codes import SUPPLEMENTARY_UNITS_TO_COMMODITY_CODES as 
 
 _merchandise_export_code = {
     'BE': '29',
-    'FR': '21'
+    'FR': '21',
+    'NL': '7',
 }
 
 _merchandise_import_code = {
     'BE': '19',
-    'FR': '11'
+    'FR': '11',
+    'NL': '6',
 }
 
 class IntrastatReport(models.AbstractModel):

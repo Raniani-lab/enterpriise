@@ -112,6 +112,9 @@ ProductConfiguratorWidget.include({
         if (this.recordData.product_uom) {
             data.default_uom_id = this.recordData.product_uom.data.id;
         }
+        if (this.recordData.tax_id) {
+            data.default_tax_ids = this.record.data.tax_id.res_ids;
+        }
         data.default_pricelist_id = this.record.evalContext.parent.pricelist_id;
         data.default_company_id = this.record.evalContext.parent.company_id;
 

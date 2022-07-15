@@ -5379,9 +5379,11 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
     def test_employee_departure_european_time_off(self):
         self._generate_departure_data()
-        self.march_2019.worked_days_line_ids.filtered(
-            lambda wd: wd.code == 'LEAVE90'
-        ).work_entry_type_id = self.env.ref("l10n_be_hr_payroll.work_entry_type_european")
+        self.march_2019.state = 'verify'
+        worked_days = self.march_2019.worked_days_line_ids.filtered(lambda wd: wd.code == 'LEAVE90')
+        worked_days.work_entry_type_id = self.env.ref("l10n_be_hr_payroll.work_entry_type_european")
+        worked_days._compute_amount()
+        self.march_2019.state = 'done'
         # - Holiday Pay N
         # - Holiday Pay N-1
         self.holiday_attest = self.env['hr.payslip.employee.depature.holiday.attests'].with_context(

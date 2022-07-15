@@ -104,7 +104,10 @@ class TestKnowledgeCommonWDataInitialValue(KnowledgeCommonWData):
             [False, False]
         )
         self.assertEqual(workspace_children.root_article_id, article_workspace)
-        self.assertEqual(workspace_children.mapped('sequence'), [0, 1])
+        # articles are not ordered by sequence.
+        # Make explicit check that first created has sequence 0, second has 1, etc.
+        self.assertEqual(self.workspace_children[0].sequence, 0)
+        self.assertEqual(self.workspace_children[1].sequence, 1)
 
     @mute_logger('odoo.addons.base.models.ir_rule')
     @users('employee')

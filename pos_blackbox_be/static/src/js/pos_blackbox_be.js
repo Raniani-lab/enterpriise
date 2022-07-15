@@ -157,8 +157,8 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
 
         get_vat_letter: async function () {
             if(this.pos.useBlackBoxBe()) {
-                var taxes = this.get_taxes()[0];
-                taxes = this._map_tax_fiscal_position(taxes, this.order);
+                const firstTax = this.get_taxes()[0];
+                const taxes = this.pos.get_taxes_after_fp(firstTax ? [firstTax.id] : [], this.order.fiscal_position);
 
                  if (!taxes) {
                     if (this.pos.gui.popup_instances.error) {

@@ -520,7 +520,8 @@ else:
     if days_per_week:
         total_amount = contract.with_context(payslip_date=payslip.date_from)._get_private_car_reimbursed_amount(contract.km_home_work) / 5 * days_per_week
         daily_amount = total_amount * 3 / 13 / days_per_week
-        result = max(0, total_amount - daily_amount * payslip.private_car_missing_days)
+        cycle_days = inputs.CYCLE.amount if inputs.CYCLE else 0
+        result = max(0, total_amount - daily_amount * (payslip.private_car_missing_days + cycle_days))
     else:
         result = 0
         </field>

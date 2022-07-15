@@ -8495,3 +8495,51 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 1234.93,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_cycle_private_car(self):
+        # Test that cycle days are removed from private car reimbursement
+        self.contract.write({
+            'transport_mode_car': False,
+            'transport_mode_private_car': True,
+        })
+        payslip = self._generate_payslip(datetime.date(2022, 7, 1), datetime.date(2022, 7, 31))
+        payslip.input_line_ids = [(0, 0, {
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.cp200_input_cycle_transportation').id,
+            'amount': 2,
+        })]
+        payslip.compute_sheet()
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'EmpBonus.1': 43.75,
+            'ONSSTOTAL': 303.78,
+            'GROSSIP': 2355.22,
+            'IP.PART': -662.5,
+            'GROSS': 1692.72,
+            'P.P': -169.01,
+            'P.P.DED': 14.5,
+            'PPTOTAL': 154.51,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -22.89,
+            'CAR.PRIV': 93.04,
+            'CYCLE': 16.0,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2362.78,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 665.55,
+            'ONSSEMPLOYERCPAE': 6.12,
+            'ONSSEMPLOYERFFE': 1.86,
+            'ONSSEMPLOYERMFFE': 2.66,
+            'ONSSEMPLOYERRESTREINT': 44.94,
+            'ONSSEMPLOYERUNEMP': 2.66,
+            'ONSSEMPLOYER': 723.78,
+        }
+        self._validate_payslip(payslip, payslip_results)

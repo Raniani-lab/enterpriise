@@ -26,7 +26,7 @@ class ProductPricing(models.Model):
 
     _name = 'product.pricing'
     _description = 'Pricing rule of temporal products'
-    _order = 'price,pricelist_id,unit,duration'
+    _order = 'product_template_id,price,pricelist_id,unit,duration'
 
     name = fields.Char(compute='_compute_name')
     description = fields.Char(compute='_compute_description')
@@ -35,10 +35,11 @@ class ProductPricing(models.Model):
                             string="Unit", required=True, default='day')
     price = fields.Monetary(string="Price", required=True, default=1.0)
     currency_id = fields.Many2one('res.currency', 'Currency', compute='_compute_currency_id', store=True)
-    product_template_id = fields.Many2one('product.template', string="Product Templates", help="Select products on which this pricing will be applied.")
+    product_template_id = fields.Many2one('product.template', string="Product Templates", ondelete='cascade',
+                                          help="Select products on which this pricing will be applied.")
     product_variant_ids = fields.Many2many('product.product', string="Product Variants",
                                            help="Select Variants of the Product for which this rule applies. Leave empty if this rule applies for any variant of this template.")
-    pricelist_id = fields.Many2one('product.pricelist')
+    pricelist_id = fields.Many2one('product.pricelist', ondelete='cascade')
     company_id = fields.Many2one('res.company', related='pricelist_id.company_id')
 
     _sql_constraints = [
@@ -59,7 +60,7 @@ class ProductPricing(models.Model):
                 price.duration, price.unit
             ]
             variants = price.product_variant_ids.ids or [_('all variants')]
-            pricing_has_all_variants = self.product_template_id.product_variant_count == len(price.product_variant_ids)
+            pricing_has_all_variants = price.product_template_id.product_variant_count == len(price.product_variant_ids)
             variants = [_('all variants')] if pricing_has_all_variants else variants
             for v in variants:
                 key_list.append(v)
@@ -67,12 +68,7 @@ class ProductPricing(models.Model):
                 conflict_counter[key_val] += 1
         pricing_issues = [k for k, v in conflict_counter.items() if v > 1]
         if pricing_issues:
-            raise ValidationError(_("You cannnot have multiple pricing for the same variant, duration, unit, and pricelist"))
-
-
-
-
-
+            raise ValidationError(_("You cannot have multiple pricing for the same variant, duration, unit, and pricelist"))
 
     @api.depends('duration', 'unit')
     def _compute_name(self):
@@ -89,7 +85,7 @@ class ProductPricing(models.Model):
             description += _("/%s", pricing.unit)
             pricing.description = description
 
-    @api.depends('pricelist_id')
+    @api.depends('pricelist_id', 'pricelist_id.currency_id')
     def _compute_currency_id(self):
         for pricing in self:
             if pricing.pricelist_id:

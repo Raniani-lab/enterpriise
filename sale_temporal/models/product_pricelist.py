@@ -6,6 +6,8 @@ from odoo import fields, models
 class Pricelist(models.Model):
     _inherit = "product.pricelist"
 
+    product_pricing_ids = fields.One2many('product.pricing', 'pricelist_id', string="Recurring Price Rules")
+
     def _compute_price_rule(
         self, products, qty, uom=None, date=False, start_date=None, end_date=None, duration=None,
         unit=None, **kwargs

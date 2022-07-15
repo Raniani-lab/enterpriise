@@ -630,9 +630,9 @@ class TestSubscription(TestSubscriptionCommon):
     def test_log_change_pricing(self):
         """ Test subscription log generation when template_id is changed """
         # Create a subscription and add a line, should have logs with MMR 120
-        pricing_month = self.env['product.pricing'].create({'duration': 1, 'unit': 'month', 'price': 120})
-        pricing_year = self.env['product.pricing'].create({'duration': 1, 'unit': 'year', 'price': 120})
-        self.sub_product_tmpl.product_pricing_ids = [Command.set(pricing_month.ids + pricing_year.ids)]
+        self.pricing_month.price = 120
+        self.pricing_year.price = 120
+        self.sub_product_tmpl.product_pricing_ids = [Command.set(self.pricing_month.ids + self.pricing_year.ids)]
         subscription = self.env['sale.order'].create({
             'name': 'TestSubscription',
             'is_subscription': True,
@@ -645,13 +645,13 @@ class TestSubscription(TestSubscriptionCommon):
             'name': 'TestRecurringLine',
             'product_id': self.product.id,
             'product_uom_qty': 1,
-            'pricing_id': pricing_month.id,
+            'pricing_id': self.pricing_month.id,
             'product_uom': self.product.uom_id.id})]})
         subscription.action_confirm()
         self.flush_tracking()
         init_nb_log = len(subscription.order_log_ids)
         self.assertEqual(subscription.order_line.recurring_monthly, 120)
-        subscription.order_line.write({'pricing_id': pricing_year.id})
+        subscription.order_line.write({'pricing_id': self.pricing_year.id})
         self.assertEqual(subscription.order_line.recurring_monthly, 10)
         self.flush_tracking()
         # Should get one more log with MRR 10 (so change is -110)
@@ -944,13 +944,12 @@ class TestSubscription(TestSubscriptionCommon):
             sub._onchange_sale_order_template_id()
             sub.name = "Parent Sub"
             sub.order_line.start_date = fields.Datetime.today()
-            pricing_1 = self.env['product.pricing'].create({'duration': 1, 'unit': 'month', 'price': 30})
-            pricing_2 = self.env['product.pricing'].create({'duration': 1, 'unit': 'year', 'price': 120})
-            # Same product for both lines
-            sub.order_line[0].product_id.product_pricing_ids = [Command.set(pricing_1.ids + pricing_2.ids)]
+            self.pricing_month.price = 30
+            self.pricing_year.price = 120
+            sub.order_line[0].product_id.product_pricing_ids = [Command.set(self.pricing_month.ids + self.pricing_year.ids)]
             sub.order_line.product_uom_qty = 1
-            sub.order_line[0].pricing_id = pricing_1.id
-            sub.order_line[1].pricing_id = pricing_2.id
+            sub.order_line[0].pricing_id = self.pricing_month.id
+            sub.order_line[1].pricing_id = self.pricing_year.id
             sub.end_date = datetime.date(2022, 1, 1)
             sub.action_confirm()
             self.flush_tracking()

@@ -9,21 +9,15 @@
     'description': """
 Contains the enterprise views for Stock management
     """,
-    'depends': ['stock', 'web_dashboard', 'web_cohort', 'web_map', 'web_grid'],
+    'depends': ['stock', 'web_dashboard', 'web_cohort', 'web_map'],
     'data': [
         'security/ir.model.access.csv',
         'security/stock_enterprise_security.xml',
         'views/stock_move_views.xml',
         'views/stock_picking_map_views.xml',
         'report/stock_report_views.xml',
-        'report/report_stock_quantity.xml',
     ],
     'installable': True,
     'auto_install': ['stock'],
     'license': 'OEEL-1',
-    'assets': {
-        'web.assets_backend': [
-            'stock_enterprise/static/**/*',
-        ],
-    }
 }

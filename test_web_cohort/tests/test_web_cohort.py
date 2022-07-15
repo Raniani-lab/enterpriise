@@ -94,6 +94,8 @@ class TestCohortForward(TestCohortCommon):
 class TestCohortBackward(TestCohortCommon):
     def setUp(self):
         super().setUp()
+        # activate an extra lang that uses ISO weeks
+        self.env['res.lang']._activate_lang('en_GB')
         start_date = START_DATE
         end_date = start_date + datetime.timedelta(days=7) #Start in the future
         data_list = []
@@ -131,19 +133,32 @@ class TestCohortBackward(TestCohortCommon):
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]['columns'][0]['percentage'], 100.0)
         self.assertEqual(result[0]['columns'][-1]['percentage'], 51)
+
         result = self.WebCohortSimpleModel.get_cohort_data("date_start", "date_stop",
             '__count', 'month', [], 'retention', 'backward')['rows']
         self.assertEqual(len(result), 3)
         self.assertEqual(result[0]['columns'][0]['percentage'], 100)
         self.assertEqual(result[0]['columns'][-2]['percentage'], 63.3)
         self.assertEqual(result[0]['columns'][-1]['percentage'], 51)
+
+        # with ISO week
+        result = self.WebCohortSimpleModel.with_context(lang='en_GB').get_cohort_data(
+            "date_start", "date_stop", '__count', 'week', [], 'retention', 'backward')['rows']
+        self.assertEqual(len(result), 11)
+        self.assertEqual(result[0]['columns'][0]['percentage'], 100)
+        self.assertEqual(result[0]['columns'][5]['percentage'], 93.3)
+        self.assertEqual(result[0]['columns'][-2]['percentage'], 58.3)
+        self.assertEqual(result[0]['columns'][-1]['percentage'], 53.3)
+
+        # with en_US week
         result = self.WebCohortSimpleModel.get_cohort_data("date_start", "date_stop",
             '__count', 'week', [], 'retention', 'backward')['rows']
         self.assertEqual(len(result), 11)
         self.assertEqual(result[0]['columns'][0]['percentage'], 100)
         self.assertEqual(result[0]['columns'][5]['percentage'], 93.3)
         self.assertEqual(result[0]['columns'][-2]['percentage'], 58.3)
-        self.assertEqual(result[0]['columns'][-1]['percentage'], 53.3)
+        self.assertEqual(result[0]['columns'][-1]['percentage'], 55)
+
         result = self.WebCohortSimpleModel.get_cohort_data("date_start", "date_stop",
             '__count', 'day', [], 'retention', 'backward')['rows']
         self.assertEqual(len(result), NB_START_DAY)

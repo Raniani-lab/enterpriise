@@ -9,7 +9,6 @@ import { ormService } from "@web/core/orm_service";
 
 import { CrossTab } from '@bus/crosstab_bus';
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
-import Widget from "web.Widget";
 import { useAutoSavingWarning } from "@documents_spreadsheet/bundle/actions/control_panel/collaborative_cross_tab_bus_warning";
 
 const { Component, useState, xml } = owl;
@@ -51,14 +50,12 @@ QUnit.module(
         },
     },
     function () {
-        QUnit.test("CrossTab bus exists and has a master tab", async function (assert) {
+        QUnit.test("CrossTab bus exists", async function (assert) {
             // This test is meant to fail when the cross tab bus is removed (most likely
             // when the websocket bus is introduced).
             // If the cross tab bus is removed, the hook under test
             // here (useAutoSavingWarning) no longer serves any purpose and can be removed.
-            const parentTab = new Widget();
-            const bus = new CrossTab(parentTab);
-            assert.equal(bus.isMasterTab(), false, "the cross tab bus has a master tab");
+            assert.ok(CrossTab, "the cross tab bus still exists");
         });
 
         QUnit.test("warning is not displayed initially if not saving", async function (assert) {

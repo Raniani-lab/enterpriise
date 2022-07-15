@@ -240,7 +240,7 @@ export class IoTLongpolling extends BusService {
 }
 
 export const iotLongpollingService = {
-    dependencies: ['notification', 'presence', 'rpc'],
+    dependencies: ['notification', 'presence', 'rpc', 'multiTab'],
     start() {
         return new IoTLongpolling(...arguments);
     }

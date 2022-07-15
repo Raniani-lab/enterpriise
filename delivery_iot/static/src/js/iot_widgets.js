@@ -101,7 +101,7 @@ var DeliveryIoTNotificationManager = AbstractService.extend({
      */
     _onNotification: function(notifications) {
         for (const { payload, type } of notifications) {
-            if (type === "iot_print_documents" && this.call('bus_service', 'isMasterTab')) {
+            if (type === "iot_print_documents" && this.call('multiTab', 'isOnMainTab')) {
                 this._printDocuments(payload.iot_device_identifier, payload.iot_ip, payload.documents);
             }
         }

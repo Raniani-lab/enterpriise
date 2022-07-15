@@ -631,12 +631,9 @@ msgstr ""
 
 #. module: l10n_lu_reports
 #: model:ir.actions.act_window,name:l10n_lu_reports.action_l10n_lu_yearly_tax_report_manual
-msgid "Annual Tax Report"
-msgstr ""
-
-#. module: l10n_lu_reports
+#: model:ir.model,name:l10n_lu_reports.model_l10n_lu_yearly_tax_report_manual
 #: model:ir.ui.menu,name:l10n_lu_reports.menu_action_l10n_lu_yearly_tax_report_manual
-msgid "Annual Tax Report - Data"
+msgid "Annual Tax Report"
 msgstr ""
 
 #. module: l10n_lu_reports
@@ -1322,6 +1319,11 @@ msgid "Other assimilated supplies"
 msgstr ""
 
 #. module: l10n_lu_reports
+#: model_terms:ir.ui.view,arch_db:l10n_lu_reports.view_l10n_lu_yearly_tax_report_manual
+msgid "Other Assimilated Supplies"
+msgstr ""
+
+#. module: l10n_lu_reports
 #: model:ir.model.fields,field_description:l10n_lu_reports.field_l10n_lu_generate_tax_report__period
 #: model:ir.model.fields,field_description:l10n_lu_reports.field_l10n_lu_stored_intra_report__period
 msgid "Period"
@@ -1872,6 +1874,11 @@ msgstr ""
 
 #. module: l10n_lu_reports
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports.view_l10n_lu_yearly_tax_report_manual
+msgid "Total Input Tax"
+msgstr ""
+
+#. module: l10n_lu_reports
+#: model_terms:ir.ui.view,arch_db:l10n_lu_reports.view_l10n_lu_yearly_tax_report_manual
 msgid ""
 "Use of goods considered business assets for purposes other than those of the"
 " business (010)"
@@ -1960,11 +1967,6 @@ msgstr ""
 #: code:addons/l10n_lu_reports/models/l10n_lu_yearly_tax_report_manual.py:0
 #, python-format
 msgid "Yearly Tax Report Manual Data"
-msgstr ""
-
-#. module: l10n_lu_reports
-#: model:ir.model,name:l10n_lu_reports.model_l10n_lu_yearly_tax_report_manual
-msgid "Yearly tax report manual data"
 msgstr ""
 
 #. module: l10n_lu_reports

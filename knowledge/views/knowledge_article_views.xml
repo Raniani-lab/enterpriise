@@ -307,6 +307,10 @@
                 <field name="body"/>
                 <field name="last_edition_uid"/>
 
+                <filter name="filter_not_is_article_item" string="Hide Article Items"
+                    domain="[('is_article_item', '=', False)]"/>
+                <filter name="filter_is_article_item" string="Article Items Only"
+                    domain="[('is_article_item', '=', True)]"/>
                 <filter name="filter_active" string="Archived"
                     domain="[('active', '=', False)]"/>
                 <filter name="filter_favorites" string="My Favorites"
@@ -327,6 +331,7 @@
         <field name="name">Articles</field>
         <field name="res_model">knowledge.article</field>
         <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{'search_default_filter_not_is_article_item': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create an article
@@ -341,6 +346,19 @@
         <field name="res_model">knowledge.article</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="knowledge.knowledge_article_view_form"/>
+    </record>
+
+    <!-- Action window for article items -->
+    <record id="knowledge_article_item_action" model="ir.actions.act_window" >
+        <field name="name">Article Items</field>
+        <field name="res_model">knowledge.article</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="context">{'search_default_filter_not_is_article_item': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new article item
+            </p>
+        </field>
     </record>
 
 </odoo>

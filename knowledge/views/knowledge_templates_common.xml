@@ -27,13 +27,13 @@
                 t-att-data-category="article.category">
                 <t t-set="isActive" t-value="article.id == active_article.id if active_article else False"/>
                 <div t-attf-class="#{ '' if not isFavoriteTree and readonly else 'o_article_handle' } d-flex align-items-center #{ 'o_article_active fw-bold' if isActive else 'text-muted' }">
-                    <button t-if="not hideChildren and article.child_ids" class="o_article_caret btn btn-link text-muted px-0 py-1" type="button">
-                        <i t-if="article.child_ids" t-att-class="'align-self-center fa fa-fw fa-caret-' + ('down' if article.id in unfolded_articles else 'right')"/>
+                    <button t-if="not hideChildren and article.has_article_children" class="o_article_caret btn btn-link text-muted px-0 py-1" type="button">
+                        <i t-if="article.has_article_children" t-att-class="'align-self-center fa fa-fw fa-caret-' + ('down' if article.id in unfolded_articles else 'right')"/>
                         <i t-else="" class="ps-3 align-self-center"/>
                     </button>
                     <t t-call="knowledge.articles_template_name"/>
                 </div>
-                <ul t-if="not hideChildren and article.child_ids and article.id in unfolded_articles">
+                <ul t-if="not hideChildren and article.has_article_children and article.id in unfolded_articles">
                     <t t-call="knowledge.articles_template">
                         <t t-set="articles" t-value="article.child_ids.sorted('sequence')"/>
                     </t>

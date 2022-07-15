@@ -6,10 +6,6 @@ import FormRenderer from 'web.FormRenderer';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
 import { qweb as QWeb } from 'web.core';
 
-import { ChatterContainer } from '@mail/components/chatter_container/chatter_container';
-import { ComponentWrapper } from 'web.OwlCompatibility';
-
-class ChatterContainerWrapperComponent extends ComponentWrapper {}
 
 const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin, {
     className: 'o_knowledge_form_view',
@@ -66,10 +62,7 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
      * @private
      */
     _closeChatter: function () {
-        const chatter = this.el.querySelector('.o_knowledge_chatter_container');
-        while (chatter.firstChild) {
-            chatter.removeChild(chatter.firstChild);
-        }
+        this._chatterContainerTarget.replaceChildren();
         if (this._chatterContainerComponent) {
             this._chatterContainerComponent.destroy();
             this._chatterContainerComponent = undefined;
@@ -207,12 +200,12 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
      * @private
      * @param {OdooEvent} ev
      */
-    _onOpenChatter: async function (ev) {
+    _onOpenChatter: function (ev) {
         ev.stopPropagation();
         if (this.state.res_id) {
             this.el.querySelector('.o_knowledge_chatter').classList.remove('d-none');
             this.el.querySelector('.btn-chatter').classList.add('active');
-            await this._renderChatter();
+            this._renderChatter();
         }
     },
     /**
@@ -246,19 +239,9 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
      * @private
      * @returns {Promise}
      */
-    _renderChatter: async function () {
-        if (!this.state.res_id) {
-            return;
-        }
+    _renderChatter: function () {
         this._closeChatter();
-        const props = this._makeChatterContainerProps();
-        this._chatterContainerComponent = new ChatterContainerWrapperComponent(
-            this,
-            ChatterContainer,
-            props
-        );
-        const target = this.el.querySelector('.o_knowledge_chatter_container');
-        await this._chatterContainerComponent.mount(target);
+        return this.initChatter();
     },
     /**
      * @private
@@ -294,6 +277,7 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
         this._renderPermissionPanel();
         this._setResizeListener();
         await this._renderEmojiPicker();
+        this._chatterContainerTarget = this.el.querySelector('.o_knowledge_chatter_container');
         return result;
     },
     /**

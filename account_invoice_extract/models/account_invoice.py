@@ -522,11 +522,15 @@ class AccountMove(models.Model):
 
     def _create_supplier_from_vat(self, vat_number_ocr):
         try:
-            response = self.env['iap.autocomplete.api']._contact_iap(
-                local_endpoint='/iap/partner_autocomplete',
+            response, error = self.env['iap.autocomplete.api']._request_partner_autocomplete(
                 action='enrich',
                 params={'vat': vat_number_ocr},
             )
+            if error:
+                raise Exception(error)
+            if 'credit_error' in response and response['credit_error']:
+                _logger.warning("Credit error on partner_autocomplete call")
+                return False
         except KeyError:
             _logger.warning("Partner autocomplete isn't installed, supplier creation from VAT is disabled")
             return False

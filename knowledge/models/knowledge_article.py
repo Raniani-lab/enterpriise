@@ -739,6 +739,9 @@ class Article(models.Model):
         values = {'parent_id': parent_id}
         if before_article:
             values['sequence'] = before_article.sequence
+        if parent_id and not self.parent_id:
+            # be sure to reset internal permission when moving a root article under a parent
+            values['internal_permission'] = False
         if not parent_id:
             # be sure to have an internal permission on the article if moved outside
             # of an hierarchy

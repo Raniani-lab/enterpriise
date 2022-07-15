@@ -206,7 +206,7 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         """ Checking the article private management. """
         article_workspace = self.article_workspace.with_env(self.env)
 
-        # Private-like article whoe parent is not in private category is under workspace
+        # Private-like article whose parent is not in private category is under workspace
         article_private_u2 = self.env['knowledge.article'].sudo().create({
             'article_member_ids': [(0, 0, {'partner_id': self.partner_employee2.id, 'permission': 'write'})],
             'internal_permission': 'none',
@@ -221,7 +221,7 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         with self.assertRaises(exceptions.AccessError):
             article_private_u2_asuser.body  # should trigger ACLs
 
-        # Moving a private article under a workspace category makes it workspace
+        # Private root article
         article_private = self._create_private_article('MyPrivate').with_user(self.env.user)
         self.assertTrue(article_private.category, 'private')
         self.assertTrue(article_private.user_has_write_access)
@@ -234,10 +234,12 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         # Move to workspace, makes it workspace
         article_private.move_to(parent_id=article_workspace.id)
         self.assertEqual(article_private.category, 'workspace')
+
+        # Should be accessible by any user of the workspace since its permission is now inherited
         article_private_asu2 = article_private.with_user(self.user_employee2)
-        # Still not accessible
-        with self.assertRaises(exceptions.AccessError):
-            article_private_asu2.body  # should trigger ACLs
+        article_private_asu2.body  # should not trigger ACLs
+        self.assertFalse(article_private.internal_permission)
+        self.assertEqual(article_private.inherited_permission, 'write')
 
     @mute_logger('odoo.sql_db')
     @users('employee')

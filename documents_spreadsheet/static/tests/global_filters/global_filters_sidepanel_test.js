@@ -38,6 +38,7 @@ async function selectYear(yearString) {
     await testUtils.fields.editInput(input, yearString);
     // trigger dateChange on YearPicker
     await click(input);
+    await nextTick();
 }
 
 QUnit.module(
@@ -628,7 +629,7 @@ QUnit.module(
             assert.containsOnce(pivots[0], ".pivot_filter_input input.o_datepicker_input");
             const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
 
-            const this_year = luxon.DateTime.local().year;
+            const this_year = luxon.DateTime.utc().year;
             assert.equal(year.value, String(this_year));
 
             await selectYear(String(this_year - 127));
@@ -717,7 +718,7 @@ QUnit.module(
             assert.containsOnce(pivots[0], ".pivot_filter_input input.o_datepicker_input");
             const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
 
-            const this_year = luxon.DateTime.local().year;
+            const this_year = luxon.DateTime.utc().year;
             assert.equal(quarter.value, "fourth_quarter");
             assert.equal(year.value, String(this_year));
             await testUtils.fields.editSelect(quarter, "second_quarter");

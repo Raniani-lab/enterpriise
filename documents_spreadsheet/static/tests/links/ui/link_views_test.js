@@ -83,6 +83,7 @@ async function insertInSpreadsheetAndClickLink(target) {
     await click(target, ".o_insert_action_spreadsheet_menu");
     await click(document, ".modal-footer button.btn-primary");
     await nextTick();
+    await nextTick();
     await click(target, ".o-link-tool a");
     await nextTick();
     await legacyExtraNextTick();

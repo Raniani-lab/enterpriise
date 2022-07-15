@@ -48,7 +48,7 @@
             <field name="list_price">500.0</field>
             <field name="detailed_type">product</field>
             <field name="weight">2</field>
-            <field name="default_code">D0045</field>
+            <field name="default_code">D_0045</field>
             <field name="tracking">serial</field>
             <field name="uom_id" ref="uom.product_uom_unit"/>
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
@@ -97,19 +97,19 @@
         </function>
         <function model="product.product" name="write">
             <value eval="[ref('product_product_stool_1')]"/>
-            <value eval="{'default_code': 'D0045_B'}"/>
+            <value eval="{'default_code': 'D_0045_B'}"/>
         </function>
         <function model="product.product" name="write">
             <value eval="[ref('product_product_stool_2')]"/>
-            <value eval="{'default_code': 'D0045_G'}"/>
+            <value eval="{'default_code': 'D_0045_G'}"/>
         </function>
         <function model="product.product" name="write">
             <value eval="[ref('product_product_stool_3')]"/>
-            <value eval="{'default_code': 'D0045_GR'}"/>
+            <value eval="{'default_code': 'D_0045_GR'}"/>
         </function>
         <function model="product.template" name="write">
             <value eval="[ref('product_template_stool')]"/>
-            <value eval="{'default_code': 'D0045'}"/>
+            <value eval="{'default_code': 'D_0045'}"/>
         </function>
         <record id="product_template_stool_foot" model="product.template" forcecreate="0">
             <field name="name">Stool Foot</field>
@@ -191,7 +191,7 @@
             <field name="default_code">FURN_1245</field>
             <field name="categ_id" ref="product.product_category_5"/>
             <field name="standard_price">7</field>
-            <field name="tracking">serial</field>
+            <field name="tracking">lot</field>
             <field name="detailed_type">product</field>
             <field name="weight">2</field>
             <field name="sale_ok" eval="False"/>
@@ -247,82 +247,21 @@
                 }]"/>
         </function>
 
-        <record id="lot_stool_top_1_1" model="stock.lot" forcecreate="0">
-            <field name="name">STB001</field>
+        <record id="lot_stool_top_1" model="stock.lot" forcecreate="0">
+            <field name="name">SN0012022</field>
             <field name="product_id" ref="product_product_stool_top_1"/>
             <field name="company_id" ref="base.main_company"/>
         </record>
-        <record id="lot_stool_top_2_1" model="stock.lot" forcecreate="0">
-            <field name="name">STB002</field>
-            <field name="product_id" ref="product_product_stool_top_1"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_3_1" model="stock.lot" forcecreate="0">
-            <field name="name">STB003</field>
-            <field name="product_id" ref="product_product_stool_top_1"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_4_1" model="stock.lot" forcecreate="0">
-            <field name="name">STB004</field>
-            <field name="product_id" ref="product_product_stool_top_1"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_5_1" model="stock.lot" forcecreate="0">
-            <field name="name">STB005</field>
-            <field name="product_id" ref="product_product_stool_top_1"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_1_2" model="stock.lot" forcecreate="0">
-            <field name="name">STG001</field>
+        <record id="lot_stool_top_2" model="stock.lot" forcecreate="0">
+            <field name="name">SN0012022</field>
             <field name="product_id" ref="product_product_stool_top_2"/>
             <field name="company_id" ref="base.main_company"/>
         </record>
-        <record id="lot_stool_top_2_2" model="stock.lot" forcecreate="0">
-            <field name="name">STG002</field>
-            <field name="product_id" ref="product_product_stool_top_2"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_3_2" model="stock.lot" forcecreate="0">
-            <field name="name">STG003</field>
-            <field name="product_id" ref="product_product_stool_top_2"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_4_2" model="stock.lot" forcecreate="0">
-            <field name="name">STG004</field>
-            <field name="product_id" ref="product_product_stool_top_2"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_5_2" model="stock.lot" forcecreate="0">
-            <field name="name">STG005</field>
-            <field name="product_id" ref="product_product_stool_top_2"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_1_3" model="stock.lot" forcecreate="0">
-            <field name="name">STGR001</field>
+        <record id="lot_stool_top_3" model="stock.lot" forcecreate="0">
+            <field name="name">SN0012022</field>
             <field name="product_id" ref="product_product_stool_top_3"/>
             <field name="company_id" ref="base.main_company"/>
         </record>
-        <record id="lot_stool_top_2_3" model="stock.lot" forcecreate="0">
-            <field name="name">STGR002</field>
-            <field name="product_id" ref="product_product_stool_top_3"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_3_3" model="stock.lot" forcecreate="0">
-            <field name="name">STGR003</field>
-            <field name="product_id" ref="product_product_stool_top_3"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_4_3" model="stock.lot" forcecreate="0">
-            <field name="name">STGR004</field>
-            <field name="product_id" ref="product_product_stool_top_3"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        <record id="lot_stool_top_5_3" model="stock.lot" forcecreate="0">
-            <field name="name">STGR005</field>
-            <field name="product_id" ref="product_product_stool_top_3"/>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-
         <function model="product.product" name="write">
             <value eval="[ref('product_product_stool_top_1')]"/>
             <value eval="{'default_code': 'FURN_1245_B'}"/>
@@ -339,18 +278,30 @@
             <value eval="[ref('product_template_stool_top')]"/>
             <value eval="{'default_code': 'FURN_1245'}"/>
         </function>
-        <record id="product_product_ruber_adhesive" model="product.product" forcecreate="0">
-            <field name="name">Ruber Adhesive</field>
-            <field name="default_code">RA_1145W</field>
-            <field name="categ_id" ref="product.product_category_5"/>
-            <field name="standard_price">0.05</field>
-            <field name="list_price">0.05</field>
-            <field name="detailed_type">consu</field>
-            <field name="weight">2</field>
-            <field name="uom_id" ref="uom.product_uom_unit"/>
-            <field name="uom_po_id" ref="uom.product_uom_unit"/>
-            <field name="description_sale">White ruber adhesive for stool feet</field>
-            <field name="image_1920" type="base64" file="mrp_workorder/static/img/ruber_adhesive.jpeg"/>
+
+        <record id="stock_inventory_stool_top_1" model="stock.quant" forcecreate="0">
+            <field name="product_id" ref="product_product_stool_top_1"/>
+            <field name="lot_id" ref="lot_stool_top_1"/>
+            <field name="inventory_quantity">20</field>
+            <field name="location_id" model="stock.location"
+                eval="obj().env.ref('stock.warehouse0').lot_stock_id.id"
+                />
+        </record>
+        <record id="stock_inventory_stool_top_2" model="stock.quant" forcecreate="0">
+            <field name="product_id" ref="product_product_stool_top_2"/>
+            <field name="lot_id" ref="lot_stool_top_2"/>
+            <field name="inventory_quantity">20</field>
+            <field name="location_id" model="stock.location"
+                eval="obj().env.ref('stock.warehouse0').lot_stock_id.id"
+                />
+        </record>
+        <record id="stock_inventory_stool_top_3" model="stock.quant" forcecreate="0">
+            <field name="product_id" ref="product_product_stool_top_3"/>
+            <field name="lot_id" ref="lot_stool_top_3"/>
+            <field name="inventory_quantity">20</field>
+            <field name="location_id" model="stock.location"
+                eval="obj().env.ref('stock.warehouse0').lot_stock_id.id"
+                />
         </record>
 
         <record id="stock_inventory_stool_foot_1" model="stock.quant" forcecreate="0">
@@ -395,11 +346,10 @@
         <record id="mrp_routing_workcenter_stool" model="mrp.routing.workcenter" forcecreate="0">
             <field name="bom_id" ref="mrp_bom_stool"/>
             <field name="workcenter_id" ref="mrp.mrp_workcenter_3"/>
-            <field name="time_cycle">10</field>
+            <field name="time_cycle_manual">10</field>
             <field name="sequence">10</field>
             <field name="name">Assembly</field>
         </record>
-
 
         <record id="mrp_bom_stool_line_1" model="mrp.bom.line" forcecreate="0">
             <field name="product_id" ref="product_product_stool_top_1"/>
@@ -449,13 +399,6 @@
             <field name="bom_product_template_attribute_value_ids" eval="[(6, 0, [ref('mrp_workorder.product_attribute_value_3')])]"/>
             <field name="bom_id" ref="mrp_bom_stool"/>
         </record>
-        <record id="mrp_bom_stool_line_7" model="mrp.bom.line" forcecreate="0">
-            <field name="product_id" ref="product_product_ruber_adhesive"/>
-            <field name="product_qty">4</field>
-            <field name="product_uom_id" ref="uom.product_uom_unit"/>
-            <field name="sequence">1</field>
-            <field name="bom_id" ref="mrp_bom_stool"/>
-        </record>
         <record id="quality_point_stool_instruction_1" model="quality.point" forcecreate="0">
             <field name="product_ids" model="product.product" eval="[(4, p) for p in obj().env.ref('mrp_workorder.product_template_stool').product_variant_ids.ids]"/>
             <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
@@ -466,7 +409,6 @@
             <ul>
                 <li>1x Stool Top </li>
                 <li>4x Stool Foot </li>
-                <li>4x Adhesive Rubber (white) </li>
             </ul>
             <p><img class="img-fluid o_we_custom_image" src="mrp_workorder/static/img/qp_stool_1.jpeg" style="width: 50%;"><br></p>]]>
                 </field>
@@ -480,11 +422,11 @@
                 <field name="test_type_id" ref="test_type_register_consumed_materials"/>
                 <field name="component_id" ref="product_product_stool_top_1"/>
                 <field name="note"><![CDATA[
-                <p>Please scan the Table Head data matrix code which contains the part serial number</p>
+                <p>Please scan the Table Head data matrix which contains the part lot number to register its consumption.</p>
                 <p><img class="img-fluid o_we_custom_image" src="mrp_workorder/static/img/qp_stool_2.jpeg" style="width: 50%;"><br></p>
                             ]]>
                 </field>
-                <field name="title">Stool Serial Number (Dark Blue)</field>
+                <field name="title">Stool Lot (Dark Blue)</field>
                 <field name="sequence">20</field>
             </record>
             <record id="quality_point_stool_instruction_3" model="quality.point" forcecreate="0">
@@ -494,11 +436,11 @@
                 <field name="test_type_id" ref="test_type_register_consumed_materials"/>
                 <field name="component_id" ref="product_product_stool_top_2"/>
                 <field name="note"><![CDATA[
-                <p>Please scan the Table Head data matrix code which contains the part serial number</p>
+                <p>Please scan the Table Head data matrix which contains the part lot number to register its consumption.</p>
                 <p><img class="img-fluid o_we_custom_image" src="mrp_workorder/static/img/qp_stool_2.jpeg" style="width: 50%;"><br></p>
                             ]]>
                 </field>
-                <field name="title">Stool Serial Number (Green)</field>
+                <field name="title">Stool Lot (Green)</field>
                 <field name="sequence">20</field>
             </record>
             <record id="quality_point_stool_instruction_4" model="quality.point" forcecreate="0">
@@ -508,11 +450,11 @@
                 <field name="test_type_id" ref="test_type_register_consumed_materials"/>
                 <field name="component_id" ref="product_product_stool_top_3"/>
                 <field name="note"><![CDATA[
-                <p>Please scan the Table Head data matrix code which contains the part serial number</p>
+                <p>Please scan the Table Head data matrix which contains the part lot number to register its consumption.</p>
                 <p><img class="img-fluid o_we_custom_image" src="mrp_workorder/static/img/qp_stool_2.jpeg" style="width: 50%;"><br></p>
                             ]]>
                 </field>
-                <field name="title">Stool Serial Number (Grey)</field>
+                <field name="title">Stool Lot (Grey)</field>
                 <field name="sequence">20</field>
             </record>
             <record id="quality_point_stool_instruction_5" model="quality.point" forcecreate="0">
@@ -521,7 +463,7 @@
                 <field name="operation_id" ref="mrp_routing_workcenter_stool"/>
                 <field name="test_type_id" ref="quality.test_type_instructions"/>
                 <field name="note"><![CDATA[
-                <p>Please attach the Four Legs to the Stool Top as shown. </p>
+                <p>Please attach the four feet to the Stool Top as shown. </p>
                 <p><img class="img-fluid o_we_custom_image" src="mrp_workorder/static/img/qp_stool_3.jpeg" style="width: 50%;"><br></p>
                             ]]>
                 </field>
@@ -534,36 +476,32 @@
                 <field name="operation_id" ref="mrp_routing_workcenter_stool"/>
                 <field name="test_type_id" ref="quality.test_type_instructions"/>
                 <field name="note"><![CDATA[
-                <p>Attach the adhesive protection pads to each leg.</p>
-                <p><img class="img-fluid o_we_custom_image" src="mrp_workorder/static/img/qp_stool_4.jpeg" style="width: 50%;"><br></p>
-                            ]]>
-                </field>
-                <field name="title">Attach Adhesive Pads</field>
-                <field name="sequence">40</field>
-            </record>
-            <record id="quality_point_stool_instruction_7" model="quality.point" forcecreate="0">
-                <field name="product_ids" model="product.product" eval="[(4, p) for p in obj().env.ref('mrp_workorder.product_template_stool').product_variant_ids.ids]"/>
-                <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
-                <field name="operation_id" ref="mrp_routing_workcenter_stool"/>
-                <field name="test_type_id" ref="quality.test_type_instructions"/>
-                <field name="note"><![CDATA[
                 <p>Generate a new Serial Number for the assembled product.</p>
                     ]]>
             </field>
             <field name="title">Generate Serial Number</field>
+            <field name="sequence">40</field>
+        </record>
+        <record id="quality_point_stool_instruction_7" model="quality.point" forcecreate="0">
+            <field name="product_ids" model="product.product" eval="[(4, p) for p in obj().env.ref('mrp_workorder.product_template_stool').product_variant_ids.ids]"/>
+            <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
+            <field name="operation_id" ref="mrp_routing_workcenter_stool"/>
+            <field name="test_type_id" ref="test_type_print_label"/>
+            <field name="note"><![CDATA[
+            <p>Print the finished product label and place it onto the assembled stool as shown.</p>
+            <p><img class="img-fluid o_we_custom_image" src="mrp_workorder/static/img/qp_stool_5.jpeg" style="width: 50%;"><br></p>
+                        ]]>
+            </field>
+            <field name="title">Print Label</field>
             <field name="sequence">50</field>
         </record>
         <record id="quality_point_stool_instruction_8" model="quality.point" forcecreate="0">
             <field name="product_ids" model="product.product" eval="[(4, p) for p in obj().env.ref('mrp_workorder.product_template_stool').product_variant_ids.ids]"/>
             <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
             <field name="operation_id" ref="mrp_routing_workcenter_stool"/>
-            <field name="test_type_id" ref="test_type_print_label"/>
-            <field name="note"><![CDATA[
-            <p>Print Label and attach it to the finished product as shown.</p>
-            <p><img class="img-fluid o_we_custom_image" src="mrp_workorder/static/img/qp_stool_5.jpeg" style="width: 50%;"><br></p>
-                        ]]>
-            </field>
-            <field name="title">Print Label</field>
+            <field name="test_type_id" ref="quality.test_type_picture"/>
+            <field name="note">Take a picture of the assembled stool.</field>
+            <field name="title">Picture</field>
             <field name="sequence">60</field>
         </record>
     </data>

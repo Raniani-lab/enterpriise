@@ -225,7 +225,6 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                     </div>
                 </div>
                 <div class="o_workorder_data">
-                    <field class="o_workorder_note" name="note"/>
                     <div class="workorder_picture">
                         <field name="picture" widget="tablet_image" attrs="{'invisible': [('test_type', '!=', 'picture')]}"/>
                     </div>
@@ -274,6 +273,7 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                         </div>
                     </div>
                     <field name="operation_note" attrs="{'invisible': ['|', ('worksheet_type', '!=', 'text'), '&amp;', ('is_last_step', '=', True), ('is_first_step', '=', False)]}"/>
+                    <field class="o_workorder_note" name="note"/>
                 </div>
                 <div class="workorder_pdf">
                     <field name="worksheet_type" invisible="1"/>

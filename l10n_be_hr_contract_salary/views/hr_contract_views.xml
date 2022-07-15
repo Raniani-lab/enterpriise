@@ -15,13 +15,6 @@
                 <field name="sim_card" attrs="{'invisible': [('mobile', '=', 0)]}"/>
                 <field name="internet_invoice" attrs="{'invisible': [('internet', '=', 0)]}"/>
             </field>
-            <xpath expr="//label[@for='final_yearly_costs']" position="before">
-                <label for="final_yearly_costs_fte" attrs="{'invisible': [('country_code', '!=', 'BE')]}"/>
-                <div class="o_row" attrs="{'invisible': [('country_code', '!=', 'BE')]}">
-                    <field name="final_yearly_costs_fte" nolabel="1"/>
-                    <span>/ year</span>
-                </div>
-            </xpath>
             <div name="div_wage_with_holidays" position="attributes">
                 <attribute name="attrs">{'invisible': [('holidays', '=', 0.0), ('l10n_be_group_insurance_rate', '=', 0.0)]}</attribute>
             </div>

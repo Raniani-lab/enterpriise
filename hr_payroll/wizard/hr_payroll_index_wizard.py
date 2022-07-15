@@ -41,9 +41,6 @@ class HrPayrollIndex(models.TransientModel):
         wage_field = contract._get_contract_wage_field()
         wage = contract[wage_field]
         contract.write({wage_field: wage * (1 + self.percentage)})
-        if contract._get_work_time_rate() == 0:
-            time_credit_full_time_wage = contract['time_credit_full_time_wage']
-            contract.write({'time_credit_full_time_wage': time_credit_full_time_wage * (1 + self.percentage)})
 
     def action_confirm(self):
         self.ensure_one()

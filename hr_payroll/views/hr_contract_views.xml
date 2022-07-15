@@ -19,13 +19,6 @@
                     <field name="hourly_wage" nolabel="1"/>
                     <span>/ hour</span>
                 </div>
-                <label for="time_credit_full_time_wage"
-                       attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('time_credit', '=', False)]}"/>
-                <div class="o_row" name="time_credit_full_time_wage"
-                     attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('time_credit', '=', False)]}">
-                    <field name="time_credit_full_time_wage" nolabel="1"/>
-                    <span>/ month</span>
-                </div>
             </xpath>
             <xpath expr="//label[@for='wage']" position="attributes">
                 <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>

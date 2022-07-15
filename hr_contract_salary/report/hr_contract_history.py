@@ -26,5 +26,5 @@ class ContractHistory(models.Model):
         mapped_employee_contract = defaultdict(lambda: self.env['hr.contract'],
                                                [(c.employee_id, c) for c in self.mapped('contract_id')])
         for history in self:
-            history.reference_monthly_wage = mapped_employee_contract[history.employee_id].wage_with_holidays
+            history.reference_monthly_wage = mapped_employee_contract[history.employee_id]._get_contract_wage()
             history.reference_yearly_cost = mapped_employee_contract[history.employee_id].final_yearly_costs

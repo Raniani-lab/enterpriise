@@ -24,9 +24,6 @@ class HrContract(models.Model):
     payslips_count = fields.Integer("# Payslips", compute='_compute_payslips_count', groups="hr_payroll.group_hr_payroll_user")
     calendar_changed = fields.Boolean(help="Whether the previous or next contract has a different schedule or not")
 
-    time_credit_full_time_wage = fields.Monetary(
-        'Full Time Equivalent Wage', compute='_compute_time_credit_full_time_wage',
-        store=True, readonly=False)
     time_credit = fields.Boolean('Part Time', readonly=False, help='This is a part time contract.')
     work_time_rate = fields.Float(
         compute='_compute_work_time_rate', store=True, readonly=True,
@@ -38,17 +35,6 @@ class HrContract(models.Model):
         'hr.work.entry.type', string='Part Time Work Entry Type',
         domain=[('is_leave', '=', True)],
         help="The work entry type used when generating work entries to fit full time working schedule.")
-
-    @api.depends('wage', 'time_credit', 'work_time_rate')
-    def _compute_time_credit_full_time_wage(self):
-        for contract in self:
-            work_time_rate = contract._get_work_time_rate()
-            if contract.time_credit and work_time_rate != 0:
-                contract.time_credit_full_time_wage = contract.wage / work_time_rate
-            elif contract.time_credit and not work_time_rate:
-                contract.time_credit_full_time_wage = contract._get_contract_wage()
-            else:
-                contract.time_credit_full_time_wage = contract.wage
 
     @api.depends('time_credit', 'resource_calendar_id.hours_per_week', 'standard_calendar_id.hours_per_week')
     def _compute_work_time_rate(self):

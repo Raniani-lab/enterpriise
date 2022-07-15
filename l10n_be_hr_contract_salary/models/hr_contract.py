@@ -18,17 +18,6 @@ class HrContract(models.Model):
     contract_type_id = fields.Many2one('hr.contract.type', "Contract Type",
                                        default=lambda self: self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi',
                                                                          raise_if_not_found=False))
-    final_yearly_costs_fte = fields.Monetary(
-        compute='_compute_final_yearly_costs_fte',
-        string="Yearly Cost (FTE)",
-        help="Total yearly cost of the employee for the employer for a full time equivalent.")
-
-    @api.depends(lambda self: (
-        'time_credit_full_time_wage',
-        *self._get_advantage_fields()))
-    def _compute_final_yearly_costs_fte(self):
-        for contract in self:
-            contract.final_yearly_costs_fte = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.time_credit_full_time_wage
 
     @api.depends(
         'wage_with_holidays', 'wage_on_signature', 'state',
@@ -47,10 +36,6 @@ class HrContract(models.Model):
         vehicle_contracts = cars.with_context(active_test=False).mapped('log_contracts').filtered(
             lambda contract: not contract.active)
         return res + [cars, vehicle_contracts]
-
-    @api.model
-    def _advantage_black_list(self):
-        return super()._advantage_black_list() | set(['time_credit_full_time_wage'])
 
     @api.model
     def _advantage_white_list(self):

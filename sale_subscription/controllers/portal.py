@@ -38,13 +38,10 @@ class CustomerPortal(portal.CustomerPortal):
         return values
 
     def _get_subscription(self, access_token, order_id):
-        logged_in = not request.env.user.sudo()._is_public()
-        order_sudo = request.env['sale.order']
-        if access_token or not logged_in:
-            try:
-                order_sudo = self._document_check_access('sale.order', order_id, access_token)
-            except (AccessError, MissingError):
-                raise werkzeug.exceptions.NotFound()
+        try:
+            order_sudo = self._document_check_access('sale.order', order_id, access_token)
+        except (AccessError, MissingError):
+            raise werkzeug.exceptions.NotFound()
         return order_sudo
 
     @http.route(['/my/subscription', '/my/subscription/page/<int:page>'], type='http', auth="user", website=True)
@@ -284,19 +281,34 @@ class PaymentPortal(payment_portal.PaymentPortal):
         return tx_sudo._get_processing_values()
 
     @http.route('/my/subscription/assign_token/<int:order_id>', type='json', auth='user')
-    def subscription_assign_token(self, order_id, token_id):
+    def subscription_assign_token(self, order_id, token_id, access_token=None):
         """ Assign a token to a subscription.
 
         :param int order_id: The subscription to which the token must be assigned, as a
                                     `sale.order` id
         :param int token_id: The token to assign, as a `payment.token` id
+        :param str access_token: the order portal access token
         :return: None
         """
-        order_sudo = request.env['sale.order'].sudo().browse(order_id).exists()
-        new_token_sudo = request.env['payment.token'].sudo().browse(int(token_id)).exists()
-        if order_sudo.partner_id.commercial_partner_id == new_token_sudo.partner_id.commercial_partner_id and \
-                request.env.user.partner_id.commercial_partner_id == new_token_sudo.partner_id.commercial_partner_id:
-            order_sudo.payment_token_id = new_token_sudo
+        order_sudo = self._get_subscription(access_token, order_id)
+
+        new_token = request.env['payment.token'].browse(int(token_id)).exists()
+        if not new_token:
+            raise werkzeug.exceptions.NotFound()
+
+        try:
+            new_token.check_access_rights('read')
+            new_token.check_access_rule('read')
+        except AccessError:
+            raise werkzeug.exceptions.NotFound()
+
+        if not new_token.sudo().active:
+            # Archived token are removed from existing subscriptions
+            # and shouldn't be re-assigned through this route.
+            raise werkzeug.exceptions.NotFound()
+
+        order_sudo.payment_token_id = new_token
+
 
 class SalePortal(sale_portal.CustomerPortal):
 

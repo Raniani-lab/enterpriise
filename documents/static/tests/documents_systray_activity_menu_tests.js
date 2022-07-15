@@ -1,12 +1,9 @@
 /** @odoo-module **/
 
-import ActivityMenu from '@mail/js/systray/systray_activity_menu';
 import { start } from '@mail/../tests/helpers/test_utils';
 
 import session from 'web.session';
-import { Items as legacySystrayItems } from 'web.SystrayMenu';
 import testUtils from 'web.test_utils';
-import { registerCleanup } from '@web/../tests/helpers/cleanup';
 import { patchWithCleanup } from '@web/../tests/helpers/utils';
 
 QUnit.module('documents', {}, function () {
@@ -24,8 +21,6 @@ QUnit.module('documents', {}, function () {
                 return this._super(...arguments);
             },
         });
-        legacySystrayItems.push(ActivityMenu);
-        registerCleanup(() => legacySystrayItems.pop());
         const { env } = await start({
             async mockRPC(route, args) {
                 if (args.method === 'systray_get_activities') {

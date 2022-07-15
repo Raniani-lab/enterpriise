@@ -16,38 +16,9 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_cl_edi_boletas
-#: model:ir.actions.server,name:l10n_cl_edi_boletas.ir_cron_send_daily_sales_book_ir_actions_server
-#: model:ir.cron,cron_name:l10n_cl_edi_boletas.ir_cron_send_daily_sales_book
-#: model:ir.cron,name:l10n_cl_edi_boletas.ir_cron_send_daily_sales_book
-msgid "1. Cron Job - Run SII Sales Book Report Process"
-msgstr ""
-
-#. module: l10n_cl_edi_boletas
-#: model:ir.actions.server,name:l10n_cl_edi_boletas.ir_cron_ask_daily_sales_book_status_ir_actions_server
-#: model:ir.cron,cron_name:l10n_cl_edi_boletas.ir_cron_ask_daily_sales_book_status
-#: model:ir.cron,name:l10n_cl_edi_boletas.ir_cron_ask_daily_sales_book_status
-msgid "2. Cron Job - Ask for Daily Sales Book status"
-msgstr ""
-
-#. module: l10n_cl_edi_boletas
-#: model:ir.model.fields.selection,name:l10n_cl_edi_boletas.selection__l10n_cl_daily_sales_book__l10n_cl_dte_status__accepted
-msgid "Accepted"
-msgstr ""
-
-#. module: l10n_cl_edi_boletas
-#: model:ir.model.fields.selection,name:l10n_cl_edi_boletas.selection__l10n_cl_daily_sales_book__l10n_cl_dte_status__objected
-msgid "Accepted With Objections"
-msgstr ""
-
-#. module: l10n_cl_edi_boletas
 #: code:addons/l10n_cl_edi_boletas/models/account_move.py:0
 #, python-format
 msgid "Accepted with objections"
-msgstr ""
-
-#. module: l10n_cl_edi_boletas
-#: model:ir.model.fields,field_description:l10n_cl_edi_boletas.field_l10n_cl_daily_sales_book__message_needaction
-msgid "Action Needed"
 msgstr ""
 
 #. module: l10n_cl_edi_boletas

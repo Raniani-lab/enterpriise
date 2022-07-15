@@ -11,7 +11,6 @@ from odoo.tools import html_escape
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    l10n_cl_daily_sales_book_id = fields.Many2one('l10n_cl.daily.sales.book', copy=False)
 
     def _l10n_cl_edi_post_validation(self):
         if self.l10n_latam_document_type_id.code == '39':
@@ -79,15 +78,6 @@ class AccountMove(models.Model):
             self.l10n_cl_dte_partner_status = 'not_sent'
             if send_dte_to_partner:
                 self._l10n_cl_send_dte_to_partner()
-            book = self.env['l10n_cl.daily.sales.book'].search(
-                [('date', '=', self.invoice_date),
-                 ('l10n_cl_dte_status', 'in', ['accepted', 'objected', 'to_resend'])],
-                limit=1)
-            if book:
-                message_body += "<br/>" +  html_escape(_("This boleta was added on the already sent salesbook for "))
-                message_body += "<a href=# data-oe-model=l10n_cl.daily.sales.book data-oe-id=%s> %s </a>. " % (book.id, book.display_name)
-                message_body += html_escape(_('It will be resent. '))
-                book.l10n_cl_dte_status = 'to_resend'
         self.message_post(body=message_body)
 
     def _l10n_cl_get_verify_status_msg_rest(self, data):

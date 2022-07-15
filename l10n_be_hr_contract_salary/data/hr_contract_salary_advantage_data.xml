@@ -71,10 +71,24 @@
         <field name="description">Enter the number of kilometers between your home and your work place. The approximative amount reimbursed by the employer is calculated accordingly.</field>
     </record>
 
+    <record id="l10n_be_transport_private_bike" model="hr.contract.salary.advantage">
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_bicyle_cost')])"/>
+        <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'l10n_be_bicyle_cost')])"/>
+        <field name="sequence">21</field>
+        <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
+        <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
+        <field name="folded" eval="True"/>
+        <field name="fold_label">Private Bike</field>
+        <field name="fold_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'has_bicycle')])"/>
+        <field name="manual_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'km_home_work')])"/>
+        <field name="display_type">manual</field>
+        <field name="description">Enter the number of kilometers between your home and your work place. The reimbursed amount is of 0.20 cents per km with a maximum amount of 8€, computed on a one-day-per-week basis.</field>
+    </record>
+
     <record id="l10n_be_transport_company_bike" model="hr.contract.salary.advantage">
         <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'company_bike_depreciated_cost')])"/>
         <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'company_bike_depreciated_cost')])"/>
-        <field name="sequence">21</field>
+        <field name="sequence">22</field>
         <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="folded" eval="True"/>

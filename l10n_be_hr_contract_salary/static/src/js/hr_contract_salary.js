@@ -43,6 +43,14 @@ hrContractSalary.include({
         fuel_card_div.removeClass("hidden");
     },
 
+    onchangeFoldedResetInteger(advantageField) {
+        if (advantageField === 'private_car_reimbursed_amount_manual' || advantageField === 'l10n_be_bicyle_cost_manual') {
+            return false;
+        } else {
+            return this._super.apply(this, arguments);
+        }
+    },
+
     start: async function () {
         const res = await this._super(...arguments);
         this.onchangeHospital();

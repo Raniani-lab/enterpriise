@@ -161,12 +161,16 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("input[name='NET']").removeClass('o_outdated');
     },
 
+    onchangeFoldedResetInteger(advantageField) {
+        return true;
+    },
+
     onchangeFolded(event) {
         const foldedContent = $(event.target.parentElement.parentElement).find('.folded_content');
         const checked = event.target.checked;
         if (!checked) {
             $(foldedContent).find('input').toArray().forEach(input => {
-                if (input.type == 'number') {
+                if (input.type == 'number' && this.onchangeFoldedResetInteger(input.name)) {
                     $(input).val(0);
                     $(input).trigger('change');
                 }

@@ -87,17 +87,26 @@ class HrContractSalary(main.HrContractSalary):
         ambulatory_insurance_fields = [
             'l10n_be_ambulatory_insured_children', 'l10n_be_ambulatory_insured_adults',
             'fold_l10n_be_ambulatory_insured_spouse', 'l10n_be_has_ambulatory_insurance']
+        if advantage_field == "km_home_work":
+            new_value = new_value if new_value else 0
+            res['extra_values'] = [
+                ('private_car_reimbursed_amount_manual', new_value),
+                ('l10n_be_bicyle_cost_manual', new_value),
+                ('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(new_value)), 2) if advantages['contract']['fold_l10n_be_bicyle_cost'] else 0),
+                ('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)  if advantages['contract']['fold_private_car_reimbursed_amount'] else 0),
+            ]
         if advantage_field == 'public_transport_reimbursed_amount':
             res['new_value'] = round(request.env['hr.contract']._get_public_transport_reimbursed_amount(float(new_value)), 2)
         elif advantage_field == 'train_transport_reimbursed_amount':
             res['new_value'] = round(request.env['hr.contract']._get_train_transport_reimbursed_amount(float(new_value)), 2)
-        elif advantage_field in ['private_car_reimbursed_amount', 'km_home_work']:
+        elif advantage_field == 'private_car_reimbursed_amount':
             new_value = new_value if new_value else 0
-            if advantage_field == 'km_home_work':
-                res['extra_values'] = [('private_car_reimbursed_amount_manual', new_value)]
-            else:
-                res['new_value'] = round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)
-                res['extra_values'] = [('km_home_work', new_value)]
+            res['new_value'] = round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)
+            res['extra_values'] = [
+                ('km_home_work', new_value),
+                ('l10n_be_bicyle_cost_manual', new_value),
+                ('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(new_value)), 2) if advantages['contract']['fold_l10n_be_bicyle_cost'] else 0),
+            ]
         elif advantage_field == 'ip_value':
             contract = self._check_access_rights(contract_id)
             res['new_value'] = contract.ip_wage_rate if float(new_value) else 0
@@ -137,6 +146,20 @@ class HrContractSalary(main.HrContractSalary):
                 child_amount, child_count,
                 adult_amount, adult_count)
             res['extra_values'] = [('l10n_be_has_ambulatory_insurance', insurance_amount)]
+        if advantage_field == 'l10n_be_bicyle_cost':
+            new_value = new_value if new_value else 0
+            res['new_value'] = round(request.env['hr.contract']._get_private_bicycle_cost(float(new_value)), 2)
+            res['extra_values'] = [
+                ('km_home_work', new_value),
+                ('private_car_reimbursed_amount_manual', new_value),
+                ('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)  if advantages['contract']['fold_private_car_reimbursed_amount'] else 0),
+            ]
+        if advantage_field == 'fold_l10n_be_bicyle_cost':
+            distance = advantages['employee']['km_home_work'] or '0'
+            res['extra_values'] = [('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(distance)), 2) if advantages['contract']['fold_l10n_be_bicyle_cost'] else 0)]
+        if advantage_field == 'fold_private_car_reimbursed_amount':
+            distance = advantages['employee']['km_home_work'] or '0'
+            res['extra_values'] = [('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(distance)), 2)  if advantages['contract']['fold_private_car_reimbursed_amount'] else 0)]
         return res
 
     def _apply_url_value(self, contract, field_name, value):

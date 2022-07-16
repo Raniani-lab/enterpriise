@@ -3,7 +3,7 @@
 import { useService } from "@web/core/utils/hooks";
 import { StudioApprovalInfos } from "@web_studio/approval/approval_infos";
 
-const { useState, onWillStart, Component, onWillUnmount, useRef } = owl;
+const { useState, Component, onWillUnmount, useRef } = owl;
 
 function useOpenExternal() {
     const closeFns = [];
@@ -29,7 +29,6 @@ export class StudioApproval extends Component {
         const approval = this.props.approval;
         this.approval = approval;
         this.state = useState(approval.state);
-        onWillStart(() => approval.init);
     }
 
     toggleApprovalInfo() {

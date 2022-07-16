@@ -28,7 +28,6 @@ function getMissingApprovals(entries, rules) {
 class StudioApproval {
     constructor() {
         this._data = reactive({});
-        this._inits = {};
 
         // Lazy properties to be set by specialization.
         this.orm = null;
@@ -40,24 +39,19 @@ class StudioApproval {
         this.action = null;
     }
 
-    get init() {
-        if (this.dataKey in this._inits) {
-            return this._inits[this.dataKey];
-        }
-        const prom = this.fetchApprovals().then(() => {
-            this._inits[this.dataKey] = null;
-        });
-        this._inits[this.dataKey] = prom;
-        return prom;
-    }
-
     get dataKey() {
         return `${this.resModel}-${this.resId}-${this.method}-${this.action}`;
     }
 
+    /**
+     * The approval's values for a given resModel, resId, method and action.
+     * If current values don't exist, we fetch them from the server. Owl's fine reactivity
+     * does the update of every component using that state.
+     */
     get state() {
         if (!(this.dataKey in this._data)) {
-            this._data[this.dataKey] = {};
+            this._data[this.dataKey] = { rules: null };
+            this.fetchApprovals();
         }
         return this._data[this.dataKey];
     }
@@ -77,10 +71,7 @@ class StudioApproval {
     async checkApproval() {
         const args = [this.resModel, this.resId, this.method, this.action];
         const result = await this.orm.call("studio.approval.rule", "check_approval", args);
-        // trigger a refresh of the relevant validation widget since validation
-        // could happen server side
         const approved = result.approved;
-        delete result.approved;
         if (!approved) {
             this.displayNotification(result);
         }
@@ -105,7 +96,6 @@ class StudioApproval {
 
     /**
      * Create or update an approval entry for a specified rule server-side.
-     * @private
      * @param {Number} ruleId
      * @param {Boolean} approved
      */
@@ -122,7 +112,6 @@ class StudioApproval {
 
     /**
      * Delete an approval entry for a given rule server-side.
-     * @private
      * @param {Number} ruleId
      */
     async cancelApproval(ruleId) {

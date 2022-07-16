@@ -1,7 +1,13 @@
 /** @odoo-module */
 
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-import { getFixture, patchWithCleanup, click, nextTick } from "@web/../tests/helpers/utils";
+import {
+    getFixture,
+    patchWithCleanup,
+    click,
+    nextTick,
+    makeDeferred,
+} from "@web/../tests/helpers/utils";
 import { session } from "@web/session";
 import { registry } from "@web/core/registry";
 
@@ -48,6 +54,42 @@ QUnit.module("Studio Approval", (hooks) => {
 
         setupViewRegistries();
         registry.category("services").add("studio", fakeStudioService);
+    });
+
+    QUnit.test("approval components are synchronous", async (assert) => {
+        const prom = makeDeferred();
+        await makeView({
+            type: "form",
+            resModel: "partner",
+            serverData,
+            arch: `<form><button studio_approval="True" type="object" name="myMethod"/></form>`,
+            async mockRPC(route, args) {
+                if (args.method === "get_approval_spec") {
+                    assert.step(args.method);
+                    await prom;
+                    return {
+                        rules: [
+                            {
+                                id: 1,
+                                group_id: [1, "Internal User"],
+                                domain: false,
+                                can_validate: true,
+                                message: false,
+                                exclusive_user: false,
+                            },
+                        ],
+                        entries: [],
+                        groups: [[1, "Internal User"]],
+                    };
+                }
+            },
+        });
+        assert.verifySteps(["get_approval_spec"]);
+        assert.containsOnce(target, "button .o_web_studio_approval .fa-circle-o-notch.fa-spin");
+        prom.resolve();
+        await nextTick();
+        assert.containsNone(target, "button .o_web_studio_approval .fa-circle-o-notch.fa-spin");
+        assert.containsOnce(target, "button .o_web_studio_approval .o_web_studio_approval_avatar");
     });
 
     QUnit.test("approval widget basic rendering", async function (assert) {

@@ -34,10 +34,7 @@ patch(ViewButton.prototype, "web_studio.ViewButtonApproval", {
             const onClickViewButton = this.env.onClickViewButton;
             owl.useSubEnv({
                 onClickViewButton: (params) => {
-                    params.beforeExecute = async () => {
-                        const approved = await this.approval.checkApproval();
-                        return approved;
-                    };
+                    params.beforeExecute = async () => this.approval.checkApproval();
                     onClickViewButton(params);
                 },
             });

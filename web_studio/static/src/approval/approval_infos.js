@@ -4,7 +4,7 @@ import { formatDate, deserializeDate } from "@web/core/l10n/dates";
 import { useService } from "@web/core/utils/hooks";
 import { Dialog } from "@web/core/dialog/dialog";
 
-const { useState, onWillStart, Component } = owl;
+const { useState, Component } = owl;
 
 export class StudioApprovalInfos extends Component {
     setup() {
@@ -12,7 +12,6 @@ export class StudioApprovalInfos extends Component {
         const approval = this.props.approval;
         this.approval = approval;
         this.state = useState(approval.state);
-        onWillStart(() => approval.init);
     }
 
     formatDate(val, format) {

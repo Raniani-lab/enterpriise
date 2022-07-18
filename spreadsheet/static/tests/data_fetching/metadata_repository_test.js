@@ -84,10 +84,10 @@ QUnit.module("spreadsheet > Metadata Repository", {}, () => {
             assert.step("labels-fetched");
         });
 
-        assert.throws(() => metadataRepository.getRecordDisplayName("A", 1));
-        assert.throws(() => metadataRepository.getRecordDisplayName("A", 1));
-        assert.throws(() => metadataRepository.getRecordDisplayName("A", 2));
-        assert.throws(() => metadataRepository.getRecordDisplayName("B", 1));
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 1), /Data is loading/);
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 1), /Data is loading/);
+        assert.throws(() => metadataRepository.getRecordDisplayName("A", 2), /Data is loading/);
+        assert.throws(() => metadataRepository.getRecordDisplayName("B", 1), /Data is loading/);
         assert.verifySteps([]);
 
         await nextTick();
@@ -145,9 +145,9 @@ QUnit.module("spreadsheet > Metadata Repository", {}, () => {
 
             const metadataRepository = new MetadataRepository(orm);
 
-            assert.throws(() => metadataRepository.getRecordDisplayName("A", 1));
-            assert.throws(() => metadataRepository.getRecordDisplayName("B", 1));
-            assert.throws(() => metadataRepository.getRecordDisplayName("B", 2));
+            assert.throws(() => metadataRepository.getRecordDisplayName("A", 1), /Data is loading/);
+            assert.throws(() => metadataRepository.getRecordDisplayName("B", 1), /Data is loading/);
+            assert.throws(() => metadataRepository.getRecordDisplayName("B", 2), /Data is loading/);
             assert.verifySteps([]);
 
             await nextTick();
@@ -159,7 +159,10 @@ QUnit.module("spreadsheet > Metadata Repository", {}, () => {
             ]);
 
             assert.strictEqual(metadataRepository.getRecordDisplayName("A", 1), "1");
-            assert.throws(() => metadataRepository.getRecordDisplayName("B", 1));
+            assert.throws(
+                () => metadataRepository.getRecordDisplayName("B", 1),
+                /Unable to fetch the label of 1 of model B/
+            );
             assert.strictEqual(metadataRepository.getRecordDisplayName("B", 2), "2");
         }
     );

@@ -4,6 +4,8 @@ import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import { ServerData } from "../data_sources/server_data";
 
+import { LoadingDataError } from "../o_spreadsheet/errors";
+
 const { EventBus } = owl;
 
 /**
@@ -111,7 +113,10 @@ export class MetadataRepository extends EventBus {
         try {
             const result = this.serverData.batch.get(model, "name_get", id);
             return result[1];
-        } catch (_) {
+        } catch (e) {
+            if (e instanceof LoadingDataError) {
+                throw e;
+            }
             throw new Error(sprintf(_t("Unable to fetch the label of %s of model %s"), id, model));
         }
     }

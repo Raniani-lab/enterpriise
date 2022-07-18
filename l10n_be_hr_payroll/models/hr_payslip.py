@@ -534,7 +534,7 @@ class Payslip(models.Model):
             ('date_from', '>=', date(self.date_from.year - 2, 1, 1)),
             ('state', 'in', ['done', 'paid']),
         ])
-        european_time_off_amount = two_years_payslips._get_worked_days_line_amount('LEAVE216')
+        european_time_off_amount = two_years_payslips.filtered(lambda p: p.date_from.year < self.date_from.year)._get_worked_days_line_amount('LEAVE216')
         already_recovered_amount = two_years_payslips._get_line_values(['EU.LEAVE.DEDUC'], compute_sum=True)['EU.LEAVE.DEDUC']['sum']['total']
         return european_time_off_amount + already_recovered_amount
 

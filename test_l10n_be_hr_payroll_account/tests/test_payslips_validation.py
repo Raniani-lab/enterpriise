@@ -8441,3 +8441,57 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'NET': 0.0,
         }
         self._validate_payslip(double_payslip, payslip_results)
+
+    def test_double_holidays_european_time_off_current_year(self):
+        # Check that european time off taken on the current year
+        # are not recovered on the double holiday pay (and left for next year)
+        self.contract._generate_work_entries(datetime.date(2020, 5, 1), datetime.date(2022, 6, 30))
+
+        european_time_off = self.env['hr.leave'].create({
+            'name': 'European Time Off',
+            'holiday_status_id': self.european_time_off_type.id,
+            'date_from': datetime.datetime(2022, 5, 9, 1, 0, 0),
+            'date_to': datetime.datetime(2022, 5, 12, 23, 0, 0),
+            'request_date_from': datetime.datetime(2020, 5, 9, 1, 0, 0),
+            'request_date_to': datetime.datetime(2020, 5, 12, 23, 0, 0),
+            'number_of_days': 4,
+            'employee_id': self.employee.id,
+        })
+        european_time_off.action_validate()
+
+        european_payslip = self.env['hr.payslip'].create({
+            'name': 'Payslip',
+            'contract_id': self.contract.id,
+            'date_from': datetime.datetime(2022, 5, 1),
+            'date_to': datetime.datetime(2022, 5, 31),
+            'employee_id': self.employee.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary').id,
+            'company_id': self.env.company.id,
+        })
+        european_payslip.action_refresh_from_work_entries()
+        european_payslip.action_payslip_done()
+        self.assertEqual(european_payslip.worked_days_line_ids.filtered(lambda wd: wd.code == 'LEAVE216').amount, 489.23)
+
+        payslip = self.env['hr.payslip'].create({
+            'name': "Test Payslip",
+            'employee_id': self.employee.id,
+            'contract_id': self.contract.id,
+            'company_id': self.env.company.id,
+            'vehicle_id': self.car.id,
+            'struct_id': self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id,
+            'date_from': datetime.date(2022, 6, 1),
+            'date_to': datetime.date(2022, 6, 30)
+        })
+        payslip.compute_sheet()
+
+        self.assertEqual(len(payslip.input_line_ids), 0)
+        payslip_results = {
+            'BASIC': 2438.0,
+            'SALARY': 2252.5,
+            'ONSS': -294.4,
+            'GROSS': 2143.6,
+            'P.P': -908.67,
+            'PPTOTAL': 908.67,
+            'NET': 1234.93,
+        }
+        self._validate_payslip(payslip, payslip_results)

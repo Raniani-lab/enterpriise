@@ -52,11 +52,15 @@ class Payslip(models.Model):
             elif slip.struct_id.code == 'CP200DOUBLE':
                 to_recover = slip._get_sum_european_time_off_days()
                 if to_recover:
-                    slip.write({'input_line_ids': [(0, 0, {
+                    european_type = self.env.ref('l10n_be_hr_payroll.input_double_holiday_european_leave_deduction')
+                    lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id == european_type)
+                    to_remove_vals = [(3, line.id, False) for line in lines_to_remove]
+                    to_add_vals = [(0, 0, {
                         'name': _('European Leaves Deduction'),
                         'amount': to_recover,
-                        'input_type_id': self.env.ref('l10n_be_hr_payroll.input_double_holiday_european_leave_deduction').id,
-                    })]})
+                        'input_type_id': european_type.id,
+                    })]
+                    slip.write({'input_line_ids': to_remove_vals + to_add_vals})
         return res
 
     @ormcache('self.employee_id', 'self.date_from', 'self.date_to')

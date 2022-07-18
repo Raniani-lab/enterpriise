@@ -81,7 +81,14 @@
                                 <td>Working Schedule</td>
                                 <td><span><t t-esc="round(o.contract_id.resource_calendar_id.hours_per_week, 2)"/> / <t t-esc="round(o.contract_id.resource_calendar_id.full_time_required_hours, 2)"/> Hours/Week</span></td>
                             </tr>
-
+                            <tr>
+                                <td>Additional time off (european, ...)</td>
+                                <td><span><t t-esc="o.input_line_ids.filtered(lambda line: line.code == 'EUROPEAN_DAYS').amount"/></span></td>
+                            </tr>
+                            <tr>
+                                <td>Additional amount to deduct</td>
+                                <td><span><t t-esc="o.input_line_ids.filtered(lambda line: line.code == 'EUROPEAN').amount"/></span></td>
+                            </tr>
                         </tbody>
                     </table>
 

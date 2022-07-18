@@ -5287,7 +5287,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         self.holiday_pay_2020.compute_sheet()
         self.assertEqual(len(self.holiday_pay_2020.worked_days_line_ids), 0)
-        self.assertEqual(len(self.holiday_pay_2020.input_line_ids), 9)
+        self.assertEqual(len(self.holiday_pay_2020.input_line_ids), 11)
         self.assertEqual(len(self.holiday_pay_2020.line_ids), 24)
         payslip_results = {
             'PAY_SIMPLE': 1137.92,
@@ -5449,7 +5449,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
 
         self.assertEqual(len(self.holiday_pay_2020.worked_days_line_ids), 0)
-        self.assertEqual(len(self.holiday_pay_2020.input_line_ids), 4)
+        self.assertEqual(len(self.holiday_pay_2020.input_line_ids), 6)
         self.assertEqual(len(self.holiday_pay_2020.line_ids), 19)
         payslip_results = {
             'PAY_SIMPLE': 1137.92,

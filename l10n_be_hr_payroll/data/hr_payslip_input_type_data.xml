@@ -225,7 +225,7 @@
         <field name="name">Additional Vacation Taken</field>
         <field name="code">EUROPEAN_DAYS</field>
         <field name="country_id" ref="base.be"/>
-        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
+        <field name="struct_ids" eval="[(4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n_holidays')), (4, ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays'))]"/>
     </record>
 
     <record id="cp200_other_input_simple_pay_december" model="hr.payslip.input.type">

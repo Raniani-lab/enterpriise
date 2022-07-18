@@ -57,10 +57,11 @@ class AccountEdiFormat(models.Model):
 
         cfdi_node = fromstring(cfdi)
         addenda_node = fromstring(addenda)
+        version = cfdi_node.get('Version')
 
         # Add a root node Addenda if not specified explicitly by the user.
-        if addenda_node.tag != '{http://www.sat.gob.mx/cfd/3}Addenda':
-            node = etree.Element(etree.QName('http://www.sat.gob.mx/cfd/3', 'Addenda'))
+        if addenda_node.tag != '{http://www.sat.gob.mx/cfd/%s}Addenda' % version[0]:
+            node = etree.Element(etree.QName('http://www.sat.gob.mx/cfd/%s' % version[0], 'Addenda'))
             node.append(addenda_node)
             addenda_node = node
 

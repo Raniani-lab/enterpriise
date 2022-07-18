@@ -11,6 +11,7 @@
 <t t-if="project.allow_forecast">
 <td style="text-align: right; vertical-align: middle;">
 <span t-if="not service['is_unit']"><t t-esc="format_value(service['planned_value'], services['is_hour'])"/> <t t-esc="service['unit']"/></span>
+<span t-else="" class="fst-italic">N/A</span>
 </td>
 </t>
         </xpath>

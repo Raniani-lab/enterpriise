@@ -23,6 +23,8 @@ class ProjectUpdate(models.Model):
         slots_by_order_line = {res['sale_line_id'][0]: res['allocated_hours'] for res in slots}
         uom_hour = self.env.ref('uom.product_uom_hour')
         for service in services['data']:
+            if service['is_unit']:
+                continue
             allocated_hours = uom_hour._compute_quantity(slots_by_order_line.get(service['sol'].id, 0), self.env.company.timesheet_encode_uom_id, raise_if_failure=False)
             service['planned_value'] = allocated_hours
             service['remaining_value'] = service['remaining_value'] - allocated_hours

@@ -208,7 +208,7 @@ class IntrastatReport(models.AbstractModel):
         where = '''
                 inv.state = 'posted'
                 AND inv_line.display_type IS NULL
-                AND NOT inv_line.quantity = 0
+                AND (NOT inv_line.price_subtotal = 0 OR inv_line.price_unit * inv_line.quantity != 0)
                 AND inv.company_id = %(company_id)s
                 AND company_country.id != country.id
                 AND country.intrastat = TRUE AND (country.code != 'GB' OR inv.date < '2021-01-01')

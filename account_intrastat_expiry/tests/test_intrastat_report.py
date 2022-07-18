@@ -58,6 +58,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 (0, 0, {
                     'name': 'line_1',
                     'product_id': cls.product_a.id,
+                    'price_unit': 5.0,
                     'intrastat_transaction_id': cls.intrastat_codes['%s-no_date' % code_type].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,
@@ -65,6 +66,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 (0, 0, {
                     'name': 'line_2',
                     'product_id': cls.product_b.id,
+                    'price_unit': 5.0,
                     'intrastat_transaction_id': cls.intrastat_codes['%s-expired' % code_type].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,
@@ -72,6 +74,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 (0, 0, {
                     'name': 'line_3',
                     'product_id': cls.product_c.id,
+                    'price_unit': 5.0,
                     'intrastat_transaction_id': cls.intrastat_codes['%s-premature' % code_type].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,

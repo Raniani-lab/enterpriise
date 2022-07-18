@@ -252,7 +252,7 @@ class AnalyticLine(models.Model):
                         add_record(False, key, {'values': record, 'domain': domain})
 
         if 'task_id' in domain_project_task:
-            task_ids = self.env['project.task'].search(domain_project_task['task_id'])
+            task_ids = self.env['project.task'].search(domain_project_task['task_id'] + [('project_id', '!=', False)])
             for task_id in task_ids:
                 record = {
                     row_field: read_row_fake_value(row_field, False, task_id)

@@ -328,6 +328,24 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         wizard = self.env[act_window_action['res_model']].with_context(act_window_action['context']).new()
         self.assertEqual(wizard.time_spent, 0.5)
 
+    def test_timesheet_grid_filter_task_without_project(self):
+        """Make sure that a task without project can not be pulled in the domain"""
+        row_fields = ['project_id', 'task_id']
+        col_field = 'date'
+        cell_field = 'unit_amount'
+        domain = [['employee_id', '=', self.user_employee.employee_id.id],
+                  ['project_id', '!=', False]]
+        orderby = 'project_id,task_id'
+        # add a task without project
+        self.env['project.task'].with_context({'mail_create_nolog': True}).create({
+            'name': 'Test task without project'
+        })
+        # look for this task
+        new_domain = expression.AND([domain, [('task_id', '=', 'Test task without project')]])
+        result = self.env['account.analytic.line'].with_context(group_expand="group_expand").read_grid(row_fields, col_field, cell_field, domain=new_domain, orderby=orderby)
+        # there is no error and nothing is in the result because a task witout project can not have timesheets
+        self.assertEqual(len(result['rows']), 0)
+
     def test_adjust_grid(self):
         today_date = fields.Date.today()
         company = self.env['res.company'].create({'name': 'My_Company'})

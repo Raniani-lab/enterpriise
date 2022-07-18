@@ -165,6 +165,7 @@ export const DocumentsRecordMixin = {
                 "text/html",
                 "text/plain",
                 "application/pdf",
+                "application/pdf;base64",
                 "audio/mpeg",
                 "video/x-matroska",
                 "video/mp4",

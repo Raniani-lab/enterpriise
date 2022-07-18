@@ -45,7 +45,6 @@ creates next activities for the related approvers.
         ],
         'web.assets_backend': [
             'approvals/static/src/components/*/*.js',
-            'approvals/static/src/components/*/*.scss',
         ],
         'web.assets_tests': [
             'approvals/static/tests/tours/**/*',

@@ -32,11 +32,11 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
                 time: null,
                 manualTimeInput: false,
                 errorManualTimeInput: false,
+                description: this.props.description,
             });
             this.TimerHeaderM2O = TimerHeaderM2O;
             this.manualTimerAmount = "00:00";
             this.manualTimeInput = useRef("manualTimerInput");
-            this.descriptionInput = useRef("inputDescription");
             this.startButton = useRef("startButton");
             this.stopButton = useRef("stopButton");
             this.timerStarted = false;
@@ -50,8 +50,8 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
             }
 
             onWillUpdateProps(async (nextProps) => {
-                if (nextProps.description !== this.props.description && this.descriptionInput.el) {
-                    this.descriptionInput.el.value = nextProps.description;
+                if (nextProps.description !== this.props.description) {
+                    this.state.description = nextProps.description;
                 }
             });
 

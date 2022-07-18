@@ -49,8 +49,7 @@
             </div>
             <div class="p-2 col-sm-12 col-md-5 input_description">
                 <span t-if="_timerReadOnly" t-esc="props.description" class="input_description_timer"/>
-                <input t-else="" class="o_field_float o_field_number o_field_widget o_input input_description_timer" type="text" t-att-value="props.description" t-ref="inputDescription"
-                    placeholder="Describe your activity..." t-on-change="_onInputDescription" t-on-keydown="_onKeydown"/>
+                <input t-else="" class="o_field_float o_field_number o_field_widget o_input input_description_timer" type="text" t-model="state.description" placeholder="Describe your activity..." t-on-change="_onInputDescription" t-on-keydown="_onKeydown"/>
             </div>
             <div t-if="_timerReadOnly" class="p-2 input_m2o d-flex flex-row justify-content-around">
                 <div class="px-2">

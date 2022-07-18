@@ -19,6 +19,8 @@ import {
     setGlobalFilterValue,
 } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
+import { createSpreadsheetWithGraph, insertGraphInSpreadsheet } from "@spreadsheet/../tests/utils/chart";
+import { createSpreadsheetWithList } from "@spreadsheet/../tests/utils/list";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { FILTER_DATE_OPTION } from "@spreadsheet/assets_backend/constants";
 
@@ -198,6 +200,83 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.equal(computedDomain.length, 3);
         const listDomain = model.getters.getListComputedDomain("1");
         assert.equal(listDomain.length, 3);
+    });
+
+    QUnit.test("Domain of simple date filter", async function (assert) {
+        patchDate(2022, 6, 14, 0, 0, 0);
+        const { model } = await createSpreadsheetWithPivotAndList();
+        insertGraphInSpreadsheet(model);
+        const chartId = model.getters.getOdooChartIds()[0];
+        await addGlobalFilter(model, {
+            filter: {
+                ...LAST_YEAR_FILTER.filter,
+                graphFields: { [chartId]: { field: "date", type: "date" } },
+            },
+        });
+        const pivotDomain = model.getters.getPivotComputedDomain("1");
+        assert.deepEqual(pivotDomain[0], "&");
+        assert.deepEqual(pivotDomain[1], ["date", ">=", "2021-01-01"]);
+        assert.deepEqual(pivotDomain[2], ["date", "<=", "2021-12-31"]);
+        const listDomain = model.getters.getListComputedDomain("1");
+        assert.deepEqual(listDomain[0], "&");
+        assert.deepEqual(listDomain[1], ["date", ">=", "2021-01-01"]);
+        assert.deepEqual(listDomain[2], ["date", "<=", "2021-12-31"]);
+        const graphDomain = model.getters
+            .getSpreadsheetGraphDataSource(chartId)
+            .getComputedDomain();
+        assert.deepEqual(graphDomain[0], "&");
+        assert.deepEqual(graphDomain[1], ["date", ">=", "2021-01-01"]);
+        assert.deepEqual(graphDomain[2], ["date", "<=", "2021-12-31"]);
+
+    });
+
+    QUnit.test("Domain of date filter with year offset on pivot field", async function (assert) {
+        patchDate(2022, 6, 14, 0, 0, 0);
+        const { model } = await createSpreadsheetWithPivot();
+        const filter = {
+            ...THIS_YEAR_FILTER.filter,
+            pivotFields: { 1: { field: "date", type: "date", offset: 1 } },
+        };
+        await addGlobalFilter(model, { filter });
+        const pivotDomain = model.getters.getPivotComputedDomain("1");
+        assert.deepEqual(pivotDomain[0], "&");
+        assert.deepEqual(pivotDomain[1], ["date", ">=", "2023-01-01"]);
+        assert.deepEqual(pivotDomain[2], ["date", "<=", "2023-12-31"]);
+    });
+
+    QUnit.test("Domain of date filter with quarter offset on list field", async function (assert) {
+        patchDate(2022, 6, 14, 0, 0, 0);
+        const { model } = await createSpreadsheetWithList();
+        const filter = {
+            ...THIS_YEAR_FILTER.filter,
+            rangeType: "quarter",
+            defaultValue: { yearOffset: 0, period: "third_quarter" },
+            listFields: { 1: { field: "date", type: "date", offset: 2 } },
+        };
+        await addGlobalFilter(model, { filter });
+        const listDomain = model.getters.getListComputedDomain("1");
+        assert.deepEqual(listDomain[0], "&");
+        assert.deepEqual(listDomain[1], ["date", ">=", "2023-01-01"]);
+        assert.deepEqual(listDomain[2], ["date", "<=", "2023-03-31"]);
+    });
+
+    QUnit.test("Domain of date filter with month offset on graph field", async function (assert) {
+        patchDate(2022, 6, 14, 0, 0, 0);
+        const { model } = await createSpreadsheetWithGraph();
+        const chartId = model.getters.getOdooChartIds()[0];
+        const filter = {
+            ...THIS_YEAR_FILTER.filter,
+            rangeType: "month",
+            defaultValue: { yearOffset: 0, period: "july" },
+            graphFields: { [chartId]: { field: "date", type: "date", offset: -2 } },
+        };
+        await addGlobalFilter(model, { filter });
+        const graphDomain = model.getters
+            .getSpreadsheetGraphDataSource(chartId)
+            .getComputedDomain();
+        assert.deepEqual(graphDomain[0], "&");
+        assert.deepEqual(graphDomain[1], ["date", ">=", "2022-05-01"]);
+        assert.deepEqual(graphDomain[2], ["date", "<=", "2022-05-31"]);
     });
 
     QUnit.test("Can import/export filters", async function (assert) {

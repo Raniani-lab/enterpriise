@@ -56,7 +56,7 @@
             </div>
         </div>
         <div class="o_side_panel_section o_side_panel_related_model" t-if="state.type === 'relation'">
-            <div class="o_side_panel_title">Related Model</div>
+            <div class="o_side_panel_title">Related model</div>
             <div t-att-class="missingModel ? 'o_field_invalid' : ''" class="o_required_modifier">
                 <ModelSelector
                     value="state.relation.relatedModel.label"
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div t-if="state.type === 'date'" class="o_side_panel_section">
-            <div class="o_side_panel_title">Time Range</div>
+            <div class="o_side_panel_title">Time range</div>
                 <select
                     t-model="state.date.type"
                     t-on-change="onDateOptionChange"
@@ -82,7 +82,7 @@
             </select>
         </div>
         <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModel.technical">
-            <div class="o_side_panel_title">Default Value</div>
+            <div class="o_side_panel_title">Default value</div>
             <div t-if="state.type === 'date'" class="d-flex align-items-center mt-2">
                 <input
                     type="checkbox"
@@ -106,50 +106,88 @@
             />
         </div>
         <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModel.technical">
-            <div class="o_side_panel_title o_field_matching_title">Field Matching</div>
+            <div class="o_side_panel_title o_field_matching_title">Field matching</div>
             <div class="text-muted">
                 Match this filter to a field for each data source
             </div>
             <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingPivotField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
                 <t t-set="pivotModel" t-value="getters.getSpreadsheetPivotModel(pivotId)"/>
                 <t t-if="pivotModel !== undefined">
-                    <div><t t-esc="modelDisplayNames.pivots[pivotId]"/> <span class="o_pivot_model_technical_name text-muted">(Pivot #<t t-esc="pivotId"/>)</span></div>
-                    <FieldSelectorAdapter
-                        Component="FieldSelectorWidget"
-                        model="getters.getPivotDefinition(pivotId).model"
-                        fields="pivotModel.getFields()"
-                        type="state.type"
-                        relatedModel="state.relation.relatedModel.technical"
-                        selected="state.pivotFields[pivotId]"
-                        t-key="pivotId + (state.relation.relatedModel.technical or 'not_defined')"
-                        onFieldChainChanged="chain => this.onSelectedPivotField(pivotId, chain)"
-                    />
+                    <div>
+                        <span class="font-weight-medium" t-esc="modelDisplayNames.pivots[pivotId]"/>
+                        <span class="o_pivot_model_technical_name text-muted"> (Pivot #<t t-esc="pivotId"/>)</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-column justify-content-end w-50">
+                            <span class="text-muted">Date field</span>
+                            <FieldSelectorAdapter
+                                Component="FieldSelectorWidget"
+                                model="getters.getPivotDefinition(pivotId).model"
+                                fields="pivotModel.getFields()"
+                                type="state.type"
+                                relatedModel="state.relation.relatedModel.technical"
+                                selected="getModelField(state.pivotFields[pivotId])"
+                                t-key="pivotId + (state.relation.relatedModel.technical or 'not_defined')"
+                                onFieldChainChanged="chain => this.selectedPivotField(pivotId, chain[0])"
+                            />
+                        </div>
+                        <FilterFieldOffset
+                            onOffsetSelected="(e) => this.onSetPivotFieldOffset(pivotId, e.target.value)"
+                            selectedOffset="state.pivotFields[pivotId].offset || 0"
+                            />
+                    </div>
                 </t>
             </div>
             <div t-foreach="listIds" t-as="listId" t-key="listId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
-                <div><t t-esc="modelDisplayNames.lists[listId]"/> <span class="o_pivot_model_technical_name text-muted">(List #<t t-esc="listId"/>)</span></div>
-                <FieldSelectorAdapter
-                    Component="FieldSelectorWidget"
-                    model="getters.getListDefinition(listId).model"
-                    fields="getters.getSpreadsheetListModel(listId).getFields()"
-                    type="state.type"
-                    relatedModel="state.relation.relatedModel.technical"
-                    selected="state.listFields[listId]"
-                    t-key="listId + (state.relation.relatedModel.technical or 'not_defined')"
-                    onFieldChainChanged="chain => this.onSelectedListField(listId, chain)"
-                    />
+                <div>
+                    <span class="font-weight-medium" t-esc="modelDisplayNames.pivots[listId]"/>
+                    <span class="o_pivot_model_technical_name text-muted"> (List #<t t-esc="listId"/>)</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column justify-content-end w-50">
+                        <span class="text-muted">Date field</span>
+                        <FieldSelectorAdapter
+                            Component="FieldSelectorWidget"
+                            model="getters.getListDefinition(listId).model"
+                            fields="getters.getSpreadsheetListModel(listId).getFields()"
+                            type="state.type"
+                            relatedModel="state.relation.relatedModel.technical"
+                            selected="getModelField(state.listFields[listId])"
+                            t-key="listId + (state.relation.relatedModel.technical or 'not_defined')"
+                            onFieldChainChanged="chain => this.selectedListField(listId, chain[0])"
+                        />
+                    </div>
+                    <FilterFieldOffset
+                        onOffsetSelected="(e) => this.onSetListFieldOffset(listId, e.target.value)"
+                        selectedOffset="state.listFields[listId].offset || 0"
+                        />
+                </div>
             </div>
             <div t-foreach="graphIds" t-as="graphId" t-key="graphId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
-                <div><t t-esc="modelDisplayNames.graph[graphId]"/> <span class="o_pivot_model_technical_name text-muted">(Graph - <t t-esc="getters.getChartDefinition(graphId).title"/>)</span></div>
-                <FieldSelectorAdapter
-                    Component="FieldSelectorWidget"
-                    model="getters.getChartDefinition(graphId).metaData.resModel"
-                    fields="getters.getSpreadsheetGraphModel(graphId).metaData.fields"
-                    type="state.type"
-                    relatedModel="state.relation.relatedModelName"
-                    selected="state.graphFields[graphId]"
-                    t-key="graphId + (state.relation.relatedModelName or 'not_defined')"
-                    onFieldChainChanged="chain => this.onSelectedGraphField(graphId, chain)" />
+                <div>
+                    <span class="font-weight-medium" t-esc="modelDisplayNames.graph[graphId]"/>
+                    <span class="o_pivot_model_technical_name text-muted">(Graph - <t t-esc="getters.getChartDefinition(graphId).title"/>)</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column justify-content-end w-50">
+                        <span class="text-muted">Date field</span>
+                        <FieldSelectorAdapter
+                            Component="FieldSelectorWidget"
+                            model="getters.getChartDefinition(graphId).metaData.resModel"
+                            fields="getters.getSpreadsheetGraphModel(graphId).metaData.fields"
+                            type="state.type"
+                            relatedModel="state.relation.relatedModelName"
+                            selected="getModelField(state.graphFields[graphId])"
+                            t-key="graphId + (state.relation.relatedModelName or 'not_defined')"
+                            onFieldChainChanged="chain => this.selectedGraphField(graphId, chain[0])"
+                            />
+                    </div>
+                    <FilterFieldOffset
+                        onOffsetSelected="(e) => this.onSetGraphFieldOffset(graphId, e.target.value)"
+                        selectedOffset="state.graphFields[graphId].offset || 0"
+                        />
+                </div>
+
             </div>
         </div>
         <div class="o_side_panel_section o-sidePanelButtons">

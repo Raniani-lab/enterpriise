@@ -13,6 +13,7 @@ import { useService } from "@web/core/utils/hooks";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ModelSelector } from "@spreadsheet_edition/assets/components/model_selector/model_selector";
 import { sprintf } from "@web/core/utils/strings";
+import { FilterFieldOffset } from "./components/filter_field_offset";
 
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -25,6 +26,22 @@ const RANGE_TYPES = [
 
 /**
  * @typedef {import("@spreadsheet/data_sources/data_source").Field} Field
+ *
+ * @typedef {Object} FilterMatchingField
+ * @property {string} field name of the field
+ * @property {string} type type of the field
+ * @property {number} [offset] offset to apply to the field (for date filters)
+ *
+ * @typedef State
+ * @property {boolean} saved
+ * @property {string} label label of the filter
+ * @property {"text" | "date" | "relation"} type type of the filter
+ * @property {Object.<string, FilterMatchingField>} pivotFields map <pivotId, field matched by the global filter>
+ * @property {Object.<string, FilterMatchingField>} listFields map <listId, field matched by the global filter>
+ * @property {Object.<string, FilterMatchingField>} graphFields map <graphId, field matched by the global filter>
+ * @property {Object} text config of text filter
+ * @property {Object} date config of date filter
+ * @property {Object} relation config of relation filter
  */
 
 /**
@@ -37,6 +54,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      */
     setup() {
         this.id = undefined;
+        /** @type {State} */
         this.state = useState({
             saved: false,
             label: undefined,
@@ -151,15 +169,29 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         if (globalFilter) {
             this.state.label = globalFilter.label;
             this.state.type = globalFilter.type;
-            this.state.pivotFields = globalFilter.pivotFields;
-            this.state.listFields = globalFilter.listFields;
-            this.state.graphFields = globalFilter.graphFields;
             this.state.date.type = globalFilter.rangeType;
             this.state.date.defaultsToCurrentPeriod = globalFilter.defaultsToCurrentPeriod;
+            this.state.date.automaticDefaultValue = globalFilter.automaticDefaultValue;
             this.state[this.state.type].defaultValue = globalFilter.defaultValue;
-            if (this.state.type === "relation") {
+            if (globalFilter.type === "relation") {
                 this.state.relation.relatedModel.technical = globalFilter.modelName;
             }
+        }
+        this._loadFilterFields(globalFilter);
+    }
+
+    _loadFilterFields(globalFilter) {
+        for (const pivotId of this.pivotIds) {
+            const field = globalFilter && globalFilter.pivotFields[pivotId];
+            this.state.pivotFields[pivotId] = { ...field };
+        }
+        for (const listId of this.listIds) {
+            const field = globalFilter && globalFilter.listFields[listId];
+            this.state.listFields[listId] = { ...field };
+        }
+        for (const graphId of this.graphIds) {
+            const field = globalFilter && globalFilter.graphFields[graphId];
+            this.state.graphFields[graphId] = { ...field };
         }
     }
 
@@ -204,17 +236,16 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * Get the first field which could be a relation of the current related
      * model
      *
-     * @param {{Object.<string, Field>}} fields Fields to look in
-     * @returns {Array<string, Field>|undefined}
+     * @param {Object.<string, Field>} fields Fields to look in
+     * @returns {string|undefined}
      */
     _findRelation(fields) {
-        return (
-            Object.entries(fields).find(
-                ([, fieldDesc]) =>
-                    fieldDesc.type === "many2one" &&
-                    fieldDesc.relation === this.state.relation.relatedModel.technical
-            ) || []
+        const field = Object.values(fields).find(
+            (field) =>
+                field.type === "many2one" &&
+                field.relation === this.state.relation.relatedModel.technical
         );
+        return field.name;
     }
 
     async onModelSelected({ technical, label }) {
@@ -227,22 +258,22 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.state.relation.relatedModel.technical = technical;
         this.state.relation.relatedModel.label = label;
         for (const pivotId of this.pivotIds) {
-            const [field, fieldDesc] = this._findRelation(
+            const fieldName = this._findRelation(
                 this.getters.getSpreadsheetPivotModel(pivotId).getFields()
             );
-            this.state.pivotFields[pivotId] = field ? { field, type: fieldDesc.type } : undefined;
+            this.selectedPivotField(pivotId, fieldName);
         }
         for (const listId of this.listIds) {
-            const [field, fieldDesc] = this._findRelation(
+            const fieldName = this._findRelation(
                 this.getters.getSpreadsheetListModel(listId).getFields()
             );
-            this.state.listFields[listId] = field ? { field, type: fieldDesc.type } : undefined;
+            this.selectedListField(listId, fieldName);
         }
         for (const graphId of this.graphIds) {
-            const [field, fieldDesc] = this._findRelation(
+            const fieldName = this._findRelation(
                 this.getters.getSpreadsheetGraphModel(graphId).metaData.fields
             );
-            this.state.graphFields[graphId] = field ? { field, type: fieldDesc.type } : undefined;
+            this.selectedGraphField(graphId, fieldName);
         }
     }
 
@@ -259,37 +290,75 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         }
     }
 
-    onSelectedPivotField(id, chain) {
-        const fieldName = chain[0];
-        const field = this.getters.getSpreadsheetPivotModel(id, fieldName).getField(fieldName);
+    /**
+     * @param {string} pivotId
+     * @param {string} fieldName
+     */
+    selectedPivotField(pivotId, fieldName) {
+        const field = this.getters.getSpreadsheetPivotModel(pivotId, fieldName).getField(fieldName);
         if (field) {
-            this.state.pivotFields[id] = {
+            this.state.pivotFields[pivotId] = {
                 field: fieldName,
                 type: field.type,
             };
+            if (this.state.type === "date") {
+                this.state.pivotFields[pivotId].offset = 0;
+            }
         }
     }
 
-    onSelectedListField(listId, chain) {
-        const fieldName = chain[0];
+    /**
+     * @param {string} listId
+     * @param {string} fieldName
+     */
+    selectedListField(listId, fieldName) {
         const field = this.getters.getSpreadsheetListModel(listId).getField(fieldName);
         if (field) {
             this.state.listFields[listId] = {
                 field: fieldName,
                 type: field.type,
             };
+            if (this.state.type === "date") {
+                this.state.listFields[listId].offset = 0;
+            }
         }
     }
 
-    onSelectedGraphField(graphId, chain) {
-        const fieldName = chain[0];
+    /**
+     * @param {string} graphId
+     * @param {string} fieldName
+     */
+    selectedGraphField(graphId, fieldName) {
         const field = this.getters.getSpreadsheetGraphModel(graphId).metaData.fields[fieldName];
         if (field) {
             this.state.graphFields[graphId] = {
                 field: fieldName,
                 type: field.type,
             };
+            if (this.state.type === "date") {
+                this.state.graphFields[graphId].offset = 0;
+            }
         }
+    }
+
+    getModelField(field) {
+        if (!field || !field.field || !field.type) return undefined;
+        return {
+            field: field.field,
+            type: field.type,
+        };
+    }
+
+    onSetPivotFieldOffset(id, offset) {
+        this.state.pivotFields[id].offset = parseInt(offset);
+    }
+
+    onSetListFieldOffset(id, offset) {
+        this.state.listFields[id].offset = parseInt(offset);
+    }
+
+    onSetGraphFieldOffset(id, offset) {
+        this.state.graphFields[id].offset = parseInt(offset);
     }
 
     onSave() {
@@ -367,4 +436,5 @@ FilterEditorSidePanel.components = {
     ModelSelector,
     X2ManyTagSelector,
     DateFilterValue,
+    FilterFieldOffset,
 };

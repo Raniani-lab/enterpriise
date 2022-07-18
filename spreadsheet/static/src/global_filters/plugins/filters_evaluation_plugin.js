@@ -309,9 +309,13 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
         const value = this.getGlobalFilterValue(filter.id);
         const field = fieldDesc.field;
         const type = fieldDesc.type;
+        const offset = fieldDesc.offset || 0;
         const luxonDate = DateTime.local();
         const setParam = { year: luxonDate.year };
-        const plusParam = { years: value.yearOffset || 0 };
+        const yearOffset = value.yearOffset || 0;
+        const plusParam = {
+            years: filter.rangeType === "year" ? yearOffset + offset : yearOffset,
+        };
         if (!value.period || value.period === "empty") {
             granularity = "year";
         } else {
@@ -319,10 +323,12 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                 case "month":
                     granularity = "month";
                     setParam.month = MONTHS[value.period].value;
+                    plusParam.month = offset;
                     break;
                 case "quarter":
                     granularity = "quarter";
                     setParam.quarter = QUARTER_OPTIONS[value.period].setParam.quarter;
+                    plusParam.quarter = offset;
                     break;
             }
         }

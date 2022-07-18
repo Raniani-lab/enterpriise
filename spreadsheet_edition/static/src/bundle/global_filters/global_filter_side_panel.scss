@@ -6,13 +6,19 @@
 
 .o_spreadsheet_global_filters_side_panel,
 .o_spreadsheet_filter_editor_side_panel {
+    .font-weight-medium {
+        font-weight: 500;
+    }
+
     input[type=text] {
         outline: none;
         width: 100%;
     }
 
     .o_pivot_field_matching {
-        padding: 8px 0px;
+        margin: 10px 0px;
+        padding-left:5px;
+        border-left: solid #ccc 2px;
     }
 
     .pivot_filter_section {
@@ -21,6 +27,7 @@
 
         .o_pivot_model_technical_name {
             font-size: 0.9rem;
+            white-space: pre;
         }
 
         .pivot_filter {

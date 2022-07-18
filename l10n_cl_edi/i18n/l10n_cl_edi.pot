@@ -1187,12 +1187,8 @@ msgstr ""
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.fetchmail_server_form_l10n_cl
-msgid "Last message UID"
-msgstr ""
-
-#. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_fetchmail_server__l10n_cl_last_uid
-msgid "Last message UID (CL)"
+msgid "Last read message ID (CL)"
 msgstr ""
 
 #. module: l10n_cl_edi
@@ -2055,7 +2051,7 @@ msgstr ""
 #. module: l10n_cl_edi
 #: model:ir.model.fields,help:l10n_cl_edi.field_fetchmail_server__l10n_cl_last_uid
 msgid ""
-"This value is pointing to the number of the last message unread by odoo in "
+"This value is pointing to the number of the last message read by odoo in "
 "the inbox. This value will be updated by the system during its "
 "normaloperation."
 msgstr ""

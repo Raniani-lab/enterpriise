@@ -116,7 +116,6 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                 'value': 'balance',
                 'value_amount': 0.0,
                 'days': 90,
-                'option': 'day_after_invoice_date',
             })],
         })
 

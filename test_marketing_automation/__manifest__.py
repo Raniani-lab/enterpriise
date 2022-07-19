@@ -12,6 +12,7 @@
         'test_mail',
         'test_mail_enterprise',
         'test_mail_full',
+        'test_mail_sms',
         'test_mass_mailing',
     ],
     'data': [

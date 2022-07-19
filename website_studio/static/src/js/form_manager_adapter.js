@@ -12,6 +12,10 @@ export class FormManagerAdapter extends ComponentAdapter {
     constructor(props) {
         props.Component = FormManager;
         super(...arguments);
+    }
+
+    setup() {
+        super.setup();
         this.studio = useService("studio");
         this.env = Component.env;
     }

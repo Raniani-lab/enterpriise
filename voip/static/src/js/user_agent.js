@@ -458,7 +458,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             window.Notification.permission === 'granted' &&
             // Only send notifications in master tab, so that the user doesn't
             // get a notification for every open tab.
-            this.call('multiTab', 'isOnMainTab')
+            this.call('multi_tab', 'isOnMainTab')
         ) {
             return new window.Notification(title, {
                 body: content,
@@ -733,7 +733,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         this._isOutgoing = false;
         this._updateCallState(CALL_STATE.RINGING_CALL);
-        if (this.call('multiTab', 'isOnMainTab')) {
+        if (this.call('multi_tab', 'isOnMainTab')) {
             this.voip.ringtoneRegistry.incomingCallRingtone.play({ loop: true });
         }
         this._notification = this._sendNotification('Odoo', content);

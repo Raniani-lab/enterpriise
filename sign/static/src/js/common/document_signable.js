@@ -121,7 +121,7 @@ const SignNameAndSignature = NameAndSignature.extend({
 
 // The goal of this override is to make the dialog re-enable the validate button
 // when it is closed by the user
-const SignInfoDialog = Dialog.extend({
+export const SignInfoDialog = Dialog.extend({
   destroy: function () {
     if (!this.isDestroyed()) {
       const parent = this.getParent();
@@ -1509,8 +1509,26 @@ export const SignableDocument = Document.extend({
           this.isUnknownPublicUser = false;
           this._signDocument()
       });
-    } else if (this.smsRequired && !this.signInfo.smsToken) {
-      new SMSSignerDialog(
+    } else if (this.authMethod) {
+      this.openAuthDialog();
+    } else {
+      await this._sign();
+      return;
+    }
+  },
+
+  openAuthDialog: function () {
+    const authDialog = this.getAuthDialog();
+    if (authDialog) {
+      authDialog.open();
+    } else {
+      this._sign();
+    }
+  },
+
+  getAuthDialog: function () {
+    if (this.authMethod === 'sms' && !this.signInfo.smsToken) {
+      return new SMSSignerDialog(
         this,
         this.requestID,
         this.accessToken,
@@ -1519,11 +1537,9 @@ export const SignableDocument = Document.extend({
         this.signerPhone,
         this.RedirectURL,
         {nextSign: this.name_list.length}
-      ).open();
-    } else {
-      await this._sign();
-      return;
+      );
     }
+    return false;
   },
 
   _sign: async function () {

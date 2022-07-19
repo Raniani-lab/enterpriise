@@ -21,7 +21,7 @@ from random import randint
 from markupsafe import Markup
 
 from odoo import api, fields, models, http, _, Command
-from odoo.tools import config, get_lang, is_html_empty, formataddr, groupby
+from odoo.tools import config, get_lang, is_html_empty, formataddr, groupby, format_date
 from odoo.exceptions import UserError, ValidationError
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "fonts", "sign"))
@@ -584,7 +584,11 @@ class SignRequest(models.Model):
         if not public_user:
             # public user was deleted, fallback to avoid crash (info may leak)
             public_user = self.env.user
-        pdf_content, __ = self.env["ir.actions.report"].with_user(public_user).sudo()._render_qweb_pdf('sign.action_sign_request_print_logs', self.ids)
+        pdf_content, __ = self.env["ir.actions.report"].with_user(public_user).sudo()._render_qweb_pdf(
+            'sign.action_sign_request_print_logs',
+            self.ids,
+            data={'format_date': format_date}
+        )
         attachment_log = self.env['ir.attachment'].create({
             'name': "Certificate of completion - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),
             'raw': pdf_content,
@@ -834,9 +838,10 @@ class SignRequestItem(models.Model):
 
         self._sign(signature)
 
-    def _sign(self, signature):
+    def _sign(self, signature, validation_required=False):
         """ Stores the sign request item values.
         :param signature: dictionary containing signature values and corresponding ids / signature image
+        :param validation_required: boolean indicating whether the sign request item will after a further validation process or now
         """
         self.ensure_one()
         if not self.env.su:
@@ -851,7 +856,10 @@ class SignRequestItem(models.Model):
             raise UserError(_("Some required items are not filled"))
 
         self._fill(signature)
+        if not validation_required:
+            self._post_fill_request_item()
 
+    def _post_fill_request_item(self):
         self.env['sign.log'].create({'sign_request_item_id': self.id, 'action': 'sign'})
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'completed'})
         # mark signature as done in next activity

@@ -33,16 +33,60 @@
                         </div>
                     </div>
                     <br/>
+                    <h5>Participants</h5>
+                    <table class="table table-sm o_main_table small mb-1">
+                        <t t-set="has_sms_validation" t-value="o.sudo().request_item_ids.filtered(lambda i: i.sms_token)"/>
+                        <thead>
+                            <tr>
+                                <th id="participants_signatory" class="text-start">Signatory</th>
+                                <th id="participants_email" class="text-start">Email</th>
+                                <th id="participants_email_verification" class="text-start">
+                                    Email Verification
+                                </th>
+                                <th id="participants_phone" class="text-start" t-if="has_sms_validation">
+                                    Phone
+                                </th>
+                            </tr>
+                            <tbody>
+                                <t t-foreach="o.sudo().request_item_ids" t-as="sri">
+                                    <tr>
+                                        <td><span t-field="sri.partner_id.name"/></td>
+                                        <td><span t-field="sri.partner_id.email"/></td>
+                                        <td class="text-center">
+                                            <t t-if="sri.access_via_link or sri.partner_id.user_id != False">
+                                                <i class="fa fa-check-square-o"/>
+                                            </t>
+                                            <t t-else="">
+                                                <i class="fa fa-square-o"/>
+                                            </t>
+                                        </td>
+                                        <td class="participant_sms_validation" t-if="has_sms_validation">
+                                            <t t-if="sri.sms_token">
+                                                <t t-set="number" t-value="''.join(['******', sri.sms_number[-4:]])"/>
+                                                <span t-esc="number"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </thead>
+                    </table>
+                    <section class="mb-4">
+                        <div class="text-muted email_verification_footnote">
+                            <small>Email Verification: The signatory has confirmed control of their email inbox by clicking on a unique link</small>
+                        </div>
+                        <div class="text-muted sms_footnote" t-if="has_sms_validation">
+                            <small>SMS: The signatory has confirmed their control of the phone number using a unique code sent by SMS</small>
+                        </div>
+                    </section>
                     <h5>Signing Events</h5>
-                    <table class="table table-sm o_main_table small">
+                    <table class="table table-sm o_main_table small mb-4">
                         <t t-set="has_sms_validation" t-value="o.sudo().request_item_ids.filtered(lambda i: i.sms_token)"/>
                         <thead>
                             <tr>
                                 <th class="text-start">Action</th>
                                 <th class="text-start">By</th>
                                 <th class="text-start">Date (UTC)</th>
-                                <th class="text-start">Email Validation</th>
-                                <th class="text-start" t-if="has_sms_validation">SMS Validation</th>
                                 <th class="text-start" groups="sign.group_sign_manager">Geolocation</th>
                                 <th class="text-start" groups="sign.group_sign_manager">IP</th>
                             </tr>
@@ -60,26 +104,6 @@
                                     </t>
                                     </td>
                                     <td> <span t-field="log.log_date"/> </td>
-                                    <td>
-                                        <t t-if="log.user_id != False and log.user_id in log.sign_request_item_id.partner_id.user_ids">
-                                            <span class="text-muted text-nowrap"><i class="fa fa-user"/> <t t-esc="log.sign_request_item_id.partner_id.user_ids[0].email"/></span>
-                                        </t>
-                                        <t t-elif="log.sign_request_item_id.access_via_link">
-                                            <span t-esc="log.sign_request_item_id.signer_email"/>
-                                        </t>
-                                        <t t-elif="log.action == 'sign'">
-                                            <span class="text-muted"><i class="fa fa-times"/> No email Validation</span>
-                                        </t>
-                                    </td>
-                                    <td t-if="has_sms_validation">
-                                        <t t-if="log.sign_request_item_id.sms_token">
-                                            <t t-set="number" t-value="''.join(['******', log.sign_request_item_id.sms_number[-4:]])"/>
-                                            <span t-esc="number"/>
-                                        </t>
-                                        <t t-elif="log.action == 'sign'">
-                                            <span class="text-muted"><i class="fa fa-times"/> No SMS Validation</span>
-                                        </t>
-                                    </td>
                                     <td groups="sign.group_sign_manager">
                                         <t t-if="log.latitude and log.longitude">
                                             <span t-field="log.latitude"/>,
@@ -114,7 +138,7 @@
                         <p>The final document and this completion history have been sent by email on&amp;nbsp; <span t-field="o.completion_date"/> to: <t t-esc="', '.join(o.sudo()._get_final_recipients())"/>.</p>
                     </div>
                     <h5>Access Logs</h5>
-                    <table class="table table-sm o_main_table small">
+                    <table class="table table-sm o_main_table small mb-4">
                         <thead>
                             <tr>
                                 <th class="text-start">Viewed/downloaded by</th>
@@ -145,7 +169,6 @@
                             </tr>
                         </tbody>
                     </table>
-
                 </t>
             </t>
         </t>

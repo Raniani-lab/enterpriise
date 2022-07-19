@@ -386,7 +386,10 @@ class SignItemParty(models.Model):
     color = fields.Integer()
     default = fields.Boolean(required=True, default=False)
 
-    sms_authentification = fields.Boolean('SMS Authentication')
+    auth_method = fields.Selection(string="Extra Authentication Step", selection=[
+        ('sms', 'Unique Code via SMS')
+    ], default=False, help="Force the signatory to identify using a second authentication method")
+
     change_authorized = fields.Boolean('Change Authorized')
 
     @api.model

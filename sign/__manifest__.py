@@ -39,6 +39,7 @@ Let your customers follow the signature process easily.
         'data/sign_demo.xml',
     ],
     'application': True,
+    'post_init_hook': '_sign_post_init',
     'installable': True,
     'license': 'OEEL-1',
     'assets': {

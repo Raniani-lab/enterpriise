@@ -307,7 +307,7 @@
         <field name="arch" type="xml">
             <tree editable="bottom">
                 <field name="name" string="Role Name"/>
-                <field name="sms_authentification"/>
+                <field name="auth_method"/>
                 <field name="change_authorized"/>
                 <field name="color" widget="color_picker"/>
             </tree>
@@ -325,7 +325,7 @@
                         <h1><field name="name" placeholder="e.g. Employee"/></h1>
                     </div>
                     <group>
-                        <field name="sms_authentification"/>
+                        <field name="auth_method"/>
                         <field name="change_authorized"/>
                     </group>
                 </sheet>

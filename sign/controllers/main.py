@@ -17,8 +17,8 @@ _logger = logging.getLogger()
 
 class Sign(http.Controller):
 
-    def get_document_qweb_context(self, id, token):
-        sign_request = http.request.env['sign.request'].sudo().browse(id).exists()
+    def get_document_qweb_context(self, sign_request_id, token, **post):
+        sign_request = http.request.env['sign.request'].sudo().browse(sign_request_id).exists()
         if not sign_request:
             return request.render('sign.deleted_sign_request')
         current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
@@ -98,6 +98,7 @@ class Sign(http.Controller):
             'sign_item_types': sign_item_types,
             'sign_item_select_options': sign_request.template_id.sign_item_ids.mapped('option_ids'),
             'refusal_allowed': sign_request.refusal_allowed and sign_request.state == 'sent',
+            'portal': post.get('portal'),
         }
 
     # -------------
@@ -126,13 +127,12 @@ class Sign(http.Controller):
         current_request_item.access_via_link = True
         return request.redirect('/sign/document/%s/%s' % (id, token))
 
-    @http.route(["/sign/document/<int:id>/<token>"], type='http', auth='public', website=True)
-    def sign_document_public(self, id, token, **post):
-        document_context = self.get_document_qweb_context(id, token)
+    @http.route(["/sign/document/<int:sign_request_id>/<token>"], type='http', auth='public', website=True)
+    def sign_document_public(self, sign_request_id, token, **post):
+        document_context = self.get_document_qweb_context(sign_request_id, token, **post)
         if not isinstance(document_context, dict):
             return document_context
 
-        document_context['portal'] = post.get('portal')
         current_request_item = document_context.get('current_request_item')
         if current_request_item and current_request_item.partner_id.lang:
             http.request.env.context = dict(http.request.env.context, lang=current_request_item.partner_id.lang)
@@ -147,7 +147,11 @@ class Sign(http.Controller):
         document = None
         if download_type == "log":
             report_action = http.request.env['ir.actions.report'].sudo()
-            pdf_content, __ = report_action._render_qweb_pdf('sign.action_sign_request_print_logs', sign_request.id)
+            pdf_content, __ = report_action._render_qweb_pdf(
+                'sign.action_sign_request_print_logs',
+                sign_request.id,
+                data={'format_date': tools.format_date}
+            )
             pdfhttpheaders = [
                 ('Content-Type', 'application/pdf'),
                 ('Content-Length', len(pdf_content)),
@@ -260,7 +264,7 @@ class Sign(http.Controller):
         request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
         if not request_item:
             return False
-        if request_item.role_id.sms_authentification:
+        if request_item.role_id.auth_method == 'sms':
             request_item.sms_number = phone_number
             try:
                 request_item._send_sms()
@@ -274,29 +278,46 @@ class Sign(http.Controller):
                 return False
         return True
 
-    @http.route([
-        '/sign/sign/<int:sign_request_id>/<token>',
-        '/sign/sign/<int:sign_request_id>/<token>/<sms_token>'
-        ], type='json', auth='public')
-    def sign(self, sign_request_id, token, sms_token=False, signature=None, new_sign_items=None):
-        request_item = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', sign_request_id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
-        if not request_item:
-            return {'success': False}
-        if request_item.role_id.sms_authentification:
-            if not sms_token or sms_token != request_item.sms_token:
+    def _validate_auth_method(self, request_item_sudo, sms_token=None):
+        if request_item_sudo.role_id.auth_method == 'sms':
+            if not sms_token or sms_token != request_item_sudo.sms_token:
                 return {
                     'success': False,
                     'sms': True
                 }
-            request_item.sign_request_id._message_log(body=_('%s validated the signature by SMS with the phone number %s.') % (request_item.partner_id.display_name, request_item.sms_number))
+            request_item_sudo.sign_request_id._message_log(
+                body=_('%s validated the signature by SMS with the phone number %s.') % (request_item_sudo.partner_id.display_name, request_item_sudo.sms_number)
+            )
+            return {'success': True}
+        return {'success': False}
 
-        sign_user = request.env['res.users'].sudo().search([('partner_id', '=', request_item.partner_id.id)], limit=1)
+    @http.route([
+        '/sign/sign/<int:sign_request_id>/<token>',
+        '/sign/sign/<int:sign_request_id>/<token>/<sms_token>'
+    ], type='json', auth='public')
+    def sign(self, sign_request_id, token, sms_token=False, signature=None, new_sign_items=None):
+        request_item_sudo = http.request.env['sign.request.item'].sudo().search([
+            ('sign_request_id', '=', sign_request_id),
+            ('access_token', '=', token),
+            ('state', '=', 'sent')
+        ], limit=1)
+
+        if not request_item_sudo:
+            return {'success': False}
+
+        result = {'success': True}
+        if request_item_sudo.role_id.auth_method:
+            result = self._validate_auth_method(request_item_sudo, sms_token=sms_token)
+            if not result.get('success'):
+                return result
+
+        sign_user = request.env['res.users'].sudo().search([('partner_id', '=', request_item_sudo.partner_id.id)], limit=1)
         if sign_user:
             # sign as a known user
-            request_item = request_item.with_user(sign_user).sudo()
+            request_item_sudo = request_item_sudo.with_user(sign_user).sudo()
 
-        request_item._edit_and_sign(signature, new_sign_items)
-        return {'success': True}
+        request_item_sudo._edit_and_sign(signature, new_sign_items)
+        return result
 
     @http.route(['/sign/refuse/<int:sign_request_id>/<token>'], type='json', auth='public')
     def refuse(self, sign_request_id, token, refusal_reason=""):

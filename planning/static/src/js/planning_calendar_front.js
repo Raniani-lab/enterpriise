@@ -70,7 +70,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 locale: locale,
                 defaultView: defaultView,
                 navLinks: true, // can click day/week names to navigate views
-                eventLimit: 2, // allow "more" link when more than two events
+                eventLimit: 3, // allow "more" link when too many events
                 titleFormat: titleFormat,
                 defaultDate: defaultStart,
                 timeFormat: 'LT',

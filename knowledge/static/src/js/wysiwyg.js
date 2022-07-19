@@ -38,7 +38,7 @@ Wysiwyg.include({
             anchor = anchor.parentElement;
         }
         if (anchor && anchor.closest('.o_knowledge_template')) {
-            commands = commands.filter(command => command.groupName != 'Knowledge');
+            commands = commands.filter(command => command.category !== 'Knowledge');
         }
         return commands;
     },
@@ -49,8 +49,8 @@ Wysiwyg.include({
     _getCommands: function () {
         const commands = this._super();
         commands.push({
-            groupName: 'Medias',
-            title: 'Article',
+            category: 'Media',
+            name: 'Article',
             description: 'Link an article.',
             fontawesome: 'fa-file',
             callback: () => {
@@ -59,8 +59,8 @@ Wysiwyg.include({
         });
         if (this.options.knowledge_commands) {
             commands.push({
-                groupName: 'Knowledge',
-                title: 'File',
+                category: 'Knowledge',
+                name: 'File',
                 description: 'Embed a file.',
                 fontawesome: 'fa-file',
                 callback: () => {
@@ -73,8 +73,8 @@ Wysiwyg.include({
                     });
                 }
             }, {
-                groupName: 'Knowledge',
-                title: "Template",
+                category: 'Knowledge',
+                name: "Template",
                 description: "Add a template section.",
                 fontawesome: 'fa-pencil-square',
                 callback: () => {

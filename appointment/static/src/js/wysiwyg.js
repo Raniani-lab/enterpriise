@@ -8,8 +8,8 @@ Wysiwyg.include({
         const commands = this._super.apply(this, arguments);
         commands.push(...[
             {
-                groupName: 'Basic blocks',
-                title: 'Appointment',
+                category: 'Basic blocks',
+                name: 'Appointment',
                 description: 'Add a specific appointment.',
                 fontawesome: 'fa-calendar',
                 callback: async () => {
@@ -46,8 +46,8 @@ Wysiwyg.include({
                 },
             },
             {
-                groupName: 'Basic blocks',
-                title: 'Calendar',
+                category: 'Basic blocks',
+                name: 'Calendar',
                 description: 'Schedule an appointment.',
                 fontawesome: 'fa-calendar',
                 callback: () => {

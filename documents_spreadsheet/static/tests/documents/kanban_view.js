@@ -3,10 +3,17 @@
 import { dom } from "web.test_utils";
 import { createDocumentsView } from "@documents/../tests/documents_test_utils";
 import { startServer } from "@mail/../tests/helpers/test_utils";
-import { click, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    mockDownload,
+    nextTick,
+    patchWithCleanup,
+} from "@web/../tests/helpers/utils";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { documentsFileUploadService } from "@documents/views/helper/documents_file_upload_service";
+import { browser } from "@web/core/browser/browser";
 
 const find = dom.find;
 const serviceRegistry = registry.category("services");
@@ -24,20 +31,26 @@ QUnit.module(
     },
     () => {
         QUnit.test("download spreadsheet from the document inspector", async function (assert) {
-            assert.expect(3);
+            assert.expect(4);
+            patchWithCleanup(browser, { setInterval: (fn) => fn(), clearInterval: () => {} });
             const pyEnv = await startServer();
             const documentsFolderId1 = pyEnv["documents.folder"].create({
                 display_name: "Workspace1",
                 has_write_access: true,
             });
-            const documentsDocumentId1 = pyEnv["documents.document"].create({
+            pyEnv["documents.document"].create({
                 name: "My spreadsheet",
                 raw: "{}",
                 is_favorited: false,
                 folder_id: documentsFolderId1,
                 handler: "spreadsheet",
             });
-            const kanban = await createDocumentsView({
+            mockDownload((options) => {
+                assert.step(options.url);
+                assert.ok(options.data.zip_name);
+                assert.ok(options.data.files);
+            });
+            await createDocumentsView({
                 type: "kanban",
                 resModel: "documents.document",
                 arch: `
@@ -51,22 +64,10 @@ QUnit.module(
                 serverData: { models: pyEnv.getData(), views: {} },
             });
 
-            patchWithCleanup(kanban.env.services.action, {
-                doAction(action) {
-                    assert.step("redirect_to_spreadsheet");
-                    assert.deepEqual(action, {
-                        type: "ir.actions.client",
-                        tag: "action_open_spreadsheet",
-                        params: {
-                            spreadsheet_id: documentsDocumentId1,
-                            download: true,
-                        },
-                    });
-                },
-            });
             await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
             await click(target, "button.o_inspector_download");
-            assert.verifySteps(["redirect_to_spreadsheet"]);
+            await nextTick();
+            assert.verifySteps(["/spreadsheet/xlsx"]);
         });
 
         QUnit.test("thumbnail size in document side panel", async function (assert) {

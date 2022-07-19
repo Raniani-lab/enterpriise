@@ -2,9 +2,9 @@
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
+import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
-import { getFixture, mockDownload, nextTick } from "@web/../tests/helpers/utils";
+import { getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { dom } from "web.test_utils";
@@ -80,32 +80,6 @@ QUnit.module(
             });
             assert.verifySteps(["create_sheet"]);
         });
-
-        QUnit.test(
-            "download spreadsheet with the action param `download`",
-            async function (assert) {
-                assert.expect(4);
-                await prepareWebClientForSpreadsheet();
-                mockDownload(async (options) => {
-                    assert.step(options.url);
-                    assert.ok(options.data.zip_name);
-                    assert.ok(options.data.files);
-                });
-                const webClient = await createWebClient({
-                    serverData: getBasicServerData(),
-                });
-                await doAction(webClient, {
-                    type: "ir.actions.client",
-                    tag: "action_open_spreadsheet",
-                    params: {
-                        spreadsheet_id: 1,
-                        download: true,
-                    },
-                });
-                await nextTick();
-                assert.verifySteps(["/spreadsheet/xlsx"]);
-            }
-        );
 
         QUnit.test("breadcrumb is rendered in control panel", async function (assert) {
             assert.expect(4);

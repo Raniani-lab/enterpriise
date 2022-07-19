@@ -22,6 +22,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.orm = useService("orm");
         const user = useService("user");
         this.ui = useService("ui");
+        this.action = useService("action");
 
         this.props.exposeSpreadsheet(this);
 
@@ -104,9 +105,6 @@ export default class SpreadsheetComponent extends LegacyComponent {
         onMounted(() => {
             if (this.props.initCallback) {
                 this.props.initCallback(this.model);
-            }
-            if (this.props.download) {
-                this._download();
             }
             this.model.on("update", this, () => {
                 if (this.props.spreadsheetSyncStatus) {
@@ -281,18 +279,21 @@ export default class SpreadsheetComponent extends LegacyComponent {
     async _download() {
         this.ui.block();
         try {
-            await this.model.config.dataSources.waitForAllLoaded();
-            const { files } = this.model.exportXLSX();
-            this.props.onDownload({
-                name: this.props.name,
-                files,
+            await this.action.doAction({
+                type: "ir.actions.client",
+                tag: "action_download_spreadsheet",
+                params: {
+                    orm: this.orm,
+                    name: this.props.name,
+                    data: this.model.exportData(),
+                    stateUpdateMessages: [],
+                },
             });
         } finally {
             this.ui.unblock();
         }
     }
 
-    
     /**
      * Open a dialog to display a message to the user.
      *
@@ -327,7 +328,6 @@ SpreadsheetComponent.props = {
     isReadonly: { type: Boolean, optional: true },
     snapshotRequested: { type: Boolean, optional: true },
     showFormulas: { type: Boolean, optional: true },
-    download: { type: Boolean, optional: true },
     stateUpdateMessages: { type: Array, optional: true },
     asyncInitCallback: {
         optional: true,
@@ -369,7 +369,6 @@ SpreadsheetComponent.props = {
 };
 SpreadsheetComponent.defaultProps = {
     isReadonly: false,
-    download: false,
     snapshotRequested: false,
     showFormulas: false,
     stateUpdateMessages: [],

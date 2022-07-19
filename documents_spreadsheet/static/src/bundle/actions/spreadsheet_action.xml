@@ -21,7 +21,6 @@
         asyncInitCallback="asyncInitCallback"
         transportService="transportService"
         snapshotRequested="snapshotRequested"
-        download="props.action.params &amp;&amp; props.action.params.download"
         onDownload.bind="_onDownload"
         spreadsheetSyncStatus.bind="_onSpreadsheetSyncStatus"
         onUnexpectedRevisionId.bind="_onUnexpectedRevisionId"

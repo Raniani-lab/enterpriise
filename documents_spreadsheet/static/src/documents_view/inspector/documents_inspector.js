@@ -17,6 +17,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
      */
     setup() {
         this._super(...arguments);
+        this.orm = useService("orm");
         this.notification = useService("notification");
     },
 
@@ -56,16 +57,23 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
     /**
      * @override
      */
-    onDownload() {
+    async onDownload() {
         const selection = this.props.selection;
         if (selection.some((record) => record.data.handler === "spreadsheet")) {
             if (selection.length === 1) {
-                this.action.doAction({
+                const record = await this.orm.call(
+                    "documents.document",
+                    "join_spreadsheet_session",
+                    [selection[0].resId]
+                );
+                await this.action.doAction({
                     type: "ir.actions.client",
-                    tag: "action_open_spreadsheet",
+                    tag: "action_download_spreadsheet",
                     params: {
-                        spreadsheet_id: selection[0].resId,
-                        download: true,
+                        orm: this.orm,
+                        name: record.name,
+                        data: JSON.parse(record.raw),
+                        stateUpdateMessages: record.revisions,
                     },
                 });
             } else {
@@ -78,7 +86,10 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
                         type: "danger",
                     }
                 );
-                this.download(selection.filter((rec) => rec.data.handler !== "spreadsheet"));
+                const docs = selection.filter((doc) => doc.data.handler !== "spreadsheet");
+                if (docs.length) {
+                    this.download(selection.filter((rec) => rec.data.handler !== "spreadsheet"));
+                }
             }
         } else {
             this._super(...arguments);

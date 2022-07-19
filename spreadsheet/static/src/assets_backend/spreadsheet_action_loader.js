@@ -32,3 +32,16 @@ export async function loadSpreadsheetAction(env, actionName, actionLazyLoader) {
         );
     }
 }
+
+const loadSpreadsheetDownloadAction = async (env, context) => {
+    await loadSpreadsheetAction(env, "action_download_spreadsheet", loadSpreadsheetDownloadAction);
+
+    return {
+        ...context,
+        target: "current",
+        tag: "action_download_spreadsheet",
+        type: "ir.actions.client",
+    };
+};
+
+actionRegistry.add("action_download_spreadsheet", loadSpreadsheetDownloadAction);

@@ -4,6 +4,7 @@
         <div name="worksheet_task_timesheet" position="before">
             <h2 t-if="doc.allow_billable and doc.sale_order_id">Time &amp; Material</h2>
             <t t-call="industry_fsm_sale.worksheet_time_and_material"/>
+            <br/>
         </div>
     </template>
 </odoo>

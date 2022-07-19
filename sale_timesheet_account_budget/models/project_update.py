@@ -11,6 +11,8 @@ class ProjectUpdate(models.Model):
     def _get_template_values(self, project):
         vals = super(ProjectUpdate, self)._get_template_values(project)
         if project.analytic_account_id and self.user_has_groups('account.group_account_readonly'):
+            vals['show_activities'] = project.budget or vals['show_activities']
+            vals['show_profitability'] = project.budget or vals['show_profitability']
             profitability = vals['profitability']
             vals['budget'] = {
                 'percentage': round((-profitability.get('costs', 0) / project.budget) * 100 if project.budget != 0 else 0, 0),

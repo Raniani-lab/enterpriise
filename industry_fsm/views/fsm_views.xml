@@ -25,7 +25,7 @@
                 <field name="progress" widget="progressbar" optional="hide" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <field name="activity_ids" widget="list_activity" invisible="context.get('set_visible',False)" optional="show" readonly="1"/>
                 <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}" context="{'project_id': project_id}"/>
-                <field name="kanban_state" widget="state_selection" optional="hide" readonly="1"/>
+                <field name="kanban_state" widget="state_selection" optional="hide" options="{'hide_label': True}" readonly="1"/>
                 <field name="stage_id" optional="hide"/>
                 <field name="activity_exception_decoration" widget="activity_exception"/>
             </tree>
@@ -45,6 +45,7 @@
                 <field name="ancestor_id" groups="project.group_subtask_project"/>
                 <field name="partner_id" operator="child_of"/>
                 <field name="active"/>
+                <field name="description"/>
                 <filter string="My Tasks" name="my_tasks" domain="[('user_ids', 'in', uid)]"/>
                 <filter string="My Team's Tasks" name="my_team_tasks" domain="[('user_ids.employee_parent_id.user_id', '=', uid)]" />
                 <filter string="My Department's Tasks" name="my_department_tasks" domain="[('user_ids.employee_id.member_of_department', '=', True)]"/>

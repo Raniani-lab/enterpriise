@@ -12,7 +12,6 @@ It also provides new tools to analyse your data.
     'depends': ['website_sale', 'web_dashboard', 'sale_enterprise'],
     'data': [
         'views/dashboard_view.xml',
-        'views/res_config_settings_views.xml'
     ],
     'auto_install': ['website_sale'],
     'license': 'OEEL-1',

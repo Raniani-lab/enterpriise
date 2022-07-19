@@ -46,11 +46,14 @@ Wysiwyg.include({
      * @override
      * @returns {Array[Object]}
      */
-    _getCommands: function () {
-        const commands = this._super();
+    _getPowerboxOptions: function () {
+        const options = this._super();
+        const {commands, categories} = options;
+        categories.push({ name: 'Media', priority: 50 });
         commands.push({
             category: 'Media',
             name: 'Article',
+            priority: 10,
             description: 'Link an article.',
             fontawesome: 'fa-file',
             callback: () => {
@@ -58,9 +61,11 @@ Wysiwyg.include({
             },
         });
         if (this.options.knowledge_commands) {
+            categories.push({ name: 'Knowledge', priority: 10 });
             commands.push({
                 category: 'Knowledge',
                 name: 'File',
+                priority: 20,
                 description: 'Embed a file.',
                 fontawesome: 'fa-file',
                 callback: () => {
@@ -75,6 +80,7 @@ Wysiwyg.include({
             }, {
                 category: 'Knowledge',
                 name: "Template",
+                priority: 10,
                 description: "Add a template section.",
                 fontawesome: 'fa-pencil-square',
                 callback: () => {
@@ -82,7 +88,7 @@ Wysiwyg.include({
                 },
             });
         }
-        return commands;
+        return {...options, commands, categories};
     },
     /**
      * Notify @see FieldHtmlInjector that toolbars need to be injected

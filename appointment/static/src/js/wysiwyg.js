@@ -4,12 +4,15 @@ import Wysiwyg from 'web_editor.wysiwyg'
 import dialogs from 'web.view_dialogs'
 
 Wysiwyg.include({
-    _getCommands: function () {
-        const commands = this._super.apply(this, arguments);
+    _getPowerboxOptions: function () {
+        const options = this._super.apply(this, arguments);
+        const {commands, categories} = options;
+        categories.push({ name: 'Navigation', priority: 40 });
         commands.push(...[
             {
-                category: 'Basic blocks',
+                category: 'Navigation',
                 name: 'Appointment',
+                priority: 10,
                 description: 'Add a specific appointment.',
                 fontawesome: 'fa-calendar',
                 callback: async () => {
@@ -46,8 +49,9 @@ Wysiwyg.include({
                 },
             },
             {
-                category: 'Basic blocks',
+                category: 'Navigation',
                 name: 'Calendar',
+                priority: 10,
                 description: 'Schedule an appointment.',
                 fontawesome: 'fa-calendar',
                 callback: () => {
@@ -56,6 +60,6 @@ Wysiwyg.include({
                 },
             },
         ]);
-        return commands;
+        return {...options, commands, categories};
     }
 });

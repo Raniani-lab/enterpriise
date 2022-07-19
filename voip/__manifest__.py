@@ -50,6 +50,7 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/src/scss/call_center_field.scss',
             'voip/static/src/scss/voip.scss',
             'voip/static/src/voip_service.js',
+            'voip/static/src/components/phone_field/phone_field.js',
         ],
         'web.assets_backend_prod_only': [
             'voip/static/src/main.js',
@@ -61,7 +62,7 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/tests/qunit_suite_tests/**/*.js',
         ],
         'web.assets_qweb': [
-            'voip/static/src/components/*/*.xml',
+            'voip/static/src/components/**/*.xml',
             'voip/static/src/xml/*.xml',
         ],
     }

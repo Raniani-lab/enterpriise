@@ -7,10 +7,10 @@ from odoo import fields, models, _
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    l10n_au_kp_api_key = fields.Char(string='Keypay API Key', config_parameter='l10n_au_keypay.l10n_au_kp_api_key', groups='account.group_account_manager')
+    l10n_au_kp_api_key = fields.Char(string='Keypay API Key', config_parameter='l10n_au_keypay.l10n_au_kp_api_key')
     l10n_au_kp_base_url = fields.Char(
         string='Payroll URL', config_parameter='l10n_au_keypay.l10n_au_kp_base_url',
-        required=True, default='https://keypay.yourpayroll.com.au/', groups='account.group_account_manager')
+        required=True, default='https://keypay.yourpayroll.com.au/')
 
     l10n_au_kp_enable = fields.Boolean(related='company_id.l10n_au_kp_enable', readonly=False)
     l10n_au_kp_identifier = fields.Char(related='company_id.l10n_au_kp_identifier', readonly=False)

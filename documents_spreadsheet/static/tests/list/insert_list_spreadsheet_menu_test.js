@@ -1,63 +1,27 @@
 /** @odoo-module */
 
-import ListView from "web.ListView";
-import testUtils from "web.test_utils";
-import * as LegacyFavoriteMenu from "web.FavoriteMenu";
-import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_legacy";
+import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
+import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
+import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 import {
     click,
-    nextTick,
     getFixture,
+    nextTick,
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
-import { spawnListViewForSpreadsheet } from "../utils/list_helpers";
-import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
+import { toggleFavoriteMenu } from "@web/../tests/search/helpers";
 import { getSpreadsheetActionModel } from "../utils/webclient_helpers";
-import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
-
-const createView = testUtils.createView;
-const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
-const { modal } = testUtils;
 
 let target;
 QUnit.module(
     "documents_spreadsheet > insert_list_spreadsheet_menu",
     {
         beforeEach: function () {
-            legacyFavoriteMenuRegistry.add(
-                "insert-list-spreadsheet-menu",
-                LegacyInsertListSpreadsheetMenu,
-                5
-            );
-            this.data = {
-                foo: {
-                    fields: {
-                        foo: { string: "Foo", type: "char" },
-                    },
-                    records: [{ id: 1, foo: "yop" }],
-                },
-            };
             target = getFixture();
         },
     },
     function () {
-        QUnit.test("Menu item is present in list view", async function (assert) {
-            assert.expect(1);
-
-            const list = await createView({
-                View: ListView,
-                model: "foo",
-                data: this.data,
-                arch: '<tree><field name="foo"/></tree>',
-            });
-
-            await testUtils.dom.click(list.$(".o_favorite_menu button"));
-            assert.containsOnce(list, ".o_insert_list_spreadsheet_menu");
-
-            list.destroy();
-        });
-
         QUnit.test("Can save a list in a new spreadsheet", async (assert) => {
             assert.expect(2);
 
@@ -69,9 +33,9 @@ QUnit.module(
                 },
             });
 
-            await click(target.querySelector(".o_favorite_menu button"));
+            await toggleFavoriteMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
-            await modal.clickButton("Confirm");
+            await click(target, ".modal button.btn-primary");
             await nextTick();
             assert.verifySteps(["create"]);
         });
@@ -94,10 +58,10 @@ QUnit.module(
                 },
             });
 
-            await click(target.querySelector(".o_favorite_menu button"));
+            await toggleFavoriteMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             await triggerEvent(target, ".o-sp-dialog-item div[data-id='1']", "focus");
-            await modal.clickButton("Confirm");
+            await click(target, ".modal button.btn-primary");
             await nextTick();
 
             assert.verifySteps(
@@ -118,26 +82,26 @@ QUnit.module(
                     spreadsheetAction = this;
                 },
             });
-            await click(document.body.querySelector(".o_favorite_menu button"));
-            await click(document.body.querySelector(".o_insert_list_spreadsheet_menu"));
+            await toggleFavoriteMenu(target);
+            await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             /** @type {HTMLInputElement} */
-            const name = document.body.querySelector(".o_spreadsheet_name");
+            const name = target.querySelector(".o_spreadsheet_name");
             name.value = "New name";
             await triggerEvent(name, null, "input");
-            await modal.clickButton("Confirm");
+            await click(target, ".modal button.btn-primary");
             const model = getSpreadsheetActionModel(spreadsheetAction);
             await waitForDataSourcesLoaded(model);
-            assert.equal(model.getters.getListName("1"), "New name");
-            assert.equal(model.getters.getListDisplayName("1"), "(#1) New name");
+            assert.strictEqual(model.getters.getListName("1"), "New name");
+            assert.strictEqual(model.getters.getListDisplayName("1"), "(#1) New name");
         });
 
         QUnit.test("Unsorted List name doesn't contains sorting info", async function (assert) {
             assert.expect(1);
             await spawnListViewForSpreadsheet();
 
-            await click(target.querySelector(".o_favorite_menu button"));
+            await toggleFavoriteMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
-            assert.equal(document.body.querySelector(".o_spreadsheet_name").value, "Partners");
+            assert.strictEqual(target.querySelector(".o_spreadsheet_name").value, "Partners");
         });
 
         QUnit.test("Sorted List name contains sorting info", async function (assert) {
@@ -146,10 +110,10 @@ QUnit.module(
                 orderBy: [{ name: "bar", asc: true }],
             });
 
-            await click(target.querySelector(".o_favorite_menu button"));
+            await toggleFavoriteMenu(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
-            assert.equal(
-                document.body.querySelector(".o_spreadsheet_name").value,
+            assert.strictEqual(
+                target.querySelector(".o_spreadsheet_name").value,
                 "Partners by Bar"
             );
         });
@@ -164,13 +128,13 @@ QUnit.module(
                     spreadsheetAction = this;
                 },
             });
-            await click(document.body.querySelector(".o_favorite_menu button"));
-            await click(document.body.querySelector(".o_insert_list_spreadsheet_menu"));
-            document.body.querySelector(".o_spreadsheet_name").value = "";
-            await modal.clickButton("Confirm");
+            await toggleFavoriteMenu(target);
+            await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
+            target.querySelector(".o_spreadsheet_name").value = "";
+            await click(target, ".modal button.btn-primary");
             const model = getSpreadsheetActionModel(spreadsheetAction);
             await waitForDataSourcesLoaded(model);
-            assert.equal(model.getters.getListName("1"), "Partners");
+            assert.strictEqual(model.getters.getListName("1"), "Partners");
         });
     }
 );

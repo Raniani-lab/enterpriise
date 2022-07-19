@@ -138,10 +138,10 @@ odoo.define('web_mobile.barcode.tests', function (require) {
             const $modal = $('.modal-dialog.modal-lg');
             assert.containsOnce($('body'), $modal, 'there should be one modal opened in full screen');
 
-            assert.containsN($modal, '.o_list_view .o_data_row', 2,
+            assert.containsN($modal, '.o_legacy_list_view .o_data_row', 2,
                 'there should be 2 records displayed');
 
-            await dom.click($modal.find('.o_list_view .o_data_row:first'));
+            await dom.click($modal.find('.o_legacy_list_view .o_data_row:first'));
 
             const selectedId = form.renderer.state.data[PRODUCT_FIELD_NAME].res_id;
             assert.equal(selectedId, this.data[PRODUCT_PRODUCT].records[1].id,

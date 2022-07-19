@@ -59,7 +59,7 @@ tour.register('test_receipt_tracked_subcontracted_product', {test: true}, [
     },
 
     {
-        trigger: ".o_field_widget[name=qty_producing]",
+        trigger: ".o_field_widget[name=qty_producing] input",
         position: "right",
         run: "text 1",
     },
@@ -82,7 +82,7 @@ tour.register('test_receipt_tracked_subcontracted_product', {test: true}, [
     },
 
     {
-        trigger: ".o_field_widget[name=qty_producing]",
+        trigger: ".o_field_widget[name=qty_producing] input",
         position: "right",
         run: "text 1",
     },
@@ -116,17 +116,16 @@ tour.register('test_receipt_flexible_subcontracted_product', {test: true}, [
     },
 
     {
-        trigger: ".o_field_widget[name=qty_producing]",
+        trigger: ".o_field_widget[name=qty_producing] input",
         position: "right",
         run: "text 1",
     },
-
     {
         trigger: "div[name=move_line_raw_ids] td[name=qty_done]",
     },
     
     {
-        trigger: "div[name=move_line_raw_ids] input[name=qty_done]",
+        trigger: "div[name=move_line_raw_ids] [name=qty_done] input",
         run: "text 2", 
     },
     {

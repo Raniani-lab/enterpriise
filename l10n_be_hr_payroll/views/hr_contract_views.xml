@@ -94,8 +94,8 @@
                     <field name="l10n_be_ambulatory_insured_spouse" string="Insured Spouse"/>
                     <field name="l10n_be_ambulatory_insured_adults" string="# Insured Children &gt;= 19"/>
                     <field name="l10n_be_ambulatory_insured_children" string="# Insured Children &lt; 19"/>
-                    <label for="l10n_be_ambulatory_insurance_amount" attrs="{'invisible': ('l10n_be_has_ambulatory_insurance', '=', False)}">Insurance Amount</label>
-                    <div class="o_row" attrs="{'invisible': ('l10n_be_has_ambulatory_insurance', '=', False)}">
+                    <label for="l10n_be_ambulatory_insurance_amount" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}">Insurance Amount</label>
+                    <div class="o_row" attrs="{'invisible': [('l10n_be_has_ambulatory_insurance', '=', False)]}">
                         <field name="l10n_be_ambulatory_insurance_amount" nolabel="1"/>
                         <span>€ / month</span>
                     </div>

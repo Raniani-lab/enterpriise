@@ -67,7 +67,7 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
             },
             {
                 trigger: ".o_favorite_menu button",
-                extra_trigger: ".o_list_view",
+                extra_trigger: ".o_list_view, .o_legacy_list_view",
                 content: "Open the favorites menu",
                 run: "click",
             },

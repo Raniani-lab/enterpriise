@@ -23,7 +23,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     content: _t('Let\'s create a new <b>product</b>.'),
     position: 'right',
 }, {
-    trigger: 'input.o_field_char',
+    trigger: '.o_field_char input',
     content: Markup(_t('Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, etc.).</i>')),
     position: 'right',
 }, {

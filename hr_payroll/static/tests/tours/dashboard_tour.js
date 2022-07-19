@@ -29,7 +29,7 @@ tour.register('payroll_dashboard_ui_tour', {
     },
     {
         content: "Input contract name",
-        trigger: 'input.o_field_char[name="name"]',
+        trigger: '.o_field_char[name="name"] input',
         run: 'text Laurie\'s Contract',
     },
     {
@@ -40,7 +40,12 @@ tour.register('payroll_dashboard_ui_tour', {
     {
         content: "Select HR Reponsible",
         id: "set_hr_responsible",
-        trigger: '.ui-menu-item a:contains("Laurie")',
+        trigger: 'div[name=hr_responsible_id] input',
+        run: 'text Laurie',
+    },
+    {
+        content: "Select HR Reponsible (2)",
+        trigger: 'div[name=hr_responsible_id] .dropdown-item:contains(Laurie)',
     },
     {
         content: "Save contract",

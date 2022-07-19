@@ -26,7 +26,7 @@ tour.register('industry_fsm_tour', {
     position: 'right',
     width: 200,
 }, {
-    trigger: ".o_form_view .o_task_customer_field",
+    trigger: ".o_legacy_form_view .o_task_customer_field",
     extra_trigger: '.o_form_project_tasks.o_form_editable',
     content: _t('Select the <b>customer</b> for your task.'),
     position: "bottom",

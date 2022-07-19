@@ -16,6 +16,10 @@ import { ComponentWrapper } from "web.OwlCompatibility";
 import { View } from "@account_accountant/js/legacy_view_adapter";
 import Widget from "web.Widget";
 
+import legacyViewRegistry from "web.view_registry";
+import FormView from 'web.FormView';
+import ListView from 'web.ListView';
+
 const { Component, reactive, useState, xml } = owl;
 const serviceRegistry = registry.category("services");
 
@@ -82,6 +86,10 @@ QUnit.module("Owl view", ({ beforeEach }) => {
 
     QUnit.test("Instantiate multiple view components", async (assert) => {
         assert.expect(8);
+        registry.category("views").remove("list"); // remove new list from registry
+        registry.category("views").remove("form"); // remove new form from registry
+        legacyViewRegistry.add("list", ListView); // add legacy list -> will be wrapped and added to new registry
+        legacyViewRegistry.add("form", FormView); // add legacy form -> will be wrapped and added to new registry
 
         let parentState = reactive({
             resModel: "hobbit",
@@ -107,8 +115,8 @@ QUnit.module("Owl view", ({ beforeEach }) => {
 
         assert.containsN(target, ".o_view_controller", 2);
         assert.containsOnce(target, ".o_control_panel");
-        assert.containsOnce(target, ".o_list_view");
-        assert.containsOnce(target, ".o_form_view");
+        assert.containsOnce(target, ".o_legacy_list_view");
+        assert.containsOnce(target, ".o_legacy_form_view");
 
         // Change domain
         assert.containsN(target, ".o_data_row", 4);
@@ -119,12 +127,12 @@ QUnit.module("Owl view", ({ beforeEach }) => {
         assert.containsN(target, ".o_data_row", 2);
 
         // Change res id
-        assert.strictEqual($(".o_form_view .o_field_char[name=foo]").text(), "frodo");
+        assert.strictEqual($(".o_legacy_form_view .o_field_char[name=foo]").text(), "frodo");
 
         parentState.resId = 2;
         await nextTick();
 
-        assert.strictEqual($(".o_form_view .o_field_char[name=foo]").text(), "sam");
+        assert.strictEqual($(".o_legacy_form_view .o_field_char[name=foo]").text(), "sam");
     });
 
     QUnit.test("Works inside of a component wrapper", async (assert) => {
@@ -169,7 +177,7 @@ QUnit.module("Owl view", ({ beforeEach }) => {
         await mount(Parent, target, { env });
 
         assert.containsOnce(target, ".o_view_controller");
-        assert.strictEqual($(".o_form_view .o_field_char[name=foo]").text(), "frodo");
+        assert.strictEqual($(".o_legacy_form_view .o_field_char[name=foo]").text(), "frodo");
         assert.verifySteps(["read"]);
 
         def = makeDeferred();
@@ -179,14 +187,14 @@ QUnit.module("Owl view", ({ beforeEach }) => {
 
         // View shouldn't be updated if the promise hasn't been resolved
         assert.containsOnce(target, ".o_view_controller");
-        assert.strictEqual($(".o_form_view .o_field_char[name=foo]").text(), "frodo");
+        assert.strictEqual($(".o_legacy_form_view .o_field_char[name=foo]").text(), "frodo");
         assert.verifySteps([]);
 
         def.resolve();
         await nextTick();
 
         assert.containsOnce(target, ".o_view_controller");
-        assert.strictEqual($(".o_form_view .o_field_char[name=foo]").text(), "sam");
+        assert.strictEqual($(".o_legacy_form_view .o_field_char[name=foo]").text(), "sam");
         assert.verifySteps(["read"]);
     });
 

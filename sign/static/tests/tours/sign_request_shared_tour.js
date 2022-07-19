@@ -35,7 +35,7 @@ odoo.define('shared_sign_request_tour', function (require) {
         },
         {
             content: "Go on signing page",
-            trigger: '.o_field_copy',
+            trigger: '.o_field_CopyClipboardChar',
             run: function () {
                 const share_link = this.$anchor.contents()[0].textContent;
                 // Retrieve the link without the origin to avoid

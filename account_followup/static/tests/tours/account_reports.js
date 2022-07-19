@@ -16,7 +16,7 @@ Tour.register('account_followup_reports_widgets', {
         },
         {
             content: 'click first item',
-            trigger: ".o_list_view .o_data_row",
+            trigger: ".o_list_view .o_data_row .o_data_cell",
             run: 'click'
         },
         {

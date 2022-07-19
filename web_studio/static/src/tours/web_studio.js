@@ -182,7 +182,7 @@ tour.register(
             position: "left",
         },
         {
-            trigger: "input.o_required_modifier",
+            trigger: ".o_field_char.o_required_modifier > input",
             auto: true,
             position: "bottom",
         },
@@ -193,7 +193,7 @@ tour.register(
         },
         {
             trigger: ".o_web_studio_navbar_item",
-            extra_trigger: ".o_form_view.o_form_readonly",
+            extra_trigger: ".o_form_view .o_form_readonly",
             content: _t(
                 "Wow, nice! And I’m sure you can make it even better! Use this icon to open <b>Odoo Studio</b> and customize any screen."
             ),

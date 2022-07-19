@@ -44,7 +44,7 @@
 }
 
 // Common style for list views (also inside form views)
-.o_list_view .o_list_table {
+.o_legacy_list_view .o_list_table {
     // We need this to be collapse because we want to add a border on the rows
     // for sale order/invoice lines of type section.
     border-collapse: collapse;
@@ -165,7 +165,7 @@
 }
 
 // Standalone list views
-.o_content > .o_list_view > .table-responsive > .table {
+.o_content > .o_legacy_list_view > .table-responsive > .table {
     // List views always have the table-sm class, maybe we should remove
     // it (and consider it does not exist) and change the default table paddings
     @include o-list-view-full-width-padding($base-x: $table-cell-padding-x-sm, $base-y: $table-cell-padding-y-sm, $ratio: 2);
@@ -181,7 +181,7 @@
 }
 // Restore on mobile the scroll on list view
 @include media-breakpoint-down(md) {
-    .o_view_controller > .o_content > .o_list_view > .table-responsive {
+    .o_view_controller > .o_content > .o_legacy_list_view > .table-responsive {
         overflow: auto;
 
         .o_list_table tr:focus-within {

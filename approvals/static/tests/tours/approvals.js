@@ -18,22 +18,22 @@ odoo.define('approvals_tour', function(require) {
             run: 'click',
         },
         {
-            trigger: 'input[name="name"]',
+            trigger: '.o_field_widget[name="name"] input',
             content: 'give name',
             run: 'text Business Trip To Berlin',
         },
         {
-            trigger: 'input[name="date_start"]',
+            trigger: '.o_field_widget[name="date_start"] input',
             content: 'give start date',
             run: 'text 12/13/2018 13:00:00',
         },
         {
-            trigger: 'input[name="date_end"]',
+            trigger: '.o_field_widget[name="date_end"] input',
             content: 'give end date',
             run: 'text 12/20/2018 13:00:00',
         },
         {
-            trigger: 'input[name="location"]',
+            trigger: '.o_field_widget[name="location"] input',
             content: 'give location',
             run: 'text Berlin, Schulz Hotel',
         },
@@ -94,7 +94,7 @@ odoo.define('approvals_tour', function(require) {
             run: 'click',
         },
         {
-            trigger: 'button[title="Current state"][data-value="refused"]',
+            trigger: 'button[aria-label="Current state"][data-value="refused"]',
             content: 'wait the request status compute',
             run: function(){},
         },

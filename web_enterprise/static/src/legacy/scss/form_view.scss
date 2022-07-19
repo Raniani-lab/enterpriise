@@ -1,5 +1,5 @@
 
-.o_form_view {
+.o_legacy_form_view {
     @include media-breakpoint-up(md) {
         display: flex;
         flex-flow: column nowrap;
@@ -351,14 +351,14 @@
 
 // Overriden style when form view in modal
 .modal .modal-dialog {
-    .o_form_view {
+    .o_legacy_form_view {
         @include media-breakpoint-down(lg) {
             .o_group.o_inner_group > tbody > tr > td.o_td_label {
                 min-width: 100px;
             }
         }
     }
-    &.modal-sm .o_form_view {
+    &.modal-sm .o_legacy_form_view {
         .o_group {
             @include form-break-table;
         }
@@ -366,7 +366,7 @@
 }
 
 // XXS form view specific rules
-.o_form_view.o_xxs_form_view {
+.o_legacy_form_view.o_xxs_form_view {
     .o_group {
         // Target XXS form view on mobile devices in portrait mode
         @include media-breakpoint-down(md) {

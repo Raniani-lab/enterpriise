@@ -42,9 +42,9 @@ export class InsertViewSpreadsheet extends Component {
     getViewDescription() {
         const { resModel } = this.env.searchModel;
         const { views = [] } = this.env.config;
-        const { context, domain } = this.env.searchModel.getIrFilterValues();
+        const { context } = this.env.searchModel.getIrFilterValues();
         const action = {
-            domain,
+            domain: this.env.searchModel.domain,
             context,
             modelName: resModel,
             views: views.map(([, type]) => [false, type]),

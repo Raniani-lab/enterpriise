@@ -33,7 +33,7 @@ QUnit.module('web_enterprise', {
     }
 }, function () {
 
-    QUnit.module('ListView');
+    QUnit.module('ListView (Legacy)');
 
     QUnit.test("add custom field button with other optional columns - studio not installed", async function (assert) {
         assert.expect(11);

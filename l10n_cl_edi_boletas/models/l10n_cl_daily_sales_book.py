@@ -339,8 +339,11 @@ class L10nClDailySalesBook(models.Model):
             self.env.cr.commit()
             books._l10n_cl_send_books_to_sii()
             self_skip._send_pending_sales_book_report_to_sii()
+        if fields.Date.today() > fields.Date.from_string('2022-08-02'):
+            self.env.ref('l10n_cl_edi_boletas.ir_cron_send_daily_sales_book').active = False
 
     def _cron_ask_daily_sales_book_status(self):
         for company in self.env['res.company'].search([('partner_id.country_id.code', '=', 'CL')]):
-            self.with_company(company=company.id).with_context(
-                cron_skip_connection_errs=True)._l10n_cl_ask_dte_status()
+            self.with_company(company=company.id).with_context(cron_skip_connection_errs=True)._l10n_cl_ask_dte_status()
+        if fields.Date.today() > fields.Date.from_string('2022-08-02'):
+            self.env.ref('l10n_cl_edi_boletas.ir_cron_ask_daily_sales_book_status').active = False

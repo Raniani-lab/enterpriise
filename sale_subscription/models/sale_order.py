@@ -23,7 +23,7 @@ class SaleOrder(models.Model):
     _inherit = ["rating.mixin", "sale.order"]
 
     def _get_default_stage_id(self):
-        return self.env['sale.order.stage'].search([], order='sequence', limit=1)
+        return self.env['sale.order.stage'].search([], order='sequence', limit=1).id
 
     def _get_default_starred_user_ids(self):
         return [(4, self.env.uid)]
@@ -547,7 +547,7 @@ class SaleOrder(models.Model):
             next_stage_in_progress = stages_in_progress.filtered(lambda s: s.sequence > self.stage_id.sequence)[:1]
             if not next_stage_in_progress:
                 next_stage_in_progress = stages_in_progress.filtered(lambda s: s.id == max(stages_in_progress.ids))
-            values.update({'stage_id': next_stage_in_progress, 'stage_category': next_stage_in_progress.category})
+            values.update({'stage_id': next_stage_in_progress.id, 'stage_category': next_stage_in_progress.category})
         return values
 
     def action_confirm(self):

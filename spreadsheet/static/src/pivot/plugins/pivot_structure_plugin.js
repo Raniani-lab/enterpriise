@@ -3,12 +3,70 @@
 import { _t } from "web.core";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
+import { getFirstPivotFunction } from "../pivot_helpers";
+import { FILTER_DATE_OPTION, monthsOptions } from "@spreadsheet/assets_backend/constants";
+
+const { astToFormula } = spreadsheet;
+const { DateTime } = luxon;
+
+/**
+ * Convert pivot period to the related filter value
+ *
+ * @param {import("@spreadsheet/global_filters/plugins/filters_plugin").RangeType} timeRange
+ * @param {string} value
+ * @returns {object}
+ */
+function pivotPeriodToFilterValue(timeRange, value) {
+    // reuse the same logic as in `parseAccountingDate`?
+    const yearOffset = (value.split("/").pop() | 0) - DateTime.now().year;
+    switch (timeRange) {
+        case "year":
+            return {
+                yearOffset,
+            };
+        case "month": {
+            const month = value.split("/")[0] | 0;
+            return {
+                yearOffset,
+                period: monthsOptions[month - 1].id,
+            };
+        }
+        case "quarter": {
+            const quarter = value.split("/")[0] | 0;
+            return {
+                yearOffset,
+                period: FILTER_DATE_OPTION.quarter[quarter - 1],
+            };
+        }
+    }
+}
 
 export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     constructor() {
         super(...arguments);
         /** @type {string} */
         this.selectedPivotId = undefined;
+        this.selection.observe(this, {
+            handleEvent: this.handleEvent.bind(this),
+        });
+    }
+
+    handleEvent(event) {
+        if (!this.getters.isDashboard()) {
+            return;
+        }
+        switch (event.type) {
+            case "ZonesSelected": {
+                const sheetId = this.getters.getActiveSheetId();
+                const { col, row } = event.anchor.cell;
+                const cell = this.getters.getCell(sheetId, col, row);
+                if (cell !== undefined && cell.content.startsWith("=ODOO.PIVOT.HEADER(")) {
+                    const filters = this.getFiltersMatchingPivot(cell.content);
+                    this.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", { filters });
+                }
+                break;
+            }
+        }
     }
 
     /**
@@ -79,7 +137,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @param {string} pivotId Id of a pivot
      * @param {Array<string>} domain Domain
      */
-    getPivotHeaderValue(pivotId, domain) {
+    getDisplayedPivotHeaderValue(pivotId, domain) {
         const model = this.getters.getSpreadsheetPivotModel(pivotId);
         if (!model) {
             throw new LoadingDataError();
@@ -89,7 +147,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
         if (len === 0) {
             return _t("Total");
         }
-        return model.getPivotHeaderValue(domain);
+        return model.getDisplayedPivotHeaderValue(domain);
     }
 
     /**
@@ -108,6 +166,64 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
         }
         model.markAsValueUsed(domain, measure);
         return model.getPivotCellValue(measure, domain);
+    }
+
+    /**
+     * Get the filter impacted by a pivot formula's argument
+     *
+     * @param {string} formula Formula of the pivot cell
+     *
+     * @returns {Object}
+     */
+    getFiltersMatchingPivot(formula) {
+        const { args } = getFirstPivotFunction(formula);
+        const evaluatedArgs = args
+            .map(astToFormula)
+            .map((arg) => this.getters.evaluateFormula(arg));
+        const pivotId = evaluatedArgs[0];
+        const argField = evaluatedArgs[evaluatedArgs.length - 2];
+        const filters = this.getters.getGlobalFilters();
+        const matchingFilters = [];
+
+        for (const filter of filters) {
+            const model = this.getters.getSpreadsheetPivotModel(pivotId);
+            const { field, aggregateOperator: time } = model.parseGroupField(argField);
+            if (filter.pivotFields[pivotId].field === field.name) {
+                let value = model.getPivotHeaderValue(evaluatedArgs.slice(1));
+                let transformedValue;
+                const currentValue = this.getters.getGlobalFilterValue(filter.id);
+                switch (filter.type) {
+                    case "date":
+                        if (time === filter.rangeType) {
+                            transformedValue = pivotPeriodToFilterValue(time, value);
+                            if (JSON.stringify(transformedValue) === JSON.stringify(currentValue)) {
+                                transformedValue = undefined;
+                            }
+                        } else {
+                            continue;
+                        }
+                        break;
+                    case "relation":
+                        if (typeof value == "string") {
+                            value = Number(value);
+                            if (Number.isNaN(value)) {
+                                break;
+                            }
+                        }
+                        if (JSON.stringify(currentValue) !== `[${value}]`) {
+                            transformedValue = [value];
+                        }
+                        break;
+                    case "text":
+                        if (currentValue !== value) {
+                            transformedValue = value;
+                        }
+                        break;
+                }
+                matchingFilters.push({ filterId: filter.id, value: transformedValue });
+            }
+        }
+        return matchingFilters;
     }
 
     // ---------------------------------------------------------------------
@@ -152,7 +268,8 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
 PivotStructurePlugin.getters = [
     "getSelectedPivotId",
     "getPivotComputedDomain",
-    "getPivotHeaderValue",
+    "getDisplayedPivotHeaderValue",
     "getPivotCellValue",
     "getPivotGroupByValues",
+    "getFiltersMatchingPivot",
 ];

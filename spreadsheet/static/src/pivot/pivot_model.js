@@ -212,7 +212,7 @@ export class SpreadsheetPivotModel extends PivotModel {
     }
 
     getReportMeasures() {
-        return computeReportMeasures(this.metaData.fields, this.metaData.fieldAttrs, [])
+        return computeReportMeasures(this.metaData.fields, this.metaData.fieldAttrs, []);
     }
 
     //--------------------------------------------------------------------------
@@ -434,17 +434,24 @@ export class SpreadsheetPivotModel extends PivotModel {
      */
     getPivotHeaderValue(domain) {
         const groupFieldString = domain[domain.length - 2];
-        const groupValueString = domain[domain.length - 1];
         if (groupFieldString.startsWith("#")) {
             const { field } = this.parseGroupField(groupFieldString);
             const { cols, rows } = this._getColsRowsValuesFromDomain(domain);
-            if (this._isCol(field)) {
-                return this.getGroupByDisplayLabel(groupFieldString, cols[cols.length - 1]);
-            } else {
-                return this.getGroupByDisplayLabel(groupFieldString, rows[rows.length - 1]);
-            }
+            return this._isCol(field) ? cols[cols.length - 1] : rows[rows.length - 1];
         }
-        return this.getGroupByDisplayLabel(groupFieldString, groupValueString);
+        const groupValueString = domain[domain.length - 1];
+        return groupValueString;
+    }
+
+    /**
+     * Get the displayed label of the last group by of the domain
+     *
+     * @param {string[]} domain Domain of the formula
+     * @returns {string}
+     */
+    getDisplayedPivotHeaderValue(domain) {
+        const groupFieldString = domain[domain.length - 2];
+        return this.getGroupByDisplayLabel(groupFieldString, this.getPivotHeaderValue(domain));
     }
 
     //--------------------------------------------------------------------------

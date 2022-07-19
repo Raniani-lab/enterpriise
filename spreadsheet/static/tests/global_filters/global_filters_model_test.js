@@ -1350,4 +1350,147 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.equal(getDateDomainDurationInDays(computedDomain), 3 * 365);
         assertDateDomainEqual(assert, "date", "2016-05-17", "2019-05-16", computedDomain);
     });
+
+    QUnit.test(
+        "Can set a value to a relation filter from the SET_MANY_GLOBAL_FILTER_VALUE command",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /*xml*/ `
+                <pivot>
+                    <field name="product_id" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    pivotFields: { 1: { field: "product_id", type: "many2one" } },
+                },
+            });
+            model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", {
+                filters: [{ filterId: "42", value: [31] }],
+            });
+            assert.deepEqual(model.getters.getGlobalFilterValue("42"), [31]);
+            model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", { filters: [{ filterId: "42" }] });
+            assert.deepEqual(model.getters.getGlobalFilterValue("42"), []);
+        }
+    );
+
+    QUnit.test(
+        "Can set a value to a date filter from the SET_MANY_GLOBAL_FILTER_VALUE command",
+        async function (assert) {
+            patchDate(2022, 6, 14, 0, 0, 0);
+            const { model } = await createSpreadsheetWithPivot();
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "date",
+                    pivotFields: { 1: { field: "date", type: "date" } },
+                    rangeType: "month",
+                },
+            });
+            const newValue = { yearOffset: -6, period: "may" };
+            model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", {
+                filters: [{ filterId: "42", value: newValue }],
+            });
+            assert.deepEqual(model.getters.getGlobalFilterValue("42"), newValue);
+            model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", { filters: [{ filterId: "42" }] });
+            assert.deepEqual(model.getters.getGlobalFilterValue("42"), { yearOffset: undefined });
+        }
+    );
+
+    QUnit.test(
+        "getFiltersMatchingPivot return correctly matching filter according to cell formula",
+        async function (assert) {
+            patchDate(2022, 6, 14, 0, 0, 0);
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /*xml*/ `
+                <pivot>
+                    <field name="product_id" type="row"/>
+                    <field name="probability" type="measure"/>
+                    <field name="date" interval="month" type="col"/>
+                </pivot>`,
+            });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    label: "relational filter",
+                    pivotFields: { 1: { field: "product_id", type: "many2one" } },
+                },
+            });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "43",
+                    type: "date",
+                    label: "date filter 1",
+                    pivotFields: { 1: { field: "date", type: "date" } },
+                    rangeType: "month",
+                },
+            });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "44",
+                    type: "date",
+                    label: "date filter 2",
+                    pivotFields: { 1: { field: "date", type: "date" } },
+                    rangeType: "year",
+                },
+            });
+            const relationalFilters1 = model.getters.getFiltersMatchingPivot(
+                '=ODOO.PIVOT.HEADER(1,"product_id",37)'
+            );
+            assert.deepEqual(relationalFilters1, [{ filterId: "42", value: [37] }]);
+            const relationalFilters2 = model.getters.getFiltersMatchingPivot(
+                '=ODOO.PIVOT.HEADER(1,"product_id","41")'
+            );
+            assert.deepEqual(relationalFilters2, [{ filterId: "42", value: [41] }]);
+            const dateFilters1 = model.getters.getFiltersMatchingPivot(
+                '=ODOO.PIVOT.HEADER(1,"date:month","08/2016")'
+            );
+            assert.deepEqual(dateFilters1, [
+                { filterId: "43", value: { yearOffset: -6, period: "august" } },
+            ]);
+            const dateFilters2 = model.getters.getFiltersMatchingPivot(
+                '=ODOO.PIVOT.HEADER(1,"date:year","2016")'
+            );
+            assert.deepEqual(dateFilters2, [{ filterId: "44", value: { yearOffset: -6 } }]);
+        }
+    );
+
+    QUnit.test(
+        "getFiltersMatchingPivot return correctly matching filter according to cell formula with multi-levels grouping",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /*xml*/ `
+                <pivot>
+                    <field name="product_id" type="row"/>
+                    <field name="probability" type="measure"/>
+                    <field name="date" interval="month" type="row"/>
+                </pivot>`,
+            });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    label: "relational filter",
+                    pivotFields: { 1: { field: "product_id", type: "many2one" } },
+                },
+            });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "43",
+                    type: "date",
+                    label: "date filter 1",
+                    pivotFields: { 1: { field: "date", type: "date" } },
+                    rangeType: "month",
+                },
+            });
+            const filters = model.getters.getFiltersMatchingPivot(
+                '=ODOO.PIVOT.HEADER(1,"date:month","08/2016","product_id","41")'
+            );
+            assert.deepEqual(filters, [{ filterId: "42", value: [41] }]);
+        }
+    );
 });

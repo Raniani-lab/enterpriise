@@ -4,7 +4,11 @@ import { serializeDate, serializeDateTime } from "@web/core/l10n/dates";
 import { Domain } from "@web/core/domain";
 
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
+import { FILTER_DATE_OPTION, monthsOptions } from "@spreadsheet/assets_backend/constants";
+import { getPeriodOptions } from "@web/search/utils/dates";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
+
+const { DateTime } = luxon;
 
 export function checkFiltersTypeValueCombination(type, value) {
     if (value !== undefined) {
@@ -94,4 +98,21 @@ export function getRelativeDateDomain(now, offset, rangeType, fieldName, fieldTy
     }
 
     return new Domain(["&", [fieldName, ">=", leftBound], [fieldName, "<=", rightBound]]);
+}
+
+/*
+ * Return a list of time options to choose from according to the requested
+ * type. Each option contains its (translated) description.
+ * @see getPeriodOptions
+ * @param {string} type "month" | "quarter" | "year"
+ * @returns {Array<Object>}
+ */
+export function dateOptions(type) {
+    if (type === "month") {
+        return monthsOptions;
+    } else {
+        return getPeriodOptions(DateTime.local()).filter(({ id }) =>
+            FILTER_DATE_OPTION[type].includes(id)
+        );
+    }
 }

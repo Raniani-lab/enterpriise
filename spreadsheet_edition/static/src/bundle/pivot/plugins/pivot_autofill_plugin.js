@@ -549,7 +549,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
                 (isColumn && model.isColumnGroupBy(fieldName)) ||
                 (!isColumn && model.isRowGroupBy(fieldName))
             ) {
-                tooltips.push({ value: model.getPivotHeaderValue([fieldName, value])});
+                tooltips.push({ value: model.getDisplayedPivotHeaderValue([fieldName, value])});
             }
         }
         if (definition.measures.length !== 1 && isColumn) {
@@ -578,7 +578,7 @@ export default class PivotAutofillPlugin extends spreadsheet.UIPlugin {
             return [{ value: _t("Total") }];
         }
         for (let [fieldName, value] of Object.entries(values)) {
-            tooltips.push({ value: model.getPivotHeaderValue([fieldName, value])});
+            tooltips.push({ value: model.getDisplayedPivotHeaderValue([fieldName, value])});
         }
         return tooltips;
     }

@@ -8,7 +8,7 @@ import FiltersPlugin from "./plugins/filters_plugin";
 const { inverseCommandRegistry } = spreadsheet.registries;
 
 function identity(cmd) {
-  return [cmd];
+    return [cmd];
 }
 
 const { coreTypes, invalidateEvaluationCommands, readonlyAllowedCommands } = spreadsheet;
@@ -28,24 +28,25 @@ invalidateEvaluationCommands.add("SET_GLOBAL_FILTER_VALUE");
 invalidateEvaluationCommands.add("CLEAR_GLOBAL_FILTER_VALUE");
 
 readonlyAllowedCommands.add("SET_GLOBAL_FILTER_VALUE");
+readonlyAllowedCommands.add("SET_MANY_GLOBAL_FILTER_VALUE");
 readonlyAllowedCommands.add("CLEAR_GLOBAL_FILTER_VALUE");
 
 inverseCommandRegistry
-  .add("EDIT_GLOBAL_FILTER", identity)
-  .add("ADD_GLOBAL_FILTER", (cmd) => {
-    return [
-      {
-        type: "REMOVE_GLOBAL_FILTER",
-        id: cmd.id,
-      },
-    ];
-  })
-  .add("REMOVE_GLOBAL_FILTER", (cmd) => {
-    return [
-      {
-        type: "ADD_GLOBAL_FILTER",
-        id: cmd.id,
-        filter: {},
-      },
-    ];
-  });
+    .add("EDIT_GLOBAL_FILTER", identity)
+    .add("ADD_GLOBAL_FILTER", (cmd) => {
+        return [
+            {
+                type: "REMOVE_GLOBAL_FILTER",
+                id: cmd.id,
+            },
+        ];
+    })
+    .add("REMOVE_GLOBAL_FILTER", (cmd) => {
+        return [
+            {
+                type: "ADD_GLOBAL_FILTER",
+                id: cmd.id,
+                filter: {},
+            },
+        ];
+    });

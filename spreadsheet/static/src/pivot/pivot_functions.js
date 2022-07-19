@@ -98,7 +98,7 @@ functionRegistry
             const args = domain.map(toString);
             assertPivotsExists(pivotId, this.getters);
             assertDomainLength(args);
-            return this.getters.getPivotHeaderValue(pivotId, args);
+            return this.getters.getDisplayedPivotHeaderValue(pivotId, args);
         },
         computeFormat: function (pivotId, ...domain) {
             pivotId = toString(pivotId.value);

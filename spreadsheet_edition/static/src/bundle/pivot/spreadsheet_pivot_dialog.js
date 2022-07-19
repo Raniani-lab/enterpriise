@@ -251,7 +251,7 @@ export class PivotDialog extends Component {
         return Array.from(rowIndexes).sort((a, b) => a - b);
     }
 
-    _getPivotHeaderValue(domain) {
+    _getDisplayedPivotHeaderValue(domain) {
         const len = domain.length;
         if (len === 0) {
             return _t("Total");
@@ -286,7 +286,7 @@ export class PivotDialog extends Component {
                 }
                 current.push({
                     formula: makePivotFormula("ODOO.PIVOT.HEADER", [id, ...domain]),
-                    value: this._getPivotHeaderValue(domain),
+                    value: this._getDisplayedPivotHeaderValue(domain),
                     span: cell.width,
                     isMissing: !this.pivotModel.isUsedHeader(domain),
                 })
@@ -322,7 +322,7 @@ export class PivotDialog extends Component {
             const cell = {
                 args: domain,
                 formula: makePivotFormula("ODOO.PIVOT.HEADER", [id, ...domain]),
-                value: this._getPivotHeaderValue(domain),
+                value: this._getDisplayedPivotHeaderValue(domain),
                 isMissing: !this.pivotModel.isUsedHeader(domain),
             };
             if (row.indent > 1) {

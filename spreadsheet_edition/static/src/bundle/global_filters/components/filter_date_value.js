@@ -1,46 +1,10 @@
 /** @odoo-module */
 
-import { getPeriodOptions } from "@web/search/utils/dates";
-
-import { _lt } from "@web/core/l10n/translation";
 import { YearPicker } from "@spreadsheet_edition/assets/components/year_picker";
+import { dateOptions } from "@spreadsheet/global_filters/helpers";
+
 const { DateTime } = luxon;
 const { Component, onWillUpdateProps } = owl;
-import { FILTER_DATE_OPTION } from "@spreadsheet/assets_backend/constants";
-
-// TODO Remove this mapping, We should only need number > description to avoid multiple conversions
-// This would require a migration though
-const monthsOptions = [
-    { id: "january", description: _lt("January") },
-    { id: "february", description: _lt("February") },
-    { id: "march", description: _lt("March") },
-    { id: "april", description: _lt("April") },
-    { id: "may", description: _lt("May") },
-    { id: "june", description: _lt("June") },
-    { id: "july", description: _lt("July") },
-    { id: "august", description: _lt("August") },
-    { id: "september", description: _lt("September") },
-    { id: "october", description: _lt("October") },
-    { id: "november", description: _lt("November") },
-    { id: "december", description: _lt("December") },
-];
-
-/**
- * Return a list of time options to choose from according to the requested
- * type. Each option contains its (translated) description.
- * @see getPeriodOptions
- * @param {string} type "month" | "quarter" | "year"
- * @returns {Array<Object>}
- */
-function dateOptions(type) {
-    if (type === "month") {
-        return monthsOptions;
-    } else {
-        return getPeriodOptions(DateTime.local()).filter(({ id }) =>
-            FILTER_DATE_OPTION[type].includes(id)
-        );
-    }
-}
 
 export class DateFilterValue extends Component {
     setup() {

@@ -205,6 +205,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
         }
         // Get the first picking as a reference for some fields the batch hasn't.
         this.picking = this.cache.getRecord('stock.picking', this.record.picking_ids[0]);
+        this.askBeforeNewLinesCreation = this.picking.immediate_transfer;
     }
 
     _defaultLocationId() {

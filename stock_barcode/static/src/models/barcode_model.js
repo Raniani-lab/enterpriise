@@ -1,16 +1,19 @@
 /** @odoo-module **/
 
 import BarcodeParser from 'barcodes.BarcodeParser';
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Mutex } from "@web/core/utils/concurrency";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
+import { useService } from "@web/core/utils/hooks";
 
 const { EventBus } = owl;
 
 export default class BarcodeModel extends EventBus {
     constructor(params, services) {
         super();
+        this.dialogService = useService('dialog');
         this.orm = services.orm;
         this.rpc = services.rpc;
         this.notification = services.notification;
@@ -709,6 +712,37 @@ export default class BarcodeModel extends EventBus {
         throw new Error('Not Implemented');
     }
 
+    createNewLine(params) {
+        const product = params.fieldsParams.product_id;
+        if (this.askBeforeNewLinesCreation && product &&
+            !this.currentState.lines.some(line => line.product_id.id === product.id)) {
+            const confirmationPromise = new Promise((resolve, reject) => {
+                const body = product.code ?
+                    sprintf(
+                        _t("Scanned product [%s] %s is not reserved for this transfer. Are you sure you want to add it?"),
+                        product.code, product.display_name
+                    ) :
+                    sprintf(
+                        _t("Scanned product %s is not reserved for this transfer. Are you sure you want to add it?"),
+                        product.display_name
+                    );
+
+                this.dialogService.add(ConfirmationDialog, {
+                    body, title: _t("Add extra product?"),
+                    cancel: reject,
+                    confirm: async () => {
+                        const newLine = await this._createNewLine(params);
+                        resolve(newLine);
+                    },
+                    close: reject,
+                });
+            });
+            return confirmationPromise;
+        } else {
+            return this._createNewLine(params);
+        }
+    }
+
     /**
      * Creates a new line with passed parameters, adds it to the barcode app and
      * to the list of lines to save, then refresh the page.
@@ -1170,7 +1204,9 @@ export default class BarcodeModel extends EventBus {
         // Depending of the configuration, the user can be forced to scan a specific barcode type.
         const check = this._checkBarcode(barcodeData);
         if (check.error) {
-            return this.notification.add(check.message, { title: check.title, type: 'danger'});
+            return this.dialogService.add(ConfirmationDialog, {
+                body: check.message, title: check.title || _t("Not the expected scan"),
+            });
         }
 
         if (barcodeData.packaging) {
@@ -1328,7 +1364,7 @@ export default class BarcodeModel extends EventBus {
             if (barcodeData.uom) {
                 fieldsParams.uom = barcodeData.uom;
             }
-            currentLine = await this._createNewLine({fieldsParams});
+            currentLine = await this.createNewLine({fieldsParams});
         }
 
         // And finally, if the scanned barcode modified a line, selects this line.

@@ -1665,6 +1665,7 @@ tour.register('test_delivery_reserved_2', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan product2'
     },
+    tour.stepUtils.confirmAddingUnreservedProduct(),
 
     {
         trigger: '.o_barcode_line:first-child:contains("product2")',
@@ -2248,11 +2249,12 @@ tour.register('test_delivery_from_scratch_with_common_lots_name', {test: true}, 
     ...tour.stepUtils.discardBarcodeForm(),
 ]);
 
-tour.register('test_receipt_from_scratch_with_sn_1', {test: true}, [
+tour.register('test_receipt_with_sn_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: 'scan sn1',
     },
+    tour.stepUtils.confirmAddingUnreservedProduct(),
     ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
@@ -4447,6 +4449,7 @@ tour.register('test_receipt_delete_button', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan product2',
     },
+    tour.stepUtils.confirmAddingUnreservedProduct(),
     // ensure receipt's extra product CAN be deleted
     {
         trigger: '.o_barcode_line[data-barcode="product2"] .o_edit',
@@ -4478,6 +4481,7 @@ tour.register('test_receipt_delete_button', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan product3',
     },
+    tour.stepUtils.confirmAddingUnreservedProduct(),
     {
         trigger: '.o_barcode_line[data-barcode="product3"] .o_edit',
     },

@@ -20,6 +20,13 @@ StepUtils.include({
             in_modal: true,
         };
     },
+    confirmAddingUnreservedProduct() {
+        return {
+            trigger: '.btn-primary',
+            extra_trigger: '.modal-title:contains("Add extra product?")',
+            in_modal: true,
+        };
+    },
     validateBarcodeForm() {
         return [{
             trigger: '.o_barcode_client_action',
@@ -40,6 +47,6 @@ StepUtils.include({
             run() {},
         }];
     },
-})
+});
 
 });

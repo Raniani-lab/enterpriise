@@ -28,6 +28,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             this.destLocationList.push(this.cache.getRecord('stock.location', id));
         });
         this._useReservation = this.initialState.lines.some(line => line.reserved_uom_qty);
+        this.askBeforeNewLinesCreation = !this.record.immediate_transfer;
         this.config = data.data.config || {}; // Picking type's scan restrictions configuration.
         if (!this.displayDestinationLocation) {
             this.config.restrict_scan_dest_location = 'no';

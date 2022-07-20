@@ -40,7 +40,7 @@ class RentalWizard(models.TransientModel):
     duration = fields.Integer(
         string="Duration", compute="_compute_duration",
         help="The duration unit is based on the unit of the rental pricing rule.")
-    duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months")],
+    duration_unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months"), ('year', "Years")],
                                      string="Unit", required=True, compute="_compute_duration")
 
     unit_price = fields.Monetary(

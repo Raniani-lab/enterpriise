@@ -21,12 +21,14 @@ const TagSelectorWidget = Widget.extend(StandaloneFieldManagerMixin, {
      *
      * @param {string} relatedModel Name of the related model
      * @param {Array<number>} selectedValues Values already selected
+     * @param {string | undefined} placeholder
      */
-    init: function (parent, relatedModel, selectedValues) {
+    init: function (parent, relatedModel, selectedValues, placeholder) {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
         this.relatedModel = relatedModel;
         this.selectedValues = selectedValues;
+        this.placeholder = placeholder;
         this.widget = undefined;
     },
     updateWidgetState: async function (state) {
@@ -103,6 +105,7 @@ const TagSelectorWidget = Widget.extend(StandaloneFieldManagerMixin, {
         );
         this.widget = new FieldMany2ManyTags(this, this.relatedModel, this.model.get(recordID), {
             mode: "edit",
+            attrs: { placeholder: this.placeholder },
         });
         this._registerWidget(recordID, this.relatedModel, this.widget);
     },
@@ -126,7 +129,7 @@ class TagSelectorWidgetAdapter extends ComponentAdapter {
      * @override
      */
     get widgetArgs() {
-        return [this.props.relatedModel, this.props.selectedValues];
+        return [this.props.relatedModel, this.props.selectedValues, this.props.placeholder];
     }
 
     /**
@@ -161,6 +164,7 @@ X2ManyTagSelector.template = xml/*xml*/ `
         relatedModel="props.relatedModel"
         selectedValues="props.selectedValues"
         onValueChanged="props.onValueChanged"
+        placeholder="props.placeholder"
     />`;
 X2ManyTagSelector.props = {
     onValueChanged: Function,
@@ -168,6 +172,10 @@ X2ManyTagSelector.props = {
     selectedValues: {
         optional: true,
         type: Array,
+    },
+    placeholder: {
+        optional: true,
+        type: String,
     },
 }
 X2ManyTagSelector.defaultProps = {

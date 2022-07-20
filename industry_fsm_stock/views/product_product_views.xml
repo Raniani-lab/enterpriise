@@ -14,18 +14,13 @@
                 <field name="serial_missing"/>
                 <field name="quantity_decreasable"/>
             </xpath>
-            <xpath expr="//div[hasclass('oe_kanban_details')]" position="after">
-                <div class="o_kanban_record_bottom position-absolute fixed-bottom me-2" attrs="{'invisible': ['|', ('tracking', '=', 'none'), ('fsm_quantity', '=', 0)]}">
-                    <div class="oe_kanban_bottom_left"/>
-                    <div class="oe_kanban_bottom_right">
-                        <button class="btn" type="object" name="action_assign_serial">
-                            <i t-att-class="record.serial_missing.raw_value and 'fa fa-list text-danger' or 'fa fa-list text-success'" title="Lot/Serial number"></i>
-                        </button>
-                    </div>
-                </div>
-            </xpath>
             <xpath expr="//ul" position="inside">
                 <li>On hand: <field name="qty_available"/> <field name="uom_id"/></li>
+            </xpath>
+            <xpath expr="//ul" position="after">
+                <button class="btn align-self-end" type="object" name="action_assign_serial" attrs="{'invisible': ['|', ('tracking', '=', 'none'), ('fsm_quantity', '=', 0)]}">
+                    <i t-att-class="record.serial_missing.raw_value and 'fa fa-list text-danger' or 'fa fa-list text-success'" title="Lot/Serial number"></i>
+                </button>
             </xpath>
         </field>
     </record>

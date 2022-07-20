@@ -15,6 +15,14 @@ Validate stock moves for Field Service
         'views/product_product_views.xml',
         'wizard/fsm_stock_tracking_views.xml',
     ],
+    'assets': {
+        'web.assets_qweb': [
+            'industry_fsm_stock/static/src/fsm_product_quantity/*.xml',
+        ],
+        'web.qunit_suite_tests': [
+            'industry_fsm_stock/static/tests/**/*',
+        ],
+    },
     'auto_install': True,
     'license': 'OEEL-1',
 }

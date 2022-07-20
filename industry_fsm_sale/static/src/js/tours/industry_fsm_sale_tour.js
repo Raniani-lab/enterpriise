@@ -1,17 +1,13 @@
-odoo.define("sale_industry_fsm.tour", function (require) {
-"use strict";
+/** @odoo-module */
 /**
  * Add custom steps to take products and sales order into account
  */
-var tour = require('web_tour.tour');
-require('industry_fsm.tour');
-var core = require('web.core');
-const {Markup} = require('web.utils');
-var _t = core._t;
+import tour from 'web_tour.tour';
+import 'industry_fsm.tour';
+import { _t } from 'web.core';
+import { Markup } from 'web.utils';
 
-var fsmStartStepIndex = _.findIndex(tour.tours.industry_fsm_tour.steps, function (step) {
-    return (step.id === 'fsm_start');
-});
+const fsmStartStepIndex = tour.tours.industry_fsm_tour.steps.findIndex(step => step.id === 'fsm_start');
 
 tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     trigger: 'button[name="action_fsm_view_material"]',
@@ -37,7 +33,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     position: "bottom",
 }, {
     trigger: "button[name='fsm_add_quantity']",
-    alt_trigger: ".o_fsm_industry_product",
+    alt_trigger: ".o_fsm_material_kanban .o_kanban_record",
     extra_trigger: '.o_fsm_material_kanban',
     content: _t('Click on your product to add it to your <b>list of materials</b>. <i>Tip: for large quantities, click on the number to edit it directly.</i>'),
     position: 'right',
@@ -48,9 +44,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     position: "bottom"
 });
 
-var fsmCreateInvoiceStepIndex = _.findIndex(tour.tours.industry_fsm_tour.steps, function (step) {
-    return (step.id === 'fsm_invoice_create');
-});
+const fsmCreateInvoiceStepIndex = tour.tours.industry_fsm_tour.steps.findIndex(step => step.id === 'fsm_invoice_create');
 
 tour.tours.industry_fsm_tour.steps.splice(fsmCreateInvoiceStepIndex + 1, 0, {
     trigger: ".o_statusbar_buttons > button:contains('Create Invoice')",
@@ -66,6 +60,4 @@ tour.tours.industry_fsm_tour.steps.splice(fsmCreateInvoiceStepIndex + 1, 0, {
     trigger: "span:contains('Customer Invoice')",
     run() {},
     auto: true,
-});
-
 });

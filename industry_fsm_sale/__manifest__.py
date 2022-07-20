@@ -24,13 +24,8 @@ Create Sales order with timesheets and products from tasks
     'post_init_hook': 'post_init',
     'assets': {
         'web.assets_backend': [
-            'industry_fsm_sale/static/src/scss/fsm_product_quantity.scss',
-            'industry_fsm_sale/static/src/js/fsm_product_quantity.js',
-            'industry_fsm_sale/static/src/js/kanban_view/model.js',
-            'industry_fsm_sale/static/src/js/kanban_view/controller.js',
-            'industry_fsm_sale/static/src/js/kanban_view/renderer.js',
-            'industry_fsm_sale/static/src/js/kanban_view/record.js',
-            'industry_fsm_sale/static/src/js/kanban_view/view.js',
+            'industry_fsm_sale/static/src/components/**/*',
+            'industry_fsm_sale/static/src/views/**/*',
             'industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js',
         ],
         'web.assets_frontend': [
@@ -40,7 +35,7 @@ Create Sales order with timesheets and products from tasks
             'industry_fsm_sale/static/tests/**/*',
         ],
         'web.assets_qweb': [
-            'industry_fsm_sale/static/src/xml/**/*',
+            'industry_fsm_sale/static/src/components/**/*.xml',
         ],
     },
     'license': 'OEEL-1',

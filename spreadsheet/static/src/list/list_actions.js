@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { getFirstListFunction } from "./list_helpers";
+import { getFirstListFunction, getNumberOfListFormulas } from "./list_helpers";
 
 const { astToFormula } = spreadsheet;
 
@@ -29,4 +29,9 @@ export const SEE_RECORD_LIST = async (env) => {
         views: [[false, "form"]],
         view_mode: "form",
     });
+};
+
+export const SEE_RECORD_LIST_VISIBLE = (env) => {
+    const cell = env.model.getters.getActiveCell();
+    return cell && cell.evaluated.value !== "" && getNumberOfListFormulas(cell.content) === 1;
 };

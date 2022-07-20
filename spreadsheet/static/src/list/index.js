@@ -9,8 +9,7 @@ import "./list_functions";
 import ListPlugin from "@spreadsheet/list/plugins/list_plugin";
 import ListStructurePlugin from "@spreadsheet/list/plugins/list_structure_plugin";
 
-import { SEE_RECORD_LIST } from "./list_actions";
-import { getNumberOfListFormulas } from "@spreadsheet/list/list_helpers";
+import { SEE_RECORD_LIST, SEE_RECORD_LIST_VISIBLE } from "./list_actions";
 const { inverseCommandRegistry } = spreadsheet.registries;
 
 function identity(cmd) {
@@ -35,15 +34,7 @@ cellMenuRegistry.add("list_see_record", {
     name: _lt("See record"),
     sequence: 200,
     action: SEE_RECORD_LIST,
-    isVisible: (env) => {
-        const cell = env.model.getters.getActiveCell();
-        return (
-            cell &&
-            cell.evaluated.value !== "" &&
-            !cell.evaluated.error &&
-            getNumberOfListFormulas(cell.content) === 1
-        );
-    },
+    isVisible: SEE_RECORD_LIST_VISIBLE,
 });
 
 inverseCommandRegistry

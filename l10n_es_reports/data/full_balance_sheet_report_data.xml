@@ -913,10 +913,10 @@
                                         <field name="code">l10n_es_full_line_21500</field>
                                         <field name="domain" eval="['|', '|', ('account_id.code','=like','120%'),
                                         ('account_id.code','=like','121%'), ('account_id.internal_group', 'in', ['income', 'expense'])]"/>
-                                        <field name="formulas">-sum</field>
+                                        <field name="formulas">-sum - l10n_es_full_line_21700</field>
                                         <field name="groupby"/>
                                         <field name="show_domain">foldable</field>
-                                        <field name="special_date_changer">to_beginning_of_period</field>
+                                        <field name="special_date_changer">from_beginning</field>
                                         <field name="sequence" eval="85"/>
                                         <field name="level" eval="3"/>
                                     </record>

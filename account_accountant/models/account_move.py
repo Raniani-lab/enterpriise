@@ -20,6 +20,18 @@ class AccountMove(models.Model):
         # OVERRIDE to enable the 'in_payment' state on invoices.
         return 'in_payment'
 
+    def open_move(self):
+        if self.statement_line_id:
+            return self.statement_line_id._action_open_bank_reconciliation_widget(
+                default_context={
+                    'search_default_journal_id': self.statement_line_id.journal_id.id,
+                    'search_default_statement_line_id': self.statement_line_id.id,
+                    'default_st_line_id': self.statement_line_id.id,
+                }
+            )
+        else:
+            return super().open_move()
+
 
 class AccountMoveLine(models.Model):
     _name = "account.move.line"
@@ -112,14 +124,3 @@ class AccountMoveLine(models.Model):
             'binding_view_types': 'list',
             'context': {'active_ids': self.ids, 'active_model': 'account.move.line'},
         }
-
-    def open_move(self):
-        if self.statement_id:
-            return self.statement_line_id._action_open_bank_reconciliation_widget(
-                default_context={
-                    'search_default_journal_id': self.statement_line_id.journal_id.id,
-                    'search_default_statement_line_id': self.statement_line_id.id,
-                }
-            )
-        else:
-            return super().open_move()

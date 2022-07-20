@@ -6663,7 +6663,7 @@
         var _a;
         if (!range)
             return undefined;
-        return (_a = getters.getCell(range.sheetId, range.zone.left, range.zone.top)) === null || _a === void 0 ? void 0 : _a.format;
+        return (_a = getters.getCell(range.sheetId, range.zone.left, range.zone.top)) === null || _a === void 0 ? void 0 : _a.evaluated.format;
     }
     function getChartLabelValues(getters, dataSets, labelRange) {
         let labels = { values: [], formattedValues: [] };
@@ -7491,7 +7491,7 @@
         if (!chart.labelRange || !chart.dataSets || !canBeLinearChart(chart, getters)) {
             return false;
         }
-        const labelFormat = (_a = getters.getCell(chart.labelRange.sheetId, chart.labelRange.zone.left, chart.labelRange.zone.top)) === null || _a === void 0 ? void 0 : _a.format;
+        const labelFormat = (_a = getters.getCell(chart.labelRange.sheetId, chart.labelRange.zone.left, chart.labelRange.zone.top)) === null || _a === void 0 ? void 0 : _a.evaluated.format;
         return Boolean(labelFormat && timeFormatMomentCompatible.test(labelFormat));
     }
     function canBeLinearChart(chart, getters) {
@@ -14559,6 +14559,22 @@
         },
         isExported: true,
     };
+    // -----------------------------------------------------------------------------
+    // TEXT
+    // -----------------------------------------------------------------------------
+    const TEXT = {
+        description: _lt("Converts a number to text according to a specified format."),
+        args: args(`
+      number (number) ${_lt("The number, date or time to format.")}
+      format (string) ${_lt("The pattern by which to format the number, enclosed in quotation marks.")}
+  `),
+        returns: ["STRING"],
+        compute: function (number, format) {
+            const _number = toNumber(number);
+            return formatValue(_number, toString(format));
+        },
+        isExported: true,
+    };
 
     var text = /*#__PURE__*/Object.freeze({
         __proto__: null,
@@ -14576,7 +14592,8 @@
         SUBSTITUTE: SUBSTITUTE,
         TEXTJOIN: TEXTJOIN,
         TRIM: TRIM,
-        UPPER: UPPER
+        UPPER: UPPER,
+        TEXT: TEXT
     });
 
     const functions$4 = {
@@ -19328,9 +19345,6 @@
         }
         isFormula() {
             return true;
-        }
-        startEvaluation() {
-            this.evaluated = { value: LOADING, type: CellValueType.text };
         }
         assignEvaluation(value, format) {
             switch (typeof value) {
@@ -24551,6 +24565,11 @@
                         this.isUpToDate.clear();
                     }
                     break;
+                case "ACTIVATE_SHEET": {
+                    this.evaluate(cmd.sheetIdTo);
+                    this.isUpToDate.add(cmd.sheetIdTo);
+                    break;
+                }
                 case "EVALUATE_CELLS":
                     this.evaluate(cmd.sheetId);
                     this.isUpToDate.add(cmd.sheetId);
@@ -24607,23 +24626,16 @@
             const compilationParameters = this.getCompilationParameters(computeCell);
             const visited = {};
             for (let cell of Object.values(cells)) {
-                if (cell.isFormula()) {
-                    cell.startEvaluation();
-                }
-            }
-            for (let cell of Object.values(cells)) {
                 computeCell(cell);
             }
             function handleError(e, cell) {
                 if (!(e instanceof Error)) {
                     e = new Error(e);
                 }
-                if (cell.evaluated.type !== CellValueType.error) {
-                    const msg = (e === null || e === void 0 ? void 0 : e.errorType) || CellErrorType.GenericError;
-                    // apply function name
-                    const __lastFnCalled = compilationParameters[2].__lastFnCalled || "";
-                    cell.assignError(msg, new EvaluationError(msg, e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled), e.logLevel !== undefined ? e.logLevel : CellErrorLevel.error));
-                }
+                const msg = (e === null || e === void 0 ? void 0 : e.errorType) || CellErrorType.GenericError;
+                // apply function name
+                const __lastFnCalled = compilationParameters[2].__lastFnCalled || "";
+                cell.assignError(msg, new EvaluationError(msg, e.message.replace("[[FUNCTION_NAME]]", __lastFnCalled), e.logLevel !== undefined ? e.logLevel : CellErrorLevel.error));
             }
             function computeCell(cell) {
                 if (!cell.isFormula()) {
@@ -24682,9 +24694,6 @@
                 return getEvaluatedCell(cell);
             }
             function getEvaluatedCell(cell) {
-                if (cell.isFormula() && cell.evaluated.type === CellValueType.error) {
-                    throw new EvaluationError(cell.evaluated.value, cell.evaluated.error.message, cell.evaluated.error.logLevel);
-                }
                 computeCell(cell);
                 if (cell.evaluated.type === CellValueType.error) {
                     throw new EvaluationError(cell.evaluated.value, cell.evaluated.error.message, cell.evaluated.error.logLevel);
@@ -24779,7 +24788,7 @@
         handle(cmd) {
             if (invalidateEvaluationCommands.has(cmd.type) ||
                 cmd.type === "EVALUATE_CELLS" ||
-                (cmd.type === "UPDATE_CELL" && "content" in cmd)) {
+                (cmd.type === "UPDATE_CELL" && ("content" in cmd || "format" in cmd))) {
                 for (const chartId in this.charts) {
                     this.charts[chartId] = undefined;
                 }
@@ -25522,9 +25531,9 @@
                     for (let col = zone.left; col <= zone.right; col++) {
                         const cell = this.getters.getCell(sheetId, col, row);
                         if ((cell === null || cell === void 0 ? void 0 : cell.evaluated.type) === CellValueType.number &&
-                            !((_a = cell.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT)) // reject dates
+                            !((_a = cell.evaluated.format) === null || _a === void 0 ? void 0 : _a.match(DATETIME_FORMAT)) // reject dates
                         ) {
-                            return cell.format || createDefaultFormat(cell.evaluated.value);
+                            return cell.evaluated.format || createDefaultFormat(cell.evaluated.value);
                         }
                     }
                 }
@@ -33916,6 +33925,7 @@
         corePluginRegistry,
         rowMenuRegistry,
         sidePanelRegistry,
+        figureRegistry,
         sheetMenuRegistry,
         chartSidePanelComponentRegistry,
         chartComponentRegistry,
@@ -34002,8 +34012,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-07-14T09:23:06.908Z';
-    exports.__info__.hash = '6a2ac3b';
+    exports.__info__.date = '2022-07-20T08:40:09.416Z';
+    exports.__info__.hash = '2420485';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

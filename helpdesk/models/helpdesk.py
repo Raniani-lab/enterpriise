@@ -526,8 +526,7 @@ class HelpdeskTeam(models.Model):
             list_fields.insert(2, 'sla_reached_late')
 
         HelpdeskTicket = self.env['helpdesk.ticket']
-        tickets = HelpdeskTicket.search_read(expression.AND([domain, [('stage_id.fold', '=', False)]]), ['sla_deadline', 'open_hours', 'sla_reached_late', 'priority'])
-
+        show_demo = not bool(HelpdeskTicket.search([], limit=1))
         result = {
             'helpdesk_target_closed': self.env.user.helpdesk_target_closed,
             'helpdesk_target_rating': self.env.user.helpdesk_target_rating,
@@ -537,10 +536,23 @@ class HelpdeskTeam(models.Model):
             'my_all': {'count': 0, 'hours': 0, 'failed': 0},
             'my_high': {'count': 0, 'hours': 0, 'failed': 0},
             'my_urgent': {'count': 0, 'hours': 0, 'failed': 0},
-            'show_demo': not bool(HelpdeskTicket.search([], limit=1)),
+            'show_demo': show_demo,
             'rating_enable': False,
             'success_rate_enable': user_uses_sla
         }
+
+        if show_demo:
+            result.update({
+                'my_all': {'count': 10, 'hours': 30, 'failed': 4},
+                'my_high': {'count': 3, 'hours': 10, 'failed': 2},
+                'my_urgent': {'count': 2, 'hours': 15, 'failed': 1},
+                'today': {'count': 1, 'rating': 50, 'success': 50},
+                '7days': {'count': 15, 'rating': 70, 'success': 80},
+                'helpdesk_target_rating': 80,
+                'helpdesk_target_success': 85,
+                'helpdesk_target_closed': 85,
+            })
+            return result
 
         def _is_sla_failed(data):
             deadline = data.get('sla_deadline')
@@ -553,6 +565,13 @@ class HelpdeskTeam(models.Model):
             if _is_sla_failed(ticket):
                 result[key]['failed'] += 1
 
+        tickets = HelpdeskTicket.search_read(
+            expression.AND([
+                domain,
+                [('stage_id.fold', '=', False)]
+            ]),
+            ['sla_deadline', 'open_hours', 'sla_reached_late', 'priority']
+        )
         for ticket in tickets:
             add_to(ticket, 'my_all')
             if ticket['priority'] == '2':
@@ -738,12 +757,10 @@ class HelpdeskTeam(models.Model):
         })
         return action
 
-    @api.model
     def action_view_rating_today(self):
         #  call this method of on click "Customer Rating" button on dashbord for today rating of teams tickets
         return self.search([('member_ids', 'in', self._uid)])._action_view_rating(period='today', user_id=self._uid)
 
-    @api.model
     def action_view_rating_7days(self):
         #  call this method of on click "Customer Rating" button on dashbord for last 7days rating of teams tickets
         return self.search([('member_ids', 'in', self._uid)])._action_view_rating(period='seven_days', user_id=self._uid)

@@ -552,7 +552,6 @@ class HelpdeskTicket(models.Model):
         )
         return super(HelpdeskTicket, self).get_empty_list_help(help_message)
 
-    @api.model
     def create_action(self, action_ref, title, search_view_ref):
         action = self.env["ir.actions.actions"]._for_xml_id(action_ref)
         action = clean_action(action, self.env)
@@ -562,8 +561,7 @@ class HelpdeskTicket(models.Model):
             action['search_view_id'] = self.env.ref(search_view_ref).read()[0]
         if 'views' not in action:
             action['views'] = [(False, view) for view in action['view_mode'].split(",")]
-
-        return {'action': action}
+        return action
 
     @api.model_create_multi
     def create(self, list_value):

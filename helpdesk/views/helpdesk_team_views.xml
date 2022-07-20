@@ -475,7 +475,10 @@
         <field name="model">helpdesk.team</field>
         <field name="priority">200</field>
         <field name="arch" type="xml">
-            <kanban class="oe_background_grey o_kanban_dashboard o_helpdesk_kanban o_helpdesk_view" group_create="0" create="0" js_class="helpdesk_dashboard" sample="1">
+            <kanban class="oe_background_grey o_kanban_dashboard o_helpdesk_kanban o_helpdesk_view"
+                    group_create="0" create="0" js_class="helpdesk_team_kanban_view" sample="1"
+                    action="action_view_ticket" type="object" context="{'default_team_id': active_id}"
+            >
                 <field name="name"/>
                 <field name="sequence" widget="handle"/>
                 <field name="color"/>

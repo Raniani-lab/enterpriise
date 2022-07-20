@@ -480,10 +480,10 @@ export default class BarcodeModel extends EventBus {
                 this._groupLinesByPage(this.currentState);
             }
             if (this.pages.length > 1) { // ... then looks to go to this record's page...
-                for (const i in this.pages) {
-                    const lineIds = this.pages[i].lines.map(line => line.id);
+                for (const [index, page] of this.pages.entries()) {
+                    const lineIds = page.lines.map(line => line.id);
                     if (lineIds.includes(recordId)) {
-                        this.pageIndex = i;
+                        this.pageIndex = index;
                         break;
                     }
                 }
@@ -554,9 +554,9 @@ export default class BarcodeModel extends EventBus {
         const { route, params } = this._getSaveCommand();
         if (route) {
             const res = await this.rpc(route, params);
-            this.linesToSave = [];
             await this.refreshCache(res.records);
         }
+        this.linesToSave = [];
     }
 
     selectLine(line) {

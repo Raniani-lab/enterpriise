@@ -71,7 +71,7 @@ class SaleOrder(models.Model):
             'name': _('View Planning'),
             'domain': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)],
             'context': {
-                'default_sale_line_id': self.planning_first_sale_line_id,
+                'default_sale_line_id': self.planning_first_sale_line_id.id,
                 'search_default_group_by_role': 1,
                 'search_default_group_by_resource': 2,
                 'initialDate': self.planning_initial_date,

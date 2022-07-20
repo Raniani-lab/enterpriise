@@ -1,11 +1,31 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import json
 import base64
+import zipfile
+import io
 
-from odoo import fields, models, api
+from odoo import _, fields, models, api
 from odoo.osv import expression
 from odoo.tools import image_process
+from odoo.exceptions import UserError
+
+SUPPORTED_PATHS = (
+    "[Content_Types].xml",
+    "xl/sharedStrings.xml",
+    "xl/styles.xml",
+    "xl/workbook.xml",
+    "_rels/",
+    "xl/_rels",
+    "xl/charts/",
+    "xl/drawings/",
+    "xl/externalLinks/",
+    "xl/pivotTables/",
+    "xl/tables/",
+    "xl/theme/",
+    "xl/worksheets/"
+)
 
 
 class Document(models.Model):
@@ -112,3 +132,43 @@ class Document(models.Model):
         else:
             docs = docs[offset:]
         return docs.read(["name", "thumbnail"])
+
+    def clone_xlsx_into_spreadsheet(self):
+        """Clone an XLSX document into a new document with its content unzipped, and return the new document id"""
+
+        self.ensure_one()
+
+        file = io.BytesIO(self.raw)
+        if not zipfile.is_zipfile(file) or self.mimetype != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+            raise UserError(_("The file is not a xlsx file"))
+
+        unzipped_size = 0
+        with zipfile.ZipFile(file) as input_zip:
+            if len(input_zip.infolist()) > 1000:
+                raise UserError(_("The xlsx file is too big"))
+
+            if not "[Content_Types].xml" in input_zip.namelist() or\
+                not any(name.startswith("xl/") for name in input_zip.namelist()):
+                raise UserError(_("The xlsx file is corrupted"))
+
+            unzipped = {}
+            for info in input_zip.infolist():
+                if not info.filename.endswith((".xml", ".xml.rels")) or\
+                    not info.filename.startswith(SUPPORTED_PATHS):
+                    # Don't extract files others than xmls or unsupported xmls
+                    continue
+
+                unzipped_size += info.file_size
+                if(unzipped_size > 50 * 1000 * 1000): # 50MB
+                    raise UserError(_("The xlsx file is too big"))
+
+                unzipped[info.filename] = input_zip.read(info.filename).decode()
+
+
+            doc = self.copy({
+                "handler": "spreadsheet",
+                "mimetype": "application/o-spreadsheet",
+                "name": self.name.replace(".xlsx", ""),
+                "raw": json.dumps(unzipped)
+            })
+            return doc.id

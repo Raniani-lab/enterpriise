@@ -7,7 +7,7 @@
                 <img class="o_document_spreadsheet o_documents_image_background o_spreadsheet_resize"
                     t-attf-src="/documents/image/{{record.resId}}/{{size}}?field=thumbnail&amp;unique="
                     t-att-title="record.data.name"
-                    t-on-click.stop.prevent="() => this.openSpreadsheet(record)"/>
+                    t-on-click.stop.prevent="() => this.openPreview()"/>
             </t>
         </xpath>
     </t>

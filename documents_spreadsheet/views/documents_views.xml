@@ -10,9 +10,12 @@
             </xpath>
             <xpath expr="//div[@name='document_preview']" position="before">
                 <t t-set="isSpreadsheet" t-value="record.handler.raw_value === 'spreadsheet'"/>
+                <t t-set="isXlsx"
+                   t-value="record.mimetype.raw_value === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'"/>
             </xpath>
             <xpath expr="//div[@name='document_preview']" position="attributes">
                 <attribute name="t-attf-class" separator=" " add="#{(isSpreadsheet) ? 'o_document_spreadsheet' : ''}"/>
+                <attribute name="t-attf-class" separator=" " add="#{(isXlsx) ? 'o_document_xlsx' : ''}"/>
             </xpath>
             <xpath expr="(//div[@name='document_preview']/div)[last()]" position="before">
                 <img t-elif="isSpreadsheet" t-attf-src="/documents/image/#{record.id.raw_value}?field=thumbnail&amp;unique=" width="100" height="100" alt="Spreadsheet Preview" class="o_attachment_image o_spreadsheet_resize"/>

@@ -2,7 +2,12 @@
 
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
-import { inspectorFields, DocumentsInspector } from "@documents/views/inspector/documents_inspector";
+import {
+    inspectorFields,
+    DocumentsInspector,
+} from "@documents/views/inspector/documents_inspector";
+
+import { XLSX_MIME_TYPE } from "@documents_spreadsheet/helpers";
 
 inspectorFields.push("handler");
 
@@ -21,6 +26,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
     getRecordAdditionalData(record) {
         const result = this._super(...arguments);
         result.isSheet = record.data.handler === "spreadsheet";
+        result.isXlsx = record.data.mimetype === XLSX_MIME_TYPE;
         return result;
     },
 
@@ -28,9 +34,12 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
      * @override
      */
     getPreviewClasses(record, additionalData) {
-        const result = this._super(...arguments);
+        let result = this._super(...arguments);
         if (additionalData.isSheet) {
             return result.replace("o_documents_preview_mimetype", "o_documents_preview_image");
+        }
+        if (additionalData.isXlsx) {
+            result += " o_document_xlsx";
         }
         return result;
     },

@@ -35,9 +35,7 @@ async function selectYear(yearString) {
     // open the YearPicker
     await click(input);
     // Change input value
-    await testUtils.fields.editInput(input, yearString);
-    // trigger dateChange on YearPicker
-    await click(input);
+    await testUtils.fields.editAndTrigger(input, yearString, ["change"]);
     await nextTick();
 }
 
@@ -108,7 +106,9 @@ QUnit.module(
             // Can't make it work with the DOM API :(
             // await testUtils.dom.triggerEvent($(target).find(".o_field_selector_value"), "focusin");
             $($(target).find(".o_field_selector_value")).focusin();
-            await testUtils.dom.click($(target).find(".o_field_selector_select_button[data-name='display_name']"));
+            await testUtils.dom.click(
+                $(target).find(".o_field_selector_select_button[data-name='display_name']")
+            );
             const save = $(target).find(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             )[0];
@@ -298,7 +298,9 @@ QUnit.module(
             assert.equal(value.value, defaultValue);
             await testUtils.fields.editInput(input, "New Label");
             $($(target).find(".o_field_selector_value")).focusin();
-            await testUtils.dom.click($(target).find(".o_field_selector_select_button[data-name='display_name']"));
+            await testUtils.dom.click(
+                $(target).find(".o_field_selector_select_button[data-name='display_name']")
+            );
             const save = $(target).find(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             )[0];

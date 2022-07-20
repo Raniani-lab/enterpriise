@@ -27,7 +27,7 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
     spreadsheet_revision_ids = fields.One2many(
         "spreadsheet.revision",
         "res_id",
-        domain=[("res_model", "=", "documents.document")],
+        domain=lambda self: [('res_model', '=', self._name)],
         groups="base.group_system",
     )
 

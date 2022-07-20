@@ -3,3 +3,4 @@
 
 from . import ir_model
 from . import spreadsheet_revision
+from . import spreadsheet_collaborative_mixin

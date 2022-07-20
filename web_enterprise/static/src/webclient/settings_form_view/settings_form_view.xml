@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="web_enterprise.EnterpriseSettingsPage" t-inherit="web.SettingsPage" t-inherit-mode="primary" owl="1">
+        <xpath expr="//*[hasclass('settings')]" position="after">
+            <ActionSwiper
+                    onRightSwipe = " hasRightSwipe() ? {
+                        action: onRightSwipe.bind(this),
+                    } : undefined"
+                    onLeftSwipe = " hasLeftSwipe() ? {
+                        action: onLeftSwipe.bind(this),
+                    } : undefined"
+                    animationOnMove="false"
+                    animationType="'forwards'"
+                    swipeDistanceRatio="6"
+           />
+        </xpath>
+        <xpath expr="//ActionSwiper" position="inside">
+            <xpath expr="//*[hasclass('settings')]" position="move"/>
+        </xpath>
+        <xpath expr="//*[hasclass('settings_tab')]"  position="attributes">
+            <attribute name="t-if">state.search.value.length === 0 or !env.isSmall</attribute>
+        </xpath>
+    </t>
+</templates>

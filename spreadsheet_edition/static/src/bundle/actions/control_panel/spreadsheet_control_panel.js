@@ -35,10 +35,6 @@ SpreadsheetControlPanel.components = {
 };
 SpreadsheetControlPanel.props = {
     spreadsheetName: String,
-    isFavorited: {
-        type: Boolean,
-        optional: true
-    },
     isSpreadsheetSynced: {
         type: Boolean,
         optional: true
@@ -50,10 +46,6 @@ SpreadsheetControlPanel.props = {
     isReadonly: {
         type: Boolean,
         optional: true
-    },
-    onFavoriteToggled: {
-        type: Function,
-        optional: true,
     },
     onSpreadsheetNameChanged: {
         type: Function,

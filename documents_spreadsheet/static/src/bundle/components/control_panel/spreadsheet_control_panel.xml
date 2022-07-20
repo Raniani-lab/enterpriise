@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+
+    <t t-name="documents_spreadsheet.DocumentsSpreadsheetControlPanel" t-inherit="spreadsheet_edition.SpreadsheetControlPanel" owl="1">
+        <xpath expr="//t[@t-call='spreadsheet_edition.Breadcrumbs']" position="replace">
+            <t t-call="documents_spreadsheet.Breadcrumbs"/>
+        </xpath>
+    </t>
+
+    <div t-name="documents_spreadsheet.Breadcrumbs" t-inherit="spreadsheet_edition.Breadcrumbs" owl="1">
+        <xpath expr="//SpreadsheetName" position="after">
+            <a title="Toggle favorite" t-on-click="props.onFavoriteToggled" t-attf-class="o_spreadsheet_favorite fa fa-lg fa-star{{!props.isFavorited ? '-o' : ' favorite_button_enabled'}}"/>
+        </xpath>
+    </div>
+</templates>

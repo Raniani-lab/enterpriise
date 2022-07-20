@@ -5,13 +5,13 @@ import { download } from "@web/core/network/download";
 import { useService } from "@web/core/utils/hooks";
 
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
-import { SpreadsheetControlPanel } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_control_panel";
 import { SpreadsheetName } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_name";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { getDataFromTemplate } from "@spreadsheet/helpers/helpers";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
+import { DocumentsSpreadsheetControlPanel } from "../components/control_panel/spreadsheet_control_panel";
 
 const { Component, useState } = owl;
 const { createEmptyWorkbookData } = spreadsheet.helpers;
@@ -176,7 +176,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 SpreadsheetAction.template = "documents_spreadsheet.SpreadsheetAction";
 SpreadsheetAction.components = {
     SpreadsheetComponent,
-    SpreadsheetControlPanel,
+    DocumentsSpreadsheetControlPanel,
     SpreadsheetName,
 };
 

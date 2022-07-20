@@ -6,7 +6,7 @@ import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadshee
 import { base64ToJson, jsonToBase64 } from "@spreadsheet/helpers/helpers";
 import { useService } from "@web/core/utils/hooks";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
-import { SpreadsheetControlPanel } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_control_panel";
+import { DocumentsSpreadsheetControlPanel } from "@documents_spreadsheet/bundle/components/control_panel/spreadsheet_control_panel";
 
 export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
     setup() {
@@ -88,7 +88,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
 SpreadsheetTemplateAction.template = "documents_spreadsheet.SpreadsheetTemplateAction";
 SpreadsheetTemplateAction.components = {
     SpreadsheetComponent,
-    SpreadsheetControlPanel,
+    DocumentsSpreadsheetControlPanel,
 };
 
 registry

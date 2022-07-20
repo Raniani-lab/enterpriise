@@ -10,7 +10,7 @@ from odoo.tests import tagged
 from odoo.tools import mute_logger
 
 
-@tagged('mail_performance')
+@tagged('mail_performance', 'post_install', '-at_install')
 class TestActivityPerformance(BaseMailPerformance):
 
     @classmethod
@@ -198,7 +198,7 @@ class TestActivityPerformance(BaseMailPerformance):
         ])
         self.env.flush_all()
 
-        with self.assertQueryCount(employee=150):  # +1 on runbot
+        with self.assertQueryCount(employee=150):  # tme 149
             activities.action_feedback(
                 feedback='Intense feedback',
                 attachment_ids=attachments.ids,
@@ -241,7 +241,7 @@ class TestActivityPerformance(BaseMailPerformance):
         ])
         self.env.flush_all()
 
-        with self.assertQueryCount(employee=150):  # +1 on runbot
+        with self.assertQueryCount(employee=150):  # tme 149
             activities.action_feedback(
                 feedback='Intense feedback',
                 attachment_ids=attachments.ids,

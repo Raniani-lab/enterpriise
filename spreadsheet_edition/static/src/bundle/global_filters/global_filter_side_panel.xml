@@ -21,6 +21,7 @@
                 <div class="pivot_filter_input">
                     <t t-set="filterValue" t-value="getters.getGlobalFilterValue(filter.id)"/>
                     <input t-if="filter.type === 'text'"
+                        type="text"
                         class="o_input"
                         t-att-value="filterValue"
                         t-on-change="(e) => this.onTextInput(filter.id, e.target.value)"/>
@@ -72,6 +73,7 @@
             <div class="o_side_panel_title">Label</div>
             <div t-att-class="missingLabel ? 'o_field_invalid' : ''" class="o_required_modifier">
                 <input
+                    type="text"
                     class="o_input o_global_filter_label"
                     t-model="state.label"
                     t-att-placeholder="placeholder"/>
@@ -105,14 +107,18 @@
         </div>
         <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModel.technical">
             <div class="o_side_panel_title">Default Value</div>
-            <DateFilterValue
-                t-if="state.type === 'date'"
-                period="state.date.defaultValue.period"
-                yearOffset="state.date.defaultValue.yearOffset"
-                type="state.date.type"
-                onTimeRangeChanged.bind="onTimeRangeChanged"
-            />
+            <div t-if="state.type === 'date'" class="d-flex align-items-center mt-2">
+                <input
+                    type="checkbox"
+                    class="me-2"
+                    id="date_automatic_filter"
+                    t-att-checked="state.date.defaultsToCurrentPeriod"
+                    t-on-change="toggleDefaultsToCurrentPeriod"
+                />
+                <label for="date_automatic_filter"> Automatically filter on the current period </label>
+            </div>
             <input t-if="state.type === 'text'"
+                type="text"
                 class="o_input o_global_filter_default_value"
                 t-model="state.text.defaultValue"/>
             <X2ManyTagSelector
@@ -178,7 +184,7 @@
                 </option>
             </t>
         </select>
-        <YearPicker 
+        <YearPicker
             date="date"
             onDateTimeChanged.bind="onYearChanged"
         />

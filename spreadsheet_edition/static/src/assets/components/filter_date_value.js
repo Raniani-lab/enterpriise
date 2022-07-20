@@ -6,11 +6,8 @@ import { _lt } from "@web/core/l10n/translation";
 import { YearPicker } from "@spreadsheet_edition/assets/components/year_picker";
 const { DateTime } = luxon;
 const { Component, onWillUpdateProps } = owl;
+import { FILTER_DATE_OPTION } from "@spreadsheet/assets_backend/constants";
 
-const dateTypeOptions = {
-    quarter: ["first_quarter", "second_quarter", "third_quarter", "fourth_quarter"],
-    year: ["this_year", "last_year", "antepenultimate_year"],
-};
 // TODO Remove this mapping, We should only need number > description to avoid multiple conversions
 // This would require a migration though
 const monthsOptions = [
@@ -40,7 +37,7 @@ function dateOptions(type) {
         return monthsOptions;
     } else {
         return getPeriodOptions(DateTime.local()).filter(({ id }) =>
-            dateTypeOptions[type].includes(id)
+            FILTER_DATE_OPTION[type].includes(id)
         );
     }
 }

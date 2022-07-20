@@ -119,7 +119,6 @@ export function orderByToString(orderBy) {
     return orderBy.map((o) => `${o.name} ${o.asc ? "ASC" : "DESC"}`).join(", ");
 }
 
-
 /**
  * Convert a spreadsheet date representation to an odoo
  * server formatted date
@@ -127,7 +126,7 @@ export function orderByToString(orderBy) {
  * @param {Date} value
  * @returns {string}
  */
- export function toServerDateString(value) {
+export function toServerDateString(value) {
     // When this number is transformed into a Date object,
     // it takes the timezone of the browser. With timezone: true, we ensure that it
     // convert the date to the day we want, regardless of the timezone.
@@ -165,3 +164,20 @@ export function camelToSnakeObject(obj) {
     return result;
 }
 
+/**
+ * Check if the argument is falsy or is an empty object/array
+ *
+ * TODO : remove this and replace it by the one in o_spreadsheet xlsx import when its merged
+ */
+export function isEmpty(item) {
+    if (!item) return true;
+    if (typeof item === "object") {
+        if (
+            Object.values(item).length === 0 ||
+            Object.values(item).every((val) => val === undefined)
+        ) {
+            return true;
+        }
+    }
+    return false;
+}

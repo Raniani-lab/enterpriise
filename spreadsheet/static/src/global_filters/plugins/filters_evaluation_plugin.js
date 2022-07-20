@@ -14,6 +14,8 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 
 import { checkFiltersTypeValueCombination } from "@spreadsheet/global_filters/helpers";
+import { isEmpty } from "@spreadsheet/helpers/helpers";
+import { FILTER_DATE_OPTION } from "@spreadsheet/assets_backend/constants";
 
 const { DateTime } = luxon;
 
@@ -112,14 +114,20 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     /**
      * Get the current value of a global filter
      *
-     * @param {string} id Id of the filter
+     * @param {string} filterId Id of the filter
      *
      * @returns {string|Array<string>|Object} value Current value to set
      */
-    getGlobalFilterValue(id) {
-        return id in this.values
-            ? this.values[id].value
-            : this.getters.getGlobalFilterDefaultValue(id);
+    getGlobalFilterValue(filterId) {
+        const filter = this.getters.getGlobalFilter(filterId);
+
+        const value = filterId in this.values ? this.values[filterId].value : filter.defaultValue;
+
+        if (filter.type === "date" && isEmpty(value) && filter.defaultsToCurrentPeriod) {
+            return this._getValueOfCurrentPeriod(filterId);
+        }
+
+        return value;
     }
 
     /**
@@ -137,7 +145,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                 return value && (value.yearOffset !== undefined || value.period);
             case "relation":
                 return value && value.length;
-        }   
+        }
     }
 
     /**
@@ -146,9 +154,8 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      * @returns {number}
      */
     getActiveFilterCount() {
-        return this.getters.getGlobalFilters().filter(
-            (filter) => this.isFilterActive(filter.id)
-        ).length;
+        return this.getters.getGlobalFilters().filter((filter) => this.isFilterActive(filter.id))
+            .length;
     }
 
     getFilterDisplayValue(filterName) {
@@ -161,8 +168,8 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             case "text":
                 return value || "";
             case "date": {
-                if(!value || value.yearOffset === undefined) {
-                    return ""
+                if (!value || value.yearOffset === undefined) {
+                    return "";
                 }
                 const periodOptions = getPeriodOptions(DateTime.local());
                 const year = String(DateTime.local().year + value.yearOffset);
@@ -170,7 +177,8 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                 let periodStr = period && period.description;
                 // Named months aren't in getPeriodOptions
                 if (!period) {
-                    periodStr = MONTHS[value.period] && String(MONTHS[value.period].value).padStart(2, "0");
+                    periodStr =
+                        MONTHS[value.period] && String(MONTHS[value.period].value).padStart(2, "0");
                 }
                 return periodStr ? periodStr + "/" + year : year;
             }
@@ -205,25 +213,52 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     }
 
     /**
+     * Get the filter value corresponding to the current period, depending of the type of range of the filter.
+     * For example if rangeType === "month", the value will be the current month of the current year.
+     *
+     * @param {string} filterId a global filter
+     * @return {Object} filter value
+     */
+    _getValueOfCurrentPeriod(filterId) {
+        const filter = this.getters.getGlobalFilter(filterId);
+        const rangeType = filter.rangeType;
+        switch (rangeType) {
+            case "year":
+                return { yearOffset: 0 };
+            case "month": {
+                const month = new Date().getMonth() + 1;
+                const period = Object.entries(MONTHS).find((item) => item[1].value === month)[0];
+                return { yearOffset: 0, period };
+            }
+            case "quarter": {
+                const quarter = Math.floor(new Date().getMonth() / 3);
+                const period = FILTER_DATE_OPTION.quarter[quarter];
+                return { yearOffset: 0, period };
+            }
+        }
+        return {};
+    }
+
+    /**
      * Set the current value to empty values which functionally deactivate the filter
      *
      * @param {string} id Id of the filter
      */
     _clearGlobalFilterValue(id) {
-        const {type, rangeType} = this.getters.getGlobalFilter(id);
+        const { type, rangeType } = this.getters.getGlobalFilter(id);
         let value;
         switch (type) {
-            case 'text':
-                value = '';
+            case "text":
+                value = "";
                 break;
-            case 'date':
+            case "date":
                 value = { yearOffset: undefined };
                 break;
-            case 'relation':
+            case "relation":
                 value = [];
                 break;
         }
-        this.values[id] = {value, rangeType };
+        this.values[id] = { value, rangeType };
     }
 
     /**
@@ -260,7 +295,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      *
      * @returns {Domain|undefined}
      */
-     _getDateDomain(filter, fieldDesc) {
+    _getDateDomain(filter, fieldDesc) {
         if (!this.isFilterActive(filter.id)) {
             return undefined;
         }
@@ -269,16 +304,15 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
         const field = fieldDesc.field;
         const type = fieldDesc.type;
         const luxonDate = DateTime.local();
-        const setParam = {year: luxonDate.year};
+        const setParam = { year: luxonDate.year };
         const plusParam = { years: value.yearOffset || 0 };
-        if (!value.period || value.period === 'empty') {
-            granularity = 'year';
-        }
-        else {
+        if (!value.period || value.period === "empty") {
+            granularity = "year";
+        } else {
             switch (filter.rangeType) {
                 case "month":
                     granularity = "month";
-                    setParam.month = MONTHS[value.period].value ;
+                    setParam.month = MONTHS[value.period].value;
                     break;
                 case "quarter":
                     granularity = "quarter";
@@ -292,8 +326,8 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             fieldType: type,
             granularity,
             setParam,
-            plusParam
-        }).domain
+            plusParam,
+        }).domain;
     }
 
     /**

@@ -39,7 +39,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.state = useState({
             saved: false,
             label: undefined,
-            type: undefined,
+            type: this.props.type,
             pivotFields: {},
             listFields: {},
             text: {
@@ -47,7 +47,8 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             },
             date: {
                 defaultValue: {},
-                type: undefined, // "year" | "month" | "quarter"
+                defaultsToCurrentPeriod: false,
+                type: "year", // "year" | "month" | "quarter"
                 options: [],
             },
             relation: {
@@ -136,13 +137,13 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     loadValues() {
         this.id = this.props.id;
         const globalFilter = this.id && this.getters.getGlobalFilter(this.id);
-        this.state.label = globalFilter && globalFilter.label;
-        this.state.type = globalFilter ? globalFilter.type : this.props.type;
-        this.state.pivotFields = globalFilter ? globalFilter.pivotFields : {};
-        this.state.listFields = globalFilter ? globalFilter.listFields : {};
-        this.state.date.type =
-            this.state.type === "date" && globalFilter ? globalFilter.rangeType : "year";
         if (globalFilter) {
+            this.state.label = globalFilter.label;
+            this.state.type = globalFilter.type;
+            this.state.pivotFields = globalFilter.pivotFields;
+            this.state.listFields = globalFilter.listFields;
+            this.state.date.type = globalFilter.rangeType;
+            this.state.date.defaultsToCurrentPeriod = globalFilter.defaultsToCurrentPeriod;
             this.state[this.state.type].defaultValue = globalFilter.defaultValue;
             if (this.state.type === "relation") {
                 this.state.relation.relatedModel.technical = globalFilter.modelName;
@@ -275,6 +276,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             defaultValue: this.state[this.state.type].defaultValue,
             defaultValueDisplayNames: this.state[this.state.type].displayNames,
             rangeType: this.state.date.type,
+            defaultsToCurrentPeriod: this.state.date.defaultsToCurrentPeriod,
             pivotFields: this.state.pivotFields,
             listFields: this.state.listFields,
         };
@@ -313,6 +315,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         // TODO t-model does not work ?
         this.state.date.type = ev.target.value;
         this.state.date.defaultValue = {};
+    }
+
+    toggleDefaultsToCurrentPeriod(ev) {
+        this.state.date.defaultsToCurrentPeriod = ev.target.checked;
     }
 }
 FilterEditorSidePanel.template = "spreadsheet_edition.FilterEditorSidePanel";

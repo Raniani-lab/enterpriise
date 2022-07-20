@@ -6,7 +6,7 @@
 
 .o_spreadsheet_global_filters_side_panel,
 .o_spreadsheet_filter_editor_side_panel {
-    input {
+    input[type=text] {
         outline: none;
         width: 100%;
     }

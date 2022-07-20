@@ -160,7 +160,7 @@ const MoveArticleToDialog = Dialog.extend({
                     markup.unshift(`<img src="${src}" class="rounded-circle me-1"/>`);
                 }
                 if (subject && subject !== text) {
-                    markup.push(`<span class="test-ellipsis small">  -  ${escapeMarkup(subject)}</span>`);
+                    markup.push(`<span class="text-ellipsis small">  -  ${escapeMarkup(subject)}</span>`);
                 }
                 return markup.join('');
             },

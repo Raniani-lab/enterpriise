@@ -35,11 +35,12 @@
                 <button name="action_l10n_mx_edi_force_generate_cfdi" type="object"
                         string="Force CFDI" class="oe_link"
                         groups="account.group_account_invoice"
-                        attrs="{'invisible': ['|', '|', '|',
+                        attrs="{'invisible': ['|', '|', '|', '|',
                                               ('state', '!=', 'posted'),
                                               ('country_code', '!=', 'MX'),
                                               ('reconciled_invoice_ids', '=', []),
-                                              ('l10n_mx_edi_force_generate_cfdi', '=', True)]}"/>
+                                              ('l10n_mx_edi_force_generate_cfdi', '=', True),
+                                              ('edi_document_ids', '!=', [])]}"/>
             </group>
         </field>
     </record>

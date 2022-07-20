@@ -11,5 +11,6 @@ class AccountPayment(models.Model):
         return self.move_id.l10n_mx_edi_update_sat_status()
 
     def action_l10n_mx_edi_force_generate_cfdi(self):
-        self.l10n_mx_edi_force_generate_cfdi = True
-        self.move_id._update_payments_edi_documents()
+        if not self.edi_document_ids:
+            self.l10n_mx_edi_force_generate_cfdi = True
+            self.move_id._update_payments_edi_documents()

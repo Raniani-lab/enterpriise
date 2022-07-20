@@ -15,6 +15,9 @@
                     <t t-else="" t-out="name" />
                 </t>
             </span>
+            <span class="ms-auto flex-shrink-0">
+                <t t-slot="focusMessage"/>
+            </span>
         </div>
     </t>
 

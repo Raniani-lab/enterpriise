@@ -83,6 +83,9 @@ commandProviderRegistry.add("knowledge", {
                 return [];
             }
         }
+        const knowledgeMainMenuId = env.services.menu.getAll().find(
+            menu => menu.xmlid === 'knowledge.knowledge_menu_root'
+        ).id;
         // display the articles
         let result =  articlesData.map((article) => ({
             Component: KnowledgeCommand,
@@ -95,6 +98,7 @@ commandProviderRegistry.add("knowledge", {
 
             },
             category: "knowledge_articles",
+            href: `/web#id=${article.id}&model=knowledge.article&view_type=form&menu_id=${knowledgeMainMenuId}`,
             name: article.name,
             props: {
                 isFavorite: article.is_user_favorite,

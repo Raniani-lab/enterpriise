@@ -59,10 +59,10 @@
             <t t-foreach="advantage_types" t-as="advantage_type">
                 <h2><t t-esc="advantage_type.name"/></h2>
                 <t t-foreach="advantages[advantage_type]" t-as="advantage">
-                    <div t-att-class="'py-4 mb-0 border-top' if advantage.name else ''">
+                    <div t-att-class="'py-4 mb-0 border-top' if advantage.show_name else ''">
                         <div class="row">
                             <label class="col-md-3 pt-0 ps-4 col-form-label" t-att-for="advantage.field">
-                                <i t-att-class="(advantage.icon or '') + ' fa-1x fa-fw bg-odoo'"/> <t t-esc="advantage.name"/>
+                                <i t-att-class="(advantage.icon or '') + ' fa-1x fa-fw bg-odoo'"/> <t t-if="advantage.show_name"><t t-esc="advantage.name"/></t>
                             </label>
                             <div class="col-md-7">
                                 <t t-if="advantage.folded">

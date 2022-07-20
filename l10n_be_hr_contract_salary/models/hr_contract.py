@@ -3,6 +3,8 @@
 
 import ast
 
+from markupsafe import Markup
+
 from odoo import api, fields, models
 
 
@@ -163,7 +165,7 @@ class HrContract(models.Model):
             'Odometer': odometer,
             'Immatriculation Date': immatriculation
         }
-        description += '<ul>%s</ul>' % ''.join(['<li>%s: %s</li>' % (key, value) for key, value in car_elements.items() if value])
+        description += Markup('<ul>%s</ul>') % Markup().join([Markup('<li>%s: %s</li>') % (key, value) for key, value in car_elements.items() if value])
         return description
 
     def _get_description_commission_on_target(self, new_value=None):

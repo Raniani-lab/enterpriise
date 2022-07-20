@@ -30,14 +30,20 @@ class HrContractSalaryResume(models.Model):
     value_type = fields.Selection([
         ('fixed', 'Fixed Value'),
         ('contract', 'Contract Value'),
-        ('monthly_total', 'Monthly Total'),
-        ('sum', 'Sum of Advantages Values')], required=True, default='fixed')
+        ('sum', 'Sum of Advantages Values'),
+        ('monthly_total', 'Monthly Total')], required=True, default='fixed',
+        help='Pick how the value of the information is computed :\n'
+             'Fixed value : Set a determined value static for all links\n'
+             'Contract value : Get the value from a field on the contract record\n'
+             'Payslip value : Get the value from a field on the payslip record\n'
+             'Sum of Advantages value : You can pick in all advantages and compute a sum of them\n'
+             'Monthly Total : The information will be a total of all the informations in the category Monthly Advantages')
     advantage_ids = fields.Many2many('hr.contract.salary.advantage')
     code = fields.Selection(_get_available_fields)
     fixed_value = fields.Float()
-    category_id = fields.Many2one('hr.contract.salary.resume.category', required=True)
+    category_id = fields.Many2one('hr.contract.salary.resume.category', required=True, help='Pick a category to display this information')
     structure_type_id = fields.Many2one('hr.payroll.structure.type', string="Salary Structure Type")
-    impacts_monthly_total = fields.Boolean()
+    impacts_monthly_total = fields.Boolean(help="If checked, the value of this information will be computed in all information set as Monthly Total")
     uom = fields.Selection([
         ('days', 'Days'),
         ('percent', 'Percent'),

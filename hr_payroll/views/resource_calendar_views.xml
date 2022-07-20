@@ -44,4 +44,18 @@
             </field>
         </field>
     </record>
+
+    <record id="view_resource_calendar_search_inherit_payroll" model="ir.ui.view">
+        <field name="name">view.resource.calendar.search.inherit.payroll</field>
+        <field name="model">resource.calendar</field>
+        <field name="inherit_id" ref="resource.view_resource_calendar_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <group expand='0'>
+                    <filter name="groupby_company" context="{'group_by': 'company_id'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>

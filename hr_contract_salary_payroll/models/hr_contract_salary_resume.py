@@ -13,5 +13,6 @@ class HrContractSalaryResume(models.Model):
 
     code = fields.Selection(_get_available_fields)
     value_type = fields.Selection(selection_add=[
-        ('payslip', 'Payslip Value')
+        ('payslip', 'Payslip Value'),
+        ('sum', )
     ], ondelete={'payslip': 'set default'})

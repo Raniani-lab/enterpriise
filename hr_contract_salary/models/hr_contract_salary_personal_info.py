@@ -45,7 +45,7 @@ class HrContractSalaryPersonalInfo(models.Model):
         ('bank_account', 'Bank Account')
     ], default='employee')
     res_model = fields.Char(compute='_compute_res_model')
-    impacts_net_salary = fields.Boolean()
+    impacts_net_salary = fields.Boolean(help=" If checked, any change on this information will trigger a new computation of the gross-->net salary.")
     dropdown_selection = fields.Selection([
         ('specific', 'Specific Values'),
         ('country', 'Countries'),
@@ -54,6 +54,10 @@ class HrContractSalaryPersonalInfo(models.Model):
     ], string="Selection Nature")
     parent_id = fields.Many2one('hr.contract.salary.personal.info')
     child_ids = fields.One2many('hr.contract.salary.personal.info', 'parent_id')
+
+    @api.onchange('applies_on')
+    def _onchange_applies_on(self):
+        self.res_field_id = False
 
     @api.constrains('res_field_id', 'applies_on')
     def _check_res_field_model(self):

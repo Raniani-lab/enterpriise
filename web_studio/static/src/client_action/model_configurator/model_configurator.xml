@@ -42,7 +42,7 @@
 
 <t t-name="web_studio.ModelConfiguratorOption" owl="1">
     <div class="col-6">
-        <div class="custom-control form-check o_web_studio_model_configurator_option">
+        <div class="form-check my-3 o_web_studio_model_configurator_option">
             <input type="checkbox" class="form-check-input" t-att-id="props.name" t-att-name="props.name" t-model="props.option.value"/>
             <label t-att-for="props.name" class="form-check-label">
                 <strong t-esc="props.option.label"/>

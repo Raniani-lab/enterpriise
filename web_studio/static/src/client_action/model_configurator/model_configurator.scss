@@ -23,14 +23,8 @@
     margin: 16px -16px;
   }
   .form-check > .form-check-label {
-    margin: 1.2rem 0;
     padding-left: 0.6rem;
     border-left: 1px solid $o-web-studio-text-inactive;
-
-    &::before,
-    &::after {
-      left: -2rem;
-    }
   }
   /* embedded in Dialog with in the EditMenu
     leave the Dialog handle width and padding */

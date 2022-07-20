@@ -142,6 +142,22 @@ class AccountConsolidationTrialBalanceReport(models.Model):
             'template': 'account_consolidation.cell_template_consolidation_report',
         }
 
+    @api.model
+    def _get_report_name(self):
+        period_id = self._get_selected_period_id()
+        return self.env['consolidation.period'].browse(period_id)['display_name'] or _("Trial Balance")
+
+    def _set_context(self, options):
+        ctx = super(AccountConsolidationTrialBalanceReport, self)._set_context(options)
+        active_id = options.get('active_id')
+        if active_id:
+            ctx.update({'active_id': active_id})
+        return ctx
+
+    def get_report_filename(self, options):
+        self = self.with_context(self._set_context(options))
+        return super(AccountConsolidationTrialBalanceReport, self).get_report_filename(options)
+
     def _consolidated_balance_report_init_options_buttons(self, options):
         ap_is_closed = False
         ap_id = self._consolidated_balance_report_get_selected_period_id()
@@ -174,6 +190,7 @@ class AccountConsolidationTrialBalanceReport(models.Model):
     def consolidated_balance_report_export_file(self, options, file_generator):
         options.update({
             'force_periods': self._consolidated_balance_report_get_period_ids(options),
+            'active_id': self.env.context.get('active_id'),
         })
 
         return self.export_file(options, file_generator)

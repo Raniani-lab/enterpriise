@@ -347,7 +347,7 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
             handle: '.o_article_handle',
             items: 'li',
             listType: 'ul',
-            toleranceElement: '> .o_article_handle',
+            toleranceElement: '> div',
             opacity: 0.6,
             placeholder: 'ui-sortable-placeholder',
             tolerance: 'intersect',

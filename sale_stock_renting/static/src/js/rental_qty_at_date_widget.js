@@ -31,6 +31,9 @@ QtyAtDateWidget.include({
     },
 
     _getContent() {
+        if (!this.data.product_id) {
+            return;
+        }
         if (!this.data.is_rental || !this.data.return_date || !this.data.start_date) {
             return this._super();
         }

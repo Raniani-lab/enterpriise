@@ -13,9 +13,13 @@ import { constructDateRange, getPeriodOptions, QUARTER_OPTIONS } from "@web/sear
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 
-import { checkFiltersTypeValueCombination } from "@spreadsheet/global_filters/helpers";
 import { isEmpty } from "@spreadsheet/helpers/helpers";
 import { FILTER_DATE_OPTION } from "@spreadsheet/assets_backend/constants";
+import {
+    checkFiltersTypeValueCombination,
+    getRelativeDateDomain,
+} from "@spreadsheet/global_filters/helpers";
+import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 
 const { DateTime } = luxon;
 
@@ -142,7 +146,10 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             case "text":
                 return value;
             case "date":
-                return value && (value.yearOffset !== undefined || value.period);
+                return (
+                    value &&
+                    (typeof value === "string" || value.yearOffset !== undefined || value.period)
+                );
             case "relation":
                 return value && value.length;
         }
@@ -168,6 +175,13 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             case "text":
                 return value || "";
             case "date": {
+                if (value && typeof value === "string") {
+                    const type = RELATIVE_DATE_RANGE_TYPES.find((type) => type.type === value);
+                    if (!type) {
+                        return "";
+                    }
+                    return type.description.toString();
+                }
                 if (!value || value.yearOffset === undefined) {
                     return "";
                 }
@@ -183,7 +197,9 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                 return periodStr ? periodStr + "/" + year : year;
             }
             case "relation":
-                if (!value || !this.orm) return "";
+                if (!value || !this.orm) {
+                    return "";
+                }
                 if (!this.recordsDisplayName[filter.id]) {
                     this.orm.call(filter.modelName, "name_get", [value]).then((result) => {
                         const names = result.map(([, name]) => name);
@@ -310,8 +326,13 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
         const field = fieldDesc.field;
         const type = fieldDesc.type;
         const offset = fieldDesc.offset || 0;
-        const luxonDate = DateTime.local();
-        const setParam = { year: luxonDate.year };
+        const now = DateTime.local();
+
+        if (filter.rangeType === "relative") {
+            return getRelativeDateDomain(now, offset, value, field, type);
+        }
+
+        const setParam = { year: now.year };
         const yearOffset = value.yearOffset || 0;
         const plusParam = {
             years: filter.rangeType === "year" ? yearOffset + offset : yearOffset,
@@ -333,7 +354,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             }
         }
         return constructDateRange({
-            referenceMoment: luxonDate,
+            referenceMoment: now,
             fieldName: field,
             fieldType: type,
             granularity,
@@ -393,7 +414,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
      */
     _getComputedDomain(getFieldDesc) {
         let domain = new Domain([]);
-        for (let filter of this.getters.getGlobalFilters()) {
+        for (const filter of this.getters.getGlobalFilters()) {
             const fieldDesc = getFieldDesc(filter.id);
             if (!fieldDesc) {
                 continue;

@@ -72,18 +72,15 @@
                     t-on-change="onDateOptionChange"
                     class="o_input">
                     <t t-foreach="dateRangeTypes" t-as="range" t-key="range.type">
-                        <option t-if="isDateTypeSelected(range.type)" selected="1" t-att-value="range.type">
-                            <t t-esc="range.description"/>
-                        </option>
-                        <option t-else="" t-att-value="range.type">
+                        <option t-att-selected="isDateTypeSelected(range.type) ? 1 : 0" t-att-value="range.type">
                             <t t-esc="range.description"/>
                         </option>
                     </t>
-            </select>
+                </select>
         </div>
         <div class="o_side_panel_section" t-if="state.type !== 'relation' || state.relation.relatedModel.technical">
             <div class="o_side_panel_title">Default value</div>
-            <div t-if="state.type === 'date'" class="d-flex align-items-center mt-2">
+            <div t-if="state.type === 'date' and state.date.type !== 'relative'" class="d-flex align-items-center mt-2">
                 <input
                     type="checkbox"
                     class="me-2"
@@ -93,6 +90,17 @@
                 />
                 <label for="date_automatic_filter"> Automatically filter on the current period </label>
             </div>
+            <select
+                t-if="state.type === 'date'and state.date.type === 'relative'"
+                t-model="state.date.defaultValue"
+                class="o_input o_relative_date_selection">
+                <option value=""/>
+                <t t-foreach="relativeDateRangesTypes" t-as="range" t-key="range.type">
+                    <option t-att-selected="range.type === state.date.defaultValue ? 1 : 0" t-att-value="range.type">
+                        <t t-esc="range.description"/>
+                    </option>
+                </t>
+            </select>
             <input t-if="state.type === 'text'"
                 type="text"
                 class="o_input o_global_filter_default_value"

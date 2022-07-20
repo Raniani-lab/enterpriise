@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 /**
- * @typedef {"year"|"month"|"quarter"} RangeType
+ * @typedef {"year"|"month"|"quarter"|"relative"} RangeType
  *
 /**
  * @typedef {Object} FilterMatchingField
@@ -217,7 +217,11 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
             for (const globalFilter of data.globalFilters) {
                 // TODO: this naming trick should be handled by proper python data migrations
                 globalFilter.pivotFields = globalFilter.fields;
-                if (globalFilter.type === "date" && "year" in globalFilter.defaultValue) {
+                if (
+                    globalFilter.type === "date" &&
+                    typeof globalFilter.defaultValue === "object" &&
+                    "year" in globalFilter.defaultValue
+                ) {
                     switch (globalFilter.defaultValue.year) {
                         case "last_year":
                             globalFilter.defaultValue.yearOffset = -1;

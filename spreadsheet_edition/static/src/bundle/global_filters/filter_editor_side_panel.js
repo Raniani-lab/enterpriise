@@ -14,6 +14,7 @@ import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ModelSelector } from "@spreadsheet_edition/assets/components/model_selector/model_selector";
 import { sprintf } from "@web/core/utils/strings";
 import { FilterFieldOffset } from "./components/filter_field_offset";
+import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -22,6 +23,7 @@ const RANGE_TYPES = [
     { type: "year", description: _lt("Year") },
     { type: "quarter", description: _lt("Quarter") },
     { type: "month", description: _lt("Month") },
+    { type: "relative", description: _lt("Relative Period") },
 ];
 
 /**
@@ -64,7 +66,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             date: {
                 defaultValue: {},
                 defaultsToCurrentPeriod: false,
-                type: "year", // "year" | "month" | "quarter"
+                type: "year", // "year" | "month" | "quarter" | "relative"
                 options: [],
             },
             relation: {
@@ -90,6 +92,9 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.FieldSelectorWidget = FieldSelectorWidget;
         this.orm = useService("orm");
         this.notification = useService("notification");
+
+        this.relativeDateRangesTypes = RELATIVE_DATE_RANGE_TYPES;
+        this.dateRangeTypes = RANGE_TYPES;
 
         onWillStart(this.onWillStart);
         onMounted(this.onMounted);
@@ -124,10 +129,6 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             this.state.type === "relation" &&
             !this.state.relation.relatedModel.technical
         );
-    }
-
-    get dateRangeTypes() {
-        return RANGE_TYPES;
     }
 
     isDateTypeSelected(dateType) {

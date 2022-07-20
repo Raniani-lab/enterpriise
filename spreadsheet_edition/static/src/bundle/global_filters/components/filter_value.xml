@@ -17,11 +17,23 @@
             />
         </span>
         <DateFilterValue
-            t-if="filter.type === 'date'"
+            t-if="filter.type === 'date' and filter.rangeType !== 'relative'"
             period="filterValue &amp;&amp; filterValue.period"
             yearOffset="filterValue &amp;&amp; filterValue.yearOffset"
             type="filter.rangeType"
             onTimeRangeChanged="(value) => this.onDateInput(filter.id, value)" />
+        <select
+            t-if="filter.type === 'date' and filter.rangeType === 'relative'"
+            t-on-change="(e) => this.onDateInput(filter.id, e.target.value || undefined)"
+            class="o_input">
+            <option value=""/>
+            <t t-foreach="relativeDateRangesTypes" t-as="range" t-key="range.type">
+                <option t-att-selected="range.type === filterValue" t-att-value="range.type">
+                    <t t-esc="range.description"/>
+                </option>
+            </t>
+        </select>
+
         <i  t-if="getters.isFilterActive(filter.id)"
             class="fa fa-times btn btn-link text-muted o_side_panel_filter_icon"
             title="Clear"

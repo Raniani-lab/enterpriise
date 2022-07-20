@@ -19,10 +19,18 @@ import {
     setGlobalFilterValue,
 } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
-import { createSpreadsheetWithGraph, insertGraphInSpreadsheet } from "@spreadsheet/../tests/utils/chart";
+import {
+    createSpreadsheetWithGraph,
+    insertGraphInSpreadsheet,
+} from "@spreadsheet/../tests/utils/chart";
 import { createSpreadsheetWithList } from "@spreadsheet/../tests/utils/list";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { FILTER_DATE_OPTION } from "@spreadsheet/assets_backend/constants";
+import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
+import {
+    assertDateDomainEqual,
+    getDateDomainDurationInDays,
+} from "@spreadsheet/../tests/utils/date_domain";
 
 const { Model, DispatchResult } = spreadsheet;
 
@@ -227,7 +235,6 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.deepEqual(graphDomain[0], "&");
         assert.deepEqual(graphDomain[1], ["date", ">=", "2021-01-01"]);
         assert.deepEqual(graphDomain[2], ["date", "<=", "2021-12-31"]);
-
     });
 
     QUnit.test("Domain of date filter with year offset on pivot field", async function (assert) {
@@ -1244,5 +1251,103 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.deepEqual(model.getters.getGlobalFilterValue("1"), {
             yearOffset: 0,
         });
+    });
+
+    QUnit.test("Relative date filter at model loading", async function (assert) {
+        const label = "Last Month";
+        const defaultValue = RELATIVE_DATE_RANGE_TYPES[1].type;
+        const model = new Model({
+            globalFilters: [
+                { type: "date", rangeType: "relative", label, defaultValue, fields: {}, id: "1" },
+            ],
+        });
+        assert.equal(model.getters.getGlobalFilterValue("1"), defaultValue);
+    });
+
+    QUnit.test("Relative date filter display value", async function (assert) {
+        patchDate(2022, 4, 16, 0, 0, 0);
+        const label = "Last Month";
+        const defaultValue = RELATIVE_DATE_RANGE_TYPES[1].type;
+        const { model } = await createSpreadsheetWithPivot();
+        await addGlobalFilter(model, {
+            filter: {
+                id: "42",
+                type: "date",
+                label,
+                defaultValue,
+                pivotFields: {},
+                rangeType: "relative",
+            },
+        });
+        assert.equal(
+            model.getters.getFilterDisplayValue(label),
+            RELATIVE_DATE_RANGE_TYPES[1].description
+        );
+    });
+
+    QUnit.test("Relative date filter domain value", async function (assert) {
+        patchDate(2022, 4, 16, 0, 0, 0);
+        const label = "Last Month";
+        const { model } = await createSpreadsheetWithPivot();
+        const filter = {
+            id: "42",
+            type: "date",
+            label,
+            defaultValue: "last_week",
+            pivotFields: { 1: { field: "date", type: "date" } },
+            rangeType: "relative",
+        };
+        await addGlobalFilter(model, { filter });
+        let computedDomain = model.getters.getPivotComputedDomain("1");
+        assert.equal(getDateDomainDurationInDays(computedDomain), 7);
+        assertDateDomainEqual(assert, "date", "2022-05-09", "2022-05-15", computedDomain);
+
+        await setGlobalFilterValue(model, { id: "42", value: "last_month" });
+        computedDomain = model.getters.getPivotComputedDomain("1");
+        assert.equal(getDateDomainDurationInDays(computedDomain), 30);
+        assertDateDomainEqual(assert, "date", "2022-04-16", "2022-05-15", computedDomain);
+
+        await setGlobalFilterValue(model, { id: "42", value: "last_year" });
+        computedDomain = model.getters.getPivotComputedDomain("1");
+        assert.equal(getDateDomainDurationInDays(computedDomain), 365);
+        assertDateDomainEqual(assert, "date", "2021-05-16", "2022-05-15", computedDomain);
+
+        await setGlobalFilterValue(model, { id: "42", value: "last_three_years" });
+        computedDomain = model.getters.getPivotComputedDomain("1");
+        assert.equal(getDateDomainDurationInDays(computedDomain), 3 * 365);
+        assertDateDomainEqual(assert, "date", "2019-05-17", "2022-05-15", computedDomain);
+    });
+
+    QUnit.test("Relative date filter with offset domain value", async function (assert) {
+        patchDate(2022, 4, 16, 0, 0, 0);
+        const label = "Last Month";
+        const { model } = await createSpreadsheetWithPivot();
+        const filter = {
+            id: "42",
+            type: "date",
+            label,
+            defaultValue: "last_week",
+            pivotFields: { 1: { field: "date", type: "date", offset: -1 } },
+            rangeType: "relative",
+        };
+        await addGlobalFilter(model, { filter });
+        let computedDomain = model.getters.getPivotComputedDomain("1");
+        assert.equal(getDateDomainDurationInDays(computedDomain), 7);
+        assertDateDomainEqual(assert, "date", "2022-05-02", "2022-05-08", computedDomain);
+
+        await setGlobalFilterValue(model, { id: "42", value: "last_month" });
+        computedDomain = model.getters.getPivotComputedDomain("1");
+        assert.equal(getDateDomainDurationInDays(computedDomain), 30);
+        assertDateDomainEqual(assert, "date", "2022-03-17", "2022-04-15", computedDomain);
+
+        await setGlobalFilterValue(model, { id: "42", value: "last_year" });
+        computedDomain = model.getters.getPivotComputedDomain("1");
+        assert.equal(getDateDomainDurationInDays(computedDomain), 365);
+        assertDateDomainEqual(assert, "date", "2020-05-16", "2021-05-15", computedDomain);
+
+        await setGlobalFilterValue(model, { id: "42", value: "last_three_years" });
+        computedDomain = model.getters.getPivotComputedDomain("1");
+        assert.equal(getDateDomainDurationInDays(computedDomain), 3 * 365);
+        assertDateDomainEqual(assert, "date", "2016-05-17", "2019-05-16", computedDomain);
     });
 });

@@ -2,12 +2,14 @@
 
 import DateFilterValue from "@spreadsheet_edition/assets/components/filter_date_value";
 import { X2ManyTagSelector } from "@spreadsheet_edition/assets/widgets/tag_selector_widget";
+import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 
 const { Component } = owl;
 
 export class FilterValue extends Component {
     setup() {
         this.getters = this.props.model.getters;
+        this.relativeDateRangesTypes = RELATIVE_DATE_RANGE_TYPES;
     }
     onDateInput(id, value) {
         this.props.model.dispatch("SET_GLOBAL_FILTER_VALUE", { id, value });

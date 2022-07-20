@@ -15,6 +15,7 @@ import { addGlobalFilter } from "@spreadsheet/../tests/utils/commands";
 import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
 import { insertListInSpreadsheet } from "@spreadsheet/../tests/utils/list";
 import { insertGraphInSpreadsheet } from "@spreadsheet/../tests/utils/chart";
+import { assertDateDomainEqual } from "@spreadsheet/../tests/utils/date_domain";
 
 let target;
 
@@ -140,17 +141,21 @@ QUnit.module(
             await testUtils.dom.click(searchIcon);
             const newRelation = $(target).find(".o_global_filter_new_relation")[0];
             await testUtils.dom.click(newRelation);
-            let selector = `.o_side_panel_related_model input`;
+            const selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            let item = target.querySelector(".o_sp_selector_product");
+            const item = target.querySelector(".o_sp_selector_product");
             await click(item);
-            assert.containsNone(target, ".o_filter_field_offset", "No offset for relational filter");
-            let save = $(target).find(
+            assert.containsNone(
+                target,
+                ".o_filter_field_offset",
+                "No offset for relational filter"
+            );
+            const save = $(target).find(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             )[0];
             await testUtils.dom.click(save);
             assert.equal($(target).find(".o_spreadsheet_global_filters_side_panel").length, 1);
-            let globalFilter = model.getters.getGlobalFilters()[0];
+            const globalFilter = model.getters.getGlobalFilters()[0];
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
             assert.deepEqual(globalFilter.pivotFields[1], {
@@ -184,11 +189,11 @@ QUnit.module(
                 });
                 await testUtils.dom.click(".o_topbar_filter_icon");
                 await testUtils.dom.click(".o_global_filter_new_relation");
-                let relatedModelSelector = `.o_side_panel_related_model input`;
-                let fieldMatchingSelector = `.o_pivot_field_matching`;
+                const relatedModelSelector = `.o_side_panel_related_model input`;
+                const fieldMatchingSelector = `.o_pivot_field_matching`;
                 assert.containsNone(target, fieldMatchingSelector);
                 await testUtils.dom.click(target.querySelector(relatedModelSelector));
-                let item = target.querySelector(".o_sp_selector_product");
+                const item = target.querySelector(".o_sp_selector_product");
                 await click(item);
                 assert.containsOnce(target, fieldMatchingSelector);
             }
@@ -404,12 +409,12 @@ QUnit.module(
             await click(searchIcon);
             const newRelation = target.querySelector(".o_global_filter_new_relation");
             await click(newRelation);
-            let selector = `.o_side_panel_related_model input`;
+            const selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            let item = target.querySelector(".o_sp_selector_product");
+            const item = target.querySelector(".o_sp_selector_product");
             await click(item);
 
-            let save = target.querySelector(
+            const save = target.querySelector(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             );
             await click(save);
@@ -417,7 +422,7 @@ QUnit.module(
                 target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
                 1
             );
-            let globalFilter = model.getters.getGlobalFilters()[0];
+            const globalFilter = model.getters.getGlobalFilters()[0];
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
             assert.deepEqual(globalFilter.pivotFields[1], {
@@ -434,12 +439,12 @@ QUnit.module(
             await click(searchIcon);
             const newRelation = target.querySelector(".o_global_filter_new_relation");
             await click(newRelation);
-            let selector = `.o_side_panel_related_model input`;
+            const selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            let item = target.querySelector(".o_sp_selector_product");
+            const item = target.querySelector(".o_sp_selector_product");
             await click(item);
 
-            let save = target.querySelector(
+            const save = target.querySelector(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             );
             await click(save);
@@ -448,7 +453,7 @@ QUnit.module(
                 1
             );
             const [graphId] = model.getters.getOdooChartIds();
-            let globalFilter = model.getters.getGlobalFilters()[0];
+            const globalFilter = model.getters.getGlobalFilters()[0];
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
             assert.deepEqual(globalFilter.graphFields[graphId], {
@@ -487,12 +492,12 @@ QUnit.module(
                 await click(searchIcon);
                 const newRelation = target.querySelector(".o_global_filter_new_relation");
                 await click(newRelation);
-                let selector = `.o_side_panel_related_model input`;
+                const selector = `.o_side_panel_related_model input`;
                 await testUtils.dom.click($(target).find(selector)[0]);
-                let item = target.querySelector(".o_sp_selector_product");
+                const item = target.querySelector(".o_sp_selector_product");
                 await click(item);
 
-                let save = target.querySelector(
+                const save = target.querySelector(
                     ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
                 );
                 await click(save);
@@ -500,7 +505,7 @@ QUnit.module(
                     target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
                     1
                 );
-                let globalFilter = model.getters.getGlobalFilters()[0];
+                const globalFilter = model.getters.getGlobalFilters()[0];
                 assert.equal(globalFilter.label, "Product");
                 assert.deepEqual(globalFilter.defaultValue, []);
                 assert.deepEqual(globalFilter.listFields["1"], {
@@ -562,24 +567,18 @@ QUnit.module(
             assert.equal(globalFilter.label, "My Label");
             assert.equal(globalFilter.rangeType, "month");
             assert.equal(globalFilter.type, "date");
-            const computedPivotDomain = model.getters.getPivotComputedDomain("1");
-            assert.deepEqual(computedPivotDomain[0], "&");
-            assert.deepEqual(computedPivotDomain[1], ["date", ">=", `2022-07-01`]);
-            assert.deepEqual(computedPivotDomain[2], ["date", "<=", `2022-07-31`]);
+            const pivotDomain = model.getters.getPivotComputedDomain("1");
+            assertDateDomainEqual(assert, "date", "2022-07-01", "2022-07-31", pivotDomain);
             assert.strictEqual(globalFilter.pivotFields["1"].offset, 0);
-            const computedListDomain = model.getters.getListComputedDomain("1");
-            assert.deepEqual(computedListDomain[0], "&");
-            assert.deepEqual(computedListDomain[1], ["date", ">=", `2022-07-01`]);
-            assert.deepEqual(computedListDomain[2], ["date", "<=", `2022-07-31`]);
+            const listDomain = model.getters.getListComputedDomain("1");
+            assertDateDomainEqual(assert, "date", "2022-07-01", "2022-07-31", listDomain);
             assert.strictEqual(globalFilter.listFields["1"].offset, 0);
             const chartId = model.getters.getOdooChartIds()[0];
-            const computedGraphDomain = model.getters
+            const graphDomain = model.getters
                 .getSpreadsheetGraphDataSource(chartId)
                 .getComputedDomain();
+            assertDateDomainEqual(assert, "date", "2022-07-01", "2022-07-31", graphDomain);
             assert.equal(globalFilter.graphFields[chartId].offset, 0);
-            assert.deepEqual(computedGraphDomain[0], "&");
-            assert.deepEqual(computedGraphDomain[1], ["date", ">=", `2022-07-01`]);
-            assert.deepEqual(computedGraphDomain[2], ["date", "<=", `2022-07-31`]);
         });
 
         QUnit.test("Create a new date filter with period offsets", async function (assert) {
@@ -641,24 +640,105 @@ QUnit.module(
             assert.equal(globalFilter.label, "My Label");
             assert.equal(globalFilter.rangeType, "month");
             assert.equal(globalFilter.type, "date");
-            const computedPivotDomain = model.getters.getPivotComputedDomain("1");
+            const pivotDomain = model.getters.getPivotComputedDomain("1");
             assert.equal(globalFilter.pivotFields["1"].offset, -1);
-            assert.deepEqual(computedPivotDomain[0], "&");
-            assert.deepEqual(computedPivotDomain[1], ["date", ">=", "2022-06-01"]);
-            assert.deepEqual(computedPivotDomain[2], ["date", "<=", "2022-06-30"]);
-            const computedListDomain = model.getters.getListComputedDomain("1");
+            assertDateDomainEqual(assert, "date", "2022-06-01", "2022-06-30", pivotDomain);
+            const listDomain = model.getters.getListComputedDomain("1");
             assert.notOk(globalFilter.listFields["1"].offset);
-            assert.deepEqual(computedListDomain[0], "&");
-            assert.deepEqual(computedListDomain[1], ["date", ">=", "2022-07-01"]);
-            assert.deepEqual(computedListDomain[2], ["date", "<=", "2022-07-31"]);
+            assertDateDomainEqual(assert, "date", "2022-07-01", "2022-07-31", listDomain);
             const chartId = model.getters.getOdooChartIds()[0];
-            const computedGraphDomain = model.getters
+            const graphDomain = model.getters
                 .getSpreadsheetGraphDataSource(chartId)
                 .getComputedDomain();
             assert.equal(globalFilter.graphFields[chartId].offset, -2);
-            assert.deepEqual(computedGraphDomain[0], "&");
-            assert.deepEqual(computedGraphDomain[1], ["date", ">=", "2022-05-01"]);
-            assert.deepEqual(computedGraphDomain[2], ["date", "<=", "2022-05-31"]);
+            assertDateDomainEqual(assert, "date", "2022-05-01", "2022-05-31", graphDomain);
+        });
+
+        QUnit.test("Create a new relative date filter", async function (assert) {
+            patchDate(2022, 6, 14, 0, 0, 0);
+            const { model } = await createSpreadsheetFromPivotView();
+            insertListInSpreadsheet(model, {
+                model: "partner",
+                columns: ["foo", "bar", "date", "product_id"],
+            });
+            insertGraphInSpreadsheet(model);
+            await nextTick();
+            await click(target, ".o_topbar_filter_icon");
+            await click(target, ".o_global_filter_new_time");
+
+            const label = target.querySelector(".o_global_filter_label");
+            await testUtils.fields.editInput(label, "My Label");
+
+            const range = target.querySelector(".o_input:nth-child(2)");
+            await testUtils.fields.editAndTrigger(range, "relative", ["change"]);
+
+            const relativeSelection = target.querySelector("select.o_relative_date_selection");
+            const values = relativeSelection.querySelectorAll("option");
+            assert.deepEqual(
+                [...values].map((val) => val.value),
+                ["", "last_week", "last_month", "last_year", "last_three_years"]
+            );
+            await testUtils.fields.editAndTrigger(relativeSelection, "last_month", ["change"]);
+
+            // pivot
+            $($(target).find(".o_field_selector_value")[0]).focusin();
+            await click(target.querySelector(".o_field_selector_select_button[data-name='date']"));
+
+            //list
+            $($(target).find(".o_field_selector_value")[1]).focusin();
+            await click(
+                target,
+                ".o_field_selector_popover:not(.d-none) .o_field_selector_select_button[data-name='date']"
+            );
+
+            // graph
+            const graphField = target.querySelectorAll(".o_pivot_field_matching ")[2];
+            $($(graphField).find(".o_field_selector_value")).focusin();
+            await click(graphField, ".o_field_selector_select_button[data-name='date']");
+            await testUtils.fields.editAndTrigger(graphField.querySelector("select"), "-2", [
+                "change",
+            ]);
+
+            await click(target, ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save");
+
+            const globalFilter = model.getters.getGlobalFilters()[0];
+            assert.equal(globalFilter.label, "My Label");
+            assert.equal(globalFilter.defaultValue, "last_month");
+            assert.equal(globalFilter.rangeType, "relative");
+            assert.equal(globalFilter.type, "date");
+            const pivotDomain = model.getters.getPivotComputedDomain("1");
+            assertDateDomainEqual(assert, "date", "2022-06-14", "2022-07-13", pivotDomain);
+            const listDomain = model.getters.getListComputedDomain("1");
+            assertDateDomainEqual(assert, "date", "2022-06-14", "2022-07-13", listDomain);
+        });
+
+        QUnit.test("Edit the value of a relative date filter", async function (assert) {
+            patchDate(2022, 6, 14, 0, 0, 0);
+            const { model } = await createSpreadsheetFromPivotView();
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "date",
+                    label: "label",
+                    defaultValue: "last_week",
+                    pivotFields: { 1: { field: "date", type: "date" } },
+                    rangeType: "relative",
+                },
+            });
+            await nextTick();
+            await click(target, ".o_topbar_filter_icon");
+            await nextTick();
+            const select = target.querySelector(".o-sidePanel select");
+            assert.deepEqual(
+                [...select.querySelectorAll("option")].map((val) => val.value),
+                ["", "last_week", "last_month", "last_year", "last_three_years"]
+            );
+            await testUtils.fields.editAndTrigger(select, "last_year", ["change"]);
+            await nextTick();
+
+            assert.equal(model.getters.getGlobalFilterValue("42"), "last_year");
+            const pivotDomain = model.getters.getPivotComputedDomain("1");
+            assertDateDomainEqual(assert, "date", "2021-07-14", "2022-07-13", pivotDomain);
         });
 
         QUnit.test("Choose any year in a year picker", async function (assert) {

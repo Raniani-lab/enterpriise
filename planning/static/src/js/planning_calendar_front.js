@@ -92,6 +92,8 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 events: employeeSlotsFcData,
                 // Event Function is called when clicking on the event
                 eventClick: this.eventFunction.bind(this),
+                buttonText: { today: "Today",  dayGridMonth: "Month", timeGridWeek: "Week", listMonth: 'List'},
+                noEventsMessage: '',
                 });
                 this.calendar.setOption('locale', locale);
                 this.calendar.render();

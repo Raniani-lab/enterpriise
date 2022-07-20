@@ -274,14 +274,14 @@ class AccountEdiFormat(models.Model):
 
         # description
         description_field = None
-        if invoice.move_type == 'out_refund':
+        if invoice.move_type in ('out_refund', 'in_refund'):
             description_field = 'l10n_co_edi_description_code_credit'
-        if invoice.move_type == 'out_invoice' and invoice.l10n_co_edi_debit_note:
+        if invoice.move_type in ('out_invoice', 'in_invoice') and invoice.l10n_co_edi_debit_note:
             description_field = 'l10n_co_edi_description_code_debit'
         description_code = invoice[description_field] if description_field else None
         description = dict(invoice._fields[description_field].selection).get(description_code) if description_code else None
 
-        xml_content = self.env['ir.qweb']._render('l10n_co_edi.electronic_invoice_xml', {
+        xml_content = self.env['ir.qweb']._render(self._l10n_co_edi_get_electronic_invoice_template(invoice), {
             'invoice': invoice,
             'edi_type': edi_type,
             'company_partner': invoice.company_id.partner_id,
@@ -310,6 +310,11 @@ class AccountEdiFormat(models.Model):
         })
         return b'<?xml version="1.0" encoding="utf-8"?>' + xml_content.encode()
 
+    def _l10n_co_edi_get_electronic_invoice_template(self, invoice):
+        if invoice.move_type in ('in_invoice', 'in_refund'):
+            return 'l10n_co_edi.electronic_invoice_vendor_document_xml'
+        return 'l10n_co_edi.electronic_invoice_xml'
+
     def _l10n_co_post_invoice_step_1(self, invoice):
         '''Sends the xml to carvajal.
         '''
@@ -327,7 +332,7 @@ class AccountEdiFormat(models.Model):
         })
 
         # == Upload ==
-        request = CarvajalRequest(invoice.company_id)
+        request = CarvajalRequest(invoice.move_type, invoice.company_id)
         response = request.upload(xml_filename, xml)
 
         if 'error' not in response:
@@ -351,7 +356,7 @@ class AccountEdiFormat(models.Model):
         download a ZIP containing the official XML and PDF if the
         invoice is reported as fully validated.
         '''
-        request = CarvajalRequest(invoice.company_id)
+        request = CarvajalRequest(invoice.move_type, invoice.company_id)
         response = request.check_status(invoice)
         if not response.get('error'):
             response['success'] = True
@@ -389,7 +394,7 @@ class AccountEdiFormat(models.Model):
         self.ensure_one()
         if self.code != 'ubl_carvajal':
             return super()._is_compatible_with_journal(journal)
-        return journal.type == 'sale' and journal.country_code == 'CO'
+        return journal.type in ['sale', 'purchase'] and journal.country_code == 'CO'
 
     def _is_required_for_invoice(self, invoice):
         # OVERRIDE
@@ -398,6 +403,8 @@ class AccountEdiFormat(models.Model):
             return super()._is_required_for_invoice(invoice)
 
         # Determine on which invoices the EDI must be generated.
+        if invoice.move_type in ('in_invoice', 'in_refund') and invoice.country_code == 'CO':
+            return bool(self.env.ref('l10n_co_edi.electronic_invoice_vendor_document_xml', False))
         return invoice.move_type in ('out_invoice', 'out_refund') and invoice.country_code == 'CO'
 
     def _check_move_configuration(self, move):

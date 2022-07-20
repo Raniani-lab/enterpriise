@@ -250,8 +250,8 @@
                                 <field name="sequence" eval="5"/>
                                 <field name="domain" eval="['|', ('account_id.internal_group', 'in', ['income', 'expense']), ('account_id.code', '=like', '141%')]"/>
                                 <field name="groupby"/>
-                                <field name="special_date_changer">to_beginning_of_period</field>
-                                <field name="formulas">-sum</field>
+                                <field name="special_date_changer">from_beginning</field>
+                                <field name="formulas">-sum - LU_BSABR_321</field>
                             </record>
                             <record id="account_financial_report_l10n_lu_bs_abr_line_2_1_6" model="account.financial.html.report.line">
                                 <field name="name">VI. Profit or loss for the financial year</field>

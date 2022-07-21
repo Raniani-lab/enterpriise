@@ -279,7 +279,6 @@
                         <t t-set="stats" t-value="t['stats']"/>
                         <div class="oe_structure" id="oe_structure_helpdesk_team_rating_1"/>
                         <div class="container oe_website_rating_team">
-                            <h2 t-if="len(teams) >= 1" t-out="team.name" class="text-muted"/>
                             <div class="row mb32">
                                 <div class="col-lg-8">
                                     <t t-if="ratings" t-call="helpdesk.team_rating_data"/>

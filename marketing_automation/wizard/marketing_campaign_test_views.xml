@@ -33,6 +33,7 @@
         <field name="target">new</field>
         <field name="context">{
             'default_campaign_id': active_id,
+            'dialog_size' : 'medium',
         }</field>
     </record>
 

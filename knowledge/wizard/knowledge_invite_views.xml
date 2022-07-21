@@ -36,6 +36,9 @@
         <field name="res_model">knowledge.invite</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
-        <field name="context">{'default_article_id': active_id}</field>
+        <field name="context">{
+            'default_article_id': active_id,
+            'dialog_size' : 'medium',
+        }</field>
     </record>
 </odoo>

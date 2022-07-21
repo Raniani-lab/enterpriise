@@ -7,9 +7,8 @@ import { _t } from 'web.core';
 
 class MoveArticleDialog extends Component {
     setup() {
-        this.size = 'lg';
+        this.size = 'md';
         this.title = _t("Move an Article");
-
         this.rpc = useService("rpc");
         this.orm = useService("orm");
         this.user = useService("user");

@@ -59,9 +59,9 @@
                                     '|', ('staff_users_choice', '=', 'current_user'), ('staff_users_choice', '=', 'all_assigned_users')]}"/>
                     </group>
                     <div attrs="{'invisible': [('suggested_staff_user_ids', '=', [])]}">
-                        <label for="base_book_url" string="Link URL" class="col-1 px-0 me-5"/>
-                        <field name="base_book_url" class="ms-5 me-1" readonly="1"/>
-                        <field name="short_code" class="w-25" nolabel="1" required="1" options="{'onchange_on_keydown': True, 'keydown_debounce_delay': 500}"/>
+                        <label for="base_book_url" string="Link URL"/>
+                        <field name="base_book_url" nolabel="1" readonly="1" class="me-1 oe_inline"/>
+                        <field name="short_code" nolabel="1" required="1" class="oe_inline" options="{'onchange_on_keydown': True, 'keydown_debounce_delay': 500}"/>
                     </div>
                     <div class="alert alert-warning" role="alert"
                          attrs="{'invisible': &quot;['|', ('staff_users_choice', '!=', 'current_user'), ('suggested_staff_user_ids', 'in', uid)]&quot;}">

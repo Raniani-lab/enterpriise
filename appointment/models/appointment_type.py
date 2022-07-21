@@ -224,6 +224,7 @@ class AppointmentType(models.Model):
             'target': 'new',
             'context': {
                 'default_appointment_type_ids': self.ids,
+                'dialog_size': 'medium',
             }
         }
 

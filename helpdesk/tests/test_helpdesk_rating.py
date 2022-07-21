@@ -89,7 +89,6 @@ class TestHelpdeskRating(HelpdeskCommon, HttpCase, MailCommon):
         res = self.url_open(f"/helpdesk/rating/{self.test_team.id}")
 
         self.assertEqual(res.status_code, 200, 'The request should be successful.')
-        self.assertIn(self.test_team.name, res.text, 'The page should contain the team ratings')
         self.assertRegex(res.text, f"<img.+alt=\"{self.test_team_ticket2.name}", 'The rating should be displayed on the page.')
 
     def test_helpdesk_dashboard(self):

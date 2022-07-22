@@ -84,10 +84,11 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
      */
     _onBtnArticleCreateClick: function (event) {
         const $target = $(event.currentTarget);
-        const $li = $target.closest('li');
+        const parentId = $target.closest('li').data('article-id');
         this.trigger_up('create', {
-            target_parent_id: $li.data('article-id')
+            target_parent_id: parentId
         });
+        this._addUnfolded(parentId.toString());
     },
     /**
      * @param {Event} event
@@ -419,20 +420,47 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
                 }
                 $li.siblings('.o_knowledge_empty_info').addClass('d-none');
                 this.$('.o_knowledge_empty_info:only-child').removeClass('d-none');
-                const confirmMove = () => {
+                const confirmMove = async () => {
                     const id = $li.data('parent-id');
                     if (typeof id !== 'undefined') {
                         const $parent = this.$(`.o_article[data-article-id="${id}"]`);
                         if (!$parent.children('ul').is(':parent')) {
                             const $caret = $parent.find('> .o_article_handle > .o_article_caret');
                             $caret.remove();
+                            this._removeUnfolded(id.toString());
                         }
                     }
                     if ($parent.length > 0) {
-                        const $handle = $parent.children('.o_article_handle:first');
-                        if ($handle.children('.o_article_caret').length === 0) {
+                        const $firstParent = $parent.first();
+                        const $caret = $firstParent.find('> .o_article_handle > .o_article_caret');
+                        // Show other children if parent already had any
+                        if ($caret.length > 0) {
+                            const $icon = $caret.find("> i");
+                            if ($icon.hasClass("fa-caret-right")) {
+                                const $ul = $firstParent.find('> div > ul');
+                                if ($ul.length) {
+                                    // Show children content stored in sibling
+                                    $firstParent.find('> ul').prepend($ul.find('> li'));
+                                    $ul.remove();
+                                    this._addUnfolded($firstParent.data('article-id').toString());
+                                    $icon.removeClass('fa-caret-right');
+                                    $icon.addClass('fa-caret-down');
+                                } else {
+                                    // Fetch children (which includes li, so remove it)
+                                    $li.detach();
+                                    await this._fold($firstParent);
+                                    if ($li.find('.o_article_handle').hasClass('o_article_active')) {
+                                        const $newLi = this.$(`#article_${$li.data('article-id')}`);
+                                        $newLi.find('.o_article_handle').addClass('o_article_active');
+                                    }
+                                    
+                                }
+                            }
+                        } else {
+                            const $handle = $parent.children('.o_article_handle:first');
                             const $caret = $(QWeb.render('knowledge.knowledge_article_caret', {}));
                             $handle.prepend($caret);
+                            this._addUnfolded($firstParent.data('article-id').toString());
                         }
                     }
                     $li.data('parent-id', $parent.data('article-id'));

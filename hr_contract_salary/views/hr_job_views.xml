@@ -5,7 +5,7 @@
         <field name="model">hr.job</field>
         <field name="inherit_id" ref="hr_recruitment.hr_job_survey"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@name='recruitment_target']" position="after">
+            <xpath expr="//group[@name='recruitment2']" position="inside">
                 <field name="default_contract_id"/>
             </xpath>
         </field>

@@ -14,6 +14,14 @@
         sequence="10"
         groups="hr.group_hr_manager"/>
 
+    <menuitem
+        id="hr_payroll_menu_contract_type"
+        name="Employment Types"
+        action="hr.hr_contract_type_action"
+        parent="menu_hr_payroll_configuration_contract"
+        sequence="20"
+        groups="hr_contract.group_hr_contract_manager"/>
+
     <record id="hr_contract_salary.salary_package_menu" model="ir.ui.menu">
         <field name="parent_id" ref="hr_work_entry_contract_enterprise.menu_hr_payroll_configuration"/>
     </record>

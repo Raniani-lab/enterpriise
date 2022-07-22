@@ -34,7 +34,7 @@ class MrpProductionSchedule(models.Model):
         required=True, default=lambda self: self._default_warehouse_id())
     bom_id = fields.Many2one(
         'mrp.bom', "Bill of Materials",
-        domain="[('product_tmpl_id', '=', product_tmpl_id)]", check_company=True)
+        domain="[('product_tmpl_id', '=', product_tmpl_id), '|', ('product_id', '=', product_id), ('product_id', '=', False)]", check_company=True)
 
     forecast_target_qty = fields.Float('Safety Stock Target')
     min_to_replenish_qty = fields.Float('Minimum to Replenish')

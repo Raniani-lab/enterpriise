@@ -13,8 +13,8 @@ export class SpreadsheetControlPanel extends Component {
         this.controlPanelDisplay = {
             "bottom-left": false,
             "bottom-right": false,
-        }
-        useAutoSavingWarning(() => this.props.isSaving);
+        };
+        useAutoSavingWarning(() => !this.props.isSpreadsheetSynced);
         this.actionService = useService("action");
     }
 

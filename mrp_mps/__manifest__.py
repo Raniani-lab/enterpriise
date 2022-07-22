@@ -28,6 +28,7 @@ procure.
         'security/mrp_mps_security.xml',
         'views/mrp_mps_views.xml',
         'views/mrp_mps_menu_views.xml',
+        'views/mrp_bom_views.xml',
         'views/product_product_views.xml',
         'views/product_template_views.xml',
         'views/res_config_settings_views.xml',

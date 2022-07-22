@@ -74,7 +74,8 @@ class MainComponent extends Component {
                 loadIrFilters: true
             });
             this.model.on('update', this, () => this.render(true));
-            await this.model.load(this.SearchModel.domain, this.env.config.offset, this.env.config.limit);
+            const domain = this.props.action.domain || this.SearchModel.domain;
+            await this.model.load(domain, this.env.config.offset, this.env.config.limit);
         });
 
         usePager(() => {

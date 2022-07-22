@@ -2,13 +2,10 @@
 
 import { registry } from '@web/core/registry';
 
-import { BusService } from '@bus/services/bus_service';
-
 import { IoTConnectionMixin } from 'iot.mixins';
 
-export class IoTLongpolling extends BusService {
+export class IoTLongpolling {
     constructor() {
-        super(...arguments);
         Object.assign(this, IoTConnectionMixin);
 
         // CONSTANTS
@@ -240,7 +237,6 @@ export class IoTLongpolling extends BusService {
 }
 
 export const iotLongpollingService = {
-    dependencies: ['notification', 'presence', 'rpc', 'multi_tab'],
     start() {
         return new IoTLongpolling(...arguments);
     }

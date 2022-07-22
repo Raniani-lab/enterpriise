@@ -1,9 +1,7 @@
 /** @odoo-module */
 
-import { InsertListSpreadsheetMenu as LegacyInsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_legacy";
 import { InsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_owl";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
-import { useLegacyViews } from "@web/../tests/legacy/legacy_setup";
 import { loadJS } from "@web/core/assets";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
@@ -12,13 +10,12 @@ import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { viewService } from "@web/views/view_service";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
-import * as LegacyFavoriteMenu from "web.FavoriteMenu";
 
-const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
 const serviceRegistry = registry.category("services");
 
 export async function prepareWebClientForSpreadsheet() {
     await loadJS("/web/static/lib/Chart/Chart.js");
+    await loadJS("/spreadsheet/static/lib/chartjs-gauge/chartjs-gauge.js");
     serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService(), { force: true });
     serviceRegistry.add(
         "user",
@@ -30,11 +27,6 @@ export async function prepareWebClientForSpreadsheet() {
     serviceRegistry.add("ui", uiService);
     serviceRegistry.add("view", viewService, { force: true }); // #action-serv-leg-compat-js-class
     serviceRegistry.add("orm", ormService, { force: true }); // #action-serv-leg-compat-js-class
-    legacyFavoriteMenuRegistry.add(
-        "insert-list-spreadsheet-menu",
-        LegacyInsertListSpreadsheetMenu,
-        5
-    );
     registry.category("favoriteMenu").add(
         "insert-list-spreadsheet-menu",
         {
@@ -47,7 +39,6 @@ export async function prepareWebClientForSpreadsheet() {
         },
         { sequence: 5 }
     );
-    useLegacyViews();
 }
 
 /**

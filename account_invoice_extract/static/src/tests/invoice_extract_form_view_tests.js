@@ -7,16 +7,10 @@ import {
     startServer,
 } from '@mail/../tests/helpers/test_utils';
 
-import { registerCleanup } from "@web/../tests/helpers/cleanup";
-
 import FormRenderer from '@account_invoice_extract/js/invoice_extract_form_renderer';
-import InvoiceExtractFormView from '@account_invoice_extract/js/invoice_extract_form_view';
 import invoiceExtractTestUtils from '@account_invoice_extract/tests/helpers/invoice_extract_test_utils';
 
-import { registry } from '@web/core/registry';
-
 import testUtils from 'web.test_utils';
-import legacyViewRegistry from 'web.view_registry';
 
 QUnit.module('account_invoice_extract', {}, function () {
 QUnit.module('invoice_extract_form_view_tests.js', {
@@ -33,14 +27,6 @@ QUnit.module('invoice_extract_form_view_tests.js', {
                 var $attachment = $(this.attachmentViewerTarget).find('.img-fluid');
                 this._startInvoiceExtract($attachment);
             },
-        });
-
-        // replace the basic form view by the custom one.
-        registry.category('views').remove('form');
-        const FormView = legacyViewRegistry.get("form");
-        legacyViewRegistry.add("form", InvoiceExtractFormView);
-        registerCleanup(() => {
-            legacyViewRegistry.add("form", FormView);
         });
     },
     afterEach: function () {
@@ -73,7 +59,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         });
         const views = {
             'account.move,false,form':
-                '<form string="Account Invoice">' +
+                '<form string="Account Invoice" js_class="account_invoice_extract_preview">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
@@ -214,7 +200,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         });
         const views = {
             'account.move,false,form':
-                '<form string="Account Invoice">' +
+                '<form string="Account Invoice" js_class="account_invoice_extract_preview">' +
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
@@ -303,7 +289,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         });
         const views = {
             'account.move,false,form':
-                '<form string="Account Invoice">' +
+                '<form string="Account Invoice" js_class="account_invoice_extract_preview">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +
@@ -401,7 +387,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         });
         const views = {
             'account.move,false,form':
-                '<form string="Account Invoice">' +
+                '<form string="Account Invoice" js_class="account_invoice_extract_preview">' +
                     '<div class="o_success_ocr"/>' +
                     '<div class="o_attachment_preview"/>' +
                     '<div class="oe_chatter">' +

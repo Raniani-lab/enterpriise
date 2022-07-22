@@ -83,7 +83,7 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
         });
 
         QUnit.test('Fetch and preview of attachments on big devices', async function (assert) {
-            assert.expect(23);
+            assert.expect(21);
 
             const pyEnv = await startServer();
             const accountMoveLineIds = pyEnv['account.move.line'].create([
@@ -179,8 +179,6 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
             await testUtils.dom.click(document.querySelectorAll('.o_group_header')[1]);
             // clicking on group header line should not do read call to ir.attachment
             assert.verifySteps([
-                'register_as_main_attachment/ir.attachment',
-                'register_as_main_attachment/ir.attachment',
                 "web_read_group/account.move.line",
                 "web_read_group/account.move.line",
                 "web_read_group/account.move.line",

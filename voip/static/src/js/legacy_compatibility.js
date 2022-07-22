@@ -7,12 +7,9 @@
 import { browser } from "@web/core/browser/browser";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import core from "web.core";
-import { registry } from "@web/core/registry";
-import { sprintf } from "@web/core/utils/strings";
-import { useService } from "@web/core/utils/hooks";
+import { useBus } from "@web/core/utils/hooks";
 
-const { Component, EventBus } = owl;
-const serviceRegistry = registry.category("services");
+const { Component } = owl;
 
 /**
  * Specialization of a ComponentAdapter for the DialingPanel. Uses the voip
@@ -21,19 +18,20 @@ const serviceRegistry = registry.category("services");
 export class DialingPanelAdapter extends ComponentAdapter {
     setup() {
         super.setup();
-        this.voipLegacy = useService('voip_legacy');
-
         this.env = Component.env;
 
-        this.props.bus.on('TOGGLE_DIALING_PANEL', this, () => {
+        const voipBus = this.props.bus;
+
+        useBus(voipBus, "TOGGLE_DIALING_PANEL", () => {
             core.bus.trigger('voip_onToggleDisplay');
         });
 
-        this.voipLegacy.bus.on('VOIP-CALL', this, (data) => {
-            this.widget.callFromPhoneWidget(data);
-        });
-        this.voipLegacy.bus.on('VOIP-ACTIVITY-CALL', this, (data) => {
-            this.widget.callFromActivityWidget(data);
+        useBus(voipBus, "VOIP-CALL", (params) => {
+            if (params.fromActivity) {
+                this.widget.callFromActivityWidget(params);
+            } else {
+                this.widget.callFromPhoneWidget(params);
+            }
         });
     }
 }
@@ -43,19 +41,14 @@ export class DialingPanelAdapter extends ComponentAdapter {
  * DialingPanel.
  */
 export const voipLegacyCompatibilityService = {
-    dependencies: ["notification"],
-    start(env, { notification }) {
-        const bus = new EventBus();
-
+    dependencies: ["voip"],
+    start(env, { voip }) {
         browser.addEventListener("voip-call", (ev) => {
-            notification.add(sprintf(env._t("Calling %s"), ev.detail.number));
-            bus.trigger('VOIP-CALL', ev.detail);
+            voip.call(ev.detail);
         });
         browser.addEventListener("voip-activity-call", (ev) => {
-            bus.trigger('VOIP-ACTIVITY-CALL', ev.detail);
+            const params = Object.assign({}, ev.detail, { fromActivity: true});
+            voip.call(params);
         });
-
-        return { bus };
     },
 };
-serviceRegistry.add("voip_legacy", voipLegacyCompatibilityService);

@@ -44,7 +44,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Job\'s Name",
-            trigger: "input.o_field_widget[name='name']",
+            trigger: ".o_field_widget[name='name'] input",
             run: 'text Experienced Developer (BE)',
         },
         {
@@ -83,17 +83,17 @@ Tour.register('hr_contract_salary_tour', {
         // Test Applicant
         {
             content: "Applicant Name",
-            trigger: '.oe_title input[name="name"]',
+            trigger: '.oe_title [name="name"] input',
             run: "text Jojo Zeboss' Application",
         },
         {
             content: "Applicant\'s Name",
-            trigger: '.oe_title input[name="partner_name"]',
+            trigger: '.oe_title [name="partner_name"] input',
             run: 'text Mitchell Admin 2',
         },
         {
             content: "Generate Offer",
-            trigger: ".o_statusbar_buttons > button span:contains('Generate Offer')",
+            trigger: ".o_statusbar_buttons > button:contains('Generate Offer')",
             extra_trigger: ".o_statusbar_buttons",
             run: 'click',
         },
@@ -110,7 +110,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Send Offer",
             trigger: "button[name='action_send_mail']",
-            extra_trigger: ".modal-dialog .btn-primary span:contains('Send')",
+            extra_trigger: ".modal-dialog .btn-primary:contains('Send')",
             run: 'click',
         },
         {
@@ -324,14 +324,14 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "BirthDate",
-            trigger: 'input[name="birthday"]',
+            trigger: '[name="birthday"] input',
             run: function () {
                 $("input[name='birthday']").val('2017-09-01');
             },
         },
         {
             content: "Gender",
-            trigger: 'input[name="gender"]',
+            trigger: '[name="gender"] input',
             run: function () {
                 $('input[value="female"]').prop('checked', true);
             },
@@ -805,24 +805,24 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Application Name",
-            trigger: '.oe_title input[name="name"]',
+            trigger: '.oe_title [name="name"] input',
             run: "text Mitchell's Application",
         },
         {
             content: "Applicant\'s Name",
-            trigger: '.oe_title input[name="partner_name"]',
+            trigger: '.oe_title [name="partner_name"] input',
             run: 'text Mitchell Admin 3',
+        },
+        {
+            content: "Confirm Applicant Creation",
+            trigger: ".o_control_panel button.o_form_button_save",
+            run: 'click'
         },
         {
             content: "Create Employee",
             trigger: ".o_statusbar_buttons > button[name='create_employee_from_applicant']",
             extra_trigger: ".o_statusbar_buttons",
             run: 'click',
-        },
-        {
-            content: "Confirm Employee Creation",
-            trigger: ".o_control_panel button.o_form_button_save",
-            run: 'click'
         },
         {
             content: "Add Manager",
@@ -841,7 +841,7 @@ Tour.register('hr_contract_salary_tour_2', {
             auto: true,
         },
         {
-            content: "Save",
+            content: "Save Employee",
             trigger: '.o_form_buttons_edit .o_form_button_save',
             extra_trigger: '.o_form_statusbar .o_statusbar_buttons:contains("Launch Plan")',
             run: 'click',
@@ -859,7 +859,7 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Contract Reference",
-            trigger: '.oe_title input[name="name"]',
+            trigger: '.oe_title [name="name"] input',
             run: 'text Mitchell Admin PFI Contract',
         },
         {
@@ -908,12 +908,12 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Contract Information",
-            trigger: ".o_content .o_form_view .o_notebook li.nav-item:eq(1) a",
+            trigger: ".o_content .o_notebook li.nav-item:eq(1) a",
             run: "click",
         },
         {
             content: "Contract Information",
-            trigger: "div.o_input[name='wage'] input",
+            trigger: "div[name='wage'] input",
             run: "text 2950",
         },
         {
@@ -934,17 +934,17 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Contract Information",
-            trigger: "div.o_input[name='fuel_card'] input",
+            trigger: "div[name='fuel_card'] input",
             run: "text 250",
         },
         {
             content: "Contract Information",
-            trigger: "div.o_input[name='commission_on_target'] input",
+            trigger: "div[name='commission_on_target'] input",
             run: "text 1000",
         },
         {
             content: "Contract Information",
-            trigger: "input.o_input[name='ip_wage_rate']",
+            trigger: "[name='ip_wage_rate'] input",
             run: "text 25",
         },
         {
@@ -954,7 +954,7 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Generate Simulation Link",
-            trigger: ".o_statusbar_buttons > button span:contains('Simulation')",
+            trigger: ".o_statusbar_buttons > button:contains('Simulation')",
             extra_trigger: ".o_statusbar_buttons",
             run: 'click',
         },
@@ -977,7 +977,7 @@ Tour.register('hr_contract_salary_tour_2', {
         {
             content: "Send Offer",
             trigger: "button[name='action_send_mail']",
-            extra_trigger: ".modal-dialog .btn-primary span:contains('Send')",
+            extra_trigger: ".modal-dialog .btn-primary:contains('Send')",
             run: 'click',
         },
         {

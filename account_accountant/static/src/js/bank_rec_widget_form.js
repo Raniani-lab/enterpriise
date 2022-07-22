@@ -258,7 +258,7 @@ export const BankRecWidgetFormController = FormController.extend({
                     });
                 },
                 postInitMethod: function(anchorEl){
-                    anchorEl.querySelector("div.o_form_view").className = '';
+                    anchorEl.querySelector("div.o_legacy_form_view").className = '';
                     anchorEl.querySelector("div.o_FormRenderer_chatterContainer").className = '';
 
                     anchorEl.parentElement.style.paddingTop = "0px";

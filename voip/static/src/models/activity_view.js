@@ -11,10 +11,11 @@ addRecordMethods("ActivityView", {
      */
     onClickLandlineNumber(ev) {
         ev.preventDefault();
-        this.component.trigger("voip-activity-call", {
-            activityId: this.activity.id,
+        this.env.services.voip.call({
             number: this.activity.phone,
-        });
+            activityId: this.activity.id,
+            fromActivity: true,
+        })
     },
     /**
      * @param {MouseEvent} ev
@@ -24,9 +25,10 @@ addRecordMethods("ActivityView", {
             return;
         }
         ev.preventDefault();
-        this.component.trigger("voip-activity-call", {
-            activityId: this.activity.id,
+        this.env.services.voip.call({
             number: this.activity.mobile,
-        });
+            activityId: this.activity.id,
+            fromActivity: true,
+        })
     },
 });

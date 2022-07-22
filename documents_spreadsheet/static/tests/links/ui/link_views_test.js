@@ -10,7 +10,6 @@ import {
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
-import { useLegacyViews } from "@web/../tests/legacy/legacy_setup";
 import {
     applyGroup,
     selectGroup,
@@ -60,7 +59,6 @@ async function openView(viewType, options = {}) {
     );
     serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
     serviceRegistry.add('spreadsheetLinkMenuCell', spreadsheetLinkMenuCellService);
-    useLegacyViews();
     const webClient = await createWebClient({
         serverData,
         mockRPC: options.mockRPC,

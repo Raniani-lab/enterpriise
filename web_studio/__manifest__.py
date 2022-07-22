@@ -59,6 +59,8 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/js/views/controllers/form_controller.js',
             'web_studio/static/src/legacy/studio_legacy_service.js',
             'web_studio/static/src/home_menu/**/*.js',
+            'web_studio/static/src/views/**/*.js',
+            'web_studio/static/src/approval/**/*',
         ],
         'web.assets_backend_prod_only': [
             'web_studio/static/src/client_action/studio_action_loader.js',
@@ -131,6 +133,7 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/tests/mock_server.js',
             'web_studio/static/tests/helpers.js',
             'web_studio/static/tests/*.js',
+            'web_studio/static/tests/views/**/*.js',
             'web_studio/static/tests/legacy/action_editor_action_tests.js',
             'web_studio/static/tests/legacy/edit_menu_tests.js',
             'web_studio/static/tests/legacy/new_model_tests.js',
@@ -142,6 +145,9 @@ Note: Only the admin user is allowed to make those customizations.
         'web.assets_qweb': [
             'web_studio/static/src/home_menu/home_menu.xml',
             'web_studio/static/src/**/*.xml',
+        ],
+        'web.qunit_mobile_suite_tests': [
+            'web_studio/static/tests/views/disable_patch.js',
         ],
     }
 }

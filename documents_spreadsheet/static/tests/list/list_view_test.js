@@ -1,18 +1,18 @@
 /** @odoo-module */
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { createView, dom } from "web.test_utils";
 import { insertList } from "@spreadsheet_edition/bundle/list/list_init_callback";
-import ListView from "@web/legacy/js/views/list/list_view";
+import { InsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_owl";
 import { selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
+import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { getCell, getCellFormula } from "@spreadsheet/../tests/utils/getters";
-import {
-    getBasicData,
-    getBasicListArch,
-    getBasicServerData,
-} from "@spreadsheet/../tests/utils/data";
-import { nextTick, getFixture, click } from "@web/../tests/helpers/utils";
-import { createSpreadsheetFromListView } from "@documents_spreadsheet/../tests/utils/list_helpers";
+import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { toggleFavoriteMenu } from "@web/../tests/search/helpers";
+import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { registry } from "@web/core/registry";
+import { ListRenderer } from '@web/views/list/list_renderer';
+import { createSpreadsheetFromListView } from "../utils/list_helpers";
+import { dom } from "web.test_utils";
 
 const { getMenuChildren } = spreadsheet.helpers;
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
@@ -91,16 +91,9 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
     });
 
     QUnit.test("Add list in an existing spreadsheet", async (assert) => {
-        const listView = await createView({
-            View: ListView,
-            model: "partner",
-            data: getBasicData(),
-            arch: getBasicListArch(),
-            session: { user_has_group: async () => true },
-        });
-        const { list, fields } = listView._getListForSpreadsheet();
-        listView.destroy();
         const { model } = await createSpreadsheetFromListView();
+        const list = model.getters.getListDefinition("1");
+        const fields = model.getters.getSpreadsheetListModel("1").getFields();
         const callback = insertList.bind({ isEmptySpreadsheet: false })({
             list: list,
             threshold: 10,
@@ -136,6 +129,32 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
     });
 
     QUnit.test("user related context is not saved in the spreadsheet", async function (assert) {
+        assert.expect(1);
+        setupViewRegistries();
+
+        registry.category("favoriteMenu").add(
+            "insert-list-spreadsheet-menu",
+            {
+                Component: InsertListSpreadsheetMenu,
+                groupNumber: 4,
+            },
+            { sequence: 5 }
+        );
+
+        patchWithCleanup(ListRenderer.prototype, {
+            getListForSpreadsheet() {
+                const result = this._super(...arguments);
+                assert.deepEqual(
+                    result.list.context,
+                    {
+                        default_stage_id: 5,
+                    },
+                    "user related context is not stored in context"
+                );
+                return result;
+            },
+        });
+
         const context = {
             allowed_company_ids: [15],
             default_stage_id: 5,
@@ -144,28 +163,28 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             lang: "FR",
             uid: 4,
         };
-        const controller = await createView({
-            View: ListView,
-            arch: `
-                    <tree string="Partners">
-                        <field name="bar"/>
-                        <field name="product_id"/>
-                    </tree>
-                `,
-            data: getBasicData(),
-            model: "partner",
+        const serverData = { models: getBasicData() };
+        await makeView({
+            serverData,
+            type: "list",
+            resModel: "partner",
             context,
-        });
-        const { list } = controller._getListForSpreadsheet();
-        assert.deepEqual(
-            list.context,
-            {
-                default_stage_id: 5,
-                search_default_stage_id: 5,
+            arch: `
+                <tree string="Partners">
+                    <field name="bar"/>
+                    <field name="product_id"/>
+                </tree>
+            `,
+            config: {
+                actionType: "ir.actions.act_window",
+                getDisplayName: () => "Test",
+                viewType: "list",
             },
-            "user related context is not stored in context"
-        );
-        controller.destroy();
+        });
+        const target = getFixture();
+        await toggleFavoriteMenu(target);
+        await click(target, ".o_insert_list_spreadsheet_menu");
+        await click(target, ".modal button.btn-primary");
     });
 
     QUnit.test("Can see record of a list", async function (assert) {

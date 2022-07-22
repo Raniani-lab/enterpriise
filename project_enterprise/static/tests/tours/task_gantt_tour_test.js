@@ -36,7 +36,7 @@ tour.register('project_enterprise_tour', {
         extra_trigger: '.o_project_kanban',
         width: 200,
     }, {
-        trigger: 'input.o_project_name',
+        trigger: '.o_project_name input',
         run: 'text New Project'
     }, {
         trigger: '.o_open_tasks',

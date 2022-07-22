@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="voip.PhoneField" t-inherit="web.PhoneField" t-inherit-mode="extension" owl="1">
+      <xpath expr="./t[1]/a[1]" position="attributes">
+        <attribute name="t-on-click">onLinkClicked</attribute>
+      </xpath>
+    </t>
+
+</templates>

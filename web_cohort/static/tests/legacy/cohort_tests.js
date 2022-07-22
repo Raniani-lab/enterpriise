@@ -355,9 +355,9 @@ QUnit.module('LegacyViews', {
         await testUtils.dom.click($(target).find('td.o_cohort_value:first'));
         await nextTick();
 
-        assert.strictEqual($(target).find('.o_list_view th:nth(1)').text(), 'Start',
+        assert.strictEqual($(target).find('.o_legacy_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual($(target).find('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(target).find('.o_legacy_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
         // Going back to cohort view
         await testUtils.dom.click($(target).find('.o_back_button'));
@@ -365,17 +365,17 @@ QUnit.module('LegacyViews', {
         // Going to the list view
         await testUtils.dom.click($(target).find('td div.o_cohort_value:first'));
         await nextTick();
-        assert.strictEqual($(target).find('.o_list_view th:nth(1)').text(), 'Start',
+        assert.strictEqual($(target).find('.o_legacy_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual($(target).find('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(target).find('.o_legacy_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
         // Going to the form view
-        await testUtils.dom.click($(target).find('.o_list_view .o_data_row'));
+        await testUtils.dom.click($(target).find('.o_legacy_list_view .o_data_row'));
         await nextTick();
 
-        assert.hasAttrValue($(target).find('.o_form_view span:first'), 'name', 'start',
+        assert.hasAttrValue($(target).find('.o_legacy_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
-        assert.hasAttrValue($(target).find('.o_form_view span:nth(1)'), 'name', 'stop',
+        assert.hasAttrValue($(target).find('.o_legacy_form_view span:nth(1)'), 'name', 'stop',
                 "Second field in the form view should be stop");
 
     });
@@ -477,9 +477,9 @@ QUnit.module('LegacyViews', {
         // Going to the list view, while clicking Period / Count cell
         await testUtils.dom.click($(target).find('td.o_cohort_value:first'));
         await nextTick();
-        assert.strictEqual($(target).find('.o_list_view th:nth(1)').text(), 'Start',
+        assert.strictEqual($(target).find('.o_legacy_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual($(target).find('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(target).find('.o_legacy_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going back to cohort view
@@ -489,17 +489,17 @@ QUnit.module('LegacyViews', {
         // Going to the list view
         await testUtils.dom.click($(target).find('td div.o_cohort_value:first'));
         await nextTick();
-        assert.strictEqual($(target).find('.o_list_view th:nth(1)').text(), 'Start',
+        assert.strictEqual($(target).find('.o_legacy_list_view th:nth(1)').text(), 'Start',
                 "First field in the list view should be start");
-        assert.strictEqual($(target).find('.o_list_view th:nth(2)').text(), 'Stop',
+        assert.strictEqual($(target).find('.o_legacy_list_view th:nth(2)').text(), 'Stop',
                 "Second field in the list view should be stop");
 
         // Going to the form view
-        await testUtils.dom.click($(target).find('.o_list_view .o_data_row'));
+        await testUtils.dom.click($(target).find('.o_legacy_list_view .o_data_row'));
         await nextTick();
-        assert.hasAttrValue($(target).find('.o_form_view span:first'), 'name', 'start',
+        assert.hasAttrValue($(target).find('.o_legacy_form_view span:first'), 'name', 'start',
                 "First field in the form view should be start");
-        assert.hasAttrValue($(target).find('.o_form_view span:nth(1)'), 'name', 'stop',
+        assert.hasAttrValue($(target).find('.o_legacy_form_view span:nth(1)'), 'name', 'stop',
                 "Second field in the form view should be stop");
 
     });

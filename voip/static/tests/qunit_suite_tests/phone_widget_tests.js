@@ -3,11 +3,20 @@ odoo.define('voip.tests', function (require) {
 
 const { start, startServer } = require('@mail/../tests/helpers/test_utils');
 
-const basicFields = require('web.basic_fields');
+const { registry } = require("@web/core/registry");
+const { voipService } = require("@voip/voip_service");
+const { userService } = require("@web/core/user_service");
+const { browser } = require("@web/core/browser/browser");
+const DialingPanel = require("voip.DialingPanel");
+const { PhoneField } = require("@web/views/fields/phone/phone_field");
+
 var config = require('web.config');
 var FormView = require('web.FormView');
 var ListView = require('web.ListView');
 var testUtils = require('web.test_utils');
+
+const { nextTick } = require("@web/../tests/helpers/utils");
+const { patchWithCleanup } = require("@web/../tests/helpers/utils");
 
 var createView = testUtils.createView;
 
@@ -133,10 +142,43 @@ QUnit.module('voip', {
     });
 
     QUnit.test("click on phone field link triggers call once", async function (assert) {
+        assert.expect(5);
+
+        const customUserService = {
+            async start() {
+                const user = await userService.start(...arguments);
+                const hasGroup = (group) => {
+                    assert.step(`hasGroup: ${group}`);
+                    return true;
+                }
+                return Object.assign(user, { hasGroup });
+            }
+        }
+
+        patchWithCleanup(browser, {
+            navigator: {
+                mediaDevices: {},
+            }
+        });
+
+        patchWithCleanup(DialingPanel.prototype,  {
+            callFromPhoneWidget() {
+                assert.step("call made");
+            }
+        });
+
+        patchWithCleanup(PhoneField.prototype, {
+            onLinkClicked(ev) {
+                this._super(...arguments);
+                assert.ok(ev.defaultPrevented);
+            }
+        });
+
         const pyEnv = await startServer();
         const resPartnerId1 = pyEnv['res.partner'].create({
             phone: "+324567606798",
         });
+
         const views = {
             'res.partner,false,form': `
                 <form string="Partners">
@@ -148,25 +190,34 @@ QUnit.module('voip', {
                 </form>
             `,
         };
+
         const { openView } = await start({
+            services: {
+                user: customUserService,
+            },
+            mockRPC(route, args) {
+                if (args.method === "get_missed_call_info") {
+                    return {};
+                }
+            },
             serverData: { views },
         });
+
+        registry.category("services").add("voip", voipService);
+        await nextTick();
+
         await openView({
             res_id: resPartnerId1,
             res_model: 'res.partner',
             views: [[false, 'form']],
         });
-        testUtils.mock.patch(basicFields.FieldPhone, {
-            _onClickLink(...args) {
-                assert.step("phone link clicked");
-                this._super(...args);
-            },
-        });
 
         await testUtils.dom.click(document.querySelector('.o_field_phone a'));
         assert.containsOnce(document.body, ".o_form_readonly", "form view should not change to edit mode from click on phone link");
-        assert.verifySteps(["phone link clicked"], "should have called click handler of phone link only once");
-        testUtils.mock.unpatch(basicFields.FieldPhone);
+        assert.verifySteps([
+            "hasGroup: base.group_user",
+            "call made"
+        ], "should have called click handler of phone link only once");
     });
 
 });

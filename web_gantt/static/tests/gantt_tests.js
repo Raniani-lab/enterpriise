@@ -2106,13 +2106,13 @@ document.createElement("a").classList.contains
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "click");
         await testUtils.nextTick();
 
-        assert.strictEqual($('.modal .o_list_view').length, 1,
+        assert.strictEqual($('.modal .o_legacy_list_view').length, 1,
             "a list view dialog should be opened");
-        assert.strictEqual($('.modal .o_list_view tbody .o_data_cell').text().replace(/\s+/g, ''), "Task41Task42Task43",
+        assert.strictEqual($('.modal .o_legacy_list_view tbody .o_data_cell').text().replace(/\s+/g, ''), "Task41Task42Task43",
             "the 3 records without date set should be displayed");
 
-        await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
-        await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(1) input'));
+        await testUtils.dom.click($('.modal .o_legacy_list_view tbody tr:eq(0) input'));
+        await testUtils.dom.click($('.modal .o_legacy_list_view tbody tr:eq(1) input'));
         await testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
 
         gantt.destroy();
@@ -2154,7 +2154,7 @@ document.createElement("a").classList.contains
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "click");
         await testUtils.nextTick();
 
-        await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
+        await testUtils.dom.click($('.modal .o_legacy_list_view tbody tr:eq(0) input'));
         await testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
 
         gantt.destroy();
@@ -2197,7 +2197,7 @@ document.createElement("a").classList.contains
         await testUtils.dom.triggerMouseEvent(gantt.$('.o_gantt_row:not(.o_gantt_row_group):first .o_gantt_cell[data-date="2018-12-10 00:00:00"] .o_gantt_cell_plan'), "click");
         await testUtils.nextTick();
 
-        await testUtils.dom.click($('.modal .o_list_view tbody tr:eq(0) input'));
+        await testUtils.dom.click($('.modal .o_legacy_list_view tbody tr:eq(0) input'));
         await testUtils.dom.click($('.modal .o_select_button:contains(Select)'));
 
         gantt.destroy();
@@ -3162,7 +3162,7 @@ document.createElement("a").classList.contains
 
         // edit pill
         await testUtils.dom.triggerEvents($secondPill, ['click']);
-        assert.containsOnce(document.body, '.modal .o_form_view');
+        assert.containsOnce(document.body, '.modal .o_legacy_form_view');
 
         gantt.destroy();
         assert.containsNone(gantt, 'div.popover', 'should not have a popover anymore');
@@ -3297,7 +3297,7 @@ document.createElement("a").classList.contains
 
         assert.strictEqual($('.modal').length, 1,
             "there should be a opened modal");
-        assert.strictEqual($('.modal .o_form_view.o_form_readonly').length, 1,
+        assert.strictEqual($('.modal .o_legacy_form_view.o_form_readonly').length, 1,
             "the form view should be in readonly");
 
         gantt.destroy();

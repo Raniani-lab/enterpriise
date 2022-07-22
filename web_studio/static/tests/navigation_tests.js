@@ -1,19 +1,18 @@
 /** @odoo-module **/
 import {
+    click,
     getFixture,
     legacyExtraNextTick,
     makeDeferred,
+    nextTick,
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
-import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
-import { registry } from "@web/core/registry";
 import { companyService } from "@web/webclient/company_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
-import testUtils from "web.test_utils";
-import { openStudio, leaveStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
+import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
+import { leaveStudio, openStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
+import { registry } from "@web/core/registry";
 import { session } from "@web/session";
-
-import { useLegacyViews } from "@web/../tests/legacy/legacy_setup";
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -23,7 +22,6 @@ let serverData;
 let target;
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
-        useLegacyViews();
         target = getFixture();
         serverData = getActionManagerServerData();
         registerStudioDependencies();
@@ -123,7 +121,7 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_home_menu");
 
         // open app Partners (act window action)
-        await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
         await legacyExtraNextTick();
 
         assert.containsOnce(target, ".o_kanban_view");
@@ -182,23 +180,16 @@ QUnit.module("Studio", (hooks) => {
     });
 
     QUnit.test("open Studio with act_window and viewType", async function (assert) {
-        assert.expect(4);
-
         await createEnterpriseWebClient({ serverData });
 
         // open app Partners (act window action), sub menu Partners (action 3)
-        await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
-        await legacyExtraNextTick();
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
         // the menu is rendered once the action is ready, so potentially in the next animation frame
-        await testUtils.nextTick();
-        await testUtils.dom.click(
-            $(target).find('.o_menu_sections .o_nav_entry:contains("Partners (Action 3)")')
-        );
-        await legacyExtraNextTick();
+        await nextTick();
+        await click(target, ".o_menu_sections .o_nav_entry:nth-child(2)");
         assert.containsOnce(target, ".o_list_view");
 
-        await testUtils.dom.click(target.querySelector(".o_data_row")); // open a record
-        await legacyExtraNextTick();
+        await click(target.querySelector(".o_data_row .o_data_cell")); // open a record
         assert.containsOnce(target, ".o_form_view");
 
         await openStudio(target);
@@ -219,7 +210,7 @@ QUnit.module("Studio", (hooks) => {
 
         await createEnterpriseWebClient({ serverData });
         // open app Partners (act window action)
-        await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
         await legacyExtraNextTick();
         assert.containsOnce(target, ".o_kanban_view");
 
@@ -227,13 +218,11 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_web_studio_client_action .o_web_studio_kanban_view_editor");
 
         // click on tab "Views"
-        await testUtils.dom.click(
-            target.querySelector(".o_web_studio_menu .o_web_studio_menu_item a")
-        );
+        await click(target.querySelector(".o_web_studio_menu .o_web_studio_menu_item a"));
         assert.containsOnce(target, ".o_web_studio_action_editor");
 
         // open list view
-        await testUtils.dom.click(
+        await click(
             target.querySelector(
                 ".o_web_studio_views .o_web_studio_view_type[data-type=list] .o_web_studio_thumbnail"
             )
@@ -255,7 +244,7 @@ QUnit.module("Studio", (hooks) => {
 
         await createEnterpriseWebClient({ serverData, mockRPC });
         // open app Partners (act window action)
-        await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
         await legacyExtraNextTick();
 
         assert.verifySteps(
@@ -291,12 +280,12 @@ QUnit.module("Studio", (hooks) => {
             "the first partner should be displayed"
         );
 
-        await testUtils.dom.click(target.querySelector(".o_studio_navbar .o_menu_toggle"));
+        await click(target.querySelector(".o_studio_navbar .o_menu_toggle"));
 
         assert.containsOnce(target, ".o_studio_home_menu");
 
         // open app Ponies (act window action)
-        await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
         await legacyExtraNextTick();
 
         assert.verifySteps(
@@ -316,7 +305,7 @@ QUnit.module("Studio", (hooks) => {
             "the list view should be opened"
         );
         assert.strictEqual(
-            $(target).find(".o_list_view .o_data_cell").text(),
+            $(target).find(".o_legacy_list_view .o_data_cell").text(),
             "Twilight SparkleApplejackFluttershy",
             "the list of ponies should be correctly displayed"
         );
@@ -324,7 +313,11 @@ QUnit.module("Studio", (hooks) => {
         await leaveStudio(target);
 
         assert.verifySteps(
-            ["/web/action/load", "/web/dataset/call_kw/pony/get_views", "/web/dataset/search_read"],
+            [
+                "/web/action/load",
+                "/web/dataset/call_kw/pony/get_views",
+                "/web/dataset/call_kw/pony/web_search_read",
+            ],
             "should have reloaded the previous action edited by Studio"
         );
 
@@ -360,7 +353,7 @@ QUnit.module("Studio", (hooks) => {
             mockRPC,
         });
         // open app Partners (act window action)
-        await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
         await legacyExtraNextTick();
 
         assert.containsOnce(target, ".o_kanban_view");
@@ -376,36 +369,27 @@ QUnit.module("Studio", (hooks) => {
     });
 
     QUnit.test("open same record when leaving form", async function (assert) {
-        assert.expect(5);
-
         await createEnterpriseWebClient({ serverData });
         // open app Ponies (act window action)
-        await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
-        await legacyExtraNextTick();
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
 
         assert.containsOnce(target, ".o_list_view");
 
-        await testUtils.dom.click(
-            $(target).find(".o_list_view tbody tr:first td:contains(Twilight Sparkle)")
-        );
-        await legacyExtraNextTick();
+        await click(target.querySelector(".o_data_row .o_data_cell"));
 
         assert.containsOnce(target, ".o_form_view");
 
         await openStudio(target);
 
-        assert.containsOnce(
-            target,
-            ".o_web_studio_client_action .o_web_studio_form_view_editor",
-            "the form view should be opened"
-        );
+        assert.containsOnce(target, ".o_web_studio_client_action .o_web_studio_form_view_editor");
 
         await leaveStudio(target);
-        assert.containsOnce(target, ".o_form_view", "the form view should be opened");
+
+        assert.containsOnce(target, ".o_form_view");
+        assert.containsOnce(target, ".o_form_view .o_field_widget[name=name] span");
         assert.strictEqual(
-            $(target).find(".o_form_view span:contains(Twilight Sparkle)").length,
-            1,
-            "should have open the same record"
+            target.querySelector(".o_form_view .o_field_widget[name=name] span").innerText,
+            "Twilight Sparkle"
         );
     });
 
@@ -446,7 +430,7 @@ QUnit.module("Studio", (hooks) => {
             serverData,
             legacyParams: { withLegacyMockServer: true },
         });
-        await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_9]"));
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_9]"));
         await legacyExtraNextTick();
 
         assert.containsOnce(target, ".o_grid_view");
@@ -472,7 +456,7 @@ QUnit.module("Studio", (hooks) => {
                 serverData,
             });
             // open app Ponies (act window action)
-            await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
+            await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
             await legacyExtraNextTick();
 
             assert.ok(
@@ -533,7 +517,7 @@ QUnit.module("Studio", (hooks) => {
                 serverData,
                 mockRPC,
             });
-            await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_43]"));
+            await click(target.querySelector(".o_app[data-menu-xmlid=app_43]"));
             await legacyExtraNextTick();
 
             assert.containsOnce(target, ".o_form_view");
@@ -546,10 +530,8 @@ QUnit.module("Studio", (hooks) => {
                 "the form view should be opened"
             );
 
-            await testUtils.dom.click(
-                target.querySelector(".o_web_studio_form_view_editor .o_field_one2many")
-            );
-            await testUtils.dom.click(
+            await click(target.querySelector(".o_web_studio_form_view_editor .o_field_one2many"));
+            await click(
                 target.querySelector(
                     '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'
                 )
@@ -583,7 +565,7 @@ QUnit.module("Studio", (hooks) => {
             });
 
             // open app Partners (non editable act window action)
-            await testUtils.dom.click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+            await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
             await def;
 
             assert.containsOnce(target, ".o_kanban_view");

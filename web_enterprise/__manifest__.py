@@ -87,6 +87,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
         'web.qunit_suite_tests': [
             ('remove', 'web/static/tests/legacy/fields/upgrade_fields_tests.js'),
 
+            'web_enterprise/static/tests/views/**/*.js',
             'web_enterprise/static/tests/webclient/**/*.js',
 
             'web_enterprise/static/tests/legacy/upgrade_fields_tests.js',
@@ -94,7 +95,9 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/tests/legacy/barcodes_tests.js',
         ],
         'web.qunit_mobile_suite_tests': [
+            'web_enterprise/static/tests/views/disable_patch.js',
             'web_enterprise/static/tests/mobile/**/*.js',
+            'web_enterprise/static/tests/webclient/settings_form_view_mobile_tests.js',
 
             'web_enterprise/static/tests/legacy/action_manager_mobile_tests.js',
             'web_enterprise/static/tests/legacy/control_panel_mobile_tests.js',
@@ -104,7 +107,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/tests/legacy/views/calendar_mobile_tests.js',
             'web_enterprise/static/tests/legacy/views/kanban_mobile_tests.js',
             'web_enterprise/static/tests/legacy/views/list_mobile_tests.js',
-            'web_enterprise/static/tests/legacy/base_settings_mobile_tests.js',
             'web_enterprise/static/tests/legacy/components/action_menus_mobile_tests.js',
             'web_enterprise/static/tests/legacy/barcodes_mobile_tests.js',
         ],

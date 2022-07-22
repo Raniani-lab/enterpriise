@@ -25,7 +25,7 @@ tour.register('rental_tour', {
     content: _t("Click here to set up your first rental product."),
     position: 'bottom',
 }, {
-    trigger: "input[name='name']",
+    trigger: ".o_field_widget[name='name'] input",
     content: _t("Enter the product name."),
     position: 'bottom',
 }, {

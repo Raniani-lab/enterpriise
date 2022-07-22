@@ -21,6 +21,10 @@ class HrContractSalaryAdvantage(models.Model):
             ('model', '=', 'hr.contract'),
             ('ttype', '=', 'binary')]
 
+    def _get_public_field_names(self):
+        return [(field.id, field.field_description) for field in self.sudo().env['ir.model.fields']\
+            .search(self._get_field_domain())]
+
     name = fields.Char(translate=True)
     active = fields.Boolean(default=True)
     res_field_id = fields.Many2one(
@@ -30,6 +34,20 @@ class HrContractSalaryAdvantage(models.Model):
         'ir.model.fields', string="Cost Field", domain=_get_field_domain, ondelete='cascade',
         help="Contract field linked to this advantage cost. If not set, the advantage won't be taken into account when computing the employee budget.")
     # LUL rename into field and cost_field to be consistent with fold_field and manual_field?
+    res_field_public = fields.Selection(
+        selection="_get_public_field_names",
+        string="Advantage Field",
+        readonly=False,
+        compute="_compute_res_field_public",
+        inverse="_inverse_res_field_public"
+    )
+    cost_res_field_public = fields.Selection(
+        selection="_get_public_field_names",
+        string="Cost Field",
+        readonly=False,
+        compute="_compute_cost_res_field_public",
+        inverse="_inverse_cost_res_field_public"
+    )
     field = fields.Char(related="res_field_id.name", readonly=True)
     cost_field = fields.Char(related="cost_res_field_id.name", string="Cost Field Name", readonly=True, compute_sudo=True)
     sequence = fields.Integer(default=100)
@@ -65,7 +83,10 @@ class HrContractSalaryAdvantage(models.Model):
     value_ids = fields.One2many('hr.contract.salary.advantage.value', 'advantage_id')
     hide_description = fields.Boolean(help="Hide the description if the advantage is not taken.")
     requested_documents_field_ids = fields.Many2many('ir.model.fields', domain=_get_binary_field_domain, string="Requested Documents")
+    requested_documents_fields_string = fields.Text('Requested Documents', compute="_compute_requested_fields_string", readonly=True)
     requested_documents = fields.Char(compute='_compute_requested_documents', string="Requested Documents Fields", compute_sudo=True)
+    has_admin_access = fields.Boolean(compute='_compute_has_admin_access')
+
     uom = fields.Selection([
         ('days', 'Days'),
         ('percent', 'Percent'),
@@ -89,10 +110,40 @@ class HrContractSalaryAdvantage(models.Model):
         )
     ]
 
+    @api.depends('res_field_id')
+    def _compute_res_field_public(self):
+        for record in self:
+            record.res_field_public = record.res_field_id.id
+
+    @api.depends('cost_res_field_id')
+    def _compute_cost_res_field_public(self):
+        for record in self:
+            record.cost_res_field_public = record.cost_res_field_id.id
+
+    def _inverse_res_field_public(self):
+        for record in self:
+            record.res_field_id = self.sudo().env['ir.model.fields'].browse(record.res_field_public)
+
+    def _inverse_cost_res_field_public(self):
+        for record in self:
+            record.cost_res_field_id = self.sudo().env['ir.model.fields'].browse(record.cost_res_field_public)
+
+    @api.depends_context('lang')
+    @api.depends('requested_documents_field_ids')
+    def _compute_requested_fields_string(self):
+        self.requested_documents_fields_string = False
+        for record in self:
+            if record.requested_documents_field_ids:
+                record.requested_documents_fields_string = ', '.join([f.field_description for f in record.sudo().requested_documents_field_ids])
+
     @api.depends('requested_documents_field_ids')
     def _compute_requested_documents(self):
         for advantage in self:
             advantage.requested_documents = ','.join(advantage.requested_documents_field_ids.mapped('name'))
+
+    @api.depends_context('uid')
+    def _compute_has_admin_access(self):
+        self.has_admin_access = self.env.user._is_system()
 
     @api.constrains('slider_min', 'slider_max')
     def _check_min_inferior_to_max(self):
@@ -104,7 +155,7 @@ class HrContractSalaryAdvantage(models.Model):
     def _check_min_inferior_to_max(self):
         for record in self:
             if not record.res_field_id and record.display_type != 'always':
-                raise ValidationError(_('Advanges that are not linked to a field should always be displayed.'))
+                raise ValidationError(_('Advantages that are not linked to a field should always be displayed.'))
 
 class HrContractSalaryAdvantageType(models.Model):
     _name = 'hr.contract.salary.advantage.type'

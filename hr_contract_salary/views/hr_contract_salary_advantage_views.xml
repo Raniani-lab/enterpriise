@@ -40,6 +40,7 @@
         <field name="model">hr.contract.salary.advantage</field>
         <field name="arch" type="xml">
             <form string="Salary Package Advantage">
+                <field name="has_admin_access" invisible="1"/>
                 <sheet>
                     <label for="name" string="Advantage"/>
                     <div class="oe_title">
@@ -47,8 +48,16 @@
                     </div>
                     <group>
                         <group>
-                            <field name="res_field_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
-                            <field name="cost_res_field_id" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+                            <field name="res_field_id"
+                                groups="base.group_erp_manager"
+                                options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+                            <field name="cost_res_field_id"
+                                groups="base.group_erp_manager"
+                                options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+                            <field name="res_field_public"
+                                attrs="{'invisible': [('has_admin_access', '=', True)]}"/>
+                            <field name="cost_res_field_public"
+                                attrs="{'invisible': [('has_admin_access', '=', True)]}"/>
                             <field name="field" invisible="1"/>
                             <field name="advantage_type_id"/>
                             <field name="structure_type_id"/>
@@ -83,7 +92,25 @@
                             </field>
                             <field name="slider_min" attrs="{'invisible': [('display_type', '!=', 'slider')]}"/>
                             <field name="slider_max" attrs="{'invisible': [('display_type', '!=', 'slider')]}"/>
-                            <field name="requested_documents_field_ids" options="{'no_create': True, 'no_edit': True, 'no_open': True}" widget="many2many_tags"/>
+                            <field name="requested_documents_field_ids"
+                                options="{'no_create': True, 'no_edit': True, 'no_open': True}"
+                                groups="base.group_erp_manager"
+                                widget="many2many_tags"/>
+                            <label for="requested_documents_fields_string"
+                                class="m-0"
+                                attrs="{'invisible': [('has_admin_access', '=', True)]}"/>
+                            <div attrs="{'invisible': [('has_admin_access', '=', True)]}"
+                                class="alert alert-warning m-0 w-100" role="alert">
+                                <span>
+                                    This field can only be modified by a server administrator, contact them if these field requires modifications. 
+                                </span>
+                                <span attrs="{'invisible': [('requested_documents_fields_string', '!=', False)]}">
+                                    There are currently no requested fields.
+                                </span>
+                                <span attrs="{'invisible': [('requested_documents_fields_string', '=', False)]}">
+                                    The current requested documents are the followings : <field name="requested_documents_fields_string" nolabel="1"/>
+                                </span>
+                            </div>
                             <field name="requested_documents" invisible="1"/>
                         </group>
                         <group>

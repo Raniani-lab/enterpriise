@@ -22,8 +22,9 @@ API_DOMAINS_MAPPING = {
     'us-west-2': 'https://sellingpartnerapi-fe.amazon.com',  # SP-API specific to FE marketplaces.
 }
 
-# Mapping of API operation to URL paths and restricted resource paths.
-API_PATHS_MAPPING = {
+
+# Mapping of API operations to URL paths, restricted resource paths, and restricted data elements.
+API_OPERATIONS_MAPPING = {
     'createFeed': {
         'url_path': '/feeds/2021-06-30/feeds',
         'restricted_resource_path': None,
@@ -42,23 +43,13 @@ API_PATHS_MAPPING = {
     },
     'getOrders': {
         'url_path': '/orders/v0/orders',
-        'restricted_resource_path': None,
-    },
-    'getOrderAddress': {
-        'url_path': '/orders/v0/orders/{param}/address',
-        'restricted_resource_path': '/orders/v0/orders/{this_is_bullshit}/address',
-    },
-    'getOrderBuyerInfo': {
-        'url_path': '/orders/v0/orders/{param}/buyerInfo',
-        'restricted_resource_path': '/orders/v0/orders/{this_is_bullshit}/buyerInfo',
+        'restricted_resource_path': '/orders/v0/orders',
+        'restricted_resource_data_elements': ['buyerInfo', 'shippingAddress'],
     },
     'getOrderItems': {
         'url_path': '/orders/v0/orders/{param}/orderItems',
-        'restricted_resource_path': None,
-    },
-    'getOrderItemsBuyerInfo': {
-        'url_path': '/orders/v0/orders/{param}/orderItems/buyerInfo',
-        'restricted_resource_path': '/orders/v0/orders/{this_is_bullshit}/orderItems/buyerInfo',
+        'restricted_resource_path': '/orders/v0/orders/{this_is_bullshit}/orderItems',
+        'restricted_resource_data_elements': ['buyerInfo']
     },
 }
 
@@ -72,7 +63,6 @@ STATUS_TO_SYNCHRONIZE = {
 
 # Mapping of Amazon Carrier Names
 # See https://images-na.ssl-images-amazon.com/images/G/01/rainier/help/xsd/release_4_1/amzn-base.xsd
-
 AMAZON_CARRIER_NAMES_MAPPING = {
     'selfdelivery': 'Self Delivery',  # Specific name recognized by Amazon for "custom tracking ref"
 
@@ -434,5 +424,5 @@ AMAZON_CARRIER_NAMES_MAPPING = {
     'yunexpress': 'Yun Express',
     'zeleris': 'Zeleris',
     'ztoexpress': 'ZTO Express',
-    'zustambrosetti': 'Zust Ambrosetti'
+    'zustambrosetti': 'Zust Ambrosetti',
 }

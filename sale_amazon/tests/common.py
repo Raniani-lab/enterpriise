@@ -16,7 +16,24 @@ AWS_RESPONSE_MOCK = {
     },
 }
 
+ORDER_BUYER_INFO_MOCK = {
+    'BuyerEmail': 'iliketurtles@marketplace.amazon.com',
+    'BuyerName': 'Gederic Frilson',
+}
+
+ORDER_ADDRESS_MOCK = {
+    'AddressLine1': '123 RainBowMan Street',
+    'Phone': '+1 234-567-8910 ext. 12345',
+    'PostalCode': '12345-1234',
+    'City': 'New Duck City DC',
+    'StateOrRegion': 'CA',
+    'CountryCode': 'US',
+    'Name': 'Gederic Frilson',
+    'AddressType': 'Commercial',
+}
+
 ORDER_MOCK = {
+    'BuyerInfo': ORDER_BUYER_INFO_MOCK,
     'AmazonOrderId': '123456789',
     'PurchaseDate': '1378-04-08T00:00:00Z',
     'LastUpdateDate': '2017-01-20T00:00:00Z',
@@ -25,6 +42,7 @@ ORDER_MOCK = {
     'ShipServiceLevel': 'SHIPPING-CODE',
     'OrderTotal': {'CurrencyCode': 'USD', 'Amount': '120.00'},
     'MarketplaceId': 'ATVPDKIKX0DER',
+    'ShippingAddress': ORDER_ADDRESS_MOCK,
 }
 
 GET_ORDERS_RESPONSE_MOCK = {
@@ -39,6 +57,13 @@ GET_ORDER_ITEMS_MOCK = {
         'AmazonOrderId': '123456789',
         'OrderItems': [
             {
+                'BuyerInfo': {
+                    'OrderItemId': '987654321',
+                    'GiftMessageText': 'Wrapped Hello',
+                    'GiftWrapLevel': 'WRAP-CODE',
+                    'GiftWrapTax': {'CurrencyCode': 'USD', 'Amount': '1.33'},
+                    'GiftWrapPrice': {'CurrencyCode': 'USD', 'Amount': '3.33'},
+                },
                 'ItemTax': {'CurrencyCode': 'USD', 'Amount': '20.00'},
                 'ItemPrice': {'CurrencyCode': 'USD', 'Amount': '100.00'},
                 'ShippingTax': {'CurrencyCode': 'USD', 'Amount': '2.50'},
@@ -58,49 +83,9 @@ GET_ORDER_ITEMS_MOCK = {
     },
 }
 
-GET_ORDER_BUYER_INFO_MOCK = {
-    'payload': {
-        'BuyerEmail': 'iliketurtles@marketplace.amazon.com',
-        'BuyerName': 'Gederic Frilson',
-    },
-}
-
-GET_ORDER_ADDRESS_MOCK = {
-    'payload': {
-        'ShippingAddress': {
-            'AddressLine1': '123 RainBowMan Street',
-            'Phone': '+1 234-567-8910 ext. 12345',
-            'PostalCode': '12345-1234',
-            'City': 'New Duck City DC',
-            'StateOrRegion': 'CA',
-            'CountryCode': 'US',
-            'Name': 'Gederic Frilson',
-            'AddressType': 'Commercial',
-        },
-    },
-}
-
-GET_ORDER_ITEMS_BUYER_INFO_MOCK = {
-    'payload': {
-        'AmazonOrderId': '123456789',
-        'OrderItems': [
-            {
-                'OrderItemId': '987654321',
-                'GiftMessageText': 'Wrapped Hello',
-                'GiftWrapLevel': 'WRAP-CODE',
-                'GiftWrapTax': {'CurrencyCode': 'USD', 'Amount': '1.33'},
-                'GiftWrapPrice': {'CurrencyCode': 'USD', 'Amount': '3.33'},
-            },
-        ],
-    },
-}
-
 OPERATIONS_RESPONSES_MAP = {
     'getOrders': GET_ORDERS_RESPONSE_MOCK,
     'getOrderItems': GET_ORDER_ITEMS_MOCK,
-    'getOrderBuyerInfo': GET_ORDER_BUYER_INFO_MOCK,
-    'getOrderAddress': GET_ORDER_ADDRESS_MOCK,
-    'getOrderItemsBuyerInfo': GET_ORDER_ITEMS_BUYER_INFO_MOCK,
     'createFeedDocument': {'feedDocumentId': '123123', 'url': 'my_amazing_feed_url.test'},
     'createFeed': None,
 }

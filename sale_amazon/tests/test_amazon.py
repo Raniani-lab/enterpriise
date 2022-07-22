@@ -605,59 +605,38 @@ class TestAmazon(common.TestAmazonCommon):
 
     def test_get_partners_no_creation_different_partners(self):
         """ Test the partners search with different partners for contact and delivery. """
-
-        def get_sp_api_response_mock(_account, operation_, **_kwargs):
-            """ Return a mocked response without making an actual call to the SP-API. """
-            base_response_ = common.OPERATIONS_RESPONSES_MAP[operation_]
-            if operation_ == 'getOrderAddress':
-                return dict(base_response_, payload={
-                    'ShippingAddress': {
-                        'AddressLine1': '123 RainBowMan Street',
-                        'Phone': '+1 234-567-8910 ext. 12345',
-                        'PostalCode': '12345-1234',
-                        'City': 'New Duck City DC',
-                        'StateOrRegion': 'CA',
-                        'CountryCode': 'US',
-                        'Name': 'Gederic Frilson Delivery',
-                        'AddressType': 'Commercial',
-                    }
-                })
-            else:
-                return base_response_
-
-        with patch(
-                'odoo.addons.sale_amazon.utils.make_sp_api_request', new=get_sp_api_response_mock
-        ):
-            country_id = self.env['res.country'].search([('code', '=', 'US')], limit=1).id
-            new_partner_vals = {
-                'is_company': True,
-                'street': '123 RainBowMan Street',
-                'zip': '12345-1234',
-                'city': 'New Duck City DC',
-                'country_id': country_id,
-                'state_id': self.env['res.country.state'].search(
-                    [('country_id', '=', country_id), ('code', '=', 'CA')], limit=1
-                ).id,
-                'phone': '+1 234-567-8910 ext. 12345',
-                'customer_rank': 1,
-                'company_id': self.account.company_id.id,
-                'amazon_email': 'iliketurtles@marketplace.amazon.com',
-            }
-            contact = self.env['res.partner'].create(dict(new_partner_vals, name='Gederic Frilson'))
-            self.env['res.partner'].create(dict(
-                new_partner_vals,
-                name='Gederic Frilson Delivery',
-                type='delivery',
-                parent_id=contact.id,
-            ))
-            partners_count = self.env['res.partner'].search_count([])
-            order_data = common.OPERATIONS_RESPONSES_MAP['getOrders']['payload']['Orders'][0]
-            contact, delivery = self.account._find_or_create_partners_from_data(order_data)
-            self.assertEqual(self.env['res.partner'].search_count([]), partners_count)
-            self.assertNotEqual(contact.id, delivery.id)
-            self.assertEqual(delivery.type, 'delivery')
-            self.assertEqual(delivery.parent_id.id, contact.id)
-            self.assertEqual(contact.amazon_email, delivery.amazon_email)
+        country_id = self.env['res.country'].search([('code', '=', 'US')], limit=1).id
+        new_partner_vals = {
+            'is_company': True,
+            'street': '123 RainBowMan Street',
+            'zip': '12345-1234',
+            'city': 'New Duck City DC',
+            'country_id': country_id,
+            'state_id': self.env['res.country.state'].search(
+                [('country_id', '=', country_id), ('code', '=', 'CA')], limit=1
+            ).id,
+            'phone': '+1 234-567-8910 ext. 12345',
+            'customer_rank': 1,
+            'company_id': self.account.company_id.id,
+            'amazon_email': 'iliketurtles@marketplace.amazon.com',
+        }
+        contact = self.env['res.partner'].create(dict(new_partner_vals, name='Gederic Frilson'))
+        self.env['res.partner'].create(dict(
+            new_partner_vals,
+            name='Gederic Frilson Delivery',
+            type='delivery',
+            parent_id=contact.id,
+        ))
+        partners_count = self.env['res.partner'].search_count([])
+        order_data = dict(common.ORDER_MOCK, ShippingAddress=dict(
+            common.ORDER_ADDRESS_MOCK, Name='Gederic Frilson Delivery'
+        ))
+        contact, delivery = self.account._find_or_create_partners_from_data(order_data)
+        self.assertEqual(self.env['res.partner'].search_count([]), partners_count)
+        self.assertNotEqual(contact.id, delivery.id)
+        self.assertEqual(delivery.type, 'delivery')
+        self.assertEqual(delivery.parent_id.id, contact.id)
+        self.assertEqual(contact.amazon_email, delivery.amazon_email)
 
     def test_get_partners_creation_delivery(self):
         """ Test the partners search with creation of the delivery. """
@@ -737,146 +716,85 @@ class TestAmazon(common.TestAmazonCommon):
 
     def test_get_partners_creation_contact_delivery(self):
         """ Test the partners search with creation of the contact and delivery. """
-
-        def get_sp_api_response_mock(_account, operation_, **_kwargs):
-            """ Return a mocked response without making an actual call to the SP-API. """
-            base_response_ = common.OPERATIONS_RESPONSES_MAP[operation_]
-            if operation_ == 'getOrderBuyerInfo':
-                return dict(base_response_, payload={
-                    'BuyerEmail': 'iliketurtles@marketplace.amazon.com',
-                    'BuyerName': 'Not Gederic Frilson',
-                })
-            else:
-                return base_response_
-
-        with patch(
-                'odoo.addons.sale_amazon.utils.make_sp_api_request', new=get_sp_api_response_mock
-        ):
-            partners_count = self.env['res.partner'].search_count([])
-            order_data = common.OPERATIONS_RESPONSES_MAP['getOrders']['payload']['Orders'][0]
-            contact, delivery = self.account._find_or_create_partners_from_data(order_data)
-            self.assertEqual(
-                self.env['res.partner'].search_count([]),
-                partners_count + 2,
-                msg="A contact partner and a delivery partner should be created when the contact "
-                    "is not found and the name on the order is different from that of the address.",
-            )
-            self.assertNotEqual(contact.id, delivery.id)
-            self.assertEqual(contact.type, 'contact')
-            self.assertEqual(delivery.type, 'delivery')
-            self.assertEqual(delivery.parent_id.id, contact.id)
-            self.assertEqual(contact.company_id.id, delivery.company_id.id)
-            self.assertEqual(contact.amazon_email, delivery.amazon_email)
+        partners_count = self.env['res.partner'].search_count([])
+        order_data = dict(common.ORDER_MOCK, BuyerInfo=dict(
+            common.ORDER_BUYER_INFO_MOCK, BuyerName='Not Gederic Frilson'
+        ))
+        contact, delivery = self.account._find_or_create_partners_from_data(order_data)
+        self.assertEqual(
+            self.env['res.partner'].search_count([]),
+            partners_count + 2,
+            msg="A contact partner and a delivery partner should be created when the contact "
+                "is not found and the name on the order is different from that of the address.",
+        )
+        self.assertNotEqual(contact.id, delivery.id)
+        self.assertEqual(contact.type, 'contact')
+        self.assertEqual(delivery.type, 'delivery')
+        self.assertEqual(delivery.parent_id.id, contact.id)
+        self.assertEqual(contact.company_id.id, delivery.company_id.id)
+        self.assertEqual(contact.amazon_email, delivery.amazon_email)
 
     def test_get_partners_missing_buyer_name(self):
         """ Test the partners search with missing buyer name. """
-
-        def get_sp_api_response_mock(_account, operation_, **_kwargs):
-            """ Return a mocked response without making an actual call to the SP-API. """
-            base_response_ = common.OPERATIONS_RESPONSES_MAP[operation_]
-            if operation_ == 'getOrderBuyerInfo':
-                return dict(base_response_, payload={
-                    'BuyerEmail': 'iliketurtles@marketplace.amazon.com',
-                    'BuyerName': None,
-                })
-            else:
-                return base_response_
-
-        with patch(
-                'odoo.addons.sale_amazon.utils.make_sp_api_request', new=get_sp_api_response_mock
-        ):
-            self.env['res.partner'].create({
-                'name': 'Gederic Frilson',
-                'company_id': self.account.company_id.id,
-                'amazon_email': 'iliketurtles@marketplace.amazon.com',
-            })
-            partners_count = self.env['res.partner'].search_count([])
-            order_data = common.OPERATIONS_RESPONSES_MAP['getOrders']['payload']['Orders'][0]
-            contact, delivery = self.account._find_or_create_partners_from_data(order_data)
-            self.assertEqual(
-                self.env['res.partner'].search_count([]),
-                partners_count + 2,
-                msg="A contact partner should be created when the buyer name is missing, "
-                    "regardless of whether the same customer already had a partner, and a delivery "
-                    "partner should also be created if the address name is different.",
-            )
-            self.assertNotEqual(contact.id, delivery.id)
-            self.assertEqual(contact.type, 'contact')
-            self.assertEqual(delivery.type, 'delivery')
-            self.assertEqual(delivery.parent_id.id, contact.id)
-            self.assertEqual(contact.amazon_email, 'iliketurtles@marketplace.amazon.com')
-            self.assertEqual(
-                contact.street,
-                '123 RainBowMan Street',
-                msg="Partners synchronized with partial personal information should still hold all "
-                    "the available personal information.",
-            )
+        self.env['res.partner'].create({
+            'name': 'Gederic Frilson',
+            'company_id': self.account.company_id.id,
+            'amazon_email': 'iliketurtles@marketplace.amazon.com',
+        })
+        partners_count = self.env['res.partner'].search_count([])
+        order_data = dict(common.ORDER_MOCK, BuyerInfo=dict(
+            common.ORDER_BUYER_INFO_MOCK, BuyerName=None
+        ))
+        contact, delivery = self.account._find_or_create_partners_from_data(order_data)
+        self.assertEqual(
+            self.env['res.partner'].search_count([]),
+            partners_count + 2,
+            msg="A contact partner should be created when the buyer name is missing, "
+                "regardless of whether the same customer already had a partner, and a delivery "
+                "partner should also be created if the address name is different.",
+        )
+        self.assertNotEqual(contact.id, delivery.id)
+        self.assertEqual(contact.type, 'contact')
+        self.assertEqual(delivery.type, 'delivery')
+        self.assertEqual(delivery.parent_id.id, contact.id)
+        self.assertEqual(contact.amazon_email, 'iliketurtles@marketplace.amazon.com')
+        self.assertEqual(
+            contact.street,
+            '123 RainBowMan Street',
+            msg="Partners synchronized with partial personal information should still hold all "
+                "the available personal information.",
+        )
 
     def test_get_partners_missing_amazon_email(self):
         """ Test the partners search with missing amazon email. """
-
-        def get_sp_api_response_mock(_account, operation_, **_kwargs):
-            """ Return a mocked response without making an actual call to the SP-API. """
-            base_response_ = common.OPERATIONS_RESPONSES_MAP[operation_]
-            if operation_ == 'getOrderBuyerInfo':
-                return dict(base_response_, payload={
-                    'BuyerEmail': None,
-                    'BuyerName': 'Gederic Frilson',
-                })
-            else:
-                return base_response_
-
-        with patch(
-                'odoo.addons.sale_amazon.utils.make_sp_api_request', new=get_sp_api_response_mock
-        ):
-            self.env['res.partner'].create({
-                'name': 'Gederic Frilson',
-                'company_id': self.account.company_id.id,
-                'amazon_email': 'iliketurtles@marketplace.amazon.com',
-            })
-            partners_count = self.env['res.partner'].search_count([])
-            order_data = common.OPERATIONS_RESPONSES_MAP['getOrders']['payload']['Orders'][0]
-            contact, _delivery = self.account._find_or_create_partners_from_data(order_data)
-            self.assertEqual(
-                self.env['res.partner'].search_count([]),
-                partners_count + 1,
-                msg="A contact partner should always be created when the amazon email is missing.",
-            )
-            self.assertFalse(contact.amazon_email)
+        self.env['res.partner'].create({
+            'name': 'Gederic Frilson',
+            'company_id': self.account.company_id.id,
+            'amazon_email': 'iliketurtles@marketplace.amazon.com',
+        })
+        partners_count = self.env['res.partner'].search_count([])
+        order_data = dict(common.ORDER_MOCK, BuyerInfo=dict(
+            common.ORDER_BUYER_INFO_MOCK, BuyerEmail=None
+        ))
+        contact, _delivery = self.account._find_or_create_partners_from_data(order_data)
+        self.assertEqual(
+            self.env['res.partner'].search_count([]),
+            partners_count + 1,
+            msg="A contact partner should always be created when the amazon email is missing.",
+        )
+        self.assertFalse(contact.amazon_email)
 
     def test_get_partners_arbitrary_fields(self):
         """ Test the partners search with all PII filled but in arbitrary fields. """
-
-        def get_sp_api_response_mock(_account, operation_, **_kwargs):
-            """ Return a mocked response without making an actual call to the SP-API. """
-            base_response_ = common.OPERATIONS_RESPONSES_MAP[operation_]
-            if operation_ == 'getOrderAddress':
-                return dict(base_response_, payload={
-                    'ShippingAddress': {
-                        'AddressLine1': None,
-                        'AddressLine2': '123 test Street',
-                        'Phone': '+1 234-567-8910 ext. 12345',
-                        'PostalCode': '12345-1234',
-                        'City': 'New Duck City DC',
-                        'StateOrRegion': 'CA',
-                        'CountryCode': 'US',
-                        'Name': 'Gederic Frilson',
-                        'AddressType': 'Commercial',
-                    }
-                })
-            else:
-                return base_response_
-
-        with patch(
-                'odoo.addons.sale_amazon.utils.make_sp_api_request', new=get_sp_api_response_mock
-        ):
-            order_data = common.OPERATIONS_RESPONSES_MAP['getOrders']['payload']['Orders'][0]
-            contact, _delivery = self.account._find_or_create_partners_from_data(order_data)
-            self.assertFalse(contact.street)
-            self.assertTrue(contact.street2)
-            self.assertTrue(contact.phone)
-            self.assertTrue(contact.customer_rank)
-            self.assertTrue(contact.amazon_email)
+        order_data = dict(common.ORDER_MOCK, ShippingAddress=dict(
+            common.ORDER_ADDRESS_MOCK, AddressLine1=None, AddressLine2='123 test Street',
+        ))
+        contact, _delivery = self.account._find_or_create_partners_from_data(order_data)
+        self.assertFalse(contact.street)
+        self.assertTrue(contact.street2)
+        self.assertTrue(contact.phone)
+        self.assertTrue(contact.customer_rank)
+        self.assertTrue(contact.amazon_email)
 
     def test_get_amazon_offer_search(self):
         """ Test the offer search. """

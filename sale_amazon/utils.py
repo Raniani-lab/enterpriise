@@ -136,14 +136,14 @@ def make_sp_api_request(account, operation, path_parameter='', payload=None, met
     account.ensure_one()
 
     # Build the request URL based on the API path and domain.
-    path = const.API_PATHS_MAPPING[operation]['url_path'].format(param=path_parameter)
+    path = const.API_OPERATIONS_MAPPING[operation]['url_path'].format(param=path_parameter)
     domain = const.API_DOMAINS_MAPPING[account.base_marketplace_id.region]
     url = url_join(domain, path)
 
     payload = payload or {}
 
     # Refresh the credentials used to sign the request.
-    if const.API_PATHS_MAPPING[operation]['restricted_resource_path'] is None:  # No RDT is required
+    if const.API_OPERATIONS_MAPPING[operation]['restricted_resource_path'] is None:  # No RDT is required
         refresh_access_token(account)
         access_token = account.access_token
     else:  # The operation requires an RDT to access restricted data.
@@ -223,14 +223,15 @@ def refresh_restricted_data_token(account):
     :return: None
     """
     if datetime.utcnow() > account.restricted_data_token_expiry - timedelta(minutes=5):
-        all_restricted_paths = [
-            v['restricted_resource_path'] for v in const.API_PATHS_MAPPING.values()
+        all_restricted_operations = [
+            k for k, mapping in const.API_OPERATIONS_MAPPING if mapping['restricted_resource_path']
         ]
         payload = {
             'restrictedResources': [{
                 'method': 'GET',
-                'path': path,
-            } for path in all_restricted_paths if path]
+                'path': operation['restricted_resource_path'],
+                'dataElements': operation['restricted_resource_data_elements'],
+            } for operation in all_restricted_operations]
         }
         response_content = make_sp_api_request(
             account, 'createRestrictedDataToken', payload=payload, method='POST'

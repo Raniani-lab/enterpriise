@@ -584,34 +584,20 @@ class AmazonAccount(models.Model):
         self.ensure_one()
 
         amazon_order_ref = order_data['AmazonOrderId']
-        anonymized_email = order_data.get('BuyerInfo', {}).get('BuyerEmail')
-        buyer_name = order_data.get('BuyerInfo', {}).get('BuyerName')
-        if not anonymized_email or not buyer_name:
-            # The buyer name and email might be considered restricted data and thus not included in
-            # the order data. Pull them separately if that's the case.
-            buyer_info = amazon_utils.make_sp_api_request(
-                self, 'getOrderBuyerInfo', path_parameter=amazon_order_ref
-            )['payload']
-            anonymized_email = anonymized_email or buyer_info.get('BuyerEmail', '')
-            buyer_name = buyer_name or buyer_info.get('BuyerName', '')
-
-        # Information on shipping address data is considered restricted data and thus not included
-        # in the order data. Pull them separately.
-        shipping_address_info = amazon_utils.make_sp_api_request(
-            self, 'getOrderAddress', path_parameter=amazon_order_ref,
-        )['payload']['ShippingAddress']
-        shipping_address_name = shipping_address_info['Name']
-        street = shipping_address_info.get('AddressLine1', '')
-        address_line2 = shipping_address_info.get('AddressLine2', '')
-        address_line3 = shipping_address_info.get('AddressLine3', '')
+        anonymized_email = order_data['BuyerInfo'].get('BuyerEmail', '')
+        buyer_name = order_data['BuyerInfo'].get('BuyerName', '')
+        shipping_address_name = order_data['ShippingAddress']['Name']
+        street = order_data['ShippingAddress'].get('AddressLine1', '')
+        address_line2 = order_data['ShippingAddress'].get('AddressLine2', '')
+        address_line3 = order_data['ShippingAddress'].get('AddressLine3', '')
         street2 = "%s %s" % (address_line2, address_line3) if address_line2 or address_line3 \
             else None
-        zip_code = shipping_address_info.get('PostalCode', '')
-        city = shipping_address_info.get('City', '')
-        country_code = shipping_address_info.get('CountryCode', '')
-        state_code = shipping_address_info.get('StateOrRegion', '')
-        phone = shipping_address_info.get('Phone', '')
-        is_company = shipping_address_info.get('AddressType') == 'Commercial'
+        zip_code = order_data['ShippingAddress'].get('PostalCode', '')
+        city = order_data['ShippingAddress'].get('City', '')
+        country_code = order_data['ShippingAddress'].get('CountryCode', '')
+        state_code = order_data['ShippingAddress'].get('StateOrRegion', '')
+        phone = order_data['ShippingAddress'].get('Phone', '')
+        is_company = order_data['ShippingAddress'].get('AddressType') == 'Commercial'
         country = self.env['res.country'].search([('code', '=', country_code)], limit=1)
         state = self.env['res.country.state'].search([
             ('country_id', '=', country.id),
@@ -724,18 +710,6 @@ class AmazonAccount(models.Model):
                 items_data_ += items_batch_data_['OrderItems']
             return items_data_
 
-        def pull_gift_wraps_data(amazon_order_ref_):
-            """ Pull all gift wraps data for the items of the order to synchronize.
-
-            :param str amazon_order_ref_: The Amazon reference of the order to synchronize.
-            :return: The gift wraps data.
-            :rtype: dict
-            """
-            restricted_items_data_ = amazon_utils.make_sp_api_request(
-                self, 'getOrderItemsBuyerInfo', path_parameter=amazon_order_ref_
-            )['payload']['OrderItems']
-            return {value_['OrderItemId']: value_ for value_ in restricted_items_data_}
-
         def convert_to_order_line_values(**kwargs_):
             """ Convert and complete a dict of values to comply with fields of `sale.order.line`.
 
@@ -763,12 +737,6 @@ class AmazonAccount(models.Model):
         marketplace_api_ref = order_data['MarketplaceId']
 
         items_data = pull_items_data(amazon_order_ref)
-        if any(item_data.get('IsGift', 'false') == 'true' for item_data in items_data):
-            # Information on gift wraps is considered restricted data and thus not included in
-            # items data. Pull them separately.
-            gift_wraps_data = pull_gift_wraps_data(amazon_order_ref)
-        else:
-            gift_wraps_data = {}  # Information on gift wraps are not required.
 
         order_lines_values = []
         for item_data in items_data:
@@ -812,7 +780,7 @@ class AmazonAccount(models.Model):
 
             # Prepare the values for the gift wrap line.
             if item_data.get('IsGift', 'false') == 'true':
-                item_gift_info = gift_wraps_data[amazon_item_ref]
+                item_gift_info = item_data.get('BuyerInfo', {})
                 gift_wrap_code = item_gift_info.get('GiftWrapLevel')
                 gift_wrap_price = float(item_gift_info.get('GiftWrapPrice', {}).get('Amount', '0'))
                 if gift_wrap_code and gift_wrap_price != 0:

@@ -26,7 +26,7 @@
                             tabindex="0"
                             t-on-focus="() => this._selectTemplate(null)"
                             t-att-class="_isSelected(null) ? 'o-template-selected': ''"
-                            src="documents_spreadsheet/static/img/spreadsheet.svg"
+                            src="spreadsheet/static/img/spreadsheet.svg"
                             t-att-title="Blank"/>
                         <div class="o-template-item-name">Blank spreadsheet</div>
                     </div>

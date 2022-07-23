@@ -25,7 +25,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
     @api.model
     def default_get(self, default_fields):
         rec = super().default_get(default_fields)
-        options = self.env.context['tax_report_options']
+        options = self.env.ref('l10n_lu.tax_report')._get_options()
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         date_to = fields.Date.from_string(options['date'].get('date_to'))
 
@@ -43,27 +43,22 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         return rec
 
     def _get_export_vat(self):
-        if self.env.context.get('tax_report_options'):
-            options = self.env.context['tax_report_options']
-        else:
-            options = self.env['account.generic.tax.report']._get_options(previous_options={'tax_report': self.env.ref('l10n_lu.tax_report').id})
-        return self.env['account.report'].get_vat_for_export(options)
+        report = self.env.ref('l10n_lu.tax_report')
+        options = report._get_options()
+        return report.get_vat_for_export(options)
 
     def _lu_get_declarations(self, declaration_template_values):
         """
         Gets the formatted values for LU's tax report.
         Exact format depends on the period (monthly, quarterly, annual(simplified)).
         """
-        options = self.env.context['tax_report_options']
-        # We want to always export the tax report
-        options['tax_report'] = self.env.ref('l10n_lu.tax_report').id
-        if options.get('group_by'):
-            del options['group_by']
-        form = self.env['account.generic.tax.report']._get_lu_electronic_report_values(options)['forms'][0]
+        report = self.env.ref('l10n_lu.tax_report')
+        options = report._get_options()
+        form = self.env.ref('l10n_lu.tax_report').l10n_lu_get_tax_electronic_report_values(options)['forms'][0]
         self.period = form['declaration_type'][-1]
-        form['field_values'] = self._remove_zero_fields(form['field_values'])
+        form['field_values'] = self._remove_zero_fields(form['field_values'], report.id)
         if self.period == 'A':
-            options = self.env.context['tax_report_options']
+            options = report._get_options()
             date_from = fields.Date.from_string(options['date'].get('date_from'))
             date_to = fields.Date.from_string(options['date'].get('date_to'))
             self._adapt_to_annual_report(form, date_from, date_to)
@@ -201,7 +196,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         form['field_values']['999'] = {'value': '0' if report_id.submitted_rcs else '1', 'field_type': 'boolean'}
         # Add annex
         if self.env.context.get('tax_report_options'):
-            annex_fields, expenditures_table = self._add_annex(self.env.context['tax_report_options'])
+            annex_fields, expenditures_table = self._add_annex(self.env.ref('l10n_lu.tax_report')._get_options())
             form['field_values'].update(annex_fields)
             # Only add the table if it contains some data
             if expenditures_table:
@@ -304,8 +299,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         annex_fields = {}
         annex_options = options.copy()
         annex_options['group_by'] = 'account.tax'
-        lines = self.env['account.generic.tax.report'].with_context(
-            self.env['account.generic.tax.report']._set_context(annex_options))._get_lines(annex_options)
+        lines = self.env.ref('l10n_lu.tax_report')._get_lines(annex_options)
         annex_fields, expenditures_table, total_base_amount, total_vat = self._add_annex_fields_expenditures(self, annex_fields, lines)
         # Annex totals
         if annex_fields:
@@ -331,9 +325,11 @@ class L10nLuGenerateTaxReport(models.TransientModel):
             '236': {'value': str(date_to.month), 'field_type': 'number'}
         })
 
-    def _remove_zero_fields(self, field_values):
+    def _remove_zero_fields(self, field_values, report_id):
         """Removes declaration fields at 0, unless they are mandatory fields or parents of filled-in fields."""
-        parents = self.env['account.tax.report.line'].search([]).mapped(lambda r: (r.code, r.parent_id.code))
+        parents = self.env['account.report.line'].search([('report_id', '=', report_id)]).mapped(
+                lambda r: (r.code, r.parent_id.code)
+        )
         parents_dict = {p[0]: p[1] for p in parents}
         new_field_values = {}
         for f in field_values:

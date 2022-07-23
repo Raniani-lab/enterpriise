@@ -1,376 +1,97 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import json
 
-from odoo import models, api, _, fields
+from odoo import models, _, fields
+from odoo.exceptions import UserError
 from odoo.tools.misc import format_date
-from datetime import timedelta
 
+from datetime import timedelta
 from collections import defaultdict
 
 
-class ReportPartnerLedger(models.AbstractModel):
+class ReportPartnerLedger(models.Model):
     _inherit = "account.report"
-    _name = "account.partner.ledger"
-    _description = "Partner Ledger"
 
-    filter_date = {'mode': 'range', 'filter': 'this_year'}
-    filter_all_entries = False
-    filter_unfold_all = False
-    filter_account_type = [
-        {'id': 'trade_receivable', 'selected': True},
-        {'id': 'trade_payable', 'selected': True},
-        {'id': 'non_trade_receivable', 'selected': False},
-        {'id': 'non_trade_payable', 'selected': False},
-    ]
 
-    filter_unreconciled = False
-    filter_partner = True
-    search_partner = True
+    def partner_ledger_action_open_partner(self, options, params):
+        dummy, record_id = self._get_model_info_from_id(params['id'])
 
-    @api.model
-    def _get_templates(self):
-        templates = super(ReportPartnerLedger, self)._get_templates()
-        templates['line_template'] = 'account_reports.line_template_partner_ledger_report'
-        templates['main_template'] = 'account_reports.template_partner_ledger_report'
-        return templates
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'res.partner',
+            'res_id': record_id,
+            'views': [[False, 'form']],
+            'view_mode': 'form',
+            'target': 'current',
+        }
 
-    ####################################################
-    # OPTIONS
-    ####################################################
+    def _custom_options_initializer_partner_ledger(self, options, previous_options=None):
+        domain = []
 
-    @api.model
-    def _get_options_domain(self, options):
-        # OVERRIDE
-        # Handle filter_unreconciled
-        domain = super()._get_options_domain(options)
-        if options.get('unreconciled'):
-            domain += ['&', ('full_reconcile_id', '=', False), ('balance', '!=', '0')]
-        exch_code = self.env['res.company'].browse(self.env.context.get('company_ids')).mapped('currency_exchange_journal_id')
+        company_ids = [company_opt['id'] for company_opt in options.get('multi_company', self.env.company)]
+        exch_code = self.env['res.company'].browse(company_ids).mapped('currency_exchange_journal_id')
         if exch_code:
             domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id', 'in', exch_code.ids)]
 
-        domain += self._get_filter_partners_domain(options)
+        options['forced_domain'] = options.get('forced_domain', []) + domain
 
-        return domain
+    def _dynamic_lines_generator_partner_ledger(self, options, all_column_groups_expression_totals):
+        if self.env.context.get('print_mode') and options.get('filter_search_bar'):
+            # Handled here instead of in custom options initializer as init_options functions aren't re-called when printing the report.
+            options.setdefault('forced_domain', []).append(('partner_id', 'ilike', options['filter_search_bar']))
 
-    def _get_filter_partners_domain(self, options):
-        if options.get('filter_accounts'):
-            return [('partner_id', 'ilike', options['filter_accounts'])]
+        lines = []
 
-        return []
+        totals_by_column_group = {
+            column_group_key: {
+                total: 0.0
+                for total in ['debit', 'credit', 'balance']
+            }
+            for column_group_key in options['column_groups']
+        }
+        for partner, results in self._partner_ledger_query_partners(options):
+            partner_values = defaultdict(dict)
+            for column_group_key in options['column_groups']:
+                partner_sum = results.get(column_group_key, {})
 
-    @api.model
-    def _get_options_sum_balance(self, options):
-        ''' Create options with the 'strict_range' enabled on the filter_date.
-        The resulting dates domain will be:
-        [
-            ('date' <= options['date_to']),
-            ('date' >= options['date_from'])
-        ]
-        :param options: The report options.
-        :return:        A copy of the options.
-        '''
-        new_options = options.copy()
-        new_options['date'] = new_options['date'].copy()
-        new_options['date']['strict_range'] = True
-        return new_options
+                partner_values[column_group_key]['debit'] = partner_sum.get('debit', 0.0)
+                partner_values[column_group_key]['credit'] = partner_sum.get('credit', 0.0)
+                partner_values[column_group_key]['balance'] = partner_sum.get('balance', 0.0)
 
-    @api.model
-    def _get_options_initial_balance(self, options):
-        ''' Create options used to compute the initial balances for each partner.
-        The resulting dates domain will be:
-        [('date' <= options['date_from'] - 1)]
-        :param options: The report options.
-        :return:        A copy of the options.
-        '''
-        new_options = options.copy()
-        new_options['date'] = new_options['date'].copy()
-        new_date_to = fields.Date.from_string(new_options['date']['date_from']) - timedelta(days=1)
-        new_options['date'].update({
-            'date_from': False,
-            'date_to': fields.Date.to_string(new_date_to),
-        })
-        return new_options
+                totals_by_column_group[column_group_key]['debit'] += partner_values[column_group_key]['debit']
+                totals_by_column_group[column_group_key]['credit'] += partner_values[column_group_key]['credit']
+                totals_by_column_group[column_group_key]['balance'] += partner_values[column_group_key]['balance']
 
-    @api.model
-    def _get_options_without_partner(self, options):
-        ''' Create options used to compute the special case of lines without partner reconcile
-        with another line having a partner for each partner.
-        :param options: The report options.
-        :return:        A copy of the options.
-        '''
-        new_options = options.copy()
-        new_options['date'] = new_options['date'].copy()
-        new_options['date'].update({
-            'date_from': False,
-        })
-        return new_options
+            lines.append((0, self._partner_ledger_get_report_line_partner(options, partner, partner_values)))
 
-    ####################################################
-    # QUERIES
-    ####################################################
+        # Report total line.
+        lines.append((0, self._partner_ledger_get_report_line_total(options, totals_by_column_group)))
 
-    @api.model
-    def _get_query_sums(self, options, expanded_partner=None):
-        ''' Construct a query retrieving all the aggregated sums to build the report. It includes:
-        - sums for all partners.
-        - sums for the initial balances.
-        :param options:             The report options.
-        :param expanded_partner:    An optional res.partner record that must be specified when expanding a line
-                                    with of without the load more.
-        :return:                    (query, params)
-        '''
-        params = []
-        queries = []
+        return lines
 
-        if expanded_partner is not None:
-            domain = [('partner_id', '=', expanded_partner.id)]
-        else:
-            domain = []
-
-        # Create the currency table.
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
-
-        # Get sums for all partners.
-        # period: [('date' <= options['date_to']), ('date' >= options['date_from'])]
-        new_options = self._get_options_sum_balance(options)
-        tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-        params += where_params
-        queries.append('''
-            SELECT
-                account_move_line.partner_id        AS groupby,
-                'sum'                               AS key,
-                SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
-                SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
-                SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-            FROM %s
-            LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-            WHERE %s
-            GROUP BY account_move_line.partner_id
-        ''' % (tables, ct_query, where_clause))
-
-        # Get sums for the initial balance.
-        # period: [('date' <= options['date_from'] - 1)]
-        new_options = self._get_options_initial_balance(options)
-        tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-        params += where_params
-        queries.append('''
-            SELECT
-                account_move_line.partner_id        AS groupby,
-                'initial_balance'                   AS key,
-                SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
-                SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
-                SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-            FROM %s
-            LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-            WHERE %s
-            GROUP BY account_move_line.partner_id
-        ''' % (tables, ct_query, where_clause))
-
-        return ' UNION ALL '.join(queries), params
-
-    @api.model
-    def _get_lines_without_partner(self, options, expanded_partner=None, offset=0, limit=0):
-        ''' Get the detail of lines without partner reconciled with a line with a partner. Those lines should be
-        considered as belonging the partner for the reconciled amount as it may clear some of the partner invoice/bill
-        and they have to be accounted in the partner balance.'''
-
-        params = []
-        if expanded_partner:
-            partner_clause = '= %s'
-            params = [expanded_partner.id] + params
-        else:
-            partner_clause = 'IS NOT NULL'
-        new_options = self._get_options_without_partner(options)
-        params += [options['date']['date_from'], options['date']['date_to']]
-        tables, where_clause, where_params = self._query_get(new_options, domain=[])
-        params += where_params + [offset]
-        limit_clause = ''
-        if limit != 0:
-            params += [limit]
-            limit_clause = "LIMIT %s"
-        query = '''
-            SELECT
-                account_move_line.id,
-                account_move_line.date,
-                account_move_line.date_maturity,
-                account_move_line.name,
-                account_move_line.ref,
-                account_move_line.company_id,
-                account_move_line.account_id,
-                account_move_line.payment_id,
-                aml_with_partner.partner_id,
-                account_move_line.currency_id,
-                account_move_line.amount_currency,
-                account_move_line.matching_number,
-                CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE partial.amount END AS debit,
-                CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE partial.amount END AS credit,
-                CASE WHEN aml_with_partner.balance > 0 THEN -partial.amount ELSE partial.amount END AS balance,
-                account_move_line__move_id.name         AS move_name,
-                account_move_line__move_id.move_type    AS move_type,
-                account.code                            AS account_code,
-                account.name                            AS account_name,
-                journal.code                            AS journal_code,
-                journal.name                            AS journal_name,
-                full_rec.name                           AS full_rec_name
-            FROM {tables},
-                account_partial_reconcile partial
-                LEFT JOIN account_full_reconcile full_rec ON full_rec.id = partial.full_reconcile_id,
-                account_move_line aml_with_partner,
-                account_journal journal,
-                account_account account
-            WHERE (account_move_line.id = partial.debit_move_id OR account_move_line.id = partial.credit_move_id)
-               AND account_move_line.partner_id IS NULL
-               AND (aml_with_partner.id = partial.debit_move_id OR aml_with_partner.id = partial.credit_move_id)
-               AND aml_with_partner.partner_id {partner_clause}
-               AND journal.id = account_move_line.journal_id
-               AND account.id = account_move_line.account_id
-               AND partial.max_date BETWEEN %s AND %s
-               AND {where_clause}
-            ORDER BY account_move_line.date, account_move_line.id
-            OFFSET %s
-            {limit_clause}
-        '''.format(tables=tables, partner_clause=partner_clause, where_clause=where_clause, limit_clause=limit_clause)
-
-        return query, params
-
-    @api.model
-    def _get_sums_without_partner(self, options, expanded_partner=None):
-        ''' Get the sum of lines without partner reconciled with a line with a partner, grouped by partner. Those lines
-        should be considered as belonging the partner for the reconciled amount as it may clear some of the partner
-        invoice/bill and they have to be accounted in the partner balance.'''
-
-        params = []
-        if expanded_partner:
-            partner_clause = '= %s'
-            params = [expanded_partner.id]
-        else:
-            partner_clause = 'IS NOT NULL'
-
-        new_options = self._get_options_without_partner(options)
-        params = [options['date']['date_from']] + params + [options['date']['date_to']]
-        tables, where_clause, where_params = self._query_get(new_options, domain=[])
-        params += where_params
-
-        query = '''
-            SELECT
-                aml_with_partner.partner_id AS groupby,
-                SUM(CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE partial.amount END) AS debit,
-                SUM(CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE partial.amount END) AS credit,
-                SUM(CASE WHEN aml_with_partner.balance > 0 THEN -partial.amount ELSE partial.amount END) AS balance,
-                CASE WHEN partial.max_date < %s THEN 'initial_balance' ELSE 'sum' END as key
-            FROM {tables}, account_partial_reconcile partial, account_move_line aml_with_partner
-            WHERE (account_move_line.id = partial.debit_move_id OR account_move_line.id = partial.credit_move_id)
-               AND account_move_line.partner_id IS NULL
-               AND (aml_with_partner.id = partial.debit_move_id OR aml_with_partner.id = partial.credit_move_id)
-               AND aml_with_partner.partner_id {partner_clause}
-               AND partial.max_date <= %s
-               AND {where_clause}
-            GROUP BY aml_with_partner.partner_id, key
-        '''.format(tables=tables, partner_clause=partner_clause, where_clause=where_clause)
-        return query, params
-
-    @api.model
-    def _get_query_amls(self, options, expanded_partner=None, offset=None, limit=None):
-        ''' Construct a query retrieving the account.move.lines when expanding a report line with or without the load
-        more.
-        :param options:             The report options.
-        :param expanded_partner:    The res.partner record corresponding to the expanded line.
-        :param offset:              The offset of the query (used by the load more).
-        :param limit:               The limit of the query (used by the load more).
-        :return:                    (query, params)
-        '''
-        unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-
-        # Get sums for the account move lines.
-        # period: [('date' <= options['date_to']), ('date', '>=', options['date_from'])]
-        if expanded_partner is not None:
-            domain = [('partner_id', '=', expanded_partner.id)]
-        elif unfold_all:
-            domain = []
-        elif options['unfolded_lines']:
-            domain = [('partner_id', 'in', [int(line[8:]) for line in options['unfolded_lines']])]
-
-        new_options = self._get_options_sum_balance(options)
-        tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
-
-        query = '''
-            SELECT
-                account_move_line.id,
-                account_move_line.date,
-                account_move_line.date_maturity,
-                account_move_line.name,
-                account_move_line.ref,
-                account_move_line.company_id,
-                account_move_line.account_id,
-                account_move_line.payment_id,
-                account_move_line.partner_id,
-                account_move_line.currency_id,
-                account_move_line.amount_currency,
-                account_move_line.matching_number,
-                ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
-                ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
-                ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
-                account_move_line__move_id.name         AS move_name,
-                company.currency_id                     AS company_currency_id,
-                partner.name                            AS partner_name,
-                account_move_line__move_id.move_type    AS move_type,
-                account.code                            AS account_code,
-                account.name                            AS account_name,
-                journal.code                            AS journal_code,
-                journal.name                            AS journal_name
-            FROM %s
-            LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-            LEFT JOIN res_company company               ON company.id = account_move_line.company_id
-            LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
-            LEFT JOIN account_account account           ON account.id = account_move_line.account_id
-            LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
-            WHERE %s
-            ORDER BY account_move_line.date, account_move_line.id
-        ''' % (tables, ct_query, where_clause)
-
-        if offset:
-            query += ' OFFSET %s '
-            where_params.append(offset)
-        if limit:
-            query += ' LIMIT %s '
-            where_params.append(limit)
-
-        return query, where_params
-
-    @api.model
-    def _do_query(self, options, expanded_partner=None):
-        ''' Execute the queries, perform all the computation and return partners_results,
-        a lists of tuple (partner, fetched_values) sorted by the table's model _order:
-            - partner is a res.parter record.
-            - fetched_values is a dictionary containing:
-                - sum:                              {'debit': float, 'credit': float, 'balance': float}
-                - (optional) initial_balance:       {'debit': float, 'credit': float, 'balance': float}
-                - (optional) lines:                 [line_vals_1, line_vals_2, ...]
-        :param options:             The report options.
-        :param expanded_account:    An optional account.account record that must be specified when expanding a line
-                                    with of without the load more.
-        :param fetch_lines:         A flag to fetch the account.move.lines or not (the 'lines' key in accounts_values).
-        :return:                    (accounts_values, taxes_results)
-        '''
+    def _partner_ledger_query_partners(self, options):
+        """ Executes the queries and performs all the computation.
+        :return:        A list of tuple (partner, column_group_values) sorted by the table's model _order:
+                        - partner is a res.parter record.
+                        - column_group_values is a dict(column_group_key, fetched_values), where
+                            - column_group_key is a string identifying a column group, like in options['column_groups']
+                            - fetched_values is a dictionary containing:
+                                - sum:                              {'debit': float, 'credit': float, 'balance': float}
+                                - (optional) initial_balance:       {'debit': float, 'credit': float, 'balance': float}
+                                - (optional) lines:                 [line_vals_1, line_vals_2, ...]
+        """
         def assign_sum(row):
-            key = row['key']
-            fields = ['balance', 'debit', 'credit'] if key == 'sum' else ['balance']
-            if any(not company_currency.is_zero(row[field]) for field in fields):
+            fields_to_assign = ['balance', 'debit', 'credit']
+            if any(not company_currency.is_zero(row[field]) for field in fields_to_assign):
                 groupby_partners.setdefault(row['groupby'], defaultdict(lambda: defaultdict(float)))
-                for field in fields:
-                    groupby_partners[row['groupby']][key][field] += row[field]
+                for field in fields_to_assign:
+                    groupby_partners[row['groupby']][row['column_group_key']][field] += row[field]
 
         company_currency = self.env.company.currency_id
 
-        # flush the tables that gonna be queried
-        self.env['account.move.line'].flush_model()
-        self.env['account.move'].flush_model()
-        self.env['account.partial.reconcile'].flush_model()
-
         # Execute the queries and dispatch the results.
-        query, params = self._get_query_sums(options, expanded_partner=expanded_partner)
+        query, params = self._partner_ledger_get_query_sums(options)
 
         groupby_partners = {}
 
@@ -378,71 +99,37 @@ class ReportPartnerLedger(models.AbstractModel):
         for res in self._cr.dictfetchall():
             assign_sum(res)
 
-        # Fetch the lines of unfolded accounts.
-        unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-        if expanded_partner or unfold_all or options['unfolded_lines']:
-            query, params = self._get_query_amls(options, expanded_partner=expanded_partner)
-            self._cr.execute(query, params)
-            for res in self._cr.dictfetchall():
-                if res['partner_id'] not in groupby_partners:
-                    continue
-                groupby_partners[res['partner_id']].setdefault('lines', [])
-                groupby_partners[res['partner_id']]['lines'].append(res)
+        # Correct the sums per partner, for the lines without partner reconciled with a line having a partner
+        query, params = self._partner_ledger_get_sums_without_partner(options)
 
-            query, params = self._get_lines_without_partner(options, expanded_partner=expanded_partner)
-            self._cr.execute(query, params)
-            for row in self._cr.dictfetchall():
-                # don't show lines of partners not expanded
-                if row['partner_id'] in groupby_partners:
-                    groupby_partners[row['partner_id']].setdefault('lines', [])
-                    row['class'] = ' text-muted'
-                    groupby_partners[row['partner_id']]['lines'].append(row)
-                if None in groupby_partners:
-                    # reconciled lines without partners are fetched to be displayed under the matched partner
-                    # and thus but be inversed to be displayed under the unknown partner
-                    none_row = row.copy()
-                    none_row['class'] = ' text-muted'
-                    none_row['debit'] = row['credit']
-                    none_row['credit'] = row['debit']
-                    none_row['balance'] = -row['balance']
-                    groupby_partners[None].setdefault('lines', [])
-                    groupby_partners[None]['lines'].append(none_row)
-
-        # correct the sums per partner, for the lines without partner reconciled with a line having a partner
-        query, params = self._get_sums_without_partner(options, expanded_partner=expanded_partner)
         self._cr.execute(query, params)
-        total = total_debit = total_credit = total_initial_balance = 0
+        totals = {}
+        for total_field in ['debit', 'credit', 'balance']:
+            totals[total_field] = {col_group_key: 0 for col_group_key in options['column_groups']}
+
         for row in self._cr.dictfetchall():
-            key = row['key']
-            total_debit += key == 'sum' and row['debit'] or 0
-            total_credit += key == 'sum' and row['credit'] or 0
-            total_initial_balance += key == 'initial_balance' and row['balance'] or 0
-            total += key == 'sum' and row['balance'] or 0
-            if None not in groupby_partners and not (expanded_partner or unfold_all or options['unfolded_lines']):
-                groupby_partners.setdefault(None, {})
+            totals['debit'][row['column_group_key']] += row['debit']
+            totals['credit'][row['column_group_key']] += row['credit']
+            totals['balance'][row['column_group_key']] += row['balance']
+
             if row['groupby'] not in groupby_partners:
                 continue
+
             assign_sum(row)
 
         if None in groupby_partners:
-            if 'sum' not in groupby_partners[None]:
-                groupby_partners[None].setdefault('sum', {'debit': 0, 'credit': 0, 'balance': 0})
-            if 'initial_balance' not in groupby_partners[None]:
-                groupby_partners[None].setdefault('initial_balance', {'balance': 0})
-            #debit/credit are inversed for the unknown partner as the computation is made regarding the balance of the known partner
-            groupby_partners[None]['sum']['debit'] += total_credit
-            groupby_partners[None]['sum']['credit'] += total_debit
-            groupby_partners[None]['sum']['balance'] -= total
-            groupby_partners[None]['initial_balance']['balance'] -= total_initial_balance
+            # Debit/credit are inverted for the unknown partner as the computation is made regarding the balance of the known partner
+            for column_group_key in options['column_groups']:
+                groupby_partners[None][column_group_key]['debit'] += totals['credit'][column_group_key]
+                groupby_partners[None][column_group_key]['credit'] += totals['debit'][column_group_key]
+                groupby_partners[None][column_group_key]['balance'] -= totals['balance'][column_group_key]
 
         # Retrieve the partners to browse.
         # groupby_partners.keys() contains all account ids affected by:
         # - the amls in the current period.
         # - the amls affecting the initial balance.
-        # Note a search is done instead of a browse to preserve the table ordering.
-        if expanded_partner:
-            partners = expanded_partner
-        elif groupby_partners:
+        if groupby_partners:
+            # Note a search is done instead of a browse to preserve the table ordering.
             partners = self.env['res.partner'].with_context(active_test=False).search([('id', 'in', list(groupby_partners.keys()))])
         else:
             partners = []
@@ -450,286 +137,448 @@ class ReportPartnerLedger(models.AbstractModel):
         # Add 'Partner Unknown' if needed
         if None in groupby_partners.keys():
             partners = [p for p in partners] + [None]
+
         return [(partner, groupby_partners[partner.id if partner else None]) for partner in partners]
+
+    def _partner_ledger_get_query_sums(self, options):
+        """ Construct a query retrieving all the aggregated sums to build the report. It includes:
+        - sums for all partners.
+        - sums for the initial balances.
+        :param options:             The report options.
+        :return:                    (query, params)
+        """
+        params = []
+        queries = []
+
+        # Create the currency table.
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = self._query_get(column_group_options, 'normal')
+            params.append(column_group_key)
+            params += where_params
+            queries.append(f"""
+                SELECT
+                    account_move_line.partner_id                                                          AS groupby,
+                    %s                                                                                    AS column_group_key,
+                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
+                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                FROM {tables}
+                LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+                WHERE {where_clause}
+                GROUP BY account_move_line.partner_id
+            """)
+
+        return ' UNION ALL '.join(queries), params
+
+    def _partner_ledger_get_initial_balance_values(self, partner_ids, options):
+        queries = []
+        params = []
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            # Get sums for the initial balance.
+            # period: [('date' <= options['date_from'] - 1)]
+            new_options = self._partner_ledger_get_options_initial_balance(column_group_options)
+            tables, where_clause, where_params = self._query_get(new_options, 'normal', domain=[('partner_id', 'in', partner_ids)])
+            params.append(column_group_key)
+            params += where_params
+            queries.append(f"""
+                SELECT
+                    account_move_line.partner_id,
+                    %s                                                                                    AS column_group_key,
+                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
+                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                FROM {tables}
+                LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+                WHERE {where_clause}
+                GROUP BY account_move_line.partner_id
+            """)
+
+        self._cr.execute(" UNION ALL ".join(queries), params)
+
+        init_balance_by_col_group = {
+            partner_id: {column_group_key: {} for column_group_key in options['column_groups']}
+            for partner_id in partner_ids
+        }
+        for result in self._cr.dictfetchall():
+            init_balance_by_col_group[result['partner_id']][result['column_group_key']] = result
+
+        return init_balance_by_col_group
+
+    def _partner_ledger_get_options_initial_balance(self, options):
+        """ Create options used to compute the initial balances for each partner.
+        The resulting dates domain will be:
+        [('date' <= options['date_from'] - 1)]
+        :param options: The report options.
+        :return:        A copy of the options, modified to match the dates to use to get the initial balances.
+        """
+        new_date_to = fields.Date.from_string(options['date']['date_from']) - timedelta(days=1)
+        new_date_options = dict(options['date'], date_from=False, date_to=fields.Date.to_string(new_date_to))
+        return dict(options, date=new_date_options)
+
+    def _partner_ledger_get_sums_without_partner(self, options):
+        """ Get the sum of lines without partner reconciled with a line with a partner, grouped by partner. Those lines
+        should be considered as belonging to the partner for the reconciled amount as it may clear some of the partner
+        invoice/bill and they have to be accounted in the partner balance."""
+        queries = []
+        params = []
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            dummy, where_clause, where_params = self._query_get(column_group_options, 'normal')
+            params += [
+                column_group_key,
+                column_group_options['date']['date_to'],
+                *where_params,
+            ]
+            queries.append(f"""
+                SELECT
+                    %s                                                                                                    AS column_group_key,
+                    aml_with_partner.partner_id                                                                           AS groupby,
+                    COALESCE(SUM(CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE partial.amount END), 0)               AS debit,
+                    COALESCE(SUM(CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE partial.amount END), 0)               AS credit,
+                    COALESCE(SUM(CASE WHEN aml_with_partner.balance > 0 THEN -partial.amount ELSE partial.amount END), 0) AS balance
+                FROM account_partial_reconcile partial
+                JOIN account_move_line ON
+                    (account_move_line.id = partial.debit_move_id OR account_move_line.id = partial.credit_move_id)
+                    AND account_move_line.partner_id IS NULL
+                JOIN account_move_line aml_with_partner ON
+                    (aml_with_partner.id = partial.debit_move_id OR aml_with_partner.id = partial.credit_move_id)
+                    AND aml_with_partner.partner_id IS NOT NULL
+                WHERE partial.max_date <= %s AND {where_clause}
+                GROUP BY aml_with_partner.partner_id
+            """)
+
+        return " UNION ALL ".join(queries), params
+
+    def _expand_unfoldable_line_partner_ledger(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+        def init_load_more_progress(line_dict):
+            return {
+                column['column_group_key']: line_col.get('no_format', 0)
+                for column, line_col in  zip(options['columns'], line_dict['columns'])
+                if column['expression_label'] == 'balance'
+            }
+
+        markup, model, record_id = self._parse_line_id(line_dict_id)[-1]
+
+        if markup != 'no_partner' and model != 'res.partner':
+            raise UserError(_("Wrong ID for partner ledger line to expand: %s", line_dict_id))
+
+        lines = []
+
+        # Get initial balance
+        if offset == 0:
+            if unfold_all_batch_data:
+                init_balance_by_col_group = unfold_all_batch_data['initial_balances'][record_id]
+            else:
+                init_balance_by_col_group = self._partner_ledger_get_initial_balance_values([record_id], options)[record_id]
+            initial_balance_line = self._get_partner_and_general_ledger_initial_balance_line(options, line_dict_id, init_balance_by_col_group)
+            if initial_balance_line:
+                lines.append(initial_balance_line)
+
+                # For the first expansion of the line, the initial balance line gives the progress
+                progress = init_load_more_progress(initial_balance_line)
+
+        limit_to_load = self.load_more_limit + 1 if self.load_more_limit and not self._context.get('print_mode') else None
+
+        if unfold_all_batch_data:
+            aml_results = unfold_all_batch_data['aml_values'][record_id]
+        else:
+            aml_results = self._partner_ledger_get_aml_values(options, [record_id], offset=offset, limit=limit_to_load)[record_id]
+
+        has_more = False
+        treated_results_count = 0
+        next_progress = progress
+        for result in aml_results:
+            if self.load_more_limit and treated_results_count == self.load_more_limit:
+                # We loaded one more than the limit on purpose: this way we know we need a "load more" line
+                has_more = True
+                break
+
+            new_line = self._partner_ledger_get_report_line_move_line(options, result, line_dict_id, next_progress)
+            lines.append(new_line)
+            next_progress = init_load_more_progress(new_line)
+            treated_results_count += 1
+
+        return {
+            'lines': lines,
+            'offset_increment': treated_results_count,
+            'has_more': has_more,
+            'progress': json.dumps(next_progress)
+        }
+
+    def _partner_ledger_get_aml_values(self, options, partner_ids, offset=0, limit=None):
+        rslt = {partner_id: [] for partner_id in partner_ids}
+
+        partner_ids_wo_none = [x for x in partner_ids if x]
+        directly_linked_aml_partner_clauses = []
+        directly_linked_aml_partner_params = []
+        indirectly_linked_aml_partner_params = []
+        indirectly_linked_aml_partner_clause = 'aml_with_partner.partner_id IS NOT NULL'
+        if None in partner_ids:
+            directly_linked_aml_partner_clauses.append('account_move_line.partner_id IS NULL')
+        if partner_ids_wo_none:
+            directly_linked_aml_partner_clauses.append('account_move_line.partner_id IN %s')
+            directly_linked_aml_partner_params.append(tuple(partner_ids_wo_none))
+            indirectly_linked_aml_partner_clause = 'aml_with_partner.partner_id IN %s'
+            indirectly_linked_aml_partner_params.append(tuple(partner_ids_wo_none))
+        directly_linked_aml_partner_clause = '(' + ' OR '.join(directly_linked_aml_partner_clauses) + ')'
+
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        queries = []
+        all_params = []
+        for column_group_key, group_options in self._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = self._query_get(group_options, 'strict_range')
+
+            all_params += [
+                column_group_key,
+                *where_params,
+                *directly_linked_aml_partner_params,
+                column_group_key,
+                *indirectly_linked_aml_partner_params,
+                *where_params,
+                group_options['date']['date_from'],
+                group_options['date']['date_to'],
+            ]
+
+            # For the move lines directly linked to this partner
+            queries.append(f'''
+                SELECT
+                    account_move_line.id,
+                    account_move_line.date,
+                    account_move_line.date_maturity,
+                    account_move_line.name,
+                    account_move_line.ref,
+                    account_move_line.company_id,
+                    account_move_line.account_id,
+                    account_move_line.payment_id,
+                    account_move_line.partner_id,
+                    account_move_line.currency_id,
+                    account_move_line.amount_currency,
+                    account_move_line.matching_number,
+                    ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
+                    ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
+                    ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
+                    account_move.name                                                                AS move_name,
+                    account_move.move_type                                                           AS move_type,
+                    account.code                                                                     AS account_code,
+                    account.name                                                                     AS account_name,
+                    journal.code                                                                     AS journal_code,
+                    journal.name                                                                     AS journal_name,
+                    %s                                                                               AS column_group_key,
+                    'directly_linked_aml'                                                            AS key
+                FROM {tables}
+                JOIN account_move ON account_move.id = account_move_line.move_id
+                LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+                LEFT JOIN res_company company               ON company.id = account_move_line.company_id
+                LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
+                LEFT JOIN account_account account           ON account.id = account_move_line.account_id
+                LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
+                WHERE {where_clause} AND {directly_linked_aml_partner_clause}
+                ORDER BY account_move_line.date, account_move_line.id
+            ''')
+
+            # For the move lines linked to no partner, but reconciled with this partner. They will appear in grey in the report
+            queries.append(f'''
+                SELECT
+                    account_move_line.id,
+                    account_move_line.date,
+                    account_move_line.date_maturity,
+                    account_move_line.name,
+                    account_move_line.ref,
+                    account_move_line.company_id,
+                    account_move_line.account_id,
+                    account_move_line.payment_id,
+                    aml_with_partner.partner_id,
+                    account_move_line.currency_id,
+                    account_move_line.amount_currency,
+                    account_move_line.matching_number,
+                    CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE partial.amount END               AS debit,
+                    CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE partial.amount END               AS credit,
+                    CASE WHEN aml_with_partner.balance > 0 THEN -partial.amount ELSE partial.amount END AS balance,
+                    account_move.name                                                                   AS move_name,
+                    account_move.move_type                                                              AS move_type,
+                    account.code                                                                        AS account_code,
+                    account.name                                                                        AS account_name,
+                    journal.code                                                                        AS journal_code,
+                    journal.name                                                                        AS journal_name,
+                    %s                                                                                  AS column_group_key,
+                    'indirectly_linked_aml'                                                             AS key
+                FROM {tables},
+                    account_partial_reconcile partial,
+                    account_move,
+                    account_move_line aml_with_partner,
+                    account_journal journal,
+                    account_account account
+                WHERE
+                    (account_move_line.id = partial.debit_move_id OR account_move_line.id = partial.credit_move_id)
+                    AND account_move_line.partner_id IS NULL
+                    AND account_move.id = account_move_line.move_id
+                    AND (aml_with_partner.id = partial.debit_move_id OR aml_with_partner.id = partial.credit_move_id)
+                    AND {indirectly_linked_aml_partner_clause}
+                    AND journal.id = account_move_line.journal_id
+                    AND account.id = account_move_line.account_id
+                    AND {where_clause}
+                    AND partial.max_date BETWEEN %s AND %s
+                ORDER BY account_move_line.date, account_move_line.id
+            ''')
+
+        query = '(' + ') UNION ALL ('.join(queries) + ')'
+
+        if offset:
+            query += ' OFFSET %s '
+            all_params.append(offset)
+
+        if limit:
+            query += ' LIMIT %s '
+            all_params.append(limit)
+
+        self._cr.execute(query, all_params)
+        for aml_result in self._cr.dictfetchall():
+            if aml_result['key'] == 'indirectly_linked_aml':
+
+                # Append the line to the partner found through the reconciliation.
+                if aml_result['partner_id'] in rslt:
+                    rslt[aml_result['partner_id']].append(aml_result)
+
+                # Balance it with an additional line in the Unknown Partner section but having reversed amounts.
+                if None in rslt:
+                    rslt[None].append({
+                        **aml_result,
+                        'debit': aml_result['credit'],
+                        'credit': aml_result['debit'],
+                        'balance': -aml_result['balance'],
+                    })
+            else:
+                rslt[aml_result['partner_id']].append(aml_result)
+
+        return rslt
+
+    def _custom_unfold_all_batch_data_generator_partner_ledger(self, options, lines_to_expand_by_function):
+        partner_ids_to_expand = []
+        for line_dict in lines_to_expand_by_function.get('_expand_unfoldable_line_partner_ledger', []):
+            model, model_id = self._get_model_info_from_id(line_dict['id'])
+            if model == 'res.partner':
+                partner_ids_to_expand.append(model_id)
+
+        return {
+            'initial_balances': self._partner_ledger_get_initial_balance_values(partner_ids_to_expand, options) if partner_ids_to_expand else {},
+
+            # load_more_limit canno( be passed to this call, otherwise it won't be applied per partner but on the whole result.
+            # We gain perf from batching, but load every result, even if the limit restricts them later.
+            'aml_values': self._partner_ledger_get_aml_values(options, partner_ids_to_expand) if partner_ids_to_expand else {},
+        }
 
     ####################################################
     # COLUMNS/LINES
     ####################################################
-
-    @api.model
-    def _get_report_line_partner(self, options, partner, initial_balance, debit, credit, balance):
+    def _partner_ledger_get_report_line_partner(self, options, partner, partner_values):
         company_currency = self.env.company.currency_id
         unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
 
-        columns = [
-            {'name': self.format_value(initial_balance), 'no_format': initial_balance, 'class': 'number'},
-            {'name': self.format_value(debit), 'no_format': debit, 'class': 'number'},
-            {'name': self.format_value(credit), 'no_format': credit, 'class': 'number'},
-        ]
-        if self.user_has_groups('base.group_multi_currency'):
-            columns.append({'name': ''})
-        columns.append({'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'})
+        unfoldable = False
+        column_values = []
+        for column in options['columns']:
+            col_expr_label = column['expression_label']
+            value = partner_values[column['column_group_key']].get(col_expr_label)
+
+            if col_expr_label in {'debit', 'credit', 'balance'}:
+                formatted_value = self.format_value(value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
+            else:
+                formatted_value = self.format_value(value, figure_type=column['figure_type']) if value is not None else value
+
+            unfoldable = unfoldable or (col_expr_label in ('debit', 'credit') and not company_currency.is_zero(value))
+
+            column_values.append({
+                'name': formatted_value,
+                'no_format': value,
+                'class': 'number'
+            })
+
+        line_id = self._get_generic_line_id('res.partner', partner.id) if partner else self._get_generic_line_id(None, None, markup='no_partner')
 
         return {
-            'id': 'partner_%s' % (partner.id if partner else 0),
-            'partner_id': partner.id if partner else None,
+            'id': line_id,
             'name': partner is not None and (partner.name or '')[:128] or _('Unknown Partner'),
-            'columns': columns,
+            'columns': column_values,
             'level': 2,
             'trust': partner.trust if partner else None,
-            'unfoldable': not company_currency.is_zero(debit) or not company_currency.is_zero(credit),
-            'unfolded': 'partner_%s' % (partner.id if partner else 0) in options['unfolded_lines'] or unfold_all,
-            'colspan': 6,
+            'unfoldable': unfoldable,
+            'unfolded': line_id in options['unfolded_lines'] or unfold_all,
+            'expand_function': '_expand_unfoldable_line_partner_ledger',
         }
 
-    @api.model
-    def _get_report_line_move_line(self, options, partner, aml, cumulated_init_balance, cumulated_balance):
-        if aml['payment_id']:
+    def _partner_ledger_get_report_line_move_line(self, options, aml_query_result, partner_line_id, init_bal_by_col_group):
+        if aml_query_result['payment_id']:
             caret_type = 'account.payment'
         else:
-            caret_type = 'account.move'
+            caret_type = 'account.move.line'
 
-        date_maturity = aml['date_maturity'] and format_date(self.env, fields.Date.from_string(aml['date_maturity']))
-
-        columns = [
-            {'name': aml['journal_code']},
-            {'name': aml['account_code']},
-            {'name': self._format_aml_name(aml['name'], aml['ref'], aml['move_name']), 'class': 'o_account_report_line_ellipsis'},
-            {'name': date_maturity or '', 'class': 'date'},
-            {'name': aml['matching_number'] or ''},
-            {'name': self.format_value(cumulated_init_balance), 'no_format': cumulated_init_balance, 'class': 'number'},
-            {'name': self.format_value(aml['debit']), 'no_format': aml['debit'], 'class': 'number'},
-            {'name': self.format_value(aml['credit']), 'no_format': aml['credit'], 'class': 'number'},
-        ]
-        if self.user_has_groups('base.group_multi_currency'):
-            if aml['currency_id']:
-                currency = self.env['res.currency'].browse(aml['currency_id'])
-                formatted_amount = self.format_value(aml['amount_currency'], currency=currency)
-                columns.append({'name': formatted_amount, 'no_format': aml['amount_currency'], 'class': 'number'})
+        columns = []
+        for column in options['columns']:
+            col_expr_label = column['expression_label']
+            if col_expr_label == 'ref':
+                col_value = self._format_aml_name(aml_query_result['name'], aml_query_result['ref'], aml_query_result['move_name'])
             else:
-                columns.append({'name': ''})
-        columns.append({'name': self.format_value(cumulated_balance, blank_if_zero=False), 'no_format': cumulated_balance, 'class': 'number'})
+                col_value = aml_query_result[col_expr_label] if column['column_group_key'] == aml_query_result['column_group_key'] else None
+
+            if col_value is None:
+                columns.append({})
+            else:
+                col_class = 'number'
+
+                if col_expr_label == 'date_maturity':
+                    formatted_value = format_date(self.env, fields.Date.from_string(col_value))
+                    col_class = 'date'
+                elif col_expr_label == 'amount_currency':
+                    currency = self.env['res.currency'].browse(aml_query_result['currency_id'])
+                    formatted_value = self.format_value(col_value, currency=currency, figure_type=column['figure_type'])
+                elif col_expr_label == 'balance':
+                    col_value += init_bal_by_col_group[column['column_group_key']]
+                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
+                else:
+                    if col_expr_label == 'ref':
+                        col_class = 'o_account_report_line_ellipsis'
+                    elif col_expr_label not in ('debit', 'credit'):
+                        col_class = ''
+                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'])
+
+                columns.append({
+                    'name': formatted_value,
+                    'no_format': col_value,
+                    'class': col_class,
+                })
+
         return {
-            'id': aml['id'],
-            'parent_id': 'partner_%s' % (partner.id if partner else 0),
-            'name': format_date(self.env, aml['date']),
-            'class': 'text' + aml.get('class', ''),  # do not format as date to prevent text centering
+            'id': self._get_generic_line_id('account.move.line', aml_query_result['id'], parent_line_id=partner_line_id),
+            'parent_id': partner_line_id,
+            'name': format_date(self.env, aml_query_result['date']),
+            'class': 'text-muted' if aml_query_result['key'] == 'indirectly_linked_aml' else 'text',  # do not format as date to prevent text centering
             'columns': columns,
             'caret_options': caret_type,
             'level': 2,
         }
 
-    @api.model
-    def _get_report_line_load_more(self, options, partner, offset, remaining, progress):
-        return {
-            'id': 'loadmore_%s' % (partner.id if partner else 0),
-            'offset': offset,
-            'progress': progress,
-            'remaining': remaining,
-            'class': 'o_account_reports_load_more text-center',
-            'parent_id': 'partner_%s' % (partner.id if partner else 0),
-            'name': _('Load more... (%s remaining)', remaining),
-            'colspan': 10 if self.user_has_groups('base.group_multi_currency') else 9,
-            'columns': [{}],
-        }
+    def _partner_ledger_get_report_line_total(self, options, totals_by_column_group):
+        column_values = []
+        for column in options['columns']:
+            col_expr_label = column['expression_label']
+            value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
 
-    @api.model
-    def _get_report_line_total(self, options, initial_balance, debit, credit, balance):
-        columns = [
-            {'name': self.format_value(initial_balance, blank_if_zero=False), 'no_format': initial_balance, 'class': 'number'},
-            {'name': self.format_value(debit, blank_if_zero=False), 'no_format': debit, 'class': 'number'},
-            {'name': self.format_value(credit, blank_if_zero=False), 'no_format': credit, 'class': 'number'},
-        ]
-        if self.user_has_groups('base.group_multi_currency'):
-            columns.append({'name': ''})
-        columns.append({'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'})
+            if col_expr_label in {'debit', 'credit', 'balance'}:
+                formatted_value = self.format_value(value, figure_type=column['figure_type'], blank_if_zero=False)
+            else:
+                formatted_value = self.format_value(value, figure_type=column['figure_type']) if value else None
+
+            column_values.append({
+                'name': formatted_value,
+                'no_format': value,
+                'class': 'number'
+            })
+
         return {
-            'id': 'partner_ledger_total_%s' % self.env.company.id,
+            'id': self._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
             'class': 'total',
             'level': 1,
-            'columns': columns,
-            'colspan': 6,
+            'columns': column_values,
         }
-
-    @api.model
-    def _get_partner_ledger_lines(self, options, line_id=None):
-        ''' Get lines for the whole report or for a specific line.
-        :param options: The report options.
-        :return:        A list of lines, each one represented by a dictionary.
-        '''
-        lines = []
-        unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-
-        expanded_partner = line_id and self.env['res.partner'].browse(int(line_id[8:]))
-        partners_results = self._do_query(options, expanded_partner=expanded_partner)
-
-        total_initial_balance = total_debit = total_credit = total_balance = 0.0
-        for partner, results in partners_results:
-            is_unfolded = 'partner_%s' % (partner.id if partner else 0) in options['unfolded_lines']
-
-            # res.partner record line.
-            partner_sum = results.get('sum', {})
-            partner_init_bal = results.get('initial_balance', {})
-
-            initial_balance = partner_init_bal.get('balance', 0.0)
-            debit = partner_sum.get('debit', 0.0)
-            credit = partner_sum.get('credit', 0.0)
-            balance = initial_balance + partner_sum.get('balance', 0.0)
-
-            lines.append(self._get_report_line_partner(options, partner, initial_balance, debit, credit, balance))
-
-            total_initial_balance += initial_balance
-            total_debit += debit
-            total_credit += credit
-            total_balance += balance
-
-            if unfold_all or is_unfolded:
-                cumulated_balance = initial_balance
-
-                # account.move.line record lines.
-                amls = results.get('lines', [])
-
-                load_more_remaining = len(amls)
-                load_more_counter = self._context.get('print_mode') and load_more_remaining or self.MAX_LINES
-
-                for aml in amls:
-                    # Don't show more line than load_more_counter.
-                    if load_more_counter == 0:
-                        break
-
-                    cumulated_init_balance = cumulated_balance
-                    cumulated_balance += aml['balance']
-                    lines.append(self._get_report_line_move_line(options, partner, aml, cumulated_init_balance, cumulated_balance))
-
-                    load_more_remaining -= 1
-                    load_more_counter -= 1
-
-                if load_more_remaining > 0:
-                    # Load more line.
-                    lines.append(self._get_report_line_load_more(
-                        options,
-                        partner,
-                        self.MAX_LINES,
-                        load_more_remaining,
-                        cumulated_balance,
-                    ))
-
-        if not line_id:
-            # Report total line.
-            lines.append(self._get_report_line_total(
-                options,
-                total_initial_balance,
-                total_debit,
-                total_credit,
-                total_balance
-            ))
-        return lines
-
-    @api.model
-    def _load_more_lines(self, options, line_id, offset, load_more_remaining, progress):
-        ''' Get lines for an expanded line using the load more.
-        :param options: The report options.
-        :return:        A list of lines, each one represented by a dictionary.
-        '''
-        lines = []
-        expanded_partner = line_id and self.env['res.partner'].browse(int(line_id[9:]))
-
-        load_more_counter = self.MAX_LINES
-
-        starting_offset = offset
-        starting_load_more_counter = load_more_counter
-
-        # Fetch the next batch of lines
-        amls_query, amls_params = self._get_query_amls(options, expanded_partner=expanded_partner, offset=offset, limit=load_more_counter)
-        self._cr.execute(amls_query, amls_params)
-        for aml in self._cr.dictfetchall():
-            # Don't show more line than load_more_counter.
-            if load_more_counter == 0:
-                break
-
-            cumulated_init_balance = progress
-            progress += aml['balance']
-
-            # account.move.line record line.
-            lines.append(self._get_report_line_move_line(options, expanded_partner, aml, cumulated_init_balance, progress))
-
-            offset += 1
-            load_more_remaining -= 1
-            load_more_counter -= 1
-
-        query, params = self._get_lines_without_partner(options, expanded_partner=expanded_partner, offset=offset-starting_offset, limit=starting_load_more_counter-load_more_counter)
-        self._cr.execute(query, params)
-        for row in self._cr.dictfetchall():
-            # Don't show more line than load_more_counter.
-            if load_more_counter == 0:
-                break
-
-            row['class'] = ' text-muted'
-            if line_id == 'loadmore_0':
-                # reconciled lines without partners are fetched to be displayed under the matched partner
-                # and thus but be inversed to be displayed under the unknown partner
-                row['debit'] = row['balance'] < 0 and row['credit'] or 0
-                row['credit'] = row['balance'] > 0 and row['debit'] or 0
-                row['balance'] = -row['balance']
-            cumulated_init_balance = progress
-            progress += row['balance']
-            lines.append(self._get_report_line_move_line(options, expanded_partner, row, cumulated_init_balance, progress))
-
-            offset += 1
-            load_more_remaining -= 1
-            load_more_counter -= 1
-
-        if load_more_remaining > 0:
-            # Load more line.
-            lines.append(self._get_report_line_load_more(
-                options,
-                expanded_partner,
-                offset,
-                load_more_remaining,
-                progress,
-            ))
-        return lines
-
-    def _get_columns_name(self, options):
-        columns = [
-            {},
-            {'name': _('JRNL')},
-            {'name': _('Account')},
-            {'name': _('Ref')},
-            {'name': _('Due Date'), 'class': 'date'},
-            {'name': _('Matching Number')},
-            {'name': _('Initial Balance'), 'class': 'number'},
-            {'name': _('Debit'), 'class': 'number'},
-            {'name': _('Credit'), 'class': 'number'}]
-
-        if self.user_has_groups('base.group_multi_currency'):
-            columns.append({'name': _('Amount Currency'), 'class': 'number'})
-
-        columns.append({'name': _('Balance'), 'class': 'number'})
-
-        return columns
-
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        offset = int(options.get('lines_offset', 0))
-        remaining = int(options.get('lines_remaining', 0))
-        balance_progress = float(options.get('lines_progress', 0))
-
-        if offset > 0:
-            # Case a line is expanded using the load more.
-            return self._load_more_lines(options, line_id, offset, remaining, balance_progress)
-        else:
-            # Case the whole report is loaded or a line is expanded for the first time.
-            return self._get_partner_ledger_lines(options, line_id=line_id)
-
-    @api.model
-    def _get_report_name(self):
-        return _('Partner Ledger')
-
-    def view_all_journal_items(self, options, params):
-        if params.get('id'):
-            params['id'] = int(params.get('id').split('_')[1])
-        action = self.env['account.report'].open_journal_items(options, params, view_id=self.env.ref('account.view_move_line_tree_grouped_partner').id)
-        action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_partner': 1})
-        return action

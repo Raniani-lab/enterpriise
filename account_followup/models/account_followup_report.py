@@ -1,54 +1,76 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import time
+import markupsafe
+
 from odoo import models, fields, api
 from odoo.tools.misc import formatLang, format_date, get_lang
 from odoo.tools.translate import _
-from odoo.tools import append_content_to_html, DEFAULT_SERVER_DATE_FORMAT, html2plaintext
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, html2plaintext
 from odoo.exceptions import UserError
 
 
-class AccountReportFollowupManager(models.Model):
-    _inherit = 'account.report.manager'
-
-    partner_id = fields.Many2one('res.partner')
-    email_subject = fields.Char()
-
-
 class AccountFollowupReport(models.AbstractModel):
-    _name = "account.followup.report"
+    _name = 'account.followup.report'
     _description = "Follow-up Report"
-    _inherit = 'account.report'
 
-    filter_partner_id = False
+    # This report, while not an account.report per se, still uses (inherited) templates from account_reports
+    main_table_header_template = 'account_followup.table_header_template_followup_report'
 
-    # It doesn't make sense to allow multicompany for these kind of reports
-    # 1. Followup mails need to have the right headers from the right company
-    # 2. Separation of business seems natural: a customer wouldn't know or care that the two companies are related
-    filter_multi_company = None
+    filter_show_draft = False
 
-    def _get_columns_name(self, options):
+    ####################################################
+    # REPORT COMPUTATION - TEMPLATE RENDERING
+    ####################################################
+
+    @api.model
+    def get_followup_informations(self, partner_id, options):
         """
-        Override
-        Return the name of the columns of the follow-ups report
+        Return all informations needed by the view:
+        - the report manager id
+        - the content in HTML of the report
+        - the state of the next_action
         """
-        headers = [{},
-                   {'name': _('Date'), 'class': 'date', 'style': 'text-align:center; white-space:nowrap;'},
-                   {'name': _('Due Date'), 'class': 'date', 'style': 'text-align:center; white-space:nowrap;'},
-                   {'name': _('Source Document'), 'style': 'text-align:center; white-space:nowrap;'},
-                   {'name': _('Communication'), 'style': 'text-align:right; white-space:nowrap;'},
-                   {'name': _('Expected Date'), 'class': 'date', 'style': 'white-space:nowrap;'},
-                   {'name': _('Excluded'), 'class': 'date', 'style': 'white-space:nowrap;'},
-                   {'name': _('Total Due'), 'class': 'number o_price_total', 'style': 'text-align:right; white-space:nowrap;'}
-                  ]
-        if self.env.context.get('print_mode'):
-            headers = headers[:5] + headers[7:]  # Remove the 'Expected Date' and 'Excluded' columns
-        return headers
+        options['partner_id'] = partner_id
+        partner = self.env['res.partner'].browse(partner_id)
+        followup_line = partner.followup_level
+        if followup_line and followup_line._amount_due_in_description() and options.get('total_due', -1) != partner.total_due:
+            options['keep_summary'] = False
+        html = self.get_followup_report_html(options)
+        next_action = False
+        if not options.get('keep_summary'):
+            next_action = partner.get_next_action(followup_line)
+        infos = {
+            'html': html,
+            'next_action': next_action,
+            'total_due': partner.total_due,
+        }
+        if partner.followup_level:
+            infos['followup_level'] = self._get_line_info(followup_line)
+        return infos
 
-    def _get_lines(self, options, line_id=None):
+    def get_followup_report_html(self, options):
         """
-        Override
+        Return the html of the followup report, based on the report options.
+        """
+        template = 'account_followup.template_followup_report'
+        render_values = self._get_followup_report_html_render_values(options)
+
+        headers = [self._get_followup_report_columns_name()]
+        lines = self._get_followup_report_lines(options)
+
+        # Catch negative numbers when present
+        for line in lines:
+            for col in line['columns']:
+                if self.env.company.currency_id.compare_amounts(col.get('no_format', 0.0), 0.0) == -1:
+                    col['class'] = 'number color-red'
+
+        render_values['lines'] = {'columns_header': headers, 'lines': lines}
+
+        return self.env['ir.qweb']._render(template, render_values)
+
+    def _get_followup_report_lines(self, options):
+        """
         Compute and return the lines of the columns of the follow-ups report.
         """
         # Get date format for the lang
@@ -81,10 +103,10 @@ class AccountFollowupReport(models.AbstractModel):
                 if is_overdue or is_payment:
                     total_issued += not aml.blocked and amount or 0
                 if is_overdue:
-                    date_due = {'name': date_due, 'class': 'color-red date', 'style': 'white-space:nowrap;text-align:center;color: red;'}
+                    date_due = {'name': date_due, 'class': 'color-red date', 'style': 'white-space:nowrap;text-align:right;color: red;'}
                 if is_payment:
                     date_due = ''
-                move_line_name = self._format_aml_name(aml.name, aml.move_id.ref)
+                move_line_name = self._followup_report_format_aml_name(aml.name, aml.move_id.ref)
                 if self.env.context.get('print_mode'):
                     move_line_name = {'name': move_line_name, 'style': 'text-align:right; white-space:normal;'}
                 amount = formatLang(self.env, amount, currency_obj=currency)
@@ -99,7 +121,7 @@ class AccountFollowupReport(models.AbstractModel):
                     invoice_origin,
                     move_line_name,
                     (expected_pay_date and expected_pay_date + ' ') + (aml.internal_note or ''),
-                    {'name': '', 'blocked': aml.blocked},
+                    {'name': '', 'blocked': aml.blocked, 'template': 'account_followup.cell_template_followup_report'},
                     amount,
                 ]
                 if self.env.context.get('print_mode'):
@@ -112,7 +134,7 @@ class AccountFollowupReport(models.AbstractModel):
                     'move_id': aml.move_id.id,
                     'type': is_payment and 'payment' or 'unreconciled_aml',
                     'unfoldable': False,
-                    'columns': [type(v) == dict and v or {'name': v} for v in columns],
+                    'columns': [isinstance(v, dict) and v or {'name': v} for v in columns],
                 })
             total_due = formatLang(self.env, total, currency_obj=currency)
             line_num += 1
@@ -152,11 +174,80 @@ class AccountFollowupReport(models.AbstractModel):
             lines.pop()
         return lines
 
-    def _get_html_render_values(self, options, report_manager):
-        # OVERRIDE
-        res = super(AccountFollowupReport, self)._get_html_render_values(options, report_manager)
-        res['report']['email_subject'] = report_manager.email_subject
-        return res
+    def _get_followup_report_html_render_values(self, options):
+        # Needed for account_reports templates
+        options['show_debug_column'] = False
+        partner = self.env['res.partner'].browse(options['partner_id'])
+        return {
+            'partner': partner,
+            'lang': partner.lang or get_lang(self.env).code,
+            'invoice_address_id': self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice']),
+            'today': fields.date.today().strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'report_summary': self._get_default_summary(options),
+            'report': self,
+            'report_title': _("Payment Reminder"),
+            'report_company_name': self.env.company.name,
+            'followup_report_email_subject': self._get_default_email_subject(options),
+            'followup_line': self.get_followup_line(options),
+            'options': options,
+            'context': self.env.context,
+            'model': self,
+            'table_end': markupsafe.Markup('''
+                </tbody></table>
+                <div style="page-break-after: always"></div>
+                <table class="o_account_reports_table table-hover">
+            '''),
+            'table_start': markupsafe.Markup('<tbody>'),
+        }
+
+    @api.model
+    def _followup_report_format_aml_name(self, line_name, move_ref, move_name=None):
+        """ Format the display of an account.move.line record. As its very costly to fetch the account.move.line
+        records, only line_name, move_ref, move_name are passed as parameters to deal with sql-queries more easily.
+
+        :param line_name:   The name of the account.move.line record.
+        :param move_ref:    The reference of the account.move record.
+        :param move_name:   The name of the account.move record.
+        :return:            The formatted name of the account.move.line record.
+        """
+        names = []
+        if move_name is not None and move_name != '/':
+            names.append(move_name)
+        if move_ref and move_ref != '/':
+            names.append(move_ref)
+        if line_name and line_name != move_name and line_name != '/':
+            names.append(line_name)
+        name = '-'.join(names)
+        return name
+
+    def _get_line_info(self, followup_line):
+        return {
+            'id': followup_line.id,
+            'name': followup_line.name,
+            'print_letter': followup_line.print_letter,
+            'send_email': followup_line.send_email,
+            'send_sms': followup_line.send_sms,
+            'manual_action': followup_line.manual_action,
+            'manual_action_note': followup_line.manual_action_note,
+        }
+
+    @api.model
+    def get_followup_line(self, options):
+        if not options.get('followup_level'):
+            partner = self.env['res.partner'].browse(options.get('partner_id'))
+            options['followup_level'] = (partner.followup_level.id, partner.followup_level.delay)
+        if options.get('followup_level'):
+            followup_line = self.env['account_followup.followup.line'].browse(options['followup_level'][0])
+            return followup_line
+        return False
+
+    def _get_caret_options(self):
+        # Method needed by the account_reports.main_template template, but unused for the followup report
+        return {}
+
+    ####################################################
+    # DEFAULT SUMMARY AND EMAIL SUBJECT
+    ####################################################
 
     @api.model
     def _get_sms_summary(self, options):
@@ -203,95 +294,31 @@ class AccountFollowupReport(models.AbstractModel):
                 return ''
         raise UserError(_('You need a least one follow-up level in order to process your follow-up'))
 
-    def _get_report_manager(self, options):
-        """
-        Override
-        Compute and return the report manager for the partner_id in options
-        """
-        domain = [('report_name', '=', 'account.followup.report'), ('partner_id', '=', options.get('partner_id')), ('company_id', '=', self.env.company.id)]
-        existing_manager = self.env['account.report.manager'].search(domain, limit=1)
-        if existing_manager and not options.get('keep_summary'):
-            existing_manager.write({
-                'summary': self._get_default_summary(options),
-                'email_subject': self._get_default_email_subject(options),
-            })
-        if not existing_manager:
-            existing_manager = self.env['account.report.manager'].create({
-                'report_name': 'account.followup.report',
-                'company_id': self.env.company.id,
-                'partner_id': options.get('partner_id'),
-                'summary': self._get_default_summary(options),
-                'email_subject': self._get_default_email_subject(options),
-            })
-        return existing_manager
+    ####################################################
+    # REPORT DATA
+    ####################################################
 
-    def get_html(self, options, line_id=None, additional_context=None):
+    def _get_followup_report_columns_name(self):
         """
-        Override
-        Compute and return the content in HTML of the followup for the partner_id in options
+        Return the name of the columns of the follow-ups report
         """
-        if additional_context is None:
-            additional_context = {}
-            additional_context['followup_line'] = self.get_followup_line(options)
-        partner = self.env['res.partner'].browse(options['partner_id'])
-        additional_context['partner'] = partner
-        additional_context['lang'] = partner.lang or get_lang(self.env).code
-        additional_context['invoice_address_id'] = self.env['res.partner'].browse(partner.address_get(['invoice'])['invoice'])
-        additional_context['today'] = fields.date.today().strftime(DEFAULT_SERVER_DATE_FORMAT)
-        return super(AccountFollowupReport, self).get_html(options, line_id=line_id, additional_context=additional_context)
+        headers = [
+            {},
+            {'name': _('Date'), 'class': 'date', 'style': 'text-align:center; white-space:nowrap;'},
+            {'name': _('Due Date'), 'class': 'date', 'style': 'text-align:center; white-space:nowrap;'},
+            {'name': _('Source Document'), 'style': 'text-align:center; white-space:nowrap;'},
+            {'name': _('Communication'), 'style': 'text-align:right; white-space:nowrap;'},
+            {'name': _('Expected Date'), 'class': 'date', 'style': 'white-space:nowrap;'},
+            {'name': _('Excluded'), 'class': 'date', 'style': 'white-space:nowrap;'},
+            {'name': _('Total Due'), 'class': 'number o_price_total', 'style': 'text-align:right; white-space:nowrap;'},
+        ]
+        if self.env.context.get('print_mode'):
+            headers = headers[:5] + headers[7:]  # Remove the 'Expected Date' and 'Excluded' columns
+        return headers
 
-    def _get_report_name(self):
-        """
-        Override
-        Return the name of the report
-        """
-        return _('Payment Reminder')
-
-    def _get_reports_buttons(self, options):
-        """
-        Override
-        Return an empty list because this report doesn't contain any buttons
-        """
-        return []
-
-    def _get_templates(self):
-        """
-        Override
-        Return the templates of the report
-        """
-        templates = super(AccountFollowupReport, self)._get_templates()
-        templates['main_template'] = 'account_followup.template_followup_report'
-        templates['line_template'] = 'account_followup.line_template_followup_report'
-        return templates
-
-    @api.model
-    def get_followup_informations(self, partner_id, options):
-        """
-        Return all informations needed by the view:
-        - the report manager id
-        - the content in HTML of the report
-        - the state of the next_action
-        """
-        options['partner_id'] = partner_id
-        partner = self.env['res.partner'].browse(partner_id)
-        followup_line = partner.followup_level
-        if followup_line and followup_line._amount_due_in_description() and options.get('total_due', -1) != partner.total_due:
-            options['keep_summary'] = False
-        report_manager_id = self._get_report_manager(options).id
-        html = self.get_html(options)
-        next_action = False
-        if not options.get('keep_summary'):
-            next_action = partner.get_next_action(followup_line)
-        infos = {
-            'report_manager_id': report_manager_id,
-            'html': html,
-            'next_action': next_action,
-            'total_due': partner.total_due,
-        }
-        if partner.followup_level:
-            infos['followup_level'] = self._get_line_info(followup_line)
-            options['followup_level'] = (partner.followup_level.id, partner.followup_level.delay)
-        return infos
+    ####################################################
+    # EXPORT
+    ####################################################
 
     @api.model
     def send_sms(self, options):
@@ -310,13 +337,6 @@ class AccountFollowupReport(models.AbstractModel):
             },
         }
 
-    def _replace_class(self):
-        # OVERRIDE: When added to the chatter by mail, don't loose the table-responsive set on the followup report table.
-        res = super()._replace_class()
-        if self._context.get('mail'):
-            res.pop('table-responsive', None)
-        return res
-
     @api.model
     def send_email(self, options):
         """
@@ -334,7 +354,7 @@ class AccountFollowupReport(models.AbstractModel):
         if email and email.strip():
             self = self.with_context(lang=partner.lang or self.env.user.lang)
             # When printing we need te replace the \n of the summary by <br /> tags
-            body_html = self.with_context(print_mode=True, mail=True).get_html(options)
+            body_html = self.with_context(print_mode=True, mail=True).get_followup_report_html(options)
             body_html = body_html.replace('o_account_reports_edit_summary_pencil', 'o_account_reports_edit_summary_pencil d-none')
             start_index = body_html.find('<span>', body_html.find('<div class="o_account_reports_summary">'))
             end_index = start_index > -1 and body_html.find('</span>', start_index) or -1
@@ -344,7 +364,7 @@ class AccountFollowupReport(models.AbstractModel):
             partner.with_context(mail_post_autofollow=True, lang=partner.lang or self.env.user.lang).message_post(
                 partner_ids=[invoice_partner.id],
                 body=body_html,
-                subject=self._get_report_manager(options).email_subject,
+                subject=self._get_default_email_subject(options),
                 subtype_id=self.env.ref('mail.mt_note').id,
                 model_description=_('payment reminder'),
                 email_layout_xmlid='mail.mail_notification_light',
@@ -366,26 +386,9 @@ class AccountFollowupReport(models.AbstractModel):
                 partner.message_post(body=_('Follow-up letter printed'))
         return action
 
-    def _get_line_info(self, followup_line):
-        return {
-            'id': followup_line.id,
-            'name': followup_line.name,
-            'print_letter': followup_line.print_letter,
-            'send_email': followup_line.send_email,
-            'send_sms': followup_line.send_sms,
-            'manual_action': followup_line.manual_action,
-            'manual_action_note': followup_line.manual_action_note
-        }
-
-    @api.model
-    def get_followup_line(self, options):
-        if not options.get('followup_level'):
-            partner = self.env['res.partner'].browse(options.get('partner_id'))
-            options['followup_level'] = (partner.followup_level.id, partner.followup_level.delay)
-        if options.get('followup_level'):
-            followup_line = self.env['account_followup.followup.line'].browse(options['followup_level'][0])
-            return followup_line
-        return False
+    ####################################################
+    # PARTNER ACTION
+    ####################################################
 
     @api.model
     def do_manual_action(self, options):

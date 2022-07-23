@@ -13,37 +13,36 @@ from freezegun import freeze_time
 @tagged('post_install', '-at_install')
 class TestAccountReportsFilters(AccountTestInvoicingCommon):
 
-    def _assert_filter_date(self, filter_date, expected_date_values, previous_options=None):
-        ''' Initialize the 'date' key in the report options and then, assert the result matches the expectations.
+    def _assert_filter_date(self, report, previous_options, expected_date_values):
+        """ Initializes and checks the 'date' option computed for the provided report and previous_options
+        """
+        options = report._get_options(previous_options)
+        self.assertDictEqual(options['date'], expected_date_values)
 
-        :param filter_date:             The filter_date report values.
-        :param expected_date_values:    The expected results for the options['date'] as a dict.
-        '''
-        report = self.env['account.report']
-        with patch.object(type(report), 'filter_date', filter_date):
-            options = {}
-            report._init_filter_date(options, previous_options)
+    def _assert_filter_comparison(self, report, previous_options, expected_period_values):
+        """ Initializes and checks the 'comparison' option computed for the provided report and previous_options
+        """
+        options = report._get_options(previous_options)
 
-            self.assertDictEqual(options['date'], expected_date_values)
+        self.assertEqual(len(options['comparison']['periods']), len(expected_period_values))
 
-    def _assert_filter_comparison(self, filter_date, filter_comparison, expected_period_values, previous_options=None):
-        ''' Initialize the 'date'/'comparison' keys in the report options and then, assert the result matches the
-        expectations.
+        for i, expected_values in enumerate(expected_period_values):
+            self.assertDictEqual(options['comparison']['periods'][i], expected_values)
 
-        :param filter_date:             The filter_date report values.
-        :param filter_comparison:       The filter_comparison report values.
-        :param expected_period_values: The expected results for options['comparison']['periods'] as a list of dicts.
-        '''
-        report = self.env['account.report']
-        with patch.object(type(report), 'filter_date', filter_date), patch.object(type(report), 'filter_comparison', filter_comparison):
-            options = {}
-            report._init_filter_date(options)
-            report._init_filter_comparison(options, previous_options)
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-            self.assertEqual(len(options['comparison']['periods']), len(expected_period_values))
+        cls.single_date_report = cls.env['account.report'].create({
+            'name': "Single Date Report",
+            'filter_period_comparison': True,
+            'filter_date_range': False,
+        })
 
-            for i, expected_values in enumerate(expected_period_values):
-                self.assertDictEqual(options['comparison']['periods'][i], expected_values)
+        cls.date_range_report = cls.env['account.report'].create({
+            'name': "Date Range Report",
+            'filter_period_comparison': True,
+        })
 
     ####################################################
     # DATES RANGE
@@ -53,7 +52,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_month_range(self):
         ''' Test the filter_date with 'this_month'/'last_month' in 'range' mode.'''
         self._assert_filter_date(
-            {'filter': 'this_month', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'this_month', 'mode': 'range'}},
             {
                 'string': 'Dec 2017',
                 'period_type': 'month',
@@ -61,12 +61,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_month',
                 'date_from': '2017-12-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_date(
-            {'filter': 'last_month', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'last_month', 'mode': 'range'}},
             {
                 'string': 'Nov 2017',
                 'period_type': 'month',
@@ -74,13 +74,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_month',
                 'date_from': '2017-11-01',
                 'date_to': '2017-11-30',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_month', 'mode': 'range'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_month', 'mode': 'range'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'Nov 2017',
@@ -88,7 +87,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-11-01',
                     'date_to': '2017-11-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'Oct 2017',
@@ -96,14 +94,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-10-01',
                     'date_to': '2017-10-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_month', 'mode': 'range'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_month', 'mode': 'range'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'Dec 2016',
@@ -111,7 +108,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'Dec 2015',
@@ -119,18 +115,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-12-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_month', 'mode': 'range'},
-            {
-                'filter': 'custom',
-                'date_from': '2016-12-01',
-                'date_to': '2016-12-31',
-            },
+            self.date_range_report,
+            {'date': {'filter': 'this_month', 'mode': 'range'}, 'comparison':{'filter': 'custom', 'date_from': '2016-12-01', 'date_to': '2016-12-31'}},
             [
                 {
                     'string': 'Dec 2016',
@@ -138,7 +129,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
             ],
         )
@@ -147,7 +137,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_quarter_range(self):
         ''' Test the filter_date with 'this_quarter'/'last_quarter' in 'range' mode.'''
         self._assert_filter_date(
-            {'filter': 'this_quarter', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'this_quarter', 'mode': 'range'}},
             {
                 'string': 'Q4\N{NO-BREAK SPACE}2017',
                 'period_type': 'quarter',
@@ -155,12 +146,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_quarter',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_date(
-            {'filter': 'last_quarter', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'last_quarter', 'mode': 'range'}},
             {
                 'string': 'Q3\N{NO-BREAK SPACE}2017',
                 'period_type': 'quarter',
@@ -168,13 +159,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_quarter',
                 'date_from': '2017-07-01',
                 'date_to': '2017-09-30',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_quarter', 'mode': 'range'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_quarter', 'mode': 'range'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'Q3\N{NO-BREAK SPACE}2017',
@@ -182,7 +172,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'Q2\N{NO-BREAK SPACE}2017',
@@ -190,14 +179,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-04-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_quarter', 'mode': 'range'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_quarter', 'mode': 'range'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'Q4\N{NO-BREAK SPACE}2016',
@@ -205,7 +193,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'Q4\N{NO-BREAK SPACE}2015',
@@ -213,17 +200,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-10-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_quarter', 'mode': 'range'},
-            {
-                'filter': 'custom',
-                'date_from': '2016-10-01',
-                'date_to': '2016-12-31'},
+            self.date_range_report,
+            {'date': {'filter': 'this_quarter', 'mode': 'range'}, 'comparison': {'filter': 'custom', 'date_from': '2016-10-01', 'date_to': '2016-12-31'}},
             [
                 {
                     'string': 'Q4\N{NO-BREAK SPACE}2016',
@@ -231,7 +214,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
             ],
         )
@@ -240,7 +222,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_fiscalyear_range_full_year(self):
         ''' Test the filter_date with 'this_year'/'last_year' in 'range' mode when the fiscal year ends the 12-31.'''
         self._assert_filter_date(
-            {'filter': 'this_year', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}},
             {
                 'string': '2017',
                 'period_type': 'fiscalyear',
@@ -248,12 +231,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-01-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_date(
-            {'filter': 'last_year', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'last_year', 'mode': 'range'}},
             {
                 'string': '2016',
                 'period_type': 'fiscalyear',
@@ -261,13 +244,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_year',
                 'date_from': '2016-01-01',
                 'date_to': '2016-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': '2016',
@@ -275,7 +257,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': '2015',
@@ -283,14 +264,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': '2016',
@@ -298,7 +278,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': '2015',
@@ -306,17 +285,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {
-                'filter': 'custom',
-                'date_from': '2016-01-01',
-                'date_to': '2016-12-31'},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'custom', 'date_from': '2016-01-01', 'date_to': '2016-12-31'}},
             [
                 {
                     'string': '2016',
@@ -324,7 +299,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
             ],
         )
@@ -336,7 +310,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
         self.env.company.fiscalyear_last_month = '6'
 
         self._assert_filter_date(
-            {'filter': 'this_year', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}},
             {
                 'string': '2017 - 2018',
                 'period_type': 'fiscalyear',
@@ -344,12 +319,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-07-01',
                 'date_to': '2018-06-30',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_date(
-            {'filter': 'last_year', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'last_year', 'mode': 'range'}},
             {
                 'string': '2016 - 2017',
                 'period_type': 'fiscalyear',
@@ -357,13 +332,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_year',
                 'date_from': '2016-07-01',
                 'date_to': '2017-06-30',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': '2016 - 2017',
@@ -371,7 +345,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
                 {
                     'string': '2015 - 2016',
@@ -379,14 +352,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-07-01',
                     'date_to': '2016-06-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': '2016 - 2017',
@@ -394,7 +366,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
                 {
                     'string': '2015 - 2016',
@@ -402,18 +373,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-07-01',
                     'date_to': '2016-06-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {
-                'filter': 'custom',
-                'date_from': '2016-07-01',
-                'date_to': '2017-06-30',
-            },
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'custom', 'date_from': '2016-07-01', 'date_to': '2017-06-30'}},
             [
                 {
                     'string': '2016 - 2017',
@@ -421,7 +387,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
             ],
         )
@@ -441,7 +406,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
             })
 
         self._assert_filter_date(
-            {'filter': 'this_year', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}},
             {
                 'string': 'custom 0',
                 'period_type': 'fiscalyear',
@@ -449,12 +415,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_date(
-            {'filter': 'last_year', 'mode': 'range'},
+            self.date_range_report,
+            {'date': {'filter': 'last_year', 'mode': 'range'}},
             {
                 'string': 'custom 1',
                 'period_type': 'fiscalyear',
@@ -462,13 +428,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'last_year',
                 'date_from': '2017-07-01',
                 'date_to': '2017-09-30',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'custom 1',
@@ -476,7 +441,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'custom 2',
@@ -484,14 +448,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-04-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'custom 4',
@@ -499,7 +462,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'custom 8',
@@ -507,17 +469,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-10-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'range'},
-            {
-                'filter': 'custom',
-                'date_from': '2017-07-01',
-                'date_to': '2017-09-30'},
+        self.date_range_report,
+            {'date': {'filter': 'this_year', 'mode': 'range'}, 'comparison': {'filter': 'custom', 'date_from': '2017-07-01', 'date_to': '2017-09-30'}},
             [
                 {
                     'string': 'custom 1',
@@ -525,7 +483,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
-                    'strict_range': False,
                 },
             ],
         )
@@ -534,12 +491,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_custom_range(self):
         ''' Test the filter_date with a custom dates range.'''
         self._assert_filter_date(
-            {
-                'filter': 'custom',
-                'mode': 'range',
-                'date_from': '2017-01-01',
-                'date_to': '2017-01-15',
-            },
+            self.date_range_report,
+            {'date': {'filter': 'custom', 'mode': 'range', 'date_from': '2017-01-01', 'date_to': '2017-01-15'}},
             {
                 'string': 'From %s\nto  %s' % (format_date(self.env, '2017-01-01'), format_date(self.env, '2017-01-15')),
                 'period_type': 'custom',
@@ -547,18 +500,15 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-01-01',
                 'date_to': '2017-01-15',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
+            self.date_range_report,
             {
-                'filter': 'custom',
-                'mode': 'range',
-                'date_from': '2017-01-01',
-                'date_to': '2017-01-15',
+                'date': {'filter': 'custom', 'mode': 'range', 'date_from': '2017-01-01', 'date_to': '2017-01-15'},
+                'comparison': {'filter': 'previous_period', 'number_period': 2},
             },
-            {'filter': 'previous_period', 'number_period': 2},
             [
                 {
                     'string': 'Dec 2016',
@@ -566,7 +516,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'Nov 2016',
@@ -574,19 +523,16 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-11-01',
                     'date_to': '2016-11-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
+            self.date_range_report,
             {
-                'filter': 'custom',
-                'mode': 'range',
-                'date_from': '2017-01-01',
-                'date_to': '2017-01-15',
+                'date': {'filter': 'custom', 'mode': 'range', 'date_from': '2017-01-01', 'date_to': '2017-01-15'},
+                'comparison': {'filter': 'same_last_year', 'number_period': 2},
             },
-            {'filter': 'same_last_year', 'number_period': 2},
             [
                 {
                     'string': 'From %s\nto  %s' % (format_date(self.env, '2016-01-01'), format_date(self.env, '2016-01-15')),
@@ -594,7 +540,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2016-01-01',
                     'date_to': '2016-01-15',
-                    'strict_range': False,
                 },
                 {
                     'string': 'From %s\nto  %s' % (format_date(self.env, '2015-01-01'), format_date(self.env, '2015-01-15')),
@@ -602,7 +547,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'range',
                     'date_from': '2015-01-01',
                     'date_to': '2015-01-15',
-                    'strict_range': False,
                 },
             ],
         )
@@ -613,12 +557,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
         It means date_from = '2018-01-01', date_to = '2018-12-31' must be considered as a full year.
         '''
         self._assert_filter_date(
-            {
-                'filter': 'custom',
-                'mode': 'range',
-                'date_from': '2017-12-01',
-                'date_to': '2017-12-31',
-            },
+            self.date_range_report,
+            {'date': {'filter': 'custom', 'mode': 'range', 'date_from': '2017-12-01', 'date_to': '2017-12-31'}},
             {
                 'string': 'Dec 2017',
                 'period_type': 'month',
@@ -626,17 +566,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-12-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_date(
-            {
-                'filter': 'custom',
-                'mode': 'range',
-                'date_from': '2017-10-01',
-                'date_to': '2017-12-31',
-            },
+            self.date_range_report,
+            {'date': {'filter': 'custom', 'mode': 'range', 'date_from': '2017-10-01', 'date_to': '2017-12-31'}},
             {
                 'string': 'Q4\N{NO-BREAK SPACE}2017',
                 'period_type': 'quarter',
@@ -644,17 +579,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_date(
-            {
-                'filter': 'custom',
-                'mode': 'range',
-                'date_from': '2017-01-01',
-                'date_to': '2017-12-31',
-            },
+            self.date_range_report,
+            {'date': {'filter': 'custom', 'mode': 'range', 'date_from': '2017-01-01', 'date_to': '2017-12-31'}},
             {
                 'string': '2017',
                 'period_type': 'fiscalyear',
@@ -662,19 +592,14 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-01-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self.env.company.fiscalyear_last_day = 30
         self.env.company.fiscalyear_last_month = '6'
         self._assert_filter_date(
-            {
-                'filter': 'custom',
-                'mode': 'range',
-                'date_from': '2016-07-01',
-                'date_to': '2017-06-30',
-            },
+            self.date_range_report,
+            {'date': {'filter': 'custom', 'mode': 'range', 'date_from': '2016-07-01', 'date_to': '2017-06-30'}},
             {
                 'string': '2016 - 2017',
                 'period_type': 'fiscalyear',
@@ -682,7 +607,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2016-07-01',
                 'date_to': '2017-06-30',
-                'strict_range': False,
             },
         )
 
@@ -693,12 +617,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
             'company_id': self.env.company.id,
         })
         self._assert_filter_date(
-            {
-                'filter': 'custom',
-                'mode': 'range',
-                'date_from': '2017-10-01',
-                'date_to': '2017-12-31',
-            },
+            self.date_range_report,
+            {'date': {'filter': 'custom', 'mode': 'range', 'date_from': '2017-10-01', 'date_to': '2017-12-31'}},
             {
                 'string': 'custom 0',
                 'period_type': 'fiscalyear',
@@ -706,7 +626,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
@@ -718,7 +637,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_today_single(self):
         ''' Test the filter_date with 'today' in 'single' mode.'''
         self._assert_filter_date(
-            {'filter': 'today', 'mode': 'single'},
+            self.single_date_report,
+            {'date': {'filter': 'today', 'mode': 'single'}},
             {
                 'string': 'As of %s' % format_date(self.env, '2017-12-30'),
                 'period_type': 'today',
@@ -726,13 +646,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'today',
                 'date_from': '2017-01-01',
                 'date_to': '2017-12-30',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'today', 'mode': 'single'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'today', 'mode': 'single'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-12-31'),
@@ -740,7 +659,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -748,14 +666,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'today', 'mode': 'single'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'today', 'mode': 'single'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-12-30'),
@@ -763,7 +680,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-30'),
@@ -771,17 +687,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'today', 'mode': 'single'},
-            {
-                'filter': 'custom',
-                'date_to': '2016-12-31',
-            },
+            self.single_date_report,
+            {'date': {'filter': 'today', 'mode': 'single'}, 'comparison': {'filter': 'custom', 'date_to': '2016-12-31'}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-12-31'),
@@ -789,7 +701,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': False,
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
             ],
         )
@@ -798,7 +709,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_month_single(self):
         ''' Test the filter_date with 'this_month'/'last_month' in 'single' mode.'''
         self._assert_filter_date(
-            {'filter': 'this_month', 'mode': 'single'},
+            self.single_date_report,
+            {'date': {'filter': 'this_month', 'mode': 'single'}},
             {
                 'string': 'As of %s' % format_date(self.env, '2017-12-31'),
                 'period_type': 'month',
@@ -806,13 +718,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_month',
                 'date_from': '2017-12-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_month', 'mode': 'single'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_month', 'mode': 'single'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-11-30'),
@@ -820,7 +731,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-11-01',
                     'date_to': '2017-11-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-10-31'),
@@ -828,14 +738,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-10-01',
                     'date_to': '2017-10-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_month', 'mode': 'single'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_month', 'mode': 'single'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-12-31'),
@@ -843,7 +752,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-12-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -851,7 +759,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-12-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
@@ -860,7 +767,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_quarter_single(self):
         ''' Test the filter_date with 'this_quarter'/'last_quarter' in 'single' mode.'''
         self._assert_filter_date(
-            {'filter': 'this_quarter', 'mode': 'single'},
+            self.single_date_report,
+            {'date': {'filter': 'this_quarter', 'mode': 'single'}},
             {
                 'string': 'As of %s' % format_date(self.env, '2017-12-31'),
                 'period_type': 'quarter',
@@ -868,13 +776,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_quarter',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_quarter', 'mode': 'single'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_quarter', 'mode': 'single'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-09-30'),
@@ -882,7 +789,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-06-30'),
@@ -890,14 +796,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-04-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_quarter', 'mode': 'single'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_quarter', 'mode': 'single'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-12-31'),
@@ -905,7 +810,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -913,7 +817,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-10-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
@@ -922,7 +825,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_fiscalyear_single_full_year(self):
         ''' Test the filter_date with 'this_year'/'last_year' in 'single' mode when the fiscal year ends the 12-31.'''
         self._assert_filter_date(
-            {'filter': 'this_year', 'mode': 'single'},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}},
             {
                 'string': 'As of %s' % format_date(self.env, '2017-12-31'),
                 'period_type': 'fiscalyear',
@@ -930,13 +834,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-01-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'single'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-12-31'),
@@ -944,7 +847,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -952,14 +854,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'single'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-12-31'),
@@ -967,7 +868,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2015-12-31'),
@@ -975,7 +875,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-01-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
@@ -987,7 +886,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
         self.env.company.fiscalyear_last_month = '6'
 
         self._assert_filter_date(
-            {'filter': 'this_year', 'mode': 'single'},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}},
             {
                 'string': 'As of %s' % format_date(self.env, '2018-06-30'),
                 'period_type': 'fiscalyear',
@@ -995,13 +895,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-07-01',
                 'date_to': '2018-06-30',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'single'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-06-30'),
@@ -1009,7 +908,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-06-30'),
@@ -1017,14 +915,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-07-01',
                     'date_to': '2016-06-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'single'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-06-30'),
@@ -1032,7 +929,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-07-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-06-30'),
@@ -1040,7 +936,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-07-01',
                     'date_to': '2016-06-30',
-                    'strict_range': False,
                 },
             ],
         )
@@ -1060,7 +955,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
             })
 
         self._assert_filter_date(
-            {'filter': 'this_year', 'mode': 'single'},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}},
             {
                 'string': 'custom 0',
                 'period_type': 'fiscalyear',
@@ -1068,13 +964,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'this_year',
                 'date_from': '2017-10-01',
                 'date_to': '2017-12-31',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'single'},
-            {'filter': 'previous_period', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'custom 1',
@@ -1082,7 +977,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-07-01',
                     'date_to': '2017-09-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'custom 2',
@@ -1090,14 +984,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-04-01',
                     'date_to': '2017-06-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {'filter': 'this_year', 'mode': 'single'},
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'this_year', 'mode': 'single'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'custom 4',
@@ -1105,7 +998,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-10-01',
                     'date_to': '2016-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'custom 8',
@@ -1113,7 +1005,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2015-10-01',
                     'date_to': '2015-12-31',
-                    'strict_range': False,
                 },
             ],
         )
@@ -1122,11 +1013,8 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_custom_single(self):
         ''' Test the filter_date with a custom date in 'single' mode.'''
         self._assert_filter_date(
-            {
-                'filter': 'custom',
-                'mode': 'single',
-                'date_to': '2018-01-15',
-            },
+            self.single_date_report,
+            {'date': {'filter': 'custom', 'mode': 'single', 'date_to': '2018-01-15'}},
             {
                 'string': 'As of %s' % format_date(self.env, '2018-01-15'),
                 'period_type': 'custom',
@@ -1134,17 +1022,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2018-01-01',
                 'date_to': '2018-01-15',
-                'strict_range': False,
             },
         )
 
         self._assert_filter_comparison(
-            {
-                'filter': 'custom',
-                'mode': 'single',
-                'date_to': '2018-01-15',
-            },
-            {'filter': 'previous_period', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'custom', 'mode': 'single', 'date_to': '2018-01-15'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-12-31'),
@@ -1152,7 +1035,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-12-01',
                     'date_to': '2017-12-31',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-11-30'),
@@ -1160,18 +1042,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-11-01',
                     'date_to': '2017-11-30',
-                    'strict_range': False,
                 },
             ],
         )
 
         self._assert_filter_comparison(
-            {
-                'filter': 'custom',
-                'mode': 'single',
-                'date_to': '2018-01-15',
-            },
-            {'filter': 'same_last_year', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'custom', 'mode': 'single', 'date_to': '2018-01-15'}, 'comparison': {'filter': 'same_last_year', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2017-01-15'),
@@ -1179,7 +1056,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2017-01-01',
                     'date_to': '2017-01-15',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2016-01-15'),
@@ -1187,7 +1063,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2016-01-01',
                     'date_to': '2016-01-15',
-                    'strict_range': False,
                 },
             ],
         )
@@ -1196,10 +1071,15 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def test_filter_date_custom_single_period_type_month(self):
         ''' Test the filter_date with a custom date in 'single' mode.'''
         self._assert_filter_date(
+            self.single_date_report,
             {
-                'filter': 'custom',
-                'mode': 'single',
-                'date_to': '2019-07-18',
+                'date': {
+                    'period_type': 'today',
+                    'mode': 'single',
+                    'date_from': '2021-09-01',
+                    'date_to': '2019-07-18',
+                    'filter': 'custom',
+                }
             },
             {
                 'string': 'As of %s' % format_date(self.env, '2019-07-18'),
@@ -1208,27 +1088,12 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                 'filter': 'custom',
                 'date_from': '2019-07-01',
                 'date_to': '2019-07-18',
-                'strict_range': False,
-            },
-            previous_options={
-                'date': {
-                    'period_type': 'today',
-                    'mode': 'single',
-                    'strict_range': False,
-                    'date_from': '2021-09-01',
-                    'date_to': '2019-07-18',
-                    'filter': 'custom',
-                }
             },
         )
 
         self._assert_filter_comparison(
-            {
-                'filter': 'custom',
-                'mode': 'single',
-                'date_to': '2019-07-18',
-            },
-            {'filter': 'previous_period', 'number_period': 2},
+            self.single_date_report,
+            {'date': {'filter': 'custom', 'mode': 'single', 'date_to': '2019-07-18'}, 'comparison': {'filter': 'previous_period', 'number_period': 2}},
             [
                 {
                     'string': 'As of %s' % format_date(self.env, '2019-06-30'),
@@ -1236,7 +1101,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2019-06-01',
                     'date_to': '2019-06-30',
-                    'strict_range': False,
                 },
                 {
                     'string': 'As of %s' % format_date(self.env, '2019-05-31'),
@@ -1244,7 +1108,6 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
                     'mode': 'single',
                     'date_from': '2019-05-01',
                     'date_to': '2019-05-31',
-                    'strict_range': False,
                 },
             ],
         )

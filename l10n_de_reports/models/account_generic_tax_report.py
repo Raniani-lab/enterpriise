@@ -4,23 +4,28 @@ from lxml import etree
 from datetime import date, datetime
 
 
-class AccountGenericTaxReport(models.AbstractModel):
-    _inherit = 'account.generic.tax.report'
+class AccountGenericTaxReport(models.Model):
+    _inherit = 'account.report'
 
-    def _get_reports_buttons(self, options):
-        buttons = super(AccountGenericTaxReport, self)._get_reports_buttons(options)
-        if self._get_report_country_code(options) == 'DE':
-            buttons += [{'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
-        return buttons
+    def _custom_options_initializer_l10n_de_tax_report(self, options, previous_options=None):
+        options.setdefault('buttons', []).extend((
+            {
+                'name': _('XML'),
+                'sequence': 30,
+                'action': 'export_file',
+                'action_param': 'l10n_de_export_tax_report_to_xml',
+                'file_export_type': _('XML'),
+            },
+            {
+                'name': _('Closing Entry'),
+                'action': 'action_periodic_vat_entries',
+                'sequence': 80,
+            },
+        ))
 
-    def get_xml(self, options):
-        if self._get_report_country_code(options) != 'DE':
-            return super(AccountGenericTaxReport, self).get_xml(options)
-
-        ctx = self._set_context(options)
-        report_lines = self.with_context(ctx)._get_lines(options)
-
+    def l10n_de_export_tax_report_to_xml(self, options):
         template_context = {}
+        options = self._get_options(options)
         date_to = datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
         template_context['year'] = date_to.year
         if options['date']['period_type'] == 'month':
@@ -44,19 +49,34 @@ class AccountGenericTaxReport(models.AbstractModel):
         # Qweb doesn't allow dynamically generated tags.
         elem = etree.SubElement(taxes, "Kz09")
         elem.text = "0.00" #please keep "0.00" until Odoo has "Kz09"
+
+        report_lines = self._get_lines(options)
+        colname_to_idx = {col['name']: idx for idx, col in enumerate(options.get('columns', []))}
+        report_line_ids = [line['columns'][colname_to_idx['Balance']]['report_line_id'] for line in report_lines]
+        codes_context = {}
+        for record in self.env['account.report.line'].browse(report_line_ids):
+            codes_context[record.id] = record.code
+
         for line in report_lines:
-            if line['line_code']:
+            line_code = codes_context[line['columns'][colname_to_idx['Balance']]['report_line_id']]
+            if line_code and line_code.startswith('DE') and not line_code.endswith('BASE'):
+                line_code = line_code.split('_')[1]
                 #all "Kz" may be supplied as negative, except "Kz39"
-                if line['columns'][0]['no_format'] and (line['line_code'] != "39" or line['columns'][0]['no_format'] > 0):
-                    elem = etree.SubElement(taxes, "Kz" + line['line_code'])
+                line_value = line['columns'][colname_to_idx['Balance']]['no_format']
+                if line_value and (line_code != "39" or line_value > 0):
+                    elem = etree.SubElement(taxes, "Kz" + line_code)
                     #only "kz09" and "kz83" can be supplied with decimals
-                    if line['line_code'] in ("09", "83"):
-                        elem.text = float_repr(line['columns'][0]['no_format'], self.env.company.currency_id.decimal_places)
+                    if line_code in {"09", "83"}:
+                        elem.text = float_repr(line_value, self.env.company.currency_id.decimal_places)
                     else:
-                        elem.text = float_repr(int(line['columns'][0]['no_format']), 0)
+                        elem.text = float_repr(int(line_value), 0)
                 #"Kz09" and "kz83" must be supplied with 0.00 if they don't have balance
-                elif line['line_code'] in ["09", "83"]:
-                    elem = etree.SubElement(taxes, "Kz" + line['line_code'])
+                elif line_code in {"09", "83"}:
+                    elem = etree.SubElement(taxes, "Kz" + line_code)
                     elem.text = "0.00"
 
-        return etree.tostring(tree, pretty_print=True, standalone=False, encoding='ISO-8859-1',)
+        return {
+            'file_name': self.get_default_report_filename('xml'),
+            'file_content': etree.tostring(tree, pretty_print=True, standalone=False, encoding='ISO-8859-1',),
+            'file_type': 'xml',
+        }

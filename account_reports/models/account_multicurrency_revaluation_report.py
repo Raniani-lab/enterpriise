@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, _
-from odoo.tools import float_is_zero, classproperty
+from odoo.tools import float_is_zero
 
 from itertools import chain
 
@@ -18,66 +18,14 @@ class MulticurrencyRevaluationReport(models.Model):
     probable expense in reports (and revert it at the end of the period, to
     recon the real gain/loss.
     """
+    _inherit = 'account.report'
 
-    _inherit = 'account.accounting.report'
-    _name = 'account.multicurrency.revaluation'
-    _description = 'Multicurrency Revaluation Report'
-    _auto = False
-
-    _order = "report_include desc, currency_code desc, account_code asc, date desc, id desc"
-
-    @classproperty
-    def _depends(self):
-        ret = dict(super()._depends)
-        ret.setdefault('account.partial.reconcile', []).extend([
-            'amount',
-            *(f'{side}_{field}' for side in ('debit', 'credit') for field in ('move_id', 'currency_id', 'amount_currency')),
-        ])
-        ret.setdefault('account.move.line', []).extend([
-            'amount_residual',
-            'amount_residual_currency'
-        ])
-        return ret
-
-    filter_multi_company = None
-    filter_date = {'filter': 'this_month', 'mode': 'single'}
-    filter_all_entries = False
-    total_line = False
-
-    report_amount_currency = fields.Monetary(string='Balance in foreign currency')
-    report_amount_currency_current = fields.Monetary(string='Balance at current rate')
-    report_adjustment = fields.Monetary(string='Adjustment')
-    report_balance = fields.Monetary(string='Balance at operation rate')
-    report_currency_id = fields.Many2one('res.currency')
-    report_include = fields.Boolean(group_operator='bool_and')
-    account_code = fields.Char(group_operator="max")
-    account_name = fields.Char(group_operator="max")
-    currency_code = fields.Char(group_operator="max")
-    move_ref = fields.Char(group_operator="max")
-    move_name = fields.Char(group_operator="max")
-
-    # TEMPLATING
-    @api.model
-    def _get_report_name(self):
-        return _('Unrealized Currency Gains/Losses')
-
-    @api.model
-    def _get_templates(self):
-        templates = super()._get_templates()
-        templates['line_template'] = 'account_reports.line_template_multicurrency_report'
-        templates['main_template'] = 'account_reports.template_multicurrency_report'
-        return templates
-
-    def _get_reports_buttons(self, options):
-        r = super()._get_reports_buttons(options)
-        r.append({'name': _('Adjustment Entry'), 'action': 'view_revaluation_wizard'})
-        return r
-
-    def _get_options(self, previous_options=None):
-        options = super()._get_options(previous_options)
+    def _custom_options_initializer_multi_currency_revaluation(self, options, previous_options=None):
         rates = self.env['res.currency'].search([('active', '=', True)])._get_rates(self.env.company, options.get('date').get('date_to'))
-        for key in rates.keys():  # normalize the rates to the company's currency
+        # Normalize the rates to the company's currency
+        for key in rates.keys():
             rates[key] /= rates[self.env.company.currency_id.id]
+
         options['currency_rates'] = {
             str(currency_id.id): {
                 'currency_id': currency_id.id,
@@ -88,126 +36,189 @@ class MulticurrencyRevaluationReport(models.Model):
                          float(previous_options['currency_rates'][str(currency_id.id)]['rate'])),
             } for currency_id in self.env['res.currency'].search([('active', '=', True)])
         }
+
         options['company_currency'] = options['currency_rates'].pop(str(self.env.company.currency_id.id))
+
         options['custom_rate'] = any(
             not float_is_zero(cr['rate'] - rates[cr['currency_id']], 6)
             for cr in options['currency_rates'].values()
         )
+
         options['warning_multicompany'] = len(self.env.companies) > 1
-        return options
+        options['buttons'].append({'name': _('Adjustment Entry'), 'sequence': 30, 'action': 'action_multi_currency_revaluation_open_revaluation_wizard'})
 
-    def _get_column_details(self, options):
-        columns_header = [
-            self._header_column(),
-            self._field_column('report_amount_currency'),
-            self._field_column('report_balance'),
-            self._field_column('report_amount_currency_current'),
-            self._field_column('report_adjustment'),
-        ]
-        return columns_header
+    def _custom_engine_multi_currency_revaluation_to_adjust(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        return self._multi_currency_revaluation_get_custom_lines(options, 'to_adjust', current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _get_hierarchy_details(self, options):
-        return [
-            self._hierarchy_level('report_include'),
-            self._hierarchy_level('report_currency_id'),
-            self._hierarchy_level('account_id', foldable=True),
-            self._hierarchy_level('id'),
-        ]
+    def _custom_engine_multi_currency_revaluation_excluded(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        return self._multi_currency_revaluation_get_custom_lines(options, 'excluded', current_groupby, next_groupby, offset=offset, limit=limit)
 
-    # GET LINES VALUES
-    def _get_sql(self):
-        options = self.env.context['report_options']
-        query = '(VALUES {}) AS custom_currency_table(currency_id, rate)'.format(
-            ', '.join("(%s, %s)" for i in range(len(options['currency_rates'])))
-        )
+    def _multi_currency_revaluation_get_custom_lines(self, options, line_code, current_groupby, next_groupby, offset=0, limit=None):
+        def build_result_dict(query_res):
+            foreign_currency = self.env['res.currency'].browse(query_res['currency_id'][0]) if len(query_res['currency_id']) == 1 else None
+
+            return {
+                'balance_currency': self.format_value(query_res['balance_currency'], currency=foreign_currency, figure_type='monetary'),
+                'balance_operation': query_res['balance_operation'],
+                'balance_current': query_res['balance_current'],
+                'adjustment': query_res['adjustment'],
+                'has_sublines': query_res['aml_count'] > 0,
+            }
+
+        self._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
+
+        # No need to run any SQL if we're computing the main line: it does not display any total
+        if not current_groupby:
+            return {
+                'balance_currency': None,
+                'balance_operation': None,
+                'balance_current': None,
+                'adjustment': None,
+                'has_sublines': False,
+            }
+
+        query = "(VALUES {})".format(', '.join("(%s, %s)" for rate in options['currency_rates']))
         params = list(chain.from_iterable((cur['currency_id'], cur['rate']) for cur in options['currency_rates'].values()))
-        custom_currency_table = self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
+        custom_currency_table_query = self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
 
-        return """
-            SELECT {move_line_fields},
-                   aml.amount_residual_currency                         AS report_amount_currency,
-                   aml.amount_residual                                  AS report_balance,
-                   aml.amount_residual_currency / custom_currency_table.rate                       AS report_amount_currency_current,
-                   aml.amount_residual_currency / custom_currency_table.rate - aml.amount_residual AS report_adjustment,
-                   aml.currency_id                                      AS report_currency_id,
-                   account.code                                         AS account_code,
-                   account.name                                         AS account_name,
-                   currency.name                                        AS currency_code,
-                   move.ref                                             AS move_ref,
-                   move.name                                            AS move_name,
-                   NOT EXISTS (
-                       SELECT * FROM account_account_exclude_res_currency_provision WHERE account_account_id = account_id AND res_currency_id = aml.currency_id
-                   )                                                    AS report_include
-            FROM account_move_line aml
-            JOIN account_move move ON move.id = aml.move_id
-            JOIN account_account account ON aml.account_id = account.id
-            JOIN res_currency currency ON currency.id = aml.currency_id
-            JOIN {custom_currency_table} ON custom_currency_table.currency_id = currency.id
-            WHERE (account.currency_id != aml.company_currency_id OR (account.account_type IN ('asset_receivable', 'liability_payable') AND (aml.currency_id != aml.company_currency_id)))
-              AND (aml.amount_residual != 0 OR aml.amount_residual_currency != 0)
+        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+        tail_query, tail_params = self._get_engine_query_tail(offset, limit)
 
-            UNION ALL
+        full_query = f"""
+            WITH custom_currency_table(currency_id, rate) AS ({custom_currency_table_query})
 
-            -- Add the lines without currency, i.e. payment in company currency for invoice in foreign currency
-            SELECT {move_line_fields},
-                   CASE WHEN aml.id = part.credit_move_id THEN -part.debit_amount_currency ELSE -part.credit_amount_currency
-                   END                                                  AS report_amount_currency,
-                   -part.amount                                         AS report_balance,
-                   CASE WHEN aml.id = part.credit_move_id THEN -part.debit_amount_currency ELSE -part.credit_amount_currency
-                   END / custom_currency_table.rate                               AS report_amount_currency_current,
-                   CASE WHEN aml.id = part.credit_move_id THEN -part.debit_amount_currency ELSE -part.credit_amount_currency
-                   END / custom_currency_table.rate - aml.balance                 AS report_adjustment,
-                   CASE WHEN aml.id = part.credit_move_id THEN part.debit_currency_id ELSE part.credit_currency_id
-                   END                                                  AS report_currency_id,
-                   account.code                                         AS account_code,
-                   account.name                                         AS account_name,
-                   currency.name                                        AS currency_code,
-                   move.ref                                             AS move_ref,
-                   move.name                                            AS move_name,
-                   NOT EXISTS (
-                       SELECT * FROM account_account_exclude_res_currency_provision WHERE account_account_id = account_id AND res_currency_id = aml.currency_id
-                   )                                                    AS report_include
-            FROM account_move_line aml
-            JOIN account_move move ON move.id = aml.move_id
-            JOIN account_account account ON aml.account_id = account.id
-            JOIN account_partial_reconcile part ON aml.id = part.credit_move_id OR aml.id = part.debit_move_id
-            JOIN res_currency currency ON currency.id = (CASE WHEN aml.id = part.credit_move_id THEN part.debit_currency_id ELSE part.credit_currency_id END)
-            JOIN {custom_currency_table} ON custom_currency_table.currency_id = currency.id
-            WHERE (account.currency_id = aml.company_currency_id AND (account.account_type IN ('asset_receivable', 'liability_payable') AND aml.currency_id = aml.company_currency_id))
-        """.format(
-            custom_currency_table=custom_currency_table,
-            move_line_fields=self._get_move_line_fields('aml'),
-        )
+            SELECT
+                subquery.grouping_key,
+                ARRAY_AGG(DISTINCT(subquery.currency_id)) AS currency_id,
+                SUM(subquery.balance_currency) AS balance_currency,
+                SUM(subquery.balance_operation) AS balance_operation,
+                SUM(subquery.balance_current) AS balance_current,
+                SUM(subquery.adjustment) AS adjustment,
+                COUNT(subquery.aml_id) AS aml_count
+            FROM (
 
-    def _format_all_line(self, res, value_dict, options):
-        if value_dict.get('report_currency_id'):
-            res['columns'][0] = {'name': self.format_value(value_dict['report_amount_currency'], self.env['res.currency'].browse(value_dict.get('report_currency_id')[0]))}
-        res['included'] = value_dict.get('report_included')
-        res['class'] = 'no_print' if not value_dict.get('report_include') else ''
+                SELECT
+                    """ + (f"account_move_line.{current_groupby} AS grouping_key," if current_groupby else '') + f"""
+                    account_move_line.amount_residual AS balance_operation,
+                    account_move_line.amount_residual_currency AS balance_currency,
+                    account_move_line.amount_residual_currency / custom_currency_table.rate AS balance_current,
+                    account_move_line.amount_residual_currency / custom_currency_table.rate - account_move_line.amount_residual AS adjustment,
+                    account_move_line.currency_id AS currency_id,
+                    account_move_line.id AS aml_id
+                FROM {tables}
+                JOIN account_account account ON account_move_line.account_id = account.id
+                JOIN res_currency currency ON currency.id = account_move_line.currency_id
+                JOIN custom_currency_table ON custom_currency_table.currency_id = currency.id
+                WHERE {where_clause}
+                    AND (account.currency_id != account_move_line.company_currency_id OR (account.account_type IN ('asset_receivable', 'liability_payable') AND (account_move_line.currency_id != account_move_line.company_currency_id)))
+                    AND (account_move_line.amount_residual != 0 OR account_move_line.amount_residual_currency != 0)
+                    AND {'NOT EXISTS' if line_code == 'to_adjust' else 'EXISTS'} (
+                        SELECT * FROM account_account_exclude_res_currency_provision WHERE account_account_id = account_id AND res_currency_id = account_move_line.currency_id
+                    )
 
-    def _format_report_currency_id_line(self, res, value_dict, options):
-        res['name'] = '{for_cur} (1 {comp_cur} = {rate:.6} {for_cur})'.format(
-            for_cur=value_dict['currency_code'],
-            comp_cur=self.env.company.currency_id.display_name,
-            rate=float(options['currency_rates'][str(value_dict.get('report_currency_id')[0])]['rate']),
-        )
+                UNION ALL
 
-    def _format_account_id_line(self, res, value_dict, options):
-        res['name'] = '%s %s' % (value_dict['account_code'], value_dict['account_name'])
+                -- Add the lines without currency, i.e. payment in company currency for invoice in foreign currency
+                SELECT
+                    """ + (f"account_move_line.{current_groupby} AS grouping_key," if current_groupby else '') + f"""
+                    -part.amount AS balance_operation,
+                    CASE
+                       WHEN account_move_line.id = part.credit_move_id THEN -part.debit_amount_currency
+                       ELSE -part.credit_amount_currency
+                    END AS balance_currency,
+                    CASE
+                       WHEN account_move_line.id = part.credit_move_id THEN -part.debit_amount_currency
+                       ELSE -part.credit_amount_currency
+                    END / custom_currency_table.rate AS balance_current,
+                    CASE
+                       WHEN account_move_line.id = part.credit_move_id THEN -part.debit_amount_currency
+                       ELSE -part.credit_amount_currency
+                    END / custom_currency_table.rate - account_move_line.balance AS adjustment,
+                    CASE
+                       WHEN account_move_line.id = part.credit_move_id THEN part.debit_currency_id
+                       ELSE part.credit_currency_id
+                    END AS currency_id,
+                    account_move_line.id AS aml_id
+                FROM {tables}
+                JOIN account_account account ON account_move_line.account_id = account.id
+                JOIN account_partial_reconcile part ON account_move_line.id = part.credit_move_id OR account_move_line.id = part.debit_move_id
+                JOIN res_currency currency ON currency.id = (CASE WHEN account_move_line.id = part.credit_move_id THEN part.debit_currency_id ELSE part.credit_currency_id END)
+                JOIN custom_currency_table ON custom_currency_table.currency_id = currency.id
+                WHERE {where_clause}
+                    AND (account.currency_id = account_move_line.company_currency_id AND (account.account_type IN ('asset_receivable', 'liability_payable') AND account_move_line.currency_id = account_move_line.company_currency_id))
+                    AND {'NOT EXISTS' if line_code == 'to_adjust' else 'EXISTS'} (
+                        SELECT * FROM account_account_exclude_res_currency_provision WHERE account_account_id = account_id AND res_currency_id = account_move_line.currency_id
+                    )
+            ) subquery
 
-    def _format_id_line(self, res, value_dict, options):
-        res['name'] = self._format_aml_name(value_dict['name'], value_dict['move_ref'], value_dict['move_name'])
-        res['caret_options'] = 'account.move'
+            GROUP BY grouping_key
+            {tail_query}
+        """
 
-    def _format_report_include_line(self, res, value_dict, options):
-        res['name'] = _('Accounts to adjust') if value_dict.get('report_include') else _('Excluded Accounts')
-        res['columns'] = [{}, {}, {}, {}]
+        self._cr.execute(full_query, (where_params * 2) + tail_params)
+        query_res_lines = self._cr.dictfetchall()
+
+        if not current_groupby:
+            return build_result_dict(query_res_lines and query_res_lines[0] or {})
+        else:
+            rslt = []
+            for query_res in query_res_lines:
+                grouping_key = query_res['grouping_key']
+                rslt.append((grouping_key, build_result_dict(query_res)))
+            return rslt
+
+    def _custom_line_postprocessor_multi_currency_revaluation(self, lines, options):
+        self.ensure_one()
+
+        line_to_adjust_id = self.env.ref('account_reports.multicurrency_revaluation_to_adjust').id
+        line_excluded_id = self.env.ref('account_reports.multicurrency_revaluation_excluded').id
+
+        rslt = []
+        for index, line in enumerate(lines):
+            res_model_name, res_id = self._get_model_info_from_id(line['id'])
+
+            if res_model_name == 'account.report.line' and (
+                   (res_id == line_to_adjust_id and self._get_model_info_from_id(lines[index + 1]['id']) == ('account.report.line', line_excluded_id)) or
+                   (res_id == line_excluded_id and index == len(lines) - 1)
+            ):
+                # 'To Adjust' and 'Excluded' lines need to be hidden if they have no child
+                continue
+            elif res_model_name == 'res.currency':
+                # Include the rate in the currency_id group lines
+                line['name'] = '{for_cur} (1 {comp_cur} = {rate:.6} {for_cur})'.format(
+                    for_cur=line['name'],
+                    comp_cur=self.env.company.currency_id.display_name,
+                    rate=float(options['currency_rates'][str(res_id)]['rate']),
+                )
+
+            rslt.append(line)
+
+        return rslt
+
+    def _custom_groupby_line_completer_multi_currency_revaluation(self, options, line_dict):
+        model_info_from_id = self._get_model_info_from_id(line_dict['id'])
+        if model_info_from_id[0] == 'res.currency':
+            line_dict['unfolded'] = True
+            line_dict['unfoldable'] = False
 
     # ACTIONS
-    def toggle_provision(self, options, params):
-        """Include/exclude an account from the provision."""
-        account = self.env['account.account'].browse(int(params.get('account_id')))
-        currency = self.env['res.currency'].browse(int(params.get('currency_id')))
+    def action_multi_currency_revaluation_open_general_ledger(self, options, params):
+        account_line_id = self._get_generic_line_id('account.account', params.get('id'))
+        general_ledger_options = self.env.ref('account_reports.general_ledger_report')._get_options(options)
+        general_ledger_options['unfolded_lines'] = [account_line_id]
+
+        general_ledger_action = self.env['ir.actions.actions']._for_xml_id('account_reports.action_account_report_general_ledger')
+        general_ledger_action['params'] = {
+            'options': general_ledger_options,
+            'ignore_session': 'read',
+        }
+
+        return general_ledger_action
+
+    def action_multi_currency_revaluation_toggle_provision(self, options, params):
+        """ Include/exclude an account from the provision. """
+        account = self.env['account.account'].browse(params.get('account_id'))
+        currency = self.env['res.currency'].browse(params.get('currency_id'))
         if currency in account.exclude_provision_currency_ids:
             account.exclude_provision_currency_ids -= currency
         else:
@@ -217,29 +228,29 @@ class MulticurrencyRevaluationReport(models.Model):
             'tag': 'reload',
         }
 
-    def view_revaluation_wizard(self, context):
+    def action_multi_currency_revaluation_open_revaluation_wizard(self, context):
         """Open the revaluation wizard."""
         form = self.env.ref('account_reports.view_account_multicurrency_revaluation_wizard', False)
         return {
-            'name': _('Make Adjustment Entry'),
+            'name': _("Make Adjustment Entry"),
             'type': 'ir.actions.act_window',
-            'res_model': "account.multicurrency.revaluation.wizard",
-            'view_mode': "form",
+            'res_model': 'account.multicurrency.revaluation.wizard',
+            'view_mode': 'form',
             'view_id': form.id,
             'views': [(form.id, 'form')],
-            'multi': "True",
-            'target': "new",
+            'multi': 'True',
+            'target': 'new',
             'context': context,
         }
 
-    def view_currency(self, options, params=None):
-        """Open the currency rate list."""
-        id = params.get('id')
+    def action_multi_currency_revaluation_open_currency_rates(self, options, params=None):
+        """ Open the currency rate list. """
+        currency_id = params.get('id')
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Currency Rates (%s)', self.env['res.currency'].browse(id).display_name),
+            'name': _('Currency Rates (%s)', self.env['res.currency'].browse(currency_id).display_name),
             'views': [(False, 'list')],
             'res_model': 'res.currency.rate',
-            'context': {**self.env.context, **{'default_currency_id': id}},
-            'domain': [('currency_id', '=', id)],
+            'context': {**self.env.context, **{'default_currency_id': currency_id, 'active_id': currency_id}},
+            'domain': [('currency_id', '=', currency_id)],
         }

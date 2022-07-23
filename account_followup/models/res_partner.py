@@ -4,7 +4,6 @@
 import logging
 from odoo import api, fields, models, _
 from odoo.tools.misc import format_date
-from odoo.osv import expression
 from datetime import date, datetime, timedelta
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.exceptions import UserError
@@ -207,7 +206,7 @@ class ResPartner(models.Model):
             'followup_level': (self.followup_level.id, self.followup_level.delay),
             'keep_summary': True
         }
-        return self.env['account.followup.report'].with_context(print_mode=True, lang=self.lang or self.env.user.lang).get_html(options)
+        return self.env['account.followup.report'].with_context(print_mode=True, lang=self.lang or self.env.user.lang).get_followup_report_html(options)
 
     def _compute_followup_lines(self):
         """ returns the followup plan of the current user's company (of given in context directly)
@@ -239,7 +238,8 @@ class ResPartner(models.Model):
         if not self.ids and not all_partners:
             return {}
 
-        sql = """
+        where = "" if all_partners else "AND aml.partner_id in %(partner_ids)s"
+        sql = f"""
             SELECT partner.id as partner_id,
                    ful.id as followup_level,
                    CASE WHEN partner.balance <= 0 THEN 'no_action_needed'
@@ -321,9 +321,7 @@ class ResPartner(models.Model):
             LEFT OUTER JOIN ir_property prop_date ON prop_date.res_id = CONCAT('res.partner,', partner.id)
                                                  AND prop_date.name = 'payment_next_action_date'
                                                  AND prop_date.company_id = %(company_id)s
-        """.format(
-            where="" if all_partners else "AND aml.partner_id in %(partner_ids)s",
-        )
+        """
         params = {
             'company_id': self.env.company.id,
             'partner_ids': tuple(self.ids),

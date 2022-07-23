@@ -175,8 +175,8 @@ class Certificate(models.Model):
                 serial_number = certificate.get_serial_number()
             except UserError as exc_orm:  # ;-)
                 raise exc_orm
-            except Exception:
-                raise ValidationError(_('The certificate content is invalid.'))
+            except Exception as e:
+                raise ValidationError(_('The certificate content is invalid %s.', e))
             # Assign extracted values from the certificate
             record.serial_number = ('%x' % serial_number)[1::2]
             record.date_start = before.strftime(DEFAULT_SERVER_DATETIME_FORMAT)

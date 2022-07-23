@@ -9,19 +9,13 @@ class AccountSalesReportCommon(TestAccountReportsCommon):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.partner_a = cls.env['res.partner'].create({
             'name': 'Partner A',
-            'country_id': cls.env['res.country'].create({
-                'name': 'Country A',
-                'code': 'ZZ',
-            }).id,
-            'vat': 'AA123456789',
+            'country_id': cls.env.ref('base.fr').id,
+            "vat": "FR23334175221",
         })
         cls.partner_b = cls.env['res.partner'].create({
             'name': 'Partner B',
-            'country_id': cls.env['res.country'].create({
-                'name': 'Country B',
-                'code': 'YY',
-            }).id,
-            'vat': 'BB123456789',
+            'country_id': cls.env.ref('base.be').id,
+            "vat": "BE0477472701",
         })
 
     def _create_invoices(self, data):

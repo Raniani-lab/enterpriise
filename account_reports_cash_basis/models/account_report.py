@@ -1,21 +1,30 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 
-class AccountReport(models.AbstractModel):
+
+class AccountReport(models.Model):
     _inherit = 'account.report'
 
-    filter_cash_basis = None
+    filter_cash_basis = fields.Boolean(
+        string="Cash Basis",
+        compute=lambda x: x._compute_report_option_filter('filter_cash_basis', False), readonly=False, store=True, depends=['root_report_id'],
+        help="Display the option to switch to cash basis mode."
+    )
+
+    def _init_options_cash_basis(self, options, previous_options=None):
+        if self.filter_cash_basis:
+            options['report_cash_basis'] = (previous_options or {}).get('report_cash_basis', False)
 
     @api.model
     def _prepare_lines_for_cash_basis(self):
-        """Prepare the temp_account_move_line substitue.
+        """Prepare the cash_basis_temp_account_move_line substitue.
 
         This method should be used once before all the SQL queries using the
         table account_move_line for reports in cash basis.
         It will create a new table like the account_move_line table, but with
         amounts and the date relative to the cash basis.
         """
-        self.env.cr.execute("SELECT 1 FROM information_schema.tables WHERE table_name='temp_account_move_line'")
+        self.env.cr.execute("SELECT 1 FROM information_schema.tables WHERE table_name='cash_basis_temp_account_move_line'")
         if self.env.cr.fetchone():
             return
         self.env.cr.execute("SELECT column_name FROM information_schema.columns WHERE table_name='account_move_line'")
@@ -23,9 +32,9 @@ class AccountReport(models.AbstractModel):
         unchanged_fields = list(set(f[0] for f in self.env.cr.fetchall()) - set(changed_fields))
         selected_journals = tuple(self.env.context.get('journal_ids', []))
         sql = """   -- Create a temporary table
-            CREATE TEMPORARY TABLE IF NOT EXISTS temp_account_move_line () INHERITS (account_move_line) ON COMMIT DROP;
+            CREATE TEMPORARY TABLE IF NOT EXISTS cash_basis_temp_account_move_line () INHERITS (account_move_line) ON COMMIT DROP;
 
-            INSERT INTO temp_account_move_line ({all_fields}) SELECT
+            INSERT INTO cash_basis_temp_account_move_line ({all_fields}) SELECT
                 {unchanged_fields},
                 "account_move_line".date,
                 "account_move_line".amount_currency,
@@ -64,7 +73,7 @@ class AccountReport(models.AbstractModel):
                 JOIN account_account account ON aml.account_id = account.id
                 WHERE account.account_type IN ('asset_receivable', 'liability_payable')
             )
-            INSERT INTO temp_account_move_line ({all_fields}) SELECT
+            INSERT INTO cash_basis_temp_account_move_line ({all_fields}) SELECT
                 {unchanged_fields},
                 ref.date,
                 ref.matched_percentage * "account_move_line".amount_currency,
@@ -94,11 +103,11 @@ class AccountReport(models.AbstractModel):
         }
         self.env.cr.execute(sql, params)
 
-    def _set_context(self, options):
-        ctx = super()._set_context(options)
-        if 'cash_basis' in options:
-            ctx['cash_basis'] = options['cash_basis']
-        return ctx
+    @api.model
+    def _query_get(self, options, date_scope, domain=None):
+        # Override to add the context key which will eventually trigger the shadowing of the table
+        context_self = self.with_context(account_report_cash_basis=options.get('report_cash_basis'))
+        return super(AccountReport, context_self)._query_get(options, date_scope, domain=domain)
 
     def open_document(self, options, params=None):
         action = super().open_document(options, params)
@@ -111,29 +120,8 @@ class AccountMoveLine(models.Model):
 
     def _where_calc(self, domain, active_test=True):
         query = super()._where_calc(domain, active_test)
-        if self.env.context.get('cash_basis'):
+        if self.env.context.get('account_report_cash_basis'):
             self.env['account.report']._prepare_lines_for_cash_basis()
-            query._tables['account_move_line'] = 'temp_account_move_line'
+            query._tables['account_move_line'] = 'cash_basis_temp_account_move_line'
+
         return query
-
-
-class AccountChartOfAccountReport(models.AbstractModel):
-    _inherit = "account.coa.report"
-
-    filter_cash_basis = False
-
-
-class ReportGeneralLedger(models.AbstractModel):
-    _inherit = "account.general.ledger"
-
-    filter_cash_basis = False
-
-
-class ReportAccountFinancialReport(models.Model):
-    _inherit = "account.financial.html.report"
-
-    cash_basis = fields.Boolean('Allow cash basis mode', help='display the option to switch to cash basis mode')
-
-    @property
-    def filter_cash_basis(self):
-        return False if self.cash_basis else None

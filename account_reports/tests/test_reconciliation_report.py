@@ -123,17 +123,21 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
         # ==== Report ====
 
-        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+        report = self.env.ref('account_reports.bank_reconciliation_report').with_context(
+            active_id=bank_journal.id,
+            active_model=bank_journal._name
+        )
 
         # report._get_lines() makes SQL queries without flushing
         self.env.flush_all()
 
         with freeze_time('2016-01-02'):
 
-            options = report._get_options(None)
+            options = self._generate_options(report, fields.Date.today(), fields.Date.today())
+            lines = report._get_lines(options, all_column_groups_expression_totals={})
 
             self.assertLinesValues(
-                report._get_lines(options),
+                lines,
                 #   Name                                                            Date            Amount
                 [   0,                                                              1,              3],
                 [
@@ -164,6 +168,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
                     ('Total Outstanding Payments/Receipts',                         '',             100.0),
                 ],
                 currency_map={3: {'currency': bank_journal.currency_id}},
+                ignore_folded=False,
             )
 
     def test_reconciliation_report_multi_currencies(self):
@@ -226,7 +231,6 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'currency_id': company_currency.id,
             'payment_method_line_id': self.inbound_payment_method_line.id,
         })
-        payment_1.action_post()
 
         # Payment in the same foreign currency as the journal.
         payment_2 = self.env['account.payment'].create({
@@ -239,7 +243,6 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'currency_id': journal_currency.id,
             'payment_method_line_id': self.inbound_payment_method_line.id,
         })
-        payment_2.action_post()
 
         # Payment in a third foreign currency.
         payment_3 = self.env['account.payment'].create({
@@ -252,19 +255,22 @@ class TestReconciliationReport(TestAccountReportsCommon):
             'currency_id': choco_currency.id,
             'payment_method_line_id': self.inbound_payment_method_line.id,
         })
-        payment_3.action_post()
+        (payment_1 + payment_2 + payment_3).action_post()
 
         # ==== Report ====
 
-        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+        report = self.env.ref('account_reports.bank_reconciliation_report').with_context(
+            active_id=bank_journal.id,
+            active_model=bank_journal._name
+        )
 
         # report._get_lines() makes SQL queries without flushing
         self.env.flush_all()
 
         with freeze_time('2016-01-02'), self.debug_mode(report):
 
-            options = report._get_options(None)
-            lines = report._get_lines(options)
+            options = self._generate_options(report, fields.Date.today(), fields.Date.today())
+            lines = report._get_lines(options, all_column_groups_expression_totals={})
 
             self.assertLinesValues(
                 lines,
@@ -294,6 +300,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
                     3: {'currency_code_index': 4},
                     5: {'currency': journal_currency},
                 },
+                ignore_folded=False,
             )
 
     def test_reconciliation_change_date(self):
@@ -333,11 +340,12 @@ class TestReconciliationReport(TestAccountReportsCommon):
         })
         payment.action_post()
 
-        # report._get_lines() makes SQL queries without flushing
-        self.env.flush_all()
-        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+        report = self.env.ref('account_reports.bank_reconciliation_report').with_context(
+            active_id=bank_journal.id,
+            active_model='account.journal'
+        )
 
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-01'))
+        options = self._generate_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-01'))
         options['all_entries'] = True
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -354,9 +362,10 @@ class TestReconciliationReport(TestAccountReportsCommon):
                 ('Total Balance of 101404 Bank',                                '01/01/2019',   10.0),
             ],
             currency_map={3: {'currency': bank_journal.currency_id}},
+            ignore_folded=False,
         )
 
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-04'))
+        options = self._generate_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-04'))
         options['all_entries'] = True
         lines = report._get_lines(options)
         self.assertLinesValues(
@@ -386,6 +395,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
             ],
             currency_map={3: {'currency': bank_journal.currency_id}},
+            ignore_folded=False,
         )
 
     def test_reconciliation_report_non_statement_payment(self):
@@ -423,17 +433,21 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
         # ==== Report ====
 
-        report = self.env['account.bank.reconciliation.report'].with_context(active_id=bank_journal.id)
+        report = self.env.ref('account_reports.bank_reconciliation_report').with_context(
+            active_id=bank_journal.id,
+            active_model='account.journal'
+        )
 
         # report._get_lines() makes SQL queries without flushing
         self.env.flush_all()
 
         with freeze_time('2016-01-02'):
 
-            options = report._get_options()
+            options = self._generate_options(report, fields.Date.today(), fields.Date.today())
+            lines = report._get_lines(options)
 
             self.assertLinesValues(
-                report._get_lines(options),
+                lines,
                 #   Name                                                            Date            Amount
                 [   0,                                                              1,              3],
                 [
@@ -450,4 +464,5 @@ class TestReconciliationReport(TestAccountReportsCommon):
                     ('Total Outstanding Payments/Receipts',                         '',             -800.0),
                 ],
                 currency_map={3: {'currency': bank_journal.currency_id}},
+                ignore_folded=False,
             )

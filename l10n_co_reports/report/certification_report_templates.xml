@@ -65,9 +65,9 @@
                                     </thead>
                                     <tbody>
                                         <tr t-foreach="partner['lines']" t-as="line">
-                                            <td><t t-esc="line['name']"/></td>
-                                            <td><t t-esc="line['tax_base_amount']"/></td>
-                                            <td><t t-esc="line['balance']"/></td>
+                                            <td><t t-esc="line.get('bimestre')"/></td>
+                                            <td><t t-esc="line.get('tax_base_amount')"/></td>
+                                            <td><t t-esc="line.get('balance')"/></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -83,11 +83,11 @@
                                     </thead>
                                     <tbody>
                                         <tr t-foreach="partner['lines']" t-as="line">
-                                            <td><t t-esc="line['name']"/></td>
-                                            <td><t t-esc="line['tax_base_amount']"/></td>
-                                            <td><t t-esc="line['balance_15_over_19']"/></td>
-                                            <td><t t-esc="line['balance']"/></td>
-                                            <td><t t-esc="line['percentage']"/></td>
+                                            <td><t t-esc="line.get('bimestre')"/></td>
+                                            <td><t t-esc="line.get('tax_base_amount')"/></td>
+                                            <td><t t-esc="line.get('balance_15_over_19')"/></td>
+                                            <td><t t-esc="line.get('balance')"/></td>
+                                            <td><t t-esc="line.get('percentage')"/></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -102,24 +102,24 @@
                                         <div>
                                             <strong>MONTO TOTAL OPERACIONAL:</strong>
                                         </div>
-                                        <t t-esc="partner['tax_base_amount']"/>
+                                        <t t-esc="partner.get('tax_base_amount', 0.0)"/>
                                     </div>
                                     <div t-att-class="not report_name.endswith('iva') and 'col-6' or 'col-4'">
                                         <div>
                                             <strong>MONTO DEL PAGO SUJETO A:</strong>
                                         </div>
                                         <t t-if="report_name.endswith('iva')">
-                                            <t t-esc="partner['balance_15_over_19']"/>
+                                            <t t-esc="partner.get('balance_15_over_19', 0.0)"/>
                                         </t>
                                         <t t-if="not report_name.endswith('iva')">
-                                            <t t-esc="partner['tax_base_amount']"/>
+                                            <t t-esc="partner.get('tax_base_amount', 0.0)"/>
                                         </t>
                                     </div>
                                     <div t-att-class="not report_name.endswith('iva') and 'col-6' or 'col-4'">
                                         <div>
                                             <strong>RETENIDO Y CONSIGNADO:</strong>
                                         </div>
-                                        <t t-esc="partner['balance']"/>
+                                        <t t-esc="partner.get('balance', 0.0)"/>
                                     </div>
                                 </div>
                             </div>

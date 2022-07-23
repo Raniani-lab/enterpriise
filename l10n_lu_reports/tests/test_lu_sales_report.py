@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+# pylint: disable=C0326
 
 import base64
+
 from odoo.addons.account_reports.tests.account_sales_report_common import AccountSalesReportCommon
 from odoo.exceptions import ValidationError
 from odoo.tests import tagged
@@ -17,9 +19,9 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
     def setUpClass(cls, chart_template_ref='l10n_lu.lu_2011_chart_1'):
         super().setUpClass('l10n_lu.lu_2011_chart_1')
 
-        cls.l_tax = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '0-IC-S-G'), '|', ("active", "=", True), ("active", "=", False)])
-        cls.t_tax = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '0-ICT-S-G'), '|', ("active", "=", True), ("active", "=", False)])
-        cls.s_tax = cls.env['account.tax'].search([('company_id', '=', cls.company_data['company'].id), ('name', '=', '0-IC-S-S'), '|', ("active", "=", True), ("active", "=", False)])
+        cls.l_tax = cls.env['account.tax'].search([('name', '=', '0-IC-S-G'), ('company_id', '=', cls.company_data['company'].id)])
+        cls.t_tax = cls.env['account.tax'].search([('name', '=', '0-ICT-S-G'), ('company_id', '=', cls.company_data['company'].id)])
+        cls.s_tax = cls.env['account.tax'].search([('name', '=', '0-IC-S-S'), ('company_id', '=', cls.company_data['company'].id)])
         cls.l_tax.active = cls.t_tax.active = cls.s_tax.active = True
 
         cls.product_1 = cls.env['product.product'].create({'name': 'product_1', 'lst_price': 1.0})
@@ -67,38 +69,32 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
 
     @freeze_time('2019-12-31')
     def test_ec_sales_report(self):
-        l_tax = self.env['account.tax'].search([('name', '=', '0-IC-S-G'), ('company_id', '=', self.company_data['company'].id)])[0]
-        t_tax = self.env['account.tax'].search([('name', '=', '0-ICT-S-G'), ('company_id', '=', self.company_data['company'].id)])[0]
-        s_tax = self.env['account.tax'].search([('name', '=', '0-IC-S-S'), ('company_id', '=', self.company_data['company'].id)])[0]
         self._create_invoices([
-            (self.partner_a, l_tax, 300),
-            (self.partner_a, l_tax, 300),
-            (self.partner_a, t_tax, 500),
-            (self.partner_b, t_tax, 500),
-            (self.partner_a, s_tax, 700),
-            (self.partner_b, s_tax, 700),
+            (self.partner_a, self.l_tax, 300),
+            (self.partner_a, self.l_tax, 300),
+            (self.partner_a, self.t_tax, 500),
+            (self.partner_b, self.t_tax, 500),
+            (self.partner_a, self.s_tax, 700),
+            (self.partner_b, self.s_tax, 700),
         ])
-        report = self.env['account.sales.report']
-        report.filter_date['filter'] = 'this_month'
-        options = report._get_options(None)
-        self.assertEqual(report._get_report_country_code(options), 'LU', "The country chosen for EC Sales list should be Luxembourg")
+        report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
+        options = report._get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
         lines = report._get_lines(options)
         self.assertLinesValues(
             lines,
             # pylint: disable=C0326
-            #   Partner                country cod              VAT Number,              Tax    Amount
+            #   Partner                country code             VAT Number,              Tax    Amount
             [   0,                     1,                       2,                       3,     4],
             [
-                (self.partner_a.name, self.partner_a.vat[:2], self.partner_a.vat[2:], 'L', f'600.00{NON_BREAKING_SPACE}€'),
-                (self.partner_a.name, self.partner_a.vat[:2], self.partner_a.vat[2:], 'T', f'500.00{NON_BREAKING_SPACE}€'),
-                (self.partner_b.name, self.partner_b.vat[:2], self.partner_b.vat[2:], 'T', f'500.00{NON_BREAKING_SPACE}€'),
-                (self.partner_a.name, self.partner_a.vat[:2], self.partner_a.vat[2:], 'S', f'700.00{NON_BREAKING_SPACE}€'),
-                (self.partner_b.name, self.partner_b.vat[:2], self.partner_b.vat[2:], 'S', f'700.00{NON_BREAKING_SPACE}€'),
-                ('Total',              '',                      '',                   '',  f'3,000.00{NON_BREAKING_SPACE}€'),
+                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'L',   f'600.00{NON_BREAKING_SPACE}€'),
+                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'T',   f'500.00{NON_BREAKING_SPACE}€'),
+                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  'S',   f'700.00{NON_BREAKING_SPACE}€'),
+                (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'T',   f'500.00{NON_BREAKING_SPACE}€'),
+                (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  'S',   f'700.00{NON_BREAKING_SPACE}€'),
+                ("Total",              '',                      '',                      '',    f'3,000.00{NON_BREAKING_SPACE}€'),
             ],
         )
-
-        report.get_report_filename(options)
+        report.l10n_lu_sales_report_get_file_name(options)
         file_ref = options['filename']
         expected_xml = f'''
             <eCDFDeclarations xmlns="http://www.ctie.etat.lu/2011/ecdf">
@@ -124,20 +120,20 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
                         <NumericField id="16">0,00</NumericField>
                         <Table>
                             <Line num="1">
-                                <TextField id="01">AA</TextField>
-                                <TextField id="02">123456789</TextField>
+                                <TextField id="01">FR</TextField>
+                                <TextField id="02">23334175221</TextField>
                                 <NumericField id="03">600,00</NumericField>
                             </Line>
                         </Table>
                         <Table>
                             <Line num="1">
-                                <TextField id="05">AA</TextField>
-                                <TextField id="06">123456789</TextField>
+                                <TextField id="05">FR</TextField>
+                                <TextField id="06">23334175221</TextField>
                                 <NumericField id="07">500,00</NumericField>
                             </Line>
                             <Line num="2">
-                                <TextField id="05">BB</TextField>
-                                <TextField id="06">123456789</TextField>
+                                <TextField id="05">BE</TextField>
+                                <TextField id="06">0477472701</TextField>
                                 <NumericField id="07">500,00</NumericField>
                             </Line>
                         </Table>
@@ -151,13 +147,13 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
                         <NumericField id="16">0,00</NumericField>
                         <Table>
                             <Line num="1">
-                                <TextField id="01">AA</TextField>
-                                <TextField id="02">123456789</TextField>
+                                <TextField id="01">FR</TextField>
+                                <TextField id="02">23334175221</TextField>
                                 <NumericField id="03">700,00</NumericField>
                             </Line>
                             <Line num="2">
-                                <TextField id="01">BB</TextField>
-                                <TextField id="02">123456789</TextField>
+                                <TextField id="01">BE</TextField>
+                                <TextField id="02">0477472701</TextField>
                                 <NumericField id="03">700,00</NumericField>
                             </Line>
                         </Table>
@@ -168,35 +164,25 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
             </eCDFDeclarations>
             '''
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.get_xml(options)),
+            self.get_xml_tree_from_string(report.l10n_lu_sales_report_export_to_xml(options)),
             self.get_xml_tree_from_string(expected_xml)
         )
 
     def test_empty_comparisons(self):
-        report = self.env['account.sales.report']
-        report = report.with_context(
-            date_from='2020-04-01',
-            date_to='2020-04-30'
-        )
-        options = report._get_options(None)
-        options['intrastat_code'] = [
-            {'id': 'Shipment', 'name': 'L', 'selected': False, 'lines': self.env.ref('l10n_lu.account_tax_report_line_1b_1_intra_community_goods_pi_vat').ids},
-            {'id': 'Triangular', 'name': 'T', 'selected': False, 'lines': self.env.ref('l10n_lu.account_tax_report_line_1b_6_a_subsequent_to_intra_community').ids},
-            {'id': 'Services', 'name': 'S', 'selected': False, 'lines': self.env.ref('l10n_lu.account_tax_report_line_1b_6_b1_non_exempt_customer_vat').ids},
-        ]
-        corrections, compared_declarations = report._get_correction_data(options, comparison_files=[])
+        report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
+        options = self._generate_options(report, '2020-04-01', '2020-04-30')
+        corrections, compared_declarations = report.l10n_lu_sales_report_get_correction_data(options, comparison_files=[])
         self.assertFalse(compared_declarations)
         self.assertFalse(any([bool(c) for c in corrections.values()]))
 
     def test_multiple_comparison(self):
         # Case 1: correct a previous declaration
-        report = self.env['account.sales.report']
+        report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
         report, options = self._get_report_and_options(report, '2020-04-01', '2020-04-30')
         wizard = self.env['l10n_lu.generate.vat.intra.report'].create({})
         wizard.save_report = False
-        wizard.with_context(report.l10n_lu_open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
+        wizard.with_context(report.l10n_lu_sales_report_open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
         declaration_to_compare = base64.b64decode(wizard.report_data.decode("utf-8"))
-
         invoices = [
             {'partner': self.partner_be, 'product': self.product_1, 'tax': self.l_tax},
             {'partner': self.partner_be_new, 'product': self.product_1, 'tax': self.l_tax},
@@ -207,14 +193,14 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         ]
         self.post_example_invoices(invoices, '2020-04-14')
 
-        report = self.env['account.sales.report']
+        report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
         report, options = self._get_report_and_options(report, '2020-05-01', '2020-05-31')
         wizard2 = self.env['l10n_lu.generate.vat.intra.report'].create({})
         wizard2.save_report = False
         attachment = self.env['ir.attachment'].create({'datas': wizard.report_data, 'name': 'discard'})
         stored_report = self.env['l10n_lu.stored.intra.report'].create({'attachment_id': attachment.id, 'year': '2020', 'period': '5', 'codes': 'LTS'})
         wizard2.l10n_lu_stored_report_ids = stored_report
-        wizard2.with_context(report.l10n_lu_open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
+        wizard2.with_context(report.l10n_lu_sales_report_open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
         declaration_to_compare_2 = base64.b64decode(wizard2.report_data.decode("utf-8"))
         filename = wizard2.filename[:-4]  # remove '.xml' postfix
         expected_xml_tree = self.get_xml_tree_from_string(
@@ -332,7 +318,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         # Case 2: correct a previous declaration (05), which contains corrections for an earlier declaration
         # but the corrected declaration is not in the comparison files, hence it shouldn't be corrected
         report, options = self._get_report_and_options(report, '2020-06-01', '2020-06-30')
-        corrections, compared_declarations = report._get_correction_data(options, comparison_files=[('', declaration_to_compare_2)])  # problem with the options here
+        corrections, compared_declarations = report.l10n_lu_sales_report_get_correction_data(options, comparison_files=[('', declaration_to_compare_2)])  # problem with the options here
         self.assertListEqual(compared_declarations, [('', 'TVA_LICM', '2020', '5'), ('', 'TVA_PSIM', '2020', '5')])
         expected = {
             'l_sum': 2.0,
@@ -351,7 +337,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         # then the correction for (4) should take into account the corrections in (5)
         # Case 2: correct a previous declaration (05), which contains corrections for an earlier declaration
         # but the corrected declaration is not in the comparison files, hence it shouldn't be corrected
-        corrections, compared_declarations = report._get_correction_data(
+        corrections, compared_declarations = report.l10n_lu_sales_report_get_correction_data(
             options, comparison_files=[('', declaration_to_compare), ('', declaration_to_compare_2)]
         )
         self.assertListEqual(compared_declarations, [('', 'TVA_LICM', '2020', '4'), ('', 'TVA_PSIM', '2020', '4'), ('', 'TVA_LICM', '2020', '5'), ('', 'TVA_PSIM', '2020', '5')])
@@ -377,37 +363,22 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
 
     def test_wrong_files(self):
         # Case 1: not ecdf declaration
-        report = self.env['account.sales.report']
+        report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
         report, options = self._get_report_and_options(report, '2020-04-01', '2020-04-30')
         with self.assertRaises(ValidationError):
-            report._get_correction_data(options, comparison_files=[('', '')])
+            report.l10n_lu_sales_report_get_correction_data(options, comparison_files=[('', '')])
         # Case 2: ecdf declaration without VAT Intra declarations inside
-        asset_report = self.env['account.assets.report'].with_context({'model': 'account.assets.report'})
+        asset_report = self.env.ref('account_asset.assets_report')
         options = asset_report._get_options(None)
-        wizard = self.env['l10n_lu.generate.xml'].create({})
-        wizard.with_context({'model': 'account.assets.report', 'account_report_generation_options': options, 'skip_xsd': True}).get_xml()
+        wizard = self.env['l10n_lu.generate.asset.report'].create({})
+        wizard.with_context({'model': 'account.report', 'report_generation_options': options, 'skip_xsd': True}).get_xml()
         declaration_to_compare = base64.b64decode(wizard.report_data.decode("utf-8"))
         with self.assertRaises(ValidationError):
-            report._get_correction_data(options, comparison_files=[('', declaration_to_compare)])
+            report.l10n_lu_sales_report_get_correction_data(options, comparison_files=[('', declaration_to_compare)])
 
     def _get_report_and_options(self, report, date_from, date_to):
-        report = report.with_context(date_from=date_from, date_to=date_to, lang='EN_us')
-        ec_sale_code = [
-            {'id': 'goods', 'name': 'L', 'selected': False, 'tax_report_line_ids': self.env.ref('l10n_lu.account_tax_report_line_1b_1_intra_community_goods_pi_vat').ids},
-            {'id': 'triangular', 'name': 'T', 'selected': False, 'tax_report_line_ids': self.env.ref('l10n_lu.account_tax_report_line_1b_6_a_subsequent_to_intra_community').ids},
-            {'id': 'services', 'name': 'S', 'selected': False, 'tax_report_line_ids': self.env.ref('l10n_lu.account_tax_report_line_1b_6_b1_non_exempt_customer_vat').ids}
-        ]
-        selected = [ln for code in ec_sale_code for ln in code['tax_report_line_ids']]
-        options = report._get_options({
-            'date': {
-                'date_from': date_from,
-                'date_to': date_to,
-                'filter': 'custom',
-                'mode': 'range',
-            },
-            'ec_sale_code': ec_sale_code,
-        })
-        options.update({'selected_tag_ids': selected, 'get_file_data': True})
+        options = self._generate_options(report, date_from, date_to)
+        options.update({'get_file_data': True})
         return report, options
 
     @classmethod

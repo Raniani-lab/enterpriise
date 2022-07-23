@@ -20,7 +20,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             'company_id': cls.vanilla_company1.id,
         })
 
-        cls.report = cls.env.ref('account_reports.account_financial_report_balancesheet0')
+        cls.report = cls.env.ref('account_reports.balance_sheet')
 
     def _assert_filter_journal(self, options, display_name, expected_values_list):
         journal_options = options['journals']

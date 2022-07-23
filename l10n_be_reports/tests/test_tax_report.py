@@ -11,7 +11,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):
-        super().setUpClass(chart_template_ref)
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
     @classmethod
     def setup_company_data(cls, company_name, chart_template=None, **kwargs):
@@ -29,8 +29,8 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
     @freeze_time('2019-12-31')
     def test_generate_xml_minimal(self):
         company = self.env.company
-        report = self.env['account.generic.tax.report']
-        options = report._get_options(None)
+        report = self.env.ref('l10n_be.tax_report_vat')
+        options = report._get_options()
 
         # The partner id is changing between execution of the test so we need to append it manually to the reference.
         ref = str(company.partner_id.id) + '112019'
@@ -66,15 +66,15 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
         """ % ref
 
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.get_xml(options)),
+            self.get_xml_tree_from_string(report.l10n_be_export_tax_report_to_xml(options)['file_content']),
             self.get_xml_tree_from_string(expected_xml)
         )
 
     @freeze_time('2019-12-31')
     def test_generate_xml_minimal_with_representative(self):
         company = self.env.company
-        report = self.env['account.generic.tax.report']
-        options = report._get_options(None)
+        report = self.env.ref('l10n_be.tax_report_vat')
+        options = report._get_options()
 
         # Create a new partner for the representative and link it to the company.
         representative = self.env['res.partner'].create({
@@ -134,7 +134,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
             """ % ref
 
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.get_xml(options)),
+            self.get_xml_tree_from_string(report.l10n_be_export_tax_report_to_xml(options)['file_content']),
             self.get_xml_tree_from_string(expected_xml)
         )
 
@@ -167,8 +167,8 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
         })
         move.action_post()
 
-        report = self.env['account.generic.tax.report']
-        options = report._get_options(None)
+        report = self.env.ref('l10n_be.tax_report_vat')
+        options = report._get_options()
 
         # The partner id is changing between execution of the test so we need to append it manually to the reference.
         ref = str(company.partner_id.id) + '112019'
@@ -205,8 +205,7 @@ class BelgiumTaxReportTest(AccountSalesReportCommon):
             </ns2:VATDeclaration>
         </ns2:VATConsignment>
         """ % ref
-
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.get_xml(options)),
+            self.get_xml_tree_from_string(report.l10n_be_export_tax_report_to_xml(options)['file_content']),
             self.get_xml_tree_from_string(expected_xml)
         )

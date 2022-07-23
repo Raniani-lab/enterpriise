@@ -81,6 +81,11 @@
     background-color: $o-view-background-color;
     color: $o-main-text-color;
 
+    // Override bootstrap in the account reports.
+    thead, tbody, tfoot, tr, td, th {
+        border-style: none;
+    }
+
     // Clearfix the floats (prevent the element height to collapse)
     .o_account_reports_header {
         clear: both;
@@ -102,22 +107,25 @@
         margin-bottom: 24px;
 
         th.o_account_report_column_header {
-            &.sortable {
+            &.sortable span {
                 cursor: pointer;
 
                 &::before {
                     content: '\f07d';
                     font-family: 'FontAwesome';
                     color: lightgray;
+                    padding-right: 8px;
                 }
             }
-            &.up::before {
+            &.up span::before {
                 content: '\f176';
                 color: black;
+                padding-right: 8px;
             }
-            &.down::before {
+            &.down span::before {
                 content: '\f175';
                 color: black;
+                padding-right: 8px;
             }
             &:first-child {
                 border: none;
@@ -182,7 +190,6 @@
     }
     .o_account_report_name_ellipsis {
         min-width: 200px;
-        max-width: 50%;
     }
     .ellipsis_width {
         height: 0 !important;
@@ -260,6 +267,7 @@
             text-align: center;
         }
         th {
+            border: 1px solid #e6e6e6;
             background-color: white;
             background-clip: padding-box;
             .subtitle{
@@ -267,15 +275,19 @@
             }
         }
         .o_account_reports_header_hierarchy {
-            line-height: 2;
-            th {
-                border-bottom: none;
-            }
             th:not(:first-child) {
+                border: 1px solid #e6e6e6;
                 border-collapse: separate;
                 padding-right: 8px;
                 padding-left: 8px;
             }
+            th:first-child {
+                border: none;
+            }
+        }
+
+        .o_account_report_column_value .o_account_report_line a {
+            color: inherit;
         }
     }
     .oe_link_reports {
@@ -531,7 +543,7 @@
         padding-top: 3rem !important;
     }
 
-    .o_account_reports_ja_name_muted td:first-of-type {
+    .o_account_reports_ja_name_muted>td:first-of-type {
         @extend .text-muted;
     }
 

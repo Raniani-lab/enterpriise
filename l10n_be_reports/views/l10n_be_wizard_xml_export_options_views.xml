@@ -6,6 +6,7 @@
             <field name="model">l10n_be_reports.periodic.vat.xml.export</field>
             <field name="arch" type="xml">
                 <form string="Export Options">
+                    <field name="control_value" invisible="1"/>
                     <div class="alert alert-warning" role="alert" attrs="{'invisible': [('control_value', '=', False)]}">
                         Some controls failed
                     </div>
@@ -19,7 +20,6 @@
                              <field name="client_nihil"/>
                          </group>
                     </group>
-                    <field name="control_value"/>
                     <footer>
                         <button string='Export XML' name="print_xml" type="object" class="btn-primary" data-hotkey="q"/>
                         <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>

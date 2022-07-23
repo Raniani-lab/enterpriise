@@ -8,19 +8,19 @@ from odoo import _, models
 _logger = logging.getLogger(__name__)
 
 class AccountGeneralLedger(models.AbstractModel):
-    _inherit = "account.general.ledger"
+    _inherit = "account.report"
 
-    def _get_reports_buttons(self, options):
-        """ Add the Export (XML Polizas) Button to the General Ledger """
-        buttons = super()._get_reports_buttons(options)
+    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
+        # Overridden to add export button on GL for Mexican companies
+        super()._custom_options_initializer_general_ledger(options, previous_options=previous_options)
+
         if self.env.company.account_fiscal_country_id.code == 'MX':
-            buttons.append({
+            options['buttons'].append({
                 'name': _('XML (Polizas)'),
-                'sequence': 3,
+                'sequence': 30,
                 'action': 'l10n_mx_open_xml_export_wizard',
                 'file_export_type': _('XML')
             })
-        return buttons
 
     def l10n_mx_open_xml_export_wizard(self, options):
         """ Action to open the XML Polizas Export Options from the General Ledger button """

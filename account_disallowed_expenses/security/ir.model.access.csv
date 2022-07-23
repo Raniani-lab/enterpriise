@@ -3,4 +3,3 @@
 "access_account_disallowed_expenses_category_readonly","access.account.disallowed.expenses.category.readonly","model_account_disallowed_expenses_category","account.group_account_readonly",1,0,0,0
 "access_account_disallowed_expenses_rate","access.account.disallowed.expenses.rate","model_account_disallowed_expenses_rate","account.group_account_manager",1,1,1,1
 "access_account_disallowed_expenses_rate_readonly","access.account.disallowed.expenses.rate.readonly","model_account_disallowed_expenses_rate","account.group_account_readonly",1,0,0,0
-"access_account_disallowed_expenses_report","access_account_disallowed_expenses_report","model_account_disallowed_expenses_report","account.group_account_readonly",1,0,0,0

@@ -1,67 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="mod_347_statistics_real_estates_count" model="account.financial.html.report.line">
+    <record id="mod_347_statistics_real_estates_count" model="account.report.line">
         <field name="name">Número total de inmuebles</field>
         <field name="code">aeat_mod_347_statistics_real_estates_count</field>
-        <field name="parent_id" ref="l10n_es_reports.mod_347_summary_title"/>
-        <field name="domain" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.account_type','=','asset_receivable'), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
-        <field name="formulas">count_rows</field>
         <field name="groupby">l10n_es_real_estate_id</field>
-        <field name="special_date_changer">strict_range</field>
-        <field name="figure_type">no_unit</field>
         <field name="sequence" eval="3"/>
-        <field name="level" eval="2"/>
+        <field name="parent_id" ref="l10n_es_reports.mod_347_summary_title"/>
+        <field name="foldable" eval="True"/>
+        <field name="expression_ids">
+            <record id="mod_347_statistics_real_estates_count_balance" model="account.report.expression">
+                <field name="label">balance</field>
+                <field name="engine">domain</field>
+                <field name="formula" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.account_type','=','asset_receivable'), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
+                <field name="subformula">count_rows</field>
+                <field name="figure_type">none</field>
+            </record>
+        </field>
     </record>
-    <record id="mod_347_real_estates" model="account.financial.html.report.line">
+    <record id="mod_347_real_estates" model="account.report.line">
         <field name="name">Relación de inmuebles</field>
         <field name="code">aeat_mod_347_real_estates</field>
-        <field name="financial_report_id" ref="l10n_es_reports.mod_347"/>
-        <field name="domain" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.account_type','=','asset_receivable'), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
-        <field name="show_domain">always</field>
-        <field name="formulas">sum</field>
-        <field name="special_date_changer">strict_range</field>
+        <field name="report_id" ref="l10n_es_reports.mod_347"/>
         <field name="groupby">l10n_es_real_estate_id</field>
         <field name="sequence" eval="4"/>
-        <field name="level" eval="1"/>
+        <field name="foldable" eval="True"/>
+        <field name="expression_ids">
+            <record id="mod_347_real_estates_balance" model="account.report.expression">
+                <field name="label">balance</field>
+                <field name="engine">domain</field>
+                <field name="formula" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.account_type','=','asset_receivable'), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
+                <field name="subformula">sum</field>
+            </record>
+        </field>
     </record>
-    <record id="l10n_es_reports.mod_347_operations_title" model="account.financial.html.report.line">
+    <record id="l10n_es_reports.mod_347_operations_title" model="account.report.line">
         <field name="name">Relación de declarados</field>
         <field name="code">aeat_mod_347_operations_title</field>
-        <field name="formulas">aeat_mod_347_operations_real_estates_sold + aeat_mod_347_operations_real_estates_bought + aeat_mod_347_operations_insurance_bought + aeat_mod_347_operations_regular_sold + aeat_mod_347_operations_regular_bought</field>
-        <field name="financial_report_id" ref="l10n_es_reports.mod_347"/>
-        <field name="sequence" eval="5"/>
-        <field name="level" eval="1"/>
+        <field name="report_id" ref="l10n_es_reports.mod_347"/>
+        <field name="expression_ids">
+            <record id="l10n_es_reports.mod_347_operations_title_balance" model="account.report.expression">
+                <field name="label">balance</field>
+                <field name="engine">aggregation</field>
+                <field name="formula">aeat_mod_347_operations_real_estates_sold.balance + aeat_mod_347_operations_real_estates_bought.balance + aeat_mod_347_operations_insurance_bought.balance + aeat_mod_347_operations_regular_sold.balance + aeat_mod_347_operations_regular_bought.balance</field>
+                <field name="date_scope">normal</field>
+            </record>
+        </field>
     </record>
-    <record id="mod_347_operations_real_estates_title" model="account.financial.html.report.line">
+    <record id="mod_347_operations_real_estates_title" model="account.report.line">
         <field name="name">Arrendamiento Local Negocio</field>
         <field name="code">aeat_mod_347_operations_real_estates_title</field>
+        <field name="report_id" ref="l10n_es_reports.mod_347"/>
         <field name="parent_id" ref="l10n_es_reports.mod_347_operations_title"/>
         <field name="sequence" eval="6"/>
-        <field name="level" eval="2"/>
         <field name="children_ids">
-            <record id="mod_347_operations_real_estates_bought" model="account.financial.html.report.line">
+            <record id="mod_347_operations_real_estates_bought" model="account.report.line">
                 <field name="name">A - Adquisiciones de bienes y servicios superiores a 3.005,06 €</field>
                 <field name="code">aeat_mod_347_operations_real_estates_bought</field>
-                <field name="domain" eval="[('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod347_invoice_type','=','real_estates'), ('move_id.move_type','in',['in_invoice','in_refund'])]"/>
-                <field name="show_domain">always</field>
-                <field name="formulas">sum</field>
+                <field name="report_id" ref="l10n_es_reports.mod_347"/>
                 <field name="groupby">partner_id</field>
-                <field name="special_date_changer">strict_range</field>
-                <field name="l10n_es_mod347_threshold">3005.06</field>
                 <field name="sequence" eval="7"/>
-                <field name="level" eval="3"/>
+                <field name="parent_id" ref="mod_347_operations_real_estates_title"/>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="mod_347_statistics_operations_real_estates_bought" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_custom_engine_l10n_es_mod347_operations_real_estates_bought</field>
+                        <field name="subformula">sum</field>
+                    </record>
+                </field>
             </record>
-            <record id="mod_347_operations_real_estates_sold" model="account.financial.html.report.line">
+            <record id="mod_347_operations_real_estates_sold" model="account.report.line">
                 <field name="name">B - Entregas de bienes y prestaciones de servicios superiores a 3.005,06 €</field>
                 <field name="code">aeat_mod_347_operations_real_estates_sold</field>
-                <field name="domain" eval="[('debit', '&gt;', 0.0), ('move_id.l10n_es_reports_mod347_invoice_type','=','real_estates'), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
-                <field name="show_domain">always</field>
-                <field name="formulas">sum</field>
+                <field name="report_id" ref="l10n_es_reports.mod_347"/>
                 <field name="groupby">partner_id</field>
-                <field name="special_date_changer">strict_range</field>
-                <field name="l10n_es_mod347_threshold">3005.06</field>
                 <field name="sequence" eval="8"/>
-                <field name="level" eval="3"/>
+                <field name="parent_id" ref="mod_347_operations_real_estates_title"/>
+                <field name="foldable" eval="True"/>
+                <field name="expression_ids">
+                    <record id="mod_347_statistics_operations_real_estates_sold" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_custom_engine_l10n_es_mod347_operations_real_estates_sold</field>
+                        <field name="subformula">sum</field>
+                    </record>
+                </field>
             </record>
         </field>
     </record>

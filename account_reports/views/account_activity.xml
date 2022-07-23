@@ -13,7 +13,8 @@
                 </div>
                 <field name="tax_report_control_error" invisible="1"/>
                 <div class="alert alert-warning text-center" attrs="{'invisible': ['|', ('tax_closing_end_date', '==', False),  ('tax_report_control_error', '!=', True)]}" role="alert">
-                    Some controls failed
+                    Some controls failed.
+                    <button class="btn btn-link" string="-> Check your tax report" name="action_open_tax_report" type="object" style="padding: 0; vertical-align=baseline;"/>
                 </div>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]/button" position="before">

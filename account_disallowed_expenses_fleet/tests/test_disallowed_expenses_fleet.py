@@ -99,32 +99,3 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
         })
 
         (bill_1 + bill_2).action_post()
-
-    def test_disallowed_expenses_report_with_unfold(self):
-        report = self.env['account.disallowed.expenses.report']
-
-        line_id = report._build_line_id({
-            'category': self.dna_category.id,
-            'account': self.company_data['default_account_expense'].id,
-        })
-
-        options = report._get_options()
-        options['unfolded_lines'] = [line_id]
-        lines = report._get_lines(options, line_id=line_id)
-
-        self.assertLinesValues(
-            # pylint: disable=C0326
-            lines,
-            #   Name                                    Total Amount     Rate          Disallowed Amount
-            [   0,                                      1,               2,            3],
-            [
-                ('600000 Expenses',                     100.0,           '10.0 %',     10.0),
-                ('600000 Expenses',                     400.0,           '20.0 %',     80.0),
-                ('600000 Expenses',                     200.0,           '30.0 %',     60.0),
-                ('600000 Expenses',                     300.0,           '56.0 %',     168.0),
-            ],
-        )
-
-        # Make sure both account lines and vehicle lines have the same level when unfolded without the 'vehicle_split'.
-        line_levels = [line['level'] for line in lines if line['level'] == lines[0]['level']]
-        self.assertEqual(len(line_levels), len(lines), "At least one line has a level that differs from the others.")

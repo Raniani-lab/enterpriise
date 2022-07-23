@@ -1,115 +1,99 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from markupsafe import Markup
 import time
-from odoo import models, api, _
-from odoo.tools.misc import formatLang
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
-class ECSalesReport(models.AbstractModel):
-    _inherit = 'account.sales.report'
+class ECSalesReport(models.Model):
+    _inherit = 'account.report'
 
-    def _get_non_generic_country_codes(self, options):
-        codes = super(ECSalesReport, self)._get_non_generic_country_codes(options)
-        codes.add('BE')
-        return codes
+    def _custom_options_initializer_l10n_be_sales_report(self, options, previous_options=None):
+        """
+        Add the invoice lines search domain that is specific to the country.
+        Typically, the taxes account.report.expression ids relative to the country for the triangular, sale of goods
+        or services.
+        :param dict options: Report options
+        :return dict: The modified options dictionary
+        """
+        self.ensure_one()
+        self._sales_report_init_core_custom_options(options, previous_options)
+        ec_operation_category = options.get('sales_report_taxes', {'goods': tuple(), 'triangular': tuple(), 'services': tuple()})
 
-    def _get_ec_sale_code_options_data(self, options):
-        if self._get_report_country_code(options) != 'BE':
-            return super(ECSalesReport, self)._get_ec_sale_code_options_data(options)
+        ec_operation_category['goods'] = tuple(self.env.ref('l10n_be.tax_report_line_46L_tag')._get_matching_tags().ids)
+        ec_operation_category['triangular'] = tuple(self.env.ref('l10n_be.tax_report_line_46T_tag')._get_matching_tags().ids)
+        ec_operation_category['services'] = tuple(self.env.ref('l10n_be.tax_report_line_44_tag')._get_matching_tags().ids)
 
-        return {
-            'goods': {
-                'name': 'L (46L)',
-                'tax_report_line_ids':
-                    self.env.ref('l10n_be.tax_report_line_46L').ids +
-                    self.env.ref('l10n_be.tax_report_line_48s46L').ids,
-                'code': 'L',
-            },
-            'triangular': {
-                'name': 'T (46T)',
-                'tax_report_line_ids':
-                    self.env.ref('l10n_be.tax_report_line_46T').ids +
-                    self.env.ref('l10n_be.tax_report_line_48s46T').ids,
-                'code': 'T',
-            },
-            'services': {
-                'name': 'S (44)',
-                'tax_report_line_ids':
-                    self.env.ref('l10n_be.tax_report_line_44').ids +
-                    self.env.ref('l10n_be.tax_report_line_48s44').ids,
-                'code': 'S',
-            },
+        # Change the names of the taxes to specific ones that are dependant to the tax type
+        ec_operation_category['operation_category'] = {
+            'goods': 'L (46L)',
+            'triangular': 'T (46T)',
+            'services': 'S (44)',
         }
+        options.update({'sales_report_taxes': ec_operation_category})
 
-    def _get_columns_name(self, options):
-        if self._get_report_country_code(options) != 'BE':
-            return super(ECSalesReport, self)._get_columns_name(options)
+        # Buttons
+        options.setdefault('buttons', []).append({
+            'name': _('XML'),
+            'sequence': 30,
+            'action': 'export_file',
+            'action_param': 'l10n_be_export_to_xml_sales_report',
+            'file_export_type': _('XML'),
+        })
 
-        return [
-            {},
-            {'name': _('Country Code')},
-            {'name': _('VAT Number')},
-            {'name': _('Code')},
-            {'name': _('Amount'), 'class': 'number'},
-        ]
+    def _dynamic_lines_generator_l10n_be_sales_report(self, options, all_column_groups_expression_totals):
+        """
+        This method is used to get the dynamic lines of the report and adds a comparative test linked to the tax report.
+        """
+        lines = self._dynamic_lines_generator_sales_report(options, all_column_groups_expression_totals)
+        colname_to_idx = {col['name']: idx for idx, col in enumerate(options['columns'])}
+        total = lines[-1][-1]['columns'][colname_to_idx['Amount']]['no_format']
+        # This test requires the total, so needs to be checked after the lines are computed, but before the rendering
+        # of the template. This is why we add it here even if it's not an option per se.
+        options['be_tax_cross_check_warning'] = not self.l10n_be_ec_total_consistent_with_tax_report(options, total)
+        return lines
 
-    def _get_row_columns(self, options, row, ec_sale_code_options_data):
-        if self._get_report_country_code(options) != 'BE':
-            return super(ECSalesReport, self)._get_row_columns(options, row, ec_sale_code_options_data)
-
-        if options.get('get_file_data'):
-            code = ec_sale_code_options_data[row['tax_code']]['code']
-            return [row['vat'], code, row['amount']]
-        else:
-            name = ec_sale_code_options_data[row['tax_code']]['name']
-            return [row['vat'][:2], row['vat'][2:], name, row['amount']]
-
-    def _process_query_result(self, options, query_result):
-        if self._get_report_country_code(options) != 'BE' or options.get('get_file_data'):
-            return super(ECSalesReport, self)._process_query_result(options, query_result)
-
-        res = super(ECSalesReport, self)._process_query_result(options, query_result)
-        total = res[-1]['columns'][0]['no_format']
-        options['be_tax_cross_check_warning'] = not self._total_consistent_with_tax_report(options, total)
-        return res
-
-    def _total_consistent_with_tax_report(self, options, total):
+    def l10n_be_ec_total_consistent_with_tax_report(self, options, total):
         """ Belgian EC Sales taxes report total must match
             Tax Report lines 44 + 46L + 46T - 48s44 - 48s46L - 48s46T.
         """
-        codes = self._get_ec_sale_code_options_data(options)
-        tax_report_line_ids = [id for k in codes for id in codes[k]['tax_report_line_ids']]
-        dict_to_fill = {id: [{
-            'periods': [{'balance': 0}],
-            'show': False
-        }] for id in tax_report_line_ids}
-        domain = [('tax_tag_ids.tax_report_line_ids.id', 'in', tax_report_line_ids)]
-        tax_report_options = self.env['account.generic.tax.report']._get_options(options)
-        self.env['account.generic.tax.report']._compute_from_amls_grids(tax_report_options, dict_to_fill, 0, domain)
+        vat_report = self.env.ref('l10n_be.tax_report_vat')
+        tax_report_options = vat_report._get_options(options)
+        expressions = (
+            self.env.ref('l10n_be.tax_report_line_44_tag'),
+            self.env.ref('l10n_be.tax_report_line_46L_tag'),
+            self.env.ref('l10n_be.tax_report_line_46T_tag'),
+            self.env.ref('l10n_be.tax_report_line_48s44_tag'),
+            self.env.ref('l10n_be.tax_report_line_48s46L_tag'),
+            self.env.ref('l10n_be.tax_report_line_48s46T_tag'),
+        )
         tax_total = 0.0
-        for line in self.env['account.tax.report.line'].browse(tax_report_line_ids):
-            if line.tag_name[:2] == '48':
-                tax_total -= dict_to_fill[line.id][0]['periods'][0]['balance']
-            else:
-                tax_total += dict_to_fill[line.id][0]['periods'][0]['balance']
-
+        tax_total_grouped = vat_report._compute_expression_totals_for_each_column_group(expressions, tax_report_options)
+        for expr_dict in tax_total_grouped.values():
+            for expression, expr_total in expr_dict.items():
+                if expression.formula[:2] == '48':
+                    tax_total -= expr_total.get('value', 0.)
+                else:
+                    tax_total += expr_total.get('value', 0.)
         return self.env.company.currency_id.compare_amounts(tax_total, total) == 0
 
     @api.model
-    def _get_reports_buttons(self, options):
-        if self._get_report_country_code(options) != 'BE':
-            return super(ECSalesReport, self)._get_reports_buttons(options)
+    def _caret_options_initializer_l10n_be_sales_report(self):
+        """
+        Add custom caret option for the report to link to the partner and allow cleaner overrides.
+        """
+        return {
+            'ec_sales': [
+                {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
+                {'name': _("Audit"), 'action': 'l10n_be_partner_vat_listing_open_invoices', 'action_param': 'id'},
+            ],
+        }
 
-        return super(ECSalesReport, self)._get_reports_buttons(options) + [
-            {'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}
-        ]
-
-    def get_xml(self, options):
-        if self._get_report_country_code(options) != 'BE':
-            return super(ECSalesReport, self).get_xml(options)
+    def l10n_be_export_to_xml_sales_report(self, options):
+        self.ensure_one()
+        colname_to_idx = {col['name']: idx for idx, col in enumerate(options.get('columns', []))}
         # Check
         company = self.env.company
         company_vat = company.partner_id.vat
@@ -129,51 +113,42 @@ class ECSalesReport(models.AbstractModel):
 
         seq_declarantnum = self.env['ir.sequence'].next_by_code('declarantnum')
         dnum = company_vat[2:] + seq_declarantnum[-4:]
-
+        ads = None
         addr = company.partner_id.address_get(['invoice'])
+        phone = email = city = post_code = street = country = ''
+
         if addr.get('invoice', False):
             ads = self.env['res.partner'].browse([addr['invoice']])[0]
-            phone = ads.phone and self._raw_phonenumber(ads.phone) or address.phone and self._raw_phonenumber(address.phone)
-            email = ads.email or ''
-            city = ads.city or ''
-            post_code = ads.zip or ''
-            if not city:
-                city = ''
+
+        if ads:
+            if ads.phone:
+                phone = self._raw_phonenumber(ads.phone)
+            elif address.phone:
+                phone = self._raw_phonenumber(address.phone)
+            if ads.email:
+                email = ads.email
+            if ads.city:
+                city = ads.city
+            if ads.zip:
+                post_code = ads.zip
             if ads.street:
                 street = ads.street
             if ads.street2:
                 street += ' ' + ads.street2
-            if ads.country_id:
-                country = ads.country_id.code
 
-        if not country:
-            country = company_vat[:2]
+            country = ads.country_id.code if ads.country_id else company_vat[:2]
 
-        date_from = options['date'].get('date_from')
-        date_to = options['date'].get('date_to')
-
-        options['get_file_data'] = True
-        lines = self.with_context(no_format=True)._get_lines(options)
+        date_from = fields.Date.from_string(options['date'].get('date_from'))
+        period_type = options['date'].get('period_type')
+        options['no_format'] = True
+        lines = self._get_lines(options)
         xml_data = {
-            'lines': lines,
-            'clientnbr': len(lines),
-            'amountsum': sum(line_vals[-1] for line_vals in lines),
+            'clientnbr': len([line for line in lines if self._get_model_info_from_id(line['id'])[0] == 'res.partner']),
+            'amountsum': lines[-1]['columns'][colname_to_idx['Amount']]['no_format'],
         }
 
-        ctx_date_from = date_from[5:10]
-        ctx_date_to = date_to[5:10]
-        month = None
-        quarter = None
-        if ctx_date_from == '01-01' and ctx_date_to == '03-31':
-            quarter = '1'
-        elif ctx_date_from == '04-01' and ctx_date_to == '06-30':
-            quarter = '2'
-        elif ctx_date_from == '07-01' and ctx_date_to == '09-30':
-            quarter = '3'
-        elif ctx_date_from == '10-01' and ctx_date_to == '12-31':
-            quarter = '4'
-        elif ctx_date_from != '01-01' or ctx_date_to != '12-31':
-            month = date_from[5:7]
+        month = date_from.month if period_type == 'month' else None
+        quarter = date_from.month // 4 + 1 if period_type == 'quarter' else None
 
         xml_data.update({
             'company_name': company.name,
@@ -186,7 +161,7 @@ class ECSalesReport(models.AbstractModel):
             'country': country,
             'email': email,
             'phone': self._raw_phonenumber(phone),
-            'year': date_from[0:4],
+            'year': date_from.year,
             'month': month,
             'quarter': quarter,
             'comments': self._get_report_manager(options).summary or '',
@@ -217,17 +192,18 @@ class ECSalesReport(models.AbstractModel):
 
         data_clientinfo = ''
         seq = 0
-        for line in xml_data['lines']:
+        for line in lines[:-1]:   # Remove total line
             seq += 1
-            vat = line[0]
+            country = line['columns'][colname_to_idx['Country Code']].get('name', '')
+            vat = line['columns'][colname_to_idx['VAT Number']].get('name', '')
             if not vat:
                 raise UserError(_('No vat number defined for %s.', line['name']))
             client = {
-                'vatnum': vat[2:].replace(' ', '').upper(),
-                'vat': vat,
-                'country': vat[:2],
-                'amount': line[2],
-                'code': line[1],
+                'vatnum': vat,
+                'vat': (country + vat).replace(' ', '').upper(),
+                'country': country,
+                'amount': line['columns'][colname_to_idx['Amount']]['no_format'],
+                'code': line['columns'][colname_to_idx['Tax Code']]['name'][:1],
                 'seq': seq,
             }
             data_clientinfo += Markup("""
@@ -239,5 +215,10 @@ class ECSalesReport(models.AbstractModel):
 
         data_rslt = data_head + data_clientinfo + Markup("""
         </ns2:IntraListing>
-</ns2:IntraConsignment>""")
-        return data_rslt.encode('ISO-8859-1', 'ignore')
+    </ns2:IntraConsignment>""")
+
+        return {
+            'file_name': self.get_default_report_filename('xml'),
+            'file_content': data_rslt.encode('ISO-8859-1', 'ignore'),
+            'file_type': 'xml',
+        }

@@ -1,298 +1,234 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, api, fields, _
-from odoo.tools.misc import format_date
+from odoo import models, fields
 
 from dateutil.relativedelta import relativedelta
 from itertools import chain
 
 
-class ReportAccountAgedPartner(models.AbstractModel):
-    _name = "account.aged.partner"
-    _description = "Aged Partner Balances"
-    _inherit = 'account.accounting.report'
-    _order = "partner_name, report_date asc, move_name desc"
+class AccountReport(models.Model):
+    _inherit = 'account.report'
 
-    filter_date = {'mode': 'single', 'filter': 'today'}
-    filter_unfold_all = False
-    filter_partner = True
-    order_selected_column = {'default': 0}
+    def _custom_engine_aged_receivable(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        return self._aged_partner_report_custom_engine_common(options, 'asset_receivable', current_groupby, next_groupby, offset=offset, limit=limit)
 
-    partner_id = fields.Many2one('res.partner')
-    partner_name = fields.Char(group_operator='max')
-    partner_trust = fields.Char(group_operator='max')
-    payment_id = fields.Many2one('account.payment')
-    report_date = fields.Date(group_operator='max', string='Due Date')
-    expected_pay_date = fields.Date(string='Expected Date')
-    move_type = fields.Char()
-    move_name = fields.Char(group_operator='max')
-    move_ref = fields.Char()
-    account_name = fields.Char(group_operator='max')
-    account_code = fields.Char(group_operator='max')
-    report_currency_id = fields.Many2one('res.currency')
-    period0 = fields.Monetary(string='As of: ')
-    period1 = fields.Monetary(string='1 - 30')
-    period2 = fields.Monetary(string='31 - 60')
-    period3 = fields.Monetary(string='61 - 90')
-    period4 = fields.Monetary(string='91 - 120')
-    period5 = fields.Monetary(string='Older')
-    amount_currency = fields.Monetary(currency_field='currency_id')
+    def _custom_engine_aged_payable(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        return self._aged_partner_report_custom_engine_common(options, 'liability_payable', current_groupby, next_groupby, offset=offset, limit=limit)
 
-    @api.model
-    def _get_templates(self):
-        # OVERRIDE
-        templates = super(ReportAccountAgedPartner, self)._get_templates()
-        templates['main_template'] = 'account_reports.template_aged_partner_balance_report'
-        return templates
+    def _aged_partner_report_custom_engine_common(self, options, internal_type, current_groupby, next_groupby, offset=0, limit=None):
+        self.ensure_one()
+        self._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
 
-    ####################################################
-    # QUERIES
-    ####################################################
-
-    @api.model
-    def _get_query_period_table(self, options):
-        ''' Compute the periods to handle in the report.
-        E.g. Suppose date = '2019-01-09', the computed periods will be:
-
-        Name                | Start         | Stop
-        --------------------------------------------
-        As of 2019-01-09    | 2019-01-09    |
-        1 - 30              | 2018-12-10    | 2019-01-08
-        31 - 60             | 2018-11-10    | 2018-12-09
-        61 - 90             | 2018-10-11    | 2018-11-09
-        91 - 120            | 2018-09-11    | 2018-10-10
-        Older               |               | 2018-09-10
-
-        Then, return the values as an sql floating table to use it directly in queries.
-
-        :return: A floating sql query representing the report's periods.
-        '''
         def minus_days(date_obj, days):
             return fields.Date.to_string(date_obj - relativedelta(days=days))
 
-        date_str = options['date']['date_to']
-        date = fields.Date.from_string(date_str)
-        period_values = [
-            (False,                  date_str),
-            (minus_days(date, 1),    minus_days(date, 30)),
-            (minus_days(date, 31),   minus_days(date, 60)),
-            (minus_days(date, 61),   minus_days(date, 90)),
-            (minus_days(date, 91),   minus_days(date, 120)),
-            (minus_days(date, 121),  False),
+        date_to = fields.Date.from_string(options['date']['date_to'])
+        periods = [
+            (False, fields.Date.to_string(date_to)),
+            (minus_days(date_to, 1), minus_days(date_to, 30)),
+            (minus_days(date_to, 31), minus_days(date_to, 60)),
+            (minus_days(date_to, 61), minus_days(date_to, 90)),
+            (minus_days(date_to, 91), minus_days(date_to, 120)),
+            (minus_days(date_to, 121), False),
         ]
 
-        period_table = ('(VALUES %s) AS period_table(date_start, date_stop, period_index)' %
-                        ','.join("(%s, %s, %s)" for i, period in enumerate(period_values)))
+        def build_result_dict(query_res_lines):
+            rslt = {f'period{i}': 0 for i in range(len(periods))}
+
+            for query_res in query_res_lines:
+                for i in range(len(periods)):
+                    period_key = f'period{i}'
+                    rslt[period_key] += query_res[period_key]
+
+            if current_groupby == 'id':
+                query_res = query_res_lines[0] # We're grouping by id, so there is only 1 element in query_res_lines anyway
+                currency = self.env['res.currency'].browse(query_res['currency_id'][0]) if len(query_res['currency_id']) == 1 else None
+                rslt.update({
+                    'due_date': query_res['due_date'][0] if len(query_res['due_date']) == 1 else None,
+                    'amount_currency': self.format_value(query_res['amount_currency'], currency=currency),
+                    'currency': currency.display_name if currency else None,
+                    'account_name': query_res['account_name'][0] if len(query_res['account_name']) == 1 else None,
+                    'expected_date': query_res['expected_date'][0] if len(query_res['expected_date']) == 1 else None,
+                    'total': None,
+                    'has_sublines': query_res['aml_count'] > 0,
+                })
+            else:
+                rslt.update({
+                    'due_date': None,
+                    'amount_currency': None,
+                    'currency': None,
+                    'account_name': None,
+                    'expected_date': None,
+                    'total': sum(rslt[f'period{i}'] for i in range(len(periods))),
+                    'has_sublines': False,
+                })
+
+            return rslt
+
+        # Build period table
+        period_table_format = ('(VALUES %s)' % ','.join("(%s, %s, %s)" for period in periods))
         params = list(chain.from_iterable(
             (period[0] or None, period[1] or None, i)
-            for i, period in enumerate(period_values)
+            for i, period in enumerate(periods)
         ))
-        return self.env.cr.mogrify(period_table, params).decode(self.env.cr.connection.encoding)
+        period_table = self.env.cr.mogrify(period_table_format, params).decode(self.env.cr.connection.encoding)
 
-    @api.model
-    def _get_sql(self):
-        options = self.env.context['report_options']
-        query = ("""
-            SELECT
-                {move_line_fields},
-                (account_move_line.amount_currency * %(sign)s) as amount_currency,
-                account_move_line.partner_id AS partner_id,
-                partner.name AS partner_name,
-                COALESCE(trust_property.value_text, 'normal') AS partner_trust,
-                COALESCE(account_move_line.currency_id, journal.currency_id) AS report_currency_id,
-                account_move_line.payment_id AS payment_id,
-                COALESCE(account_move_line.date_maturity, account_move_line.date) AS report_date,
-                account_move_line.expected_pay_date AS expected_pay_date,
-                move.move_type AS move_type,
-                move.name AS move_name,
-                move.ref AS move_ref,
-                account.code || ' ' || account.name AS account_name,
-                account.code AS account_code,""" + ','.join([("""
+        # Build query
+        tables, where_clause, where_params = self._query_get(options, 'strict_range', domain=[('account_id.account_type', '=', internal_type)])
+
+        currency_table = self.env['res.currency']._get_query_currency_table(options)
+        always_present_groupby = "period_table.period_index, currency_table.rate, currency_table.precision"
+        if current_groupby:
+            select_from_groupby = f"account_move_line.{current_groupby} AS grouping_key,"
+            groupby_clause = f"account_move_line.{current_groupby}, {always_present_groupby}"
+        else:
+            select_from_groupby = ''
+            groupby_clause = always_present_groupby
+        select_period_query = ','.join(
+            f"""
                 CASE WHEN period_table.period_index = {i}
-                THEN %(sign)s * ROUND((
-                    account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0)
-                ) * currency_table.rate, currency_table.precision)
-                ELSE 0 END AS period{i}""").format(i=i) for i in range(6)]) + """
-            FROM account_move_line
-            JOIN account_move move ON account_move_line.move_id = move.id
+                THEN %s * (
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision))
+                    - COALESCE(SUM(ROUND(part_debit.amount * currency_table.rate, currency_table.precision)), 0)
+                    + COALESCE(SUM(ROUND(part_credit.amount * currency_table.rate, currency_table.precision)), 0)
+                )
+                ELSE 0 END AS period{i}
+            """
+            for i in range(len(periods))
+        )
+
+        tail_query, tail_params = self._get_engine_query_tail(offset, limit)
+        query = f"""
+            WITH period_table(date_start, date_stop, period_index) AS ({period_table})
+
+            SELECT
+                {select_from_groupby}
+                %s * SUM(account_move_line.amount_currency) AS amount_currency,
+                ARRAY_AGG(DISTINCT account_move_line.partner_id) AS partner_id,
+                ARRAY_AGG(account_move_line.payment_id) AS payment_id,
+                ARRAY_AGG(DISTINCT COALESCE(account_move_line.date_maturity, account_move_line.date)) AS report_date,
+                ARRAY_AGG(DISTINCT account_move_line.expected_pay_date) AS expected_date,
+                ARRAY_AGG(DISTINCT account.code) AS account_name,
+                ARRAY_AGG(DISTINCT COALESCE(account_move_line.date_maturity, account_move_line.date)) AS due_date,
+                ARRAY_AGG(DISTINCT account_move_line.currency_id) AS currency_id,
+                COUNT(account_move_line.id) AS aml_count,
+                ARRAY_AGG(account.code) AS account_code,
+                {select_period_query}
+
+            FROM {tables}
+
             JOIN account_journal journal ON journal.id = account_move_line.journal_id
             JOIN account_account account ON account.id = account_move_line.account_id
-            LEFT JOIN res_partner partner ON partner.id = account_move_line.partner_id
-            LEFT JOIN ir_property trust_property ON (
-                trust_property.res_id = 'res.partner,'|| account_move_line.partner_id
-                AND trust_property.name = 'trust'
-                AND trust_property.company_id = account_move_line.company_id
-            )
             JOIN {currency_table} ON currency_table.company_id = account_move_line.company_id
+
             LEFT JOIN LATERAL (
-                SELECT part.amount, part.debit_move_id
+                SELECT SUM(part.amount) AS amount, part.debit_move_id
                 FROM account_partial_reconcile part
-                WHERE part.max_date <= %(date)s
+                WHERE part.max_date <= %s
+                GROUP BY part.debit_move_id
             ) part_debit ON part_debit.debit_move_id = account_move_line.id
+
             LEFT JOIN LATERAL (
-                SELECT part.amount, part.credit_move_id
+                SELECT SUM(part.amount) AS amount, part.credit_move_id
                 FROM account_partial_reconcile part
-                WHERE part.max_date <= %(date)s
+                WHERE part.max_date <= %s
+                GROUP BY part.credit_move_id
             ) part_credit ON part_credit.credit_move_id = account_move_line.id
-            JOIN {period_table} ON (
-                period_table.date_start IS NULL
-                OR COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
-            )
-            AND (
-                period_table.date_stop IS NULL
-                OR COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)
-            )
-            GROUP BY account_move_line.id, partner.id, trust_property.id, journal.id, move.id, account.id,
-                     period_table.period_index, currency_table.rate, currency_table.precision
-            HAVING ROUND(account_move_line.balance - COALESCE(SUM(part_debit.amount), 0) + COALESCE(SUM(part_credit.amount), 0), currency_table.precision) != 0
-        """).format(
-            move_line_fields=self._get_move_line_fields('account_move_line'),
-            currency_table=self.env['res.currency']._get_query_currency_table(options),
-            period_table=self._get_query_period_table(options),
-        )
-        params = {
-            'sign': options['account_type_aml_sign'],
-            'date': options['date']['date_to'],
-        }
-        return self.env.cr.mogrify(query, params).decode(self.env.cr.connection.encoding)
 
-    ####################################################
-    # COLUMNS/LINES
-    ####################################################
-    @api.model
-    def _get_column_details(self, options):
-        columns = [
-            self._header_column(),
-            self._field_column('report_date'),
+            JOIN period_table ON
+                (
+                    period_table.date_start IS NULL
+                    OR COALESCE(account_move_line.date_maturity, account_move_line.date) <= DATE(period_table.date_start)
+                )
+                AND
+                (
+                    period_table.date_stop IS NULL
+                    OR COALESCE(account_move_line.date_maturity, account_move_line.date) >= DATE(period_table.date_stop)
+                )
 
-            self._field_column('account_code', name=_("Account")),
-            self._field_column('expected_pay_date'),
-            self._field_column('period0', name=_("As of: %s", format_date(self.env, options['date']['date_to']))),
-            self._field_column('period1', sortable=True),
-            self._field_column('period2', sortable=True),
-            self._field_column('period3', sortable=True),
-            self._field_column('period4', sortable=True),
-            self._field_column('period5', sortable=True),
-            self._custom_column(  # Avoid doing twice the sub-select in the view
-                name=_('Total'),
-                classes=['number'],
-                formatter=self.format_value,
-                getter=(lambda v: v['period0'] + v['period1'] + v['period2'] + v['period3'] + v['period4'] + v['period5']),
-                sortable=True,
-            ),
+            WHERE {where_clause}
+
+            GROUP BY {groupby_clause}
+
+            HAVING (
+                SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision))
+                - COALESCE(SUM(ROUND(part_debit.amount * currency_table.rate, currency_table.precision)), 0)
+                + COALESCE(SUM(ROUND(part_credit.amount * currency_table.rate, currency_table.precision)), 0)
+            ) != 0
+            {tail_query}
+        """
+
+        multiplicator = -1 if internal_type == 'liability_payable' else 1
+        params = [
+            multiplicator,
+            *([multiplicator] * len(periods)),
+            date_to,
+            date_to,
+            *where_params,
+            *tail_params,
         ]
+        self._cr.execute(query, params)
+        query_res_lines = self._cr.dictfetchall()
 
-        if self.user_has_groups('base.group_multi_currency'):
-            columns[2:2] = [
-                self._field_column('amount_currency'),
-                self._field_column('currency_id'),
+        if not current_groupby:
+            return build_result_dict(query_res_lines)
+        else:
+            rslt = []
+
+            all_res_per_grouping_key = {}
+            for query_res in query_res_lines:
+                grouping_key = query_res['grouping_key']
+                all_res_per_grouping_key.setdefault(grouping_key, []).append(query_res)
+
+            for grouping_key, query_res_lines in all_res_per_grouping_key.items():
+                rslt.append((grouping_key, build_result_dict(query_res_lines)))
+
+            return rslt
+
+    def _custom_options_initializer_aged_report(self, options, previous_options=None):
+        if not self.user_has_groups('base.group_multi_currency'):
+            options['columns'] = [
+                column for column in options['columns']
+                if column['expression_label'] not in {'amount_currency', 'currency'}
             ]
-        return columns
 
-    def _get_hierarchy_details(self, options):
-        return [
-            self._hierarchy_level('partner_id', foldable=True, namespan=len(self._get_column_details(options)) - 7),
-            self._hierarchy_level('id'),
-        ]
+        default_order_column = 0
+        for index, column in enumerate(options.get('columns')):
+            if column.get('expression_label') == 'due_date':
+                default_order_column = index + 1
+                break
+        options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
 
-    def _show_line(self, report_dict, value_dict, current, options):
-        # Don't display an aml report line (except the header) with all zero amounts.
-        all_zero = all(
-            self.env.company.currency_id.is_zero(value_dict[f])
-            for f in ['period0', 'period1', 'period2', 'period3', 'period4', 'period5']
-        ) and not value_dict.get('__count')
-        return super()._show_line(report_dict, value_dict, current, options) and not all_zero
+    def _custom_line_postprocessor_aged_report(self, lines, options):
+        partner_lines_map = {}
 
-    def _format_partner_id_line(self, res, value_dict, options):
-        res['name'] = value_dict['partner_name'][:128] if value_dict['partner_name'] else _('Unknown Partner')
-        res['trust'] = value_dict['partner_trust']
+        # Sort line dicts by partner
+        for line in lines:
+            model, model_id = self._get_model_info_from_id(line['id'])
+            if model == 'res.partner':
+                partner_lines_map[model_id] = line
 
-    def _format_id_line(self, res, value_dict, options):
-        res['name'] = value_dict['move_name']
-        res['title_hover'] = value_dict['move_ref']
-        res['caret_options'] = 'account.payment' if value_dict.get('payment_id') else 'account.move'
-        for col in res['columns']:
-            if col.get('no_format') == 0:
-                col['name'] = ''
-        res['columns'][-1]['name'] = ''
+        if partner_lines_map:
+            # Query trust for the required partners
+            self._cr.execute("""
+                SELECT res_id, value_text
+                FROM ir_property
+                WHERE res_id IN %s
+                AND name = 'trust'
+                AND company_id IN %s
+            """, [
+                tuple(f"res.partner,{partner_id}" for partner_id in partner_lines_map),
+                tuple(comp['id'] for comp in options.get('multi_company', [])) or (self.env.company.id,),
+            ])
 
-    def _format_total_line(self, res, value_dict, options):
-        res['name'] = _('Total')
-        res['colspan'] = len(self._get_column_details(options)) - 7
-        res['columns'] = res['columns'][res['colspan']-1:]
+            trust_map = {}
+            for res_id_str, trust in self._cr.fetchall():
+                partner_id = int(res_id_str.split(',')[1])
+                trust_map[partner_id] = trust
 
-        # Since we remove every 0.0 by default we need to add them here
-        for col in res['columns']:
-            if col.get('no_format') == 0:
-                col['name'] = self.format_value(col.get('no_format'), blank_if_zero=False)
+            # Set the trust key into the line dicts
+            for partner_id, line_dict in partner_lines_map.items():
+                line_dict['trust'] = trust_map.get(partner_id, 'normal')
 
-
-class ReportAccountAgedReceivable(models.Model):
-    _name = "account.aged.receivable"
-    _description = "Aged Receivable"
-    _inherit = "account.aged.partner"
-    _auto = False
-
-    filter_account_type = [
-        {'id': 'trade_receivable', 'selected': True},
-        {'id': 'non_trade_receivable', 'selected': False},
-    ]
-
-    def _init_filter_account_type(self, options, previous_options=None):
-        # OVERRIDE
-        super()._init_filter_account_type(options, previous_options=previous_options)
-        options['account_type_aml_sign'] = 1
-
-    @api.model
-    def _get_report_name(self):
-        return _("Aged Receivable")
-
-    @api.model
-    def _get_templates(self):
-        # OVERRIDE
-        templates = super(ReportAccountAgedReceivable, self)._get_templates()
-        templates['line_template'] = 'account_reports.line_template_aged_receivable_report'
-        return templates
-
-    def view_all_journal_items(self, options, params):
-        if params.get('id'):
-            params['id'] = int(params.get('id').split('_')[1])
-        action = self.env['account.report'].open_journal_items(options, params, view_id=self.env.ref('account.view_move_line_tree_grouped_partner').id)
-        action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_partner': 1})
-        return action
-
-
-class ReportAccountAgedPayable(models.Model):
-    _name = "account.aged.payable"
-    _description = "Aged Payable"
-    _inherit = "account.aged.partner"
-    _auto = False
-
-    filter_account_type = [
-        {'id': 'trade_payable', 'selected': True},
-        {'id': 'non_trade_payable', 'selected': False},
-    ]
-
-    def _init_filter_account_type(self, options, previous_options=None):
-        # OVERRIDE
-        super()._init_filter_account_type(options, previous_options=previous_options)
-        options['account_type_aml_sign'] = -1
-
-    @api.model
-    def _get_report_name(self):
-        return _("Aged Payable")
-
-    @api.model
-    def _get_templates(self):
-        # OVERRIDE
-        templates = super(ReportAccountAgedPayable, self)._get_templates()
-        templates['line_template'] = 'account_reports.line_template_aged_payable_report'
-        return templates
-
-    def view_all_journal_items(self, options, params):
-        if params.get('id'):
-            params['id'] = int(params.get('id').split('_')[1])
-        action = self.env['account.report'].open_journal_items(options, params, view_id=self.env.ref('account.view_move_line_tree_grouped_partner').id)
-        action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_partner': 1})
-        return action
+        return lines

@@ -17,16 +17,20 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         cls.revenue_1 = cls.company_data['default_account_revenue']
         cls.revenue_2 = cls.copy_account(cls.revenue_1)
 
-    def checkAmlsRedirection(self, report, options, tax, expected_amls):
-        action = report._redirect_audit_default_tax_report(options, tax.type_tax_use, tax.id)
-        domain = action['domain']
-        amls = self.env['account.move.line'].search(domain)
-        self.assertEqual(set(amls), set(expected_amls))
+        cls.report_generic = cls.env.ref('account.generic_tax_report')
+        cls.report_grouped_account_tax = cls.env.ref('account.generic_tax_report_account_tax')
+        cls.report_grouped_tax_account = cls.env.ref('account.generic_tax_report_tax_account')
+
+    def checkAmlsRedirection(self, report, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict):
+        # Check the caret options of the tax lines redirect to the correct amls
+        for tax_line in tax_lines_with_caret_options:
+            expected_amls = expected_amls_based_on_tax_dict.get(tax_line['name'])
+            action = report.generic_tax_report_caret_option_audit_tax(options, {'line_id': tax_line['id']})
+            domain = action['domain']
+            actual_amls = self.env['account.move.line'].search(domain)
+            self.assertEqual(set(actual_amls), set(expected_amls))
 
     def test_tax_affect_base(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
-
         tax_20_affect_base = self.env['account.tax'].create({
             'name': "tax_20_affect_base",
             'amount_type': 'percent',
@@ -63,20 +67,24 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         })
         invoice.action_post()
 
+        date_from_str = '2019-01-01'
+        date_to_str = '2019-01-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         640.0),
                 ('tax_20_affect_base (20.0%)',          2000.0,     400.0),
                 ('tax_10 (10.0%)',                      2400.0,     240.0),
+                ('Total Sales',                         '',         640.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
@@ -84,15 +92,19 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('400000 Product Sales',                '',         320.0),
                 ('tax_20_affect_base (20.0%)',          1000.0,     200.0),
                 ('tax_10 (10.0%)',                      1200.0,     120.0),
+                ('Total 400000 Product Sales',          '',         320.0),
                 ('400000 (2) Product Sales',            '',         320.0),
                 ('tax_20_affect_base (20.0%)',          1000.0,     200.0),
                 ('tax_10 (10.0%)',                      1200.0,     120.0),
+                ('Total 400000 (2) Product Sales',      '',         320.0),
+                ('Total Sales',                         '',         640.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
@@ -100,21 +112,25 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_20_affect_base (20.0%)',          '',         400.0),
                 ('400000 Product Sales',                1000.0,     200.0),
                 ('400000 (2) Product Sales',            1000.0,     200.0),
+                ('Total tax_20_affect_base (20.0%)',    '',         400.0),
                 ('tax_10 (10.0%)',                      '',         240.0),
                 ('400000 Product Sales',                1200.0,     120.0),
                 ('400000 (2) Product Sales',            1200.0,     120.0),
+                ('Total tax_10 (10.0%)',                '',         240.0),
+                ('Total Sales',                         '',         640.0),
             ],
         )
 
-        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_20_affect_base or tax_20_affect_base in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_20_affect_base, expected_amls)
-        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_10 or tax_10 in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_10, expected_amls)
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
+        expected_amls_tax_10 = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_10 or tax_10 in x.tax_ids)
+        expected_amls_tax_20 = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_20_affect_base or tax_20_affect_base in x.tax_ids)
+        expected_amls_based_on_tax_dict = {
+            'tax_10 (10.0%)': expected_amls_tax_10,
+            'tax_20_affect_base (20.0%)': expected_amls_tax_20,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)
 
     def test_tax_group_shared_tax(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
-
         tax_10 = self.env['account.tax'].create({
             'name': "tax_10",
             'amount_type': 'percent',
@@ -168,20 +184,24 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         })
         invoice.action_post()
 
+        date_from_str = '2019-01-01'
+        date_to_str = '2019-01-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         1100.0),
                 ('tax_group_10_20',                     1000.0,     300.0),
                 ('tax_group_10_30',                     2000.0,     800.0),
+                ('Total Sales',                         '',         1100.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
@@ -189,34 +209,44 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('400000 Product Sales',                '',         1100.0),
                 ('tax_group_10_20',                     1000.0,     300.0),
                 ('tax_group_10_30',                     2000.0,     800.0),
+                ('Total 400000 Product Sales',          '',         1100.0),
+                ('Total Sales',                         '',         1100.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         1100.0),
                 ('tax_group_10_20',                     '',         300.0),
                 ('400000 Product Sales',                1000.0,     300.0),
+                ('Total tax_group_10_20',               '',         300.0),
                 ('tax_group_10_30',                     '',         800.0),
                 ('400000 Product Sales',                2000.0,     800.0),
+                ('Total tax_group_10_30',               '',         800.0),
+                ('Total Sales',                         '',         1100.0),
             ],
         )
 
-        expected_amls = invoice.line_ids.filtered(lambda x: x.group_tax_id == tax_group_10_20 or tax_group_10_20 in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_group_10_20, expected_amls)
-        expected_amls = invoice.line_ids.filtered(lambda x: x.group_tax_id == tax_group_10_30 or tax_group_10_30 in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_group_10_30, expected_amls)
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
+        expected_amls_tax_group_10_20 = invoice.line_ids.filtered(lambda x: x.group_tax_id == tax_group_10_20 or tax_group_10_20 in x.tax_ids)
+        expected_amls_tax_group_10_30 = invoice.line_ids.filtered(lambda x: x.group_tax_id == tax_group_10_30 or tax_group_10_30 in x.tax_ids)
+        expected_amls_based_on_tax_dict = {
+            'tax_group_10_20': expected_amls_tax_group_10_20,
+            'tax_group_10_30': expected_amls_tax_group_10_30,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)
 
         # Same with tax_10 as a sale tax.
-        options['tax_report'] = 'generic'
         tax_10.type_tax_use = 'sale'
 
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
@@ -224,6 +254,7 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ("tax_10 (10.0%)" ,                     3000.0,     300.0),
                 ("tax_20 (20.0%)" ,                     1000.0,     200.0),
                 ("tax_30 (30.0%)" ,                     2000.0,     600),
+                ('Total Sales',                         '',         1100.0),
             ],
         )
 
@@ -232,7 +263,7 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         tax_20.type_tax_use = 'sale'
 
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
@@ -240,13 +271,11 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ("tax_10 (10.0%)" ,                     1000.0,     100.0),
                 ("tax_20 (20.0%)" ,                     1000.0,     200.0),
                 ('tax_group_10_30',                     2000.0,     800.0),
+                ('Total Sales',                         '',         1100.0),
             ],
         )
 
     def test_tax_group_of_taxes_affected_by_other(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
-
         tax_10_affect_base = self.env['account.tax'].create({
             'name': "tax_10_affect_base",
             'amount_type': 'percent',
@@ -289,20 +318,24 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         })
         invoice.action_post()
 
+        date_from_str = '2019-01-01'
+        date_to_str = '2019-01-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         452.0),
                 ('tax_10_affect_base (10.0%)',          1000.0,     100.0),
                 ('tax_group',                           1100.0,     352.0),
+                ('Total Sales',                         '',         452.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
@@ -310,32 +343,39 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('400000 Product Sales',                '',         452.0),
                 ('tax_10_affect_base (10.0%)',          1000.0,     100.0),
                 ('tax_group',                           1100.0,     352.0),
+                ('Total 400000 Product Sales',          '',         452.0),
+                ('Total Sales',                         '',         452.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         452.0),
                 ('tax_10_affect_base (10.0%)',          '',         100.0),
                 ('400000 Product Sales',                1000.0,     100.0),
+                ('Total tax_10_affect_base (10.0%)',    '',         100.0),
                 ('tax_group',                           '',         352.0),
                 ('400000 Product Sales',                1100.0,     352.0),
+                ('Total tax_group',                     '',         352.0),
+                ('Total Sales',                         '',         452.0),
             ],
         )
 
-        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_10_affect_base or tax_10_affect_base in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_10_affect_base, expected_amls)
-        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_group, expected_amls)
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
+        expected_amls_tax_10_affect_base = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_10_affect_base or tax_10_affect_base in x.tax_ids)
+        expected_amls_tax_group = invoice.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
+        expected_amls_based_on_tax_dict = {
+            'tax_10_affect_base (10.0%)': expected_amls_tax_10_affect_base,
+            'tax_group': expected_amls_tax_group,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)
 
     def test_mixed_all_type_tax_use_same_line(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
-
         tax_10 = self.env['account.tax'].create({
             'name': "tax_10",
             'amount_type': 'percent',
@@ -372,57 +412,72 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         move = move_form.save()
         move.action_post()
 
+        date_from_str = '2019-01-01'
+        date_to_str = '2019-01-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         -100.0),
                 ('tax_10 (10.0%)',                      -1000.0,    -100.0),
+                ('Total Sales',                         '',         -100.0),
                 ('Purchases',                           '',         200.0),
                 ('tax_20 (20.0%)',                      1000.0,     200.0),
+                ('Total Purchases',                     '',         200.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         -100.0),
                 ('400000 Product Sales',                '',         -100.0),
                 ('tax_10 (10.0%)',                      -1000.0,    -100.0),
+                ('Total 400000 Product Sales',          '',         -100.0),
+                ('Total Sales',                         '',         -100.0),
                 ('Purchases',                           '',         200.0),
                 ('400000 Product Sales',                '',         200.0),
                 ('tax_20 (20.0%)',                      1000.0,     200.0),
+                ('Total 400000 Product Sales',          '',         200.0),
+                ('Total Purchases',                     '',         200.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         -100.0),
                 ('tax_10 (10.0%)',                      '',         -100.0),
                 ('400000 Product Sales',                -1000.0,    -100.0),
+                ('Total tax_10 (10.0%)',                '',         -100.0),
+                ('Total Sales',                         '',         -100.0),
                 ('Purchases',                           '',         200.0),
                 ('tax_20 (20.0%)',                      '',         200.0),
                 ('400000 Product Sales',                1000.0,     200.0),
+                ('Total tax_20 (20.0%)',                '',         200.0),
+                ('Total Purchases',                     '',         200.0),
             ],
         )
 
-        expected_amls = move.line_ids.filtered(lambda x: x.tax_line_id == tax_10 or x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_10, expected_amls)
-        expected_amls = move.line_ids.filtered(lambda x: x.tax_line_id == tax_20 or x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_20, expected_amls)
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
+        expected_amls_tax_10 = move.line_ids.filtered(lambda x: x.tax_line_id == tax_10 or x.tax_ids)
+        expected_amls_tax_20 = move.line_ids.filtered(lambda x: x.tax_line_id == tax_20 or x.tax_ids)
+        expected_amls_based_on_tax_dict = {
+            'tax_10 (10.0%)': expected_amls_tax_10,
+            'tax_20 (20.0%)': expected_amls_tax_20,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)
 
     def test_mixed_all_type_tax_on_different_line(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
-
         tax_10 = self.env['account.tax'].create({
             'name': "tax_10",
             'amount_type': 'percent',
@@ -459,52 +514,70 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         move = move_form.save()
         move.action_post()
 
+        date_from_str = '2019-01-01'
+        date_to_str = '2019-01-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         -100.0),
                 ('tax_10 (10.0%)',                      -1000.0,    -100.0),
+                ('Total Sales',                         '',         -100.0),
                 ('Purchases',                           '',         200.0),
                 ('tax_20 (20.0%)',                      1000.0,     200.0),
+                ('Total Purchases',                     '',         200.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         -100.0),
                 ('400000 Product Sales',                '',         -100.0),
                 ('tax_10 (10.0%)',                      -1000.0,    -100.0),
+                ('Total 400000 Product Sales',          '',         -100.0),
+                ('Total Sales',                         '',         -100.0),
                 ('Purchases',                           '',         200.0),
                 ('400000 Product Sales',                '',         200.0),
                 ('tax_20 (20.0%)',                      1000.0,     200.0),
+                ('Total 400000 Product Sales',          '',         200.0),
+                ('Total Purchases',                     '',         200.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         -100.0),
                 ('tax_10 (10.0%)',                      '',         -100.0),
                 ('400000 Product Sales',                -1000.0,    -100.0),
+                ('Total tax_10 (10.0%)',                '',         -100.0),
+                ('Total Sales',                         '',         -100.0),
                 ('Purchases',                           '',         200.0),
                 ('tax_20 (20.0%)',                      '',         200.0),
                 ('400000 Product Sales',                1000.0,     200.0),
+                ('Total tax_20 (20.0%)',                '',         200.0),
+                ('Total Purchases',                     '',         200.0),
             ],
         )
 
-        expected_amls = move.line_ids.filtered(lambda x: x.tax_line_id == tax_10 or tax_10 in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_10, expected_amls)
-        expected_amls = move.line_ids.filtered(lambda x: x.tax_line_id == tax_20 or tax_20 in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_20, expected_amls)
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
+        expected_amls_tax_10 = move.line_ids.filtered(lambda x: x.tax_line_id == tax_10 or tax_10 in x.tax_ids)
+        expected_amls_tax_20 = move.line_ids.filtered(lambda x: x.tax_line_id == tax_20 or tax_20 in x.tax_ids)
+        expected_amls_based_on_tax_dict = {
+            'tax_10 (10.0%)': expected_amls_tax_10,
+            'tax_20 (20.0%)': expected_amls_tax_20,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)
 
     def test_tax_report_custom_edition_tax_line(self):
         ''' When on a journal entry, a tax line is edited manually by the user, it could lead to a broken mapping
@@ -512,9 +585,6 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         on the tax line in order to reflect this edition. This test is there to ensure the tax report is well handling
         such behavior.
         '''
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
-
         tax_10 = self.env['account.tax'].create({
             'name': "tax_10",
             'amount_type': 'percent',
@@ -552,20 +622,24 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         ]})
         invoice.action_post()
 
+        date_from_str = '2019-01-01'
+        date_to_str = '2019-01-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         301.0),
                 ('tax_10 (10.0%)',                      1000.0,     100.0),
                 ('tax_20 (20.0%)',                      1000.0,     201.0),
+                ('Total Sales',                         '',         301.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
@@ -573,33 +647,39 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('400000 Product Sales',                '',         301.0),
                 ('tax_10 (10.0%)',                      1000.0,     100.0),
                 ('tax_20 (20.0%)',                      1000.0,     201.0),
+                ('Total 400000 Product Sales',          '',         301.0),
+                ('Total Sales',                         '',         301.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         301.0),
                 ('tax_10 (10.0%)',                      '',         100.0),
                 ('400000 Product Sales',                1000.0,     100.0),
+                ('Total tax_10 (10.0%)',                '',         100.0),
                 ('tax_20 (20.0%)',                      '',         201.0),
                 ('400000 Product Sales',                1000.0,     201.0),
+                ('Total tax_20 (20.0%)',                '',         201.0),
+                ('Total Sales',                         '',         301.0),
             ],
         )
 
-        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_10 or tax_10 in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_10, expected_amls)
-        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_20 or tax_20 in x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax_20, expected_amls)
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
+        expected_amls_tax_10 = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_10 or tax_10 in x.tax_ids)
+        expected_amls_tax_20 = invoice.line_ids.filtered(lambda x: x.tax_line_id == tax_20 or tax_20 in x.tax_ids)
+        expected_amls_based_on_tax_dict = {
+            'tax_10 (10.0%)': expected_amls_tax_10,
+            'tax_20 (20.0%)': expected_amls_tax_20,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)
 
     def test_tax_report_comparisons(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-03-01'), fields.Date.from_string('2019-03-31'))
-        options = self._update_comparison_filter(options, report, 'previous_period', 2)
-
         tax_10 = self.env['account.tax'].create({
             'name': "tax_10",
             'amount_type': 'percent',
@@ -636,8 +716,12 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         )])
         invoices.action_post()
 
+        date_from_str = '2019-03-01'
+        date_to_str = '2019-03-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
+        options = self._update_comparison_filter(options, self.report_generic, 'previous_period', 2)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX         NET         TAX         NET         TAX
             [   0,                                      1,          2,          3,          4,          5,          6],
             [
@@ -645,13 +729,14 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('tax_10 (10.0%)',                      1000.0,     100.0,      '',         '',         '',         ''),
                 ('tax_20 (20.0%)',                      '',         '',         1000.0,     200.0,      '',         ''),
                 ('tax_30 (30.0%)',                      '',         '',         1000.0,     300.0,      1000.0,     300.0),
+                ('Total Sales',                         '',         100.0,      '',         500.0,      '',         300.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
-        options['group_by'] = 'account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
+        options = self._update_comparison_filter(options, self.report_grouped_account_tax, 'previous_period', 2)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX         NET         TAX         NET         TAX
             [   0,                                      1,          2,          3,          4,          5,          6],
             [
@@ -659,27 +744,34 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
                 ('400000 Product Sales',                '',         100.0,      '',         '',         '',         300.0),
                 ('tax_10 (10.0%)',                      1000.0,     100.0,      '',         '',         '',         ''),
                 ('tax_30 (30.0%)',                      '',         '',         '',         '',         1000.0,     300.0),
+                ('Total 400000 Product Sales',          '',         100.0,      '',         '',         '',         300.0),
                 ('400000 (2) Product Sales',            '',         '',         '',         500.0,      '',         ''),
                 ('tax_20 (20.0%)',                      '',         '',         1000.0,     200.0,      '',         ''),
                 ('tax_30 (30.0%)',                      '',         '',         1000.0,     300.0,      '',         ''),
+                ('Total 400000 (2) Product Sales',      '',         '',         '',         500.0,      '',         ''),
+                ('Total Sales',                         '',         100.0,      '',         500.0,      '',         300.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
-        options['group_by'] = 'tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        options = self._update_comparison_filter(options, self.report_grouped_tax_account, 'previous_period', 2)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_tax_account._get_lines(options),
             #   Name                                    NET         TAX         NET         TAX         NET         TAX
             [   0,                                      1,          2,          3,          4,          5,          6],
             [
                 ('Sales',                               '',         100.0,      '',         500.0,      '',         300.0),
                 ('tax_10 (10.0%)',                      '',         100.0,      '',         '',         '',         ''),
                 ('400000 Product Sales',                1000.0,     100.0,      '',         '',         '',         ''),
+                ('Total tax_10 (10.0%)',                '',         100.0,      '',         '',         '',         ''),
                 ('tax_20 (20.0%)',                      '',         '',         '',         200.0,      '',         ''),
                 ('400000 (2) Product Sales',            '',         '',         1000.0,     200.0,      '',         ''),
+                ('Total tax_20 (20.0%)',                '',         '',         '',         200.0,      '',         ''),
                 ('tax_30 (30.0%)',                      '',         '',         '',         300.0,      '',         300.0),
                 ('400000 Product Sales',                '',         '',         '',         '',         1000.0,     300.0),
                 ('400000 (2) Product Sales',            '',         '',         1000.0,     300.0,      '',         ''),
+                ('Total tax_30 (30.0%)',                '',         '',         '',         300.0,      '',         300.0),
+                ('Total Sales',                         '',         100.0,      '',         500.0,      '',         300.0),
             ],
         )
 
@@ -738,23 +830,20 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         move.action_post()
 
         # Check generic tax report
-        report = self.env['account.generic.tax.report']
-        report_options = self._init_options(report, move.date, move.date, {'tax_report': 'generic'})
+        options = self._generate_options(self.report_generic, move.date, move.date)
         self.assertLinesValues(
-            report._get_lines(report_options),
+            self.report_generic._get_lines(options),
             #   Name                                   Net              Tax
             [   0,                                       1,               2],
             [
                 ("Sales",                               '',             108.2),
                 ("%s (42.0%%)" % affecting_tax.name,   200,              84),
                 ("%s (10.0%%)" % affected_tax.name,    242,              24.2),
+                ("Total Sales",                         '',             108.2),
             ],
         )
 
     def test_tax_multiple_repartition_lines(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
-
         tax = self.env['account.tax'].create({
             'name': "tax",
             'amount_type': 'percent',
@@ -807,48 +896,58 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         })
         invoice.action_post()
 
+        date_from_str = '2019-01-01'
+        date_to_str = '2019-01-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         100.0),
                 ('tax (10.0%)',                         1000.0,     100.0),
+                ('Total Sales',                         '',         100.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         100.0),
                 ('400000 Product Sales',                '',         100.0),
                 ('tax (10.0%)',                         1000.0,     100.0),
+                ('Total 400000 Product Sales',          '',         100.0),
+                ('Total Sales',                         '',         100.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         100.0),
                 ('tax (10.0%)',                         '',         100.0),
                 ('400000 Product Sales',                1000.0,     100.0),
+                ('Total tax (10.0%)',                   '',         100.0),
+                ('Total Sales',                         '',         100.0),
             ],
         )
 
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
         expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax, expected_amls)
+        expected_amls_based_on_tax_dict = {
+            'tax (10.0%)': expected_amls,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)
 
     @freeze_time('2019-01-01')
     def test_tax_invoice_completely_refund(self):
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-31'))
-
         tax = self.env['account.tax'].create({
             'name': "tax",
             'amount_type': 'percent',
@@ -882,42 +981,55 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
             .reverse_moves()
         refund = self.env['account.move'].browse(action_vals['res_id'])
 
+        date_from_str = '2019-01-01'
+        date_to_str = '2019-01-31'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         ''),
-                ('tax (10.0%)',                         '',        ''),
+                ('tax (10.0%)',                         '',         ''),
+                ('Total Sales',                         '',         ''),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         ''),
                 ('400000 Product Sales',                '',         ''),
                 ('tax (10.0%)',                         '',         ''),
+                ('Total 400000 Product Sales',          '',         ''),
+                ('Total Sales',                         '',         ''),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET         TAX
             [   0,                                      1,          2],
             [
                 ('Sales',                               '',         ''),
                 ('tax (10.0%)',                         '',         ''),
                 ('400000 Product Sales',                '',         ''),
+                ('Total tax (10.0%)',                   '',         ''),
+                ('Total Sales',                         '',         ''),
             ],
         )
 
-        expected_amls = (invoice + refund).line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax, expected_amls)
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
+        expected_amls = invoice.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids) + refund.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
+        expected_amls_based_on_tax_dict = {
+            'tax (10.0%)': expected_amls,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)
 
     def test_tax_report_entry_move_2_opposite_invoice_lines(self):
         tax = self.env['account.tax'].create({
@@ -950,42 +1062,52 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         move = move_form.save()
         move.action_post()
 
-        report = self.env['account.generic.tax.report']
-        options = self._init_options(report, fields.Date.from_string('2022-02-01'), fields.Date.from_string('2022-02-01'))
-
+        date_from_str = '2022-02-01'
+        date_to_str = '2022-02-01'
+        options = self._generate_options(self.report_generic, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_generic._get_lines(options),
             #   Name                                    NET           TAX
             [   0,                                      1,             2],
             [
                 ('Sales',                               '',          1.0),
                 ('tax (10.0%)',                       10.0,          1.0),
+                ('Total Sales',                         '',          1.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_account_tax'
+        options = self._generate_options(self.report_grouped_account_tax, date_from_str, date_to_str)
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report_grouped_account_tax._get_lines(options),
             #   Name                                    NET           TAX
             [   0,                                      1,             2],
             [
                 ('Sales',                               '',          1.0),
                 ('400000 Product Sales',                '',          1.0),
                 ('tax (10.0%)',                       10.0,          1.0),
+                ('Total 400000 Product Sales',          '',          1.0),
+                ('Total Sales',                         '',          1.0),
             ],
         )
 
-        options['tax_report'] = 'generic_grouped_tax_account'
+        options = self._generate_options(self.report_grouped_tax_account, date_from_str, date_to_str)
+        report_lines = self.report_grouped_tax_account._get_lines(options)
         self.assertLinesValues(
-            report._get_lines(options),
+            report_lines,
             #   Name                                    NET            TAX
             [   0,                                      1,              2],
             [
                 ('Sales',                               '',           1.0),
                 ('tax (10.0%)',                         '',           1.0),
                 ('400000 Product Sales',              10.0,           1.0),
+                ('Total tax (10.0%)',                   '',           1.0),
+                ('Total Sales',                         '',           1.0),
             ],
         )
 
+        tax_lines_with_caret_options = [report_line for report_line in report_lines if report_line.get('caret_options') == 'generic_tax_report']
         expected_amls = move.line_ids.filtered(lambda x: x.tax_line_id or x.tax_ids)
-        self.checkAmlsRedirection(report, options, tax, expected_amls)
+        expected_amls_based_on_tax_dict = {
+            'tax (10.0%)': expected_amls,
+        }
+        self.checkAmlsRedirection(self.report_grouped_tax_account, options, tax_lines_with_caret_options, expected_amls_based_on_tax_dict)

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import calendar
-import json
 from collections import namedtuple
 
 from dateutil.rrule import rrule, MONTHLY
@@ -11,19 +10,30 @@ from odoo.exceptions import UserError
 from odoo.tools.misc import street_split
 
 
-class ReportAccountGeneralLedger(models.AbstractModel):
-    _inherit = 'account.general.ledger'
+class ReportAccountGeneralLedger(models.Model):
+    # inherit account_reports/account_general_ledger
+    _inherit = 'account.report'
 
-    def _get_reports_buttons(self, options):
-        buttons = super(ReportAccountGeneralLedger, self)._get_reports_buttons(options)
-        buttons.append({'name': _('XAF'), 'sequence': 3, 'action': 'l10n_nl_print_xaf', 'file_export_type': _('XAF')})
-        return buttons
+    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
+        super()._custom_options_initializer_general_ledger(options, previous_options)
 
-    def _compute_period_number(self, date_str):
+        if self.env.company.account_fiscal_country_id.code != 'NL':
+            return
+
+        xaf_export_button = {
+            'name': _('XAF'),
+            'sequence': 30,
+            'action': 'export_file',
+            'action_param': '_l10n_nl_general_ledger_get_xaf',
+            'file_export_type': _('XAF'),
+        }
+        options['buttons'].append(xaf_export_button)
+
+    def _l10n_nl_general_ledger_compute_period_number(self, date_str):
         date = fields.Date.from_string(date_str)
         return date.strftime('%y%m')[1:]
 
-    def get_xaf(self, options):
+    def _l10n_nl_general_ledger_get_xaf(self, options):
         def cust_sup_tp(customer, supplier):
             if supplier and customer:
                 return 'B'
@@ -60,8 +70,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             return date.strftime('%Y-%m-%dT%H:%M:%S')
 
         def get_vals_dict():
-            new_options = self.env['account.partner.ledger']._get_options_sum_balance(options)
-            tables, where_clause, where_params = self._query_get(new_options)
+            tables, where_clause, where_params = self._query_get(options, 'strict_range')
 
             # Count the total number of lines to be used in the batching
             self.env.cr.execute(f"SELECT COUNT(*) FROM {tables} WHERE {where_clause}", where_params)
@@ -71,17 +80,17 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             res_list = []
 
             for offset in range(0, count, batch_size):
-                self.env.cr.execute(f"""
+                self._cr.execute(f"""
                     SELECT DISTINCT ON (account_move_line.id)
                            journal.id AS journal_id,
                            journal.name AS journal_name,
                            journal.code AS journal_code,
                            journal.type AS journal_type,
-                           account_move_line__move_id.id AS move_id,
-                           account_move_line__move_id.name AS move_name,
-                           account_move_line__move_id.date AS move_date,
-                           account_move_line__move_id.amount_total AS move_amount,
-                           account_move_line__move_id.move_type IN ('out_invoice', 'out_refund', 'in_refund', 'in_invoice', 'out_receipt', 'in_receipt') AS move_is_invoice,
+                           account_move.id AS move_id,
+                           account_move.name AS move_name,
+                           account_move.date AS move_date,
+                           account_move.amount_total AS move_amount,
+                           account_move.move_type IN ('out_invoice', 'out_refund', 'in_refund', 'in_invoice', 'out_receipt', 'in_receipt') AS move_is_invoice,
                            account_move_line.id AS line_id,
                            account_move_line.name AS line_name,
                            account_move_line.display_type AS line_display_type,
@@ -133,6 +142,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                            tax.id AS tax_id,
                            tax.name AS tax_name
                       FROM {tables}
+                      JOIN account_move ON account_move.id = account_move_line.move_id
                       JOIN account_journal journal ON account_move_line.journal_id = journal.id
                       JOIN account_account account ON account_move_line.account_id = account.id
                       LEFT JOIN res_partner partner ON account_move_line.partner_id = partner.id
@@ -231,7 +241,7 @@ class ReportAccountGeneralLedger(models.AbstractModel):
                     'move_name': row['move_name'],
                     'move_date': row['move_date'],
                     'move_amount': round(row['move_amount'], 2),
-                    'move_period_number': self._compute_period_number(row['move_date']),
+                    'move_period_number': self._l10n_nl_general_ledger_compute_period_number(row['move_date']),
                     'move_line_data': {},
                 })
                 vals_dict['journal_data'][row['journal_id']]['journal_move_data'][row['move_id']]['move_line_data'].setdefault(row['line_id'], {
@@ -279,16 +289,16 @@ class ReportAccountGeneralLedger(models.AbstractModel):
             period_to = period.replace(day=calendar.monthrange(period.year, period.month)[1])
             period_to = fields.Date.to_string(period_to.date())
             periods.append(Period(
-                number=self._compute_period_number(period_from),
+                number=self._l10n_nl_general_ledger_compute_period_number(period_from),
                 name=period.strftime('%B') + ' ' + date_from[0:4],
                 date_from=period_from,
                 date_to=period_to
             ))
 
         # Retrieve opening balance values
-        new_options = self.env['account.partner.ledger']._get_options_initial_balance(options)
-        tables, where_clause, where_params = self._query_get(new_options)
-        self.env.cr.execute(f"""
+        new_options = self._general_ledger_get_options_initial_balance(options)
+        tables, where_clause, where_params = self._query_get(new_options, 'normal')
+        self._cr.execute(f"""
             SELECT acc.id AS account_id,
                    acc.code AS account_code,
                    COUNT(*) AS lines_count,
@@ -341,14 +351,8 @@ class ReportAccountGeneralLedger(models.AbstractModel):
         audit_content = self.env['ir.qweb']._render('l10n_nl_reports.xaf_audit_file', values)
         self.env['ir.attachment'].l10n_nl_reports_validate_xml_from_attachment(audit_content, 'XmlAuditfileFinancieel3.2.xsd')
 
-        return audit_content
-
-    def l10n_nl_print_xaf(self, options):
         return {
-                'type': 'ir_actions_account_report_download',
-                'data': {'model': self.env.context.get('model'),
-                         'options': json.dumps(options),
-                         'output_format': 'xaf',
-                         'financial_id': self.env.context.get('id'),
-                         }
-                }
+            'file_name': self.get_default_report_filename('xaf'),
+            'file_content': audit_content,
+            'file_type': 'xml',
+        }

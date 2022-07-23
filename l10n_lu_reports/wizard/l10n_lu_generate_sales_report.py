@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
+
 from odoo import _, fields, models
 from odoo.exceptions import UserError
 
@@ -30,8 +31,8 @@ class L10nLuGenerateSalesReport(models.TransientModel):
             raise UserError(_("The report can't be saved, because it isn't a valid eCDF declaration. "
                               "Either both 'L' and 'T' codes should be selected, or none of them"))
         comparison_files = [(d.attachment_id.name, base64.b64decode(d.attachment_id.datas)) for d in self.l10n_lu_stored_report_ids]
-        ec_sales_report = self.env['account.sales.report']
-        forms, year, period, codes = ec_sales_report._get_lu_xml_2_0_report_values(report_generation_options, comparison_files)
+        ec_sales_report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
+        forms, year, period, codes = ec_sales_report.l10n_lu_sales_report_get_xml_2_0_report_values(report_generation_options, comparison_files)
         declarations = {'declaration_singles': {'forms': forms}, 'declaration_groups': []}
         declarations.update(declaration_template_values)
         return {'declarations': [declarations], 'year': year, 'period': period, 'codes': codes}
@@ -42,7 +43,6 @@ class L10nLuGenerateSalesReport(models.TransientModel):
 
         if not self.save_report:
             return
-
         attachment = self.env['ir.attachment'].create({
             'name': self.filename,
             'company_id': self.env.company.id,

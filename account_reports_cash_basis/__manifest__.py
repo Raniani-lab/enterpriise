@@ -10,7 +10,7 @@ Cash Basis for Accounting Reports
     """,
     'depends': ['account_reports'],
     'data': [
-        'data/account_financial_report_data.xml',
+        'data/account_reports_data.xml',
         'views/account_report_view.xml',
         'views/report_financial.xml',
     ],

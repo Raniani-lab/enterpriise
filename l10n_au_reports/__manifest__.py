@@ -36,7 +36,8 @@ The report uses tax tags ``Service`` and ``Tax Withheld`` in order to find adequ
         'account_reports_cash_basis',
     ],
     'data': [
-        'views/tpar_views.xml',
+        'data/tpar_report.xml',
+        'views/menuitems.xml',
     ],
     'installable': True,
     'auto_install': ['l10n_au', 'account_reports'],

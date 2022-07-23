@@ -2,128 +2,173 @@
 from odoo import models, fields, api, _
 from odoo.tools.misc import get_lang
 
-from dateutil.relativedelta import relativedelta
 
-import copy
-
-
-class AccountCashFlowReport(models.AbstractModel):
-    _name = 'account.cash.flow.report'
-    _description = 'Cash Flow Report'
+class AccountCashFlowReport(models.Model):
     _inherit = 'account.report'
 
-    filter_date = {'mode': 'range', 'filter': 'today'}
-    filter_comparison = None
-    filter_journals = True
-    filter_unfold_all = False
-    filter_all_entries = False
+    def _dynamic_lines_generator_cash_flow_report(self, options, all_column_groups_expression_totals):
+        # Compute the cash flow report using the direct method: https://www.investopedia.com/terms/d/direct_method.asp
+        lines = []
 
-    # -------------------------------------------------------------------------
-    # OPTIONS
-    # -------------------------------------------------------------------------
+        layout_data = self._cash_flow_report_get_layout_data()
+        report_data = self._cash_flow_report_get_report_data(options, layout_data)
 
-    @api.model
-    def _get_options_current_period(self, options):
-        ''' Create options with the 'strict_range' enabled on the filter_date / filter_comparison.
-        :param options: The report options.
-        :return:        A copy of the options.
-        '''
-        new_options = options.copy()
-        new_options['date'] = {
-            'mode': 'range',
-            'date_from': options['date']['date_from'],
-            'date_to': options['date']['date_to'],
-            'strict_range': options['date']['date_from'] is not False,
+        for layout_line_id, layout_line_data in layout_data.items():
+            lines.append((0, self._cash_flow_report_get_layout_line(options, layout_line_id, layout_line_data, report_data)))
+
+            if layout_line_id in report_data and 'aml_groupby_account' in report_data[layout_line_id]:
+                for aml_data in report_data[layout_line_id]['aml_groupby_account'].values():
+                    lines.append((0, self._cash_flow_report_get_aml_line(options, aml_data)))
+
+        unexplained_difference_line = self._cash_flow_report_get_unexplained_difference_line(options, report_data)
+
+        if unexplained_difference_line:
+            lines.append((0, unexplained_difference_line))
+
+        return lines
+
+    def _cash_flow_report_get_report_data(self, options, layout_data):
+        report_data = {}
+
+        currency_table_query = self.env['res.currency']._get_query_currency_table(options)
+
+        payment_move_ids, payment_account_ids = self._cash_flow_report_get_liquidity_move_ids(options)
+
+        # Compute 'Cash and cash equivalents, beginning of period'
+        for aml_data in self._cash_flow_report_compute_liquidity_balance(options, currency_table_query, payment_account_ids, 'to_beginning_of_period'):
+            self._cash_flow_report_add_report_data('opening_balance', aml_data, layout_data, report_data)
+            self._cash_flow_report_add_report_data('closing_balance', aml_data, layout_data, report_data)
+
+        # Compute 'Cash and cash equivalents, closing balance'
+        for aml_data in self._cash_flow_report_compute_liquidity_balance(options, currency_table_query, payment_account_ids, 'strict_range'):
+            self._cash_flow_report_add_report_data('closing_balance', aml_data, layout_data, report_data)
+
+        tags_ids = {
+            'operating': self.env.ref('account.account_tag_operating').id,
+            'investing': self.env.ref('account.account_tag_investing').id,
+            'financing': self.env.ref('account.account_tag_financing').id,
         }
-        new_options['journals'] = []
-        return new_options
 
-    @api.model
-    def _get_options_beginning_period(self, options):
-        ''' Create options with the 'strict_range' enabled on the filter_date.
-        :param options: The report options.
-        :return:        A copy of the options.
-        '''
-        new_options = options.copy()
-        date_tmp = fields.Date.from_string(options['date']['date_from']) - relativedelta(days=1)
-        new_options['date'] = {
-            'mode': 'single',
-            'date_from': False,
-            'date_to': fields.Date.to_string(date_tmp),
-        }
-        return new_options
+        # Process liquidity moves
+        for aml_groupby_account in self._cash_flow_report_get_liquidity_moves(options, currency_table_query, payment_account_ids, payment_move_ids):
+            for aml_data in aml_groupby_account.values():
+                self._cash_flow_report_dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
-    @api.model
-    def _get_filter_journals(self):
-        # OVERRIDE to filter only bank / cash journals.
-        return self.env['account.journal'].search([
-            ('company_id', 'in', self.env.companies.ids),
-            ('type', 'in', ('bank', 'cash'))
-        ], order='company_id, name')
+        # Process reconciled moves
+        for aml_groupby_account in self._cash_flow_report_get_reconciled_moves(options, currency_table_query, payment_account_ids, payment_move_ids):
+            for aml_data in aml_groupby_account.values():
+                self._cash_flow_report_dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
+
+        return report_data
+
+    def _cash_flow_report_add_report_data(self, layout_line_id, aml_data, layout_data, report_data):
+        """
+        Add or update the report_data dictionnary with aml_data.
+
+        report_data is a dictionnary where the keys are keys from _cash_flow_report_get_layout_data() (used for mapping)
+        and the values can contain 2 dictionnaries:
+            * (required) 'balance' where the key is the column_group_key and the value is the balance of the line
+            * (optional) 'aml_groupby_account' where the key is an account_id and the values are the aml data
+        """
+        def _report_update_parent(layout_line_id, aml_column_group_key, aml_balance, layout_data, report_data):
+            # Update the balance in report_data of the parent of the layout_line_id recursively (Stops when the line has no parent)
+            if 'parent_line_id' in layout_data[layout_line_id]:
+                parent_line_id = layout_data[layout_line_id]['parent_line_id']
+
+                report_data.setdefault(parent_line_id, {'balance': {}})
+                report_data[parent_line_id]['balance'].setdefault(aml_column_group_key, 0.0)
+                report_data[parent_line_id]['balance'][aml_column_group_key] += aml_balance
+
+                _report_update_parent(parent_line_id, aml_column_group_key, aml_balance, layout_data, report_data)
+
+        aml_column_group_key = aml_data['column_group_key']
+        aml_account_id = aml_data['account_id']
+        aml_account_code = aml_data['account_code']
+        aml_account_name = aml_data['account_name']
+        aml_balance = aml_data['balance']
+        aml_account_tag = aml_data.get('account_tag_id', None)
+
+        if self.env.company.currency_id.is_zero(aml_balance):
+            return
+
+        report_data.setdefault(layout_line_id, {
+            'balance': {},
+            'aml_groupby_account': {},
+        })
+
+        report_data[layout_line_id]['aml_groupby_account'].setdefault(aml_account_id, {
+            'parent_line_id': layout_line_id,
+            'account_id': aml_account_id,
+            'account_code': aml_account_code,
+            'account_name': aml_account_name,
+            'account_tag_id': aml_account_tag,
+            'level': layout_data[layout_line_id]['level'] + 1,
+            'balance': {},
+        })
+
+        report_data[layout_line_id]['balance'].setdefault(aml_column_group_key, 0.0)
+        report_data[layout_line_id]['balance'][aml_column_group_key] += aml_balance
+
+        report_data[layout_line_id]['aml_groupby_account'][aml_account_id]['balance'].setdefault(aml_column_group_key, 0.0)
+        report_data[layout_line_id]['aml_groupby_account'][aml_account_id]['balance'][aml_column_group_key] += aml_balance
+
+        _report_update_parent(layout_line_id, aml_column_group_key, aml_balance, layout_data, report_data)
+
+    def _cash_flow_report_dispatch_aml_data(self, tags_ids, aml_data, layout_data, report_data):
+        # Dispatch the aml_data in the correct layout_line
+        if aml_data['account_account_type'] == 'asset_receivable':
+            self._cash_flow_report_add_report_data('advance_payments_customer', aml_data, layout_data, report_data)
+        elif aml_data['account_account_type'] == 'liability_payable':
+            self._cash_flow_report_add_report_data('advance_payments_suppliers', aml_data, layout_data, report_data)
+        elif aml_data['balance'] < 0:
+            if aml_data['account_tag_id'] == tags_ids['operating']:
+                self._cash_flow_report_add_report_data('paid_operating_activities', aml_data, layout_data, report_data)
+            elif aml_data['account_tag_id'] == tags_ids['investing']:
+                self._cash_flow_report_add_report_data('investing_activities_cash_out', aml_data, layout_data, report_data)
+            elif aml_data['account_tag_id'] == tags_ids['financing']:
+                self._cash_flow_report_add_report_data('financing_activities_cash_out', aml_data, layout_data, report_data)
+            else:
+                self._cash_flow_report_add_report_data('unclassified_activities_cash_out', aml_data, layout_data, report_data)
+        elif aml_data['balance'] > 0:
+            if aml_data['account_tag_id'] == tags_ids['operating']:
+                self._cash_flow_report_add_report_data('received_operating_activities', aml_data, layout_data, report_data)
+            elif aml_data['account_tag_id'] == tags_ids['investing']:
+                self._cash_flow_report_add_report_data('investing_activities_cash_in', aml_data, layout_data, report_data)
+            elif aml_data['account_tag_id'] == tags_ids['financing']:
+                self._cash_flow_report_add_report_data('financing_activities_cash_in', aml_data, layout_data, report_data)
+            else:
+                self._cash_flow_report_add_report_data('unclassified_activities_cash_in', aml_data, layout_data, report_data)
 
     # -------------------------------------------------------------------------
     # QUERIES
     # -------------------------------------------------------------------------
-
-    @api.model
-    def _get_tags_per_account(self, options, tag_ids):
-        ''' Compute a map account_id => tags used to dispatch the lines in the cash flow statement:
-        operating, investing, financing or unclassified activities.
-
-        This part is done in sql to avoid browsing and prefetching all account.account records.
-
-        :param options: The report options.
-        :param tag_ids: The ids of the 3 tags used by the cash flow: operating, investing and the financing tags.
-        :return:        A map account_id => tag_ids set on this account.
-        '''
-        tags_per_accounts = {}
-
-        query = '''
-            SELECT
-                DISTINCT account_account_id,
-                ARRAY_AGG(account_account_tag_id)
-            FROM account_account_account_tag
-            WHERE account_account_tag_id IN %s
-            GROUP BY account_account_id
-        '''
-        params = [tag_ids]
-
-        self._cr.execute(query, params)
-        for account_id, tags in self._cr.fetchall():
-            tags_per_accounts[account_id] = tags
-        return tags_per_accounts
-
-    @api.model
-    def _get_liquidity_move_ids(self, options):
-        ''' Retrieve all liquidity moves to be part of the cash flow statement and also the accounts making them
-        such moves.
+    def _cash_flow_report_get_liquidity_move_ids(self, options):
+        ''' Retrieve all liquidity moves to be part of the cash flow statement and also the accounts making them.
 
         :param options: The report options.
         :return:        payment_move_ids: A tuple containing all account.move's ids being the liquidity moves.
                         payment_account_ids: A tuple containing all account.account's ids being used in a liquidity journal.
         '''
-        new_options = self._get_options_current_period(options)
-        selected_journals = self._get_options_journals(options)
-
         # Fetch liquidity accounts:
-        # Accounts being used by at least one bank / cash journal.
-        selected_journal_ids = [j['id'] for j in selected_journals]
-        if selected_journal_ids:
-            where_clause = "account_journal.id IN %s"
-            where_params = [tuple(selected_journal_ids)]
-        else:
-            where_clause = "account_journal.type IN ('bank', 'cash')"
-            where_params = []
+        # Accounts being used by at least one bank/cash journal.
+        selected_journal_ids = [j['id'] for j in self._get_options_journals(options)]
 
-        self._cr.execute('''
-            SELECT array_remove(ARRAY_AGG(DISTINCT default_account_id), NULL),
-                   array_remove(ARRAY_AGG(DISTINCT apml.payment_account_id), NULL),
-                   array_remove(ARRAY_AGG(DISTINCT rc.account_journal_payment_debit_account_id), NULL),
-                   array_remove(ARRAY_AGG(DISTINCT rc.account_journal_payment_credit_account_id), NUll)
+        where_clause = "account_journal.id IN %s" if selected_journal_ids else "account_journal.type IN ('bank', 'cash')"
+        where_params = [tuple(selected_journal_ids)] if selected_journal_ids else []
+
+        self._cr.execute(f'''
+            SELECT
+                array_remove(ARRAY_AGG(DISTINCT default_account_id), NULL),
+                array_remove(ARRAY_AGG(DISTINCT account_payment_method_line.payment_account_id), NULL),
+                array_remove(ARRAY_AGG(DISTINCT res_company.account_journal_payment_debit_account_id), NULL),
+                array_remove(ARRAY_AGG(DISTINCT res_company.account_journal_payment_credit_account_id), NUll)
             FROM account_journal
-            JOIN res_company rc ON account_journal.company_id = rc.id
-            LEFT JOIN account_payment_method_line apml ON account_journal.id = apml.journal_id
-            WHERE ''' + where_clause, where_params)
+            JOIN res_company
+                ON account_journal.company_id = res_company.id
+            LEFT JOIN account_payment_method_line
+                ON account_journal.id = account_payment_method_line.journal_id
+            WHERE {where_clause}
+        ''', where_params)
 
         res = self._cr.fetchall()[0]
         payment_account_ids = set((res[0] or []) + (res[1] or []) + (res[2] or []) + (res[3] or []))
@@ -131,25 +176,76 @@ class AccountCashFlowReport(models.AbstractModel):
         if not payment_account_ids:
             return (), ()
 
-        # Fetch journal entries:
-        # account.move having at least one line using a liquidity account.
-        payment_move_ids = set()
-        tables, where_clause, where_params = self._query_get(new_options, [('account_id', 'in', list(payment_account_ids))])
+        queries = []
+        params = []
 
-        query = '''
-            SELECT DISTINCT account_move_line.move_id
-            FROM ''' + tables + '''
-            WHERE ''' + where_clause + '''
-            GROUP BY account_move_line.move_id
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = self._query_get(column_group_options, 'strict_range', [('account_id', 'in', list(payment_account_ids))])
+
+            queries.append(f'''
+                SELECT
+                    %s AS column_group_key,
+                    account_move_line.move_id
+                FROM {tables}
+                WHERE {where_clause}
+                GROUP BY account_move_line.move_id
+            ''')
+
+            params += [column_group_key, *where_params]
+
+        self._cr.execute(' UNION ALL '.join(queries), params)
+
+        payment_move_ids = {}
+
+        for res in self._cr.dictfetchall():
+            payment_move_ids.setdefault(res['column_group_key'], set())
+            payment_move_ids[res['column_group_key']].add(res['move_id'])
+
+        return payment_move_ids, tuple(payment_account_ids)
+
+    def _cash_flow_report_compute_liquidity_balance(self, options, currency_table_query, payment_account_ids, date_scope):
+        ''' Compute the balance of all liquidity accounts to populate the following sections:
+            'Cash and cash equivalents, beginning of period' and 'Cash and cash equivalents, closing balance'.
+
+        :param options:                 The report options.
+        :param currency_table_query:    The custom query containing the multi-companies rates.
+        :param payment_account_ids:     A tuple containing all account.account's ids being used in a liquidity journal.
+        :return:                        A list of tuple (account_id, account_code, account_name, balance).
         '''
-        self._cr.execute(query, where_params)
-        for res in self._cr.fetchall():
-            payment_move_ids.add(res[0])
+        queries = []
+        params = []
 
-        return tuple(payment_move_ids), tuple(payment_account_ids)
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = self._query_get(column_group_options, date_scope, domain=[('account_id', 'in', payment_account_ids)])
 
-    @api.model
-    def _get_liquidity_move_report_lines(self, options, currency_table_query, payment_move_ids, payment_account_ids):
+            queries.append(f'''
+                SELECT
+                    %s AS column_group_key,
+                    account_move_line.account_id,
+                    account_account.code AS account_code,
+                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                FROM {tables}
+                JOIN account_account
+                    ON account_account.id = account_move_line.account_id
+                LEFT JOIN ir_translation
+                    ON ir_translation.name = 'account.account,name'
+                    AND ir_translation.res_id = account_account.id
+                    AND ir_translation.type = 'model'
+                    AND ir_translation.lang = %s
+                LEFT JOIN {currency_table_query}
+                    ON currency_table.company_id = account_move_line.company_id
+                WHERE {where_clause}
+                GROUP BY account_move_line.account_id, account_account.code, account_name
+            ''')
+
+            params += [column_group_key, self.env.user.lang or get_lang(self.env).code, *where_params]
+
+        self._cr.execute(' UNION ALL '.join(queries), params)
+
+        return self._cr.dictfetchall()
+
+    def _cash_flow_report_get_liquidity_moves(self, options, currency_table_query, payment_account_ids, payment_move_ids):
         ''' Fetch all information needed to compute lines from liquidity moves.
         The difficulty is to represent only the not-reconciled part of balance.
 
@@ -162,79 +258,129 @@ class AccountCashFlowReport(models.AbstractModel):
         if not payment_move_ids:
             return []
 
-        reconciled_amount_per_account = {}
+        reconciled_aml_groupby_account = {}
 
-        # ==== Compute the reconciled part of each account ====
+        queries = []
+        params = []
 
-        query = '''
-            SELECT
-                credit_line.account_id,
-                account.code,
-                COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
-                account.account_type,
-                SUM(ROUND(partial.amount * currency_table.rate, currency_table.precision))
-            FROM account_move_line credit_line
-            LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = credit_line.company_id
-            LEFT JOIN account_partial_reconcile partial ON partial.credit_move_id = credit_line.id
-            JOIN account_account account ON account.id = credit_line.account_id
-            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
-            WHERE credit_line.move_id IN %s AND credit_line.account_id NOT IN %s
-            AND partial.max_date BETWEEN %s AND %s
-            GROUP BY credit_line.company_id, credit_line.account_id, account.code, account_name, account.account_type
-            
-            UNION ALL
-            
-            SELECT
-                debit_line.account_id,
-                account.code,
-                COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
-                account.account_type,
-                -SUM(ROUND(partial.amount * currency_table.rate, currency_table.precision))
-            FROM account_move_line debit_line
-            LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = debit_line.company_id
-            LEFT JOIN account_partial_reconcile partial ON partial.debit_move_id = debit_line.id
-            JOIN account_account account ON account.id = debit_line.account_id
-            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
-            WHERE debit_line.move_id IN %s AND debit_line.account_id NOT IN %s
-            AND partial.max_date BETWEEN %s AND %s
-            GROUP BY debit_line.company_id, debit_line.account_id, account.code, account_name, account.account_type
-        '''
-        lang = self.env.user.lang or get_lang(self.env).code
-        self._cr.execute(query, [
-            lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
-            lang, payment_move_ids, payment_account_ids, options['date']['date_from'], options['date']['date_to'],
-        ])
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            queries.append(f'''
+                -- Credit amount of each account
+                SELECT
+                    %s AS column_group_key,
+                    account_move_line.account_id,
+                    account_account.code AS account_code,
+                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    account_account.account_type AS account_account_type,
+                    account_account_account_tag.account_account_tag_id AS account_tag_id,
+                    SUM(ROUND(account_partial_reconcile.amount * currency_table.rate, currency_table.precision)) AS balance
+                FROM account_move_line
+                LEFT JOIN {currency_table_query}
+                    ON currency_table.company_id = account_move_line.company_id
+                LEFT JOIN account_partial_reconcile
+                    ON account_partial_reconcile.credit_move_id = account_move_line.id
+                JOIN account_account
+                    ON account_account.id = account_move_line.account_id
+                LEFT JOIN account_account_account_tag
+                    ON account_account_account_tag.account_account_id = account_move_line.account_id
+                LEFT JOIN ir_translation
+                    ON ir_translation.name = 'account.account,name'
+                    AND ir_translation.res_id = account_account.id
+                    AND ir_translation.type = 'model'
+                    AND ir_translation.lang = %s
+                WHERE account_move_line.move_id IN %s
+                    AND account_move_line.account_id NOT IN %s
+                    AND account_partial_reconcile.max_date BETWEEN %s AND %s
+                GROUP BY account_move_line.company_id, account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
 
-        for account_id, account_code, account_name, account_type, reconciled_amount in self._cr.fetchall():
-            reconciled_amount_per_account.setdefault(account_id, [account_code, account_name, account_type, 0.0, 0.0])
-            reconciled_amount_per_account[account_id][3] += reconciled_amount
+                UNION ALL
 
-        # ==== Compute total amount of each account ====
+                -- Debit amount of each account
+                SELECT
+                    %s AS column_group_key,
+                    account_move_line.account_id,
+                    account_account.code AS account_code,
+                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    account_account.account_type AS account_account_type,
+                    account_account_account_tag.account_account_tag_id AS account_tag_id,
+                    -SUM(ROUND(account_partial_reconcile.amount * currency_table.rate, currency_table.precision)) AS balance
+                FROM account_move_line
+                LEFT JOIN {currency_table_query}
+                    ON currency_table.company_id = account_move_line.company_id
+                LEFT JOIN account_partial_reconcile
+                    ON account_partial_reconcile.debit_move_id = account_move_line.id
+                JOIN account_account
+                    ON account_account.id = account_move_line.account_id
+                LEFT JOIN account_account_account_tag
+                    ON account_account_account_tag.account_account_id = account_move_line.account_id
+                LEFT JOIN ir_translation
+                    ON ir_translation.name = 'account.account,name'
+                    AND ir_translation.res_id = account_account.id
+                    AND ir_translation.type = 'model'
+                    AND ir_translation.lang = %s
+                WHERE account_move_line.move_id IN %s
+                    AND account_move_line.account_id NOT IN %s
+                    AND account_partial_reconcile.max_date BETWEEN %s AND %s
+                GROUP BY account_move_line.company_id, account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
 
-        query = '''
-            SELECT
-                line.account_id,
-                account.code,
-                COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
-                account.account_type,
-                SUM(ROUND(line.balance * currency_table.rate, currency_table.precision))
-            FROM account_move_line line
-            LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = line.company_id
-            JOIN account_account account ON account.id = line.account_id
-            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
-            WHERE line.move_id IN %s AND line.account_id NOT IN %s
-            GROUP BY line.account_id, account.code, account_name, account.account_type
-        '''
-        self._cr.execute(query, [lang, payment_move_ids, payment_account_ids])
+                UNION ALL
 
-        for account_id, account_code, account_name, account_type, balance in self._cr.fetchall():
-            reconciled_amount_per_account.setdefault(account_id, [account_code, account_name, account_type, 0.0, 0.0])
-            reconciled_amount_per_account[account_id][4] += balance
+                -- Total amount of each account
+                SELECT
+                    %s AS column_group_key,
+                    account_move_line.account_id AS account_id,
+                    account_account.code AS account_code,
+                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    account_account.account_type AS account_account_type,
+                    account_account_account_tag.account_account_tag_id AS account_tag_id,
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                FROM account_move_line
+                LEFT JOIN {currency_table_query}
+                    ON currency_table.company_id = account_move_line.company_id
+                JOIN account_account
+                    ON account_account.id = account_move_line.account_id
+                LEFT JOIN account_account_account_tag
+                    ON account_account_account_tag.account_account_id = account_move_line.account_id
+                LEFT JOIN ir_translation
+                    ON ir_translation.name = 'account.account,name'
+                    AND ir_translation.res_id = account_account.id
+                    AND ir_translation.type = 'model'
+                    AND ir_translation.lang = %s
+                WHERE account_move_line.move_id IN %s
+                    AND account_move_line.account_id NOT IN %s
+                GROUP BY account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
+            ''')
 
-        return [(k, v[0], v[1], v[2], v[4] + v[3]) for k, v in reconciled_amount_per_account.items()]
+            lang = self.env.user.lang or get_lang(self.env).code
+            date_from = column_group_options['date']['date_from']
+            date_to = column_group_options['date']['date_to']
 
-    @api.model
-    def _get_reconciled_move_report_lines(self, options, currency_table_query, payment_move_ids, payment_account_ids):
+            column_group_payment_move_ids = tuple(payment_move_ids.get(column_group_key, [None]))
+            params += [
+                column_group_key, lang, column_group_payment_move_ids, payment_account_ids, date_from, date_to,
+                column_group_key, lang, column_group_payment_move_ids, payment_account_ids, date_from, date_to,
+                column_group_key, lang, column_group_payment_move_ids, payment_account_ids
+            ]
+
+        self._cr.execute(' UNION ALL '.join(queries), params)
+
+        for aml_data in self._cr.dictfetchall():
+            reconciled_aml_groupby_account.setdefault(aml_data['account_id'], {})
+            reconciled_aml_groupby_account[aml_data['account_id']].setdefault(aml_data['column_group_key'], {
+                'column_group_key': aml_data['column_group_key'],
+                'account_id': aml_data['account_id'],
+                'account_code': aml_data['account_code'],
+                'account_name': aml_data['account_name'],
+                'account_account_type': aml_data['account_account_type'],
+                'account_tag_id': aml_data['account_tag_id'],
+                'balance': 0.0,
+            })
+
+            reconciled_aml_groupby_account[aml_data['account_id']][aml_data['column_group_key']]['balance'] -= aml_data['balance']
+
+        return list(reconciled_aml_groupby_account.values())
+
+    def _cash_flow_report_get_reconciled_moves(self, options, currency_table_query, payment_account_ids, payment_move_ids):
         ''' Retrieve all moves being not a liquidity move to be shown in the cash flow statement.
         Each amount must be valued at the percentage of what is actually paid.
         E.g. An invoice of 1000 being paid at 50% must be valued at 500.
@@ -245,112 +391,166 @@ class AccountCashFlowReport(models.AbstractModel):
         :param payment_account_ids:     A tuple containing all account.account's ids being used in a liquidity journal.
         :return:                        A list of tuple (account_id, account_code, account_name, account_type, amount).
         '''
-        reconciled_account_ids = set()
+        if not payment_move_ids:
+            return []
+
+        reconciled_account_ids = {}
         reconciled_percentage_per_move = {}
 
-        if not payment_move_ids:
-            return reconciled_percentage_per_move
+        queries = []
+        params = []
 
-        # ==== Compute reconciled amount per (move_id, account_id) ====
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            queries.append('''
+                SELECT
+                    %s AS column_group_key,
+                    debit_line.move_id,
+                    debit_line.account_id,
+                    SUM(account_partial_reconcile.amount) AS balance
+                FROM account_move_line AS credit_line
+                LEFT JOIN account_partial_reconcile
+                    ON account_partial_reconcile.credit_move_id = credit_line.id
+                INNER JOIN account_move_line AS debit_line
+                    ON debit_line.id = account_partial_reconcile.debit_move_id
+                WHERE credit_line.move_id IN %s
+                    AND credit_line.account_id NOT IN %s
+                    AND credit_line.credit > 0.0
+                    AND debit_line.move_id NOT IN %s
+                    AND account_partial_reconcile.max_date BETWEEN %s AND %s
+                GROUP BY debit_line.move_id, debit_line.account_id
 
-        query = '''
-            SELECT
-                debit_line.move_id,
-                debit_line.account_id,
-                SUM(partial.amount)
-            FROM account_move_line credit_line
-            LEFT JOIN account_partial_reconcile partial ON partial.credit_move_id = credit_line.id
-            INNER JOIN account_move_line debit_line ON debit_line.id = partial.debit_move_id
-            WHERE credit_line.move_id IN %s
-            AND credit_line.account_id NOT IN %s
-            AND credit_line.credit > 0.0
-            AND debit_line.move_id NOT IN %s
-            AND partial.max_date BETWEEN %s AND %s
-            GROUP BY debit_line.move_id, debit_line.account_id
-            
-            UNION ALL
-            
-            SELECT
-                credit_line.move_id,
-                credit_line.account_id,
-                -SUM(partial.amount)
-            FROM account_move_line debit_line
-            LEFT JOIN account_partial_reconcile partial ON partial.debit_move_id = debit_line.id
-            INNER JOIN account_move_line credit_line ON credit_line.id = partial.credit_move_id
-            WHERE debit_line.move_id IN %s
-            AND debit_line.account_id NOT IN %s
-            AND debit_line.debit > 0.0
-            AND credit_line.move_id NOT IN %s
-            AND partial.max_date BETWEEN %s AND %s
-            GROUP BY credit_line.move_id, credit_line.account_id
-        '''
-        self._cr.execute(query, [
-            payment_move_ids, payment_account_ids, payment_move_ids, options['date']['date_from'], options['date']['date_to'],
-            payment_move_ids, payment_account_ids, payment_move_ids, options['date']['date_from'], options['date']['date_to'],
-        ])
-        for move_id, account_id, reconciled_amount in self._cr.fetchall():
-            reconciled_percentage_per_move.setdefault(move_id, {})
-            reconciled_percentage_per_move[move_id].setdefault(account_id, [0.0, 0.0])
-            reconciled_percentage_per_move[move_id][account_id][0] += reconciled_amount
-            reconciled_account_ids.add(account_id)
+                UNION ALL
+
+                SELECT
+                    %s AS column_group_key,
+                    credit_line.move_id,
+                    credit_line.account_id,
+                    -SUM(account_partial_reconcile.amount) AS balance
+                FROM account_move_line AS debit_line
+                LEFT JOIN account_partial_reconcile
+                    ON account_partial_reconcile.debit_move_id = debit_line.id
+                INNER JOIN account_move_line AS credit_line
+                    ON credit_line.id = account_partial_reconcile.credit_move_id
+                WHERE debit_line.move_id IN %s
+                    AND debit_line.account_id NOT IN %s
+                    AND debit_line.debit > 0.0
+                    AND credit_line.move_id NOT IN %s
+                    AND account_partial_reconcile.max_date BETWEEN %s AND %s
+                GROUP BY credit_line.move_id, credit_line.account_id
+            ''')
+
+            column_group_payment_move_ids = tuple(payment_move_ids.get(column_group_key, [None]))
+
+            params += [
+                column_group_key,
+                column_group_payment_move_ids,
+                payment_account_ids,
+                column_group_payment_move_ids,
+                column_group_options['date']['date_from'],
+                column_group_options['date']['date_to'],
+            ] * 2
+
+        self._cr.execute(' UNION ALL '.join(queries), params)
+
+        for aml_data in self._cr.dictfetchall():
+            reconciled_percentage_per_move.setdefault(aml_data['column_group_key'], {})
+            reconciled_percentage_per_move[aml_data['column_group_key']].setdefault(aml_data['move_id'], {})
+            reconciled_percentage_per_move[aml_data['column_group_key']][aml_data['move_id']].setdefault(aml_data['account_id'], [0.0, 0.0])
+            reconciled_percentage_per_move[aml_data['column_group_key']][aml_data['move_id']][aml_data['account_id']][0] += aml_data['balance']
+
+            reconciled_account_ids.setdefault(aml_data['column_group_key'], set())
+            reconciled_account_ids[aml_data['column_group_key']].add(aml_data['account_id'])
 
         if not reconciled_percentage_per_move:
             return []
 
-        # ==== Compute the balance per (move_id, account_id) ====
+        queries = []
+        params = []
 
-        query = '''
-            SELECT
-                line.move_id,
-                line.account_id,
-                SUM(line.balance)
-            FROM account_move_line line
-            JOIN ''' + currency_table_query + ''' ON currency_table.company_id = line.company_id
-            WHERE line.move_id IN %s AND line.account_id IN %s
-            GROUP BY line.move_id, line.account_id
-        '''
-        self._cr.execute(query, [tuple(reconciled_percentage_per_move.keys()), tuple(reconciled_account_ids)])
-        for move_id, account_id, balance in self._cr.fetchall():
-            if account_id in reconciled_percentage_per_move[move_id]:
-                reconciled_percentage_per_move[move_id][account_id][1] += balance
+        for column in options['columns']:
+            queries.append(f'''
+                SELECT
+                    %s AS column_group_key,
+                    account_move_line.move_id,
+                    account_move_line.account_id,
+                    SUM(account_move_line.balance) AS balance
+                FROM account_move_line
+                JOIN {currency_table_query}
+                    ON currency_table.company_id = account_move_line.company_id
+                WHERE account_move_line.move_id IN %s
+                    AND account_move_line.account_id IN %s
+                GROUP BY account_move_line.move_id, account_move_line.account_id
+            ''')
 
-        # ==== Fetch lines of reconciled moves ====
+            params += [column['column_group_key'], tuple(reconciled_percentage_per_move[column['column_group_key']].keys()), tuple(reconciled_account_ids[column['column_group_key']])]
 
-        reconciled_amount_per_account = {}
+        self._cr.execute(' UNION ALL '.join(queries), params)
 
-        query = '''
-            SELECT
-                line.move_id,
-                line.account_id,
-                account.code,
-                COALESCE(NULLIF(ir_translation.value, ''), account.name) account_name,
-                account.account_type,
-                SUM(ROUND(line.balance * currency_table.rate, currency_table.precision))
-            FROM account_move_line line
-            LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = line.company_id
-            JOIN account_account account ON account.id = line.account_id
-            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
-            WHERE line.move_id IN %s
-            GROUP BY line.move_id, line.account_id, account.code, account_name, account.account_type
-        '''
-        lang = self.env.user.lang or get_lang(self.env).code
-        self._cr.execute(query, [lang, tuple(reconciled_percentage_per_move.keys())])
+        for aml_data in self._cr.dictfetchall():
+            if aml_data['account_id'] in reconciled_percentage_per_move[aml_data['column_group_key']][aml_data['move_id']]:
+                reconciled_percentage_per_move[aml_data['column_group_key']][aml_data['move_id']][aml_data['account_id']][1] += aml_data['balance']
 
-        for move_id, account_id, account_code, account_name, account_type, balance in self._cr.fetchall():
+        reconciled_aml_per_account = {}
+
+        queries = []
+        params = []
+
+        for column in options['columns']:
+            queries.append(f'''
+                SELECT
+                    %s AS column_group_key,
+                    account_move_line.move_id,
+                    account_move_line.account_id,
+                    account_account.code AS account_code,
+                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    account_account.account_type AS account_account_type,
+                    account_account_account_tag.account_account_tag_id AS account_tag_id,
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                FROM account_move_line
+                LEFT JOIN {currency_table_query}
+                    ON currency_table.company_id = account_move_line.company_id
+                JOIN account_account
+                    ON account_account.id = account_move_line.account_id
+                LEFT JOIN account_account_account_tag
+                    ON account_account_account_tag.account_account_id = account_move_line.account_id
+                LEFT JOIN ir_translation
+                    ON ir_translation.name = 'account.account,name'
+                    AND ir_translation.res_id = account_account.id
+                    AND ir_translation.type = 'model'
+                    AND ir_translation.lang = '{self.env.user.lang or get_lang(self.env).code}'
+                WHERE account_move_line.move_id IN %s
+                GROUP BY account_move_line.move_id, account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
+            ''')
+
+            params += [column['column_group_key'], tuple(reconciled_percentage_per_move[column['column_group_key']].keys())]
+
+        self._cr.execute(' UNION ALL '.join(queries), params)
+
+        for aml_data in self._cr.dictfetchall():
+            aml_column_group_key = aml_data['column_group_key']
+            aml_move_id = aml_data['move_id']
+            aml_account_id = aml_data['account_id']
+            aml_account_code = aml_data['account_code']
+            aml_account_name = aml_data['account_name']
+            aml_account_account_type = aml_data['account_account_type']
+            aml_account_tag_id = aml_data['account_tag_id']
+            aml_balance = aml_data['balance']
+
             # Compute the total reconciled for the whole move.
             total_reconciled_amount = 0.0
             total_amount = 0.0
-            for reconciled_amount, amount in reconciled_percentage_per_move[move_id].values():
+
+            for reconciled_amount, amount in reconciled_percentage_per_move[aml_column_group_key][aml_move_id].values():
                 total_reconciled_amount += reconciled_amount
                 total_amount += amount
 
             # Compute matched percentage for each account.
-            if total_amount and account_id not in reconciled_percentage_per_move[move_id]:
+            if total_amount and aml_account_id not in reconciled_percentage_per_move[aml_column_group_key][aml_move_id]:
                 # Lines being on reconciled moves but not reconciled with any liquidity move must be valued at the
                 # percentage of what is actually paid.
                 reconciled_percentage = total_reconciled_amount / total_amount
-                balance *= reconciled_percentage
-            elif not total_amount and account_id in reconciled_percentage_per_move[move_id]:
+                aml_balance *= reconciled_percentage
+            elif not total_amount and aml_account_id in reconciled_percentage_per_move[aml_column_group_key][aml_move_id]:
                 # The total amount to reconcile is 0. In that case, only add entries being on these accounts. Otherwise,
                 # this special case will lead to an unexplained difference equivalent to the reconciled amount on this
                 # account.
@@ -367,241 +567,140 @@ class AccountCashFlowReport(models.AbstractModel):
                 # --------------------------------------
                 # Receivable      |           | 200
                 # Receivable      | 200       |             <- Only the reconciled part of this entry must be added.
-                balance = -reconciled_percentage_per_move[move_id][account_id][0]
+                aml_balance = -reconciled_percentage_per_move[aml_column_group_key][aml_move_id][aml_account_id][0]
             else:
                 # Others lines are not considered.
                 continue
 
-            reconciled_amount_per_account.setdefault(account_id, [account_id, account_code, account_name, account_type, 0.0])
-            reconciled_amount_per_account[account_id][4] += balance
+            reconciled_aml_per_account.setdefault(aml_account_id, {})
+            reconciled_aml_per_account[aml_account_id].setdefault(aml_column_group_key, {
+                'column_group_key': aml_column_group_key,
+                'account_id': aml_account_id,
+                'account_code': aml_account_code,
+                'account_name': aml_account_name,
+                'account_account_type': aml_account_account_type,
+                'account_tag_id': aml_account_tag_id,
+                'balance': 0.0,
+            })
 
-        return list(reconciled_amount_per_account.values())
+            reconciled_aml_per_account[aml_account_id][aml_column_group_key]['balance'] -= aml_balance
 
-    @api.model
-    def _compute_liquidity_balance(self, options, currency_table_query, payment_account_ids):
-        ''' Compute the balance of all liquidity accounts to populate the following sections:
-            'Cash and cash equivalents, beginning of period' and 'Cash and cash equivalents, closing balance'.
+        return list(reconciled_aml_per_account.values())
 
-        :param options:                 The report options.
-        :param currency_table_query:    The custom query containing the multi-companies rates.
-        :param payment_account_ids:     A tuple containing all account.account's ids being used in a liquidity journal.
-        :return:                        A list of tuple (account_id, account_code, account_name, balance).
-        '''
-        new_options = self._get_options_current_period(options)
-        tables, where_clause, where_params = self._query_get(new_options, domain=[('account_id', 'in', payment_account_ids)])
-
-        query = '''
-            SELECT
-                account_move_line.account_id,
-                account.code AS account_code,
-                COALESCE(NULLIF(ir_translation.value, ''), account.name) AS account_name,
-                SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision))
-            FROM ''' + tables + '''
-            JOIN account_account account ON account.id = account_move_line.account_id
-            LEFT JOIN ir_translation ON ir_translation.name = 'account.account,name' AND ir_translation.res_id = account.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
-            LEFT JOIN ''' + currency_table_query + ''' ON currency_table.company_id = account_move_line.company_id
-            WHERE ''' + where_clause + '''
-            GROUP BY account_move_line.account_id, account.code, account_name
-        '''
-        lang = self.env.user.lang or get_lang(self.env).code
-        self._cr.execute(query, [lang] + where_params)
-        return self._cr.fetchall()
+    # -------------------------------------------------------------------------
+    # OPTIONS
+    # -------------------------------------------------------------------------
+    def _custom_options_initializer_cash_flow_report(self, options, previous_options=None):
+        self._init_options_journals(options, previous_options=previous_options, additional_journals_domain=[('type', 'in', ('bank', 'cash'))])
 
     # -------------------------------------------------------------------------
     # COLUMNS / LINES
     # -------------------------------------------------------------------------
+    def _cash_flow_report_get_layout_data(self):
+        # Indentation of the following dict reflects the structure of the report.
+        return {
+            'opening_balance': {'name': _('Cash and cash equivalents, beginning of period'), 'level': 0},
+            'net_increase': {'name': _('Net increase in cash and cash equivalents'), 'level': 0},
+                'operating_activities': {'name': _('Cash flows from operating activities'), 'level': 2, 'parent_line_id': 'net_increase'},
+                    'advance_payments_customer': {'name': _('Advance Payments received from customers'), 'level': 3, 'parent_line_id': 'operating_activities'},
+                    'received_operating_activities': {'name': _('Cash received from operating activities'), 'level': 3, 'parent_line_id': 'operating_activities'},
+                    'advance_payments_suppliers': {'name': _('Advance payments made to suppliers'), 'level': 3, 'parent_line_id': 'operating_activities'},
+                    'paid_operating_activities': {'name': _('Cash paid for operating activities'), 'level': 3, 'parent_line_id': 'operating_activities'},
+                'investing_activities': {'name': _('Cash flows from investing & extraordinary activities'), 'level': 2, 'parent_line_id': 'net_increase'},
+                    'investing_activities_cash_in': {'name': _('Cash in'), 'level': 3, 'parent_line_id': 'investing_activities'},
+                    'investing_activities_cash_out': {'name': _('Cash out'), 'level': 3, 'parent_line_id': 'investing_activities'},
+                'financing_activities': {'name': _('Cash flows from financing activities'), 'level': 2, 'parent_line_id': 'net_increase'},
+                    'financing_activities_cash_in': {'name': _('Cash in'), 'level': 3, 'parent_line_id': 'financing_activities'},
+                    'financing_activities_cash_out': {'name': _('Cash out'), 'level': 3, 'parent_line_id': 'financing_activities'},
+                'unclassified_activities': {'name': _('Cash flows from unclassified activities'), 'level': 2, 'parent_line_id': 'net_increase'},
+                    'unclassified_activities_cash_in': {'name': _('Cash in'), 'level': 3, 'parent_line_id': 'unclassified_activities'},
+                    'unclassified_activities_cash_out': {'name': _('Cash out'), 'level': 3, 'parent_line_id': 'unclassified_activities'},
+            'closing_balance': {'name': _('Cash and cash equivalents, closing balance'), 'level': 0},
+        }
 
-    @api.model
-    def _get_columns_name(self, options):
-        return [{'name': ''}, {'name': _('Balance'), 'class': 'number'}]
-
-    @api.model
-    def _get_lines_to_compute(self, options):
-        return [
-            {
-                'id': 'cash_flow_line_%s' % index,
-                'name': name,
-                'level': level,
-                'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
-                'columns': [{'no_format': 0.0, 'class': 'number'}],
-            } for index, level, name in [
-                (0, 0, _('Cash and cash equivalents, beginning of period')),
-                (1, 0, _('Net increase in cash and cash equivalents')),
-                (2, 2, _('Cash flows from operating activities')),
-                (3, 3, _('Advance Payments received from customers')),
-                (4, 3, _('Cash received from operating activities')),
-                (5, 3, _('Advance payments made to suppliers')),
-                (6, 3, _('Cash paid for operating activities')),
-                (7, 2, _('Cash flows from investing & extraordinary activities')),
-                (8, 3, _('Cash in')),
-                (9, 3, _('Cash out')),
-                (10, 2, _('Cash flows from financing activities')),
-                (11, 3, _('Cash in')),
-                (12, 3, _('Cash out')),
-                (13, 2, _('Cash flows from unclassified activities')),
-                (14, 3, _('Cash in')),
-                (15, 3, _('Cash out')),
-                (16, 0, _('Cash and cash equivalents, closing balance')),
-            ]
-        ]
-
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        def _add_no_format_values(array, key_result, key_to_sum):
-            for key in key_to_sum:
-                array[key_result]['columns'][0]['no_format'] += array[key]['columns'][0]['no_format']
-
-        def _insert_at_index(index, account_id, account_code, account_name, amount):
-            ''' Insert the amount in the right section depending the line's index and the account_id. '''
-            # Helper used to add some values to the report line having the index passed as parameter
-            # (see _get_lines_to_compute).
-            line = lines_to_compute[index]
-
-            if self.env.company.currency_id.is_zero(amount):
-                return
-
-            line.setdefault('unfolded_lines', {})
-            line['unfolded_lines'].setdefault(account_id, {
-                'id': account_id,
-                'name': '%s %s' % (account_code, account_name),
-                'level': line['level'] + 1,
-                'parent_id': line['id'],
-                'columns': [{'no_format': 0.0, 'class': 'number'}],
-            })
-
-            line['columns'][0]['no_format'] += amount
-            line['unfolded_lines'][account_id]['columns'][0]['no_format'] += amount
-
-        def _dispatch_result(account_id, account_code, account_name, account_type, amount):
-            ''' Dispatch the newly fetched line inside the right section. '''
-            if account_type == 'asset_receivable':
-                # 'Advance Payments received from customers'                (index=3)
-                _insert_at_index(3, account_id, account_code, account_name, -amount)
-            elif account_type == 'liability_payable':
-                # 'Advance Payments made to suppliers'                      (index=5)
-                _insert_at_index(5, account_id, account_code, account_name, -amount)
-            elif amount < 0:
-                if tag_operating_id in tags_per_account.get(account_id, []):
-                    # 'Cash received from operating activities'             (index=4)
-                    _insert_at_index(4, account_id, account_code, account_name, -amount)
-                elif tag_investing_id in tags_per_account.get(account_id, []):
-                    # 'Cash in for investing activities'                    (index=8)
-                    _insert_at_index(8, account_id, account_code, account_name, -amount)
-                elif tag_financing_id in tags_per_account.get(account_id, []):
-                    # 'Cash in for financing activities'                    (index=11)
-                    _insert_at_index(11, account_id, account_code, account_name, -amount)
-                else:
-                    # 'Cash in for unclassified activities'                 (index=14)
-                    _insert_at_index(14, account_id, account_code, account_name, -amount)
-            elif amount > 0:
-                if tag_operating_id in tags_per_account.get(account_id, []):
-                    # 'Cash paid for operating activities'                  (index=6)
-                    _insert_at_index(6, account_id, account_code, account_name, -amount)
-                elif tag_investing_id in tags_per_account.get(account_id, []):
-                    # 'Cash out for investing activities'                   (index=9)
-                    _insert_at_index(9, account_id, account_code, account_name, -amount)
-                elif tag_financing_id in tags_per_account.get(account_id, []):
-                    # 'Cash out for financing activities'                   (index=12)
-                    _insert_at_index(12, account_id, account_code, account_name, -amount)
-                else:
-                    # 'Cash out for unclassified activities'                (index=15)
-                    _insert_at_index(15, account_id, account_code, account_name, -amount)
-
-        self.env.flush_all()
-
+    def _cash_flow_report_get_layout_line(self, options, layout_line_id, layout_line_data, report_data):
+        line_id = self._get_generic_line_id(None, None, markup=layout_line_id)
         unfold_all = self._context.get('print_mode') or options.get('unfold_all')
-        currency_table_query = self.env['res.currency']._get_query_currency_table(options)
-        lines_to_compute = self._get_lines_to_compute(options)
+        unfoldable = 'aml_groupby_account' in report_data[layout_line_id] if layout_line_id in report_data else False
 
-        tag_operating_id = self.env.ref('account.account_tag_operating').id
-        tag_investing_id = self.env.ref('account.account_tag_investing').id
-        tag_financing_id = self.env.ref('account.account_tag_financing').id
-        tag_ids = (tag_operating_id, tag_investing_id, tag_financing_id)
-        tags_per_account = self._get_tags_per_account(options, tag_ids)
+        column_values = []
 
-        payment_move_ids, payment_account_ids = self._get_liquidity_move_ids(options)
+        for column in options['columns']:
+            expression_label = column['expression_label']
+            column_group_key = column['column_group_key']
 
-        # Compute 'Cash and cash equivalents, beginning of period'      (index=0)
-        beginning_period_options = self._get_options_beginning_period(options)
-        for account_id, account_code, account_name, balance in self._compute_liquidity_balance(beginning_period_options, currency_table_query, payment_account_ids):
-            _insert_at_index(0, account_id, account_code, account_name, balance)
-            _insert_at_index(16, account_id, account_code, account_name, balance)
+            value = report_data[layout_line_id].get(expression_label, 0.0).get(column_group_key, 0.0) if layout_line_id in report_data else 0.0
 
-        # Compute 'Cash and cash equivalents, closing balance'          (index=16)
-        for account_id, account_code, account_name, balance in self._compute_liquidity_balance(options, currency_table_query, payment_account_ids):
-            _insert_at_index(16, account_id, account_code, account_name, balance)
-
-        # ==== Process liquidity moves ====
-        res = self._get_liquidity_move_report_lines(options, currency_table_query, payment_move_ids, payment_account_ids)
-        for account_id, account_code, account_name, account_type, amount in res:
-            _dispatch_result(account_id, account_code, account_name, account_type, amount)
-
-        # ==== Process reconciled moves ====
-        res = self._get_reconciled_move_report_lines(options, currency_table_query, payment_move_ids, payment_account_ids)
-        for account_id, account_code, account_name, account_type, balance in res:
-            _dispatch_result(account_id, account_code, account_name, account_type, balance)
-
-        # 'Cash flows from operating activities'                            (index=2)
-        _add_no_format_values(lines_to_compute, 2, [3, 4, 5, 6])
-
-        # 'Cash flows from investing & extraordinary activities'            (index=7)
-        _add_no_format_values(lines_to_compute, 7, [8, 9])
-
-        # 'Cash flows from financing activities'                            (index=10)
-        _add_no_format_values(lines_to_compute, 10, [11, 12])
-
-        # 'Cash flows from unclassified activities'                         (index=13)
-        _add_no_format_values(lines_to_compute, 13, [14, 15])
-
-        # 'Net increase in cash and cash equivalents'                       (index=1)
-        _add_no_format_values(lines_to_compute, 1, [2, 7, 10, 13])
-
-        # ==== Compute the unexplained difference ====
-
-        closing_ending_gap = lines_to_compute[16]['columns'][0]['no_format'] - lines_to_compute[0]['columns'][0]['no_format']
-        computed_gap = sum(lines_to_compute[index]['columns'][0]['no_format'] for index in [2, 7, 10, 13])
-        delta = closing_ending_gap - computed_gap
-        if not self.env.company.currency_id.is_zero(delta):
-            lines_to_compute.insert(16, {
-                'id': 'cash_flow_line_unexplained_difference',
-                'name': _('Unexplained Difference'),
-                'level': 0,
-                'columns': [{'no_format': delta, 'class': 'number'}],
+            column_values.append({
+                'name': self.format_value(value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
+                'no_format': value,
+                'class': 'number',
             })
 
-        # ==== Build final lines ====
+        return {
+            'id': line_id,
+            'name': layout_line_data['name'],
+            'level': layout_line_data['level'],
+            'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
+            'columns': column_values,
+            'unfoldable': unfoldable,
+            'unfolded': line_id in options['unfolded_lines'] or unfold_all,
+        }
 
-        lines = []
-        for line in lines_to_compute:
-            unfolded_lines = line.pop('unfolded_lines', {})
-            sub_lines = [unfolded_lines[k] for k in sorted(unfolded_lines)]
+    def _cash_flow_report_get_aml_line(self, options, aml_data):
+        parent_line_id = self._get_generic_line_id(None, None, aml_data['parent_line_id'])
+        line_id = self._get_generic_line_id('account.account', aml_data['account_id'], parent_line_id=parent_line_id)
 
-            line['unfoldable'] = len(sub_lines) > 0
-            line['unfolded'] = line['unfoldable'] and (unfold_all or line['id'] in options['unfolded_lines'])
+        column_values = []
 
-            # Header line.
-            line['columns'][0]['name'] = self.format_value(line['columns'][0]['no_format'])
-            lines.append(line)
+        for column in options['columns']:
+            expression_label = column['expression_label']
+            column_group_key = column['column_group_key']
 
-            # Sub lines.
-            for sub_line in sub_lines:
-                sub_line['columns'][0]['name'] = self.format_value(sub_line['columns'][0]['no_format'])
-                sub_line['style'] = '' if line['unfolded'] else 'display: none;'
-                lines.append(sub_line)
+            value = aml_data[expression_label].get(column_group_key, 0.0)
 
-            # Total line.
-            if line['unfoldable']:
-                lines.append({
-                    'id': '%s_total' % line['id'],
-                    'name': _('Total') + ' ' + line['name'],
-                    'level': line['level'] + 1,
-                    'parent_id': line['id'],
-                    'columns': line['columns'],
-                    'class': 'o_account_reports_domain_total',
-                    'style': '' if line['unfolded'] else 'display: none;',
-                })
-        return lines
+            column_values.append({
+                'name': self.format_value(value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
+                'no_format': value,
+                'class': 'number',
+            })
 
-    @api.model
-    def _get_report_name(self):
-        return _('Cash Flow Statement')
+        return {
+            'id': line_id,
+            'name': f"{aml_data['account_code']} {aml_data['account_name']}",
+            'level': aml_data['level'],
+            'parent_id': parent_line_id,
+            'columns': column_values,
+        }
+
+    def _cash_flow_report_get_unexplained_difference_line(self, options, report_data):
+        unexplained_difference = False
+        column_values = []
+
+        for column in options['columns']:
+            expression_label = column['expression_label']
+            column_group_key = column['column_group_key']
+
+            opening_balance = report_data['opening_balance'][expression_label].get(column_group_key, 0.0) if 'opening_balance' in report_data else 0.0
+            closing_balance = report_data['closing_balance'][expression_label].get(column_group_key, 0.0) if 'closing_balance' in report_data else 0.0
+            net_increase = report_data['net_increase'][expression_label].get(column_group_key, 0.0) if 'net_increase' in report_data else 0.0
+
+            delta = closing_balance - opening_balance - net_increase
+
+            if not self.env.company.currency_id.is_zero(delta):
+                unexplained_difference = True
+
+            column_values.append({
+                'name': self.format_value(delta, blank_if_zero=False, figure_type='monetary'),
+                'no_format': delta,
+                'class': 'number',
+            })
+
+        if unexplained_difference:
+            return {
+                'id': self._get_generic_line_id(None, None, markup='unexplained_difference'),
+                'name': 'Unexplained Difference',
+                'level': 0,
+                'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
+                'columns': column_values,
+            }

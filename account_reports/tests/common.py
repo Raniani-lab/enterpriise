@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-from contextlib import contextmanager
-from unittest.mock import patch
 import copy
+from contextlib import contextmanager
+from datetime import datetime, date
+from unittest.mock import patch
 
-from odoo import fields
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+
+from odoo import Command, fields
+from odoo.exceptions import UserError
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.tools.misc import formatLang
-
 
 class TestAccountReportsCommon(AccountTestInvoicingCommon):
 
@@ -19,23 +21,33 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         cls.company_data_2['currency'] = cls.currency_data['currency']
 
     @classmethod
-    def _init_options(cls, report, date_from, date_to, default_options=None):
+    def _generate_options(cls, report, date_from, date_to, default_options=None):
         ''' Create new options at a certain date.
         :param report:          The report.
-        :param filter:          One of the following values: ('today', 'custom', 'this_month', 'this_quarter', 'this_year', 'last_month', 'last_quarter', 'last_year').
-        :param date_from:       A datetime object or False.
-        :param date_to:         A datetime object.
+        :param date_from:       A datetime object, str representation of a date or False.
+        :param date_to:         A datetime object or str representation of a date.
         :return:                The newly created options.
         '''
+        if isinstance(date_from, datetime):
+            date_from_str = fields.Date.to_string(datetime)
+        else:
+            date_from_str = date_from
+
+        if isinstance(date_to, datetime):
+            date_to_str = fields.Date.to_string(datetime)
+        else:
+            date_to_str = date_to
+
         if not default_options:
             default_options = {}
 
         return report._get_options({
+            'report_id': report.id,
             'date': {
-                'date_from': date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
-                'date_to': date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+                'date_from': date_from_str,
+                'date_to': date_to_str,
+                'mode': 'range',
                 'filter': 'custom',
-                'mode': report.filter_date.get('mode', 'range'),
             },
             **default_options,
         })
@@ -50,13 +62,13 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         :param date_to:         A datetime object the 'custom' comparison_type.
         :return:                The newly created options.
         '''
-        report._init_filter_comparison(options, {**options, 'comparison': {
+        previous_options = {**options, 'comparison': {
             'date_from': date_from and date_from.strftime(DEFAULT_SERVER_DATE_FORMAT),
             'date_to': date_to and date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
             'filter': comparison_type,
             'number_period': number_period,
-        }})
-        return options
+        }}
+        return report._get_options(previous_options)
 
     def _update_multi_selector_filter(self, options, option_key, selected_ids):
         ''' Modify a selector in the options to select .
@@ -82,6 +94,19 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         with patch.object(type(report), 'user_has_groups', user_has_groups):
             yield
 
+    def assertGrowthComparisonValues(self, lines, expected_values):
+        filtered_lines = self._filter_folded_lines(lines)
+
+        # Check number of lines.
+        self.assertEqual(len(filtered_lines), len(expected_values))
+
+        for value, expected_value in zip(filtered_lines, expected_values):
+            # Check number of columns.
+            key = 'growth_comparison_data'
+            self.assertEqual(len(value[key]) + 1, len(expected_value))
+            # Check name, value and class.
+            self.assertEqual(tuple([value['name'], value[key]['name'], value[key]['class']]), expected_value)
+
     def assertHeadersValues(self, headers, expected_headers):
         ''' Helper to compare the headers returned by the _get_table method
         with some expected results.
@@ -99,11 +124,9 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
 
             for i, column in enumerate(header):
                 # Check name.
-                self.assertEqual(column['name'], expected_header[i][0])
-                # Check colspan.
-                self.assertEqual(column.get('colspan', 1), expected_header[i][1])
+                self.assertEqual(column['name'], self._convert_str_to_date(column['name'], expected_header[i]))
 
-    def assertLinesValues(self, lines, columns, expected_values, currency_map={}):
+    def assertLinesValues(self, lines, columns, expected_values, currency_map=None, ignore_folded=True):
         ''' Helper to compare the lines returned by the _get_lines method
         with some expected results.
         :param lines:               See _get_lines.
@@ -112,30 +135,31 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         :param currency_map:        A map mapping each column_index to some extra options to test the lines:
             - currency:             The currency to be applied on the column.
             - currency_code_index:  The index of the column containing the currency code.
+        :param ignore_folded:          Will not filter folded lines when True.
         '''
+        if currency_map is None:
+            currency_map = {}
+
+        filtered_lines = self._filter_folded_lines(lines) if ignore_folded else lines
 
         # Compare the table length to see if any line is missing
-        self.assertEqual(len(lines), len(expected_values))
+        self.assertEqual(len(filtered_lines), len(expected_values))
 
         # Compare cell by cell the current value with the expected one.
-        i = 0
         to_compare_list = []
-        for line in lines:
-            j = 0
+        for i, line in enumerate(filtered_lines):
             compared_values = [[], []]
-            for index in columns:
-                expected_value = expected_values[i][j]
-
+            for j, index in enumerate(columns):
                 if index == 0:
                     current_value = line['name']
                 else:
-                    colspan = line.get('colspan', 1)
-                    line_index = index - colspan
-                    if line_index < 0:
-                        current_value = ''
-                    else:
-                        current_value = line['columns'][line_index].get('name', '')
+                    # Some lines may not have columns, like title lines. In such case, no values should be provided for these.
+                    # Note that the function expect a tuple, so the line still need a comma after the name value.
+                    if j > len(expected_values[i]) - 1:
+                        break
+                    current_value = line['columns'][index-1].get('name', '')
 
+                expected_value = expected_values[i][j]
                 currency_data = currency_map.get(index, {})
                 used_currency = None
                 if 'currency' in currency_data:
@@ -154,9 +178,7 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
                 compared_values[0].append(current_value)
                 compared_values[1].append(expected_value)
 
-                j += 1
             to_compare_list.append(compared_values)
-            i += 1
 
         errors = []
         for i, to_compare in enumerate(to_compare_list):
@@ -169,31 +191,70 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         if errors:
             self.fail('\n'.join(errors))
 
+    def _filter_folded_lines(self, lines):
+        """ Children lines returned for folded lines (for example, totals below sections) should be ignored when comparing the results
+        in assertLinesValues (their parents are folded, so they are not shown anyway). This function returns a filtered version of lines
+        list, without the chilren of folded lines.
+        """
+        filtered_lines = []
+        folded_lines = set()
+        for line in lines:
+            if line.get('parent_id') in folded_lines:
+                folded_lines.add(line['id'])
+            else:
+                if line.get('unfoldable') and not line.get('unfolded'):
+                    folded_lines.add(line['id'])
+                filtered_lines.append(line)
+        return filtered_lines
+
+    def _convert_str_to_date(self, ref, val):
+        if isinstance(ref, date) and isinstance(val, str):
+            return datetime.strptime(val, '%Y-%m-%d').date()
+        return val
+
     @classmethod
-    def _create_tax_report_line(cls, name, report, tag_name=None, parent_line=None, sequence=None, code=None, formula=None,
-                                carry_over_condition=None, is_carryover_used_in_balance=False,
-                                carry_over_destination_line_id=False, is_carryover_persistent=True):
+    def _create_tax_report_line(cls, name, report, tag_name=None, parent_line=None, sequence=None, code=None, formula=None):
         """ Creates a tax report line
         """
         create_vals = {
             'name': name,
+            'code': code,
             'report_id': report.id,
+            'sequence': sequence,
+            'expression_ids': [],
         }
+        if tag_name and formula:
+            raise UserError("Can't use this helper to create a line with both tags and formula")
         if tag_name:
-            create_vals['tag_name'] = tag_name
+            create_vals['expression_ids'].append(Command.create({
+                "label": "balance",
+                "engine": "tax_tags",
+                "formula": tag_name,
+            }))
         if parent_line:
             create_vals['parent_id'] = parent_line.id
-        if sequence != None:
-            create_vals['sequence'] = sequence
-        if code:
-            create_vals['code'] = code
         if formula:
-            create_vals['formula'] = formula
-        if carry_over_condition:
-            create_vals['carry_over_condition_method'] = carry_over_condition
-        if carry_over_destination_line_id:
-            create_vals['carry_over_destination_line_id'] = carry_over_destination_line_id
-        create_vals['is_carryover_used_in_balance'] = is_carryover_used_in_balance
-        create_vals['is_carryover_persistent'] = is_carryover_persistent
+            create_vals['expression_ids'].append(Command.create({
+                "label": "balance",
+                "engine": "aggregation",
+                "formula": formula,
+            }))
 
-        return cls.env['account.tax.report.line'].create(create_vals)
+        return cls.env['account.report.line'].create(create_vals)
+
+    @classmethod
+    def _get_basic_line_dict_id_from_report_line(cls, report_line):
+        """ Computes a full generic id for the provided report line (hence including the one of its parent as prefix), using no markup.
+        """
+        report = report_line.report_id
+        if report_line.parent_id:
+            parent_line_id = cls._get_basic_line_dict_id_from_report_line(report_line.parent_id)
+            return report._get_generic_line_id(report_line._name, report_line.id, parent_line_id=parent_line_id)
+
+        return report._get_generic_line_id(report_line._name, report_line.id)
+
+    @classmethod
+    def _get_basic_line_dict_id_from_report_line_ref(cls, report_line_xmlid):
+        """ Same as _get_basic_line_dict_id_from_report_line, but from the line's xmlid, for convenience in the tests.
+        """
+        return cls._get_basic_line_dict_id_from_report_line(cls.env.ref(report_line_xmlid))

@@ -69,8 +69,15 @@ class TestL10nBeReportsPostWizard(TestAccountReportsCommon):
         self.tax_return_move.refresh_tax_entry()
 
         # Posting the tax returns move with the wizard data actually posts the move
-        report = self.env['account.generic.tax.report']
-        with patch.object(type(report), 'get_pdf', autospec=True, side_effect=lambda *args, **kwargs: b''):
+        report = self.env.ref('l10n_be.tax_report_vat')
+
+        mock_pdf = {
+            'file_name': report.get_default_report_filename('pdf'),
+            'file_content': b'',
+            'file_type': 'pdf',
+        }
+
+        with patch.object(type(report), 'export_to_pdf', autospec=True, side_effect=lambda *args, **kwargs: mock_pdf):
             self.tax_return_move.with_context({'l10n_be_reports_generation_options': {}}).action_post()
 
         self.assertRecordValues(self.tax_return_move, [{'state': 'posted'}])

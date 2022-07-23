@@ -6,6 +6,7 @@
         <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@id='hr_payroll_localization']" position="after">
+                <field name="country_code" invisible="1"/>
                 <field name="module_l10n_fr_hr_payroll" invisible="1"/>
                 <field name="country_code" invisible="1"/>
                 <h2 attrs="{'invisible': ['|', ('module_l10n_fr_hr_payroll', '=', False),('country_code', '!=', 'FR')]}">Payroll</h2>

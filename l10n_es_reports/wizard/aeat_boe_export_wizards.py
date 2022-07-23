@@ -3,7 +3,7 @@
 
 from odoo import models, fields, api, _
 
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 import json
 
@@ -13,30 +13,21 @@ class AEATBOEExportWizard(models.TransientModel):
     _name = 'l10n_es_reports.aeat.boe.export.wizard'
     _description = "BOE Export Wizard"
 
+    report_id = fields.Many2one(string="Report", comodel_name='account.report', required=True)
     calling_export_wizard_id = fields.Many2one(string="Calling Export Wizard", comodel_name="account_reports.export.wizard", help="Optional field containing the report export wizard calling this BOE wizard, if there is one.")
 
     def download_boe_action(self):
+        if not self.env.company.vat:
+            raise UserError(_("Please first set the TIN of your company."))
+
         if self.calling_export_wizard_id and not self.calling_export_wizard_id.l10n_es_reports_boe_wizard_model:
             # In this case, the BOE wizard has been called by an export wizard, and this wizard has not yet received the data necessary to generate the file
             self.calling_export_wizard_id.l10n_es_reports_boe_wizard_id = self.id
             self.calling_export_wizard_id.l10n_es_reports_boe_wizard_model = self._name
             return self.calling_export_wizard_id.export_report()
         else:
-            # We add the generation context to the options, as it is not passed
-            # otherwize, and we need it for manual lines' values
             options = self.env.context.get('l10n_es_reports_report_options', {})
-            return {
-                'type': 'ir_actions_account_report_download',
-                'data': {'model': self.env.context.get('model'),
-                         'options': json.dumps({**options, 'l10n_es_reports_boe_wizard_id': self.id}),
-                         'output_format': 'txt',
-                         'financial_id': self.env.context.get('id'),
-                },
-            }
-
-    def retrieve_boe_manual_data(self):
-        return {} # For extension
-
+            return self.report_id.export_file({**options, 'l10n_es_reports_boe_wizard_id': self.id}, f'l10n_es_boe_export_mod{self.MODELO_NUMBER}')
 
 class Mod111And115And303CommonBOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.export.wizard'
@@ -86,6 +77,8 @@ class Mod111BOEWizard(models.TransientModel):
     _name = 'l10n_es_reports.aeat.boe.mod111.export.wizard'
     _description = "BOE Export Wizard for (mod111)"
 
+    MODELO_NUMBER = 111
+
     # No field, but keeping it so is mandatory for the genericity of the modelling
 
 
@@ -93,6 +86,8 @@ class Mod115BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod111and115and303.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod115.export.wizard'
     _description = "BOE Export Wizard for (mod115)"
+
+    MODELO_NUMBER = 115
 
     # No field, but keeping it so is mandatory for the genericity of the modelling
 
@@ -102,7 +97,19 @@ class Mod303BOEWizard(models.TransientModel):
     _name = 'l10n_es_reports.aeat.boe.mod303.export.wizard'
     _description = "BOE Export Wizard for (mod303)"
 
+    MODELO_NUMBER = 303
+
     monthly_return = fields.Boolean(string="In Monthly Return Register")
+    using_sii = fields.Boolean(string="Using SII Voluntarily", default=False)
+    exempted_from_mod_390 = fields.Boolean(string="Exempted From Modelo 390", default=False)
+    exempted_from_mod_390_available = fields.Boolean(compute='_compute_show_exempted_from_mod_390', help="Technical field used to only make exempted_from_mod_390 avilable in the last period (12 or 4T)")
+
+    def _compute_show_exempted_from_mod_390(self):
+        report = self.env.ref('l10n_es_reports.mod_303')
+        options = self.env.context.get('l10n_es_reports_report_options', {})
+        period = report._l10n_es_get_mod_period_and_year(options)[0]
+        for record in self:
+            record.exempted_from_mod_390_available = period in ('12', '4T')
 
     @api.constrains('partner_bank_id')
     def validate_bic(self):
@@ -111,19 +118,19 @@ class Mod303BOEWizard(models.TransientModel):
                 raise ValidationError(_("Please first assign a BIC number to the bank related to this account."))
 
     def _get_using_sii_2021_value(self):
-        """ Hook to be overridden in 2021 module to allow manual
-        configuration of the SII field in the BOE"""
-        return 2
+        return 1 if self.using_sii else 2
 
     def _get_exonerated_from_mod_390_2021_value(self, period):
-        """ Hook to be overridden in 2021 module to allow manual
-        configuration of the 'exeonerated from mod 390' field in the BOE"""
-        return 2 if period in ('12', '4T') else 0
+        if period in ('12', '4T'):
+            return 1 if self.exempted_from_mod_390 else 2
+        return 0
 
 class Mod347BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod347and349.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod347.export.wizard'
     _description = "BOE Export Wizard for (mod347)"
+
+    MODELO_NUMBER = 347
 
     cash_basis_mod347_data = fields.One2many(
         comodel_name='l10n_es_reports.aeat.mod347.manual.partner.data',
@@ -131,7 +138,7 @@ class Mod347BOEWizard(models.TransientModel):
         string="Cash Basis Data",
         help="Manual entries containing the amounts perceived for the partners with cash basis criterion during this year. Leave empty for partners for which this criterion does not apply.")
 
-    def get_partners_manual_parameters_map(self):
+    def l10n_es_get_partners_manual_parameters_map(self):
         cash_basis_dict = {}
         for data in self.cash_basis_mod347_data:
             if not cash_basis_dict.get(data.partner_id.id):
@@ -158,5 +165,7 @@ class Mod349BOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.mod347and349.export.wizard'
     _name = 'l10n_es_reports.aeat.boe.mod349.export.wizard'
     _description = "BOE Export Wizard for (mod349)"
+
+    MODELO_NUMBER = 349
 
     trimester_2months_report = fields.Boolean(string="Trimester monthly report", help="Whether or not this BOE file must be generated with the data of the first two months of the trimester (in case its total amount of operation is above the threshold fixed by the law)")

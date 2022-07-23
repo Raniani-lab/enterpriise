@@ -1,71 +1,75 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
 from lxml import etree, objectify
-from odoo import models, fields, api, _
+
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare
+from odoo.tools import float_compare
 
 
-class ECSalesReport(models.AbstractModel):
-    _inherit = 'account.sales.report'
+class ECSalesReport(models.Model):
+    _inherit = 'account.report'
 
-    def _get_non_generic_country_codes(self, options):
-        codes = super(ECSalesReport, self)._get_non_generic_country_codes(options)
-        codes.add('LU')
-        return codes
+    def _custom_options_initializer_l10n_lu_sales_report(self, options, previous_options=None):
+        """
+        Add the invoice lines search domain that is specific to the country.
+        Typically, the taxes account.report.expression ids relative to the country for the triangular, sale of goods
+        or services.
+        :param dict options: Report options
+        :return dict: The modified options dictionary
+        """
+        self.ensure_one()
+        self._sales_report_init_core_custom_options(options, previous_options)
+        ec_operation_category = options.get('sales_report_taxes', {'goods': tuple(), 'triangular': tuple(), 'services': tuple()})
 
-    def _get_ec_sale_code_options_data(self, options):
-        if self._get_report_country_code(options) != 'LU':
-            return super(ECSalesReport, self)._get_ec_sale_code_options_data(options)
+        ec_operation_category['goods'] = \
+            tuple(self.env.ref('l10n_lu.account_tax_report_line_1b_1_intra_community_goods_pi_vat_tag')._get_matching_tags().ids)
+        ec_operation_category['triangular'] = \
+            tuple(self.env.ref('l10n_lu.account_tax_report_line_1b_6_a_subsequent_to_intra_community_tag')._get_matching_tags().ids)
+        ec_operation_category['services'] = \
+            tuple(self.env.ref('l10n_lu.account_tax_report_line_1b_6_b1_non_exempt_customer_vat_tag')._get_matching_tags().ids)
 
-        return {
-            'goods': {
-                'name': 'L',
-                'tax_report_line_ids': self.env.ref('l10n_lu.account_tax_report_line_1b_1_intra_community_goods_pi_vat').ids,
-            },
-            'triangular': {
-                'name': 'T',
-                'tax_report_line_ids': self.env.ref('l10n_lu.account_tax_report_line_1b_6_a_subsequent_to_intra_community').ids,
-            },
-            'services': {
-                'name': 'S',
-                'tax_report_line_ids': self.env.ref('l10n_lu.account_tax_report_line_1b_6_b1_non_exempt_customer_vat').ids,
-            },
+        # Change the names of the taxes to specific ones that are dependant to the tax type
+        ec_operation_category['operation_category'] = {
+            'goods': 'L',
+            'triangular': 'T',
+            'services': 'S',
         }
+        options.update({'sales_report_taxes': ec_operation_category})
 
-    def _get_reports_buttons(self, options):
-        res = super()._get_reports_buttons(options)
-        if self._get_report_country_code(options) == 'LU':
-            res.append({'name': _('XML'), 'sequence': 3, 'action': 'l10n_lu_open_report_export_wizard'})
-        return res
+        # Buttons
+        options.setdefault('buttons', []).append(
+            {'name': _('XML'), 'sequence': 30, 'action': 'l10n_lu_sales_report_open_report_export_wizard'}
+        )
 
-    @api.model
-    def _get_columns_name(self, options):
-        if self._get_report_country_code(options) != 'LU':
-            return super(ECSalesReport, self)._get_columns_name(options)
+    def l10n_lu_sales_report_get_file_name(self, options):
+        ''' 000000         X            20200101 T                      120030  01
+            └> eCDF prefix └> X for XML └> date  └> date/time separator └> time └> sequence num (we use ms)
+        '''
+        ecdf_prefix = self.env.company.ecdf_prefix
+        date_time = datetime.now().strftime('%Y%m%dT%H%M%S%f')[:-4]
+        filename = f'{ecdf_prefix}X{date_time}'
+        # `FileReference` element of exported XML must be the same as filename -> store in options
+        options['filename'] = filename
 
-        return [
-            {'name': ''},
-            {'name': _('Country Code')},
-            {'name': _('VAT Number')},
-            {'name': _('Code')},
-            {'name': _('Amount'), 'class': 'number'},
-        ]
+    def l10n_lu_sales_report_get_file_data_lines(self, options):
+        lines = self._get_lines(self._get_options(options))[:-1]  # Remove the total line
+        for i, line in enumerate(lines):
+            new_line = [j['no_format'] for j in line['columns']]
+            lines[i] = new_line
 
-    def _get_file_data_lines(self, options):
-        lines = self.with_context(no_format=True)._get_lines(options)
         l_lines = []
         t_lines = []
         s_lines = []
         l_sum = t_sum = s_sum = 0
         for line in lines:
-            if line[2] == 'L':
+            if line[2].startswith('L'):
                 l_sum += line[3]
                 l_lines.append(line)
-            elif line[2] == 'T':
+            elif line[2].startswith('T'):
                 t_sum += line[3]
                 t_lines.append(line)
             else:
@@ -81,22 +85,7 @@ class ECSalesReport(models.AbstractModel):
             's_sum': ('%.2f' % s_sum).replace('.', ','),
         }
 
-    @api.model
-    def get_report_filename(self, options):
-        if self._get_report_country_code(options) != 'LU':
-            return super().get_report_filename(options)
-
-        ''' 000000         X            20200101 T                      120030  01
-            └> eCDF prefix └> X for XML └> date  └> date/time separator └> time └> sequence num (we use ms)
-        '''
-        ecdf_prefix = self.env.company.ecdf_prefix
-        date_time = datetime.now().strftime('%Y%m%dT%H%M%S%f')[:-4]
-        filename = f'{ecdf_prefix}X{date_time}'
-        # `FileReference` element of exported XML must be the same as fileme -> store in options
-        options['filename'] = filename
-        return filename
-
-    def _get_report_data(self, options):
+    def l10n_lu_sales_report_get_report_data(self, options):
         date_from = options['date'].get('date_from')
         date_to = options['date'].get('date_to')
 
@@ -118,18 +107,16 @@ class ECSalesReport(models.AbstractModel):
         year = date_from[:4]
 
         options['get_file_data'] = True
-        xml_data = self._get_file_data_lines(options)
+        xml_data = self.l10n_lu_sales_report_get_file_data_lines(options)
 
         return xml_data, month, quarter, year
 
     @api.model
-    def get_xml(self, options):
-        if self._get_report_country_code(options) != 'LU':
-            return super().get_xml(options)
+    def l10n_lu_sales_report_export_to_xml(self, options):
         # Check
         company = self.env.company
         errors = []
-        self._lu_validate_ecdf_prefix()
+        self._l10n_lu_validate_ecdf_prefix()
         company_vat = company.partner_id.vat
         if not company_vat:
             errors.append(_('VAT'))
@@ -140,11 +127,11 @@ class ECSalesReport(models.AbstractModel):
             raise UserError(_('The following must be set on your company:\n- %s', ('\n- '.join(errors))))
 
         rcs_number = company.company_registry or 'NE'
-
+        self.l10n_lu_sales_report_get_file_name(options)
         file_ref = options['filename']
         company_vat = company_vat.replace(' ', '').upper()[2:]
 
-        xml_data, month, quarter, year = self._get_report_data(options)
+        xml_data, month, quarter, year = self.l10n_lu_sales_report_get_report_data(options)
 
         xml_data.update({
             "file_ref": file_ref,
@@ -159,24 +146,33 @@ class ECSalesReport(models.AbstractModel):
         rendered_content = self.env['ir.qweb']._render('l10n_lu_reports.EcSalesLuXMLReport', xml_data)
         return b"<?xml version='1.0' encoding='utf-8'?>" + rendered_content.encode()
 
-    def _get_lu_xml_2_0_report_values(self, options, comparison_files):
+    def l10n_lu_sales_report_get_xml_2_0_report_values(self, options, comparison_files):
         """
-        Returns the formatted forms for the LU VAT recapitulative statements (Intracommunity exchange of goods and services).
+        Returns the formatted forms for the LU VAT recapitulative statements (Intracommunity exchange of goods and
+        services).
         This comprises the recapitulative statement of IC supplies of goods (if selected in the options) and
         the recapitulative statement of IC supplies of services (if selected in the options).
-        Both declarations comprise corrections tables, which can be used to correct the data reported in previous declarations.
-        These tables are filled in by comparing what would be reported at present time with the given comparison declarations.
-        (IC supplies of goods (monthly): https://ecdf-developer.b2g.etat.lu/ecdf/forms/popup/TVA_LICM_TYPE/2020M01/en/1/preview
-         IC supplies of services (monthly): https://ecdf-developer.b2g.etat.lu/ecdf/forms/popup/TVA_PSIM_TYPE/2020M01/en/1/preview)
+        Both declarations comprise corrections tables, which can be used to correct the data reported in previous
+        declarations.
+        These tables are filled in by comparing what would be reported at present time with the given comparison
+        declarations.
+        (IC supplies of goods (monthly): https://ecdf-developer.b2g.etat.lu/ecdf/forms/popup/TVA_LICM_TYPE/2020M01/en
+        /1/preview
+         IC supplies of services (monthly): https://ecdf-developer.b2g.etat.lu/ecdf/forms/popup/TVA_PSIM_TYPE/2020M01
+         /en/1/preview)
 
         :param comparison_files: past declarations to check and correct if needed
         """
-        xml_data, month, quarter, year = self._get_report_data(options)
-
+        xml_data, month, quarter, year = self.l10n_lu_sales_report_get_report_data(options)
         # Format the values for the export
-        intrastat_codes = [c['id'] for c in options['ec_sale_code'] if c['selected']] or ['L', 'T', 'S']
-        corrections, compared_declarations = self._get_correction_data(options, comparison_files)
-        forms = self._format_export_values(intrastat_codes, xml_data, corrections, compared_declarations, month, quarter, year)
+        intra_codes = []
+        for c in options.get('ec_tax_filter_selection', {}):
+            if c['selected']:
+                intra_codes.append(options.get('sales_report_taxes', {}).get('operation_category', {})[c['id']])
+        if not intra_codes:
+            intra_codes = ['L', 'T', 'S']
+        corr, comped_decl = self.l10n_lu_sales_report_get_correction_data(options, comparison_files)
+        forms = self.l10n_lu_sales_report_format_export_values(intra_codes, xml_data, corr, comped_decl, month, quarter, year)
 
         for form in forms:
             form.update({
@@ -185,9 +181,9 @@ class ECSalesReport(models.AbstractModel):
                 'currency': self.env.company.currency_id.name,
                 'model': '1',
             })
-        return forms, year, month and 'M' + str(month) or quarter and 'Q' + str(quarter), ''.join(intrastat_codes)
+        return forms, year, month and 'M' + str(month) or quarter and 'Q' + str(quarter), ''.join(intra_codes)
 
-    def l10n_lu_open_report_export_wizard(self, options):
+    def l10n_lu_sales_report_open_report_export_wizard(self, options):
         """ Creates a new export wizard for this report."""
         new_context = self.env.context.copy()
         new_context['report_generation_options'] = options
@@ -201,12 +197,12 @@ class ECSalesReport(models.AbstractModel):
             'context': new_context,
         }
 
-    def _format_export_values(self, intrastat_codes, xml_data, corrections, compared_declarations, month, quarter, year):
+    def l10n_lu_sales_report_format_export_values(self, intrastat_codes, xml_data, corrections, compared_declarations, month, quarter, year):
         """
         Returns the formatted forms for the LU VAT recapitulative statements (Intracommunity exchange of goods and services).
 
         :param intrastat_codes: the codes of the tables to fill in ('L': goods, 'T': triangular operations, 'S': services)
-        :param xml_data: the data for the report of the selected period (from _get_file_data_lines())
+        :param xml_data: the data for the report of the selected period (from l10n_lu_sales_report_get_file_data_lines())
         :para corrections: corrections for previous declarations to include in the report
         :param s: tuple (year, month/quarter, declaration_type) describing the previous declarations that are to be corrected
         :param month: the month of the declared period (if a monthly period is declared)
@@ -303,7 +299,7 @@ class ECSalesReport(models.AbstractModel):
 
         return forms
 
-    def _get_correction_data(self, options, comparison_files):
+    def l10n_lu_sales_report_get_correction_data(self, options, comparison_files):
         """
         Compares the data from old declarations to the data that would be reported at this time.
 
@@ -319,15 +315,14 @@ class ECSalesReport(models.AbstractModel):
         attached_declarations = []
         for name, dec in comparison_files:
             try:
-                attached_declarations.append((name, self._get_data_from_xml(dec, self.env.company.matr_number)))
+                attached_declarations.append((name, self.l10n_lu_sales_report_get_data_from_xml(dec, self.env.company.matr_number)))
             except ValidationError as err:
                 raise ValidationError(_("Error in file ") + name + ": " + str(err))
-        summarized_data, original_declarations = self._summarize_data(attached_declarations)
-        corrections = self._compare_declarations(summarized_data, options)
+        summarized_data, original_declarations = self.l10n_lu_sales_report_summarize_data(attached_declarations)
+        corrections = self.l10n_lu_sales_report_compare_declarations(summarized_data, options)
         return corrections, original_declarations
 
-    # Comparison methods
-    def _get_data_from_xml(self, xml_file_string, company_matr):
+    def l10n_lu_sales_report_get_data_from_xml(self, xml_file_string, company_matr):
         """
         Gets the EC Sales declarations data from an ecdf-compliant formatted xml declaration,
         for the company with the indicated Matr. number.
@@ -341,20 +336,30 @@ class ECSalesReport(models.AbstractModel):
             Each line a dictionary with keys: type, year, period, acquirer, triangular
         """
         fields_map = {
-            '03': ('amount',), '07': ('amount', 'triangular'), '14': ('amount',), '15': ('triangular',), '01': ('acquirer_country',),
-            '05': ('acquirer_country',), '09': ('acquirer_country',), '02': ('acquirer_vat',), '06': ('acquirer_vat',),
-            '10': ('acquirer_vat',), '11': ('year',), '12': ('quarterly', 'period'), '18': ('monthly', 'period'),
+            '01': ('acquirer_country',),
+            '02': ('acquirer_vat',),
+            '03': ('amount',),
+            '05': ('acquirer_country',),
+            '06': ('acquirer_vat',),
+            '07': ('amount', 'triangular'),
+            '09': ('acquirer_country',),
+            '10': ('acquirer_vat',),
+            '11': ('year',),
+            '12': ('quarterly', 'period'),
+            '14': ('amount',),
+            '15': ('triangular',),
+            '18': ('monthly', 'period'),
         }
         prfx = '{http://www.ctie.etat.lu/2011/ecdf}'
         try:
             root = objectify.fromstring(xml_file_string)
-        except (etree.XMLSyntaxError):
+        except etree.XMLSyntaxError:
             raise ValidationError(_("The provided comparison file is not a properly formatted XML."))
         data = {'original': [], 'corrective': [], 'declared': []}
         try:
             # Element Declarer
-            declarations = [d for d in root.iterchildren(tag=prfx + 'Declarations')]
-            declarer = [declarer for d in declarations for declarer in d.iterchildren(tag=prfx + 'Declarer')]
+            declarations_elem = [d for d in root.iterchildren(tag=prfx + 'Declarations')]
+            declarer = [declarer for d in declarations_elem for declarer in d.iterchildren(tag=prfx + 'Declarer')]
             # Filter for company with the right company Matr.nb and of IC type
             declarations = []
             for decl in declarer:
@@ -396,7 +401,7 @@ class ECSalesReport(models.AbstractModel):
             raise ValidationError(_("There are no Intracommunity VAT declarations for the declaring company in the provided file!"))
         return data
 
-    def _summarize_data(self, declarations):
+    def l10n_lu_sales_report_summarize_data(self, declarations):
         """
         Summarizes the declaration data from multiple declarations.
         Form: {(type, year, period): {'s_lines': {(acquirer_country: x, acquirer_vat: y): <amount>, ..}, 't_lines': {..}, 's_lines': {..}}, ..}
@@ -406,6 +411,7 @@ class ECSalesReport(models.AbstractModel):
         # Iterate over all lines whose original declaration is present in the given declarations;
         # this allows, for example, correcting just the previous declaration by comparing with it,
         # without taking into consideration the corrections that it made to previous declarations
+
         for line in [ln for data in declarations for ln in (data[1]['original'] + data[1]['corrective'])]:
             line_decl = (line['type'], line['year'], line['period'])
             if line_decl in original_declarations:
@@ -414,33 +420,31 @@ class ECSalesReport(models.AbstractModel):
                 summarized_data[line_decl][line_type][acq] = summarized_data[line_decl][line_type].get(acq, 0.00) + float(line['amount'].replace(',', '.'))
         # Empty declarations (no data for the declared period) need to be considered too
         for data in original_declarations:
-            if data not in summarized_data:
-                summarized_data[data] = {'s_lines': {}, 'l_lines': {}, 't_lines': {}}
+            summarized_data.setdefault(data, {'s_lines': {}, 'l_lines': {}, 't_lines': {}})
         # Need the filename as well to be able to raise precise error messages
         original_declarations = [(decl[0], d['type'], d['year'], d['period']) for decl in declarations for d in decl[1]['declared']]
         return summarized_data, original_declarations
 
-    def _compare_declarations(self, summarized_data, options):
+    def l10n_lu_sales_report_compare_declarations(self, summarized_data, options):
         """
         Compares the data from summarized data to the data that would be reported at this time.
-        :param summarized_data: data in the form coming from _summarize_data
+        :param summarized_data: data in the form coming from l10n_lu_sales_report_summarize_data
         :return: dictionary:
             - x_sum: <sum of all corrections for l_lines>
             - x_lines: {(decl_type, decl_year, decl_period): {(acquirer_country, acquirer_vat): <correction_amount>, ..}, ..}
             for x in l, t, s
         """
         def _compare_lines(old, new):
-            corrections = {}
+            diff = {}
             for k in new:
                 corr = float(new[k].replace(',', '.')) - old.get(k, 0.00)
                 if float_compare(corr, 0.0, 2) != 0:
-                    corrections[k] = corr
+                    diff[k] = corr
             for k in old:
                 if k not in new:
                     if float_compare(old[k], 0.0, 2) != 0:
-                        corrections[k] = - old[k]
-            return corrections
-
+                        diff[k] = -old[k]
+            return diff
         corrections = {'l_lines': {}, 't_lines': {}, 's_lines': {}}
         for key in summarized_data:  # key: (declaration_type, year, period)
             decl_type, decl_year, decl_period = key
@@ -452,12 +456,15 @@ class ECSalesReport(models.AbstractModel):
             decl_date_to = decl_date_from + delta
             options['date'] = {'mode': 'range', 'date_from': decl_date_from, 'date_to': decl_date_to}
             # Get the actualised data for the examined period
-            ctx = self._set_context(options)
-            ctx.update({'get_xml_data': True})
-            new_lines = self.with_context(ctx)._get_file_data_lines(options)
-            new_data = {ln_type: {(k[0], k[1]): k[3] for k in decl} for ln_type, decl in new_lines.items() if ln_type.endswith('lines')}
+            options.update({'get_xml_data': True, 'filter_unfold_all': True})
+            new_lines = self.l10n_lu_sales_report_get_file_data_lines(options)
+            new_data = {
+                ln_type: {
+                    (k[0], k[1]): k[3] for k in decl
+                } for ln_type, decl in new_lines.items() if ln_type.endswith('lines')
+            }
             for k in new_data:
-                if k[0] in ['l', 't'] and key[0][4] == 'L' or k[0] == 's' and key[0][4] == 'P':
+                if (k[0] in ('l', 't') and key[0].startswith('TVA_L')) or (k[0] == 's' and key[0].startswith('TVA_P')):
                     corrections[k][key] = _compare_lines(summarized_data[key].get(k, {}), new_data[k])
                 else:
                     corrections[k][key] = {}

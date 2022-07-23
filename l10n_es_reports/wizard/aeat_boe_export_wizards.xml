@@ -62,6 +62,9 @@
                             <field name="complementary_declaration"/>
                             <field name="monthly_return"/>
                             <field name="previous_report_number" attrs="{'invisible': [('complementary_declaration', '=', False)]}"/>
+                            <field name="using_sii"/>
+                            <field name="exempted_from_mod_390" attrs="{'invisible': [('exempted_from_mod_390_available', '=', False)]}"/>
+                            <field name="exempted_from_mod_390_available" invisible="1"/>
                         </group>
                     </group>
 

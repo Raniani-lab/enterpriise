@@ -45,8 +45,8 @@ class TestAccountReportsTaxReminder(TestAccountReportsCommon):
         self.assertEqual(len(reminder_id), 0)
 
         # Posting the tax entry should post one mail activity of this type
-        report = self.env['account.generic.tax.report']
-        with patch.object(type(report), 'get_pdf', autospec=True, side_effect=lambda *args, **kwargs: b''):
+        report = self.env.ref('account.generic_tax_report')
+        with patch.object(type(report), 'export_to_pdf', autospec=True, side_effect=lambda *args, **kwargs: {'file_name': 'dummy', 'file_content': b'', 'file_type': 'pdf'}):
             self.tax_return_move.action_post()
 
         self.assertRecordValues(self.tax_return_move, [{'state': 'posted'}])

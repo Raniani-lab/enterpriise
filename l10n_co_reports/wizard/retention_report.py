@@ -13,10 +13,5 @@ class RetentionReportWizard(models.TransientModel):
     article = fields.Char(string=u'Artículo', default='ART. 10 DECRETO 386/91', required=True)
 
     def generate_report(self):
-        data = {
-            'wizard_values': self.read()[0],
-            'lines': self._context.get('lines'),
-            'report_name': self._context.get('report_name'),
-        }
-
+        data = {'wizard_values': self.read()[0]}
         return self.env.ref('l10n_co_reports.action_report_certification').report_action([], data=data)

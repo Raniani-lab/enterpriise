@@ -5,7 +5,7 @@ var tour = require('web_tour.tour');
 
 tour.register('account_reports_widgets', {
     test: true,
-    url: '/web?#action=account_reports.action_account_report_pnl',
+    url: '/web?#action=account_reports.action_account_report_pl',
 },
     [
         {
@@ -68,7 +68,7 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "change comparison filter",
-            trigger: ".dropdown-item.js_foldable_trigger[data-filter='previous_period_filter']"
+            trigger: ".dropdown-item.js_foldable_trigger[data-filter='previous_period']"
         },
         {
             content: "change comparison filter",
@@ -85,7 +85,7 @@ tour.register('account_reports_widgets', {
         },
         {
             title: "export xlsx",
-            trigger: 'button[action="print_xlsx"]',
+            trigger: 'button[action_param="export_to_xlsx"]',
             run: 'click'
         },
     ]

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 from odoo.tools import format_date
 from itertools import groupby
 from collections import defaultdict
@@ -9,74 +9,54 @@ from collections import defaultdict
 MAX_NAME_LENGTH = 50
 
 
-class assets_report(models.AbstractModel):
+class AssetsReport(models.Model):
     _inherit = 'account.report'
-    _name = 'account.assets.report'
-    _description = 'Account Assets Report'
 
-    filter_date = {'mode': 'range', 'filter': 'this_year'}
-    filter_all_entries = False
-    filter_hierarchy = True
-    filter_unfold_all = True
+    def _custom_options_initializer_assets_report(self, options, previous_options=None):
+        column_group_options_map = self._split_options_per_column_group(options)
 
-    def _get_report_name(self):
-        return _('Depreciation Table Report')
+        for col in options['columns']:
+            column_group_options = column_group_options_map[col['column_group_key']]
+            # Dynamic naming of columns containing dates
+            if col['expression_label'] == 'balance':
+                col['name'] = '' # The column label will be displayed in the subheader
+            if col['expression_label'] in ['assets_date_from', 'depre_date_from']:
+                col['name'] = format_date(self.env, column_group_options['date']['date_from'])
+            elif col['expression_label'] in ['assets_date_to', 'depre_date_to']:
+                col['name'] = format_date(self.env, column_group_options['date']['date_to'])
 
-    def _get_templates(self):
-        templates = super(assets_report, self)._get_templates()
-        templates['main_template'] = 'account_asset.main_template_asset_report'
-        return templates
-
-    def get_header(self, options):
-        start_date = format_date(self.env, options['date']['date_from'])
-        end_date = format_date(self.env, options['date']['date_to'])
-        return [
-            [
-                {'name': ''},
-                {'name': _('Characteristics'), 'colspan': 4},
-                {'name': _('Assets'), 'colspan': 4},
-                {'name': _('Depreciation'), 'colspan': 4},
-                {'name': _('Book Value')},
-            ],
-            [
-                {'name': ''},  # Description
-                {'name': _('Acquisition Date'), 'class': 'text-center'},  # Characteristics
-                {'name': _('First Depreciation'), 'class': 'text-center'},
-                {'name': _('Method'), 'class': 'text-center'},
-                {'name': _('Duration / Rate'), 'class': 'number', 'title': _('In percent.<br>For a linear method, the depreciation rate is computed per year.<br>For a declining method, it is the declining factor'), 'data-bs-toggle': 'tooltip'},
-                {'name': start_date, 'class': 'number'},  # Assets
-                {'name': _('+'), 'class': 'number'},
-                {'name': _('-'), 'class': 'number'},
-                {'name': end_date, 'class': 'number'},
-                {'name': start_date, 'class': 'number'},  # Depreciation
-                {'name': _('+'), 'class': 'number'},
-                {'name': _('-'), 'class': 'number'},
-                {'name': end_date, 'class': 'number'},
-                {'name': '', 'class': 'number'},  # Gross
-            ],
+        options['custom_columns_subheaders'] = [
+            {"name": "Characteristics", "colspan": 4},
+            {"name": "Assets", "colspan": 4},
+            {"name": "Depreciation", "colspan": 4},
+            {"name": "Book Value", "colspan": 1}
         ]
 
-    def _init_filter_hierarchy(self, options, previous_options=None):
-        # overwrite because we don't depend on account.group
-        if self.filter_hierarchy is not None:
-            if previous_options and 'hierarchy' in previous_options:
-                options['hierarchy'] = previous_options['hierarchy']
-            else:
-                options['hierarchy'] = self.filter_hierarchy
+        # Unfold all by default
+        options['unfold_all'] = (previous_options or {}).get('unfold_all', True)
 
-    def get_account_codes(self, account):
-        return [(name, name) for name in self._get_account_group_with_company(account.code, account.company_id.id)[1:]]
+        # Group by account by default
+        groupby_activated = (previous_options or {}).get('assets_groupby_account', True)
+        options['assets_groupby_account'] = groupby_activated
+        # If group by account is activated, activate the hierarchy (which will group by account group as well) if
+        # the company has at least one account group, otherwise only group by account
+        has_account_group = self.env['account.group'].search_count([('company_id', '=', self.env.company.id)], limit=1)
+        options['hierarchy'] = has_account_group and groupby_activated or False
 
-    def _get_account_group(self, account_code, parent_group=None, group_dict=None):
-        """ Get the list of parent groups for this account
-        return: list containing the main group key, then the name of every group
-                for this account, beginning by the more general, until the
-                name of the account itself.
-            This method is deprecated. Call instead _get_account_group_with_company
-        """
-        return self._get_account_group_with_company(account_code, self.env.company.id, parent_group, group_dict)
+    def _get_caret_option_view_map(self):
+        view_map = super()._get_caret_option_view_map()
+        view_map['account.asset.line'] = 'account_asset.view_account_asset_expense_form'
+        return view_map
 
-    def _with_context_company2code2account(self):
+    def _caret_options_initializer_assets_report(self):
+        # Use 'caret_option_open_record_form' defined in account_reports rather than a custom function
+        return {
+            'account_asset_line': [
+                {'name': _("Open Asset"), 'action': 'caret_option_open_record_form'},
+            ]
+        }
+
+    def _assets_with_context_company2code2account(self):
         if self.env.context.get('company2code2account') is not None:
             return self
 
@@ -86,35 +66,7 @@ class assets_report(models.AbstractModel):
 
         return self.with_context(company2code2account=company2code2account)
 
-    def _get_account_group_with_company(self, account_code, company_id, parent_group=None, group_dict=None):
-        """ Get the list of parent groups for this account
-        return: list containing the main group key, then the name of every group
-                for this account, beginning by the more general, until the
-                name of the account itself.
-        """
-
-        if not account_code:
-            # This is used if there is no account_asset_id
-            account_code = '##'
-        group_dict = group_dict or self.env['account.report']._get_account_groups_for_asset_report()
-        self = self._with_context_company2code2account()
-        account_id = self.env.context['company2code2account'].get(company_id, {}).get(account_code)
-        account_suffix = [] if parent_group else [account_id.display_name if account_id else _("No asset account")]
-        for k, v in group_dict.items():
-            key_split = k.split('-')
-            account_code_short = account_code[:len(str(key_split[0]))]
-            if not v.get('children') and account_code_short == k:
-                return (parent_group or [k]) + [v['name']] + account_suffix
-            elif v.get('children') and key_split[0] <= account_code_short <= key_split[1]:
-                return self._get_account_group_with_company(
-                    account_code_short,
-                    company_id,
-                    (parent_group or [k]) + [v['name']],
-                    v['children']
-                ) + account_suffix
-        return (parent_group or [account_code[:2]]) + account_suffix
-
-    def _get_rate_cached(self, from_currency, to_currency, company, date, cache):
+    def _asset_get_rate_cached(self, from_currency, to_currency, company, date, cache):
         if from_currency == to_currency:
             return 1
         key = (from_currency, to_currency, company, date)
@@ -122,12 +74,105 @@ class assets_report(models.AbstractModel):
             cache[key] = self.env['res.currency']._get_conversion_rate(*key)
         return cache[key]
 
-    def _get_lines(self, options, line_id=None):
-        self = self._with_context_company2code2account()
-        options['self'] = self
+    def _dynamic_lines_generator_assets_report(self, options, all_column_groups_expression_totals):
+        self = self._assets_with_context_company2code2account()
+
+        # construct a dictionary:
+        #   {(account_id, asset_id): {col_group_key: {expression_label_1: value, expression_label_2: value, ...}}}
+        all_asset_ids = set()
+        all_lines_data = {}
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            # the lines returned are already sorted by account_id !
+            lines_query_results = self._assets_query_lines(column_group_options)
+            for account_id, asset_id, cols_by_expr_label in lines_query_results:
+                line_id = (account_id, asset_id)
+                all_asset_ids.add(asset_id)
+                if line_id not in all_lines_data:
+                    all_lines_data[line_id] = {column_group_key: []}
+                all_lines_data[line_id][column_group_key] = cols_by_expr_label
+
+        column_names = [
+            'assets_date_from', 'assets_plus', 'assets_minus', 'assets_date_to', 'depre_date_from',
+            'depre_plus', 'depre_minus', 'depre_date_to', 'balance'
+        ]
+        totals_by_column_group = defaultdict(lambda: dict.fromkeys(column_names, 0.0))
+
+        # Browse all the necessary assets in one go, to minimize the number of queries
+        assets_cache = {asset.id: asset for asset in self.env['account.asset'].browse(all_asset_ids)}
+
+        # construct the lines, 1 at a time
         lines = []
-        total = [0] * 9
-        asset_lines = self._get_assets_lines(options)
+        company_currency = self.env.company.currency_id
+        for (account_id, asset_id), col_group_totals in all_lines_data.items():
+            all_columns = []
+            for column_data in options['columns']:
+                col_group_key = column_data['column_group_key']
+                expr_label = column_data['expression_label']
+                if col_group_key not in col_group_totals or expr_label not in col_group_totals[col_group_key]:
+                    all_columns.append({})
+                    continue
+
+                col_value = col_group_totals[col_group_key][expr_label]
+                if col_value is None:
+                    all_columns.append({})
+                elif column_data['figure_type'] == 'monetary':
+                    all_columns.append({
+                        'name': self.format_value(col_value, company_currency, figure_type='monetary'),
+                        'no_format': col_value,
+                    })
+                else:
+                    all_columns.append({'name': col_value, 'no_format': col_value})
+
+                # add to the total line
+                if column_data['figure_type'] == 'monetary':
+                    totals_by_column_group[column_data['column_group_key']][column_data['expression_label']] += col_value
+
+            name = assets_cache[asset_id].name
+            line = {
+                'id': self._get_generic_line_id('account.asset', asset_id),
+                'level': 1,
+                'name': name,
+                'columns': all_columns,
+                'unfoldable': False,
+                'unfolded': False,
+                'caret_options': 'account_asset_line',
+                'class': 'o_account_asset_column_contrast',
+                'assets_account_id': account_id,
+            }
+            if len(name) >= MAX_NAME_LENGTH:
+                line['title_hover'] = name
+            lines.append(line)
+
+        # add the groups by account
+        if options['assets_groupby_account']:
+            lines = self._assets_group_by_account(lines, options)
+
+        # add the total line
+        total_columns = []
+        for column_data in options['columns']:
+            col_value = totals_by_column_group[column_data['column_group_key']].get(column_data['expression_label'])
+            if column_data.get('figure_type') == 'monetary':
+                total_columns.append({'name': self.format_value(col_value, company_currency, figure_type='monetary')})
+            else:
+                total_columns.append({})
+
+        lines.append({
+            'id': self._get_generic_line_id(None, None, markup='total'),
+            'level': 1,
+            'class': 'total',
+            'name': _('Total'),
+            'columns': total_columns,
+            'unfoldable': False,
+            'unfolded': False,
+        })
+        return [(0, line) for line in lines]
+
+    def _assets_query_lines(self, options):
+        """
+        Returns a list of tuples: [(asset_id, account_id, [{expression_label: value}])]
+        """
+        lines = []
+        asset_lines = self._assets_query_values(options)
         curr_cache = {}
 
         for company_id, company_asset_lines in groupby(asset_lines, key=lambda x: x['company_id']):
@@ -155,7 +200,7 @@ class assets_report(models.AbstractModel):
                     asset_depreciation_rate = ('{:.2f} %').format(float(al['asset_method_progress_factor']) * 100)
 
                 al_currency = self.env['res.currency'].browse(al['asset_currency_id'])
-                al_rate = self._get_rate_cached(al_currency, company_currency, company, al['asset_acquisition_date'], curr_cache)
+                al_rate = self._asset_get_rate_cached(al_currency, company_currency, company, al['asset_acquisition_date'], curr_cache)
 
                 depreciation_opening = company_currency.round(al['depreciated_start'] * al_rate) - company_currency.round(al['depreciation'] * al_rate)
                 depreciation_closing = company_currency.round(al['depreciated_end'] * al_rate)
@@ -174,7 +219,7 @@ class assets_report(models.AbstractModel):
 
                 for child in children_lines[al['asset_id']]:
                     child_currency = self.env['res.currency'].browse(child['asset_currency_id'])
-                    child_rate = self._get_rate_cached(child_currency, company_currency, company, child['asset_acquisition_date'], curr_cache)
+                    child_rate = self._asset_get_rate_cached(child_currency, company_currency, company, child['asset_acquisition_date'], curr_cache)
 
                     depreciation_opening += company_currency.round(child['depreciated_start'] * child_rate) - company_currency.round(child['depreciation'] * child_rate)
                     depreciation_closing += company_currency.round(child['depreciated_end'] * child_rate)
@@ -201,66 +246,82 @@ class assets_report(models.AbstractModel):
 
                 asset_gross = asset_closing - depreciation_closing
 
-                total = [x + y for x, y in zip(total, [asset_opening, asset_add, asset_minus, asset_closing, depreciation_opening, depreciation_add, depreciation_minus, depreciation_closing, asset_gross])]
+                current_values = [asset_opening, asset_add, asset_minus, asset_closing, depreciation_opening,
+                                  depreciation_add, depreciation_minus, depreciation_closing, asset_gross]
 
-                asset_line_id = self._build_line_id([
-                    (None, 'account.account', al['account_id']),
-                    (None, 'account.asset', al['asset_id']),
-                ])
-                name = str(al['asset_name'])
-                line = {
-                    'id': asset_line_id,
-                    'level': 1,
-                    'name': name,
-                    'account_code': al['account_code'],
-                    'columns': [
-                        {'name': al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '', 'no_format': ''},  # Characteristics
-                        {'name': al['asset_date'] and format_date(self.env, al['asset_date']) or '', 'no_format': ''},
-                        {'name': (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'), 'no_format': ''},
-                        {'name': asset_depreciation_rate, 'no_format': ''},
-                        {'name': self.format_value(asset_opening), 'no_format': asset_opening},  # Assets
-                        {'name': self.format_value(asset_add), 'no_format': asset_add},
-                        {'name': self.format_value(asset_minus), 'no_format': asset_minus},
-                        {'name': self.format_value(asset_closing), 'no_format': asset_closing},
-                        {'name': self.format_value(depreciation_opening), 'no_format': depreciation_opening},  # Depreciation
-                        {'name': self.format_value(depreciation_add), 'no_format': depreciation_add},
-                        {'name': self.format_value(depreciation_minus), 'no_format': depreciation_minus},
-                        {'name': self.format_value(depreciation_closing), 'no_format': depreciation_closing},
-                        {'name': self.format_value(asset_gross), 'no_format': asset_gross},  # Gross
-                    ],
-                    'unfoldable': False,
-                    'unfolded': False,
-                    'caret_options': 'account.asset.line',
-                    'account_id': al['account_id']
-                }
-                if len(name) >= MAX_NAME_LENGTH:
-                    line.update({'title_hover': name})
-                lines.append(line)
-        lines.append({
-            'id': 'total',
-            'level': 0,
-            'name': _('Total'),
-            'columns': [
-                {'name': ''},  # Characteristics
-                {'name': ''},
-                {'name': ''},
-                {'name': ''},
-                {'name': self.format_value(total[0])},  # Assets
-                {'name': self.format_value(total[1])},
-                {'name': self.format_value(total[2])},
-                {'name': self.format_value(total[3])},
-                {'name': self.format_value(total[4])},  # Depreciation
-                {'name': self.format_value(total[5])},
-                {'name': self.format_value(total[6])},
-                {'name': self.format_value(total[7])},
-                {'name': self.format_value(total[8])},  # Gross
-            ],
-            'unfoldable': False,
-            'unfolded': False,
-        })
+                columns_by_expr_label = {
+                    options['columns'][0]['expression_label']: al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '',  # Characteristics
+                    options['columns'][1]['expression_label']: al['asset_date'] and format_date(self.env, al['asset_date']) or '',
+                    options['columns'][2]['expression_label']: (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'),
+                    options['columns'][3]['expression_label']: asset_depreciation_rate}
+                for val, idx in zip(current_values, range(4, 13)):
+                    columns_by_expr_label.update({options['columns'][idx]['expression_label']: val})
+                lines.append((al['account_id'], al['asset_id'], columns_by_expr_label))
         return lines
 
-    def _get_assets_lines(self, options):
+    def _assets_group_by_account(self, lines, options):
+        """
+        This function adds the grouping lines on top of each group of account.asset
+        It iterates over the lines, change the line_id of each line to include the account.account.id and the
+        account.asset.id.
+        """
+        if not lines:
+            return lines
+
+        rslt_lines = []
+        idx_monetary_columns = [idx_col for idx_col, col in enumerate(options['columns']) if col['figure_type'] == 'monetary']
+        # while iterating, we compare the 'parent_account_id' with the 'current_account_id' of each line,
+        # and sum the monetary amounts into 'group_total', the lines belonging to the same account.account.id are
+        # added to 'group_lines'
+        parent_account_id = lines[0].get('assets_account_id')  # get parent id name
+        group_total = [0] * len(idx_monetary_columns)
+        group_lines = []
+
+        dummy_extra_line = {'id': '-account.account-1', 'columns': [{'name': 0, 'no_format': 0}] * len(options['columns'])}
+        for line in lines + [dummy_extra_line]:
+            line_amounts = [line['columns'][idx].get('no_format', 0) for idx in idx_monetary_columns]
+            current_parent_account_id = line.get('assets_account_id')
+            # replace the line['id'] to add the account.account.id
+            line['id'] = self._build_line_id([
+                (None, 'account.account', current_parent_account_id),
+                (None, 'account.asset', self._get_model_info_from_id(line['id'])[-1])
+            ])
+            # if True, the current lines belongs to another account.account.id, we know the preceding group is complete
+            # so we can add the grouping line of the preceding group (corresponding to the parent_account_id).
+            if current_parent_account_id != parent_account_id:
+                account = self.env['account.account'].browse(parent_account_id)
+                columns = []
+                for idx_col in range(len(options['columns'])):
+                    if idx_col in idx_monetary_columns:
+                        tot_val = group_total.pop(0)
+                        columns.append({
+                            'name': self.format_value(tot_val, self.env.company.currency_id, figure_type='monetary'),
+                            'no_format': tot_val
+                        })
+                    else:
+                        columns.append({})
+                new_line = {
+                    'id': self._build_line_id([(None, 'account.account', parent_account_id)]),
+                    'name': f"{account.code} {account.name}",
+                    'unfoldable': True,
+                    'unfolded': options.get('unfold_all', False),
+                    'level': 1,
+                    'columns': columns,
+                    'class': 'o_account_asset_column_contrast',
+                }
+                rslt_lines += [new_line] + group_lines
+                # Reset the control variables
+                parent_account_id = current_parent_account_id
+                group_total = [0] * len(idx_monetary_columns)
+                group_lines = []
+            # Add the line amount to the current group_total, set the line's parent_id and add the line to the
+            # current group of lines
+            group_total = [x + y for x, y in zip(group_total, line_amounts)]
+            line['parent_id'] = self._build_line_id([(None, 'account.account', parent_account_id)])
+            group_lines.append(line)
+        return rslt_lines
+
+    def _assets_query_values(self, options):
         "Get the data from the database"
 
         self.env['account.move.line'].check_access_rights('read')
@@ -364,20 +425,16 @@ class assets_report(models.AbstractModel):
                 ORDER BY account.code, asset.acquisition_date;
             """.format(where_account_move=where_account_move)
 
-        date_to = options['date']['date_to']
-        date_from = options['date']['date_from']
         if options.get('multi_company', False):
             company_ids = tuple(self.env.companies.ids)
         else:
             company_ids = tuple(self.env.company.ids)
 
-        self.env.flush_all()
-        self.env.cr.execute(sql, {'date_to': date_to, 'date_from': date_from, 'company_ids': company_ids})
-        results = self.env.cr.dictfetchall()
-        self.env.cr.execute("DROP TABLE temp_account_move")  # Because tests are run in the same transaction, we need to clean here the SQL INHERITS
+        self._cr.execute(sql, {
+            'date_to': options['date']['date_to'],
+            'date_from': options['date']['date_from'],
+            'company_ids': company_ids,
+        })
+        results = self._cr.dictfetchall()
+        self._cr.execute("DROP TABLE temp_account_move")  # Because tests are run in the same transaction, we need to clean here the SQL INHERITS
         return results
-
-    def open_asset(self, options, params=None):
-        model, active_id = self._get_model_info_from_id(params.get('id'))
-        asset = self.env[model].browse(active_id)
-        return asset.open_asset(['form'])

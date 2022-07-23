@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from copy import deepcopy
 from collections import defaultdict
-import xml.dom.minidom
-import re
 
 from odoo.tools import float_repr
 from odoo import api, fields, models, release, _
@@ -11,10 +8,10 @@ from odoo.exceptions import UserError
 
 
 class AccountGeneralLedger(models.AbstractModel):
-    _inherit = "account.general.ledger"
+    _inherit = "account.report"
 
     @api.model
-    def _fill_saft_report_general_ledger_values(self, options, values):
+    def _saft_fill_report_general_ledger_values(self, options, values):
         res = {
             'total_debit_in_period': 0.0,
             'total_credit_in_period': 0.0,
@@ -25,27 +22,27 @@ class AccountGeneralLedger(models.AbstractModel):
         }
 
         # Fill 'account_vals_list'.
-        accounts_results, dummy = self._do_query([options])
-        for account, periods_results in accounts_results:
-            # Detail for each account.
-            results = periods_results[0]
-            account_init_bal = results.get('initial_balance', {})
+        accounts_results = self._general_ledger_query_values(options)
+        rslts_array = tuple((account, res_col_gr[options['single_column_group']]) for account, res_col_gr in accounts_results)
+        init_bal_res = self._general_ledger_get_initial_balance_values(tuple(account.id for account, results in rslts_array), options)
+        initial_balances_map = {}
+        initial_balance_gen = ((account, init_bal_dict.get(options['single_column_group'])) for account, init_bal_dict in init_bal_res.values())
+        for account, initial_balance in initial_balance_gen:
+            initial_balances_map[account.id] = initial_balance
+        for account, results in rslts_array:
+            account_init_bal = initial_balances_map[account.id]
             account_un_earn = results.get('unaffected_earnings', {})
             account_balance = results.get('sum', {})
-            opening_balance = account_init_bal.get('debit', 0.0) \
-                              + account_un_earn.get('debit', 0.0) \
-                              - account_init_bal.get('credit', 0.0) \
-                              - account_un_earn.get('credit', 0.0)
-            closing_balance = account_balance.get('debit', 0.0) - account_balance.get('credit', 0.0)
+            opening_balance = account_init_bal.get('balance', 0.0) + account_un_earn.get('balance', 0.0)
+            closing_balance = account_balance.get('balance', 0.0)
             res['account_vals_list'].append({
                 'account': account,
                 'account_type': dict(self.env['account.account']._fields['account_type']._description_selection(self.env))[account.account_type],
                 'opening_balance': opening_balance,
                 'closing_balance': closing_balance,
             })
-
         # Fill 'total_debit_in_period', 'total_credit_in_period', 'move_vals_list'.
-        tables, where_clause, where_params = self._query_get(options)
+        tables, where_clause, where_params = self._query_get(options, 'strict_range')
         query = '''
             SELECT
                 account_move_line.id,
@@ -64,12 +61,12 @@ class AccountGeneralLedger(models.AbstractModel):
                 account_move_line.price_unit,
                 account_move_line.product_id,
                 account_move_line.product_uom_id,
-                account_move_line__move_id.id               AS move_id,
-                account_move_line__move_id.name             AS move_name,
-                account_move_line__move_id.move_type        AS move_type,
-                account_move_line__move_id.create_date      AS move_create_date,
-                account_move_line__move_id.invoice_date     AS move_invoice_date,
-                account_move_line__move_id.invoice_origin   AS move_invoice_origin,
+                account_move.id                             AS move_id,
+                account_move.name                           AS move_name,
+                account_move.move_type                      AS move_type,
+                account_move.create_date                    AS move_create_date,
+                account_move.invoice_date                   AS move_invoice_date,
+                account_move.invoice_origin                 AS move_invoice_origin,
                 tax.id                                      AS tax_id,
                 tax.name                                    AS tax_name,
                 tax.amount                                  AS tax_amount,
@@ -83,6 +80,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 product.default_code                        AS product_default_code,
                 uom.name                                    AS product_uom_name
             FROM ''' + tables + '''
+            JOIN account_move ON account_move.id = account_move_line.move_id
             JOIN account_journal journal ON journal.id = account_move_line.journal_id
             JOIN account_account account ON account.id = account_move_line.account_id
             JOIN res_currency currency ON currency.id = account_move_line.currency_id
@@ -143,10 +141,10 @@ class AccountGeneralLedger(models.AbstractModel):
         values.update(res)
 
     @api.model
-    def _fill_saft_report_tax_details_values(self, options, values):
+    def _saft_fill_report_tax_details_values(self, options, values):
         tax_vals_map = {}
 
-        tables, where_clause, where_params = self._query_get(options)
+        tables, where_clause, where_params = self._query_get(options, 'strict_range')
         tax_details_query, tax_details_params = self.env['account.move.line']._get_query_tax_details(tables, where_clause, where_params)
         self._cr.execute(f'''
             SELECT
@@ -180,7 +178,7 @@ class AccountGeneralLedger(models.AbstractModel):
         values['tax_vals_list'] = list(tax_vals_map.values())
 
     @api.model
-    def _fill_saft_report_partner_ledger_values(self, options, values):
+    def _saft_fill_report_partner_ledger_values(self, options, values):
         res = {
             'customer_vals_list': [],
             'supplier_vals_list': [],
@@ -194,31 +192,33 @@ class AccountGeneralLedger(models.AbstractModel):
         all_partners = self.env['res.partner']
 
         # Fill 'customer_vals_list' and 'supplier_vals_list'
-        new_options = dict(options)
+        report = self.env.ref('account_reports.partner_ledger_report')
+        new_options = report._get_options(options)
         new_options['account_type'] = [
             {'id': 'trade_receivable', 'selected': True},
             {'id': 'non_trade_receivable', 'selected': True},
             {'id': 'trade_payable', 'selected': True},
             {'id': 'non_trade_payable', 'selected': True},
         ]
-        partners_results = self.env['account.partner.ledger']._do_query(new_options)
+        partners_results = report._partner_ledger_query_partners(new_options)
         partner_vals_list = []
-        for partner, results in partners_results:
+        rslts_array = tuple((partner, res_col_gr[options['single_column_group']]) for partner, res_col_gr in partners_results)
+        init_bal_res = self._partner_ledger_get_initial_balance_values(tuple(partner.id for partner, results in rslts_array), options)
+        initial_balances_map = {}
+        initial_balance_gen = ((partner_id, init_bal_dict.get(options['single_column_group'])) for partner_id, init_bal_dict in init_bal_res.items())
+
+        for partner_id, initial_balance in initial_balance_gen:
+            initial_balances_map[partner_id] = initial_balance
+        for partner, results in rslts_array:
             # Ignore Falsy partner.
             if not partner:
                 continue
 
             all_partners |= partner
+            partner_init_bal = initial_balances_map[partner.id]
 
-            partner_sum = results.get('sum', {})
-            partner_init_bal = results.get('initial_balance', {})
-
-            opening_balance = partner_init_bal.get('debit', 0.0) \
-                              - partner_init_bal.get('credit', 0.0)
-            closing_balance = partner_init_bal.get('debit', 0.0) \
-                              + partner_sum.get('debit', 0.0) \
-                              - partner_init_bal.get('credit', 0.0) \
-                              - partner_sum.get('credit', 0.0)
+            opening_balance = partner_init_bal.get('balance', 0.0)
+            closing_balance = results.get('balance', 0.0)
             partner_vals_list.append({
                 'partner': partner,
                 'opening_balance': opening_balance,
@@ -227,7 +227,7 @@ class AccountGeneralLedger(models.AbstractModel):
 
         if all_partners:
             domain = [('partner_id', 'in', tuple(all_partners.ids))]
-            tables, where_clause, where_params = self._query_get(new_options, domain=domain)
+            tables, where_clause, where_params = self._query_get(new_options, 'strict_range', domain=domain)
             self._cr.execute(f'''
                 SELECT
                     account_move_line.partner_id,
@@ -286,20 +286,20 @@ class AccountGeneralLedger(models.AbstractModel):
 
         if no_partner_address:
             raise UserError(_(
-                "Please define at least one address (Zip/City) for the following partners: %s.",
-                ', '.join(no_partner_address.mapped('display_name')),
+                    "Please define at least one address (Zip/City) for the following partners: %s.",
+                    ', '.join(no_partner_address.mapped('display_name')),
             ))
         if no_partner_contact:
             raise UserError(_(
-                "Please define at least one contact (Phone or Mobile) for the following partners: %s.",
-                ', '.join(no_partner_contact.mapped('display_name')),
+                    "Please define at least one contact (Phone or Mobile) for the following partners: %s.",
+                    ', '.join(no_partner_contact.mapped('display_name')),
             ))
 
         # Add newly computed values to the final template values.
         values.update(res)
 
     @api.model
-    def _prepare_saft_report_values(self, options):
+    def _saft_prepare_report_values(self, options):
         def format_float(amount, digits=2):
             return float_repr(amount or 0.0, precision_digits=digits)
 
@@ -310,6 +310,11 @@ class AccountGeneralLedger(models.AbstractModel):
         company = self.env.company
         if not company.company_registry:
             raise UserError(_("Please define `Company Registry` for your company."))
+
+        if len(options["column_groups"]) > 1:
+            raise UserError(_("SAFT is only compatible with one column group."))
+
+        options["single_column_group"] = tuple(options["column_groups"].keys())[0]
 
         template_values = {
             'company': company,
@@ -323,21 +328,7 @@ class AccountGeneralLedger(models.AbstractModel):
             'format_float': format_float,
             'format_date': format_date,
         }
-        self._fill_saft_report_general_ledger_values(options, template_values)
-        self._fill_saft_report_tax_details_values(options, template_values)
-        self._fill_saft_report_partner_ledger_values(options, template_values)
+        self._saft_fill_report_general_ledger_values(options, template_values)
+        self._saft_fill_report_tax_details_values(options, template_values)
+        self._saft_fill_report_partner_ledger_values(options, template_values)
         return template_values
-
-    def get_xml(self, options):
-        options = deepcopy(options)
-        options = self._force_strict_range(options)
-        options.pop('multi_company', None)
-        options['unfolded_lines'] = []
-        options['unfold_all'] = False
-
-        template_vals = self._prepare_saft_report_values(options)
-        content = self.env['ir.qweb']._render('account_saft.saft_template', template_vals)
-
-        # Indent the XML data and return as Pretty XML string and remove extra new lines.
-        pretty_xml = xml.dom.minidom.parseString(content).toprettyxml()
-        return "\n".join(re.split(r'\n\s*\n', pretty_xml)).encode()

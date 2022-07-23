@@ -160,8 +160,7 @@ class HmrcVatObligation(models.Model):
                         'date_to': fields.Date.to_string(self.date_end),
                         'filter': 'custom',
                         'mode': 'range'})
-        ctx = report._set_context(options)
-        report_values = report.with_context(ctx)._get_lines(options)
+        report_values = report._get_lines(options)
         values = self._fetch_values_from_report(report_values)
         vat = self.env.company.vat
         res = self.env['hmrc.service']._login()

@@ -24,16 +24,16 @@
                          t-esc="item['supplementary_units']"/>
                     <Dim prop="EXCNTORI"
                          t-if="expedition"
-                         t-esc="item['intrastat_product_origin_country']"/>
+                         t-esc="item['intrastat_product_origin_country_code']"/>
                     <Dim prop="PARTNERID"
                          t-if="expedition"
                          t-esc="item['partner_vat']"/>
                     <Dim prop="EXTPC"
                          t-if="extended"
-                         t-esc="item['invoice_transport'] or item['company_transport'] or ''"/>
+                         t-esc="item['transport_code'] or ''"/>
                     <Dim prop="EXDELTRM"
                          t-if="extended"
-                         t-esc="item['invoice_incoterm'] or item['company_incoterm'] or ''"/>
+                         t-esc="item['incoterm_code'] or ''"/>
                 </Item>
             </t>
         </template>

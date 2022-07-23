@@ -9,7 +9,8 @@
     'data': [
         'security/account_consolidation_security.xml',
         'security/ir.model.access.csv',
-        'report/trial_balance.xml',
+        'data/consolidated_balance_report.xml',
+        'data/account_report_actions.xml',
         'views/account_account_views.xml',
         'views/account_move_views.xml',
         'views/consolidation_account_views.xml',

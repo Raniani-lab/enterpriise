@@ -2,19 +2,21 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
+
 from odoo import fields, models, tools, _
 from odoo.exceptions import UserError
 
-class AccountGenericTaxReport(models.AbstractModel):
-    _inherit = "account.generic.tax.report"
+class AccountGenericTaxReport(models.Model):
+    _inherit = "account.report"
 
-    filter_journals = True
+    def _custom_options_initializer_l10n_lu_reports_tax_report(self, options, previous_options=None):
+        options.setdefault('buttons', []).append(
+            {'name': _('XML'), 'sequence': 30, 'action': 'l10n_lu_open_report_export_wizard', 'file_export_type': _('XML')}
+        )
 
-    def _get_lu_electronic_report_values(self, options):
-        lu_template_values = super()._get_lu_electronic_report_values(options)
-
-        lines = self.with_context(self._set_context(options))._get_lines(options)
-
+    def l10n_lu_get_tax_electronic_report_values(self, options):
+        lu_template_values = self.l10n_lu_get_electronic_report_values(options)
+        lines = self._get_lines({'unfold_all': True, **options})
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         date_to = fields.Date.from_string(options['date'].get('date_to'))
 
@@ -39,12 +41,14 @@ class AccountGenericTaxReport(models.AbstractModel):
         values = {}
         for line in lines:
             # tax report's `code` would contain alpha-numeric string like `LUTAX_XXX` where characters
-            # at last three positions will be digits, hence we split `code` with `_` and build dictionary
+            # at last three positions will be digits, hence we split `code` with ` - ` and build dictionary
             # having `code` as dictionary key
-            split_line_code = line.get('line_code') and line['line_code'].split('_') or []
-            if len(split_line_code) > 1 and split_line_code[1].isdigit():
+            if len(self._parse_line_id(line.get('id'))) == 1:
+                continue
+            split_line_code = line.get('name', '').split(' - ')[0]
+            if split_line_code and split_line_code.isdigit():
                 balance = "{:.2f}".format(line['columns'][0]['no_format']).replace('.', ',')
-                values[split_line_code[1]] = {'value': balance, 'field_type': 'number'}
+                values[split_line_code] = {'value': balance, 'field_type': 'number'}
 
         on_payment = self.env['account.tax'].search([
             ('company_id', 'in', self.get_report_company_ids(options)),
@@ -69,27 +73,29 @@ class AccountGenericTaxReport(models.AbstractModel):
         })
         return lu_template_values
 
-    def get_xml(self, options):
-        if self._get_report_country_code(options) != 'LU':
-            return super().get_xml(options)
+    def l10n_lu_export_tax_report_to_xml(self, options):
+        self._l10n_lu_validate_ecdf_prefix()
 
-        self._lu_validate_ecdf_prefix()
-
-        lu_template_values = self._get_lu_electronic_report_values(options)
+        lu_template_values = self.l10n_lu_get_tax_electronic_report_values(options)
+        for form in lu_template_values['forms']:
+            values = form["field_values"]
+            ordered_values = {}
+            for code in sorted(values.keys()):
+                ordered_values[code] = values[code]
+            form["field_values"] = ordered_values
         rendered_content = self.env['ir.qweb']._render('l10n_lu_reports.l10n_lu_electronic_report_template_1_1', lu_template_values, minimal_qcontext=True)
-        content = "\n".join(re.split(r'\n\s*\n', rendered_content)) # Remove empty lines
-        self._lu_validate_xml_content(content)
+        content = "\n".join(re.split(r'\n\s*\n', rendered_content))  # Remove empty lines
+        self._l10n_lu_validate_xml_content(content)
 
-        return "<?xml version='1.0' encoding='UTF-8'?>" + content
-
-    def _get_reports_buttons(self, options):
-        res = super()._get_reports_buttons(options)
-        if self._get_report_country_code(options) == 'LU':
-            res.append({'name': _('XML'), 'sequence': 3, 'action': 'l10n_lu_open_report_export_wizard'})
-        return res
+        return {
+            'file_name': self.l10n_lu_get_report_filename(options) + '.xml',
+            'file_content': "<?xml version='1.0' encoding='UTF-8'?>" + content,
+            'file_type': 'xml',
+        }
 
     def l10n_lu_open_report_export_wizard(self, options):
         """ Creates a new export wizard for this report."""
         new_context = self.env.context.copy()
-        new_context['tax_report_options'] = options
+        new_context['report_generation_options'] = options
+        new_context['report_generation_options']['report_id'] = self.id
         return self.env['l10n_lu.generate.tax.report'].with_context(new_context).create({}).get_xml()

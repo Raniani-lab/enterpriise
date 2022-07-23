@@ -63,22 +63,22 @@
         <div class="dropdown-menu o_filter_menu" role="menu">
             <a role="menuitem" title="No Comparison" data-filter="no_comparison" class="dropdown-item js_account_report_date_cmp_filter">No Comparison</a>
             <div role="separator" class="dropdown-divider"></div>
-            <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='previous_period_filter'>Previous Period</a>
-            <div class="o_foldable_menu o_closed_menu o_account_report_search" data-filter='previous_period_filter'>
+            <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='previous_period'>Previous Period</a>
+            <div class="o_foldable_menu o_closed_menu o_account_report_search" data-filter='previous_period'>
                 <label for="periods_number">Number of periods :</label><br />
                 <input type="number" name="periods_number" t-att-value="options['comparison'].get('number_period')"/><br />
                 <button type="button" class="btn btn-primary js_account_report_date_cmp_filter" data-filter='previous_period'>Apply</button>
             </div>
             <div role="separator" class="dropdown-divider"></div>
-            <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='same_last_year_filter'>Same Period Last Year</a>
-            <li class="o_foldable_menu o_closed_menu o_account_report_search" data-filter='same_last_year_filter'>
+            <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='same_last_year'>Same Period Last Year</a>
+            <li class="o_foldable_menu o_closed_menu o_account_report_search" data-filter='same_last_year'>
                 <label for="periods_number">Number of periods :</label><br />
                 <input type="number" name="periods_number" t-att-value="options['comparison'].get('number_period')"/><br />
                 <button type="button" class="btn btn-primary js_account_report_date_cmp_filter" data-filter='same_last_year'>Apply</button>
             </li>
             <div role="separator" class="dropdown-divider"></div>
-            <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='custom_cmp_filter'>Custom</a>
-            <div class="o_foldable_menu o_closed_menu o_account_report_search" data-filter='custom_cmp_filter'>
+            <a role="menuitem" class="dropdown-item js_foldable_trigger o_closed_menu" data-filter='custom'>Custom</a>
+            <div class="o_foldable_menu o_closed_menu o_account_report_search" data-filter='custom'>
                 <t t-if="options['date']['mode'] == 'range'">
                     <label class="form-label" for="date_from_cmp">Start Date :</label>
                     <div class="mb-3">
@@ -242,7 +242,7 @@
         </button>
         <div class="dropdown-menu o_filters_menu" role="menu">
             <div class="o_account_report_search" data-filter='custom_currency'>
-                <div t-foreach="options['currency_rates'].values()" t-as="opt" class="form-group">
+                <div t-foreach="options['currency_rates'].values()" t-as="opt" class="mb-3">
                     <label t-att-for="opt['currency_id']">1 <t t-esc="opt['currency_main']"/> <i class="fa fa-arrow-right"/> <t t-esc="opt['currency_name']"/></label>
                     <input t-att-value="opt['rate']" t-att-name="opt['currency_id']" type="number" min="0" step="0.000001" class="js_account_report_custom_currency_input"/>
                 </div>

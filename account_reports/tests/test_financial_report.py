@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=C0326
 
-
-import ast
-from freezegun import freeze_time
-
-from odoo import fields, Command
-from odoo.osv.expression import OR
-from odoo.tools import ustr
-from odoo.tests import tagged
-
 from .common import TestAccountReportsCommon
 
+from odoo import fields, Command
+from odoo.tests import tagged
+
+from freezegun import freeze_time
 
 
 @tagged('post_install', '-at_install')
@@ -36,15 +31,15 @@ class TestFinancialReport(TestAccountReportsCommon):
         ]).unlink()
 
         account_type_data = [
-            ('asset_receivable',           {'reconcile': True}),
-            ('liability_payable',              {'reconcile': True}),
-            ('asset_cash',            {}),
+            ('asset_receivable',    {'reconcile': True}),
+            ('liability_payable',   {'reconcile': True}),
+            ('asset_cash',          {}),
             ('asset_current',       {}),
-            ('asset_prepayments',          {}),
+            ('asset_prepayments',   {}),
             ('asset_fixed',         {}),
             ('asset_non_current',   {}),
-            ('equity',               {}),
-            ('equity_unaffected',  {}),
+            ('equity',              {}),
+            ('equity_unaffected',   {}),
             ('income',              {}),
         ]
 
@@ -66,11 +61,18 @@ class TestFinancialReport(TestAccountReportsCommon):
 
         # ==== Custom filters ====
 
-        cls.filter = cls.env['ir.filters'].create({
-            'name': 'filter',
-            'model_id': 'account.move.line',
-            'context': str({'group_by': ['date', 'partner_id']}),
-            'domain': str([('partner_id.name', '=', 'partner_a')]),
+        cls.horizontal_group = cls.env['account.report.horizontal.group'].create({
+            'name': 'Horizontal Group',
+            'rule_ids': [
+                Command.create({
+                    'field_name': 'partner_id',
+                    'domain': f"[('id', 'in', {(cls.partner_a + cls.partner_b).ids})]",
+                }),
+                Command.create({
+                    'field_name': 'account_id',
+                    'domain': f"[('id', 'in', {accounts[:2].ids})]",
+                }),
+            ],
         })
 
         # ==== Journal entries ====
@@ -118,48 +120,78 @@ class TestFinancialReport(TestAccountReportsCommon):
         })
         cls.move_2017.action_post()
 
-        cls.report = cls.env.ref('account_reports.account_financial_report_balancesheet0')
-        cls.report.applicable_filters_ids |= cls.filter
+        cls.report = cls.env.ref('account_reports.balance_sheet')
 
-        cls.report_no_parent_id = cls.env["account.financial.html.report"].create({"name": "Test report"})
-        cls.report_no_parent_id["line_ids"] = [
-            (0, 0, {
-                "name": "Invisible Partner A line",
-                "code": "INVA",
-                "domain": [("partner_id", "=", cls.partner_a.id)],
-                "level": 2,
-                "groupby": "account_id",
-                "formulas": "sum",
-                "special_date_changer": "strict_range"
-            }),
-            (0, 0, {
-                "name": "Invisible Partner B line",
-                "code": "INVB",
-                "domain": [("partner_id", "=", cls.partner_b.id)],
-                "level": 2,
-                "groupby": "account_id",
-                "formulas": "sum",
-                "special_date_changer": "strict_range"
-            }),
-            (0, 0, {
-                "name": "Total of Invisible lines",
-                "code": "INVT",
-                "financial_report_id": cls.report_no_parent_id.id,
-                "level": 1,
-                "formulas": "INVA + INVB"
-            })
-        ]
+        cls.report_no_parent_id = cls.env["account.report"].create({
+            'name': "Test report",
+
+            'column_ids': [
+                Command.create({
+                    'name': 'Balance',
+                    'expression_label': 'balance',
+                    'sequence': 1
+                })
+            ],
+
+            'line_ids': [
+                Command.create({
+                    'name': "Invisible Partner A line",
+                    'code': "INVA",
+                    'sequence': 1,
+                    'hierarchy_level': 0,
+                    'groupby': "account_id",
+                    'foldable': True,
+                    'expression_ids': [Command.clear(), Command.create({
+                        'label': 'balance',
+                        'engine': 'domain',
+                        'formula': [("partner_id", "=", cls.partner_a.id)],
+                        'subformula': 'sum',
+                        'date_scope': 'strict_range'
+                    })],
+                }),
+                Command.create({
+                    'name': "Invisible Partner B line",
+                    'code': "INVB",
+                    'sequence': 2,
+                    'hierarchy_level': 0,
+                    'groupby': "account_id",
+                    'foldable': True,
+                    'expression_ids': [Command.clear(), Command.create({
+                        'label': 'balance',
+                        'engine': 'domain',
+                        'formula': [("partner_id", "=", cls.partner_b.id)],
+                        'subformula': 'sum',
+                        'date_scope': 'strict_range'
+                    })],
+                }),
+                Command.create({
+                    'name': "Total of Invisible lines",
+                    'code': "INVT",
+                    'sequence': 3,
+                    'hierarchy_level': 0,
+                    'expression_ids': [Command.clear(), Command.create({
+                        'label': 'balance',
+                        'engine': 'aggregation',
+                        'formula': 'INVA.balance + INVB.balance',
+                        'date_scope': 'normal'
+                    })],
+                }),
+            ],
+        })
 
     def _build_generic_id_from_financial_line(self, financial_rep_ln_xmlid):
         report_line = self.env.ref(financial_rep_ln_xmlid)
         return '-account.financial.html.report.line-%s' % report_line.id
 
+    def _get_line_id_from_generic_id(self, generic_id):
+        return int(generic_id.split('-')[-1])
+
     def test_financial_report_strict_range_on_report_lines_with_no_parent_id(self):
         """ Tests that lines with no parent can be correctly filtered by date range """
-        options = self._init_options(self.report_no_parent_id, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
+        options = self._generate_options(self.report_no_parent_id, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
         options.pop('multi_company', None)
 
-        _headers, lines = self.report_no_parent_id._get_table(options)
+        lines = self.report_no_parent_id._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                         Balance
@@ -172,18 +204,18 @@ class TestFinancialReport(TestAccountReportsCommon):
 
     def test_financial_report_strict_empty_range_on_report_lines_with_no_parent_id(self):
         """ Tests that lines with no parent can be correctly filtered by date range with no invoices"""
-        options = self._init_options(self.report_no_parent_id, fields.Date.from_string('2019-03-01'), fields.Date.from_string('2019-03-31'))
+        options = self._generate_options(self.report_no_parent_id, fields.Date.from_string('2019-03-01'), fields.Date.from_string('2019-03-31'))
         options.pop('multi_company', None)
 
-        _headers, lines = self.report_no_parent_id._get_table(options)
+        lines = self.report_no_parent_id._get_lines(options)
         self.assertLinesValues(
             lines,
-            #   Name                         Balance
-            [   0,                           1],
+            #   Name                          Balance
+            [   0,                            1],
             [
-                ('Invisible Partner A line', ''),
-                ('Invisible Partner B line', ''),
-                ('Total of Invisible lines', ''),
+                ('Invisible Partner A line',  ''),
+                ('Invisible Partner B line',  ''),
+                ('Total of Invisible lines',  ''),
             ])
 
     @freeze_time("2016-06-06")
@@ -200,11 +232,11 @@ class TestFinancialReport(TestAccountReportsCommon):
         })
         invoice.action_post()
 
-        options = self._init_options(self.report, fields.Date.from_string('2016-06-01'), fields.Date.from_string('2016-06-06'))
+        options = self._generate_options(self.report, fields.Date.from_string('2016-06-01'), fields.Date.from_string('2016-06-06'))
         options['date']['filter'] = 'today'
         options.pop('multi_company', None)
 
-        lines = self.report._get_table(options)[1]
+        lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
@@ -212,32 +244,32 @@ class TestFinancialReport(TestAccountReportsCommon):
             [
                 ('ASSETS',                                      110.0),
                 ('Current Assets',                              110.0),
-                ('Bank and Cash Accounts',                      ''),
+                ('Bank and Cash Accounts',                         ''),
                 ('Receivables',                                 110.0),
-                ('Current Assets',                              ''),
-                ('Prepayments',                                 ''),
+                ('Current Assets',                                 ''),
+                ('Prepayments',                                    ''),
                 ('Total Current Assets',                        110.0),
-                ('Plus Fixed Assets',                           ''),
-                ('Plus Non-current Assets',                     ''),
+                ('Plus Fixed Assets',                              ''),
+                ('Plus Non-current Assets',                        ''),
                 ('Total ASSETS',                                110.0),
 
-                ('LIABILITIES',                                 ''),
-                ('Current Liabilities',                         ''),
-                ('Current Liabilities',                         ''),
-                ('Payables',                                    ''),
-                ('Total Current Liabilities',                   ''),
-                ('Plus Non-current Liabilities',                ''),
-                ('Total LIABILITIES',                           ''),
+                ('LIABILITIES',                                    ''),
+                ('Current Liabilities',                            ''),
+                ('Current Liabilities',                            ''),
+                ('Payables',                                       ''),
+                ('Total Current Liabilities',                      ''),
+                ('Plus Non-current Liabilities',                   ''),
+                ('Total LIABILITIES',                              ''),
 
                 ('EQUITY',                                      110.0),
                 ('Unallocated Earnings',                        110.0),
                 ('Current Year Unallocated Earnings',           110.0),
                 ('Current Year Earnings',                       110.0),
-                ('Current Year Allocated Earnings',             ''),
+                ('Current Year Allocated Earnings',                ''),
                 ('Total Current Year Unallocated Earnings',     110.0),
-                ('Previous Years Unallocated Earnings',         ''),
+                ('Previous Years Unallocated Earnings',            ''),
                 ('Total Unallocated Earnings',                  110.0),
-                ('Retained Earnings',                           ''),
+                ('Retained Earnings',                              ''),
                 ('Total EQUITY',                                110.0),
 
                 ('LIABILITIES + EQUITY',                        110.0),
@@ -296,12 +328,12 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('LIABILITIES + EQUITY',                        6000.0),
 
             ]
-        options = self._init_options(self.report, fields.Date.from_string('2016-05-05'), fields.Date.from_string('2016-05-05'))
+        options = self._generate_options(self.report, fields.Date.from_string('2016-05-05'), fields.Date.from_string('2016-05-05'))
         options.pop('multi_company', None)
 
         # End of Last Month
         options['date']['filter'] = 'last_month'
-        lines = self.report._get_table(options)[1]
+        lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
@@ -310,7 +342,7 @@ class TestFinancialReport(TestAccountReportsCommon):
         )
         # Custom
         options['date']['filter'] = 'custom'
-        lines = self.report._get_table(options)[1]
+        lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
@@ -319,55 +351,56 @@ class TestFinancialReport(TestAccountReportsCommon):
         )
 
     def test_financial_report_single_company(self):
-        line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')
-        options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
+        line_id = self._get_basic_line_dict_id_from_report_line_ref('account_reports.account_financial_report_bank_view0')
+        options = self._generate_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
         options['unfolded_lines'] = [line_id]
         options.pop('multi_company', None)
 
-        headers, lines = self.report._get_table(options)
+        lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
             [   0,                                              1],
             [
-                ('ASSETS',                                      50.0),
+                ('ASSETS',                                        50.0),
                 ('Current Assets',                              -650.0),
-                ('Bank and Cash Accounts',                      -1300.0),
-                ('code2 account2',                              -1300.0),
-                ('Total Bank and Cash Accounts',                -1300.0),
+                ('Bank and Cash Accounts',                     -1300.0),
+                ('code2 account2',                             -1300.0),
+                ('Total Bank and Cash Accounts',               -1300.0),
                 ('Receivables',                                 1350.0),
-                ('Current Assets',                              400.0),
-                ('Prepayments',                                 -1100.0),
+                ('Current Assets',                               400.0),
+                ('Prepayments',                                -1100.0),
                 ('Total Current Assets',                        -650.0),
-                ('Plus Fixed Assets',                           ''),
-                ('Plus Non-current Assets',                     700.0),
-                ('Total ASSETS',                                50.0),
+                ('Plus Fixed Assets',                               ''),
+                ('Plus Non-current Assets',                      700.0),
+                ('Total ASSETS',                                  50.0),
 
                 ('LIABILITIES',                                 -200.0),
                 ('Current Liabilities',                         -200.0),
-                ('Current Liabilities',                         ''),
+                ('Current Liabilities',                             ''),
                 ('Payables',                                    -200.0),
                 ('Total Current Liabilities',                   -200.0),
-                ('Plus Non-current Liabilities',                ''),
+                ('Plus Non-current Liabilities',                    ''),
                 ('Total LIABILITIES',                           -200.0),
 
-                ('EQUITY',                                      250.0),
+                ('EQUITY',                                       250.0),
                 ('Unallocated Earnings',                        -550.0),
                 ('Current Year Unallocated Earnings',           -800.0),
-                ('Current Year Earnings',                       ''),
+                ('Current Year Earnings',                           ''),
                 ('Current Year Allocated Earnings',             -800.0),
                 ('Total Current Year Unallocated Earnings',     -800.0),
-                ('Previous Years Unallocated Earnings',         250.0),
+                ('Previous Years Unallocated Earnings',          250.0),
                 ('Total Unallocated Earnings',                  -550.0),
-                ('Retained Earnings',                           800.0),
-                ('Total EQUITY',                                250.0),
+                ('Retained Earnings',                            800.0),
+                ('Total EQUITY',                                 250.0),
 
-                ('LIABILITIES + EQUITY',                        50.0),
+                ('LIABILITIES + EQUITY',                          50.0),
             ],
         )
 
+        unfolded_lines = self.report._get_unfolded_lines(lines, line_id)
         self.assertLinesValues(
-            self.report._get_lines(options, line_id=line_id),
+            unfolded_lines,
             #   Name                                            Balance
             [   0,                                              1],
             [
@@ -378,336 +411,176 @@ class TestFinancialReport(TestAccountReportsCommon):
         )
 
     def test_financial_report_multi_company_currency(self):
-        line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')
-        options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
+        line_id = self._get_basic_line_dict_id_from_report_line_ref('account_reports.account_financial_report_bank_view0')
+        options = self._generate_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
         options['unfolded_lines'] = [line_id]
 
-        headers, lines = self.report._get_table(options)
+        lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance
             [   0,                                              1],
             [
-                ('ASSETS',                                      50.0),
-                ('Current Assets',                              -4150.0),
-                ('Bank and Cash Accounts',                      -3300.0),
-                ('code102 account102',                          -2000.0),
-                ('code2 account2',                              -1300.0),
-                ('Total Bank and Cash Accounts',                -3300.0),
+                ('ASSETS',                                        50.0),
+                ('Current Assets',                             -4150.0),
+                ('Bank and Cash Accounts',                     -3300.0),
+                ('code102 account102',                         -2000.0),
+                ('code2 account2',                             -1300.0),
+                ('Total Bank and Cash Accounts',               -3300.0),
                 ('Receivables',                                 2350.0),
-                ('Current Assets',                              400.0),
-                ('Prepayments',                                 -3600.0),
-                ('Total Current Assets',                        -4150.0),
-                ('Plus Fixed Assets',                           ''),
+                ('Current Assets',                               400.0),
+                ('Prepayments',                                -3600.0),
+                ('Total Current Assets',                       -4150.0),
+                ('Plus Fixed Assets',                               ''),
                 ('Plus Non-current Assets',                     4200.0),
-                ('Total ASSETS',                                50.0),
+                ('Total ASSETS',                                  50.0),
 
                 ('LIABILITIES',                                 -200.0),
                 ('Current Liabilities',                         -200.0),
-                ('Current Liabilities',                         ''),
+                ('Current Liabilities',                             ''),
                 ('Payables',                                    -200.0),
                 ('Total Current Liabilities',                   -200.0),
-                ('Plus Non-current Liabilities',                ''),
+                ('Plus Non-current Liabilities',                    ''),
                 ('Total LIABILITIES',                           -200.0),
 
-                ('EQUITY',                                      250.0),
+                ('EQUITY',                                       250.0),
                 ('Unallocated Earnings',                        -550.0),
                 ('Current Year Unallocated Earnings',           -800.0),
-                ('Current Year Earnings',                       ''),
+                ('Current Year Earnings',                           ''),
                 ('Current Year Allocated Earnings',             -800.0),
                 ('Total Current Year Unallocated Earnings',     -800.0),
-                ('Previous Years Unallocated Earnings',         250.0),
+                ('Previous Years Unallocated Earnings',          250.0),
                 ('Total Unallocated Earnings',                  -550.0),
-                ('Retained Earnings',                           800.0),
-                ('Total EQUITY',                                250.0),
+                ('Retained Earnings',                            800.0),
+                ('Total EQUITY',                                 250.0),
 
-                ('LIABILITIES + EQUITY',                        50.0),
+                ('LIABILITIES + EQUITY',                          50.0),
             ],
         )
 
+        unfolded_lines = self.report._get_unfolded_lines(lines, line_id)
         self.assertLinesValues(
-            self.report._get_lines(options, line_id=line_id),
+            unfolded_lines,
             #   Name                                            Balance
             [   0,                                              1],
             [
-                ('Bank and Cash Accounts',                      -3300.0),
-                ('code102 account102',                          -2000.0),
-                ('code2 account2',                              -1300.0),
-                ('Total Bank and Cash Accounts',                -3300.0),
+                ('Bank and Cash Accounts',                     -3300.0),
+                ('code102 account102',                         -2000.0),
+                ('code2 account2',                             -1300.0),
+                ('Total Bank and Cash Accounts',               -3300.0),
             ],
         )
 
     def test_financial_report_comparison(self):
-        line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_bank_view0')
-        options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
+        line_id = self._get_basic_line_dict_id_from_report_line_ref('account_reports.account_financial_report_bank_view0')
+        options = self._generate_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
         options = self._update_comparison_filter(options, self.report, 'custom', 1, date_to=fields.Date.from_string('2018-12-31'))
         options['unfolded_lines'] = [line_id]
 
-        headers, lines = self.report._get_table(options)
-        self.assertLinesValues(
+        lines = self.report._get_lines(options)
+
+        self.assertGrowthComparisonValues(
             lines,
-            #   Name                                            Balance     Comparison  %
-            [   0,                                              1,          2,          3],
             [
-                ('ASSETS',                                      50.0,       250.0,      '-80.0%'),
-                ('Current Assets',                              -4150.0,    -3250.0,    '27.7%'),
-                ('Bank and Cash Accounts',                      -3300.0,    -3000.0,    '10.0%'),
-                ('code102 account102',                          -2000.0,    -2000.0,    '0.0%'),
-                ('code2 account2',                              -1300.0,    -1000.0,    '30.0%'),
-                ('Total Bank and Cash Accounts',                -3300.0,    -3000.0,    '10.0%'),
-                ('Receivables',                                 2350.0,     2250.0,     '4.4%'),
-                ('Current Assets',                              400.0,      '',         'n/a'),
-                ('Prepayments',                                 -3600.0,    -2500.0,    '44.0%'),
-                ('Total Current Assets',                        -4150.0,    -3250.0,    '27.7%'),
-                ('Plus Fixed Assets',                           '',         '',         'n/a'),
-                ('Plus Non-current Assets',                     4200.0,     3500.0,     '20.0%'),
-                ('Total ASSETS',                                50.0,       250.0,      '-80.0%'),
+                ('ASSETS',                                      '-80.0%',       'number color-red'),
+                ('Current Assets',                              '27.7%',        'number color-red'),
+                ('Bank and Cash Accounts',                      '10.0%',        'number color-red'),
+                ('code102 account102',                          '0.0%',         'number'),
+                ('code2 account2',                              '30.0%',        'number color-red'),
+                ('Total Bank and Cash Accounts',                '10.0%',        'number color-red'),
+                ('Receivables',                                 '4.4%',         'number color-green'),
+                ('Current Assets',                              'n/a',          'number'),
+                ('Prepayments',                                 '44.0%',        'number color-red'),
+                ('Total Current Assets',                        '27.7%',        'number color-red'),
+                ('Plus Fixed Assets',                           '',             ''),
+                ('Plus Non-current Assets',                     '20.0%',        'number color-green'),
+                ('Total ASSETS',                                '-80.0%',       'number color-red'),
 
-                ('LIABILITIES',                                 -200.0,     '',         'n/a'),
-                ('Current Liabilities',                         -200.0,     '',         'n/a'),
-                ('Current Liabilities',                         '',         '',         'n/a'),
-                ('Payables',                                    -200.0,     '',         'n/a'),
-                ('Total Current Liabilities',                   -200.0,     '',         'n/a'),
-                ('Plus Non-current Liabilities',                '',         '',         'n/a'),
-                ('Total LIABILITIES',                           -200.0,     '',         'n/a'),
+                ('LIABILITIES',                                 'n/a',          'number'),
+                ('Current Liabilities',                         'n/a',          'number'),
+                ('Current Liabilities',                         '',             ''),
+                ('Payables',                                    'n/a',          'number'),
+                ('Total Current Liabilities',                   'n/a',          'number'),
+                ('Plus Non-current Liabilities',                '',             ''),
+                ('Total LIABILITIES',                           'n/a',          'number'),
 
-                ('EQUITY',                                      250.0,      250.0,      '0.0%'),
-                ('Unallocated Earnings',                        -550.0,     250.0,      '-320.0%'),
-                ('Current Year Unallocated Earnings',           -800.0,     250.0,      '-420.0%'),
-                ('Current Year Earnings',                       '',         250.0,      '-100.0%'),
-                ('Current Year Allocated Earnings',             -800.0,     '',         'n/a'),
-                ('Total Current Year Unallocated Earnings',     -800.0,     250.0,      '-420.0%'),
-                ('Previous Years Unallocated Earnings',         250.0,      '',         'n/a'),
-                ('Total Unallocated Earnings',                  -550.0,     250.0,      '-320.0%'),
-                ('Retained Earnings',                           800.0,      '',         'n/a'),
-                ('Total EQUITY',                                250.0,      250.0,      '0.0%'),
+                ('EQUITY',                                      '0.0%',         'number'),
+                ('Unallocated Earnings',                        '-320.0%',      'number color-red'),
+                ('Current Year Unallocated Earnings',           '-420.0%',      'number color-red'),
+                ('Current Year Earnings',                       '-100.0%',      'number color-red'),
+                ('Current Year Allocated Earnings',             'n/a',          'number'),
+                ('Total Current Year Unallocated Earnings',     '-420.0%',      'number color-red'),
+                ('Previous Years Unallocated Earnings',         'n/a',          'number'),
+                ('Total Unallocated Earnings',                  '-320.0%',      'number color-red'),
+                ('Retained Earnings',                           'n/a',          'number'),
+                ('Total EQUITY',                                '0.0%',         'number'),
 
-                ('LIABILITIES + EQUITY',                        50.0,       250.0,      '-80.0%'),
-            ],
+
+                ('LIABILITIES + EQUITY',                        '-80.0%',       'number color-green'),
+            ]
         )
 
-        self.assertLinesValues(
-            self.report._get_lines(options, line_id=line_id),
-            #   Name                                            Balance     Comparison  %
-            [   0,                                              1,          2,          3],
-            [
-                ('Bank and Cash Accounts',                      -3300.0,    -3000.0,    '10.0%'),
-                ('code102 account102',                          -2000.0,    -2000.0,    '0.0%'),
-                ('code2 account2',                              -1300.0,    -1000.0,    '30.0%'),
-                ('Total Bank and Cash Accounts',                -3300.0,    -3000.0,    '10.0%'),
-            ],
-        )
+    def test_financial_report_horizontal_group(self):
+        line_id = self._get_basic_line_dict_id_from_report_line_ref('account_reports.account_financial_report_receivable0')
+        self.report.horizontal_group_ids |= self.horizontal_group
 
-    def test_financial_report_custom_filters(self):
-        line_id = self._build_generic_id_from_financial_line('account_reports.account_financial_report_receivable0')
-        options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
+        options = self._generate_options(
+            self.report,
+            fields.Date.from_string('2019-01-01'),
+            fields.Date.from_string('2019-12-31'),
+            default_options={
+                'unfolded_lines': [line_id],
+                'selected_horizontal_group_id': self.horizontal_group.id,
+            }
+        )
         options = self._update_comparison_filter(options, self.report, 'custom', 1, date_to=fields.Date.from_string('2018-12-31'))
-        options = self._update_multi_selector_filter(options, 'ir_filters', self.filter.ids)
-        options['unfolded_lines'] = [line_id]
 
-        headers, lines = self.report._get_table(options)
-        self.assertHeadersValues(headers, [
-            [   ('', 1),                                                ('As of 12/31/2019',  3),                                   ('As of 12/31/2018', 3)],
-            [   ('', 1),                                    ('2017-01-01', 1),  ('2018-01-01', 1),  ('2019-01-01', 1),  ('2017-01-01', 1),  ('2018-01-01', 1),  ('2019-01-01', 1)],
-            [   ('', 1),                                    ('partner_a', 1),   ('partner_a', 1),   ('partner_a', 1),   ('partner_a', 1),   ('partner_a', 1),   ('partner_a', 1)],
-        ])
+        lines = self.report._get_lines(options)
+        self.assertHeadersValues(
+            options['column_headers'],
+            [
+                ['As of 12/31/2019', 'As of 12/31/2018'],
+                ['partner_a', 'partner_b'],
+                ['code0 account0', 'code1 account1'],
+            ]
+        )
         self.assertLinesValues(
             lines,
-            [   0,                                          1,                  2,                  3,                  4,                  5,                  6],
+            [   0,                                          1,                   2,                  3,                  4,                  5,                  6,                  7,                  8],
             [
-                ('ASSETS',                                  4500.0,             1250.0,             1150.0,             4500.0,             1250.0,             ''),
-                ('Current Assets',                          1000.0,             1250.0,             450.0,              1000.0,             1250.0,             ''),
-                ('Bank and Cash Accounts',                  '',                 '',                 '',                 '',                 '',                 ''),
-                ('Receivables',                             1000.0,             1250.0,             50.0,               1000.0,             1250.0,             ''),
-                ('code0 account0',                          '',                 1250.0,             50.0,               '',                 1250.0,             ''),
-                ('code100 account100',                      1000.0,             '',                 '',                 1000.0,             '',                 ''),
-                ('Total Receivables',                       1000.0,             1250.0,             50.0,               1000.0,             1250.0,             ''),
-                ('Current Assets',                          '',                 '',                 400.0,              '',                 '',                 ''),
-                ('Prepayments',                             '',                 '',                 '',                 '',                 '',                 ''),
-                ('Total Current Assets',                    1000.0,             1250.0,             450.0,              1000.0,             1250.0,             ''),
-                ('Plus Fixed Assets',                       '',                 '',                 '',                 '',                 '',                 ''),
-                ('Plus Non-current Assets',                 3500.0,             '',                 700.0,              3500.0,             '',                 ''),
-                ('Total ASSETS',                            4500.0,             1250.0,             1150.0,             4500.0,             1250.0,             ''),
+                ('ASSETS',                                  1300.0,              '',                 25.0,               '',                 1250.0,             '',                 '',                 ''),
+                ('Current Assets',                          1300.0,              '',                 25.0,               '',                 1250.0,             '',                 '',                 ''),
+                ('Bank and Cash Accounts',                  '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Receivables',                             1300.0,              '',                 25.0,               '',                 1250.0,             '',                 '',                 ''),
+                ('code0 account0',                          1300.0,              '',                 25.0,               '',                 1250.0,             '',                 '',                 ''),
+                ('Total Receivables',                       1300.0,              '',                 25.0,               '',                 1250.0,             '',                 '',                 ''),
+                ('Current Assets',                          '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Prepayments',                             '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Total Current Assets',                    1300.0,              '',                 25.0,               '',                 1250.0,             '',                 '',                 ''),
+                ('Plus Fixed Assets',                       '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Plus Non-current Assets',                 '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Total ASSETS',                            1300.0,              '',                 25.0,               '',                 1250.0,             '',                 '',                 ''),
 
-                ('LIABILITIES',                             '',                 '',                 '',                 '',                 '',                 ''),
-                ('Current Liabilities',                     '',                 '',                 '',                 '',                 '',                 ''),
-                ('Current Liabilities',                     '',                 '',                 '',                 '',                 '',                 ''),
-                ('Payables',                                '',                 '',                 '',                 '',                 '',                 ''),
-                ('Total Current Liabilities',               '',                 '',                 '',                 '',                 '',                 ''),
-                ('Plus Non-current Liabilities',            '',                 '',                 '',                 '',                 '',                 ''),
-                ('Total LIABILITIES',                       '',                 '',                 '',                 '',                 '',                 ''),
+                ('LIABILITIES',                             '',                  '',                 '',                -200.0,              '',                 '',                 '',                 ''),
+                ('Current Liabilities',                     '',                  '',                 '',                -200.0,              '',                 '',                 '',                 ''),
+                ('Current Liabilities',                     '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Payables',                                '',                  '',                 '',                -200.0,              '',                 '',                 '',                 ''),
+                ('Total Current Liabilities',               '',                  '',                 '',                -200.0,              '',                 '',                 '',                 ''),
+                ('Plus Non-current Liabilities',            '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Total LIABILITIES',                       '',                  '',                 '',                -200.0,              '',                 '',                 '',                 ''),
 
-                ('EQUITY',                                  '',                 250.0,              '',                 '',                 250.0,              ''),
-                ('Unallocated Earnings',                    '',                 250.0,              '',                 '',                 250.0,              ''),
-                ('Current Year Unallocated Earnings',       '',                 '',                 '',                 '',                 250.0,              ''),
-                ('Current Year Earnings',                   '',                 '',                 '',                 '',                 250.0,              ''),
-                ('Current Year Allocated Earnings',         '',                 '',                 '',                 '',                 '',                 ''),
-                ('Total Current Year Unallocated Earnings', '',                 '',                 '',                 '',                 250.0,              ''),
-                ('Previous Years Unallocated Earnings',     '',                 250.0,              '',                 '',                 '',                 ''),
-                ('Total Unallocated Earnings',              '',                 250.0,              '',                 '',                 250.0,              ''),
-                ('Retained Earnings',                       '',                 '',                 '',                 '',                 '',                 ''),
-                ('Total EQUITY',                            '',                 250.0,              '',                 '',                 250.0,              ''),
+                ('EQUITY',                                  '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Unallocated Earnings',                    '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Current Year Unallocated Earnings',       '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Current Year Earnings',                   '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Current Year Allocated Earnings',         '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Total Current Year Unallocated Earnings', '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Previous Years Unallocated Earnings',     '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Total Unallocated Earnings',              '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Retained Earnings',                       '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
+                ('Total EQUITY',                            '',                  '',                 '',                 '',                 '',                 '',                 '',                 ''),
 
-                ('LIABILITIES + EQUITY',                    '',                 250.0,              '',                 '',                 250.0,              ''),
-            ],
-        )
-
-        self.assertLinesValues(
-            self.report._get_lines(options, line_id=line_id),
-            [   0,                                          1,                  2,                  3,                  4,                  5,                  6],
-            [
-                ('Receivables',                             1000.0,             1250.0,             50.0,               1000.0,             1250.0,             ''),
-                ('code0 account0',                          '',                 1250.0,             50.0,               '',                 1250.0,             ''),
-                ('code100 account100',                      1000.0,             '',                 '',                 1000.0,             '',                 ''),
-                ('Total Receivables',                       1000.0,             1250.0,             50.0,               1000.0,             1250.0,             ''),
-            ],
-        )
-
-    def test_financial_report_control_domain(self):
-        def check_missing_exceeding(lines, missing, excess):
-            map_missing = {line['id']: line.get('has_missing') for line in lines}
-            map_excess = {line['id']: line.get('has_excess') for line in lines}
-            for line_id in map_missing:
-                if line_id in missing:
-                    self.assertTrue(map_missing[line_id], line_id)
-                else:
-                    self.assertFalse(map_missing[line_id], line_id)
-            for line_id in map_excess:
-                if line_id in excess:
-                    self.assertTrue(map_excess[line_id], line_id)
-                else:
-                    self.assertFalse(map_excess[line_id], line_id)
-
-        options = self._init_options(self.report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
-        options['unfold_all'] = True
-        options.pop('multi_company', None)
-
-        # Activate debug mode to enable control domain feature
-        with self.debug_mode(self.report):
-
-            # 1. Test for each scenario separately
-            report_line = self.env.ref('account_reports.account_financial_report_current_assets_view0')
-            line_id_current_assets = self.env['account.financial.html.report']._get_generic_line_id(
-                'account.financial.html.report.line',
-                report_line.id,
-            )
-
-            # 1.0. Base case : no control domain
-            lines = self.report._get_table(options)[1]
-            check_missing_exceeding(lines, {}, {})
-
-            # 1.1. Base case : nothing missing or in excess
-            report_line.control_domain = OR([ast.literal_eval(ustr(line.domain)) for line in report_line.children_ids])
-            lines = self.report._get_table(options)[1]
-            check_missing_exceeding(lines, {}, {})
-
-            # 1.2. Excess journal items
-            report_line.control_domain = "[('account_id', '=', False)]"
-            lines = self.report._get_table(options)[1]
-            check_missing_exceeding(lines, {}, {line_id_current_assets})
-
-            # 1.3. Missing journal items
-            report_line.control_domain = "[('account_id', '!=', False)]"
-            lines = self.report._get_table(options)[1]
-            check_missing_exceeding(lines, {line_id_current_assets}, {})
-
-            # 2. Test for both missing and excess journal items
-            report_line = self.env.ref('account_reports.account_financial_unaffected_earnings0')
-            line_id_unaffected_earnings = self.env['account.financial.html.report']._get_generic_line_id(
-                'account.financial.html.report.line',
-                report_line.id,
-            )
-
-            report_line.control_domain = "[('account_id', '!=', False)]"
-            lines = self.report._get_table(options)[1]
-            check_missing_exceeding(lines, {line_id_current_assets, line_id_unaffected_earnings}, {line_id_unaffected_earnings})
-
-    def test_financial_report_sum_if_x_groupby(self):
-        account1 = self.env['account.account'].create({
-            'name': "test_financial_report_sum_if_x_groupby1",
-            'code': "42241",
-            'account_type': 'asset_fixed',
-        })
-        account2 = self.env['account.account'].create({
-            'name': "test_financial_report_sum_if_x_groupby2",
-            'code': "42242",
-            'account_type': 'asset_fixed',
-        })
-
-        move = self.env['account.move'].create({
-            'move_type': 'entry',
-            'date': '2019-01-01',
-            'line_ids': [
-                # pylint: disable=C0326
-                (0, 0, {'debit': 1000.0,    'credit': 0.0,          'account_id': account1.id}),
-                (0, 0, {'debit': 0.0,       'credit': 10000.0,      'account_id': account1.id}),
-
-                (0, 0, {'debit': 50000.0,   'credit': 0.0,          'account_id': account2.id}),
-                (0, 0, {'debit': 0.0,       'credit': 5000.0,       'account_id': account2.id}),
-
-                (0, 0, {'debit': 0.0,       'credit': 36000.0,      'account_id': self.company_data['default_account_revenue'].id}),
-            ],
-        })
-        move.action_post()
-        move.line_ids.flush_recordset()
-
-        report = self.env["account.financial.html.report"].create({
-            'name': "test_financial_report_sum_if_x_groupby",
-            'unfold_all_filter': True,
-            'line_ids': [
-                (0, 0, {
-                    'name': "report_line_1",
-                    'code': 'TEST_L1',
-                    'level': 1,
-                    'domain': [('account_id', 'in', (account1 + account2).ids)],
-                    'groupby': 'account_id',
-                    'formulas': 'sum_if_pos_groupby',
-                }),
-                (0, 0, {
-                    'name': "report_line_2",
-                    'code': 'TEST_L2',
-                    'level': 1,
-                    'domain': [('account_id', 'in', (account1 + account2).ids)],
-                    'groupby': 'account_id',
-                    'formulas': '-sum_if_neg_groupby',
-                }),
-                (0, 0, {
-                    'name': "report_line_3",
-                    'code': 'TEST_L3',
-                    'level': 1,
-                    'domain': [('account_id', 'in', (account1 + account2).ids)],
-                    'groupby': 'account_id',
-                    'formulas': 'sum_if_pos',
-                }),
-                (0, 0, {
-                    'name': "report_line_4",
-                    'code': 'TEST_L4',
-                    'level': 1,
-                    'domain': [('account_id', 'in', (account1 + account2).ids)],
-                    'groupby': 'account_id',
-                    'formulas': '-sum_if_neg',
-                }),
-            ],
-        })
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-01-01'))
-        options['unfold_all'] = True
-
-        self.assertLinesValues(
-            # pylint: disable=C0326
-            report._get_table(options)[1],
-            [   0,                          1],
-            [
-                ("report_line_1",           45000.0),
-                (account2.display_name,     45000.0),
-                ("Total report_line_1",     45000.0),
-                ("report_line_2",           9000.0),
-                (account1.display_name,     9000.0),
-                ("Total report_line_2",     9000.0),
-                ("report_line_3",           36000.0),
-                (account1.display_name,     -9000.0),
-                (account2.display_name,     45000.0),
-                ("Total report_line_3",     36000.0),
-                ("report_line_4",           ''),
+                ('LIABILITIES + EQUITY',                    '',                  '',                 '',                -200.0,              '',                 '',                 '',                 ''),
             ],
         )
 
@@ -756,56 +629,77 @@ class TestFinancialReport(TestAccountReportsCommon):
         moves.action_post()
         moves.line_ids.flush_recordset()
 
-        report = self.env["account.financial.html.report"].create({
+        report = self.env["account.report"].create({
             'name': "test_financial_report_sum",
-            'unfold_all_filter': True,
+            'column_ids': [
+                Command.create({
+                    'name': "Balance",
+                    'expression_label': 'balance',
+                    'sequence': 1,
+                }),
+            ],
             'line_ids': [
-                (0, 0, {
+                Command.create({
                     'name': "Title",
                     'code': 'TT',
-                    'level': 1,
                     'hide_if_zero': True,
+                    'sequence': 0,
                     'children_ids': [
-                        (0, 0, {
+                        Command.create({
                             'name': "report_line_1",
                             'code': 'TEST_L1',
-                            'level': 2,
-                            'domain': [('account_id', '=', account1.id)],
-                            'groupby': 'account_id',
-                            'formulas': 'sum',
+                            'sequence': 1,
+                            'expression_ids': [
+                                Command.create({
+                                    'label': 'balance',
+                                    'engine': 'domain',
+                                    'formula': f"[('account_id', '=', {account1.id})]",
+                                    'subformula': 'sum',
+                                    'date_scope': 'normal',
+                                }),
+                            ],
                         }),
-                        (0, 0, {
+                        Command.create({
                             'name': "report_line_2",
                             'code': 'TEST_L2',
-                            'level': 2,
-                            'domain': [('account_id', '=', account2.id)],
-                            'groupby': 'account_id',
-                            'formulas': 'sum',
+                            'sequence': 2,
+                            'expression_ids': [
+                                Command.create({
+                                    'label': 'balance',
+                                    'engine': 'domain',
+                                    'formula': f"[('account_id', '=', {account2.id})]",
+                                    'subformula': 'sum',
+                                    'date_scope': 'normal',
+                                }),
+                            ],
                         }),
                     ]
                 }),
             ],
         })
 
-        options = self._init_options(report, fields.Date.from_string('2019-05-01'), fields.Date.from_string('2019-05-01'))
+        # TODO without this, the create() puts newIds in the sublines, and flushing doesn't help. Seems to be an ORM bug.
+        self.env.invalidate_all()
+
+        options = self._generate_options(report, fields.Date.from_string('2019-05-01'), fields.Date.from_string('2019-05-01'))
         options = self._update_comparison_filter(options, report, 'previous_period', 2)
-        options['unfolded_lines'] = report.line_ids.ids
 
-        expected_values = [
-            # pylint: disable=C0326
-            ("Title",              '',      '',     ''),
-            ("report_line_1",     3.0,     3.0,     ''),
-            ("report_line_2",    -4.0,    -3.0,     ''),
-            ("Total Title",        '',      '',     ''),
-        ]
-
-        self.assertLinesValues(report._get_table(options)[1], [0, 1, 2, 3], expected_values)
+        self.assertLinesValues(
+            report._get_lines(options),
+            [   0,                                   1,       2,       3],
+            [
+                ("Title",                           '',      '',      ''),
+                ("report_line_1",                  3.0,     3.0,      ''),
+                ("report_line_2",                 -4.0,    -3.0,      ''),
+            ]
+        )
 
         move = self.env['account.move'].create({
             'move_type': 'entry',
             'date': '2019-05-01',
             'line_ids': [
-                (0, 0, {'debit': 1.0, 'credit': 0.0, 'account_id': account1.id}),
+                (0, 0, {'debit': 0.0, 'credit': 3.0, 'account_id': account1.id}),
+                (0, 0, {'debit': 4.0, 'credit': 0.0, 'account_id': account2.id}),
                 (0, 0, {'debit': 0.0, 'credit': 1.0, 'account_id': self.company_data['default_account_revenue'].id}),
             ],
         })
@@ -813,4 +707,17 @@ class TestFinancialReport(TestAccountReportsCommon):
         move.action_post()
         move.line_ids.flush_recordset()
 
-        self.assertLinesValues(report._get_table(options)[1], [0, 1, 2, 3], [])
+        # With the comparison still on, the lines shouldn't be hidden
+        self.assertLinesValues(
+            report._get_lines(options),
+            [   0,                                   1,       2,       3],
+            [
+                ("Title",                           '',      '',      ''),
+                ("report_line_1",                   '',     3.0,      ''),
+                ("report_line_2",                   '',    -3.0,      ''),
+            ]
+        )
+
+        # Removing the comparison should hide the lines, as they will be 0 in every considered period (the current one)
+        options = self._update_comparison_filter(options, report, 'previous_period', 0)
+        self.assertLinesValues(report._get_lines(options), [0, 1, 2, 3], [])

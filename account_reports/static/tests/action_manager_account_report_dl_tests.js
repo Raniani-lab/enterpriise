@@ -89,16 +89,27 @@ QUnit.module('Account Reports', {
                 id: 9,
                 tag: 'account_report',
                 type: 'ir.actions.client',
+                params: {
+                    options: {
+                        buttons: [],
+                        search_bar: false,
+                    }
+                }
             },
         };
-        Object.assign(serverData, { actions, models });
+        serverData = { actions, models };
         const webClient = await createWebClient({
             serverData,
             mockRPC: function (route, args) {
                 if (route === '/web/dataset/call_kw/account.report/get_report_informations') {
                     var vals = {
-                        options: {partner: true, partner_ids: [], partner_categories:[]},
-                        buttons: [],
+                        options: {
+                            partner: true,
+                            partner_ids: [],
+                            partner_categories:[],
+                            buttons: [],
+                            search_bar: false,
+                        },
                         searchview_html: '<a class="dropdown-toggle" data-bs-toggle="dropdown">' +
                             '<span class="fa fa-folder-open"/> Partners' +
                             '<span class="caret" />' +

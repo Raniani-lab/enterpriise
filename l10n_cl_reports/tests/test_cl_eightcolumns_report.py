@@ -31,21 +31,21 @@ class TestClEightColumnsReport(TestAccountReportsCommon):
         invoice.action_post()
 
     def test_whole_report(self):
-        report = self.env['account.eightcolumns.report.cl']
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+        report = self.env.ref('l10n_cl_reports.cl_eightcolumns_report')
+        options = self._generate_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 
         # pylint: disable=bad-whitespace
         self.assertLinesValues(
             report._get_lines(options),
             # pylint: disable=C0326
-            #   Cuenta                                  Debe            Haber   Deudor  Acreedor    Activo  Pasivo  Perdida Ganancia
-            [   0,                                      1,              2,      3,      4,          5,      6,      7,      8],
+            #   Account                                 Debit      Credit   Debitor  Creditor    Active  Passive Loss    Gain
+            [   0,                                       1,         2,       3,       4,          5,      6,       7,        8],
             [
-                ('110310 Clientes',                     1190.0,         '',     1190.0, '',         1190.0, '',     '',     '') ,
-                ('210710 IVA Débito Fiscal',            '',             190.0,  '',     190.0,      '',     190.0,  '',     '') ,
-                ('310110 Ingresos por Consultoría',     '',             1000.0, '',     1000.0,     '',     '',     '',     1000.0),
-                ('Subtotal',                            1190.0,         1190.0, 1190.0, 1190.0,     1190.0, 190.0,  '',     1000.0),
-                ('Profit and Loss',                     '',             '',     '',     '',         '',     1000.0, 1000.0, '') ,
-                ('Total',                               1190.0,         1190.0, 1190.0, 1190.0,     1190.0, 1190.0, 1000.0, 1000.0),
+                ('110310 Clientes',                 1190.0,        '',  1190.0,      '',     1190.0,     '',      '',       ''),
+                ('210710 IVA Débito Fiscal',            '',     190.0,      '',   190.0,         '',  190.0,      '',       ''),
+                ('310110 Ingresos por Consultoría',     '',    1000.0,      '',  1000.0,         '',     '',      '',   1000.0),
+                ('Subtotal',                        1190.0,    1190.0,  1190.0,  1190.0,     1190.0,  190.0,      '',   1000.0),
+                ('Profit and Loss',                     '',        '',      '',      '',         '', 1000.0,  1000.0,       ''),
+                ('Total',                           1190.0,    1190.0,  1190.0,  1190.0,     1190.0, 1190.0,  1000.0,   1000.0),
             ],
         )

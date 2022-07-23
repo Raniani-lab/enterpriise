@@ -8,9 +8,9 @@
     'depends': ['account_fleet', 'account_disallowed_expenses'],
     'data': [
         'security/ir.model.access.csv',
+        'data/account_disallowed_expenses_fleet_report.xml',
         'views/account_disallowed_expenses_category_views.xml',
         'views/fleet_vehicle_views.xml',
-        'views/report_financial.xml',
     ],
     'installable': True,
     'auto_install': True,

@@ -15,6 +15,7 @@ Accounting reports for Finland
     'data': [
         'data/balance_sheet.xml',
         'data/profit_and_loss.xml',
+        'data/account_report_ec_sales_list_report.xml',
     ],
     'auto_install': ['l10n_fi', 'account_reports'],
     'installable': True,

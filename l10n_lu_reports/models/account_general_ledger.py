@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import re
 from itertools import groupby
 import base64
 import io
@@ -9,13 +10,19 @@ from odoo.exceptions import UserError
 
 
 class AccountGeneralLedger(models.AbstractModel):
-    _inherit = 'account.general.ledger'
+    _inherit = 'account.report'
 
-    def _get_reports_buttons(self, options):
-        res = super()._get_reports_buttons(options)
-        if self._get_report_country_code(options) == 'LU':
-            res.append({'name': _('FAIA'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')})
-        return res
+    def general_ledger_custom_options_initializer(self, options, previous_options=None):
+        super().general_ledger_custom_options_initializer(options, previous_options)
+        if self.env.company.account_fiscal_country_id.code == 'LU':
+            options.setdefault('buttons', []).append({
+                'name': _('FAIA'),
+                'sequence': 50,
+                'action': 'export_file',
+                'action_param': 'l10n_lu_export_saft_to_xml',
+                'file_export_type': _('XML')
+            })
+
 
     @api.model
     def _fill_l10n_lu_saft_report_invoices_values(self, options, values):
@@ -128,12 +135,8 @@ class AccountGeneralLedger(models.AbstractModel):
         values.update(res)
 
     @api.model
-    def _prepare_saft_report_values(self, options):
-        # OVERRIDE
-        template_vals = super()._prepare_saft_report_values(options)
-
-        if self.env.company.account_fiscal_country_id.code != 'LU':
-            return template_vals
+    def _l10n_lu_prepare_saft_report_values(self, options):
+        template_vals = self._saft_prepare_report_values(options)
 
         template_vals.update({
             'xmlns': 'urn:OECD:StandardAuditFile-Taxation/2.00',
@@ -144,15 +147,17 @@ class AccountGeneralLedger(models.AbstractModel):
         return template_vals
 
     @api.model
-    def get_xml(self, options):
-        # OVERRIDE
-        content = super().get_xml(options)
-
-        if self.env.company.account_fiscal_country_id.code != 'LU':
-            return content
+    def l10n_lu_export_saft_to_xml(self, options):
+        template_vals = self._l10n_lu_prepare_saft_report_values(options)
+        content = self.env['ir.qweb']._render('l10n_lu_reports.saft_template_inherit_l10n_lu_saft', template_vals)
 
         xsd_attachment = self.env['ir.attachment'].search([('name', '=', 'xsd_cached_FAIA_v_2_01_reduced_version_A_xsd')])
         if xsd_attachment:
             with io.BytesIO(base64.b64decode(xsd_attachment.with_context(bin_size=False).datas)) as xsd:
                 tools.xml_utils._check_with_xsd(content, xsd)
-        return content
+
+        return {
+            'file_name': self.get_default_report_filename('xml'),
+            'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
+            'file_type': 'xml',
+        }

@@ -42,10 +42,8 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         # Init options.
         report = self.env['account.followup.report']
         options = {
-            **report._get_options(None),
             'partner_id': self.partner_a.id,
         }
-        report = report.with_context(report._set_context(options))
 
         with freeze_time('2016-01-01'):
             self.assertPartnerFollowup(self.partner_a, None, None)
@@ -82,7 +80,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         with freeze_time('2016-01-01'):
             self.assertLinesValues(
                 # pylint: disable=C0326
-                report._get_lines(options),
+                report._get_followup_report_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
                 [   0,                                      1,              2,              3,      5,          6,                  7],
                 [
@@ -111,7 +109,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         with freeze_time('2016-01-05'):
             self.assertLinesValues(
                 # pylint: disable=C0326
-                report._get_lines(options),
+                report._get_followup_report_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
                 [   0,                                      1,              2,              3,      5,          6,                  7],
                 [
@@ -126,7 +124,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         # 2016-01-15: Draft invoice + previous credit note reached the date_maturity + first invoice reached the delay
         # of the first followup level.
 
-        invoice_3 = self.env['account.move'].create({
+        self.env['account.move'].create({
             'move_type': 'out_refund',
             'invoice_date': '2016-01-15',
             'partner_id': self.partner_a.id,
@@ -140,7 +138,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         with freeze_time('2016-01-15'):
             self.assertLinesValues(
                 # pylint: disable=C0326
-                report._get_lines(options),
+                report._get_followup_report_lines(options),
                 #   Name                                    Date,           Due Date,       Doc.    Exp. Date   Blocked             Total Due
                 [   0,                                      1,              2,              3,      5,          6,                  7],
                 [
@@ -168,7 +166,7 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         invoice_4.action_post()
 
         with freeze_time('2016-01-20'):
-            lines = report._get_lines(options)
+            lines = report._get_followup_report_lines(options)
             self.assertLinesValues(
                 # pylint: disable=C0326
                 lines[:3],

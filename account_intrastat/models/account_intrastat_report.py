@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _, _lt
+from odoo import api, models, _
 from .supplementary_unit_codes import SUPPLEMENTARY_UNITS_TO_COMMODITY_CODES as SUPP_TO_COMMODITY
 
 _merchandise_export_code = {
@@ -23,149 +23,244 @@ _unknown_country_code = {
 
 _qn_unknown_individual_vat_country_codes = ('FI', 'SE', 'SK', 'DE', 'AT')
 
-class IntrastatReport(models.AbstractModel):
-    _name = 'account.intrastat.report'
-    _description = 'Intrastat Report'
+class IntrastatReport(models.Model):
     _inherit = 'account.report'
 
-    filter_date = {'mode': 'range', 'filter': 'this_month'}
-    filter_journals = True
-    filter_multi_company = None
-    filter_with_vat = False
-    filter_intrastat_type = [
-        {'name': _lt('Arrival'), 'selected': False, 'id': 'arrival'},
-        {'name': _lt('Dispatch'), 'selected': False, 'id': 'dispatch'},
-    ]
-    filter_intrastat_extended = True
+    ####################################################
+    # OVERRIDES
+    ####################################################
 
-    def print_xlsx(self, options):
-        return super().print_xlsx({**options, 'country_format': 'code', 'commodity_flow': 'code'})
-
-    def _get_filter_journals(self):
-        #only show sale/purchase journals
-        return self.env['account.journal'].search([('company_id', 'in', self.env.companies.ids or [self.env.company.id]), ('type', 'in', ('sale', 'purchase'))], order="company_id, name")
-
-    def _show_region_code(self):
+    def _intrastat_show_region_code(self):
         """Return a bool indicating if the region code is to be displayed for the country concerned in this localisation."""
         # TO OVERRIDE
         return True
 
-    def _get_columns_name(self, options):
-        columns = [
-            {'name': ''},
-            {'name': _('Commodity Flow')},
-            {'name': _('Country Code')},
-            {'name': _('Transaction Code')},
+    ####################################################
+    # OPTIONS: INIT
+    ####################################################
+
+    def _custom_options_initializer_intrastat(self, options, previous_options=None):
+        previous_options = previous_options or {}
+
+        # Filter only partners with VAT
+        options['intrastat_with_vat'] = previous_options.get('intrastat_with_vat', False)
+
+        # Filter types of invoices
+        default_type = [
+            {'name': _('Arrival'), 'selected': False, 'id': 'arrival'},
+            {'name': _('Dispatch'), 'selected': False, 'id': 'dispatch'},
         ]
-        if self._show_region_code():
-            columns += [
-                {'name': _('Region Code')},
-            ]
-        columns += [
-            {'name': _('Commodity Code')},
-            {'name': _('Origin Country')},
-            {'name': _('Partner VAT')},
-        ]
-        if options.get('intrastat_extended'):
-            columns += [
-                {'name': _('Transport Code')},
-                {'name': _('Incoterm Code')},
-            ]
-        columns += [
-            {'name': _('Weight')},
-            {'name': _('Supplementary Units')},
-            {'name': _('Value'), 'class': 'number'},
-        ]
-        return columns
+        options['intrastat_type'] = previous_options.get('intrastat_type', default_type)
+        options['country_format'] = previous_options.get('country_format')
+        options['commodity_flow'] = previous_options.get('commodity_flow')
+
+        # Filter the domain based on the types of invoice selected
+        include_arrivals = options['intrastat_type'][0]['selected']
+        include_dispatches = options['intrastat_type'][1]['selected']
+        if not include_arrivals and not include_dispatches:
+            include_arrivals = include_dispatches = True
+
+        invoice_types = []
+        if include_arrivals:
+            invoice_types += ['in_invoice', 'out_refund']
+        if include_dispatches:
+            invoice_types += ['out_invoice', 'in_refund']
+
+        # When only one type is selected, we can display a total line
+        options['intrastat_total_line'] = include_arrivals != include_dispatches
+        options.setdefault('forced_domain', []).append(('move_id.move_type', 'in', invoice_types))
+
+        # Filter report type (extended form)
+        options['intrastat_extended'] = previous_options.get('intrastat_extended', True)
+
+        # 2 columns are conditional and should only appear when rendering the extended intrastat report
+        # Some countries don't use the region code column; we hide it for them.
+        excluded_columns = set()
+        if not options['intrastat_extended']:
+            excluded_columns |= {'transport_code', 'incoterm_code'}
+        if not self._intrastat_show_region_code():
+            excluded_columns.add('region_code')
+
+        new_columns = []
+        for col in options['columns']:
+            if col['expression_label'] not in excluded_columns:
+                new_columns.append(col)
+
+                # Replace country names by codes if necessary (for file exports)
+                if options.get('country_format') == 'code':
+                    if col['expression_label'] == 'country_name':
+                        col['expression_label'] = 'country_code'
+                    elif col['expression_label'] == 'intrastat_product_origin_country_name':
+                        col['expression_label'] = 'intrastat_product_origin_country_code'
+
+        # Only pick Sale/Purchase journals (+ divider)
+        self._init_options_journals(options, previous_options=previous_options, additional_journals_domain=[('type', 'in', ('sale', 'purchase'))])
+
+        # When printing the report to xlsx, we want to use country codes instead of names
+        xlsx_button_option = next(button_opt for button_opt in options['buttons'] if button_opt.get('action_param') == 'export_to_xlsx')
+        xlsx_button_option['action_param'] = 'intrastat_export_to_xlsx'
+
+    def intrastat_export_to_xlsx(self, options, response=None):
+        # We need to regenerate the options to make sure we hide the country name columns as expected.
+        new_options = self._get_options(previous_options={**options, 'country_format': 'code', 'commodity_flow': 'code'})
+        return self.export_to_xlsx(new_options, response=response)
+
+    ####################################################
+    # REPORT LINES: CORE
+    ####################################################
 
     @api.model
-    def _create_intrastat_report_line(self, options, vals):
-        # This is so that full country names are displayed when in the UI, and the 2-digit iso codes are used when 'code' is in the options
-        country_column = 'country_code' if options.get('country_format') == 'code' else 'country_name'
-        origin_country_column = 'intrastat_product_origin_country' if options.get('country_format') == 'code' else 'intrastat_product_origin_country_name'
+    def _dynamic_lines_generator_intrastat(self, options, all_column_groups_expression_totals):
+        # dict of the form {move_id: {column_group_key: {expression_label: value}}}
+        move_info_dict = {}
 
-        commodity_flow = vals['system'] if options.get('commodity_flow') else f"{vals['system']} ({vals['type']})"
-        columns = [{'name': c} for c in [
-            commodity_flow, vals[country_column], vals['transaction_code'],
-        ]]
-        if self._show_region_code():
-            columns.append({'name': vals['region_code']})
-        columns += [{'name': c} for c in [
-            vals['commodity_code'], vals[origin_country_column], vals['partner_vat'],
-        ]]
-        if options.get('intrastat_extended'):
-            columns += [{'name': c} for c in [
-                vals['invoice_transport'] or vals['company_transport'] or '',
-                vals['invoice_incoterm'] or vals['company_incoterm'] or '',
-            ]]
+        # dict of the form {column_group_key: total_value}
+        total_values_dict = {}
 
-        columns += [{'name': c} for c in [
-            vals['weight'], vals['supplementary_units'], self.format_value(vals['value'])
-        ]]
+        # Build query
+        query_list = []
+        full_query_params = []
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            query, params = self._intrastat_prepare_query(column_group_options, column_group_key)
+            query_list.append(f"({query})")
+            full_query_params += params
+
+        full_query = " UNION ALL ".join(query_list)
+        self._cr.execute(full_query, full_query_params)
+        results = self._cr.dictfetchall()
+        results = self._intrastat_fill_supplementary_units(results)
+
+        # Fill dictionaries
+        for result in self._intrastat_fill_missing_values(results):
+            move_id = result['id']
+            column_group_key = result['column_group_key']
+
+            current_move_info = move_info_dict.setdefault(move_id, {})
+
+            current_move_info[column_group_key] = result
+            current_move_info['name'] = result['name']
+
+            total_values_dict.setdefault(column_group_key, 0)
+            total_values_dict[column_group_key] += result['value']
+
+        # Create lines
+        lines = []
+        for move_id, move_info in move_info_dict.items():
+            line = self._intrastat_create_report_line(options, move_info, move_id, ['value'])
+            lines.append((0, line))
+
+        # Create total line if only one type of invoice is selected
+        if options.get('intrastat_total_line'):
+            total_line = self._intrastat_create_report_total_line(options, total_values_dict)
+            lines.append((0, total_line))
+        return lines
+
+    @api.model
+    def _intrastat_create_report_line(self, options, line_vals, line_id, number_values):
+        """ Create a standard (non-total) line for the report
+
+        :param options: report options
+        :param line_vals: values necessary for the line
+        :param line_id: id of the line
+        :param number_values: list of expression labels that need to have the 'number' class
+        """
+        columns = []
+        for column in options['columns']:
+            expression_label = column['expression_label']
+            value = line_vals.get(column['column_group_key'], {}).get(expression_label, False)
+
+            if options.get('commodity_flow') != 'code' and column['expression_label'] == 'system':
+                value = f"{value} ({line_vals.get(column['column_group_key'], {}).get('type', False)})"
+
+            columns.append({
+                'name': self.format_value(value, figure_type=column['figure_type']) if value else None,
+                'no_format': value,
+                'class': 'number' if expression_label in number_values else '',
+            })
 
         return {
-            'id': vals['id'],
+            'id': self._get_generic_line_id('account.move.line', line_id),
             'caret_options': 'account.move',
-            'model': 'account.move.line',
-            'name': vals['invoice_number'],
+            'name': line_vals['name'],
             'columns': columns,
             'level': 2,
         }
 
     @api.model
-    def _decode_options(self, options):
-        journal_ids = self.env['account.journal'].search([('type', 'in', ('sale', 'purchase'))]).ids
-        if options.get('journals'):
-            journal_ids = [c['id'] for c in options['journals'] if c.get('selected')] or journal_ids
+    def _intrastat_create_report_total_line(self, options, total_vals):
+        """ Create a total line for the report
 
-        if options.get('intrastat_type'):
-            incl_arrivals = options['intrastat_type'][0]['selected']
-            incl_dispatches = options['intrastat_type'][1]['selected']
-            if not incl_arrivals and not incl_dispatches:
-                incl_arrivals = incl_dispatches = True
-        else:
-            incl_arrivals = incl_dispatches = True
+        :param options: report options
+        :param total_vals: total values dict
+        """
+        columns = []
+        for column in options['columns']:
+            expression_label = column['expression_label']
+            value = total_vals.get(column['column_group_key'], {}).get(expression_label, False)
 
-        return options['date']['date_from'], options['date']['date_to'], journal_ids, \
-            incl_arrivals, incl_dispatches, options.get('intrastat_extended'), options.get('with_vat')
+            columns.append({
+                'name': self.format_value(value, figure_type=column['figure_type']) if value else None,
+                'no_format': value,
+                'class': 'number',
+            })
+        return {
+            'id': self._get_generic_line_id(None, None, markup='total'),
+            'name': _('Total'),
+            'class': 'total',
+            'level': 1,
+            'columns': columns,
+        }
+
+    ####################################################
+    # REPORT LINES: QUERY
+    ####################################################
 
     @api.model
-    def _prepare_query(self, date_from, date_to, journal_ids, invoice_types=None, with_vat=False):
-        query_blocks, params = self._build_query(date_from, date_to, journal_ids, invoice_types=invoice_types, with_vat=with_vat)
-        query = 'SELECT %(select)s FROM %(from)s WHERE %(where)s ORDER BY %(order)s' % query_blocks
-        return query, params
+    def _intrastat_prepare_query(self, options, column_group_key=None):
+        query_blocks, where_params = self._intrastat_build_query(options, column_group_key)
+        query = f"{query_blocks['select']} {query_blocks['from']} {query_blocks['where']} {query_blocks['order']}"
+        return query, where_params
 
     @api.model
-    def _build_query(self, date_from, date_to, journal_ids, invoice_types=None, with_vat=False):
+    def _intrastat_build_query(self, options, column_group_key=None):
         # triangular use cases are handled by letting the intrastat_country_id editable on
         # invoices. Modifying or emptying it allow to alter the intrastat declaration
         # accordingly to specs (https://www.nbb.be/doc/dq/f_pdf_ex/intra2017fr.pdf (§ 4.x))
-        select = '''
+        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+
+        import_merchandise_code = _merchandise_import_code.get(self.env.company.country_id.code, '29')
+        export_merchandise_code = _merchandise_export_code.get(self.env.company.country_id.code, '19')
+        unknown_individual_vat = 'QN999999999999' if self.env.company.country_id.code in _qn_unknown_individual_vat_country_codes else 'QV999999999999'
+        unknown_country_code = _unknown_country_code.get(self.env.company.country_id.code, 'QV')
+        weight_category_id = self.env['ir.model.data']._xmlid_to_res_id('uom.product_uom_categ_kgm')
+
+        select = """
+            SELECT
+                %s AS column_group_key,
                 row_number() over () AS sequence,
-                CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN %(import_merchandise_code)s ELSE %(export_merchandise_code)s END AS system,
+                CASE WHEN account_move.move_type IN ('in_invoice', 'out_refund') THEN %s ELSE %s END AS system,
                 country.code AS country_code,
                 country.name AS country_name,
                 company_country.code AS comp_country_code,
                 transaction.code AS transaction_code,
                 company_region.code AS region_code,
                 code.code AS commodity_code,
-                inv_line.id AS id,
+                account_move_line.id AS id,
                 prodt.id AS template_id,
                 prodt.categ_id AS category_id,
-                inv_line.product_uom_id AS uom_id,
+                account_move_line.product_uom_id AS uom_id,
                 inv_line_uom.category_id AS uom_category_id,
-                inv.id AS invoice_id,
-                inv.currency_id AS invoice_currency_id,
-                inv.name AS invoice_number,
-                coalesce(inv.date, inv.invoice_date) AS invoice_date,
-                inv.move_type AS invoice_type,
-                inv_incoterm.code AS invoice_incoterm,
-                comp_incoterm.code AS company_incoterm,
-                inv_transport.code AS invoice_transport,
-                comp_transport.code AS company_transport,
-                CASE WHEN inv.move_type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
+                account_move.id AS invoice_id,
+                account_move.currency_id AS invoice_currency_id,
+                account_move.name,
+                COALESCE(account_move.date, account_move.invoice_date) AS invoice_date,
+                account_move.move_type AS invoice_type,
+                COALESCE(inv_incoterm.code, comp_incoterm.code) AS incoterm_code,
+                COALESCE(inv_transport.code, comp_transport.code) AS transport_code,
+                CASE WHEN account_move.move_type IN ('in_invoice', 'out_refund') THEN 'Arrival' ELSE 'Dispatch' END AS type,
+                partner.vat as partner_vat,
                 ROUND(
-                    prod.weight * inv_line.quantity / (
+                    prod.weight * account_move_line.quantity / (
                         CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                         THEN inv_line_uom.factor ELSE 1 END
                     ) * (
@@ -174,89 +269,86 @@ class IntrastatReport(models.AbstractModel):
                     ),
                     SCALE(ref_weight_uom.rounding)
                 ) AS weight,
-                inv_line.quantity / (
+                account_move_line.quantity / (
                     CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                     THEN inv_line_uom.factor ELSE 1 END
                 ) AS quantity,
-                inv_line.quantity AS line_quantity,
-                CASE WHEN inv_line.price_subtotal = 0 THEN inv_line.price_unit * inv_line.quantity ELSE inv_line.price_subtotal END AS value,
-                COALESCE(product_country.code, %(unknown_country_code)s) AS intrastat_product_origin_country,
+                account_move_line.quantity AS line_quantity,
+                CASE WHEN account_move_line.price_subtotal = 0 THEN account_move_line.price_unit * account_move_line.quantity ELSE account_move_line.price_subtotal END AS value,
+                COALESCE(product_country.code, %s) AS intrastat_product_origin_country_code,
                 product_country.name AS intrastat_product_origin_country_name,
                 CASE WHEN partner.vat IS NOT NULL THEN partner.vat
-                     WHEN partner.vat IS NULL AND partner.is_company IS FALSE THEN %(unknown_individual_vat)s
+                     WHEN partner.vat IS NULL AND partner.is_company IS FALSE THEN %s
                      ELSE 'QV999999999999'
                 END AS partner_vat
-                '''
-        from_ = '''
-                account_move_line inv_line
-                LEFT JOIN account_move inv ON inv_line.move_id = inv.id
-                LEFT JOIN account_intrastat_code transaction ON inv_line.intrastat_transaction_id = transaction.id
-                LEFT JOIN res_company company ON inv.company_id = company.id
+        """
+        from_ = f"""
+            FROM
+                {tables}
+                JOIN account_move ON account_move.id = account_move_line.move_id
+                LEFT JOIN account_intrastat_code transaction ON account_move_line.intrastat_transaction_id = transaction.id
+                LEFT JOIN res_company company ON account_move.company_id = company.id
                 LEFT JOIN account_intrastat_code company_region ON company.intrastat_region_id = company_region.id
-                LEFT JOIN res_partner partner ON inv_line.partner_id = partner.id
+                LEFT JOIN res_partner partner ON account_move_line.partner_id = partner.id
                 LEFT JOIN res_partner comp_partner ON company.partner_id = comp_partner.id
-                LEFT JOIN res_country country ON inv.intrastat_country_id = country.id
+                LEFT JOIN res_country country ON account_move.intrastat_country_id = country.id
                 LEFT JOIN res_country company_country ON comp_partner.country_id = company_country.id
-                INNER JOIN product_product prod ON inv_line.product_id = prod.id
+                INNER JOIN product_product prod ON account_move_line.product_id = prod.id
                 LEFT JOIN product_template prodt ON prod.product_tmpl_id = prodt.id
                 LEFT JOIN account_intrastat_code code ON code.id = COALESCE(prod.intrastat_variant_id, prodt.intrastat_id)
-                LEFT JOIN uom_uom inv_line_uom ON inv_line.product_uom_id = inv_line_uom.id
+                LEFT JOIN uom_uom inv_line_uom ON account_move_line.product_uom_id = inv_line_uom.id
                 LEFT JOIN uom_uom prod_uom ON prodt.uom_id = prod_uom.id
-                LEFT JOIN account_incoterms inv_incoterm ON inv.invoice_incoterm_id = inv_incoterm.id
+                LEFT JOIN account_incoterms inv_incoterm ON account_move.invoice_incoterm_id = inv_incoterm.id
                 LEFT JOIN account_incoterms comp_incoterm ON company.incoterm_id = comp_incoterm.id
-                LEFT JOIN account_intrastat_code inv_transport ON inv.intrastat_transport_mode_id = inv_transport.id
+                LEFT JOIN account_intrastat_code inv_transport ON account_move.intrastat_transport_mode_id = inv_transport.id
                 LEFT JOIN account_intrastat_code comp_transport ON company.intrastat_transport_mode_id = comp_transport.id
-                LEFT JOIN res_country product_country ON product_country.id = inv_line.intrastat_product_origin_country_id
+                LEFT JOIN res_country product_country ON product_country.id = account_move_line.intrastat_product_origin_country_id
                 LEFT JOIN res_country partner_country ON partner.country_id = partner_country.id AND partner_country.intrastat IS TRUE
-                LEFT JOIN uom_uom ref_weight_uom on ref_weight_uom.category_id = %(weight_category_id)s and ref_weight_uom.uom_type = 'reference'
-                '''
-        where = '''
-                inv.state = 'posted'
-                AND inv_line.display_type = 'product'
-                AND (NOT inv_line.price_subtotal = 0 OR inv_line.price_unit * inv_line.quantity != 0)
-                AND inv.company_id = %(company_id)s
+                LEFT JOIN uom_uom ref_weight_uom on ref_weight_uom.category_id = %s and ref_weight_uom.uom_type = 'reference'
+        """
+        where = f"""
+            WHERE
+                {where_clause}
+                AND (account_move_line.price_subtotal != 0 OR account_move_line.price_unit * account_move_line.quantity != 0)
                 AND company_country.id != country.id
-                AND country.intrastat = TRUE AND (country.code != 'GB' OR inv.date < '2021-01-01')
-                AND coalesce(inv.date, inv.invoice_date) >= %(date_from)s
-                AND coalesce(inv.date, inv.invoice_date) <= %(date_to)s
+                AND country.intrastat = TRUE AND (country.code != 'GB' OR account_move.date < '2021-01-01')
                 AND prodt.type != 'service'
-                AND inv.journal_id IN %(journal_ids)s
-                AND inv.move_type IN %(invoice_types)s
-                '''
-        order = 'inv.invoice_date DESC, inv_line.id'
-        params = {
-            'company_id': self.env.company.id,
-            'import_merchandise_code': _merchandise_import_code.get(self.env.company.country_id.code, '29'),
-            'export_merchandise_code': _merchandise_export_code.get(self.env.company.country_id.code, '19'),
-            'date_from': date_from,
-            'date_to': date_to,
-            'journal_ids': tuple(journal_ids),
-            'weight_category_id': self.env['ir.model.data']._xmlid_to_res_id('uom.product_uom_categ_kgm'),
-            'unknown_individual_vat': 'QN999999999999' if self.env.company.country_id.code in _qn_unknown_individual_vat_country_codes else 'QV999999999999',
-            'unknown_country_code': _unknown_country_code.get(self.env.company.country_id.code, 'QV'),
-        }
-        if with_vat:
-            where += ' AND partner.vat IS NOT NULL '
-        if invoice_types:
-            params['invoice_types'] = tuple(invoice_types)
-        else:
-            params['invoice_types'] = ('out_invoice', 'out_refund', 'in_invoice', 'in_refund')
+        """
+        order = "ORDER BY account_move.invoice_date DESC, account_move_line.id"
+
+        if options['intrastat_with_vat']:
+            where += " AND partner.vat IS NOT NULL "
+
         query = {
             'select': select,
             'from': from_,
             'where': where,
             'order': order,
         }
-        return query, params
+
+        query_params = [
+            column_group_key,
+            import_merchandise_code,
+            export_merchandise_code,
+            unknown_country_code,
+            unknown_individual_vat,
+            weight_category_id,
+            *where_params
+        ]
+
+        return query, query_params
+
+    ####################################################
+    # REPORT LINES: HELPERS
+    ####################################################
 
     @api.model
-    def _fill_missing_values(self, vals_list):
-        ''' Some values are too complex to be retrieved in the SQL query.
+    def _intrastat_fill_missing_values(self, vals_list):
+        """ Some values are too complex to be retrieved in the SQL query.
         Then, this method is used to compute the missing values fetched from the database.
 
-        :param vals:    A dictionary created by the dictfetchall method.
-        '''
-
+        :param vals_list:    A dictionary created by the dictfetchall method.
+        """
         # Prefetch data before looping
         category_ids = self.env['product.category'].browse({vals['category_id'] for vals in vals_list})
         self.env['product.category'].search([('id', 'parent_of', category_ids.ids)]).read(['intrastat_id', 'parent_id'])
@@ -279,56 +371,7 @@ class IntrastatReport(models.AbstractModel):
                 vals['value'] = currency_id._convert(vals['value'], company_currency_id, self.env.company, vals['invoice_date'])
         return vals_list
 
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        self.env['account.move.line'].check_access_rights('read')
-
-        date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended, with_vat = self._decode_options(options)
-
-        if not journal_ids:
-            return []
-
-        invoice_types = []
-        if incl_arrivals:
-            invoice_types += ['in_invoice', 'out_refund']
-        if incl_dispatches:
-            invoice_types += ['out_invoice', 'in_refund']
-
-        query, params = self._prepare_query(date_from, date_to, journal_ids, invoice_types=invoice_types, with_vat=with_vat)
-
-        self._cr.execute(query, params)
-        query_res = self._cr.dictfetchall()
-        query_res = self._fill_supplementary_units(query_res)
-
-        # Create lines
-        lines = []
-        total_value = 0
-        for vals in self._fill_missing_values(query_res):
-            line = self._create_intrastat_report_line(options, vals)
-            lines.append(line)
-            total_value += vals['value']
-
-        # Create total line if only one type selected.
-        if incl_arrivals != incl_dispatches:
-            colspan = 12 if extended else 10
-            lines.append({
-                'id': 0,
-                'name': _('Total'),
-                'class': 'total',
-                'level': 2,
-                'columns': [{'name': v} for v in [self.format_value(total_value)]],
-                'colspan': colspan,
-            })
-        return lines
-
-    @api.model
-    def _get_report_name(self):
-        return _('Intrastat Report')
-
-    def _get_report_country_code(self, options):
-        return self.env.company.account_fiscal_country_id.code or None
-
-    def _fill_supplementary_units(self, query_results):
+    def _intrastat_fill_supplementary_units(self, query_results):
         """ Although the default measurement provided is the weight in kg, some commodities require a supplementary unit
         in the report.
 

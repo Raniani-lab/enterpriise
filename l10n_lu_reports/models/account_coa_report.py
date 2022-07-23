@@ -7,9 +7,9 @@ from odoo.tools.float_utils import float_compare
 from ..models.coa_data import ACCOUNTS_2020, ACCOUNTS_2019
 
 class AccountChartOfAccountReport(models.AbstractModel):
-    _inherit = 'account.coa.report'
+    _inherit = 'account.report'
 
-    def _get_lu_xml_2_0_report_values(self, options, avg_nb_employees=1, size='small',
+    def l10n_lu_get_xml_2_0_report_coa_values(self, options, avg_nb_employees=1, size='small',
                                       pl='full', bs='full', coa_only=False, optional_remarks=''):
         """
         Returns the formatted report values for LU's Chart of Accounts financial report.
@@ -35,12 +35,12 @@ class AccountChartOfAccountReport(models.AbstractModel):
             raise ValidationError(_("CoA report for Luxembourg not supported for years previous to 2019."))
 
         # Stores the values for the account fields (debit/credit)
-        account_fields = self._get_account_fields(options, account_dict, date_from.year)
+        account_fields = self.l10n_lu_coa_report_get_account_fields(options, account_dict, date_from.year)
 
         # The fields 0161/0162, corresponding to the accounts 142xxx (results for the financial year)
         # have to be manually filled in in 2019 to balance the report
         if date_from.year <= 2019:
-            update_fields, net142 = self._assemble_results_financial_year(account_fields)
+            update_fields, net142 = self.l10n_lu_coa_report_assemble_results_financial_year(account_fields)
             account_fields.update(update_fields)
             # Update class total 1-5 and set net debit or credit only
             net1to5 = account_fields.get('1111', 0.00) - account_fields.get('1112', 0.00) + net142
@@ -86,7 +86,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
 
         # Size and abridged/non abridged fields
         if date_from.year >= 2020 and not coa_only:
-            values.update(self._get_size_and_abr_versions_fields(size, pl, bs))
+            values.update(self.l10n_lu_coa_report_get_size_and_abr_versions_fields(size, pl, bs))
 
         # Chart of Accounts only
         if coa_only and date_from.year >= 2020:
@@ -102,7 +102,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
             'model': model
         }
 
-    def _get_account_fields(self, options, account_dict, year):
+    def l10n_lu_coa_report_get_account_fields(self, options, account_dict, year):
         """ Get the account fields.
 
             :param options: the context options
@@ -110,7 +110,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
             :return: a dictionary in which the values for the different fields (dict keys) are filled in
         """
         account_fields = {}
-        lines = self.with_context(self._set_context(options))._get_lines(options)
+        lines = self._get_lines(self._get_options(options))
         # Read the debit and credit from all accounts and add the values to the corresponding fields.
         # Name hierarchy allows easy calculation of the totals.
         # eg the debit from account 106284 will be added to the fields: 106284, 10628, 1062, 106, 10
@@ -192,7 +192,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
         return account_fields
 
     @api.model
-    def _assemble_results_financial_year(self, account_fields):
+    def l10n_lu_coa_report_assemble_results_financial_year(self, account_fields):
         """ Gets the fields corresponding to the result for the financial year (142).
             This is computed as the total debit for classes 6 to 7 minus the total credit for classes 6 to 7.
             Updates the values of the totals of classes 1-5.
@@ -216,7 +216,7 @@ class AccountChartOfAccountReport(models.AbstractModel):
         return update_fields, net142
 
     @api.model
-    def _get_size_and_abr_versions_fields(self, size, pl, bs):
+    def l10n_lu_coa_report_get_size_and_abr_versions_fields(self, size, pl, bs):
         """ Gets the fields corresponding to the company size and report versions (full or abridged).
 
             :param size: the size of the report's company

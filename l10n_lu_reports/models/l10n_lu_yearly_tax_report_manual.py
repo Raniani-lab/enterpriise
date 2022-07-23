@@ -16,7 +16,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
 
     # ==== DEFAULTS ====
     def _get_default_company_ids(self):
-        options = self.env['account.generic.tax.report']._get_options(previous_options={'tax_report': self.env.ref('l10n_lu.tax_report').id})
+        options = self.env.ref('l10n_lu.tax_report')._get_options()
         if options.get('multi_company'):
             return [c['id'] for c in options['multi_company']]
         return self.env.company.ids if self.env.company.account_fiscal_country_id.code == "LU" else []
@@ -617,7 +617,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
         monthly_totals = {'472', '455', '456', '457', '458', '459', '460', '461'}
         for record in self:
             if record.company_ids:
-                options = self.env['account.generic.tax.report'].with_context(allowed_company_ids=record.company_ids.ids)._get_options(previous_options={
+                options = self.env.ref('l10n_lu.tax_report')._get_options({
                     'date': {
                         'string': self.year,
                         'period_type': 'fiscalyear',
@@ -626,12 +626,11 @@ class L10nLuYearlyTaxReportManual(models.Model):
                         'date_to': f'{self.year}-12-31',
                         'mode': 'range'
                     },
-                    'tax_report': self.env.ref('l10n_lu.tax_report').id,
                 })
                 if self.env.company.account_fiscal_country_id.code == "LU":
-                    lines = record.env['account.generic.tax.report']._get_lines(options)
+                    lines = self.env.ref('l10n_lu.tax_report')._get_lines(options)
                 else:
-                    lines = record.env['account.generic.tax.report'].with_context(allowed_company_ids=record.company_ids.ids)._get_lines(options)
+                    lines = self.env.ref('l10n_lu.tax_report')._get_lines(options)
                 _set_monthly_totals(record, lines, self.env.company.account_fiscal_country_id.code == "LU")
             else:
                 _set_monthly_totals(record, [])
@@ -642,8 +641,8 @@ class L10nLuYearlyTaxReportManual(models.Model):
         Returns the lines of the report grouped by tax > account
         """
         self.ensure_one()
-        GenericTaxReport = self.env['account.generic.tax.report'].with_context(allowed_company_ids=self.company_ids.ids)
-        tax_report_options = GenericTaxReport._get_options(previous_options={
+        tax_report = self.env.ref('l10n_lu.tax_report')
+        options = tax_report._get_options({
             'date': {
                 'string': self.year,
                 'period_type': 'fiscalyear',
@@ -654,7 +653,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
             },
             'tax_report': 'generic_grouped_tax_account',
         })
-        report_line_dicts = GenericTaxReport._get_lines(tax_report_options)
+        report_line_dicts = tax_report._get_lines(options)
         return report_line_dicts
 
     @api.depends("year", "company_ids")
@@ -702,7 +701,8 @@ class L10nLuYearlyTaxReportManual(models.Model):
         if self.env.company.account_fiscal_country_id.code != "LU":
             raise UserError(_("The fiscal country of your active company is not Luxembourg. This export is not available for other countries."))
         self.write({'state': 'exported'})
-        return self.env['l10n_lu.generate.tax.report'].get_xml(lu_annual_report=self)
+        report = self.env.ref('l10n_lu.tax_report')
+        return self.env['l10n_lu.generate.tax.report'].with_context({'report_generation_options': {'report_id':  report.id}}).get_xml(lu_annual_report=self)
 
     def _lu_get_declarations(self, declaration_template_values):
         """
@@ -710,7 +710,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
         Exact format depends on the period (monthly, quarterly, annual(simplified)).
         """
         self.ensure_one()
-        options = self.env['account.generic.tax.report']._get_options(previous_options={
+        options = self.env.ref('l10n_lu.tax_report')._get_options({
             'date': {
                 'string': self.year,
                 'period_type': 'fiscalyear',
@@ -720,9 +720,8 @@ class L10nLuYearlyTaxReportManual(models.Model):
                 'mode': 'range'
             },
             'declaration_type': 'TVA_DECA',
-            'tax_report': self.env.ref('l10n_lu.tax_report').id,
         })
-        form = self.env['account.generic.tax.report']._get_lu_electronic_report_values(options)['forms'][0]
+        form = self._get_lu_electronic_report_values(options)['forms'][0]
         form['field_values'] = self.env['l10n_lu.generate.tax.report']._remove_zero_fields(form['field_values'])
         date_from = fields.Date.from_string(options['date']['date_from'])
         date_to = fields.Date.from_string(options['date']['date_to'])

@@ -7,8 +7,8 @@ from odoo.exceptions import UserError
 from odoo.tools.sql import column_exists, create_column
 
 from datetime import datetime
-from collections import namedtuple, defaultdict
-import json
+from collections import namedtuple
+import tempfile
 import zipfile
 import time
 import io
@@ -183,100 +183,95 @@ class AccountMoveL10NDe(models.Model):
             move.l10n_de_datev_main_account_id = value
 
 
-class DatevExportCSV(models.AbstractModel):
-    _inherit = 'account.general.ledger'
+class DatevExportCSV(models.Model):
+    _inherit = 'account.report'
 
-    def _get_reports_buttons(self, options):
-        buttons = super(DatevExportCSV, self)._get_reports_buttons(options)
-        buttons += [
-            {'name': _('Datev (zip)'), 'sequence': 3, 'action': 'print_zip', 'file_export_type': _('Datev zip')},
-            {'name': _('Datev + ATCH (zip)'), 'sequence': 4, 'action': 'print_zip_and_attach', 'file_export_type': _('Datev + atch zip')},
-        ]
-        return buttons
+    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
+        """
+        Add the invoice lines search domain that common for all countries.
+        :param dict options: Report options
+        :param dict previous_options: Previous report options
+        """
+        super()._custom_options_initializer_general_ledger(options, previous_options)
+        if self.env.company.country_code == 'DE':
+            options.setdefault('buttons', []).extend((
+                {
+                    'name': _('Datev (zip)'),
+                    'sequence': 30,
+                    'action': 'export_file',
+                    'action_param': 'l10n_de_datev_export_to_zip',
+                    'file_export_type': _('Datev zip'),
+                },
+                {
+                    'name': _('Datev + ATCH (zip)'),
+                    'sequence': 40,
+                    'action': 'export_file',
+                    'action_param': 'l10_de_datev_export_to_zip_and_attach',
+                    'file_export_type': _('Datev + batch zip'),
+                },
+            ))
 
-    # This will be removed in master as export CSV is not needed anymore
-    # Can't remove it in version 11 in order to not break the stable policy
-    def print_csv(self, options):
-        return {
-            'type': 'ir_actions_account_report_download',
-            'data': {
-                'model': self.env.context.get('model'),
-                'options': json.dumps(options),
-                'output_format': 'csv',
-            }
-        }
-
-    def print_zip(self, options):
-        return {
-            'type': 'ir_actions_account_report_download',
-            'data': {'model': self.env.context.get('model'),
-                     'options': json.dumps(options),
-                     'output_format': 'zip',
-                     }
-        }
-
-    def print_zip_and_attach(self, options):
+    def l10_de_datev_export_to_zip_and_attach(self, options):
         options['add_attachments'] = True
-        return self.print_zip(options)
+        return self.l10n_de_datev_export_to_zip(options)
 
-    def _get_zip(self, options):
-        # Check ir_attachment for method _get_path
-        # create a sha and replace 2 first letters by something not hexadecimal
-        # Return full_path as 2nd args, use it as name for Zipfile
-        # Don't need to unlink as it will be done automatically by bgarbage collector
-        # of attachment cron
-        # This create a zip file that we store as an ir_attachment. To prevent overwritting
-        # an existing ir_attachement, we store it in a folder called ww (all others attachments
-        # are inside folders that only has hexadecimal value as name)
-        # This is done so that we can send the zip directly to client without putting it
-        # in memory. After having created the file, we also have to call _file_delete
-        # Otherwise the folder ww won't be garbage collected by the cron
-        ir_attachment = self.env['ir.attachment']
-        sha = ir_attachment._compute_checksum(str(time.time()).encode('utf-8'))
-        fname, full_path = ir_attachment._get_path(False, 'ww' + sha[2:])
-        with zipfile.ZipFile(full_path, 'w', False) as zf:
+    def l10n_de_datev_export_to_zip(self, options):
+        """
+        Check ir_attachment for method _get_path
+        create a sha and replace 2 first letters by something not hexadecimal
+        Return full_path as 2nd args, use it as name for Zipfile
+        Don't need to unlink as it will be done automatically by garbage collector
+        of attachment cron
+        """
 
-            move_line_ids = tuple(self.with_context(
-                self._set_context(options),
-                print_mode=True,
-                aml_only=True
-            )._get_lines({**options, 'unfolded_lines': []}))  # if we do _get_lines with some unfolded lines, only those will be returned, but we want all of them
-            domain = [
-                ('line_ids', 'in', move_line_ids),
-                ('company_id', 'in', self.get_report_company_ids(options)),
-            ]
-            if options.get('all_entries'):
-                domain += [('state', '!=', 'cancel')]
-            else:
-                domain += [('state', '=', 'posted')]
-            if options.get('date'):
-                domain += [('date', '<=', options['date']['date_to'])]
-                # cannot set date_from on move as domain depends on the move line account if "strict_range" is False
-            domain += self._get_options_journals_domain(options)
-            moves = self.env['account.move'].search(domain)
-            zf.writestr('EXTF_accounting_entries.csv', self._get_csv(options, moves))
-            zf.writestr('EXTF_customer_accounts.csv', self._get_partner_list(options, customer=True))
-            zf.writestr('EXTF_vendor_accounts.csv', self._get_partner_list(options, customer=False))
-            if options.get('add_attachments'):
-                # add all moves attachments in zip file, this is not part of DATEV specs
-                slash_re = re.compile('[\\/]')
-                for move in moves:
-                    # rename files by move name + sequence number (if more than 1 file)
-                    # '\' is not allowed in file name, replace by '-'
-                    base_name = slash_re.sub('-', move.name)
-                    if len(move.attachment_ids) > 1:
-                        name_pattern = f'%(base)s-%(index)0.{len(str(len(move.attachment_ids)))}d%(extension)s'
-                    else:
-                        name_pattern = '%(base)s%(extension)s'
-                    for i, attachment in enumerate(move.attachment_ids.sorted('id'), 1):
-                        extension = os.path.splitext(attachment.name)[1]
-                        name = name_pattern % {'base': base_name, 'index': i, 'extension': extension}
-                        zf.writestr(name, attachment.raw)
+        with tempfile.NamedTemporaryFile(mode='w+b', delete=True) as buf:
+            with zipfile.ZipFile(buf, mode="w", compression=zipfile.ZIP_DEFLATED, allowZip64=False) as zf:
+                move_line_ids = []
+                for line in self._get_lines({**options, 'unfold_all': True}):
+                    model, model_id = self._get_model_info_from_id(line['id'])
+                    if model == 'account.move.line':
+                        move_line_ids.append(model_id)
 
-        ir_attachment._file_delete(fname)
-        return open(full_path, 'rb')
+                domain = [
+                    ('line_ids', 'in', move_line_ids),
+                    ('company_id', 'in', self.get_report_company_ids(options)),
+                ]
+                if options.get('all_entries'):
+                    domain += [('state', '!=', 'cancel')]
+                else:
+                    domain += [('state', '=', 'posted')]
+                if options.get('date'):
+                    domain += [('date', '<=', options['date']['date_to'])]
+                    # cannot set date_from on move as domain depends on the move line account if "strict_range" is False
+                domain += self._get_options_journals_domain(options)
+                moves = self.env['account.move'].search(domain)
+                zf.writestr('EXTF_accounting_entries.csv', self._l10n_de_datev_get_csv(options, moves))
+                zf.writestr('EXTF_customer_accounts.csv', self._l10n_de_datev_get_partner_list(options, customer=True))
+                zf.writestr('EXTF_vendor_accounts.csv', self._l10n_de_datev_get_partner_list(options, customer=False))
+                if options.get('add_attachments'):
+                    # add all moves attachments in zip file, this is not part of DATEV specs
+                    slash_re = re.compile('[\\/]')
+                    for move in moves:
+                        # rename files by move name + sequence number (if more than 1 file)
+                        # '\' is not allowed in file name, replace by '-'
+                        base_name = slash_re.sub('-', move.name)
+                        if len(move.attachment_ids) > 1:
+                            name_pattern = f'%(base)s-%(index)0.{len(str(len(move.attachment_ids)))}d%(extension)s'
+                        else:
+                            name_pattern = '%(base)s%(extension)s'
+                        for i, attachment in enumerate(move.attachment_ids.sorted('id'), 1):
+                            extension = os.path.splitext(attachment.name)[1]
+                            name = name_pattern % {'base': base_name, 'index': i, 'extension': extension}
+                            zf.writestr(name, attachment.raw)
+            buf.seek(0)
+            content = buf.read()
+        return {
+            'file_name': self.get_default_report_filename('ZIP'),
+            'file_content': content,
+            'file_type': 'zip'
+        }
 
-    def _get_datev_client_number(self):
+    def _l10n_de_datev_get_client_number(self):
         consultant_number = self.env.company.l10n_de_datev_consultant_number
         client_number = self.env.company.l10n_de_datev_client_number
         if not consultant_number:
@@ -285,25 +280,25 @@ class DatevExportCSV(models.AbstractModel):
             client_number = 999
         return [consultant_number, client_number]
 
-    def _get_partner_list(self, options, customer=True):
-        date_from = fields.Date.from_string(options.get('date').get('date_from'))
+    def _l10n_de_datev_get_partner_list(self, options, customer=True):
         date_to = fields.Date.from_string(options.get('date').get('date_to'))
         fy = self.env.company.compute_fiscalyear_dates(date_to)
 
-        date_from = datetime.strftime(date_from, '%Y%m%d')
-        date_to = datetime.strftime(date_to, '%Y%m%d')
         fy = datetime.strftime(fy.get('date_from'), '%Y%m%d')
-        datev_info = self._get_datev_client_number()
+        datev_info = self._l10n_de_datev_get_client_number()
 
         output = io.BytesIO()
         writer = pycompat.csv_writer(output, delimiter=';', quotechar='"', quoting=2)
         preheader = ['EXTF', 510, 16, 'Debitoren/Kreditoren', 4, None, None, '', '', '', datev_info[0], datev_info[1], fy, 8,
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         header = ['Konto', 'Name (AdressatentypUnternehmen)', 'Name (Adressatentypnatürl. Person)', '', '', '', 'Adressatentyp']
-
-        # if we do _get_lines with some unfolded lines, only those will be returned, but we want all of them
-        move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines({**options, 'unfolded_lines': []})
         lines = [preheader, header]
+
+        move_line_ids = set()
+        for line in self._get_lines({**options, 'unfold_all': True}):
+            model, model_id = self._parse_line_id(line['id'])[-1][-2:]
+            if model == 'account.move.line':
+                move_line_ids.add(str(model_id))
 
         if len(move_line_ids):
             if customer:
@@ -323,9 +318,9 @@ class DatevExportCSV(models.AbstractModel):
         partners = self.env['res.partner'].browse([p.get('partner_id') for p in self.env.cr.dictfetchall()])
         for partner in partners:
             if customer:
-                code = self._find_partner_account(partner.property_account_receivable_id, partner)
+                code = self._l10n_de_datev_find_partner_account(partner.property_account_receivable_id, partner)
             else:
-                code = self._find_partner_account(partner.property_account_payable_id, partner)
+                code = self._l10n_de_datev_find_partner_account(partner.property_account_payable_id, partner)
             line_value = {
                 'code': code,
                 'company_name': partner.name if partner.is_company else '',
@@ -343,7 +338,7 @@ class DatevExportCSV(models.AbstractModel):
         writer.writerows(lines)
         return output.getvalue()
 
-    def _find_partner_account(self, account, partner):
+    def _l10n_de_datev_find_partner_account(self, account, partner):
         param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count', "100000000")[:9]
         param_start_vendors = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count_vendors', "700000000")[:9]
         len_param = max(param_start.isdigit() and len(param_start) or 9, param_start_vendors.isdigit() and len(param_start_vendors) or 9, 5)
@@ -369,7 +364,7 @@ class DatevExportCSV(models.AbstractModel):
         return str(account.code).ljust(len_param - 1, '0')
 
     # Source: http://www.datev.de/dnlexom/client/app/index.html#/document/1036228/D103622800029
-    def _get_csv(self, options, moves):
+    def _l10n_de_datev_get_csv(self, options, moves):
         # last 2 element of preheader should be filled by "consultant number" and "client number"
         date_from = fields.Date.from_string(options.get('date').get('date_from'))
         date_to = fields.Date.from_string(options.get('date').get('date_to'))
@@ -378,7 +373,7 @@ class DatevExportCSV(models.AbstractModel):
         date_from = datetime.strftime(date_from, '%Y%m%d')
         date_to = datetime.strftime(date_to, '%Y%m%d')
         fy = datetime.strftime(fy.get('date_from'), '%Y%m%d')
-        datev_info = self._get_datev_client_number()
+        datev_info = self._l10n_de_datev_get_client_number()
 
         output = io.BytesIO()
         writer = pycompat.csv_writer(output, delimiter=';', quotechar='"', quoting=2)
@@ -387,7 +382,12 @@ class DatevExportCSV(models.AbstractModel):
         header = ['Umsatz (ohne Soll/Haben-Kz)', 'Soll/Haben-Kennzeichen', 'WKZ Umsatz', 'Kurs', 'Basis-Umsatz', 'WKZ Basis-Umsatz', 'Konto', 'Gegenkonto (ohne BU-Schlüssel)', 'BU-Schlüssel', 'Belegdatum', 'Belegfeld 1', 'Belegfeld 2', 'Skonto', 'Buchungstext']
 
         # if we do _get_lines with some unfolded lines, only those will be returned, but we want all of them
-        move_line_ids = self.with_context(self._set_context(options), print_mode=True, aml_only=True)._get_lines({**options, 'unfolded_lines': []})
+        move_line_ids = []
+        for line in self._get_lines({**options, 'unfold_all': True}):
+            model, model_id = self._parse_line_id(line['id'])[-1][-2:]
+            if model == 'account.move.line':
+                move_line_ids.append(int(model_id))
+
         lines = [preheader, header]
 
         for m in moves:
@@ -429,8 +429,8 @@ class DatevExportCSV(models.AbstractModel):
                         code_correction = codes.pop()
 
                 # account and counterpart account
-                to_account_code = str(self._find_partner_account(aml.move_id.l10n_de_datev_main_account_id, aml.partner_id))
-                account_code = u'{code}'.format(code=self._find_partner_account(aml.account_id, aml.partner_id))
+                to_account_code = str(self._l10n_de_datev_find_partner_account(aml.move_id.l10n_de_datev_main_account_id, aml.partner_id))
+                account_code = u'{code}'.format(code=self._l10n_de_datev_find_partner_account(aml.account_id, aml.partner_id))
 
                 # We don't want to have lines with our outstanding payment/receipt as they don't represent real moves
                 # So if payment skip one move line to write, while keeping the account
@@ -513,13 +513,3 @@ class DatevExportCSV(models.AbstractModel):
 
         writer.writerows(lines)
         return output.getvalue()
-
-
-class report_account_coa(models.AbstractModel):
-    _inherit = "account.coa.report"
-
-    def _get_reports_buttons(self, options):
-        buttons = super(report_account_coa, self)._get_reports_buttons(options)
-        # It doesn't make sense to print the DATEV on anything else than the
-        # proper general ledger
-        return [b for b in buttons if b.get('action') != 'print_zip']

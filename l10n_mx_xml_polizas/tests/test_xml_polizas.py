@@ -90,7 +90,7 @@ class AccountXmlPolizasWizard(TestAccountReportsCommon):
 
     def _get_xml_data(self, date_from, date_to, company=None):
         """ Fire the export wizard and get the generated XML and metadata (year, month, filename) """
-        options = self._init_options(self.env['account.general.ledger'], date_from, date_to)
+        options = self._generate_options(self.env.ref('account_reports.general_ledger_report'), date_from, date_to)
         wizard = self.wizard.with_context(l10n_mx_xml_polizas_generation_options=options)
         if company:
             wizard = wizard.with_company(company)
@@ -149,7 +149,7 @@ class AccountXmlPolizasWizard(TestAccountReportsCommon):
                                   expected_xml=expected_xml, actual_data=exported_file)
 
         expected_xml = """<?xml version='1.0' encoding='utf-8'?>
-            <PLZ:Polizas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+            <PLZ:Polizas xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                          xmlns:PLZ="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo"
                          xsi:schemaLocation="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd"
                          Version="1.3" TipoSolicitud="AF" NumOrden="ABC6987654/99" Anio="2016" Mes="01" RFC="P&amp;G851223B24">

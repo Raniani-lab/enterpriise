@@ -1,97 +1,60 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import models, api, _
+from odoo import api, models, _
 
-from datetime import datetime
 from collections import defaultdict
+from datetime import datetime
 
 
-class IntrastatExpiryReport(models.AbstractModel):
-    _inherit = 'account.intrastat.report'
+class IntrastatReport(models.Model):
+    # OVERRIDE: account_intrastat/IntrastatReport
+    _inherit = 'account.report'
 
-    @api.model
-    def _build_query(self, date_from, date_to, journal_ids, invoice_types=None, with_vat=False):
-        query, params = super()._build_query(date_from, date_to, journal_ids, invoice_types, with_vat)
-        query['select'] = """
-            transaction.expiry_date <= invoice_date AS expired_trans,
-            transaction.start_date > invoice_date AS premature_trans,
-            code.expiry_date <= invoice_date AS expired_comm,
-            code.start_date > invoice_date AS premature_comm,
-            prod.id AS product_id,
-			prodt.categ_id AS template_categ,
-        """ + query['select']
-        return query, params
+    ####################################################
+    # REPORT LINES: CORE
+    ####################################################
 
     @api.model
-    def _create_intrastat_report_line(self, options, vals):
-        for error, val_key in (
+    def _intrastat_create_report_line(self, options, line_vals, line_id, number_values=None):
+        errors = (
             ('expired_trans', 'invoice_id'),
             ('premature_trans', 'invoice_id'),
             ('expired_comm', 'product_id'),
             ('premature_comm', 'product_id'),
             ('expired_categ_comm', 'template_categ'),
             ('premature_categ_comm', 'template_categ'),
-        ):
-            if vals.get(error):
-                options['warnings'][error].add(vals[val_key])
+        )
+        for column_group in options['column_groups']:
+            for error, val_key in errors:
+                if line_vals.get(column_group) and line_vals[column_group].get(error):
+                    options.setdefault('intrastat_warnings', defaultdict(list))
+                    options['intrastat_warnings'][error].append(line_vals[column_group][val_key])
 
-        return super()._create_intrastat_report_line(options, vals)
+        return super()._intrastat_create_report_line(options, line_vals, line_id, number_values)
 
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        options['warnings'] = defaultdict(set)
-        res = super()._get_lines(options, line_id)
-        options['warnings'] = {k: list(v) for k, v in options['warnings'].items()}
-        return res
-
-    def action_invalid_code_moves(self, options, params):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Invalid transaction intrastat code entries.'),
-            'res_model': 'account.move',
-            'views': [(False, 'tree'), (False, 'form')],
-            'domain': [('id', 'in', options['warnings'][params['option_key']])],
-            'context': {'create': False, 'delete': False},
-        }
-
-    def action_invalid_code_products(self, options, params):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Invalid commodity intrastat code products.'),
-            'res_model': 'product.product',
-            'views': [(
-                self.env.ref('account_intrastat_expiry.product_product_tree_view_account_intrastat_expiry').id,
-                'list',
-            ), (False, 'form')],
-            'domain': [('id', 'in', options['warnings'][params['option_key']])],
-            'context': {
-                'create': False,
-                'delete': False,
-                'expand': True,
-            },
-        }
-
-    def action_invalid_code_product_categories(self, options, params):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': _('Invalid commodity intrastat code product categories.'),
-            'res_model': 'product.category',
-            'views': [(
-                self.env.ref('account_intrastat_expiry.product_category_tree_view_account_intrastat_expiry').id,
-                # False,
-                'list',
-            ), (False, 'form')],
-            'domain': [('id', 'in', options['warnings'][params['option_key']])],
-            'context': {
-                'create': False,
-                'delete': False,
-                'search_default_group_by_intrastat_id': True,
-                'expand': True,
-            },
-        }
+    ####################################################
+    # REPORT LINES: QUERY
+    ####################################################
 
     @api.model
-    def _fill_missing_values(self, vals_list):
+    def _intrastat_build_query(self, options, column_group_key=None):
+        query, params = super()._intrastat_build_query(options, column_group_key)
+        query['select'] += """,
+            transaction.expiry_date <= account_move.invoice_date AS expired_trans,
+            transaction.start_date > account_move.invoice_date AS premature_trans,
+            code.expiry_date <= account_move.invoice_date AS expired_comm,
+            code.start_date > account_move.invoice_date AS premature_comm,
+            prod.id AS product_id,
+            prodt.categ_id AS template_categ
+        """
+        return query, params
+
+    ####################################################
+    # REPORT LINES: HELPERS
+    ####################################################
+
+    @api.model
+    def _intrastat_fill_missing_values(self, vals_list):
         vals_with_no_commodity_code = []
         for vals in vals_list:
             # set transaction_code default value if none, code "1" is expired from 2022-01-01, replaced by code "11"
@@ -101,7 +64,7 @@ class IntrastatExpiryReport(models.AbstractModel):
             if not vals['commodity_code']:
                 vals_with_no_commodity_code.append(vals)
 
-        res = super()._fill_missing_values(vals_list)
+        res = super()._intrastat_fill_missing_values(vals_list)
 
         codes_from_prod_categ = [x['commodity_code'] for x in vals_with_no_commodity_code if x['commodity_code']]
         commodity_code_by_code = {
@@ -119,3 +82,53 @@ class IntrastatExpiryReport(models.AbstractModel):
                     vals['premature_categ_comm'] = True
 
         return res
+
+    ####################################################
+    # ACTIONS
+    ####################################################
+
+    def action_invalid_code_moves(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invalid transaction intrastat code entries.'),
+            'res_model': 'account.move',
+            'views': [(False, 'tree'), (False, 'form')],
+            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'context': {'create': False, 'delete': False},
+        }
+
+    def action_invalid_code_products(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invalid commodity intrastat code products.'),
+            'res_model': 'product.product',
+            'views': [(
+                self.env.ref('account_intrastat_expiry.product_product_tree_view_account_intrastat_expiry').id,
+                'list',
+            ), (False, 'form')],
+            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'context': {
+                'create': False,
+                'delete': False,
+                'expand': True,
+            },
+        }
+
+    def action_invalid_code_product_categories(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invalid commodity intrastat code product categories.'),
+            'res_model': 'product.category',
+            'views': [(
+                self.env.ref('account_intrastat_expiry.product_category_tree_view_account_intrastat_expiry').id,
+                # False,
+                'list',
+            ), (False, 'form')],
+            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'context': {
+                'create': False,
+                'delete': False,
+                'search_default_group_by_intrastat_id': True,
+                'expand': True,
+            },
+        }

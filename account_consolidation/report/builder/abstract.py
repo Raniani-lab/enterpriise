@@ -32,7 +32,7 @@ class AbstractBuilder(ABC):
             return []
         params = self._get_params(period_ids, options, line_id)
 
-        if options.get('hierarchy', True):
+        if options.get('consolidation_hierarchy', True):
             return self._get_hierarchy(options, line_id, **params)
         else:
             return self._get_plain(options, **params)
@@ -88,9 +88,9 @@ class AbstractBuilder(ABC):
         1) - If no line_id is given, it starts by getting all accounts without parent ("orphans") and process them to
             get their totals and the lines to add in the output. Then it fetches all the sections without parents
             ("root sections"), these will be used later in the algorithm.
-            - If a line_id is given, then the line_id corresponds to a line of a section and is formatted like this
-            "section-[ID]". It parses this ID and get the section with is used lated in the algorithm.
-        2) It process recursively the children accounts/sections of the computed sections in step 1.
+            - If a line_id is given, then the line_id corresponds to a line of a section and is formatted with
+            account_reports._get_generic_line_id(). It parses this ID and get the section with is used later in the algorithm.
+        2) It processes recursively the children accounts/sections of the computed sections in step 1.
         3) It computes and add the final total line if line_id is not given
         :param options: options of the report
         :type options: dict
@@ -106,8 +106,7 @@ class AbstractBuilder(ABC):
             # HANDLE ORPHAN ACCOUNTS
             level = 1
             orphan_totals, orphan_lines = self._handle_orphan_accounts(options, level, **kwargs)
-            super_totals = [x + y for x, y in
-                            zip(super_totals, orphan_totals)] if super_totals is not None else orphan_totals
+            super_totals = [x + y for x, y in zip(super_totals, orphan_totals)] if super_totals is not None else orphan_totals
             lines += orphan_lines
 
             # FETCH ALL ROOT SECTIONS
@@ -121,8 +120,7 @@ class AbstractBuilder(ABC):
         # PROCESS COMPUTED SECTIONS
         if len(sections) > 0:
             section_totals, section_lines = self._handle_sections(sections, options, level, **kwargs)
-            super_totals = [x + y for x, y in
-                            zip(super_totals, section_totals)] if super_totals is not None else section_totals
+            super_totals = [x + y for x, y in zip(super_totals, section_totals)] if super_totals is not None else section_totals
             lines += section_lines
 
         if line_id is None and super_totals:
@@ -147,8 +145,7 @@ class AbstractBuilder(ABC):
         for section in sections:
             section_totals, section_lines = self._build_section_line(section, level, options, **kwargs)
             # Handle TOTALS
-            all_totals = [x + y for x, y in
-                          zip(all_totals, section_totals)] if all_totals is not None else section_totals
+            all_totals = [x + y for x, y in  zip(all_totals, section_totals)] if all_totals is not None else section_totals
             # Handle LINES
             if ShowZeroHandler.section_line_should_be_added(section_lines, options):
                 lines += section_lines
@@ -276,14 +273,14 @@ class AbstractBuilder(ABC):
         # Line
         name = account.name_get()[0][1]
         account_line = {
-            'id': account.id,
+            'id': self.env['account.report']._get_generic_line_id(None, None, account.id),
             'name': len(name) > 40 and not self.env.context.get('print_mode') and name[:40] + '...' or name,
             'title_hover': _("%s (%s Currency Conversion Method)") % (account.name, account.get_display_currency_mode()),
             'columns': cols,
             'level': level
         }
         if account.group_id:
-            parent_id = 'section-%s' % account.group_id.id
+            parent_id = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % account.group_id.id)
             account_line['parent_id'] = parent_id
             if options is not None:
                 account_line['unfolded'] = options.get('unfold_all', parent_id in options.get('unfolded_lines', []))
@@ -303,7 +300,7 @@ class AbstractBuilder(ABC):
         - the totals of the section line
         :rtype: tuple
         """
-        section_id = 'section-%s' % section.id
+        section_id = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.id)
         section_line = {
             'id': section_id,
             'name': section.name,
@@ -312,7 +309,7 @@ class AbstractBuilder(ABC):
             'unfolded': options.get('unfold_all', False) or section_id in options.get('unfolded_lines', [])
         }
         if section.parent_id:
-            section_line['parent_id'] = 'section-%s' % section.parent_id.id
+            section_line['parent_id'] = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.parent_id.id)
         lines = [section_line]
 
         # HANDLE CHILDREN
@@ -321,8 +318,7 @@ class AbstractBuilder(ABC):
             for child_section in section.child_ids:
                 # This will return the section line THEN all subsequent lines
                 child_totals, descendant_lines = self._build_section_line(child_section, level + 1, options, **kwargs)
-                section_totals = [x + y for x, y in
-                                  zip(section_totals, child_totals)] if section_totals is not None else child_totals
+                section_totals = [x + y for x, y in zip(section_totals, child_totals)] if section_totals is not None else child_totals
                 if section_line['unfolded'] and ShowZeroHandler.section_line_should_be_added(descendant_lines, options):
                     lines += descendant_lines
 
@@ -331,15 +327,13 @@ class AbstractBuilder(ABC):
             for child_account in section.account_ids:
                 account_totals = self._compute_account_totals(child_account, **kwargs)
                 account_line = self._format_account_line(child_account, level + 1, account_totals, options, **kwargs)
-                section_totals = [x + y for x, y in
-                                  zip(section_totals, account_totals)] if section_totals is not None else account_totals
+                section_totals = [x + y for x, y in zip(section_totals, account_totals)] if section_totals is not None else account_totals
                 if section_line['unfolded'] and ShowZeroHandler.account_line_should_be_added(account_line, options):
                     lines.append(account_line)
 
         if section_totals is None:
             section_totals = self._get_default_line_totals(options, **kwargs)
-        section_line['columns'] = [{'name': self.value_formatter(total), 'no_format': total}
-                                   for total in section_totals]
+        section_line['columns'] = [{'name': self.value_formatter(total), 'no_format': total} for total in section_totals]
         return section_totals, lines
 
     def _build_total_line(self, totals: list, options: dict, **kwargs) -> dict:
@@ -358,7 +352,7 @@ class AbstractBuilder(ABC):
         } for total in totals]
 
         return {
-            'id': 'grouped_accounts_total',
+            'id': self.env['account.report']._get_generic_line_id(None, None, 'grouped_accounts_total'),
             'name': _('Total'),
             'class': 'total',
             'columns': cols,

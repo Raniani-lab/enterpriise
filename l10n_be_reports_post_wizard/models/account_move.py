@@ -40,10 +40,20 @@ class AccountMove(models.Model):
            the context by the wizard opened by `action_post` overridden by this module,
            and merges them in the computed options.
         """
-        options = super()._get_report_options_from_tax_closing_entry()
+        report, options = super()._get_report_options_from_tax_closing_entry()
 
         l10n_be_options = self.env.context.get('l10n_be_reports_generation_options', False)
         if l10n_be_options:
             options.update(l10n_be_options)
 
-        return options
+        return report, options
+
+    def _get_vat_report_attachments(self, report, options):
+        attachments = super()._get_vat_report_attachments(report, options)
+
+        # Add the XML along with other attachments when the VAT report is posted
+        if self.env.company.account_fiscal_country_id.code == 'BE':
+            xml_data = report.l10n_be_export_tax_report_to_xml(options)
+            attachments.append((xml_data['file_name'], xml_data['file_content']))
+
+        return attachments

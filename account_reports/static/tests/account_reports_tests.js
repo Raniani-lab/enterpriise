@@ -33,13 +33,21 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
                     name: "Account reports",
                     tag: 'account_report',
                     type: 'ir.actions.client',
+                    params: {
+                        options: {
+                            buttons: [],
+                            search_bar: false,
+                        }
+                    }
                 }
             };
             this.mockRPC = function (route) {
                 if (route === '/web/dataset/call_kw/account.report/get_report_informations') {
                     return Promise.resolve({
-                        options: {},
-                        buttons: [],
+                        options: {
+                            buttons: [],
+                            search_bar: false,
+                        },
                         main_html: '<a action="go_to_details">Go to detail view</a>',
                     });
                 } else if (route === '/web/dataset/call_kw/account.report/go_to_details') {

@@ -565,8 +565,8 @@ class TestAccountAsset(TestAccountReportsCommon):
             self.assertTrue(Hashed_car.depreciation_move_ids[i].reversal_move_id.id > 0)
 
         # The depreciation schedule report should not contain cancelled assets
-        report = self.env['account.assets.report']
-        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        report = self.env.ref('account_asset.assets_report')
+        options = self._generate_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         assets_in_report = [x['name'] for x in lines[:-1]]
 
@@ -784,22 +784,22 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         today = fields.Date.today()
 
-        report = self.env['account.assets.report']
+        report = self.env.ref('account_asset.assets_report')
         # TEST REPORT
         # look at all period, with unposted entries
-        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._generate_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 10000.0,     0.0, 10000.0,     0.0,  7500.0,     0.0,  7500.0,  2500.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # look at all period, without unposted entries
-        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._generate_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': False}})
         self.assertListEqual([    0.0, 10000.0,     0.0, 10000.0,     0.0,  4500.0,     0.0,  4500.0,  5500.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # look only at this period
-        options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        options = self._generate_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,     0.0,     0.0, 10000.0,  4500.0,   750.0,     0.0,  5250.0,  4750.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
@@ -829,14 +829,14 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
 
         # look at all period, with unposted entries
-        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._generate_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
-        self.assertEqual('10 y', lines[0]['columns'][3]['name'], 'Depreciation Rate = 10%')
+        self.assertEqual('10 y', lines[1]['columns'][3]['name'], 'Depreciation Rate = 10%')
 
         # look only at this period
-        options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        options = self._generate_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  1000.0,     0.0,  5500.0,  6000.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
@@ -862,13 +862,13 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(self.truck.salvage_value + sum(self.truck.children_ids.mapped('salvage_value')), 3000)
 
         # look at all period, with unposted entries
-        options = self._init_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        options = self._generate_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([    0.0, 11500.0,     0.0, 11500.0,     0.0,  8500.0,     0.0,  8500.0,  3000.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])
 
         # look only at this period
-        options = self._init_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
+        options = self._generate_options(report, today + relativedelta(years=0, month=1, day=1), today + relativedelta(years=0, month=12, day=31))
         lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
         self.assertListEqual([10000.0,  1500.0,     0.0, 11500.0,  4500.0,  3250.0,     0.0,  7750.0,  3750.0],
                              [x['no_format'] for x in lines[0]['columns'][4:]])

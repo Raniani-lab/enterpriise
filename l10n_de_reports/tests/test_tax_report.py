@@ -11,7 +11,7 @@ class GermanTaxReportTest(AccountSalesReportCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_de_skr03.l10n_de_chart_template'):
-        super().setUpClass(chart_template_ref)
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
     @classmethod
     def setup_company_data(cls, company_name, chart_template=None, **kwargs):
@@ -54,8 +54,8 @@ class GermanTaxReportTest(AccountSalesReportCommon):
         })
         move.action_post()
 
-        report = self.env['account.generic.tax.report']
-        options = report._get_options(None)
+        report = self.env.ref('l10n_de.tax_report')
+        options = report._get_options()
 
         expected_xml = """
         <Anmeldungssteuern art="UStVA" version="201801">
@@ -82,8 +82,7 @@ class GermanTaxReportTest(AccountSalesReportCommon):
             </Steuerfall>
         </Anmeldungssteuern>
         """
-
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.get_xml(options)),
+            self.get_xml_tree_from_string(report.l10n_de_export_tax_report_to_xml(options)['file_content']),
             self.get_xml_tree_from_string(expected_xml)
         )

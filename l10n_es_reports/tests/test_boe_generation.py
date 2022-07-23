@@ -62,20 +62,19 @@ class TestBOEGeneration(TestAccountReportsCommon):
 
         cls.env.company.vat = "ESA12345674"
 
-    def _check_boe_export(self, report, options):
-        wizard_action = report.print_boe(options)
-        self.assertEqual('l10n_es_reports.aeat.boe.mod%s.export.wizard' % report.l10n_es_reports_modelo_number, wizard_action['res_model'], "Wrong BOE export wizard returned")
+    def _check_boe_export(self, report, options, modelo_number):
+        wizard_action = report.l10n_es_export_boe(options, modelo_number)
+        self.assertEqual(f'l10n_es_reports.aeat.boe.mod{modelo_number}.export.wizard', wizard_action['res_model'], "Wrong BOE export wizard returned")
         options['l10n_es_reports_boe_wizard_id'] = wizard_action['res_id']
-        self.assertTrue(report.get_txt(options), "Empty BOE")
+        self.assertTrue(getattr(report, f'l10n_es_boe_export_mod{modelo_number}')(options), "Empty BOE")
 
     def _check_boe_111_to_303(self, modelo_number):
         self.init_invoice('out_invoice', partner=self.spanish_partner, amounts=[10000], invoice_date=fields.Date.today(), taxes=self.spanish_test_tax, post=True)
         report = self.env.ref('l10n_es_reports.mod_%s' % modelo_number)
-        options = self._init_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
-        options['sorted_groupby_keys'] = [(0,)] # Artificially set here; 'in real life', always set by _get_table when opening the report
+        options = self._generate_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
         if 'multi_company' in options:
             del options['multi_company']
-        self._check_boe_export(report, options)
+        self._check_boe_export(report, options, modelo_number)
 
     @freeze_time('2020-12-22')
     def test_boe_mod_111(self):
@@ -95,11 +94,10 @@ class TestBOEGeneration(TestAccountReportsCommon):
         invoice.l10n_es_reports_mod347_invoice_type = 'regular'
         invoice._post()
         report = self.env.ref('l10n_es_reports.mod_347')
-        options = self._init_options(report, fields.Date.from_string('2020-01-01'), fields.Date.from_string('2020-12-31'))
+        options = self._generate_options(report, fields.Date.from_string('2020-01-01'), fields.Date.from_string('2020-12-31'))
         if 'multi_company' in options:
             del options['multi_company']
-        options['sorted_groupby_keys'] = [(0,)] # Artificially set here; 'in real life', always set by _get_table when opening the report
-        self._check_boe_export(report, options)
+        self._check_boe_export(report, options, 347)
 
     @freeze_time('2020-12-22')
     def test_boe_mod_349(self):
@@ -111,8 +109,7 @@ class TestBOEGeneration(TestAccountReportsCommon):
         invoice.l10n_es_reports_mod349_invoice_type = 'E'
         invoice._post()
         report = self.env.ref('l10n_es_reports.mod_349')
-        options = self._init_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
+        options = self._generate_options(report, fields.Date.from_string('2020-12-01'), fields.Date.from_string('2020-12-31'))
         if 'multi_company' in options:
             del options['multi_company']
-        options['sorted_groupby_keys'] = [(0,)] # Artificially set here; 'in real life', always set by _get_table when opening the report
-        self._check_boe_export(report, options)
+        self._check_boe_export(report, options, 349)

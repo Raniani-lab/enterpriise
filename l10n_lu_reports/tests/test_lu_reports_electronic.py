@@ -57,17 +57,17 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
     def _filter_zero_lines(self, lines):
         filtered_lines = []
         for line in lines:
-            balance_column = line['columns'][0]
-            if 'no_format' not in balance_column or balance_column['no_format'] != 0.0:
+            bal_col = line['columns'][0]
+            if not bal_col.get('is_zero'):
                 filtered_lines.append(line)
         return filtered_lines
 
     def test_balance_sheet(self):
         report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_bs')
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+        options = self._generate_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 
         self.assertLinesValues(
-            self._filter_zero_lines(report._get_table(options)[1]),
+            self._filter_zero_lines(report._get_lines(options)),
             #   Name                                            Balance
             [   0,                                              1],
             [
@@ -91,10 +91,10 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
 
     def test_profit_and_loss(self):
         report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_pl')
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+        options = self._generate_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 
         self.assertLinesValues(
-            self._filter_zero_lines(report._get_table(options)[1]),
+            self._filter_zero_lines(report._get_lines(options)),
             #   Name                                                                    Balance
             [   0,                                                                      1],
             [
@@ -134,8 +134,8 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         })
         move.action_post()
 
-        report = self.env['account.generic.tax.report']
-        options = report._get_options(None)
+        report = self.env.ref('l10n_lu.tax_report')
+        options = report._get_options()
 
         # Add the filename in the options, which is initially done by the get_report_filename() method
         now_datetime = datetime.now()
@@ -165,134 +165,132 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
                         <Period>11</Period>
                         <FormData>
                                 <NumericField id="012">0,00</NumericField>
-                                <NumericField id="454">0,00</NumericField>
-                                <NumericField id="471">0,00</NumericField>
-                                <NumericField id="472">0,00</NumericField>
-                                <NumericField id="455">0,00</NumericField>
-                                <NumericField id="456">0,00</NumericField>
-                                <NumericField id="021">0,00</NumericField>
-                                <NumericField id="457">0,00</NumericField>
                                 <NumericField id="014">0,00</NumericField>
                                 <NumericField id="015">0,00</NumericField>
                                 <NumericField id="016">0,00</NumericField>
                                 <NumericField id="017">0,00</NumericField>
                                 <NumericField id="018">0,00</NumericField>
-                                <NumericField id="423">0,00</NumericField>
-                                <NumericField id="424">0,00</NumericField>
-                                <NumericField id="226">0,00</NumericField>
                                 <NumericField id="019">0,00</NumericField>
-                                <NumericField id="419">0,00</NumericField>
+                                <NumericField id="021">0,00</NumericField>
                                 <NumericField id="022">0,00</NumericField>
-                                <NumericField id="037">0,00</NumericField>
-                                <NumericField id="701">0,00</NumericField>
-                                <NumericField id="703">0,00</NumericField>
-                                <NumericField id="705">0,00</NumericField>
                                 <NumericField id="031">0,00</NumericField>
                                 <NumericField id="033">0,00</NumericField>
-                                <NumericField id="046">0,00</NumericField>
-                                <NumericField id="702">0,00</NumericField>
-                                <NumericField id="704">0,00</NumericField>
-                                <NumericField id="706">0,00</NumericField>
+                                <NumericField id="037">0,00</NumericField>
                                 <NumericField id="040">0,00</NumericField>
-                                <NumericField id="051">0,00</NumericField>
-                                <NumericField id="711">0,00</NumericField>
-                                <NumericField id="713">0,00</NumericField>
-                                <NumericField id="715">0,00</NumericField>
+                                <NumericField id="046">0,00</NumericField>
                                 <NumericField id="049">0,00</NumericField>
-                                <NumericField id="194">0,00</NumericField>
-                                <NumericField id="719">0,00</NumericField>
-                                <NumericField id="056">0,00</NumericField>
-                                <NumericField id="712">0,00</NumericField>
-                                <NumericField id="714">0,00</NumericField>
-                                <NumericField id="716">0,00</NumericField>
+                                <NumericField id="051">0,00</NumericField>
                                 <NumericField id="054">0,00</NumericField>
-                                <NumericField id="152">0,00</NumericField>
-                                <NumericField id="065">0,00</NumericField>
-                                <NumericField id="721">0,00</NumericField>
-                                <NumericField id="723">0,00</NumericField>
-                                <NumericField id="725">0,00</NumericField>
+                                <NumericField id="056">0,00</NumericField>
                                 <NumericField id="059">0,00</NumericField>
-                                <NumericField id="195">0,00</NumericField>
-                                <NumericField id="729">0,00</NumericField>
-                                <NumericField id="731">0,00</NumericField>
-                                <NumericField id="733">0,00</NumericField>
-                                <NumericField id="735">0,00</NumericField>
                                 <NumericField id="063">0,00</NumericField>
-                                <NumericField id="196">0,00</NumericField>
-                                <NumericField id="407">0,00</NumericField>
-                                <NumericField id="722">0,00</NumericField>
-                                <NumericField id="724">0,00</NumericField>
-                                <NumericField id="726">0,00</NumericField>
+                                <NumericField id="065">0,00</NumericField>
                                 <NumericField id="068">0,00</NumericField>
-                                <NumericField id="732">0,00</NumericField>
-                                <NumericField id="734">0,00</NumericField>
-                                <NumericField id="736">0,00</NumericField>
                                 <NumericField id="073">0,00</NumericField>
-                                <NumericField id="409">0,00</NumericField>
-                                <NumericField id="436">0,00</NumericField>
-                                <NumericField id="741">0,00</NumericField>
-                                <NumericField id="743">0,00</NumericField>
-                                <NumericField id="745">0,00</NumericField>
-                                <NumericField id="431">0,00</NumericField>
-                                <NumericField id="435">0,00</NumericField>
-                                <NumericField id="463">0,00</NumericField>
-                                <NumericField id="751">0,00</NumericField>
-                                <NumericField id="753">0,00</NumericField>
-                                <NumericField id="755">0,00</NumericField>
-                                <NumericField id="441">0,00</NumericField>
-                                <NumericField id="445">0,00</NumericField>
-                                <NumericField id="765">0,00</NumericField>
-                                <NumericField id="761">0,00</NumericField>
-                                <NumericField id="410">0,00</NumericField>
-                                <NumericField id="462">0,00</NumericField>
-                                <NumericField id="742">0,00</NumericField>
-                                <NumericField id="744">0,00</NumericField>
-                                <NumericField id="746">0,00</NumericField>
-                                <NumericField id="432">0,00</NumericField>
-                                <NumericField id="464">0,00</NumericField>
-                                <NumericField id="752">0,00</NumericField>
-                                <NumericField id="754">0,00</NumericField>
-                                <NumericField id="756">0,00</NumericField>
-                                <NumericField id="442">0,00</NumericField>
-                                <NumericField id="766">0,00</NumericField>
-                                <NumericField id="762">0,00</NumericField>
-                                <NumericField id="767">0,00</NumericField>
-                                <NumericField id="763">0,00</NumericField>
-                                <NumericField id="768">0,00</NumericField>
-                                <NumericField id="764">0,00</NumericField>
-                                <NumericField id="227">0,00</NumericField>
                                 <NumericField id="076">0,00</NumericField>
-                                <NumericField id="093">39,50</NumericField>
-                                <NumericField id="458">39,50</NumericField>
-                                <NumericField id="459">0,00</NumericField>
-                                <NumericField id="460">0,00</NumericField>
                                 <NumericField id="090">0,00</NumericField>
-                                <NumericField id="461">0,00</NumericField>
                                 <NumericField id="092">0,00</NumericField>
-                                <NumericField id="228">0,00</NumericField>
-                                <NumericField id="097">0,00</NumericField>
+                                <NumericField id="093">39,50</NumericField>
                                 <NumericField id="094">0,00</NumericField>
                                 <NumericField id="095">0,00</NumericField>
                                 <NumericField id="096">0,00</NumericField>
+                                <NumericField id="097">0,00</NumericField>
                                 <NumericField id="102">39,50</NumericField>
                                 <NumericField id="103">0,00</NumericField>
                                 <NumericField id="104">39,50</NumericField>
                                 <NumericField id="105">-39,50</NumericField>
+                                <NumericField id="152">0,00</NumericField>
+                                <NumericField id="194">0,00</NumericField>
+                                <NumericField id="195">0,00</NumericField>
+                                <NumericField id="196">0,00</NumericField>
                                 <Choice id="204">0</Choice>
                                 <Choice id="205">1</Choice>
+                                <NumericField id="226">0,00</NumericField>
+                                <NumericField id="227">0,00</NumericField>
+                                <NumericField id="228">0,00</NumericField>
                                 <NumericField id="403">0</NumericField>
+                                <NumericField id="407">0,00</NumericField>
+                                <NumericField id="409">0,00</NumericField>
+                                <NumericField id="410">0,00</NumericField>
                                 <NumericField id="418">0</NumericField>
+                                <NumericField id="419">0,00</NumericField>
+                                <NumericField id="423">0,00</NumericField>
+                                <NumericField id="424">0,00</NumericField>
+                                <NumericField id="431">0,00</NumericField>
+                                <NumericField id="432">0,00</NumericField>
+                                <NumericField id="435">0,00</NumericField>
+                                <NumericField id="436">0,00</NumericField>
+                                <NumericField id="441">0,00</NumericField>
+                                <NumericField id="442">0,00</NumericField>
+                                <NumericField id="445">0,00</NumericField>
                                 <NumericField id="453">0</NumericField>
+                                <NumericField id="454">0,00</NumericField>
+                                <NumericField id="455">0,00</NumericField>
+                                <NumericField id="456">0,00</NumericField>
+                                <NumericField id="457">0,00</NumericField>
+                                <NumericField id="458">39,50</NumericField>
+                                <NumericField id="459">0,00</NumericField>
+                                <NumericField id="460">0,00</NumericField>
+                                <NumericField id="461">0,00</NumericField>
+                                <NumericField id="462">0,00</NumericField>
+                                <NumericField id="463">0,00</NumericField>
+                                <NumericField id="464">0,00</NumericField>
+                                <NumericField id="471">0,00</NumericField>
+                                <NumericField id="472">0,00</NumericField>
+                                <NumericField id="701">0,00</NumericField>
+                                <NumericField id="702">0,00</NumericField>
+                                <NumericField id="703">0,00</NumericField>
+                                <NumericField id="704">0,00</NumericField>
+                                <NumericField id="705">0,00</NumericField>
+                                <NumericField id="706">0,00</NumericField>
+                                <NumericField id="711">0,00</NumericField>
+                                <NumericField id="712">0,00</NumericField>
+                                <NumericField id="713">0,00</NumericField>
+                                <NumericField id="714">0,00</NumericField>
+                                <NumericField id="715">0,00</NumericField>
+                                <NumericField id="716">0,00</NumericField>
+                                <NumericField id="719">0,00</NumericField>
+                                <NumericField id="721">0,00</NumericField>
+                                <NumericField id="722">0,00</NumericField>
+                                <NumericField id="723">0,00</NumericField>
+                                <NumericField id="724">0,00</NumericField>
+                                <NumericField id="725">0,00</NumericField>
+                                <NumericField id="726">0,00</NumericField>
+                                <NumericField id="729">0,00</NumericField>
+                                <NumericField id="731">0,00</NumericField>
+                                <NumericField id="732">0,00</NumericField>
+                                <NumericField id="733">0,00</NumericField>
+                                <NumericField id="734">0,00</NumericField>
+                                <NumericField id="735">0,00</NumericField>
+                                <NumericField id="736">0,00</NumericField>
+                                <NumericField id="741">0,00</NumericField>
+                                <NumericField id="742">0,00</NumericField>
+                                <NumericField id="743">0,00</NumericField>
+                                <NumericField id="744">0,00</NumericField>
+                                <NumericField id="745">0,00</NumericField>
+                                <NumericField id="746">0,00</NumericField>
+                                <NumericField id="751">0,00</NumericField>
+                                <NumericField id="752">0,00</NumericField>
+                                <NumericField id="753">0,00</NumericField>
+                                <NumericField id="754">0,00</NumericField>
+                                <NumericField id="755">0,00</NumericField>
+                                <NumericField id="756">0,00</NumericField>
+                                <NumericField id="761">0,00</NumericField>
+                                <NumericField id="762">0,00</NumericField>
+                                <NumericField id="763">0,00</NumericField>
+                                <NumericField id="764">0,00</NumericField>
+                                <NumericField id="765">0,00</NumericField>
+                                <NumericField id="766">0,00</NumericField>
+                                <NumericField id="767">0,00</NumericField>
+                                <NumericField id="768">0,00</NumericField>
                         </FormData>
                     </Declaration>
                 </Declarer>
             </Declarations>
         </eCDFDeclarations>
         """ % options['filename']
-
         # Remove the <?xml version='1.0' encoding='UTF-8'?> from the string since the assert doesn't work with it
-        xml = report.with_context(skip_xsd=True).get_xml(options)[38:]
-
+        xml = report.with_context(skip_xsd=True).l10n_lu_export_tax_report_to_xml(options)['file_content'][38:]
         self.assertXmlTreeEqual(
             self.get_xml_tree_from_string(xml),
             self.get_xml_tree_from_string(expected_xml)

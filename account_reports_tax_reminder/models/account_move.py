@@ -5,8 +5,8 @@ from odoo import fields, models
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    def _close_tax_entry(self):
-        ret = super()._close_tax_entry()
+    def _close_tax_period(self):
+        ret = super()._close_tax_period()
 
         # add a next activity on the moves, as the attachments should be sent to the administration
         MailActivity = self.env['mail.activity'].with_context(mail_activity_quick_update=True)

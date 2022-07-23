@@ -7,12 +7,10 @@ from odoo import models, _
 from odoo.exceptions import UserError
 
 
-class AccountReport(models.AbstractModel):
+class AccountReport(models.Model):
     _inherit = 'account.report'
 
-    def get_report_filename(self, options):
-        if self._get_report_country_code(options) != 'LU':
-            return super().get_report_filename(options)
+    def l10n_lu_get_report_filename(self, options):
         # we can't determine milliseconds using fields.Datetime, hence used python's `datetime`
         company = self.env.company
         agent = company.account_representative_id
@@ -28,16 +26,10 @@ class AccountReport(models.AbstractModel):
             options['filename'] = filename
         return filename
 
-    def _get_report_country_code(self, options):
-        # Overridden in order to use the fiscal country of the current company
-        if self.env.company.account_fiscal_country_id.code != 'LU':
-            return super()._get_report_country_code(options)
-        return self.env.company.account_fiscal_country_id.code or None
-
-    def _get_lu_electronic_report_values(self, options):
+    def l10n_lu_get_electronic_report_values(self, options):
         company = self.env.company
         vat = self.get_vat_for_export(options)
-        if vat and vat.startswith("LU"): # Remove LU prefix in the XML
+        if vat and vat.startswith("LU"):  # Remove LU prefix in the XML
             vat = vat[2:]
         return {
             'filename': options.get('filename'),
@@ -48,7 +40,7 @@ class AccountReport(models.AbstractModel):
             'rcs_number' : company.company_registry or "NE",
         }
 
-    def _lu_validate_ecdf_prefix(self):
+    def _l10n_lu_validate_ecdf_prefix(self):
         ecdf_prefix = self.env.company.ecdf_prefix
         if not ecdf_prefix:
             raise UserError(_('Please set valid eCDF Prefix for your company.'))
@@ -58,6 +50,6 @@ class AccountReport(models.AbstractModel):
             raise UserError(msg.format(ecdf_prefix, self.env.company.display_name))
         return True
 
-    def _lu_validate_xml_content(self, content):
+    def _l10n_lu_validate_xml_content(self, content):
         self.env['ir.attachment'].l10n_lu_reports_validate_xml_from_attachment(content, 'xsd_lu_eCDF.xsd')
         return True

@@ -1,93 +1,79 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-import json
-import zipfile
 import math
 import tempfile
-from odoo import models, fields, api, _
+import zipfile
+
+from odoo import _, api, models
 
 
-class ECSalesReport(models.AbstractModel):
-    _inherit = 'account.sales.report'
+class ECSalesReport(models.Model):
+    _inherit = 'account.report'
 
-    def _get_non_generic_country_codes(self, options):
-        codes = super(ECSalesReport, self)._get_non_generic_country_codes(options)
-        codes.add('DE')
-        return codes
+    def _custom_options_initializer_l10n_de_sales_report(self, options, previous_options=None):
+        """
+        Add the invoice lines search domain that is specific to the country.
+        Typically, the taxes account.report.expression ids relative to the country for the triangular, sale of goods
+        or services.
+        :param dict options: Report options
+        :return dict: The modified options dictionary
+        """
+        self.ensure_one()
+        self._sales_report_init_core_custom_options(options, previous_options)
+        ec_operation_category = options.get('sales_report_taxes', {'goods': tuple(), 'triangular': tuple(), 'services': tuple()})
 
-    def _get_ec_sale_code_options_data(self, options):
-        if self._get_report_country_code(options) != 'DE':
-            return super(ECSalesReport, self)._get_ec_sale_code_options_data(options)
+        ec_operation_category['goods'] = tuple(self.env.ref('l10n_de.tax_report_de_tag_41_tag')._get_matching_tags().ids)
+        ec_operation_category['triangular'] = tuple(self.env.ref('l10n_de.tax_report_de_tag_42_tag')._get_matching_tags().ids)
+        ec_operation_category['services'] = tuple(self.env.ref('l10n_de.tax_report_de_tag_68_tag')._get_matching_tags().ids)
 
-        return {
-            'goods': {
-                'name': 'L',
-                'tax_report_line_ids': self.env.ref('l10n_de.tax_report_de_tag_41').ids,
-            },
-            'triangular': {
-                'name': 'D',
-                'tax_report_line_ids': self.env.ref('l10n_de.tax_report_de_tag_42').ids,
-            },
-            'services': {
-                'name': 'S',
-                'tax_report_line_ids': self.env.ref('l10n_de.tax_report_de_tag_68').ids,
-            },
+        # Change the names of the taxes to specific ones that are dependant to the tax type
+        ec_operation_category['operation_category'] = {
+            'goods': 'L',
+            'triangular': 'D',
+            'services': 'S',
         }
 
-    @api.model
-    def _get_columns_name(self, options):
-        if self._get_report_country_code(options) != 'DE':
-            return super(ECSalesReport, self)._get_columns_name(options)
+        options.update({'sales_report_taxes': ec_operation_category})
 
-        return [
-            {'name': ''},
-            {'name': _('Länderkennzeichen')},
-            {'name': _('Ust-IdNr.')},
-            {'name': _('Art der Leistung')},
-            {'name': _('Betrag'), 'class': 'number'},
-        ]
+        # Buttons
 
-    @api.model
-    def _get_reports_buttons(self, options):
-        if self._get_report_country_code(options) != 'DE':
-            return super(ECSalesReport, self)._get_reports_buttons(options)
-
-        return super(ECSalesReport, self)._get_reports_buttons(options) + [
-            {'name': _('CSV'), 'sequence': 3, 'action': 'print_de_csvs_zip', 'file_export_type': _('ZIP')}
-        ]
-
-    def print_de_csvs_zip(self, options):
-        return {
-            'type': 'ir_actions_account_report_download',
-            'data': {
-                'model': self.env.context.get('model'),
-                'options': json.dumps(options),
-                'output_format': 'zip',
-                'financial_id': self.env.context.get('id'),
-            }
-        }
+        options.setdefault('buttons', []).append({
+            'name': _('CSV'),
+            'sequence': 30,
+            'action': 'export_file',
+            'action_param': 'l10n_de_datev_print_de_csvs_zip',
+            'file_export_type': _('ZIP')
+        })
 
     @api.model
-    def _get_csvs(self, options):
+    def l10n_de_datev_get_csvs(self, options):
         options['get_file_data'] = True
-        lines = self.with_context(no_format=True)._get_lines(options)
+        lines = []
+        for line in self._get_lines(options)[:-1]:
+            l = []
+            for column in line['columns']:
+                l.append(column['no_format'])
+            lines.append(tuple(l))
         # each csv file may only contain up to 1000 lines
         line_chunks = []
         chunks = [lines[i * 1000:(i + 1) * 1000] for i in range(math.ceil(len(lines) / 1000))]
         for chunk in chunks:
             content = 'Länderkennzeichen,USt-IdNr.,Betrag (Euro),Art der Leistung\n'
-            for l in chunk:
-                content += ','.join([l[0], l[1], str(l[3]), l[2]]) + '\n'
+            for val in chunk:
+                content += ','.join([val[0], val[1], str(val[3]), val[2]]) + '\n'
             line_chunks.append(content)
         return line_chunks
 
-    def _get_zip(self, options):
-        csvs = self._get_csvs(options)
+    def l10n_de_datev_print_de_csvs_zip(self, options):
+        csvs = self.l10n_de_datev_get_csvs(options)
         with tempfile.NamedTemporaryFile() as buf:
             with zipfile.ZipFile(buf, mode="w", compression=zipfile.ZIP_DEFLATED, allowZip64=False) as zip_buffer:
                 for i, csv in enumerate(csvs):
                     zip_buffer.writestr('EC_Sales_list%s.csv' % (len(csvs) > 1 and ("_" + str(i+1)) or ""), csv)
             buf.seek(0)
             res = buf.read()
-        return res
+        return {
+            'file_name': self.get_default_report_filename('ZIP'),
+            'file_content': res,
+            'file_type': 'zip'
+        }

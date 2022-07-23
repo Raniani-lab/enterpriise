@@ -22,7 +22,9 @@ Keeps track of depreciations, and creates corresponding journal entries.
         'views/account_deferred_revenue.xml',
         'views/account_deferred_expense.xml',
         'views/account_move_views.xml',
-        'report/account_assets_report_views.xml',
+        'data/asset_report.xml',
+        'data/account_report_actions.xml',
+        'data/menuitems.xml',
     ],
     'demo': [
         'demo/account_deferred_revenue_demo.xml',

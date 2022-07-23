@@ -1,64 +1,64 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-from math import copysign
-
-from odoo import models, fields, api, _
+from odoo import api, fields, models, release, _
 from odoo.exceptions import ValidationError
-from odoo import release
 
 from datetime import datetime, date
+from math import copysign
 
 
-class IntrastatReport(models.AbstractModel):
-    _inherit = 'account.intrastat.report'
+class IntrastatReport(models.Model):
+    # OVERRIDE: account_intrastat/IntrastatReport
+    _inherit = 'account.report'
 
-    def _get_reports_buttons(self, options):
-        res = super(IntrastatReport, self)._get_reports_buttons(options)
-        if self._get_report_country_code(options) == "NL":
-            res += [{'name': _('CBS'), 'sequence': 3, 'action': 'print_csv', 'file_export_type': _('CBS')}]
-        return res
+    def _custom_options_initializer_intrastat(self, options, previous_options):
+        super()._custom_options_initializer_intrastat(options, previous_options)
 
-    def print_csv(self, options):
-        action = self.print_xml(options)
-        action['data']['output_format'] = 'csv'
-        return action
+        if self.env.company.partner_id.country_id.code != 'NL':
+            return
 
-    def _show_region_code(self):
+        cbs_button = {
+            'name': _('CBS'),
+            'sequence': 30,
+            'action': 'export_file',
+            'action_param': '_l10n_nl_intrastat_export_to_csv',
+            'file_export_type': _('CBS'),
+        }
+        options['buttons'].append(cbs_button)
+
+    def _intrastat_show_region_code(self):
         # The region code is irrelevant for the Netherlands and will always be an empty column, with
         # this function we can conditionally exclude it from the report.
-        if self.env.company.country_id.code == 'NL':
+        if self.env.company.account_fiscal_country_id.code == 'NL':
             return False
-        return super()._show_region_code()
+        return super()._intrastat_show_region_code()
 
     @api.model
-    def get_csv(self, options):
-        ''' Export the Centraal Bureau voor de Statistiek (CBS) file.
+    def _l10n_nl_intrastat_export_to_csv(self, options):
+        """ Export the Centraal Bureau voor de Statistiek (CBS) file.
 
         Documentation found in:
         https://www.cbs.nl/en-gb/participants-survey/overzicht/businesses/onderzoek/international-trade-in-goods/idep-code-lists
 
         :param options: The report options.
-        :return:        The content of the file as str.
-        '''
+        :return:        Info dict needed by the export button with:
+                        - file_name
+                        - file_content
+                        - file_type
+        """
         # Fetch data.
         self.env['account.move.line'].check_access_rights('read')
 
         company = self.env.company
-        date_from, date_to, journal_ids, incl_arrivals, incl_dispatches, extended, with_vat = self._decode_options(options)
+        date_from = options['date']['date_from']
+        date_to = options['date']['date_to']
 
-        invoice_types = []
-        if incl_arrivals:
-            invoice_types += ['in_invoice', 'out_refund']
-        if incl_dispatches:
-            invoice_types += ['out_invoice', 'in_refund']
-
-        query, params = self._prepare_query(date_from, date_to, journal_ids, invoice_types=invoice_types, with_vat=with_vat)
+        query, params = self._intrastat_prepare_query(options)
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
-        query_res = self._fill_supplementary_units(query_res)
-        query_res = self._fill_missing_values(query_res)
+        query_res = self._intrastat_fill_supplementary_units(query_res)
+        query_res = self._intrastat_fill_missing_values(query_res)
         line_map = dict((l.id, l) for l in self.env['account.move.line'].browse(res['id'] for res in query_res))
 
         # Create csv file content.
@@ -116,7 +116,7 @@ class IntrastatReport(models.AbstractModel):
             line = line_map[res['id']]
             inv = line.move_id
             country_dest_code = inv.partner_id.country_id and inv.partner_id.country_id.code or ''
-            country_origin_code = res['intrastat_product_origin_country'] if res['type'] == 'Dispatch' and fields.Date.to_date(date_to) > date(2022, 1, 1) else ''
+            country_origin_code = res['intrastat_product_origin_country_code'] if res['type'] == 'Dispatch' and fields.Date.to_date(date_to) > date(2022, 1, 1) else ''
             country = inv.intrastat_country_id.code and inv.intrastat_country_id.code or '' if res['type'] == 'Arrival' else country_dest_code
 
             # From the Manual for Statistical Declarations International Trade in Goods:
@@ -149,7 +149,7 @@ class IntrastatReport(models.AbstractModel):
                 str(i).zfill(5),                                                # Line number           length=5
                 country_origin_code.ljust(3),                                   # Country of origin     length=3
                 country.ljust(3),                                               # Count. of cons./dest. length=3
-                res['invoice_transport'] or '3',                                # Mode of transport     length=1
+                res['transport_code'] or '3',                                   # Mode of transport     length=1
                 '0',                                                            # Container             length=1
                 '00',                                                           # Traffic region/port   length=2
                 '00',                                                           # Statistical procedure length=2
@@ -180,5 +180,8 @@ class IntrastatReport(models.AbstractModel):
             '9899',                                                             # Record type           length=4
             ''.ljust(111)                                                       # Reserve               length=111
         ])
-
-        return file_content
+        return {
+            'file_name': self.get_default_report_filename('csv'),
+            'file_content': file_content,
+            'file_type': 'csv',
+        }

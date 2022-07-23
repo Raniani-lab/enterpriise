@@ -11,7 +11,7 @@ class SwedishTaxReportTest(AccountSalesReportCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_se.l10nse_chart_template'):
-        super().setUpClass(chart_template_ref)
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
     @classmethod
     def setup_company_data(cls, company_name, chart_template=None, **kwargs):
@@ -54,8 +54,8 @@ class SwedishTaxReportTest(AccountSalesReportCommon):
         })
         move.action_post()
 
-        report = self.env['account.generic.tax.report']
-        options = report._get_options(None)
+        report = self.env.ref('l10n_se.tax_report')
+        options = report._get_options()
 
         expected_xml = """
         <!DOCTYPE eSKDUpload PUBLIC "-//Skatteverket, Sweden//DTD Skatteverket eSKDUpload-DTD Version 6.0//SV" "https://www1.skatteverket.se/demoeskd/eSKDUpload_6p0.dtd">
@@ -98,6 +98,6 @@ class SwedishTaxReportTest(AccountSalesReportCommon):
         """
 
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.get_xml(options)),
+            self.get_xml_tree_from_string(report.l10n_se_export_tax_report_to_xml(options)['file_content']),
             self.get_xml_tree_from_string(expected_xml)
         )

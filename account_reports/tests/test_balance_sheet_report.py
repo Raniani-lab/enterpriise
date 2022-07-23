@@ -13,7 +13,7 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
-        cls.report = cls.env.ref('account_reports.account_financial_report_balancesheet0')
+        cls.report = cls.env.ref('account_reports.balance_sheet')
 
     def test_report_lines_ordering(self):
         """ Check that the report lines are correctly ordered with nested account groups """
@@ -49,39 +49,39 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
         move.action_post()
         move.line_ids.flush_recordset()
 
-        # Create the report hierachy with the Bank and Cash Accounts lines unfolded
-        line_id = self.report._get_generic_line_id(
-            'account.financial.html.report.line',
-            self.env.ref('account_reports.account_financial_report_bank_view0').id,
-        )
-        options = self._init_options(
+        # Create the report hierarchy with the Bank and Cash Accounts lines unfolded
+        line_id = self._get_basic_line_dict_id_from_report_line_ref('account_reports.account_financial_report_bank_view0')
+        options = self._generate_options(
             self.report,
             fields.Date.from_string('2020-02-01'),
             fields.Date.from_string('2020-02-28')
         )
         options['unfolded_lines'] = [line_id]
-        lines = self.report._get_lines(options, line_id)
+        lines = self.report._get_lines(options)
         lines = self.report._create_hierarchy(lines, options)
 
         # The Bank and Cash Accounts section start at index 2
         # Since we created 4 lines + 2 groups, we keep the 6 following lines
-        lines = [{'name': line['name'], 'level': line['level']} for line in lines]
+        unfolded_lines = self.report._get_unfolded_lines(lines, line_id)
+        unfolded_lines = [{'name': line['name'], 'level': line['level']} for line in unfolded_lines]
 
-        expected_lines = [
-            {'level': 2, 'name': 'Bank and Cash Accounts'},
-            {'level': 3, 'name': '101402-101601 A'},
-            {'level': 4, 'name': '101404 Bank'},
-            {'level': 4, 'name': '1014040-1015010 A1'},
-            {'level': 5, 'name': '1014040 A'},
-            {'level': 5, 'name': '101501 Cash'},
-            {'level': 4, 'name': '101600 C'},
-            {'level': 3, 'name': 'Total Bank and Cash Accounts'},
-        ]
-        self.assertEqual(lines, expected_lines)
+        self.assertEqual(
+            unfolded_lines,
+            [
+                {'level': 5, 'name': 'Bank and Cash Accounts'},
+                {'level': 6, 'name': '101402-101601 A'},
+                {'level': 7, 'name': '101404 Bank'},
+                {'level': 7, 'name': '1014040-1015010 A1'},
+                {'level': 8, 'name': '1014040 A'},
+                {'level': 8, 'name': '101501 Cash'},
+                {'level': 7, 'name': '101600 C'},
+                {'level': 6, 'name': 'Total Bank and Cash Accounts'},
+            ]
+        )
 
     def test_balance_sheet_custom_date(self):
         line_id = self.env.ref('account_reports.account_financial_report_bank_view0').id
-        options = self._init_options(self.report, fields.Date.from_string('2020-02-01'), fields.Date.from_string('2020-02-28'))
+        options = self._generate_options(self.report, fields.Date.from_string('2020-02-01'), fields.Date.from_string('2020-02-28'))
         options['date']['filter'] = 'custom'
         options['unfolded_lines'] = [line_id]
         options.pop('multi_company', None)
@@ -99,7 +99,7 @@ class TestBalanceSheetReport(TestAccountReportsCommon):
         } for i in range(1, 4)])
         invoices.action_post()
 
-        dummy, lines = self.report._get_table(options)
+        lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
             #   Name                                            Balance

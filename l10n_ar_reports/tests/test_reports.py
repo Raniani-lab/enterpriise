@@ -214,13 +214,83 @@ class TestReports(TestAr, TestAccountReportsCommon):
             invoice = invoice_form.save()
             self.demo_bills[key] = invoice
 
+    def _vat_book_report_create_test_data(self):
+        purchase_journal = self.env["account.journal"].search([('type', '=', 'purchase'), ('company_id', '=', self.env.company.id)])
+        ar_partner = self.env['res.partner'].create({
+            'name': 'BEST PARTNER',
+            'vat': '30714295698',
+            'l10n_latam_identification_type_id': self.env.ref('l10n_ar.it_cuit').id
+        })
+        test_tax_group = self.env['account.tax.group'].create({
+            'name': "test tax group",
+            'l10n_ar_vat_afip_code': '5',
+        })
+        test_tax_21 = self.env['account.tax'].create({
+            'name': "test tax",
+            'amount_type': 'percent',
+            'amount': 21,
+            'tax_group_id': test_tax_group.id,
+        })
+        test_product = self.env['product.product'].create({
+            'name': "Test Product",
+            'categ_id': self.env.ref("product.product_category_all").id,
+            'lst_price': 100.0,
+            'standard_price': 10.0,
+            'property_account_income_id': self.company_data["default_account_revenue"].id,
+            'property_account_expense_id': self.company_data["default_account_expense"].id,
+        })
+        invoices = self.env['account.move'].create([
+            {
+                'move_type': 'in_invoice',
+                'partner_id': ar_partner.id,
+                'invoice_date': '2022-03-01',
+                "journal_id": purchase_journal.id,
+                "l10n_latam_document_number": "0001-00000001000",
+                'invoice_line_ids': [(0, 0, {
+                    'product_id': test_product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [(6, 0, [test_tax_21.id])],
+                })],
+            },
+            {
+                'move_type': 'in_invoice',
+                'partner_id': ar_partner.id,
+                'invoice_date': '2022-03-10',
+                "journal_id": purchase_journal.id,
+                "l10n_latam_document_number": "0001-00000002000",
+                'invoice_line_ids': [(0, 0, {
+                    'product_id': test_product.id,
+                    'price_unit': 500.0,
+                    'tax_ids': [(6, 0, [test_tax_21.id])],
+                })],
+            },
+            {
+                'move_type': 'in_invoice',
+                'partner_id': ar_partner.id,
+                'invoice_date': '2022-03-31',
+                "journal_id": purchase_journal.id,
+                "l10n_latam_document_number": "0001-00000003000",
+                'invoice_line_ids': [(0, 0, {
+                    'product_id': test_product.id,
+                    'price_unit': 800.0,
+                    'tax_ids': [(6, 0, [test_tax_21.id])],
+                })],
+            },
+        ])
+        invoices.action_post()
+
+
+    def _update_options_selected_tax(self, options, new_tax_type):
+        self.assertTrue(new_tax_type in ('sale', 'purchase'), "Journal type should either be sale or purchase")
+        for tax_type in options['ar_vat_book_tax_types']:
+            tax_type['selected'] = tax_type.get('id') == new_tax_type
+
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_ar.l10nar_ri_chart_template'):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.journal = cls._create_journal(cls, 'preprinted', data={'l10n_ar_afip_pos_number': 37928})
         cls.maxDiff = None
-        company_ids = cls.company_ri.ids
-        cls.report = cls.env['l10n_ar.vat.book'].with_context(allowed_company_ids=company_ids)
+        cls.report = cls.env.ref('l10n_ar_reports.l10n_ar_vat_book_report')
 
         # Login to (AR) Responsable Inscripto company
         context = dict(cls.env.context, allowed_company_ids=[cls.company_ri.id])
@@ -238,34 +308,56 @@ class TestReports(TestAr, TestAccountReportsCommon):
         for _key, inv in cls.demo_bills.items():
             inv.action_post()
 
-        cls.options = cls._init_options(cls.report, fields.Date.from_string('2021-03-01'), fields.Date.from_string('2021-03-31'))
+        cls.options = cls._generate_options(cls.report, fields.Date.from_string('2021-03-01'), fields.Date.from_string('2021-03-31'))
+        cls._vat_book_report_create_test_data(cls)
 
-    def _test_txt_file(self, filename):
+    def _test_txt_file(self, filename, journal_type):
         filetype = 1 if 'IVA' in filename else 0
-        out_txt = self.report._get_txt_files(self.options)[filetype].decode('ISO-8859-1')
+        out_txt = self.report._ar_vat_book_get_txt_files(self.options, journal_type)[filetype].decode('ISO-8859-1')
         res_file = file_open('l10n_ar_reports/tests/' + filename, 'rb').read().decode('ISO-8859-1')
         self.assertEqual(out_txt, res_file)
 
     def test_01_sale_vat_book_vouchers(self):
-        self.options.update({'journal_type': 'sale', 'txt_type': 'sale'})
-        self._test_txt_file('Ventas.txt')
+        self._update_options_selected_tax(self.options, 'sale')
+        self.options['txt_type'] = 'sale'
+        self._test_txt_file('Ventas.txt', 'sale')
 
     def test_02_sale_vat_book_aliquots(self):
-        self.options.update({'journal_type': 'sale', 'txt_type': 'sale'})
-        self._test_txt_file('IVA_Ventas.txt')
+        self._update_options_selected_tax(self.options, 'sale')
+        self.options['txt_type'] = 'sale'
+        self._test_txt_file('IVA_Ventas.txt', 'sale')
 
     def test_03_purchase_vat_book_purchases_voucher(self):
-        self.options.update({'journal_type': 'purchase', 'txt_type': 'purchases'})
-        self._test_txt_file('Compras.txt')
+        self._update_options_selected_tax(self.options, 'purchase')
+        self.options['txt_type'] = 'purchases'
+        self._test_txt_file('Compras.txt', 'purchase')
 
     def test_04_purchase_vat_book_purchases_aliquots(self):
-        self.options.update({'journal_type': 'purchase', 'txt_type': 'purchases'})
-        self._test_txt_file('IVA_Compras.txt')
+        self._update_options_selected_tax(self.options, 'purchase')
+        self.options['txt_type'] = 'purchases'
+        self._test_txt_file('IVA_Compras.txt', 'purchase')
 
     def test_05_purchase_vat_book_goods_import_voucher(self):
-        self.options.update({'journal_type': 'purchase', 'txt_type': 'goods_import'})
-        self._test_txt_file('Importaciones_de_Bienes.txt')
+        self._update_options_selected_tax(self.options, 'purchase')
+        self.options['txt_type'] = 'goods_import'
+        self._test_txt_file('Importaciones_de_Bienes.txt', 'purchase')
 
     def test_06_purchase_vat_book_goods_import_aliquots(self):
-        self.options.update({'journal_type': 'purchase', 'txt_type': 'goods_import'})
-        self._test_txt_file('IVA_Importaciones_de_Bienes.txt')
+        self._update_options_selected_tax(self.options, 'purchase')
+        self.options['txt_type'] = 'goods_import'
+        self._test_txt_file('IVA_Importaciones_de_Bienes.txt', 'purchase')
+
+    def test_vat_book_report(self):
+        options = self._generate_options(self.report, date_from=fields.Date.from_string('2022-03-01'), date_to=fields.Date.from_string('2022-03-31'))
+        lines = self.report._get_lines(options)
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            lines,
+            #    Move Name              Partner Name    VAT            Taxed   VAT 21%   Total
+            [    0,                     2,              4,             5,      8,        12],
+            [
+                ('DI 0001-00000001000', 'BEST PARTNER', '30714295698', -1000,  -210,     -1210),
+                ('DI 0001-00000002000', 'BEST PARTNER', '30714295698', -500,   -105,     -605),
+                ('DI 0001-00000003000', 'BEST PARTNER', '30714295698', -800,   -168,     -968),
+            ],
+        )

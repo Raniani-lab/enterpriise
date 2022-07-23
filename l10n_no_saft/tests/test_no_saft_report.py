@@ -77,11 +77,11 @@ class TestNoSaftReport(TestAccountReportsCommon):
 
     @freeze_time('2019-12-31')
     def test_saft_report_values(self):
-        report = self.env['account.general.ledger']
-        options = self._init_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
+        report = self.env.ref('account_reports.general_ledger_report')
+        options = self._generate_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
 
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.with_context(skip_xsd=True).get_xml(options)),
+            self.get_xml_tree_from_string(report.with_context(skip_xsd=True).l10n_no_export_saft_to_xml(options)['file_content']),
             self.get_xml_tree_from_string('''
                 <AuditFile xmlns="urn:StandardAuditFile-Taxation-Financial:NO">
                     <Header>

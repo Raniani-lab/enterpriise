@@ -42,7 +42,7 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
     def setUpClass(cls, chart_template_ref='l10n_fr.l10n_fr_pcg_chart_template'):
         """ Setup all the prerequisite entities for the CSV import tests to run """
 
-        super().setUpClass(chart_template_ref)
+        super().setUpClass(chart_template_ref=chart_template_ref)
 
         # Company -------------------------------------
         cls.company = cls.company_data['company']

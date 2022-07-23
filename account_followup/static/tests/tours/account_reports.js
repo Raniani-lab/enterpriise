@@ -5,7 +5,7 @@ var Tour = require('web_tour.tour');
 
 Tour.register('account_followup_reports_widgets', {
     test: true,
-    url: '/web#action=account_followup.action_view_list_customer_statements',
+    url: '/web?#action=account_followup.action_view_list_customer_statements',
     },
      [
         {

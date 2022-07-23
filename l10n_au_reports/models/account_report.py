@@ -14,42 +14,37 @@ RUN_TYPE = 'P'  # T for test or P for production
 VALID_STATES = {'ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA', 'OTH'}
 
 
-class TaxReport(models.AbstractModel):
+class TaxReport(models.Model):
     """Generate the TPAR for Australia.
 
     This file was generated using https://softwaredevelopers.ato.gov.au/TPARspecification
     as a reference.
     """
-
-    _name = 'l10n.au.tax.report'
-    _description = "Taxable Payments Annual Reports (TPAR) for Australia"
     _inherit = 'account.report'
 
-    filter_date = {'mode': 'range', 'filter': 'this_month'}
-    filter_cash_basis = True
+    def _l10n_au_tpar_init_custom_options(self, options, previous_options=None):
+        options['buttons'] += [{
+            'name': _('TPAR'), 'sequence': 30, 'action': 'export_file', 'action_param': '_l10n_au_tpar_get_txt', 'file_export_type': _('TPAR')
+        }]
 
-    def _get_country_for_fiscal_position_filter(self, options):
-        return self.env.ref('base.au')
-
-    def _get_report_name(self):
-        return _('Taxable Payments Annual Reports (TPAR)')
-
-    def _get_data(self, options, raise_warning=False):
-        ctx = self._set_context(options)
-        self.with_context(ctx)._prepare_lines_for_cash_basis()
-        params = {
-            'company_id': self.env.company.id,
-            'date_from': options['date']['date_from'],
-            'date_to': options['date']['date_to'],
-            'tag_tpar_id': self.env.ref('l10n_au.service_tag').id,
-            'tag_withheld_id': self.env.ref('l10n_au.tax_withheld_tag').id,
+    def _l10n_au_tpar_caret_options_initializer(self):
+        return {
+            'res.partner': [
+                {'name': _("Open Invoices"), 'action': 'l10n_au_tpar_caret_option_open_invoices'},
+                {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
+            ]
         }
+
+    def _l10n_au_tpar_build_query(self, options, column_group_key=None):
+        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+
         self.env['account.move'].flush_model()
         self.env['account.move.line'].flush_model()
         self.env['res.partner'].flush_model()
 
-        query = """
+        query = f"""
             SELECT
+                %s AS column_group_key,
                 payee.id as id,
                 payee.vat as vat,
                 payee.name as name,
@@ -70,7 +65,7 @@ class TaxReport(models.AbstractModel):
                 -- • any tax withheld where an ABN was not quoted, and
                 -- • the market value of any non-cash benefits
                 COALESCE(SUM(
-                    CASE WHEN journal.type IN ('bank', 'cash') THEN aml.credit ELSE 0 END
+                    CASE WHEN journal.type IN ('bank', 'cash') THEN account_move_line.credit ELSE 0 END
                 ), 0) AS gross_paid,
                 -- # 6.62
                 -- if tax is withheld from payments where an ABN was not quoted, this can be reported
@@ -80,62 +75,125 @@ class TaxReport(models.AbstractModel):
                 -- for the financial year. This amount includes any amounts withheld on the market value
                 -- of non-cash benefits. The amount must be reported in whole dollars.
                 COALESCE(-SUM(
-                    CASE WHEN aml_tag.account_account_tag_id = %(tag_withheld_id)s THEN aml.balance ELSE 0 END
+                    CASE WHEN aml_tag.account_account_tag_id = %s THEN account_move_line.balance ELSE 0 END
                 ), 0) AS tax_withheld,
                 -- # 6.63
                 -- the total of any GST included in the amounts paid
                 COALESCE(SUM(
-                    CASE WHEN aml_tag.account_account_tag_id = %(tag_tpar_id)s THEN aml.balance ELSE 0 END
+                    CASE WHEN aml_tag.account_account_tag_id = %s THEN account_move_line.balance ELSE 0 END
                 ), 0) AS total_gst
-            FROM res_partner payee
+            FROM {tables}
+            RIGHT JOIN res_partner payee ON payee.id = account_move_line.partner_id
             LEFT JOIN res_country_state payee_state ON payee_state.id = payee.state_id
             LEFT JOIN res_country payee_country ON payee_country.id = payee.country_id
             LEFT JOIN res_partner_bank payee_bank ON payee_bank.partner_id = payee.id
-            LEFT JOIN account_move_line aml ON aml.date >= %(date_from)s
-                                           AND aml.date <= %(date_to)s
-                                           AND aml.company_id = %(company_id)s
-                                           AND aml.partner_id = payee.id
-            LEFT JOIN account_journal journal ON aml.journal_id = journal.id
-            LEFT JOIN account_account_tag_account_move_line_rel aml_tag ON aml.id = aml_tag.account_move_line_id
+            LEFT JOIN account_journal journal ON account_move_line.journal_id = journal.id
+            LEFT JOIN account_account_tag_account_move_line_rel aml_tag ON account_move_line.id = aml_tag.account_move_line_id
+            WHERE {where_clause}
             GROUP BY payee.id, payee.vat, payee.name, payee.name, payee.street, payee.street2, payee.city, payee_state.name, payee_state.code, payee.zip, payee_country.name, payee.phone, payee_bank.sanitized_acc_number, payee.email
-            HAVING bool_or(aml_tag.account_account_tag_id IN (%(tag_withheld_id)s, %(tag_tpar_id)s))
+            HAVING BOOL_OR(aml_tag.account_account_tag_id IN (%s, %s))
             ORDER BY payee.name
         """
+        tag_tpar_id = self.env.ref('l10n_au.service_tag').id
+        tag_withheld_id = self.env.ref('l10n_au.tax_withheld_tag').id
+        query_params = [column_group_key, tag_withheld_id, tag_tpar_id, *where_params, tag_withheld_id, tag_tpar_id]
 
-        self.env.cr.execute(query, params)
-        partner_values = self.env.cr.dictfetchall()
-        for p in partner_values:
-            if p.get('total_gst', 0) > p.get('gross_paid', 0) and raise_warning:
-                raise UserError(_('The total GST is higher than the Gross Paid for %s.', p['name']))
-        return partner_values
+        return query, query_params
 
-    def _get_columns_name(self, options):
-        return [{}, {'name': _('ABN')}, {'name': _('Total GST'), 'class': 'number'}, {'name': _('Gross Paid'), 'class': 'number'}, {'name': _('Tax Withheld'), 'class': 'number'}]
+    def _l10n_au_tpar_execute_query(self, options, raise_warning=False):
+        query_list = []
+        full_query_params = []
 
-    def _get_lines(self, options, line_id=None):
-        data = self._get_data(options)
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            query, params = self._l10n_au_tpar_build_query(column_group_options, column_group_key)
+            query_list.append(f"({query})")
+            full_query_params += params
+
+        full_query = " UNION ALL ".join(query_list)
+        self._cr.execute(full_query, full_query_params)
+        results = self._cr.dictfetchall()
+
+        # small optional sanity check
+        if raise_warning:
+            for partner in results:
+                if partner.get('total_gst', 0) > partner.get('gross_paid', 0) and raise_warning:
+                    raise UserError(_('The total GST is higher than the Gross Paid for %s.', partner['name']))
+
+        return results
+
+    def _l10n_au_tpar_get_dynamic_lines(self, options, all_column_groups_expression_totals):
+        # dict of the form {partner_id: {column_group_key: {expression_label: value}}}
+        partner_info_dict = {}
+
+        # dict of the form {column_group_key: total_value}
+        total_values_dict = {}
+
+        # Build and execute query
+        results = self._l10n_au_tpar_execute_query(options)
+
+        # Fill dictionaries
+        for result in results:
+            partner_id = result['id']
+            column_group_key = result['column_group_key']
+            current_partner_info = partner_info_dict.setdefault(partner_id, {})
+
+            current_partner_info[column_group_key] = result
+            current_partner_info['name'] = result['name']
+
+            column_group_total = total_values_dict.setdefault(
+                column_group_key, {'total_gst': 0, 'gross_paid': 0, 'tax_withheld': 0}
+            )
+            column_group_total['total_gst'] += result['total_gst']
+            column_group_total['gross_paid'] += result['gross_paid']
+            column_group_total['tax_withheld'] += result['tax_withheld']
+
+        # Create lines
         lines = []
-        for row in data:
-            lines += [{
-                'id': row['id'],
+        company_currency = self.env.company.currency_id
+        for partner_id, partner_info in partner_info_dict.items():
+            columns = []
+            for column in options['columns']:
+                expression_label = column['expression_label']
+                value = partner_info.get(column['column_group_key'], {}).get(expression_label, False)
+                columns.append({
+                    'name': self.format_value(
+                        value, company_currency, figure_type=column['figure_type']
+                    ) if column['figure_type'] == 'monetary' else value,
+                    'no_format': value,
+                    'class': column['figure_type'],
+                })
+            line = {
+                'id': self._get_generic_line_id('res.partner', partner_id),
                 'caret_options': 'res.partner',
                 'model': 'res.partner',
-                'name': row['name'],
-                'columns': [
-                    {'name': row['vat']},
-                    {'name': self.format_value(row['total_gst']), 'no_format': row['total_gst']},
-                    {'name': self.format_value(row['gross_paid']), 'no_format': row['gross_paid']},
-                    {'name': self.format_value(row['tax_withheld']), 'no_format': row['tax_withheld']},
-                ],
-            }]
+                'name': partner_info['name'],
+                'columns': columns,
+            }
+            lines.append((0, line))
+
+        # Add total line
+        if lines:
+            total_columns = []
+            for column in options['columns']:
+                expression_label = column['expression_label']
+                value = total_values_dict.get(column['column_group_key'], {}).get(expression_label, False)
+                total_columns.append({
+                    'name': self.format_value(value, figure_type=column['figure_type']) if value else None,
+                    'no_format': value,
+                    'class': 'number',
+                })
+            total_line = {
+                'id': self._get_generic_line_id(None, None, markup='total'),
+                'name': _('Total'),
+                'class': 'total',
+                'level': 1,
+                'columns': total_columns,
+            }
+            lines.append((0, total_line))
 
         return lines
 
-    def _get_reports_buttons(self, options):
-        buttons = super(TaxReport, self)._get_reports_buttons(options)
-        return buttons + [{'name': _('TPAR'), 'sequence': 3, 'action': 'print_txt', 'file_export_type': _('TPAR')}]
-
-    def get_txt(self, options):
+    def _l10n_au_tpar_get_txt(self, options):
         sender_data = {
             'vat': self.get_vat_for_export(options),
             'name': self.env.company.name,
@@ -151,7 +209,7 @@ class TaxReport(models.AbstractModel):
             'email': self.env.company.email,
         }
         self._validate_partner(sender_data)
-        data = self._get_data(options, raise_warning=True)
+        data = self._l10n_au_tpar_execute_query(options, raise_warning=True)
         lines = [self._sender_data_record_1(options, sender_data), self._sender_data_record_2(sender_data), self._sender_data_record_3(sender_data)]
         lines += [self._payer_identity_data_record(options, sender_data), self._software_data_record()]
         lines += [self._payee_data_record(d) for d in data]
@@ -160,7 +218,13 @@ class TaxReport(models.AbstractModel):
             if len(line) != 996:
                 raise UserError(_('There was an error while writing the file (line length not 996).'
                                   '\nPlease contact the support.\n\n%s') % line)
-        return ''.join(lines)
+        file_content = ''.join(lines)
+
+        return {
+            'file_name': self.get_default_report_filename('txt'),
+            'file_content': file_content,
+            'file_type': 'txt',
+        }
 
     def _sender_data_record_1(self, options, data):
         return "%03d%-14s%-11s%-1s%-8s%-1s%-1s%-1s%-10s%-946s" % (
@@ -319,9 +383,9 @@ class TaxReport(models.AbstractModel):
             return [_('The Australian Business Number is not valid')]
         return []
 
-    def open_invoices(self, options, params=None):
-        active_id = int(params.get('id'))
-        partner = self.env['res.partner'].browse(active_id)
+    def l10n_au_tpar_caret_option_open_invoices(self, options, params=None):
+        dummy, record_id = self._get_model_info_from_id(params['line_id'])
+        partner = self.env['res.partner'].browse(record_id)
         tags = self.env.ref('l10n_au.service_tag') + self.env.ref('l10n_au.tax_withheld_tag')
         return {
             'name': _('TPAR invoices of %s') % partner.display_name,

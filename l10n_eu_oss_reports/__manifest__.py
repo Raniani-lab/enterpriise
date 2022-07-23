@@ -14,9 +14,9 @@ Provides Reports for OSS with export files for available EU countries.
     'depends': ['account_reports', 'l10n_eu_oss'],
     'data': [
         'views/report_export_templates.xml',
-        'views/search_template_view.xml',
         'views/res_company_views.xml',
         'views/product_views.xml',
+        'data/account_reports.xml',
     ],
     'license': 'OEEL-1',
     'auto_install': True,

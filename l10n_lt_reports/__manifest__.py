@@ -20,6 +20,7 @@
     ],
     'data': [
         'data/account_financial_html_report_data.xml',
+        'data/account_report_ec_sales_list_report.xml'
     ],
     'auto_install': ['l10n_lt', 'account_reports'],
     'installable': True,

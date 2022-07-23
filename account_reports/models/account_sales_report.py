@@ -1,258 +1,308 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from collections import defaultdict
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
-from odoo.tools.misc import formatLang
+from odoo import _, api, fields, models
 
 
-class ECSalesReport(models.AbstractModel):
-    """ This report is meant to be overridden.
-    It is overridden by the current company country specific report (should be in l10n_XX_reports),
-    or if no report exists for the current company country, by "account_sales_report_generic.py".
-    The menuitem linking to this report is initially set to active = False.
-    The menuitem active field is set to True when installing account_intrastat or a country specific report.
-    This means that, when creating a new country specific report, the following record must be added
-    to the report module (l10n_XX_reports) data :
-    <record model="ir.ui.menu" id="account_reports.menu_action_account_report_sales">
-        <field name="active" eval="True"/>
-    </record>
-    """
-
-    _name = 'account.sales.report'
-    _description = 'EC Sales List'
+class ECSalesReport(models.Model):
     _inherit = 'account.report'
-    filter_date = {'mode': 'range', 'filter': 'last_month'}
-    filter_journals = True
-    filter_multi_company = None
-    filter_ec_sale_code = None
 
-    @api.model
-    def _get_templates(self):
-        templates = super(ECSalesReport, self)._get_templates()
-        templates['main_template'] = 'account_reports.account_reports_sales_report_main_template'
-        templates['line_caret_options'] = 'account_reports.ec_sales_line_caret_options'
-        return templates
+    def _custom_options_initializer_sales_report_no_country(self, options, previous_options=None):
+        """
+        Add the invoice lines search domain that is specific to the country.
+        Typically, the taxes tag_ids relative to the country for the triangular, sale of goods or services
+        :param dict options: Report options
+        :param dict previous_options: Previous report options
+        """
+        self.ensure_one()
+        self._sales_report_init_core_custom_options(options, previous_options)
+        company_id = self.env.company.id
+        options.update({
+            'sales_report_taxes': {
+                'goods': tuple(self.env['account.tax'].search([
+                    ('company_id', '=', company_id),
+                    ('amount', '=', 0.0),
+                    ('amount_type', '=', 'percent'),
+                ]).ids),
+                'services': tuple(),
+                'triangular': tuple(),
+                'use_taxes_instead_of_tags': True,
+                # We can't use tags as we don't have a country tax report correctly set, 'use_taxes_instead_of_tags'
+                # should never be used outside this case
+            }
+        })
 
-    def _get_non_generic_country_codes(self, options):
-        # to be overridden by country specific method
-        return set()
+        self._init_options_journals(options, previous_options=previous_options, additional_journals_domain=[('type', '=', 'sale')])
 
-    def _get_report_country_code(self, options):
-        # Overridden in order to use the fiscal country of the current company
-        return self.env.company.account_fiscal_country_id.code or None
+    def _sales_report_init_core_custom_options(self, options, previous_options=None):
+        """
+        Add the invoice lines search domain that is common to all countries.
+        :param dict options: Report options
+        :param dict previous_options: Previous report options
+        """
+        self.ensure_one()
+        country_ids = self.env['res.country'].search([
+            ('code', 'in', tuple(self.sales_report_get_ec_country_codes(options)))
+        ]).ids
+        other_country_ids = tuple(set(country_ids) - {self.env.company.account_fiscal_country_id.id})
+        options.setdefault('forced_domain', []).append(('partner_id.country_id', 'in', other_country_ids))
+        default_tax_filter = [
+            {'id': 'goods', 'name': _('Goods'), 'selected': True},
+            {'id': 'triangular', 'name': _('Triangular'), 'selected': True},
+            {'id': 'services', 'name': _('Services'), 'selected': True},
+        ]
+        options['ec_tax_filter_selection'] = (previous_options or {}).get('ec_tax_filter_selection', default_tax_filter)
 
-    def _get_options(self, previous_options=None):
-        options = super(ECSalesReport, self)._get_options(previous_options)
-        options['country_specific_report_label'] = self.env.company.account_fiscal_country_id.display_name
-        options['date']['strict_range'] = True
-        return options
-
-    @api.model
-    def _get_filter_journals(self):
-        # only show sale journals
-        return self.env['account.journal'].search([('company_id', '=', self.env.company.id), ('type', '=', 'sale')], order="company_id, name")
-
-    @api.model
-    def _get_columns_name(self, options):
-        # this method must be overridden by country specific method
-        return []
-
-    def _get_ec_sale_code_options_data(self, options):
-        # this method must be overridden by country specific method
-        # it defines which tax report line ids are linked to goods, triangular & services
-        # and it defines country specific names
+    def _caret_options_initializer_sales_report(self):
+        """
+        Add custom caret option for the report to link to the partner and allow cleaner overrides.
+        """
         return {
-            'goods': {'name': _('Goods'), 'tax_report_line_ids': []},
-            'triangular': {'name': _('Triangular'), 'tax_report_line_ids': []},
-            'services': {'name': _('Services'), 'tax_report_line_ids': []},
+            'ec_sales': [
+                {'name': _("View Partner"), 'action': 'caret_option_open_record_form'}
+            ],
         }
 
-    def _init_filter_ec_sale_code(self, options, previous_options=None):
-        # If the country changes, previous_options['ec_sale_code'] might exist but with wrong names/data.
-        # We must recreate the dict, and apply "selected" state if previous ones existing.
-        ec_sale_code_options_data = self._get_ec_sale_code_options_data(options)
-        options['ec_sale_code'] = []
-        for id in ('goods', 'triangular', 'services'):
-            options['ec_sale_code'].append({**ec_sale_code_options_data[id], 'id': id, 'selected': False})
+    def _dynamic_lines_generator_sales_report(self, options, all_column_groups_expression_totals):
+        """
+        Generate the dynamic lines for the report in a vertical style (one line per tax per partner).
+        """
+        self.ensure_one()
 
-        if previous_options and previous_options.get('ec_sale_code'):
-            for i in range(0, 3):
-                options['ec_sale_code'][i]['selected'] = previous_options['ec_sale_code'][i]['selected']
-
-    @api.model
-    def _prepare_query(self, options):
-        tables, where_clause, where_params = self._query_get(options)
-        query = ' '.join([
-            'WITH', self._get_query_with(options),
-            'SELECT', self._get_query_select(options),
-            'FROM', tables, self._get_query_from(options),
-            'WHERE', where_clause,
-            'GROUP BY', self._get_query_group_by(options),
-            'ORDER BY', self._get_query_order_by(options),
-        ])
-        return query, where_params
-
-    @api.model
-    def _get_query_with(self, options):
-        params = []
-        for tax_code, tax_report_line_ids in self._get_selected_tags(options).items():
-            for tax_report_line_id in tax_report_line_ids:
-                params += [tax_code, tax_report_line_id]
-        values = ', '.join(['(%s, %s)'] * int(len(params) / 2))
-        return self.env.cr.mogrify(
-            'tax_report_lines_additional_info (code, id) AS (VALUES %s)' % values,
-            params,
-        ).decode(self.env.cr.connection.encoding)
-
-    @api.model
-    def _get_query_select(self, options):
-        res = '''p.vat AS vat,
-                 tax_report_lines_additional_info.code as tax_code,
-                 SUM(-account_move_line.balance) AS amount,
-                 (p.country_id = company_partner.country_id) AS same_country,
-                 country.code AS partner_country_code'''
-        if not options or not options.get('get_file_data'):
-            res += ''',
-                 account_move_line.partner_id AS partner_id,
-                 p.name As partner_name'''
-        return res
-
-    @api.model
-    def _get_query_from(self, options):
-        return '''
-             LEFT JOIN res_partner p ON account_move_line.partner_id = p.id
-                  JOIN account_account_tag_account_move_line_rel aml_tag ON account_move_line.id = aml_tag.account_move_line_id
-                  JOIN account_account_tag tag ON tag.id = aml_tag.account_account_tag_id
-                  JOIN account_tax_report_line_tags_rel ON account_tax_report_line_tags_rel.account_account_tag_id = tag.id
-                  JOIN tax_report_lines_additional_info ON tax_report_lines_additional_info.id = account_tax_report_line_tags_rel.account_tax_report_line_id
-                  JOIN res_company company ON account_move_line.company_id = company.id
-                  JOIN res_partner company_partner ON company_partner.id = company.partner_id
-                  JOIN res_country country ON p.country_id = country.id'''
-
-    @api.model
-    def _get_query_group_by(self, options):
-        res = 'p.vat, tax_report_lines_additional_info.code, p.country_id, company_partner.country_id, country.code'
-        if not options.get('get_file_data'):
-            res = 'p.name, account_move_line.partner_id, ' + res
-        return res
-
-    @api.model
-    def _get_query_order_by(self, options):
-        params = [tax_code for tax_code in self._get_selected_tags(options)][::-1]
-        order_items = ['tax_report_lines_additional_info.code= %s'] * len(params)
-        order_items.append('vat' if options.get('get_file_data') else 'partner_name')
-        return self.env.cr.mogrify(", ".join(order_items), params).decode(self.env.cr.connection.encoding)
-
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        query, params = self._prepare_query(options)
-        self._cr.execute(query, params)
-        query_res = self._cr.dictfetchall()
-
-        return self._process_query_result(options, query_res)
-
-    @api.model
-    def _get_selected_tags(self, options):
-        selected_tags = {}
-        if options.get('ec_sale_code', False):
-            # if no codes are selected to filter on, show all codes
-            show_all = not [x['id'] for x in options['ec_sale_code'] if x['selected']]
-            for option_code in options['ec_sale_code']:
-                if option_code['selected'] or show_all:
-                    selected_tags[option_code['id']] = tuple(option_code['tax_report_line_ids'])
-        return selected_tags
-
-    def _get_row_columns(self, options, row, ec_sale_code_options_data):
-        return [
-            row['vat'][:2],
-            row['vat'][2:],
-            ec_sale_code_options_data[row['tax_code']]['name'],
-            row['amount']
-        ]
-
-    @api.model
-    def _process_query_result(self, options, query_result):
-        get_file_data = options.get('get_file_data')
-        ec_country_to_check = self.get_ec_country_codes(options)
         lines = []
-        ec_sale_code_options_data = self._get_ec_sale_code_options_data(options)
-        total_value = 0
-        for row in query_result:
-            if not row['vat']:
-                row['vat'] = ''
+        totals_by_column_group = {
+            column_group_key: {
+                'balance': 0.0,
+                'goods': 0.0,
+                'triangular': 0.0,
+                'services': 0.0,
+                'vat_number': '',
+                'country_code': '',
+                'sales_type_code': '',
+            }
+            for column_group_key in options['column_groups']
+        }
 
-            amt = row['amount'] or 0.0
-            if amt:
-                if not row['vat']:
-                    if get_file_data:
-                        raise UserError(_('One or more partners has no VAT Number.'))
-                    elif row['partner_country_code'] in ec_country_to_check:
-                        # if country is not ec country, "no VAT" warning is redundant and potentially confusing
-                        options['missing_vat_warning'] = True
+        operation_categories = options['sales_report_taxes'].get('operation_category', {})
+        ec_tax_filter_selection = {v.get('id'): v.get('selected') for v in options.get('ec_tax_filter_selection', [])}
+        for partner, results in self._sales_report_query_partners(options):
+            for tax_ec_category in ('goods', 'triangular', 'services'):
+                if not ec_tax_filter_selection[tax_ec_category]:
+                    # Skip the line if the tax is not selected
+                    continue
+                partner_values = defaultdict(dict)
+                country_specific_code = operation_categories.get(tax_ec_category)
+                has_found_a_line = False
+                for col_grp_key in options['column_groups']:
+                    partner_sum = results.get(col_grp_key, {})
+                    partner_values[col_grp_key]['vat_number'] = partner_sum.get('vat_number', 'UNKNOWN')
+                    partner_values[col_grp_key]['country_code'] = partner_sum.get('country_code', 'UNKNOWN')
+                    partner_values[col_grp_key]['sales_type_code'] = []
+                    partner_values[col_grp_key]['balance'] = 0.0
+                    for i, operation_id in enumerate(partner_sum.get('tax_element_id', [])):
+                        if operation_id in options['sales_report_taxes'][tax_ec_category]:
+                            has_found_a_line = True
+                            partner_values[col_grp_key]['balance'] += partner_sum.get(tax_ec_category, 0.0)
+                            totals_by_column_group[col_grp_key]['balance'] += partner_sum.get(tax_ec_category, 0.0)
+                            partner_values[col_grp_key]['sales_type_code'] += [
+                                country_specific_code or
+                                (partner_sum.get('sales_type_code') and partner_sum.get('sales_type_code')[i])
+                                or None]
+                            if has_found_a_line and options['sales_report_taxes'].get('use_taxes_instead_of_tags'):
+                                break # We only want the first line to avoid amount multiplication in the generic report
+                    partner_values[col_grp_key]['sales_type_code'] = ', '.join(partner_values[col_grp_key]['sales_type_code'])
+                if has_found_a_line:
+                    lines.append((0, self._sales_report_get_report_line_partner(options, partner, partner_values)))
 
-                if row['partner_country_code'] not in ec_country_to_check:
-                    options['non_ec_country_warning'] = True
-
-                if row.get('same_country'):
-                    options['same_country_warning'] = True
-
-                total_value += amt
-
-                if not options.get('get_file_data') and not self.env.context.get('no_format'):
-                    currency_id = self.env.company.currency_id
-                    row['amount'] = formatLang(self.env, row['amount'], currency_obj=currency_id)
-
-                columns = self._get_row_columns(options, row, ec_sale_code_options_data)
-
-                if get_file_data:
-                    lines.append(columns)
-                else:
-                    if row.get('tax_code'):  # generic report results have no tax_code column
-                        tax_report_line_ids = ec_sale_code_options_data[row['tax_code']]['tax_report_line_ids']
-                    else:
-                        tax_report_line_ids = None
-                    lines.append({
-                        'id': self._get_generic_line_id('res.partner', row['partner_id']),
-                        'caret_options': 'res.partner',
-                        'model': 'res.partner',
-                        'name': row['partner_name'],
-                        'columns': [{'name': v} for v in columns],
-                        'tax_report_line_ids': tax_report_line_ids,
-                    })
-
-        if not get_file_data:
-            lines.append({
-                'id': self._get_generic_line_id('', '', 'total_value'),
-                'name': _('Total'),
-                'class': 'total',
-                'level': 2,
-                'columns': [{'name': self.format_value(total_value), 'no_format': total_value}],
-                'colspan': len(self._get_columns_name(options)) - 1,
-            })
+        # Report total line.
+        lines.append((0, self._sales_report_get_report_line_total(options, totals_by_column_group)))
         return lines
 
-    def _get_partner_amls_domain(self, options, params):
-        model, model_id = self._get_model_info_from_id(params['id'])
-        if model != 'res.partner':
-            raise UserError(_("Wrong model on line %s ; expected res.partner", params['id']))
+    def _sales_report_get_report_line_partner(self, options, partner, partner_values):
+        """
+        Convert the partner values to a report line.
+        :param dict options: Report options
+        :param recordset partner: the corresponding res.partner record
+        :param dict partner_values: Dictionary of values for the report line
+        :return dict: Return a dict with the values for the report line.
+        """
+        column_values = []
+        for column in options['columns']:
+            expression_label = column['expression_label']
+            value = partner_values[column['column_group_key']].get(expression_label)
+            column_values.append({
+                'name': self.format_value(value, figure_type=column['figure_type']) if value is not None else value,
+                'no_format': value,
+                'class': 'number' if column['figure_type'] == 'monetary' else 'text'
+            }) # value is not None => allows to avoid the "0.0" or None values but only those
 
-        return [
-            ('partner_id', '=', model_id),
-            ('tax_tag_ids.tax_report_line_ids', 'in', params['tax_report_line_ids']),
-            ('move_id.date', '>=', options['date']['date_from']),
-            ('move_id.date', '<=', options['date']['date_to']),
-        ]
-
-    def get_partner_amls(self, options, params):
         return {
-            'name': _("Partner Audit"),
-            'type': 'ir.actions.act_window',
-            'views': [[self.env.ref('account.view_move_line_tree').id, 'list'], (False, 'form')],
-            'res_model': 'account.move.line',
-            'context': {},
-            'domain': self._get_partner_amls_domain(options, params),
+            'id': self._get_generic_line_id('res.partner', partner.id),
+            'name': partner is not None and (partner.name or '')[:128] or _('Unknown Partner'),
+            'columns': column_values,
+            'level': 2,
+            'trust': partner.trust if partner else None,
+            'caret_options': 'ec_sales',
         }
+
+    def _sales_report_get_report_line_total(self, options, totals_by_column_group):
+        """
+        Convert the total values values to a report line.
+        :param dict options: Report options
+        :param dict totals_by_column_group: Dictionary of values for the total line
+        :return dict: Return a dict with the values for the report line.
+        """
+        column_values = []
+        for column in options['columns']:
+            value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
+            column_values.append({
+                'name': self.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'no_format': value if column['figure_type'] == 'monetary' else '',
+                'class': 'number' if column['figure_type'] == 'monetary' else 'text'
+            })
+
+        return {
+            'id': self._get_generic_line_id(None, None, markup='total'),
+            'name': _('Total'),
+            'class': 'total',
+            'level': 1,
+            'columns': column_values,
+        }
+
+    def _sales_report_query_partners(self, options):
+        ''' Execute the queries, perform all the computation, then
+        returns a lists of tuple (partner, fetched_values) sorted by the table's model _order:
+            - partner is a res.parter record.
+            - fetched_values is a dictionary containing:
+                - sums by operation type:           {'goods': float,
+                                                     'triangular': float,
+                                                     'services': float,
+
+                - tax identifiers:                   'tax_element_id': list[int], > the tag_id in almost every case
+                                                     'sales_type_code': list[str],
+
+                - partner identifier elements:       'vat_number': str,
+                                                     'full_vat_number': str,
+                                                     'country_code': str}
+
+        :param options:             The report options.
+        :return:                    (accounts_values, taxes_results)
+        '''
+        groupby_partners = {}
+
+        def assign_sum(row):
+            """
+            Assign corresponding values from the SQL querry row to the groupby_partners dictionary.
+            If the line balance isn't 0, find the tax tag_id and check in which column/report line the SQL line balance
+            should be displayed.
+
+            The tricky part is to allow for the report to be displayed in vertical or horizontal format.
+            In vertical, you have up to 3 lines per partner (one for each operation type).
+            In horizontal, you have one line with 3 columns per partner (one for each operation type).
+
+            Add then the more straightforward data (vat number, country code, ...)
+            :param dict row:
+            """
+            if not company_currency.is_zero(row['balance']):
+                groupby_partners.setdefault(row['groupby'], defaultdict(lambda: defaultdict(float)))
+
+                groupby_partners_keyed = groupby_partners[row['groupby']][row['column_group_key']]
+                if row['tax_element_id'] in options['sales_report_taxes']['goods']:
+                    groupby_partners_keyed['goods'] += row['balance']
+                elif row['tax_element_id'] in options['sales_report_taxes']['triangular']:
+                    groupby_partners_keyed['triangular'] += row['balance']
+                elif row['tax_element_id'] in options['sales_report_taxes']['services']:
+                    groupby_partners_keyed['services'] += row['balance']
+
+                groupby_partners_keyed.setdefault('tax_element_id', []).append(row['tax_element_id'])
+                groupby_partners_keyed.setdefault('sales_type_code', []).append(row['sales_type_code'])
+
+                vat = row['vat_number'] or ''
+                groupby_partners_keyed.setdefault('vat_number', vat[2:])
+                groupby_partners_keyed.setdefault('full_vat_number', vat)
+                groupby_partners_keyed.setdefault('country_code', vat[:2])
+
+        company_currency = self.env.company.currency_id
+
+        # Execute the queries and dispatch the results.
+        query, params = self._sales_report_get_query_sums(options)
+        self._cr.execute(query, params)
+
+        dictfetchall = self._cr.dictfetchall()
+        for res in dictfetchall:
+            assign_sum(res)
+
+        if groupby_partners:
+            partners = self.env['res.partner'].with_context(active_test=False).browse(groupby_partners.keys())
+        else:
+            partners = self.env['res.partner']
+
+        return [(partner, groupby_partners[partner.id]) for partner in partners]
+
+    def _sales_report_get_query_sums(self, options):
+        ''' Construct a query retrieving all the aggregated sums to build the report. It includes:
+        - sums for all partners.
+        - sums for the initial balances.
+        :param options:             The report options.
+        :return:                    (query, params)
+        '''
+        params = []
+        queries = []
+        # Create the currency table.
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        allowed_ids = self._sales_report_get_tag_ids_filtered(options)
+
+        # In the case of the generic report, we don't have a country defined. So no reliable tax report whose
+        # tag_ids can be used. So we have a fallback to tax_ids.
+
+        if options.get('sales_report_taxes', {}).get('use_taxes_instead_of_tags'):
+            tax_elem_table = 'account_tax'
+            aml_rel_table = 'account_move_line_account_tax_rel'
+        else:
+            tax_elem_table = 'account_account_tag'
+            aml_rel_table = 'account_account_tag_account_move_line_rel'
+
+        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = self._query_get(column_group_options, 'normal')
+            params.append(column_group_key)
+            params += where_params
+            if allowed_ids:
+                where_clause += f" AND {tax_elem_table}.id IN %s"  # Add the tax element filter.
+                params.append(tuple(allowed_ids))
+            queries.append(f"""
+                SELECT
+                    %s                              AS column_group_key,
+                    account_move_line.partner_id    AS groupby,
+                    res_partner.vat                 AS vat_number,
+                    res_country.code                AS country_code,
+                    -SUM(account_move_line.balance) AS balance,
+                    {tax_elem_table}.name           AS sales_type_code,
+                    {tax_elem_table}.id             AS tax_element_id
+                FROM {tables}
+                JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+                JOIN {aml_rel_table} ON {aml_rel_table}.account_move_line_id = account_move_line.id
+                JOIN {tax_elem_table} ON {aml_rel_table}.{tax_elem_table}_id = {tax_elem_table}.id
+                JOIN res_partner ON account_move_line.partner_id = res_partner.id
+                JOIN res_country ON res_partner.country_id = res_country.id
+                WHERE {where_clause}
+                GROUP BY {tax_elem_table}.id, {tax_elem_table}.name, account_move_line.partner_id,
+                res_partner.vat, res_country.code
+            """)
+        return ' UNION ALL '.join(queries), params
+
+    @api.model
+    def _sales_report_get_tag_ids_filtered(self, options):
+        """
+        Helper function to get all the tag_ids concerned by the report for the given options.
+        :param dict options: Report options
+        :return tuple: tag_ids untyped after filtering
+        """
+        allowed_taxes = set()
+        for operation_type in options.get('ec_tax_filter_selection', []):
+            if operation_type.get('selected'):
+                allowed_taxes.update(options['sales_report_taxes'][operation_type.get('id')])
+        return allowed_taxes
 
     def get_non_vat_actions_window(self, options, params):
         res = {
@@ -289,7 +339,7 @@ class ECSalesReport(models.AbstractModel):
             'context': {},
         }
         amls = self._get_act_window_amls(options, [
-            ('partner_id.country_id.code', 'not in', tuple(self.get_ec_country_codes(options)))
+            ('partner_id.country_id.code', 'not in', tuple(self.sales_report_get_ec_country_codes(options)))
         ])
         if params.get('model') == 'move':
             res.update({
@@ -312,7 +362,7 @@ class ECSalesReport(models.AbstractModel):
             'context': {},
         }
         amls = self._get_act_window_amls(options, [
-            ('partner_id.country_id.code', '=', self._get_report_country_code(options))
+            ('partner_id.country_id.code', '=', self.sales_report_get_ec_country_codes(options))
         ])
         if params.get('model') == 'move':
             res.update({
@@ -350,16 +400,16 @@ class ECSalesReport(models.AbstractModel):
         return self.env['account.move.line'].search(domain)
 
     @api.model
-    def get_ec_country_codes(self, options):
+    def sales_report_get_ec_country_codes(self, options):
+        """
+        Return the list of country codes for the EC countries.
+        :param dict options: Report options
+        :return set: List of country codes for a given date (UK case)
+        """
         rslt = {'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU',
                 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE'}
 
         # GB left the EU on January 1st 2021. But before this date, it's still to be considered as a EC country
         if fields.Date.from_string(options['date']['date_from']) < fields.Date.from_string('2021-01-01'):
             rslt.add('GB')
-
         return rslt
-
-    @api.model
-    def _get_report_name(self):
-        return _('EC Sales List')

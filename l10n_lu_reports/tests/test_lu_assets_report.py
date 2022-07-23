@@ -45,9 +45,9 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
             'journal_id': self.company_data['default_journal_purchase'].id,
             'original_value': 100.00,
         }).validate()
-        report = self.env['account.assets.report']
+        report = self.env.ref('account_asset.assets_report')
         report, options = self._get_report_and_options(report, datetime.today() - relativedelta(days=365), datetime.today())
-        data = report._get_lu_xml_2_0_report_values(options)['forms'][0]['tables'][0]
+        data = report.l10n_lu_asset_report_get_xml_2_0_report_values(options)['forms'][0]['tables'][0]
         self.assertNotIn('504', data[0].keys())
         self.assertNotIn('505', data[0].keys())
 
@@ -91,12 +91,13 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
             line_form.tax_ids.add(self.tax_17)
         move = move_form.save()
         move.action_post()
-        report = self.env['account.assets.report']
+        report = self.env.ref('account_asset.assets_report')
         # Assets must be in a state different from draft in order to be reported
         for asset in move.asset_ids:
             asset.state = 'open'
         report, options = self._get_report_and_options(report, datetime.today() - relativedelta(days=365), datetime.today())
-        data = report._get_lu_xml_2_0_report_values(options)['forms'][0]['tables'][0]
+        data = report.l10n_lu_asset_report_get_xml_2_0_report_values(options)['forms'][0]['tables'][0]
+
         self.assertEqual(len(data), 10)
         for line in data:
             self.assertEqual((1000.0 + 170.0) / 10, line.get('504', {}).get('value'))
@@ -121,9 +122,9 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
         asset_form.journal_id = cls.company_data['default_journal_purchase']
         asset_form = asset_form.save()
         asset_form.validate()
-        report = cls.env['account.assets.report']
+        report = cls.env.ref('account_asset.assets_report')
         report, options = cls._get_report_and_options(report, datetime.today() - relativedelta(days=365), datetime.today())
-        data = report._get_lu_xml_2_0_report_values(options)['forms'][0]['tables'][0]
+        data = report.l10n_lu_asset_report_get_xml_2_0_report_values(options)['forms'][0]['tables'][0]
         return data
 
     @classmethod

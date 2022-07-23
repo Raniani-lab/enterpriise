@@ -1,253 +1,355 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import json
 
 from odoo import models, fields, api, _
-from odoo.tools.misc import format_date, DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools.misc import format_date
+from odoo.exceptions import UserError
+
 from datetime import timedelta
+from collections import defaultdict
 
 
-class AccountGeneralLedgerReport(models.AbstractModel):
-    _name = "account.general.ledger"
-    _description = "General Ledger Report"
-    _inherit = "account.report"
+class AccountGeneralLedgerReport(models.Model):
+    _inherit = 'account.report'
 
-    filter_date = {'mode': 'range', 'filter': 'this_month'}
-    filter_all_entries = False
-    filter_journals = True
-    filter_analytic = True
-    filter_unfold_all = False
-    search_account = True
+    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
+        # Remove multi-currency columns if needed
+        if not self.user_has_groups('base.group_multi_currency'):
+            options['columns'] = [
+                column for column in options['columns']
+                if column['expression_label'] != 'amount_currency'
+            ]
 
-    @api.model
-    def _get_templates(self):
-        templates = super(AccountGeneralLedgerReport, self)._get_templates()
-        templates['line_template'] = 'account_reports.line_template_general_ledger_report'
-        templates['main_template'] = 'account_reports.template_general_ledger_report'
-        return templates
+    def _expand_unfoldable_line_general_ledger(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+        def init_load_more_progress(line_dict):
+            return {
+                column['column_group_key']: line_col.get('no_format', 0)
+                for column, line_col in  zip(options['columns'], line_dict['columns'])
+                if column['expression_label'] == 'balance'
+            }
 
-    @api.model
-    def _get_columns_name(self, options):
-        columns_names = [
-            {'name': ''},
-            {'name': _('Date'), 'class': 'date'},
-            {'name': _('Communication')},
-            {'name': _('Partner')},
-            {'name': _('Debit'), 'class': 'number'},
-            {'name': _('Credit'), 'class': 'number'},
-            {'name': _('Balance'), 'class': 'number'}
-        ]
-        if self.user_has_groups('base.group_multi_currency'):
-            columns_names.insert(4, {'name': _('Currency'), 'class': 'number'})
-        return columns_names
+        model, model_id = self._get_model_info_from_id(line_dict_id)
 
-    @api.model
-    def _get_report_name(self):
-        return _("General Ledger")
+        if model != 'account.account':
+            raise UserError(_("Wrong ID for general ledger line to expand: %s", line_dict_id))
 
-    def view_all_journal_items(self, options, params):
-        if params.get('id'):
-            params['id'] = int(params.get('id').split('_')[1])
-        return self.env['account.report'].open_journal_items(options, params, view_id=self.env.ref('account.view_move_line_tree_grouped_general').id)
-
-    ####################################################
-    # MAIN METHODS
-    ####################################################
-
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        offset = int(options.get('lines_offset', 0))
-        remaining = int(options.get('lines_remaining', 0))
-        balance_progress = float(options.get('lines_progress', 0))
-
-        if offset > 0:
-            # Case a line is expanded using the load more.
-            return self._load_more_lines(options, line_id, offset, remaining, balance_progress)
-        else:
-            # Case the whole report is loaded or a line is expanded for the first time.
-            return self._get_general_ledger_lines(options, line_id=line_id)
-
-    @api.model
-    def _get_general_ledger_lines(self, options, line_id=None):
-        ''' Get lines for the whole report or for a specific line.
-        :param options: The report options.
-        :return:        A list of lines, each one represented by a dictionary.
-        '''
         lines = []
-        aml_lines = []
-        options_list = self._get_options_periods_list(options)
-        unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
+
+        # Get initial balance
+        if offset == 0:
+            if unfold_all_batch_data:
+                account, init_balance_by_col_group = unfold_all_batch_data['initial_balances'][model_id]
+            else:
+                account, init_balance_by_col_group = self._general_ledger_get_initial_balance_values([model_id], options)[model_id]
+
+            initial_balance_line = self._get_partner_and_general_ledger_initial_balance_line(options, line_dict_id, init_balance_by_col_group, account.currency_id)
+
+            if initial_balance_line:
+                lines.append(initial_balance_line)
+
+                # For the first expansion of the line, the initial balance line gives the progress
+                progress = init_load_more_progress(initial_balance_line)
+
+        # Get move lines
+        limit_to_load = self.load_more_limit + 1 if self.load_more_limit and not self._context.get('print_mode') else None
+
+        if unfold_all_batch_data:
+            aml_results = unfold_all_batch_data['aml_values'][model_id]
+        else:
+            aml_results = self._general_ledger_get_aml_values(options, [model_id], offset=offset, limit=limit_to_load)[model_id]
+
+        has_more = False
+        treated_results_count = 0
+        next_progress = progress
+        for aml_result in aml_results.values():
+            if limit_to_load and treated_results_count == self.load_more_limit:
+                # Enough elements loaded. Only the one due to the +1 in the limit passed when computing aml_results is left.
+                # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
+                has_more = True
+                break
+
+            new_line = self._general_ledger_get_aml_line(line_dict_id, options, aml_result, next_progress)
+            lines.append(new_line)
+            next_progress = init_load_more_progress(new_line)
+            treated_results_count += 1
+
+        return {
+            'lines': lines,
+            'offset_increment': treated_results_count,
+            'has_more': has_more,
+            'progress': json.dumps(next_progress),
+        }
+
+    def _custom_unfold_all_batch_data_generator_general_ledger(self, options, lines_to_expand_by_function):
+        account_ids_to_expand = []
+        for line_dict in lines_to_expand_by_function.get('_expand_unfoldable_line_general_ledger', []):
+            model, model_id = self._get_model_info_from_id(line_dict['id'])
+            if model == 'account.account':
+                account_ids_to_expand.append(model_id)
+
+        return {
+            'initial_balances': self._general_ledger_get_initial_balance_values(account_ids_to_expand, options),
+
+            # load_more_limit canno( be passed to this call, otherwise it won't be applied per account but on the whole result.
+            # We gain perf from batching, but load every result, even if the limit restricts them later.
+            'aml_values': self._general_ledger_get_aml_values(options, account_ids_to_expand),
+        }
+
+    def _dynamic_lines_generator_general_ledger(self, options, all_column_groups_expression_totals):
+        lines = []
         date_from = fields.Date.from_string(options['date']['date_from'])
         company_currency = self.env.company.currency_id
 
-        expanded_account = line_id and self.env['account.account'].browse(int(line_id[8:]))
-        accounts_results, taxes_results = self._do_query(options_list, expanded_account=expanded_account)
+        totals_by_column_group = defaultdict(lambda: {'debit': 0, 'credit': 0, 'balance': 0})
+        for account, column_group_results in self._general_ledger_query_values(options):
+            eval_dict = {}
+            has_lines = False
+            for column_group_key, results in column_group_results.items():
+                account_sum = results.get('sum', {})
+                account_un_earn = results.get('unaffected_earnings', {})
 
-        total_debit = total_credit = total_balance = 0.0
-        for account, periods_results in accounts_results:
-            # No comparison allowed in the General Ledger. Then, take only the first period.
-            results = periods_results[0]
+                account_debit = account_sum.get('debit', 0.0) + account_un_earn.get('debit', 0.0)
+                account_credit = account_sum.get('credit', 0.0) + account_un_earn.get('credit', 0.0)
+                account_balance = account_sum.get('balance', 0.0) + account_un_earn.get('balance', 0.0)
 
-            is_unfolded = 'account_%s' % account.id in options['unfolded_lines']
+                eval_dict[column_group_key] = {
+                    'amount_currency': account_sum.get('amount_currency', 0.0) + account_un_earn.get('amount_currency', 0.0),
+                    'debit': account_debit,
+                    'credit': account_credit,
+                    'balance': account_balance,
+                }
 
-            # account.account record line.
-            account_sum = results.get('sum', {})
-            account_un_earn = results.get('unaffected_earnings', {})
+                max_date = account_sum.get('max_date')
+                has_lines = has_lines or (max_date and max_date >= date_from)
 
-            # Check if there is sub-lines for the current period.
-            max_date = account_sum.get('max_date')
-            has_lines = max_date and max_date >= date_from or False
+                totals_by_column_group[column_group_key]['debit'] += account_debit
+                totals_by_column_group[column_group_key]['credit'] += account_credit
+                totals_by_column_group[column_group_key]['balance'] += account_balance
 
-            amount_currency = account_sum.get('amount_currency', 0.0) + account_un_earn.get('amount_currency', 0.0)
-            debit = account_sum.get('debit', 0.0) + account_un_earn.get('debit', 0.0)
-            credit = account_sum.get('credit', 0.0) + account_un_earn.get('credit', 0.0)
-            balance = account_sum.get('balance', 0.0) + account_un_earn.get('balance', 0.0)
+            lines.append(self._general_ledger_get_account_title_line(options, account, has_lines, eval_dict))
 
-            lines.append(self._get_account_title_line(options, account, amount_currency, debit, credit, balance, has_lines))
+        # Report total line.
+        for totals in totals_by_column_group.values():
+            totals['balance'] = company_currency.round(totals['balance'])
 
-            total_debit += debit
-            total_credit += credit
-            total_balance += balance
+        # Tax Declaration lines.
+        journal_options = self._get_options_journals(options)
+        if len(options['column_groups']) == 1 and len(journal_options) == 1 and journal_options[0]['type'] in ('sale', 'purchase'):
+            lines += self._general_ledger_get_tax_declaration_lines(options, journal_options[0]['type'])
 
-            if has_lines and (unfold_all or is_unfolded):
-                # Initial balance line.
-                account_init_bal = results.get('initial_balance', {})
+        # Total line
+        lines.append(self._general_ledger_get_total_line(options, totals_by_column_group))
 
-                cumulated_balance = account_init_bal.get('balance', 0.0) + account_un_earn.get('balance', 0.0)
+        return [(0, line) for line in lines]
 
-                initial_balance_line = self._get_initial_balance_line(
-                    options,
-                    account,
-                    account_init_bal.get('amount_currency', 0.0) + account_un_earn.get('amount_currency', 0.0),
-                    account_init_bal.get('debit', 0.0) + account_un_earn.get('debit', 0.0),
-                    account_init_bal.get('credit', 0.0) + account_un_earn.get('credit', 0.0),
-                    cumulated_balance,
-                )
+    def _general_ledger_get_tax_declaration_lines(self, options, tax_type):
+        labels_replacement = {
+            'debit': _("Base Amount"),
+            'credit': _("Tax Amount"),
+        }
 
-                if initial_balance_line:
-                    lines.append(initial_balance_line)
+        rslt = [{
+            'id': self._get_generic_line_id(None, None, markup='tax_decl_header_1'),
+            'name': _('Tax Declaration'),
+            'columns': [{} for column in options['columns']],
+            'level': 1,
+            'unfoldable': False,
+            'unfolded': False,
+        }, {
+            'id': self._get_generic_line_id(None, None, markup='tax_decl_header_1'),
+            'name': _('Name'),
+            'columns': [{'name': labels_replacement.get(col['expression_label'], '')} for col in options['columns']],
+            'level': 2,
+            'unfoldable': False,
+            'unfolded': False,
+        }]
 
-                # account.move.line record lines.
-                amls = results.get('lines', [])
+        # Call the generic tax report
+        generic_tax_report = self.env.ref('account.generic_tax_report')
+        tax_report_options = generic_tax_report._get_options({**options, 'forced_domain': [('tax_line_id.type_tax_use', '=', tax_type)]})
+        tax_report_lines = generic_tax_report._get_lines(tax_report_options)
+        tax_type_parent_line_id = generic_tax_report._get_generic_line_id(None, None, markup=tax_type)
 
-                load_more_remaining = len(amls)
-                load_more_counter = self._context.get('print_mode') and load_more_remaining or self.MAX_LINES
+        for tax_report_line in tax_report_lines:
+            if tax_report_line.get('parent_id') == tax_type_parent_line_id:
+                original_columns = tax_report_line['columns']
+                row_column_map = {
+                    'debit': original_columns[0],
+                    'credit': original_columns[1],
+                }
 
-                for aml in amls:
-                    # Don't show more line than load_more_counter.
-                    if load_more_counter == 0:
-                        break
+                tax_report_line['columns'] = [row_column_map.get(col['expression_label'], {}) for col in options['columns']]
+                rslt.append(tax_report_line)
 
-                    cumulated_balance += aml['balance']
-                    lines.append(self._get_aml_line(options, account, aml, company_currency.round(cumulated_balance)))
+        return rslt
 
-                    load_more_remaining -= 1
-                    load_more_counter -= 1
-                    aml_lines.append(aml['id'])
+    def _general_ledger_query_values(self, options):
+        """ Executes the queries, and performs all the computations.
 
-                if load_more_remaining > 0:
-                    # Load more line.
-                    lines.append(self._get_load_more_line(
-                        options, account,
-                        self.MAX_LINES,
-                        load_more_remaining,
-                        cumulated_balance,
-                    ))
+        :return:    [(record, values_by_column_group), ...],  where
+                    - record is an account.account record.
+                    - values_by_column_group is a dict in the form {column_group_key: values, ...}
+                        - column_group_key is a string identifying a column group, as in options['column_groups']
+                        - values is a list of dictionaries, one per period containing:
+                            - sum:                              {'debit': float, 'credit': float, 'balance': float}
+                            - (optional) initial_balance:       {'debit': float, 'credit': float, 'balance': float}
+                            - (optional) unaffected_earnings:   {'debit': float, 'credit': float, 'balance': float}
+        """
+        # Execute the queries and dispatch the results.
+        query, params = self._general_ledger_get_query_sums(options)
 
-                if self.env.company.totals_below_sections:
-                    # Account total line.
-                    lines.append(self._get_account_total_line(
-                        options, account,
-                        account_sum.get('amount_currency', 0.0),
-                        account_sum.get('debit', 0.0),
-                        account_sum.get('credit', 0.0),
-                        account_sum.get('balance', 0.0),
-                    ))
+        groupby_accounts = {}
+        groupby_companies = {}
 
-        if not line_id:
-            # Report total line.
-            lines.append(self._get_total_line(
-                options,
-                total_debit,
-                total_credit,
-                company_currency.round(total_balance),
-            ))
+        self._cr.execute(query, params)
+        for res in self._cr.dictfetchall():
+            # No result to aggregate.
+            if res['groupby'] is None:
+                continue
 
-            # Tax Declaration lines.
-            journal_options = self._get_options_journals(options)
-            if len(journal_options) == 1 and journal_options[0]['type'] in ('sale', 'purchase'):
-                lines += self._get_tax_declaration_lines(
-                    options, journal_options[0]['type'], taxes_results
-                )
-        if self.env.context.get('aml_only'):
-            return aml_lines
-        return lines
+            column_group_key = res['column_group_key']
+            key = res['key']
+            if key == 'sum':
+                groupby_accounts.setdefault(res['groupby'], {col_group_key: {} for col_group_key in options['column_groups']})
+                groupby_accounts[res['groupby']][column_group_key][key] = res
 
-    @api.model
-    def _load_more_lines(self, options, line_id, offset, load_more_remaining, balance_progress):
-        ''' Get lines for an expanded line using the load more.
-        :param options: The report options.
-        :param line_id: string representing the line to expand formed as 'loadmore_<ID>'
-        :params offset, load_more_remaining: integers. Parameters that will be used to fetch the next aml slice
-        :param balance_progress: float used to carry on with the cumulative balance of the account.move.line
-        :return:        A list of lines, each one represented by a dictionary.
-        '''
-        lines = []
-        expanded_account = self.env['account.account'].browse(int(line_id[9:]))
+            elif key == 'initial_balance':
+                groupby_accounts.setdefault(res['groupby'], {col_group_key: {} for col_group_key in options['column_groups']})
+                groupby_accounts[res['groupby']][column_group_key][key] = res
 
-        load_more_counter = self.MAX_LINES
+            elif key == 'unaffected_earnings':
+                groupby_companies.setdefault(res['groupby'], {col_group_key: {} for col_group_key in options['column_groups']})
+                groupby_companies[res['groupby']][column_group_key] = res
 
-        # Fetch the next batch of lines.
-        amls_query, amls_params = self._get_query_amls(options, expanded_account, offset=offset, limit=load_more_counter)
-        self.env.cr.execute(amls_query, amls_params)
-        for aml in self._cr.dictfetchall():
-            # Don't show more line than load_more_counter.
-            if load_more_counter == 0:
-                break
+        # Affect the unaffected earnings to the first fetched account of type 'account.data_unaffected_earnings'.
+        # There is an unaffected earnings for each company but it's less costly to fetch all candidate accounts in
+        # a single search and then iterate it.
+        if groupby_companies:
+            candidates_account_ids = self.env['account.account']._name_search(options.get('filter_search_bar'), [
+                ('account_type', '=', 'equity_unaffected'),
+                ('company_id', 'in', list(groupby_companies.keys())),
+            ])
+            for account in self.env['account.account'].browse(candidates_account_ids):
+                company_unaffected_earnings = groupby_companies.get(account.company_id.id)
+                if not company_unaffected_earnings:
+                    continue
+                for column_group_key in options['column_groups']:
+                    unaffected_earnings = company_unaffected_earnings[column_group_key]
+                    groupby_accounts.setdefault(account.id, {col_group_key: {} for col_group_key in options['column_groups']})
+                    groupby_accounts[account.id][column_group_key]['unaffected_earnings'] = unaffected_earnings
+                del groupby_companies[account.company_id.id]
 
-            balance_progress += aml['balance']
+        # Retrieve the accounts to browse.
+        # groupby_accounts.keys() contains all account ids affected by:
+        # - the amls in the current period.
+        # - the amls affecting the initial balance.
+        # - the unaffected earnings allocation.
+        # Note a search is done instead of a browse to preserve the table ordering.
+        if groupby_accounts:
+            accounts = self.env['account.account'].search([('id', 'in', list(groupby_accounts.keys()))])
+        else:
+            accounts = []
 
-            # account.move.line record line.
-            lines.append(self._get_aml_line(options, expanded_account, aml, balance_progress))
+        return [(account, groupby_accounts[account.id]) for account in accounts]
 
-            offset += 1
-            load_more_remaining -= 1
-            load_more_counter -= 1
+    def _general_ledger_get_query_sums(self, options):
+        """ Construct a query retrieving all the aggregated sums to build the report. It includes:
+        - sums for all accounts.
+        - sums for the initial balances.
+        - sums for the unaffected earnings.
+        - sums for the tax declaration.
+        :return:                    (query, params)
+        """
+        options_by_column_group = self._split_options_per_column_group(options)
 
-        if load_more_remaining > 0:
-            # Load more line.
-            lines.append(self._get_load_more_line(
-                options, expanded_account,
-                offset,
-                load_more_remaining,
-                balance_progress,
-            ))
-        return lines
+        params = []
+        queries = []
 
-    ####################################################
-    # OPTIONS
-    ####################################################
+        # Create the currency table.
+        # As the currency table is the same whatever the comparisons, create it only once.
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
 
-    @api.model
-    def _force_strict_range(self, options):
-        ''' Duplicate options with the 'strict_range' enabled on the filter_date.
-        :param options: The report options.
-        :return:        A copy of the options.
-        '''
-        new_options = options.copy()
-        new_options['date'] = new_options['date'].copy()
-        new_options['date']['strict_range'] = True
-        return new_options
+        # ============================================
+        # 1) Get sums for all accounts.
+        # ============================================
+        for column_group_key, options_group in options_by_column_group.items():
+            # The period domain is expressed as:
+            # [
+            #   ('date' <= options['date_to']),
+            #   '|',
+            #   ('date' >= fiscalyear['date_from']),
+            #   ('account_id.include_initial_balance', '=', True),
+            # ]
 
-    @api.model
-    def _get_options_domain(self, options):
-        # OVERRIDE
-        domain = super(AccountGeneralLedgerReport, self)._get_options_domain(options)
-        # Filter accounts based on the search bar.
-        domain += [('account_id', 'ilike', options.get('filter_accounts'))]
-        return domain
+            new_options = self._general_ledger_get_options_sum_balance(options_group)
 
-    @api.model
-    def _get_options_sum_balance(self, options):
+            # Sum is computed including the initial balance of the accounts configured to do so, unless a special option key is used
+            # (this is required for trial balance, which is based on general ledger)
+            sum_date_scope = 'strict_range' if options_group.get('general_ledger_strict_range') else 'normal'
+
+            query_domain = []
+
+            if options.get('filter_search_bar'):
+                query_domain.append(('account_id', 'ilike', options['filter_search_bar']))
+
+            if options_group.get('include_current_year_in_unaff_earnings'):
+                query_domain += [('account_id.include_initial_balance', '=', True)]
+
+            tables, where_clause, where_params = self._query_get(new_options, sum_date_scope, domain=query_domain)
+            params.append(column_group_key)
+            params += where_params
+            queries.append(f"""
+                SELECT
+                    account_move_line.account_id                            AS groupby,
+                    'sum'                                                   AS key,
+                    MAX(account_move_line.date)                             AS max_date,
+                    %s                                                      AS column_group_key,
+                    COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
+                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
+                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                FROM {tables}
+                LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+                WHERE {where_clause}
+                GROUP BY account_move_line.account_id
+            """)
+
+            # ============================================
+            # 2) Get sums for the unaffected earnings.
+            # ============================================
+            if not options_group.get('general_ledger_strict_range'):
+                unaff_earnings_domain = [('account_id.include_initial_balance', '=', False)]
+
+                # The period domain is expressed as:
+                # [
+                #   ('date' <= fiscalyear['date_from'] - 1),
+                #   ('account_id.include_initial_balance', '=', False),
+                # ]
+
+                new_options = self._general_ledger_get_options_unaffected_earnings(options_group)
+                tables, where_clause, where_params = self._query_get(new_options, 'strict_range', domain=unaff_earnings_domain)
+                params.append(column_group_key)
+                params += where_params
+                queries.append(f"""
+                    SELECT
+                        account_move_line.company_id                            AS groupby,
+                        'unaffected_earnings'                                   AS key,
+                        NULL                                                    AS max_date,
+                        %s                                                      AS column_group_key,
+                        COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
+                        SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
+                        SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
+                        SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                    FROM {tables}
+                    LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+                    WHERE {where_clause}
+                    GROUP BY account_move_line.company_id
+                """)
+
+        return ' UNION ALL '.join(queries), params
+
+    def _general_ledger_get_options_sum_balance(self, options):
         ''' Create options used to compute the aggregated sums on accounts.
         The resulting dates domain will be:
         [
@@ -260,16 +362,19 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(new_options['date']['date_from']))
-        new_options['date'] = {
-            'mode': 'range',
-            'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'date_to': options['date']['date_to'],
-        }
+
+        if not options.get('general_ledger_strict_range'):
+            reference_date = options['date']['date_from'] or options['date']['date_to'] # date_from is None when computing trial balance
+            fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(reference_date))
+            new_options['date'] = {
+                'mode': 'range',
+                'date_from': fields.Date.to_string(fiscalyear_dates['date_from']),
+                'date_to': options['date']['date_to'],
+            }
+
         return new_options
 
-    @api.model
-    def _get_options_unaffected_earnings(self, options):
+    def _general_ledger_get_options_unaffected_earnings(self, options):
         ''' Create options used to compute the unaffected earnings.
         The unaffected earnings are the amount of benefits/loss that have not been allocated to
         another account in the previous fiscal years.
@@ -282,18 +387,165 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         :return:        A copy of the options.
         '''
         new_options = options.copy()
-        new_options.pop('filter_accounts', None)
+        new_options.pop('filter_search_bar', None)
         fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
-        new_date_to = fiscalyear_dates['date_from'] - timedelta(days=1)
+
+        # Trial balance uses the options key, general ledger does not
+        new_date_to = fiscalyear_dates['date_to'] if options.get('include_current_year_in_unaff_earnings') else fiscalyear_dates['date_from'] - timedelta(days=1)
+
         new_options['date'] = {
             'mode': 'single',
-            'date_to': new_date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'date_to': fields.Date.to_string(new_date_to),
         }
+
         return new_options
 
-    @api.model
-    def _get_options_initial_balance(self, options):
-        ''' Create options used to compute the initial balances.
+    def _general_ledger_get_aml_values(self, options, expanded_account_ids, offset=0, limit=None):
+        rslt = {account_id: {} for account_id in expanded_account_ids}
+        aml_query, aml_params = self._general_ledger_get_query_amls(options, expanded_account_ids, offset=offset, limit=limit)
+        self._cr.execute(aml_query, aml_params)
+        for aml_result in self._cr.dictfetchall():
+            # The same aml can return multiple results when using account_report_cash_basis module, if the receivable/payable
+            # is reconciled with multiple payments. In this case, the date shown for the move lines actually corresponds to the
+            # reconciliation date. In order to keep distinct lines in this case, we include date in the grouping key.
+            aml_key = (aml_result['id'], aml_result['date'])
+
+            account_result = rslt[aml_result['account_id']]
+            if not aml_key in account_result:
+                account_result[aml_key] = {col_group_key: {} for col_group_key in options['column_groups']}
+
+            already_present_result = account_result[aml_key][aml_result['column_group_key']]
+            if already_present_result:
+                # In case the same move line gives multiple results at the same date, add them.
+                # This does not happen in standard GL report, but could because of custom shadowing of account.move.line,
+                # such as the one done in account_report_cash_basis (if the payable/receivable line is reconciled twice at the same date).
+                already_present_result['debit'] += aml_result['debit']
+                already_present_result['credit'] += aml_result['credit']
+                already_present_result['balance'] += aml_result['balance']
+                already_present_result['amount_currency'] += aml_result['amount_currency']
+            else:
+                account_result[aml_key][aml_result['column_group_key']] = aml_result
+
+        return rslt
+
+    def _general_ledger_get_query_amls(self, options, expanded_account_ids, offset=0, limit=None):
+        """ Construct a query retrieving the account.move.lines when expanding a report line with or without the load
+        more.
+        :param options:               The report options.
+        :param expanded_account_ids:  The account.account ids corresponding to consider. If None, match every account.
+        :param offset:                The offset of the query (used by the load more).
+        :param limit:                 The limit of the query (used by the load more).
+        :return:                      (query, params)
+        """
+        additional_domain = [('account_id', 'in', expanded_account_ids)] if expanded_account_ids is not None else None
+        queries = []
+        all_params = []
+        for column_group_key, group_options in self._split_options_per_column_group(options).items():
+            # Get sums for the account move lines.
+            # period: [('date' <= options['date_to']), ('date', '>=', options['date_from'])]
+            tables, where_clause, where_params = self._query_get(group_options, domain=additional_domain, date_scope='strict_range')
+            ct_query = self.env['res.currency']._get_query_currency_table(group_options)
+            query = f'''
+                (SELECT
+                    account_move_line.id,
+                    account_move_line.date,
+                    account_move_line.date_maturity,
+                    account_move_line.name,
+                    account_move_line.ref,
+                    account_move_line.company_id,
+                    account_move_line.account_id,
+                    account_move_line.payment_id,
+                    account_move_line.partner_id,
+                    account_move_line.currency_id,
+                    account_move_line.amount_currency,
+                    ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
+                    ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
+                    ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
+                    move.name                               AS move_name,
+                    company.currency_id                     AS company_currency_id,
+                    partner.name                            AS partner_name,
+                    move.move_type                          AS move_type,
+                    account.code                            AS account_code,
+                    account.name                            AS account_name,
+                    journal.code                            AS journal_code,
+                    journal.name                            AS journal_name,
+                    full_rec.name                           AS full_rec_name,
+                    %s                                      AS column_group_key
+                FROM {tables}
+                JOIN account_move move                      ON move.id = account_move_line.move_id
+                LEFT JOIN {ct_query}                        ON currency_table.company_id = account_move_line.company_id
+                LEFT JOIN res_company company               ON company.id = account_move_line.company_id
+                LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
+                LEFT JOIN account_account account           ON account.id = account_move_line.account_id
+                LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
+                LEFT JOIN account_full_reconcile full_rec   ON full_rec.id = account_move_line.full_reconcile_id
+                WHERE {where_clause}
+                ORDER BY account_move_line.date, account_move_line.id)
+            '''
+
+            queries.append(query)
+            all_params.append(column_group_key)
+            all_params += where_params
+
+        full_query = " UNION ALL ".join(queries)
+
+        if offset:
+            full_query += ' OFFSET %s '
+            all_params.append(offset)
+        if limit:
+            full_query += ' LIMIT %s '
+            all_params.append(limit)
+
+        return (full_query, all_params)
+
+    def _general_ledger_get_initial_balance_values(self, account_ids, options):
+        """
+        Get sums for the initial balance.
+        """
+        queries = []
+        params = []
+        for column_group_key, options_group in self._split_options_per_column_group(options).items():
+            new_options = self._general_ledger_get_options_initial_balance(options_group)
+            ct_query = self.env['res.currency']._get_query_currency_table(new_options)
+            tables, where_clause, where_params = self._query_get(new_options, 'normal', domain=[
+                ('account_id', 'in', account_ids),
+                ('account_id.include_initial_balance', '=', True),
+            ])
+            params.append(column_group_key)
+            params += where_params
+            queries.append(f"""
+                SELECT
+                    account_move_line.account_id                                                          AS groupby,
+                    'initial_balance'                                                                     AS key,
+                    NULL                                                                                  AS max_date,
+                    %s                                                                                    AS column_group_key,
+                    COALESCE(SUM(account_move_line.amount_currency), 0.0)                                 AS amount_currency,
+                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
+                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
+                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
+                FROM {tables}
+                LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+                WHERE {where_clause}
+                GROUP BY account_move_line.account_id
+            """)
+
+        self._cr.execute(" UNION ALL ".join(queries), params)
+
+        init_balance_by_col_group = {
+            account_id: {column_group_key: {} for column_group_key in options['column_groups']}
+            for account_id in account_ids
+        }
+        for result in self._cr.dictfetchall():
+            init_balance_by_col_group[result['groupby']][result['column_group_key']] = result
+
+        accounts = self.env['account.account'].browse(account_ids)
+        return {
+            account.id: (account, init_balance_by_col_group[account.id])
+            for account in accounts
+        }
+
+    def _general_ledger_get_options_initial_balance(self, options):
+        """ Create options used to compute the initial balances.
         The initial balances depict the current balance of the accounts at the beginning of
         the selected period in the report.
         The resulting dates domain will be:
@@ -305,549 +557,128 @@ class AccountGeneralLedgerReport(models.AbstractModel):
         ]
         :param options: The report options.
         :return:        A copy of the options.
-        '''
+        """
         new_options = options.copy()
-        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
-        new_date_to = fields.Date.from_string(new_options['date']['date_from']) - timedelta(days=1)
+        date_to = new_options['comparison']['periods'][-1]['date_from'] if new_options.get('comparison', {}).get('periods') else new_options['date']['date_from']
+        new_date_to = fields.Date.from_string(date_to) - timedelta(days=1)
+        fiscalyear_dates = self.env.company.compute_fiscalyear_dates(new_date_to)
         new_options['date'] = {
             'mode': 'range',
-            'date_from': fiscalyear_dates['date_from'].strftime(DEFAULT_SERVER_DATE_FORMAT),
-            'date_to': new_date_to.strftime(DEFAULT_SERVER_DATE_FORMAT),
+            'date_to': fields.Date.to_string(new_date_to),
+            'date_from': fields.Date.to_string(fiscalyear_dates['date_from']),
         }
         return new_options
 
     ####################################################
-    # QUERIES
-    ####################################################
-
-    @api.model
-    def _get_query_sums(self, options_list, expanded_account=None):
-        ''' Construct a query retrieving all the aggregated sums to build the report. It includes:
-        - sums for all accounts.
-        - sums for the initial balances.
-        - sums for the unaffected earnings.
-        - sums for the tax declaration.
-        :param options_list:        The report options list, first one being the current dates range, others being the
-                                    comparisons.
-        :param expanded_account:    An optional account.account record that must be specified when expanding a line
-                                    with of without the load more.
-        :return:                    (query, params)
-        '''
-        options = options_list[0]
-        unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-
-        params = []
-        queries = []
-
-        # Create the currency table.
-        # As the currency table is the same whatever the comparisons, create it only once.
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
-
-        # ============================================
-        # 1) Get sums for all accounts.
-        # ============================================
-
-        domain = [('account_id', '=', expanded_account.id)] if expanded_account else []
-
-        for i, options_period in enumerate(options_list):
-
-            # The period domain is expressed as:
-            # [
-            #   ('date' <= options['date_to']),
-            #   '|',
-            #   ('date' >= fiscalyear['date_from']),
-            #   ('account_id.include_initial_balance', '=', True),
-            # ]
-
-            new_options = self._get_options_sum_balance(options_period)
-            tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-            params += where_params
-            queries.append('''
-                SELECT
-                    account_move_line.account_id                            AS groupby,
-                    'sum'                                                   AS key,
-                    MAX(account_move_line.date)                             AS max_date,
-                    %s                                                      AS period_number,
-                    COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
-                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
-                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
-                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-                FROM %s
-                LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-                WHERE %s
-                GROUP BY account_move_line.account_id
-            ''' % (i, tables, ct_query, where_clause))
-
-        # ============================================
-        # 2) Get sums for the unaffected earnings.
-        # ============================================
-
-        domain = [('account_id.include_initial_balance', '=', False)]
-        if expanded_account:
-            domain.append(('company_id', '=', expanded_account.company_id.id))
-
-        # Compute only the unaffected earnings for the oldest period.
-
-        i = len(options_list) - 1
-        options_period = options_list[-1]
-
-        # The period domain is expressed as:
-        # [
-        #   ('date' <= fiscalyear['date_from'] - 1),
-        #   ('account_id.include_initial_balance', '=', False),
-        # ]
-
-        new_options = self._get_options_unaffected_earnings(options_period)
-        tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-        params += where_params
-        queries.append('''
-            SELECT
-                account_move_line.company_id                            AS groupby,
-                'unaffected_earnings'                                   AS key,
-                NULL                                                    AS max_date,
-                %s                                                      AS period_number,
-                COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
-                SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
-                SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
-                SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-            FROM %s
-            LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-            WHERE %s
-            GROUP BY account_move_line.company_id
-        ''' % (i, tables, ct_query, where_clause))
-
-        # ============================================
-        # 3) Get sums for the initial balance.
-        # ============================================
-
-        domain = []
-        if expanded_account:
-            domain = [('account_id', '=', expanded_account.id)]
-        elif not unfold_all and options['unfolded_lines']:
-            domain = [('account_id', 'in', [int(line[8:]) for line in options['unfolded_lines']])]
-
-        for i, options_period in enumerate(options_list):
-
-            # The period domain is expressed as:
-            # [
-            #   ('date' <= options['date_from'] - 1),
-            #   '|',
-            #   ('date' >= fiscalyear['date_from']),
-            #   ('account_id.include_initial_balance', '=', True)
-            # ]
-
-            new_options = self._get_options_initial_balance(options_period)
-            tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-            params += where_params
-            queries.append('''
-                SELECT
-                    account_move_line.account_id                            AS groupby,
-                    'initial_balance'                                       AS key,
-                    NULL                                                    AS max_date,
-                    %s                                                      AS period_number,
-                    COALESCE(SUM(account_move_line.amount_currency), 0.0)   AS amount_currency,
-                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))   AS debit,
-                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))  AS credit,
-                    SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-                FROM %s
-                LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-                WHERE %s
-                GROUP BY account_move_line.account_id
-            ''' % (i, tables, ct_query, where_clause))
-
-        # ============================================
-        # 4) Get sums for the tax declaration.
-        # ============================================
-
-        journal_options = self._get_options_journals(options)
-        if not expanded_account and len(journal_options) == 1 and journal_options[0]['type'] in ('sale', 'purchase'):
-            for i, options_period in enumerate(options_list):
-                tables, where_clause, where_params = self._query_get(options_period)
-                params += where_params + where_params
-                queries += ['''
-                    SELECT
-                        tax_rel.account_tax_id                  AS groupby,
-                        'base_amount'                           AS key,
-                        NULL                                    AS max_date,
-                        %s                                      AS period_number,
-                        0.0                                     AS amount_currency,
-                        0.0                                     AS debit,
-                        0.0                                     AS credit,
-                        SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-                    FROM account_move_line_account_tax_rel tax_rel, %s
-                    LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-                    WHERE account_move_line.id = tax_rel.account_move_line_id AND %s
-                    GROUP BY tax_rel.account_tax_id
-                ''' % (i, tables, ct_query, where_clause), '''
-                    SELECT
-                    account_move_line.tax_line_id               AS groupby,
-                    'tax_amount'                                AS key,
-                        NULL                                    AS max_date,
-                        %s                                      AS period_number,
-                        0.0                                     AS amount_currency,
-                        0.0                                     AS debit,
-                        0.0                                     AS credit,
-                        SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
-                    FROM %s
-                    LEFT JOIN %s ON currency_table.company_id = account_move_line.company_id
-                    WHERE %s
-                    GROUP BY account_move_line.tax_line_id
-                ''' % (i, tables, ct_query, where_clause)]
-
-        return ' UNION ALL '.join(queries), params
-
-    @api.model
-    def _get_query_amls(self, options, expanded_account, offset=None, limit=None):
-        ''' Construct a query retrieving the account.move.lines when expanding a report line with or without the load
-        more.
-        :param options:             The report options.
-        :param expanded_account:    The account.account record corresponding to the expanded line.
-        :param offset:              The offset of the query (used by the load more).
-        :param limit:               The limit of the query (used by the load more).
-        :return:                    (query, params)
-        '''
-
-        unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-
-        # Get sums for the account move lines.
-        # period: [('date' <= options['date_to']), ('date', '>=', options['date_from'])]
-        if expanded_account:
-            domain = [('account_id', '=', expanded_account.id)]
-        elif unfold_all:
-            domain = []
-        elif options['unfolded_lines']:
-            domain = [('account_id', 'in', [int(line[8:]) for line in options['unfolded_lines']])]
-
-        new_options = self._force_strict_range(options)
-        tables, where_clause, where_params = self._query_get(new_options, domain=domain)
-        ct_query = self.env['res.currency']._get_query_currency_table(options)
-        query = f'''
-            SELECT
-                account_move_line.id,
-                account_move_line.date,
-                account_move_line.date_maturity,
-                account_move_line.name,
-                account_move_line.ref,
-                account_move_line.company_id,
-                account_move_line.account_id,
-                account_move_line.payment_id,
-                account_move_line.partner_id,
-                account_move_line.currency_id,
-                account_move_line.amount_currency,
-                ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
-                ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
-                ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
-                account_move_line__move_id.name         AS move_name,
-                company.currency_id                     AS company_currency_id,
-                partner.name                            AS partner_name,
-                account_move_line__move_id.move_type    AS move_type,
-                account.code                            AS account_code,
-                account.name                            AS account_name,
-                journal.code                            AS journal_code,
-                journal.name                            AS journal_name,
-                full_rec.name                           AS full_rec_name
-            FROM {tables}
-            LEFT JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
-            LEFT JOIN res_company company               ON company.id = account_move_line.company_id
-            LEFT JOIN res_partner partner               ON partner.id = account_move_line.partner_id
-            LEFT JOIN account_account account           ON account.id = account_move_line.account_id
-            LEFT JOIN account_journal journal           ON journal.id = account_move_line.journal_id
-            LEFT JOIN account_full_reconcile full_rec   ON full_rec.id = account_move_line.full_reconcile_id
-            WHERE {where_clause}
-            ORDER BY account_move_line.date, account_move_line.id
-        '''
-
-        if offset:
-            query += ' OFFSET %s '
-            where_params.append(offset)
-        if limit:
-            query += ' LIMIT %s '
-            where_params.append(limit)
-
-        return query, where_params
-
-    @api.model
-    def _do_query(self, options_list, expanded_account=None, fetch_lines=True):
-        ''' Execute the queries, perform all the computation and return (accounts_results, taxes_results). Both are
-        lists of tuple (record, fetched_values) sorted by the table's model _order:
-        - accounts_values: [(record, values), ...] where
-            - record is an account.account record.
-            - values is a list of dictionaries, one per period containing:
-                - sum:                              {'debit': float, 'credit': float, 'balance': float}
-                - (optional) initial_balance:       {'debit': float, 'credit': float, 'balance': float}
-                - (optional) unaffected_earnings:   {'debit': float, 'credit': float, 'balance': float}
-                - (optional) lines:                 [line_vals_1, line_vals_2, ...]
-        - taxes_results: [(record, values), ...] where
-            - record is an account.tax record.
-            - values is a dictionary containing:
-                - base_amount:  float
-                - tax_amount:   float
-        :param options_list:        The report options list, first one being the current dates range, others being the
-                                    comparisons.
-        :param expanded_account:    An optional account.account record that must be specified when expanding a line
-                                    with of without the load more.
-        :param fetch_lines:         A flag to fetch the account.move.lines or not (the 'lines' key in accounts_values).
-        :return:                    (accounts_values, taxes_results)
-        '''
-        # Execute the queries and dispatch the results.
-        query, params = self._get_query_sums(options_list, expanded_account=expanded_account)
-
-        groupby_accounts = {}
-        groupby_companies = {}
-        groupby_taxes = {}
-
-        self.env.cr.execute(query, params)
-        for res in self._cr.dictfetchall():
-            # No result to aggregate.
-            if res['groupby'] is None:
-                continue
-
-            i = res['period_number']
-            key = res['key']
-            if key == 'sum':
-                groupby_accounts.setdefault(res['groupby'], [{} for n in range(len(options_list))])
-                groupby_accounts[res['groupby']][i][key] = res
-            elif key == 'initial_balance':
-                groupby_accounts.setdefault(res['groupby'], [{} for n in range(len(options_list))])
-                groupby_accounts[res['groupby']][i][key] = res
-            elif key == 'unaffected_earnings':
-                groupby_companies.setdefault(res['groupby'], [{} for n in range(len(options_list))])
-                groupby_companies[res['groupby']][i] = res
-            elif key == 'base_amount' and len(options_list) == 1:
-                groupby_taxes.setdefault(res['groupby'], {})
-                groupby_taxes[res['groupby']][key] = res['balance']
-            elif key == 'tax_amount' and len(options_list) == 1:
-                groupby_taxes.setdefault(res['groupby'], {})
-                groupby_taxes[res['groupby']][key] = res['balance']
-
-        # Fetch the lines of unfolded accounts.
-        # /!\ Unfolding lines combined with multiple comparisons is not supported.
-        if fetch_lines and len(options_list) == 1:
-            options = options_list[0]
-            unfold_all = options.get('unfold_all') or (self._context.get('print_mode') and not options['unfolded_lines'])
-            if expanded_account or unfold_all or options['unfolded_lines']:
-                query, params = self._get_query_amls(options, expanded_account)
-                self.env.cr.execute(query, params)
-                for res in self._cr.dictfetchall():
-                    groupby_accounts[res['account_id']][0].setdefault('lines', [])
-                    groupby_accounts[res['account_id']][0]['lines'].append(res)
-
-        # Affect the unaffected earnings to the first fetched account of type 'equity_unaffected'.
-        # There is an unaffected earnings for each company but it's less costly to fetch all candidate accounts in
-        # a single search and then iterate it.
-        if groupby_companies:
-            options = options_list[0]
-
-            candidates_account_ids = self.env['account.account']._name_search(options.get('filter_accounts'), [
-                ('account_type', '=', 'equity_unaffected'),
-                ('company_id', 'in', list(groupby_companies)),
-            ])
-            for account in self.env['account.account'].browse(candidates_account_ids):
-                company_unaffected_earnings = groupby_companies.get(account.company_id.id)
-                if not company_unaffected_earnings:
-                    continue
-                for i in range(len(options_list)):
-                    unaffected_earnings = company_unaffected_earnings[i]
-                    groupby_accounts.setdefault(account.id, [{} for i in range(len(options_list))])
-                    groupby_accounts[account.id][i]['unaffected_earnings'] = unaffected_earnings
-                del groupby_companies[account.company_id.id]
-
-        # Retrieve the accounts to browse.
-        # groupby_accounts.keys() contains all account ids affected by:
-        # - the amls in the current period.
-        # - the amls affecting the initial balance.
-        # - the unaffected earnings allocation.
-        # Note a search is done instead of a browse to preserve the table ordering.
-        if expanded_account:
-            accounts = expanded_account
-        elif groupby_accounts:
-            accounts = self.env['account.account'].search([('id', 'in', list(groupby_accounts.keys()))])
-        else:
-            accounts = []
-        accounts_results = [(account, groupby_accounts[account.id]) for account in accounts]
-
-        # Fetch as well the taxes.
-        if groupby_taxes:
-            taxes = self.env['account.tax'].search([('id', 'in', list(groupby_taxes.keys()))])
-        else:
-            taxes = []
-        taxes_results = [(tax, groupby_taxes[tax.id]) for tax in taxes]
-        return accounts_results, taxes_results
-
-    ####################################################
     # COLUMN/LINE HELPERS
     ####################################################
+    def _general_ledger_get_account_title_line(self, options, account, has_lines, eval_dict):
+        line_columns = []
+        for column in options['columns']:
+            col_value = eval_dict[column['column_group_key']].get(column['expression_label'])
+            col_expr_label = column['expression_label']
 
-    @api.model
-    def _get_account_title_line(self, options, account, amount_currency, debit, credit, balance, has_lines):
-        unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
+            if col_value is None or (col_expr_label == 'amount_currency' and not account.currency_id):
+                line_columns.append({})
 
-        name = '%s %s' % (account.code, account.name)
-        columns = [
-            {'name': self.format_value(debit), 'no_format': debit, 'class': 'number'},
-            {'name': self.format_value(credit), 'no_format': credit, 'class': 'number'},
-            {'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'},
-        ]
-        if self.user_has_groups('base.group_multi_currency'):
-            has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
-            columns.insert(0, {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=True) or '', 'class': 'number'})
+            else:
+                if col_expr_label == 'amount_currency':
+                    formatted_value = self.format_value(col_value, currency=account.currency_id, figure_type=column['figure_type'])
+                else:
+                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=col_expr_label != 'balance')
+
+                line_columns.append({
+                    'name': formatted_value,
+                    'no_format': col_value,
+                    'class': 'number',
+                })
+
+        unfold_all = self._context.get('print_mode') or options.get('unfold_all')
+        line_id = self._get_generic_line_id('account.account', account.id)
         return {
-            'id': 'account_%d' % account.id,
-            'name': name,
-            'code': account.code,
-            'columns': columns,
+            'id': line_id,
+            'name': f'{account.code} {account.name}',
+            'search_key': account.code,
+            'columns': line_columns,
             'level': 1,
             'unfoldable': has_lines,
-            'unfolded': has_lines and 'account_%d' % account.id in options.get('unfolded_lines') or unfold_all,
-            'colspan': 4,
+            'unfolded': has_lines and (line_id in options.get('unfolded_lines') or unfold_all),
+            'expand_function': '_expand_unfoldable_line_general_ledger',
             'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
         }
 
-    @api.model
-    def _get_initial_balance_line(self, options, account, amount_currency, debit, credit, balance):
-        columns = [
-            {'name': self.format_value(debit), 'no_format': debit, 'class': 'number'},
-            {'name': self.format_value(credit), 'no_format': credit, 'class': 'number'},
-            {'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'},
-        ]
+    def _general_ledger_get_aml_line(self, parent_line_id, options, eval_dict, init_bal_by_col_group):
+        line_columns = []
+        for column in options['columns']:
+            col_expr_label = column['expression_label']
+            col_value = eval_dict[column['column_group_key']].get(col_expr_label)
 
-        if not any(column['no_format'] for column in columns):
-            return None
+            if col_value is None:
+                line_columns.append({})
+            else:
+                col_class = 'number'
 
-        if self.user_has_groups('base.group_multi_currency'):
-            has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
-            columns.insert(0, {'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id) or '', 'class': 'number'})
-        return {
-            'id': 'initial_%d' % account.id,
-            'class': 'o_account_reports_initial_balance',
-            'name': _('Initial Balance'),
-            'parent_id': 'account_%d' % account.id,
-            'columns': columns,
-            'colspan': 4,
-        }
+                if col_expr_label == 'amount_currency':
+                    currency = self.env['res.currency'].browse(eval_dict[column['column_group_key']]['currency_id'])
 
-    @api.model
-    def _get_aml_line(self, options, account, aml, cumulated_balance):
-        if aml['payment_id']:
+                    if currency != self.env.company.currency_id:
+                        formatted_value = self.format_value(col_value, currency=currency, figure_type=column['figure_type'])
+                    else:
+                        formatted_value = ''
+                elif col_expr_label == 'date':
+                    formatted_value = format_date(self.env, col_value)
+                    col_class = 'date'
+                elif col_expr_label == 'balance':
+                    col_value += init_bal_by_col_group[column['column_group_key']]
+                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=False)
+                else:
+                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'])
+                    if col_expr_label not in ('debit', 'credit'):
+                        col_class = ''
+
+                line_columns.append({
+                    'name': formatted_value,
+                    'no_format': col_value,
+                    'class': col_class,
+                })
+
+        first_column_group_key = options['columns'][0]['column_group_key']
+        if eval_dict[first_column_group_key]['payment_id']:
             caret_type = 'account.payment'
         else:
-            caret_type = 'account.move'
+            caret_type = 'account.move.line'
 
-        columns = [
-            {'name': format_date(self.env, aml['date']), 'class': 'date'},
-            {'name': self._format_aml_name(aml['name'], aml['ref']), 'class': 'o_account_report_line_ellipsis'},
-            {'name': aml['partner_name'], 'class': 'o_account_report_line_ellipsis'},
-            {'name': self.format_value(aml['debit']), 'no_format': aml['debit'], 'class': 'number'},
-            {'name': self.format_value(aml['credit']), 'no_format': aml['credit'], 'class': 'number'},
-            {'name': self.format_value(cumulated_balance, blank_if_zero=False), 'no_format': cumulated_balance, 'class': 'number'},
-        ]
-        if self.user_has_groups('base.group_multi_currency'):
-            if (aml['currency_id'] and aml['currency_id'] != account.company_id.currency_id.id) or account.currency_id:
-                currency = self.env['res.currency'].browse(aml['currency_id'])
-            else:
-                currency = False
-            columns.insert(3, {'name': currency and aml['amount_currency'] and self.format_value(aml['amount_currency'], currency=currency, blank_if_zero=True) or '', 'class': 'number'})
         return {
-            'id': aml['id'],
+            'id': self._get_generic_line_id('account.move.line', eval_dict[first_column_group_key]['id'], parent_line_id=parent_line_id),
             'caret_options': caret_type,
-            'parent_id': 'account_%d' % aml['account_id'],
-            'name': aml['move_name'],
-            'columns': columns,
+            'parent_id': parent_line_id,
+            'name': eval_dict[first_column_group_key]['move_name'],
+            'columns': line_columns,
             'level': 2,
         }
 
     @api.model
-    def _get_load_more_line(self, options, account, offset, remaining, progress):
-        return {
-            'id': 'loadmore_%s' % account.id,
-            'offset': offset,
-            'progress': progress,
-            'remaining': remaining,
-            'class': 'o_account_reports_load_more text-center',
-            'parent_id': 'account_%s' % account.id,
-            'name': _('Load more... (%s remaining)', remaining),
-            'colspan': self.user_has_groups('base.group_multi_currency') and 7 or 6,
-            'columns': [{}],
-        }
-
-    @api.model
-    def _get_account_total_line(self, options, account, amount_currency, debit, credit, balance):
-
-        columns = []
-        if self.user_has_groups('base.group_multi_currency'):
-            has_foreign_currency = account.currency_id and account.currency_id != account.company_id.currency_id or False
-            columns.append({'name': has_foreign_currency and self.format_value(amount_currency, currency=account.currency_id, blank_if_zero=False) or '', 'class': 'number'})
-
-        columns += [
-            {'name': self.format_value(debit, blank_if_zero=False), 'no_format': debit, 'class': 'number'},
-            {'name': self.format_value(credit, blank_if_zero=False), 'no_format': credit, 'class': 'number'},
-            {'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'},
-        ]
+    def _general_ledger_get_total_line(self, options, eval_dict):
+        line_columns = []
+        for column in options['columns']:
+            col_value = eval_dict[column['column_group_key']].get(column['expression_label'])
+            if col_value is None:
+                line_columns.append({})
+            else:
+                formatted_value = self.format_value(col_value, blank_if_zero=False, figure_type='monetary')
+                line_columns.append({
+                    'name': formatted_value,
+                    'no_format': col_value,
+                    'class': 'number',
+                })
 
         return {
-            'id': 'total_%s' % account.id,
-            'class': 'o_account_reports_domain_total',
-            'parent_id': 'account_%s' % account.id,
-            'name': _('Total %s', account["display_name"]),
-            'columns': columns,
-            'colspan': 4,
-        }
-
-    @api.model
-    def _get_total_line(self, options, debit, credit, balance):
-        return {
-            'id': 'general_ledger_total_%s' % self.env.company.id,
+            'id': self._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
             'class': 'total',
             'level': 1,
-            'columns': [
-                {'name': self.format_value(debit, blank_if_zero=False), 'no_format': debit, 'class': 'number'},
-                {'name': self.format_value(credit, blank_if_zero=False), 'no_format': credit, 'class': 'number'},
-                {'name': self.format_value(balance, blank_if_zero=False), 'no_format': balance, 'class': 'number'},
-            ],
-            'colspan': self.user_has_groups('base.group_multi_currency') and 5 or 4,
+            'columns': line_columns,
         }
 
-    @api.model
-    def _get_tax_declaration_lines(self, options, journal_type, taxes_results):
-        lines = [{
-            'id': 0,
-            'name': _('Tax Declaration'),
-            'columns': [{'name': ''}],
-            'colspan': self.user_has_groups('base.group_multi_currency') and 7 or 6,
-            'level': 1,
-            'unfoldable': False,
-            'unfolded': False,
-        }, {
-            'id': 0,
-            'name': _('Name'),
-            'columns': [{'name': v} for v in ['', _('Base Amount'), _('Tax Amount'), '']],
-            'colspan': self.user_has_groups('base.group_multi_currency') and 4 or 3,
-            'level': 2,
-            'unfoldable': False,
-            'unfolded': False,
-        }]
-
-        tax_report_date = options['date'].copy()
-        tax_report_date['strict_range'] = True
-        tax_report_options = self.env['account.generic.tax.report']._get_options()
-        tax_report_options.update({
-            'tax_grids': False,
-            'date': tax_report_date,
-            'journals': options['journals'],
-            'all_entries': options['all_entries'],
-            'tax_report': 'generic',
-        })
-        journal = self.env['account.journal'].browse(self._get_options_journals(options)[0]['id'])
-        tax_report_lines = self.env['account.generic.tax.report'].with_company(journal.company_id)._get_lines(tax_report_options)
-
-        for tax_line in tax_report_lines:
-            if tax_line['id'] not in ('sale', 'purchase'): # We want to exclude title lines here
-                tax_line['columns'].append({'name': ''})
-                tax_line['colspan'] = self.user_has_groups('base.group_multi_currency') and 5 or 4
-                lines.append(tax_line)
-
-        return lines
-
-    def action_dropdown_audit_default_tax_report(self, options, data):
-        return self.env['account.generic.tax.report'].action_dropdown_audit_default_tax_report(options, data)
+    def generic_tax_report_caret_option_audit_tax(self, options, params):
+        return self.env.ref('account.generic_tax_report').generic_tax_report_caret_option_audit_tax(options, params)

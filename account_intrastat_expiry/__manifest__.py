@@ -13,6 +13,7 @@
         'views/account_invoice_view.xml',
         'views/product_views.xml',
         'views/report_financial.xml',
+        'data/account_financial_report_data.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

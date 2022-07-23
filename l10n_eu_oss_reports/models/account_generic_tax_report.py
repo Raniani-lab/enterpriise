@@ -1,73 +1,63 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, fields, _
+from odoo import models, fields, _
 from odoo.addons.l10n_eu_oss.models.eu_tax_map import EU_TAX_MAP
 from odoo.exceptions import UserError
 
 from collections import defaultdict
 from lxml import etree, objectify
 
-class AccountGenericTaxReport(models.AbstractModel):
-    _inherit = 'account.generic.tax.report'
 
-    def _init_filter_tax_report(self, options, previous_options=None):
-        # Overridden to accept generic_oss_no_import and generic_oss_import reports as well
-        super()._init_filter_tax_report(options, previous_options=previous_options)
+class AccountReport(models.Model):
+    _inherit = 'account.report'
 
-        company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])] or self.env.company.ids
-        oss_tag = self.env.ref('l10n_eu_oss.tag_oss')
-        oss_rep_ln = self.env['account.tax.repartition.line']\
-                     .search([('tag_ids', 'in', oss_tag.ids), ('company_id', 'in', company_ids)], limit=1)
+    availability_condition = fields.Selection(selection_add=[('oss', "Using OSS")])
 
-        if oss_rep_ln:
-            options['available_oss_reports'] = {'generic_oss_import', 'generic_oss_no_import'}
+    def _is_available_for(self, options):
+        # Overridden to support 'oss' availability condition
+        if self.availability_condition == 'oss':
+            oss_tag = self.env.ref('l10n_eu_oss.tag_oss')
+            company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])] or self.env.company.ids
+            return bool(self.env['account.tax.repartition.line']\
+                        .search([('tag_ids', 'in', oss_tag.ids), ('company_id', 'in', company_ids)], limit=1))
         else:
-            options['available_oss_reports'] = set()
+            return super()._is_available_for(options)
 
-        previous_options_report = (previous_options or {}).get('tax_report')
-        if previous_options_report in {'generic_oss_import', 'generic_oss_no_import'}:
-            options['tax_report'] = previous_options_report if previous_options_report in options['available_oss_reports'] else 'generic'
+    def _custom_options_initializer_oss_sales(self, options, previous_options=None):
+        options['forced_domain'] = [
+            *options.get('forced_domain', []),
+            ('tax_tag_ids', 'in', self.env.ref('l10n_eu_oss.tag_oss').ids),
+            ('tax_tag_ids', 'not in', self.env.ref('l10n_eu_oss.tag_eu_import').ids),
+        ]
+        self._oss_common_custom_options_initializer(options, previous_options=previous_options)
 
-    @api.model
-    def _get_options_domain(self, options):
-        domain = super()._get_options_domain(options)
+    def _oss_imports_custom_options_initializer(self, options, previous_options=None):
+        options['forced_domain'] = [
+            *options.get('forced_domain', []),
+            ('tax_tag_ids', 'in', self.env.ref('l10n_eu_oss.tag_oss').ids),
+            ('tax_tag_ids', 'in', self.env.ref('l10n_eu_oss.tag_eu_import').ids),
+        ]
+        self._oss_common_custom_options_initializer(options, previous_options=previous_options)
 
-        if options['tax_report'] == 'generic_oss_no_import':
-            domain += [
-                ('tax_tag_ids', 'in', self.env.ref('l10n_eu_oss.tag_oss').ids),
-                ('tax_tag_ids', 'not in', self.env.ref('l10n_eu_oss.tag_eu_import').ids),
-            ]
+    def _oss_common_custom_options_initializer(self, options, previous_options=None):
+        # Add OSS XML export if there is one available for the domestic country
+        if self._get_oss_xml_template(options):
+            options.setdefault('buttons', []).append({
+                'name': _('XML'),
+                'sequence': 3,
+                'action': 'export_file',
+                'action_param': '_oss_export_to_xml',
+                'file_export_type': _('XML'),
+            })
 
-        elif options['tax_report'] == 'generic_oss_import':
-            domain += [
-                ('tax_tag_ids', 'in', self.env.ref('l10n_eu_oss.tag_oss').ids),
-                ('tax_tag_ids', 'in', self.env.ref('l10n_eu_oss.tag_eu_import').ids),
-            ]
-
-        return domain
-
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        rslt = super()._get_lines(options, line_id=line_id)
-
-        if options['tax_report'] in {'generic_oss_import', 'generic_oss_no_import'}:
-            rslt = self._process_generic_lines_for_oss_report(rslt)
-
-        return rslt
-
-    @api.model
-    def _process_generic_lines_for_oss_report(self, generic_lines):
+    def _dynamic_lines_generator_oss_report(self, options, all_column_groups_expression_totals):
         """ The country for OSS taxes can't easily be guessed from SQL, as it would create JOIN issues.
         So, instead of handling them as a grouping key in the tax report engine, we
         post process the result of a grouping made by (type_tax_use, id) to inject the
         grouping by country.
-
-        :param generic_lines: The result of super()._get_lines for a grouping by (type_tax_use, id)
-
-        :param: the lines for the OSS reports, grouped by (type_tax_use, OSS country, id)
         """
-        def append_country_and_taxes_lines(rslt, tax_lines_by_country):
+        def append_country_and_taxes_lines(parent_line, rslt, tax_lines_by_country):
             for country, tax_lines in sorted(tax_lines_by_country.items(), key=lambda elem: elem[0].display_name):
                 col_number = len(tax_lines[0]['columns']) if tax_lines else 0
                 tax_sums = [
@@ -77,45 +67,55 @@ class AccountGenericTaxReport(models.AbstractModel):
 
                 country_columns = []
                 for tax_sum in tax_sums:
-                    country_columns += [{'name': ''}, {'no_format': tax_sum, 'name': self.format_value(tax_sum)}]
+                    country_columns += [{'name': ''}, {'no_format': tax_sum, 'name': self.format_value(tax_sum, figure_type='monetary')}]
 
+                country_line_id = self._get_generic_line_id('res.country', country.id, parent_line_id=parent_line['id'])
                 country_line = {
-                    'id': self._get_generic_line_id('res.country', country.id, parent_line_id=line['id']),
+                    'id': country_line_id,
                     'name': country.display_name,
+                    'parent_id': parent_line['id'],
                     'columns': country_columns,
                     'unfoldable': False,
                     'level': 2,
                 }
 
-                rslt.append(country_line)
+                rslt.append((0, country_line))
 
                 for tax_line in tax_lines:
-                    tax_parsed_id = self._parse_line_id(tax_line['id'])[-1]
+                    tax_line['parent_id'] = country_line_id
                     tax_line['level'] = 3
+                    tax_parsed_id = self._parse_line_id(tax_line['id'])[-1]
                     tax_line['id'] = self._get_generic_line_id(
                         markup=tax_parsed_id[0],
                         model_name=tax_parsed_id[1],
                         value=tax_parsed_id[2],
-                        parent_line_id=line['id']
+                        parent_line_id=country_line['id']
                     )
-                    rslt.append(tax_line)
+                    rslt.append((0, tax_line))
+
+        lines = self._dynamic_lines_generator_generic_tax_report(options, all_column_groups_expression_totals)
 
         rslt = []
+        tax_type_markups = {'sale', 'purchase'}
         tax_lines_by_country = defaultdict(lambda: [])
-        for line in generic_lines:
-            model_info = self._get_model_info_from_id(line['id'])
-            if model_info[0] != 'account.tax':
+        last_tax_type_line = None
+        for (dummy, line) in lines:
+            markup, model, model_id = self._parse_line_id(line['id'])[-1]
+
+            if markup in tax_type_markups:
+                last_tax_type_line = line
+
                 # Then it's a type_tax_use_section
                 # If there were tax lines for the previous section, append them to rslt; the previous section is over
-                append_country_and_taxes_lines(rslt, tax_lines_by_country)
+                append_country_and_taxes_lines(line, rslt, tax_lines_by_country)
 
                 # Start next section
-                rslt.append(line)
+                rslt.append((0, line))
                 tax_lines_by_country = defaultdict(lambda: [])
 
-            else:
+            elif model == 'account.tax':
                 # line is a tax line
-                tax = self.env['account.tax'].browse(model_info[1])
+                tax = self.env['account.tax'].browse(model_id)
                 tax_oss_country = self.env['account.fiscal.position.tax'].search([('tax_dest_id', '=', tax.id)])\
                                                                          .mapped('position_id.country_id')
 
@@ -127,25 +127,13 @@ class AccountGenericTaxReport(models.AbstractModel):
                 tax_lines_by_country[tax_oss_country].append(line)
 
         # Append the tax and country lines for the last section
-        append_country_and_taxes_lines(rslt, tax_lines_by_country)
+        append_country_and_taxes_lines(last_tax_type_line, rslt, tax_lines_by_country)
 
         return rslt
 
-    def _get_reports_buttons(self, options):
-        res = super()._get_reports_buttons(options)
-        if options['tax_report'] in {'generic_oss_import', 'generic_oss_no_import'}:
-            # Disable the tax closing for OSS reports: we currently don't support it. It has to be done manually.
-            res = [button for button in res if button['action'] != 'periodic_vat_entries']
-
-            # Add OSS XML export if there is one available for the domestic country
-            if self._get_oss_xml_template(options):
-                res.append({'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')})
-        return res
-
-    def get_xml(self, options):
-        if options['tax_report'] not in {'generic_oss_import', 'generic_oss_no_import'}:
-            return super().get_xml(options)
-
+    def _oss_export_to_xml(self, options):
+        self.ensure_one()
+        oss_import_report = self.env.ref('l10n_eu_oss_reports.oss_imports_report')
         eu_countries = self.env.ref('base.europe').country_ids
         date_to = fields.Date.from_string(options['date']['date_to'])
         month = None
@@ -189,8 +177,8 @@ class AccountGenericTaxReport(models.AbstractModel):
         values = {
             'VATNumber': sender_company.vat if sender_company.account_fiscal_country_id in eu_countries else None,
             'VoesNumber': sender_company.voes if sender_company.account_fiscal_country_id not in eu_countries else None,
-            'IOSSNumber': sender_company.ioss if options['tax_report'] == 'generic_oss_import' else None,
-            'IntNumber': sender_company.intermediary_no if options['tax_report'] == 'generic_oss_import' else None,
+            'IOSSNumber': sender_company.ioss if self == oss_import_report else None,
+            'IntNumber': sender_company.intermediary_no if self == oss_import_report else None,
             'Year': date_to.year,
             'Quarter': quarter,
             'Month': month,
@@ -201,26 +189,29 @@ class AccountGenericTaxReport(models.AbstractModel):
         export_template_ref = self._get_oss_xml_template(options)
         rendered_content = self.env['ir.qweb']._render(export_template_ref, values)
         tree = objectify.fromstring(rendered_content)
-        return etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='utf-8')
+
+        return {
+            'file_name': self.get_default_report_filename('xml'),
+            'file_content': etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='utf-8'),
+            'file_type': 'xml',
+        }
 
     def _get_oss_xml_template(self, options):
         ''' Used to get the template ref for XML export
         Override this method to include additional templates for other countries
         Also serves as a check to verify if the options selected are conducive to an XML export
         '''
-        export_template_ref = False
-
         country_code = self._get_sender_company_for_export(options).account_fiscal_country_id.code
         if country_code == 'BE':
-            export_template_ref = 'l10n_eu_oss_reports.eu_oss_generic_export_xml_be'
-        elif country_code == 'LU':
-            export_template_ref = 'l10n_eu_oss_reports.eu_oss_generic_export_xml_lu'
+            return 'l10n_eu_oss_reports.eu_oss_generic_export_xml_be'
+        if country_code == 'LU':
+            return 'l10n_eu_oss_reports.eu_oss_generic_export_xml_lu'
 
-        return export_template_ref
+        return None
 
-    def _get_vat_closing_entry_additional_domain(self):
+    def _tax_report_get_vat_closing_entry_additional_domain(self):
         # OVERRIDE
-        domain = super()._get_vat_closing_entry_additional_domain()
+        domain = super()._tax_report_get_vat_closing_entry_additional_domain()
         domain += [
             ('tax_tag_ids', 'not in', self.env.ref('l10n_eu_oss.tag_oss').ids),
         ]

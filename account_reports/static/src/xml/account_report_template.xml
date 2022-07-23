@@ -2,13 +2,12 @@
 
 <templates>
     <t t-name="accountReports.search_bar">
-        <div class="o_cp_searchview" t-if="report_options.search_account or report_options.search_partner">
+        <div class="o_cp_searchview" t-if="report_options.search_bar">
             <div class="o_searchview">
                 <i class="o_searchview_icon oi oi-search" role="img" aria-label="Search..." title="Search..."></i>
 
                 <div class="o_searchview_input_container">
-                    <input class="o_searchview_input" type="text" placeholder="Search account" t-if="report_options.search_account"/>
-                    <input class="o_searchview_input" type="text" placeholder="Search partner" t-if="report_options.search_partner"/>
+                    <input class="o_searchview_input" type="text" placeholder="Search line"/>
                 </div>
             </div>
         </div>
@@ -16,14 +15,14 @@
 
     <t t-name="accountReports.footnote_dialog">
         <form role="form">
-            <textarea name="note" rows='4' class="js_account_reports_footnote_note" t-att-data-line="id" placeholder="Insert foot note here"><t t-esc="text"/></textarea>
+            <textarea name="note" rows='4' class="js_account_reports_footnote_note" t-att-data-line="id" placeholder="Insert foot note here"><t t-out="text"/></textarea>
         </form>
     </t>
 
     <t t-name="accountReports.buttons">
-        <t t-foreach="buttons" t-as="button">
-            <button t-if="button.sequence == 1" type="button" class="btn btn-primary" t-att-action="button.action"><t t-esc="button.name"/></button>
-            <button t-else="" type="button" class="btn btn-secondary" t-att-action="button.action"><t t-esc="button.name"/></button>
+        <t t-foreach="report_options['buttons']" t-as="button">
+            <button t-if="button == report_options['buttons'][0]" type="button" class="btn btn-primary" t-att-action="button.action" t-att-action_param="button.action_param"><t t-out="button.name"/></button>
+            <button t-else="" type="button" class="btn btn-secondary" t-att-action="button.action" t-att-action_param="button.action_param"><t t-out="button.name"/></button>
         </t>
     </t>
 
@@ -38,92 +37,101 @@
     <div t-name='m2mWidgetTable' class="o_form_view">
         <table class="o_group o_inner_group">
             <tr t-foreach="fields" t-as="field">
-                <td class="o_td_label"><label class="o_form_label" t-esc="fields[field].label"/></td>
+                <td class="o_td_label"><label class="o_form_label" t-out="fields[field].label"/></td>
                 <td t-att-id="field + '_field'" style="min-width:200px;"/>
             </tr>
         </table>
     </div>
 
-    <t t-name="accountReports.FinancialReportInfosTemplate">
+    <t t-name="accountReports.DebugPopupTemplate">
         <table>
-            <tr>
-                <td><strong>Name: </strong></td>
-                <td style="text-align:right;"><t t-out="name"/></td>
-            </tr>
-            <tr>
-                <td><strong>Code: </strong></td>
-                <td style="text-align:right;"><t t-out="code"/></td>
-            </tr>
-            <tr>
-                <td><strong>Formula: </strong></td>
-                <td style="text-align:right;">
-                    <t t-foreach="formula" t-as="token">
-                        <t t-if="token.type === 'internal'">
-                            <span class="js_popup_formula" t-out="token.code"/>
-                        </t>
-                        <t t-elif="token.type === 'external'">
-                            <button class="btn btn-sm btn-secondary js_popup_open_report"
-                                    t-att-data-id="token.id" t-att-data-target="token.target"
-                                    t-out="token.code"/>
-                        </t>
-                        <t t-else=""><t t-out="token.text"/></t>
-                    </t>
-                </td>
-            </tr>
-            <tr t-if="formula_with_values != formula_balance">
-               <td> = </td>
-                <td style="text-align:right;"><t t-out="formula_with_values"/></td>
-            </tr>
-            <tr>
-               <td> = </td>
-                <td style="text-align:right;"><t t-out="formula_balance"/></td>
-            </tr>
-            <tr t-if="domain">
-                <td><strong>Domain: </strong></td>
-                <td style="text-align:right;"><t t-out="domain"/></td>
-            </tr>
-            <tr t-if="control_domain">
-                <td><strong>Control Domain: </strong></td>
-                <td style="text-align:right;"><t t-out="control_domain"/></td>
-            </tr>
-            <tr t-if="display_button">
-               <td style="text-align:center;"
-                   colspan="2">
-                   <button t-att-data-id="id"
-                           class="btn btn-sm btn-secondary js_view_entries">View Journal Entries</button>
-               </td>
-            </tr>
-            <tr t-if="control_domain">
-               <td style="text-align:center;"
-                   colspan="2">
-                   <button t-att-data-id="id"
-                           class="btn btn-sm btn-secondary float-start js_view_coa">Accounts</button>
-                   <button t-att-data-id="id"
-                           class="btn btn-sm btn-secondary float-end js_view_line_computation">Report Line Computation</button>
-               </td>
+            <t t-foreach="expressions_detail" t-as="engine_and_totals">
+                <t t-set="expression_engine" t-value="engine_and_totals[0]"/>
+                <t t-set="expression_totals" t-value="engine_and_totals[1]"/>
+
+                <tr>
+                    <td><strong t-out="expression_engine"/></td>
+                </tr>
+
+                <t t-foreach="expression_totals" t-as="label_and_infos">
+                    <t t-set="expression_label" t-value="label_and_infos[0]"/>
+                    <t t-set="expression_info" t-value="label_and_infos[1]"/>
+
+                    <tr>
+                        <td>
+                            <span t-out="expression_label"/>
+                        </td>
+
+                        <td>
+                            <span t-out="' = ' + expression_info['formula']"/>
+                        </td>
+                    </tr>
+
+                    <tr t-if="expression_info['subformula']">
+                        <td/>
+                        <td>
+                            <span>[<t t-out="expression_info['subformula']"/>]</span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td/>
+                        <td>
+                            <span> = <strong t-out="expression_info['value']"/></span>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+
+            <tr t-if="expressions_detail.length == 0">
+                <td colspan="2"><span>Line without formula</span></td>
             </tr>
         </table>
+
     </t>
 
-    <t t-name="accountReports.CarryOverInfoTemplate">
+    <t t-name="accountReports.ColumnInfoPopupTemplate">
         <table>
-            <tr>
-                <td><t t-esc="description1"/></td>
-            </tr>
-            <tr>
-                <td><t t-esc="description2"/></td>
-            </tr>
-            <tr><td/></tr>
-            <tr>
-                <td><t t-esc="description3"/></td>
-            </tr>
-            <tr>
-                <td>
-                    <t t-esc="balance"/>
-                    <button t-if="debug" t-att-data-id="id"
-                        class="btn btn-sm btn-secondary js_view_carryover_lines">View Carryover Lines</button>
-                </td>
-            </tr>
+            <t t-if="carryover or applied_carryover">
+                <tr>
+                    <td><strong>Carryover</strong></td>
+                    <td/>
+                </tr>
+
+                <tr t-if="applied_carryover">
+                    <td colspan="2">
+                        <span><strong t-out="applied_carryover"/> were carried over to this line from previous period.</span>
+                    </td>
+                </tr>
+
+                <tr t-if="carryover">
+                    <td colspan="2">
+                        <span t-if="carryover_target"><strong t-out="carryover"/> will be carried over to <t t-out="carryover_target"/> in the next period.</span>
+                        <span t-else=""><strong t-out="carryover"/> will be carried over to this line in the next period.</span>
+                    </td>
+                </tr>
+
+                <tr t-if="allow_carryover_audit">
+                    <td/>
+                    <td>
+                        <button t-att-data-expression-id="expression_id" class="btn btn-sm btn-secondary js_view_carryover_lines">View Carryover Lines</button>
+                    </td>
+                </tr>
+            </t>
+
         </table>
+
     </t>
+
+    <t t-name="accountReports.EditColumnTemplate">
+        <div>
+            <input id="account_reports_manual_value_input" class="account_reports_popup_no_hide"/>
+            <button
+                class="account_reports_submit_manual_value btn btn-primary btn-sm"
+                t-att-data-column-group-key="column_group_key"
+                t-att-data-target-expression-id="target_expression_id"
+                t-att-data-rounding="rounding">Post</button>
+        </div>
+    </t>
+
 </templates>

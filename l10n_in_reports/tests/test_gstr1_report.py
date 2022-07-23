@@ -47,43 +47,17 @@ class TestReports(TestAccountReportsCommon):
         return cls.env["account.tax"]
 
     def test_gstr1_b2b_summary(self):
-        report = self.env["l10n.in.report.account"]
-        options = self._init_options(report, fields.Date.from_string("2019-01-01"), fields.Date.from_string("2019-12-31"))
-        lines = report._get_lines(options)
+        report = self.env.ref('l10n_in_reports.account_report_gstr1')
+        options = self._generate_options(report, fields.Date.from_string("2019-01-01"), fields.Date.from_string("2019-12-31"))
+        b2b_line = report._get_lines(options)[0]
+        columns = {col.get('expression_label'): col.get('no_format') for col in b2b_line.get('columns')}
         # For B2B Invoice - 4A, AB, 4C, 6B, 6C
-        expected = [
-            {"name": 1, "class": ""},
-            {"name": f"₹{NON_BREAKING_SPACE}25.00", "class": "number"},
-            {"name": f"₹{NON_BREAKING_SPACE}25.00", "class": "number"},
-            {"name": "", "class": "number"},
-            {"name": "", "class": "number"}
-            ]
-        self.assertListEqual(expected, lines[0]['columns'], "Wrong values for Indian GSTR-1 B2B summary report.")
-
-    def test_gstr1_b2b_detailed_report(self):
-        report = self.env["l10n.in.report.account"]
-        options = self._init_options(report, fields.Date.from_string("2019-01-01"), fields.Date.from_string("2019-12-31"))
-        options.update({'gst_section': 'b2b'})
-        lines = report._get_lines(options)
-        expected = [{'id': min(self.invoice.line_ids.filtered(lambda l: l.tax_line_id).ids),
-            'caret_options': 'account.move',
-            'name': 'INV/2019/00001',
-            'class': 'o_account_reports_level2',
-            'style': 'font-weight: normal;',
-            'level': 1,
-            'colspan': 0,
-            'columns': [
-                {'name': '24BBBFF5679L8ZR', 'class': ''}, # GSTIN(partner_vat)
-                {'name': 'partner_a', 'class': ''}, # Partner name
-                {'name': '01-JAN-2019', 'class': ''}, # Invoice date in DD-MMM-YYYY
-                {'name': '24-Gujarat', 'class': ''},# place of supply
-                {'name': 'N', 'class': ''}, # IS Reverse Charge
-                {'name': 'Regular', 'class': ''}, # Invoice Type
-                {'name': '', 'class': 'print_only'}, # E-Commerce GSTIN
-                {'name': 5.0, 'class': ''}, # Tax rate
-                {'name': 1050.0, 'class': 'number'}, # Invoice Value
-                {'name': 1000.0, 'class': 'number'}, # Taxable Value
-                {'name': 0.0, 'class': 'number'} # Cess tax Amount
-            ],
-        }]
-        self.assertListEqual(expected, lines, "Wrong values for Indian GSTR-1 B2B detailed report.")
+        expected = {
+            'name': 'B2B Invoice - 4A, 4B, 4C, 6B, 6C',
+            'tax_base': 1000.0,
+            'tax_cgst': 25.0,
+            'tax_sgst': 25.0,
+            'tax_igst': 0.0,
+            'tax_cess': 0.0
+        }
+        self.assertDictEqual(expected, {'name': b2b_line.get('name'), **columns}, "Wrong values for Indian GSTR-1 B2B summary report.")

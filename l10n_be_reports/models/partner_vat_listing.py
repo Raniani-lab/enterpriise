@@ -1,203 +1,312 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, _
-from odoo.tools.misc import formatLang
+from odoo import models, _
 from odoo.exceptions import UserError
-from itertools import groupby
 from markupsafe import Markup
+from itertools import groupby
 
 
-class ReportL10nBePartnerVatListing(models.AbstractModel):
-    _name = "l10n.be.report.partner.vat.listing"
-    _description = "Partner VAT Listing"
+class ReportL10nBePartnerVatListing(models.Model):
     _inherit = 'account.report'
 
-    filter_date = {'mode': 'range', 'filter': 'last_month'}
+    def _custom_options_initializer_l10n_be_partner_vat_listing(self, options, previous_options=None):
+        operations_tags_expr = [
+            'l10n_be.tax_report_line_00_tag', 'l10n_be.tax_report_line_01_tag', 'l10n_be.tax_report_line_02_tag',
+            'l10n_be.tax_report_line_03_tag', 'l10n_be.tax_report_line_45_tag', 'l10n_be.tax_report_line_49_tag',
+        ]
 
-    def _get_templates(self):
-        res = super()._get_templates()
-        res['line_caret_options'] = 'l10n_be_reports.line_caret_options'
-        return res
+        operation_expressions = self.env['account.report.expression']
 
-    def l10n_be_open_invoices(self, options, params=None):
+        for xmlid in operations_tags_expr:
+            operation_expressions += self.env.ref(xmlid)
+
+        options['partner_vat_listing_operations_tag_ids'] = operation_expressions._get_matching_tags().ids
+
+        taxes_tags_expr = ['l10n_be.tax_report_line_54_tag', 'l10n_be.tax_report_line_64_tag']
+        tax_expressions = self.env['account.report.expression']
+
+        for xmlid in taxes_tags_expr:
+            tax_expressions += self.env.ref(xmlid)
+
+        options['partner_vat_listing_taxes_tag_ids'] = tax_expressions._get_matching_tags().ids
+
+        options['buttons'] += [{
+            'name': _('XML'),
+            'sequence': 30,
+            'action': 'export_file',
+            'action_param': 'l10n_be_partner_vat_listing_export_to_xml',
+            'file_export_type': _('XML')
+        }]
+
+    def _caret_options_initializer_l10n_be_partner_vat_listing(self):
+        return {
+            'res.partner': [
+                {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
+                {'name': _("Audit"), 'action': 'l10n_be_partner_vat_listing_open_invoices'},
+            ]
+        }
+
+    def _custom_engine_l10n_be_partner_vat_listing(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        def build_result_dict(query_res_lines):
+            if current_groupby:
+                rslt = {
+                    'vat_number': query_res_lines[0]['vat'],
+                    'turnover': query_res_lines[0]['turnover'],
+                    'vat_amount': query_res_lines[0]['vat_amount'],
+                    'has_sublines': False,
+                }
+            else:
+                turnover = 0.0
+                vat_amount = 0.0
+
+                for line in enumerate(query_res_lines):
+                    turnover += line[1]['turnover']
+                    vat_amount += line[1]['vat_amount']
+
+                rslt = {
+                    'vat_number': None,
+                    'turnover': turnover,
+                    'vat_amount': vat_amount,
+                    'has_sublines': False,
+                }
+
+            return rslt
+
+        self._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
+
+        if current_groupby == 'id':
+            raise UserError(_('Grouping by ID key is not supported by partner VAT custom engine.'))
+
+        partner_ids = self.env['res.partner'].with_context(active_test=False).search([('vat', 'ilike', 'BE%')]).ids
+
+        if not partner_ids:
+            return []
+
+        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+
+        query = f'''
+            SELECT
+                {'turnover_sub.grouping_key,refund_vat_sub.grouping_key,refund_base_sub.grouping_key,' if current_groupby else ''}
+                turnover_sub.partner_id, turnover_sub.name, turnover_sub.vat, turnover_sub.turnover,
+                refund_vat_sub.refund_base,
+                refund_base_sub.vat_amount, refund_base_sub.refund_vat_amount
+            FROM (
+                -- Turnover --
+                SELECT
+                    {f'"account_move_line".{current_groupby} AS grouping_key,' if current_groupby else ''}
+                    "account_move_line".partner_id, p.name, p.vat,
+                    SUM("account_move_line".credit - "account_move_line".debit) AS turnover
+                FROM {tables}
+                LEFT JOIN res_partner p
+                    ON "account_move_line".partner_id = p.id
+                JOIN account_account_tag_account_move_line_rel aml_tag
+                    ON "account_move_line".id = aml_tag.account_move_line_id
+                LEFT JOIN account_move inv
+                    ON "account_move_line".move_id = inv.id
+                WHERE
+                    p.vat IS NOT NULL
+                    AND aml_tag.account_account_tag_id IN %s
+                    AND "account_move_line".partner_id IN %s
+                    AND (
+                        ("account_move_line".move_id IS NULL AND "account_move_line".credit > 0)
+                        OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted')
+                    )
+                    AND {where_clause}
+                GROUP BY
+                    {f'"account_move_line".{current_groupby},' if current_groupby else ''}
+                    "account_move_line".partner_id, p.name, p.vat
+            ) AS turnover_sub
+
+            FULL JOIN (
+                -- Refund vat --
+                SELECT
+                    {f'"account_move_line".{current_groupby} AS grouping_key,' if current_groupby else ''}
+                    "account_move_line".partner_id,
+                    SUM("account_move_line".debit - "account_move_line".credit) AS refund_base
+                FROM {tables}
+                JOIN res_partner p
+                    ON "account_move_line".partner_id = p.id
+                JOIN account_account_tag_account_move_line_rel aml_tag
+                    ON "account_move_line".id = aml_tag.account_move_line_id
+                LEFT JOIN account_move inv
+                    ON "account_move_line".move_id = inv.id
+                WHERE
+                    p.vat IS NOT NULL
+                    AND aml_tag.account_account_tag_id IN %s
+                    AND "account_move_line".partner_id IN %s
+                    AND (
+                        ("account_move_line".move_id IS NULL AND "account_move_line".credit > 0)
+                        OR (inv.move_type = 'out_refund' AND inv.state = 'posted')
+                    )
+                    AND {where_clause}
+                GROUP BY
+                    {f'"account_move_line".{current_groupby},' if current_groupby else ''}
+                    "account_move_line".partner_id, p.name, p.vat
+            ) AS refund_vat_sub
+            ON turnover_sub.partner_id = refund_vat_sub.partner_id
+            {'AND turnover_sub.grouping_key = refund_vat_sub.grouping_key' if current_groupby  else ''}
+
+            LEFT JOIN (
+                -- Refund base
+                SELECT
+                    {f'"account_move_line".{current_groupby} AS grouping_key,' if current_groupby else ''}
+                    COALESCE("account_move_line".partner_id, inv.partner_id) AS partner_id,
+                    SUM("account_move_line".credit - "account_move_line".debit) AS vat_amount,
+                    SUM("account_move_line".debit) AS refund_vat_amount
+                FROM {tables}
+                JOIN account_account_tag_account_move_line_rel aml_tag2
+                    ON "account_move_line".id = aml_tag2.account_move_line_id
+                LEFT JOIN account_move inv
+                    ON "account_move_line".move_id = inv.id
+                WHERE
+                    aml_tag2.account_account_tag_id IN %s
+                    AND COALESCE("account_move_line".partner_id, inv.partner_id) IN %s
+                    AND (
+                        ("account_move_line".move_id IS NULL AND "account_move_line".credit > 0)
+                        OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted')
+                    )
+                    AND {where_clause}
+                GROUP BY
+                    {f'"account_move_line".{current_groupby},' if current_groupby else ''}
+                    COALESCE("account_move_line".partner_id, inv.partner_id)
+            ) AS refund_base_sub
+            ON turnover_sub.partner_id = refund_base_sub.partner_id
+            {'AND turnover_sub.grouping_key = refund_base_sub.grouping_key' if current_groupby  else ''}
+
+            WHERE turnover > 250 OR refund_base > 0 OR refund_vat_amount > 0
+            ORDER BY turnover_sub.vat, turnover_sub.turnover DESC
+        '''
+
+        params = [
+            tuple(options['partner_vat_listing_operations_tag_ids']), tuple(partner_ids), *where_params,
+            tuple(options['partner_vat_listing_operations_tag_ids']), tuple(partner_ids), *where_params,
+            tuple(options['partner_vat_listing_taxes_tag_ids']), tuple(partner_ids), *where_params,
+        ]
+
+        self._cr.execute(query, params)
+
+        if not current_groupby:
+            return build_result_dict(self._cr.dictfetchall())
+        else:
+            rslt = []
+            all_res_per_grouping_key = {}
+
+            for query_res in self._cr.dictfetchall():
+                grouping_key = query_res.get('grouping_key')
+                all_res_per_grouping_key.setdefault(grouping_key, []).append(query_res)
+
+            for grouping_key, query_res_lines in all_res_per_grouping_key.items():
+                rslt.append((grouping_key, build_result_dict(query_res_lines)))
+
+            return rslt
+
+    def l10n_be_partner_vat_listing_open_invoices(self, options, params=None):
+        domain = [
+            ('move_id.move_type', 'in', self.env['account.move'].get_sale_types(include_receipts=True)),
+            ('move_id.date', '>=', options['date']['date_from']),
+            ('move_id.date', '<=', options['date']['date_to']),
+        ]
+
+        # This action can also be called from the EC Sales Report.
+        # In that case, we don't want to restrict the partner's VAT or 'tax_tag_ids'.
+        if self == self.env.ref('l10n_be_reports.l10n_be_partner_vat_listing'):
+            domain += [
+                ('move_id.partner_id.vat', 'ilike', 'BE%'),
+                ('tax_tag_ids', 'in', options['partner_vat_listing_operations_tag_ids'] + options['partner_vat_listing_taxes_tag_ids']),
+            ]
+
         return {
             'name': _('VAT Listing Audit'),
             'type': 'ir.actions.act_window',
             'views': [[self.env.ref('account.view_move_line_tree').id, 'list'], [False, 'form']],
             'res_model': 'account.move.line',
             'context': {
-                'search_default_partner_id': params['id'],
+                'search_default_partner_id': self._get_model_info_from_id(params['line_id'])[1],
                 'search_default_group_by_partner': 1,
                 'expand': 1,
             },
-            'domain': [
-                ('move_id.partner_id.vat', 'ilike', 'BE%'),
-                ('move_id.move_type', 'in', self.env['account.move'].get_sale_types(include_receipts=True)),
-                ('move_id.amount_tax_signed', '>', 0),
-                ('move_id.date', '>=', options['date']['date_from']),
-                ('move_id.date', '<=', options['date']['date_to']),
-                ('tax_ids', '!=', False),
-            ]
+            'domain': domain,
         }
 
-    @api.model
-    def _get_lines(self, options, line_id=None):
-        lines = []
-        context = self.env.context
-        partner_ids = self.env['res.partner'].with_context(active_test=False).search([('vat', 'ilike', 'BE%')]).ids
-        if not partner_ids:
-            return lines
-
-        tag_ids = [self.env['ir.model.data']._xmlid_to_res_id(k) for k in ['l10n_be.tax_report_line_00', 'l10n_be.tax_report_line_01', 'l10n_be.tax_report_line_02', 'l10n_be.tax_report_line_03', 'l10n_be.tax_report_line_45', 'l10n_be.tax_report_line_49']]
-        tag_ids_2 = [self.env['ir.model.data']._xmlid_to_res_id(k) for k in ['l10n_be.tax_report_line_54', 'l10n_be.tax_report_line_64']]
-        query = """
-            SELECT turnover_sub.partner_id, turnover_sub.name, turnover_sub.vat, turnover_sub.turnover, refund_vat_sub.refund_base, refund_base_sub.vat_amount, refund_base_sub.refund_vat_amount
-              FROM (SELECT l.partner_id, p.name, p.vat, SUM(l.credit - l.debit) as turnover
-                  FROM account_move_line l
-                  LEFT JOIN res_partner p ON l.partner_id = p.id
-                  JOIN account_account_tag_account_move_line_rel aml_tag ON l.id = aml_tag.account_move_line_id
-                  JOIN account_tax_report_line_tags_rel tag_rep_ln ON tag_rep_ln.account_account_tag_id = aml_tag.account_account_tag_id
-                  LEFT JOIN account_move inv ON l.move_id = inv.id
-                  WHERE p.vat IS NOT NULL
-				  AND tag_rep_ln.account_tax_report_line_id IN %(tags)s
-                  AND l.partner_id IN %(partner_ids)s
-                  AND l.date >= %(date_from)s
-                  AND l.date <= %(date_to)s
-                  AND l.company_id IN %(company_ids)s
-                  AND ((l.move_id IS NULL AND l.credit > 0)
-                    OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
-                  GROUP BY l.partner_id, p.name, p.vat) AS turnover_sub
-                    FULL JOIN (SELECT l.partner_id, SUM(l.debit-l.credit) AS refund_base
-                        FROM account_move_line l
-                        JOIN res_partner p ON l.partner_id = p.id
-                        JOIN account_account_tag_account_move_line_rel aml_tag ON l.id = aml_tag.account_move_line_id
-                        JOIN account_tax_report_line_tags_rel tag_rep_ln ON tag_rep_ln.account_account_tag_id = aml_tag.account_account_tag_id
-                        LEFT JOIN account_move inv ON l.move_id = inv.id
-                        WHERE p.vat IS NOT NULL
-                        AND tag_rep_ln.account_tax_report_line_id IN %(tags)s
-                        AND l.partner_id IN %(partner_ids)s
-                        AND l.date >= %(date_from)s
-                        AND l.date <= %(date_to)s
-                        AND l.company_id IN %(company_ids)s
-                        AND ((l.move_id IS NULL AND l.credit > 0)
-                          OR (inv.move_type = 'out_refund' AND inv.state = 'posted'))
-                        GROUP BY l.partner_id, p.name, p.vat) AS refund_vat_sub
-                    ON turnover_sub.partner_id = refund_vat_sub.partner_id
-            LEFT JOIN (SELECT COALESCE(l2.partner_id, inv.partner_id) as partner_id, SUM(l2.credit - l2.debit) as vat_amount, SUM(l2.debit) AS refund_vat_amount
-                  FROM account_move_line l2
-                  JOIN account_account_tag_account_move_line_rel aml_tag2 ON l2.id = aml_tag2.account_move_line_id
-                  JOIN account_tax_report_line_tags_rel tag_rep_ln_2 ON tag_rep_ln_2.account_account_tag_id = aml_tag2.account_account_tag_id
-                  LEFT JOIN account_move inv ON l2.move_id = inv.id
-                  WHERE tag_rep_ln_2.account_tax_report_line_id IN %(tags2)s
-                  AND COALESCE(l2.partner_id, inv.partner_id) IN %(partner_ids)s
-                  AND l2.date >= %(date_from)s
-                  AND l2.date <= %(date_to)s
-                  AND l2.company_id IN %(company_ids)s
-                  AND ((l2.move_id IS NULL AND l2.credit > 0)
-                   OR (inv.move_type IN ('out_refund', 'out_invoice') AND inv.state = 'posted'))
-                GROUP BY COALESCE(l2.partner_id, inv.partner_id)) AS refund_base_sub
-              ON turnover_sub.partner_id = refund_base_sub.partner_id
-           WHERE turnover > 250 OR refund_base > 0 OR refund_vat_amount > 0
-           ORDER BY turnover_sub.vat, turnover_sub.turnover DESC
-        """
-        params = {
-            'tags': tuple(tag_ids),
-            'tags2': tuple(tag_ids_2),
-            'partner_ids': tuple(partner_ids),
-            'date_from': options['date']['date_from'],
-            'date_to': options['date']['date_to'],
-            'company_ids': tuple(self.env.companies.ids),
-        }
-        self.env.cr.execute(query, params)
-
-        for record in self.env.cr.dictfetchall():
-            currency_id = self.env.company.currency_id
-            columns = [record['vat'].replace(' ', '').upper(), record['turnover'], record['vat_amount']]
-            if not context.get('no_format', False):
-                columns[1] = formatLang(self.env, columns[1] or 0.0, currency_obj=currency_id)
-                columns[2] = formatLang(self.env, columns[2] or 0.0, currency_obj=currency_id)
-            lines.append({
-                'id': record['partner_id'],
-                # 'type': 'partner_id',
-                'caret_options': 'res.partner',
-                'model': 'res.partner',
-                'name': record['name'],
-                'columns': [{'name': v } for v in columns],
-                # 'level': 2,
-                'unfoldable': False,
-                'unfolded': False,
-            })
-        return lines
-
-    def _get_report_name(self):
-        return _('Partner VAT Listing')
-
-    def _get_columns_name(self, options):
-        return [{}, {'name': _('VAT Number')}, {'name': _('Turnover'), 'class': 'number'}, {'name': _('VAT Amount'), 'class': 'number'}]
-
-    def _get_reports_buttons(self, options):
-        buttons = super(ReportL10nBePartnerVatListing, self)._get_reports_buttons(options)
-        buttons += [{'name': _('XML'), 'sequence': 3, 'action': 'print_xml', 'file_export_type': _('XML')}]
-        return buttons
-
-    def get_xml(self, options):
+    def l10n_be_partner_vat_listing_export_to_xml(self, options):
         # Precheck
         company = self.env.company
         company_vat = company.partner_id.vat
+
         if not company_vat:
             raise UserError(_('No VAT number associated with your company.'))
+
         default_address = company.partner_id.address_get()
         address = default_address.get('invoice', company.partner_id)
+
         if not address.email:
             raise UserError(_('No email address associated with the company.'))
+
         if not address.phone:
             raise UserError(_('No phone associated with the company.'))
+
         # Write xml
-        seq_declarantnum = self.env['ir.sequence'].get('declarantnum')
+        seq_declarantnum = self.env['ir.sequence'].next_by_code('declarantnum')
         company_vat = company_vat.replace(' ', '').upper()
         SenderId = company_vat[2:]
         issued_by = company_vat[:2]
         dnum = company_vat[2:] + seq_declarantnum[-4:]
         street = city = country = ''
         addr = company.partner_id.address_get(['invoice'])
+
         if addr.get('invoice', False):
-            ads = self.env['res.partner'].browse([addr['invoice']])[0]
-            phone = ads.phone and self._raw_phonenumber(ads.phone) or address.phone and self._raw_phonenumber(address.phone)
-            email = ads.email or ''
-            city = ads.city or ''
-            zip = ads.zip or ''
+            addr_partner = self.env['res.partner'].browse([addr['invoice']])
+            phone = addr_partner.phone and self._raw_phonenumber(addr_partner.phone) or address.phone and self._raw_phonenumber(address.phone)
+            email = addr_partner.email or ''
+            city = addr_partner.city or ''
+            zip_code = addr_partner.zip or ''
+
             if not city:
                 city = ''
-            if ads.street:
-                street = ads.street
-            if ads.street2:
-                street += ' ' + ads.street2
-            if ads.country_id:
-                country = ads.country_id.code
+            if addr_partner.street:
+                street = addr_partner.street
+            if addr_partner.street2:
+                street += ' ' + addr_partner.street2
+            if addr_partner.country_id:
+                country = addr_partner.country_id.code
 
         # Turnover and Farmer tags are not included
-        ctx = self._set_context(options)
-        ctx.update({'no_format': True, 'date_from': ctx['date_from'][0:4] + '-01-01', 'date_to': ctx['date_from'][0:4] + '-12-31'})
-        lines = self.with_context(ctx)._get_lines(options)
+        options['date']['date_from'] = options['date']['date_from'][0:4] + '-01-01'
+        options['date']['date_to'] = options['date']['date_to'][0:4] + '-12-31'
+        lines = self._get_lines(options)
 
         data_client_info = ''
         seq = 0
         sum_turnover = 0.00
         sum_tax = 0.00
-        lines = sorted(lines, key=lambda l: l['columns'][0]['name'] or '')
-        for vat, values in groupby(lines, key=lambda l: l['columns'][0]['name']):
-            values = list(values)
-            turnover = sum([k['columns'][1]['name'] or 0.0 for k in values])
-            tax = sum([k['columns'][2]['name'] or 0.0 for k in values])
+
+        for vat_number, values in groupby(lines[1:], key=lambda line: line['columns'][0]['name']):
+            turnover = 0.0
+            vat_amount = 0.0
+
+            for value in list(values):
+                line_model = self._get_model_info_from_id(value['id'])[0]
+
+                if line_model != 'res.partner':
+                    continue
+
+                for column in value['columns']:
+                    col_expr_label = column['expression_label']
+
+                    if col_expr_label == 'turnover':
+                        turnover += column['no_format'] or 0.0
+                    elif col_expr_label == 'vat_amount':
+                        vat_amount += column['no_format'] or 0.0
+
             seq += 1
             sum_turnover += turnover
-            sum_tax += tax
+            sum_tax += vat_amount
             amount_data = {
                 'seq': str(seq),
-                'only_vat': vat[2:],
+                'only_vat': vat_number[2:],
                 'turnover': turnover,
-                'vat_amount': tax,
+                'vat_amount': vat_amount,
             }
             data_client_info += Markup("""
         <ns2:Client SequenceNumber="%(seq)s">
@@ -211,7 +320,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
             'company_vat': company_vat,
             'comp_name': company.name,
             'street': street,
-            'zip': zip,
+            'zip_code': zip_code,
             'city': city,
             'country': country,
             'email': email,
@@ -235,7 +344,7 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
             <VATNumber>%(SenderId)s</VATNumber>
             <Name>%(comp_name)s</Name>
             <Street>%(street)s</Street>
-            <PostCode>%(zip)s</PostCode>
+            <PostCode>%(zip_code)s</PostCode>
             <City>%(city)s</City>
             <CountryCode>%(country)s</CountryCode>
             <EmailAddress>%(email)s</EmailAddress>
@@ -248,4 +357,8 @@ class ReportL10nBePartnerVatListing(models.AbstractModel):
     </ns2:ClientListing>
 </ns2:ClientListingConsignment>""") % annual_listing_data
 
-        return (data_begin + data_client_info + data_end).encode('ISO-8859-1', 'ignore')
+        return {
+            'file_name': self.get_default_report_filename('xml'),
+            'file_content': (data_begin + data_client_info + data_end).encode('ISO-8859-1', 'ignore'),
+            'file_type': 'xml',
+        }

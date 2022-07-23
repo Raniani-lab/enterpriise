@@ -17,7 +17,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
         values = [
             {
                 'type': type,
-                'name': '%s-%s' % (type, date[0]),
+                'name': f'{type}-{date[0]}',
                 'start_date': date[1],
                 'expiry_date': date[2],
             } for type in (
@@ -52,35 +52,36 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
         moves = cls.env['account.move'].create({
             'move_type': 'out_invoice',
             'partner_id': cls.partner_a.id,
-            'invoice_date': fields.Date.from_string('2022-02-01'),
+            'invoice_date': '2022-01-01',
             'intrastat_country_id': cls.env.ref('base.de').id,
             'invoice_line_ids': [
                 Command.create({
                     'name': 'line_1',
                     'product_id': cls.product_a.id,
                     'price_unit': 5.0,
-                    'intrastat_transaction_id': cls.intrastat_codes['%s-no_date' % code_type].id if code_type else None,
+                    'intrastat_transaction_id': cls.intrastat_codes[f'{code_type}-no_date'].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,
                     'tax_ids': [],
+                    'price_unit': 80.0,
                 }),
                 Command.create({
                     'name': 'line_2',
                     'product_id': cls.product_b.id,
-                    'price_unit': 5.0,
-                    'intrastat_transaction_id': cls.intrastat_codes['%s-expired' % code_type].id if code_type else None,
+                    'intrastat_transaction_id': cls.intrastat_codes[f'{code_type}-expired'].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,
                     'tax_ids': [],
+                    'price_unit': 100.0,
                 }),
                 Command.create({
                     'name': 'line_3',
                     'product_id': cls.product_c.id,
-                    'price_unit': 5.0,
-                    'intrastat_transaction_id': cls.intrastat_codes['%s-premature' % code_type].id if code_type else None,
+                    'intrastat_transaction_id': cls.intrastat_codes[f'{code_type}-premature'].id if code_type else None,
                     'quantity': 1.0,
                     'account_id': cls.company_data['default_account_revenue'].id,
                     'tax_ids': [],
+                    'price_unit': 250.0,
                 }),
             ],
         })
@@ -88,14 +89,16 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
         cls.env.flush_all()  # must flush else SQL request in report is not accurate
         return moves
 
-    @freeze_time('2022-02-01')
+    @freeze_time('2022-01-31')
     def test_intrastat_report_transaction(self):
         invoice = self._create_invoices('transaction')
-        report = self.env['account.intrastat.report']
-        options = report._get_options(None)
-        options['date']['date_from'] = '1900-01-01'
-        options['date']['date_to'] = '2022-12-01'
-        options.update({'country_format': 'code'})
+        report = self.env.ref('account_intrastat.intrastat_report')
+        options = self._generate_options(
+            report,
+            date_from=fields.Date.from_string('2022-01-01'),
+            date_to=fields.Date.from_string('2022-01-31'),
+            default_options={'country_format': 'code'},
+        )
         lines = report._get_lines(options)
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -108,22 +111,24 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 ('DE',          '105',             'QU'),
             ],
         )
-        self.assertEqual(options['warnings'], {
+        self.assertEqual(options['intrastat_warnings'], {
             'expired_trans': [invoice.id],
             'premature_trans': [invoice.id],
         })
 
-    @freeze_time('2022-02-01')
+    @freeze_time('2022-01-31')
     def test_intrastat_report_commodity_on_products(self):
         self.product_a.intrastat_id = self.intrastat_codes['commodity-no_date']
         self.product_b.intrastat_id = self.intrastat_codes['commodity-expired']
         self.product_c.intrastat_id = self.intrastat_codes['commodity-premature']
         self._create_invoices()
-        report = self.env['account.intrastat.report']
-        options = report._get_options(None)
-        options['date']['date_from'] = '1900-01-01'
-        options['date']['date_to'] = '2022-12-01'
-        options.update({'country_format': 'code'})
+        report = self.env.ref('account_intrastat.intrastat_report')
+        options = self._generate_options(
+            report,
+            date_from=fields.Date.from_string('2022-01-01'),
+            date_to=fields.Date.from_string('2022-01-31'),
+            default_options={'country_format': 'code'},
+        )
         lines = report._get_lines(options)
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -136,12 +141,12 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 ('DE',          11,                '102',          'QU'),
             ],
         )
-        self.assertEqual(options['warnings'], {
+        self.assertEqual(options['intrastat_warnings'], {
             'expired_comm': [self.product_b.id],
             'premature_comm': [self.product_c.id],
         })
 
-    @freeze_time('2022-02-01')
+    @freeze_time('2022-01-31')
     def test_intrastat_report_commodity_on_product_categories(self):
         self.product_a.categ_id = self.env['product.category'].create({
             'name': 'categ_a',
@@ -156,11 +161,14 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             'intrastat_id': self.intrastat_codes['commodity-premature'].id,
         })
         self._create_invoices()
-        report = self.env['account.intrastat.report']
-        options = report._get_options(None)
-        options['date']['date_from'] = '1900-01-01'
-        options['date']['date_to'] = '2022-12-01'
-        options.update({'country_format': 'code'})
+        report = self.env.ref('account_intrastat.intrastat_report')
+        options = self._generate_options(
+            report,
+            date_from=fields.Date.from_string('2022-01-01'),
+            date_to=fields.Date.from_string('2022-01-31'),
+            default_options={
+                'country_format': 'code'
+            })
         lines = report._get_lines(options)
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -173,7 +181,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
                 ('DE',          11,                '102',          'QU'),
             ],
         )
-        self.assertEqual(options['warnings'], {
+        self.assertEqual(options['intrastat_warnings'], {
             'expired_categ_comm': [self.product_b.categ_id.id],
             'premature_categ_comm': [self.product_c.categ_id.id],
         })

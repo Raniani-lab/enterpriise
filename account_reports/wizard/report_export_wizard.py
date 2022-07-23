@@ -3,6 +3,7 @@
 
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
+from odoo.models import check_method_name
 
 import json
 import base64
@@ -17,25 +18,24 @@ class ReportExportWizard(models.TransientModel):
     _description = "Export wizard for accounting's reports"
 
     export_format_ids = fields.Many2many(string="Export to", comodel_name='account_reports.export.wizard.format', relation="dms_acc_rep_export_wizard_format_rel")
-    report_model = fields.Char(string="Report Model", required=True)
-    report_id = fields.Integer(string="Parent Report Id", required=True)
+    report_id = fields.Many2one(string="Parent Report Id", comodel_name='account.report', required=True)
     doc_name = fields.Char(string="Documents Name", help="Name to give to the generated documents.")
 
     @api.model_create_multi
     def create(self, vals_list):
         wizards = super().create(vals_list)
         for wizard in wizards:
-            report = wizard._get_report_obj()
-            wizard.doc_name = hasattr(report, 'name') and report.name or report._description # account.financial.html.report objects have a name field, not account.report ones
+            wizard.doc_name = wizard.report_id.name
 
             # We create one export format object per available export type of the report,
             # with the right generation function associated to it.
             # This is done so to allow selecting them as Many2many tags in the wizard.
-            for button_dict in report._get_reports_buttons_in_sequence(self._context.get('account_report_generation_options', {})):
+            for button_dict in self._context.get('account_report_generation_options', {}).get('buttons', []):
                 if button_dict.get('file_export_type'):
                     self.env['account_reports.export.wizard.format'].create({
                         'name': button_dict['file_export_type'],
                         'fun_to_call': button_dict['action'],
+                        'fun_param': button_dict.get('action_param'),
                         'export_wizard_id': wizard.id,
                     })
         return wizards
@@ -56,35 +56,58 @@ class ReportExportWizard(models.TransientModel):
     def _get_attachments_to_save(self):
         self.ensure_one()
         to_create_attachments = []
+        report_options = self.env.context['account_report_generation_options']
         for format in self.export_format_ids:
-            report_options = self.env.context['account_report_generation_options']
-            report_action = format.apply_export(report_options)
-            report = self._get_report_obj()
-            if report_action['type'] == 'ir_actions_account_report_download':
-                output_format = report_action['data']['output_format']
-                mimetype = report.get_export_mime_type(output_format)
+            # format.fun_to_call is a button function, so it has to be public
+            check_method_name(format.fun_to_call)
+            report_function = getattr(self.report_id, format.fun_to_call)
+            report_function_params = [format.fun_param] if format.fun_param else []
+            report_action = report_function(report_options, *report_function_params)
 
-                if mimetype is not False: # We let the option to set a None value for it
-                    report_options = json.loads(report_action['data']['options'])
-                    report_options = self._get_log_options_dict(report_options)
-                    generation_function = getattr(report, 'get_' + output_format)
-                    file_name = f"{self.doc_name or report.get_report_filename(report_options)}.{output_format}"
-                    # We use the options from the action, as the action may have added or modified
-                    # stuff into them (see l10n_es_reports, with BOE wizard)
-                    file_content = base64.encodebytes(generation_function(report_options))
-            elif report_action['type'] == 'ir.actions.act_url':
-                query_params = parse_qs(urlparse(report_action['url']).query)
-                model = query_params['model'][0]
-                model_id = int(query_params['id'][0])
-                wizard = self.env[model].browse(model_id)
-                file_name = wizard[query_params['filename_field'][0]]
-                file_content = wizard[query_params['field'][0]]
-                mimetype = self.env['account.report'].get_export_mime_type(file_name.split('.')[-1])
-            else:
-                raise UserError(_("One of the formats chosen can not be exported in the DMS"))
-            report_options.pop('self', False)
-            to_create_attachments.append(self.get_attachment_vals(file_name, file_content, mimetype, report_options))
+            to_create_attachments.append(format.apply_export(report_action))
+
         return to_create_attachments
+
+
+class ReportExortWizardOption(models.TransientModel):
+    _name = 'account_reports.export.wizard.format'
+    _description = "Export format for accounting's reports"
+
+    name = fields.Char(string="Name", required=True)
+    fun_to_call = fields.Char(string="Function to Call", required=True)
+    fun_param = fields.Char(string="Function Parameter")
+    export_wizard_id = fields.Many2one(string="Parent Wizard", comodel_name='account_reports.export.wizard', required=True)
+
+    def apply_export(self, report_action):
+        self.ensure_one()
+
+        if report_action['type'] == 'ir_actions_account_report_download':
+            report_options = json.loads(report_action['data']['options'])
+
+            # file_generator functions are always public for ir_actions_account_report_download
+            check_method_name(report_action['data']['file_generator'])
+            generation_function = getattr(self.export_wizard_id.report_id, report_action['data']['file_generator'])
+            export_result = generation_function(report_options)
+
+            # We use the options from the action, as the action may have added or modified
+            # stuff into them (see l10n_es_reports, with BOE wizard)
+            file_content = base64.encodebytes(export_result['file_content'])
+            file_name = f"{self.export_wizard_id.doc_name or self.export_wizard_id.report_id.name}.{export_result['file_type']}"
+            mimetype = self.export_wizard_id.report_id.get_export_mime_type(export_result['file_type'])
+
+        elif report_action['type'] == 'ir.actions.act_url':
+            query_params = parse_qs(urlparse(report_action['url']).query)
+            model = query_params['model'][0]
+            model_id = int(query_params['id'][0])
+            wizard = self.env[model].browse(model_id)
+            file_name = wizard[query_params['filename_field'][0]]
+            file_content = wizard[query_params['field'][0]]
+            mimetype = self.env['account.report'].get_export_mime_type(file_name.split('.')[-1])
+
+        else:
+            raise UserError(_("One of the formats chosen can not be exported in the DMS"))
+
+        return self.get_attachment_vals(file_name, file_content, mimetype, report_options)
 
     def get_attachment_vals(self, file_name, file_content, mimetype, log_options_dict):
         self.ensure_one()
@@ -95,29 +118,3 @@ class ReportExportWizard(models.TransientModel):
             'mimetype': mimetype,
             'description': json.dumps(log_options_dict)
         }
-
-    def _get_report_obj(self):
-        model = self.env[self.report_model]
-        if self.report_id:
-            return model.browse(self.report_id)
-        return model
-
-    def _get_log_options_dict(self, report_options):
-        """ To be overridden in order to replace wizard ids by json data for the
-        correponding object.
-        """
-        return report_options
-
-
-class ReportExortWizardOption(models.TransientModel):
-    _name = 'account_reports.export.wizard.format'
-    _description = "Export format for accounting's reports"
-
-    name = fields.Char(string="Name", required=True)
-    fun_to_call = fields.Char(string="Function to Call", required=True)
-    export_wizard_id = fields.Many2one(string="Parent Wizard", comodel_name='account_reports.export.wizard', required=True)
-
-    def apply_export(self, report_options):
-        self.ensure_one()
-        report = self.env[self.export_wizard_id.report_model].browse(self.export_wizard_id.report_id)
-        return getattr(report, self.fun_to_call)(report_options)

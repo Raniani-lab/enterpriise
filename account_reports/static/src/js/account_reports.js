@@ -21,11 +21,12 @@ var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
      * @constructor
      * @param {Object} fields
      */
-    init: function (parent, fields) {
+    init: function (parent, fields, change_event) {
         this._super.apply(this, arguments);
         StandaloneFieldManagerMixin.init.call(this);
         this.fields = fields;
         this.widgets = {};
+        this.change_event = change_event;
     },
     /**
      * @override
@@ -70,7 +71,7 @@ var M2MFilters = Widget.extend(StandaloneFieldManagerMixin, {
         _.each(this.fields, function (filter, fieldName) {
             data[fieldName] = self.widgets[fieldName].value.res_ids;
         });
-        this.trigger_up('value_changed', data);
+        this.trigger_up(this.change_event, data);
         return result;
     },
     /**
@@ -117,7 +118,7 @@ var accountReportsWidget = AbstractAction.extend({
     hasControlPanel: true,
 
     events: {
-        'input .o_searchview_input': 'filter_accounts',
+        'input .o_searchview_input': 'filter_search_bar',
         'click .o_account_reports_summary': 'edit_summary',
         'click .js_account_report_save_summary': 'save_summary',
         'click .o_account_reports_footnote_icons': 'delete_footnote',
@@ -125,40 +126,39 @@ var accountReportsWidget = AbstractAction.extend({
         'click .js_account_report_foldable': 'fold_unfold',
         'click [action]': 'trigger_action',
         'click .o_account_reports_load_more span': 'load_more',
-        'click .o_account_reports_table thead th': 'selected_column',
+        'click .o_account_reports_table thead .sortable': 'order_selected_column',
         'click .o_change_expected_date': '_onChangeExpectedDate',
         'click .o_search_options .dropdown-menu': '_onClickDropDownMenu',
     },
 
     custom_events: {
-        'value_changed': function(ev) {
+        'partner_filter_changed': function(ev) {
              var self = this;
              self.report_options.partner_ids = ev.data.partner_ids;
              self.report_options.partner_categories = ev.data.partner_categories;
-             self.report_options.analytic_accounts = ev.data.analytic_accounts;
-             self.report_options.analytic_tags = ev.data.analytic_tags;
              return self.reload().then(function () {
                  self.$searchview_buttons.find('.account_partner_filter').click();
-                 self.$searchview_buttons.find('.account_analytic_filter').click();
              });
          },
+
+         'analytic_filter_changed': function(ev) {
+              var self = this;
+              self.report_options.analytic_accounts = ev.data.analytic_accounts;
+              self.report_options.analytic_tags = ev.data.analytic_tags;
+              return self.reload().then(function () {
+                  self.$searchview_buttons.find('.account_analytic_filter').click();
+              });
+          },
     },
 
     init: function(parent, action) {
         this.actionManager = parent;
-        this.report_model = action.context.model;
-        if (this.report_model === undefined) {
-            this.report_model = 'account.report';
-        }
-        this.financial_id = false;
-        if (action.context.id) {
-            this.financial_id = action.context.id;
-        }
         this.odoo_context = action.context;
         this.report_options = action.params && action.params.options;
+        this.root_account_report_id = this.report_options.report_id || action.context.report_id;
         this.ignore_session = action.params && action.params.ignore_session;
         if ((this.ignore_session === 'read' || this.ignore_session === 'both') !== true) {
-            var persist_key = 'report:'+this.report_model+':'+this.financial_id+':'+session.company_id;
+            var persist_key = this.get_persist_options_key()
             var company_reload_persist_key = this.get_persist_options_key_for_company_reload(session.user_context['allowed_company_ids']);
 
             this.report_options = JSON.parse(sessionStorage.getItem(company_reload_persist_key))
@@ -173,11 +173,11 @@ var accountReportsWidget = AbstractAction.extend({
     },
     willStart: async function () {
         const reportsInfoPromise = this._rpc({
-            model: this.report_model,
+            model: 'account.report',
             method: 'get_report_informations',
-            args: [this.financial_id, this.report_options],
+            args: [this.root_account_report_id, this.report_options],
             context: this.odoo_context,
-        }).then(res => this.parse_reports_informations(res));
+        }).then(res => this.parse_report_informations(res));
         const parentPromise = this._super(...arguments);
         return Promise.all([reportsInfoPromise, parentPromise]);
     },
@@ -192,13 +192,52 @@ var accountReportsWidget = AbstractAction.extend({
         await this._super(...arguments);
         this.render();
 
+        let self = this;
+        $(document).on("click", function(event){
+            let $target = $(event.target);
+            if (event.target.classList.contains('o_account_report_popup')) {
+               $target.popover("show");
+               let manual_value_input = document.getElementById("account_reports_manual_value_input")
+               if (manual_value_input)
+                  manual_value_input.focus();
+            }
+            else if (!event.target.classList.contains("account_reports_popup_no_hide")) {
+                _.each($(document).find(".o_account_report_popup"), function(popup_trigger) {
+                    $(popup_trigger).popover("hide");
+                });
+            }
+
+            if (event.target.classList.contains("account_reports_submit_manual_value")) {
+                let manual_value = document.getElementById('account_reports_manual_value_input').value;
+                self._rpc({
+                    model: 'account.report',
+                    method: 'action_modify_manual_value',
+                    args: [
+                        self.report_options['report_id'],
+                        self.report_options, $target.data('columnGroupKey'),
+                        manual_value,
+                        $target.data('targetExpressionId'),
+                        $target.data('rounding'),
+                        self.report_column_groups_totals
+                    ],
+                    context: self.odoo_context,
+                })
+                .then(function(result){
+                    self.main_html = result.new_main_html;
+                    self.report_column_groups_totals = result.new_report_column_groups_totals;
+                    self.render();
+                })
+            }
+        });
+
         // A default value has been set for the filter accounts.
         // Apply the filter to take this value into account.
         if("default_filter_accounts" in (this.odoo_context || {}))
             this.$('.o_account_reports_filter_input').val(this.odoo_context.default_filter_accounts).trigger("input");
     },
-    parse_reports_informations: function(values) {
+    parse_report_informations: function(values) {
         this.report_options = values.options;
+        this.report_column_groups_totals = values.column_groups_totals;
         this.odoo_context = values.context;
         this.report_manager_id = values.report_manager_id;
         this.footnotes = values.footnotes;
@@ -209,9 +248,12 @@ var accountReportsWidget = AbstractAction.extend({
         this.$searchview_buttons = $(values.searchview_html);
         this.persist_options();
     },
+    get_persist_options_key: function() {
+        return 'account.report:'+this.root_account_report_id+':'+session.company_id;
+    },
     persist_options: function() {
         if ((this.ignore_session === 'write' || this.ignore_session === 'both') !== true) {
-            var persist_key = 'report:'+this.report_model+':'+this.financial_id+':'+session.company_id;
+            var persist_key = this.get_persist_options_key()
             sessionStorage.setItem(persist_key, JSON.stringify(this.report_options));
         }
     },
@@ -227,7 +269,7 @@ var accountReportsWidget = AbstractAction.extend({
         The refresh makes it so that the tax unit option that just got selected is lost if we don't
         make it persist in the session. However, doing it with the regular persist_options will cause
         the first willStart to use it in previous_options while self.env.companies is not yet compatible
-        with it, making the init_filter_multi_company reinitialize it with something inconsistent with
+        with it, making the init_options_multi_company reinitialize it with something inconsistent with
         what we clicked on, before the second willStart acts using those wrongly reinitialized options
         as previous_options.
 
@@ -243,7 +285,7 @@ var accountReportsWidget = AbstractAction.extend({
     get_persist_options_key_for_company_reload: function(company_ids) {
         company_ids = company_ids ? [...company_ids] : []
         company_ids.sort((a, b) => a - b);
-        return 'report:reload_company_ids:'+company_ids.toString()+':'+this.report_model+':'+this.financial_id+':'+session.company_id;
+        return 'account.report:reload_company_ids:'+company_ids.toString()+':'+this.root_account_report_id+':'+session.company_id;
     },
     // Updates the control panel and render the elements that have yet to be rendered
     update_cp: function() {
@@ -261,13 +303,13 @@ var accountReportsWidget = AbstractAction.extend({
     reload: function() {
         var self = this;
         return this._rpc({
-                model: this.report_model,
+                model: 'account.report',
                 method: 'get_report_informations',
-                args: [self.financial_id, self.report_options],
+                args: [self.root_account_report_id, self.report_options],
                 context: self.odoo_context,
             })
             .then(function(result){
-                self.parse_reports_informations(result);
+                self.parse_report_informations(result);
                 self.render();
                 self.renderButtons();
                 return self.update_cp();
@@ -324,102 +366,28 @@ var accountReportsWidget = AbstractAction.extend({
                 html: true,
                 template: "<div class='popover' role='tooltip' style='max-width: 100%; margin-right:80px;'><div class='popover-body'></div></div>",
                 placement: 'left',
-                trigger: 'focus',
+                trigger: 'manual',
                 container: 'body',
                 delay: {show: 0, hide: 100},
                 content: function(){
                     var data = JSON.parse(popup.getAttribute('data'));
-
-                    // Render the content.
                     var $content = $(QWeb.render(popup.getAttribute('template'), data));
 
-                    // Bind the 'view journal items' button with the 'action_view_journal_entries' python method.
-                    $content.find('.js_view_entries').on('click', function(event){
-                        self._rpc({
-                            model: 'account.financial.html.report.line',
-                            method: 'action_view_journal_entries',
-                            args: [$(event.target).data('id'), self.report_options, self.financial_id],
-                            context: self.odoo_context,
-                        })
-                        .then(function(result){
-                            return self.do_action(result);
-                        })
-                    });
-
-                    // Bind the 'Accounts' button with the 'action_view_coa' python method.
-                    $content.find('.js_view_coa').on('click', function(event){
-                        self._rpc({
-                            model: 'account.financial.html.report.line',
-                            method: 'action_view_coa',
-                            args: [$(event.target).data('id'), self.report_options],
-                            context: self.odoo_context,
-                        })
-                        .then(function(result){
-                            return self.do_action(result);
-                        })
-                    });
-
-                    // Bind the 'Report Line Computation' button with the 'action_view_line_computation' python method.
-                    $content.find('.js_view_line_computation').on('click', function(event){
-                        self._rpc({
-                            model: 'account.financial.html.report.line',
-                            method: 'action_view_line_computation',
-                            args: [$(event.target).data('id')],
-                            context: self.odoo_context,
-                        })
-                        .then(function(result){
-                            return self.do_action(result);
-                        })
-                    });
-
-                    // Bind the 'view carryover lines' button with the 'action_view_carryover_lines' python method.
+                    // Bind the 'View Carryover Lines' button with the 'action_view_carryover_lines' python method.
                     $content.find('.js_view_carryover_lines').on('click', function(event){
                         self._rpc({
-                            model: 'account.tax.report.line',
+                            model: 'account.report.expression',
                             method: 'action_view_carryover_lines',
-                            args: [$(event.target).data('id'), self.report_options],
+                            args: [$(event.target).data('expression-id'), self.report_options],
                             context: self.odoo_context,
                         })
                         .then(function(result){
                             return self.do_action(result);
                         })
-                    });
-
-                    // Highlight involved codes during formula evaluation.
-                    _.each($content.find('.js_popup_formula'), function(element){
-                        $(element).on("mouseenter", function(event){
-                            $(element).addClass('o_financial_report_hover_popup');
-                            self.$("[code='" + element.textContent + "']").addClass('o_financial_report_hover_popup');
-                        });
-                        $(element).on("mouseleave", function(event){
-                            $(element).removeClass('o_financial_report_hover_popup');
-                            self.$("[code='" + element.textContent + "']").removeClass('o_financial_report_hover_popup');
-                        });
-                    });
-
-                    // Redirect to another report.
-                    _.each($content.find('.js_popup_open_report'), function(element){
-                        $(element).on("click", function(event){
-                            var $target = $(event.target);
-                            self._rpc({
-                                model: 'account.financial.html.report',
-                                method: 'action_redirect_to_report',
-                                args: [$target.data('id'), self.report_options, $target.data('target')],
-                                context: self.odoo_context,
-                            })
-                            .then(function(result){
-                                return self.do_action(result);
-                            })
-                        });
                     });
 
                     return $content;
                 }
-            });
-
-            // Triggered when the popup is closed without mouseleave event.
-            $(popup).on("hidden.bs.popover", function(element){
-                self.$('.js_popup_formula').removeClass('o_financial_report_hover_popup');
             });
         });
     },
@@ -444,7 +412,7 @@ var accountReportsWidget = AbstractAction.extend({
 
         this._init_line_popups();
      },
-    filter_accounts: function(e) {
+    filter_search_bar: function(e) {
         var self = this;
         var query = e.target.value.trim().toLowerCase();
         this.filterOn = false;
@@ -456,11 +424,15 @@ var accountReportsWidget = AbstractAction.extend({
             const lineNameEl = $accountReportLineFoldable.find('.account_report_line_name')[0];
             // Only the direct text node, not text situated in other child nodes
             const displayName = lineNameEl.childNodes[0].nodeValue.trim().toLowerCase();
-            const accountCode = lineNameEl.dataset.accountCode || '';
-            const accountName = displayName.slice(accountCode ? accountCode.length + 1 : 0);
+            const searchKey = lineNameEl.dataset.searchKey || '';
 
             // The python does this too
-            const queryFound = accountCode.startsWith(query.split(' ')[0]) || accountName.includes(query);
+            let queryFound = undefined;
+            if (searchKey) {
+                queryFound = searchKey.startsWith(query.split(' ')[0]);
+            } else {
+                queryFound = displayName.includes(query);
+            }
 
             $accountReportLineFoldable.toggleClass('o_account_reports_filtered_lines', !queryFound);
             $childs.toggleClass('o_account_reports_filtered_lines', !queryFound);
@@ -482,19 +454,21 @@ var accountReportsWidget = AbstractAction.extend({
         else {
             this.$('.o_account_reports_level1.total').show();
         }
-        this.report_options['filter_accounts'] = query;
+        this.report_options['filter_search_bar'] = query;
         this.render_footnotes();
     },
-    selected_column: function(e) {
-        var self = this;
-        if (self.report_options.selected_column !== undefined) {
-            var col_number = Array.prototype.indexOf.call(e.currentTarget.parentElement.children, e.currentTarget) + 1; // we can't have negative 0 so lets start index at 1
-            if (self.report_options.selected_column && self.report_options.selected_column == col_number) {
-                self.report_options.selected_column = -col_number;
+    order_selected_column: function(e) {
+        let self = this;
+        if (self.report_options.order_column !== undefined) {
+            let colNumber = Array.prototype.indexOf.call(e.currentTarget.parentElement.children, e.currentTarget);
+            if (self.report_options.order_column && self.report_options.order_column == colNumber) {
+                self.report_options.order_column = -colNumber;
+            } else if (self.report_options.order_column && self.report_options.order_column == -colNumber) {
+                self.report_options.order_column = null;
             } else {
-                self.report_options.selected_column = col_number;
+                self.report_options.order_column = colNumber;
             }
-            self.reload()
+            self.reload();
         }
     },
     _onChangeExpectedDate: function (event) {
@@ -617,7 +591,9 @@ var accountReportsWidget = AbstractAction.extend({
             self.reload();
         });
         _.each(this.$searchview_buttons.find('.js_account_reports_one_choice_filter'), function(k) {
-            $(k).toggleClass('selected', ''+self.report_options[$(k).data('filter')] === ''+$(k).data('id'));
+            let menu_data = $(k).data('id');
+            let option_data = self.report_options[$(k).data('filter')];
+            $(k).toggleClass('selected', option_data == menu_data);
         });
         // click events
         this.$searchview_buttons.find('.js_account_report_date_filter').click(function (event) {
@@ -669,19 +645,20 @@ var accountReportsWidget = AbstractAction.extend({
             });
             self.reload();
         });
-        var rate_handler = function (event) {
-            var option_value = $(this).data('filter');
-            if (option_value == 'current_currency') {
+        const rateHandler = function (event) {
+            let optionValue = $(this).data('filter');
+            if (optionValue === 'current_currency') {
                 delete self.report_options.currency_rates;
-            } else if (option_value == 'custom_currency') {
-                _.each($('input.js_account_report_custom_currency_input'), function(input) {
+            } else if (optionValue === 'custom_currency') {
+                _.each($('input.js_account_report_custom_currency_input'), (input) => {
                     self.report_options.currency_rates[input.name].rate = input.value;
                 });
             }
             self.reload();
-        }
-        $(document).on('click', '.js_account_report_custom_currency', rate_handler);
-        this.$searchview_buttons.find('.js_account_report_custom_currency').click(rate_handler);
+        };
+        $(document).on('click', '.js_account_report_custom_currency', rateHandler);
+        $(document).on('click', '.js_account_report_custom_currency', rateHandler);
+        this.$searchview_buttons.find('.js_account_report_custom_currency').click(rateHandler);
         this.$searchview_buttons.find('.js_account_reports_one_choice_filter').click(function (event) {
             var option_value = $(this).data('filter');
             self.report_options[option_value] = $(this).data('id');
@@ -736,7 +713,7 @@ var accountReportsWidget = AbstractAction.extend({
 
         // partner filter
         if (this.report_options.partner) {
-            if (!this.M2MFilters) {
+            if (!this.partners_m2m_filter) {
                 var fields = {};
                 if ('partner_ids' in this.report_options) {
                     fields['partner_ids'] = {
@@ -753,17 +730,17 @@ var accountReportsWidget = AbstractAction.extend({
                     };
                 }
                 if (!_.isEmpty(fields)) {
-                    this.M2MFilters = new M2MFilters(this, fields);
-                    this.M2MFilters.appendTo(this.$searchview_buttons.find('.js_account_partner_m2m'));
+                    this.partners_m2m_filter = new M2MFilters(this, fields, 'partner_filter_changed');
+                    this.partners_m2m_filter.appendTo(this.$searchview_buttons.find('.js_account_partner_m2m'));
                 }
             } else {
-                this.$searchview_buttons.find('.js_account_partner_m2m').append(this.M2MFilters.$el);
+                this.$searchview_buttons.find('.js_account_partner_m2m').append(this.partners_m2m_filter.$el);
             }
         }
 
         // analytic filter
         if (this.report_options.analytic) {
-            if (!this.M2MFilters) {
+            if (!this.analytic_m2m_filter) {
                 var fields = {};
                 if (this.report_options.analytic_accounts) {
                     fields['analytic_accounts'] = {
@@ -780,11 +757,11 @@ var accountReportsWidget = AbstractAction.extend({
                     };
                 }
                 if (!_.isEmpty(fields)) {
-                    this.M2MFilters = new M2MFilters(this, fields);
-                    this.M2MFilters.appendTo(this.$searchview_buttons.find('.js_account_analytic_m2m'));
+                    this.analytic_m2m_filter = new M2MFilters(this, fields, 'analytic_filter_changed');
+                    this.analytic_m2m_filter.appendTo(this.$searchview_buttons.find('.js_account_analytic_m2m'));
                 }
             } else {
-                this.$searchview_buttons.find('.js_account_analytic_m2m').append(this.M2MFilters.$el);
+                this.$searchview_buttons.find('.js_account_analytic_m2m').append(this.analytic_m2m_filter.$el);
             }
         }
     },
@@ -794,15 +771,17 @@ var accountReportsWidget = AbstractAction.extend({
     },
     renderButtons: function() {
         var self = this;
-        this.$buttons = $(QWeb.render("accountReports.buttons", {buttons: this.buttons}));
+        this.$buttons = $(QWeb.render("accountReports.buttons", {report_options: this.report_options}));
         // bind actions
         _.each(this.$buttons.siblings('button'), function(el) {
             $(el).click(function() {
                 self.$buttons.attr('disabled', true);
+                let action_param = $(el).attr('action_param')
+
                 return self._rpc({
-                        model: self.report_model,
+                        model: 'account.report',
                         method: $(el).attr('action'),
-                        args: [self.financial_id, self.report_options],
+                        args: [self.report_options.report_id, self.report_options].concat(action_param ? action_param : []),
                         context: self.odoo_context,
                     })
                     .then(function(result){
@@ -873,9 +852,9 @@ var accountReportsWidget = AbstractAction.extend({
         });
         // Render footnote template
         return this._rpc({
-                model: this.report_model,
+                model: 'account.report',
                 method: 'get_html_footnotes',
-                args: [self.financial_id, footnote_to_render],
+                args: [self.root_account_report_id, footnote_to_render],
                 context: self.odoo_context,
             })
             .then(function(result){
@@ -1021,8 +1000,8 @@ var accountReportsWidget = AbstractAction.extend({
         }
     },
     /**
-     * 
-     * @deprecated 
+     *
+     * @deprecated
      * Use batch_fold to fold lines.
      * To be removed in master.
      */
@@ -1032,13 +1011,19 @@ var accountReportsWidget = AbstractAction.extend({
         line.find('.o_account_reports_caret_icon .fa-caret-down').toggleClass('fa-caret-right fa-caret-down');
         line.addClass('folded');
         $(line).parent('tr').removeClass('o_js_account_report_parent_row_unfolded');
-        var $lines_to_hide = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
+
+        // Remove the lines from the ones marked as unfolded in the options, it it is there.
         var index = self.report_options.unfolded_lines.indexOf(line_id);
         if (index > -1) {
             self.report_options.unfolded_lines.splice(index, 1);
         }
+
+        // Mark line as folded
+        line[0].dataset.unfolded = 'False';
+
+        // Hide child lines
+        var $lines_to_hide = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
         if ($lines_to_hide.length > 0) {
-            line[0].dataset.unfolded = 'False';
             $lines_to_hide.find('.js_account_report_line_footnote').addClass('folded');
             $lines_to_hide.hide();
             _.each($lines_to_hide, function(el){
@@ -1056,7 +1041,8 @@ var accountReportsWidget = AbstractAction.extend({
         line.toggleClass('folded');
         self.report_options.unfolded_lines.push(line_id);
         var $lines_in_dom = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
-        if ($lines_in_dom.length > 0) {
+        let $total_lines = $lines_in_dom.filter('.total');
+        if ($lines_in_dom.length - $total_lines.length > 0) {
             $lines_in_dom.find('.js_account_report_line_footnote').removeClass('folded');
             $lines_in_dom.show();
             line.find('.o_account_reports_caret_icon .fa-caret-right').toggleClass('fa-caret-right fa-caret-down');
@@ -1065,14 +1051,24 @@ var accountReportsWidget = AbstractAction.extend({
             return true;
         }
         else {
+            // Display the total lines (for 'totals below section' option)
+            if ($total_lines.length > 0) {
+                $total_lines.show();
+            }
+
+            // Change the caret icon
+            line.find('.o_account_reports_caret_icon .fa-caret-right').toggleClass('fa-caret-right fa-caret-down');
+
+            // Load sublines
             return this._rpc({
-                    model: this.report_model,
-                    method: 'get_html',
-                    args: [self.financial_id, self.report_options, line.data('id')],
+                    model: 'account.report',
+                    method: 'get_expanded_line_html',
+                    args: [self.report_options.report_id, self.report_options, line.data('id'), line.data('groupby'), line.data('expandFunction'), line.data('progress'), 0],
                     context: self.odoo_context,
                 })
                 .then(function(result){
-                    $(line).parent('tr').replaceWith(result);
+                    line[0].dataset.unfolded = 'True';
+                    $(line).parent('tr').after(result);
                     self._add_line_classes();
                     var displayed_table = $('.o_account_reports_table:not(#table_header_clone)')
                     displayed_table.find('.js_account_report_foldable').each(function() {
@@ -1085,17 +1081,12 @@ var accountReportsWidget = AbstractAction.extend({
     },
     load_more: function (ev) {
         var $line = $(ev.target).parents('td');
-        var id = $line.data('id');
-        var offset = $line.data('offset') || 0;
-        var progress = $line.data('progress') || 0;
-        var remaining = $line.data('remaining') || 0;
-        var remaining_moves = $line.data('remaining_moves') || 0;
-        var options = _.extend({}, this.report_options, {lines_offset: offset, lines_progress: progress, lines_remaining: remaining, moves_remaining: remaining_moves});
+        var offset = $line.data('offset');
         var self = this;
         this._rpc({
-                model: this.report_model,
-                method: 'get_html',
-                args: [this.financial_id, options, id],
+                model: 'account.report',
+                method: 'get_expanded_line_html',
+                args: [this.report_options.report_id, this.report_options, $line.data('parentId'), $line.data('groupby'), $line.data('expandFunction'), $line.data('progress'), offset],
                 context: this.odoo_context,
             })
             .then(function (result){
@@ -1126,9 +1117,9 @@ var accountReportsWidget = AbstractAction.extend({
         params = _.omit(params, 'actionContext');
         if (action) {
             return this._rpc({
-                    model: this.report_model,
+                    model: 'account.report',
                     method: action,
-                    args: [this.financial_id, this.report_options, params],
+                    args: [this.report_options.report_id, this.report_options, params],
                     context: context.eval(),
                 })
                 .then(function(result){

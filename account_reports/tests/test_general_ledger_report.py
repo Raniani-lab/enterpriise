@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=C0326
-
-from unittest.mock import patch
-
 from .common import TestAccountReportsCommon
 
 from odoo import fields
 from odoo.tests import tagged
 
+import json
 
 @tagged('post_install', '-at_install')
 class TestGeneralLedgerReport(TestAccountReportsCommon):
-
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
@@ -74,23 +71,21 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
 
         # Archive 'default_journal_bank' to ensure archived entries are not filtered out.
         cls.company_data_2['default_journal_bank'].active = False
+
         # Deactive all currencies to ensure group_multi_currency is disabled.
         cls.env['res.currency'].search([('name', '!=', 'USD')]).active = False
+
+        cls.report = cls.env.ref('account_reports.general_ledger_report')
 
     # -------------------------------------------------------------------------
     # TESTS: General Ledger
     # -------------------------------------------------------------------------
-
-    def test_general_ledger_unfold_1_whole_report(self):
+    def test_general_ledger_fold_unfold_multicompany_multicurrency(self):
         ''' Test unfolding a line when rendering the whole report. '''
-        report = self.env['account.general.ledger']
-        line_id = 'account_%s' % self.company_data['default_account_revenue'].id
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['unfolded_lines'] = [line_id]
+        options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 
         self.assertLinesValues(
-            # pylint: disable=C0326
-            report._get_lines(options),
+            self.report._get_lines(options),
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
             [
@@ -98,12 +93,6 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ('211000 Account Payable',              100.0,          '',             100.0),
                 ('211000 Account Payable',              50.0,           '',             50.0),
                 ('400000 Product Sales',                20000.0,        '',             20000.0),
-                ('INV/2017/00001',                      2000.0,         '',             2000.0),
-                ('INV/2017/00001',                      3000.0,         '',             5000.0),
-                ('INV/2017/00001',                      4000.0,         '',             9000.0),
-                ('INV/2017/00001',                      5000.0,         '',             14000.0),
-                ('INV/2017/00001',                      6000.0,         '',             20000.0),
-                ('Total 400000 Product Sales',          20000.0,        0.0,            20000.0),
                 ('400000 Product Sales',                '',             200.0,          -200.0),
                 ('600000 Expenses',                     '',             21000.0,        -21000.0),
                 ('600000 Expenses',                     200.0,          '',             200.0),
@@ -113,91 +102,163 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             ],
         )
 
-    def test_general_ledger_unfold_2_folded_line(self):
-        ''' Test unfolding a line when "clicking" on a folded line. '''
-        report = self.env['account.general.ledger']
-        line_id = 'account_%s' % self.company_data['default_account_revenue'].id
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['unfolded_lines'] = [line_id]
+        options['unfold_all'] = True
 
         self.assertLinesValues(
-            # pylint: disable=C0326
-            report._get_lines(options, line_id=line_id),
+            self.report._get_lines(options),
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
             [
+                ('121000 Account Receivable',           1000.0,         '',             1000.0),
+                ('INV/2017/00001',                      1000.0,         '',             1000.0),
+                ('Total 121000 Account Receivable',     1000.0,         '',             1000.0),
+                ('211000 Account Payable',              100.0,          '',             100.0),
+                ('211000 Account Payable',              50.0,           '',             50.0),
                 ('400000 Product Sales',                20000.0,        '',             20000.0),
                 ('INV/2017/00001',                      2000.0,         '',             2000.0),
                 ('INV/2017/00001',                      3000.0,         '',             5000.0),
                 ('INV/2017/00001',                      4000.0,         '',             9000.0),
                 ('INV/2017/00001',                      5000.0,         '',             14000.0),
                 ('INV/2017/00001',                      6000.0,         '',             20000.0),
-                ('Total 400000 Product Sales',          20000.0,       0.0,             20000.0),
+                ('Total 400000 Product Sales',          20000.0,        '',             20000.0),
+                ('400000 Product Sales',                '',             200.0,          -200.0),
+                ('BNK1/2017/06/0001',                   '',             200.0,          -200.0),
+                ('Total 400000 Product Sales',          '',             200.0,          -200.0),
+                ('600000 Expenses',                     '',             21000.0,        -21000.0),
+                ('INV/2017/00001',                      '',             6000.0,         -6000.0),
+                ('INV/2017/00001',                      '',             7000.0,         -13000.0),
+                ('INV/2017/00001',                      '',             8000.0,         -21000.0),
+                ('Total 600000 Expenses',               '',             21000.0,        -21000.0),
+                ('600000 Expenses',                     200.0,          '',             200.0),
+                ('BNK1/2017/06/0001',                   200.0,          '',             200.0),
+                ('Total 600000 Expenses',               200.0,          '',             200.0),
+                ('999999 Undistributed Profits/Losses', 200.0,          300.0,          -100.0),
+                ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
+                ('Total',                               21550.0,        21550.0,        0.0),
             ],
         )
 
-    def test_general_ledger_unfold_3_load_more(self):
+    def test_general_ledger_multiple_years_initial_balance(self):
+        # Entries in 2015 for company_1 to test the initial balance.
+        move_2015_1 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': fields.Date.from_string('2015-01-01'),
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'line_ids': [
+                (0, 0, {'debit': 100.0,     'credit': 0.0,      'name': '2015_1_1',     'account_id': self.company_data['default_account_payable'].id}),
+                (0, 0, {'debit': 200.0,     'credit': 0.0,      'name': '2015_1_2',     'account_id': self.company_data['default_account_expense'].id}),
+                (0, 0, {'debit': 0.0,       'credit': 300.0,    'name': '2015_1_3',     'account_id': self.company_data['default_account_revenue'].id}),
+            ],
+        })
+        move_2015_1.action_post()
+
+        options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      4,              5,              6],
+            [
+                ('121000 Account Receivable',           1000.0,         '',             1000.0),
+                ('211000 Account Payable',              200.0,          '',             200.0),
+                ('211000 Account Payable',              50.0,           '',             50.0),
+                ('400000 Product Sales',                20000.0,        '',             20000.0),
+                ('400000 Product Sales',                '',             200.0,          -200.0),
+                ('600000 Expenses',                     '',             21000.0,        -21000.0),
+                ('600000 Expenses',                     200.0,          '',             200.0),
+                ('999999 Undistributed Profits/Losses', 400.0,          600.0,          -200.0),
+                ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
+                ('Total',                               21850.0,        21850.0,        0.0),
+            ],
+        )
+
+        options['unfold_all'] = True
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      4,              5,              6],
+            [
+                ('121000 Account Receivable',           1000.0,         '',             1000.0),
+                ('INV/2017/00001',                      1000.0,         '',             1000.0),
+                ('Total 121000 Account Receivable',     1000.0,         '',             1000.0),
+                ('211000 Account Payable',              200.0,          '',             200.0),
+                ('211000 Account Payable',              50.0,           '',             50.0),
+                ('400000 Product Sales',                20000.0,        '',             20000.0),
+                ('INV/2017/00001',                      2000.0,         '',             2000.0),
+                ('INV/2017/00001',                      3000.0,         '',             5000.0),
+                ('INV/2017/00001',                      4000.0,         '',             9000.0),
+                ('INV/2017/00001',                      5000.0,         '',             14000.0),
+                ('INV/2017/00001',                      6000.0,         '',             20000.0),
+                ('Total 400000 Product Sales',          20000.0,        '',             20000.0),
+                ('400000 Product Sales',                '',             200.0,          -200.0),
+                ('BNK1/2017/06/0001',                   '',             200.0,          -200.0),
+                ('Total 400000 Product Sales',          '',             200.0,          -200.0),
+                ('600000 Expenses',                     '',             21000.0,        -21000.0),
+                ('INV/2017/00001',                      '',             6000.0,         -6000.0),
+                ('INV/2017/00001',                      '',             7000.0,         -13000.0),
+                ('INV/2017/00001',                      '',             8000.0,         -21000.0),
+                ('Total 600000 Expenses',               '',             21000.0,        -21000.0),
+                ('600000 Expenses',                     200.0,          '',             200.0),
+                ('BNK1/2017/06/0001',                   200.0,          '',             200.0),
+                ('Total 600000 Expenses',               200.0,          '',             200.0),
+                ('999999 Undistributed Profits/Losses', 400.0,          600.0,          -200.0),
+                ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
+                ('Total',                               21850.0,        21850.0,        0.0),
+            ],
+        )
+
+    def test_general_ledger_load_more(self):
         ''' Test unfolding a line to use the load more. '''
-        report = self.env['account.general.ledger']
-        line_id = 'account_%s' % self.company_data['default_account_revenue'].id
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['unfolded_lines'] = [line_id]
+        self.env.companies = self.env.company
+        self.report.load_more_limit = 2
 
-        with patch.object(type(report), 'MAX_LINES', 2):
-            report_lines = report._get_lines(options, line_id=line_id)
-            self.assertLinesValues(
-                # pylint: disable=C0326
-                report_lines,
-                #   Name                                    Debit           Credit          Balance
-                [   0,                                      4,              5,              6],
-                [
-                    ('400000 Product Sales',                20000.0,        '',             20000.0),
-                    ('INV/2017/00001',                      2000.0,         '',             2000.0),
-                    ('INV/2017/00001',                      3000.0,         '',             5000.0),
-                    ('Load more... (3 remaining)',          '',             '',             ''),
-                    ('Total 400000 Product Sales',          20000.0,       0.0,             20000.0),
-                ],
-            )
+        options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+        options['unfolded_lines'] = [f'-account.account-{self.company_data["default_account_revenue"].id}']
 
-            line_id = report_lines[3]['id']
-            options['unfolded_lines'] = [line_id]
-            options.update({
-                'lines_offset': report_lines[3]['offset'],
-                'lines_progress': report_lines[3]['progress'],
-                'lines_remaining': report_lines[3]['remaining'],
-            })
+        report_lines = self.report._get_lines(options)
 
-            report_lines = report._get_lines(options, line_id=line_id)
-            self.assertLinesValues(
-                # pylint: disable=C0326
-                report_lines,
-                #   Name                                    Debit           Credit          Balance
-                [   0,                                      4,              5,              6],
-                [
-                    ('INV/2017/00001',                      4000.0,         '',             9000.0),
-                    ('INV/2017/00001',                      5000.0,         '',             14000.0),
-                    ('Load more... (1 remaining)',          '',             '',             ''),
-                ],
-            )
+        self.assertLinesValues(
+            report_lines,
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      4,              5,              6],
+            [
+                ('121000 Account Receivable',           1000.0,         '',             1000.0),
+                ('211000 Account Payable',              100.0,          '',             100.0),
+                ('400000 Product Sales',                20000.0,        '',             20000.0),
+                ('INV/2017/00001',                      2000.0,         '',             2000.0),
+                ('INV/2017/00001',                      3000.0,         '',             5000.0),
+                ('Load more...',                        '',             '',             ''),
+                ('Total 400000 Product Sales',          20000.0,        '',             20000.0),
+                ('600000 Expenses',                     '',             21000.0,        -21000.0),
+                ('999999 Undistributed Profits/Losses', 200.0,          300.0,          -100.0),
+                ('Total',                               21300.0,        21300.0,        0.0),
+            ],
+        )
 
-            line_id = report_lines[2]['id']
-            options['unfolded_lines'] = [line_id]
-            options.update({
-                'lines_offset': report_lines[2]['offset'],
-                'lines_progress': report_lines[2]['progress'],
-                'lines_remaining': report_lines[2]['remaining'],
-            })
+        load_more_1 = self.report._expand_unfoldable_line('_expand_unfoldable_line_general_ledger', report_lines[3]['id'], report_lines[6]['groupby'], options, json.loads(report_lines[6]['progress']), report_lines[6]['offset'])
 
-            report_lines = report._get_lines(options, line_id=line_id)
-            self.assertLinesValues(
-                # pylint: disable=C0326
-                report_lines,
-                #   Name                                    Debit           Credit          Balance
-                [   0,                                      4,              5,              6],
-                [
-                    ('INV/2017/00001',                      6000.0,         '',             20000.0),
-                ],
-            )
+        self.assertLinesValues(
+            load_more_1,
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      4,              5,              6],
+            [
+                ('INV/2017/00001',                      4000.0,         '',             9000.0),
+                ('INV/2017/00001',                      5000.0,         '',            14000.0),
+                ('Load more...',                        '',             '',             ''),
+            ],
+        )
+
+        load_more_2 = self.report._expand_unfoldable_line('_expand_unfoldable_line_general_ledger', report_lines[3]['id'], load_more_1[2]['groupby'], options, json.loads(load_more_1[2]['progress']), load_more_1[2]['offset'])
+
+        self.assertLinesValues(
+            load_more_2,
+            #   Name                                    Debit           Credit          Balance
+            [   0,                                      4,              5,              6],
+            [
+                ('INV/2017/00001',                      6000.0,         '',             20000.0),
+            ],
+        )
 
     def test_general_ledger_foreign_currency_account(self):
         ''' Ensure the total in foreign currency of an account is displayed only if all journal items are sharing the
@@ -206,8 +267,8 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         self.env.user.groups_id |= self.env.ref('base.group_multi_currency')
 
         foreign_curr_account = self.env['account.account'].create({
-            'name': "foreign_curr_account",
-            'code': "test",
+            'name': 'foreign_curr_account',
+            'code': 'test',
             'account_type': 'liability_current',
             'currency_id': self.currency_data['currency'].id,
             'company_id': self.company_data['company'].id,
@@ -265,14 +326,11 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
         move_2017.line_ids.flush_recordset()
 
         # Init options.
-        report = self.env['account.general.ledger']
-        line_id = 'account_%s' % foreign_curr_account.id
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['unfolded_lines'] = [line_id]
+        options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+        options['unfolded_lines'] = [f'-account.account-{foreign_curr_account.id}']
 
         self.assertLinesValues(
-            # pylint: disable=C0326
-            report._get_lines(options),
+            self.report._get_lines(options),
             #   Name                                    Amount_currency Debit           Credit          Balance
             [   0,                                      4,              5,              6,              7],
             [
@@ -288,104 +346,45 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ('test foreign_curr_account',           -2300.0,        '',             1100.0,         -1100.0),
                 ('Initial Balance',                     -300.0,         '',             100.0,          -100.0),
                 ('INV/2017/00002',                      -2000.0,        '',             1000.0,         -1100.0),
-                ('Total test foreign_curr_account',     -2300.0,        0.0,            1100.0,         -1100.0),
+                ('Total test foreign_curr_account',     -2300.0,        '',             1100.0,         -1100.0),
                 ('Total',                               '',             22650.0,        22650.0,        0.0),
             ],
-            currency_map={4: {'currency': self.currency_data['currency']}},
+            currency_map = {4: {'currency': self.currency_data['currency']}},
         )
 
-    def test_general_ledger_filter_accounts(self):
-        """ Test when a user filter on an account """
-        # Init options.
-        report = self.env['account.general.ledger']
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['filter_accounts'] = '40'
+    def test_general_ledger_filter_search_bar_print(self):
+        """ Test the lines generated when a user filters on the search bar and prints the report """
+        options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+        options['filter_search_bar'] = '400'
+
         self.assertLinesValues(
-            report._get_lines(options),
+            self.report.with_context(print_mode=True)._get_lines(options),
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
             [
-                ('400000 Product Sales',                20000.0,        '',             20000.0),
-                ('400000 Product Sales',                '',             200.0,          -200.0),
+                ('400000 Product Sales',                20000.0,           '',          20000.0),
+                ('INV/2017/00001',                       2000.0,           '',           2000.0),
+                ('INV/2017/00001',                       3000.0,           '',           5000.0),
+                ('INV/2017/00001',                       4000.0,           '',           9000.0),
+                ('INV/2017/00001',                       5000.0,           '',           14000.0),
+                ('INV/2017/00001',                       6000.0,           '',           20000.0),
+                ('Total 400000 Product Sales',          20000.0,           '',          20000.0),
+                ('400000 Product Sales',                     '',        200.0,           -200.0),
+                ('BNK1/2017/06/0001',                        '',        200.0,           -200.0),
+                ('Total 400000 Product Sales',               '',        200.0,           -200.0),
                 ('Total',                               20000.0,        200.0,          19800.0),
             ],
         )
 
-        options['filter_accounts'] = '9999'
-        self.assertLinesValues(
-            report._get_lines(options),
-            #   Name                                    Debit           Credit          Balance
-            [   0,                                      4,              5,              6],
-            [
-                ('999999 Undistributed Profits/Losses', 200.0,          300.0,          -100.0),
-                ('999999 Undistributed Profits/Losses', '',             50.0,           -50.0),
-                ('Total',                               200.0,          350.0,          -150.0),
-            ],
-        )
-
-    # -------------------------------------------------------------------------
-    # TESTS: Trial Balance
-    # -------------------------------------------------------------------------
-
-    def test_trial_balance_whole_report(self):
-        report = self.env['account.coa.report']
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
+        options['filter_search_bar'] = '999'
 
         self.assertLinesValues(
-            report._get_lines(options),
-            #                                           [  Initial Balance   ]          [       Balance      ]          [       Total        ]
-            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
-            [   0,                                      1,              2,              3,              4,              5,              6],
+            self.report.with_context(print_mode=True)._get_lines(options),
+            #   Name                                          Debit           Credit          Balance
+            [   0,                                            4,              5,              6],
             [
-                ('121000 Account Receivable',           '',             '',             1000.0,         '',             1000.0,         ''),
-                ('211000 Account Payable',              100.0,          '',             '',             '',             100.0,          ''),
-                ('211000 Account Payable',              50.0,           '',             '',             '',             50.0,           ''),
-                ('400000 Product Sales',                '',             '',             20000.0,        '',             20000.0,        ''),
-                ('400000 Product Sales',                '',             '',             '',             200.0,          '',             200.0),
-                ('600000 Expenses',                     '',             '',             '',             21000.0,        '',             21000.0),
-                ('600000 Expenses',                     '',             '',             200.0,          '',             200.0,          ''),
-                ('999999 Undistributed Profits/Losses', '',             100.0,          '',             '',             '',             100.0),
-                ('999999 Undistributed Profits/Losses', '',             50.0,           '',             '',             '',             50.0),
-                ('Total',                               150.0,          150.0,          21200.0,        21200.0,        21350.0,        21350.0),
-            ],
-        )
-
-    def test_trial_balance_filter_journals(self):
-        report = self.env['account.coa.report']
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options = self._update_multi_selector_filter(options, 'journals', self.company_data['default_journal_sale'].ids)
-
-        self.assertLinesValues(
-            report._get_lines(options),
-            #                                           [  Initial Balance   ]          [       Balance      ]          [       Total        ]
-            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
-            [   0,                                      1,              2,              3,              4,              5,              6],
-            [
-                ('121000 Account Receivable',           '',             '',             1000.0,         '',             1000.0,         ''),
-                ('400000 Product Sales',                '',             '',             20000.0,        '',             20000.0,        ''),
-                ('600000 Expenses',                     '',             '',             '',             21000.0,        '',             21000.0),
-                ('Total',                              0.0,            0.0,             21000.0,        21000.0,        21000.0,        21000.0),
-            ],
-        )
-
-    def test_trial_balance_comparisons(self):
-        report = self.env['account.coa.report']
-        options = self._init_options(report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options = self._update_comparison_filter(options, report, 'previous_period', 1)
-
-        self.assertLinesValues(
-            report._get_lines(options),
-            #                                           [  Initial Balance   ]          [        2016        ]          [        2017        ]          [       Total        ]
-            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit          Debit           Credit
-            [   0,                                      1,              2,              3,              4,              5,              6,              7,              8],
-            [
-                ('121000 Account Receivable',           '',             '',             '',             '',             1000.0,         '',             1000.0,         ''),
-                ('211000 Account Payable',              '',             '',             100.0,          '',             '',             '',             100.0,          ''),
-                ('211000 Account Payable',              '',             '',             50.0,           '',             '',             '',             50.0,           ''),
-                ('400000 Product Sales',                '',             '',             '',             300.0,          20000.0,        '',             19700.0,        ''),
-                ('400000 Product Sales',                '',             '',             '',             50.0,           '',             200.0,          '',             250.0),
-                ('600000 Expenses',                     '',             '',             200.0,          '',             '',             21000.0,        '',             20800.0),
-                ('600000 Expenses',                     '',             '',             '',             '',             200.0,          '',             200.0,          ''),
-                ('Total',                              0.0,            0.0,             350.0,          350.0,          21200.0,        21200.0,        21050.0,        21050.0),
+                ('999999 Undistributed Profits/Losses',       200.0,          300.0,          -100.0),
+                ('999999 Undistributed Profits/Losses',          '',           50.0,           -50.0),
+                ('Total',                                     200.0,          350.0,          -150.0),
             ],
         )

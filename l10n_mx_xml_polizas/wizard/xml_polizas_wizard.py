@@ -182,7 +182,7 @@ class XmlPolizasExportWizard(models.TransientModel):
         """ Retrieve the moves data to be rendered with the template """
 
         # Retrieve the data from the ledger itself, unfolding every group
-        ledger = self.env['account.general.ledger']
+        ledger = self.env.ref('account_reports.general_ledger_report')
 
         # Options ---------------------------------
         # Ensure that the date range is enforced
@@ -190,7 +190,7 @@ class XmlPolizasExportWizard(models.TransientModel):
 
         # If the filter is on a date range, exclude initial balances
         if options.get('date', {}).get('mode', '') == 'range':
-            options = ledger._force_strict_range(options)
+            options['general_ledger_strict_range'] = True
 
         # Unfold all lines from the ledger
         options['unfold_all'] = True
@@ -198,24 +198,22 @@ class XmlPolizasExportWizard(models.TransientModel):
         # We don't need all companies
         options.pop('multi_company', None)
 
-        options_list = ledger._get_options_periods_list(options)
-
         # Retrieve --------------------------------
-        accounts_results, _dummy = ledger._do_query(options_list)
+        aml_query, aml_query_params = ledger._general_ledger_get_query_amls(options, None)
+        self._cr.execute(aml_query, aml_query_params)
 
         # Group data for (year, month / move)
         move_data = MoveExportData()
-        for _key, (results, *_rest) in accounts_results:
-            for line in results.get('lines', []):
-                move_data.append(line['date'], line['journal_name'], line['move_name'], {
-                    'line_label': textwrap.shorten(
-                        line['journal_name'] + ((' - ' + line['name']) if line['name'] else ''),
-                        width=200),
-                    'account_name': line['account_name'],
-                    'account_code': line['account_code'],
-                    'credit': '%.2f' % line['credit'],
-                    'debit': '%.2f' % line['debit']
-                })
+        for line in self._cr.dictfetchall():
+            move_data.append(line['date'], line['journal_name'], line['move_name'], {
+                'line_label': textwrap.shorten(
+                    line['journal_name'] + ((' - ' + line['name']) if line['name'] else ''),
+                    width=200),
+                'account_name': line['account_name'],
+                'account_code': line['account_code'],
+                'credit': '%.2f' % line['credit'],
+                'debit': '%.2f' % line['debit']
+            })
 
         # Sort the lines by name, to have a consistent order
         for period, moves in move_data.items():

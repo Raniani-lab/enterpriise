@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields
+from odoo import Command, fields
 from odoo.tests import tagged
 from odoo.tools.misc import formatLang
 
@@ -28,15 +28,18 @@ class POSTestTaxReport(TestAccountReportsCommon):
         cls.company_data['company'].chart_template_id.country_id = test_country # So that we can easily instantiate test tax templates within this country
 
         # Create some tax report
-        tax_report = cls.env['account.tax.report'].create({
+        cls.tax_report = cls.env['account.report'].create({
             'name': 'Test',
+            'root_report_id': cls.env.ref('account.generic_tax_report').id,
+            'availability_condition': 'country',
             'country_id': test_country.id,
+            'column_ids': [Command.create({'name': 'balance', 'sequence': 1, 'expression_label': 'balance'})]
         })
 
-        cls.pos_tax_report_line_invoice_base = cls._create_tax_report_line("Invoice Base", tax_report, tag_name='pos_invoice_base', sequence=0)
-        cls.pos_tax_report_line_invoice_tax = cls._create_tax_report_line("Invoice Tax", tax_report, tag_name='pos_invoice_tax', sequence=1)
-        cls.pos_tax_report_line_refund_base = cls._create_tax_report_line("Refund Base", tax_report, tag_name='pos_refund_base', sequence=2)
-        cls.pos_tax_report_line_refund_tax = cls._create_tax_report_line("Refund Tax", tax_report, tag_name='pos_refund_tax', sequence=3)
+        cls.pos_tax_report_line_invoice_base = cls._create_tax_report_line("Invoice Base", cls.tax_report, tag_name='pos_invoice_base', sequence=0)
+        cls.pos_tax_report_line_invoice_tax = cls._create_tax_report_line("Invoice Tax", cls.tax_report, tag_name='pos_invoice_tax', sequence=1)
+        cls.pos_tax_report_line_refund_base = cls._create_tax_report_line("Refund Base", cls.tax_report, tag_name='pos_refund_base', sequence=2)
+        cls.pos_tax_report_line_refund_tax = cls._create_tax_report_line("Refund Tax", cls.tax_report, tag_name='pos_refund_tax', sequence=3)
 
         # Create a tax using the created report
         tax_template = cls.env['account.tax.template'].create({
@@ -49,26 +52,26 @@ class POSTestTaxReport(TestAccountReportsCommon):
                 (0,0, {
                     'factor_percent': 100,
                     'repartition_type': 'base',
-                    'plus_report_line_ids': [cls.pos_tax_report_line_invoice_base.id],
+                    'plus_report_expression_ids': cls.pos_tax_report_line_invoice_base.expression_ids.ids,
                 }),
 
                 (0,0, {
                     'factor_percent': 100,
                     'repartition_type': 'tax',
-                    'plus_report_line_ids': [cls.pos_tax_report_line_invoice_tax.id],
+                    'plus_report_expression_ids': cls.pos_tax_report_line_invoice_tax.expression_ids.ids,
                 }),
             ],
             'refund_repartition_line_ids': [
                 (0,0, {
                     'factor_percent': 100,
                     'repartition_type': 'base',
-                    'plus_report_line_ids': [cls.pos_tax_report_line_refund_base.id],
+                    'plus_report_expression_ids': cls.pos_tax_report_line_refund_base.expression_ids.ids,
                 }),
 
                 (0,0, {
                     'factor_percent': 100,
                     'repartition_type': 'tax',
-                    'plus_report_line_ids': [cls.pos_tax_report_line_refund_tax.id],
+                    'plus_report_expression_ids': cls.pos_tax_report_line_refund_tax.expression_ids.ids,
                 }),
             ],
         })
@@ -164,13 +167,10 @@ class POSTestTaxReport(TestAccountReportsCommon):
         self._create_and_pay_pos_order(-1, 40)
         self.pos_config.current_session_id.action_pos_session_closing_control()
 
-        report = self.env['account.generic.tax.report']
         self.env.flush_all()
-        report_opt = report._get_options({'date': {'period_type': 'custom', 'filter': 'custom', 'date_to': today, 'mode': 'range', 'date_from': today}})
-        new_context = report._set_context(report_opt)
-        inv_report_lines = report.with_context(new_context)._get_lines(report_opt)
+        report_opt = self._generate_options(self.tax_report, today, today)
         self.assertLinesValues(
-            inv_report_lines,
+            self.tax_report._get_lines(report_opt),
             #   Name                                                Balance
             [   0,                                                  1],
             [

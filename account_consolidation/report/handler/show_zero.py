@@ -4,17 +4,16 @@ from odoo.tools.float_utils import float_is_zero
 
 class ShowZeroHandler:
     @classmethod
-    def account_line_should_be_added(cls, line: dict, options: dict = None,
-                                     key: str = 'show_zero_balance_accounts') -> bool:
+    def account_line_should_be_added(cls, line: dict, options: dict = None, key: str = 'consolidation_show_zero_balance_accounts') -> bool:
         """
-        Determine if a account line should be added or not to the list of report lines.
-        A account should be shown no matter what if options key ("show_zero_balance_accounts" by default) is True,
+        Determine if an account line should be added or not to the list of report lines.
+        An account should be shown no matter what if options key ("consolidation_show_zero_balance_accounts" by default) is True,
         else it has to be shown if its total is not zero.
         :param line: the account line to check
         :type line: dict
         :param options: options of the report
         :type options: dict
-        :param key: the options key of the show zero parameter, "show_zero_balance_accounts" by default
+        :param key: the options key of the show zero parameter, "consolidation_show_zero_balance_accounts" by default
         :type key: str
         :return: True if the section's lines should be added, False otherwise
         """
@@ -24,17 +23,16 @@ class ShowZeroHandler:
             return cls._line_is_not_zero(line)
 
     @classmethod
-    def section_line_should_be_added(cls, section_lines: list, options: dict = None,
-                                     key: str = 'show_zero_balance_accounts') -> bool:
+    def section_line_should_be_added(cls, section_lines: list, options: dict = None, key: str = 'consolidation_show_zero_balance_accounts') -> bool:
         """
         Determine if a section's lines should be added or not to the list of report lines.
-        A section should be shown no matter what if options "show_zero_balance_accounts" is True, else it has to be
+        A section should be shown no matter what if options "consolidation_show_zero_balance_accounts" is True, else it has to be
         shown if it has children or if its total is not zero.
         :param section_lines: the section lines corresponding to the generation of lines for a given section
         :type section_lines: list
         :param options: options of the report
         :type options: list
-        :param key: the options key of the show zero parameter, "show_zero_balance_accounts" by default
+        :param key: the options key of the show zero parameter, "consolidation_show_zero_balance_accounts" by default
         :type key: str
         :return: True if the section's lines should be added, False otherwise
         """
@@ -48,7 +46,7 @@ class ShowZeroHandler:
         Check if a line has a total of zero
         :param line: the line to test (formatted as to be renderer in a report)
         :type line: dict
-        :return: True is the line has a total of zero (no columsn, all columns are 0 or sum of columns = 0),
+        :return: True is the line has a total of zero (no columns, all columns are 0 or sum of columns = 0),
         False otherwise
         :rtype: bool
         """

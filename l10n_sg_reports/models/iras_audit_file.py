@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import json
-from datetime import timedelta,datetime
 from lxml import etree
 from lxml.objectify import fromstring
-from odoo import api, fields, models, release, tools, _
+from odoo import fields, models, release, tools, _
 from odoo.exceptions import UserError
 from odoo.tools import date_utils
 from odoo.tools.float_utils import float_repr
@@ -14,6 +13,7 @@ IRAS_DIGITS = 2
 IRAS_VERSION = 'IAFv2.0.0'
 IRAS_XML_TEMPLATE = 'l10n_sg_reports.iras_audit_file_xml'
 IRAS_XSD = 'l10n_sg_reports/data/iras_audit_file.xsd'
+
 
 class IrasAuditFileWizard(models.TransientModel):
     _name = 'l10n.sg.reports.iaf.wizard'
@@ -27,23 +27,20 @@ class IrasAuditFileWizard(models.TransientModel):
         ], string='Export Type', required=True, default='xml')
 
     def generate_iras(self):
-        options = {
+        general_ledger_report = self.env.ref('account_reports.general_ledger_report')
+        options = general_ledger_report._get_options(previous_options={
             'date_from': self.date_from,
             'date_to': self.date_to
-        }
+        })
         if self.export_type == 'xml':
-            return self.env['l10n.sg.reports.iaf'].l10n_sg_print_iras_audit_file_xml(options)
-        return self.env['l10n.sg.reports.iaf'].l10n_sg_print_iras_audit_file_txt(options)
+            return general_ledger_report.l10n_sg_export_iras_audit_file_xml(options)
+        return general_ledger_report.l10n_sg_export_iras_audit_file_txt(options)
 
 
-class IrasAuditFile(models.AbstractModel):
-    _inherit = 'account.general.ledger'
-    _name = 'l10n.sg.reports.iaf'
-    _description = 'Create IRAS audit file'
+class IrasAuditFile(models.Model):
+    _inherit = 'account.report'
 
-    filter_cash_basis = None
-
-    def _get_company_infos(self, date_from, date_to):
+    def _l10n_sg_get_company_infos(self, date_from, date_to):
         """
         Generate the informations about the company for the IRAS Audit File
         """
@@ -63,7 +60,7 @@ class IrasAuditFile(models.AbstractModel):
             'IAFVersion': IRAS_VERSION
         }
 
-    def _get_purchases_infos(self, date_from, date_to):
+    def _l10n_sg_get_purchases_infos(self, date_from, date_to):
         """
         Generate purchases informations for the IRAS Audit File
         """
@@ -116,7 +113,7 @@ class IrasAuditFile(models.AbstractModel):
             'TransactionCountTotal': str(transaction_count_total)
         }
 
-    def _get_sales_infos(self, date_from, date_to):
+    def _l10n_sg_get_sales_infos(self, date_from, date_to):
         """
         Generate sales informations for the IRAS Audit File
         """
@@ -168,7 +165,7 @@ class IrasAuditFile(models.AbstractModel):
             'TransactionCountTotal': str(transaction_count_total)
         }
 
-    def _get_gldata(self, date_from, date_to):
+    def _l10n_sg_get_gldata(self, date_from, date_to):
         """
         Generate gldata for IRAS Audit File
         """
@@ -178,27 +175,28 @@ class IrasAuditFile(models.AbstractModel):
         transaction_count_total = 0
         glt_currency = 'SGD'
 
-        company_id = self.env.company
+        company = self.env.company
         move_line_ids = self.env['account.move.line'].search([
-            ('company_id', '=', company_id.id),
+            ('company_id', '=', company.id),
             ('date', '>=', date_from),
             ('date', '<=', date_to)
             ])
 
-        options_list = [{
+        options = self._get_options(previous_options={
+            'multi_company': {'id': company.id, 'name': company.name},
             'unfold_all': True,
             'unfolded_lines': [],
             'date': {
-                'mode':'range',
+                'mode': 'range',
                 'date_from': fields.Date.from_string(date_from),
-                'date_to': fields.Date.from_string(date_from)}}]
-        accounts_results,taxes_results = self._do_query(options_list)
-        all_accounts = self.env['account.account'].search([
-            ('company_id', '=', company_id.id)
-            ])
+                'date_to': fields.Date.from_string(date_from)
+            }
+        })
+        accounts_results = self._general_ledger_query_values(options)
+        all_accounts = self.env['account.account'].search([('company_id', '=', company.id)])
 
         for account in all_accounts:
-            initial_bal = dict(accounts_results).get(account.id, {'initial_balance':{'balance': 0, 'amount_currency': 0, 'debit': 0, 'credit': 0}})['initial_balance']
+            initial_bal = dict(accounts_results).get(account.id, {'initial_balance': {'balance': 0, 'amount_currency': 0, 'debit': 0, 'credit': 0}})['initial_balance']
             gldata_lines.append({
                 'TransactionDate': date_from,
                 'AccountID': account.code,
@@ -215,7 +213,7 @@ class IrasAuditFile(models.AbstractModel):
             balance = initial_bal['balance']
             for move_line_id in move_line_ids:
                 if move_line_id.account_id.code == account.code:
-                    balance = company_id.currency_id.round(balance + move_line_id.debit - move_line_id.credit)
+                    balance = company.currency_id.round(balance + move_line_id.debit - move_line_id.credit)
                     total_credit += move_line_id.credit
                     total_debit += move_line_id.debit
                     transaction_count_total += 1
@@ -241,43 +239,43 @@ class IrasAuditFile(models.AbstractModel):
             'GLTCurrency': glt_currency
         }
 
-    def _get_generic_data(self, date_from, date_to):
+    def _l10n_sg_get_generic_data(self, date_from, date_to):
         return {
-            'Company': self._get_company_infos(date_from, date_to),
-            'Purchases': self._get_purchases_infos(date_from, date_to),
-            'Sales': self._get_sales_infos(date_from, date_to),
-            'GlData': self._get_gldata(date_from, date_to)
+            'Company': self._l10n_sg_get_company_infos(date_from, date_to),
+            'Purchases': self._l10n_sg_get_purchases_infos(date_from, date_to),
+            'Sales': self._l10n_sg_get_sales_infos(date_from, date_to),
+            'GlData': self._l10n_sg_get_gldata(date_from, date_to)
         }
 
-    def get_xml(self, options):
+    def _l10n_sg_get_xml(self, options):
         """
         Generate the IRAS Audit File in xml format
         """
         qweb = self.env['ir.qweb']
-        values = self._get_generic_data(options['date_from'], options['date_to'])
+        values = self._l10n_sg_get_generic_data(options['date']['date_from'], options['date']['date_to'])
         doc = qweb._render(IRAS_XML_TEMPLATE, values=values)
         with tools.file_open(IRAS_XSD, 'rb') as xsd:
             _check_with_xsd(doc, xsd)
         tree = fromstring(doc)
         return etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
-    def _txt_create_line(self, values):
+    def _l10n_sg_txt_create_line(self, values):
         node = ''
         for value in values:
             node += (value if value else '') + '|'
         node += '\n'
         return node
 
-    def _txt_company_infos(self, values):
+    def _l10n_sg_txt_company_infos(self, values):
         node = 'CompInfoStart|\n'
-        node += self._txt_create_line(values.keys())
-        node += self._txt_create_line(values.values())
+        node += self._l10n_sg_txt_create_line(values.keys())
+        node += self._l10n_sg_txt_create_line(values.values())
         node += 'CompInfoEnd|\n\n'
         return node
 
-    def _txt_purchases_infos(self, values):
+    def _l10n_sg_txt_purchases_infos(self, values):
         node = 'PurcDataStart|\n'
-        node += self._txt_create_line([
+        node += self._l10n_sg_txt_create_line([
             'SupplierName',
             'SupplierUEN',
             'InvoiceDate',
@@ -293,13 +291,13 @@ class IrasAuditFile(models.AbstractModel):
             'GSTFCY'
         ])
         for line in values['lines']:
-            node += self._txt_create_line(line.values())
+            node += self._l10n_sg_txt_create_line(line.values())
         node += 'PurcDataEnd|' + values['PurchaseTotalSGD'] + '|' + values['GSTTotalSGD'] + '|' + values['TransactionCountTotal'] + '|\n\n'
         return node
 
-    def _txt_sales_infos(self, values):
+    def _l10n_sg_txt_sales_infos(self, values):
         node = 'SuppDataStart|\n'
-        node += self._txt_create_line([
+        node += self._l10n_sg_txt_create_line([
             'CustomerName',
             'CustomerUEN',
             'InvoiceDate',
@@ -315,13 +313,13 @@ class IrasAuditFile(models.AbstractModel):
             'GSTFCY'
         ])
         for line in values['lines']:
-            node += self._txt_create_line(line.values())
+            node += self._l10n_sg_txt_create_line(line.values())
         node += 'SuppDataEnd|' + values['SupplyTotalSGD'] + '|' + values['GSTTotalSGD'] + '|' + values['TransactionCountTotal'] + '|\n\n'
         return node
 
-    def _txt_gldata_infos(self, values):
+    def _l10n_sg_txt_gldata_infos(self, values):
         node = 'GLDataStart|\n'
-        node += self._txt_create_line([
+        node += self._l10n_sg_txt_create_line([
             'TransactionDate',
             'AccountID',
             'AccountName',
@@ -335,47 +333,55 @@ class IrasAuditFile(models.AbstractModel):
             'Balance'
         ])
         for line in values['lines']:
-            node += self._txt_create_line(line.values())
+            node += self._l10n_sg_txt_create_line(line.values())
         node += 'GLDataEnd|' + values['TotalDebit'] + '|' + values['TotalCredit'] + '|' + values['TransactionCountTotal'] + '|' + values['GLTCurrency'] + '|\n\n'
         return node
 
-    def get_txt(self, options):
+    def _l10n_sg_get_txt(self, options):
         """
         Generate the IRAS Audit File in txt format
         """
-        values = self._get_generic_data(options['date_from'], options['date_to'])
-        txt = self._txt_company_infos(values['Company'])
-        txt += self._txt_purchases_infos(values['Purchases'])
-        txt += self._txt_sales_infos(values['Sales'])
-        txt += self._txt_gldata_infos(values['GlData'])
+        values = self._l10n_sg_get_generic_data(options['date']['date_from'], options['date']['date_to'])
+        txt = self._l10n_sg_txt_company_infos(values['Company'])
+        txt += self._l10n_sg_txt_purchases_infos(values['Purchases'])
+        txt += self._l10n_sg_txt_sales_infos(values['Sales'])
+        txt += self._l10n_sg_txt_gldata_infos(values['GlData'])
         return txt
 
-    @api.model
-    def _get_report_name(self):
-        return _('IRAS Audit File')
-
-    def l10n_sg_print_iras_audit_file_xml(self, options):
+    def l10n_sg_export_iras_audit_file_xml(self, options):
         """
         Print the IAF in xml format
         """
         return {
             'type': 'ir_actions_account_report_download',
             'data': {
-                'model': 'l10n.sg.reports.iaf',
-                'options': json.dumps(options, default=date_utils.json_default),
-                'output_format': 'xml',
-            }
+                 'options': json.dumps(options, default=date_utils.json_default),
+                 'file_generator': 'l10n_sg_print_iras_audit_file_xml',
+             }
         }
 
-    def l10n_sg_print_iras_audit_file_txt(self, options):
+    def l10n_sg_print_iras_audit_file_xml(self, options):
+        return {
+            'file_name': 'iras_audit_file.xml',
+            'file_content': self._l10n_sg_get_xml(options),
+            'file_type': 'xml',
+        }
+
+    def l10n_sg_export_iras_audit_file_txt(self, options):
         """
         Print the IAF in txt format
         """
         return {
             'type': 'ir_actions_account_report_download',
             'data': {
-                'model': 'l10n.sg.reports.iaf',
-                'options': json.dumps(options, default=date_utils.json_default),
-                'output_format': 'txt',
-            }
+                 'options': json.dumps(options, default=date_utils.json_default),
+                 'file_generator': 'l10n_sg_print_iras_audit_file_txt',
+             }
+        }
+
+    def l10n_sg_print_iras_audit_file_txt(self, options):
+        return {
+            'file_name': 'iras_audit_file.txt',
+            'file_content': self._l10n_sg_get_txt(options),
+            'file_type': 'txt',
         }

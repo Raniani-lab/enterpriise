@@ -34,6 +34,11 @@
     }
 }
 
+.o_account_asset_column_contrast td:nth-child(2n+6) {
+    background-color: #FAFAFA;
+    background-clip: padding-box;
+}
+
 .o_account_asset_kanban_title {
     text-overflow: ellipsis;
     overflow: hidden;

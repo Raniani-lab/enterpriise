@@ -58,6 +58,9 @@
             'appointment/static/src/js/calendar_model.js',
             'appointment/static/src/js/calendar_renderer.js',
         ],
+        'web_studio.studio_assets': [
+            'appointment/static/src/scss/legacy_appointment_type_views.scss',
+        ],
         'web.assets_qweb': [
             'appointment/static/src/xml/**/*',
         ],

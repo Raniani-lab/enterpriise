@@ -1,4 +1,5 @@
-.o_kanban_renderer.o_kanban_dashboard.o_appointment_kanban {
+// TODO: Remove this file when studio is migrated to the new views
+.o_legacy_kanban_view.o_kanban_dashboard.o_appointment_kanban {
     &.o_kanban_grouped {
         .o_appointment_kanban_card_ungrouped {
             display:none !important;
@@ -16,15 +17,12 @@
         }
         padding: 0;
 
-        .o_kanban_record {
+        .o_appointment_kanban_card {
             width: 100%;
-            margin: 0px;
-            .o_appointment_kanban_card {
-                margin: 0;
-                border-top: 0 !important;
-                &:first-child {
-                    border-bottom: 1px solid #dee2e6 !important;
-                }
+            margin: 0;
+            border-top: 0 !important;
+            &:first-child {
+                border-bottom: 1px solid #dee2e6 !important;
             }
         }
         .o_m2m_avatar, .o_m2m_avatar_empty {
@@ -45,16 +43,13 @@
         .ribbon {
             height: 71px;
             width: 80px;
-
             &-top-right {
                 margin-top: -$o-kanban-inside-vgutter;
                 right: 0;
-
                 & span {
                     top: 13px;
                 }
             }
-
             & span {
                 background-color: $o-brand-odoo;
                 font-size: 0.8rem;
@@ -88,7 +83,6 @@
             font-weight: 300;
         }
     }
-
     // Grouped specific
     .o_appointment_kanban_card_grouped {
         .o_kanban_record {
@@ -98,7 +92,6 @@
             &::before, &::after {
                 display: none;
             }
-
             span {
                 background-color: $o-brand-odoo;
                 padding: 5px;
@@ -107,20 +100,16 @@
                 height: auto;
             }
         }
-
         .ribbon-top-right {
             margin-top: -$o-kanban-dashboard-vpadding;
-
             span {
                 left: 0;
                 right: 30px;
             }
         }
     }
-
     .o_appointment_kanban_boxes {
         flex-flow: row nowrap;
-
         .o_appointment_kanban_box {
             flex: 1 1 auto;
             flex-flow: row nowrap;
@@ -132,21 +121,6 @@
                 justify-content: flex-end;
                 text-align: right;
             }
-
         }
     }
-}
-
-.o_appointment_slots_list {
-    th.o_list_button {
-        width: 2.4em!important;
-    }
-
-    button.fa-long-arrow-right {
-        pointer-events: none;
-    }
-}
-
-.o_appointment_create_custom_appointment.disabled {
-    pointer-events: none;
 }

@@ -4,7 +4,7 @@
         <div class="o_hr_payroll_dashboard_sheet container-fluid mt-3 mb-2">
             <div class="row m-2">
                 <div class="col-md-7 m-0 p-0">
-                    <div class="row mx-2 h-auto" style="min-height:50%;">
+                    <div class="row mx-2 h-auto">
                         <div class="col m-2 p-0">
                             <PayrollDashboardActionBox actions="dashboardData.actions"/>
                         </div>
@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <t t-set="stats" t-value="dashboardData.stats"/>
-                    <div class="row m-2 h-auto" style="min-height:50%;" t-if="stats &amp;&amp; stats.length > 0">
+                    <div class="row m-2 h-auto" t-if="stats &amp;&amp; stats.length > 0">
                         <t t-foreach="stats" t-as="stat" t-key="stat.id">
                             <div class="col m-2 p-0">
                                 <PayrollDashboardStats t-props="stat"/>

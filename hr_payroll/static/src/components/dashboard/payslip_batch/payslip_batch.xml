@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
     <t t-name="hr_payroll.PayslipBatch" owl="1">
-        <div class="o_hr_payroll_dashboard_block p-2 ps-4">
+        <div class="o_hr_payroll_dashboard_block o_hr_payroll_dashboard_batches p-2 ps-4">
             <div class="row">
                 <div class="col">
                     <h2 class="btn btn-link p-0 border-0" t-on-click="onClickTitle">
@@ -11,12 +11,12 @@
             </div>
             <t t-foreach="props.batches" t-as="batch" t-key="batch.id">
                 <div class="row w-100 align-items-center">
-                     <div class="col col-3 text-start">
+                    <div class="col-4 col-md-3 text-start">
                         <span t-att-class="'badge rounded-pill text-start o_field_badge o_readonly_modifier o_required_modifier o_field_widget ' + this.getColorFromState(batch.state)">
                             <t t-esc="batch.state"/>
                         </span>
                     </div>
-                    <div class="col col btn btn-link text-start" t-on-click="() => this.onClickLine(batch.id, batch.name)">
+                    <div class="col btn btn-link text-start o_hr_payroll_dashboard_batch" t-on-click="() => this.onClickLine(batch.id, batch.name)">
                         <t t-esc="batch.name"/> <span t-esc="batch.payslip_count" class="text-nowrap"/>
                     </div>
                 </div>

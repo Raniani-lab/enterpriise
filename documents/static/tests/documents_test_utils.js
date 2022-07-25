@@ -5,7 +5,7 @@ import { start } from "@mail/../tests/helpers/test_utils";
 
 function getEnrichedSearchArch(searchArch='<search></search>') {
     var searchPanelArch = `
-        <searchpanel>
+        <searchpanel class="o_documents_search_panel">
             <field name="folder_id" string="Workspace" enable_counters="1"/>
             <field name="tag_ids" select="multi" groupby="facet_id" enable_counters="1"/>
             <field name="res_model" select="multi" string="Attached To" enable_counters="1"/>

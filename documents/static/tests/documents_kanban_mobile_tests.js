@@ -1,6 +1,9 @@
 /** @odoo-module **/
 
 import { createDocumentsView, createDocumentsViewWithMessaging } from './documents_test_utils';
+import { DocumentsSearchPanel } from "@documents/views/search/documents_search_panel";
+import { SearchPanel } from "@web/search/search_panel/search_panel";
+import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
 
 import { startServer } from '@mail/../tests/helpers/test_utils';
 
@@ -10,8 +13,8 @@ import {
     getFixture,
     nextTick,
     triggerEvent,
+    patchWithCleanup,
 } from '@web/../tests/helpers/utils';
-import { patch, unpatch } from "@web/core/utils/patch";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { documentsFileUploadService } from '@documents/views/helper/documents_file_upload_service';
 import { DocumentsListRenderer } from '@documents/views/list/documents_list_renderer';
@@ -26,15 +29,43 @@ QUnit.module('documents_kanban_mobile_tests.js', {
         setupViewRegistries();
         target = getFixture();
         serviceRegistry.add("documents_file_upload", documentsFileUploadService);
-        patch(DocumentsListRenderer, "document_mobile_long_press", {
+        patchWithCleanup(DocumentsListRenderer, {
             init() {
                 this._super(...arguments);
                 this.LONG_TOUCH_THRESHOLD = 0;
             },
         });
-    },
-    afterEach() {
-        unpatch(DocumentsListRenderer, "document_mobile_long_press");
+        serviceRegistry.add("documents_pdf_thumbnail", {
+            start() {
+                return {
+                    enqueueRecords: () => {},
+                };
+            },
+        });
+        // Historically the inspector had the preview on the kanban, due to it being
+        // controlled with a props we simply force the kanban view to also have it during the tests
+        // to ensure that the functionality stays the same, while keeping the tests as is.
+        patchWithCleanup(DocumentsKanbanRenderer.prototype, {
+            getDocumentsInspectorProps() {
+                const result = this._super(...arguments);
+                result.withFilePreview = true;
+                return result;
+            },
+        });
+        // Due to the search panel allowing double clicking on elements, the base
+        // methods have a debounce time in order to not do anything on dblclick.
+        // This patch removes those features
+        patchWithCleanup(DocumentsSearchPanel.prototype, {
+            toggleCategory() {
+                return SearchPanel.prototype.toggleCategory.call(this, ...arguments);
+            },
+            toggleFilterGroup() {
+                return SearchPanel.prototype.toggleFilterGroup.call(this, ...arguments);
+            },
+            toggleFilterValue() {
+                return SearchPanel.prototype.toggleFilterValue.call(this, ...arguments);
+            },
+        });
     },
 }, function () {
     QUnit.module('DocumentsKanbanViewMobile', function () {

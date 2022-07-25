@@ -4,27 +4,94 @@
         <xpath expr="//div[hasclass('o_search_panel')]" position="inside">
             <span class="o_resize" t-on-click.stop.prevent="" t-on-mousedown.stop.prevent="_onStartResize"/>
         </xpath>
+        <xpath expr="//label[hasclass('o_search_panel_label')]" position="inside">
+            <div class="ms-auto me-1">
+                <t t-if="supportedEditionFields.includes(section.fieldName)">
+                    <div class="o_documents_create_section_value h-100" t-if="!isEditing(section.id, false, group.id)" t-on-click.stop.prevent="() => this.addNewSectionValue(section, group.id)">
+                        <span class="fa fa-plus"/>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//header[hasclass('o_search_panel_group_header')]//input" position="attributes">
+            <attribute name="t-on-dblclick">() => this.startEdition(section.id, group.name, false, group.id)</attribute>
+        </xpath>
+        <xpath expr="//header[hasclass('o_search_panel_group_header')]//label" position="attributes">
+            <attribute name="t-on-dblclick">() => this.startEdition(section.id, group.name, false, group.id)</attribute>
+        </xpath>
+        <xpath expr="//header[hasclass('o_search_panel_group_header')]//label//span" position="attributes">
+            <attribute name="t-if">!isEditing(section.id, false, group.id)</attribute>
+        </xpath>
+        <xpath expr="//header[hasclass('o_search_panel_group_header')]//label//span" position="after">
+            <div class="d-flex flex-row" t-else="">
+                <input type="text" class="o_search_panel_label o_input flex-grow-1" t-on-keydown="(ev) => this.onInputKeydown(ev)" t-on-blur.stop.prevent="(ev) => this.confirmEdition(ev)" t-att-value="group.name" t-ref="autofocus"/>
+                <div class="o_documents_delete_section_value d-flex my-auto mx-1" t-on-mousedown.stop.prevent="() => this.removeSectionValue(value)" t-on-click.stop.prevent="() => {}">
+                    <span class="fa fa-trash"/>
+                </div>
+            </div>
+        </xpath>
     </t>
 
     <t t-name="documents.SearchPanel.Category" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary" owl="1">
         <xpath expr="//li[contains(@class, 'o_search_panel_category_value')]" position="attributes">
             <attribute name="t-att-title">value.display_name</attribute>
-            <attribute name="t-on-dragenter.stop.prevent">(ev) => this._onDragEnter(section.id, valueId, ev)</attribute>
-            <attribute name="t-on-dragleave.stop.prevent">_onDragLeave</attribute>
+            <attribute name="draggable">true</attribute>
+            <attribute name="t-on-dragstart.stop">(ev) => this.onDragStartFolder(value, ev)</attribute>
+            <attribute name="t-on-dragenter.stop.prevent">(ev) => this.onDragEnter(section, value, ev)</attribute>
+            <attribute name="t-on-dragleave.stop.prevent">(ev) => this.onDragLeave(section, ev)</attribute>
             <attribute name="t-on-dragover.stop.prevent"> </attribute>
-            <attribute name="t-on-drop.stop.prevent">(ev) => this._onDrop(section.id, valueId, ev)</attribute>
+            <attribute name="t-on-drop.stop.prevent">(ev) => this.onDrop(section, value, ev)</attribute>
+        </xpath>
+        <xpath expr="//header" position="attributes">
+            <attribute name="t-on-dblclick.stop.prevent">() => this.startEdition(section.id, value.display_name, valueId)</attribute>
+        </xpath>
+        <xpath expr="//span[contains(@class, 'o_search_panel_label_title')]" position="replace">
+            <t t-if="!isEditing(section.id, valueId)">$0</t>
+            <div class="d-flex flex-row" t-else="">
+                <input type="text" class="o_search_panel_label_title o_input flex-grow-1" t-on-keydown="(ev) => this.onInputKeydown(ev)" t-on-blur.stop.prevent="(ev) => this.confirmEdition(ev)" t-att-value="value.display_name" t-ref="autofocus"/>
+                <div class="o_documents_edit_section_value d-flex my-auto mx-1" t-on-mousedown.stop.prevent="() => this.editSectionValue(value)" t-on-click.stop.prevent="() => {}">
+                    <span class="fa fa-edit"/>
+                </div>
+                <div class="o_documents_delete_section_value d-flex my-auto mx-1" t-on-mousedown.stop.prevent="() => this.removeSectionValue(value)" t-on-click.stop.prevent="() => {}">
+                    <span class="fa fa-trash"/>
+                </div>
+            </div>
         </xpath>
         <xpath expr="//*[contains(@class, 'o_search_panel_label')]" position="inside">
-            <span t-if="_isUploadingInFolder(valueId)" class="fa fa-circle-o-notch fa-spin"/>
+            <div class="ms-auto me-2">
+                <t t-if="valueId and supportedEditionFields.includes(section.fieldName)">
+                    <div class="o_documents_create_section_value h-100" t-if="!isEditing(section.id, valueId)" t-on-click.stop.prevent="() => this.addNewSectionValue(section, value.id)">
+                        <span class="fa fa-plus"/>
+                    </div>
+                </t>
+            <span t-if="documentState.isUploadingInFolder(valueId)" class="fa fa-circle-o-notch fa-spin"/>
+            </div>
         </xpath>
     </t>
     
     <t t-name="documents.SearchPanel.FiltersGroup" t-inherit="web.SearchPanel.FiltersGroup" t-inherit-mode="primary" owl="1">
         <xpath expr="//li[contains(@class, 'o_search_panel_filter_value')]" position="attributes">
-            <attribute name="t-on-dragenter.stop.prevent">(ev) => this._onDragEnter(section.id, valueId, ev)</attribute>
-            <attribute name="t-on-dragleave.stop.prevent">_onDragLeave</attribute>
+            <attribute name="t-on-dragenter.stop.prevent">(ev) => this.onDragEnter(section, values.get(valueId), ev)</attribute>
+            <attribute name="t-on-dragleave.stop.prevent">(ev) => this.onDragLeave(section, ev)</attribute>
             <attribute name="t-on-dragover.stop.prevent"> </attribute>
-            <attribute name="t-on-drop.stop.prevent">(ev) => this._onDrop(section.id, valueId, ev)</attribute>
+            <attribute name="t-on-drop.stop.prevent">(ev) => this.onDrop(section, values.get(valueId), ev)</attribute>
+        </xpath>
+        <xpath expr="//input" position="attributes">
+            <attribute name="t-on-dblclick">() => this.startEdition(section.id, value.display_name, value.id)</attribute>
+        </xpath>
+        <xpath expr="//label" position="attributes">
+            <attribute name="t-on-dblclick">() => this.startEdition(section.id, value.display_name, value.id)</attribute>
+        </xpath>
+        <xpath expr="//label//span" position="attributes">
+            <attribute name="t-if">!isEditing(section.id, value.id)</attribute>
+        </xpath>
+        <xpath expr="//label//span" position="after">
+            <div class="d-flex flex-row" t-else="">
+                <input type="text" class="o_search_panel_label o_input flex-grow-1" t-on-keydown="(ev) => this.onInputKeydown(ev)" t-on-blur.stop.prevent="(ev) => this.confirmEdition(ev)" t-att-value="value.display_name" t-ref="autofocus"/>
+                <div class="o_documents_delete_section_value d-flex my-auto mx-1" t-on-mousedown.stop.prevent="() => this.removeSectionValue(value)" t-on-click.stop.prevent="() => {}">
+                    <span class="fa fa-trash"/>
+                </div>
+            </div>
         </xpath>
     </t>
 </templates>

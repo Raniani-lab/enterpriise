@@ -1,51 +1,55 @@
 /** @odoo-module **/
 
 import { registerModel } from "@mail/model/model_core";
-import { clear } from "@mail/model/model_field_command";
 import { attr, many, one } from "@mail/model/model_field";
 
 registerModel({
     name: "DocumentList",
+    lifecycleHooks: {
+        _willDelete() {
+            this.onDeleteCallback();
+        },
+    },
     recordMethods: {
         selectNextAttachment() {
             const index = this.viewableDocuments.findIndex((document) => document === this.selectedDocument);
             const nextIndex = index === this.viewableDocuments.length - 1 ? 0 : index + 1;
-            this.update({ userSelectedDocument: this.viewableDocuments[nextIndex] });
+            this.update({ selectedDocument: this.viewableDocuments[nextIndex] });
+            this.onSelectDocument(this.selectedDocument.record);
         },
         selectPreviousAttachment() {
             const index = this.viewableDocuments.findIndex((document) => document === this.selectedDocument);
             const prevIndex = index === 0 ? this.viewableDocuments.length - 1 : index - 1;
-            this.update({ userSelectedDocument: this.viewableDocuments[prevIndex] });
-        },
-        _computeSelectedDocument() {
-            if (this.userSelectedDocument) {
-                return this.userSelectedDocument;
-            }
-            if (this.viewableDocuments.length > 0) {
-                return this.viewableDocuments[0];
-            }
-            return clear();
+            this.update({ selectedDocument: this.viewableDocuments[prevIndex] });
+            this.onSelectDocument(this.selectedDocument.record);
         },
         _computeViewableDocuments() {
             return this.documents.filter((doc) => doc.isViewable);
         },
         openPdfManager() {
-            return this.pdfManagerOpenCallback();
+            const documents = this.initialRecordSelectionLength === 1 ? [this.selectedDocument.record] : this.viewableDocuments.map(doc => doc.record);
+            return this.pdfManagerOpenCallback(documents);
         }
     },
     fields: {
-        documentViewerDialog: one("Dialog", {
-            inverse: "documentListOwnerAsDocumentViewer",
+        attachmentViewer: one("AttachmentViewer", {
             isCausal: true,
+            inverse: "documentListOwner",
         }),
         documents: many("Document"),
+        initialRecordSelectionLength: attr({
+            required: true,
+        }),
+        onDeleteCallback: attr({
+            required: true,
+        }),
+        onSelectDocument: attr({
+            required: true,
+        }),
         pdfManagerOpenCallback: attr({
             required: true,
         }),
-        selectedDocument: one("Document", {
-            compute: '_computeSelectedDocument'
-        }),
-        userSelectedDocument: one("Document"),
+        selectedDocument: one("Document"),
         viewableDocuments: many("Document", {
             compute: "_computeViewableDocuments",
         }),

@@ -62,7 +62,7 @@ export const DocumentsDataPointMixin = (component) => class extends component {
      * Keep selection
      * @override
      */
-    setup(params, state) {
+    setup(_params, state) {
         super.setup(...arguments);
         if (this.resModel === "documents.document") {
             this.originalSelection = state.selection;
@@ -92,6 +92,7 @@ export const DocumentsDataPointMixin = (component) => class extends component {
         if (this.resModel !== "documents.document") {
             return res;
         }
+        this.model.env.bus.trigger("documents-close-preview");
         if (this.originalSelection && this.originalSelection.length > 0 && this.records) {
             const originalSelection = new Set(this.originalSelection);
             this.records.forEach((rec) => {
@@ -142,6 +143,14 @@ export const DocumentsDataPointMixin = (component) => class extends component {
 };
 
 export const DocumentsRecordMixin = (component) => class extends component {
+
+    isPdf() {
+        return this.data.mimetype === "application/pdf" || this.data.mimetype === "application/pdf;base64";
+    }
+
+    hasThumbnail() {
+        return this.data.thumbnail_status === "present";
+    }
 
     isViewable() {
         return (
@@ -213,10 +222,14 @@ export const DocumentsRecordMixin = (component) => class extends component {
             this.onRecordClick(ev, { isKeepSelection: false, isRangeSelection: false });
         }
         const root = this.model.root;
+        const foldersById = this.model.env.searchModel.getFolders().reduce((agg, folder) => {
+            agg[folder.id] = folder;
+            return agg;
+        }, {});
         const draggableRecords = root.selection.filter(
-            (record) => !record.data.lock_uid || record.data.lock_uid[0] === this.context.uid
+            (record) => (!record.data.lock_uid || record.data.lock_uid[0] === this.context.uid) && foldersById[record.data.folder_id[0]].has_write_access
         );
-        if (draggableRecords.length === 0 || !this.model.env.searchModel.getSelectedFolder().has_write_access) {
+        if (draggableRecords.length === 0) {
             ev.preventDefault();
             return;
         }

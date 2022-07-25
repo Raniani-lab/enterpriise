@@ -16,7 +16,7 @@ class DocumentShare(models.Model):
     _inherit = ['mail.thread', 'mail.alias.mixin']
     _description = 'Documents Share'
 
-    folder_id = fields.Many2one('documents.folder', string="Workspace", required=True)
+    folder_id = fields.Many2one('documents.folder', string="Workspace", required=True, ondelete='cascade')
     include_sub_folders = fields.Boolean()
     name = fields.Char(string="Name")
 
@@ -41,7 +41,7 @@ class DocumentShare(models.Model):
     action = fields.Selection([
         ('download', "Download"),
         ('downloadupload', "Download and Upload"),
-    ], default='download', string="Allows to")
+    ], default='download', string="Allows to", inverse="_inverse_action")
     tag_ids = fields.Many2many('documents.tag', string="Shared Tags")
     partner_id = fields.Many2one('res.partner', string="Contact")
     owner_id = fields.Many2one('res.users', string="Document Owner", default=lambda self: self.env.uid)
@@ -178,10 +178,16 @@ class DocumentShare(models.Model):
                 if diff_time <= 0:
                     record.state = 'expired'
 
-    @api.onchange('access_token')
+    @api.depends('access_token')
     def _compute_full_url(self):
         for record in self:
             record.full_url = "%s/document/share/%s/%s" % (record.get_base_url(), record.id, record.access_token)
+
+    def _inverse_action(self):
+        # Prevent the alias from existing if the option is removed
+        for record in self:
+            if record.action != 'downloadandupload' and record.alias_name:
+                record.alias_name = False
 
     def _alias_get_creation_values(self):
         values = super(DocumentShare, self)._alias_get_creation_values()
@@ -202,7 +208,7 @@ class DocumentShare(models.Model):
             'context': context,
             'res_model': 'documents.share',
             'target': 'new',
-            'name': _('Share selected records') if vals.get('type') == 'ids' else _('Share domain'),
+            'name': _('Share selected files') if vals.get('type') == 'ids' else _('Share selected workspace'),
             'res_id': self.id if self else False,
             'type': 'ir.actions.act_window',
             'views': [[view_id, 'form']], 
@@ -221,6 +227,7 @@ class DocumentShare(models.Model):
         :return: a form action that opens the share window to display the settings.
         """
         new_context = dict(self.env.context)
+        # TOOD: since the share is created directly do we really need to set the context?
         new_context.update({
             'default_owner_id': self.env.uid,
             'default_folder_id': vals.get('folder_id'),
@@ -229,11 +236,14 @@ class DocumentShare(models.Model):
             'default_domain': vals.get('domain') if vals.get('type', 'domain') == 'domain' else False,
             'default_document_ids': vals.get('document_ids', False),
         })
-        return self._get_share_popup(new_context, vals)
+        return self.create(vals)._get_share_popup(new_context, vals)
+
+    @api.model
+    def action_get_share_url(self, vals):
+        """
+        Creates a new share directly and return it's url
+        """
+        return self.create(vals).full_url
 
     def action_delete_shares(self):
         self.unlink()
-
-    def action_generate_url(self):
-        #Reload the wizard view to display the generated full url.
-        return self._get_share_popup(self.env.context, {'type': self.type})

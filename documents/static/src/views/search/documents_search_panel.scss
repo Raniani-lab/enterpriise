@@ -1,0 +1,8 @@
+.o_documents_search_panel {
+    .o_search_panel_label:not(:hover) .o_documents_create_section_value {
+        visibility: hidden;
+    }
+    .o_search_panel_group_header {
+        padding-right: 6px;
+    }
+}

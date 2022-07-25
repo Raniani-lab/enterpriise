@@ -39,7 +39,12 @@ class Document(models.Model):
     # Document
     name = fields.Char('Name', copy=True, store=True, compute='_compute_name', inverse='_inverse_name')
     active = fields.Boolean(default=True, string="Active")
-    thumbnail = fields.Binary(readonly=1, store=True, attachment=True, compute='_compute_thumbnail')
+    thumbnail = fields.Binary(readonly=False, store=True, attachment=True, compute='_compute_thumbnail')
+    thumbnail_status = fields.Selection([
+            ('present', 'Present'), # Document has a thumbnail
+            ('error', 'Error'), # Error when generating the thumbnail
+        ], compute="_compute_thumbnail_status", store=True, readonly=False,
+    )
     url = fields.Char('URL', index=True, size=1024, tracking=True)
     res_model_name = fields.Char(compute='_compute_res_model_name', index=True)
     type = fields.Selection([('url', 'URL'), ('binary', 'File'), ('empty', 'Request')],
@@ -123,9 +128,20 @@ class Document(models.Model):
     def _compute_thumbnail(self):
         for record in self:
             try:
-                record.thumbnail = base64.b64encode(image_process(record.raw, size=(80, 80), crop='center'))
+                record.thumbnail = base64.b64encode(image_process(record.raw, size=(200, 140), crop='center'))
             except (UserError, TypeError):
                 record.thumbnail = False
+
+    @api.depends("thumbnail")
+    def _compute_thumbnail_status(self):
+        domain = [
+            ('res_model', '=', self._name),
+            ('res_field', '=', 'thumbnail'),
+            ('res_id', 'in', self.ids),
+        ]
+        documents_with_thumbnail = set(res['res_id'] for res in self.env['ir.attachment'].sudo().search_read(domain, ['res_id']))
+        for document in self:
+            document.thumbnail_status = document.id in documents_with_thumbnail and 'present'
 
     @api.depends('attachment_type', 'url')
     def _compute_type(self):

@@ -300,7 +300,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             _logger.info("Declaration 281.45:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)
 
-        with self.assertQueryCount(admin=1833):
+        with self.assertQueryCount(admin=1834):
             start_time = time.time()
             declaration_281_45.line_ids.write({
                 'pdf_to_generate': True,
@@ -316,7 +316,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'name': 'Test',
         })
         self.assertEqual(len(individual_accounts.line_ids), 100)
-        with self.assertQueryCount(admin=1824):
+        with self.assertQueryCount(admin=1825):
             start_time = time.time()
             individual_accounts.line_ids.write({
                 'pdf_to_generate': True,

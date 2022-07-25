@@ -15,6 +15,7 @@ export const DocumentsRendererMixin = (component) => class extends component {
                 const leaveHandler = this.onDragLeave.bind(this);
                 const scrollHandler = () => {
                     this.documentDropZone.move(el.scrollTop);
+                    this.attachmentViewer.move(el.scrollTop);
                 };
                 el.addEventListener("dragover", overHandler);
                 el.addEventListener("dragleave", leaveHandler);
@@ -42,18 +43,22 @@ export const DocumentsRendererMixin = (component) => class extends component {
         this.documentDropZone = documentDropZone;
     }
 
+    setAttachmentViewer(attachmentViewer) {
+        this.attachmentViewer = attachmentViewer;
+    }
+
     onDragOver(ev) {
         if (!this.env.searchModel.getSelectedFolderId() || !ev.dataTransfer.types.includes("Files")) {
             return;
         }
         ev.stopPropagation();
         ev.preventDefault();
-        if (this.root && this.root.el) {
+        if (this.root && this.root.el && !this.root.el.classList.contains("o_documents_drop_over")) {
             this.root.el.classList.add("o_documents_drop_over");
         }
         this.documentDropZone.toggle(true);
     }
-
+    
     onDragLeave(ev) {
         ev.stopPropagation();
         ev.preventDefault();

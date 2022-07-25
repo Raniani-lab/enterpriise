@@ -5,7 +5,7 @@
         <t t-set="currentFolder" t-value="getCurrentFolder()"/>
         <div class="o_documents_inspector h-100">
             <t t-set="nbPreviews" t-value="props.selection.length"/>
-            <div class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
+            <div t-if="props.withFilePreview" class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
                 <div t-if="nbPreviews === 0">
                     <t t-if="currentFolder">
                         <div class="o_inspector_folder_description">
@@ -35,27 +35,30 @@
             <t t-set="additionalRecordData" t-value="getRecordAdditionalData(record)"/>
             <div name="document_preview" t-att-class="getPreviewClasses(record, additionalRecordData)">
                 <t t-set="mimetype" t-value="record.data.mimetype"/>
-                <t t-if="additionalRecordData.isImage or additionalRecordData.isGif or additionalRecordData.isYoutubeVideo">
+                <t t-if="additionalRecordData.isImage or additionalRecordData.isGif or additionalRecordData.isYoutubeVideo or (record.isPdf() and record.hasThumbnail())">
                     <t t-set="size" t-value="nbPreviews === 1 ? '268x130' : nbPreviews === 2 ? '120x130' : '120x75'"/>
                     <img t-if="additionalRecordData.isYoutubeVideo"
-                         t-on-click.stop.prevent="() => this.openPreview()"
+                         t-on-click.stop.prevent="() => this.openPreview(record)"
                          t-att-data-id="record.resId"
                          class="o_preview_available"
                          t-attf-src="https://img.youtube.com/vi/{{additionalRecordData.youtubeToken}}/0.jpg"
                          alt="Youtube Video"/>
                     <t t-else="">
                         <t t-set="unique" t-value="record.data.checksum ? record.data.checksum.slice(-8) : ''"/>
-                        <img class="o_preview_available o_documents_image_background"
-                             t-on-click.stop.prevent="() => this.openPreview()"
+                        <img t-if="!record.isPdf()" class="o_preview_available o_documents_image_background"
+                             t-on-click.stop.prevent="() => this.openPreview(record)"
                              t-attf-src="/documents/image/{{record.resId}}/{{size}}?unique={{unique}}"
                              t-att-title="record.data.name"/>
+                        <img t-else="" class="o_preview_available o_documents_image_background"
+                             t-on-click.stop.prevent="() => this.openPreview(record)"
+                             t-attf-src="/documents/image/{{record.resId}}/{{size}}?field=thumbnail&amp;unique={{unique}}"
+                             t-att-title="record.data.name"/>
                     </t>
-    
                 </t>
                 <div t-elif="record.data.url"
                      class="o_image o_mimetype_icon"
                      t-attf-data-mimetype="{{mimetype}}"
-                     t-on-click.stop.prevent="() => this.openPreview()"
+                     t-on-click.stop.prevent="() => this.openPreview(record)"
                      t-att-title="record.data.name"/>
                 <div t-elif="record.data.type === 'empty'"
                      class="o_inspector_request_icon fa fa-upload fa-5x"
@@ -67,13 +70,13 @@
                         mimetype.indexOf('video') !== -1 or
                         mimetype.indexOf('text') !== -1)) and 'o_preview_available' or ''}}"
                      t-att-data-mimetype="mimetype"
-                     t-on-click.stop.prevent="() => this.openPreview()"
+                     t-on-click.stop.prevent="() => this.openPreview(record)"
                      t-att-title="record.data.name"/>
                 <span t-if="record.data.type === 'empty'">
                     Upload Document
                 </span>
             </div>
-            <i t-if="nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_open_chatter rounded-circle text-center fa fa-comments" title="Open chatter"
+            <i t-if="nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_open_chatter o_inspector_open_chatter_preview rounded-circle text-center fa fa-comments" title="Open chatter"
                 t-on-click.stop.prevent="() => state.showChatter = true"/>
             <div t-if="record_index == 1 and record_size == 4" class="w-100"/>
         </t>
@@ -128,18 +131,19 @@
                             t-on-click.stop.prevent="onLock" t-att-disabled="editDisabled || locked"/>
                     </t>
                     <t t-if="isPdfOnly()">
-                        <button class="btn fa fa-scissors o_inspector_button o_inspector_split" aria-label="Split" title="Split" t-on-click.stop.prevent="() => this.openPreview(true)" t-att-disabled="editDisabled || locked"/>
+                        <button class="btn fa fa-scissors o_inspector_button o_inspector_split" aria-label="Split" title="Split" t-on-click.stop.prevent="() => this.openPreview(false, true)" t-att-disabled="editDisabled || locked"/>
                     </t>
                 </t>
             </div>
-    
             <button t-if="records[0].data.active" class="o_active btn fa fa-archive o_inspector_button o_inspector_archive float-end" title="Archive"
-                t-on-click.stop.prevent="onArchive" t-att-disabled="editDisabled || locked"/>
+            t-on-click.stop.prevent="onArchive" t-att-disabled="editDisabled || locked"/>
             <t t-else="">
                 <button class="btn float-end o_inspector_button o_inspector_delete" title="Delete" t-on-click.stop.prevent="onDelete" t-att-disabled="editDisabled || locked"><i class="fa fa-trash"/></button>
                 <button class="btn float-end o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"
-                    t-on-click.stop.prevent="onUnarchive" t-att-disabled="editDisabled || locked"><i class="fa fa-upload"/></button>
+                t-on-click.stop.prevent="onUnarchive" t-att-disabled="editDisabled || locked"><i class="fa fa-upload"/></button>
             </t>
+            <i t-if="!props.withFilePreview and nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_open_chatter rounded-circle text-center fa fa-comments float-end" title="Open chatter"
+                t-on-click.stop.prevent="() => state.showChatter = true"/>
         </div>
     </t>
 

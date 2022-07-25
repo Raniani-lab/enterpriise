@@ -71,10 +71,7 @@ registerModel({
          * @returns {boolean}
          */
         _computeIsPdf() {
-            if (this.attachment) {
-                return this.attachment.isPdf;
-            }
-            return this.mimetype === "application/pdf";
+            return this.record.isPdf();
         },
         /**
          * @private
@@ -178,6 +175,7 @@ registerModel({
         }),
         mimetype: attr(),
         name: attr(),
+        record: attr(),
         url: attr(),
     },
 });

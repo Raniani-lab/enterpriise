@@ -130,6 +130,16 @@ class DocumentFolder(models.Model):
         for record in self:
             record.action_count = action_count_dict.get(record.id, 0)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        if self.env.context.get('create_from_search_panel'):
+            # Folders created from the search panel inherit the parent's rights.
+            for vals in vals_list:
+                if 'folder_id' not in vals:
+                    continue
+                vals.update(self.browse(vals['folder_id'])._get_inherited_settings_as_vals())
+        return super().create(vals_list)
+
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
         self.ensure_one()
@@ -235,3 +245,25 @@ class DocumentFolder(models.Model):
             'view_mode': 'tree,form',
             'context': "{'default_folder_id': %s}" % self.id
         }
+
+    def _get_inherited_settings_as_vals(self):
+        self.ensure_one()
+        return {
+            'group_ids': [(6, 0, self.group_ids.ids)],
+            'read_group_ids': [(6, 0, self.read_group_ids.ids)],
+            'user_specific': self.user_specific,
+            'user_specific_write': self.user_specific_write,
+        }
+
+    def set_parent_folder(self, parent_folder_id):
+        self.ensure_one()
+        parent_folder = self.browse(parent_folder_id)
+        if self.parent_folder_id == parent_folder:
+            return
+        parent_folder.check_access_rule('write')
+        if parent_folder and parent_folder.parent_path.startswith(self.parent_path):
+            self.children_folder_ids.parent_folder_id = self.parent_folder_id
+        self.parent_folder_id = parent_folder
+        if not parent_folder:
+            return
+        self.write(parent_folder._get_inherited_settings_as_vals())

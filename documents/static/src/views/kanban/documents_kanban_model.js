@@ -20,8 +20,11 @@ export class DocumentsKanbanRecord extends DocumentsRecordMixin(KanbanModel.Reco
                 .filter((folder) => folder.id === this.data.folder_id[0]);
             const hasPdfSplit =
                 (!this.data.lock_uid || this.data.lock_uid[0] === session.uid) && folder.has_write_access;
+            const selection = this.model.root.selection;
+            let documents = selection.length > 1 && selection.find(rec => rec === this) && selection.filter(rec => rec.isViewable()) || [this];
             await this.model.env.bus.trigger("documents-open-preview", {
-                documents: [this],
+                documents,
+                mainDocument: this,
                 isPdfSplit: false,
                 rules: this.data.available_rule_ids.records,
                 hasPdfSplit,

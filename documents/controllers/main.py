@@ -14,6 +14,8 @@ from odoo.http import request, content_disposition
 from odoo.tools.translate import _
 from odoo.tools import image_process
 
+from werkzeug.exceptions import Forbidden
+
 logger = logging.getLogger(__name__)
 
 
@@ -183,6 +185,24 @@ class ShareRoute(http.Controller):
     @http.route(['/documents/content/<int:id>'], type='http', auth='user')
     def documents_content(self, id):
         return self._get_file_response(id)
+
+    @http.route(['/documents/pdf_content/<int:document_id>'], type='http', auth='user')
+    def documents_pdf_content(self, document_id):
+        """
+        This route is used to fetch the content of a pdf document to make it's thumbnail.
+        404 not found is returned if the user does not hadocument_idve the rights to write on the document.
+        """
+        record = request.env['documents.document'].browse(int(document_id))
+        try:
+            # We have to check that we can actually read the attachment as well.
+            # Since we could have a document with an attachment linked to another record to which
+            # we don't have access to.
+            if record.attachment_id:
+                record.attachment_id.check('read')
+            record.check_access_rule('write')
+        except AccessError:
+            raise Forbidden()
+        return self._get_file_response(document_id)
 
     @http.route(['/documents/image/<int:res_id>',
                  '/documents/image/<int:res_id>/<int:width>x<int:height>',
@@ -411,6 +431,9 @@ class ShareRoute(http.Controller):
                 'author': share.create_uid.name,
             }
             if share.type == 'ids' and len(available_documents) == 1:
+                if self._get_downloadable_documents(available_documents) == available_documents:
+                    document = self._get_file_response(available_documents[0].id, share_id=share.id, share_token=str(token), field='raw')
+                    return document or request.not_found()
                 options.update(document=available_documents[0], request_upload=True)
                 return request.render('documents.share_single', options)
             else:

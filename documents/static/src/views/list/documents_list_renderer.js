@@ -8,6 +8,7 @@ import { DocumentsFileUploadViewContainer } from "../helper/documents_file_uploa
 import { DocumentsDropZone } from "../helper/documents_drop_zone";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
+import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
 
 const { useEffect } = owl;
 
@@ -33,6 +34,7 @@ export class DocumentsListRenderer extends DocumentsRendererMixin(ListRenderer) 
                         options.isKeepSelection = true;
                     }
                     ev.stopPropagation();
+                    ev.preventDefault();
                     record.onRecordClick(ev, options);
                 };
                 el.addEventListener("keydown", handler);
@@ -52,6 +54,15 @@ export class DocumentsListRenderer extends DocumentsRendererMixin(ListRenderer) 
         return "documents.DocumentsFileUploadProgressLine";
     }
 
+    /**
+     * @override
+     */
+    getDocumentsInspectorProps() {
+        const result = super.getDocumentsInspectorProps();
+        // Only show preview in inspector if we are not viewing a file.
+        result.withFilePreview = !this.env.documentsPreviewStore.documentList || !this.env.documentsPreviewStore.documentList.exists();;
+        return result;
+    }
 }
 
 // We need the actual event when clicking on a checkbox (to support multi select), only accept onClick
@@ -81,4 +92,5 @@ DocumentsListRenderer.components = Object.assign({}, ListRenderer.components, {
     DocumentsFileUploadViewContainer,
     DocumentsDropZone,
     DocumentsActionHelper,
+    DocumentsAttachmentViewer,
 });

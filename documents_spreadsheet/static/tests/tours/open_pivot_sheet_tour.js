@@ -32,6 +32,11 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                 run: "click",
             },
             {
+                trigger: `button.o_switch_view.o_list`,
+                content: "Switch to list view",
+                run: "click",
+            },
+            {
                 trigger: `img[title="${SHEETNAME}"]`,
                 content: "Open the sheet",
                 run: "click",

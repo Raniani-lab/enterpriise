@@ -14,6 +14,7 @@ import { FileUploader } from "@web/views/fields/file_handler";
 import { ChatterContainer } from "@mail/components/chatter_container/chatter_container";
 import { DocumentsInspectorField } from "./documents_inspector_field";
 import { download } from "@web/core/network/download";
+import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
 
 const { Component, markup, useEffect, useState, useRef, onPatched, onWillUpdateProps, onWillStart } = owl;
 
@@ -33,6 +34,7 @@ export const inspectorFields = [
     "checksum",
     "display_name",
     "folder_id",
+    "thumbnail_status",
     "lock_uid",
     "message_attachment_count",
     "message_follower_ids",
@@ -57,11 +59,14 @@ export class DocumentsInspector extends Component {
         this.orm = useService("orm");
         this.action = useService("action");
         this.dialogService = useService("dialog");
+        this.notificationService = useService("notification");
         this.documentsReplaceInput = useRef("replaceFileInput");
         this.chatterContainer = useRef("chatterContainer");
         this.keepLast = new KeepLast();
         this.previewLockCount = 0;
         this.str_to_datetime = str_to_datetime;
+        // Avoid generating new urls if they were generated within this component's lifetime
+        this.generatedUrls = {};
         this.state = useState({
             previousAttachmentData: null,
             previousAttachmentDirty: true,
@@ -80,6 +85,7 @@ export class DocumentsInspector extends Component {
             this.updateAttachmentHistory(null);
         });
         onWillUpdateProps((nextProps) => {
+            this.generatedUrl = false;
             updateLockedState(nextProps);
             this.updateAttachmentHistory(nextProps);
         });
@@ -109,6 +115,22 @@ export class DocumentsInspector extends Component {
             },
             () => [this.chatterContainer.el && this.chatterContainer.el.querySelector(".o_Chatter")]
         );
+
+        // Pdf thumbnails
+        if (this.props.withFilePreview) {
+            this.pdfService = useService("documents_pdf_thumbnail");
+            onWillStart(async () => {
+                this.pdfService.enqueueRecords(this.props.selection);
+            })
+            onWillUpdateProps(async (nextProps) => {
+                this.pdfService.enqueueRecords(nextProps.selection);
+            })
+            onNewPdfThumbnail(({ detail }) => {
+                if (this.props.selection.find(rec => rec.resId === detail.record.resId)) {
+                    this.render(true);
+                }
+            });
+        }
 
         //Mobile specific
         if (!device.isMobile) {
@@ -218,7 +240,7 @@ export class DocumentsInspector extends Component {
         if (nbPreviews === 1) {
             classes.push("o_documents_single_preview");
         }
-        if (additionalData.isImage || additionalData.isYoutubeVideo) {
+        if (additionalData.isImage || additionalData.isYoutubeVideo || (record.isPdf() && record.hasThumbnail())) {
             classes.push("o_documents_preview_image");
         } else {
             classes.push("o_documents_preview_mimetype");
@@ -230,7 +252,7 @@ export class DocumentsInspector extends Component {
     }
 
     isPdfOnly() {
-        return this.props.selection.every((record) => record.data.mimetype === "application/pdf");
+        return this.props.selection.every((record) => record.isPdf());
     }
 
     download(records) {
@@ -257,17 +279,31 @@ export class DocumentsInspector extends Component {
         this.download(this.props.selection);
     }
 
+    // Override during tests.
+    _writeInClipboard(text) {
+        navigator.clipboard.writeText(text);
+    }
+
     async onShare() {
-        const action = await this.orm.call("documents.share", "open_share_popup", [
+        const resIds = this.resIds;
+        if (!this.generatedUrls[resIds]) {
+            this.generatedUrls[resIds] = await this.orm.call(
+                "documents.share",
+                "action_get_share_url",
+                [{
+                    document_ids: [x2ManyCommands.replaceWith(this.resIds)],
+                    folder_id: this.env.searchModel.getSelectedFolderId(),
+                    type: "ids",
+                }],
+            );
+        }
+        this._writeInClipboard(this.generatedUrls[resIds]);
+        this.notificationService.add(
+            _t("The share url has been copied to your clipboard."),
             {
-                document_ids: [x2ManyCommands.replaceWith(this.resIds)],
-                folder_id: this.env.searchModel.getSelectedFolderId(),
-                type: "ids",
+                type: "success",
             },
-        ]);
-        this.action.doAction(action, {
-            fullscreen: this.isMobile,
-        });
+        );
     }
 
     async onReplace(ev) {
@@ -465,12 +501,14 @@ export class DocumentsInspector extends Component {
         });
     }
 
-    openPreview(isPdfSplit = false) {
+    openPreview(mainDocument = false, isPdfSplit = false) {
         if ((isPdfSplit && !this.isPdfOnly()) || this.previewLockCount) {
             return;
         }
+        const documents = this.props.selection.filter(rec => rec.isViewable());
         this.env.bus.trigger("documents-open-preview", {
-            documents: this.props.selection.filter((rec) => rec.isViewable()),
+            documents: documents,
+            mainDocument: mainDocument || documents[0],
             isPdfSplit,
             rules: this.getCommonRules(),
             hasPdfSplit: !this.isLocked && !this.isEditDisabled,

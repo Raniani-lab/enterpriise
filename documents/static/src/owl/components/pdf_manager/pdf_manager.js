@@ -514,6 +514,8 @@ export class PdfManager extends Component {
             }
             delete newFile.pageIds;
         });
+        // When splitting a file we want them displayed in the same order as they were in the file.
+        newFiles.reverse();
 
         return new Promise((resolve, reject) => {
             const xhr = this._createXhr();

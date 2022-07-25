@@ -13,14 +13,19 @@
     z-index: -9999;
 }
 
-.o_documents_kanban {
-    align-items: flex-start;
-
+.o_content {
     .o_documents_kanban_view {
         overflow: auto;
         transition: background 0.3s;
         height: 100%;
         width: 100%;
+
+        .o_kanban_record {
+            display: flex;
+            flex-direction: column;
+            min-height: 200px;
+            width: 200px;
+        }
 
         .o_kanban_record .o_kanban_attachment {
             &.oe_file_request {
@@ -29,12 +34,27 @@
             }
 
             .o_kanban_image, .o_kanban_image_wrapper {
-                height: 100%;
+                height: 140px;
+                width: 100%;
             }
 
             .o_kanban_image .o_kanban_image_wrapper {
                 background-color: $gray-200;
-                border-right: 1px solid map-get($grays, '400');
+                height: 100%;
+
+                .o_documents_image {
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    width: 100%;
+                    height: 100%;
+                }
+
+                img {
+                    object-fit: contain;
+                    width: auto;
+                    height: 100%;
+                }
             }
 
             .o_request_image .o_kanban_image_wrapper {
@@ -52,7 +72,7 @@
 
             .o_kanban_details {
                 padding-left: $o-kanban-attachement-image-size + $o-kanban-inside-hgutter;
-                height: 100%;
+                padding-left: 0;
 
                 .o_documents_lock {
                     color: map-get($grays, '700');
@@ -78,6 +98,7 @@
                 @include o-position-absolute($o-kanban-inside-vgutter - 4px , $o-kanban-inside-hgutter - 4px);
                 padding: $o-dms-p-tiny;
                 font-size: 16px;
+                z-index: 3;
             }
 
             .fa-star-o {

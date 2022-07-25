@@ -10,6 +10,7 @@
         </xpath>
         <table position="before">
             <DocumentsDropZone setDropZone.bind="setDropZone"/>
+            <DocumentsAttachmentViewer setAttachmentViewer.bind="setAttachmentViewer"/>
             <DocumentsFileUploadViewContainer recordTemplate="'documents.DocumentsFileUploadProgressLine'"/>
         </table>
         <t t-call="web.ActionHelper" position="replace">

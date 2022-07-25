@@ -8,15 +8,24 @@ addRecordMethods("AttachmentViewer", {
      * Called upon clicking on the "Split PDF" button
      */
     onClickPdfSplit() {
-        if (this.documentList) {
-            this.documentList.openPdfManager();
+        if (this.documentListOwner) {
+            this.documentListOwner.openPdfManager();
             this.close();
         }
     },
     /**
+     * If the initial record selection is a single record, and the current record is a pdf, return true.
+     * If the initial record selection is a list, return true if every record is a pdf.
+     *
      * @private
      */
-    _computeIsPdfOnly() {
+    _computeWithPdfSplit() { 
+        if (!this.documentListOwner) {
+            return false;
+        }
+        if (this.documentListOwner.initialRecordSelectionLength === 1) {
+            return this.attachmentViewerViewable.isPdf;
+        }
         return this.attachmentViewerViewables.every(viewable => viewable.isPdf);
     },
 });
@@ -27,8 +36,8 @@ patchRecordMethods("AttachmentViewer", {
      * @private
      */
     _computeAttachmentViewerViewable() {
-        if (this.documentList) {
-            return this.documentList.selectedDocument.attachmentViewerViewable;
+        if (this.documentListOwner) {
+            return this.documentListOwner.selectedDocument.attachmentViewerViewable;
         }
         return this._super();
     },
@@ -37,8 +46,8 @@ patchRecordMethods("AttachmentViewer", {
      * @private
      */
     _computeAttachmentViewerViewables() {
-        if (this.documentList) {
-            return this.documentList.documents.map(doc => {
+        if (this.documentListOwner) {
+            return this.documentListOwner.documents.map(doc => {
                 return { documentOwner: doc };
             });
         }
@@ -49,8 +58,8 @@ patchRecordMethods("AttachmentViewer", {
      * @private
      */
     next() {
-        if (this.documentList) {
-            this.documentList.selectNextAttachment();
+        if (this.documentListOwner) {
+            this.documentListOwner.selectNextAttachment();
             return;
         }
         return this._super();
@@ -60,8 +69,8 @@ patchRecordMethods("AttachmentViewer", {
      * @private
      */
     previous() {
-        if (this.documentList) {
-            this.documentList.selectPreviousAttachment();
+        if (this.documentListOwner) {
+            this.documentListOwner.selectPreviousAttachment();
             return;
         }
         return this._super();
@@ -69,13 +78,15 @@ patchRecordMethods("AttachmentViewer", {
 });
 
 addFields("AttachmentViewer", {
-    documentList: one("DocumentList", {
-        related: "dialogOwner.documentListOwnerAsDocumentViewer",
+    documentListOwner: one("DocumentList", {
+        identifying: true,
+        inverse: "attachmentViewer",
+        isCausal: true,
     }),
     hasPdfSplit: attr({
         default: false,
     }),
-    isPdfOnly: attr({
-        compute: "_computeIsPdfOnly",
+    withPdfSplit: attr({
+        compute: "_computeWithPdfSplit",
     }),
 });

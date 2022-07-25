@@ -203,4 +203,7 @@ tour.register('knowledge_main_flow_tour', {
 }, {
     // go back to main workspace article
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("My Workspace Article")',
+}, {
+    trigger: ':contains("Content of My Workspace Article")',
+    run() {},
 }]);

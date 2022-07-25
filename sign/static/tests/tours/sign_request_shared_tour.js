@@ -76,7 +76,7 @@ odoo.define('shared_sign_request_tour', function (require) {
             content: 'View Document',
             trigger: '.modal-footer button:contains("View Document")',
             extra_trigger: '.modal-title:contains("Thank You !")',
-            run: 'click',
+            run(){},
         },
     ])
 })

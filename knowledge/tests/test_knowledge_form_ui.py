@@ -7,6 +7,7 @@ from odoo.tests.common import tagged, HttpCase
 
 @tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
 class TestKnowledgeUI(HttpCase):
+    allow_end_on_form = True
     @classmethod
     def setUpClass(cls):
         super(TestKnowledgeUI, cls).setUpClass()

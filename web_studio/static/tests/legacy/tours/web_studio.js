@@ -925,7 +925,8 @@ tour.register('web_studio_approval_tour', {
 }, {
     // there should be a warning
     trigger: '.o_notification.border-warning'
-}
+},
+    ...tour.stepUtils.discardForm(),
 ]);
 
 tour.register('web_studio_custom_field_tour', {

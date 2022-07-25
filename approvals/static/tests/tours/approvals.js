@@ -83,6 +83,7 @@ odoo.define('approvals_tour', function(require) {
             content: 'approve the request via activity',
             run: 'click',
         },
+        ...tour.stepUtils.discardForm(),
         {
             trigger: 'button[name="action_withdraw"]',
             content: 'withdraw approver',

@@ -102,14 +102,12 @@ tour.register('rental_product_configurator_tour', {
     trigger: 'button[special=save]',
     extra_trigger: '.o_form_nosheet',
     position: 'bottom',
-},
-
-// Saving and confirming the quotation
-{
-    trigger: '.o_form_button_save',
-    position: 'bottom',
 }, {
     trigger: 'button[name=action_confirm]',
     position: 'bottom',
-}
+}, {
+    content: "verify that the rental has been confirmed",
+    trigger: '.o_statusbar_status button.btn-primary:contains("Sales Order")',
+    run() {},
+}, ...tour.stepUtils.discardForm(),
 ]);

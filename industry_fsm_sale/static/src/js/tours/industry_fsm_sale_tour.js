@@ -61,6 +61,11 @@ tour.tours.industry_fsm_tour.steps.splice(fsmCreateInvoiceStepIndex + 1, 0, {
     extra_trigger: ".modal-dialog.modal-lg",
     content: _t("Confirm the creation of your <b>invoice</b>."),
     position: "bottom"
+}, {
+    content: _t("Wait for the invoice to show up"),
+    trigger: "span:contains('Customer Invoice')",
+    run() {},
+    auto: true,
 });
 
 });

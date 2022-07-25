@@ -48,12 +48,6 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     position: "bottom"
 });
 
-const fillWorkTemplateStepIndex = _.findIndex(tour.tours.industry_fsm_tour.steps, function (step) {
-    return (step.id === 'fill_work_template');
-});
-
-tour.tours.industry_fsm_tour.steps.splice(fillWorkTemplateStepIndex, 1);
-
 var fsmCreateInvoiceStepIndex = _.findIndex(tour.tours.industry_fsm_tour.steps, function (step) {
     return (step.id === 'fsm_invoice_create');
 });

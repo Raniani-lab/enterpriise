@@ -24,5 +24,13 @@ Create Reports for Field Service
     'demo': ['data/fsm_report_demo.xml'],
     'post_init_hook': 'post_init',
     'auto_install': ['industry_fsm', 'web_studio'],
+    'assets': {
+        'web.assets_backend': [
+            'industry_fsm_report/static/src/js/tours/industry_fsm_report_tour.js',
+        ],
+        'web.assets_frontend': [
+            'industry_fsm_report/static/src/js/tours/industry_fsm_report_tour.js',
+        ],
+    },
     'license': 'OEEL-1',
 }

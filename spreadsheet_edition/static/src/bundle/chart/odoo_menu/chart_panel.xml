@@ -2,7 +2,7 @@
 
     <t t-name="spreadsheet_edition.OdooMenuChartPanelSection" owl="1">
         <div class="o-section">
-            <div class="o-section-title">Link to Odoo Menu</div>
+            <div class="o-section-title">Link to Odoo menu</div>
             <IrMenuSelector
                 menuId="odooMenuId"
                 onValueChanged.bind="updateOdooLink"/>

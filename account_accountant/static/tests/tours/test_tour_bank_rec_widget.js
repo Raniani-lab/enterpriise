@@ -149,5 +149,15 @@ tour.register('account_accountant_bank_rec_widget',
             trigger: "div[name='lines_widget'] td[field='name']:contains('line3')",
             run: function() {},
         },
+        tour.stepUtils.toggleHomeMenu(),
+        ...tour.stepUtils.goToAppSteps(
+            'account_accountant.menu_accounting',
+            "Reset back to accounting module"
+        ),
+        {
+            content: "check that we're back on the dashboard",
+            trigger: 'a:contains("Customer Invoices")',
+            run() {}
+        }
     ]
 );

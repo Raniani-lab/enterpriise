@@ -48,7 +48,7 @@
     height: 40px;
     .o_weekend {
         background-color: mix(map-get($theme-colors, 'primary'), $body-bg, 30%);
-        color: color-yiq(mix(map-get($theme-colors, 'primary'), $body-bg, 30%));
+        color: color-contrast(mix(map-get($theme-colors, 'primary'), $body-bg, 30%));
     }
     .o_day{
         border: 2px solid map-get($theme-colors, 'primary');
@@ -62,7 +62,7 @@
         }
     }
     .o_day:hover, .o_slot_selected {
-        color: color-yiq(map-get($theme-colors, 'primary'));
+        color: color-contrast(map-get($theme-colors, 'primary'));
         background-color: map-get($theme-colors, 'primary');
     }
     .o_mute_day {
@@ -102,7 +102,7 @@
                 color: $body-color;
             }
             a:hover {
-                color: color-yiq(map-get($theme-colors, 'primary'));
+                color: color-contrast(map-get($theme-colors, 'primary'));
             }
         }
     }

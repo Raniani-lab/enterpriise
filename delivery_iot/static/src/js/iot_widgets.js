@@ -91,15 +91,16 @@ var DeliveryIoTNotificationManager = AbstractService.extend({
     start: function () {
         this._super.apply(this, arguments);
         core.bus.on('web_client_ready', this, () => {
-            this.call('bus_service', 'onNotification', this._onNotification.bind(this));
+            this.call('bus_service', 'addEventListener', 'notification', this._onNotification.bind(this));
         });
     },
 
     /**
      * @private
-     * @param {Object[]} notifs
+     * @param {CustomEvent} ev
+     * @param {Object[]} [ev.detail] notifications coming from the bus.
      */
-    _onNotification: function(notifications) {
+    _onNotification: function({ detail: notifications }) {
         for (const { payload, type } of notifications) {
             if (type === "iot_print_documents" && this.call('multi_tab', 'isOnMainTab')) {
                 this._printDocuments(payload.iot_device_identifier, payload.iot_ip, payload.documents);

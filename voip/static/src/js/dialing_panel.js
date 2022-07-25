@@ -136,7 +136,7 @@ const DialingPanel = Widget.extend({
             this._onToggleDisplay();
         });
 
-        this.call('bus_service', 'onNotification', this._onLongpollingNotifications.bind(this));
+        this.call('bus_service', 'addEventListener', 'notification', this._onLongpollingNotifications.bind(this));
 
         for (const tab of Object.values(this._tabs)) {
             tab.on('callNumber', this, ev => this._makeCall(ev.data.number));
@@ -798,10 +798,11 @@ const DialingPanel = Widget.extend({
     },
     /**
      * @private
-     * @param {Object[]} notifications
-     * @param {string} [notifications[i].type]
+     * @param {CustomEvent} ev
+     * @param {Object[]} [ev.detail] notifications coming from the bus.
+     * @param {string} [ev.detail[i].type]
      */
-    async _onLongpollingNotifications(notifications) {
+    async _onLongpollingNotifications({ detail: notifications }) {
         for (const { type } of notifications) {
             if (type === 'refresh_voip') {
                 if (this._isInCall) {

@@ -531,6 +531,9 @@
                 <field name="company_id" invisible="1"/>
                 <field name="use_sla" invisible="1"/>
                 <field name="fold" invisible="1"/>
+                <field name="legend_normal" invisible="1"/>
+                <field name="legend_blocked" invisible="1"/>
+                <field name="legend_done" invisible="1"/>
                 <field name="ticket_ref" string="ID" readonly="1" optional="show"/>
                 <field name="priority" optional="show" widget="priority"/>
                 <field name="name" string="Name" readonly="1"/>
@@ -910,7 +913,7 @@
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Congratulations! 
+                Congratulations!
                 </p><p>You completed all your tickets on time.
             </p>
         </field>
@@ -1054,7 +1057,7 @@
                 <field name="priority" invisible="1"/>
                 <field name="team_id"/>
                 <field name="user_id"/>
-                
+
                 <filter string="My Tickets" domain="[('user_id','=',uid)]" name="my_ticket"/>
                 <filter string="Unassigned Tickets" domain="[('user_id','=',False)]" name="unassigned"/>
                 <separator/>
@@ -1186,7 +1189,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
-                No data yet! 
+                No data yet!
             </p><p>
                 Create tickets to get statistics.
             </p>
@@ -1217,7 +1220,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
-                No data yet! 
+                No data yet!
             </p><p>
                 Create tickets to get statistics.
             </p>

@@ -40,8 +40,16 @@ class Sign(http.Controller):
             for item_type in sign_item_types:
                 if item_type['auto_field']:
                     try:
-                        auto_field = current_request_item.partner_id.mapped(item_type['auto_field'])
-                        item_type['auto_value'] = auto_field[0] if auto_field and not isinstance(auto_field, models.BaseModel) else ''
+                        partner = current_request_item.partner_id
+                        field_record = partner._fields[item_type['auto_field']]
+                        auto_field = partner.mapped(item_type['auto_field'])
+                        if field_record.type in ['monetary', 'float']:
+                            # Use convert_to_column (ctc) to get the right representation
+                            # E.G. :  for a latitude variable with 5 digits of precision:
+                            # Without ctc: value shown on the sign document is 50.503
+                            # With ctc, the value is 50.50300
+                            auto_field = [field_record.convert_to_column(partner[item_type['auto_field']], partner)]
+                        item_type['auto_field'] = auto_field[0] if auto_field and not isinstance(auto_field, models.BaseModel) else ''
                     except Exception:
                         item_type['auto_value'] = ''
                 if item_type['item_type'] in ['signature', 'initial']:

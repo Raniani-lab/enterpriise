@@ -428,7 +428,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         setCellContent(model, "F10", `=ODOO.PIVOT.HEADER("1", "product_id", A25)`);
         assert.equal(getCell(model, "A25"), null, "the cell should be empty");
         await nextTick();
-        assert.equal(getCellValue(model, "F10"), "(Undefined)");
+        assert.equal(getCellValue(model, "F10"), "None");
     });
 
     QUnit.test("Verify pivot measures are correctly computed :)", async function (assert) {
@@ -509,7 +509,7 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
             '=ODOO.PIVOT(1,"probability","tag_ids",67,"foo",2)'
         );
 
-        assert.equal(getCellValue(model, "A3"), "(Undefined)");
+        assert.equal(getCellValue(model, "A3"), "None");
         assert.equal(getCellValue(model, "A4"), "isCool");
         assert.equal(getCellValue(model, "A5"), "Growing");
         assert.equal(getCellValue(model, "B3"), "");

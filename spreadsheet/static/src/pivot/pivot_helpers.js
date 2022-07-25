@@ -20,7 +20,7 @@ export function formatDate(interval, value) {
     const output = formats[interval].display;
     const input = formats[interval].out;
     const date = moment(value, input);
-    return date.isValid() ? date.format(output) : _t("(Undefined)");
+    return date.isValid() ? date.format(output) : _t("None");
 }
 
 /**

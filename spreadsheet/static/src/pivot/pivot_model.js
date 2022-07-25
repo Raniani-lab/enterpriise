@@ -404,7 +404,7 @@ export class SpreadsheetPivotModel extends PivotModel {
         }
         const { field, aggregateOperator } = this.parseGroupField(groupFieldString);
         const value = parsePivotFormulaFieldValue(field, groupValueString);
-        const undef = _t("(Undefined)");
+        const undef = _t("None");
         if (this._isDateField(field)) {
             return formatDate(aggregateOperator, value);
         }

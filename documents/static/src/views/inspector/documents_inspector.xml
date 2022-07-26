@@ -171,10 +171,10 @@
                         <t t-if="records[0].data.type === 'url'" t-call="documents.DocumentsInspector.field">
                             <t t-set="field">url</t>
                         </t>
-                        <t t-call="documents.DocumentsInspector.field">
-                            <t t-set="field">partner_id</t>
-                            <t t-set="additionalProps" t-value="{canOpen: false}"/>
-                        </t>
+                    </t>
+                    <t t-call="documents.DocumentsInspector.field">
+                        <t t-set="field">partner_id</t>
+                        <t t-set="additionalProps" t-value="{canOpen: false}"/>
                     </t>
                     <t t-call="documents.DocumentsInspector.field">
                         <t t-set="field">owner_id</t>

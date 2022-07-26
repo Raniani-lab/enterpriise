@@ -911,8 +911,9 @@
                                     <record id="balance_full_line_21500" model="account.financial.html.report.line">
                                         <field name="name">V. Resultados de ejercicios anteriores</field>
                                         <field name="code">l10n_es_full_line_21500</field>
-                                        <field name="domain" eval="['|', '|', ('account_id.code','=like','120%'),
-                                        ('account_id.code','=like','121%'), ('account_id.internal_group', 'in', ['income', 'expense'])]"/>
+                                        <field name="domain" eval="['|', '|', '|', ('account_id.code','=like','120%'),
+                                        ('account_id.code','=like','121%'), ('account_id.code', '=like', '129%'),
+                                        ('account_id.internal_group', 'in', ['income', 'expense'])]"/>
                                         <field name="formulas">-sum - l10n_es_full_line_21700</field>
                                         <field name="groupby"/>
                                         <field name="show_domain">foldable</field>
@@ -933,8 +934,7 @@
                                     <record id="balance_full_line_21700" model="account.financial.html.report.line">
                                         <field name="name">VII. Resultado del ejercicio</field>
                                         <field name="code">l10n_es_full_line_21700</field>
-                                        <field name="domain" eval="['|', ('account_id.code','=like','129%'),
-                                         ('account_id.internal_group', 'in', ['income', 'expense'])]"/>
+                                        <field name="domain" eval="[('account_id.internal_group', 'in', ['income', 'expense'])]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="special_date_changer">from_fiscalyear</field>
                                         <field name="groupby"/>

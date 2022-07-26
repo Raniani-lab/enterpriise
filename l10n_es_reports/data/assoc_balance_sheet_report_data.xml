@@ -329,9 +329,10 @@
                                         <field name="name">IV. Excedentes de ejercicios anteriores</field>
                                         <field name="code">l10n_es_assoc_line_21300</field>
                                         <field name="domain" eval="[
-                                            '|', '|',
+                                            '|', '|', '|',
                                             ('account_id.code','=like','120%'),
                                             ('account_id.code','=like','121%'),
+                                            ('account_id.code','=like','129%'),
                                             ('account_id.internal_group', 'in', ['income', 'expense'])
                                         ]"/>
                                         <field name="formulas">-sum</field>
@@ -343,11 +344,7 @@
                                     <record id="balance_assoc_line_21400" model="account.financial.html.report.line">
                                         <field name="name">V. Excedente del ejercicio</field>
                                         <field name="code">l10n_es_assoc_line_21400</field>
-                                        <field name="domain" eval="[
-                                            '|',
-                                            ('account_id.code','=like','129%'),
-                                            ('account_id.internal_group', 'in', ['income', 'expense'])
-                                        ]"/>
+                                        <field name="domain" eval="[('account_id.internal_group', 'in', ['income', 'expense'])]"/>
                                         <field name="formulas">-sum</field>
                                         <field name="groupby"/>
                                         <field name="special_date_changer">from_fiscalyear</field>

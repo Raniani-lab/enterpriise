@@ -1,19 +1,35 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
+import { useAutofocus } from "@web/core/utils/hooks";
 import { archParseBoolean } from '@web/views/utils';
 import { formatInteger } from "@web/views/fields/formatters";
 import { IntegerField } from '@web/views/fields/integer/integer_field';
 
-const { useState } = owl;
+const { useState, useRef, useEffect } = owl;
 
 export class FsmProductQuantity extends IntegerField {
     setup() {
         super.setup(...arguments);
+        const refName = 'numpadDecimal';
+        useAutofocus({ refName });
         this.state = useState({
             readonly: this.props.readonly,
             addSmallClass: this.props.value.toString().length > 5,
         });
+
+        const ref = useRef(refName);
+        useEffect( // remove 0 when the input is focused.
+            (el) => {
+                if (el) {
+                    if (["INPUT", "TEXTAREA"].includes(el.tagName) && el.type === 'number') {
+                        el.value = el.value === '0' ? '' : el.value;
+                    }
+                }
+            },
+            () => [ref.el]
+        );
+    }
 
     get formattedValue() {
         if (!this.state.readonly && this.props.inputType === "number") {

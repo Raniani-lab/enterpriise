@@ -32,7 +32,6 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         st_line = self._create_st_line(amount=2300.0, payment_ref=f"turlututu{so1.name}tsoin{so2.name}tsoin")
         rule = self._create_reconcile_model()
-
         # Match directly the sale orders.
         self.assertDictEqual(
             rule._apply_rules(st_line, st_line._retrieve_partner()),
@@ -44,7 +43,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         invoice = so1._create_invoices()
         invoice.action_post()
         invoice_line = invoice.line_ids.filtered(lambda x: x.account_id.account_type == 'asset_receivable')
+        rslt = rule._apply_rules(st_line, st_line._retrieve_partner())
+        rslt.pop('amls_values_list')
         self.assertDictEqual(
-            rule._apply_rules(st_line, st_line._retrieve_partner()),
+            rslt,
             {'amls': invoice_line, 'model': rule},
         )

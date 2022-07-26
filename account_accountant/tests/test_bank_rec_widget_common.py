@@ -67,12 +67,14 @@ class TestBankRecWidgetCommon(AccountTestInvoicingCommon):
         view.arch = etree.tostring(tree)
 
     @classmethod
-    def _create_invoice_line(cls, amount, partner, move_type, currency=None, pay_reference=None, ref=None, name=None, inv_date='2017-01-01'):
+    def _create_invoice_line(cls, amount, partner, move_type, currency=None, pay_reference=None, ref=None, name=None, inv_date='2017-01-01', payment_term=None):
         ''' Create an invoice on the fly.'''
         invoice_form = Form(cls.env['account.move'].with_context(default_move_type=move_type, default_invoice_date=inv_date, default_date=inv_date))
         invoice_form.partner_id = partner
         if currency:
             invoice_form.currency_id = currency
+        if payment_term:
+            invoice_form.invoice_payment_term_id = payment_term
         if pay_reference:
             invoice_form.payment_reference = pay_reference
         if ref:

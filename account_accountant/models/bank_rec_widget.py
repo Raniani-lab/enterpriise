@@ -987,7 +987,7 @@ class BankRecWidget(models.Model):
 
         return self._lines_widget_prepare_aml_line(liquidity_line, flag='liquidity')
 
-    def _lines_widget_prepare_auto_balance_line(self):
+    def _lines_widget_prepare_auto_balance_line(self, **kwargs):
         """ Create the auto_balance line if necessary in order to have fully balanced lines."""
         self.ensure_one()
         self._ensure_loaded_lines()
@@ -1020,6 +1020,7 @@ class BankRecWidget(models.Model):
             'name': name,
             'amount_currency': open_amount_currency,
             'balance': open_balance,
+            **kwargs,
         }
 
     def _lines_widget_add_auto_balance_line(self):
@@ -1331,8 +1332,29 @@ class BankRecWidget(models.Model):
         matching = reconcile_models._apply_rules(self.st_line_id, self.partner_id)
 
         if matching.get('amls'):
-            reco_model = matching['model']
-            self._action_add_new_amls(matching['amls'], reco_model=reco_model)
+
+            # Manage the early payment discount.
+            remaining_amls = self.env['account.move.line']
+            for aml_values in matching.get('amls_values_list', []):
+
+                if aml_values.get('early_payment_vals'):
+                    discount_vals = aml_values['early_payment_vals']
+                    self._action_add_new_amls(aml_values['aml'], reco_model=matching['model'], allow_partial=False)
+                    self.line_ids = [Command.create(self._lines_widget_prepare_auto_balance_line(
+                        flag='manual',
+                        name=discount_vals['name'],
+                        account_id=discount_vals['account'].id,
+                        balance=discount_vals['balance'],
+                        amount_currency=discount_vals['balance'],
+                    ))]
+                else:
+                    remaining_amls |= aml_values['aml']
+
+            if remaining_amls:
+                self._action_add_new_amls(remaining_amls, reco_model=matching['model'])
+
+            self._lines_widget_add_auto_balance_line()
+
         if matching.get('status') == 'write_off':
             reco_model = matching['model']
             self._action_select_reconcile_model(reco_model)

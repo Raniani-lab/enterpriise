@@ -63,6 +63,7 @@ odoo.define('pos_iot.LastTransactionStatus', function(require) {
      */
     class LastTransactionPopup extends AbstractAwaitablePopup { }
     LastTransactionPopup.template = 'LastTransactionPopup';
+    LastTransactionPopup.defaultProps = { cancelKey: false };
     Registries.Component.add(LastTransactionPopup);
 
     return {

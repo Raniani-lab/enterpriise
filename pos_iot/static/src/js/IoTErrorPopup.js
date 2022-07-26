@@ -16,8 +16,8 @@ odoo.define('pos_iot.IoTErrorPopup', function(require) {
     IoTErrorPopup.template = 'IoTErrorPopup';
     IoTErrorPopup.defaultProps = {
         confirmText: 'Ok',
-        cancelText: 'Cancel',
         title: 'Error',
+        cancelKey: false,
     };
 
     Registries.Component.add(IoTErrorPopup);

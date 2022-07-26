@@ -58,10 +58,10 @@ const TimesheetUomDisplayTimer = TimesheetUom.FieldTimesheetTime.extend({
  * (unit_amount) field.
  */
 const FieldTimesheetTimeTimer = TimesheetUomDisplayTimer.extend({
-    init: function () {
+    init: function (parent) {
         this._super.apply(this, arguments);
         this.isTimerRunning = this.record.data.is_timer_running;
-        this.rendererIsSample = arguments[0].state.isSample; // This only works with list_views.
+        this.rendererIsSample = parent.state && parent.state.isSample; // This only works with list_views.
     },
 
     willstart() {

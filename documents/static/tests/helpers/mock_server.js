@@ -103,6 +103,16 @@ patch(MockServer.prototype, 'documents', {
         });
     },
     /**
+     * @override
+     * @returns {Object}
+     */
+    _mockResUsers_InitMessaging(...args) {
+        return {
+            ...this._super(...args),
+            'hasDocumentsUserGroup': true,
+        };
+    },
+    /**
      * Override to handle the specific case of model 'documents.document'.
      *
      * @override

@@ -4,6 +4,7 @@ from odoo.addons.test_discuss_full.tests.test_performance import TestDiscussFull
 
 old_method = TestDiscussFullPerformance._get_init_messaging_result
 
+
 def _get_init_messaging_result(self):
     res = old_method(self)
     res['current_user_settings'].update({
@@ -20,10 +21,13 @@ def _get_init_messaging_result(self):
         'pbxAddress': "localhost",
         'webSocketUrl': "ws://localhost",
     }
+    res['hasDocumentsUserGroup'] = False
     return res
 
+
 def _get_query_count(self):
-    return 84
+    return 85
+
 
 TestDiscussFullPerformance._get_init_messaging_result = _get_init_messaging_result
 TestDiscussFullPerformance._get_query_count = _get_query_count

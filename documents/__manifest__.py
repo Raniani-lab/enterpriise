@@ -42,13 +42,14 @@
     ],
     'license': 'OEEL-1',
     'assets': {
+        'mail.assets_messaging': [
+            'documents/static/src/models/*.js',
+        ],
         'web.assets_backend': [
             'documents/static/src/views/**/*.js',
-            'documents/static/src/models/*.js',
             'documents/static/src/owl/components/pdf_manager/pdf_manager.js',
             'documents/static/src/owl/components/pdf_page/pdf_page.js',
             'documents/static/src/owl/components/pdf_group_name/pdf_group_name.js',
-            'documents/static/src/js/systray_activity_menu.js',
             'documents/static/src/js/tours/documents.js',
             'documents/static/src/scss/documents_views.scss',
             'documents/static/src/scss/documents_kanban_view.scss',
@@ -80,9 +81,8 @@
             'documents/static/tests/documents_kanban_mobile_tests.js',
         ],
         'web.assets_qweb': [
-            'documents/static/src/components/**/*.xml',
+            'documents/static/src/components/*/*.xml',
             'documents/static/src/views/**/*.xml',
-            'documents/static/src/xml/*.xml',
             'documents/static/src/owl/components/pdf_manager/pdf_manager.xml',
             'documents/static/src/owl/components/pdf_page/pdf_page.xml',
             'documents/static/src/owl/components/pdf_group_name/pdf_group_name.xml',

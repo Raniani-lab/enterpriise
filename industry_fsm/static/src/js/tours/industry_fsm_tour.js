@@ -79,6 +79,7 @@ tour.register('industry_fsm_tour', {
     extra_trigger: '.o_project_portal_sidebar',
     content: _t('Invite your customer to <b>validate and sign your task report</b>.'),
     position: 'right',
+    id: 'sign_report',
 }, {
     trigger: '.o_web_sign_auto_button',
     extra_trigger: '.o_project_portal_sidebar',

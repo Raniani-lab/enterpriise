@@ -14,12 +14,20 @@
                             <group>
                                 <aggregate name="count" string="Hired People" field="count" invisible="1"/>
                                 <aggregate name="refused" string="# Payslips" field="refused" invisible="1"/>
-                                <aggregate name="hired" string="Hired People" field="hired"/>
-                                <formula name="recruitment_rate" string="Recruitment Rate" value="100 * record.hired / record.count" value_label="%"/>
+                                <aggregate name="hired"
+                                    help="Applicant that have been enrolled into the company."
+                                    string="Hired People" field="hired"/>
+                                <formula name="recruitment_rate"
+                                    help="The % is based on the total of applicant that have been hired divided by the total of applicant."
+                                    string="Recruitment Rate"
+                                    value="100 * record.hired / record.count" value_label="%"/>
                             </group>
                             <group>
                                 <aggregate name="process_duration" string="Process Duration in Days" field="process_duration" invisible="1"/>
-                                <formula name="process_duration_week" string="Process Duration" help="From creation till hire" value="record.process_duration / 7" value_label="weeks"/>
+                                <formula name="process_duration_week"
+                                    help='The process duration is based on the time between the applicant creation and the stage "hired" or "refused".'
+                                    string="Process Duration"
+                                    value="record.process_duration / 7" value_label="weeks"/>
                             </group>
                         </group>
                         <group col="1">
@@ -94,7 +102,7 @@
             <field name="mode">primary</field>
             <field name="priority">1</field>
             <field name="arch" type="xml">
-                <graph string="Recruitment Analysis" type="line" sample="1">
+                <graph js_class="recruitment_report_view_graph" string="Recruitment Analysis" type="line" sample="1">
                     <field name="create_date" interval="month"/>
                     <field name="count" type="measure"/>
                 </graph>
@@ -121,6 +129,7 @@
                 <tree string="Recruitment Analysis">
                     <field name="name"/>
                     <field name="job_id" optional="show"/>
+                    <field name="source_id" optional="show"/>
                     <field name="medium_id" optional="show"/>
                     <field name="create_date" optional="show"/>
                     <field name="stage_id" optional="show"/>

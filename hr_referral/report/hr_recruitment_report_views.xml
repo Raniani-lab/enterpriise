@@ -10,7 +10,10 @@
                 <xpath expr="//group[@col='4']//group" position="inside">
                     <aggregate name="has_referrer" string="Referrer People" field="has_referrer" invisible="1"/>
                     <aggregate name="referral_hired" string="Referred Hired People" field="referral_hired" invisible="1"/>
-                    <formula name="recruitment_referral_rate" string="Referral Rate" value="100 * record.referral_hired / record.has_referrer" value_label="%"/>
+                    <formula name="recruitment_referral_rate"
+                        help="The % is based on the total of applicant that have been referred by someone else divided by the total of applicant."
+                        string="Referral Rate"
+                        value="100 * record.referral_hired / record.has_referrer" value_label="%"/>
                 </xpath>
             </field>
         </record>

@@ -15,7 +15,7 @@ class HrRecruitmentReport(models.Model):
     _rec_name = 'create_date'
     _order = 'create_date desc'
 
-    count = fields.Integer('# New Applicant', group_operator="sum", readonly=True)
+    count = fields.Integer('# Applicant', group_operator="sum", readonly=True)
     refused = fields.Integer('# Refused', group_operator="sum", readonly=True)
     hired = fields.Integer('# Hired', group_operator="sum", readonly=True)
     hiring_ratio = fields.Integer('# Hired Ratio', group_operator="avg", readonly=True)

@@ -227,8 +227,7 @@ class Providerdhl(models.Model):
             shipment_request['Billing'] = srm._set_billing(account_number, "S", self.dhl_duty_payment, self.dhl_dutiable)
             shipment_request['Consignee'] = srm._set_consignee(picking.partner_id)
             shipment_request['Shipper'] = srm._set_shipper(account_number, picking.company_id.partner_id, picking.picking_type_id.warehouse_id.partner_id)
-            total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_ids])
-            currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
+            total_value, currency_name = self._dhl_calculate_value(picking)
             if self.dhl_dutiable:
                 incoterm = picking.sale_id.incoterm or self.env.company.incoterm_id
                 shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name, incoterm)
@@ -276,8 +275,7 @@ class Providerdhl(models.Model):
         shipment_request['Billing'] = srm._set_billing(account_number, "S", "S", self.dhl_dutiable)
         shipment_request['Consignee'] = srm._set_consignee(picking.picking_type_id.warehouse_id.partner_id)
         shipment_request['Shipper'] = srm._set_shipper(account_number, picking.partner_id, picking.partner_id)
-        total_value = sum([line.product_id.lst_price * line.product_uom_qty for line in picking.move_ids])
-        currency_name = picking.sale_id.currency_id.name or picking.company_id.currency_id.name
+        total_value, currency_name = self._dhl_calculate_value(picking)
         if self.dhl_dutiable:
             incoterm = picking.sale_id.incoterm or self.env.company.incoterm_id
             shipment_request['Dutiable'] = srm._set_dutiable(total_value, currency_name, incoterm)
@@ -354,3 +352,15 @@ class Providerdhl(models.Model):
                     request[key] = new_value
 
         extra_data_to_request(request, custom_data)
+
+    def _dhl_calculate_value(self, picking):
+        sale_order = picking.sale_id
+        if sale_order:
+            total_value = sum(line.price_reduce_taxinc * line.product_uom_qty for line in
+                              sale_order.order_line.filtered(
+                                  lambda l: l.product_id.type in ('consu', 'product') and not l.display_type))
+            currency_name = picking.sale_id.currency_id.name
+        else:
+            total_value = sum([line.product_id.lst_price * line.product_qty for line in picking.move_ids])
+            currency_name = picking.company_id.currency_id.name
+        return total_value, currency_name

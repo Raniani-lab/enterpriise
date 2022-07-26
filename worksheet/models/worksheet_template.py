@@ -356,7 +356,7 @@ class WorksheetTemplate(models.Model):
         field_name = field_node.attrib['name']
         new_container_col = container_col
         if field_name not in self._get_qweb_arch_omitted_fields():
-            field_info = form_view_fields.get('field_name')
+            field_info = form_view_fields.get(field_name)
             widget = field_node.attrib.get('widget', False)
             is_signature = False
             # adapt the widget syntax

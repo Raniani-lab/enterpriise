@@ -442,16 +442,10 @@ class AccountReport(models.AbstractModel):
         if previous_mode == 'single' and options_mode == 'range':
             # 'single' date mode to 'range'.
 
-            if previous_filter == 'custom':
+            if previous_filter:
                 date_to = fields.Date.from_string(previous_date_to or previous_date_from)
                 date_from = self.env.company.compute_fiscalyear_dates(date_to)['date_from']
                 options_filter = 'custom'
-            elif previous_filter == 'today':
-                date_to = fields.Date.context_today(self)
-                date_from = self.env.company.compute_fiscalyear_dates(date_to)['date_from']
-                options_filter = 'custom'
-            elif previous_filter:
-                options_filter = previous_filter
             else:
                 options_filter = default_filter
 

@@ -291,13 +291,14 @@ class Article(models.Model):
           - The article allow read or write access to all internal users AND the user
             is not member with 'none' access
         """
+        Article = self.env["knowledge.article"]
         if operator not in ('=', '!=') or not isinstance(value, bool):
             raise NotImplementedError("Unsupported search operator")
 
         articles_with_access = {}
         if not self.env.user.share:
-            articles_with_access = self._get_internal_permission(filter_domain=[('internal_permission', '!=', 'none')])
-        member_permissions = self._get_partner_member_permissions(self.env.user.partner_id)
+            articles_with_access = Article._get_internal_permission(filter_domain=[('internal_permission', '!=', 'none')])
+        member_permissions = Article._get_partner_member_permissions(self.env.user.partner_id)
         articles_with_no_member_access = [article_id for article_id, perm in member_permissions.items() if perm == 'none']
         articles_with_member_access = list(set(member_permissions.keys() - set(articles_with_no_member_access)))
 
@@ -333,6 +334,7 @@ class Article(models.Model):
             article.user_has_write_access = article.user_permission == 'write'
 
     def _search_user_has_write_access(self, operator, value):
+        Article = self.env["knowledge.article"]
         if operator not in ('=', '!=') or not isinstance(value, bool):
             raise NotImplementedError("Unsupported search operator")
 
@@ -342,8 +344,8 @@ class Article(models.Model):
                 return expression.FALSE_DOMAIN
             return expression.TRUE_DOMAIN
 
-        articles_with_access = self._get_internal_permission(filter_domain=[('internal_permission', '=', 'write')])
-        member_permissions = self._get_partner_member_permissions(self.env.user.partner_id)
+        articles_with_access = Article._get_internal_permission(filter_domain=[('internal_permission', '=', 'write')])
+        member_permissions = Article._get_partner_member_permissions(self.env.user.partner_id)
         articles_with_member_access = [article_id for article_id, perm in member_permissions.items() if perm == 'write']
         articles_with_no_member_access = list(set(member_permissions.keys() - set(articles_with_member_access)))
 
@@ -870,7 +872,11 @@ class Article(models.Model):
             - Favorite count
         and returned result mimic a search_read result structure.
         """
-        search_domain = ["|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query)]
+        search_domain = [
+            "&",
+                ('user_has_access', '=', True), # Admins won't see other's private articles.
+                "|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query)
+        ]
         articles = self.search(
             expression.AND([search_domain, [("is_user_favorite", "=", True)]]),
             limit=None,
@@ -1662,10 +1668,13 @@ class Article(models.Model):
         """ Returns the list of articles that can be set as parent for the
         current article (to avoid recursions) """
         return self.search_read(
-            domain=['&',
-                    ['name', 'ilike', search_term],
-                    ['id', 'not in', (self._get_descendants() + self).ids]
-                    ],
+            domain=[
+                '&',
+                    ('name', 'ilike', search_term),
+                    '&',
+                        ('id', 'not in', (self._get_descendants() + self).ids),
+                        ('user_has_access', '=', True),
+            ],
             fields=['id', 'display_name', 'root_article_id'],
             limit=15,
         )

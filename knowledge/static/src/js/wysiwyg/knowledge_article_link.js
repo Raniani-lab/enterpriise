@@ -68,7 +68,7 @@ const KnowledgeArticleLinkModal = Dialog.extend({
                         method: 'search_read',
                         kwargs: {
                             fields: ['id', 'display_name', 'root_article_id'],
-                            domain: [['name', '=ilike', `%${term}%`]],
+                            domain: [['name', '=ilike', `%${term}%`], ['user_has_access', "=", true]],
                         },
                     });
                     params.success({ results });

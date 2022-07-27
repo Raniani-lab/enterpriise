@@ -38,9 +38,9 @@
     <record id="dhl_packaging_BOX" model="stock.package.type">
         <field name="name">DHL Box</field>
         <field name="shipper_package_code">BOX</field>
-        <field name="height">409</field>
-        <field name="width">444</field>
-        <field name="packaging_length">541</field>
+        <field name="height">40</field>
+        <field name="width">44</field>
+        <field name="packaging_length">54</field>
         <field name="package_carrier_type">dhl</field>
         <field name="max_weight">70</field>
     </record>

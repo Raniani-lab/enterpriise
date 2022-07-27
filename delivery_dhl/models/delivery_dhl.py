@@ -183,7 +183,8 @@ class Providerdhl(models.Model):
                         'error_message': "%s.\n%s" % (condition.find('ConditionData').text, _("Hint: The destination may not require the dutiable option.")),
                         'warning_message': False,
                     }
-                elif condition_code in ['420504', '420505', '420506']:
+                elif condition_code in ['420504', '420505', '420506', '410304'] or\
+                        response.find('GetQuoteResponse/Note/ActionStatus').text == "Failure":
                     return {
                         'success': False,
                         'price': 0.0,

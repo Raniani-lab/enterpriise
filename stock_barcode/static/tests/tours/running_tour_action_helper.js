@@ -12,4 +12,28 @@ RunningTourActionHelper.include({
     },
 });
 
+const StepUtils = require('web_tour.TourStepUtils');
+StepUtils.include({
+    validateBarcodeForm() {
+        return [{
+            trigger: '.o_barcode_client_action',
+            run: 'scan O-BTN.validate'
+        }, {
+            trigger: '.o_notification.border-success',
+        }];
+    },
+    discardBarcodeForm() {
+        return [{
+            content: "discard barcode form",
+            trigger: '.o_discard',
+            auto: true,
+        }, {
+            content: "wait to be back on the barcode lines",
+            trigger: '.o_add_line',
+            auto: true,
+            run() {},
+        }];
+    },
+})
+
 });

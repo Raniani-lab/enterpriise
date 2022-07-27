@@ -40,15 +40,7 @@ tour.register('test_receipt_classic_subcontracted_product', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-02-00',
     },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan O-BTN.validate',
-    },
-
-    {
-        trigger: '.o_notification.border-success',
-    },
+    ...tour.stepUtils.validateBarcodeForm(),
 
 ]);
 
@@ -99,15 +91,7 @@ tour.register('test_receipt_tracked_subcontracted_product', {test: true}, [
         content: _t('Record production'),
         position: "bottom",
     },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan O-BTN.validate',
-    },
-
-    {
-        trigger: '.o_notification.border-success',
-    },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 tour.register('test_receipt_flexible_subcontracted_product', {test: true}, [
@@ -133,15 +117,7 @@ tour.register('test_receipt_flexible_subcontracted_product', {test: true}, [
         content: _t('Record production'),
         position: "bottom",
     },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan O-BTN.validate',
-    },
-
-    {
-        trigger: '.o_notification.border-success',
-    },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 });

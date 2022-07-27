@@ -66,13 +66,7 @@ tour.register('test_gs1_inventory_product_units', {test: true}, [
             helper.assertLineQty($line, '102');
         }
     },
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan O-BTN.validate',
-    },
-    {
-        trigger: '.o_notification.border-success',
-    },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 tour.register('test_gs1_inventory_lot_serial', {test: true}, [
@@ -529,8 +523,7 @@ tour.register('test_gs1_package_receipt', {test: true}, [
             helper.assert(linePackage, 'PACK0000123 (Iron Chest)');
         }
     },
-    { trigger: '.o_barcode_client_action', run: 'scan O-BTN.validate' },
-    { trigger: '.o_notification.border-success' },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 tour.register('test_gs1_package_delivery', {test: true}, [
@@ -564,11 +557,7 @@ tour.register('test_gs1_package_delivery', {test: true}, [
             helper.assert(product2_result_package, '546879213579461324');
         }
     },
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan O-BTN.validate',
-    },
-    { trigger: '.o_notification.border-success' },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 tour.register('test_gs1_reserved_delivery', {test:true}, [
@@ -1167,7 +1156,7 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
             helper.assert(fieldQtyDone.value, "1250");
         }
     },
-    { trigger: '.o_discard' },
+    ...tour.stepUtils.discardBarcodeForm(),
 ]);
 
 tour.register('test_gs1_receipt_packaging', {test: true}, [
@@ -1216,5 +1205,5 @@ tour.register('test_gs1_receipt_packaging', {test: true}, [
             helper.assert(fieldQtyDone.value, "30");
         }
     },
-    { trigger: '.o_discard' },
+    ...tour.stepUtils.discardBarcodeForm(),
 ]);

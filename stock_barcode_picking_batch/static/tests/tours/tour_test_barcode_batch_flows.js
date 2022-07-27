@@ -817,14 +817,7 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
             helper.assert(product2_package, 'PACK0000002');
         }
     },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan O-BTN.validate',
-    },
-    {
-        trigger: '.o_notification.border-success',
-    },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 });

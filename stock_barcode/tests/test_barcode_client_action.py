@@ -1118,12 +1118,14 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(lines[0].qty_done, 0.0)
         self.assertEqual(lines[0].reserved_qty, 4.0)
         self.assertEqual(lines.mapped('location_id.name'), ['Vendors'])
-        self.assertEqual(lines[3].lot_name, 'lot1')
+
         self.assertEqual(lines[1].lot_name, 'lot2')
         self.assertEqual(lines[1].qty_done, 2)
-        self.assertEqual(lines[2].qty_done, 2)
-        self.assertEqual(lines[3].location_dest_id.name, 'Section 2')
         self.assertEqual(lines[1].location_dest_id.name, 'Section 1')
+
+        self.assertEqual(lines[2].lot_name, 'lot1')
+        self.assertEqual(lines[2].qty_done, 2)
+        self.assertEqual(lines[2].location_dest_id.name, 'Section 2')
 
     def test_pack_multiple_scan(self):
         """ Make a reception of two products, put them in pack and validate.

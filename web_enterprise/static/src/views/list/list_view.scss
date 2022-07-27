@@ -106,11 +106,6 @@
         .o_progressbar {
             display: table-row;
 
-            > div {
-                width: 100%;
-                display: table-cell;
-            }
-
             .o_progressbar_value {
                 width: 45px;
                 min-width: 45px;

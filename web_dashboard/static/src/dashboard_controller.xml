@@ -3,7 +3,7 @@
 
     <t t-name="web_dashboard.DashboardView" owl="1">
         <div t-att-class="props.className" t-ref="root">
-            <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''">
+            <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="props.display">
                 <t t-set="displayNoContent" t-value="props.info.noContentHelp !== false and (model.useSampleModel)" />
                 <t t-if="displayNoContent">
                     <t t-if="props.info.noContentHelp" t-call="web.ActionHelper">

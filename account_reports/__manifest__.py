@@ -55,7 +55,8 @@ Accounting Reports
             'account_reports/static/src/scss/account_report_print.scss',
         ],
         'web.assets_backend': [
-            'account_reports/static/src/js/mail_activity.js',
+            'account_reports/static/src/js/legacy_mail_activity.js',
+            'account_reports/static/src/js/vat_activity.js',
             'account_reports/static/src/js/account_reports.js',
             'account_reports/static/src/js/action_manager_account_report_dl.js',
             'account_reports/static/src/scss/account_financial_report.scss',

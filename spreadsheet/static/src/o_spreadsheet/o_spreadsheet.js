@@ -110,13 +110,14 @@
     const DEFAULT_CELL_WIDTH = 96;
     const DEFAULT_CELL_HEIGHT = 23;
     const SCROLLBAR_WIDTH$1 = 15;
-    const PADDING_AUTORESIZE = 3;
     const AUTOFILL_EDGE_LENGTH = 8;
     const ICON_EDGE_LENGTH = 18;
     const UNHIDE_ICON_EDGE_LENGTH = 14;
     const MIN_CF_ICON_MARGIN = 4;
     const MIN_CELL_TEXT_MARGIN = 4;
     const CF_ICON_EDGE_LENGTH = 15;
+    const PADDING_AUTORESIZE_VERTICAL = 3;
+    const PADDING_AUTORESIZE_HORIZONTAL = MIN_CELL_TEXT_MARGIN;
     // Menus
     const MENU_WIDTH = 250;
     const MENU_ITEM_HEIGHT = 24;
@@ -583,7 +584,7 @@
         if (!((_a = cell === null || cell === void 0 ? void 0 : cell.style) === null || _a === void 0 ? void 0 : _a.fontSize)) {
             return DEFAULT_CELL_HEIGHT;
         }
-        return fontSizeInPixels(cell.style) + 2 * PADDING_AUTORESIZE;
+        return fontSizeInPixels(cell.style) + 2 * PADDING_AUTORESIZE_VERTICAL;
     }
     function fontSizeInPixels(style) {
         const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
@@ -759,6 +760,14 @@
         return argument !== undefined;
     }
     /**
+     * Check if all the values of an object, and all the values of the objects inside of it, are undefined.
+     */
+    function isObjectEmptyRecursive(argument) {
+        if (argument === undefined)
+            return true;
+        return Object.values(argument).every((value) => typeof value === "object" ? isObjectEmptyRecursive(value) : !value);
+    }
+    /**
      * Get the id of the given item (its key in the given dictionnary).
      * If the given item does not exist in the dictionary, it creates one with a new id.
      */
@@ -850,6 +859,40 @@
     function getAddHeaderStartIndex(position, base) {
         return position === "after" ? base + 1 : base;
     }
+    /**
+     * Compare two objects.
+     */
+    function deepEquals(o1, o2) {
+        if (o1 === o2)
+            return true;
+        if ((o1 && !o2) || (o2 && !o1))
+            return false;
+        // Objects can have different keys if the values are undefined
+        const keys = new Set();
+        Object.keys(o1).forEach((key) => keys.add(key));
+        Object.keys(o2).forEach((key) => keys.add(key));
+        for (let key of keys) {
+            if (typeof o1[key] !== typeof o1[key])
+                return false;
+            if (typeof o1[key] === "object") {
+                if (!deepEquals(o1[key], o2[key]))
+                    return false;
+            }
+            else {
+                if (o1[key] !== o2[key])
+                    return false;
+            }
+        }
+        return true;
+    }
+    /**
+     * Return an object with all the keys in the object that have a falsy value removed.
+     */
+    function removeFalsyAttributes(obj) {
+        const cleanObject = { ...obj };
+        Object.keys(cleanObject).forEach((key) => !cleanObject[key] && delete cleanObject[key]);
+        return cleanObject;
+    }
 
     const colors$1 = [
         "#eb6d00",
@@ -936,6 +979,28 @@
                 .map((valueString) => parseInt(valueString, 10).toString(16).padStart(2, "0"))).toUpperCase());
     }
     /**
+     * RGBA to HEX representation (#RRGGBBAA).
+     *
+     * https://css-tricks.com/converting-color-spaces-in-javascript/
+     */
+    function rgbaToHex(rgba) {
+        let r = rgba.r.toString(16);
+        let g = rgba.g.toString(16);
+        let b = rgba.b.toString(16);
+        let a = Math.round(rgba.a * 255).toString(16);
+        if (r.length == 1)
+            r = "0" + r;
+        if (g.length == 1)
+            g = "0" + g;
+        if (b.length == 1)
+            b = "0" + b;
+        if (a.length == 1)
+            a = "0" + a;
+        if (a === "ff")
+            a = "";
+        return "#" + r + g + b + a;
+    }
+    /**
      * Color string to RGBA representation
      */
     function colorToRGBA(color) {
@@ -958,6 +1023,99 @@
         }
         a = +(a / 255).toFixed(3);
         return { a, r, g, b };
+    }
+    /**
+     * HSLA to RGBA.
+     *
+     * https://css-tricks.com/converting-color-spaces-in-javascript/
+     */
+    function hslaToRGBA(hsla) {
+        hsla = { ...hsla };
+        // Must be fractions of 1
+        hsla.s /= 100;
+        hsla.l /= 100;
+        let c = (1 - Math.abs(2 * hsla.l - 1)) * hsla.s;
+        let x = c * (1 - Math.abs(((hsla.h / 60) % 2) - 1));
+        let m = hsla.l - c / 2;
+        let r = 0;
+        let g = 0;
+        let b = 0;
+        if (0 <= hsla.h && hsla.h < 60) {
+            r = c;
+            g = x;
+            b = 0;
+        }
+        else if (60 <= hsla.h && hsla.h < 120) {
+            r = x;
+            g = c;
+            b = 0;
+        }
+        else if (120 <= hsla.h && hsla.h < 180) {
+            r = 0;
+            g = c;
+            b = x;
+        }
+        else if (180 <= hsla.h && hsla.h < 240) {
+            r = 0;
+            g = x;
+            b = c;
+        }
+        else if (240 <= hsla.h && hsla.h < 300) {
+            r = x;
+            g = 0;
+            b = c;
+        }
+        else if (300 <= hsla.h && hsla.h < 360) {
+            r = c;
+            g = 0;
+            b = x;
+        }
+        r = Math.round((r + m) * 255);
+        g = Math.round((g + m) * 255);
+        b = Math.round((b + m) * 255);
+        return { a: hsla.a, r, g, b };
+    }
+    /**
+     * HSLA to RGBA.
+     *
+     * https://css-tricks.com/converting-color-spaces-in-javascript/
+     */
+    function rgbaToHSLA(rgba) {
+        // Make r, g, and b fractions of 1
+        const r = rgba.r / 255;
+        const g = rgba.g / 255;
+        const b = rgba.b / 255;
+        // Find greatest and smallest channel values
+        let cMin = Math.min(r, g, b);
+        let cMax = Math.max(r, g, b);
+        let delta = cMax - cMin;
+        let h = 0;
+        let s = 0;
+        let l = 0;
+        // Calculate hue
+        // No difference
+        if (delta == 0)
+            h = 0;
+        // Red is max
+        else if (cMax == r)
+            h = ((g - b) / delta) % 6;
+        // Green is max
+        else if (cMax == g)
+            h = (b - r) / delta + 2;
+        // Blue is max
+        else
+            h = (r - g) / delta + 4;
+        h = Math.round(h * 60);
+        // Make negative hues positive behind 360°
+        if (h < 0)
+            h += 360;
+        l = (cMax + cMin) / 2;
+        // Calculate saturation
+        s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+        // Multiply l and s by 100
+        s = +(s * 100).toFixed(1);
+        l = +(l * 100).toFixed(1);
+        return { a: rgba.a, h, s, l };
     }
 
     /** Reference of a cell (eg. A1, $B$5) */
@@ -4208,6 +4366,7 @@
                 top: dataSetsHaveTitle ? zone.top + 1 : zone.top,
             });
         }
+        const newLegendPos = dataSetZone.right === dataSetZone.left ? "none" : "top"; //Using the same variable as above to identify number of columns involved.
         env.model.dispatch("CREATE_CHART", {
             sheetId,
             id,
@@ -4222,7 +4381,7 @@
                 dataSetsHaveTitle,
                 background: BACKGROUND_CHART_COLOR,
                 verticalAxisPosition: "left",
-                legendPosition: "top",
+                legendPosition: newLegendPos,
             },
         });
         env.openSidePanel("ChartPanel", { figureId: id });
@@ -5742,7 +5901,9 @@
     }
 
     /**
-     * Convert a color string to an excel compatible hexadecimal format.
+     * Convert a JS color hexadecimal to an excel compatible color.
+     *
+     * In Excel the color don't start with a '#' and the format is AARRGGBB instead of RRGGBBAA
      */
     function toXlsxHexColor(color) {
         color = toHex(color).replace("#", "");
@@ -6641,6 +6802,7 @@
                 animation: {
                     duration: 0, // general animation time
                 },
+                devicePixelRatio: 1,
                 hover: {
                     animationDuration: 10, // duration of animations when hovering an item
                 },
@@ -6831,7 +6993,7 @@
         const legend = {
             labels: { fontColor },
         };
-        if (!chart.labelRange && chart.dataSets.length === 1) {
+        if ((!chart.labelRange && chart.dataSets.length === 1) || chart.legendPosition === "none") {
             legend.display = false;
         }
         else {
@@ -7513,7 +7675,7 @@
         const legend = {
             labels: { fontColor },
         };
-        if (!chart.labelRange && chart.dataSets.length === 1) {
+        if ((!chart.labelRange && chart.dataSets.length === 1) || chart.legendPosition === "none") {
             legend.display = false;
         }
         else {
@@ -7696,7 +7858,7 @@
         const legend = {
             labels: { fontColor },
         };
-        if (!chart.labelRange && chart.dataSets.length === 1) {
+        if ((!chart.labelRange && chart.dataSets.length === 1) || chart.legendPosition === "none") {
             legend.display = false;
         }
         else {
@@ -17623,9 +17785,11 @@
             this.state.resizerIsActive = this.state.isResizing;
             this.state.waitingForMove = false;
         }
-        onDblClick() {
+        onDblClick(ev) {
             this._fitElementSize(this.state.activeElement);
             this.state.isResizing = false;
+            this._computeHandleDisplay(ev);
+            this._computeGrabDisplay(ev);
         }
         onMouseDown(ev) {
             this.state.isResizing = true;
@@ -19551,6 +19715,3142 @@
     }
 
     /**
+     * Represent a raw XML string
+     */
+    class XMLString {
+        /**
+         * @param xmlString should be a well formed, properly escaped XML string
+         */
+        constructor(xmlString) {
+            this.xmlString = xmlString;
+        }
+        toString() {
+            return this.xmlString;
+        }
+    }
+    const XLSX_CHART_TYPES = [
+        "areaChart",
+        "area3DChart",
+        "lineChart",
+        "line3DChart",
+        "stockChart",
+        "radarChart",
+        "scatterChart",
+        "pieChart",
+        "pie3DChart",
+        "doughnutChart",
+        "barChart",
+        "bar3DChart",
+        "ofPieChart",
+        "surfaceChart",
+        "surface3DChart",
+        "bubbleChart",
+    ];
+
+    /** In XLSX color format (no #)  */
+    const AUTO_COLOR = "000000";
+    const XLSX_ICONSET_MAP = {
+        arrow: "3Arrows",
+        smiley: "3Symbols",
+        dot: "3TrafficLights1",
+    };
+    const NAMESPACE = {
+        styleSheet: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        sst: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        Relationships: "http://schemas.openxmlformats.org/package/2006/relationships",
+        Types: "http://schemas.openxmlformats.org/package/2006/content-types",
+        worksheet: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        workbook: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
+        drawing: "http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing",
+    };
+    const DRAWING_NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main";
+    const DRAWING_NS_C = "http://schemas.openxmlformats.org/drawingml/2006/chart";
+    const CONTENT_TYPES = {
+        workbook: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
+        sheet: "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml",
+        sharedStrings: "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml",
+        styles: "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml",
+        drawing: "application/vnd.openxmlformats-officedocument.drawing+xml",
+        chart: "application/vnd.openxmlformats-officedocument.drawingml.chart+xml",
+        themes: "application/vnd.openxmlformats-officedocument.theme+xml",
+        table: "application/vnd.openxmlformats-officedocument.spreadsheetml.table+xml",
+        pivot: "application/vnd.openxmlformats-officedocument.spreadsheetml.pivotTable+xml",
+        externalLink: "application/vnd.openxmlformats-officedocument.spreadsheetml.externalLink+xml",
+    };
+    const RELATIONSHIP_NSR = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
+    const HEIGHT_FACTOR = 0.75; // 100px => 75 u
+    const WIDTH_FACTOR = 0.1317; // 100px => 13.17 u
+    /** unit : maximum number of characters a column can hold at the standard font size. What. */
+    const EXCEL_DEFAULT_COL_WIDTH = 8.43;
+    /** unit : points */
+    const EXCEL_DEFAULT_ROW_HEIGHT = 12.75;
+    const EXCEL_IMPORT_DEFAULT_NUMBER_OF_COLS = 30;
+    const EXCEL_IMPORT_DEFAULT_NUMBER_OF_ROWS = 100;
+    const FIRST_NUMFMT_ID = 164;
+    const FORCE_DEFAULT_ARGS_FUNCTIONS = {
+        FLOOR: [{ type: "NUMBER", value: 1 }],
+        CEILING: [{ type: "NUMBER", value: 1 }],
+        ROUND: [{ type: "NUMBER", value: 0 }],
+        ROUNDUP: [{ type: "NUMBER", value: 0 }],
+        ROUNDDOWN: [{ type: "NUMBER", value: 0 }],
+    };
+    /**
+     * This list contains all "future" functions that are not compatible with older versions of Excel
+     * For more information, see https://docs.microsoft.com/en-us/openspecs/office_standards/ms-xlsx/5d1b6d44-6fc1-4ecd-8fef-0b27406cc2bf
+     */
+    const NON_RETROCOMPATIBLE_FUNCTIONS = [
+        "ACOT",
+        "ACOTH",
+        "AGGREGATE",
+        "ARABIC",
+        "BASE",
+        "BETA.DIST",
+        "BETA.INV",
+        "BINOM.DIST",
+        "BINOM.DIST.RANGE",
+        "BINOM.INV",
+        "BITAND",
+        "BITLSHIFT",
+        "BITOR",
+        "BITRSHIFT",
+        "BITXOR",
+        "CEILING.MATH",
+        "CEILING.PRECISE",
+        "CHISQ.DIST",
+        "CHISQ.DIST.RT",
+        "CHISQ.INV",
+        "CHISQ.INV.RT",
+        "CHISQ.TEST",
+        "COMBINA",
+        "CONCAT",
+        "CONFIDENCE.NORM",
+        "CONFIDENCE.T",
+        "COT",
+        "COTH",
+        "COVARIANCE.P",
+        "COVARIANCE.S",
+        "CSC",
+        "CSCH",
+        "DAYS",
+        "DECIMAL",
+        "ERF.PRECISE",
+        "ERFC.PRECISE",
+        "EXPON.DIST",
+        "F.DIST",
+        "F.DIST.RT",
+        "F.INV",
+        "F.INV.RT",
+        "F.TEST",
+        "FILTERXML",
+        "FLOOR.MATH",
+        "FLOOR.PRECISE",
+        "FORECAST.ETS",
+        "FORECAST.ETS.CONFINT",
+        "FORECAST.ETS.SEASONALITY",
+        "FORECAST.ETS.STAT",
+        "FORECAST.LINEAR",
+        "FORMULATEXT",
+        "GAMMA",
+        "GAMMA.DIST",
+        "GAMMA.INV",
+        "GAMMALN.PRECISE",
+        "GAUSS",
+        "HYPGEOM.DIST",
+        "IFNA",
+        "IFS",
+        "IMCOSH",
+        "IMCOT",
+        "IMCSC",
+        "IMCSCH",
+        "IMSEC",
+        "IMSECH",
+        "IMSINH",
+        "IMTAN",
+        "ISFORMULA",
+        "ISOWEEKNUM",
+        "LOGNORM.DIST",
+        "LOGNORM.INV",
+        "MAXIFS",
+        "MINIFS",
+        "MODE.MULT",
+        "MODE.SNGL",
+        "MUNIT",
+        "NEGBINOM.DIST",
+        "NORM.DIST",
+        "NORM.INV",
+        "NORM.S.DIST",
+        "NORM.S.INV",
+        "NUMBERVALUE",
+        "PDURATION",
+        "PERCENTILE.EXC",
+        "PERCENTILE.INC",
+        "PERCENTRANK.EXC",
+        "PERCENTRANK.INC",
+        "PERMUTATIONA",
+        "PHI",
+        "POISSON.DIST",
+        "QUARTILE.EXC",
+        "QUARTILE.INC",
+        "QUERYSTRING",
+        "RANK.AVG",
+        "RANK.EQ",
+        "RRI",
+        "SEC",
+        "SECH",
+        "SHEET",
+        "SHEETS",
+        "SKEW.P",
+        "STDEV.P",
+        "STDEV.S",
+        "SWITCH",
+        "T.DIST",
+        "T.DIST.2T",
+        "T.DIST.RT",
+        "T.INV",
+        "T.INV.2T",
+        "T.TEST",
+        "TEXTJOIN",
+        "UNICHAR",
+        "UNICODE",
+        "VAR.P",
+        "VAR.S",
+        "WEBSERVICE",
+        "WEIBULL.DIST",
+        "XOR",
+        "Z.TEST",
+    ];
+    const CONTENT_TYPES_FILE = "[Content_Types].xml";
+
+    /**
+     * Map of the different types of conversions warnings and their name in error messages
+     */
+    var WarningTypes;
+    (function (WarningTypes) {
+        WarningTypes["DiagonalBorderNotSupported"] = "Diagonal Borders";
+        WarningTypes["BorderStyleNotSupported"] = "Border style";
+        WarningTypes["FillStyleNotSupported"] = "Fill Style";
+        WarningTypes["FontNotSupported"] = "Font";
+        WarningTypes["HorizontalAlignmentNotSupported"] = "Horizontal Alignment";
+        WarningTypes["VerticalAlignmentNotSupported"] = "Vertical Alignments";
+        WarningTypes["MultipleRulesCfNotSupported"] = "Multiple rules conditional formats";
+        WarningTypes["CfTypeNotSupported"] = "Conditional format type";
+        WarningTypes["CfFormatBorderNotSupported"] = "Borders in conditional formats";
+        WarningTypes["CfFormatAlignmentNotSupported"] = "Alignment in conditional formats";
+        WarningTypes["CfFormatNumFmtNotSupported"] = "Num formats in conditional formats";
+        WarningTypes["CfIconSetEmptyIconNotSupported"] = "IconSets with empty icons";
+        WarningTypes["BadlyFormattedHyperlink"] = "Badly formatted hyperlink";
+        WarningTypes["NumFmtIdNotSupported"] = "Number format";
+    })(WarningTypes || (WarningTypes = {}));
+    class XLSXImportWarningManager {
+        constructor() {
+            this._parsingWarnings = new Set();
+            this._conversionWarnings = new Set();
+        }
+        addParsingWarning(warning) {
+            this._parsingWarnings.add(warning);
+        }
+        addConversionWarning(warning) {
+            this._conversionWarnings.add(warning);
+        }
+        get warnings() {
+            return [...this._parsingWarnings, ...this._conversionWarnings];
+        }
+        /**
+         * Add a warning "... is not supported" to the manager.
+         *
+         * @param type the type of the warning to add
+         * @param name optional, name of the element that was not supported
+         * @param supported optional, list of the supported elements
+         */
+        generateNotSupportedWarning(type, name, supported) {
+            let warning = `${type} ${name ? '"' + name + '" is' : "are"} not yet supported. `;
+            if (supported) {
+                warning += `Only ${supported.join(", ")} are currently supported.`;
+            }
+            if (!this._conversionWarnings.has(warning)) {
+                this._conversionWarnings.add(warning);
+            }
+        }
+    }
+
+    const SUPPORTED_BORDER_STYLES = ["thin"];
+    const SUPPORTED_HORIZONTAL_ALIGNMENTS = ["general", "left", "center", "right"];
+    const SUPPORTED_FONTS = ["Arial"];
+    const SUPPORTED_FILL_PATTERNS = ["solid"];
+    const SUPPORTED_CF_TYPES = [
+        "expression",
+        "cellIs",
+        "colorScale",
+        "iconSet",
+        "containsText",
+        "notContainsText",
+        "beginsWith",
+        "endsWith",
+        "containsBlanks",
+        "notContainsBlanks",
+    ];
+    /** Map between cell type in XLSX file and human readable cell type  */
+    const CELL_TYPE_CONVERSION_MAP = {
+        b: "boolean",
+        d: "date",
+        e: "error",
+        inlineStr: "inlineStr",
+        n: "number",
+        s: "sharedString",
+        str: "str",
+    };
+    /** Conversion map Border Style in XLSX <=> Border style in o_spreadsheet*/
+    const BORDER_STYLE_CONVERSION_MAP = {
+        dashDot: "thin",
+        dashDotDot: "thin",
+        dashed: "thin",
+        dotted: "thin",
+        double: "thin",
+        hair: "thin",
+        medium: "thin",
+        mediumDashDot: "thin",
+        mediumDashDotDot: "thin",
+        mediumDashed: "thin",
+        none: undefined,
+        slantDashDot: "thin",
+        thick: "thin",
+        thin: "thin",
+    };
+    /** Conversion map Horizontal Alignment in XLSX <=> Horizontal Alignment in o_spreadsheet*/
+    const H_ALIGNMENT_CONVERSION_MAP = {
+        general: undefined,
+        left: "left",
+        center: "center",
+        right: "right",
+        fill: "left",
+        justify: "left",
+        centerContinuous: "center",
+        distributed: "center",
+    };
+    /** Convert the "CellIs" cf operator.
+     * We have all the operators that the xlsx have, but ours begin with a uppercase character */
+    function convertCFCellIsOperator(xlsxCfOperator) {
+        return (xlsxCfOperator.slice(0, 1).toUpperCase() +
+            xlsxCfOperator.slice(1));
+    }
+    /** Conversion map CF types in XLSX <=> Cf types in o_spreadsheet */
+    const CF_TYPE_CONVERSION_MAP = {
+        aboveAverage: undefined,
+        expression: undefined,
+        cellIs: undefined,
+        colorScale: undefined,
+        dataBar: undefined,
+        iconSet: undefined,
+        top10: undefined,
+        uniqueValues: undefined,
+        duplicateValues: undefined,
+        containsText: "ContainsText",
+        notContainsText: "NotContains",
+        beginsWith: "BeginsWith",
+        endsWith: "EndsWith",
+        containsBlanks: "IsEmpty",
+        notContainsBlanks: "IsNotEmpty",
+        containsErrors: undefined,
+        notContainsErrors: undefined,
+        timePeriod: undefined,
+    };
+    /** Conversion map CF thresholds types in XLSX <=> Cf thresholds types in o_spreadsheet */
+    const CF_THRESHOLD_CONVERSION_MAP = {
+        num: "number",
+        percent: "percentage",
+        max: "value",
+        min: "value",
+        percentile: "percentile",
+        formula: "formula",
+    };
+    /**
+     * Conversion map between Excels IconSets and our own IconSets. The string is the key of the iconset in the ICON_SETS constant.
+     *
+     * NoIcons is undefined instead of an empty string because we don't support it and need to mange it separately.
+     */
+    const ICON_SET_CONVERSION_MAP = {
+        NoIcons: undefined,
+        "3Arrows": "arrows",
+        "3ArrowsGray": "arrows",
+        "3Symbols": "smiley",
+        "3Symbols2": "smiley",
+        "3Signs": "dots",
+        "3Flags": "dots",
+        "3TrafficLights1": "dots",
+        "3TrafficLights2": "dots",
+        "4Arrows": "arrows",
+        "4ArrowsGray": "arrows",
+        "4RedToBlack": "dots",
+        "4Rating": "smiley",
+        "4TrafficLights": "dots",
+        "5Arrows": "arrows",
+        "5ArrowsGray": "arrows",
+        "5Rating": "smiley",
+        "5Quarters": "dots",
+        "3Stars": "smiley",
+        "3Triangles": "arrows",
+        "5Boxes": "dots",
+    };
+    /** Map between legend position in XLSX file and human readable position  */
+    const DRAWING_LEGEND_POSITION_CONVERSION_MAP = {
+        b: "bottom",
+        t: "top",
+        l: "left",
+        r: "right",
+        tr: "right",
+    };
+    /** Conversion map chart types in XLSX <=> Cf chart types o_spreadsheet (undefined for unsupported chart types)*/
+    const CHART_TYPE_CONVERSION_MAP = {
+        areaChart: undefined,
+        area3DChart: undefined,
+        lineChart: "line",
+        line3DChart: undefined,
+        stockChart: undefined,
+        radarChart: undefined,
+        scatterChart: undefined,
+        pieChart: "pie",
+        pie3DChart: undefined,
+        doughnutChart: "pie",
+        barChart: "bar",
+        bar3DChart: undefined,
+        ofPieChart: undefined,
+        surfaceChart: undefined,
+        surface3DChart: undefined,
+        bubbleChart: undefined,
+    };
+    /** Conversion map for the SUBTOTAL(index, formula) function in xlsx, index <=> actual function*/
+    const SUBTOTAL_FUNCTION_CONVERSION_MAP = {
+        "1": "AVERAGE",
+        "2": "COUNT",
+        "3": "COUNTA",
+        "4": "MAX",
+        "5": "MIN",
+        "6": "PRODUCT",
+        "7": "STDEV",
+        "8": "STDEVP",
+        "9": "SUM",
+        "10": "VAR",
+        "11": "VARP",
+        "101": "AVERAGE",
+        "102": "COUNT",
+        "103": "COUNTA",
+        "104": "MAX",
+        "105": "MIN",
+        "106": "PRODUCT",
+        "107": "STDEV",
+        "108": "STDEVP",
+        "109": "SUM",
+        "110": "VAR",
+        "111": "VARP",
+    };
+    /** Mapping between Excel format indexes (see XLSX_FORMAT_MAP) and some supported formats  */
+    const XLSX_FORMATS_CONVERSION_MAP = {
+        0: "",
+        1: "0",
+        2: "0.00",
+        3: "#,#00",
+        4: "#,##0.00",
+        9: "0%",
+        10: "0.00%",
+        11: undefined,
+        12: undefined,
+        13: undefined,
+        14: "m/d/yyyy",
+        15: "m/d/yyyy",
+        16: "m/d/yyyy",
+        17: "m/d/yyyy",
+        18: "hh:mm:ss a",
+        19: "hh:mm:ss a",
+        20: "hhhh:mm:ss",
+        21: "hhhh:mm:ss",
+        22: "m/d/yy h:mm",
+        37: undefined,
+        38: undefined,
+        39: undefined,
+        40: undefined,
+        45: "hhhh:mm:ss",
+        46: "hhhh:mm:ss",
+        47: "hhhh:mm:ss",
+        48: undefined,
+        49: undefined,
+    };
+    /**
+     * Mapping format index to format defined by default
+     *
+     * OpenXML $18.8.30
+     * */
+    const XLSX_FORMAT_MAP = {
+        "0": 1,
+        "0.00": 2,
+        "#,#00": 3,
+        "#,##0.00": 4,
+        "0%": 9,
+        "0.00%": 10,
+        "0.00E+00": 11,
+        "# ?/?": 12,
+        "# ??/??": 13,
+        "mm-dd-yy": 14,
+        "d-mm-yy": 15,
+        "mm-yy": 16,
+        "mmm-yy": 17,
+        "h:mm AM/PM": 18,
+        "h:mm:ss AM/PM": 19,
+        "h:mm": 20,
+        "h:mm:ss": 21,
+        "m/d/yy h:mm": 22,
+        "#,##0 ;(#,##0)": 37,
+        "#,##0 ;[Red](#,##0)": 38,
+        "#,##0.00;(#,##0.00)": 39,
+        "#,##0.00;[Red](#,##0.00)": 40,
+        "mm:ss": 45,
+        "[h]:mm:ss": 46,
+        "mmss.0": 47,
+        "##0.0E+0": 48,
+        "@": 49,
+        "hh:mm:ss a": 19, // TODO: discuss: this format is not recognized by excel for example (doesn't follow their guidelines I guess)
+    };
+    /** OpenXML $18.8.27 */
+    const XLSX_INDEXED_COLORS = {
+        0: "000000",
+        1: "FFFFFF",
+        2: "FF0000",
+        3: "00FF00",
+        4: "0000FF",
+        5: "FFFF00",
+        6: "FF00FF",
+        7: "00FFFF",
+        8: "000000",
+        9: "FFFFFF",
+        10: "FF0000",
+        11: "00FF00",
+        12: "0000FF",
+        13: "FFFF00",
+        14: "FF00FF",
+        15: "00FFFF",
+        16: "800000",
+        17: "008000",
+        18: "000080",
+        19: "808000",
+        20: "800080",
+        21: "008080",
+        22: "C0C0C0",
+        23: "808080",
+        24: "9999FF",
+        25: "993366",
+        26: "FFFFCC",
+        27: "CCFFFF",
+        28: "660066",
+        29: "FF8080",
+        30: "0066CC",
+        31: "CCCCFF",
+        32: "000080",
+        33: "FF00FF",
+        34: "FFFF00",
+        35: "00FFFF",
+        36: "800080",
+        37: "800000",
+        38: "008080",
+        39: "0000FF",
+        40: "00CCFF",
+        41: "CCFFFF",
+        42: "CCFFCC",
+        43: "FFFF99",
+        44: "99CCFF",
+        45: "FF99CC",
+        46: "CC99FF",
+        47: "FFCC99",
+        48: "3366FF",
+        49: "33CCCC",
+        50: "99CC00",
+        51: "FFCC00",
+        52: "FF9900",
+        53: "FF6600",
+        54: "666699",
+        55: "969696",
+        56: "003366",
+        57: "339966",
+        58: "003300",
+        59: "333300",
+        60: "993300",
+        61: "993366",
+        62: "333399",
+        63: "333333",
+        64: "000000",
+        65: "FFFFFF", // system background
+    };
+
+    /**
+     * Most of the functions could stay private, but are exported for testing purposes
+     */
+    /**
+     *
+     * Extract the color referenced inside of an XML element and return it as an hex string #RRGGBBAA (or #RRGGBB
+     * if alpha = FF)
+     *
+     *  The color is an attribute of the element that can be :
+     *  - rgb : an rgb string
+     *  - theme : a reference to a theme element
+     *  - auto : automatic coloring. Return const AUTO_COLOR in constants.ts.
+     *  - indexed : a legacy indexing scheme for colors. The only value that should be present in a xlsx is
+     *      64 = System Foreground, that we can replace with AUTO_COLOR.
+     */
+    function convertColor(xlsxColor) {
+        if (!xlsxColor) {
+            return undefined;
+        }
+        let rgb;
+        if (xlsxColor.rgb) {
+            rgb = xlsxColor.rgb;
+        }
+        else if (xlsxColor.auto) {
+            rgb = AUTO_COLOR;
+        }
+        else if (xlsxColor.indexed) {
+            rgb = XLSX_INDEXED_COLORS[xlsxColor.indexed];
+        }
+        else {
+            return undefined;
+        }
+        rgb = xlsxColorToHEXA(rgb);
+        if (xlsxColor.tint) {
+            rgb = applyTint(rgb, xlsxColor.tint);
+        }
+        rgb = rgb.toUpperCase();
+        // Remove unnecessary alpha
+        if (rgb.length === 9 && rgb.endsWith("FF")) {
+            rgb = rgb.slice(0, 7);
+        }
+        return rgb;
+    }
+    /**
+     * Convert a hex color AARRGGBB (or RRGGBB)(representation inside XLSX Xmls) to a standard js color
+     * representation #RRGGBBAA
+     */
+    function xlsxColorToHEXA(color) {
+        if (color.length === 6)
+            return "#" + color + "FF";
+        return "#" + color.slice(2) + color.slice(0, 2);
+    }
+    /**
+     *  Apply tint to a color (see OpenXml spec §18.3.1.15);
+     */
+    function applyTint(color, tint) {
+        const rgba = colorToRGBA(color);
+        const hsla = rgbaToHSLA(rgba);
+        if (tint < 0) {
+            hsla.l = hsla.l * (1 + tint);
+        }
+        if (tint > 0) {
+            hsla.l = hsla.l * (1 - tint) + (100 - 100 * (1 - tint));
+        }
+        return rgbaToHex(hslaToRGBA(hsla));
+    }
+    /**
+     * Convert a hex + alpha color string to an integer representation. Also remove the alpha.
+     *
+     * eg. #FF0000FF => 4278190335
+     */
+    function hexaToInt(hex) {
+        if (hex.length === 9) {
+            hex = hex.slice(0, 7);
+        }
+        return parseInt(hex.replace("#", ""), 16);
+    }
+
+    /**
+     * Get the relative path between two files
+     *
+     * Eg.:
+     * from "folder1/file1.txt" to "folder2/file2.txt" => "../folder2/file2.txt"
+     */
+    function getRelativePath(from, to) {
+        const fromPathParts = from.split("/");
+        const toPathParts = to.split("/");
+        let relPath = "";
+        let startIndex = 0;
+        for (let i = 0; i < fromPathParts.length - 1; i++) {
+            if (fromPathParts[i] === toPathParts[i]) {
+                startIndex++;
+            }
+            else {
+                relPath += "../";
+            }
+        }
+        relPath += toPathParts.slice(startIndex).join("/");
+        return relPath;
+    }
+    /**
+     * Convert an array of element into an object where the objects keys were the elements position in the array.
+     * Can give an offset as argument, and all the array indexes will we shifted by this offset in the returned object.
+     *
+     * eg. : ["a", "b"] => {0:"a", 1:"b"}
+     */
+    function arrayToObject(array, indexOffset = 0) {
+        const obj = {};
+        for (let i = 0; i < array.length; i++) {
+            if (array[i]) {
+                obj[i + indexOffset] = array[i];
+            }
+        }
+        return obj;
+    }
+    /**
+     * Convert an object whose keys are numbers to an array were the element index was their key in the object.
+     *
+     * eg. : {0:"a", 2:"b"} => ["a", undefined, "b"]
+     */
+    function objectToArray(obj) {
+        const arr = [];
+        for (let key of Object.keys(obj).map(Number)) {
+            arr[key] = obj[key];
+        }
+        return arr;
+    }
+    /**
+     * In xlsx we can have string with unicode characters with the format _x00fa_.
+     * Replace with characters understandable by JS
+     */
+    function fixXlsxUnicode(str) {
+        return str.replace(/_x([0-9a-zA-Z]{4})_/g, (match, code) => {
+            return String.fromCharCode(parseInt(code, 16));
+        });
+    }
+
+    function convertBorders(data, warningManager) {
+        const borderArray = data.borders.map((border) => {
+            addBorderWarnings(border, warningManager);
+            const b = {
+                top: convertBorderDescr$1(border.top, warningManager),
+                bottom: convertBorderDescr$1(border.bottom, warningManager),
+                left: convertBorderDescr$1(border.left, warningManager),
+                right: convertBorderDescr$1(border.right, warningManager),
+            };
+            Object.keys(b).forEach((key) => b[key] === undefined && delete b[key]);
+            return b;
+        });
+        return arrayToObject(borderArray, 1);
+    }
+    function convertBorderDescr$1(borderDescr, warningManager) {
+        if (!borderDescr)
+            return undefined;
+        addBorderDescrWarnings(borderDescr, warningManager);
+        const style = BORDER_STYLE_CONVERSION_MAP[borderDescr.style];
+        return style ? [style, convertColor(borderDescr.color)] : undefined;
+    }
+    function convertStyles(data, warningManager) {
+        const stylesArray = data.styles.map((style) => {
+            return convertStyle({
+                fontStyle: data.fonts[style.fontId],
+                fillStyle: data.fills[style.fillId],
+                alignment: style.alignment,
+            }, warningManager);
+        });
+        return arrayToObject(stylesArray, 1);
+    }
+    function convertStyle(styleStruct, warningManager) {
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+        addStyleWarnings(styleStruct === null || styleStruct === void 0 ? void 0 : styleStruct.fontStyle, styleStruct === null || styleStruct === void 0 ? void 0 : styleStruct.fillStyle, warningManager);
+        addHorizontalAlignmentWarnings((_a = styleStruct === null || styleStruct === void 0 ? void 0 : styleStruct.alignment) === null || _a === void 0 ? void 0 : _a.horizontal, warningManager);
+        addVerticalAlignmentWarnings((_b = styleStruct === null || styleStruct === void 0 ? void 0 : styleStruct.alignment) === null || _b === void 0 ? void 0 : _b.vertical, warningManager);
+        return {
+            bold: (_c = styleStruct.fontStyle) === null || _c === void 0 ? void 0 : _c.bold,
+            italic: (_d = styleStruct.fontStyle) === null || _d === void 0 ? void 0 : _d.italic,
+            strikethrough: (_e = styleStruct.fontStyle) === null || _e === void 0 ? void 0 : _e.strike,
+            underline: (_f = styleStruct.fontStyle) === null || _f === void 0 ? void 0 : _f.underline,
+            align: ((_g = styleStruct.alignment) === null || _g === void 0 ? void 0 : _g.horizontal)
+                ? H_ALIGNMENT_CONVERSION_MAP[styleStruct.alignment.horizontal]
+                : undefined,
+            // In xlsx fills, bgColor is the color of the fill, and fgColor is the color of the pattern above the background, except in solid fills
+            fillColor: ((_h = styleStruct.fillStyle) === null || _h === void 0 ? void 0 : _h.patternType) === "solid"
+                ? convertColor((_j = styleStruct.fillStyle) === null || _j === void 0 ? void 0 : _j.fgColor)
+                : convertColor((_k = styleStruct.fillStyle) === null || _k === void 0 ? void 0 : _k.bgColor),
+            textColor: convertColor((_l = styleStruct.fontStyle) === null || _l === void 0 ? void 0 : _l.color),
+            fontSize: ((_m = styleStruct.fontStyle) === null || _m === void 0 ? void 0 : _m.size)
+                ? getClosestFontSize(styleStruct.fontStyle.size)
+                : undefined,
+        };
+    }
+    function convertFormats(data, warningManager) {
+        const formats = [];
+        for (let style of data.styles) {
+            const format = convertXlsxFormat(style.numFmtId, data.numFmts, warningManager);
+            if (format) {
+                formats[style.numFmtId] = format;
+            }
+        }
+        return arrayToObject(formats, 1);
+    }
+    /**
+     * Convert excel format to o_spreadsheet format
+     *
+     * Excel format are defined in openXML §18.8.31
+     */
+    function convertXlsxFormat(numFmtId, formats, warningManager) {
+        var _a, _b, _c;
+        if (numFmtId === 0) {
+            return undefined;
+        }
+        // Format is either defined in the imported data, or the formatId is defined in openXML §18.8.30
+        let format = XLSX_FORMATS_CONVERSION_MAP[numFmtId] || ((_a = formats.find((f) => f.id === numFmtId)) === null || _a === void 0 ? void 0 : _a.format);
+        if (format) {
+            try {
+                let convertedFormat = format.replace(/(.*?);.*/, "$1"); // only take first part of multi-part format
+                convertedFormat = convertedFormat.replace(/\[(.*)-[A-Z0-9]{3}\]/g, "[$1]"); // remove currency and locale/date system/number system info (ECMA §18.8.31)
+                convertedFormat = convertedFormat.replace(/\[\$\]/g, ""); // remove empty bocks
+                // Quotes in format escape sequences of characters. ATM we only support [$...] blocks to escape characters, and only one of them per format
+                const numberOfQuotes = ((_b = convertedFormat.match(/"/g)) === null || _b === void 0 ? void 0 : _b.length) || 0;
+                const numberOfOpenBrackets = ((_c = convertedFormat.match(/\[/g)) === null || _c === void 0 ? void 0 : _c.length) || 0;
+                if (numberOfQuotes / 2 + numberOfOpenBrackets > 1) {
+                    throw new Error("Multiple escaped blocks in format");
+                }
+                convertedFormat = convertedFormat.replace(/"(.*)"/g, "[$$$1]"); // replace '"..."' by '[$...]'
+                convertedFormat = convertedFormat.replace(/_.{1}/g, ""); // _ == ignore with of next char for align purposes. Not supported ATM
+                convertedFormat = convertedFormat.replace(/\*.{1}/g, ""); // * == repeat next character enough to fill the line. Not supported ATM
+                convertedFormat = convertedFormat.replace(/\\ /g, " "); // unescape spaces
+                formatValue(0, convertedFormat);
+                return convertedFormat;
+            }
+            catch (e) { }
+        }
+        warningManager.generateNotSupportedWarning(WarningTypes.NumFmtIdNotSupported, format || `nmFmtId ${numFmtId}`);
+        return undefined;
+    }
+    /**
+     * We currently only support only a set of font sizes, we cannot define new font sizes.
+     * This function adapts an arbitrary font size to the closest supported font size.
+     */
+    function getClosestFontSize(fontSize) {
+        const supportedSizes = Object.keys(fontSizeMap).map(Number);
+        const closest = supportedSizes.reduce((prev, curr) => Math.abs(curr - fontSize) < Math.abs(prev - fontSize) ? curr : prev);
+        return closest;
+    }
+    // ---------------------------------------------------------------------------
+    // Warnings
+    // ---------------------------------------------------------------------------
+    function addStyleWarnings(font, fill, warningManager) {
+        if (font && font.name && !SUPPORTED_FONTS.includes(font.name)) {
+            warningManager.generateNotSupportedWarning(WarningTypes.FontNotSupported, font.name, SUPPORTED_FONTS);
+        }
+        if (fill && fill.patternType && !SUPPORTED_FILL_PATTERNS.includes(fill.patternType)) {
+            warningManager.generateNotSupportedWarning(WarningTypes.FillStyleNotSupported, fill.patternType, SUPPORTED_FILL_PATTERNS);
+        }
+    }
+    function addBorderDescrWarnings(borderDescr, warningManager) {
+        if (!SUPPORTED_BORDER_STYLES.includes(borderDescr.style)) {
+            warningManager.generateNotSupportedWarning(WarningTypes.BorderStyleNotSupported, borderDescr.style, SUPPORTED_BORDER_STYLES);
+        }
+    }
+    function addBorderWarnings(border, warningManager) {
+        if (border.diagonal) {
+            warningManager.generateNotSupportedWarning(WarningTypes.DiagonalBorderNotSupported);
+        }
+    }
+    function addHorizontalAlignmentWarnings(alignment, warningManager) {
+        if (alignment && !SUPPORTED_HORIZONTAL_ALIGNMENTS.includes(alignment)) {
+            warningManager.generateNotSupportedWarning(WarningTypes.HorizontalAlignmentNotSupported, alignment, SUPPORTED_HORIZONTAL_ALIGNMENTS);
+        }
+    }
+    function addVerticalAlignmentWarnings(alignment, warningManager) {
+        if (alignment) {
+            warningManager.generateNotSupportedWarning(WarningTypes.VerticalAlignmentNotSupported);
+        }
+    }
+
+    function convertConditionalFormats(xlsxCfs, dxfs, warningManager) {
+        const cfs = [];
+        let cfId = 1;
+        for (let cf of xlsxCfs) {
+            if (cf.cfRules.length === 0)
+                continue;
+            addCfConversionWarnings(cf, dxfs, warningManager);
+            const rule = cf.cfRules[0];
+            let operator;
+            const values = [];
+            if (rule.dxfId === undefined && !(rule.type === "colorScale" || rule.type === "iconSet"))
+                continue;
+            switch (rule.type) {
+                case "aboveAverage":
+                case "containsErrors":
+                case "notContainsErrors":
+                case "dataBar":
+                case "duplicateValues":
+                case "expression":
+                case "top10":
+                case "uniqueValues":
+                case "timePeriod":
+                    // Not supported
+                    continue;
+                case "colorScale":
+                    const colorScale = convertColorScale(cfId++, cf);
+                    if (colorScale) {
+                        cfs.push(colorScale);
+                    }
+                    continue;
+                case "iconSet":
+                    const iconSet = convertIconSet(cfId++, cf, warningManager);
+                    if (iconSet) {
+                        cfs.push(iconSet);
+                    }
+                    continue;
+                case "containsText":
+                case "notContainsText":
+                case "beginsWith":
+                case "endsWith":
+                    if (!rule.text)
+                        continue;
+                    operator = CF_TYPE_CONVERSION_MAP[rule.type];
+                    values.push(rule.text);
+                    break;
+                case "containsBlanks":
+                case "notContainsBlanks":
+                    operator = CF_TYPE_CONVERSION_MAP[rule.type];
+                    break;
+                case "cellIs":
+                    if (!rule.operator || !rule.formula || rule.formula.length === 0)
+                        continue;
+                    operator = convertCFCellIsOperator(rule.operator);
+                    values.push(rule.formula[0]);
+                    if (rule.formula.length === 2) {
+                        values.push(rule.formula[1]);
+                    }
+                    break;
+            }
+            if (operator && rule.dxfId !== undefined) {
+                cfs.push({
+                    id: (cfId++).toString(),
+                    ranges: cf.sqref,
+                    stopIfTrue: rule.stopIfTrue,
+                    rule: {
+                        type: "CellIsRule",
+                        operator: operator,
+                        values: values,
+                        style: convertStyle({ fontStyle: dxfs[rule.dxfId].font, fillStyle: dxfs[rule.dxfId].fill }, warningManager),
+                    },
+                });
+            }
+        }
+        return cfs;
+    }
+    function convertColorScale(id, xlsxCf) {
+        const scale = xlsxCf.cfRules[0].colorScale;
+        if (!scale ||
+            scale.cfvos.length !== scale.colors.length ||
+            scale.cfvos.length < 2 ||
+            scale.cfvos.length > 3) {
+            return undefined;
+        }
+        const thresholds = [];
+        for (let i = 0; i < scale.cfvos.length; i++) {
+            thresholds.push({
+                color: hexaToInt(convertColor(scale.colors[i]) || "#FFFFFF"),
+                type: CF_THRESHOLD_CONVERSION_MAP[scale.cfvos[i].type],
+                value: scale.cfvos[i].value,
+            });
+        }
+        const minimum = thresholds[0];
+        const maximum = thresholds.length === 2 ? thresholds[1] : thresholds[2];
+        const midpoint = thresholds.length === 3 ? thresholds[1] : undefined;
+        return {
+            id: id.toString(),
+            stopIfTrue: xlsxCf.cfRules[0].stopIfTrue,
+            ranges: xlsxCf.sqref,
+            rule: { type: "ColorScaleRule", minimum, midpoint, maximum },
+        };
+    }
+    /**
+     * Convert Icons Sets.
+     *
+     * In the Xlsx extension of OpenXml, the IconSets can either be simply an IconSet, or a list of Icons
+     *  (ie. their respective IconSet and their id in this set).
+     *
+     * In the case of a list of icons :
+     *  - The order of the icons is lower => middle => upper
+     *  - The their ids are :  0 : bad, 1 : neutral, 2 : good
+     */
+    function convertIconSet(id, xlsxCf, warningManager) {
+        const xlsxIconSet = xlsxCf.cfRules[0].iconSet;
+        if (!xlsxIconSet)
+            return undefined;
+        let cfVos = xlsxIconSet.cfvos;
+        let cfIcons = xlsxIconSet.cfIcons;
+        if (cfVos.length < 3 || (cfIcons && cfIcons.length < 3)) {
+            return undefined;
+        }
+        // We don't support icon sets with more than 3 icons, so take the extrema and the middle.
+        if (cfVos.length > 3) {
+            cfVos = [cfVos[0], cfVos[Math.floor(cfVos.length / 2)], cfVos[cfVos.length - 1]];
+        }
+        if (cfIcons && cfIcons.length > 3) {
+            cfIcons = [cfIcons[0], cfIcons[Math.floor(cfIcons.length / 2)], cfIcons[cfIcons.length - 1]];
+        }
+        // In xlsx, the thresholds are NOT in the first cfVo, but on the second and third
+        const thresholds = [];
+        for (let i = 1; i <= 2; i++) {
+            const type = CF_THRESHOLD_CONVERSION_MAP[cfVos[i].type];
+            if (type === "value") {
+                return undefined;
+            }
+            thresholds.push({
+                value: cfVos[i].value || "",
+                operator: cfVos[i].gte ? "ge" : "gt",
+                type: type,
+            });
+        }
+        let icons = {
+            lower: cfIcons
+                ? convertIcons(cfIcons[0].iconSet, cfIcons[0].iconId)
+                : convertIcons(xlsxIconSet.iconSet, 0),
+            middle: cfIcons
+                ? convertIcons(cfIcons[1].iconSet, cfIcons[1].iconId)
+                : convertIcons(xlsxIconSet.iconSet, 1),
+            upper: cfIcons
+                ? convertIcons(cfIcons[2].iconSet, cfIcons[2].iconId)
+                : convertIcons(xlsxIconSet.iconSet, 2),
+        };
+        if (xlsxIconSet.reverse) {
+            icons = { upper: icons.lower, middle: icons.middle, lower: icons.upper };
+        }
+        // We don't support empty icons in an IconSet, put a dot icon instead
+        for (let key of Object.keys(icons)) {
+            if (!icons[key]) {
+                warningManager.generateNotSupportedWarning(WarningTypes.CfIconSetEmptyIconNotSupported);
+                switch (key) {
+                    case "upper":
+                        icons[key] = ICON_SETS.dots.good;
+                        break;
+                    case "middle":
+                        icons[key] = ICON_SETS.dots.neutral;
+                        break;
+                    case "lower":
+                        icons[key] = ICON_SETS.dots.bad;
+                        break;
+                }
+            }
+        }
+        return {
+            id: id.toString(),
+            stopIfTrue: xlsxCf.cfRules[0].stopIfTrue,
+            ranges: xlsxCf.sqref,
+            rule: {
+                type: "IconSetRule",
+                icons: icons,
+                upperInflectionPoint: thresholds[1],
+                lowerInflectionPoint: thresholds[0],
+            },
+        };
+    }
+    /**
+     * Convert an icon from a XLSX.
+     *
+     * The indexes are : 0 : bad, 1 : neutral, 2 : good
+     */
+    function convertIcons(xlsxIconSet, index) {
+        const iconSet = ICON_SET_CONVERSION_MAP[xlsxIconSet];
+        if (!iconSet)
+            return "";
+        return index === 0
+            ? ICON_SETS[iconSet].bad
+            : index === 1
+                ? ICON_SETS[iconSet].neutral
+                : ICON_SETS[iconSet].good;
+    }
+    // ---------------------------------------------------------------------------
+    // Warnings
+    // ---------------------------------------------------------------------------
+    function addCfConversionWarnings(cf, dxfs, warningManager) {
+        if (cf.cfRules.length > 1) {
+            warningManager.generateNotSupportedWarning(WarningTypes.MultipleRulesCfNotSupported);
+        }
+        if (!SUPPORTED_CF_TYPES.includes(cf.cfRules[0].type)) {
+            warningManager.generateNotSupportedWarning(WarningTypes.CfTypeNotSupported, cf.cfRules[0].type);
+        }
+        if (cf.cfRules[0].dxfId) {
+            const dxf = dxfs[cf.cfRules[0].dxfId];
+            if (dxf.border) {
+                warningManager.generateNotSupportedWarning(WarningTypes.CfFormatBorderNotSupported);
+            }
+            if (dxf.alignment) {
+                warningManager.generateNotSupportedWarning(WarningTypes.CfFormatAlignmentNotSupported);
+            }
+            if (dxf.numFmt) {
+                warningManager.generateNotSupportedWarning(WarningTypes.CfFormatNumFmtNotSupported);
+            }
+        }
+    }
+
+    // -------------------------------------
+    //            CF HELPERS
+    // -------------------------------------
+    /**
+     * Convert the conditional formatting o-spreadsheet operator to
+     * the corresponding excel operator.
+     * */
+    function convertOperator(operator) {
+        switch (operator) {
+            case "IsNotEmpty":
+                return "notContainsBlanks";
+            case "IsEmpty":
+                return "containsBlanks";
+            case "NotContains":
+                return "notContainsBlanks";
+            default:
+                return operator.charAt(0).toLowerCase() + operator.slice(1);
+        }
+    }
+    // -------------------------------------
+    //        WORKSHEET HELPERS
+    // -------------------------------------
+    function getCellType(value) {
+        switch (typeof value) {
+            case "boolean":
+                return "b";
+            case "string":
+                return "str";
+            case "number":
+                return "n";
+        }
+    }
+    /**
+     * For some reason, Excel will only take the devicePixelRatio (i.e. interface scale on Windows desktop)
+     * into account for the height.
+     */
+    function convertHeightToExcel(height) {
+        return Math.round(HEIGHT_FACTOR * height * window.devicePixelRatio * 100) / 100;
+    }
+    function convertWidthToExcel(width) {
+        return Math.round(WIDTH_FACTOR * width * 100) / 100;
+    }
+    function convertHeightFromExcel(height) {
+        if (!height)
+            return height;
+        return Math.round((height / HEIGHT_FACTOR) * 100) / 100;
+    }
+    function convertWidthFromExcel(width) {
+        if (!width)
+            return width;
+        return Math.round((width / WIDTH_FACTOR) * 100) / 100;
+    }
+    function convertBorderDescr(descr) {
+        if (!descr) {
+            return undefined;
+        }
+        return {
+            style: descr[0],
+            color: { rgb: descr[1] },
+        };
+    }
+    function extractStyle(cell, data) {
+        let style = {};
+        if (cell.style) {
+            style = data.styles[cell.style];
+        }
+        const format = cell.format ? data.formats[cell.format] : undefined;
+        const exportedBorder = {};
+        if (cell.border) {
+            const border = data.borders[cell.border];
+            exportedBorder.left = convertBorderDescr(border.left);
+            exportedBorder.right = convertBorderDescr(border.right);
+            exportedBorder.bottom = convertBorderDescr(border.bottom);
+            exportedBorder.top = convertBorderDescr(border.top);
+        }
+        const styles = {
+            font: {
+                size: (style === null || style === void 0 ? void 0 : style.fontSize) || DEFAULT_FONT_SIZE,
+                color: { rgb: (style === null || style === void 0 ? void 0 : style.textColor) ? style.textColor : "000000" },
+                family: 2,
+                name: "Arial",
+            },
+            fill: (style === null || style === void 0 ? void 0 : style.fillColor)
+                ? {
+                    fgColor: { rgb: style.fillColor },
+                }
+                : { reservedAttribute: "none" },
+            numFmt: format ? { format: format, id: 0 /* id not used for export */ } : undefined,
+            border: exportedBorder || {},
+            alignment: {
+                vertical: "center",
+                horizontal: style.align,
+            },
+        };
+        styles.font["strike"] = !!(style === null || style === void 0 ? void 0 : style.strikethrough) || undefined;
+        styles.font["underline"] = !!(style === null || style === void 0 ? void 0 : style.underline) || undefined;
+        styles.font["bold"] = !!(style === null || style === void 0 ? void 0 : style.bold) || undefined;
+        styles.font["italic"] = !!(style === null || style === void 0 ? void 0 : style.italic) || undefined;
+        return styles;
+    }
+    function normalizeStyle(construct, styles) {
+        const { id: fontId } = pushElement(styles["font"], construct.fonts);
+        const { id: fillId } = pushElement(styles["fill"], construct.fills);
+        const { id: borderId } = pushElement(styles["border"], construct.borders);
+        // Normalize this
+        const numFmtId = convertFormat(styles["numFmt"], construct.numFmts);
+        const style = {
+            fontId,
+            fillId,
+            borderId,
+            numFmtId,
+            alignment: {
+                vertical: styles.alignment.vertical,
+                horizontal: styles.alignment.horizontal,
+            },
+        };
+        const { id } = pushElement(style, construct.styles);
+        return id;
+    }
+    function convertFormat(format, numFmtStructure) {
+        if (!format) {
+            return 0;
+        }
+        let formatId = XLSX_FORMAT_MAP[format.format];
+        if (!formatId) {
+            const { id } = pushElement(format, numFmtStructure);
+            formatId = id + FIRST_NUMFMT_ID;
+        }
+        return formatId;
+    }
+    /**
+     * Add a relation to the given file and return its id.
+     */
+    function addRelsToFile(relsFiles, path, rel) {
+        let relsFile = relsFiles.find((file) => file.path === path);
+        // the id is a one-based int casted as string
+        let id;
+        if (!relsFile) {
+            id = "rId1";
+            relsFiles.push({ path, rels: [{ ...rel, id }] });
+        }
+        else {
+            id = `rId${(relsFile.rels.length + 1).toString()}`;
+            relsFile.rels.push({
+                ...rel,
+                id,
+            });
+        }
+        return id;
+    }
+    function pushElement(property, propertyList) {
+        for (let [key, value] of Object.entries(propertyList)) {
+            if (JSON.stringify(value) === JSON.stringify(property)) {
+                return { id: parseInt(key, 10), list: propertyList };
+            }
+        }
+        let elemId = propertyList.findIndex((elem) => JSON.stringify(elem) === JSON.stringify(property));
+        if (elemId === -1) {
+            propertyList.push(property);
+            elemId = propertyList.length - 1;
+        }
+        return {
+            id: elemId,
+            list: propertyList,
+        };
+    }
+    const chartIds = [];
+    /**
+     * Convert a chart o-spreadsheet id to a xlsx id which
+     * are unsigned integers (starting from 1).
+     */
+    function convertChartId(chartId) {
+        const xlsxId = chartIds.findIndex((id) => id === chartId);
+        if (xlsxId === -1) {
+            chartIds.push(chartId);
+            return chartIds.length;
+        }
+        return xlsxId + 1;
+    }
+    /**
+     * Convert a value expressed in dot to EMU.
+     * EMU = English Metrical Unit
+     * There are 914400 EMU per inch.
+     *
+     * /!\ A value expressed in EMU cannot be fractional.
+     * See https://docs.microsoft.com/en-us/windows/win32/vml/msdn-online-vml-units#other-units-of-measurement
+     */
+    function convertDotValueToEMU(value) {
+        const DPI = 96;
+        return Math.round((value * 914400) / DPI);
+    }
+    function getRangeSize(xc, defaultSheetIndex, data) {
+        const xcSplit = xc.split("!");
+        let rangeSheetIndex;
+        if (xcSplit.length > 1) {
+            const index = data.sheets.findIndex((sheet) => sheet.name === xcSplit[0]);
+            if (index < 0) {
+                throw new Error("Unable to find a sheet with the name " + xcSplit[0]);
+            }
+            rangeSheetIndex = index;
+            xc = xcSplit[1];
+        }
+        else {
+            rangeSheetIndex = Number(defaultSheetIndex);
+        }
+        const zone = toUnboundedZone(xc);
+        if (zone.right === undefined) {
+            zone.right = data.sheets[rangeSheetIndex].colNumber;
+        }
+        if (zone.bottom === undefined) {
+            zone.bottom = data.sheets[rangeSheetIndex].rowNumber;
+        }
+        return (zone.right - zone.left + 1) * (zone.bottom - zone.top + 1);
+    }
+    function convertEMUToDotValue(value) {
+        const DPI = 96;
+        return Math.round((value * DPI) / 914400);
+    }
+    /**
+     * Get the position of the start of a column in Excel (in px).
+     */
+    function getColPosition(colIndex, sheetData) {
+        var _a;
+        let position = 0;
+        for (let i = 0; i < colIndex; i++) {
+            const colAtIndex = sheetData.cols.find((col) => i >= col.min && i <= col.max);
+            if (colAtIndex === null || colAtIndex === void 0 ? void 0 : colAtIndex.width) {
+                position += colAtIndex.width;
+            }
+            else if ((_a = sheetData.sheetFormat) === null || _a === void 0 ? void 0 : _a.defaultColWidth) {
+                position += sheetData.sheetFormat.defaultColWidth;
+            }
+            else {
+                position += EXCEL_DEFAULT_COL_WIDTH;
+            }
+        }
+        return position / WIDTH_FACTOR;
+    }
+    /**
+     * Get the position of the start of a row in Excel (in px).
+     */
+    function getRowPosition(rowIndex, sheetData) {
+        var _a;
+        let position = 0;
+        for (let i = 0; i < rowIndex; i++) {
+            const rowAtIndex = sheetData.rows[i];
+            if (rowAtIndex === null || rowAtIndex === void 0 ? void 0 : rowAtIndex.height) {
+                position += rowAtIndex.height;
+            }
+            else if ((_a = sheetData.sheetFormat) === null || _a === void 0 ? void 0 : _a.defaultRowHeight) {
+                position += sheetData.sheetFormat.defaultRowHeight;
+            }
+            else {
+                position += EXCEL_DEFAULT_ROW_HEIGHT;
+            }
+        }
+        return position / HEIGHT_FACTOR;
+    }
+
+    function convertFigures(sheetData) {
+        let id = 1;
+        return sheetData.figures
+            .map((figure) => convertFigure(figure, (id++).toString(), sheetData))
+            .filter(isDefined$1);
+    }
+    function convertFigure(figure, id, sheetData) {
+        const x1 = getColPosition(figure.anchors[0].col, sheetData) +
+            convertEMUToDotValue(figure.anchors[0].colOffset);
+        const x2 = getColPosition(figure.anchors[1].col, sheetData) +
+            convertEMUToDotValue(figure.anchors[1].colOffset);
+        const y1 = getRowPosition(figure.anchors[0].row, sheetData) +
+            convertEMUToDotValue(figure.anchors[0].rowOffset);
+        const y2 = getRowPosition(figure.anchors[1].row, sheetData) +
+            convertEMUToDotValue(figure.anchors[1].rowOffset);
+        const width = x2 - x1;
+        const height = y2 - y1;
+        const chartData = convertChartData(figure.data);
+        if (!chartData)
+            return undefined;
+        return {
+            id: id,
+            x: x1,
+            y: y1,
+            width: width,
+            height: height,
+            tag: "chart",
+            data: convertChartData(figure.data),
+        };
+    }
+    function convertChartData(chartData) {
+        var _a;
+        const labelRange = (_a = chartData.dataSets[0].label) === null || _a === void 0 ? void 0 : _a.replace(/\$/g, "");
+        let dataSets = chartData.dataSets.map((data) => data.range.replace(/\$/g, ""));
+        // For doughnut charts, in chartJS first dataset = outer dataset, in excel first dataset = inner dataset
+        if (chartData.type === "pie") {
+            dataSets.reverse();
+        }
+        return {
+            dataSets,
+            dataSetsHaveTitle: false,
+            labelRange,
+            title: chartData.title || "",
+            type: chartData.type,
+            background: convertColor({ rgb: chartData.backgroundColor }) || "#FFFFFF",
+            verticalAxisPosition: chartData.verticalAxisPosition,
+            legendPosition: chartData.legendPosition,
+            stackedBar: chartData.stackedBar || false,
+            labelsAsText: false,
+        };
+    }
+
+    /**
+     * Match external reference (ex. '[1]Sheet 3'!$B$4)
+     *
+     * First match group is the external reference id
+     * Second match group is the sheet id
+     * Third match group is the reference of the cell
+     */
+    const externalReferenceRegex = new RegExp(/'?\[([0-9]*)\](.*)'?!(\$?[a-zA-Z]*\$?[0-9]*)/g);
+    const subtotalRegex = new RegExp(/SUBTOTAL\(([0-9]*),/g);
+    const cellRegex = new RegExp(cellReference.source, "ig");
+    function convertFormulasContent(sheet, data) {
+        const sfMap = getSharedFormulasMap(sheet);
+        for (let cell of sheet.rows.map((row) => row.cells).flat()) {
+            if (cell === null || cell === void 0 ? void 0 : cell.formula) {
+                cell.formula.content =
+                    cell.formula.sharedIndex !== undefined && !cell.formula.content
+                        ? "=" + adaptFormula(cell.xc, sfMap[cell.formula.sharedIndex])
+                        : "=" + cell.formula.content;
+                cell.formula.content = convertFormula(cell.formula.content, data);
+            }
+        }
+    }
+    function getSharedFormulasMap(sheet) {
+        const formulas = {};
+        for (let row of sheet.rows) {
+            for (let cell of row.cells) {
+                if (cell.formula && cell.formula.sharedIndex !== undefined && cell.formula.content) {
+                    formulas[cell.formula.sharedIndex] = { refCellXc: cell.xc, formula: cell.formula.content };
+                }
+            }
+        }
+        return formulas;
+    }
+    /**
+     * Convert an XLSX formula into something we can evaluate.
+     * - remove _xlfn. flags before function names
+     * - convert the SUBTOTAL(index, formula) function to the function given by its index
+     * - change #REF! into #REF
+     * - convert external references into their value
+     */
+    function convertFormula(formula, data) {
+        formula = formula.replace("_xlfn.", "");
+        formula = formula.replace(/#REF!/g, "#REF");
+        // SUBOTOTAL function, eg. =SUBTOTAL(3, {formula})
+        formula = formula.replace(subtotalRegex, (match, functionId) => {
+            const convertedFunction = SUBTOTAL_FUNCTION_CONVERSION_MAP[functionId];
+            return convertedFunction ? convertedFunction + "(" : match;
+        });
+        // External references, eg. ='[1]Sheet 3'!$B$4
+        formula = formula.replace(externalReferenceRegex, (match, externalRefId, sheetName, cellRef) => {
+            var _a;
+            externalRefId = Number(externalRefId) - 1;
+            cellRef = cellRef.replace(/\$/g, "");
+            const sheetIndex = data.externalBooks[externalRefId].sheetNames.findIndex((name) => name === sheetName);
+            if (sheetIndex === -1) {
+                return match;
+            }
+            const externalDataset = (_a = data.externalBooks[externalRefId].datasets.find((dataset) => dataset.sheetId === sheetIndex)) === null || _a === void 0 ? void 0 : _a.data;
+            if (!externalDataset) {
+                return match;
+            }
+            const datasetValue = externalDataset && externalDataset[cellRef];
+            const convertedValue = Number(datasetValue) ? datasetValue : `"${datasetValue}"`;
+            return convertedValue || match;
+        });
+        return formula;
+    }
+    /**
+     * Transform a shared formula for the given target.
+     *
+     * This will compute the offset between the original cell of the shared formula and the target cell,
+     * then apply this offset to all the ranges in the formula (taking fixed references into account)
+     */
+    function adaptFormula(targetCell, sf) {
+        const refPosition = toCartesian(sf.refCellXc);
+        let newFormula = sf.formula.slice();
+        let match;
+        do {
+            match = cellRegex.exec(newFormula);
+            if (match) {
+                const formulaPosition = toCartesian(match[0].replace("$", ""));
+                const targetPosition = toCartesian(targetCell);
+                const rangePart = {
+                    colFixed: match[0].startsWith("$"),
+                    rowFixed: match[0].includes("$", 1),
+                };
+                const offset = {
+                    col: targetPosition.col - refPosition.col,
+                    row: targetPosition.row - refPosition.row,
+                };
+                const offsettedPosition = {
+                    col: rangePart.colFixed ? formulaPosition.col : formulaPosition.col + offset.col,
+                    row: rangePart.rowFixed ? formulaPosition.row : formulaPosition.row + offset.row,
+                };
+                newFormula =
+                    newFormula.slice(0, match.index) +
+                        toXC(offsettedPosition.col, offsettedPosition.row, rangePart) +
+                        newFormula.slice(match.index + match[0].length);
+            }
+        } while (match);
+        return newFormula;
+    }
+
+    function convertSheets(data, warningManager) {
+        return data.sheets.map((sheet) => {
+            convertFormulasContent(sheet, data);
+            const sheetDims = getSheetDims(sheet);
+            const sheetOptions = sheet.sheetViews[0];
+            return {
+                id: sheet.sheetName,
+                areGridLinesVisible: sheetOptions ? sheetOptions.showGridLines : true,
+                name: sheet.sheetName,
+                colNumber: sheetDims[0],
+                rowNumber: sheetDims[1],
+                cells: convertCells(sheet, data, sheetDims, warningManager),
+                merges: sheet.merges,
+                cols: convertCols(sheet, sheetDims[0]),
+                rows: convertRows(sheet, sheetDims[1]),
+                conditionalFormats: convertConditionalFormats(sheet.cfs, data.dxfs, warningManager),
+                figures: convertFigures(sheet),
+                isVisible: sheet.isVisible,
+            };
+        });
+    }
+    function convertCols(sheet, numberOfCols) {
+        var _a;
+        const cols = {};
+        // Excel begins indexes at 1
+        for (let i = 1; i < numberOfCols + 1; i++) {
+            const col = sheet.cols.find((col) => col.min <= i && i <= col.max);
+            let colSize;
+            if (col && col.width)
+                colSize = col.width;
+            else if ((_a = sheet.sheetFormat) === null || _a === void 0 ? void 0 : _a.defaultColWidth)
+                colSize = sheet.sheetFormat.defaultColWidth;
+            else
+                colSize = EXCEL_DEFAULT_COL_WIDTH;
+            cols[i - 1] = { size: convertWidthFromExcel(colSize), isHidden: col === null || col === void 0 ? void 0 : col.hidden };
+        }
+        return cols;
+    }
+    function convertRows(sheet, numberOfRows) {
+        var _a;
+        const rows = {};
+        // Excel begins indexes at 1
+        for (let i = 1; i < numberOfRows + 1; i++) {
+            const row = sheet.rows.find((row) => row.index === i);
+            let rowSize;
+            if (row && row.height)
+                rowSize = row.height;
+            else if ((_a = sheet.sheetFormat) === null || _a === void 0 ? void 0 : _a.defaultRowHeight)
+                rowSize = sheet.sheetFormat.defaultRowHeight;
+            else
+                rowSize = EXCEL_DEFAULT_ROW_HEIGHT;
+            rows[i - 1] = { size: convertHeightFromExcel(rowSize), isHidden: row === null || row === void 0 ? void 0 : row.hidden };
+        }
+        return rows;
+    }
+    /** Remove newlines (\n) in shared strings, We do not support them */
+    function convertSharedStrings(xlsxSharedStrings) {
+        return xlsxSharedStrings.map((str) => str.replace(/\n/g, ""));
+    }
+    function convertCells(sheet, data, sheetDims, warningManager) {
+        const cells = {};
+        const sharedStrings = convertSharedStrings(data.sharedStrings);
+        const hyperlinkMap = sheet.hyperlinks.reduce((map, link) => {
+            map[link.xc] = link;
+            return map;
+        }, {});
+        for (let row of sheet.rows) {
+            for (let cell of row.cells) {
+                cells[cell.xc] = {
+                    content: getCellValue(cell, hyperlinkMap, sharedStrings, warningManager),
+                    // + 1 : our indexes for normalized values begin at 1 and not 0
+                    style: cell.styleIndex ? cell.styleIndex + 1 : undefined,
+                    border: cell.styleIndex ? data.styles[cell.styleIndex].borderId + 1 : undefined,
+                    format: cell.styleIndex ? data.styles[cell.styleIndex].numFmtId + 1 : undefined,
+                };
+            }
+        }
+        // Apply row style
+        for (let row of sheet.rows.filter((row) => row.styleIndex)) {
+            for (let colIndex = 1; colIndex <= sheetDims[0]; colIndex++) {
+                const xc = toXC(colIndex - 1, row.index - 1); // Excel indexes start at 1
+                let cell = cells[xc];
+                if (!cell) {
+                    cell = {};
+                    cells[xc] = cell;
+                }
+                cell.style = cell.style ? cell.style : row.styleIndex + 1;
+                cell.border = cell.border ? cell.border : data.styles[row.styleIndex].borderId + 1;
+                cell.format = cell.format ? cell.format : data.styles[row.styleIndex].numFmtId + 1;
+            }
+        }
+        // Apply col style
+        for (let col of sheet.cols.filter((col) => col.styleIndex)) {
+            for (let colIndex = col.min; colIndex <= Math.min(col.max, sheetDims[0]); colIndex++) {
+                for (let rowIndex = 1; rowIndex <= sheetDims[1]; rowIndex++) {
+                    const xc = toXC(colIndex - 1, rowIndex - 1); // Excel indexes start at 1
+                    let cell = cells[xc];
+                    if (!cell) {
+                        cell = {};
+                        cells[xc] = cell;
+                    }
+                    cell.style = cell.style ? cell.style : col.styleIndex + 1;
+                    cell.border = cell.border ? cell.border : data.styles[col.styleIndex].borderId + 1;
+                    cell.format = cell.format ? cell.format : data.styles[col.styleIndex].numFmtId + 1;
+                }
+            }
+        }
+        return cells;
+    }
+    function getCellValue(cell, hyperLinksMap, sharedStrings, warningManager) {
+        let cellValue;
+        switch (cell.type) {
+            case "sharedString":
+                const ssIndex = parseInt(cell.value, 10);
+                cellValue = sharedStrings[ssIndex];
+                break;
+            case "boolean":
+                cellValue = Number(cell.value) ? "TRUE" : "FALSE";
+                break;
+            case "date": // I'm not sure where this is used rather than a number with a format
+            case "error": // I don't think Excel really uses this
+            case "inlineStr":
+            case "number":
+            case "str":
+                cellValue = cell.value;
+                break;
+        }
+        if (cellValue && hyperLinksMap[cell.xc]) {
+            cellValue = convertHyperlink(hyperLinksMap[cell.xc], cellValue, warningManager);
+        }
+        if (cell.formula) {
+            cellValue = cell.formula.content;
+        }
+        return cellValue;
+    }
+    function convertHyperlink(link, cellValue, warningManager) {
+        const label = link.display || cellValue;
+        if (!link.relTarget && !link.location) {
+            warningManager.generateNotSupportedWarning(WarningTypes.BadlyFormattedHyperlink);
+        }
+        const url = link.relTarget ? link.relTarget : buildSheetLink(link.location.split("!")[0]);
+        return markdownLink(label, url);
+    }
+    function getSheetDims(sheet) {
+        const dims = [0, 0];
+        for (let row of sheet.rows) {
+            dims[0] = Math.max(dims[0], ...row.cells.map((cell) => toCartesian(cell.xc).col));
+            dims[1] = Math.max(dims[1], row.index);
+        }
+        dims[0] = Math.max(dims[0], EXCEL_IMPORT_DEFAULT_NUMBER_OF_COLS);
+        dims[1] = Math.max(dims[1], EXCEL_IMPORT_DEFAULT_NUMBER_OF_ROWS);
+        return dims;
+    }
+
+    const TABLE_HEADER_STYLE = {
+        fillColor: "#000000",
+        textColor: "#ffffff",
+        bold: true,
+    };
+    const TABLE_HIGHLIGHTED_CELL_STYLE = {
+        bold: true,
+    };
+    const TABLE_BORDER_STYLE = ["thin", "#000000FF"];
+    /**
+     * Convert the imported XLSX tables.
+     *
+     * As we don't support a concept similar to the XLSX tables, we will settle for applying a style in all
+     * the cells of the table and converting the table-specific formula references into standard reference.
+     *
+     * Change the converted data in-place.
+     */
+    function convertTables(convertedData, xlsxData) {
+        applyTableStyle(convertedData, xlsxData);
+        convertTableFormulaReferences(convertedData.sheets, xlsxData.sheets);
+    }
+    /**
+     * Apply a style to all the cells that are in a table, and add the created styles in the  converted data.
+     *
+     * In XLSXs, the style of the cells of a table are not directly in the sheet, but rather deduced from the style of
+     * the table that is defined in the table's XML file. The style of the table is a string referencing a standard style
+     * defined in the OpenXML specifications. As there are 80+ different styles, we won't implement every one of them but
+     * we will just define a style that will be used for all the imported tables.
+     */
+    function applyTableStyle(convertedData, xlsxData) {
+        var _a, _b, _c, _d;
+        const styles = objectToArray(convertedData.styles);
+        const borders = objectToArray(convertedData.borders);
+        for (let xlsxSheet of xlsxData.sheets) {
+            for (let table of xlsxSheet.tables) {
+                const sheet = convertedData.sheets.find((sheet) => sheet.name === xlsxSheet.sheetName);
+                const tableZone = toZone(table.ref);
+                // Table style
+                for (let i = 0; i < table.headerRowCount; i++) {
+                    applyStyleToZone(TABLE_HEADER_STYLE, { ...tableZone, bottom: tableZone.top + i }, sheet.cells, styles);
+                }
+                for (let i = 0; i < table.totalsRowCount; i++) {
+                    applyStyleToZone(TABLE_HIGHLIGHTED_CELL_STYLE, { ...tableZone, top: tableZone.bottom - i }, sheet.cells, styles);
+                }
+                if ((_a = table.style) === null || _a === void 0 ? void 0 : _a.showFirstColumn) {
+                    applyStyleToZone(TABLE_HIGHLIGHTED_CELL_STYLE, { ...tableZone, right: tableZone.left }, sheet.cells, styles);
+                }
+                if ((_b = table.style) === null || _b === void 0 ? void 0 : _b.showLastColumn) {
+                    applyStyleToZone(TABLE_HIGHLIGHTED_CELL_STYLE, { ...tableZone, left: tableZone.right }, sheet.cells, styles);
+                }
+                // Table borders
+                // Borders at : table outline + col(/row) if showColumnStripes(/showRowStripes) + border above totalRow
+                for (let col = tableZone.left; col <= tableZone.right; col++) {
+                    for (let row = tableZone.top; row <= tableZone.bottom; row++) {
+                        const xc = toXC(col, row);
+                        const cell = sheet.cells[xc];
+                        const border = {
+                            left: col === tableZone.left || ((_c = table.style) === null || _c === void 0 ? void 0 : _c.showColumnStripes)
+                                ? TABLE_BORDER_STYLE
+                                : undefined,
+                            right: col === tableZone.right ? TABLE_BORDER_STYLE : undefined,
+                            top: row === tableZone.top ||
+                                ((_d = table.style) === null || _d === void 0 ? void 0 : _d.showRowStripes) ||
+                                row > tableZone.bottom - table.totalsRowCount
+                                ? TABLE_BORDER_STYLE
+                                : undefined,
+                            bottom: row === tableZone.bottom ? TABLE_BORDER_STYLE : undefined,
+                        };
+                        const newBorder = (cell === null || cell === void 0 ? void 0 : cell.border) ? { ...borders[cell.border], ...border } : border;
+                        let borderIndex = borders.findIndex((border) => deepEquals(border, newBorder));
+                        if (borderIndex === -1) {
+                            borderIndex = borders.length;
+                            borders.push(newBorder);
+                        }
+                        if (cell) {
+                            cell.border = borderIndex;
+                        }
+                        else {
+                            sheet.cells[xc] = { border: borderIndex };
+                        }
+                    }
+                }
+            }
+        }
+        convertedData.styles = arrayToObject(styles);
+        convertedData.borders = arrayToObject(borders);
+    }
+    /**
+     * Apply a style to all the cells in the zone. The applied style WILL NOT overwrite values in existing style of the cell.
+     *
+     * If a style that was not in the styles array was applied, push it into the style array.
+     */
+    function applyStyleToZone(appliedStyle, zone, cells, styles) {
+        for (let col = zone.left; col <= zone.right; col++) {
+            for (let row = zone.top; row <= zone.bottom; row++) {
+                const xc = toXC(col, row);
+                const cell = cells[xc];
+                const newStyle = (cell === null || cell === void 0 ? void 0 : cell.style) ? { ...styles[cell.style], ...appliedStyle } : appliedStyle;
+                let styleIndex = styles.findIndex((style) => deepEquals(style, newStyle));
+                if (styleIndex === -1) {
+                    styleIndex = styles.length;
+                    styles.push(newStyle);
+                }
+                if (cell) {
+                    cell.style = styleIndex;
+                }
+                else {
+                    cells[xc] = { style: styleIndex };
+                }
+            }
+        }
+    }
+    /**
+     * In all the sheets, replace the table-only references in the formula cells with standard references.
+     */
+    function convertTableFormulaReferences(convertedSheets, xlsxSheets) {
+        for (let sheet of convertedSheets) {
+            const tables = xlsxSheets.find((s) => s.sheetName === sheet.name).tables;
+            for (let table of tables) {
+                const tabRef = table.name + "[";
+                for (let position of positions(toZone(table.ref))) {
+                    const xc = toXC(position.col, position.row);
+                    const cell = sheet.cells[xc];
+                    if (cell && cell.content && cell.content.startsWith("=")) {
+                        let refIndex;
+                        while ((refIndex = cell.content.indexOf(tabRef)) !== -1) {
+                            let reference = cell.content.slice(refIndex + tabRef.length);
+                            // Expression can either be tableName[colName] or tableName[[#This Row], [colName]]
+                            let endIndex = reference.indexOf("]");
+                            if (reference.startsWith(`[`)) {
+                                endIndex = reference.indexOf("]", endIndex + 1);
+                                endIndex = reference.indexOf("]", endIndex + 1);
+                            }
+                            reference = reference.slice(0, endIndex);
+                            const convertedRef = convertTableReference(reference, table, xc);
+                            cell.content =
+                                cell.content.slice(0, refIndex) +
+                                    convertedRef +
+                                    cell.content.slice(tabRef.length + refIndex + endIndex + 1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * Convert table-specific references in formulas into standard references.
+     *
+     * A reference in a table can have the form (only the part between brackets should be given to this function):
+     *  - tableName[colName] : reference to the whole column "colName"
+     *  - tableName[[#keyword], [colName]] : reference to some of the element(s) of the column colName
+     *
+     * The available keywords are :
+     * - #All : all the column (including totals)
+     * - #Data : only the column data (no headers/totals)
+     * - #Headers : only the header of the column
+     * - #Totals : only the totals of the column
+     * - #This Row : only the element in the same row as the cell
+     */
+    function convertTableReference(expr, table, cellXc) {
+        const refElements = expr.split(",");
+        const tableZone = toZone(table.ref);
+        const refZone = { ...tableZone };
+        let isReferencedZoneValid = true;
+        // Single column reference
+        if (refElements.length === 1) {
+            const colRelativeIndex = table.cols.findIndex((col) => col.name === refElements[0]);
+            refZone.left = refZone.right = colRelativeIndex + tableZone.left;
+            if (table.headerRowCount) {
+                refZone.top += table.headerRowCount;
+            }
+            if (table.totalsRowCount) {
+                refZone.bottom -= 1;
+            }
+        }
+        // Other references
+        else {
+            switch (refElements[0].slice(1, refElements[0].length - 1)) {
+                case "#All":
+                    refZone.top = table.headerRowCount ? tableZone.top + table.headerRowCount : tableZone.top;
+                    refZone.bottom = tableZone.bottom;
+                    break;
+                case "#Data":
+                    refZone.top = table.headerRowCount ? tableZone.top + table.headerRowCount : tableZone.top;
+                    refZone.bottom = table.totalsRowCount ? tableZone.bottom + 1 : tableZone.bottom;
+                    break;
+                case "#This Row":
+                    refZone.top = refZone.bottom = toCartesian(cellXc).row;
+                    break;
+                case "#Headers":
+                    refZone.top = refZone.bottom = tableZone.top;
+                    if (!table.headerRowCount) {
+                        isReferencedZoneValid = false;
+                    }
+                    break;
+                case "#Totals":
+                    refZone.top = refZone.bottom = tableZone.bottom;
+                    if (!table.totalsRowCount) {
+                        isReferencedZoneValid = false;
+                    }
+                    break;
+            }
+            const colRef = refElements[1].slice(1, refElements[1].length - 1);
+            const colRelativeIndex = table.cols.findIndex((col) => col.name === colRef);
+            refZone.left = refZone.right = colRelativeIndex + tableZone.left;
+        }
+        if (!isReferencedZoneValid) {
+            return INCORRECT_RANGE_STRING;
+        }
+        return refZone.top !== refZone.bottom ? zoneToXc(refZone) : toXC(refZone.left, refZone.top);
+    }
+
+    // -------------------------------------
+    //            XML HELPERS
+    // -------------------------------------
+    function createXMLFile(doc, path, contentType) {
+        return {
+            content: new XMLSerializer().serializeToString(doc),
+            path,
+            contentType,
+        };
+    }
+    function xmlEscape(str) {
+        return String(str)
+            .replace(/\&/g, "&amp;")
+            .replace(/\</g, "&lt;")
+            .replace(/\>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/\'/g, "&apos;");
+    }
+    function formatAttributes(attrs) {
+        return new XMLString(attrs.map(([key, val]) => `${key}="${xmlEscape(val)}"`).join(" "));
+    }
+    function parseXML(xmlString) {
+        const document = new DOMParser().parseFromString(xmlString.toString(), "text/xml");
+        const parserError = document.querySelector("parsererror");
+        if (parserError) {
+            const errorString = parserError.innerHTML;
+            const lineNumber = parseInt(errorString.split(":")[0], 10);
+            const xmlStringArray = xmlString.toString().trim().split("\n");
+            const xmlPreview = xmlStringArray
+                .slice(Math.max(lineNumber - 3, 0), Math.min(lineNumber + 2, xmlStringArray.length))
+                .join("\n");
+            throw new Error(`XML string could not be parsed: ${errorString}\n${xmlPreview}`);
+        }
+        return document;
+    }
+    function getDefaultXLSXStructure() {
+        return {
+            relsFiles: [],
+            sharedStrings: [],
+            // default Values that will always be part of the style sheet
+            styles: [
+                {
+                    fontId: 0,
+                    fillId: 0,
+                    numFmtId: 0,
+                    borderId: 0,
+                    alignment: { vertical: "center" },
+                },
+            ],
+            fonts: [
+                {
+                    size: DEFAULT_FONT_SIZE,
+                    family: 2,
+                    color: { rgb: "000000" },
+                    name: "Calibri",
+                },
+            ],
+            fills: [{ reservedAttribute: "none" }, { reservedAttribute: "gray125" }],
+            borders: [{}],
+            numFmts: [],
+            dxfs: [],
+        };
+    }
+    function createOverride(partName, contentType) {
+        return escapeXml /*xml*/ `
+    <Override ContentType="${contentType}" PartName="${partName}" />
+  `;
+    }
+    function joinXmlNodes(xmlNodes) {
+        return new XMLString(xmlNodes.join("\n"));
+    }
+    /**
+     * Escape interpolated values except if the value is already
+     * a properly escaped XML string.
+     *
+     * ```
+     * escapeXml`<t>${"This will be escaped"}</t>`
+     * ```
+     */
+    function escapeXml(strings, ...expressions) {
+        let str = [strings[0]];
+        for (let i = 0; i < expressions.length; i++) {
+            const value = expressions[i] instanceof XMLString ? expressions[i] : xmlEscape(expressions[i]);
+            str.push(value + strings[i + 1]);
+        }
+        return new XMLString(concat(str));
+    }
+    /**
+     * Removes the namespace of all the xml tags in the string.
+     *
+     * Eg. : "ns:test a" => "test a"
+     */
+    function removeNamespaces(query) {
+        return query.replace(/[a-z0-9]+:(?=[a-z0-9]+)/gi, "");
+    }
+    /**
+     * Escape the namespace's colons of all the xml tags in the string.
+     *
+     * Eg. : "ns:test a" => "ns\\:test a"
+     */
+    function escapeNamespaces(query) {
+        return query.replace(/([a-z0-9]+):(?=[a-z0-9]+)/gi, "$1\\:");
+    }
+    /**
+     * Return true if the querySelector ignores the namespaces when searching for a tag in the DOM.
+     *
+     * Should return true if it's running on a browser, and false if it's running on jest (jsdom).
+     */
+    function areNamespaceIgnoredByQuerySelector() {
+        const doc = new DOMParser().parseFromString("<t:test xmlns:t='a'/>", "text/xml");
+        return doc.querySelector("test") !== null;
+    }
+
+    class AttributeValue {
+        constructor(value) {
+            this.value = value;
+        }
+        asString() {
+            return fixXlsxUnicode(String(this.value));
+        }
+        asBool() {
+            return Boolean(Number(this.value));
+        }
+        asNum() {
+            return Number(this.value);
+        }
+    }
+    class XlsxBaseExtractor {
+        constructor(rootFile, xlsxStructure, warningManager) {
+            // The xml file we are currently parsing. We should have one Extractor class by XLSXImportFile, but
+            // the XLSXImportFile contains both the main .xml file, and the .rels file
+            this.currentFile = undefined;
+            this.rootFile = rootFile;
+            this.currentFile = rootFile.file.fileName;
+            this.xlsxFileStructure = xlsxStructure;
+            this.warningManager = warningManager;
+            this.areNamespaceIgnored = areNamespaceIgnoredByQuerySelector();
+            this.relationships = {};
+            if (rootFile.rels) {
+                this.extractRelationships(rootFile.rels).map((rel) => {
+                    this.relationships[rel.id] = rel;
+                });
+            }
+        }
+        /**
+         * Extract all the relationships inside a .xml.rels file
+         */
+        extractRelationships(relFile) {
+            return this.mapOnElements({ parent: relFile.xml, query: "Relationship" }, (relationshipElement) => {
+                return {
+                    id: this.extractAttr(relationshipElement, "Id", { required: true }).asString(),
+                    target: this.extractAttr(relationshipElement, "Target", { required: true }).asString(),
+                    type: this.extractAttr(relationshipElement, "Type", { required: true }).asString(),
+                };
+            });
+        }
+        /**
+         * Get the list of all the XLSX files in the XLSX file structure
+         */
+        getListOfFiles() {
+            const files = Object.values(this.xlsxFileStructure).flat().filter(isDefined$1);
+            return files;
+        }
+        /**
+         * Return an array containing the return value of the given function applied to all the XML elements
+         * found using the MapOnElementArgs.
+         *
+         * The arguments contains :
+         *  - query : a QuerySelector string to find the elements to apply the function to
+         *  - parent : an XML element or XML document in which to find the queried elements
+         *  - children : if true, the function is applied on the direct children of the queried element
+         *
+         * This method will also handle the errors thrown in the argument function.
+         */
+        mapOnElements(args, fct) {
+            var _a;
+            const ret = [];
+            const oldWorkingDocument = this.currentFile;
+            let elements;
+            if (args.children) {
+                const children = (_a = this.querySelector(args.parent, args.query)) === null || _a === void 0 ? void 0 : _a.children;
+                elements = children ? children : [];
+            }
+            else {
+                elements = this.querySelectorAll(args.parent, args.query);
+            }
+            if (elements) {
+                for (let element of elements) {
+                    try {
+                        ret.push(fct(element));
+                    }
+                    catch (e) {
+                        this.catchErrorOnElement(e, element);
+                    }
+                }
+            }
+            this.currentFile = oldWorkingDocument;
+            return ret;
+        }
+        /**
+         * Log an error caught when parsing an element in the warningManager.
+         */
+        catchErrorOnElement(error, onElement) {
+            const errorMsg = onElement
+                ? `Error when parsing an element <${onElement.tagName}> of file ${this.currentFile}, skip this element. \n${error.stack}`
+                : `Error when parsing file ${this.currentFile}.`;
+            this.warningManager.addParsingWarning([errorMsg, error.message].join("\n"));
+        }
+        /**
+         * Extract an attribute from an Element.
+         *
+         * If the attribute is required but was not found, will add a warning in the warningManager if it was given a default
+         * value, and throw an error if no default value was given.
+         *
+         * Can only return undefined value for non-required attributes without default value.
+         */
+        extractAttr(e, attName, optionalArgs) {
+            const attribute = e.attributes[attName];
+            if (!attribute)
+                this.handleMissingValue(e, `attribute "${attName}"`, optionalArgs);
+            const value = (attribute === null || attribute === void 0 ? void 0 : attribute.value) ? attribute.value : optionalArgs === null || optionalArgs === void 0 ? void 0 : optionalArgs.default;
+            return (value === undefined ? undefined : new AttributeValue(value));
+        }
+        /**
+         * Extract the text content of an Element.
+         *
+         * If the text content is required but was not found, will add a warning in the warningManager if it was given a default
+         * value, and throw an error if no default value was given.
+         *
+         * Can only return undefined value for non-required text content without default value.
+         */
+        extractTextContent(element, optionalArgs) {
+            var _a;
+            if ((optionalArgs === null || optionalArgs === void 0 ? void 0 : optionalArgs.default) !== undefined && typeof optionalArgs.default !== "string") {
+                throw new Error("extractTextContent default value should be a string");
+            }
+            const shouldPreserveSpaces = ((_a = element === null || element === void 0 ? void 0 : element.attributes["xml:space"]) === null || _a === void 0 ? void 0 : _a.value) === "preserve";
+            let textContent = element === null || element === void 0 ? void 0 : element.textContent;
+            if (!element || textContent === null) {
+                this.handleMissingValue(element, `text content`, optionalArgs);
+            }
+            if (textContent) {
+                textContent = shouldPreserveSpaces ? textContent : textContent.trim();
+            }
+            return (textContent ? fixXlsxUnicode(textContent) : optionalArgs === null || optionalArgs === void 0 ? void 0 : optionalArgs.default);
+        }
+        /**
+         * Extract an attribute of a child of the given element.
+         *
+         * The reference of a child can be a string (tag of the child) or an number (index in the list of children of the element)
+         *
+         * If the attribute is required but either the attribute or the referenced child element was not found, it will
+         * will add a warning in the warningManager if it was given a default value, and throw an error if no default value was given.
+         *
+         * Can only return undefined value for non-required attributes without default value.
+         */
+        extractChildAttr(e, childRef, attName, optionalArgs) {
+            var _a;
+            let child;
+            if (typeof childRef === "number") {
+                child = e.children[childRef];
+            }
+            else {
+                child = this.querySelector(e, childRef);
+            }
+            if (!child) {
+                this.handleMissingValue(e, typeof childRef === "number" ? `child at index ${childRef}` : `child <${childRef}>`, optionalArgs);
+            }
+            const value = child
+                ? (_a = this.extractAttr(child, attName, optionalArgs)) === null || _a === void 0 ? void 0 : _a.asString()
+                : optionalArgs === null || optionalArgs === void 0 ? void 0 : optionalArgs.default;
+            return (value !== undefined ? new AttributeValue(value) : undefined);
+        }
+        /**
+         * Extract the text content of a child of the given element.
+         *
+         * If the text content is required but either the text content or the referenced child element was not found, it will
+         * will add a warning in the warningManager if it was given a default value, and throw an error if no default value was given.
+         *
+         * Can only return undefined value for non-required text content without default value.
+         */
+        extractChildTextContent(e, childRef, optionalArgs) {
+            if ((optionalArgs === null || optionalArgs === void 0 ? void 0 : optionalArgs.default) !== undefined && typeof optionalArgs.default !== "string") {
+                throw new Error("extractTextContent default value should be a string");
+            }
+            let child = this.querySelector(e, childRef);
+            if (!child) {
+                this.handleMissingValue(e, `child <${childRef}>`, optionalArgs);
+            }
+            return (child ? this.extractTextContent(child, optionalArgs) : optionalArgs === null || optionalArgs === void 0 ? void 0 : optionalArgs.default);
+        }
+        /**
+         * Should be called if a extractAttr/extractTextContent doesn't find the element it needs to extract.
+         *
+         * If the extractable was required, this function will add a warning in the warningManager if there was a default value,
+         * and throw an error if no default value was given.
+         */
+        handleMissingValue(parentElement, missingElementName, optionalArgs) {
+            if (optionalArgs === null || optionalArgs === void 0 ? void 0 : optionalArgs.required) {
+                if (optionalArgs === null || optionalArgs === void 0 ? void 0 : optionalArgs.default) {
+                    this.warningManager.addParsingWarning(`Missing required ${missingElementName} in element <${parentElement.tagName}> of ${this.currentFile}, replacing it by the default value ${optionalArgs.default}`);
+                }
+                else {
+                    throw new Error(`Missing required ${missingElementName} in element <${parentElement.tagName}> of ${this.currentFile}, and no default value was set`);
+                }
+            }
+        }
+        /**
+         * Extract a color, extracting it from the theme if needed.
+         *
+         * Will throw an error if the element references a theme, but no theme was provided or the theme it doesn't contain the color.
+         */
+        extractColor(colorElement, theme, defaultColor) {
+            var _a, _b, _c, _d, _e;
+            if (!colorElement) {
+                return defaultColor ? { rgb: defaultColor } : undefined;
+            }
+            const themeIndex = (_a = this.extractAttr(colorElement, "theme")) === null || _a === void 0 ? void 0 : _a.asString();
+            let rgb;
+            if (themeIndex !== undefined) {
+                if (!theme || !theme.clrScheme) {
+                    throw new Error("Color referencing a theme but no theme was provided");
+                }
+                rgb = this.getThemeColor(themeIndex, theme.clrScheme);
+            }
+            else {
+                rgb = (_b = this.extractAttr(colorElement, "rgb")) === null || _b === void 0 ? void 0 : _b.asString();
+            }
+            const color = {
+                rgb,
+                auto: (_c = this.extractAttr(colorElement, "auto")) === null || _c === void 0 ? void 0 : _c.asBool(),
+                indexed: (_d = this.extractAttr(colorElement, "indexed")) === null || _d === void 0 ? void 0 : _d.asNum(),
+                tint: (_e = this.extractAttr(colorElement, "tint")) === null || _e === void 0 ? void 0 : _e.asNum(),
+            };
+            return color;
+        }
+        /**
+         * Returns the xlsx file targeted by a relationship.
+         */
+        getTargetXmlFile(relationship) {
+            if (!relationship)
+                throw new Error("Undefined target file");
+            let target = relationship.target;
+            target = target.replace("../", "");
+            target = target.replace("./", "");
+            // Use "endsWith" because targets are relative paths, and we know the files by their absolute path.
+            const f = this.getListOfFiles().find((f) => f.file.fileName.endsWith(target));
+            if (!f || !f.file)
+                throw new Error("Cannot find target file");
+            return f;
+        }
+        /**
+         * Wrapper of querySelector, but we'll remove the namespaces from the query if areNamespacesIgnored is true.
+         *
+         * Why we need to do this :
+         *  - For an XML "<t:test />"
+         *  - on Jest(jsdom) : xml.querySelector("test") == null, xml.querySelector("t\\:test") == <t:test />
+         *  - on Browser : xml.querySelector("test") == <t:test />, xml.querySelector("t\\:test") == null
+         */
+        querySelector(element, query) {
+            query = this.areNamespaceIgnored ? removeNamespaces(query) : escapeNamespaces(query);
+            return element.querySelector(query);
+        }
+        /**
+         * Wrapper of querySelectorAll, but we'll remove the namespaces from the query if areNamespacesIgnored is true.
+         *
+         * Why we need to do this :
+         *  - For an XML "<t:test />"
+         *  - on Jest(jsdom) : xml.querySelectorAll("test") == [], xml.querySelectorAll("t\\:test") == [<t:test />]
+         *  - on Browser : xml.querySelectorAll("test") == [<t:test />], xml.querySelectorAll("t\\:test") == []
+         */
+        querySelectorAll(element, query) {
+            query = this.areNamespaceIgnored ? removeNamespaces(query) : escapeNamespaces(query);
+            return element.querySelectorAll(query);
+        }
+        /**
+         * Get a color from its id in the Theme's colorScheme.
+         *
+         * Note that Excel don't use the colors from the theme but from its own internal theme, so the displayed
+         * colors will be different in the import than in excel.
+         * .
+         */
+        getThemeColor(colorId, clrScheme) {
+            switch (colorId) {
+                case "0": // 0 : sysColor window text
+                    return "FFFFFF";
+                case "1": // 1 : sysColor window background
+                    return "000000";
+                // Don't ask me why these 2 are inverted, I cannot find any documentation for it but everyone does it
+                case "2":
+                    return clrScheme["3"].value;
+                case "3":
+                    return clrScheme["2"].value;
+                default:
+                    return clrScheme[colorId].value;
+            }
+        }
+    }
+
+    /**
+     * XLSX Extractor class that can be used for either sharedString XML files or theme XML files.
+     *
+     * Since they both are quite simple, it make sense to make a single class to manage them all, to avoid unnecessary file
+     * cluttering.
+     */
+    class XlsxMiscExtractor extends XlsxBaseExtractor {
+        getTheme() {
+            const clrScheme = this.mapOnElements({ query: "a:clrScheme", parent: this.rootFile.file.xml, children: true }, (element) => {
+                return {
+                    name: element.tagName,
+                    value: this.extractChildAttr(element, 0, "val", {
+                        required: true,
+                        default: AUTO_COLOR,
+                    }).asString(),
+                    lastClr: this.extractChildAttr(element, 0, "lastClr", {
+                        default: AUTO_COLOR,
+                    }).asString(),
+                };
+            });
+            return { clrScheme };
+        }
+        /**
+         * Get the array of shared strings of the XLSX.
+         *
+         * Worth noting that running a prettier on the xml can mess up some strings, since there is an option in the
+         * xmls to keep the spacing and not trim the string.
+         */
+        getSharedStrings() {
+            return this.mapOnElements({ parent: this.rootFile.file.xml, query: "si" }, (ssElement) => {
+                // Shared string can either be a simple text, or a rich text (text with formatting, possibly in multiple parts)
+                if (ssElement.children[0].tagName === "t") {
+                    return this.extractTextContent(ssElement) || "";
+                }
+                // We don't support rich text formatting, we'll only extract the text
+                else {
+                    return this.mapOnElements({ parent: ssElement, query: "t" }, (textElement) => {
+                        return this.extractTextContent(textElement) || "";
+                    }).join("");
+                }
+            });
+        }
+    }
+
+    class XlsxCfExtractor extends XlsxBaseExtractor {
+        constructor(sheetFile, xlsxStructure, warningManager, theme) {
+            super(sheetFile, xlsxStructure, warningManager);
+            this.theme = theme;
+        }
+        extractConditionalFormattings() {
+            const cfs = this.mapOnElements({ parent: this.rootFile.file.xml, query: "worksheet > conditionalFormatting" }, (cfElement) => {
+                var _a;
+                return {
+                    // sqref = ranges on which the cf applies, separated by spaces
+                    sqref: this.extractAttr(cfElement, "sqref", { required: true }).asString().split(" "),
+                    pivot: (_a = this.extractAttr(cfElement, "pivot")) === null || _a === void 0 ? void 0 : _a.asBool(),
+                    cfRules: this.extractCFRules(cfElement, this.theme),
+                };
+            });
+            // XLSX extension to OpenXml
+            cfs.push(...this.mapOnElements({ parent: this.rootFile.file.xml, query: "extLst x14:conditionalFormatting" }, (cfElement) => {
+                var _a;
+                return {
+                    sqref: this.extractChildTextContent(cfElement, "xm:sqref", { required: true }).split(" "),
+                    pivot: (_a = this.extractAttr(cfElement, "xm:pivot")) === null || _a === void 0 ? void 0 : _a.asBool(),
+                    cfRules: this.extractCFRules(cfElement, this.theme),
+                };
+            }));
+            return cfs;
+        }
+        extractCFRules(cfElement, theme) {
+            return this.mapOnElements({ parent: cfElement, query: "cfRule, x14:cfRule" }, (cfRuleElement) => {
+                var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+                const cfType = this.extractAttr(cfRuleElement, "type", {
+                    required: true,
+                }).asString();
+                if (cfType === "dataBar") {
+                    // Databars are an extension to OpenXml and have a different format (XLSX §2.6.30). Do'nt bother
+                    // extracting them as we don't support them.
+                    throw new Error("Databars conditional formats are not supported.");
+                }
+                return {
+                    type: cfType,
+                    priority: this.extractAttr(cfRuleElement, "priority", { required: true }).asNum(),
+                    colorScale: this.extractCfColorScale(cfRuleElement, theme),
+                    formula: this.extractCfFormula(cfRuleElement),
+                    iconSet: this.extractCfIconSet(cfRuleElement),
+                    dxfId: (_a = this.extractAttr(cfRuleElement, "dxfId")) === null || _a === void 0 ? void 0 : _a.asNum(),
+                    stopIfTrue: (_b = this.extractAttr(cfRuleElement, "stopIfTrue")) === null || _b === void 0 ? void 0 : _b.asBool(),
+                    aboveAverage: (_c = this.extractAttr(cfRuleElement, "aboveAverage")) === null || _c === void 0 ? void 0 : _c.asBool(),
+                    percent: (_d = this.extractAttr(cfRuleElement, "percent")) === null || _d === void 0 ? void 0 : _d.asBool(),
+                    bottom: (_e = this.extractAttr(cfRuleElement, "bottom")) === null || _e === void 0 ? void 0 : _e.asBool(),
+                    operator: (_f = this.extractAttr(cfRuleElement, "operator")) === null || _f === void 0 ? void 0 : _f.asString(),
+                    text: (_g = this.extractAttr(cfRuleElement, "text")) === null || _g === void 0 ? void 0 : _g.asString(),
+                    timePeriod: (_h = this.extractAttr(cfRuleElement, "timePeriod")) === null || _h === void 0 ? void 0 : _h.asString(),
+                    rank: (_j = this.extractAttr(cfRuleElement, "rank")) === null || _j === void 0 ? void 0 : _j.asNum(),
+                    stdDev: (_k = this.extractAttr(cfRuleElement, "stdDev")) === null || _k === void 0 ? void 0 : _k.asNum(),
+                    equalAverage: (_l = this.extractAttr(cfRuleElement, "equalAverage")) === null || _l === void 0 ? void 0 : _l.asBool(),
+                };
+            });
+        }
+        extractCfFormula(cfRulesElement) {
+            return this.mapOnElements({ parent: cfRulesElement, query: "formula" }, (cfFormulaElements) => {
+                return this.extractTextContent(cfFormulaElements, { required: true });
+            });
+        }
+        extractCfColorScale(cfRulesElement, theme) {
+            const colorScaleElement = this.querySelector(cfRulesElement, "colorScale");
+            if (!colorScaleElement)
+                return undefined;
+            return {
+                colors: this.mapOnElements({ parent: colorScaleElement, query: "color" }, (colorElement) => {
+                    return this.extractColor(colorElement, theme, "ffffff");
+                }),
+                cfvos: this.extractCFVos(colorScaleElement),
+            };
+        }
+        extractCfIconSet(cfRulesElement) {
+            var _a, _b;
+            const iconSetElement = this.querySelector(cfRulesElement, "iconSet, x14:iconSet");
+            if (!iconSetElement)
+                return undefined;
+            return {
+                iconSet: this.extractAttr(iconSetElement, "iconSet", {
+                    default: "3TrafficLights1",
+                }).asString(),
+                showValue: this.extractAttr(iconSetElement, "showValue", { default: true }).asBool(),
+                percent: this.extractAttr(iconSetElement, "percent", { default: true }).asBool(),
+                reverse: (_a = this.extractAttr(iconSetElement, "reverse")) === null || _a === void 0 ? void 0 : _a.asBool(),
+                custom: (_b = this.extractAttr(iconSetElement, "custom")) === null || _b === void 0 ? void 0 : _b.asBool(),
+                cfvos: this.extractCFVos(iconSetElement),
+                cfIcons: this.extractCfIcons(iconSetElement),
+            };
+        }
+        extractCfIcons(iconSetElement) {
+            const icons = this.mapOnElements({ parent: iconSetElement, query: "cfIcon, x14:cfIcon" }, (cfIconElement) => {
+                return {
+                    iconSet: this.extractAttr(cfIconElement, "iconSet", {
+                        required: true,
+                    }).asString(),
+                    iconId: this.extractAttr(cfIconElement, "iconId", { required: true }).asNum(),
+                };
+            });
+            return icons.length === 0 ? undefined : icons;
+        }
+        extractCFVos(parent) {
+            return this.mapOnElements({ parent, query: "cfvo, x14:cfvo" }, (cfVoElement) => {
+                var _a, _b;
+                return {
+                    type: this.extractAttr(cfVoElement, "type", {
+                        required: true,
+                    }).asString(),
+                    gte: (_a = this.extractAttr(cfVoElement, "gte", { default: true })) === null || _a === void 0 ? void 0 : _a.asBool(),
+                    value: cfVoElement.attributes["val"]
+                        ? (_b = this.extractAttr(cfVoElement, "val")) === null || _b === void 0 ? void 0 : _b.asString()
+                        : this.extractChildTextContent(cfVoElement, "f, xm:f"),
+                };
+            });
+        }
+    }
+
+    class XlsxChartExtractor extends XlsxBaseExtractor {
+        extractChart() {
+            return this.mapOnElements({ parent: this.rootFile.file.xml, query: "c:chartSpace" }, (rootChartElement) => {
+                const chartType = this.getChartType(rootChartElement);
+                if (!CHART_TYPE_CONVERSION_MAP[chartType]) {
+                    throw new Error(`Unsupported chart type ${chartType}`);
+                }
+                // Title can be separated into multiple xml elements (for styling and such), we only import the text
+                const chartTitle = this.mapOnElements({ parent: rootChartElement, query: "c:title a:t" }, (textElement) => {
+                    return textElement.textContent || "";
+                }).join("");
+                const barChartGrouping = this.extractChildAttr(rootChartElement, "c:grouping", "val", {
+                    default: "clustered",
+                }).asString();
+                return {
+                    title: chartTitle,
+                    type: CHART_TYPE_CONVERSION_MAP[chartType],
+                    dataSets: this.extractChartDatasets(this.querySelector(rootChartElement, `c:${chartType}`)),
+                    backgroundColor: this.extractChildAttr(rootChartElement, "c:chartSpace > c:spPr a:srgbClr", "val", {
+                        default: "ffffff",
+                    }).asString(),
+                    verticalAxisPosition: this.extractChildAttr(rootChartElement, "c:valAx > c:axPos", "val", {
+                        default: "l",
+                    }).asString() === "r"
+                        ? "right"
+                        : "left",
+                    legendPosition: DRAWING_LEGEND_POSITION_CONVERSION_MAP[this.extractChildAttr(rootChartElement, "c:legendPos", "val", {
+                        default: "b",
+                    }).asString()],
+                    stackedBar: barChartGrouping === "stacked",
+                    fontColor: "000000",
+                };
+            })[0];
+        }
+        extractChartDatasets(chartElement) {
+            return this.mapOnElements({ parent: chartElement, query: "c:ser" }, (chartDataElement) => {
+                return {
+                    label: this.extractChildTextContent(chartDataElement, "c:cat c:f"),
+                    range: this.extractChildTextContent(chartDataElement, "c:val c:f", { required: true }),
+                };
+            });
+        }
+        /**
+         * The chart type in the XML isn't explicitly defined, but there is an XML element that define the
+         * chart, and this element tag name tells us which type of chart it is. We just need to find this XML element.
+         */
+        getChartType(chartElement) {
+            const plotAreaElement = this.querySelector(chartElement, "c:plotArea");
+            if (!plotAreaElement) {
+                throw new Error("Missing plot area in the chart definition.");
+            }
+            for (let child of plotAreaElement.children) {
+                const tag = removeNamespaces(child.tagName);
+                if (XLSX_CHART_TYPES.some((chartType) => chartType === tag)) {
+                    return tag;
+                }
+            }
+            throw new Error("Unknown chart type");
+        }
+    }
+
+    class XlsxFigureExtractor extends XlsxBaseExtractor {
+        extractFigures() {
+            return this.mapOnElements({ parent: this.rootFile.file.xml, query: "xdr:wsDr", children: true }, (figureElement) => {
+                const anchorType = removeNamespaces(figureElement.tagName);
+                if (anchorType !== "twoCellAnchor") {
+                    throw new Error("Only twoCellAnchor are supported for xlsx drawings.");
+                }
+                const chartElement = this.querySelector(figureElement, "c:chart");
+                if (!chartElement) {
+                    throw new Error("Only chart figures are currently supported.");
+                }
+                return {
+                    anchors: [
+                        this.extractFigureAnchor("xdr:from", figureElement),
+                        this.extractFigureAnchor("xdr:to", figureElement),
+                    ],
+                    data: this.extractChart(chartElement),
+                };
+            });
+        }
+        extractFigureAnchor(anchorTag, figureElement) {
+            const anchor = this.querySelector(figureElement, anchorTag);
+            if (!anchor) {
+                throw new Error(`Missing anchor element ${anchorTag}`);
+            }
+            return {
+                col: Number(this.extractChildTextContent(anchor, "xdr:col", { required: true })),
+                colOffset: Number(this.extractChildTextContent(anchor, "xdr:colOff", { required: true })),
+                row: Number(this.extractChildTextContent(anchor, "xdr:row", { required: true })),
+                rowOffset: Number(this.extractChildTextContent(anchor, "xdr:rowOff", { required: true })),
+            };
+        }
+        extractChart(chartElement) {
+            const chartId = this.extractAttr(chartElement, "r:id", { required: true }).asString();
+            const chartFile = this.getTargetXmlFile(this.relationships[chartId]);
+            const chartDefinition = new XlsxChartExtractor(chartFile, this.xlsxFileStructure, this.warningManager).extractChart();
+            if (!chartDefinition) {
+                throw new Error("Unable to extract chart definition");
+            }
+            return chartDefinition;
+        }
+    }
+
+    /**
+     * We don't really support pivot tables, we'll just extract them as Tables.
+     */
+    class XlsxPivotExtractor extends XlsxBaseExtractor {
+        getPivotTable() {
+            return this.mapOnElements(
+            // Use :root instead of "pivotTableDefinition" because others pivotTableDefinition elements are present inside the root
+            // pivotTableDefinition elements.
+            { query: ":root", parent: this.rootFile.file.xml }, (pivotElement) => {
+                return {
+                    displayName: this.extractAttr(pivotElement, "name", { required: true }).asString(),
+                    id: this.extractAttr(pivotElement, "name", { required: true }).asString(),
+                    ref: this.extractChildAttr(pivotElement, "location", "ref", {
+                        required: true,
+                    }).asString(),
+                    headerRowCount: this.extractChildAttr(pivotElement, "location", "firstDataRow", {
+                        default: 0,
+                    }).asNum(),
+                    totalsRowCount: 1,
+                    cols: [],
+                    style: {
+                        showFirstColumn: true,
+                        showRowStripes: true,
+                    },
+                };
+            })[0];
+        }
+    }
+
+    class XlsxTableExtractor extends XlsxBaseExtractor {
+        getTable() {
+            return this.mapOnElements({ query: "table", parent: this.rootFile.file.xml }, (tableElement) => {
+                var _a;
+                return {
+                    displayName: this.extractAttr(tableElement, "displayName", {
+                        required: true,
+                    }).asString(),
+                    name: (_a = this.extractAttr(tableElement, "name")) === null || _a === void 0 ? void 0 : _a.asString(),
+                    id: this.extractAttr(tableElement, "id", { required: true }).asString(),
+                    ref: this.extractAttr(tableElement, "ref", { required: true }).asString(),
+                    headerRowCount: this.extractAttr(tableElement, "headerRowCount", {
+                        default: 1,
+                    }).asNum(),
+                    totalsRowCount: this.extractAttr(tableElement, "totalsRowCount", {
+                        default: 0,
+                    }).asNum(),
+                    cols: this.extractTableCols(tableElement),
+                    style: this.extractTableStyleInfo(tableElement),
+                };
+            })[0];
+        }
+        extractTableCols(tableElement) {
+            return this.mapOnElements({ query: "tableColumn", parent: tableElement }, (tableColElement) => {
+                return {
+                    id: this.extractAttr(tableColElement, "id", { required: true }).asString(),
+                    name: this.extractAttr(tableColElement, "name", { required: true }).asString(),
+                    colFormula: this.extractChildTextContent(tableColElement, "calculatedColumnFormula"),
+                };
+            });
+        }
+        extractTableStyleInfo(tableElement) {
+            return this.mapOnElements({ query: "tableStyleInfo", parent: tableElement }, (tableStyleElement) => {
+                var _a, _b, _c, _d, _e;
+                return {
+                    name: (_a = this.extractAttr(tableStyleElement, "name")) === null || _a === void 0 ? void 0 : _a.asString(),
+                    showFirstColumn: (_b = this.extractAttr(tableStyleElement, "showFirstColumn")) === null || _b === void 0 ? void 0 : _b.asBool(),
+                    showLastColumn: (_c = this.extractAttr(tableStyleElement, "showLastColumn")) === null || _c === void 0 ? void 0 : _c.asBool(),
+                    showRowStripes: (_d = this.extractAttr(tableStyleElement, "showRowStripes")) === null || _d === void 0 ? void 0 : _d.asBool(),
+                    showColumnStripes: (_e = this.extractAttr(tableStyleElement, "showColumnStripes")) === null || _e === void 0 ? void 0 : _e.asBool(),
+                };
+            })[0];
+        }
+    }
+
+    class XlsxSheetExtractor extends XlsxBaseExtractor {
+        constructor(sheetFile, xlsxStructure, warningManager, theme) {
+            super(sheetFile, xlsxStructure, warningManager);
+            this.theme = theme;
+        }
+        getSheet() {
+            return this.mapOnElements({ query: "worksheet", parent: this.rootFile.file.xml }, (sheetElement) => {
+                const sheetWorkbookInfo = this.getSheetWorkbookInfo();
+                return {
+                    sheetName: this.extractSheetName(),
+                    sheetViews: this.extractSheetViews(sheetElement),
+                    sheetFormat: this.extractSheetFormat(sheetElement),
+                    cols: this.extractCols(sheetElement),
+                    rows: this.extractRows(sheetElement),
+                    sharedFormulas: this.extractSharedFormulas(sheetElement),
+                    merges: this.extractMerges(sheetElement),
+                    cfs: this.extractConditionalFormats(),
+                    figures: this.extractFigures(sheetElement),
+                    hyperlinks: this.extractHyperLinks(sheetElement),
+                    tables: [...this.extractTables(sheetElement), ...this.extractPivotTables()],
+                    isVisible: sheetWorkbookInfo.state === "visible" ? true : false,
+                };
+            })[0];
+        }
+        extractSheetViews(worksheet) {
+            return this.mapOnElements({ parent: worksheet, query: "sheetView" }, (sheetViewElement) => {
+                return {
+                    tabSelected: this.extractAttr(sheetViewElement, "tabSelected", {
+                        default: false,
+                    }).asBool(),
+                    showFormulas: this.extractAttr(sheetViewElement, "showFormulas", {
+                        default: false,
+                    }).asBool(),
+                    showGridLines: this.extractAttr(sheetViewElement, "showGridLines", {
+                        default: true,
+                    }).asBool(),
+                    showRowColHeaders: this.extractAttr(sheetViewElement, "showRowColHeaders", {
+                        default: true,
+                    }).asBool(),
+                };
+            });
+        }
+        extractSheetName() {
+            const relativePath = getRelativePath(this.xlsxFileStructure.workbook.file.fileName, this.rootFile.file.fileName);
+            const workbookRels = this.extractRelationships(this.xlsxFileStructure.workbook.rels);
+            const relId = workbookRels.find((rel) => rel.target === relativePath).id;
+            // Having a namespace in the attributes names mess with the querySelector, and the behavior is not the same
+            // for every XML parser. So we'll search manually instead of using a querySelector to search for an attribute value.
+            for (let sheetElement of this.querySelectorAll(this.xlsxFileStructure.workbook.file.xml, "sheet")) {
+                if (sheetElement.attributes["r:id"].value === relId) {
+                    return sheetElement.attributes["name"].value;
+                }
+            }
+            throw new Error("Missing sheet name");
+        }
+        getSheetWorkbookInfo() {
+            const relativePath = getRelativePath(this.xlsxFileStructure.workbook.file.fileName, this.rootFile.file.fileName);
+            const workbookRels = this.extractRelationships(this.xlsxFileStructure.workbook.rels);
+            const relId = workbookRels.find((rel) => rel.target === relativePath).id;
+            const workbookSheets = this.mapOnElements({ parent: this.xlsxFileStructure.workbook.file.xml, query: "sheet" }, (sheetElement) => {
+                return {
+                    relationshipId: this.extractAttr(sheetElement, "r:id", { required: true }).asString(),
+                    sheetId: this.extractAttr(sheetElement, "sheetId", { required: true }).asString(),
+                    sheetName: this.extractAttr(sheetElement, "name", { required: true }).asString(),
+                    state: this.extractAttr(sheetElement, "state", {
+                        default: "visible",
+                    }).asString(),
+                };
+            });
+            const info = workbookSheets.find((info) => info.relationshipId === relId);
+            if (!info) {
+                throw new Error("Cannot find corresponding workbook sheet");
+            }
+            return info;
+        }
+        extractConditionalFormats() {
+            return new XlsxCfExtractor(this.rootFile, this.xlsxFileStructure, this.warningManager, this.theme).extractConditionalFormattings();
+        }
+        extractFigures(worksheet) {
+            const figures = this.mapOnElements({ parent: worksheet, query: "drawing" }, (drawingElement) => {
+                var _a;
+                const drawingId = (_a = this.extractAttr(drawingElement, "r:id", { required: true })) === null || _a === void 0 ? void 0 : _a.asString();
+                const drawingFile = this.getTargetXmlFile(this.relationships[drawingId]);
+                const figures = new XlsxFigureExtractor(drawingFile, this.xlsxFileStructure, this.warningManager).extractFigures();
+                return figures;
+            })[0];
+            return figures || [];
+        }
+        extractTables(worksheet) {
+            return this.mapOnElements({ query: "tablePart", parent: worksheet }, (tablePartElement) => {
+                var _a;
+                const tableId = (_a = this.extractAttr(tablePartElement, "r:id", { required: true })) === null || _a === void 0 ? void 0 : _a.asString();
+                const tableFile = this.getTargetXmlFile(this.relationships[tableId]);
+                const tableExtractor = new XlsxTableExtractor(tableFile, this.xlsxFileStructure, this.warningManager);
+                return tableExtractor.getTable();
+            });
+        }
+        extractPivotTables() {
+            try {
+                return Object.values(this.relationships)
+                    .filter((relationship) => relationship.type.endsWith("pivotTable"))
+                    .map((pivotRelationship) => {
+                    const pivotFile = this.getTargetXmlFile(pivotRelationship);
+                    const pivot = new XlsxPivotExtractor(pivotFile, this.xlsxFileStructure, this.warningManager).getPivotTable();
+                    return pivot;
+                });
+            }
+            catch (e) {
+                this.catchErrorOnElement(e);
+                return [];
+            }
+        }
+        extractMerges(worksheet) {
+            return this.mapOnElements({ parent: worksheet, query: "mergeCell" }, (mergeElement) => {
+                return this.extractAttr(mergeElement, "ref", { required: true }).asString();
+            });
+        }
+        extractSheetFormat(worksheet) {
+            const formatElement = this.querySelector(worksheet, "sheetFormatPr");
+            if (!formatElement)
+                return undefined;
+            return {
+                defaultColWidth: this.extractAttr(formatElement, "defaultColWidth", {
+                    default: EXCEL_DEFAULT_COL_WIDTH.toString(),
+                }).asNum(),
+                defaultRowHeight: this.extractAttr(formatElement, "defaultRowHeight", {
+                    default: EXCEL_DEFAULT_ROW_HEIGHT.toString(),
+                }).asNum(),
+            };
+        }
+        extractCols(worksheet) {
+            return this.mapOnElements({ parent: worksheet, query: "cols col" }, (colElement) => {
+                var _a, _b, _c, _d, _e, _f, _g;
+                return {
+                    width: (_a = this.extractAttr(colElement, "width")) === null || _a === void 0 ? void 0 : _a.asNum(),
+                    customWidth: (_b = this.extractAttr(colElement, "customWidth")) === null || _b === void 0 ? void 0 : _b.asBool(),
+                    bestFit: (_c = this.extractAttr(colElement, "bestFit")) === null || _c === void 0 ? void 0 : _c.asBool(),
+                    hidden: (_d = this.extractAttr(colElement, "hidden")) === null || _d === void 0 ? void 0 : _d.asBool(),
+                    min: (_e = this.extractAttr(colElement, "min", { required: true })) === null || _e === void 0 ? void 0 : _e.asNum(),
+                    max: (_f = this.extractAttr(colElement, "max", { required: true })) === null || _f === void 0 ? void 0 : _f.asNum(),
+                    styleIndex: (_g = this.extractAttr(colElement, "style")) === null || _g === void 0 ? void 0 : _g.asNum(),
+                };
+            });
+        }
+        extractRows(worksheet) {
+            return this.mapOnElements({ parent: worksheet, query: "sheetData row" }, (rowElement) => {
+                var _a, _b, _c, _d, _e;
+                return {
+                    index: (_a = this.extractAttr(rowElement, "r", { required: true })) === null || _a === void 0 ? void 0 : _a.asNum(),
+                    cells: this.extractCells(rowElement),
+                    height: (_b = this.extractAttr(rowElement, "ht")) === null || _b === void 0 ? void 0 : _b.asNum(),
+                    customHeight: (_c = this.extractAttr(rowElement, "customHeight")) === null || _c === void 0 ? void 0 : _c.asBool(),
+                    hidden: (_d = this.extractAttr(rowElement, "hidden")) === null || _d === void 0 ? void 0 : _d.asBool(),
+                    styleIndex: (_e = this.extractAttr(rowElement, "s")) === null || _e === void 0 ? void 0 : _e.asNum(),
+                };
+            });
+        }
+        extractCells(row) {
+            return this.mapOnElements({ parent: row, query: "c" }, (cellElement) => {
+                var _a, _b, _c;
+                return {
+                    xc: (_a = this.extractAttr(cellElement, "r", { required: true })) === null || _a === void 0 ? void 0 : _a.asString(),
+                    styleIndex: (_b = this.extractAttr(cellElement, "s")) === null || _b === void 0 ? void 0 : _b.asNum(),
+                    type: CELL_TYPE_CONVERSION_MAP[(_c = this.extractAttr(cellElement, "t", { default: "n" })) === null || _c === void 0 ? void 0 : _c.asString()],
+                    value: this.extractChildTextContent(cellElement, "v"),
+                    formula: this.extractCellFormula(cellElement),
+                };
+            });
+        }
+        extractCellFormula(cellElement) {
+            var _a, _b;
+            const formulaElement = this.querySelector(cellElement, "f");
+            if (!formulaElement)
+                return undefined;
+            return {
+                content: this.extractTextContent(formulaElement),
+                sharedIndex: (_a = this.extractAttr(formulaElement, "si")) === null || _a === void 0 ? void 0 : _a.asNum(),
+                ref: (_b = this.extractAttr(formulaElement, "ref")) === null || _b === void 0 ? void 0 : _b.asString(),
+            };
+        }
+        extractHyperLinks(worksheet) {
+            return this.mapOnElements({ parent: worksheet, query: "hyperlink" }, (linkElement) => {
+                var _a, _b, _c, _d;
+                const relId = (_a = this.extractAttr(linkElement, "r:id")) === null || _a === void 0 ? void 0 : _a.asString();
+                return {
+                    xc: (_b = this.extractAttr(linkElement, "ref", { required: true })) === null || _b === void 0 ? void 0 : _b.asString(),
+                    location: (_c = this.extractAttr(linkElement, "location")) === null || _c === void 0 ? void 0 : _c.asString(),
+                    display: (_d = this.extractAttr(linkElement, "display")) === null || _d === void 0 ? void 0 : _d.asString(),
+                    relTarget: relId ? this.relationships[relId].target : undefined,
+                };
+            });
+        }
+        extractSharedFormulas(worksheet) {
+            const sfElements = this.querySelectorAll(worksheet, `f[si][ref]`);
+            const sfMap = {};
+            for (let sfElement of sfElements) {
+                const index = this.extractAttr(sfElement, "si", { required: true }).asNum();
+                const formula = this.extractTextContent(sfElement, { required: true });
+                sfMap[index] = formula;
+            }
+            const sfs = [];
+            for (let i = 0; i < Object.keys(sfMap).length; i++) {
+                if (!sfMap[i]) {
+                    this.warningManager.addParsingWarning(`Missing shared formula ${i}, replacing it by empty formula`);
+                    sfs.push("");
+                }
+                else {
+                    sfs.push(sfMap[i]);
+                }
+            }
+            return sfs;
+        }
+    }
+
+    class XlsxStyleExtractor extends XlsxBaseExtractor {
+        constructor(xlsxStructure, warningManager, theme) {
+            super(xlsxStructure.styles, xlsxStructure, warningManager);
+            this.theme = theme;
+        }
+        getNumFormats() {
+            return this.mapOnElements({ parent: this.rootFile.file.xml, query: "numFmt" }, (numFmtElement) => {
+                return this.extractNumFormats(numFmtElement);
+            });
+        }
+        extractNumFormats(numFmtElement) {
+            return {
+                id: this.extractAttr(numFmtElement, "numFmtId", {
+                    required: true,
+                }).asNum(),
+                format: this.extractAttr(numFmtElement, "formatCode", {
+                    required: true,
+                    default: "",
+                }).asString(),
+            };
+        }
+        getFonts() {
+            return this.mapOnElements({ parent: this.rootFile.file.xml, query: "font" }, (font) => {
+                return this.extractFont(font);
+            });
+        }
+        extractFont(fontElement) {
+            var _a, _b, _c, _d;
+            const name = this.extractChildAttr(fontElement, "name", "val", {
+                default: "Arial",
+            }).asString();
+            const size = this.extractChildAttr(fontElement, "sz", "val", {
+                default: DEFAULT_FONT_SIZE.toString(),
+            }).asNum();
+            const color = this.extractColor(this.querySelector(fontElement, `color`), this.theme);
+            // The behavior for these is kinda strange. The text is italic if there is either a "italic" tag with no "val"
+            // attribute, or a tag with a "val" attribute = "1" (boolean).
+            const italicElement = this.querySelector(fontElement, `i`) || undefined;
+            const italic = italicElement && ((_a = italicElement.attributes["val"]) === null || _a === void 0 ? void 0 : _a.value) !== "0";
+            const boldElement = this.querySelector(fontElement, `b`) || undefined;
+            const bold = boldElement && ((_b = boldElement.attributes["val"]) === null || _b === void 0 ? void 0 : _b.value) !== "0";
+            const strikeElement = this.querySelector(fontElement, `strike`) || undefined;
+            const strike = strikeElement && ((_c = strikeElement.attributes["val"]) === null || _c === void 0 ? void 0 : _c.value) !== "0";
+            const underlineElement = this.querySelector(fontElement, `u`) || undefined;
+            const underline = underlineElement && ((_d = underlineElement.attributes["val"]) === null || _d === void 0 ? void 0 : _d.value) !== "none";
+            return { name, size, color, italic, bold, underline, strike };
+        }
+        getFills() {
+            return this.mapOnElements({ parent: this.rootFile.file.xml, query: "fill" }, (fillElement) => {
+                return this.extractFill(fillElement);
+            });
+        }
+        extractFill(fillElement) {
+            var _a;
+            // Fills are either patterns of gradients
+            const fillChild = fillElement.children[0];
+            if (fillChild.tagName === "patternFill") {
+                return {
+                    patternType: (_a = fillChild.attributes["patternType"]) === null || _a === void 0 ? void 0 : _a.value,
+                    bgColor: this.extractColor(this.querySelector(fillChild, "bgColor"), this.theme),
+                    fgColor: this.extractColor(this.querySelector(fillChild, "fgColor"), this.theme),
+                };
+            }
+            else {
+                // We don't support gradients. Take the second gradient color as fill color
+                return {
+                    patternType: "solid",
+                    fgColor: this.extractColor(this.querySelectorAll(fillChild, "color")[1], this.theme),
+                };
+            }
+        }
+        getBorders() {
+            return this.mapOnElements({ parent: this.rootFile.file.xml, query: "border" }, (borderElement) => {
+                return this.extractBorder(borderElement);
+            });
+        }
+        extractBorder(borderElement) {
+            var _a, _b;
+            const border = {
+                left: this.extractSingleBorder(borderElement, "left", this.theme),
+                right: this.extractSingleBorder(borderElement, "right", this.theme),
+                top: this.extractSingleBorder(borderElement, "top", this.theme),
+                bottom: this.extractSingleBorder(borderElement, "bottom", this.theme),
+                diagonal: this.extractSingleBorder(borderElement, "diagonal", this.theme),
+            };
+            if (border.diagonal) {
+                border.diagonalUp = (_a = this.extractAttr(borderElement, "diagonalUp")) === null || _a === void 0 ? void 0 : _a.asBool();
+                border.diagonalDown = (_b = this.extractAttr(borderElement, "diagonalDown")) === null || _b === void 0 ? void 0 : _b.asBool();
+            }
+            return border;
+        }
+        extractSingleBorder(borderElement, direction, theme) {
+            const directionElement = this.querySelector(borderElement, direction);
+            if (!directionElement || !directionElement.attributes["style"])
+                return undefined;
+            return {
+                style: this.extractAttr(directionElement, "style", {
+                    required: true,
+                    default: "thin",
+                }).asString(),
+                color: this.extractColor(directionElement.children[0], theme, "000000"),
+            };
+        }
+        extractAlignment(alignmentElement) {
+            var _a, _b, _c, _d, _e, _f, _g;
+            return {
+                horizontal: this.extractAttr(alignmentElement, "horizontal", {
+                    default: "general",
+                }).asString(),
+                vertical: this.extractAttr(alignmentElement, "vertical", {
+                    default: "center",
+                }).asString(),
+                textRotation: (_a = this.extractAttr(alignmentElement, "textRotation")) === null || _a === void 0 ? void 0 : _a.asNum(),
+                wrapText: (_b = this.extractAttr(alignmentElement, "wrapText")) === null || _b === void 0 ? void 0 : _b.asBool(),
+                indent: (_c = this.extractAttr(alignmentElement, "indent")) === null || _c === void 0 ? void 0 : _c.asNum(),
+                relativeIndent: (_d = this.extractAttr(alignmentElement, "relativeIndent")) === null || _d === void 0 ? void 0 : _d.asNum(),
+                justifyLastLine: (_e = this.extractAttr(alignmentElement, "justifyLastLine")) === null || _e === void 0 ? void 0 : _e.asBool(),
+                shrinkToFit: (_f = this.extractAttr(alignmentElement, "shrinkToFit")) === null || _f === void 0 ? void 0 : _f.asBool(),
+                readingOrder: (_g = this.extractAttr(alignmentElement, "readingOrder")) === null || _g === void 0 ? void 0 : _g.asNum(),
+            };
+        }
+        getDxfs() {
+            return this.mapOnElements({ query: "dxf", parent: this.rootFile.file.xml }, (dxfElement) => {
+                const fontElement = this.querySelector(dxfElement, "font");
+                const fillElement = this.querySelector(dxfElement, "fill");
+                const borderElement = this.querySelector(dxfElement, "border");
+                const numFmtElement = this.querySelector(dxfElement, "numFmt");
+                const alignmentElement = this.querySelector(dxfElement, "alignment");
+                return {
+                    font: fontElement ? this.extractFont(fontElement) : undefined,
+                    fill: fillElement ? this.extractFill(fillElement) : undefined,
+                    numFmt: numFmtElement ? this.extractNumFormats(numFmtElement) : undefined,
+                    alignment: alignmentElement ? this.extractAlignment(alignmentElement) : undefined,
+                    border: borderElement ? this.extractBorder(borderElement) : undefined,
+                };
+            });
+        }
+        getStyles() {
+            return this.mapOnElements({ query: "cellXfs xf", parent: this.rootFile.file.xml }, (styleElement) => {
+                const alignmentElement = this.querySelector(styleElement, "alignment");
+                return {
+                    fontId: this.extractAttr(styleElement, "fontId", {
+                        required: true,
+                        default: 0,
+                    }).asNum(),
+                    fillId: this.extractAttr(styleElement, "fillId", {
+                        required: true,
+                        default: 0,
+                    }).asNum(),
+                    borderId: this.extractAttr(styleElement, "borderId", {
+                        required: true,
+                        default: 0,
+                    }).asNum(),
+                    numFmtId: this.extractAttr(styleElement, "numFmtId", {
+                        required: true,
+                        default: 0,
+                    }).asNum(),
+                    alignment: alignmentElement ? this.extractAlignment(alignmentElement) : undefined,
+                };
+            });
+        }
+    }
+
+    class XlsxExternalBookExtractor extends XlsxBaseExtractor {
+        getExternalBook() {
+            return this.mapOnElements({ parent: this.rootFile.file.xml, query: "externalBook" }, (bookElement) => {
+                return {
+                    rId: this.extractAttr(bookElement, "r:id", { required: true }).asString(),
+                    sheetNames: this.mapOnElements({ parent: bookElement, query: "sheetName" }, (sheetNameElement) => {
+                        return this.extractAttr(sheetNameElement, "val", { required: true }).asString();
+                    }),
+                    datasets: this.extractExternalSheetData(bookElement),
+                };
+            })[0];
+        }
+        extractExternalSheetData(externalBookElement) {
+            return this.mapOnElements({ parent: externalBookElement, query: "sheetData" }, (sheetDataElement) => {
+                const cellsData = this.mapOnElements({ parent: sheetDataElement, query: "cell" }, (cellElement) => {
+                    return {
+                        xc: this.extractAttr(cellElement, "r", { required: true }).asString(),
+                        value: this.extractChildTextContent(cellElement, "v", { required: true }),
+                    };
+                });
+                const dataMap = {};
+                for (let cell of cellsData) {
+                    dataMap[cell.xc] = cell.value;
+                }
+                return {
+                    sheetId: this.extractAttr(sheetDataElement, "sheetId", { required: true }).asNum(),
+                    data: dataMap,
+                };
+            });
+        }
+    }
+
+    /**
+     * Return all the xmls converted to XLSXImportFile corresponding to the given content type.
+     */
+    function getXLSXFilesOfType(contentType, xmls) {
+        const paths = getPathsOfContent(contentType, xmls);
+        return getXlsxFile(paths, xmls);
+    }
+    /**
+     * From an array of file path, return the equivalents XLSXFiles. An XLSX File is composed of an XML,
+     * and optionally of a relationships XML.
+     */
+    function getXlsxFile(files, xmls) {
+        const ret = [];
+        for (let file of files) {
+            const rels = getRelationFile(file, xmls);
+            ret.push({
+                file: { fileName: file, xml: xmls[file] },
+                rels: rels ? { fileName: rels, xml: xmls[rels] } : undefined,
+            });
+        }
+        return ret;
+    }
+    /**
+     * Return all the path of the files in a XLSX directory that have content of the given type.
+     */
+    function getPathsOfContent(contentType, xmls) {
+        const xml = xmls[CONTENT_TYPES_FILE];
+        const sheetItems = xml.querySelectorAll(`Override[ContentType="${contentType}"]`);
+        const paths = [];
+        for (let item of sheetItems) {
+            const file = item === null || item === void 0 ? void 0 : item.attributes["PartName"].value;
+            paths.push(file.substring(1)); // Remove the heading "/"
+        }
+        return paths;
+    }
+    /**
+     * Get the corresponding relationship file for a given xml file in a XLSX directory.
+     */
+    function getRelationFile(file, xmls) {
+        if (file === CONTENT_TYPES_FILE) {
+            return "_rels/.rels";
+        }
+        let relsFile = "";
+        const pathParts = file.split("/");
+        for (let i = 0; i < pathParts.length - 1; i++) {
+            relsFile += pathParts[i] + "/";
+        }
+        relsFile += "_rels/";
+        relsFile += pathParts[pathParts.length - 1] + ".rels";
+        if (!xmls[relsFile]) {
+            relsFile = undefined;
+        }
+        return relsFile;
+    }
+
+    const EXCEL_IMPORT_VERSION = 12;
+    class XlsxReader {
+        constructor(files) {
+            this.warningManager = new XLSXImportWarningManager();
+            this.xmls = {};
+            for (let key of Object.keys(files)) {
+                // Random files can be in xlsx (like a bin file for printer settings)
+                if (key.endsWith(".xml") || key.endsWith(".rels")) {
+                    this.xmls[key] = parseXML(new XMLString(files[key]));
+                }
+            }
+        }
+        convertXlsx() {
+            const xlsxData = this.getXlsxData();
+            const convertedData = this.convertImportedData(xlsxData);
+            return convertedData;
+        }
+        // ---------------------------------------------------------------------------
+        // Parsing XMLs
+        // ---------------------------------------------------------------------------
+        getXlsxData() {
+            const xlsxFileStructure = this.buildXlsxFileStructure();
+            const theme = xlsxFileStructure.theme
+                ? new XlsxMiscExtractor(xlsxFileStructure.theme, xlsxFileStructure, this.warningManager).getTheme()
+                : undefined;
+            const sharedStrings = xlsxFileStructure.sharedStrings
+                ? new XlsxMiscExtractor(xlsxFileStructure.sharedStrings, xlsxFileStructure, this.warningManager).getSharedStrings()
+                : [];
+            // Sort sheets by file name : the sheets will always be named sheet1.xml, sheet2.xml, ... in order
+            const sheets = xlsxFileStructure.sheets
+                .sort((a, b) => a.file.fileName.localeCompare(b.file.fileName, undefined, { numeric: true }))
+                .map((sheetFile) => {
+                return new XlsxSheetExtractor(sheetFile, xlsxFileStructure, this.warningManager, theme).getSheet();
+            });
+            const externalBooks = xlsxFileStructure.externalLinks.map((externalLinkFile) => {
+                return new XlsxExternalBookExtractor(externalLinkFile, xlsxFileStructure, this.warningManager).getExternalBook();
+            });
+            const styleExtractor = new XlsxStyleExtractor(xlsxFileStructure, this.warningManager, theme);
+            return {
+                fonts: styleExtractor.getFonts(),
+                fills: styleExtractor.getFills(),
+                borders: styleExtractor.getBorders(),
+                dxfs: styleExtractor.getDxfs(),
+                numFmts: styleExtractor.getNumFormats(),
+                styles: styleExtractor.getStyles(),
+                sheets: sheets,
+                sharedStrings,
+                externalBooks,
+            };
+        }
+        buildXlsxFileStructure() {
+            const xlsxFileStructure = {
+                sheets: getXLSXFilesOfType(CONTENT_TYPES.sheet, this.xmls),
+                workbook: getXLSXFilesOfType(CONTENT_TYPES.workbook, this.xmls)[0],
+                styles: getXLSXFilesOfType(CONTENT_TYPES.styles, this.xmls)[0],
+                sharedStrings: getXLSXFilesOfType(CONTENT_TYPES.sharedStrings, this.xmls)[0],
+                theme: getXLSXFilesOfType(CONTENT_TYPES.themes, this.xmls)[0],
+                charts: getXLSXFilesOfType(CONTENT_TYPES.chart, this.xmls),
+                figures: getXLSXFilesOfType(CONTENT_TYPES.drawing, this.xmls),
+                tables: getXLSXFilesOfType(CONTENT_TYPES.table, this.xmls),
+                pivots: getXLSXFilesOfType(CONTENT_TYPES.pivot, this.xmls),
+                externalLinks: getXLSXFilesOfType(CONTENT_TYPES.externalLink, this.xmls),
+            };
+            if (!xlsxFileStructure.workbook.rels) {
+                throw Error(_lt("Cannot find workbook relations file"));
+            }
+            return xlsxFileStructure;
+        }
+        // ---------------------------------------------------------------------------
+        // Conversion
+        // ---------------------------------------------------------------------------
+        convertImportedData(data) {
+            const convertedData = {
+                version: EXCEL_IMPORT_VERSION,
+                sheets: convertSheets(data, this.warningManager),
+                styles: convertStyles(data, this.warningManager),
+                formats: convertFormats(data, this.warningManager),
+                borders: convertBorders(data, this.warningManager),
+                entities: {},
+                revisionId: DEFAULT_REVISION_ID,
+            };
+            convertTables(convertedData, data);
+            // Remove falsy attributes in styles. Not mandatory, but make objects more readable when debugging
+            Object.keys(data.styles).map((key) => {
+                data.styles[key] = removeFalsyAttributes(data.styles[key]);
+            });
+            return convertedData;
+        }
+    }
+
+    /**
      * parses a formula (as a string) into the same formula,
      * but with the references to other cells extracted
      *
@@ -19590,9 +22890,18 @@
      *
      * It also ensures that there is at least one sheet.
      */
-    function load(data) {
+    function load(data, verboseImport) {
         if (!data) {
             return createEmptyWorkbookData();
+        }
+        if (data["[Content_Types].xml"]) {
+            const reader = new XlsxReader(data);
+            data = reader.convertXlsx();
+            if (verboseImport) {
+                for (let parsingError of reader.warningManager.warnings.sort()) {
+                    console.warn(parsingError);
+                }
+            }
         }
         data = JSON.parse(JSON.stringify(data));
         // apply migrations, if needed
@@ -20284,15 +23593,22 @@
         }
         /**
          * Set the borders of a cell.
-         * Note that it override the current border
+         * It overrides the current border if override == true.
          */
-        setBorder(sheetId, col, row, border) {
-            this.history.update("borders", sheetId, col, row, {
-                vertical: border === null || border === void 0 ? void 0 : border.left,
-                horizontal: border === null || border === void 0 ? void 0 : border.top,
-            });
-            this.history.update("borders", sheetId, col + 1, row, "vertical", border === null || border === void 0 ? void 0 : border.right);
-            this.history.update("borders", sheetId, col, row + 1, "horizontal", border === null || border === void 0 ? void 0 : border.bottom);
+        setBorder(sheetId, col, row, border, override = true) {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r;
+            if (override || !((_d = (_c = (_b = (_a = this.borders) === null || _a === void 0 ? void 0 : _a[sheetId]) === null || _b === void 0 ? void 0 : _b[col]) === null || _c === void 0 ? void 0 : _c[row]) === null || _d === void 0 ? void 0 : _d.vertical)) {
+                this.history.update("borders", sheetId, col, row, "vertical", border === null || border === void 0 ? void 0 : border.left);
+            }
+            if (override || !((_h = (_g = (_f = (_e = this.borders) === null || _e === void 0 ? void 0 : _e[sheetId]) === null || _f === void 0 ? void 0 : _f[col]) === null || _g === void 0 ? void 0 : _g[row]) === null || _h === void 0 ? void 0 : _h.horizontal)) {
+                this.history.update("borders", sheetId, col, row, "horizontal", border === null || border === void 0 ? void 0 : border.top);
+            }
+            if (override || !((_m = (_l = (_k = (_j = this.borders) === null || _j === void 0 ? void 0 : _j[sheetId]) === null || _k === void 0 ? void 0 : _k[col + 1]) === null || _l === void 0 ? void 0 : _l[row]) === null || _m === void 0 ? void 0 : _m.vertical)) {
+                this.history.update("borders", sheetId, col + 1, row, "vertical", border === null || border === void 0 ? void 0 : border.right);
+            }
+            if (override || !((_r = (_q = (_p = (_o = this.borders) === null || _o === void 0 ? void 0 : _o[sheetId]) === null || _p === void 0 ? void 0 : _p[col]) === null || _q === void 0 ? void 0 : _q[row + 1]) === null || _r === void 0 ? void 0 : _r.horizontal)) {
+                this.history.update("borders", sheetId, col, row + 1, "horizontal", border === null || border === void 0 ? void 0 : border.bottom);
+            }
         }
         /**
          * Remove the borders of a zone
@@ -20396,7 +23712,7 @@
                         if (cell === null || cell === void 0 ? void 0 : cell.border) {
                             const border = data.borders[cell.border];
                             const { col, row } = toCartesian(xc);
-                            this.setBorder(sheet.id, col, row, border);
+                            this.setBorder(sheet.id, col, row, border, false);
                         }
                     }
                 }
@@ -24329,7 +27645,6 @@
                 col: selection.left,
                 row: selection.top,
             });
-            this.dispatch("REMOVE_MERGE", { sheetId: state.sheetId, target: state.merges });
             this.state = undefined;
         }
         /**
@@ -24401,7 +27716,12 @@
                     const origin = rowCells[c];
                     const position = { col: col + c, row: row + r, sheetId: sheetId };
                     this.removeMergeIfTopLeft(position);
-                    this.pasteMergeIfExist(origin.position, position);
+                    // TODO: refactor this part. the "Paste merge" action is also executed with
+                    // MOVE_RANGES in pasteFromCut. Adding a condition on the operation type here
+                    // is not appropriate
+                    if (state.operation !== "CUT") {
+                        this.pasteMergeIfExist(origin.position, position);
+                    }
                     this.pasteCell(origin, position, state.operation, pasteOption);
                     if (shouldPasteCF) {
                         this.dispatch("PASTE_CONDITIONAL_FORMAT", {
@@ -26342,23 +29662,20 @@
         }
         handle(cmd) {
             switch (cmd.type) {
-                // some commands should not remove the current selection
-                case "CREATE_SHEET":
-                case "DELETE_SHEET":
-                case "CREATE_FIGURE":
-                case "CREATE_CHART":
-                case "UPDATE_FIGURE":
-                case "EVALUATE_CELLS":
-                case "DISABLE_SELECTION_INPUT":
-                case "ENABLE_NEW_SELECTION_INPUT":
+                case "START_EDITION":
+                case "ACTIVATE_SHEET":
+                    this.selectedFigureId = null;
                     break;
                 case "DELETE_FIGURE":
                     if (this.selectedFigureId === cmd.id) {
                         this.selectedFigureId = null;
                     }
                     break;
-                default:
-                    this.selectedFigureId = null;
+                case "DELETE_SHEET":
+                    if (this.selectedFigureId && this.getters.getFigure(cmd.sheetId, this.selectedFigureId)) {
+                        this.selectedFigureId = null;
+                    }
+                    break;
             }
             switch (cmd.type) {
                 case "START":
@@ -28074,7 +31391,7 @@
                             this.dispatch("RESIZE_COLUMNS_ROWS", {
                                 elements: [col],
                                 dimension: "COL",
-                                size: size + 2 * PADDING_AUTORESIZE,
+                                size: size + 2 * PADDING_AUTORESIZE_HORIZONTAL,
                                 sheetId: cmd.sheetId,
                             });
                         }
@@ -31779,488 +35096,6 @@
         }
     }
 
-    const XLSX_FORMAT_MAP = {
-        "0": 1,
-        "0.00": 2,
-        "#,#00": 3,
-        "#,##0.00": 4,
-        "0%": 9,
-        "0.00%": 10,
-        "0.00E+00": 11,
-        "# ?/?": 12,
-        "# ??/??": 13,
-        "mm-dd-yy": 14,
-        "d-mm-yy": 15,
-        "mm-yy": 16,
-        "mmm-yy": 17,
-        "h:mm AM/PM": 18,
-        "h:mm:ss AM/PM": 19,
-        "h:mm": 20,
-        "h:mm:ss": 21,
-        "m/d/yy h:mm": 22,
-        "#,##0 ;(#,##0)": 37,
-        "#,##0 ;[Red](#,##0)": 38,
-        "#,##0.00;(#,##0.00)": 39,
-        "#,##0.00;[Red](#,##0.00)": 40,
-        "mm:ss": 45,
-        "[h]:mm:ss": 46,
-        "mmss.0": 47,
-        "##0.0E+0": 48,
-        "@": 49,
-        "hh:mm:ss a": 19, // TODO: discuss: this format is not recognized by excel for example (doesn't follow their guidelines I guess)
-    };
-    const XLSX_ICONSET_MAP = {
-        arrow: "3Arrows",
-        smiley: "3Symbols",
-        dot: "3TrafficLights1",
-    };
-    const NAMESPACE = {
-        styleSheet: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
-        sst: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
-        Relationships: "http://schemas.openxmlformats.org/package/2006/relationships",
-        Types: "http://schemas.openxmlformats.org/package/2006/content-types",
-        worksheet: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
-        workbook: "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
-        drawing: "http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing",
-    };
-    const DRAWING_NS_A = "http://schemas.openxmlformats.org/drawingml/2006/main";
-    const DRAWING_NS_C = "http://schemas.openxmlformats.org/drawingml/2006/chart";
-    const CONTENT_TYPES = {
-        workbook: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
-        sheet: "application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml",
-        sharedStrings: "application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml",
-        styles: "application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml",
-        drawing: "application/vnd.openxmlformats-officedocument.drawing+xml",
-        chart: "application/vnd.openxmlformats-officedocument.drawingml.chart+xml",
-    };
-    const RELATIONSHIP_NSR = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
-    const HEIGHT_FACTOR = 0.75; // 100px => 75 u
-    const WIDTH_FACTOR = 0.1425; // 100px => 14.25 u
-    const FIRST_NUMFMT_ID = 164;
-    const FORCE_DEFAULT_ARGS_FUNCTIONS = {
-        FLOOR: [{ type: "NUMBER", value: 1 }],
-        CEILING: [{ type: "NUMBER", value: 1 }],
-        ROUND: [{ type: "NUMBER", value: 0 }],
-        ROUNDUP: [{ type: "NUMBER", value: 0 }],
-        ROUNDDOWN: [{ type: "NUMBER", value: 0 }],
-    };
-    /**
-     * This list contains all "future" functions that are not compatible with older versions of Excel
-     * For more information, see https://docs.microsoft.com/en-us/openspecs/office_standards/ms-xlsx/5d1b6d44-6fc1-4ecd-8fef-0b27406cc2bf
-     */
-    const NON_RETROCOMPATIBLE_FUNCTIONS = [
-        "ACOT",
-        "ACOTH",
-        "AGGREGATE",
-        "ARABIC",
-        "BASE",
-        "BETA.DIST",
-        "BETA.INV",
-        "BINOM.DIST",
-        "BINOM.DIST.RANGE",
-        "BINOM.INV",
-        "BITAND",
-        "BITLSHIFT",
-        "BITOR",
-        "BITRSHIFT",
-        "BITXOR",
-        "CEILING.MATH",
-        "CEILING.PRECISE",
-        "CHISQ.DIST",
-        "CHISQ.DIST.RT",
-        "CHISQ.INV",
-        "CHISQ.INV.RT",
-        "CHISQ.TEST",
-        "COMBINA",
-        "CONCAT",
-        "CONFIDENCE.NORM",
-        "CONFIDENCE.T",
-        "COT",
-        "COTH",
-        "COVARIANCE.P",
-        "COVARIANCE.S",
-        "CSC",
-        "CSCH",
-        "DAYS",
-        "DECIMAL",
-        "ERF.PRECISE",
-        "ERFC.PRECISE",
-        "EXPON.DIST",
-        "F.DIST",
-        "F.DIST.RT",
-        "F.INV",
-        "F.INV.RT",
-        "F.TEST",
-        "FILTERXML",
-        "FLOOR.MATH",
-        "FLOOR.PRECISE",
-        "FORECAST.ETS",
-        "FORECAST.ETS.CONFINT",
-        "FORECAST.ETS.SEASONALITY",
-        "FORECAST.ETS.STAT",
-        "FORECAST.LINEAR",
-        "FORMULATEXT",
-        "GAMMA",
-        "GAMMA.DIST",
-        "GAMMA.INV",
-        "GAMMALN.PRECISE",
-        "GAUSS",
-        "HYPGEOM.DIST",
-        "IFNA",
-        "IFS",
-        "IMCOSH",
-        "IMCOT",
-        "IMCSC",
-        "IMCSCH",
-        "IMSEC",
-        "IMSECH",
-        "IMSINH",
-        "IMTAN",
-        "ISFORMULA",
-        "ISOWEEKNUM",
-        "LOGNORM.DIST",
-        "LOGNORM.INV",
-        "MAXIFS",
-        "MINIFS",
-        "MODE.MULT",
-        "MODE.SNGL",
-        "MUNIT",
-        "NEGBINOM.DIST",
-        "NORM.DIST",
-        "NORM.INV",
-        "NORM.S.DIST",
-        "NORM.S.INV",
-        "NUMBERVALUE",
-        "PDURATION",
-        "PERCENTILE.EXC",
-        "PERCENTILE.INC",
-        "PERCENTRANK.EXC",
-        "PERCENTRANK.INC",
-        "PERMUTATIONA",
-        "PHI",
-        "POISSON.DIST",
-        "QUARTILE.EXC",
-        "QUARTILE.INC",
-        "QUERYSTRING",
-        "RANK.AVG",
-        "RANK.EQ",
-        "RRI",
-        "SEC",
-        "SECH",
-        "SHEET",
-        "SHEETS",
-        "SKEW.P",
-        "STDEV.P",
-        "STDEV.S",
-        "SWITCH",
-        "T.DIST",
-        "T.DIST.2T",
-        "T.DIST.RT",
-        "T.INV",
-        "T.INV.2T",
-        "T.TEST",
-        "TEXTJOIN",
-        "UNICHAR",
-        "UNICODE",
-        "VAR.P",
-        "VAR.S",
-        "WEBSERVICE",
-        "WEIBULL.DIST",
-        "XOR",
-        "Z.TEST",
-    ];
-
-    // -------------------------------------
-    //            CF HELPERS
-    // -------------------------------------
-    /**
-     * Convert the conditional formatting o-spreadsheet operator to
-     * the corresponding excel operator.
-     * */
-    function convertOperator(operator) {
-        switch (operator) {
-            case "IsNotEmpty":
-                return "notContainsBlanks";
-            case "IsEmpty":
-                return "containsBlanks";
-            case "NotContains":
-                return "notContainsBlanks";
-            default:
-                return operator.charAt(0).toLowerCase() + operator.slice(1);
-        }
-    }
-    // -------------------------------------
-    //        WORKSHEET HELPERS
-    // -------------------------------------
-    function getCellType(value) {
-        switch (typeof value) {
-            case "boolean":
-                return "b";
-            case "string":
-                return "str";
-            case "number":
-                return "n";
-        }
-    }
-    /**
-     * For some reason, Excel will only take the devicePixelRatio (i.e. interface scale on Windows desktop)
-     * into account for the height.
-     */
-    function convertHeight(height) {
-        return Math.round(HEIGHT_FACTOR * height * window.devicePixelRatio * 100) / 100;
-    }
-    function convertWidth(width) {
-        return Math.round(WIDTH_FACTOR * width * 100) / 100;
-    }
-    function extractStyle(cell, data) {
-        let style = {};
-        if (cell.style) {
-            style = data.styles[cell.style];
-        }
-        const format = cell.format ? data.formats[cell.format] : undefined;
-        let border = {};
-        if (cell.border) {
-            border = data.borders[cell.border];
-        }
-        const styles = {
-            font: {
-                size: (style === null || style === void 0 ? void 0 : style.fontSize) || DEFAULT_FONT_SIZE,
-                color: (style === null || style === void 0 ? void 0 : style.textColor) ? style.textColor : "000000",
-                family: 2,
-                name: "Arial",
-            },
-            fill: (style === null || style === void 0 ? void 0 : style.fillColor)
-                ? {
-                    fgColor: style.fillColor,
-                }
-                : { reservedAttribute: "none" },
-            numFmt: format,
-            border: border || {},
-            verticalAlignment: "center",
-            horizontalAlignment: style === null || style === void 0 ? void 0 : style.align,
-        };
-        styles.font["strike"] = !!(style === null || style === void 0 ? void 0 : style.strikethrough) || undefined;
-        styles.font["underline"] = !!(style === null || style === void 0 ? void 0 : style.underline) || undefined;
-        styles.font["bold"] = !!(style === null || style === void 0 ? void 0 : style.bold) || undefined;
-        styles.font["italic"] = !!(style === null || style === void 0 ? void 0 : style.italic) || undefined;
-        return styles;
-    }
-    function normalizeStyle(construct, styles) {
-        const { id: fontId } = pushElement(styles["font"], construct.fonts);
-        const { id: fillId } = pushElement(styles["fill"], construct.fills);
-        const { id: borderId } = pushElement(styles["border"], construct.borders);
-        // Normalize this
-        const numFmtId = convertFormat(styles["numFmt"], construct.numFmts);
-        const style = {
-            fontId,
-            fillId,
-            borderId,
-            numFmtId,
-            verticalAlignment: styles["verticalAlignment"],
-            horizontalAlignment: styles["horizontalAlignment"],
-        };
-        const { id } = pushElement(style, construct.styles);
-        return id;
-    }
-    function convertFormat(format, numFmtStructure) {
-        if (!format) {
-            return 0;
-        }
-        let formatId = XLSX_FORMAT_MAP[format];
-        if (!formatId) {
-            const { id } = pushElement(format, numFmtStructure);
-            formatId = id + FIRST_NUMFMT_ID;
-        }
-        return formatId;
-    }
-    /**
-     * Add a relation to the given file and return its id.
-     */
-    function addRelsToFile(relsFiles, path, rel) {
-        let relsFile = relsFiles.find((file) => file.path === path);
-        // the id is a one-based int casted as string
-        let id;
-        if (!relsFile) {
-            id = "rId1";
-            relsFiles.push({ path, rels: [{ ...rel, id }] });
-        }
-        else {
-            id = `rId${(relsFile.rels.length + 1).toString()}`;
-            relsFile.rels.push({
-                ...rel,
-                id,
-            });
-        }
-        return id;
-    }
-    function pushElement(property, propertyList) {
-        for (let [key, value] of Object.entries(propertyList)) {
-            if (JSON.stringify(value) === JSON.stringify(property)) {
-                return { id: parseInt(key, 10), list: propertyList };
-            }
-        }
-        let elemId = propertyList.findIndex((elem) => JSON.stringify(elem) === JSON.stringify(property));
-        if (elemId === -1) {
-            propertyList.push(property);
-            elemId = propertyList.length - 1;
-        }
-        return {
-            id: elemId,
-            list: propertyList,
-        };
-    }
-    const chartIds = [];
-    /**
-     * Convert a chart o-spreadsheet id to a xlsx id which
-     * are unsigned integers (starting from 1).
-     */
-    function convertChartId(chartId) {
-        const xlsxId = chartIds.findIndex((id) => id === chartId);
-        if (xlsxId === -1) {
-            chartIds.push(chartId);
-            return chartIds.length;
-        }
-        return xlsxId + 1;
-    }
-    /**
-     * Convert a value expressed in dot to EMU.
-     * EMU = English Metrical Unit
-     * There are 914400 EMU per inch.
-     *
-     * /!\ A value expressed in EMU cannot be fractional.
-     * See https://docs.microsoft.com/en-us/windows/win32/vml/msdn-online-vml-units#other-units-of-measurement
-     */
-    function convertDotValueToEMU(value) {
-        const DPI = 96;
-        return Math.round((value * 914400) / DPI);
-    }
-    function getRangeSize(xc, defaultSheetIndex, data) {
-        const xcSplit = xc.split("!");
-        let rangeSheetIndex;
-        if (xcSplit.length > 1) {
-            const index = data.sheets.findIndex((sheet) => sheet.name === xcSplit[0]);
-            if (index < 0) {
-                throw new Error("Unable to find a sheet with the name " + xcSplit[0]);
-            }
-            rangeSheetIndex = index;
-            xc = xcSplit[1];
-        }
-        else {
-            rangeSheetIndex = Number(defaultSheetIndex);
-        }
-        const zone = toUnboundedZone(xc);
-        if (zone.right === undefined) {
-            zone.right = data.sheets[rangeSheetIndex].colNumber;
-        }
-        if (zone.bottom === undefined) {
-            zone.bottom = data.sheets[rangeSheetIndex].rowNumber;
-        }
-        return (zone.right - zone.left + 1) * (zone.bottom - zone.top + 1);
-    }
-
-    /**
-     * Represent a raw XML string
-     */
-    class XMLString {
-        /**
-         * @param xmlString should be a well formed, properly escaped XML string
-         */
-        constructor(xmlString) {
-            this.xmlString = xmlString;
-        }
-        toString() {
-            return this.xmlString;
-        }
-    }
-
-    // -------------------------------------
-    //            XML HELPERS
-    // -------------------------------------
-    function createXMLFile(doc, path, contentType) {
-        return {
-            content: new XMLSerializer().serializeToString(doc),
-            path,
-            contentType,
-        };
-    }
-    function xmlEscape(str) {
-        return String(str)
-            .replace(/\&/g, "&amp;")
-            .replace(/\</g, "&lt;")
-            .replace(/\>/g, "&gt;")
-            .replace(/\"/g, "&quot;")
-            .replace(/\'/g, "&apos;");
-    }
-    function formatAttributes(attrs) {
-        return new XMLString(attrs.map(([key, val]) => `${key}="${xmlEscape(val)}"`).join(" "));
-    }
-    function parseXML(xmlString) {
-        const document = new DOMParser().parseFromString(xmlString.toString(), "text/xml");
-        const parserError = document.querySelector("parsererror");
-        if (parserError) {
-            const errorString = parserError.innerHTML;
-            const lineNumber = parseInt(errorString.split(":")[0], 10);
-            const xmlStringArray = xmlString.toString().trim().split("\n");
-            const xmlPreview = xmlStringArray
-                .slice(Math.max(lineNumber - 3, 0), Math.min(lineNumber + 2, xmlStringArray.length))
-                .join("\n");
-            throw new Error(`XML string could not be parsed: ${errorString}\n${xmlPreview}`);
-        }
-        return document;
-    }
-    function getDefaultXLSXStructure() {
-        return {
-            relsFiles: [],
-            sharedStrings: [],
-            // default Values that will always be part of the style sheet
-            styles: [
-                {
-                    fontId: 0,
-                    fillId: 0,
-                    numFmtId: 0,
-                    borderId: 0,
-                    verticalAlignment: "center",
-                },
-            ],
-            fonts: [
-                {
-                    size: DEFAULT_FONT_SIZE,
-                    family: 2,
-                    color: "000000",
-                    name: "Calibri",
-                },
-            ],
-            fills: [{ reservedAttribute: "none" }, { reservedAttribute: "gray125" }],
-            borders: [{}],
-            numFmts: [],
-            dxfs: [],
-        };
-    }
-    function createOverride(partName, contentType) {
-        return escapeXml /*xml*/ `
-    <Override ContentType="${contentType}" PartName="${partName}" />
-  `;
-    }
-    function joinXmlNodes(xmlNodes) {
-        return new XMLString(xmlNodes.join("\n"));
-    }
-    /**
-     * Escape interpolated values except if the value is already
-     * a properly escaped XML string.
-     *
-     * ```
-     * escapeXml`<t>${"This will be escaped"}</t>`
-     * ```
-     */
-    function escapeXml(strings, ...expressions) {
-        let str = [strings[0]];
-        for (let i = 0; i < expressions.length; i++) {
-            const value = expressions[i] instanceof XMLString ? expressions[i] : xmlEscape(expressions[i]);
-            str.push(value + strings[i + 1]);
-        }
-        return new XMLString(concat(str));
-    }
-
     /**
      * Each axis present inside a graph needs to be identified by an unsigned integer
      * The value does not matter, it can be hardcoded.
@@ -32773,7 +35608,7 @@
         const formulas = cellRuleFormula(cf.ranges, rule).map((formula) => escapeXml /*xml*/ `<formula>${formula}</formula>`);
         const dxf = {
             font: {
-                color: rule.style.textColor,
+                color: { rgb: rule.style.textColor },
                 bold: rule.style.bold,
                 italic: rule.style.italic,
                 strike: rule.style.strikethrough,
@@ -32781,7 +35616,7 @@
             },
         };
         if (rule.style.fillColor) {
-            dxf.fill = { fgColor: rule.style.fillColor };
+            dxf.fill = { fgColor: { rgb: rule.style.fillColor } };
         }
         const { id } = pushElement(dxf, dxfs);
         ruleAttributes.push(["dxfId", id]);
@@ -33097,7 +35932,7 @@
         for (let [index, numFmt] of Object.entries(numFmts)) {
             const numFmtAttrs = [
                 ["numFmtId", parseInt(index) + FIRST_NUMFMT_ID],
-                ["formatCode", numFmt],
+                ["formatCode", numFmt.format],
             ];
             numFmtNodes.push(escapeXml /*xml*/ `
       <numFmt ${formatAttributes(numFmtAttrs)}/>
@@ -33110,7 +35945,7 @@
   `;
     }
     function addFont(font) {
-        if (Object.values(font).filter(isDefined$1).length === 0) {
+        if (isObjectEmptyRecursive(font)) {
             return escapeXml /*xml*/ ``;
         }
         return escapeXml /*xml*/ `
@@ -33120,7 +35955,9 @@
       ${font.underline ? escapeXml /*xml*/ `<u />` : ""}
       ${font.strike ? escapeXml /*xml*/ `<strike />` : ""}
       ${font.size ? escapeXml /*xml*/ `<sz val="${font.size}" />` : ""}
-      ${font.color ? escapeXml /*xml*/ `<color rgb="${toXlsxHexColor(font.color)}" />` : ""}
+      ${font.color && font.color.rgb
+        ? escapeXml /*xml*/ `<color rgb="${toXlsxHexColor(font.color.rgb)}" />`
+        : ""}
       ${font.name ? escapeXml /*xml*/ `<name val="${font.name}" />` : ""}
     </font>
   `;
@@ -33146,7 +35983,7 @@
                 fillNodes.push(escapeXml /*xml*/ `
         <fill>
           <patternFill patternType="solid">
-            <fgColor rgb="${toXlsxHexColor(fill.fgColor)}" />
+            <fgColor rgb="${toXlsxHexColor(fill.fgColor.rgb)}" />
             <bgColor indexed="64" />
           </patternFill>
         </fill>
@@ -33183,8 +36020,8 @@
             return escapeXml ``;
         }
         return formatAttributes([
-            ["style", description[0]],
-            ["color", toXlsxHexColor(description[1])],
+            ["style", description.style],
+            ["color", toXlsxHexColor(description.color.rgb)],
         ]);
     }
     function addStyles(styles) {
@@ -33198,11 +36035,11 @@
             ];
             // Note: the apply${substyleName} does not seem to be required
             const alignAttrs = [];
-            if (style.verticalAlignment) {
-                alignAttrs.push(["vertical", style.verticalAlignment]);
+            if (style.alignment && style.alignment.vertical) {
+                alignAttrs.push(["vertical", style.alignment.vertical]);
             }
-            if (style.horizontalAlignment) {
-                alignAttrs.push(["horizontal", style.horizontalAlignment]);
+            if (style.alignment && style.alignment.horizontal) {
+                alignAttrs.push(["horizontal", style.alignment.horizontal]);
             }
             styleNodes.push(escapeXml /*xml*/ `
       <xf ${formatAttributes(attributes)}>
@@ -33232,7 +36069,7 @@
                 fillNode = escapeXml /*xml*/ `
         <fill>
           <patternFill>
-            <bgColor rgb="${toXlsxHexColor(dxf.fill.fgColor)}" />
+            <bgColor rgb="${toXlsxHexColor(dxf.fill.fgColor.rgb)}" />
           </patternFill>
         </fill>
       `;
@@ -33261,7 +36098,7 @@
             const attributes = [
                 ["min", parseInt(id) + 1],
                 ["max", parseInt(id) + 1],
-                ["width", convertWidth(col.size || DEFAULT_CELL_WIDTH)],
+                ["width", convertWidthToExcel(col.size || DEFAULT_CELL_WIDTH)],
                 ["customWidth", 1],
                 ["hidden", col.isHidden ? 1 : 0],
             ];
@@ -33281,7 +36118,7 @@
             const rowAttrs = [["r", r + 1]];
             const row = sheet.rows[r] || {};
             // Always force our own row height
-            rowAttrs.push(["ht", convertHeight(row.size || DEFAULT_CELL_HEIGHT)], ["customHeight", 1], ["hidden", row.isHidden ? 1 : 0]);
+            rowAttrs.push(["ht", convertHeightToExcel(row.size || DEFAULT_CELL_HEIGHT)], ["customHeight", 1], ["hidden", row.isHidden ? 1 : 0]);
             const cellNodes = [];
             for (let c = 0; c < sheet.colNumber; c++) {
                 const xc = toXC(c, r);
@@ -33312,7 +36149,7 @@
         `);
                 }
             }
-            if (cellNodes.length) {
+            if (cellNodes.length || row.size !== DEFAULT_CELL_HEIGHT || row.isHidden) {
                 rowNodes.push(escapeXml /*xml*/ `
         <row ${formatAttributes(rowAttrs)}>
           ${joinXmlNodes(cellNodes)}
@@ -33435,8 +36272,8 @@
                 ["xmlns:r", RELATIONSHIP_NSR],
             ];
             const sheetFormatAttributes = [
-                ["defaultRowHeight", convertHeight(DEFAULT_CELL_HEIGHT)],
-                ["defaultColWidth", convertWidth(DEFAULT_CELL_WIDTH)],
+                ["defaultRowHeight", convertHeightToExcel(DEFAULT_CELL_HEIGHT)],
+                ["defaultColWidth", convertWidthToExcel(DEFAULT_CELL_WIDTH)],
             ];
             // Figures and Charts
             let drawingNode = escapeXml ``;
@@ -33577,7 +36414,7 @@
         Status[Status["Finalizing"] = 3] = "Finalizing";
     })(Status || (Status = {}));
     class Model extends EventBus {
-        constructor(data = {}, config = {}, stateUpdateMessages = [], uuidGenerator = new UuidGenerator()) {
+        constructor(data = {}, config = {}, stateUpdateMessages = [], uuidGenerator = new UuidGenerator(), verboseImport = true) {
             super();
             this.corePlugins = [];
             this.uiPlugins = [];
@@ -33664,7 +36501,7 @@
                 return DispatchResult.Success;
             };
             stateUpdateMessages = repairInitialMessages(data, stateUpdateMessages);
-            const workbookData = load(data);
+            const workbookData = load(data, verboseImport);
             this.state = new StateObserver();
             this.uuidGenerator = uuidGenerator;
             this.config = this.setupConfig(config);
@@ -34012,8 +36849,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-07-20T08:40:09.416Z';
-    exports.__info__.hash = '2420485';
+    exports.__info__.date = '2022-07-27T09:06:10.866Z';
+    exports.__info__.hash = '31e1671';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

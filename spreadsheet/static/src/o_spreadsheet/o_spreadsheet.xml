@@ -1355,11 +1355,12 @@
         </select>
       </div>
       <div class="o-section">
-        <div class="o-section-title">LegendPosition</div>
+        <div class="o-section-title">Legend position</div>
         <select
           t-att-value="props.definition.legendPosition"
           class="o-input o-type-selector"
           t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
+          <option value="none">None</option>
           <option value="top">Top</option>
           <option value="bottom">Bottom</option>
           <option value="left">Left</option>
@@ -1619,11 +1620,12 @@
         />
       </div>
       <div class="o-section">
-        <div class="o-section-title">LegendPosition</div>
+        <div class="o-section-title">Legend position</div>
         <select
           t-att-value="props.definition.legendPosition"
           class="o-input o-type-selector"
           t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
+          <option value="none">None</option>
           <option value="top">Top</option>
           <option value="bottom">Bottom</option>
           <option value="left">Left</option>
@@ -1717,11 +1719,12 @@
         </select>
       </div>
       <div class="o-section">
-        <div class="o-section-title">LegendPosition</div>
+        <div class="o-section-title">Legend position</div>
         <select
           t-att-value="props.definition.legendPosition"
           class="o-input o-type-selector"
           t-on-change="(ev) => this.updateSelect('legendPosition', ev)">
+          <option value="none">None</option>
           <option value="top">Top</option>
           <option value="bottom">Bottom</option>
           <option value="left">Left</option>

@@ -348,6 +348,7 @@ class AccountOnlineLink(models.Model):
             resp_json = self._fetch_odoo_fin('/proxy/v1/accounts', data)
             for acc in resp_json.get('accounts', []):
                 acc['account_online_link_id'] = self.id
+                acc.pop('currency_code', '')  # We now return the currency code along the other accounts' info. But this field won't exist before v16, so it will be unused until then.
                 accounts[str(acc.get('online_identifier'))] = acc
             if not resp_json.get('next_data'):
                 break

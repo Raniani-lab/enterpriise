@@ -784,8 +784,7 @@ QUnit.module('documents_kanban_tests.js', {
 
         await click(find(target, '.o_kanban_record', 'burp'));
 
-        target.querySelector('div[name=name] input').value = "foo";
-        triggerEvent(target.querySelector('div[name=name] input'), null, 'change');
+        await editInput(target, 'div[name=name] input', 'foo');
 
         await click(target, '.o_document_preview img');
         await nextTick();

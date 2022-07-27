@@ -14,7 +14,7 @@ import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 
 const { markup, onWillStart, reactive, useRef, useSubEnv } = owl;
 
-export const DocumentsControllerMixin = {
+export const DocumentsControllerMixin = (component) => class extends component {
     setup() {
         // The root state is shared between the different views to sync up selection
         if (this.props.globalState && this.props.globalState.documentsRootState) {
@@ -23,7 +23,7 @@ export const DocumentsControllerMixin = {
             }
             this.props.state.rootState = this.props.globalState.documentsRootState;
         }
-        this._super(...arguments);
+        super.setup(...arguments);
         const rootRef = useRef("root");
         this.uploadFileInputRef = useRef("uploadFileInput");
         this.orm = useService("orm");
@@ -68,7 +68,7 @@ export const DocumentsControllerMixin = {
                 (this.props.globalState && this.props.globalState.maxUploadSize) ||
                 (await this.orm.call("documents.document", "get_document_max_upload_limit"));
         });
-    },
+    }
 
     async onTriggerRule(ev) {
         const { documents, ruleId, preventReload } = ev.detail;
@@ -77,7 +77,7 @@ export const DocumentsControllerMixin = {
             ruleId,
             preventReload
         );
-    },
+    }
 
     async triggerRule(documentIds, ruleId, preventReload = false) {
         const result = await this.orm.call("documents.workflow.rule", "apply_actions", [[ruleId], documentIds]);
@@ -114,7 +114,7 @@ export const DocumentsControllerMixin = {
                 this.model.notify();
             }
         }
-    },
+    }
 
     async onOpenDocumentsPreview(ev) {
         const { documents, isPdfSplit, rules, hasPdfSplit } = ev.detail;
@@ -183,7 +183,7 @@ export const DocumentsControllerMixin = {
             documentListOwnerAsDocumentViewer: replace(documentList),
         });
         this.dialog.attachmentViewer.update({ hasPdfSplit: hasPdfSplit || true });
-    },
+    }
 
     async onFileInputChange(ev) {
         if (!ev.target.files.length) {
@@ -199,12 +199,12 @@ export const DocumentsControllerMixin = {
             }
         );
         ev.target.value = "";
-    },
+    }
 
     async onUploadFiles(ev) {
         const { files, folderId, recordId, context, params } = ev.detail;
         await this._uploadFiles(files, folderId, recordId, context, params);
-    },
+    }
 
     async _uploadFiles(files, folderId, recordId, context, params) {
         if (this.maxUploadSize && [...files].some((file) => file.size > this.maxUploadSize)) {
@@ -254,7 +254,7 @@ export const DocumentsControllerMixin = {
             context || this.props.context,
             params
         );
-    },
+    }
 
     onClickDocumentsRequest() {
         this.actionService.doAction("documents.action_request_form", {
@@ -269,7 +269,7 @@ export const DocumentsControllerMixin = {
                 this.model.notify();
             },
         });
-    },
+    }
 
     onClickDocumentsAddUrl() {
         this.actionService.doAction("documents.action_url_form", {
@@ -286,7 +286,7 @@ export const DocumentsControllerMixin = {
                 this.model.notify();
             },
         });
-    },
+    }
 
     async onClickShareDomain() {
         const action = await this.orm.call("documents.share", "open_share_popup", [
@@ -303,10 +303,10 @@ export const DocumentsControllerMixin = {
         this.actionService.doAction(action, {
             fullscreen: this.env.isSmall,
         });
-    },
+    }
 
     hasDisabledButtons() {
         const folder = this.env.searchModel.getSelectedFolder();
         return !folder.id || !folder.has_write_access;
-    },
+    }
 };

@@ -2,9 +2,9 @@
 
 const { useRef, useEffect } = owl;
 
-export const DocumentsRendererMixin = {
+export const DocumentsRendererMixin = (component) => class extends component {
     setup() {
-        this._super();
+        super.setup();
         this.root = useRef("root");
         useEffect(
             (el) => {
@@ -27,7 +27,7 @@ export const DocumentsRendererMixin = {
             },
             () => [this.root.el]
         );
-    },
+    }
 
     getDocumentsInspectorProps() {
         return {
@@ -36,11 +36,11 @@ export const DocumentsRendererMixin = {
             fileSize: this.props.list.fileSize,
             archInfo: this.props.archInfo,
         };
-    },
+    }
 
     setDropZone(documentDropZone) {
         this.documentDropZone = documentDropZone;
-    },
+    }
 
     onDragOver(ev) {
         if (!this.env.searchModel.getSelectedFolderId() || !ev.dataTransfer.types.includes("Files")) {
@@ -52,7 +52,7 @@ export const DocumentsRendererMixin = {
             this.root.el.classList.add("o_documents_drop_over");
         }
         this.documentDropZone.toggle(true);
-    },
+    }
 
     onDragLeave(ev) {
         ev.stopPropagation();
@@ -61,7 +61,7 @@ export const DocumentsRendererMixin = {
             this.root.el.classList.remove("o_documents_drop_over");
         }
         this.documentDropZone.toggle(false);
-    },
+    }
 
     async onDrop(ev) {
         if (!this.env.searchModel.getSelectedFolderId() || !ev.dataTransfer.types.includes("Files")) {
@@ -79,5 +79,5 @@ export const DocumentsRendererMixin = {
                 tagIds: this.env.searchModel.getSelectedTagIds(),
             },
         });
-    },
+    }
 };

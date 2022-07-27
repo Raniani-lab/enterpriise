@@ -4,7 +4,7 @@ import { sprintf } from "@web/core/utils/strings";
 import { _t } from "web.core";
 import { inspectorFields } from "./inspector/documents_inspector";
 
-export const DocumentsModelMixin = {
+export const DocumentsModelMixin = (component) => class extends component {
     /**
      * Add inspector fields to the list of fields to load
      * @override
@@ -53,28 +53,31 @@ export const DocumentsModelMixin = {
                 },
             },
         });
-        this._super(...arguments);
-    },
+        super.setup(...arguments);
+    }
 };
 
-export const DocumentsDataPointMixin = {
+export const DocumentsDataPointMixin = (component) => class extends component {
     /**
      * Keep selection
      * @override
      */
     setup(params, state) {
-        this._super(...arguments);
+        super.setup(...arguments);
         if (this.resModel === "documents.document") {
             this.originalSelection = state.selection;
         }
-    },
+    }
 
+    /**
+     * @override
+     */
     exportState() {
         return {
-            ...this._super(...arguments),
+            ...super.exportState(...arguments),
             selection: this.selection.map((rec) => rec.resId),
         };
-    },
+    }
 
     /**
      * Also load the total file size
@@ -85,7 +88,7 @@ export const DocumentsDataPointMixin = {
         if (selection && selection.length > 0) {
             this.originalSelection = selection.map((rec) => rec.resId);
         }
-        const res = await this._super(...arguments);
+        const res = await super.load(...arguments);
         if (this.resModel !== "documents.document") {
             return res;
         }
@@ -109,7 +112,7 @@ export const DocumentsDataPointMixin = {
         size /= 1000 * 1000; // in MB
         this.fileSize = Math.round(size * 100) / 100;
         return res;
-    },
+    }
 
     /**
      * Remove the confirmation dialog upon multiSave + keep selection.
@@ -134,20 +137,10 @@ export const DocumentsDataPointMixin = {
                 record.discard();
             }
         }
-    },
+    }
 };
 
-export const DocumentsRecordMixin = {
-    setup(params, state) {
-        this._super(...arguments);
-        // this.selected = state.selected || false;
-    },
-
-    exportState() {
-        const state = this._super(...arguments);
-        // state.selected = this.selected;
-        return state;
-    },
+export const DocumentsRecordMixin = (component) => class extends component {
 
     isViewable() {
         return (
@@ -173,7 +166,7 @@ export const DocumentsRecordMixin = {
             ].includes(this.data.mimetype) ||
             (this.data.url && this.data.url.includes("youtu"))
         );
-    },
+    }
 
     /**
      * Upon clicking on a record, we want to select it and unselect other records.
@@ -209,7 +202,7 @@ export const DocumentsRecordMixin = {
             thisSelected = undefined;
         }
         this.toggleSelection(thisSelected);
-    },
+    }
 
     /**
      * Called when starting to drag kanban/list records
@@ -250,12 +243,12 @@ export const DocumentsRecordMixin = {
         document.body.append(newElement);
         ev.dataTransfer.setDragImage(newElement, -5, -5);
         setTimeout(() => newElement.remove());
-    },
+    }
 
     /**
      * Get the current file upload for this record if there is any
      */
     getFileUpload() {
         return this.env.documentsStore.uploadByRecordId[this.resId];
-    },
+    }
 };

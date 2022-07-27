@@ -1,15 +1,12 @@
 /** @odoo-module **/
 
-import { patch } from "@web/core/utils/patch";
-
 import session from "web.session";
-import { KanbanModel, KanbanDynamicGroupList, KanbanDynamicRecordList } from "@web/views/kanban/kanban_model";
-import { StaticList } from "@web/views/relational_model";
+import { KanbanModel } from "@web/views/kanban/kanban_model";
 import { DocumentsModelMixin, DocumentsDataPointMixin, DocumentsRecordMixin } from "../documents_model_mixin";
 
-export class DocumentsKanbanModel extends KanbanModel {}
+export class DocumentsKanbanModel extends DocumentsModelMixin(KanbanModel) {}
 
-export class DocumentsKanbanRecord extends KanbanModel.Record {
+export class DocumentsKanbanRecord extends DocumentsRecordMixin(KanbanModel.Record) {
     async onClickPreview(ev) {
         if (this.data.type === "empty") {
             // In case the file is actually empty we open the input to replace the file
@@ -47,23 +44,8 @@ export class DocumentsKanbanRecord extends KanbanModel.Record {
         ev.target.value = "";
     }
 }
-class DocumentsKanbanGroup extends KanbanModel.Group {}
-class DocumentsKanbanDynamicGroupList extends KanbanDynamicGroupList {}
-class DocumentsKanbanDynamicRecordList extends KanbanDynamicRecordList {}
-class DocumentsKanbanStaticList extends StaticList {}
-patch(DocumentsKanbanRecord.prototype, "documents_kanban_kanban_record", DocumentsRecordMixin);
-patch(DocumentsKanbanGroup.prototype, "documents_kanban_kanban_group", DocumentsDataPointMixin);
-patch(DocumentsKanbanDynamicGroupList.prototype, "documents_kanban_kanban_dynamic_group_list", DocumentsDataPointMixin);
-patch(
-    DocumentsKanbanDynamicRecordList.prototype,
-    "documents_kanban_kanban_dynamic_record_list",
-    DocumentsDataPointMixin
-);
-patch(DocumentsKanbanStaticList.prototype, "documents_kanban_kanban_static_list", DocumentsDataPointMixin);
 DocumentsKanbanModel.Record = DocumentsKanbanRecord;
-DocumentsKanbanModel.Group = DocumentsKanbanGroup;
-DocumentsKanbanModel.DynamicGroupList = DocumentsKanbanDynamicGroupList;
-DocumentsKanbanModel.DynamicRecordList = DocumentsKanbanDynamicRecordList;
-DocumentsKanbanModel.StaticList = DocumentsKanbanStaticList;
-
-patch(DocumentsKanbanModel.prototype, "documents_kanban_model", DocumentsModelMixin);
+DocumentsKanbanModel.Group = class DocumentsKanbanGroup extends DocumentsDataPointMixin(KanbanModel.Group) {};
+DocumentsKanbanModel.DynamicGroupList = class DocumentsKanbanDynamicGroupList extends DocumentsDataPointMixin(KanbanModel.DynamicGroupList) {};
+DocumentsKanbanModel.DynamicRecordList = class DocumentsKanbanDynamicRecordList extends DocumentsDataPointMixin(KanbanModel.DynamicRecordList) {};
+DocumentsKanbanModel.StaticList = class DocumentsKanbanStaticList extends DocumentsDataPointMixin(KanbanModel.StaticList) {};

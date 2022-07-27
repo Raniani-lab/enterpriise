@@ -2,7 +2,6 @@
 
 import { ListRenderer } from "@web/views/list/list_renderer";
 
-import { patch } from "@web/core/utils/patch";
 import { DocumentsRendererMixin } from "../documents_renderer_mixin";
 import { DocumentsInspector } from "../inspector/documents_inspector";
 import { DocumentsFileUploadViewContainer } from "../helper/documents_file_upload";
@@ -12,7 +11,7 @@ import { DocumentsActionHelper } from "../helper/documents_action_helper";
 
 const { useEffect } = owl;
 
-export class DocumentsListRenderer extends ListRenderer {
+export class DocumentsListRenderer extends DocumentsRendererMixin(ListRenderer) {
     setup() {
         super.setup();
         useEffect(
@@ -64,7 +63,6 @@ export class DocumentsListRenderer extends ListRenderer {
         return result;
     }
 }
-patch(DocumentsListRenderer.prototype, "documents_list_renderer_mixin", DocumentsRendererMixin);
 
 // We need the actual event when clicking on a checkbox (to support multi select), only accept onClick
 export class DocumentsListRendererCheckBox extends CheckBox {

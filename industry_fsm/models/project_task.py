@@ -425,7 +425,7 @@ class Task(models.Model):
 
     def has_to_be_signed(self):
         self.ensure_one()
-        return self.allow_worksheets and not self.worksheet_signature
+        return self._is_fsm_report_available() and not self.worksheet_signature
 
     @api.model
     def get_views(self, views, options=None):

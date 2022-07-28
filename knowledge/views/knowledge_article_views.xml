@@ -17,7 +17,7 @@
                     <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0">
                         <div class="d-flex flex-column h-100">
                             <!-- Search bar -->
-                            <div id="knowledge_search_bar" class="d-flex align-items-center border bg-light rounded m-3 o_cursor_pointer" data-hotkey="f">
+                            <div id="knowledge_search_bar" class="d-flex align-items-center border bg-light rounded m-3 cursor-pointer" data-hotkey="f">
                                 <div class="flex-grow-1 px-2 py-1">Search an article...</div>
                                 <i class="oi oi-search pe-2" title="search"/>
                             </div>
@@ -55,10 +55,10 @@
                                                    class="o_breadcrumb_article_name o_input" name="name"/>
                                         </li>
                                     </ol>
-                                    <i class="fa fa-star o_toggle_favorite o_cursor_pointer"
+                                    <i class="fa fa-star o_toggle_favorite cursor-pointer"
                                        title="Remove from favorites"
                                        attrs="{'invisible': [('is_user_favorite', '=', False)]}"/>
-                                    <i class="fa fa-star-o o_toggle_favorite o_cursor_pointer"
+                                    <i class="fa fa-star-o o_toggle_favorite cursor-pointer"
                                        title="Add to favorites"
                                        attrs="{'invisible': [('is_user_favorite', '=', True)]}"/>
                                     <div attrs="{'invisible': ['|', ('is_locked', '=', False), ('user_has_write_access', '=', False)]}">

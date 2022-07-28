@@ -2,9 +2,6 @@
     .fc-widget-header {
         @include o-bg-color($o-brand-odoo, $important: false);
     }
-    .o_cursor_pointer {
-        cursor: pointer;
-    }
     .fc-more-cell {
         color: $o-enterprise-primary-color;
     }

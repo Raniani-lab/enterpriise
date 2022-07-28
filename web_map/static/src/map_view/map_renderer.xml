@@ -35,7 +35,7 @@
     </t>
 
     <t t-name="web_map.MapRenderer.PinListContainer" owl="1">
-        <div class="o-map-renderer--pin-list-container d-none d-lg-block col-2 o_cursor_default">
+        <div class="o-map-renderer--pin-list-container d-none d-lg-block col-2 cursor-default">
             <t t-if="!props.model.metaData.hideTitle">
                 <div class="o-map-renderer--pin-list-header o_pin_list_header">
                     <header>

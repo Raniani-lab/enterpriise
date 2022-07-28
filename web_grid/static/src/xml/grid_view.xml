@@ -35,7 +35,7 @@
     </t>
 
     <t t-name="web_grid.Table" owl="1">
-        <div class="o_view_grid table-responsive o_cursor_default">
+        <div class="o_view_grid table-responsive cursor-default">
             <table class="table table-hover table-sm table-striped">
                 <thead>
                     <tr>

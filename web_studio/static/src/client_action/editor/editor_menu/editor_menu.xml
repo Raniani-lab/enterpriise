@@ -9,7 +9,7 @@
                     t-as="crumb"
                     t-key="crumb.id"
                     t-on-click="crumb.handler"
-                    class="breadcrumb-item o_cursor_default"
+                    class="breadcrumb-item cursor-default"
                     t-att-class="{active: crumb_last, o_back_button: !crumb_last}"
                     t-esc="crumb.name"/>
             </ol>
@@ -22,13 +22,13 @@
                 o_web_studio_menu_undo_redo">
             <div class="o_web_studio_menu_before_undo_redo"/>
             <div t-attf-class="o_web_studio_undo {{ state.undo_available ? 'o_web_studio_active' : '' }}" t-on-click="() => { this.studio.bus.trigger('undo_clicked'); }">
-                <button class="btn o_web_studio_undo_redo_button o_cursor_default"><i class="fa fa-undo"/><span>Undo</span></button>
+                <button class="btn o_web_studio_undo_redo_button cursor-default"><i class="fa fa-undo"/><span>Undo</span></button>
             </div>
             <div class="o_web_studio_undo_redo_separator">
                 <div class="o_web_studio_undo_redo_separator_line"/>
             </div>
             <div t-attf-class="o_web_studio_redo  {{ state.redo_available ? 'o_web_studio_active' : '' }}" t-on-click="() => { this.studio.bus.trigger('redo_clicked'); }">
-                <button class="btn o_web_studio_undo_redo_button o_cursor_default"><i class="fa fa-repeat"/><span>Redo</span></button>
+                <button class="btn o_web_studio_undo_redo_button cursor-default"><i class="fa fa-repeat"/><span>Redo</span></button>
             </div>
         </div>
 

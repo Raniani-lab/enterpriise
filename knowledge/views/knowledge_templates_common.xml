@@ -56,12 +56,12 @@
                     <t t-else="">📄</t>
                 </a>
             </div>
-            <div class="o_article_name p-1 flex-grow-1 text-truncate o_cursor_pointer" t-out="article.name"/>
+            <div class="o_article_name p-1 flex-grow-1 text-truncate cursor-pointer" t-out="article.name"/>
             <button t-if="not hideChildren and not readonly" class="o_article_create btn p-1 opacity-75 opacity-100-hover" type="button">
                 <i class="fa fa-fw fa-plus" title="Create a nested article" />
             </button>
         </t>
-        <div class="o_article_name p-1 flex-grow-1 text-truncate o_cursor_pointer" t-else="">
+        <div class="o_article_name p-1 flex-grow-1 text-truncate cursor-pointer" t-else="">
             <a t-out="article.display_name" t-attf-href="/knowledge/article/{{article.id}}" class="text-decoration-none"/>
         </div>
     </template>

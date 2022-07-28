@@ -20,7 +20,7 @@
     <div
         class="o_dial_fold position-relative rounded-top-3 overflow-hidden text-bg-odoo">
         <div
-            class="o_dial_window_title d-flex align-items-center justify-content-between o_cursor_pointer">
+            class="o_dial_window_title d-flex align-items-center justify-content-between cursor-pointer">
             <t t-call="voip.DialingPanel.HeaderContent">
                 <a t-set="title" t-value="widget.title"/>
             </t>

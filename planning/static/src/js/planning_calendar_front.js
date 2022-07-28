@@ -107,7 +107,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 eventContent[i].classList.add('d-block', 'text-truncate');
             }
         }
-        calRender.el.classList.add('o_cursor_pointer');
+        calRender.el.classList.add('cursor-pointer');
         calRender.el.childNodes[0].classList.add('fw-bold');
     },
     formatDateAsBackend: function (date) {

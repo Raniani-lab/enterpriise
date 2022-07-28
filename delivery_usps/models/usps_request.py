@@ -35,7 +35,11 @@ class USPSRequest():
 
     def check_required_value(self, recipient, delivery_nature, shipper, order=False, picking=False):
         recipient_required_field = ['city', 'zip', 'country_id']
-        if not recipient.street and not recipient.street2:
+        # The street isn't required if we compute the rate with a partial delivery address in the
+        # express checkout flow.
+        if not recipient.street and not recipient.street2 and not recipient._context.get(
+            'express_checkout_partial_delivery_address', False
+        ):
             recipient_required_field.append('street')
         shipper_required_field = ['city', 'zip', 'phone', 'state_id', 'country_id']
         if not recipient.street and not recipient.street2:

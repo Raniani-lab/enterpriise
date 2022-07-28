@@ -188,7 +188,11 @@ class UPSRequest():
         res = [required_field[field] for field in required_field if field != 'phone' and not ship_to[field]]
         if ship_to.country_id.code in ('US', 'CA', 'IE') and not ship_to.state_id.code:
             res.append('State')
-        if not ship_to.street and not ship_to.street2:
+        # The street isn't required if we compute the rate with a partial delivery address in the
+        # express checkout flow.
+        if not ship_to.street and not ship_to.street2 and not ship_to._context.get(
+            'express_checkout_partial_delivery_address', False
+        ):
             res.append('Street')
         if ship_to.country_id.code != 'HK' and not ship_to.zip:
             res.append('ZIP code')
@@ -211,11 +215,19 @@ class UPSRequest():
             packages_without_weight = picking.move_line_ids.mapped('result_package_id').filtered(lambda p: not p.shipping_weight)
             if packages_without_weight:
                 return _('Packages %s do not have a positive shipping weight.', ', '.join(packages_without_weight.mapped('display_name')))
-        if not phone:
+        # The phone isn't required if we compute the rate with a partial delivery address in the
+        # express checkout flow.
+        if not phone and not ship_to._context.get(
+            'express_checkout_partial_delivery_address', False
+        ):
             res.append('Phone')
         if res:
             return _("The recipient address is missing or wrong.\n(Missing field(s) : %s)", ",".join(res))
-        if len(self._clean_phone_number(phone)) < 10:
+        # The phone isn't required if we compute the rate with a partial delivery address in the
+        # express checkout flow.
+        if not ship_to._context.get(
+            'express_checkout_partial_delivery_address', False
+        ) and len(self._clean_phone_number(phone)) < 10:
             return str(UPS_ERROR_MAP.get('120213'))
         return False
 

@@ -44,7 +44,11 @@ class BpostRequest():
         recipient_required_fields = ['city', 'country_id']
         if recipient.country_id.code not in COUNTRIES_WITHOUT_POSTCODES:
             recipient_required_fields.append('zip')
-        if not recipient.street and not recipient.street2:
+        # The street isn't required if we compute the rate with a partial delivery address in the
+        # express checkout flow.
+        if not recipient.street and not recipient.street2 and not recipient._context.get(
+            'express_checkout_partial_delivery_address', False
+        ):
             recipient_required_fields.append('street')
         shipper_required_fields = ['city', 'zip', 'country_id']
         if not shipper.street and not shipper.street2:

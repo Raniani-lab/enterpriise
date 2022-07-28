@@ -262,7 +262,11 @@ class DHLProvider():
         if not carrier.dhl_account_number:
             return _("DHL account number is missing, please modify your delivery method settings.")
 
-        if not recipient.street and not recipient.street2:
+        # The street isn't required if we compute the rate with a partial delivery address in the
+        # express checkout flow.
+        if not recipient.street and not recipient.street2 and not recipient._context.get(
+            'express_checkout_partial_delivery_address', False
+        ):
             recipient_required_field.append('street')
         res = [field for field in recipient_required_field if not recipient[field]]
         if res:

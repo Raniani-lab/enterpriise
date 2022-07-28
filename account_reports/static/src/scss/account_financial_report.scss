@@ -76,6 +76,8 @@
 }
 
 .o_account_reports_page {
+    // Define direction attribute here so when rtlcss preprocessor run, it converts it to rtl
+    direction: ltr;
     background-color: $o-view-background-color;
     color: $o-main-text-color;
 

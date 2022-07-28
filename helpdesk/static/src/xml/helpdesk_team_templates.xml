@@ -13,7 +13,7 @@
                     <div class="ribbon ribbon-top-right mt-n4">
                         <span class="o_recruitment_purple h-auto ms-3 p-2 bg-odoo">Sample</span>
                     </div>
-                    <t t-set="demo_class" t-value="' o_demo o_debounce_disabled cursor-default '"/>
+                    <t t-set="demo_class" t-value="' o_demo pe-none cursor-default '"/>
 
                     <t t-set="widget.values['my_all']['count']" t-value="10"/>
                     <t t-set="widget.values['my_high']['count']" t-value="3"/>

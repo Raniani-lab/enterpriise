@@ -15,7 +15,7 @@
                 <field name="allow_material" invisible="1"/>
             </field>
             <xpath expr="//button[@name='action_project_sharing_view_parent_task']" position="before">
-                <button class="oe_stat_button o_debounce_disabled" name="action_fsm_view_material" type="object" icon="fa-cart-plus" special="cancel"
+                <button class="oe_stat_button pe-none" name="action_fsm_view_material" type="object" icon="fa-cart-plus" special="cancel"
                         attrs="{'invisible': ['|', '|', ('partner_id', '=', False), ('allow_material', '=', False), ('material_line_product_count', '=', 0)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">

@@ -31,7 +31,7 @@
                     </div>
                 </button>
                 <!-- Non Clickable -->
-                <button icon="fa-clock-o" disabled="1" class="o_debounce_disabled"
+                <button icon="fa-clock-o" disabled="1" class="pe-none"
                     attrs="{'invisible': ['|', '|', '|', '|', ('can_open_timesheets', '=', True), ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">

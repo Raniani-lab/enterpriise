@@ -51,6 +51,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             'acc_type': 'iban',
             'partner_id': cls.partner_a.id,
             'acc_number': 'BE08429863697813',
+            'allow_out_payment': True,
             'bank_id': cls.bank_bnp.id,
             'currency_id': cls.env.ref('base.USD').id,
         })
@@ -58,6 +59,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             'acc_type': 'bank',
             'partner_id': cls.partner_b.id,
             'acc_number': '1234567890',
+            'allow_out_payment': True,
             'bank_name': 'Mock & Co',
         })
 

@@ -268,6 +268,16 @@ class AccountBatchPayment(models.Model):
                 'help': _("Set payments state to \"posted\".")
             })
 
+        if self.batch_type == 'outbound':
+            not_allowed_payments = self.payment_ids.filtered(lambda x: x.partner_bank_id and not x.partner_bank_id.allow_out_payment)
+            if not_allowed_payments:
+                rslt.append({
+                    'code': 'out_payment_not_allowed',
+                    'title': _("Some recipient accounts do not allow out payments."),
+                    'records': not_allowed_payments,
+                    'help': _("Target another recipient account or allow sending money to the current one.")
+                })
+
         sent_payments = self.payment_ids.filtered(lambda x: x.is_move_sent)
         if sent_payments:
             rslt.append({

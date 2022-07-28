@@ -2,15 +2,58 @@
 
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import { LoadingDataError } from "../../o_spreadsheet/errors";
+import { getFirstListFunction } from "../list_helpers";
+
+const { astToFormula } = spreadsheet;
+
 /**
  * @typedef {import("./list_plugin").SpreadsheetList} SpreadsheetList
  */
 
 export default class ListStructurePlugin extends spreadsheet.UIPlugin {
-    constructor(getters, history, dispatch, config) {
-        super(getters, history, dispatch, config);
+    constructor(getters, history, dispatch, config, selection) {
+        super(getters, history, dispatch, config, selection);
         /** @type {string} */
         this.selectedListId = undefined;
+        this.selection.observe(this, {
+            handleEvent: this.handleEvent.bind(this),
+        });
+        this.env = config.evalContext.env;
+    }
+
+    handleEvent(event) {
+        switch (event.type) {
+            case "ZonesSelected":
+                if (this.getters.isDashboard()) {
+                    const sheetId = this.getters.getActiveSheetId();
+                    const { col, row } = event.anchor.cell;
+                    const cell = this.getters.getCell(sheetId, col, row);
+                    if (cell && cell.content.startsWith("=ODOO.LIST(")) {
+                        const { args } = getFirstListFunction(cell.content);
+                        const evaluatedArgs = args
+                            .map(astToFormula)
+                            .map((arg) => this.getters.evaluateFormula(arg));
+                        if (evaluatedArgs.length < 3) {
+                            return;
+                        }
+                        const listId = this.getters.getListIdFromPosition(sheetId, col, row);
+                        const { model } = this.getters.getListDefinition(listId);
+                        const listModel = this.getters.getSpreadsheetListModel(listId);
+                        const recordId = listModel.getIdFromPosition(evaluatedArgs[1] - 1);
+                        if (!recordId) {
+                            return;
+                        }
+                        this.env.services.action.doAction({
+                            type: "ir.actions.act_window",
+                            res_model: model,
+                            res_id: recordId,
+                            views: [[false, "form"]],
+                            view_mode: "form",
+                        });
+                    }
+                }
+                break;
+        }
     }
 
     /**

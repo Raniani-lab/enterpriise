@@ -33,5 +33,5 @@ export const SEE_RECORD_LIST = async (env) => {
 
 export const SEE_RECORD_LIST_VISIBLE = (env) => {
     const cell = env.model.getters.getActiveCell();
-    return cell && cell.evaluated.value !== "" && getNumberOfListFormulas(cell.content) === 1;
+    return cell && getNumberOfListFormulas(cell.content) === 1;
 };

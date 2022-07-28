@@ -5,9 +5,10 @@ import { nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { createModelWithDataSource, waitForDataSourcesLoaded } from "../utils/model";
-import { setCellContent } from "../utils/commands";
+import { selectCell, setCellContent } from "../utils/commands";
 import { getCell, getCellContent, getCellFormula, getCells, getCellValue } from "../utils/getters";
 import { createSpreadsheetWithList } from "../utils/list";
+import { registry } from "@web/core/registry";
 
 QUnit.module("spreadsheet > list plugin", {}, () => {
     QUnit.test("List export", async (assert) => {
@@ -397,4 +398,50 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         });
         assert.deepEqual(model.exportData().lists["1"].domain, [["foo", "in", [55]]]);
     });
+
+    QUnit.test("Can see record of a list in dashboard mode", async function (assert) {
+        const fakeActionService = {
+            dependencies: [],
+            start: (env) => ({
+                doAction: (params) => {
+                    assert.step(params.res_model);
+                    assert.step(params.res_id.toString());
+                },
+            }),
+        };
+        registry.category("services").add("action", fakeActionService);
+        const { model } = await createSpreadsheetWithList();
+        model.updateMode("dashboard");
+        const listId = model.getters.getListIds()[0];
+        const listModel = model.getters.getSpreadsheetListModel(listId);
+        selectCell(model, "A2");
+        assert.verifySteps(["partner", listModel.getIdFromPosition(0).toString()]);
+    });
+
+    QUnit.test(
+        "Cannot see record of a list in dashboard mode if wrong list formula",
+        async function (assert) {
+            const fakeActionService = {
+                dependencies: [],
+                start: (env) => ({
+                    doAction: (params) => {
+                        assert.step(params.res_model);
+                        assert.step(params.res_id.toString());
+                    },
+                }),
+            };
+            registry.category("services").add("action", fakeActionService);
+            const { model } = await createSpreadsheetWithList();
+            const sheetId = model.getters.getActiveSheetId();
+            model.dispatch("UPDATE_CELL", {
+                col: 0,
+                row: 1,
+                sheetId,
+                content: "=ODOO.LIST()",
+            });
+            model.updateMode("dashboard");
+            selectCell(model, "A2");
+            assert.verifySteps([]);
+        }
+    );
 });

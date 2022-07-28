@@ -94,7 +94,7 @@ class Document(models.Model):
         values_range = OrderedDict()
         for record in records:
             record_id = record['id']
-            if record['parent_folder_id'] not in available_folder_ids:
+            if record['parent_folder_id'] and record['parent_folder_id'][0] not in available_folder_ids:
                 record['parent_folder_id'] = False
             value = record['parent_folder_id']
             record['parent_folder_id'] = value and value[0]

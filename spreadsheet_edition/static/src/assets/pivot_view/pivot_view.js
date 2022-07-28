@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { PivotController } from "@web/views/pivot/pivot_controller";
-import { pivotView } from "@web/views/pivot/pivot_view";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { removeContextUserInfo, PERIODS } from "@spreadsheet_edition/assets/helpers";
@@ -54,5 +53,3 @@ patch(PivotController.prototype, "pivot_spreadsheet", {
         this.env.services.dialog.add(SpreadsheetSelectorDialog, params);
     },
 });
-
-pivotView.buttonTemplate = "spreadsheet_edition.PivotView.buttons";

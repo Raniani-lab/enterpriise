@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <t t-name="spreadsheet_edition.PivotView.buttons" t-inherit="web.PivotView.Buttons" t-inherit-mode="primary" owl="1">
+    <t t-name="spreadsheet_edition.PivotView.buttons" t-inherit="web.PivotView.Buttons" t-inherit-mode="extension" owl="1">
         <xpath expr="//button[hasclass('o_pivot_flip_button')]" position="before">
             <button t-if="canInsertPivot and env.isSmall"
                     class="btn btn-secondary fa fa-file-text-o o_pivot_add_spreadsheet"

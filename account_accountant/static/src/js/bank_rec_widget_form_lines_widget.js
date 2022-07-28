@@ -81,13 +81,14 @@ export class BankRecWidgetFormLinesWidget extends AbstractFieldOwl{
         }});
     }
 
-    _onClickExpandCollapseExtraNote(ev){
+    _onClickExpandCollapseExtraNote(ev) {
         ev.stopPropagation();
-        let classList = ev.currentTarget.classList;
-        let foldedClass = "text-wrap";
-        if(classList.contains(foldedClass)){
+        let classList = ev.currentTarget.querySelector(".extra-notes").classList;
+        let foldedClass = "d-none";
+
+        if (classList.contains(foldedClass)) {
             classList.remove(foldedClass);
-        }else{
+        } else {
             classList.add(foldedClass);
         }
     }

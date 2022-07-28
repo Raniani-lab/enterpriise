@@ -146,16 +146,15 @@
                                         <t t-if="line.flag.value == 'liquidity'">
                                             <td class="o_data_cell o_field_cell o_list_char"
                                                 field="name"
-                                                t-att-title="line.name.value"
                                                 t-on-click="_onClickExpandCollapseExtraNote">
                                                 <div class="o_bank_rec_widget_lines_widget_label">
-                                                    <span t-att-title="line.name.value"
-                                                          t-esc="line.name.value"/>
                                                     <t t-if="data.extra_notes">
+                                                        <span t-att-title="data.extra_notes" t-esc="line.name.value"/>
                                                         <br/>
-                                                        <span class="text-muted"
-                                                              t-att-title="data.extra_notes"
-                                                              t-esc="data.extra_notes"/>
+                                                        <span class="text-muted extra-notes d-none" t-esc="data.extra_notes"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <span t-att-title="line.name.value" t-esc="line.name.value"/>
                                                     </t>
                                                 </div>
                                             </td>

@@ -24,6 +24,8 @@ class PrintBatchPayment(models.AbstractModel):
             'date': batch.date,
             'batch_name': batch.name,
             'journal_name': batch.journal_id.name,
+            'company_name': batch.journal_id.company_id.name,
+            'bank_account_number': batch.journal_id.bank_acc_number,
             'payments': payments,
             'currency': batch.currency_id,
             'total_amount': batch.amount if idx == len(payment_slices) - 1 else 0,

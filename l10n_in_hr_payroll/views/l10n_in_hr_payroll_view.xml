@@ -80,7 +80,7 @@
                         <div class="oe_right">
                             <field name="state" widget="statusbar" nolabel="1" statusbar_visible="draft"/>
                         </div>
-                        <div class="oe_clear"/>
+                        <div class="clearfix"/>
                     </header>
                     <sheet>
                         <group>

@@ -91,7 +91,7 @@
                                 <label for="amount_total" />
                                 <field name="amount_total" nolabel="1" widget="monetary"/>
                             </group>
-                            <div class="oe_clear"/>
+                            <div class="clearfix"/>
                         </page>
                     </notebook>
                 </sheet>

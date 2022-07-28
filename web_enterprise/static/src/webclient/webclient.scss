@@ -134,10 +134,6 @@ b, strong {
   font-weight: $font-weight-bold;
 }
 
-.oe_clear {
-  clear: both;
-}
-
 //== Titles
 @include media-breakpoint-down(md) {
   h1 {

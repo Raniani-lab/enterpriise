@@ -104,7 +104,7 @@
                                     <field name="employee_id" widget="many2one_avatar_employee"/>
                                 </div>
                             </div>
-                            <div class="oe_clear"></div>
+                            <div class="clearfix"></div>
                         </div>
                     </t>
                 </templates>

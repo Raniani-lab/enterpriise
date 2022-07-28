@@ -141,7 +141,7 @@
                                     </div>
                                     <field name="amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"/>
                                 </group>
-                                <div class="oe_clear"/>
+                                <div class="clearfix"/>
                             </page>
                             <page name="extra" string="Extra Info">
                                 <group string="Fiscal Data Module information">

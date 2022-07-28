@@ -87,7 +87,7 @@
                 <UOMTable t-if="uoms">
                     <UOMTableEntry t-foreach="uoms" t-as="uom">
                         <UnitOfMeasure t-esc="uom.name[:9]"/>
-                        <Description t-esc="uom.uom_type[:256]"/>
+                        <Description t-esc="uom.category_id.name[:256]"/>
                     </UOMTableEntry>
                 </UOMTable>
                 <Products t-if="product_vals_list">

@@ -102,7 +102,8 @@ class StockPicking(models.Model):
             "records": {
                 "stock.picking": self.read(self._get_fields_stock_barcode(), load=False),
                 "stock.move.line": move_lines.read(move_lines._get_fields_stock_barcode(), load=False),
-                "product.product": products.with_context(partner_id=self.partner_id.id).read(products._get_fields_stock_barcode(), load=False),
+                 # `self` can be a record set (e.g.: a picking batch), set only the first partner in the context.
+                "product.product": products.with_context(partner_id=self[:1].partner_id.id).read(products._get_fields_stock_barcode(), load=False),
                 "product.packaging": packagings.read(packagings._get_fields_stock_barcode(), load=False),
                 "res.partner": owners.read(owners._get_fields_stock_barcode(), load=False),
                 "stock.location": locations.read(locations._get_fields_stock_barcode(), load=False),

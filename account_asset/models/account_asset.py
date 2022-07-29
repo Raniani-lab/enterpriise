@@ -370,6 +370,7 @@ class AccountAsset(models.Model):
             self.method_progress_factor = model.method_progress_factor
             self.prorata_computation_type = model.prorata_computation_type
             self.analytic_distribution = model.analytic_distribution or self.analytic_distribution
+            self.account_asset_id = model.account_asset_id
             self.account_depreciation_id = model.account_depreciation_id
             self.account_depreciation_expense_id = model.account_depreciation_expense_id
             self.journal_id = model.journal_id

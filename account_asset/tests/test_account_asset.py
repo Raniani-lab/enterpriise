@@ -2443,3 +2443,73 @@ class TestAccountAsset(TestAccountReportsCommon):
         """ Test that we can archive an asset model. """
         self.account_asset_model_fixedassets.active = False
         self.assertFalse(self.account_asset_model_fixedassets.active)
+
+    def test_asset_onchange_model(self):
+        """
+        Test the changes of account_asset_id when changing asset models
+        """
+        account_asset = self.company_data['default_account_assets'].copy()
+        asset_model = self.env['account.asset'].create({
+            'name': 'test model',
+            'state': 'model',
+            'active': True,
+            'asset_type': 'purchase',
+            'method': 'linear',
+            'method_number': 5,
+            'method_period': '1',
+            'prorata_computation_type': 'none',
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'account_asset_id': account_asset.id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+        })
+
+        asset_model_with_account = self.env['account.asset'].create({
+            'name': 'test model with account',
+            'state': 'model',
+            'active': True,
+            'asset_type': 'purchase',
+            'method': 'linear',
+            'method_number': 5,
+            'method_period': '1',
+            'prorata_computation_type': 'none',
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+        })
+
+        asset_form = Form(self.env['account.asset'].with_context(asset_type='purchase'))
+        asset_form.name = "Test Asset"
+        asset_form.original_value = 10000
+        asset_form.model_id = asset_model
+
+        self.assertEqual(asset_form.account_asset_id, account_asset, "The account_asset_id should be the one from the model")
+
+        asset_form.model_id = asset_model_with_account
+        self.assertEqual(asset_form.account_asset_id, self.company_data['default_account_assets'], "The account_asset_id should be computed from the depreciation account from the model")
+
+        other_account_on_bill = self.company_data['default_account_assets'].copy()
+        other_account_on_bill.create_asset = 'draft'
+        other_account_on_bill.asset_model = asset_model
+        invoice = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'invoice_date': '2020-12-31',
+            'partner_id': self.ref("base.res_partner_12"),
+            'invoice_line_ids': [
+                (0, 0, {
+                    'name': 'A beautiful small bomb',
+                    'account_id': other_account_on_bill.id,
+                    'price_unit': 200.0,
+                    'quantity': 1,
+                }),
+            ],
+        })
+        invoice.action_post()
+
+        self.assertEqual(invoice.asset_ids.account_asset_id, other_account_on_bill,
+                         "The account should be the one from the bill, not the model")
+
+        asset_form = Form(invoice.asset_ids)
+        asset_form.model_id = asset_model
+
+        self.assertEqual(asset_form.account_asset_id, other_account_on_bill, "We keep the account from the bill")

@@ -105,9 +105,9 @@ class AccountMove(models.Model):
              "'NumCertificadoOrigen'.")
 
     # ==== CFDI attachment fields ====
-    l10n_mx_edi_cfdi_uuid = fields.Char(string='Fiscal Folio', copy=False, readonly=True,
+    l10n_mx_edi_cfdi_uuid = fields.Char(string='Fiscal Folio', copy=False, readonly=True, store=True,
         help='Folio in electronic invoice, is returned by SAT when send to stamp.',
-        compute='_compute_cfdi_values')
+        compute='_compute_l10n_mx_edi_cfdi_uuid')
     l10n_mx_edi_cfdi_supplier_rfc = fields.Char(string='Supplier RFC', copy=False, readonly=True,
         help='The supplier tax identification number.',
         compute='_compute_cfdi_values')
@@ -140,9 +140,7 @@ class AccountMove(models.Model):
 
     def _get_l10n_mx_edi_signed_edi_document(self):
         self.ensure_one()
-
-        cfdi_3_3_edi = self.env.ref('l10n_mx_edi.edi_cfdi_3_3')
-        return self.edi_document_ids.filtered(lambda document: document.edi_format_id == cfdi_3_3_edi and document.attachment_id)
+        return self.edi_document_ids.filtered(lambda document: document.edi_format_id.code == 'cfdi_3_3' and document.attachment_id)
 
     def _get_l10n_mx_edi_issued_address(self):
         self.ensure_one()
@@ -171,17 +169,38 @@ class AccountMove(models.Model):
             cadena_root = etree.parse(tools.file_open(template))
             return str(etree.XSLT(cadena_root)(cfdi_node))
 
+        def is_purchase_move(move):
+            return move.move_type in move.get_purchase_types() \
+                    or move.payment_id.reconciled_bill_ids
+
         # Find a signed cfdi.
         if not cfdi_data:
             signed_edi = self._get_l10n_mx_edi_signed_edi_document()
             if signed_edi:
                 cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
 
+            # For vendor bills, the CFDI XML must be posted in the chatter as an attachment.
+            elif is_purchase_move(self) and self.country_code == 'MX' and not self.l10n_mx_edi_cfdi_request:
+                attachments = self.attachment_ids.filtered(lambda x: x.mimetype == 'application/xml')
+                if attachments:
+                    attachment = sorted(attachments, key=lambda x: x.create_date)[-1]
+                    cfdi_data = base64.decodebytes(attachment.with_context(bin_size=False).datas)
+
         # Nothing to decode.
         if not cfdi_data:
             return {}
 
-        cfdi_node = fromstring(cfdi_data)
+        try:
+            cfdi_node = fromstring(cfdi_data)
+            emisor_node = cfdi_node.Emisor
+            receptor_node = cfdi_node.Receptor
+        except etree.XMLSyntaxError:
+            # Not an xml
+            return {}
+        except AttributeError:
+            # Not a CFDI
+            return {}
+
         tfd_node = get_node(
             cfdi_node,
             'tfd:TimbreFiscalDigital[1]',
@@ -190,11 +209,11 @@ class AccountMove(models.Model):
 
         return {
             'uuid': ({} if tfd_node is None else tfd_node).get('UUID'),
-            'supplier_rfc': cfdi_node.Emisor.get('Rfc', cfdi_node.Emisor.get('rfc')),
-            'customer_rfc': cfdi_node.Receptor.get('Rfc', cfdi_node.Receptor.get('rfc')),
+            'supplier_rfc': emisor_node.get('Rfc', emisor_node.get('rfc')),
+            'customer_rfc': receptor_node.get('Rfc', receptor_node.get('rfc')),
             'amount_total': cfdi_node.get('Total', cfdi_node.get('total')),
             'cfdi_node': cfdi_node,
-            'usage': cfdi_node.Receptor.get('UsoCFDI'),
+            'usage': receptor_node.get('UsoCFDI'),
             'payment_method': cfdi_node.get('formaDePago', cfdi_node.get('MetodoPago')),
             'bank_account': cfdi_node.get('NumCtaPago'),
             'sello': cfdi_node.get('sello', cfdi_node.get('Sello', 'No identificado')),
@@ -203,7 +222,7 @@ class AccountMove(models.Model):
             'certificate_number': cfdi_node.get('noCertificado', cfdi_node.get('NoCertificado')),
             'certificate_sat_number': tfd_node is not None and tfd_node.get('NoCertificadoSAT'),
             'expedition': cfdi_node.get('LugarExpedicion'),
-            'fiscal_regime': cfdi_node.Emisor.get('RegimenFiscal', ''),
+            'fiscal_regime': emisor_node.get('RegimenFiscal', ''),
             'emission_date_str': cfdi_node.get('fecha', cfdi_node.get('Fecha', '')).replace('T', ' '),
             'stamp_date': tfd_node is not None and tfd_node.get('FechaTimbrado', '').replace('T', ' '),
         }
@@ -322,14 +341,20 @@ class AccountMove(models.Model):
             else:
                 move.l10n_mx_edi_cfdi_request = False
 
+    @api.depends('edi_document_ids', 'edi_document_ids.state', 'attachment_ids')
+    def _compute_l10n_mx_edi_cfdi_uuid(self):
+        '''Fill the invoice fields from the cfdi values.
+        '''
+        for move in self:
+            cfdi_infos = move._l10n_mx_edi_decode_cfdi()
+            move.l10n_mx_edi_cfdi_uuid = cfdi_infos.get('uuid')
+
     @api.depends('edi_document_ids')
     def _compute_cfdi_values(self):
         '''Fill the invoice fields from the cfdi values.
         '''
         for move in self:
             cfdi_infos = move._l10n_mx_edi_decode_cfdi()
-
-            move.l10n_mx_edi_cfdi_uuid = cfdi_infos.get('uuid')
             move.l10n_mx_edi_cfdi_supplier_rfc = cfdi_infos.get('supplier_rfc')
             move.l10n_mx_edi_cfdi_customer_rfc = cfdi_infos.get('customer_rfc')
             move.l10n_mx_edi_cfdi_amount = cfdi_infos.get('amount_total')

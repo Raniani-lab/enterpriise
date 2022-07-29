@@ -13,6 +13,7 @@
     "license": "OEEL-1",
     "depends": [
         "l10n_mx_reports",
+        "l10n_mx_edi",
     ],
     "data": [
         "security/ir.model.access.csv",

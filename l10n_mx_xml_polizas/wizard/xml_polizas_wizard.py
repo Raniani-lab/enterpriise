@@ -178,6 +178,113 @@ class XmlPolizasExportWizard(models.TransientModel):
     #
     # ------------------------------
 
+    def _do_query(self, ledger, options):
+        """ Execute the query
+        """
+        tables, where_clause, where_params = ledger._query_get(options, domain=False, date_scope='strict_range')
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        query = f'''
+            SELECT
+                account_move_line.id,
+                account_move_line.name,
+                account_move_line.date,
+                account_move_line.currency_id,
+                account_move_line.amount_currency,
+                ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
+                ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
+                ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
+                company.currency_id           AS company_currency_id,
+                account.code                  AS account_code,
+                account.name                  AS account_name,
+                journal.name                  AS journal_name,
+                currency.name                 AS currency_name,
+                move.id                       AS move_id,
+                move.name                     AS move_name,
+                move.l10n_mx_edi_cfdi_uuid    AS l10n_mx_edi_cfdi_uuid,
+                partner.vat                   AS partner_vat,
+                country.code                  AS country_code
+            FROM {tables}
+            LEFT JOIN account_move move          ON move.id = account_move_line.move_id
+            LEFT JOIN {ct_query}                 ON currency_table.company_id = account_move_line.company_id
+            LEFT JOIN res_company company        ON company.id = account_move_line.company_id
+            LEFT JOIN account_account account    ON account.id = account_move_line.account_id
+            LEFT JOIN account_journal journal    ON journal.id = account_move_line.journal_id
+            LEFT JOIN res_currency currency      ON currency.id = account_move_line.currency_id
+            LEFT JOIN res_partner partner        ON account_move_line.partner_id = partner.id
+            LEFT JOIN res_country country        ON partner.country_id = country.id
+            WHERE {where_clause}
+            ORDER BY account_move_line.date, account_move_line.id
+        '''
+        self.env.cr.execute(query, where_params)
+
+        result = self._cr.dictfetchall()
+
+        # accunt_name and journal_name will be translatable in case l10n_multilang is installed (and the cursor will then return a dict instead of string)
+        if self.env['account.journal']._fields['name'].translate:
+            result = [
+                {
+                    **res,
+                    'journal_name': res['journal_name'].get(self.env.user.lang, res['journal_name']['en_US']),
+                    'account_name': res['account_name'].get(self.env.user.lang, res['account_name']['en_US']),
+                } for res in result
+            ]
+
+        return result
+
+    def _get_move_export_data(self, accounts_results):
+        """ Parse db results in a structure feasible for xml report
+        """
+        move_conversion_rate = {}
+        move_data = MoveExportData()
+
+        for line in accounts_results:
+            data = {
+                'line_label': textwrap.shorten(
+                    line['journal_name'] + ((' - ' + line['name']) if line['name'] else ''),
+                    width=200),
+                'account_name': line['account_name'],
+                'account_code': line['account_code'],
+                'credit': '%.2f' % line['credit'],
+                'debit': '%.2f' % line['debit'],
+            }
+            if line.get('l10n_mx_edi_cfdi_uuid'):
+                foreign_currency = line['currency_id'] and line['currency_id'] != line['company_currency_id']
+                amount_total = line['amount_currency'] if foreign_currency else line['balance']
+                if line['country_code'] != 'MX':
+                    partner_rfc = 'XEXX010101000'
+                elif line['partner_vat']:
+                    partner_rfc = line['partner_vat'].strip()
+                elif line['country_code'] in (False, 'MX'):
+                    partner_rfc = 'XAXX010101000'
+                else:
+                    partner_rfc = 'XEXX010101000'
+
+                currency_name = False
+                currency_conversion_rate = False
+                if foreign_currency:
+                    # calculate conversion rate just once per move so we don't see
+                    # rounding differences between lines
+                    currency_name = line['currency_name']
+                    currency_conversion_rate = move_conversion_rate.get(line['move_id'])
+                    if not currency_conversion_rate:
+                        amount_total_signed = line['balance']
+                        if amount_total:
+                            currency_conversion_rate = abs(amount_total_signed) / abs(amount_total)
+                        else:
+                            currency_conversion_rate = 1.0
+                        currency_conversion_rate = '%.*f' % (5, currency_conversion_rate)
+                        move_conversion_rate[line['move_id']] = currency_conversion_rate
+
+                data.update({
+                    'uuid': line['l10n_mx_edi_cfdi_uuid'],
+                    'partner_rfc': partner_rfc,
+                    'currency_name': currency_name,
+                    'currency_conversion_rate': currency_conversion_rate,
+                    'amount_total': '%.2f' % amount_total,
+                })
+            move_data.append(line['date'], line['journal_name'], line['move_name'], data)
+        return move_data
+
     def _get_moves_data(self):
         """ Retrieve the moves data to be rendered with the template """
 
@@ -199,21 +306,10 @@ class XmlPolizasExportWizard(models.TransientModel):
         options.pop('multi_company', None)
 
         # Retrieve --------------------------------
-        aml_query, aml_query_params = self.env['account.general.ledger.report.handler']._get_query_amls(ledger, options, None)
-        self._cr.execute(aml_query, aml_query_params)
+        accounts_results = self._do_query(ledger, options)
 
         # Group data for (year, month / move)
-        move_data = MoveExportData()
-        for line in self._cr.dictfetchall():
-            move_data.append(line['date'], line['journal_name'], line['move_name'], {
-                'line_label': textwrap.shorten(
-                    line['journal_name'] + ((' - ' + line['name']) if line['name'] else ''),
-                    width=200),
-                'account_name': line['account_name'],
-                'account_code': line['account_code'],
-                'credit': '%.2f' % line['credit'],
-                'debit': '%.2f' % line['debit']
-            })
+        move_data = self._get_move_export_data(accounts_results)
 
         # Sort the lines by name, to have a consistent order
         for period, moves in move_data.items():

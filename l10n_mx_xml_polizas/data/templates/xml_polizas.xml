@@ -20,7 +20,16 @@
             t-att-DesCta="line['account_name']"
             t-att-NumCta="line['account_code']" 
             t-att-Haber="line['credit']"
-            t-att-Debe="line['debit']" /></t>
+            t-att-Debe="line['debit']">
+            <PLZ:CompNal
+                t-if="line.get('uuid')"
+                t-att-UUID_CFDI="line['uuid']"
+                t-att-RFC="line['partner_rfc']"
+                t-att-MontoTotal="line['amount_total']"
+                t-att-Moneda="line['currency_name']"
+                t-att-TipCamb="line['currency_conversion_rate']"/>
+          </PLZ:Transaccion>
+      </t>
     </PLZ:Poliza></t>
 </PLZ:Polizas>
 </template>

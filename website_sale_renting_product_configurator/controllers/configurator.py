@@ -16,8 +16,8 @@ class RentingConfiguratorController(WebsiteSaleProductConfiguratorController):
         This route is called in JS by appending _website to the base route.
         """
         if request.env.context.get('start_date') and request.env.context.get('end_date'):
-            context = {**request.env.context}
-            context['start_date'] = parse_date(context.get('start_date'))
-            context['end_date'] = parse_date(context.get('end_date'))
-            request.env.context = frozendict(context)
+            request.update_context(
+                start_date=parse_date(request.env.context['start_date']),
+                end_date=parse_date(request.env.context['end_date']),
+            )
         return super().show_advanced_configurator_website(*args, **kw)

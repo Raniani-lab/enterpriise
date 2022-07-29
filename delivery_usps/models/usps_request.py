@@ -42,7 +42,7 @@ class USPSRequest():
         ):
             recipient_required_field.append('street')
         shipper_required_field = ['city', 'zip', 'phone', 'state_id', 'country_id']
-        if not recipient.street and not recipient.street2:
+        if not shipper.street and not shipper.street2:
             shipper_required_field.append('street')
 
         res = [field for field in shipper_required_field if not shipper[field]]

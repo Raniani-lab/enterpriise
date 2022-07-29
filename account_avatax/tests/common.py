@@ -163,7 +163,7 @@ class TestAccountAvataxCommon(TestAvataxCommon, AccountTestInvoicingCommon):
             'avatax_category_id': cls.env.ref('account_avatax.DC010000').id,
         })
 
-        # This tax is deliberately wrong with an amount of 0. This is used
+        # This tax is deliberately wrong with an amount of 1. This is used
         # to make sure we use the tax values that Avatax returns and not the tax values
         # Odoo computes (these values would be wrong if a user manually changes it for example).
         cls.example_tax = cls.env["account.tax"].create({

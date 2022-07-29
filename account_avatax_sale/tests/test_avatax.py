@@ -6,6 +6,24 @@ from .mocked_so_response import generate_response
 
 @tagged("-at_install", "post_install")
 class TestSaleAvalara(TestAccountAvataxCommon):
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        res = super().setUpClass(chart_template_ref)
+
+        # This tax is deliberately wrong with an amount of 1. This is
+        # used to make sure we use the tax values that Avatax returns
+        # and not the tax values Odoo computes (these values would be
+        # wrong if a user manually changes it or if they're partially
+        # exempt).
+        cls.tax_with_diff_amount = cls.env["account.tax"].create({
+            'name': 'CA COUNTY TAX [075] (0.2500 %)',
+            'company_id': cls.env.user.company_id.id,
+            'amount': 1,
+            'amount_type': 'percent',
+        })
+
+        return res
+
     def assertOrder(self, order, mocked_response=None):
         if mocked_response:
             self.assertRecordValues(order, [{
@@ -13,6 +31,10 @@ class TestSaleAvalara(TestAccountAvataxCommon):
                 'amount_untaxed': 90.0,
                 'amount_tax': 7.68,
             }])
+            totals = order.tax_totals
+            subtotal_group = totals['groups_by_subtotal']['Untaxed Amount']
+            self.assertEqual(len(subtotal_group), 1, 'There should only be one subtotal group (Untaxed Amount)')
+            self.assertEqual(subtotal_group[0]['tax_group_amount'], order.amount_tax, 'The tax on tax_totals is different from amount_tax.')
 
             for avatax_line in mocked_response['lines']:
                 so_line = order.order_line.filtered(lambda l: str(l.id) == avatax_line['lineNumber'].split(',')[1])

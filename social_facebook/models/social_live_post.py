@@ -26,7 +26,7 @@ class SocialLivePostFacebook(models.Model):
         accounts = self.env['social.account'].search([('media_type', '=', 'facebook')])
 
         for account in accounts:
-            posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/%s" % (account.facebook_account_id, 'feed'))
+            posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/%s" % (account.facebook_account_id, 'published_posts'))
             result = requests.get(posts_endpoint_url,
                 params={
                     'access_token': account.facebook_access_token,

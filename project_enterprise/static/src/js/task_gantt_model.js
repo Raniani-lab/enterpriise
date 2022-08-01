@@ -150,4 +150,32 @@ export default GanttModel.extend({
         }
         return data;
     },
+
+    /**
+     * @override
+     */
+    reschedule(ids, schedule, isUTC, callback) {
+        if (!schedule.smart_task_scheduling) {
+            return this._super(...arguments);
+        }
+
+        if (!(ids instanceof Array)) {
+            ids = [ids];
+        }
+
+        const data = this.rescheduleData(schedule, isUTC);
+        const end_date = moment(data.planned_date_end).endOf(this.get().scale);
+        return this.mutex.exec(() => {
+            return this._rpc({
+                model: this.modelName,
+                method: 'schedule_tasks',
+                args: [ids, data],
+                context: Object.assign({}, this.context, {'last_date_view': this.convertToServerTime(end_date)}),
+            }).then((result) => {
+                if (callback) {
+                    callback(result);
+                }
+            });
+        });
+    },
 });

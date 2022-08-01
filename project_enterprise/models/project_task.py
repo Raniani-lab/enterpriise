@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from pytz import utc
+from pytz import utc, timezone
 from collections import defaultdict
 from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
+from odoo import Command, fields, models, api, _, _lt
 from odoo.exceptions import UserError
+from odoo.tools import topological_sort
+
 from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 
 PROJECT_TASK_WRITABLE_FIELDS = {
@@ -246,7 +248,9 @@ class Task(models.Model):
 
     def write(self, vals):
         compute_default_planned_dates = None
-        if not self.env.context.get('fsm_mode', False) and 'planned_date_begin' in vals and 'planned_date_end' in vals:  # if fsm_mode=True then the processing in industry_fsm module is done for these dates.
+        if not self._context.get('fsm_mode', False) \
+           and not self._context.get('smart_task_scheduling', False) \
+           and 'planned_date_begin' in vals and 'planned_date_end' in vals:  # if fsm_mode=True then the processing in industry_fsm module is done for these dates.
             compute_default_planned_dates = self.filtered(lambda task: not task.planned_date_begin and not task.planned_date_end)
 
         res = super().write(vals)
@@ -266,6 +270,254 @@ class Task(models.Model):
                 })
 
         return res
+
+    # -------------------------------------
+    # Business Methods : Smart Scheduling
+    # -------------------------------------
+    def schedule_tasks(self, vals):
+        """ Compute the start and end planned date for each task in the recordset.
+
+            This computation is made according to the schedule of the employee the tasks
+            are assigned to, as well as the task already planned for the user.
+            The function schedules the tasks order by dependencies, priority.
+            The transitivity of the tasks is respected in the recordset, but is not guaranteed
+            once the tasks are planned for some specific use case. This function ensures that
+            no tasks planned by it are concurrent with another.
+            If this function is used to plan tasks for the company and not an employee,
+            the tasks are planned with the company calendar, and have the same starting date.
+            Their end date is computed based on their timesheet only.
+            Concurrent or dependent tasks are irrelevant.
+
+            :return: empty dict if some data were missing for the computation
+                or if no action and no warning to display.
+                Else, return a dict { 'action': action, 'warnings'; warning_list } where action is
+                the action to launch if some planification need the user confirmation to be applied,
+                and warning_list the warning message to show if needed.
+        """
+        required_written_fields = {'planned_date_begin', 'planned_date_end'}
+        if not self.env.context.get('last_date_view') or len(self.project_id) != 1 \
+           or any(key not in vals for key in required_written_fields):
+            self.write(vals)
+            return {}
+
+        discarded_task_vals = []
+        tasks_to_write = {}
+        warnings = {}
+
+        user = self.env['res.users']
+        calendar = self.project_id.resource_calendar_id
+        company = self.company_id if len(self.company_id) == 1 else self.project_id.company_id
+        tz_info = calendar.tz
+        sorted_tasks = self.sorted('priority', reverse=True)
+        if (vals.get('user_ids') and len(vals['user_ids']) == 1) or ('user_ids' not in vals and len(self.user_ids) == 1):
+            user = self.env['res.users'].browse(vals.get('user_ids', self.user_ids.ids))
+            tz_info = user.tz or self._context.get('tz', 'UTC')
+            dependencies_dict = {  # contains a task as key and the list of tasks before this one as values
+                task:
+                    [t for t in self if t != task and t in task.depend_on_ids]
+                    if task.depend_on_ids
+                    else []
+                for task in sorted_tasks
+            }
+            sorted_tasks = topological_sort(dependencies_dict)
+
+        max_date_start = datetime.strptime(self.env.context.get('last_date_view'), '%Y-%m-%d %H:%M:%S').astimezone(timezone(tz_info))
+        init_date_start = datetime.strptime(vals["planned_date_begin"], '%Y-%m-%d %H:%M:%S').astimezone(timezone(tz_info))
+        fetch_date_start = init_date_start
+        fetch_date_end = max_date_start
+        current_date_start = init_date_start
+        end_loop = init_date_start + relativedelta(day=31, month=12, years=1)  # end_loop will be the end of the next year.
+
+        invalid_intervals, schedule = self._compute_schedule(user, calendar, fetch_date_start, fetch_date_end, company)
+        concurrent_tasks_intervals = self._fetch_concurrent_tasks_intervals_for_employee(fetch_date_start, fetch_date_end, user, tz_info)
+        dependent_tasks_end_dates = self._fetch_last_date_end_from_dependent_task_for_all_tasks(tz_info)
+
+        for task in sorted_tasks:
+            if task._get_hours_to_plan() <= 0:
+                continue
+            hours_to_plan = task._get_hours_to_plan()
+            compute_date_start = compute_date_end = False
+            last_date_end = dependent_tasks_end_dates.get(task.id)
+            # The 'user' condition is added to avoid changing the starting date based on the tasks dependencies of
+            # the tasks to plan when the working schedule of company is used to schedule the tasks.
+            if last_date_end and user:
+                current_date_start = last_date_end
+            # In case working intervals were added to the schedule in the previous iteration, set the curr_schedule to schedule
+            curr_schedule = schedule
+            while (not compute_date_start or not compute_date_end) and (current_date_start < end_loop):
+                for start_date, end_date, dummy in curr_schedule:
+                    if end_date <= current_date_start:
+                        continue
+                    hours_to_plan -= (end_date - start_date).total_seconds() / 3600
+                    if not compute_date_start:
+                        compute_date_start = start_date
+
+                    if hours_to_plan <= 0:
+                        compute_date_end = end_date + relativedelta(seconds=hours_to_plan * 3600)
+                        break
+                if hours_to_plan <= 0:  # the compute_date_end was found, we check if the candidates start and end date are valid
+                    current_date_start = self._check_concurrent_tasks(compute_date_start, compute_date_end, concurrent_tasks_intervals)
+                    # an already planned task is concurrent with the candidate dates. reset the values and keep searching for new candidate dates
+                    if current_date_start:
+                        compute_date_start = False
+                        compute_date_end = False
+                        hours_to_plan = task._get_hours_to_plan()
+                        end_interval = self._get_end_interval(current_date_start, curr_schedule)
+                        # removed the part already checked in the working schedule
+                        curr_schedule = schedule - Intervals([(init_date_start, end_interval, task)])
+                    # no concurrent tasks were found, we reset the current date start
+                    else:
+                        current_date_start = schedule._items[0][0]
+                        # if the task is assigned to a user, add the working interval of the task to the concurrent tasks
+                        if user:
+                            concurrent_tasks_intervals |= Intervals([(compute_date_start, compute_date_end, task)])
+
+                else:  # no date end candidate was found, update the schedule and keep searching
+                    fetch_date_start = fetch_date_end
+                    fetch_date_end = (fetch_date_end + relativedelta(days=1)) + relativedelta(months=1, day=1)
+                    new_invalid_intervals, curr_schedule = task._compute_schedule(user, calendar, fetch_date_start, fetch_date_end, task.company_id or company)
+                    # schedule is not used in this iteration but we are using this variable to keep the fetched intervals to avoid refetching it later
+                    schedule |= curr_schedule
+                    invalid_intervals |= new_invalid_intervals
+                    concurrent_tasks_intervals |= self._fetch_concurrent_tasks_intervals_for_employee(fetch_date_start, fetch_date_end, user, tz_info)
+
+            # remove the task from the record to avoid unnecessary write
+            self -= task
+            # this is a security break to avoid infinite loop. It is very unlikely to be of used in a real use case.
+            if current_date_start > end_loop:
+                if 'loop_break' not in warnings:
+                    warnings['loop_break'] = _lt("Some tasks weren't planned because the closest available starting date was too far ahead in the future")
+                current_date_start = schedule._items[0][0]
+                continue
+
+            start_no_utc = compute_date_start.astimezone(utc).replace(tzinfo=None)
+            end_no_utc = compute_date_end.astimezone(utc).replace(tzinfo=None)
+            company_schedule = False
+            # if the working interval for the task has overlap with 'invalid_intervals', we set the warning message accordingly
+            if start_no_utc > datetime.now() and len(Intervals([(compute_date_start, compute_date_end, task)]) & invalid_intervals) > 0:
+                company_schedule = True
+            if compute_date_start <= max_date_start:
+                tasks_to_write[task] = {'start': start_no_utc, 'end': end_no_utc}
+            else:
+                if company_schedule and 'company_schedule' not in warnings:
+                    warnings['company_schedule'] = _lt('This employee does not have a running contract during the selected period.\nThe working hours of the company were used as a reference instead.')
+                discarded_task_vals.append((task.id, start_no_utc, end_no_utc, company_schedule))
+
+        self.write(vals)
+        for task in tasks_to_write:
+            task_vals = {
+                'planned_date_begin': tasks_to_write[task]['start'],
+                'planned_date_end': tasks_to_write[task]['end'],
+                'user_ids': user.ids,
+            }
+            if user:
+                task_vals['user_ids'] = user.ids
+            task.with_context(smart_task_scheduling=True).write(task_vals)
+        response = {}
+        if discarded_task_vals:
+            wizard = self.env["project.task.confirm.schedule.wizard"].create({
+                'line_ids': [
+                    Command.create({
+                        'task_id': task_id,
+                        'date_begin': start,
+                        'date_end': end,
+                        'warning': warnings['company_schedule'] if warning else False,
+                    }) for task_id, start, end, warning in discarded_task_vals],
+                'user_id': user.id,
+            })
+            if 'company_schedule' in warnings:  # this warning is displayed in the wizard, no need to display it as notification
+                del warnings['company_schedule']
+            action = {
+                'name': _('Caution: some tasks have not been scheduled'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'project.task.confirm.schedule.wizard',
+                'views': [[False, 'form']],
+                'view_id': 'view_task_confirm_schedule_wizard_form',
+                'target': 'new',
+                'res_id': wizard.id,
+            }
+            response['action'] = action
+        if warnings:
+            response['warnings'] = list(warnings.values())
+        return response
+
+    def _get_hours_to_plan(self):
+        return self.planned_hours
+
+    @api.model
+    def _compute_schedule(self, user, calendar, date_start, date_end, company=None):
+        """ Compute the working intervals available for the employee
+            fill the empty schedule slot between contract with the company schedule.
+        """
+        if user:
+            employees_work_days_data, dummy = user._get_valid_work_intervals(date_start, date_end)
+            schedule = employees_work_days_data.get(user.id) or Intervals([])
+            # We are using this function to get the intervals for which the schedule of the employee is invalid. Those data are needed to check if we must fallback on the
+            # company schedule. The validity_intervals['valid'] does not contain the work intervals needed, it simply contains large intervals with validity time period
+            # ex of return value : ['valid'] = 01-01-2000 00:00:00 to 11-01-2000 23:59:59; ['invalid'] = 11-02-2000 00:00:00 to 12-31-2000 23:59:59
+            dummy, validity_intervals = self._web_gantt_reschedule_get_resource_calendars_validity(
+                date_start, date_end,
+                resource=user._get_project_task_resource(),
+                company=company)
+            for start, stop, dummy in validity_intervals['invalid']:
+                schedule |= calendar._work_intervals_batch(start, stop)[False]
+
+            return validity_intervals['invalid'], schedule
+        else:
+            return Intervals([]), calendar._work_intervals_batch(date_start, date_end)[False]
+
+    def _fetch_last_date_end_from_dependent_task_for_all_tasks(self, tz_info):
+        """
+            return: return a dict with task.id as key, and the latest date end from all the dependent task of that task
+        """
+        query = """
+                    SELECT task.id as id,
+                           MAX(depends_on.planned_date_end) as date
+                      FROM project_task task
+                      JOIN task_dependencies_rel rel
+                        ON rel.task_id = task.id
+                      JOIN project_task depends_on
+                        ON depends_on.id != task.id
+                       AND depends_on.id = rel.depends_on_id
+                       AND depends_on.planned_date_end is not null
+                     WHERE task.id = any(%s)
+                  GROUP BY task.id
+                """
+        self.env.cr.execute(query, [self.ids])
+        return {res['id']: res['date'].astimezone(timezone(tz_info)) for res in self.env.cr.dictfetchall()}
+
+    @api.model
+    def _fetch_concurrent_tasks_intervals_for_employee(self, date_begin, date_end, user, tz_info):
+        concurrent_tasks = self.env['project.task']
+        if user:
+            concurrent_tasks = self.env['project.task'].search(
+                [('user_ids', '=', user.id),
+                 ('planned_date_end', '>=', date_begin),
+                 ('planned_date_begin', '<=', date_end)],
+                order='planned_date_end',
+            )
+
+        return Intervals([
+            (t.planned_date_begin.astimezone(timezone(tz_info)),
+             t.planned_date_end.astimezone(timezone(tz_info)),
+             t)
+            for t in concurrent_tasks
+        ])
+
+    def _check_concurrent_tasks(self, date_begin, date_end, concurrent_tasks):
+        current_date_end = None
+        for start, stop, dummy in concurrent_tasks:
+            if start <= date_end and stop >= date_begin:
+                current_date_end = stop
+            elif start > date_end:
+                break
+        return current_date_end
+
+    def _get_end_interval(self, date, intervals):
+        for start, stop, dummy in intervals:
+            if start <= date <= stop:
+                return stop
+        return date
 
     # -------------------------------------
     # Business Methods : Auto-shift
@@ -313,7 +565,7 @@ class Task(models.Model):
         return self._web_gantt_reschedule_get_resource() or self.company_id or self.project_id.company_id
 
     def _web_gantt_reschedule_get_resource_calendars_validity(
-            self, date_start, date_end, intervals_to_search=None, resource=None
+            self, date_start, date_end, intervals_to_search=None, resource=None, company=None
     ):
         """ Get the calendars and resources (for instance to later get the work intervals for the provided date_start
             and date_end).
@@ -327,14 +579,14 @@ class Task(models.Model):
                      has a valid calendar (resp. no calendar)
             :rtype: tuple(defaultdict(), dict())
         """
-        self.ensure_one()
         interval = Intervals([(date_start, date_end, self.env['resource.calendar.attendance'])])
         if intervals_to_search:
             interval &= intervals_to_search
         invalid_interval = interval
         resource = self._web_gantt_reschedule_get_resource() if resource is None else resource
+        default_company = company or self.company_id or self.project_id.company_id
         resource_calendar_validity = resource._get_calendars_validity_within_period(
-            date_start, date_end, default_company=self.company_id or self.project_id.company_id
+            date_start, date_end, default_company=default_company
         )[resource.id]
         for calendar in resource_calendar_validity:
             resource_calendar_validity[calendar] &= interval
@@ -372,7 +624,8 @@ class Task(models.Model):
         resource_calendar_validity_delta, resource_validity_tmp = self._web_gantt_reschedule_get_resource_calendars_validity(
             intervals_not_searched._items[0][0],
             intervals_not_searched._items[-1][1],
-            intervals_to_search=intervals_not_searched, resource=resource
+            intervals_to_search=intervals_not_searched, resource=resource,
+            company=self.company_id or self.project_id.company_id
         )
         for calendar in resource_calendar_validity_delta:
             if not resource_calendar_validity_delta[calendar]:

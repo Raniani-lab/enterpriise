@@ -122,3 +122,6 @@ class Task(models.Model):
 
     def get_worked_hours_fields(self):
         return ['effective_hours', 'subtask_effective_hours']
+
+    def _get_hours_to_plan(self):
+        return self.remaining_hours

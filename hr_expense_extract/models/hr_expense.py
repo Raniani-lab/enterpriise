@@ -5,8 +5,6 @@ from odoo.addons.iap.tools import iap_tools
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError
 
-from datetime import timedelta
-
 import logging
 import time
 
@@ -86,15 +84,14 @@ class HrExpense(models.Model):
     @api.depends('extract_state')
     def _compute_state_processed(self):
         for record in self:
-            record.state_processed = record.extract_state in ['planned', 'waiting_extraction']
+            record.state_processed = record.extract_state == 'waiting_extraction'
 
     extract_state = fields.Selection([('no_extract_requested', 'No extract requested'),
-                                      ('planned', 'Waiting for submission'),
                                       ('not_enough_credit', 'Not enough credit'),
                                       ('error_status', 'An error occurred'),
-                                      ('waiting_extraction', 'Waiting for extraction'),
-                                      ('extract_not_ready', 'waiting for extraction, but it is not ready'),
-                                      ('waiting_validation', 'Waiting for validation'),
+                                      ('waiting_extraction', 'Waiting extraction'),
+                                      ('extract_not_ready', 'waiting extraction, but it is not ready'),
+                                      ('waiting_validation', 'Waiting validation'),
                                       ('done', 'Completed flow')],
                                      'Extract state', default='no_extract_requested', required=True, copy=False)
     extract_status_code = fields.Integer("Status code", copy=False)
@@ -109,9 +106,9 @@ class HrExpense(models.Model):
     def attach_document(self, **kwargs):
         """when an attachment is uploaded, send the attachment to iap-extract if this is the first attachment"""
         if self.env.company.expense_extract_show_ocr_option_selection == 'auto_send':
-            records_to_digitalize = self.filtered(lambda e: e.extract_state == "no_extract_requested")
-            if records_to_digitalize:
-                self.env.ref('hr_expense_extract.ir_cron_update_ocr_digitalize')._trigger(fields.Datetime.now() + timedelta(minutes=1))
+            for record in self:
+                if record.extract_state == "no_extract_requested":
+                    record.retry_ocr()
 
     def _message_set_main_attachment_id(self, attachment_ids):
         super(HrExpense, self)._message_set_main_attachment_id(attachment_ids)
@@ -266,20 +263,12 @@ class HrExpense(models.Model):
 
             }
 
-    def _digitalize_all(self):
-        # cron job
-        records_to_digitalize = self.search([('extract_state', 'in', ['planned', 'waiting_extraction', 'extract_not_ready']), ('state', '=', 'draft')], limit=20)
-        for record in records_to_digitalize:
-            record.retry_ocr()
-
-        self.env.ref('hr_expense_extract.ir_cron_update_ocr_status')._trigger(fields.Datetime.now() + timedelta(minutes=1))
-
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
         if not self.env.company.expense_extract_show_ocr_option_selection or self.env.company.expense_extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
-        if attachments and attachments.exists() and self.extract_state in ['planned', 'no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
+        if attachments and attachments.exists() and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status', 'module_not_up_to_date']:
             account_token = self.env['iap.account'].get('invoice_ocr')
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
                     'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/expense_extract/parse'

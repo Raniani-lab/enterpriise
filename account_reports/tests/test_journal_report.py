@@ -135,12 +135,8 @@ class TestJournalAuditReport(TestAccountReportsCommon):
             'amount_type': 'percent',
             'type_tax_use': 'sale',
             'invoice_repartition_line_ids': [
+                Command.create({'repartition_type': 'base'}),
                 Command.create({
-                    'factor_percent': 100,
-                    'repartition_type': 'base',
-                }),
-                Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'tag_ids': [Command.link(cls.tax_report.line_ids[0].expression_ids[0]._get_matching_tags().filtered(lambda x: not x.tax_negate).id)],
                 })]

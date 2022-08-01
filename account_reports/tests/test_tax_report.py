@@ -281,7 +281,7 @@ class TestTaxReport(TestAccountReportsCommon):
 
             repartition_vals = [
                 Command.clear(),
-                Command.create({'repartition_type': 'base', 'factor_percent': 100, 'tag_ids': base_tag.ids}),
+                Command.create({'repartition_type': 'base', 'tag_ids': base_tag.ids}),
             ]
 
             for (factor_percent, account, use_in_tax_closing) in tax_repartition:
@@ -642,24 +642,20 @@ class TestTaxReport(TestAccountReportsCommon):
             'chart_template_id': company.chart_template_id.id,
             'invoice_repartition_line_ids': [
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'plus_report_expression_ids': base_11_line.expression_ids.ids,
                 }),
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'plus_report_expression_ids': tax_11_line.expression_ids.ids,
                 }),
             ],
             'refund_repartition_line_ids': [
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'minus_report_expression_ids': base_11_line.expression_ids.ids,
                 }),
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'minus_report_expression_ids': tax_11_line.expression_ids.ids,
                 }),
@@ -674,7 +670,6 @@ class TestTaxReport(TestAccountReportsCommon):
             'chart_template_id': company.chart_template_id.id,
             'invoice_repartition_line_ids': [
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'plus_report_expression_ids': base_42_line.expression_ids.ids,
                 }),
@@ -699,7 +694,6 @@ class TestTaxReport(TestAccountReportsCommon):
             ],
             'refund_repartition_line_ids': [
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'minus_report_expression_ids': base_42_line.expression_ids.ids,
                 }),
@@ -840,7 +834,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 'tax_exigibility': 'on_payment',
                 'invoice_repartition_line_ids': [
                     Command.create({
-                        'factor_percent': 100,
                         'repartition_type': 'base',
                         'plus_report_expression_ids': report_line.expression_ids.ids,
                     }),
@@ -857,7 +850,6 @@ class TestTaxReport(TestAccountReportsCommon):
                 ],
                 'refund_repartition_line_ids': [
                     Command.create({
-                        'factor_percent': 100,
                         'repartition_type': 'base',
                         'minus_report_expression_ids': report_line.expression_ids.ids,
                     }),
@@ -898,24 +890,20 @@ class TestTaxReport(TestAccountReportsCommon):
                 'chart_template_id': company.chart_template_id.id,
                 'invoice_repartition_line_ids': [
                     Command.create({
-                        'factor_percent': 100,
                         'repartition_type': 'base',
                         'plus_report_expression_ids': report_line[0].expression_ids.ids,
                     }),
                     Command.create({
-                        'factor_percent': 100,
                         'repartition_type': 'tax',
                         'plus_report_expression_ids': report_line[1].expression_ids.ids,
                     }),
                 ],
                 'refund_repartition_line_ids': [
                     Command.create({
-                        'factor_percent': 100,
                         'repartition_type': 'base',
                         'plus_report_expression_ids': report_line[0].expression_ids.ids,
                     }),
                     Command.create({
-                        'factor_percent': 100,
                         'repartition_type': 'tax',
                         'plus_report_expression_ids': report_line[1].expression_ids.ids,
                     }),
@@ -2078,24 +2066,20 @@ class TestTaxReport(TestAccountReportsCommon):
             'tax_exigibility': 'on_payment',
             'invoice_repartition_line_ids': [
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'tag_ids': [Command.set(report_line_invoice_base.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids)],
                 }),
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'tag_ids': [Command.set(report_line_invoice_tax.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids)],
                 }),
             ],
             'refund_repartition_line_ids': [
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'tag_ids': [Command.set(report_line_refund_base.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids)],
                 }),
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'tag_ids': [Command.set(report_line_refund_tax.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids)],
                 }),

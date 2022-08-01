@@ -611,12 +611,12 @@ class WinbooksImportWizard(models.TransientModel):
                     'type_tax_use': 'sale' if rec.get('CODE')[0] == '2' else 'purchase',
                     'price_include': False if rec.get('TAXFORM') or rec.get('BASFORM') == 'BAL' else True,
                     'refund_repartition_line_ids': [
-                        (0, 0, {'repartition_type': 'base', 'factor_percent': 100.0, 'tag_ids': get_tags(rec.get('BASE_CN')), 'company_id': self.env.company.id}),
-                        (0, 0, {'repartition_type': 'tax', 'factor_percent': 100.0, 'tag_ids': get_tags(rec.get('TAX_CN')), 'company_id': self.env.company.id, 'account_id': account_central.get(rec.get('ACCCN1'), False)}),
+                        (0, 0, {'repartition_type': 'base', 'tag_ids': get_tags(rec.get('BASE_CN')), 'company_id': self.env.company.id}),
+                        (0, 0, {'repartition_type': 'tax', 'tag_ids': get_tags(rec.get('TAX_CN')), 'company_id': self.env.company.id, 'account_id': account_central.get(rec.get('ACCCN1'), False)}),
                     ],
                     'invoice_repartition_line_ids': [
-                        (0, 0, {'repartition_type': 'base', 'factor_percent': 100.0, 'tag_ids': get_tags(rec.get('BASE_INV')), 'company_id': self.env.company.id}),
-                        (0, 0, {'repartition_type': 'tax', 'factor_percent': 100.0, 'tag_ids': get_tags(rec.get('TAX_INV')), 'company_id': self.env.company.id, 'account_id': account_central.get(rec.get('ACCINV1'), False)}),
+                        (0, 0, {'repartition_type': 'base', 'tag_ids': get_tags(rec.get('BASE_INV')), 'company_id': self.env.company.id}),
+                        (0, 0, {'repartition_type': 'tax', 'tag_ids': get_tags(rec.get('TAX_INV')), 'company_id': self.env.company.id, 'account_id': account_central.get(rec.get('ACCINV1'), False)}),
                     ],
                 }
                 if rec.get('ACCCN2'):

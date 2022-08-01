@@ -221,7 +221,6 @@ class AccountAvatax(models.AbstractModel):
             def repartition_line(repartition_type, account=None):
                 return (0, 0, {
                     'repartition_type': repartition_type,
-                    'factor_percent': 100.0,
                     'tag_ids': [],
                     'company_id': doc.company_id.id,
                     'account_id': account and account.id,

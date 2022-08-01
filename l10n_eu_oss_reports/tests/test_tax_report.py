@@ -152,24 +152,20 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
             'country_id': cls.company_data['company'].account_fiscal_country_id.id,
             'invoice_repartition_line_ids': [
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'tag_ids': [Command.set(report_line_invoice_base_line.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids + oss_tag.ids)],
                 }),
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'tag_ids': [Command.set(oss_tag.ids)],
                 }),
             ],
             'refund_repartition_line_ids': [
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'tag_ids': [Command.set(report_line_refund_base_line.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate).ids + oss_tag.ids)],
                 }),
                 Command.create({
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'tag_ids': [Command.set(oss_tag.ids)],
                 }),

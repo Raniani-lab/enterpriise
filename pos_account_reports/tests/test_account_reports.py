@@ -50,26 +50,22 @@ class POSTestTaxReport(TestAccountReportsCommon):
             'chart_template_id': cls.company_data['company'].chart_template_id.id,
             'invoice_repartition_line_ids': [
                 (0,0, {
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'plus_report_expression_ids': cls.pos_tax_report_line_invoice_base.expression_ids.ids,
                 }),
 
                 (0,0, {
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'plus_report_expression_ids': cls.pos_tax_report_line_invoice_tax.expression_ids.ids,
                 }),
             ],
             'refund_repartition_line_ids': [
                 (0,0, {
-                    'factor_percent': 100,
                     'repartition_type': 'base',
                     'plus_report_expression_ids': cls.pos_tax_report_line_refund_base.expression_ids.ids,
                 }),
 
                 (0,0, {
-                    'factor_percent': 100,
                     'repartition_type': 'tax',
                     'plus_report_expression_ids': cls.pos_tax_report_line_refund_tax.expression_ids.ids,
                 }),

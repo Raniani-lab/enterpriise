@@ -1269,10 +1269,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'amount_type': 'percent',
             'type_tax_use': 'purchase',
             'invoice_repartition_line_ids': [
-                Command.create({
-                    'factor_percent': 100,
-                    'repartition_type': 'base',
-                }),
+                Command.create({'repartition_type': 'base'}),
                 Command.create({
                     'factor_percent': 50,
                     'repartition_type': 'tax',
@@ -1285,10 +1282,7 @@ class TestAccountAsset(TestAccountReportsCommon):
                 }),
             ],
             'refund_repartition_line_ids': [
-                Command.create({
-                    'factor_percent': 100,
-                    'repartition_type': 'base',
-                }),
+                Command.create({'repartition_type': 'base'}),
                 Command.create({
                     'factor_percent': 50,
                     'repartition_type': 'tax',

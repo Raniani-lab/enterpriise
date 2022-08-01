@@ -35,26 +35,22 @@ class TestBOEGeneration(TestAccountReportsCommon):
             'invoice_repartition_line_ids': [
                 (0, 0, {
                     'repartition_type': 'base',
-                    'factor_percent': 100,
                     'tag_ids': base_tags.ids,
                 }),
 
                 (0, 0, {
                     'repartition_type': 'tax',
-                    'factor_percent': 100,
                     'tag_ids': tax_tags.ids,
                 })
             ],
             'refund_repartition_line_ids': [
                 (0, 0, {
                     'repartition_type': 'base',
-                    'factor_percent': 100,
                     'tag_ids': base_tags.ids,
                 }),
 
                 (0, 0, {
                     'repartition_type': 'tax',
-                    'factor_percent': 100,
                     'tag_ids': tax_tags.ids,
                 })
             ],

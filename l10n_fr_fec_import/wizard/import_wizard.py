@@ -233,8 +233,13 @@ class FecImportWizard(models.TransientModel):
             when a rounding issue is found. """
 
         # Get the accounts for the debit and credit differences
-        domain = [('code', 'in', ('658000', '758000')), ('company_id', '=', self.company_id.id)]
-        debit_account, credit_account = self.env["account.account"].search(domain, order='code')
+        debit_account, credit_account = [
+            self.env["account.account"].search(
+                [('code', '=like', code), ('company_id', '=', self.company_id.id)],
+                order='code',
+                limit=1,
+            ) for code in ('6580%', '7580%')
+        ]
 
         # Check the moves for rounding issues
         currency = self.company_id.currency_id

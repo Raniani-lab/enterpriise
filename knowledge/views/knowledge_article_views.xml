@@ -247,7 +247,7 @@
         <field name="name">knowledge.article.view.kanban</field>
         <field name="model">knowledge.article</field>
         <field name="arch" type="xml">
-            <kanban class="o_knowledge_article_kanban_view">
+            <kanban create="0" class="o_knowledge_article_kanban_view">
                 <field name="icon" invisible="1"/>
                 <field name="is_locked" invisible="1"/>
                 <field name="is_user_favorite" invisible="1"/>

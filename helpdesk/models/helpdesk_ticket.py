@@ -365,6 +365,14 @@ class HelpdeskTicket(models.Model):
             return ticket_phone_formatted != partner_phone_formatted
         return False
 
+    def action_customer_preview(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_url',
+            'url': self.get_portal_url(),
+            'target': 'self',
+        }
+
     # ------------------------------------------------------------
     # ORM overrides
     # ------------------------------------------------------------

@@ -85,7 +85,7 @@ class HelpdeskTeam(models.Model):
     allow_portal_ticket_closing = fields.Boolean('Closure by Customers')
     use_website_helpdesk_form = fields.Boolean('Website Form', compute='_compute_use_website_helpdesk_form', readonly=False, store=True)
     use_website_helpdesk_livechat = fields.Boolean('Live Chat')
-    use_website_helpdesk_forum = fields.Boolean('Community Forum')
+    use_website_helpdesk_forum = fields.Boolean('Community Forum', compute='_compute_use_website_helpdesk_forum', readonly=False, store=True)
     use_website_helpdesk_slides = fields.Boolean('Enable eLearning', compute='_compute_use_website_helpdesk_slides', readonly=False, store=True)
     use_website_helpdesk_knowledge = fields.Boolean('Knowledge', compute='_compute_use_website_helpdesk_knowledge', readonly=False, store=True)
     use_helpdesk_timesheet = fields.Boolean(
@@ -255,10 +255,15 @@ class HelpdeskTeam(models.Model):
         if not self.use_alias:
             self.alias_name = False
 
-    @api.depends('use_website_helpdesk_knowledge', 'use_website_helpdesk_slides')
+    @api.depends('use_website_helpdesk_knowledge', 'use_website_helpdesk_slides', 'use_website_helpdesk_forum')
     def _compute_use_website_helpdesk_form(self):
-        teams = self.filtered(lambda team: not team.use_website_helpdesk_form and (team.use_website_helpdesk_knowledge or team.use_website_helpdesk_slides))
+        teams = self.filtered(lambda team: not team.use_website_helpdesk_form and (team.use_website_helpdesk_knowledge or team.use_website_helpdesk_slides or team.use_website_helpdesk_forum))
         teams.use_website_helpdesk_form = True
+
+    @api.depends('use_website_helpdesk_form')
+    def _compute_use_website_helpdesk_forum(self):
+        teams = self.filtered(lambda team: not team.use_website_helpdesk_form and team.use_website_helpdesk_forum)
+        teams.use_website_helpdesk_forum = False
 
     @api.depends('use_website_helpdesk_form')
     def _compute_use_website_helpdesk_slides(self):

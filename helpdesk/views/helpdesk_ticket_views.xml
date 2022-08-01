@@ -312,6 +312,7 @@
                     <field name="use_rating" invisible="1"/>
                     <field name="rating_avg" invisible="1"/>
                     <field name="company_id" invisible="1"/>
+                    <field name="team_privacy_visibility" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_open_ratings" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_count', '=', 0)]}" groups="helpdesk.group_use_rating">
                             <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_avg', '&lt;', 3.66)]}" title="Satisfied"/>
@@ -334,6 +335,8 @@
                                 </span>
                             </div>
                         </button>
+                        <button class="oe_stat_button" string="Customer Preview" type="object" name="action_customer_preview" icon="fa-globe"
+                            attrs="{'invisible': ['|', ('partner_id', '=', False), ('team_privacy_visibility', '!=', 'portal')]}"/>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="kanban_state" widget="state_selection"/>

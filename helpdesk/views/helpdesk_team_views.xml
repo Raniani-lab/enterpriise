@@ -148,9 +148,34 @@
                             </div>
                         </setting>
                     </div>
-                    <div class="row mt32 o_settings_container" id="website_form_channel">
+                    <h2>Help Center</h2>
+                    <div class="row mt16 o_settings_container" id="website_form_channel">
                         <setting help="Get tickets through an online form">
                             <field name="use_website_helpdesk_form"/>
+                        </setting>
+                        <setting help="Centralize, manage, share and grow your knowledge library">
+                            <field name="use_website_helpdesk_knowledge"/>
+                            <div id="use_website_helpdesk_knowledge" attrs="{'invisible': [('use_website_helpdesk_knowledge', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
+                                </div>
+                            </div>
+                        </setting>
+                        <setting help="Let your customers answer each other's questions on a forum">
+                            <field name="use_website_helpdesk_forum"/>
+                            <div id="use_website_helpdesk_forum" attrs="{'invisible': [('use_website_helpdesk_forum', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
+                                </div>
+                            </div>
+                        </setting>
+                        <setting help="Share presentations and videos, and organize them into courses">
+                            <field name="use_website_helpdesk_slides"/>
+                            <div id="use_website_helpdesk_slides" attrs="{'invisible': [('use_website_helpdesk_slides', '=', False)]}">
+                                <div class="text-warning mb4 mt16" id="o_slide_option">
+                                    Save this page and refresh to activate the feature.
+                                </div>
+                            </div>
                         </setting>
                     </div>
                     <h2 class="mt32">Track &amp; Bill Time</h2>
@@ -200,30 +225,6 @@
                     </div>
                     <h2>Self-Service</h2>
                     <div class="row mt16 o_settings_container" id="self-Service">
-                        <setting help="Centralize, manage, share and grow your knowledge library">
-                            <field name="use_website_helpdesk_knowledge"/>
-                            <div id="use_website_helpdesk_knowledge" attrs="{'invisible': [('use_website_helpdesk_knowledge', '=', False)]}">
-                                <div class="text-warning mb4 mt16">
-                                    Save this page and refresh to activate the feature.
-                                </div>
-                            </div>
-                        </setting>
-                        <setting help="Let your customers answer each other's questions on a forum">
-                            <field name="use_website_helpdesk_forum"/>
-                            <div id="use_website_helpdesk_forum" attrs="{'invisible': [('use_website_helpdesk_forum', '=', False)]}">
-                                <div class="text-warning mb4 mt16">
-                                    Save this page and refresh to activate the feature.
-                                </div>
-                            </div>
-                        </setting>
-                        <setting help="Share presentations and videos, and organize them into courses">
-                            <field name="use_website_helpdesk_slides"/>
-                            <div id="use_website_helpdesk_slides" attrs="{'invisible': [('use_website_helpdesk_slides', '=', False)]}">
-                                <div class="text-warning mb4 mt16" id="o_slide_option">
-                                    Save this page and refresh to activate the feature.
-                                </div>
-                            </div>
-                        </setting>
                         <setting help="Close inactive tickets automatically">
                             <field name="auto_close_ticket"/>
                             <div class="content-group" attrs="{'invisible': [('auto_close_ticket', '=', False)]}">

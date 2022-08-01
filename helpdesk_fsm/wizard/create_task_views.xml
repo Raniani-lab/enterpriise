@@ -8,14 +8,12 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                        <group col="2">
-                            <group>
-                                <field name="helpdesk_ticket_id" invisible="1"/>
-                                <field name="name" />
-                                <field name="company_id" invisible="1"/>
-                                <field name="project_id" widget="Many2one" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
-                                <field name="partner_id" widget="Many2one"/>
-                            </group>
+                        <group>
+                            <field name="helpdesk_ticket_id" invisible="1"/>
+                            <field name="name" />
+                            <field name="company_id" invisible="1"/>
+                            <field name="project_id" widget="Many2one" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/>
+                            <field name="partner_id" widget="Many2one"/>
                         </group>
                     </sheet>
                     <footer>

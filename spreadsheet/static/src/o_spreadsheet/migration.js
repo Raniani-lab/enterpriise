@@ -59,27 +59,40 @@ function migrate1to2(data) {
         for (const xc in sheet.cells || []) {
             const cell = sheet.cells[xc];
             if (cell.content && cell.content.startsWith("=")) {
-                const ast = parse(cell.content);
-                const convertedAst = convertAstNodes(ast, "FUNCALL", (ast) => {
-                    if (["ODOO.PIVOT", "ODOO.PIVOT.HEADER"].includes(
-                        ast.value.toUpperCase()
-                        )) {
-                            for (let subAst of ast.args){
-                                if (subAst.type === "STRING") {
-                                    const date = subAst.value.match(dmyRegex);
-                                    if (date) {
-                                        subAst.value = `${[date[2], date[1], date[3]].join("/")}`;
-                                    }
-                                }
-                            }
-                        }
-                    return ast
-                })
-                cell.content = "=" + astToFormula(convertedAst);
+                try {
+                    cell.content = migratePivotDaysParameters(cell.content);
+                } catch (_) {
+                    continue;
+                }
             }
         }
     }
     return data;
+}
+
+/**
+ * Convert pivot formulas days parameters from day/month/year
+ * format to the standard spreadsheet month/day/year format.
+ * e.g. =PIVOT.HEADER(1,"create_date:day","30/07/2022") becomes =PIVOT.HEADER(1,"create_date:day","07/30/2022")
+ * @param {string} formulaString
+ * @returns {string}
+ */
+function migratePivotDaysParameters(formulaString) {
+    const ast = parse(formulaString);
+    const convertedAst = convertAstNodes(ast, "FUNCALL", (ast) => {
+        if (["ODOO.PIVOT", "ODOO.PIVOT.HEADER"].includes(ast.value.toUpperCase())) {
+            for (let subAst of ast.args) {
+                if (subAst.type === "STRING") {
+                    const date = subAst.value.match(dmyRegex);
+                    if (date) {
+                        subAst.value = `${[date[2], date[1], date[3]].join("/")}`;
+                    }
+                }
+            }
+        }
+        return ast;
+    });
+    return "=" + astToFormula(convertedAst);
 }
 
 export default class OdooVersion extends CorePlugin {

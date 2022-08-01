@@ -44,6 +44,7 @@ QUnit.test("Pivot 'day' arguments are migrated", (assert) => {
                     A3: { content: `=odoo.pivot("1","21/07/2021")` },
                     A4: { content: `=ODOO.PIVOT("1","test")` },
                     A5: { content: `=odoo.pivot("1","21/07/2021")+"21/07/2021"` },
+                    A6: { content: `=BAD_FORMULA(` },
                 },
             },
         ],
@@ -54,6 +55,7 @@ QUnit.test("Pivot 'day' arguments are migrated", (assert) => {
     assert.strictEqual(migratedData.sheets[0].cells.A3.content, `=odoo.pivot("1","07/21/2021")`);
     assert.strictEqual(migratedData.sheets[0].cells.A4.content, `=ODOO.PIVOT("1","test")`);
     assert.strictEqual(migratedData.sheets[0].cells.A5.content, `=odoo.pivot("1","07/21/2021")+"21/07/2021"`);
+    assert.strictEqual(migratedData.sheets[0].cells.A6.content, `=BAD_FORMULA(`);
 });
 
 QUnit.test("Odoo version is exported", (assert) => {

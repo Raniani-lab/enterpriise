@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.tools import float_round
 
 
 class HrPayslipWorkedDays(models.Model):
@@ -43,7 +44,9 @@ class HrPayslipWorkedDays(models.Model):
             else:
                 worked_days.amount = worked_days.payslip_id.contract_id.contract_wage * worked_days.number_of_hours / (worked_days.payslip_id.sum_worked_hours or 1) if worked_days.is_paid else 0
 
-    @api.depends('work_entry_type_id')
+    @api.depends('work_entry_type_id', 'number_of_days', 'number_of_hours', 'payslip_id')
     def _compute_name(self):
         for worked_days in self:
-            worked_days.name = worked_days.work_entry_type_id.name
+            work_hours = worked_days.payslip_id._get_worked_day_lines_hours_per_day()
+            half_day = worked_days.number_of_days < 1 or float_round(worked_days.number_of_hours / worked_days.number_of_days, 2) < work_hours
+            worked_days.name = worked_days.work_entry_type_id.name + (_(' (Half-Day)') if half_day else '')

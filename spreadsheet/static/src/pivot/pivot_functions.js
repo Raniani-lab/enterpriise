@@ -124,6 +124,7 @@ functionRegistry
                     if (aggregateOperator === "day") {
                         return "mm/dd/yyyy";
                     }
+                    return undefined;
                 default:
                     return undefined;
             }

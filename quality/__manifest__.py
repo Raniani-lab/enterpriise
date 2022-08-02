@@ -27,11 +27,13 @@ Quality Base
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'quality/static/src/js/tablet_image_widget.js',
-            'quality/static/src/scss/tablet_view.scss',
+            'quality/static/src/**/*',
         ],
         'web.assets_qweb': [
-            'quality/static/src/xml/**/*',
+            'quality/static/src/**/*.xml',
+        ],
+        'web.qunit_suite_tests': [
+            'quality/static/tests/*.js',
         ],
     }
 }

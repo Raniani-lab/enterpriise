@@ -2,7 +2,7 @@
 .workorder_picture, .quality_picture {
     margin: 5px 0;
 
-    .o_field_image {
+    .o_legacy_field_widget.o_field_image {
         position: relative;
         margin-bottom: $o-horizontal-padding !important;
 

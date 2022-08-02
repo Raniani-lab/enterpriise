@@ -10,14 +10,14 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
 
     const { start, startServer } = require('@mail/../tests/helpers/test_utils');
     const { patchUiSize, SIZES } = require('@mail/../tests/helpers/patch_ui_size');
-    const { WEBCLIENT_LOAD_ROUTES } = require('@mail/../tests/helpers/webclient_setup');
+    const { ROUTES_TO_IGNORE: MAIL_ROUTES_TO_IGNORE } = require('@mail/../tests/helpers/webclient_setup');
 
     const ROUTES_TO_IGNORE = [
         '/longpolling/im_status',
         '/mail/init_messaging',
         '/mail/load_message_failures',
         '/web/dataset/call_kw/account.move.line/get_views',
-        ...WEBCLIENT_LOAD_ROUTES
+        ...MAIL_ROUTES_TO_IGNORE
     ];
     legacyViewRegistry.add('account_move_line_list', MoveLineListView);
 

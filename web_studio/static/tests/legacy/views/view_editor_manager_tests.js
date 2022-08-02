@@ -2,7 +2,7 @@ odoo.define('web_studio.ViewEditorManager_tests', function (require) {
 "use strict";
 
 const { start, startServer } = require('@mail/../tests/helpers/test_utils');
-const { WEBCLIENT_LOAD_ROUTES } = require('@mail/../tests/helpers/webclient_setup');
+const { ROUTES_TO_IGNORE } = require('@mail/../tests/helpers/webclient_setup');
 
 var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
@@ -4859,7 +4859,7 @@ QUnit.module('ViewEditorManager', {
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
             mockRPC: function(route, args) {
-                if (!['/mail/init_messaging', '/mail/load_message_failures', '/longpolling/im_status', ...WEBCLIENT_LOAD_ROUTES].includes(route)) {
+                if (!['/mail/init_messaging', '/mail/load_message_failures', '/longpolling/im_status', ...ROUTES_TO_IGNORE].includes(route)) {
                     assert.step(route);
                 }
                 if (route === '/web_studio/edit_view') {

@@ -16,6 +16,11 @@ _merchandise_import_code = {
     'NL': '6',
 }
 
+_unknown_country_code = {
+    'BE': 'QU',
+    'NL': 'QV',
+}
+
 _qn_unknown_individual_vat_country_codes = ('FI', 'SE', 'SK', 'DE', 'AT')
 
 class IntrastatReport(models.AbstractModel):
@@ -175,7 +180,7 @@ class IntrastatReport(models.AbstractModel):
                 ) AS quantity,
                 inv_line.quantity AS line_quantity,
                 CASE WHEN inv_line.price_subtotal = 0 THEN inv_line.price_unit * inv_line.quantity ELSE inv_line.price_subtotal END AS value,
-                COALESCE(product_country.code, 'QV') AS intrastat_product_origin_country, -- If you don't know the country of origin of the goods, as an exception you may replace the country code by "QV".
+                COALESCE(product_country.code, %(unknown_country_code)s) AS intrastat_product_origin_country,
                 product_country.name AS intrastat_product_origin_country_name,
                 CASE WHEN partner.vat IS NOT NULL THEN partner.vat
                      WHEN partner.vat IS NULL AND partner.is_company IS FALSE THEN %(unknown_individual_vat)s
@@ -228,6 +233,7 @@ class IntrastatReport(models.AbstractModel):
             'journal_ids': tuple(journal_ids),
             'weight_category_id': self.env['ir.model.data']._xmlid_to_res_id('uom.product_uom_categ_kgm'),
             'unknown_individual_vat': 'QN999999999999' if self.env.company.country_id.code in _qn_unknown_individual_vat_country_codes else 'QV999999999999',
+            'unknown_country_code': _unknown_country_code.get(self.env.company.country_id.code, 'QV'),
         }
         if with_vat:
             where += ' AND partner.vat IS NOT NULL '

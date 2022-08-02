@@ -5,14 +5,14 @@ import "web.dom_ready";
 // The purpose of this module is to adapt the image preview size on the public
 // page of shared documents
 
-const container = document.querySelectorAll('#wrap .o_docs_single_container.o_has_preview');
-if (container.length) {
+const container = document.querySelector('#wrap .o_docs_single_container.o_has_preview');
+if (container) {
     initPublicPages(container);
 }
 
 function initPublicPages(container) {
     const parent = container.parentElement;
-    const image = container.querySelector('> img');
+    const image = container.querySelector('img');
     const actions = container.querySelector('.o_docs_single_actions');
 
     const checkResize = _.throttle(() => {

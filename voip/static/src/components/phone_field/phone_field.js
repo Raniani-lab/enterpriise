@@ -19,17 +19,18 @@ patch(PhoneField.prototype, "voip.PhoneField", {
      * @private
      * @param {MouseEvent} ev
      */
-     async onLinkClicked(ev) {
-         if (!this.voip) {
-             return;
-         }
-         if (ev.target.matches("a")) {
-             ev.stopImmediatePropagation();
-         }
-         if (!this.props.readonly || !this.voip.canCall) {
-             return;
-         }
-         ev.preventDefault();
-         this.voip.call({number: this.value});
-     },
- });
+    async onLinkClicked(ev) {
+        if (!this.voip) {
+            return;
+        }
+        if (ev.target.matches("a")) {
+            ev.stopImmediatePropagation();
+        }
+        if (!this.props.readonly || !this.voip.canCall) {
+            return;
+        }
+        ev.preventDefault();
+        const { value, record } = this.props;
+        this.voip.call({ number: value, resModel: record.resModel, resId: record.resId });
+    },
+});

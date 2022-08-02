@@ -45,7 +45,7 @@ export const voipService = {
         }
 
        function call(params = {}) {
-            if (!canCall() || !("number" in params)) {
+            if (!canCall() || !params.number) {
                 return;
             }
             notification.add(sprintf(env._t("Calling %s"), params.number));

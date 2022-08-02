@@ -26,11 +26,12 @@ export class DialingPanelAdapter extends ComponentAdapter {
             core.bus.trigger('voip_onToggleDisplay');
         });
 
-        useBus(voipBus, "VOIP-CALL", (params) => {
-            if (params.fromActivity) {
-                this.widget.callFromActivityWidget(params);
+        useBus(voipBus, "VOIP-CALL", (ev) => {
+            const payload = ev.detail;
+            if (payload.fromActivity) {
+                this.widget.callFromActivityWidget(payload);
             } else {
-                this.widget.callFromPhoneWidget(params);
+                this.widget.callFromPhoneWidget(payload);
             }
         });
     }

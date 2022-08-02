@@ -1304,7 +1304,7 @@
                 case "NUMBER":
                     formattedValue += applyInternalNumberFormat(Math.abs(value), part.format);
                     break;
-                case "CURRENCY":
+                case "STRING":
                     formattedValue += part.format;
                     break;
             }
@@ -1315,6 +1315,7 @@
         if (format.isPercent) {
             value = value * 100;
         }
+        value = value / format.magnitude;
         let maxDecimals = 0;
         if (format.decimalPart !== undefined) {
             maxDecimals = format.decimalPart.length;
@@ -1473,6 +1474,31 @@
         let { decimalDigits } = splitNumber(value, 10);
         return decimalDigits ? "0." + "0".repeat(decimalDigits.length) : "0";
     }
+    function createLargeNumberFormat(format, magnitude, postFix) {
+        const internalFormat = parseFormat(format || "#,##0");
+        const largeNumberFormat = internalFormat
+            .map((formatPart) => {
+            if (formatPart.type === "NUMBER") {
+                return [
+                    {
+                        ...formatPart,
+                        format: {
+                            ...formatPart.format,
+                            magnitude,
+                            decimalPart: undefined,
+                        },
+                    },
+                    {
+                        type: "STRING",
+                        format: postFix,
+                    },
+                ];
+            }
+            return formatPart;
+        })
+            .flat();
+        return convertInternalFormatToFormat(largeNumberFormat);
+    }
     function changeDecimalPlaces(format, step) {
         const internalFormat = parseFormat(format);
         const newInternalFormat = internalFormat.map((intFmt) => {
@@ -1518,13 +1544,17 @@
                     throw new Error(`Currency formats have to be prefixed by a $: ${format}`);
                 }
                 // manage brackets/customStrings
-                closingIndex = format.substring(currentIndex).lastIndexOf("]") + currentIndex + 1;
+                closingIndex = format.substring(currentIndex + 1).indexOf("]") + currentIndex + 2;
                 if (closingIndex === 0) {
                     throw new Error(`Invalid currency brackets format: ${format}`);
                 }
+                const str = format.substring(currentIndex + 2, closingIndex - 1);
+                if (str.includes("[")) {
+                    throw new Error(`Invalid currency format: ${format}`);
+                }
                 result.push({
-                    type: "CURRENCY",
-                    format: format.substring(currentIndex + 2, closingIndex - 1),
+                    type: "STRING",
+                    format: str,
                 }); // remove leading "[$"" and ending "]".
             }
             else {
@@ -1546,16 +1576,25 @@
         }
         return result;
     }
+    const magnitudeRegex = /,*?$/;
     /**
      * @param format a formatString that is only applicable to numbers. I.e. composed of characters 0 # , . %
      */
     function convertToInternalNumberFormat(format) {
+        var _a;
+        format = format.trim();
+        if (containsInvalidNumberChars(format)) {
+            throw new Error(`Invalid number format: ${format}`);
+        }
         const isPercent = format.includes("%");
-        const thousandsSeparator = format.includes(",");
-        if (format.match(/\..*,/)) {
+        const magnitudeCommas = ((_a = format.match(magnitudeRegex)) === null || _a === void 0 ? void 0 : _a[0]) || "";
+        const magnitude = !magnitudeCommas ? 1 : 1000 ** magnitudeCommas.length;
+        let _format = format.slice(0, format.length - (magnitudeCommas.length || 0));
+        const thousandsSeparator = _format.includes(",");
+        if (_format.match(/\..*,/)) {
             throw new Error("A format can't contain ',' symbol in the decimal part");
         }
-        const _format = format.replace("%", "").replace(",", "");
+        _format = _format.replace("%", "").replace(",", "");
         const extraSigns = _format.match(/[\%|,]/);
         if (extraSigns) {
             throw new Error(`A format can only contain a single '${extraSigns[0]}' symbol`);
@@ -1570,6 +1609,7 @@
                 isPercent,
                 thousandsSeparator,
                 decimalPart,
+                magnitude,
             };
         }
         else {
@@ -1577,8 +1617,13 @@
                 integerPart,
                 isPercent,
                 thousandsSeparator,
+                magnitude,
             };
         }
+    }
+    const validNumberChars = /[,#0.%]/g;
+    function containsInvalidNumberChars(format) {
+        return Boolean(format.replace(validNumberChars, ""));
     }
     function convertInternalFormatToFormat(internalFormat) {
         let format = "";
@@ -1597,8 +1642,11 @@
                     if (fmt.isPercent) {
                         currentFormat += "%";
                     }
+                    if (fmt.magnitude) {
+                        currentFormat += ",".repeat(Math.log10(fmt.magnitude) / 3);
+                    }
                     break;
-                case "CURRENCY":
+                case "STRING":
                     currentFormat = `[$${part.format}]`;
                     break;
                 case "DATE":
@@ -10021,6 +10069,39 @@
         }
     }
 
+    // -----------------------------------------------------------------------------
+    // FORMAT.LARGE.NUMBER
+    // -----------------------------------------------------------------------------
+    const FORMAT_LARGE_NUMBER = {
+        description: _lt(`Apply a large number format`),
+        args: args(`
+      value (number) ${_lt("The number.")}
+    `),
+        returns: ["NUMBER"],
+        computeFormat: (arg) => {
+            const value = Math.abs(toNumber(arg.value));
+            const format = arg.format;
+            if (value < 1e5) {
+                return format || "#,##0";
+            }
+            else if (value < 1e8) {
+                return createLargeNumberFormat(format, 1e3, "k");
+            }
+            else if (value < 1e11) {
+                return createLargeNumberFormat(format, 1e6, "m");
+            }
+            return createLargeNumberFormat(format, 1e9, "b");
+        },
+        compute: function (value) {
+            return toNumber(value);
+        },
+    };
+
+    var misc$1 = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        FORMAT_LARGE_NUMBER: FORMAT_LARGE_NUMBER
+    });
+
     const DEFAULT_FACTOR = 1;
     const DEFAULT_MODE = 0;
     const DEFAULT_PLACES = 0;
@@ -14766,6 +14847,7 @@
         lookup,
         logical,
         math,
+        misc: misc$1,
         operators,
         statistical,
         text,
@@ -14823,7 +14905,7 @@
         for (let name in fns) {
             const addDescr = fns[name];
             addDescr.category = category;
-            name = name.replace("_", ".");
+            name = name.replace(/_/g, ".");
             functionRegistry.add(name, { isExported: false, ...addDescr });
         }
     }
@@ -16235,12 +16317,16 @@
             const end = tokens[tokens.length - 1].end;
             const newContent = content.slice(0, start) + updatedReferences + content.slice(end);
             const lengthDiff = newContent.length - content.length;
+            const startOfTokens = refTokens[0].start;
+            const endOfTokens = refTokens[refTokens.length - 1].end + lengthDiff;
+            const selection = { start: startOfTokens, end: endOfTokens };
+            // Put the selection at the end of the token if we cycled on a single token
+            if (refTokens.length === 1 && this.selectionStart === this.selectionEnd) {
+                selection.start = selection.end;
+            }
             this.dispatch("SET_CURRENT_CONTENT", {
                 content: newContent,
-                selection: {
-                    start: refTokens[0].start,
-                    end: refTokens[refTokens.length - 1].end + lengthDiff,
-                },
+                selection,
             });
         }
         validateSelection(length, start, end) {
@@ -19054,7 +19140,7 @@
             return [colIndex, rowIndex];
         }
         onMouseDown(ev) {
-            if (ev.button > 0 || this.env.isDashboard()) {
+            if (ev.button > 0) {
                 // not main button, probably a context menu
                 return;
             }
@@ -19064,6 +19150,10 @@
             }
             this.clickedCol = col;
             this.clickedRow = row;
+            if (this.env.model.getters.isDashboard()) {
+                this.env.model.selection.selectCell(col, row);
+                return;
+            }
             const sheetId = this.env.model.getters.getActiveSheetId();
             this.closeOpenedPopover();
             if (this.env.model.getters.getEditionMode() === "editing") {
@@ -34551,7 +34641,7 @@
             }
         }
         /**
-         * Register callbacks to observe the steam
+         * Register callbacks to observe the stream
          */
         observe(owner, callbacks) {
             this.observers.push({ owner, callbacks });
@@ -34636,8 +34726,10 @@
             this.stream.observe(owner, callbacks);
         }
         release(owner) {
-            this.stream.release(owner);
-            this.anchor = this.defaultAnchor;
+            if (this.stream.isListening(owner)) {
+                this.stream.release(owner);
+                this.anchor = this.defaultAnchor;
+            }
         }
         /**
          * Select a new anchor
@@ -34844,7 +34936,12 @@
          * be processed.
          */
         processEvent(newAnchorEvent) {
-            const event = { ...newAnchorEvent, previousAnchor: this.anchor };
+            const sheetId = this.getters.getActiveSheetId();
+            const previousAnchor = deepCopy({
+                cell: this.anchor.cell,
+                zone: this.getters.expandZone(sheetId, this.anchor.zone),
+            });
+            const event = { ...newAnchorEvent, previousAnchor };
             const commandResult = this.checkEventAnchorZone(event);
             if (commandResult !== 0 /* Success */) {
                 return new DispatchResult(commandResult);
@@ -36836,6 +36933,7 @@
     exports.components = components;
     exports.convertAstNodes = convertAstNodes;
     exports.coreTypes = coreTypes;
+    exports.findCellInNewZone = findCellInNewZone;
     exports.functionCache = functionCache;
     exports.helpers = helpers;
     exports.invalidateEvaluationCommands = invalidateEvaluationCommands;
@@ -36849,8 +36947,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-07-27T09:06:10.866Z';
-    exports.__info__.hash = '31e1671';
+    exports.__info__.date = '2022-08-02T11:55:12.522Z';
+    exports.__info__.hash = '93644c4';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

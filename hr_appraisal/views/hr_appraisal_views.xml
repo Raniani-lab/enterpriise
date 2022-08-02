@@ -93,7 +93,7 @@
                                             <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle_confirm" class="ms-2 me-0"/>
                                         </div>
                                     </div>
-                                    <div class="col-12 o_appraisal_input">
+                                    <div class="col-12 o_appraisal_input position-relative">
                                         <span class="o_appraisal_overlay o_highlight" attrs="{'invisible': ['|', '|', ('can_see_employee_publish', '=', True), ('employee_feedback_published', '=', True), ('employee_feedback_template', '=', False)]}">
                                             <div>Self Assessment will show here</div>
                                             <div>once published</div>
@@ -116,7 +116,7 @@
                                             <field name="manager_feedback_published" nolabel="1" widget="boolean_toggle" class="ms-2 me-0" attrs="{'invisible': [('can_see_manager_publish', '=', False)]}"/>
                                         </div>
                                     </div>
-                                    <div class="col-12 o_appraisal_input">
+                                    <div class="col-12 o_appraisal_input position-relative">
                                         <span class="o_appraisal_overlay" attrs="{'invisible': ['|', '|', ('can_see_manager_publish', '=', True), ('manager_feedback_published', '=', True), ('manager_feedback_template', '=', False)]}">
                                             <div>Manager Assessment will show here</div>
                                             <div>once published</div>

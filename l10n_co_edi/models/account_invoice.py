@@ -151,3 +151,10 @@ class AccountMoveLine(models.Model):
                 return (self.product_id.default_code, '999', 'Estándar de adopción del contribuyente')
 
         return ('1010101', '001', '')
+
+    def _l10n_co_edi_get_iae3_value(self, product_code):
+        value = {
+            '010': '9',
+            '001': '10',
+        }
+        return value.get(product_code, '')

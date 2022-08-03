@@ -59,11 +59,11 @@
                         <div class="col-xs-12 col-md-6 o_setting_box" id="sms">
                             <div class="o_setting_right_pane" id="sms_settings">
                                 <div class="o_form_label">
-                                    Send SMS
+                                    Authenticate by SMS
                                     <a href="https://www.odoo.com/documentation/master/applications/marketing/sms_marketing/pricing/pricing_and_faq.html" title="Documentation" class="ms-1 o_doc_link" target="_blank"></a>
                                 </div>
                                 <div class="text-muted">
-                                    Send texts to your contacts
+                                    Deliver one-time codes by SMS to identify signatories when signing a document.
                                 </div>
                                 <widget name="iap_buy_more_credits" service_name="sms" hide_service="1"/>
                             </div>

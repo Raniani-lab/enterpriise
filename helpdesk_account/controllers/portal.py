@@ -35,7 +35,7 @@ class CustomerPortal(HelpdeskCustomerPortal, AccountCustomerPortal):
     ], type='http', auth="user", website=True)
     def portal_my_tickets_invoices(self, ticket_id=None, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
         ticket = request.env['helpdesk.ticket'].search([('id', '=', ticket_id)])
-        if not ticket.exists():
+        if not ticket:
             return NotFound()
         domain = [('id', 'in', ticket.invoice_ids.ids)]
         values = self._prepare_my_invoices_values(page, date_begin, date_end, sortby, filterby, domain=domain)

@@ -105,7 +105,7 @@ class AccountMove(models.Model):
                 vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
 
                 partner_id = self.find_partner_id_with_vat(vat_number_ocr)
-                if partner_id.exists():
+                if partner_id:
                     partner_id = partner_id.id
                 else:
                     partner_id = self.find_partner_id_with_name(supplier_ocr)

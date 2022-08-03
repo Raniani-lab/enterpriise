@@ -32,8 +32,8 @@ class AppointmentHr(Appointment):
         # Ensure old link ?filter_employee_ids= retrocompatibility. This parameter is deprecated since task-2499566.
         filter_employee_ids = json.loads(filter_employee_ids) if filter_employee_ids else []
         if filter_employee_ids:
-            employees = request.env['hr.employee'].sudo().browse(filter_employee_ids)
-            valid_employees = employees.filtered(lambda emp: emp.exists() and emp.user_id in appointment_type.staff_user_ids)
+            employees = request.env['hr.employee'].sudo().browse(filter_employee_ids).exists()
+            valid_employees = employees.filtered(lambda emp: emp.user_id in appointment_type.staff_user_ids)
             if valid_employees:
                 return str(valid_employees.user_id.ids)
 

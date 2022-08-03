@@ -37,7 +37,7 @@ class CustomerPortal(SaleCustomerPortal, AccountCustomerPortal):
     ], type='http', auth='user', website=True)
     def portal_my_task_quotes(self, project_id=None, task_id=None, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         task = request.env['project.task'].search([('project_id', '=', project_id), ('id', '=', task_id)])
-        if not task.exists() or not task.project_id._check_project_sharing_access():
+        if not task or not task.project_id._check_project_sharing_access():
             return NotFound()
         values = self._prepare_portal_layout_values()
         SaleOrder = request.env['sale.order']

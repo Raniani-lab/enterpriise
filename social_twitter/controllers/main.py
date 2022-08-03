@@ -119,7 +119,7 @@ class SocialTwitterController(SocialController):
             ('twitter_tweet_id', '=', tweet_id),
             ('stream_id', '=', stream_id)
         ], limit=1)
-        if not tweet.exists():
+        if not tweet:
             raise NotFound()
         try:
             return tweet._twitter_do_retweet()
@@ -162,7 +162,7 @@ class SocialTwitterController(SocialController):
             ('twitter_tweet_id', '=', tweet_id),
             ('stream_id', '=', stream_id)
         ], limit=1)
-        if not tweet.exists():
+        if not tweet:
             return NotFound()
         files = request.httprequest.files.getlist('attachment')
         # Extract all attachments from the request:

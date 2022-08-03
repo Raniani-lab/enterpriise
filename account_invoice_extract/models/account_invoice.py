@@ -317,10 +317,10 @@ class AccountMove(models.Model):
         don't know which box is the right one (if it exists)
         """
         selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("user_selected", "=", True)])
-        if not selected.exists():
+        if not selected:
             selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("selected_status", "=", 1)], limit=1)
         return_box = {}
-        if selected.exists():
+        if selected:
             return_box["box"] = [selected.word_text, selected.word_page, selected.word_box_midX,
                                  selected.word_box_midY, selected.word_box_width, selected.word_box_height, selected.word_box_angle]
         # now we have the user or ocr selection, check if there was manual changes
@@ -468,7 +468,7 @@ class AccountMove(models.Model):
             return 0
         if new_word.field == "supplier":
             partner_names = self.env["res.partner"].search([("name", "ilike", new_word.word_text), *self._domain_company()])
-            if partner_names.exists():
+            if partner_names:
                 partner = min(partner_names, key=len)
                 return partner.id
             else:
@@ -590,8 +590,8 @@ class AccountMove(models.Model):
         self.env.cr.execute("""
             SELECT id, name
             FROM res_partner
-            WHERE active = true 
-              AND supplier_rank > 0 
+            WHERE active = true
+              AND supplier_rank > 0
               AND name IS NOT NULL
               AND (company_id IS NULL OR company_id = %s)
         """, [self.company_id.id])
@@ -850,7 +850,7 @@ class AccountMove(models.Model):
                         move_form.partner_id = created_supplier
                         if iban_ocr and not move_form.partner_bank_id and self.is_purchase_document():
                             bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
-                            if bank_account.exists():
+                            if bank_account:
                                 if bank_account.partner_id == move_form.partner_id.id:
                                     move_form.partner_bank_id = bank_account
                             else:
@@ -860,11 +860,11 @@ class AccountMove(models.Model):
                                        }
                                 if SWIFT_code_ocr:
                                     bank_id = self.env['res.bank'].search([('bic', '=', SWIFT_code_ocr['bic'])], limit=1)
-                                    if bank_id.exists():
+                                    if bank_id:
                                         vals['bank_id'] = bank_id.id
-                                    if not bank_id.exists() and SWIFT_code_ocr['verified_bic']:
+                                    if not bank_id and SWIFT_code_ocr['verified_bic']:
                                         country_id = self.env['res.country'].search([('code', '=', SWIFT_code_ocr['country_code'])], limit=1)
-                                        if country_id.exists():
+                                        if country_id:
                                             vals['bank_id'] = self.env['res.bank'].create({'name': SWIFT_code_ocr['name'], 'country': country_id.id, 'city': SWIFT_code_ocr['city'], 'bic': SWIFT_code_ocr['bic']}).id
                                 move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create(vals)
 

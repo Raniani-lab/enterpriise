@@ -4,15 +4,14 @@
         <field name="name">hr.department.kanban.inherit</field>
         <field name="model">hr.department</field>
         <field name="inherit_id" ref="hr.hr_department_view_kanban"/>
-        <field name="groups_id" eval="[(4,ref('hr_appraisal.group_hr_appraisal_user'))]"/>
         <field name="arch" type="xml">
             <data>
                 <xpath expr="//templates" position="before">
-                    <field name="appraisals_to_process_count"/>
+                    <field name="appraisals_to_process_count" groups="hr_appraisal.group_hr_appraisal_user"/>
                 </xpath>
 
                 <xpath expr="//div[hasclass('o_kanban_primary_right')]" position="inside">
-                    <div t-if="record.appraisals_to_process_count.raw_value > 0" class="row ml16">
+                    <div groups="hr_appraisal.group_hr_appraisal_user" t-if="record.appraisals_to_process_count.raw_value > 0" class="row ml16">
                         <div class="col">
                             <a name="%(hr_appraisal_action_from_department)d" type="action">
                                 <t t-esc="record.appraisals_to_process_count.raw_value"/> Appraisals
@@ -22,7 +21,7 @@
                 </xpath>
 
                 <xpath expr="//div[hasclass('o_kanban_manage_reports')]" position="inside">
-                    <a role="menuitem" class="dropdown-item" name="%(action_appraisal_report_all)d" type="action">
+                    <a groups="hr_appraisal.group_hr_appraisal_user" role="menuitem" class="dropdown-item" name="%(action_appraisal_report_all)d" type="action">
                         Appraisals
                     </a>
                 </xpath>

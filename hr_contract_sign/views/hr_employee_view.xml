@@ -4,13 +4,14 @@
         <field name="name">hr.employee.form</field>
         <field name="model">hr.employee</field>
         <field name="inherit_id" ref="hr.view_employee_form"/>
-        <field name="groups_id" eval="[(4, ref('hr_contract.group_hr_contract_manager'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="%(sign_contract_wizard_action)d" string="Signature Request" type="action" groups="sign.group_sign_user"/>
+                <t groups="hr_contract.group_hr_contract_manager">
+                    <button name="%(sign_contract_wizard_action)d" string="Signature Request" type="action" groups="sign.group_sign_user"/>
+                </t>
             </xpath>
             <div name="button_box" position="inside">
-                <button name="open_employee_sign_requests" type="object" class="oe_stat_button" icon="fa-pencil" attrs="{'invisible': [('sign_request_count', '=', 0)]}">
+                <button groups="hr_contract.group_hr_contract_manager" name="open_employee_sign_requests" type="object" class="oe_stat_button" icon="fa-pencil" attrs="{'invisible': [('sign_request_count', '=', 0)]}">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value"><field name="sign_request_count"/></span>
                         <span class="o_stat_text">Signature Requests</span>

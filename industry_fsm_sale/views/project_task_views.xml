@@ -232,27 +232,30 @@
         <field name="inherit_id" ref="sale_project.view_sale_project_inherit_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="after">
-                <div class="text-center alert alert-primary" role="alert" attrs="{'invisible': ['|', ('warning_message', '=', False), ('warning_message', '=', '')]}">
+                <div groups="sales_team.group_sale_salesman,industry_fsm.group_fsm_quotation_from_task" class="text-center alert alert-primary" role="alert" attrs="{'invisible': ['|', ('warning_message', '=', False), ('warning_message', '=', '')]}">
                     <field name="warning_message"/>
                 </div>
             </xpath>
             <xpath expr="//span[@id='end_button_box']" position="before">
-                <button name="action_fsm_view_quotations"
-                    type="object"
-                    class="oe_stat_button"
-                    icon="fa-dollar"
-                    groups="industry_fsm.group_fsm_manager"
-                    attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('quotation_count', '=', 0)]}">
-                    <field string="Quotations" name="quotation_count" widget="statinfo"/>
-                </button>
+                <t groups="sales_team.group_sale_salesman,industry_fsm.group_fsm_quotation_from_task">
+                    <button name="action_fsm_view_quotations"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-dollar"
+                        groups="industry_fsm.group_fsm_manager"
+                        attrs="{'invisible': ['|', ('allow_quotations', '=', False), ('quotation_count', '=', 0)]}">
+                        <field string="Quotations" name="quotation_count" widget="statinfo"/>
+                    </button>
+                </t>
             </xpath>
             <xpath expr="//button[@name='action_view_so']" position="after">
-                <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager">
-                    <field name="invoice_count" widget="statinfo" string="Invoices"/>
-                </button>
+                <t groups="sales_team.group_sale_salesman,industry_fsm.group_fsm_quotation_from_task">
+                    <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-pencil-square-o" attrs="{'invisible': ['|', ('allow_billable', '=', False), ('invoice_count', '=', 0)]}" groups="industry_fsm.group_fsm_manager">
+                        <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                    </button>
+                </t>
             </xpath>
         </field>
-        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman')), (4, ref('industry_fsm.group_fsm_quotation_from_task'))]"/>
     </record>
 
 

@@ -7,17 +7,16 @@
         <field name="priority">32</field>
         <field name="arch" type="xml">
             <xpath expr="/kanban" position="inside">
-                <field name="allow_forecast"/>
+                <field name="allow_forecast" groups="planning.group_planning_user"/>
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_manage_view')]" position="inside">
-                <div role="menuitem" t-if="record.allow_forecast.raw_value">
+                <div groups="planning.group_planning_user" role="menuitem" t-if="record.allow_forecast.raw_value">
                     <a name="action_project_forecast_from_project" type="object">
                         Planning
                     </a>
                 </div>
             </xpath>
         </field>
-        <field name="groups_id" eval="[(4, ref('planning.group_planning_user'))]"/>
     </record>
 
     <record id="project_project_view_form_simplified_inherit_forecast" model="ir.ui.view">
@@ -27,10 +26,9 @@
         <field name="priority">32</field>
         <field name="arch" type="xml">
             <field name="user_id" position="after">
-                <field name="allow_forecast"/>
+                <field name="allow_forecast" groups="planning.group_planning_user"/>
             </field>
         </field>
-        <field name="groups_id" eval="[(4, ref('planning.group_planning_user'))]"/>
     </record>
 
     <record id="project_view_form_inherit_project_forecast" model="ir.ui.view">

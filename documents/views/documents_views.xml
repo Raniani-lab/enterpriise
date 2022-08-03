@@ -832,7 +832,6 @@
         <field name="model">res.config.settings</field>
         <field name="priority" eval="70"/>
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
-        <field name="groups_id" eval="[(4, ref('documents.group_documents_manager'), 0)]"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('settings')]" position="inside">
                 <div class="app_settings_block o_documents_block"
@@ -852,11 +851,10 @@
     <record id="documents_document_res_partner_view" model="ir.ui.view">
         <field name="name">res.partner.view.documents.document.form</field>
         <field name="model">res.partner</field>
-        <field name="groups_id" eval="[(4, ref('documents.group_documents_user'))]"/>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                <button groups="documents.group_documents_user" name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value"><field name="document_count"/></span>
                         <span class="o_stat_text">Documents</span>

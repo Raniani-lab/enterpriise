@@ -8,4 +8,9 @@
     'depends': ['website_sale_delivery', 'website_sale_account_taxcloud'],
     'auto_install': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_tests': [
+            'website_sale_taxcloud_delivery/static/tests/**/*',
+        ],
+    }
 }

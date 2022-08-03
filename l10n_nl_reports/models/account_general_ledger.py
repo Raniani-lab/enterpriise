@@ -75,9 +75,11 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             # Count the total number of lines to be used in the batching
             self.env.cr.execute(f"SELECT COUNT(*) FROM {tables} WHERE {where_clause}", where_params)
             count = self.env.cr.fetchone()[0]
-            batch_size = 10**4
+            batch_size = self.env['ir.config_parameter'].sudo().get_param('l10n_nl_reports.general_ledger_batch_size', 10**4)
             # Create a list to store the query results during the batching
             res_list = []
+            # Minimum row_number used to paginate query results. Row_Number is faster than using OFFSET for large databases.
+            min_row_number = 0
 
             lang = self.env.user.lang or get_lang(self.env).code
             journal_name = f"COALESCE(journal.name->>'{lang}', journal.name->>'en_US')" if \
@@ -88,7 +90,8 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 self.pool['account.tax'].name.translate else 'tax.name'
             for offset in range(0, count, batch_size):
                 self._cr.execute(f"""
-                    SELECT DISTINCT ON (account_move_line.id)
+                    SELECT * FROM (
+                        SELECT DISTINCT ON (account_move_line.id)
                            journal.id AS journal_id,
                            {journal_name} AS journal_name,
                            journal.code AS journal_code,
@@ -147,28 +150,30 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                            partner.supplier_rank AS partner_supplier_rank,
                            country.code AS partner_country_code,
                            tax.id AS tax_id,
-                           {tax_name} AS tax_name
-                      FROM {tables}
-                      JOIN account_move ON account_move.id = account_move_line.move_id
-                      JOIN account_journal journal ON account_move_line.journal_id = journal.id
-                      JOIN account_account account ON account_move_line.account_id = account.id
-                      LEFT JOIN res_partner partner ON account_move_line.partner_id = partner.id
-                      LEFT JOIN account_tax tax ON account_move_line.tax_line_id = tax.id
-                      LEFT JOIN account_full_reconcile reconcile ON account_move_line.full_reconcile_id = reconcile.id
-                      LEFT JOIN res_currency currency ON account_move_line.currency_id = currency.id
-                      LEFT JOIN res_currency currency2 ON account_move_line.company_currency_id = currency2.id
-                      LEFT JOIN res_country country ON partner.country_id = country.id
-                      LEFT JOIN res_partner_bank partner_bank ON partner.id = partner_bank.partner_id and partner_bank.company_id = account_move_line.company_id
-                      LEFT JOIN res_bank bank ON partner_bank.bank_id = bank.id
-                      LEFT JOIN res_country_state state ON partner.state_id = state.id
-                      LEFT JOIN ir_property credit_limit ON credit_limit.res_id = 'res.partner,' || partner.id AND credit_limit.name = 'credit_limit'
-                      LEFT JOIN res_partner parent_partner ON parent_partner.id = partner.parent_id
-                     WHERE {where_clause}
-                     ORDER BY account_move_line.id
-                     LIMIT {batch_size}
-                    OFFSET {offset}
-                """, where_params)
+                           {tax_name} AS tax_name,
+                           ROW_NUMBER () OVER (ORDER BY account_move_line.id) as row_number
+                        FROM {tables}
+                        JOIN account_move ON account_move.id = account_move_line.move_id
+                        JOIN account_journal journal ON account_move_line.journal_id = journal.id
+                        JOIN account_account account ON account_move_line.account_id = account.id
+                        LEFT JOIN res_partner partner ON account_move_line.partner_id = partner.id
+                        LEFT JOIN account_tax tax ON account_move_line.tax_line_id = tax.id
+                        LEFT JOIN account_full_reconcile reconcile ON account_move_line.full_reconcile_id = reconcile.id
+                        LEFT JOIN res_currency currency ON account_move_line.currency_id = currency.id
+                        LEFT JOIN res_currency currency2 ON account_move_line.company_currency_id = currency2.id
+                        LEFT JOIN res_country country ON partner.country_id = country.id
+                        LEFT JOIN res_partner_bank partner_bank ON partner.id = partner_bank.partner_id and partner_bank.company_id = account_move_line.company_id
+                        LEFT JOIN res_bank bank ON partner_bank.bank_id = bank.id
+                        LEFT JOIN res_country_state state ON partner.state_id = state.id
+                        LEFT JOIN ir_property credit_limit ON credit_limit.res_id = 'res.partner,' || partner.id AND credit_limit.name = 'credit_limit'
+                        LEFT JOIN res_partner parent_partner ON parent_partner.id = partner.parent_id
+                        WHERE {where_clause}
+                        ORDER BY account_move_line.id) sub
+                    WHERE sub.row_number > %s
+                    LIMIT %s
+                    """, where_params + [min_row_number, batch_size])
                 res_list += self.env.cr.dictfetchall()
+                min_row_number = res_list[-1]['row_number']
 
             vals_dict = {}
             for row in res_list:

@@ -150,9 +150,17 @@ export default class BarcodeModel extends EventBus {
             case 'scan_product_or_dest':
                 barcodeInformations.message = _t("Scan more products, or scan the destination location"); break;
             case 'scan_lot':
-                barcodeInformations.message = _t("Scan the lot number of the product"); break;
+                barcodeInformations.message = sprintf(
+                    _t("Scan lot numbers for product %s to change their quantity"),
+                    line.product_id.display_name
+                );
+                break;
             case 'scan_serial':
-                barcodeInformations.message = _t("Scan the serial number of the product"); break;
+                barcodeInformations.message = sprintf(
+                    _t("Scan serial numbers for product %s to change their quantity"),
+                    line.product_id.display_name
+                );
+                break;
         }
         return barcodeInformations;
     }

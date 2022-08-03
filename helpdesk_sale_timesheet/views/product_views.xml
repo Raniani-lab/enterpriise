@@ -8,22 +8,11 @@
             <group name="sale" position="after">
                 <group>
                     <group string="Helpdesk" name="helpdesk" attrs="{'invisible': ['|', ('type', '!=', 'service'), ('sale_ok', '=', False)]}" groups="helpdesk.group_use_sla">
-                        <field name="sla_id" attrs="{'invisible': ['|', ('type', '!=', 'service'), ('sale_ok', '=', False)]}" groups="helpdesk.group_use_sla" options="{'no_quick_create': True, 'no_open': True}"/>
+                        <field name="sla_id" groups="!helpdesk.group_helpdesk_user" attrs="{'invisible': ['|', ('type', '!=', 'service'), ('sale_ok', '=', False)]}" options="{'no_quick_create': True, 'no_open': True}"/>
+                        <field name="sla_id" groups="helpdesk.group_helpdesk_user" attrs="{'invisible': ['|', ('type', '!=', 'service'), ('sale_ok', '=', False)]}" options="{'no_quick_create': True}"/>
                     </group>
                 </group>
             </group>
-        </field>
-    </record>
-
-    <record id="product_template_form_view_invoice_policy_inherit_helpdesk_user" model="ir.ui.view">
-        <field name="name">product.template.timesheet.form.inherit.helpdesk.user</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product_template_form_view_invoice_policy_inherit_helpdesk"/>
-        <field name="groups_id" eval="[(4, ref('helpdesk.group_helpdesk_user'))]"/>
-        <field name="arch" type="xml">
-            <field name="sla_id" position="attributes">
-                <attribute name="options">{'no_quick_create': True}</attribute>
-            </field>
         </field>
     </record>
 </odoo>

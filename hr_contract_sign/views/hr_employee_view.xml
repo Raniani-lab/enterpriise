@@ -6,9 +6,11 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <t groups="hr_contract.group_hr_contract_manager">
-                    <button name="%(sign_contract_wizard_action)d" string="Signature Request" type="action" groups="sign.group_sign_user"/>
-                </t>
+                <!--
+                    hr_contract.group_hr_contract_manager implies sign.group_sign_manager
+                    https://github.com/odoo/enterprise/blob/435fa269064d358c8b78a957b8201dc6b6aeb6af/hr_contract_sign/security/security.xml#L4
+                 -->
+                <button name="%(sign_contract_wizard_action)d" string="Signature Request" type="action" groups="hr_contract.group_hr_contract_manager"/>
             </xpath>
             <div name="button_box" position="inside">
                 <button groups="hr_contract.group_hr_contract_manager" name="open_employee_sign_requests" type="object" class="oe_stat_button" icon="fa-pencil" attrs="{'invisible': [('sign_request_count', '=', 0)]}">

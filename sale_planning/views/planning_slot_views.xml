@@ -44,7 +44,8 @@
                     'readonly': [('sale_line_plannable', '!=', False), ('end_datetime', '=', False)]}</attribute>
             </field>
             <field name="role_id" position="after">
-                <field name="sale_line_id" options="{'no_create': True, 'no_open': True}" context="{'with_planning_remaining_hours': True}"/>
+                <field name="sale_line_id" groups="!sales_team.group_sale_salesman" options="{'no_create': True, 'no_open': True}" context="{'with_planning_remaining_hours': True}"/>
+                <field name="sale_line_id" groups="sales_team.group_sale_salesman" options="{'no_create': True}" context="{'with_planning_remaining_hours': True}"/>
                 <field name="sale_line_plannable" invisible="1"/>
             </field>
             <xpath expr="//div[@name='button_box']" position="inside">
@@ -55,18 +56,6 @@
                     string="Sales Order"
                     groups="sales_team.group_sale_salesman_all_leads"/>
             </xpath>
-        </field>
-    </record>
-
-    <record id="planning_slot_view_form_inherit_sale_planning_salesman" model="ir.ui.view">
-        <field name="name">planning.slot.form.inherit.sale.planning.salesman</field>
-        <field name="model">planning.slot</field>
-        <field name="inherit_id" ref="planning_slot_view_form_inherit_sale_planning"/>
-        <field name="groups_id" eval="[(4, ref('sales_team.group_sale_salesman'))]"/>
-        <field name="arch" type="xml">
-            <field name="sale_line_id" position="attributes">
-                <attribute name="options">{'no_create': True}</attribute>
-            </field>
         </field>
     </record>
 

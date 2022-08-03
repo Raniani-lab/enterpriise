@@ -40,19 +40,14 @@
     <record model="ir.ui.view" id="account_reports_journal_dashboard_kanban_view_account_manager">
         <field name="name">account.journal.dashboard.kanban.reports</field>
         <field name="model">account.journal</field>
-        <field name="groups_id" eval="[(4,ref('account.group_account_manager'))]"/>
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@name='latest_statement']" position="replace">
-                <div name="latest_statement" class="row">
-                    <div class="col overflow-hidden text-start">
-                        <span title="Latest Statement">Latest Statement</span>
-                    </div>
-                    <div class="col-auto text-end">
-                        <span><t t-out="dashboard.last_balance"/></span>
-                    </div>
-                </div>
-                <div class="row" t-if="dashboard.difference">
+            <xpath expr="//div[@name='latest_statement']" position="after">
+                <!--
+                    This view was replacing //div[@name='latest_statement'] with exactly the same block
+                    + a new block after. So, basically, a position="after" is enough ...
+                -->
+                <div groups="account.group_account_manager" class="row" t-if="dashboard.difference">
                     <div class="col overflow-hidden text-start">
                         <a type="action" name="%(action_account_report_bank_reconciliation)d">Difference</a>
                     </div>

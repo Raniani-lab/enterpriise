@@ -7,7 +7,7 @@
         <field name="priority">32</field>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
-                <page string="UK HMRC Integration" name="uk_hmrc_integration">
+                <page string="UK HMRC Integration" name="uk_hmrc_integration" groups="base.group_system">
                     <group>
                     <group>
                         <field name="l10n_uk_user_token" readonly="1"/>
@@ -21,6 +21,5 @@
                 </page>
             </xpath>
         </field>
-        <field name="groups_id" eval="[(4, ref('base.group_system'))]"/>
     </record>
 </odoo>

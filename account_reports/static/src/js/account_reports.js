@@ -292,7 +292,7 @@ var accountReportsWidget = AbstractAction.extend({
         this.$('.o_content').scroll(function() {
             var content_top = $('.o_content').offset().top;
             var table_top = $('.o_account_reports_table').offset().top;
-            var thead = $('.o_account_reports_table thead');
+            var thead = $('.o_account_reports_table>thead');
 
             // Makes thead stick
             if (content_top >= table_top) {

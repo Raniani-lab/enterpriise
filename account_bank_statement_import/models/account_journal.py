@@ -153,7 +153,8 @@ class AccountJournal(models.Model):
     def _statement_import_check_bank_account(self, account_number):
         # Needed for CH to accommodate for non-unique account numbers
         sanitized_acc_number = self.bank_account_id.sanitized_acc_number.split(" ")[0]
-        if len(sanitized_acc_number) == 27 and sanitized_acc_number[:2].upper() == "FR":
+        # Needed for BNP France
+        if len(sanitized_acc_number) == 27 and len(account_number) == 11 and sanitized_acc_number[:2].upper() == "FR":
             return sanitized_acc_number[14:-2] == account_number
         return sanitized_acc_number == account_number
 

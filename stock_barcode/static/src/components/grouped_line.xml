@@ -17,8 +17,8 @@
                         <span t-if="props.displayUOM" t-esc="line.product_uom_id.name"/>
                     </div>
                 </div>
-                <button t-on-click="toggleSublines" class="o_line_button o_toggle_sublines btn btn-primary ms-2 ms-sm-4">                <i t-if="!line.opened" class="fa fa-2x fa-caret-down"/>
-                    <i t-elif="line.opened" class="fa fa-2x fa-caret-up"/>
+                <button t-on-click="toggleSublines" class="o_line_button o_toggle_sublines btn btn-primary ms-2 ms-sm-4">
+                    <i t-att-class="'fa fa-2x fa-caret-' + (opened ? 'up' : 'down')"/>
                 </button>
             </div>
             <div class="o_sublines my-2 flex-grow-1" t-if="opened">

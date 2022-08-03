@@ -45,4 +45,4 @@ class SaleOrder(models.Model):
 
     def _set_closed_state(self):
         super()._set_closed_state()
-        self.filtered('is_subscription').order_line.task_id.action_stop_recurrence()
+        self.filtered('is_subscription').order_line.task_id.action_unlink_recurrence()

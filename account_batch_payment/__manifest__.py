@@ -24,7 +24,6 @@ When you reconcile, simply select the corresponding batch payment to reconcile a
         'views/account_payment_views.xml',
         'views/account_batch_payment_views.xml',
         'views/account_journal_views.xml',
-        'wizard/download_wizard_views.xml',
         'wizard/batch_error_views.xml',
     ],
     'installable': True,

@@ -98,11 +98,9 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             self.assertFalse(batch.sct_generic)
 
             wizard_action = batch.validate_batch()
-            self.assertTrue(wizard_action, "Validation wizard should have returned an action")
-            self.assertEqual(wizard_action.get('res_model'), 'account.batch.download.wizard', "The action returned at validation should target a download wizard")
+            self.assertFalse(wizard_action, "Validation wizard should not have returned an action")
 
-            download_wizard = self.env['account.batch.download.wizard'].browse(batch.export_batch_payment()['res_id'])
-            sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
+            sct_doc = etree.fromstring(base64.b64decode(batch.export_file))
             self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
             self.assertTrue(payment_1.is_move_sent)
             self.assertTrue(payment_2.is_move_sent)
@@ -132,8 +130,8 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             self.assertTrue(len(error_wizard.warning_line_ids) > 0, "Using generic SEPA should raise warnings")
             self.assertTrue(len(error_wizard.error_line_ids) == 0, "Error wizard should not list any error")
 
-            download_wizard = self.env['account.batch.download.wizard'].browse(error_wizard.proceed_with_validation()['res_id'])
-            sct_doc = etree.fromstring(base64.b64decode(download_wizard.export_file))
+            batch._send_after_validation()
+            sct_doc = etree.fromstring(base64.b64decode(batch.export_file))
             self.assertTrue(self.xmlschema.validate(sct_doc), self.xmlschema.error_log.last_error)
             self.assertTrue(payment_1.is_move_sent)
             self.assertTrue(payment_2.is_move_sent)

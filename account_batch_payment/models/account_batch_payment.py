@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import base64
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
@@ -322,7 +323,6 @@ class AccountBatchPayment(models.Model):
         return [{'title': error, 'records': pmts} for error, pmts in exceptions_mapping.items()]
 
     def export_batch_payment(self):
-        export_file_data = {}
         #export and save the file for each batch payment
         self.check_access_rights('write')
         self.check_access_rule('write')
@@ -332,19 +332,11 @@ class AccountBatchPayment(models.Model):
             record.export_file = export_file_data['file']
             record.export_filename = export_file_data['filename']
             record.export_file_create_date = fields.Date.today()
-
-        #if the validation was asked for a single batch payment, open the wizard to download the newly generated file
-        if len(self) == 1:
-            download_wizard = self.env['account.batch.download.wizard'].create({
-                    'batch_payment_id': self.id,
-            })
-            return {
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-                'res_model': 'account.batch.download.wizard',
-                'target': 'new',
-                'res_id': download_wizard.id,
-            }
+            record.message_post(
+                attachments=[
+                    (record.export_filename, base64.decodebytes(record.export_file)),
+                ]
+            )
 
     def print_batch_payment(self):
         return self.env.ref('account_batch_payment.action_print_batch_payment').report_action(self, config=False)

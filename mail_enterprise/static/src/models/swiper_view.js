@@ -25,7 +25,7 @@ registerModel({
             }
             if (this.notificationGroupViewOwner) {
                 if (this.notificationGroupViewOwner.notificationGroup.notifications.length > 0) {
-                    this.notificationGroupViewOwner.notificationGroup.openCancelAction();
+                    this.notificationGroupViewOwner.notificationGroup.notifyCancel();
                 }
             }
             if (this.threadNeedactionPreviewViewOwner) {

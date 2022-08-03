@@ -495,7 +495,8 @@ class AccountMove(models.Model):
         self.l10n_cl_dte_file = dte_attachment.id
 
     def _l10n_cl_create_partner_dte(self):
-        dte_signed, file_name = self._l10n_cl_create_dte_envelope(self.partner_id.vat)
+        dte_signed, file_name = self._l10n_cl_create_dte_envelope(
+            '55555555-5' if self.partner_id.l10n_cl_sii_taxpayer_type == '4' else self.partner_id.vat)
         dte_partner_attachment = self.env['ir.attachment'].create({
             'name': file_name,
             'res_model': self._name,

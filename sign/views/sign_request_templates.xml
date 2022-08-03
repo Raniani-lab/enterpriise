@@ -184,14 +184,14 @@
                         </p>
                     </div>
                     <input type="password" required="required" name="password" t-att-autofocus="autofocus" maxlength="50"/>
-                    <input type="submit" value="Generate Document" ></input>
+                    <input type="submit" value="Generate Document"></input>
                 </form>
             </div>
         </t>
     </template>
 
-    <template id="sign.deleted_sign_request" name="Missing Signature Request">
-        <t t-call="web.layout">
+    <template id="sign.deleted_sign_request" name="Signature Request Not Found">
+        <t t-call="web.frontend_layout">
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
                 <t t-call-assets="web.assets_common" t-js="false"/>
@@ -200,14 +200,35 @@
                 <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
-            <div class="container">
-                <h3>Missing signature request</h3>
-                <p>
-                    The signature access you are trying to reach does not exist. Maybe the signature request has been deleted or modified. <br/>
-                    If there still exists a signature request for this document, check your inbox to get your access!
-                </p>
+            <div class="oe_structure oe_empty">
+                <section class="s_text_image pt104 pb104" data-snippet="s_image_text" data-name="Image - Text">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-4 pb32">
+                                <img class="img img-fluid mx-auto" src="/web_editor/shape/http_routing/404.svg"/>
+                            </div>
+                            <div class="col-lg-8 text-lg-start text-center my-auto">
+                                <h1 class="visually-hidden">Error 404</h1>
+                                <h2>We couldn't find the signature request you're looking for!</h2>
+                                <p/>
+                                <p>The Odoo Sign document you are trying to reach does not exist. The signature request might have been deleted or modified.</p>
+                                <p>You can contact the person who invited you to sign the document by email for help.</p>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="s_hr pt32 pb48" data-snippet="s_hr" data-name="Separator">
+                                    <hr class="w-100 mx-auto" style="border-top-width: 1px; border-top-style: solid; border-top-color: var(--400);"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <p class="text-center">Sign up for Odoo Sign to manage your own documents and signature requests!</p>
+                                <ul class="list-inline text-center">
+                                    <li class="list-inline-item mb-2"><a href="https://www.odoo.com/trial?selected_app=sign&amp;utm_source=db&amp;utm_medium=sign_404" target="blank" class="btn btn-secondary">Try Odoo Sign</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </t>
     </template>
-
 </odoo>

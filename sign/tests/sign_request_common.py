@@ -48,6 +48,7 @@ class SignRequestCommon(TransactionCase):
                 'height': 0.015,
             }
         ])
+        cls.single_role_customer_sign_values = cls.create_sign_values(cls, cls.template_1_role.sign_item_ids, cls.role_customer.id)
 
         cls.template_3_roles = cls.env['sign.template'].create({
             'name': 'template_3_roles',

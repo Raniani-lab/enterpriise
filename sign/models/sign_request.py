@@ -92,6 +92,7 @@ class SignRequest(models.Model):
     request_item_infos = fields.Binary(compute="_compute_request_item_infos")
     last_action_date = fields.Datetime(related="message_ids.create_date", readonly=True, string="Last Action Date")
     completion_date = fields.Date(string="Completion Date", compute="_compute_progress", compute_sudo=True)
+    communication_company_id = fields.Many2one('res.company', string="Company used for communication")
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
     template_tags = fields.Many2many('sign.template.tag', string='Template Tags', related='template_id.tag_ids')
@@ -336,7 +337,7 @@ class SignRequest(models.Model):
         self._message_send_mail(
             body, 'mail.mail_notification_light',
             {'record_name': self.reference},
-            {'model_description': 'signature', 'company': self.create_uid.company_id},
+            {'model_description': 'signature', 'company': self.communication_company_id or self.create_uid.company_id},
             {'email_from': self.create_uid.email_formatted,
              'author_id': self.create_uid.partner_id.id,
              'email_to': formataddr((partner.name, partner.email_formatted)),
@@ -427,7 +428,7 @@ class SignRequest(models.Model):
         self.env['sign.request']._message_send_mail(
             body, 'mail.mail_notification_light',
             {'record_name': self.reference},
-            {'model_description': 'signature', 'company': self.create_uid.company_id},
+            {'model_description': 'signature', 'company': self.communication_company_id or self.create_uid.company_id},
             {'email_from': self.create_uid.email_formatted,
              'author_id': self.create_uid.partner_id.id,
              'email_to': partner.email_formatted,
@@ -641,6 +642,7 @@ class SignRequestItem(models.Model):
     sign_item_value_ids = fields.One2many('sign.request.item.value', 'sign_request_item_id', string="Value")
     reference = fields.Char(related='sign_request_id.reference', string="Document Name")
     mail_sent_order = fields.Integer(default=1)
+    communication_company_id = fields.Many2one(related='sign_request_id.communication_company_id')
 
     access_token = fields.Char(required=True, default=_default_access_token, readonly=True, copy=False, groups="base.group_system")
     access_via_link = fields.Boolean('Accessed Through Token', copy=False)
@@ -772,7 +774,7 @@ class SignRequestItem(models.Model):
             self.env['sign.request']._message_send_mail(
                 body, 'mail.mail_notification_light',
                 {'record_name': signer.sign_request_id.reference},
-                {'model_description': 'signature', 'company': self.env.company},
+                {'model_description': 'signature', 'company': signer.communication_company_id or signer.sign_request_id.create_uid.company_id},
                 {'email_from': signer.create_uid.email_formatted,
                  'author_id': signer.create_uid.partner_id.id,
                  'email_to': formataddr((signer.partner_id.name, signer.signer_email)),
@@ -910,6 +912,8 @@ class SignRequestItem(models.Model):
             body += ', '.join(receiver_names)
             if not is_html_empty(sign_request.message):
                 body += sign_request.message
+            if not sign_request.communication_company_id:
+                sign_request.communication_company_id = self.env.company
             sign_request.message_post(body=body, attachment_ids=sign_request.attachment_ids.ids)
         self._send_signature_access_mail()
 

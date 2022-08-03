@@ -4,14 +4,19 @@
  * @typedef {"year"|"month"|"quarter"} RangeType
  *
 /**
+ * @typedef {Object} FilterMatchingField
+ * @property {string} field name of the field
+ * @property {string} type type of the field
+ * @property {number} [offset] offset to apply to the field (for date filters)
+ *
  * @typedef {Object} GlobalFilter
  * @property {string} id
  * @property {string} label
  * @property {string} type "text" | "date" | "relation"
  * @property {RangeType} rangeType
- * @property {Object} pivotFields
- * @property {Object} listFields
- * @property {Object} graphFields
+ * @property {Record<string, FilterMatchingField>} pivotFields
+ * @property {Record<string, FilterMatchingField>} listFields
+ * @property {Record<string, FilterMatchingField>} graphFields
  * @property {string|Array<string>|Object} defaultValue Default Value
  * @property {number} [modelID] ID of the related model
  * @property {string} [modelName] Name of the related model
@@ -97,7 +102,7 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
      *
      * @param {string} filterId Id of the filter
      * @param {string} pivotId Id of the pivot
-     * @returns {string|undefined}
+     * @returns {FilterMatchingField|undefined}
      */
     getGlobalFilterFieldPivot(filterId, pivotId) {
         return this.getGlobalFilter(filterId).pivotFields[pivotId];
@@ -108,7 +113,7 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
      *
      * @param {string} filterId Id of the filter
      * @param {string} listId Id of the list
-     * @returns {string|undefined}
+     * @returns {FilterMatchingField|undefined}
      */
     getGlobalFilterFieldList(filterId, listId) {
         return this.getGlobalFilter(filterId).listFields[listId];
@@ -119,7 +124,7 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
      *
      * @param {string} filterId Id of the filter
      * @param {string} graphId Id of the Graph
-     * @returns {string|undefined}
+     * @returns {FilterMatchingField|undefined}
      */
     getGlobalFilterFieldGraph(filterId, graphId) {
         return this.getGlobalFilter(filterId).graphFields[graphId];

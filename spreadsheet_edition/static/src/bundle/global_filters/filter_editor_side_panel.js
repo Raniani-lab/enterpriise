@@ -25,12 +25,8 @@ const RANGE_TYPES = [
 ];
 
 /**
- * @typedef {import("@spreadsheet/data_sources/data_source").Field} Field
- *
- * @typedef {Object} FilterMatchingField
- * @property {string} field name of the field
- * @property {string} type type of the field
- * @property {number} [offset] offset to apply to the field (for date filters)
+ * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
+ * @typedef {import("@spreadsheet/global_filters/plugins/filters_plugin").FilterMatchingField} FilterMatchingField
  *
  * @typedef State
  * @property {boolean} saved

@@ -9,6 +9,13 @@ import { LoadingDataError } from "../o_spreadsheet/errors";
 const { EventBus } = owl;
 
 /**
+ * @typedef {object} Field
+ * @property {string} name technical name
+ * @property {string} type field type
+ * @property {string} string display name
+ * @property {string} [relation] related model technical name (only for relational fields)
+ */
+/**
  * This class is used to provide facilities to fetch some common data. It's
  * used in the data sources to obtain the fields (fields_get) and the display
  * name of the models (display_name_for on ir.model).
@@ -62,7 +69,7 @@ export class MetadataRepository extends EventBus {
      * Get the list of fields for the given model
      *
      * @param {string} model Technical name
-     * @returns {Promise<Object>} List of fields (result of fields_get)
+     * @returns {Promise<Record<string, Field>>} List of fields (result of fields_get)
      */
     async fieldsGet(model) {
         return this.serverData.fetch(model, "fields_get");

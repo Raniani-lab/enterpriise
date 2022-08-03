@@ -4,7 +4,6 @@ import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import { LoadingDataError } from "../../o_spreadsheet/errors";
 /**
  * @typedef {import("./list_plugin").SpreadsheetList} SpreadsheetList
- * @typedef {import("../../o_spreadsheet/basic_data_source").Field} Field
  */
 
 export default class ListStructurePlugin extends spreadsheet.UIPlugin {

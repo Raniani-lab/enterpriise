@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 /**
- * @typedef {import("../../helpers/basic_data_source").Field} Field
+ * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
  * @typedef {import("./filters_plugin").GlobalFilter} GlobalFilter
  */
 

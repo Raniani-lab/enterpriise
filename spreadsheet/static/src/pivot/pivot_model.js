@@ -16,12 +16,14 @@ import { SpreadsheetPivotTable } from "@spreadsheet/pivot/pivot_table";
 const { toString, toNumber, toBoolean } = spreadsheet.helpers;
 
 /**
+ * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
+ *
  * @typedef {Object} PivotMetaData
  * @property {Array<string>} colGroupBys
  * @property {Array<string>} rowGroupBys
  * @property {Array<string>} activeMeasures
  * @property {string} resModel
- * @property {Object|undefined} fields
+ * @property {Record<string, Field>} fields
  * @property {string|undefined} modelLabel
  *
  * @typedef {Object} PivotSearchParams
@@ -34,9 +36,9 @@ const { toString, toNumber, toBoolean } = spreadsheet.helpers;
 /**
  * Parses the positional char (#), the field and operator string of pivot group.
  * e.g. "create_date:month"
- * @param {object} allFields
+ * @param {Record<string, Field>} allFields
  * @param {string} groupFieldString
- * @returns {{field: object, aggregateOperator: string, isPositional: boolean}}
+ * @returns {{field: Field, aggregateOperator: string, isPositional: boolean}}
  */
 function parseGroupField(allFields, groupFieldString) {
     let [fieldName, aggregateOperator] = groupFieldString.split(":");
@@ -185,7 +187,7 @@ export class SpreadsheetPivotModel extends PivotModel {
     }
 
     /**
-     * @returns {Object} List of fields
+     * @returns {Record<string, Field>} List of fields
      */
     getFields() {
         return this.metaData.fields;
@@ -193,7 +195,7 @@ export class SpreadsheetPivotModel extends PivotModel {
 
     /**
      * @param {string} field Field name
-     * @returns {Object | undefined} Field
+     * @returns {Field | undefined} Field
      */
     getField(field) {
         return this.metaData.fields[field];
@@ -478,6 +480,7 @@ export class SpreadsheetPivotModel extends PivotModel {
      * @override
      */
     async _loadData(config) {
+        /** @type {(groupFieldString: string) => ReturnType<parseGroupField>} */
         this.parseGroupField = parseGroupField.bind(null, this.metaData.fields);
         /*
          * prune is manually set to false in order to expand all the groups
@@ -515,7 +518,7 @@ export class SpreadsheetPivotModel extends PivotModel {
     /**
      * Determines if the given field is a date or datetime field.
      *
-     * @param {Object} field Field description
+     * @param {Field} field Field description
      * @private
      * @returns {boolean} True if the type of the field is date or datetime
      */

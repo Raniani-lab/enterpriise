@@ -10,9 +10,12 @@ const { toNumber } = spreadsheet.helpers;
 const { EventBus } = owl;
 
 /**
+ * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
+ *
  * @typedef {Object} ListMetaData
  * @property {Array<string>} columns
  * @property {string} resModel
+ * @property {Record<string, Field>} fields
  *
  * @typedef {Object} ListSearchParams
  * @property {Array<string>} orderBy
@@ -144,7 +147,7 @@ export class SpreadsheetListModel extends EventBus {
     //--------------------------------------------------------------------------
 
     /**
-     * @returns {Object} List of fields
+     * @returns {Record<string, Field>} List of fields
      */
     getFields() {
         return this.metaData.fields;
@@ -152,7 +155,7 @@ export class SpreadsheetListModel extends EventBus {
 
     /**
      * @param {string} field Field name
-     * @returns {Object | undefined} Field
+     * @returns {Field | undefined} Field
      */
     getField(field) {
         return this.metaData.fields[field];

@@ -405,12 +405,17 @@ Tour.register('hr_contract_salary_tour', {
             run: 'text BE10 3631 0709 4104',
         },
         {
-            content: "Bank Account",
+            content: "Private License Plate",
+            trigger: 'input[name="private_car_plate"]',
+            run: 'text 1-ABC-123',
+        },
+        {
+            content: "Emergency Contact",
             trigger: 'input[name="emergency_contact"]',
             run: 'text Batman',
         },
         {
-            content: "Bank Account",
+            content: "Emergency Phone",
             trigger: 'input[name="emergency_phone"]',
             run: 'text +32 2 290 34 90',
         },

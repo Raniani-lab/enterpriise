@@ -217,6 +217,15 @@
         <field name="info_type_id" ref="hr_contract_salary_personal_info_type_contact"/>
     </record>
 
+    <record id="hr_contract_salary_personal_info_private_license_plate" model="hr.contract.salary.personal.info">
+        <field name="name">Private License Plate</field>
+        <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.employee'), ('name', '=', 'private_car_plate')])"/>
+        <field name="applies_on">employee</field>
+        <field name="info_type_id" ref="hr_contract_salary_personal_info_type_contact"/>
+        <field name="is_required">False</field>
+        <field name="sequence">245</field>
+    </record>
+
     <record id="hr_contract_salary_personal_info_type_emergency" model="hr.contract.salary.personal.info.type">
         <field name="name">In case of emergency</field>
         <field name="sequence">250</field>

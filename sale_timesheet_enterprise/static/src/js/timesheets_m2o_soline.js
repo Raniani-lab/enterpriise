@@ -15,10 +15,9 @@ const TimesheetM2OSOLine = TimesheetM2OWidget.extend({
         this.fieldName = 'so_line';
 
         this._super.apply(this, arguments);
-        const uomName = this.cacheUnit ? this.cacheUnit.toLowerCase() : '';
         this.title = sprintf(_t(
             'Difference between the number of %s ordered on the sales order item and the number of %s delivered.'),
-            uomName, uomName
+            this.cacheUnit, this.cacheUnit
         );
     },
 });

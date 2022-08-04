@@ -56,7 +56,7 @@ const TimesheetM2OWidget = Widget.extend(StandaloneFieldManagerMixin, {
             this._updateTemplateFromCacheData();
             this._renderHoursFromCache(true);
         }
-        
+
         return this._super(...arguments);
     },
 
@@ -146,7 +146,7 @@ const TimesheetM2OWidget = Widget.extend(StandaloneFieldManagerMixin, {
         const overtime = this.cacheHours - this.cacheWorkedHours;
         let overtimeIndication = overtime > 0 ? '+' : '';
         if (this.cacheUnit === 'days') { // format in days
-            overtimeIndication += `${(Math.round(overtime * 100) / 100).toFixed(2)} ${this.cacheUnit}`;
+            overtimeIndication += `${(Math.round(overtime * 100) / 100).toFixed(2)}`;
         } else { // format in hours
             overtimeIndication += field_utils.format.float_time(overtime);
         }

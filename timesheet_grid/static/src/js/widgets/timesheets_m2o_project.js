@@ -14,10 +14,9 @@ const TimesheetM2OProject = TimesheetM2OWidget.extend({
         this.fieldName = 'project_id';
 
         this._super.apply(this, arguments);
-        const uomName = this.cacheUnit ? this.cacheUnit.toLowerCase() : '';
         this.title = sprintf(_t(
             'Difference between the number of %s allocated to the project and the number of %s recorded.'),
-            uomName, uomName
+            this.cacheUnit, this.cacheUnit
         );
     },
 });

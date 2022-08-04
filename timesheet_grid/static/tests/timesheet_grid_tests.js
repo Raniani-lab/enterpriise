@@ -411,10 +411,10 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 context: this.context,
             });
 
-            const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('-1.00 days')").length;
+            const numberOfSpanWhereAllHoursCompleted = grid.$("span:contains('-1.00')").length;
             assert.ok(numberOfSpanWhereAllHoursCompleted > 0, 'There must be at least one element or this test is useless');
 
-            const numberOfSpanWhereAllDaysAreNotDoneYetAreRed = grid.$("span.o_grid_section_subtext_not_enough_hours:contains('-1.00 days')").length;
+            const numberOfSpanWhereAllDaysAreNotDoneYetAreRed = grid.$("span.o_grid_section_subtext_not_enough_hours:contains('-1.00')").length;
             assert.strictEqual(numberOfSpanWhereAllDaysAreNotDoneYetAreRed, numberOfSpanWhereAllHoursCompleted, 'The employee has not done enough days, thus we display the number of days in red.');
 
             grid.destroy();

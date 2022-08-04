@@ -111,7 +111,7 @@ import { qweb, _lt } from 'web.core';
             const overtime = this.cacheWorkedHours - this.cacheHours;
             let overtimeIndication = overtime > 0 ? '+' : '';
             if (this.cacheUnit === 'days') { // format in days
-                overtimeIndication += `${(Math.round(overtime * 100) / 100).toFixed(2)} ${this.cacheUnit}`;
+                overtimeIndication += `${(Math.round(overtime * 100) / 100).toFixed(2)}`;
             } else { // format in hours
                 overtimeIndication += field_utils.format.float_time(this.cacheWorkedHours - this.cacheHours);
             }

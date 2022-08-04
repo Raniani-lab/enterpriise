@@ -14,10 +14,9 @@ const TimesheetM2OTask = TimesheetM2OWidget.extend({
         this.fieldName = 'task_id';
 
         this._super.apply(this, arguments);
-        const uomName = this.cacheUnit ? this.cacheUnit.toLowerCase() : '';
         this.title = sprintf(_t(
             'Difference between the number of %s allocated to the task and the number of %s recorded.'),
-            uomName, uomName
+            this.cacheUnit, this.cacheUnit
         );
     },
 });

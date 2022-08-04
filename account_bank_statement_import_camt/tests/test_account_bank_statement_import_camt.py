@@ -7,6 +7,8 @@ from odoo.exceptions import UserError
 from odoo.modules.module import get_module_resource
 from odoo.addons.account_bank_statement_import_camt.models.account_journal import _logger as camt_wizard_logger
 
+NORMAL_AMOUNTS = [100, 150, 250]
+LARGE_AMOUNTS = [10000, 15000, 25000]
 
 @tagged('post_install', '-at_install')
 class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
@@ -139,6 +141,17 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
         self._test_minimal_camt_file_import('camt_053_minimal_and_multicurrency_06.xml', usd_currency)
 
+    def test_minimal_and_multicurrency_camt_file_import_07(self):
+        """
+        This test aims at importing a file with amounts expressed in EUR and USD.
+        The company's currency is USD.
+        This is the same test than test_minimal_and_multicurrency_camt_file_import,
+        except that the exchange rate is rounded to 4 digits.
+        """
+        usd_currency = self.env.ref('base.USD')
+        self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
+        self._test_minimal_camt_file_import('camt_053_minimal_and_multicurrency_07.xml', usd_currency)
+
     def test_several_minimal_stmt_different_currency(self):
         """
         Two different journals with the same bank account. The first one is in USD, the second one in EUR
@@ -208,18 +221,20 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
         line = bank_st_record.line_ids.ensure_one()
         self.assertEqual(line.amount, end_balance - start_balance, "Transaction not matched")
 
-    def _test_camt_with_several_tx_details(self, filename):
+    def _test_camt_with_several_tx_details(self, filename, expected_amounts=None):
+        if expected_amounts is None:
+            expected_amounts = NORMAL_AMOUNTS
         usd_currency = self.env.ref('base.USD')
         self.assertEqual(self.env.company.currency_id.id, usd_currency.id)
         self._import_camt_file(filename, usd_currency)
         imported_statement = self.env['account.bank.statement'].search([('company_id', '=', self.env.company.id)], order='id desc', limit=1)
         self.assertEqual(len(imported_statement.line_ids), 3)
         self.assertEqual(imported_statement.line_ids[0].payment_ref, 'label01')
-        self.assertEqual(imported_statement.line_ids[0].amount, 100)
+        self.assertEqual(imported_statement.line_ids[0].amount, expected_amounts[0])
         self.assertEqual(imported_statement.line_ids[1].payment_ref, 'label02')
-        self.assertEqual(imported_statement.line_ids[1].amount, 150)
+        self.assertEqual(imported_statement.line_ids[1].amount, expected_amounts[1])
         self.assertEqual(imported_statement.line_ids[2].payment_ref, 'label03')
-        self.assertEqual(imported_statement.line_ids[2].amount, 250)
+        self.assertEqual(imported_statement.line_ids[2].amount, expected_amounts[2])
 
     def test_camt_with_several_tx_details(self):
         self._test_camt_with_several_tx_details('camt_053_several_tx_details.xml')
@@ -238,6 +253,10 @@ class TestAccountBankStatementImportCamt(AccountTestInvoicingCommon):
 
     def test_camt_with_several_tx_details_and_multicurrency_03(self):
         self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_multicurrency_03.xml')
+
+    def test_camt_with_several_tx_details_and_multicurrency_04(self):
+        self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_multicurrency_04.xml',
+            expected_amounts=LARGE_AMOUNTS)
 
     def test_camt_with_several_tx_details_and_charges(self):
         self._test_camt_with_several_tx_details('camt_053_several_tx_details_and_charges.xml')

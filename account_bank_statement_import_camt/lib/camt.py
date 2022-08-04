@@ -5,6 +5,7 @@ from functools import partial
 
 from odoo import _lt
 from odoo.exceptions import ValidationError
+from odoo.tools import float_compare
 
 
 # Codes from the updated document of 30 june 2017
@@ -656,11 +657,25 @@ class CAMT:
         if not amount or (charges and journal_currency and journal_currency.compare_amounts(amount + charges, entry_amount) == 0):
             amount, amount_currency_name = get_value_and_currency_name(entry, getters)
 
+        entry_amount_in_currency = get_value_and_currency_name(entry, getters, target_currency=amount_currency_name)[0]
+        entry_details_amount_in_currency = get_value_and_currency_name(entry_details, getters, target_currency=amount_currency_name)[0]
+
         if not journal_currency or amount_currency_name == journal_currency_name:
             rate = 1.0
         else:
             rate = get_rate(entry_details, entry, target_currency=journal_currency_name)
-            if not rate:
+            entry_amount = entry_details_amount or entry_amount
+            if entry_details_amount:
+                entry_amount_in_currency = entry_details_amount_in_currency
+            elif not entry_amount_in_currency:
+                entry_amount_in_currency = amount
+            computed_rate = entry_amount / entry_amount_in_currency
+            if rate:
+                if float_compare(rate, computed_rate, precision_digits=4) == 0:
+                    rate = computed_rate
+                elif float_compare(rate, 1 / computed_rate, precision_digits=4) == 0:
+                    rate = 1 / computed_rate
+            else:
                 amount, amount_currency_name = get_value_and_currency_name(entry_details, CAMT._amount_getters, target_currency=journal_currency_name)
                 if not amount:
                     amount, amount_currency_name = get_value_and_currency_name(entry, CAMT._amount_getters, target_currency=journal_currency_name)

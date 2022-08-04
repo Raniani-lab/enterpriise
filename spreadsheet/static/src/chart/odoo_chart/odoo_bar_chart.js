@@ -36,14 +36,18 @@ chartRegistry.add("odoo_bar", {
 });
 
 function createOdooChartRuntime(chart, getters) {
+    const background = chart.background || "#FFFFFF";
     const model = getters.getSpreadsheetGraphModel(chart.id);
     if (!model) {
-        return getBarConfiguration(chart, []);
+        return {
+            background,
+            chartJsConfig: getBarConfiguration(chart, []),
+        };
     }
     const { datasets, labels } = model.data;
-    const runtime = getBarConfiguration(chart, labels);
+    const chartJsConfig = getBarConfiguration(chart, labels);
     const colors = new ChartColors();
-    for (let { label, data } of datasets) {
+    for (const { label, data } of datasets) {
         const color = colors.next();
         const dataset = {
             label,
@@ -51,10 +55,10 @@ function createOdooChartRuntime(chart, getters) {
             borderColor: color,
             backgroundColor: color,
         };
-        runtime.data.datasets.push(dataset);
+        chartJsConfig.data.datasets.push(dataset);
     }
 
-    return runtime;
+    return { background, chartJsConfig };
 }
 
 function getBarConfiguration(chart, labels) {

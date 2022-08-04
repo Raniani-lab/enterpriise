@@ -1,6 +1,134 @@
 (function (exports, owl) {
     'use strict';
 
+    /**
+     * Registry
+     *
+     * The Registry class is basically just a mapping from a string key to an object.
+     * It is really not much more than an object. It is however useful for the
+     * following reasons:
+     *
+     * 1. it let us react and execute code when someone add something to the registry
+     *   (for example, the FunctionRegistry subclass this for this purpose)
+     * 2. it throws an error when the get operation fails
+     * 3. it provides a chained API to add items to the registry.
+     */
+    class Registry {
+        constructor() {
+            this.content = {};
+        }
+        /**
+         * Add an item to the registry
+         *
+         * Note that this also returns the registry, so another add method call can
+         * be chained
+         */
+        add(key, value) {
+            this.content[key] = value;
+            return this;
+        }
+        /**
+         * Get an item from the registry
+         */
+        get(key) {
+            /**
+             * Note: key in {} is ~12 times slower than {}[key].
+             * So, we check the absence of key only when the direct access returns
+             * a falsy value. It's done to ensure that the registry can contains falsy values
+             */
+            const content = this.content[key];
+            if (!content) {
+                if (!(key in this.content)) {
+                    throw new Error(`Cannot find ${key} in this registry!`);
+                }
+            }
+            return content;
+        }
+        /**
+         * Get a list of all elements in the registry
+         */
+        getAll() {
+            return Object.values(this.content);
+        }
+        /**
+         * Get a list of all keys in the registry
+         */
+        getKeys() {
+            return Object.keys(this.content);
+        }
+        /**
+         * Remove an item from the registry
+         */
+        remove(key) {
+            delete this.content[key];
+        }
+    }
+
+    /**
+     * This registry is intended to map a cell content (raw string) to
+     * an instance of a cell.
+     */
+    const chartRegistry = new Registry();
+    const chartComponentRegistry = new Registry();
+
+    class ChartJsComponent extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.canvas = owl.useRef("graphContainer");
+        }
+        get background() {
+            return this.chartRuntime.background;
+        }
+        get canvasStyle() {
+            return `background-color: ${this.background}`;
+        }
+        get chartRuntime() {
+            const runtime = this.env.model.getters.getChartRuntime(this.props.figure.id);
+            if (!("chartJsConfig" in runtime)) {
+                throw new Error("Unsupported chart runtime");
+            }
+            return runtime;
+        }
+        setup() {
+            owl.onMounted(() => {
+                const runtime = this.chartRuntime;
+                this.createChart(runtime.chartJsConfig);
+            });
+            owl.onPatched(() => {
+                var _a, _b, _c, _d;
+                const chartData = this.chartRuntime.chartJsConfig;
+                if (chartData.data && chartData.data.datasets) {
+                    this.chart.data = chartData.data;
+                    if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
+                        this.chart.config.options.title = chartData.options.title;
+                    }
+                    if (chartData.options && "valueLabel" in chartData.options) {
+                        if ((_b = chartData.options) === null || _b === void 0 ? void 0 : _b.valueLabel) {
+                            this.chart.config.options.valueLabel =
+                                chartData.options.valueLabel;
+                        }
+                    }
+                }
+                else {
+                    this.chart.data.datasets = undefined;
+                }
+                this.chart.config.options.legend = (_c = chartData.options) === null || _c === void 0 ? void 0 : _c.legend;
+                this.chart.config.options.scales = (_d = chartData.options) === null || _d === void 0 ? void 0 : _d.scales;
+                this.chart.update({ duration: 0 });
+            });
+        }
+        createChart(chartData) {
+            const canvas = this.canvas.el;
+            const ctx = canvas.getContext("2d");
+            this.chart = new window.Chart(ctx, chartData);
+        }
+    }
+    ChartJsComponent.template = "o-spreadsheet-ChartJsComponent";
+    chartComponentRegistry.add("line", ChartJsComponent);
+    chartComponentRegistry.add("bar", ChartJsComponent);
+    chartComponentRegistry.add("pie", ChartJsComponent);
+    chartComponentRegistry.add("gauge", ChartJsComponent);
+
     /*
      * usage: every string should be translated either with _lt if they are registered with a registry at
      *  the load of the app or with Spreadsheet._t in the templates. Spreadsheet._t is exposed in the
@@ -171,135 +299,6 @@
         ComponentsImportance[ComponentsImportance["Popover"] = 30] = "Popover";
         ComponentsImportance[ComponentsImportance["ChartAnchor"] = 1000] = "ChartAnchor";
     })(ComponentsImportance || (ComponentsImportance = {}));
-
-    /**
-     * Registry
-     *
-     * The Registry class is basically just a mapping from a string key to an object.
-     * It is really not much more than an object. It is however useful for the
-     * following reasons:
-     *
-     * 1. it let us react and execute code when someone add something to the registry
-     *   (for example, the FunctionRegistry subclass this for this purpose)
-     * 2. it throws an error when the get operation fails
-     * 3. it provides a chained API to add items to the registry.
-     */
-    class Registry {
-        constructor() {
-            this.content = {};
-        }
-        /**
-         * Add an item to the registry
-         *
-         * Note that this also returns the registry, so another add method call can
-         * be chained
-         */
-        add(key, value) {
-            this.content[key] = value;
-            return this;
-        }
-        /**
-         * Get an item from the registry
-         */
-        get(key) {
-            /**
-             * Note: key in {} is ~12 times slower than {}[key].
-             * So, we check the absence of key only when the direct access returns
-             * a falsy value. It's done to ensure that the registry can contains falsy values
-             */
-            const content = this.content[key];
-            if (!content) {
-                if (!(key in this.content)) {
-                    throw new Error(`Cannot find ${key} in this registry!`);
-                }
-            }
-            return content;
-        }
-        /**
-         * Get a list of all elements in the registry
-         */
-        getAll() {
-            return Object.values(this.content);
-        }
-        /**
-         * Get a list of all keys in the registry
-         */
-        getKeys() {
-            return Object.keys(this.content);
-        }
-        /**
-         * Remove an item from the registry
-         */
-        remove(key) {
-            delete this.content[key];
-        }
-    }
-
-    /**
-     * This registry is intended to map a cell content (raw string) to
-     * an instance of a cell.
-     */
-    const chartRegistry = new Registry();
-    const chartComponentRegistry = new Registry();
-
-    class ChartJsComponent extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.canvas = owl.useRef("graphContainer");
-        }
-        get background() {
-            const definition = this.env.model.getters.getChartDefinition(this.props.figureId);
-            return (definition && definition.background) || BACKGROUND_CHART_COLOR;
-        }
-        get canvasStyle() {
-            return `background-color: ${this.background}`;
-        }
-        get chartRuntime() {
-            const runtime = this.env.model.getters.getChartRuntime(this.props.figureId);
-            if (!("type" in runtime)) {
-                throw new Error("Unsupported chart runtime");
-            }
-            return runtime;
-        }
-        setup() {
-            owl.onMounted(() => {
-                const runtime = this.chartRuntime;
-                this.createChart(runtime);
-            });
-            owl.onPatched(() => {
-                var _a, _b, _c, _d;
-                const chartData = this.chartRuntime;
-                if (chartData.data && chartData.data.datasets) {
-                    this.chart.data = chartData.data;
-                    if ((_a = chartData.options) === null || _a === void 0 ? void 0 : _a.title) {
-                        this.chart.config.options.title = chartData.options.title;
-                    }
-                    if (chartData.options && "valueLabel" in chartData.options) {
-                        if ((_b = chartData.options) === null || _b === void 0 ? void 0 : _b.valueLabel) {
-                            this.chart.config.options.valueLabel =
-                                chartData.options.valueLabel;
-                        }
-                    }
-                }
-                else {
-                    this.chart.data.datasets = undefined;
-                }
-                this.chart.config.options.legend = (_c = chartData.options) === null || _c === void 0 ? void 0 : _c.legend;
-                this.chart.config.options.scales = (_d = chartData.options) === null || _d === void 0 ? void 0 : _d.scales;
-                this.chart.update({ duration: 0 });
-            });
-        }
-        createChart(chartData) {
-            const canvas = this.canvas.el;
-            const ctx = canvas.getContext("2d");
-            this.chart = new window.Chart(ctx, chartData);
-        }
-    }
-    ChartJsComponent.template = "o-spreadsheet-ChartJsComponent";
-    chartComponentRegistry.add("line", ChartJsComponent);
-    chartComponentRegistry.add("bar", ChartJsComponent);
-    chartComponentRegistry.add("pie", ChartJsComponent);
-    chartComponentRegistry.add("gauge", ChartJsComponent);
 
     const fontSizes = [
         { pt: 7.5, px: 10 },
@@ -2561,6 +2560,14 @@
         "UNDO",
         "REDO",
     ]);
+    const invalidateCFEvaluationCommands = new Set([
+        ...invalidateEvaluationCommands,
+        "DUPLICATE_SHEET",
+        "EVALUATE_CELLS",
+        "ADD_CONDITIONAL_FORMAT",
+        "REMOVE_CONDITIONAL_FORMAT",
+        "MOVE_CONDITIONAL_FORMAT",
+    ]);
     const readonlyAllowedCommands = new Set([
         "START",
         "ACTIVATE_SHEET",
@@ -2972,6 +2979,35 @@
             return "none";
         }
         return `${strikethrough ? "line-through" : ""} ${underline ? "underline" : ""}`;
+    }
+    /**
+     * Convert the cell text style to CSS properties.
+     */
+    function cellTextStyleToCss(style) {
+        const attributes = {};
+        if (!style)
+            return attributes;
+        if (style.bold) {
+            attributes["font-weight"] = "bold";
+        }
+        if (style.italic) {
+            attributes["font-style"] = "italic";
+        }
+        if (style.strikethrough || style.underline) {
+            let decoration = style.strikethrough ? "line-through" : "";
+            decoration = style.underline ? decoration + " underline" : decoration;
+            attributes["text-decoration"] = decoration;
+        }
+        if (style.textColor) {
+            attributes["color"] = style.textColor;
+        }
+        return attributes;
+    }
+    function cssPropertiesToCss(attributes) {
+        const str = Object.entries(attributes)
+            .map(([attName, attValue]) => `${attName}: ${attValue};`)
+            .join("\n");
+        return "\n" + str + "\n";
     }
 
     /**
@@ -4427,7 +4463,6 @@
                 type: "bar",
                 stackedBar: false,
                 dataSetsHaveTitle,
-                background: BACKGROUND_CHART_COLOR,
                 verticalAxisPosition: "left",
                 legendPosition: newLegendPos,
             },
@@ -5327,7 +5362,6 @@
         padding: 4px 6px;
         border-radius: 4px;
         box-sizing: border-box;
-        border: 1px solid #dadce0;
         flex-grow: 2;
       }
       input:focus {
@@ -6741,23 +6775,27 @@
         if (!baseline) {
             return "";
         }
-        else if (!isNumber(baseline) || !isNumber(keyValue)) {
-            return baseline.toString();
+        else if (baselineMode === "text" || !isNumber(keyValue) || !isNumber(baseline.content)) {
+            return baseline.formattedValue;
         }
         else {
-            let diff = toNumber(keyValue) - toNumber(baseline);
+            let diff = toNumber(keyValue) - toNumber(baseline.content);
             if (baselineMode === "percentage") {
-                diff = (diff / toNumber(baseline)) * 100;
+                diff = (diff / toNumber(baseline.content)) * 100;
             }
-            let baselineValue = Math.abs(parseFloat(diff.toFixed(2))).toLocaleString();
+            const baselineValue = Math.abs(parseFloat(diff.toFixed(2)));
+            let baselineStr = baselineValue.toLocaleString();
             if (baselineMode === "percentage") {
-                baselineValue += "%";
+                baselineStr += "%";
             }
-            return baselineValue;
+            else if (baseline.format) {
+                baselineStr = formatValue(baselineValue, baseline.format);
+            }
+            return baselineStr;
         }
     }
-    function getBaselineColor(baseline, keyValue, colorUp, colorDown) {
-        if (!isNumber(baseline) || !isNumber(keyValue)) {
+    function getBaselineColor(baseline, baselineMode, keyValue, colorUp, colorDown) {
+        if (baselineMode === "text" || !isNumber(baseline) || !isNumber(keyValue)) {
             return undefined;
         }
         const diff = toNumber(keyValue) - toNumber(baseline);
@@ -6769,8 +6807,8 @@
         }
         return undefined;
     }
-    function getBaselineArrowDirection(baseline, keyValue) {
-        if (!isNumber(baseline) || !isNumber(keyValue)) {
+    function getBaselineArrowDirection(baseline, keyValue, baselineMode) {
+        if (baselineMode === "text" || !isNumber(baseline) || !isNumber(keyValue)) {
             return "neutral";
         }
         const diff = toNumber(keyValue) - toNumber(baseline);
@@ -6955,7 +6993,7 @@
         }
         static getDefinitionFromContextCreation(context) {
             return {
-                background: context.background || BACKGROUND_CHART_COLOR,
+                background: context.background,
                 dataSets: context.range ? context.range : [],
                 dataSetsHaveTitle: false,
                 stackedBar: false,
@@ -7004,7 +7042,7 @@
                 .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
             return {
                 ...this.getDefinition(),
-                backgroundColor: toXlsxHexColor(this.background),
+                backgroundColor: toXlsxHexColor(this.background || BACKGROUND_CHART_COLOR),
                 fontColor: toXlsxHexColor(chartFontColor(this.background)),
                 dataSets,
                 stackedBar: this.stackedBar,
@@ -7086,7 +7124,7 @@
         let labels = labelValues.formattedValues;
         let dataSetsValues = getChartDatasetValues(getters, chart.dataSets);
         ({ labels, dataSetsValues } = filterEmptyDataPoints(labels, dataSetsValues));
-        const runtime = getBarConfiguration(chart, labels);
+        const config = getBarConfiguration(chart, labels);
         const colors = new ChartColors();
         for (let { label, data } of dataSetsValues) {
             const color = colors.next();
@@ -7096,9 +7134,9 @@
                 borderColor: color,
                 backgroundColor: color,
             };
-            runtime.data.datasets.push(dataset);
+            config.data.datasets.push(dataset);
         }
-        return runtime;
+        return { chartJsConfig: config, background: chart.background || BACKGROUND_CHART_COLOR };
     }
 
     /**
@@ -7263,7 +7301,7 @@
         }
         static getDefinitionFromContextCreation(context) {
             return {
-                background: context.background || BACKGROUND_CHART_COLOR,
+                background: context.background,
                 title: context.title || "",
                 type: "gauge",
                 dataRange: context.range ? context.range[0] : undefined,
@@ -7360,7 +7398,7 @@
         return config;
     }
     function createGaugeChartRuntime(chart, getters) {
-        const runtime = getGaugeConfiguration(chart);
+        const config = getGaugeConfiguration(chart);
         const colors = chart.sectionRule.colors;
         const lowerPoint = chart.sectionRule.lowerInflectionPoint;
         const upperPoint = chart.sectionRule.upperInflectionPoint;
@@ -7420,15 +7458,18 @@
                 displayValue = true;
             }
         }
-        runtime.options.valueLabel.display = displayValue;
-        runtime.options.valueLabel.formatter = cellFormatter;
-        runtime.data.datasets.push({
+        config.options.valueLabel.display = displayValue;
+        config.options.valueLabel.formatter = cellFormatter;
+        config.data.datasets.push({
             data,
             minValue: Number(chart.sectionRule.rangeMin),
             value: needleValue,
             backgroundColor,
         });
-        return runtime;
+        return {
+            chartJsConfig: config,
+            background: getters.getBackgroundOfSingleCellChart(chart.background, dataRange),
+        };
     }
 
     const UNIT_LENGTH = {
@@ -7583,7 +7624,7 @@
         }
         static getDefinitionFromContextCreation(context) {
             return {
-                background: context.background || BACKGROUND_CHART_COLOR,
+                background: context.background,
                 dataSets: context.range ? context.range : [],
                 dataSetsHaveTitle: false,
                 labelsAsText: false,
@@ -7634,7 +7675,7 @@
                 .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
             return {
                 ...this.getDefinition(),
-                backgroundColor: toXlsxHexColor(this.background),
+                backgroundColor: toXlsxHexColor(this.background || BACKGROUND_CHART_COLOR),
                 fontColor: toXlsxHexColor(chartFontColor(this.background)),
                 dataSets,
             };
@@ -7768,16 +7809,16 @@
         if (axisType === "time") {
             ({ labels, dataSetsValues } = fixEmptyLabelsForDateCharts(labels, dataSetsValues));
         }
-        const runtime = getLineConfiguration(chart, labels);
+        const config = getLineConfiguration(chart, labels);
         const labelFormat = getLabelFormat(getters, chart.labelRange);
         if (axisType === "time") {
-            runtime.options.scales.xAxes[0].type = "time";
-            runtime.options.scales.xAxes[0].time = getChartTimeOptions(labels, labelFormat);
-            runtime.options.scales.xAxes[0].ticks.maxTicksLimit = 15;
+            config.options.scales.xAxes[0].type = "time";
+            config.options.scales.xAxes[0].time = getChartTimeOptions(labels, labelFormat);
+            config.options.scales.xAxes[0].ticks.maxTicksLimit = 15;
         }
         else if (axisType === "linear") {
-            runtime.options.scales.xAxes[0].type = "linear";
-            runtime.options.scales.xAxes[0].ticks.callback = (value) => formatValue(value, labelFormat);
+            config.options.scales.xAxes[0].type = "linear";
+            config.options.scales.xAxes[0].ticks.callback = (value) => formatValue(value, labelFormat);
         }
         const colors = new ChartColors();
         for (let { label, data } of dataSetsValues) {
@@ -7793,9 +7834,9 @@
                 borderColor: color,
                 backgroundColor: color,
             };
-            runtime.data.datasets.push(dataset);
+            config.data.datasets.push(dataset);
         }
-        return runtime;
+        return { chartJsConfig: config, background: chart.background || BACKGROUND_CHART_COLOR };
     }
 
     chartRegistry.add("pie", {
@@ -7824,7 +7865,7 @@
         }
         static getDefinitionFromContextCreation(context) {
             return {
-                background: context.background || BACKGROUND_CHART_COLOR,
+                background: context.background,
                 dataSets: context.range ? context.range : [],
                 dataSetsHaveTitle: false,
                 legendPosition: "top",
@@ -7869,7 +7910,7 @@
                 .filter((ds) => ds.range !== ""); // && range !== INCORRECT_RANGE_STRING ? show incorrect #ref ?
             return {
                 ...this.getDefinition(),
-                backgroundColor: toXlsxHexColor(this.background),
+                backgroundColor: toXlsxHexColor(this.background || BACKGROUND_CHART_COLOR),
                 fontColor: toXlsxHexColor(chartFontColor(this.background)),
                 verticalAxisPosition: "left",
                 dataSets,
@@ -7938,7 +7979,7 @@
         let labels = labelValues.formattedValues;
         let dataSetsValues = getChartDatasetValues(getters, chart.dataSets);
         ({ labels, dataSetsValues } = filterEmptyDataPoints(labels, dataSetsValues));
-        const runtime = getPieConfiguration(chart, labels);
+        const config = getPieConfiguration(chart, labels);
         const colors = new ChartColors();
         for (let { label, data } of dataSetsValues) {
             const backgroundColor = getPieColors(colors, dataSetsValues);
@@ -7948,9 +7989,9 @@
                 borderColor: "#FFFFFF",
                 backgroundColor,
             };
-            runtime.data.datasets.push(dataset);
+            config.data.datasets.push(dataset);
         }
-        return runtime;
+        return { chartJsConfig: config, background: chart.background || BACKGROUND_CHART_COLOR };
     }
 
     chartRegistry.add("scorecard", {
@@ -7983,18 +8024,17 @@
             this.background = definition.background;
             this.baselineColorUp = definition.baselineColorUp;
             this.baselineColorDown = definition.baselineColorDown;
-            this.fontColor = definition.fontColor;
         }
         static validateChartDefinition(validator, definition) {
             return validator.checkValidations(definition, checkKeyValue, checkBaseline);
         }
         static getDefinitionFromContextCreation(context) {
             return {
-                background: context.background || BACKGROUND_CHART_COLOR,
+                background: context.background,
                 type: "scorecard",
                 keyValue: context.range ? context.range[0] : undefined,
                 title: context.title || "",
-                baselineMode: "absolute",
+                baselineMode: "difference",
                 baselineColorUp: "#00A04A",
                 baselineColorDown: "#DC6965",
                 baseline: context.auxiliaryRange || "",
@@ -8054,7 +8094,6 @@
                 background: this.background,
                 baseline: baseline ? this.getters.getRangeString(baseline, this.sheetId) : undefined,
                 baselineDescr: this.baselineDescr,
-                fontColor: this.fontColor,
                 keyValue: keyValue ? this.getters.getRangeString(keyValue, this.sheetId) : undefined,
             };
         }
@@ -8075,22 +8114,31 @@
     function createScorecardChartRuntime(chart, getters) {
         let keyValue = "";
         let formattedKeyValue = "";
+        let keyValueCell;
         if (chart.keyValue) {
-            const keyValueCell = getters.getCellsInZone(chart.keyValue.sheetId, chart.keyValue.zone)[0];
+            const keyValueZone = chart.keyValue.zone;
+            keyValueCell = getters.getCell(chart.keyValue.sheetId, keyValueZone.left, keyValueZone.top);
             keyValue = (keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.evaluated.value) ? String(keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.evaluated.value) : "";
             formattedKeyValue = (keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.formattedValue) || "";
         }
-        const baseline = chart.baseline ? getters.getRangeValues(chart.baseline)[0] : undefined;
-        const baselineStr = baseline !== undefined ? String(baseline) : "";
+        let baselineCell;
+        if (chart.baseline) {
+            const baselineZone = chart.baseline.zone;
+            baselineCell = getters.getCell(chart.baseline.sheetId, baselineZone.left, baselineZone.top);
+        }
+        const baselineValue = (baselineCell === null || baselineCell === void 0 ? void 0 : baselineCell.content) || "";
+        const background = getters.getBackgroundOfSingleCellChart(chart.background, chart.keyValue);
         return {
             title: chart.title,
             keyValue: formattedKeyValue || keyValue,
-            baselineDisplay: getBaselineText(baselineStr, keyValue, chart.baselineMode),
-            baselineArrow: getBaselineArrowDirection(baselineStr, keyValue),
-            baselineColor: getBaselineColor(baselineStr, keyValue, chart.baselineColorUp, chart.baselineColorDown),
+            baselineDisplay: getBaselineText(baselineCell, keyValue, chart.baselineMode),
+            baselineArrow: getBaselineArrowDirection(baselineValue, keyValue, chart.baselineMode),
+            baselineColor: getBaselineColor(baselineValue, chart.baselineMode, keyValue, chart.baselineColorUp, chart.baselineColorDown),
             baselineDescr: chart.baselineDescr,
-            background: chart.background,
-            fontColor: chartFontColor(chart.background),
+            fontColor: chartFontColor(background),
+            background,
+            baselineStyle: chart.baselineMode !== "percentage" ? baselineCell === null || baselineCell === void 0 ? void 0 : baselineCell.style : undefined,
+            keyValueStyle: keyValueCell === null || keyValueCell === void 0 ? void 0 : keyValueCell.style,
         };
     }
 
@@ -8156,6 +8204,9 @@
                 baseline: this.baseline,
             });
         }
+        updateBaselineMode(ev) {
+            this.props.updateChart({ baselineMode: ev.target.value });
+        }
     }
     ScorecardChartConfigPanel.template = "o-spreadsheet-ScorecardChartConfigPanel";
     ScorecardChartConfigPanel.components = { SelectionInput };
@@ -8174,9 +8225,6 @@
         }
         updateBaselineDescr(ev) {
             this.props.updateChart({ baselineDescr: ev.target.value });
-        }
-        updateBaselineMode(ev) {
-            this.props.updateChart({ baselineMode: ev.target.value });
         }
         openColorPicker(colorPickerId) {
             this.state.openedColorPicker = colorPickerId;
@@ -9377,32 +9425,41 @@
     const KEY_BOX_HEIGHT_RATIO = 0.65;
     /** Baseline description should have a smaller font than the baseline */
     const BASELINE_DESCR_FONT_RATIO = 0.9;
-    /* Paddings, in percentage of the element they are inside */
-    const CHART_VERTICAL_PADDING_RATIO = 0.04;
-    const CHART_HORIZONTAL_PADDING_RATIO = 0.05;
-    const VERTICAL_PADDING_TITLE_KEY_RATIO = 0.06;
+    /* Padding at the border of the chart, in percentage of the chart width */
+    const CHART_PADDING_RATIO = 0.02;
+    /**
+     * Line height (in em)
+     * Having a line heigh =1em (=font size) don't work, the font will overflow.
+     */
+    const LINE_HEIGHT = 1.2;
     css /* scss */ `
   div.o-scorecard {
     user-select: none;
     background-color: white;
-    text-align: center;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     box-sizing: border-box;
+
+    .o-scorecard-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center;
+      text-align: center;
+    }
 
     .o-title-text {
       color: #757575;
       text-align: left;
-      height: 1em;
-      line-height: 1em;
+      height: ${LINE_HEIGHT + "em"};
+      line-height: ${LINE_HEIGHT + "em"};
       overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .o-key-text {
-      line-height: 1em;
+      line-height: ${LINE_HEIGHT + "em"};
+      height: ${LINE_HEIGHT + "em"};
       overflow: hidden;
       white-space: nowrap;
     }
@@ -9418,9 +9475,14 @@
 
     .o-baseline-text {
       color: #757575;
-      line-height: 1em;
+      line-height: ${LINE_HEIGHT + "em"};
+      height: ${LINE_HEIGHT + "em"};
       overflow: hidden;
       white-space: nowrap;
+
+      .o-baseline-text-description {
+        white-space: pre;
+      }
     }
   }
 `;
@@ -9430,7 +9492,7 @@
             this.ctx = document.createElement("canvas").getContext("2d");
         }
         get runtime() {
-            return this.env.model.getters.getChartRuntime(this.props.figureId);
+            return this.env.model.getters.getChartRuntime(this.props.figure.id);
         }
         get title() {
             var _a;
@@ -9446,7 +9508,8 @@
         }
         get baselineDescr() {
             var _a;
-            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.baselineDescr) ? " " + this.runtime.baselineDescr : "";
+            const baselineDescr = ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.baselineDescr) || "";
+            return this.baseline && baselineDescr ? " " + baselineDescr : baselineDescr;
         }
         get baselineArrowDirection() {
             var _a;
@@ -9461,51 +9524,51 @@
             return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.fontColor) || "black";
         }
         get figure() {
-            const figure = this.env.model.getters.getFigure(this.env.model.getters.getActiveSheetId(), this.props.figureId);
-            if (!figure) {
-                throw new Error("No figure found");
-            }
-            return figure;
+            return this.props.figure;
         }
         get chartStyle() {
             return `
       height:${this.figure.height}px;
       width:${this.figure.width}px;
-      padding-top:${this.figure.height * CHART_VERTICAL_PADDING_RATIO}px;
-      padding-bottom:${this.figure.height * CHART_VERTICAL_PADDING_RATIO}px;
-      padding-left:${this.figure.width * CHART_HORIZONTAL_PADDING_RATIO}px;
-      padding-right:${this.figure.width * CHART_HORIZONTAL_PADDING_RATIO}px;
+      padding:${this.chartPadding}px;
       background:${this.backgroundColor};
       color:${this.fontColor};
     `;
         }
-        get baselineColorStyle() {
-            var _a;
-            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.baselineColor) ? `color:${this.runtime.baselineColor}` : "";
+        get chartContentStyle() {
+            return `
+      height:${this.getDrawableHeight()}px;
+    `;
+        }
+        get chartPadding() {
+            return this.figure.width * CHART_PADDING_RATIO;
         }
         getTextStyles() {
+            var _a, _b, _c;
             // If the widest text overflows horizontally, scale it down, and apply the same scaling factors to all the other fonts.
-            const maxLineWidth = this.figure.width * (1 - 2 * CHART_HORIZONTAL_PADDING_RATIO);
+            const maxLineWidth = this.figure.width * (1 - 2 * CHART_PADDING_RATIO);
             const widestElement = this.getWidestElement();
-            const baseFontSize = widestElement.getElementMaxFontSize(this.getDrawableHeight(), this.runtime);
-            const fontSizeMatchingWidth = getFontSizeMatchingWidth(maxLineWidth, baseFontSize, (fontSize) => widestElement.getElementWidth(fontSize, this.ctx, this.runtime));
+            const baseFontSize = widestElement.getElementMaxFontSize(this.getDrawableHeight(), this);
+            const fontSizeMatchingWidth = getFontSizeMatchingWidth(maxLineWidth, baseFontSize, (fontSize) => widestElement.getElementWidth(fontSize, this.ctx, this));
             let scalingFactor = fontSizeMatchingWidth / baseFontSize;
             // Fonts sizes in px
-            const keyFontSize = new KeyValueElement().getElementMaxFontSize(this.getDrawableHeight(), this.runtime) *
-                scalingFactor;
-            const baselineFontSize = new BaselineElement().getElementMaxFontSize(this.getDrawableHeight(), this.runtime) *
-                scalingFactor;
+            const keyFontSize = new KeyValueElement().getElementMaxFontSize(this.getDrawableHeight(), this) * scalingFactor;
+            const baselineFontSize = new BaselineElement().getElementMaxFontSize(this.getDrawableHeight(), this) * scalingFactor;
             return {
                 titleStyle: this.getTextStyle({
                     fontSize: TITLE_FONT_SIZE,
-                    paddingBottom: VERTICAL_PADDING_TITLE_KEY_RATIO * this.figure.height,
                 }),
                 keyStyle: this.getTextStyle({
                     fontSize: keyFontSize,
+                    cellStyle: (_a = this.runtime) === null || _a === void 0 ? void 0 : _a.keyValueStyle,
                 }),
                 baselineStyle: this.getTextStyle({
                     fontSize: baselineFontSize,
-                    paddingTop: 0,
+                }),
+                baselineValueStyle: this.getTextStyle({
+                    fontSize: baselineFontSize,
+                    cellStyle: (_b = this.runtime) === null || _b === void 0 ? void 0 : _b.baselineStyle,
+                    color: (_c = this.runtime) === null || _c === void 0 ? void 0 : _c.baselineColor,
                 }),
                 baselineDescrStyle: this.getTextStyle({
                     fontSize: baselineFontSize * BASELINE_DESCR_FONT_RATIO,
@@ -9514,66 +9577,68 @@
         }
         /** Return an CSS style string corresponding to the given arguments */
         getTextStyle(args) {
-            return `
-    padding-top:${args.paddingTop || 0}px;
-    padding-bottom:${args.paddingBottom || 0}px;
-    font-size:${args.fontSize}px;
-  `;
+            const cssAttributes = cellTextStyleToCss(args.cellStyle);
+            cssAttributes["font-size"] = `${args.fontSize}px`;
+            cssAttributes["display"] = "inline-block";
+            if (!cssAttributes["color"] && args.color) {
+                cssAttributes["color"] = args.color;
+            }
+            return cssPropertiesToCss(cssAttributes);
         }
         /** Get the height of the chart minus all the vertical paddings */
         getDrawableHeight() {
-            let totalPaddingRatio = 2 * CHART_VERTICAL_PADDING_RATIO;
-            totalPaddingRatio += this.title ? VERTICAL_PADDING_TITLE_KEY_RATIO : 0;
-            let availableHeight = this.figure.height * (1 - totalPaddingRatio);
-            availableHeight -= this.title ? TITLE_FONT_SIZE : 0;
+            const verticalPadding = 2 * this.chartPadding;
+            let availableHeight = this.figure.height - verticalPadding;
+            availableHeight -= this.title ? TITLE_FONT_SIZE * LINE_HEIGHT : 0;
             return availableHeight;
         }
         /** Return the element with he widest text in the chart */
         getWidestElement() {
             const baseline = new BaselineElement();
             const keyValue = new KeyValueElement();
-            return baseline.getElementWidth(BASELINE_BOX_HEIGHT_RATIO, this.ctx, this.runtime) >
-                keyValue.getElementWidth(KEY_BOX_HEIGHT_RATIO, this.ctx, this.runtime)
+            return baseline.getElementWidth(BASELINE_BOX_HEIGHT_RATIO, this.ctx, this) >
+                keyValue.getElementWidth(KEY_BOX_HEIGHT_RATIO, this.ctx, this)
                 ? baseline
                 : keyValue;
         }
     }
     ScorecardChart.template = "o-spreadsheet-ScorecardChart";
     class BaselineElement {
-        getElementWidth(fontSize, ctx, runtime) {
-            if (!runtime)
+        getElementWidth(fontSize, ctx, chart) {
+            if (!chart.runtime)
                 return 0;
-            const baselineStr = runtime.baselineDisplay;
-            // Put mock text to simulate the width of the up/down arrow + 2 spaces to overshoot a bit the size
-            // to make sure that the text doesn't overflow
-            const largeText = runtime.baselineArrow !== "neutral" ? "A  " + baselineStr : baselineStr;
+            const baselineStr = chart.baseline;
+            // Put mock text to simulate the width of the up/down arrow
+            const largeText = chart.baselineArrowDirection !== "neutral" ? "A " + baselineStr : baselineStr;
             ctx.font = `${fontSize}px ${DEFAULT_FONT}`;
             let textWidth = ctx.measureText(largeText).width;
             // Baseline descr font size should be smaller than baseline font size
             ctx.font = `${fontSize * BASELINE_DESCR_FONT_RATIO}px ${DEFAULT_FONT}`;
-            textWidth += ctx.measureText(runtime.baselineDescr || "").width;
+            textWidth += ctx.measureText(chart.baselineDescr).width;
             return textWidth;
         }
-        getElementMaxFontSize(availableHeight, runtime) {
-            if (!runtime)
+        getElementMaxFontSize(availableHeight, chart) {
+            if (!chart.runtime)
                 return 0;
-            const haveBaseline = runtime.baselineDisplay !== "" || runtime.baselineDescr;
-            return haveBaseline ? BASELINE_BOX_HEIGHT_RATIO * availableHeight : 0;
+            const haveBaseline = chart.baseline !== "" || chart.baselineDescr;
+            const maxHeight = haveBaseline ? BASELINE_BOX_HEIGHT_RATIO * availableHeight : 0;
+            return maxHeight / LINE_HEIGHT;
         }
     }
     class KeyValueElement {
-        getElementWidth(fontSize, ctx, runtime) {
-            if (!runtime)
+        getElementWidth(fontSize, ctx, chart) {
+            if (!chart.runtime)
                 return 0;
-            const str = runtime.keyValue || "";
+            const str = chart.keyValue || "";
             ctx.font = `${fontSize}px ${DEFAULT_FONT}`;
             return ctx.measureText(str).width;
         }
-        getElementMaxFontSize(availableHeight, runtime) {
-            if (!runtime)
+        getElementMaxFontSize(availableHeight, chart) {
+            if (!chart.runtime)
                 return 0;
-            const haveBaseline = runtime.baselineDisplay !== "" || runtime.baselineDescr;
-            return haveBaseline ? KEY_BOX_HEIGHT_RATIO * availableHeight : availableHeight;
+            const haveBaseline = chart.baseline !== "" || chart.baselineDescr;
+            const maxHeight = haveBaseline ? KEY_BOX_HEIGHT_RATIO * availableHeight : availableHeight;
+            return maxHeight / LINE_HEIGHT;
         }
     }
     chartComponentRegistry.add("scorecard", ScorecardChart);
@@ -9621,7 +9686,7 @@
             registry.add("edit", {
                 name: _lt("Edit"),
                 sequence: 1,
-                action: () => this.env.openSidePanel("ChartPanel", { figureId: this.props.figureId }),
+                action: () => this.env.openSidePanel("ChartPanel", { figureId: this.props.figure.id }),
             });
             registry.add("delete", {
                 name: _lt("Delete"),
@@ -9629,10 +9694,10 @@
                 action: () => {
                     this.env.model.dispatch("DELETE_FIGURE", {
                         sheetId: this.env.model.getters.getActiveSheetId(),
-                        id: this.props.figureId,
+                        id: this.props.figure.id,
                     });
                     if (this.props.sidePanelIsOpen) {
-                        this.env.toggleSidePanel("ChartPanel", { figureId: this.props.figureId });
+                        this.env.toggleSidePanel("ChartPanel", { figureId: this.props.figure.id });
                     }
                     this.props.onFigureDeleted();
                 },
@@ -9642,14 +9707,14 @@
                 sequence: 11,
                 action: () => {
                     this.env.model.dispatch("REFRESH_CHART", {
-                        id: this.props.figureId,
+                        id: this.props.figure.id,
                     });
                 },
             });
             return registry;
         }
         get chartType() {
-            return this.env.model.getters.getChartType(this.props.figureId);
+            return this.env.model.getters.getChartType(this.props.figure.id);
         }
         onContextMenu(ev) {
             const position = {
@@ -25653,7 +25718,7 @@
                             sheetId,
                             col,
                             row,
-                            style: topLeft ? topLeft.style : undefined,
+                            style: topLeft ? topLeft.style : null,
                             content: "",
                         });
                     }
@@ -28197,8 +28262,9 @@
         }
         handle(cmd) {
             if (invalidateEvaluationCommands.has(cmd.type) ||
+                invalidateCFEvaluationCommands.has(cmd.type) ||
                 cmd.type === "EVALUATE_CELLS" ||
-                (cmd.type === "UPDATE_CELL" && ("content" in cmd || "format" in cmd))) {
+                cmd.type === "UPDATE_CELL") {
                 for (const chartId in this.charts) {
                     this.charts[chartId] = undefined;
                 }
@@ -28250,8 +28316,35 @@
                 this.dispatch("EVALUATE_CELLS", { sheetId });
             }
         }
+        /**
+         * Get the background color of a chart based on the color of the first cell of the main range
+         * of the chart. In order of priority, it will return :
+         *
+         *  - the chart background color if one is defined
+         *  - the fill color of the cell if one is defined
+         *  - the fill color of the cell from conditional formats if one is defined
+         *  - the default chart color if no other color is defined
+         */
+        getBackgroundOfSingleCellChart(chartBackground, mainRange) {
+            if (chartBackground)
+                return chartBackground;
+            if (!mainRange) {
+                return BACKGROUND_CHART_COLOR;
+            }
+            const col = mainRange.zone.left;
+            const row = mainRange.zone.top;
+            const cfFormat = this.getters.getConditionalStyle(col, row, mainRange.sheetId);
+            if (cfFormat && cfFormat.fillColor) {
+                return cfFormat.fillColor;
+            }
+            const cell = this.getters.getCell(mainRange.sheetId, col, row);
+            if (cell && cell.style && cell.style.fillColor) {
+                return cell.style.fillColor;
+            }
+            return BACKGROUND_CHART_COLOR;
+        }
     }
-    EvaluationChartPlugin.getters = ["getChartRuntime"];
+    EvaluationChartPlugin.getters = ["getChartRuntime", "getBackgroundOfSingleCellChart"];
 
     // -----------------------------------------------------------------------------
     // Constants
@@ -28330,6 +28423,10 @@
         // Command Handling
         // ---------------------------------------------------------------------------
         handle(cmd) {
+            if (invalidateCFEvaluationCommands.has(cmd.type) ||
+                (cmd.type === "UPDATE_CELL" && "content" in cmd)) {
+                this.isStale = true;
+            }
             switch (cmd.type) {
                 case "ACTIVATE_SHEET":
                     const activeSheet = cmd.sheetIdTo;
@@ -28347,22 +28444,6 @@
                 case "PASTE_CONDITIONAL_FORMAT":
                     this.pasteCf(cmd.origin, cmd.target, cmd.operation);
                     break;
-                case "DUPLICATE_SHEET":
-                case "CREATE_SHEET":
-                case "DELETE_SHEET":
-                case "ADD_CONDITIONAL_FORMAT":
-                case "REMOVE_CONDITIONAL_FORMAT":
-                case "REMOVE_COLUMNS_ROWS":
-                case "ADD_COLUMNS_ROWS":
-                case "EVALUATE_CELLS":
-                case "UPDATE_CELL":
-                case "UNDO":
-                case "REDO":
-                case "DELETE_CELL":
-                case "INSERT_CELL":
-                case "MOVE_CONDITIONAL_FORMAT":
-                    this.isStale = true;
-                    break;
             }
         }
         finalize() {
@@ -28375,13 +28456,14 @@
         // Getters
         // ---------------------------------------------------------------------------
         /**
-         * Returns the conditional style property for a given cell reference in the active sheet or
+         * Returns the conditional style property for a given cell reference or
          * undefined if this cell doesn't have a conditional style set.
+         *
+         * @param sheetId: take the cell in the active sheet if the method is not given a sheetId
          */
-        getConditionalStyle(col, row) {
+        getConditionalStyle(col, row, sheetId = this.getters.getActiveSheetId()) {
             var _a;
-            const activeSheet = this.getters.getActiveSheetId();
-            const styles = this.computedStyles[activeSheet];
+            const styles = this.computedStyles[sheetId];
             return styles && ((_a = styles[col]) === null || _a === void 0 ? void 0 : _a[row]);
         }
         getConditionalIcon(col, row) {
@@ -32241,7 +32323,8 @@
         }
 
         .o-section-subtitle {
-          color: gray;
+          color: dimgrey;
+          font-weight: 500;
           font-size: 12px;
           line-height: 14px;
           margin: 8px 0 4px 0;
@@ -32300,12 +32383,18 @@
       box-sizing: border-box;
       line-height: 1;
       width: 100%;
+      height: 28px;
       .o-type-selector {
         background-position: right 5px top 11px;
       }
     }
-    input.o-required {
+    input.o-required,
+    select.o-required {
       border-color: #4c4c4c;
+    }
+    input.o-optional,
+    select.o-optional {
+      border: 1px solid #a9a9a9;
     }
     input.o-invalid {
       border-color: red;
@@ -36947,8 +37036,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-08-02T11:55:12.522Z';
-    exports.__info__.hash = '93644c4';
+    exports.__info__.date = '2022-08-04T07:14:10.353Z';
+    exports.__info__.hash = '2c40373';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

@@ -20,14 +20,18 @@ chartRegistry.add("odoo_pie", {
 });
 
 function createOdooChartRuntime(chart, getters) {
+    const background = chart.background || "#FFFFFF";
     const model = getters.getSpreadsheetGraphModel(chart.id);
     if (!model) {
-        return getPieConfiguration(chart, []);
+        return {
+            background,
+            chartJsConfig: getPieConfiguration(chart, []),
+        };
     }
     const { datasets, labels } = model.data;
-    const runtime = getPieConfiguration(chart, labels);
+    const chartJsConfig = getPieConfiguration(chart, labels);
     const colors = new ChartColors();
-    for (let { label, data } of datasets) {
+    for (const { label, data } of datasets) {
         const backgroundColor = getPieColors(colors, datasets);
         const dataset = {
             label,
@@ -35,10 +39,9 @@ function createOdooChartRuntime(chart, getters) {
             borderColor: "#FFFFFF",
             backgroundColor,
         };
-        runtime.data.datasets.push(dataset);
+        chartJsConfig.data.datasets.push(dataset);
     }
-
-    return runtime;
+    return { background, chartJsConfig };
 }
 
 function getPieConfiguration(chart, labels) {

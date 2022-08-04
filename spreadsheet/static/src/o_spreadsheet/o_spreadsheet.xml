@@ -237,29 +237,31 @@
     <div class="o-scorecard" t-att-style="chartStyle">
       <t t-set="textStyles" t-value="getTextStyles()"/>
       <div t-if="title" class="o-title-text" t-esc="title" t-att-style="textStyles.titleStyle"/>
-      <div class="o-key-text" t-esc="keyValue" t-att-style="textStyles.keyStyle"/>
-      <t t-if="baseline || baselineDescr">
-        <div class="o-baseline-text" t-att-style="textStyles.baselineStyle">
-          <t t-if="baseline">
-            <t t-if="baselineArrowDirection === 'up'">
-              <t t-call="o-spreadsheet-Icon.ARROW_UP">
-                <t t-set="color" t-value="'fill : ' + runtime.baselineColor"/>
+      <div class="o-scorecard-content" t-att-style="chartContentStyle">
+        <div class="o-key-text" t-if="keyValue" t-esc="keyValue" t-att-style="textStyles.keyStyle"/>
+        <t t-if="baseline || baselineDescr">
+          <div class="o-baseline-text" t-att-style="textStyles.baselineStyle">
+            <t t-if="baseline">
+              <t t-if="baselineArrowDirection === 'up'">
+                <t t-call="o-spreadsheet-Icon.ARROW_UP">
+                  <t t-set="color" t-value="'fill : ' + runtime.baselineColor"/>
+                </t>
               </t>
-            </t>
-            <t t-if="baselineArrowDirection === 'down'">
-              <t t-call="o-spreadsheet-Icon.ARROW_DOWN">
-                <t t-set="color" t-value="'fill : ' + runtime.baselineColor"/>
+              <t t-if="baselineArrowDirection === 'down'">
+                <t t-call="o-spreadsheet-Icon.ARROW_DOWN">
+                  <t t-set="color" t-value="'fill : ' + runtime.baselineColor"/>
+                </t>
               </t>
+              <span t-att-style="textStyles.baselineValueStyle" class="o-baseline-text-value">
+                <t t-esc="baseline"/>
+              </span>
             </t>
-            <span t-att-style="baselineColorStyle">
-              <t t-esc="baseline"/>
+            <span t-att-style="textStyles.baselineDescrStyle" class="o-baseline-text-description">
+              <t t-esc="baselineDescr"/>
             </span>
-          </t>
-          <span t-att-style="textStyles.baselineDescrStyle">
-            <t t-esc="baselineDescr"/>
-          </span>
-        </div>
-      </t>
+          </div>
+        </t>
+      </div>
     </div>
   </t>
 
@@ -282,7 +284,7 @@
               t-key="info.id"
               sidePanelIsOpen="props.sidePanelIsOpen"
               onFigureDeleted="props.onFigureDeleted"
-              figureId="info.figure.id"
+              figure="info.figure"
             />
             <t t-if="info.isSelected">
               <div
@@ -340,8 +342,8 @@
       </div>
       <t
         t-component="chartComponent"
-        figureId="props.figureId"
-        t-key="props.figureId + '-' + chartType"
+        figure="this.props.figure"
+        t-key="this.props.figure.id + '-' + chartType"
       />
 
       <Menu
@@ -1247,6 +1249,7 @@
           t-att-class="{
             'o-focused' : range.isFocused,
             'o-required': props.required,
+            'o-optional': !props.required,
             'o-invalid': isInvalid || !range.isValidRange,
           }"
         />
@@ -1340,7 +1343,7 @@
           type="text"
           t-att-value="props.definition.title"
           t-on-change="updateTitle"
-          class="o-input"
+          class="o-input o-optional"
           placeholder="New Chart"
         />
       </div>
@@ -1417,7 +1420,7 @@
           type="text"
           t-att-value="props.definition.title"
           t-on-change="updateTitle"
-          class="o-input"
+          class="o-input o-optional"
           placeholder="New Chart"
         />
       </div>
@@ -1615,7 +1618,7 @@
           type="text"
           t-att-value="props.definition.title"
           t-on-change="updateTitle"
-          class="o-input"
+          class="o-input o-optional"
           placeholder="New Chart"
         />
       </div>
@@ -1704,7 +1707,7 @@
           type="text"
           t-att-value="props.definition.title"
           t-on-change="updateTitle"
-          class="o-input"
+          class="o-input o-optional"
           placeholder="New Chart"
         />
       </div>
@@ -1806,7 +1809,8 @@
         />
       </div>
       <div class="o-section o-data-labels">
-        <div class="o-section-title">Baseline value</div>
+        <div class="o-section-title">Baseline configuration</div>
+        <div class="o-section-subtitle">Baseline value</div>
         <SelectionInput
           ranges="[props.definition.baseline || '']"
           isInvalid="isBaselineInvalid"
@@ -1814,6 +1818,15 @@
           onSelectionChanged="(ranges) => this.onBaselineRangeChanged(ranges)"
           onSelectionConfirmed="() => this.updateBaselineRange()"
         />
+        <div class="o-section-subtitle">Baseline format</div>
+        <select
+          t-att-value="props.definition.baselineMode"
+          class="o-input o-type-selector o-optional"
+          t-on-change="(ev) => this.updateBaselineMode(ev)">
+          <option value="text">Absolute value</option>
+          <option value="difference">Value change from key value</option>
+          <option value="percentage">Percentage change from key value</option>
+        </select>
       </div>
       <div class="o-section o-sidepanel-error" t-if="errorMessages">
         <div t-foreach="errorMessages" t-as="error" t-key="error">
@@ -1849,19 +1862,9 @@
           type="text"
           t-att-value="props.definition.title"
           t-on-change="updateTitle"
-          class="o-input"
+          class="o-input o-optional"
           placeholder="New Chart"
         />
-      </div>
-      <div class="o-section">
-        <div class="o-section-title">Baseline comparison to key value</div>
-        <select
-          t-att-value="props.definition.baselineMode"
-          class="o-input o-type-selector"
-          t-on-change="(ev) => this.updateBaselineMode(ev)">
-          <option value="absolute">Absolute change</option>
-          <option value="percentage">Percentage change</option>
-        </select>
       </div>
       <div class="o-section">
         <div class="o-section-title">Baseline description</div>
@@ -1869,7 +1872,7 @@
           type="text"
           t-att-value="props.definition.baselineDescr"
           t-on-change="updateBaselineDescr"
-          class="o-input"
+          class="o-input o-optional"
         />
       </div>
     </div>

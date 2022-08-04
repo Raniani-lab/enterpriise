@@ -11,13 +11,13 @@ patch(spreadsheet.components.ChartFigure.prototype, "spreadsheet.ChartFigure", {
         this.actionService = useService("action");
     },
     async navigateToOdooMenu() {
-        const menu = this.env.model.getters.getChartOdooMenu(this.props.figureId);
+        const menu = this.env.model.getters.getChartOdooMenu(this.props.figure.id);
         if (!menu) {
             throw new Error(`Cannot find any menu associated with the chart`);
         }
         await this.actionService.doAction(menu.actionID);
     },
     get hasOdooMenu() {
-        return this.env.model.getters.getChartOdooMenu(this.props.figureId) !== undefined;
+        return this.env.model.getters.getChartOdooMenu(this.props.figure.id) !== undefined;
     },
 });

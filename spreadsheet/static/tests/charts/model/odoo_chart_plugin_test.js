@@ -15,7 +15,7 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         const chart = model.getters.getChart(chartId);
         assert.ok(chart instanceof OdooBarChart);
         assert.strictEqual(chart.getDefinitionForExcel(), undefined);
-        assert.strictEqual(model.getters.getChartRuntime(chartId).type, "bar");
+        assert.strictEqual(model.getters.getChartRuntime(chartId).chartJsConfig.type, "bar");
     });
 
     QUnit.test("Can add an Odoo Line chart", async (assert) => {
@@ -26,7 +26,7 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         const chart = model.getters.getChart(chartId);
         assert.ok(chart instanceof OdooLineChart);
         assert.strictEqual(chart.getDefinitionForExcel(), undefined);
-        assert.strictEqual(model.getters.getChartRuntime(chartId).type, "line");
+        assert.strictEqual(model.getters.getChartRuntime(chartId).chartJsConfig.type, "line");
     });
 
     QUnit.test("Can add an Odoo Pie chart", async (assert) => {
@@ -37,7 +37,7 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         const chart = model.getters.getChart(chartId);
         assert.ok(chart instanceof OdooChart);
         assert.strictEqual(chart.getDefinitionForExcel(), undefined);
-        assert.strictEqual(model.getters.getChartRuntime(chartId).type, "pie");
+        assert.strictEqual(model.getters.getChartRuntime(chartId).chartJsConfig.type, "pie");
     });
 
     QUnit.test("A data source is added after a chart creation", async (assert) => {
@@ -61,7 +61,7 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         assert.strictEqual(m1.getters.getChartIds(sheetId).length, 1);
         const chartId = m1.getters.getChartIds(sheetId)[0];
         assert.ok(m1.getters.getSpreadsheetGraphDataSource(chartId));
-        assert.strictEqual(m1.getters.getChartRuntime(chartId).type, "line");
+        assert.strictEqual(m1.getters.getChartRuntime(chartId).chartJsConfig.type, "line");
     });
 
     QUnit.test("Can undo/redo an Odoo chart creation", async (assert) => {
@@ -91,8 +91,12 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
             id: chartId,
             sheetId,
         });
-        assert.ok(model.getters.getChartRuntime(chartId).options.scales.xAxes[0].stacked);
-        assert.ok(model.getters.getChartRuntime(chartId).options.scales.yAxes[0].stacked);
+        assert.ok(
+            model.getters.getChartRuntime(chartId).chartJsConfig.options.scales.xAxes[0].stacked
+        );
+        assert.ok(
+            model.getters.getChartRuntime(chartId).chartJsConfig.options.scales.yAxes[0].stacked
+        );
         model.dispatch("UPDATE_CHART", {
             definition: {
                 ...definition,
@@ -101,7 +105,11 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
             id: chartId,
             sheetId,
         });
-        assert.notOk(model.getters.getChartRuntime(chartId).options.scales.xAxes[0].stacked);
-        assert.notOk(model.getters.getChartRuntime(chartId).options.scales.yAxes[0].stacked);
+        assert.notOk(
+            model.getters.getChartRuntime(chartId).chartJsConfig.options.scales.xAxes[0].stacked
+        );
+        assert.notOk(
+            model.getters.getChartRuntime(chartId).chartJsConfig.options.scales.yAxes[0].stacked
+        );
     });
 });

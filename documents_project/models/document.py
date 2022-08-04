@@ -8,7 +8,7 @@ from odoo import api, fields, models
 class Document(models.Model):
     _inherit = 'documents.document'
 
-    is_shared = fields.Boolean(compute='_compute_is_shared')
+    is_shared = fields.Boolean(compute='_compute_is_shared', search='_search_is_shared')
 
     def _compute_is_shared(self):
         search_domain = [
@@ -30,6 +30,41 @@ class Document(models.Model):
 
         for document in self:
             document.is_shared = doc_share_count_per_doc_id.get(document.id) or document.folder_id.is_shared
+
+    @api.model
+    def _search_is_shared(self, operator, value):
+        if operator not in ('=', '!=') or not isinstance(value, bool):
+            raise NotImplementedError(f'The search does not support the {operator} operator or {value} value.')
+
+        share_links = self.env['documents.share'].search_read(
+            ['|', ('date_deadline', '=', False), ('date_deadline', '>', fields.Date.today())],
+            ['document_ids', 'folder_id', 'include_sub_folders', 'type'],
+        )
+
+        shared_folder_ids = set()
+        shared_folder_with_descendants_ids = set()
+        shared_document_ids = set()
+
+        for link in share_links:
+            if link['type'] == 'domain':
+                if link['include_sub_folders']:
+                    shared_folder_with_descendants_ids.add(link['folder_id'][0])
+                else:
+                    shared_folder_ids.add(link['folder_id'][0])
+            else:
+                shared_document_ids |= set(link['document_ids'])
+
+        domain = [
+            '|',
+                '|',
+                    ('folder_id', 'in', list(shared_folder_ids)),
+                    ('folder_id', 'child_of', list(shared_folder_with_descendants_ids)),
+                ('id', 'in', list(shared_document_ids)),
+        ]
+
+        if (operator == '=') ^ value:
+            domain.insert(0, '!')
+        return domain
 
     @api.model
     def search_panel_select_range(self, field_name, **kwargs):

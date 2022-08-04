@@ -1,29 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import http
-from odoo.exceptions import AccessError, MissingError
-from odoo.http import request
-
-from odoo.addons.project.controllers.portal import ProjectCustomerPortal
+from odoo.addons.portal.controllers.portal import CustomerPortal
 
 
-class DocumentsProjectCustomerPortal(ProjectCustomerPortal):
-    @http.route('/my/tasks/<int:task_id>/documents', type='http', auth='user')
-    def portal_my_task_documents(self, task_id, **kwargs):
-        try:
-            task_sudo = self._document_check_access('project.task', task_id)
-        except (AccessError, MissingError):
-            return request.redirect('/my')
-
-        available_documents = task_sudo.shared_document_ids
-        if not available_documents:
-            return request.not_found()
-
-        options = {
-            'base_url': f"/my/tasks/{task_id}/documents/",
-            'upload': task_sudo.documents_folder_id.is_shared,
-            'document_ids': available_documents,
-            'all_button': len(available_documents) > 1 and 'binary' in [document.type for document in available_documents],
-        }
-        return request.render('documents_project.share_page', options)
+class DocumentsProjectCustomerPortal(CustomerPortal):
+    def _project_get_page_view_values(self, project, access_token, page=1, date_begin=None, date_end=None, sortby=None, search=None, search_in='content', groupby=None, **kwargs):
+        if project.use_documents and project.sudo().shared_document_count:
+            groupby = 'project'
+        return super()._project_get_page_view_values(project, access_token, page=page, date_begin=date_begin, date_end=date_end, sortby=sortby, search=search, search_in=search_in, groupby=groupby, **kwargs)

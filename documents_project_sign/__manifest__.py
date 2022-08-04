@@ -12,9 +12,9 @@ Adds an action to sign documents attached to tasks.
     'website': ' ',
     'depends': ['documents_project', 'documents_sign'],
     'data': [
+        'data/data.xml',
     ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
-    'post_init_hook': '_documents_project_sign_post_init',
 }

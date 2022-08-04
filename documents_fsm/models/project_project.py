@@ -19,4 +19,4 @@ class ProjectProject(models.Model):
     @api.depends('is_fsm')
     def _compute_use_documents(self):
         for project in self:
-            project.use_documents = project.company_use_documents and not project.is_fsm
+            project.use_documents = not project.is_fsm

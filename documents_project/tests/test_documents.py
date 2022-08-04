@@ -48,55 +48,12 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
         self.assertTrue(task.exists(), 'failed at workflow_bridge_documents_project task')
         self.assertEqual(self.attachment_txt.res_id, task.id, "failed at workflow_bridge_documents_project res_id")
 
-    def test_bridge_project_settings(self):
-        """
-        Tests that the documents feature is automatically enabled on new and existing projects when globally enabled
-        """
-        self.assertFalse(self.env.company.project_use_documents, "The documents feature should be disabled by default.")
-        self.assertFalse(self.project_pigs.documents_folder_id or self.project_goats.documents_folder_id, "The projects should have no workspace while the feature has never been enabled.")
-
-        self.env['res.config.settings'].create({'project_use_documents': True}).execute()
-
-        self.assertTrue(self.env.company.project_use_documents, "The documents feature should be enabled.")
-        self.assertTrue(self.project_pigs.use_documents and self.project_goats.use_documents, "The document feature should be automatically enabled on existing projects.")
-        self.assertTrue(self.project_pigs.documents_folder_id and self.project_goats.documents_folder_id, "A workspace should be automatically created for the projects.")
-        self.assertEqual(self.project_pigs.name, self.project_pigs.documents_folder_id.name, "The created workspace should have the same name as the project.")
-        self.assertEqual(self.project_pigs.company_id, self.project_pigs.documents_folder_id.company_id, "The created workspace should have the same company as the project.")
-
     def test_bridge_parent_folder(self):
         """
         Tests the "Parent Workspace" setting
         """
-        parent_folder = self.env['documents.folder'].create({
-            'name': 'Parent Folder',
-        })
-        self.env['res.config.settings'].create({
-            'project_documents_parent_folder': parent_folder.id,
-            'project_use_documents': True,
-        }).execute()
-        self.assertEqual(self.project_pigs.documents_folder_id.parent_folder_id, parent_folder, "The workspace of the project should be a child of the workspace set as parent workspace in the settings.")
-
-    def test_bridge_template_folder(self):
-        """
-        Tests the "Template Workspace" setting
-        """
-        template_folder = self.env['documents.folder'].create({
-            'name': 'Template',
-            'description': 'Template Folder',
-        })
-
-        self.env['res.config.settings'].create({
-            'project_documents_template_folder': template_folder.id,
-            'project_use_documents': True,
-        }).execute()
-
-        project_folder = self.project_pigs.documents_folder_id
-
-        self.assertEqual(template_folder.description, project_folder.description, "The workspace of the project should be a copy of the template workspace.")
-        self.assertTrue(project_folder.name == self.project_pigs.name and project_folder.company_id == self.project_pigs.company_id,
-            "The copied workspace should have the same name and the same company as the project.")
-
-        # Testing that the template folder will be an identical copy of the template is handled by the TestDocumentsFolder test in `documents`
+        parent_folder = self.env.ref('documents_project.documents_project_folder')
+        self.assertEqual(self.project_pigs.documents_folder_id.parent_folder_id, parent_folder, "The workspace of the project should be a child of the 'Projects' workspace.")
 
     def test_bridge_project_project_settings_on_write(self):
         """
@@ -107,20 +64,13 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
             'datas': TEXT,
             'name': 'fileText_test.txt',
             'mimetype': 'text/plain',
+            'res_model': 'project.project',
+            'res_id': self.project_pigs.id,
         })
         attachment_gif_test = self.env['ir.attachment'].create({
             'datas': GIF,
             'name': 'fileText_test.txt',
             'mimetype': 'text/plain',
-        })
-
-        self.env['res.config.settings'].create({'project_use_documents': True}).execute()
-
-        attachment_txt_test.write({
-            'res_model': 'project.project',
-            'res_id': self.project_pigs.id,
-        })
-        attachment_gif_test.write({
             'res_model': 'project.task',
             'res_id': self.task_1.id,
         })
@@ -177,3 +127,55 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
         self.attachment_txt._compute_is_shared()
 
         self.assertTrue(self.attachment_txt.is_shared, "The document should be shared by a link sharing it by id and not expired yet")
+
+    def test_copy_and_merge_folders(self):
+        """
+        Create 3 folders (folderA, folderB, folderC) with different properties (subfolders, tags, workflow actions)
+        and merge them. The merged folder should have all the properties of the original folders combined.
+        """
+        folderA, folderB, folderC = self.env['documents.folder'].create([{
+            'name': f'folder{l}',
+        } for l in 'ABC'])
+
+        folderA_child = self.env['documents.folder'].create({
+            'name': 'folderA_child',
+            'parent_folder_id': folderA.id,
+        })
+        folderB_facet = self.env['documents.facet'].create({
+            'name': 'folderB_facet',
+            'folder_id': folderB.id,
+        })
+        folderB_tag = self.env['documents.tag'].create({
+            'name': 'folderB_tag',
+            'facet_id': folderB_facet.id,
+        })
+        folderC_workflow_rule = self.env['documents.workflow.rule'].create({
+            'name': 'folderC_workflow_rule',
+            'domain_folder_id': folderC.id,
+            'condition_type': 'criteria',
+            'criteria_partner_id': self.partner_1.id,
+        })
+        self.env['documents.workflow.action'].create({
+            'workflow_rule_id': folderC_workflow_rule.id,
+            'action': 'remove',
+        })
+
+        copied_folder = (folderA + folderB + folderC)._copy_and_merge()
+
+        self.assertEqual(len(copied_folder.children_folder_ids), 1)
+        self.assertEqual(folderA_child.name, copied_folder.children_folder_ids[0].name)
+
+        self.assertEqual(len(copied_folder.facet_ids), 1)
+        facet_copy = copied_folder.facet_ids[0]
+        self.assertEqual(folderB_facet.name, facet_copy.name)
+
+        self.assertEqual(len(facet_copy.tag_ids), 1)
+        self.assertEqual(folderB_tag.name, facet_copy.tag_ids[0].name)
+
+        workflow_rule_copy_search = self.env['documents.workflow.rule'].search([('domain_folder_id', '=', copied_folder.id)])
+        self.assertEqual(len(workflow_rule_copy_search), 1)
+        workflow_rule_copy = workflow_rule_copy_search[0]
+        self.assertEqual(folderC_workflow_rule.name, workflow_rule_copy.name)
+
+        workflow_action_search = self.env['documents.workflow.action'].search([('workflow_rule_id', '=', workflow_rule_copy.id)])
+        self.assertEqual(len(workflow_action_search), 1)

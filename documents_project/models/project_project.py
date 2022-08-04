@@ -11,13 +11,14 @@ class ProjectProject(models.Model):
     _name = 'project.project'
     _inherit = ['project.project', 'documents.mixin']
 
-    company_use_documents = fields.Boolean("Company Documents Setting", related='company_id.project_use_documents')
-    use_documents = fields.Boolean("Use Documents", default=lambda self: self.env.company.project_use_documents)
-    documents_folder_id = fields.Many2one('documents.folder', string="Workspace", domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+    use_documents = fields.Boolean("Use Documents", default=True)
+    documents_folder_id = fields.Many2one('documents.folder', string="Workspace", domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]", copy=False,
         help="Workspace in which all of the documents of this project will be categorized. All of the attachments of your tasks will be automatically added as documents in this workspace as well.")
-    documents_tag_ids = fields.Many2many('documents.tag', 'project_documents_tag_rel', string="Default Tags", domain="[('folder_id', 'parent_of', documents_folder_id)]",
+    documents_tag_ids = fields.Many2many('documents.tag', 'project_documents_tag_rel', string="Default Tags", domain="[('folder_id', 'parent_of', documents_folder_id)]", copy=True,
         help="Tags that will be set by default on all of the new documents of your project.")
     document_count = fields.Integer(compute='_compute_attached_document_count', string="Number of documents in Project", groups='documents.group_documents_user')
+    shared_document_ids = fields.One2many('documents.document', string='Shared Documents', compute='_compute_shared_document_ids')
+    shared_document_count = fields.Integer("Shared Documents Count", compute='_compute_shared_document_ids')
 
     @api.constrains('documents_folder_id')
     def _check_company_is_folder_company(self):
@@ -54,6 +55,53 @@ class ProjectProject(models.Model):
                     if task_id in task_ids
                 ])
 
+    def _compute_shared_document_ids(self):
+        tasks_read_group = self.env['project.task']._read_group(
+            [('project_id', 'in', self.ids)],
+            ['ids:array_agg(id)'],
+            ['project_id'],
+        )
+
+        project_id_per_task_id = {}
+        task_ids = []
+
+        for res in tasks_read_group:
+            project_id = res['project_id'][0]
+            task_ids += res['ids']
+            for task_id in res['ids']:
+                project_id_per_task_id[task_id] = project_id
+
+        documents_read_group = self.env['documents.document']._read_group(
+            [
+                '&',
+                    ('is_shared', '=', True),
+                    '|',
+                        '&',
+                            ('res_model', '=', 'project.project'),
+                            ('res_id', 'in', self.ids),
+                        '&',
+                            ('res_model', '=', 'project.task'),
+                            ('res_id', 'in', task_ids),
+            ],
+            ['ids:array_agg(id)'],
+            ['res_model', 'res_id'],
+            lazy=False,
+        )
+
+        document_ids_per_project_id = defaultdict(list)
+        for res in documents_read_group:
+            if res['res_model'] == 'project.project':
+                document_ids_per_project_id[res['res_id']] += res['ids']
+            else:
+                project_id = project_id_per_task_id[res['res_id']]
+                document_ids_per_project_id[project_id] += res['ids']
+
+        for project in self:
+            shared_document_ids = self.env['documents.document'] \
+                .browse(document_ids_per_project_id[project.id])
+            project.shared_document_ids = shared_document_ids
+            project.shared_document_count = len(shared_document_ids)
+
     @api.onchange('documents_folder_id')
     def _onchange_documents_folder_id(self):
         self.env['documents.document'].search([
@@ -63,35 +111,31 @@ class ProjectProject(models.Model):
         ]).folder_id = self.documents_folder_id
         self.documents_tag_ids = False
 
-    @api.model_create_multi
-    def create(self, vals_list):
+    def _create_missing_folders(self):
         folders_to_create_vals = []
-        vals_indexes_with_folder_to_create = []
-        copied_folder_ids_per_company_id = defaultdict(list)
+        projects_with_folder_to_create = []
+        documents_project_folder_id = self.env.ref('documents_project.documents_project_folder').id
 
-        for index, vals in enumerate(vals_list):
-            if (('use_documents' in vals and vals['use_documents']) or (self.env.company.project_use_documents and not 'use_documents' in vals)) and not vals.get('documents_folder_id'):
-                company = self.env['res.company'].browse(vals['company_id']) if vals.get('company_id') else self.env.company
+        for project in self:
+            if not project.documents_folder_id:
                 folder_vals = {
-                    'name': vals['name'],
-                    'parent_folder_id': company.project_documents_parent_folder.id,
-                    'company_id': company.id,
+                    'name': project.name,
+                    'parent_folder_id': documents_project_folder_id,
+                    'company_id': project.company_id.id,
                 }
-                if company.project_documents_template_folder:
-                    copied_folder = company.project_documents_template_folder.copy(folder_vals)
-                    copied_folder_ids_per_company_id[company.id].append(copied_folder.id)
-                    vals['documents_folder_id'] = copied_folder.id
-                else:
-                    folders_to_create_vals.append(folder_vals)
-                    vals_indexes_with_folder_to_create.append(index)
-
-        for company_id, folder_ids in copied_folder_ids_per_company_id.items():
-            self.env['documents.folder'].search([('id', 'child_of', folder_ids)]).write({'company_id': company_id})
+                folders_to_create_vals.append(folder_vals)
+                projects_with_folder_to_create.append(project)
 
         created_folders = self.env['documents.folder'].create(folders_to_create_vals)
-        for index, folder in zip(vals_indexes_with_folder_to_create, created_folders):
-            vals_list[index]['documents_folder_id'] = folder.id
-        return super().create(vals_list)
+        for project, folder in zip(projects_with_folder_to_create, created_folders):
+            project.documents_folder_id = folder
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        projects = super().create(vals_list)
+        if not self.env.context.get('no_create_folder'):
+            projects.filtered(lambda project: project.use_documents)._create_missing_folders()
+        return projects
 
     def write(self, vals):
         if 'company_id' in vals:
@@ -110,34 +154,16 @@ class ProjectProject(models.Model):
             for project in self:
                 if project.documents_folder_id and project.documents_folder_id.company_id:
                     project.documents_folder_id.company_id = project.company_id
-
         if vals.get('use_documents'):
-            folders_to_create_vals = []
-            projects_with_folder_to_create = []
-            copied_folder_ids_per_company_id = defaultdict(list)
-
-            for project in self:
-                if not project.documents_folder_id:
-                    folder_vals = {
-                        'name': project.name,
-                        'parent_folder_id': project.company_id.project_documents_parent_folder.id,
-                        'company_id': project.company_id.id,
-                    }
-                    if project.company_id.project_documents_template_folder:
-                        copied_folder = project.company_id.project_documents_template_folder.copy(folder_vals)
-                        copied_folder_ids_per_company_id[project.company_id.id].append(copied_folder.id)
-                        project.documents_folder_id = copied_folder.id
-                    else:
-                        folders_to_create_vals.append(folder_vals)
-                        projects_with_folder_to_create.append(project)
-
-            for company_id, folder_ids in copied_folder_ids_per_company_id.items():
-                self.env['documents.folder'].search([('id', 'child_of', folder_ids)]).write({'company_id': company_id})
-
-            created_folders = self.env['documents.folder'].create(folders_to_create_vals)
-            for project, folder in zip(projects_with_folder_to_create, created_folders):
-                project.documents_folder_id = folder.id
+            self._create_missing_folders()
         return res
+
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        project = super().copy(default)
+        if not self.env.context.get('no_create_folder') and project.use_documents and self.documents_folder_id:
+            project.documents_folder_id = self.documents_folder_id.copy({'name': project.name})
+        return project
 
     def _get_stat_buttons(self):
         buttons = super(ProjectProject, self)._get_stat_buttons()

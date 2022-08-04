@@ -12,7 +12,7 @@
     'depends': ['documents_project', 'industry_fsm'],
     'data': [
     ],
-    'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',
+    'post_init_hook': '_documents_fsm_post_init'
 }

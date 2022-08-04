@@ -26,8 +26,20 @@ class ProjectTask(models.Model):
             task.document_count = tasks_data.get(task.id, 0)
 
     def _compute_shared_document_ids(self):
+        documents_read_group = self.env['documents.document']._read_group(
+            [
+                '&',
+                    ('is_shared', '=', True),
+                    '&',
+                        ('res_model', '=', 'project.task'),
+                        ('res_id', 'in', self.ids),
+            ],
+            ['ids:array_agg(id)'],
+            ['res_id'],
+        )
+        document_ids_per_task_id = {documents['res_id']: documents['ids'] for documents in documents_read_group}
         for task in self:
-            task.shared_document_ids = task.document_ids.filtered('is_shared')
+            task.shared_document_ids = document_ids_per_task_id.get(task.id, False)
 
     def unlink(self):
         # unlink documents.document directly so mail.activity.mixin().unlink is called

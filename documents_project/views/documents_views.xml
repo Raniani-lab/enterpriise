@@ -1,39 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="res_config_settings_view_form" model="ir.ui.view">
-        <field name="name">res.config.settings.view.form.inherit.documents</field>
-        <field name="model">res.config.settings</field>
-        <field name="priority" eval="70"/>
-        <field name="inherit_id" ref="project.res_config_settings_view_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//h2[@name='section_analytics']" position="replace">
-                <h2>Documents &amp; Analytics</h2>
-            </xpath>
-            <xpath expr="//div[@id='track_customer_satisfaction_setting']" position="before">
-                <div class="col-12 col-lg-6 o_setting_box">
-                    <field name="project_documents_parent_folder" invisible="1"/>
-                    <field name="project_documents_template_folder" invisible="1"/>
-                    <div class="o_setting_left_pane">
-                        <field name="project_use_documents"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="project_use_documents"/>
-                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
-                        <div class="text-muted">
-                            Categorize and share your documents with your customers
-                        </div>
-                        <div class="content-group mt16" attrs="{'invisible': [('project_use_documents', '=', False)]}">
-                            <label for="project_documents_parent_folder" class="o_form_label"/>
-                            <field name="project_documents_parent_folder" context="{'form_view_ref': 'documents_project.folder_view_form_inherit', 'project_documents_template_folder': project_documents_template_folder}"/>
-                            <label for="project_documents_template_folder" class="o_form_label"/>
-                            <field name="project_documents_template_folder"/>
-                        </div>
-                    </div>
-                </div>
-            </xpath>
-        </field>
-    </record>
-
     <record id="folder_view_form_inherit" model="ir.ui.view">
         <field name="name">folder.view.form.inherit</field>
         <field name="model">documents.folder</field>

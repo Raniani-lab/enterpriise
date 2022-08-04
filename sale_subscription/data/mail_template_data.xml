@@ -7,6 +7,7 @@
         <field name="subject">Termination of subscription {{ object.client_order_ref or object.name }}</field>
         <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email or user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
+        <field name="description">Sent to customer to indicate that subscription is automatically terminated</field>
         <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -105,6 +106,7 @@
         <field name="subject">Payment reminder for subscription {{ object.client_order_ref or object.name }}</field>
         <field name="email_from">{{ (object.user_id.email_formatted or object.company_id.email or user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
+        <field name="description">Sent to customer when payment failed but subscription is not yet cancelled</field>
         <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -202,11 +204,12 @@
 </record>
 
     <record id="email_payment_success" model="mail.template">
-        <field name="name">Subscription: Payment Success</field>
+        <field name="name">Subscription: Payment Success And Invoice</field>
         <field name="model_id" ref="account.model_account_move"/>
         <field name="subject">Invoice for subscription {{ ctx.get('code', ctx.get('subscription_name')) }}</field>
         <field name="email_from">{{ (object.invoice_user_id.email_formatted or object.company_id.email or user.email_formatted) }}</field>
         <field name="email_to">{{ object.partner_id.email_formatted }}</field>
+        <field name="description">Sent automatically with subscription invoice when payment is successful</field>
         <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -310,6 +313,7 @@
         <field name="email_from">{{ (object._rating_get_operator().email_formatted or user.email_formatted) }}</field>
         <field name="partner_to" >{{ object._rating_get_partner().id }}</field>
         <field name="auto_delete" eval="True"/>
+        <field name="description">Set on subscription's stage (e.g. Closed, Upsell) to ask a rating to customers</field>
         <field name="body_html" type="html">
             <div style="background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
             <t t-set="access_token" t-value="object._rating_get_access_token()"/>
@@ -387,6 +391,7 @@
         <field name="email_from">{{ (object.user_id.email_formatted or user.email_formatted) }}</field>
         <field name="partner_to" >{{ object.partner_id.id }}</field>
         <field name="auto_delete" eval="True"/>
+        <field name="description">Template to be used on customized alerts for subscriptions requiring attention</field>
         <field name="body_html" type="html">
             <div style="background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;">
                 <table style="width:600px;margin:5px auto;">
@@ -416,11 +421,12 @@
 
     <!--Email template -->
     <record id="mail_template_subscription_invoice" model="mail.template">
-        <field name="name">Subscription Invoice: Send by Email</field>
+        <field name="name">Subscription: Subscription Invoice</field>
         <field name="model_id" ref="account.model_account_move"/>
         <field name="email_from">{{ (object.invoice_user_id.email_formatted or user.email_formatted) }}</field>
         <field name="partner_to">{{ object.partner_id.id }}</field>
         <field name="subject">{{ object.company_id.name }} Invoice (Ref {{ object.name or 'n/a' }})</field>
+        <field name="description">Sent manually to customers with the invoice in attachment</field>
         <field name="body_html" type="html">
             <div style="margin: 0px; padding: 0px;">
                 <p style="margin: 0px; padding: 0px; font-size: 13px;">

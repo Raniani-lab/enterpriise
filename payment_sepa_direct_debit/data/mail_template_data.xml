@@ -7,6 +7,7 @@
             <field name="subject">SEPA Direct Debit: Charge Notification</field>
             <field name="email_from">{{ object.company_id.email }}</field>
             <field name="email_to">{{ object.partner_id.email_formatted }}</field>
+            <field name="description">Sent to the customer to indicate their account will be charged</field>
             <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
@@ -105,6 +106,7 @@
             <field name="email_to">{{ object.partner_id.email_formatted }}</field>
             <field name="report_template" ref="account_sepa_direct_debit.sdd_mandate_form_report_main"/>
             <field name="report_name">{{ (object.name or '').replace('/','_') }}</field>
+            <field name="description">Send the SEPA mandate in attachement, to partners who signed a new mandate</field>
             <field name="body_html" type="html">
 <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;"><tr><td align="center">
 <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">

@@ -167,7 +167,7 @@ export class MapModel extends Model {
         data.records = results.records;
         data.count = results.length;
         if (data.isGrouped) {
-            data.recordGroups = this._getRecordGroups(metaData, data);
+            data.recordGroups = await this._getRecordGroups(metaData, data);
         } else {
             data.recordGroups = [];
         }
@@ -319,13 +319,14 @@ export class MapModel extends Model {
      * @protected
      * @returns {Object} the fetched records grouped by the groupBy field.
      */
-    _getRecordGroups(metaData, data) {
+    async _getRecordGroups(metaData, data) {
         const [fieldName, subGroup] = data.groupByKey.split(":");
         const groups = {};
+        const idToFetch = {};
+        const fieldType = metaData.fields[fieldName].type;
         for (const record of data.records) {
             const value = record[fieldName];
             let id, name;
-            const fieldType = metaData.fields[fieldName].type;
             if (["date", "datetime"].includes(fieldType) && value) {
                 const date = fieldType === "date" ? parseDate(value) : parseDateTime(value);
                 id = name = date.toFormat(DATE_GROUP_FORMATS[subGroup]);
@@ -340,13 +341,40 @@ export class MapModel extends Model {
                 id = name = this.env._t("None");
             }
 
-            if (!groups[id]) {
+            if (["many2many", "one2many"].includes(fieldType) && value.length) {
+                for (const m2mId of value) {
+                    idToFetch[m2mId] = undefined;
+                }
+            } else if (!groups[id]) {
                 groups[id] = {
                     name,
                     records: [],
                 };
             }
-            groups[id].records.push(record);
+            if (!["many2many", "one2many"].includes(fieldType) || !value.length) {
+                groups[id].records.push(record);
+            }
+        }
+        if (["many2many", "one2many"].includes(fieldType)) {
+            const m2mList = await this.orm.nameGet(
+                metaData.fields[fieldName].relation,
+                Object.keys(idToFetch).map(Number)
+            );
+            for (const [m2mId, m2mName] of m2mList) {
+                idToFetch[m2mId] = m2mName;
+            }
+
+            for (const record of data.records) {
+                for (const m2mId of record[fieldName]) {
+                    if (!groups[m2mId]) {
+                        groups[m2mId] = {
+                            name: idToFetch[m2mId],
+                            records: [],
+                        };
+                    }
+                    groups[m2mId].records.push(record);
+                }
+            }
         }
         return groups;
     }

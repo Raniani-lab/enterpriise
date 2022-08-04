@@ -56,6 +56,13 @@ QUnit.module("Views", (hooks) => {
                         type: "many2one",
                         relation: "res.partner}",
                     },
+                    partner_ids: {
+                        string: "Partners",
+                        type: "one2many",
+                        comodel_name: "res.partner",
+                        relation: "res.partner",
+                        relation_field: "task_id",
+                    },
                 },
                 records: [{ id: 1, display_name: "project", partner_id: 1 }],
                 oneRecord: {
@@ -73,13 +80,26 @@ QUnit.module("Views", (hooks) => {
 
                 threeRecords: {
                     records: [
-                        { id: 1, display_name: "FooProject", sequence: 1, partner_id: [1] },
-                        { id: 2, display_name: "BarProject", sequence: 2, partner_id: [2] },
+                        {
+                            id: 1,
+                            display_name: "FooProject",
+                            sequence: 1,
+                            partner_id: [1],
+                            partner_ids: [1, 2],
+                        },
+                        {
+                            id: 2,
+                            display_name: "BarProject",
+                            sequence: 2,
+                            partner_id: [2],
+                            partner_ids: [1, 3],
+                        },
                         {
                             id: 3,
                             display_name: "FooBarProject",
                             sequence: 3,
                             partner_id: [1],
+                            partner_ids: [1],
                         },
                     ],
                     length: 3,
@@ -2051,10 +2071,63 @@ QUnit.module("Views", (hooks) => {
         );
     });
 
+    QUnit.test("Toggle grouped one2many pin lists", async function (assert) {
+        patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
+        const records = serverData.models["project.task"].threeRecords;
+        const partners = serverData.models["res.partner"].records;
+
+        for (const record of records.records) {
+            // add name on partner_id to have name_get like value
+            record.partner_id.push(partners.find((x) => x.id === record.partner_id[0]).name);
+        }
+        await makeView({
+            serverData,
+            type: "map",
+            resModel: "project.task",
+            arch: `<map res_partner="partner_id"/>`,
+            groupBy: ["partner_ids"],
+            async mockRPC(route) {
+                switch (route) {
+                    case "/web/dataset/call_kw/project.task/web_search_read":
+                        return records;
+                    case "/web/dataset/call_kw/res.partner/search_read":
+                        return partners;
+                }
+            },
+        });
+
+        assert.containsN(
+            target,
+            ".o-map-renderer--pin-list-group-header",
+            3,
+            "Should have 3 groups"
+        );
+
+        const groupHeaders = Array.from(
+            target.querySelectorAll(".o-map-renderer--pin-list-group-header")
+        );
+        assert.deepEqual(
+            groupHeaders.map((gh) => gh.innerText),
+            ["Foo", "Foo", "Bar"]
+        );
+
+        assert.containsN(target, ".o-map-renderer--pin-list-details", 3);
+        assert.containsN(target, ".o-map-renderer--pin-list-details li", 5);
+        const details = Array.from(target.querySelectorAll(".o-map-renderer--pin-list-details"));
+        assert.deepEqual(
+            details.map((d) => d.innerText),
+            ["FooProject\nBarProject\nFooBarProject", "FooProject", "BarProject"]
+        );
+        assert.containsN(target, ".leaflet-marker-icon", 3);
+    });
+
     QUnit.test("Check groupBy on datetime field", async function (assert) {
         assert.expect(1);
         patchWithCleanup(session, { map_box_token: MAP_BOX_TOKEN });
-        serverData.models["project.task"].fields['scheduled_date'] = { string: "Schedule date", type: "datetime"};
+        serverData.models["project.task"].fields["scheduled_date"] = {
+            string: "Schedule date",
+            type: "datetime",
+        };
         serverData.models["project.task"].records = [
             { id: 1, name: "FooProject", sequence: 1, partner_id: 1, scheduled_date: false },
         ];

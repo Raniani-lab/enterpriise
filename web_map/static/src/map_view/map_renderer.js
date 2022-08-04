@@ -107,18 +107,26 @@ export class MapRenderer extends Component {
         if (this.props.model.data.isGrouped) {
             records = Object.entries(this.props.model.data.recordGroups)
                 .filter(([key]) => !this.state.closedGroupIds.includes(key))
-                .flatMap(([, value]) => value.records);
+                .flatMap(([groupId, value]) => value.records.map((elem) => ({ ...elem, groupId })));
         }
 
+        const pinInSamePlace = {};
         for (const record of records) {
             const partner = record.partner;
             if (partner && partner.partner_latitude && partner.partner_longitude) {
-                const key = `${partner.partner_latitude}-${partner.partner_longitude}`;
+                const lat_long = `${partner.partner_latitude}-${partner.partner_longitude}`;
+                const group = this.props.model.data.recordGroups ? `-${record.groupId}` : "";
+                const key = `${lat_long}${group}`;
                 if (key in markersInfo) {
                     markersInfo[key].record = record;
                     markersInfo[key].ids.push(record.id);
                 } else {
-                    markersInfo[key] = { record: record, ids: [record.id] };
+                    pinInSamePlace[lat_long] = ++pinInSamePlace[lat_long] || 0;
+                    markersInfo[key] = {
+                        record: record,
+                        ids: [record.id],
+                        pinInSamePlace: pinInSamePlace[lat_long],
+                    };
                 }
             }
         }
@@ -132,10 +140,13 @@ export class MapRenderer extends Component {
             };
 
             if (this.props.model.data.isGrouped) {
-                const group = Object.entries(this.props.model.data.recordGroups).find(([, value]) =>
-                    value.records.includes(markerInfo.record)
+                const groupId = markerInfo.record.groupId;
+                params.color = this.getGroupColor(groupId);
+                params.number = this.props.model.data.recordGroups[groupId].records.findIndex(
+                    (record) => {
+                        return record.id === markerInfo.record.id;
+                    }
                 );
-                params.color = this.getGroupColor(group[0]);
             }
 
             // Icon creation
@@ -144,17 +155,18 @@ export class MapRenderer extends Component {
                 html: renderToString("web_map.marker", params),
             };
 
+            const offset = markerInfo.pinInSamePlace * 0.000025;
             // Attach marker with icon and popup
             const marker = L.marker(
                 [
-                    markerInfo.record.partner.partner_latitude,
-                    markerInfo.record.partner.partner_longitude,
+                    markerInfo.record.partner.partner_latitude + offset,
+                    markerInfo.record.partner.partner_longitude - offset,
                 ],
                 { icon: L.divIcon(iconInfo) }
             );
             marker.addTo(this.leafletMap);
             marker.on("click", () => {
-                this.createMarkerPopup(markerInfo);
+                this.createMarkerPopup(markerInfo, offset);
             });
             this.markers.push(marker);
         }
@@ -198,8 +210,9 @@ export class MapRenderer extends Component {
      * Create a popup for the specified marker.
      *
      * @param {Object} markerInfo
+     * @param {Number} latLongOffset
      */
-    createMarkerPopup(markerInfo) {
+    createMarkerPopup(markerInfo, latLongOffset = 0) {
         const popupFields = this.getMarkerPopupFields(markerInfo);
         const partner = markerInfo.record.partner;
         const popupHtml = renderToString("web_map.markerPopup", {
@@ -209,7 +222,10 @@ export class MapRenderer extends Component {
         });
 
         const popup = L.popup({ offset: [0, -30] })
-            .setLatLng([partner.partner_latitude, partner.partner_longitude])
+            .setLatLng([
+                partner.partner_latitude + latLongOffset,
+                partner.partner_longitude - latLongOffset,
+            ])
             .setContent(popupHtml)
             .openOn(this.leafletMap);
 

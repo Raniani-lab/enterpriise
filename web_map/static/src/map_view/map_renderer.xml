@@ -115,7 +115,7 @@
     </t>
 
     <t t-name="web_map.markerBadge" owl="1">
-        <span class="badge text-bg-danger rounded-pill border-0 o-map-renderer--marker-badge">
+        <span class="badge text-bg-danger rounded-pill border-0 o-map-renderer--marker-badge" t-att-style="color and `background-color: ${color} !important`">
             <t t-esc="count"/>
         </span>
     </t>

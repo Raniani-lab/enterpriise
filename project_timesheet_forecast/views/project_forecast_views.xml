@@ -6,9 +6,6 @@
         <field name="inherit_id" ref="project_forecast.planning_slot_view_form"/>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='task_id']" position="attributes">
-                <attribute name="widget">task_with_hours</attribute>
-            </xpath>
             <xpath expr="//group[@name='slot_info_right']" position="inside">
                 <field name="company_id" position="move"/>
                 <field name="allow_timesheets" invisible="1"/>
@@ -20,7 +17,7 @@
             <xpath expr="//div[@name='button_box']" position="inside">
                 <!-- Clickable -->
                 <button type="object" name="action_open_timesheets" icon="fa-clock-o"
-                    attrs="{'invisible': ['|', '|', '|', '|', ('can_open_timesheets', '=', False), ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
+                    attrs="{'invisible': ['|', '|', '|', ('can_open_timesheets', '=', False), ('project_id', '=', False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="effective_hours" widget="timesheet_uom"/>
@@ -32,7 +29,7 @@
                 </button>
                 <!-- Non Clickable -->
                 <button icon="fa-clock-o" disabled="1" class="pe-none"
-                    attrs="{'invisible': ['|', '|', '|', '|', ('can_open_timesheets', '=', True), ('project_id', '=', False), ('task_id', '=',  False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
+                    attrs="{'invisible': ['|', '|', '|', ('can_open_timesheets', '=', True), ('project_id', '=', False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="effective_hours" widget="timesheet_uom"/>
@@ -52,7 +49,7 @@
         <field name="inherit_id" ref="project_forecast.planning_slot_view_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='conflict_shifts']" position="after">
-                <filter name="no_timesheets" string="No Timesheets" domain="[('effective_hours', '=', 0), ('task_id', '!=', False), ('end_datetime', '&lt;=', datetime.datetime.now())]" groups="hr_timesheet.group_hr_timesheet_user"/>
+                <filter name="no_timesheets" string="No Timesheets" domain="[('effective_hours', '=', 0), ('end_datetime', '&lt;=', datetime.datetime.now())]" groups="hr_timesheet.group_hr_timesheet_user"/>
             </xpath>
         </field>
     </record>
@@ -62,9 +59,6 @@
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="project_forecast.planning_slot_view_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='task_id']" position="attributes">
-                <attribute name="widget">task_with_hours</attribute>
-            </xpath>
             <xpath expr="//field[@name='name']" position="before">
                 <field name="effective_hours" widget="float_time" optional="hide" attrs="{'invisible': [('effective_hours', '=', 0)]}"/>
             </xpath>
@@ -107,13 +101,7 @@
             </gantt>
             <xpath expr="//field[@name='allocated_percentage']" position="after">
                 <field name="effective_hours"/>
-                <field name="task_id"/>
                 <field name="percentage_hours" invisible="1"/>
-            </xpath>
-            <xpath expr="//div[@id='allocated_hours']" position="after">
-                <div t-if="task_id and resource_type == 'user'" id="effective_hours">
-                    <strong>Effective Hours — </strong><t t-esc="effectiveHoursFormatted"/> (<t t-esc="effectivePercentageFormatted"/>%)
-                </div>
             </xpath>
         </field>
     </record>
@@ -138,7 +126,7 @@
         <field name="view_mode">gantt,calendar,tree,form,kanban,pivot,graph</field>
         <field name="context">{
             'planning_groupby_role': True,
-            'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1, 'planning_expand_task': 1,
+            'planning_expand_resource': 1, 'planning_expand_role': 1, 'planning_expand_project': 1,
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

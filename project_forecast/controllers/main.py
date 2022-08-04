@@ -23,10 +23,9 @@ class ShiftControllerProject(ShiftController):
         for slot_sudo in slot_ids:
             slot_data = mapped_data[slot_sudo.id]
             slot_data['project'] = slot_sudo.project_id.name
-            slot_data['task'] = slot_sudo.task_id.name
             # Reset the title according to the project and task name
             title = slot_sudo.role_id.name or ''
-            title_full = " - ".join([x for x in (title, slot_sudo.project_id.name, slot_sudo.task_id.name) if x])
+            title_full = " - ".join([x for x in (title, slot_sudo.project_id.name) if x])
             if not title_full:
                 title_full = _('Shift')
             if slot_sudo.name:
@@ -36,5 +35,4 @@ class ShiftControllerProject(ShiftController):
         result['employee_slots_fullcalendar_data'] = new_employee_fullcalendar_data
         open_slots = result['open_slots_ids']
         result['has_project'] = any(s.project_id for s in open_slots)
-        result['has_task'] = any(s.task_id for s in open_slots)
         return result

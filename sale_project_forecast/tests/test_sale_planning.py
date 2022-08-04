@@ -64,26 +64,9 @@ class TestSaleForecast(TestSalePlanning):
         })
         cls.employee_wout.write({'user_id': cls.user_projectuser_wout.id})
 
-    def test_planning_plan_order_task_assignee(self):
-        so_form = Form(self.env['sale.order'])
-        so_form.partner_id = self.planning_partner
-        with so_form.order_line.new() as sol_form:
-            sol_form.product_id = self.plannable_forecast_product
-            sol_form.product_uom_qty = 50
-        so = so_form.save()
-        so.action_confirm()
-        so.order_line.task_id.write({'user_ids': self.user_projectuser_wout})
-        Slot = self.env['planning.slot'].with_context(start_date='2021-07-25 00:00:00', stop_date='2021-07-31 23:59:59', scale='week', focus_date='2021-07-31 00:00:00')
-        with freeze_time('2021-07-26'):
-            Slot.action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
-        slot = so.order_line.planning_slot_ids.filtered('start_datetime')
-        self.assertEqual(slot.employee_id, self.employee_wout, 'Planning should be assigned to the employee with sol\'s product role as default role')
-
-    def test_sale_line_id_value_depending_project_and_task(self):
+    def test_sale_line_id_value_depending_project(self):
         line1_project = self.sale_order_line1.project_id
-        line1_task = self.sale_order_line1.task_id
         line2_project = self.sale_order_line2.project_id
-        line2_task = self.sale_order_line2.task_id
 
         slot1 = self.env['planning.slot'].create({
             'project_id': line1_project.id,
@@ -91,28 +74,5 @@ class TestSaleForecast(TestSalePlanning):
         self.assertEqual(slot1.sale_line_id, line1_project.sale_line_id, 'Sale order item of Planning should be same as project')
 
         slot1.write({'project_id': line2_project.id})
-        #changing project of slot should not change to new project's sol if sol of slot is already set
+        # changing project of slot should not change to new project's sol if sol of slot is already set
         self.assertEqual(slot1.sale_line_id, line1_project.sale_line_id, 'Sale order item of Planning should not change to new project\'s sol if it\'s already set')
-
-        slot2 = self.env['planning.slot'].create({
-            'task_id': line2_task.id,
-        })
-        self.assertEqual(slot2.sale_line_id, line2_task.sale_line_id, 'Sale order item of Planning should be same as task\'s sol')
-
-        slot2.write({'task_id': line1_task.id})
-        #changing task of slot should not change to new task's sol if sol of slot is already set
-        self.assertEqual(slot2.sale_line_id, line2_task.sale_line_id, 'Sale order item of Planning should not change to new task\'s sol if it\'s already set')
-
-    def test_ensure_project_id_follows_task_id_project_id(self):
-        """ This test purpose is to ensure that, when a sol generates a task within a project, when the task is moved
-            into another project, the project of the slot should get the project of the task and not the one stored
-            in the sol.
-        """
-        project = self.env['project.project'].create({'name': 'Project'})
-        self.sale_order_line1.task_id.project_id = project
-        slot1 = self.env['planning.slot'].create({
-            'sale_line_id': self.sale_order_line1.id,
-        })
-        self.assertEqual(slot1.project_id, slot1.task_id.project_id, "Slot's project_id should be the one of the task linked to the SOL.")
-        self.assertEqual(slot1.project_id, project, "Slot's project_id is the one of the task and not the one stored in the SOL linked.")
-        self.assertNotEqual(slot1.project_id, self.sale_order_line1.project_id, 'The project stored on the SOL should not be the one set in the slot.')

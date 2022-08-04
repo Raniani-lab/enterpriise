@@ -70,7 +70,6 @@
             <field name="publication_warning" eval="False"/>
             <field name="state">draft</field>
             <field name="project_id" search="[('sale_order_id', '=', ref('sale_timesheet.sale_order_1'))]"/>
-            <field name="task_id" ref="sale_timesheet.project_agr_task_3"/>
         </record>
         <record id="sale_forecast_slot_012" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>
@@ -379,7 +378,6 @@
             <field name="publication_warning" eval="False"/>
             <field name="state">draft</field>
             <field name="project_id" ref="project.project_project_2"/>
-            <field name="task_id" ref="project.project_2_task_6"/>
         </record>
 
         <!-- Week 2 -->
@@ -449,7 +447,6 @@
             <field name="publication_warning" eval="False"/>
             <field name="state">draft</field>
             <field name="project_id" ref="project.project_project_2"/>
-            <field name="task_id" ref="project.project_2_task_6"/>
         </record>
         <record id="sale_forecast_slot_212" model="planning.slot">
             <field name="start_datetime" eval="(datetime.today() - timedelta(days=datetime.today().weekday())).strftime('%Y-%m-%d 06:00:00')"/>

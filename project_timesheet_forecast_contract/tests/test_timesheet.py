@@ -55,7 +55,6 @@ class TestPlanningContractTimesheet(TestCommonForecast):
 
         planning_shift = self.env['planning.slot'].create({
             'project_id': self.project_opera.id,
-            'task_id': self.task_opera_place_new_chairs.id,
             'employee_id': self.employee_bert.id,
             'resource_id': self.resource_bert.id,
             'allocated_hours': 24,

@@ -35,25 +35,22 @@ class Forecast(models.Model):
         Returns the domain used to fetch the timesheets, None is returned in case there would be no match
         '''
         self.ensure_one
-        if not self.task_id or not self.project_id:
+        if not self.project_id:
             return None
         domain = [
             ('employee_id', '=', self.employee_id.id),
             ('date', '>=', self.start_datetime.date()),
             ('date', '<=', self.end_datetime.date())
         ]
-        if self.task_id:
-            all_task = self.task_id + self.task_id.with_context(active_test=False)._get_all_subtasks()
-            domain = expression.AND([[('task_id', 'in', all_task.ids)], domain])
-        elif self.project_id:
+        if self.project_id:
             domain = expression.AND([[('account_id', '=', self.project_id.analytic_account_id.id)], domain])
         return domain
 
-    @api.depends('task_id', 'employee_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'task_id.timesheet_ids', 'project_id.analytic_account_id.line_ids', 'project_id.analytic_account_id.line_ids.unit_amount')
+    @api.depends('employee_id', 'start_datetime', 'end_datetime', 'project_id.analytic_account_id', 'project_id.analytic_account_id.line_ids', 'project_id.analytic_account_id.line_ids.unit_amount')
     def _compute_effective_hours(self):
         Timesheet = self.env['account.analytic.line']
         for forecast in self:
-            if (not forecast.task_id and not forecast.project_id) or not forecast.start_datetime or not forecast.end_datetime:
+            if not forecast.project_id or not forecast.start_datetime or not forecast.end_datetime:
                 forecast.effective_hours = 0
                 forecast.timesheet_ids = False
             else:
@@ -169,7 +166,6 @@ class Forecast(models.Model):
 
         timesheet_read_group = self.env['account.analytic.line'].read_group(
             [('project_id', 'in', slots.project_id.ids),
-             ('task_id', 'in', slots.task_id.ids),
              ('employee_id', 'in', list(work_data_per_employee_id.keys())),
              ('date', '>=', min_date),
              ('date', '<=', max_date),
@@ -185,7 +181,7 @@ class Forecast(models.Model):
         vals_list = []
         for slot in slots:
             work_hours_data = work_data_per_employee_id[slot.employee_id.id]
-            timesheet_count_per_dates = timesheet_count_per_dates_per_task_and_employee[(slot.task_id.id, slot.employee_id.id)]
+            timesheet_count_per_dates = timesheet_count_per_dates_per_task_and_employee[(slot.employee_id.id)]
             for day_date, work_hours_count in work_hours_data:
                 if timesheet_count_per_dates.get(day_date, 0.0):
                     continue
@@ -204,14 +200,13 @@ class Forecast(models.Model):
         return {
             'name': '/',
             'project_id': self.project_id.id,
-            'task_id': self.task_id.id,
             'account_id': self.project_id.analytic_account_id.id,
             'unit_amount': round(work_hours_count * ratio, 2),
             'user_id': self.user_id.id,
             'slot_id': self.id,
             'date': day_date,
             'employee_id': self.employee_id.id,
-            'company_id': self.task_id.company_id.id or self.project_id.company_id.id,
+            'company_id': self.project_id.company_id.id,
         }
 
     def action_open_timesheets(self):
@@ -238,7 +233,6 @@ class Forecast(models.Model):
             'default_date': self.start_datetime.date()\
                 if self.start_datetime < fields.Datetime.now() else fields.Date.today(),
             'default_employee_id': self.employee_id.id,
-            'default_task_id': self.task_id.id,
             'default_project_id': self.project_id.id,
             'grid_anchor': self.start_datetime.date(),
         }

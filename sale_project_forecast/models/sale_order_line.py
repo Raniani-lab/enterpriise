@@ -10,5 +10,4 @@ class SaleOrderLine(models.Model):
         return {
             **super()._planning_slot_values(),
             'project_id': self.project_id.id or self.task_id.project_id.id,
-            'task_id': self.task_id.id,
         }

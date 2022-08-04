@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="planning.planning_slot_121" model="planning.slot">
-            <field name="task_id" ref="project.project_1_task_8"/>
+            <field name="project_id" ref="project.project_project_1"/>
         </record>
         <record id="planning_slot_121_account_analytic_line_1" model="account.analytic.line">
             <field name="name">Quality analysis</field>
@@ -14,7 +14,7 @@
         </record>
 
         <record id="planning.planning_slot_132" model="planning.slot">
-            <field name="task_id" ref="project.project_1_task_9"/>
+            <field name="project_id" ref="project.project_project_1"/>
         </record>
         <record id="planning_slot_132_account_analytic_line_1" model="account.analytic.line">
             <field name="name">Quality analysis</field>
@@ -26,7 +26,7 @@
         </record>
 
         <record id="planning.planning_slot_145" model="planning.slot">
-            <field name="task_id" ref="project.project_2_task_5"/>
+            <field name="project_id" ref="project.project_project_2"/>
         </record>
         <record id="planning_slot_145_account_analytic_line_1" model="account.analytic.line">
             <field name="name">Quality analysis</field>

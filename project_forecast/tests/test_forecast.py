@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from odoo.tests import tagged
 
@@ -54,35 +54,3 @@ class TestForecastCreationAndEditing(TestCommonForecast):
         planning_shift.write(values)
 
         self.assertEqual(planning_shift.allocated_hours, 40, 'resource hours should be a full week\'s available hours')
-
-    def test_task_in_project(self):
-        values = {
-            'project_id': self.project_opera.id,
-            'task_id': self.task_horizon_dawn.id,  # oops, task_horizon_dawn is into another project
-            'employee_id': self.employee_bert.id,
-            'allocated_hours': 8,
-            'start_datetime': datetime(2019, 6, 2, 8, 0, 0),
-            'end_datetime': datetime(2019, 6, 2, 17, 0, 0)
-        }
-        slot = self.env['planning.slot'].create(values)
-        self.assertEqual(slot.project_id, self.project_horizon, 'If we put a task when creation, we take the project of this task for this new slot.')
-
-        # Test when we change the project of the task linked to the shift.
-        self.task_horizon_dawn.write({'project_id': self.project_opera.id})
-        self.assertEqual(slot.project_id, self.project_opera, 'If the project changed in the task linked to this shift, the new project of this task must be the project linked to this shift.')
-
-        # Add a shift template with a project linked to this shift and see if the project remains the one in project.
-        shift_template = self.env['planning.slot.template'].create({
-            'project_id': self.project_opera.id,
-            'task_id': self.task_opera_place_new_chairs.id,
-            'duration': 8,
-        })
-        slot.write({'template_id': shift_template.id})
-        self.assertEqual(slot.task_id, shift_template.task_id, 'the task should be the same of its template.')
-        self.assertEqual(slot.task_id, self.task_opera_place_new_chairs, 'The task of the slot should be the one in the template.')
-        self.assertEqual(slot.project_id, shift_template.project_id, 'the project should be the same of its template.')
-        self.assertEqual(slot.project_id, self.project_opera, 'The project of the slot should be the one in the template.')
-
-        # Change the project of this task to see if the shift has the new project.
-        self.task_opera_place_new_chairs.write({'project_id': self.project_horizon.id})
-        self.assertEqual(slot.project_id, self.project_horizon, 'The project of the slot should be the new one of the task.')

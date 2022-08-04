@@ -31,7 +31,7 @@ class Project(models.Model):
             'display_name': _("%(name)s's Timesheets and Planning Analysis", name=self.name),
             'domain': [('project_id', '=', self.id)],
             'context': {
-                'pivot_row_groupby': ['entry_date:month', 'sale_line_id'],
+                'pivot_row_groupby': ['entry_date:month'],
             }
         })
         return action
@@ -54,15 +54,3 @@ class Project(models.Model):
             'sequence': 63,
         })
         return buttons
-
-class Task(models.Model):
-
-    _inherit = 'project.task'
-
-    def name_get(self):
-        if 'project_task_display_forecast' in self._context:
-            result = []
-            for task in self:
-                result.append((task.id, _('%s (%s remaining hours)') % (task.name, task.remaining_hours)))
-            return result
-        return super(Task, self).name_get()

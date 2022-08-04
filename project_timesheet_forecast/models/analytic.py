@@ -20,11 +20,11 @@ class AccountAnalyticLine(models.Model):
             section_field=section_field, group_expand_section_values=group_expand_section_values)
 
         employee = self.env.user.employee_id
-        valid_row_fields = list(set(['project_id', 'task_id', 'employee_id']) & set(row_fields))
+        valid_row_fields = list(set(['project_id', 'employee_id']) & set(row_fields))
         if not employee or not valid_row_fields:
             return grids
         slots = self.env['planning.slot'].read_group(
-            self._get_planning_domain(employee.id, with_task='task_id' in valid_row_fields),
+            self._get_planning_domain(employee.id),
             valid_row_fields, valid_row_fields, lazy=False
         )
         employee_name_get = employee.name_get()[0]
@@ -112,7 +112,7 @@ class AccountAnalyticLine(models.Model):
             res |= employee
         return res
 
-    def _get_planning_domain(self, employee_id, with_task=False):
+    def _get_planning_domain(self, employee_id):
         today = fields.Date.to_string(fields.Date.today())
         grid_anchor = fields.Datetime.from_string(self.env.context.get('grid_anchor', today))
         grid_range = self.env.context.get('grid_range', 'week')
@@ -129,6 +129,4 @@ class AccountAnalyticLine(models.Model):
             ('start_datetime', '<', period_end),
             ('end_datetime', '>', period_start),
         ]
-        if with_task:
-            planning_domain.append(('task_id', '!=', False))
         return planning_domain

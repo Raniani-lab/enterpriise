@@ -42,7 +42,6 @@
             <tree string="Timesheets and Planning Analysis">
                 <field name="entry_date"/>
                 <field name="project_id" optional="show"/>
-                <field name="task_id" optional="hide"/>
                 <field name="employee_id" optional="show" widget="many2one_avatar_employee"/>
                 <field name="company_id" optional="show" groups="base.group_multi_company"/>
                 <field name="planned_hours" optional="show" sum="Sum of Planned Hours"/>
@@ -59,20 +58,15 @@
             <search string="Timesheets and Planning Analysis">
                 <field name="employee_id" filter_domain="[('employee_id', 'ilike', self)]"/>
                 <field name="project_id" filter_domain="[('project_id', 'ilike', self)]"/>
-                <field name="task_id" filter_domain="[('task_id', 'ilike', self)]"/>
-                <field name="milestone_id" filter_domain="[('milestone_id', 'ilike', self)]" groups="project.group_project_milestone"/>
                 <field name="entry_date"/>
                 <filter string="My Team" name="myteam" help="My Team" domain="[('employee_id.parent_id.user_id', '=', uid)]"/>
                 <filter string="My Department" name="my_department" domain="[('employee_id.member_of_department', '=', True)]"/>
                 <filter string="My Projects" name="myprojects" domain="[('project_id.user_id', '=', uid)]"/>
-                <filter string="My Tasks" name="my_tasks" domain="[('user_id', '=', uid)]"/>
                 <separator/>
                 <filter string="Date" name="year" date="entry_date"/>
                 <group expand="1" string="Group By">
                     <filter string="Employee" name="resource_employee" context="{'group_by':'employee_id'}"/>
                     <filter string="Project" name="project_resource" context="{'group_by':'project_id'}"/>
-                    <filter string="Milestone" name="milestone" context="{'group_by':'milestone_id'}" groups="project.group_project_milestone"/>
-                    <filter string="Task" name="resource_task" context="{'group_by':'task_id'}"/>
                     <filter string="Date" name="date_month" context="{'group_by':'entry_date:month'}"/>
                 </group>
             </search>
@@ -94,7 +88,7 @@
             <p class="o_view_nocontent_empty_folder">
                 No data yet!
             </p><p>
-                Track the progress of your projects by comparing the hours initially planned with the effective hours recorded on your tasks
+                Track the progress of your projects by comparing the hours initially planned with the effective hours recorded
             </p>
         </field>
     </record>

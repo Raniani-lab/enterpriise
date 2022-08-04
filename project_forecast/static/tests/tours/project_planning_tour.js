@@ -13,14 +13,6 @@ planningTestTour.steps.splice(projectPlanningStartStepIndex + 1, 0, {
     trigger: "ul.ui-autocomplete a:contains(New Project)",
     auto: true,
     in_modal: false,
-}, {
-    trigger: ".o_field_many2one[name='task_id'] input",
-    content: "Create task named-'New Task' for this shift",
-    run: "text New Task",
-}, {
-    trigger: "ul.ui-autocomplete a:contains(New Task)",
-    auto: true,
-    in_modal: false,
 });
 
 const projectPlanningEndStepIndex = planningTestTour.steps.findIndex((step) => step.id && step.id === 'planning_check_format_step');
@@ -30,7 +22,7 @@ planningTestTour.steps.splice(projectPlanningEndStepIndex + 1, 0, {
     content: "Click Add record to verify the naming format of planning template",
 },
 {
-    trigger: "span.o_selection_badge:contains('[New Project - New Task]')",
+    trigger: "span.o_selection_badge:contains('[New Project]')",
     content: "Check the naming format of planning template",
     run() {}
 },

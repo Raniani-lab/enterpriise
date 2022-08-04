@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="project_forecast.planning_analysis_report_view_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='human']" position="before">
-                <filter name="no_timesheets" string="No Timesheets" domain="[('effective_hours', '=', 0), ('task_id', '!=', False), ('end_datetime', '&lt;=', datetime.datetime.now())]" groups="hr_timesheet.group_hr_timesheet_user"/>
+                <filter name="no_timesheets" string="No Timesheets" domain="[('effective_hours', '=', 0), ('end_datetime', '&lt;=', datetime.datetime.now())]" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <separator/>
             </xpath>
         </field>

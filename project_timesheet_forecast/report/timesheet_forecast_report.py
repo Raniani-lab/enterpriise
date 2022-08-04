@@ -16,8 +16,6 @@ class TimesheetForecastReport(models.Model):
     entry_date = fields.Date('Date', readonly=True)
     employee_id = fields.Many2one('hr.employee', 'Employee', readonly=True)
     company_id = fields.Many2one('res.company', string="Company", readonly=True)
-    task_id = fields.Many2one('project.task', string='Task', readonly=True)
-    milestone_id = fields.Many2one('project.milestone', 'Milestone', readonly=True, groups="project.group_project_milestone")
     project_id = fields.Many2one('project.project', string='Project', readonly=True)
     line_type = fields.Selection([('forecast', 'Planning'), ('timesheet', 'Timesheet')], string='Type', readonly=True)
     effective_hours = fields.Float('Effective Hours', readonly=True)
@@ -33,8 +31,6 @@ class TimesheetForecastReport(models.Model):
                 d::date AS entry_date,
                 F.employee_id AS employee_id,
                 F.company_id AS company_id,
-                F.task_id AS task_id,
-                T.milestone_id,
                 F.project_id AS project_id,
                 F.user_id AS user_id,
                 0.0 AS effective_hours,
@@ -56,7 +52,6 @@ class TimesheetForecastReport(models.Model):
             ) d
                 LEFT JOIN planning_slot F ON d::date >= F.start_datetime::date AND d::date <= F.end_datetime::date
                 LEFT JOIN hr_employee E ON F.employee_id = E.id
-                LEFT JOIN project_task T ON T.id = F.task_id
         """
         return from_str
 
@@ -67,8 +62,6 @@ class TimesheetForecastReport(models.Model):
                 A.date AS entry_date,
                 E.id AS employee_id,
                 A.company_id AS company_id,
-                A.task_id AS task_id,
-                T.milestone_id,
                 A.project_id AS project_id,
                 A.user_id AS user_id,
                 A.unit_amount / UOM.factor * HOUR_UOM.factor AS effective_hours,
@@ -85,7 +78,6 @@ class TimesheetForecastReport(models.Model):
         from_str = """
             FROM account_analytic_line A
                 LEFT JOIN hr_employee E ON A.employee_id = E.id
-                LEFT JOIN project_task T ON T.id = A.task_id
                 LEFT JOIN uom_uom UOM ON A.product_uom_id = UOM.id,
                 (
                     SELECT

@@ -17,10 +17,11 @@ class ProjectUpdate(models.Model):
             for service in services['data']
         ]
         slots = self.env['planning.slot']._read_group([
-            ('order_line_id', 'in', sol_ids),
+            ('project_id', '=', project.id),
+            ('sale_line_id', 'in', sol_ids),
             ('start_datetime', '>=', fields.Date.today())
-        ], ['order_line_id', 'allocated_hours'], ['order_line_id'])
-        slots_by_order_line = {res['order_line_id'][0]: res['allocated_hours'] for res in slots}
+        ], ['sale_line_id', 'allocated_hours'], ['sale_line_id'])
+        slots_by_order_line = {res['sale_line_id'][0]: res['allocated_hours'] for res in slots}
         total_planned = 0
         uom_hour = self.env.ref('uom.product_uom_hour')
         for service in services['data']:

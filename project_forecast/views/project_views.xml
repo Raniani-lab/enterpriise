@@ -45,7 +45,7 @@
                     <div class="o_setting_right_pane">
                         <label for="allow_forecast"/>
                         <div class="text-muted" id="allow_forecast_setting">
-                            Plan your resources on project tasks
+                            Plan your resources for this project
                         </div>
                     </div>
                 </div>
@@ -68,45 +68,4 @@
         </field>
     </record>
 
-    <record id="project_task_view_form" model="ir.ui.view">
-        <field name="name">project.task.view.form.inherit.project.forecast</field>
-        <field name="model">project.task</field>
-        <field name="priority" eval="15"/>
-        <field name="inherit_id" ref="project.view_task_form2"/>
-        <field name="arch" type="xml">
-            <xpath expr="//button[@name='%(project.project_task_action_sub_task)d']" position="before">
-                <field name="allow_forecast" invisible="1"/>
-                <button class="oe_stat_button" name="action_get_project_forecast_by_user"
-                    type="object" icon="fa-tasks" context="{'default_task_id': id, 'default_project_id': project_id}" attrs="{'invisible': [('allow_forecast', '=', False)]}">
-                    <div class="o_stat_info">
-                        <div class="oe_inline">
-                            <span class="o_stat_value me-1">
-                                <field name="forecast_hours" nolabel="1" class="me-1"/>
-                            </span>
-                            <span class="o_stat_value">Hours</span>
-                        </div>
-                        <div>Planned</div>
-                    </div>
-                </button>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="action_project_task_view_planning" model="ir.actions.act_window">
-        <field name="name">View Planning</field>
-        <field name="res_model">planning.slot</field>
-        <field name="view_mode">gantt</field>
-        <field name="view_id" ref="planning.planning_view_gantt_no_sample"/>
-        <field name="domain">[('task_id', 'in', active_ids)]</field>
-        <field name="context">{'search_default_group_by_task': 1, 'hide_open_shift': 1, 'show_tasks_without_slot': 1}</field>
-        <field name="binding_model_id" ref="model_project_task"/>
-        <field name="binding_view_types">list</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                No shifts found. Let's create one!
-            </p><p>
-                Let's start your planning by adding a new shift.
-            </p>
-        </field>
-    </record>
 </odoo>

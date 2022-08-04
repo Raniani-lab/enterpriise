@@ -9,7 +9,7 @@
             <xpath expr="//field[@name='role_product_ids']" position="before">
                 <field name="sale_order_id" position="move"/>
             </xpath>
-            <xpath expr="//filter[@name='my_task']" position="after">
+            <xpath expr="//filter[@name='my_project']" position="after">
                 <xpath expr="//filter[@name='my_sale_orders']" position="move"/>
             </xpath>
         </field>

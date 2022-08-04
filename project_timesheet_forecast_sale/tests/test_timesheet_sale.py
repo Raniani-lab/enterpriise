@@ -21,16 +21,10 @@ class TestPlanningTimesheetSale(TestCommonSaleTimesheet):
     def test_generate_slot_timesheet_for_non_billable_project(self):
         self.assertFalse(self.project_non_billable.allow_billable, "Project should be non billable")
 
-        non_billable_task = self.env['project.task'].create({
-            'name': 'Task1',
-            'project_id': self.project_non_billable.id,
-        })
-
         self.assertEqual(self.manager_company_B.tz, self.manager_company_B.resource_calendar_id.tz)
 
         planning_shift = self.env['planning.slot'].create({
             'project_id': self.project_non_billable.id,
-            'task_id': non_billable_task.id,
             'employee_id': self.manager_company_B.id,
             'resource_id': self.manager_company_B.resource_id.id,
             'allocated_hours': 8,
@@ -47,14 +41,8 @@ class TestPlanningTimesheetSale(TestCommonSaleTimesheet):
     def test_generate_slot_timesheet_for_billable_project(self):
         self.assertTrue(self.project_global.allow_billable, "Project should be billable")
 
-        billable_task = self.env['project.task'].create({
-            'name': 'Task1',
-            'project_id': self.project_global.id,
-        })
-
         planning_shift = self.env['planning.slot'].create({
             'project_id': self.project_global.id,
-            'task_id': billable_task.id,
             'sale_line_id': self.so.order_line.filtered(lambda x: x.product_id == self.product_delivery_timesheet2).id,
             'employee_id': self.manager_company_B.id,
             'resource_id': self.manager_company_B.resource_id.id,

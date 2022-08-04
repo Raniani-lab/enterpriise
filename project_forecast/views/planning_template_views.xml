@@ -8,7 +8,6 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id"/>
-                <field name="task_id" context="{'default_project_id': project_id}"/>
             </xpath>
         </field>
     </record>
@@ -20,7 +19,6 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id" optional="show"/>
-                <field name="task_id" optional="show"/>
             </xpath>
         </field>
     </record>
@@ -32,15 +30,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="after">
                 <field name="project_id" />
-                <field name="task_id" />
             </xpath>
             <div class="oe_kanban_card oe_kanban_global_click" position="inside">
                 <div>
                     <div class="o_row">
                         <field name="project_id" />
-                    </div>
-                    <div class="o_row">
-                        <field name="task_id" />
                     </div>
                 </div>
             </div>
@@ -54,11 +48,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id"/>
-                <field name="task_id"/>
             </xpath>
             <xpath expr="//filter[@name='my_role']" position="after">
                 <filter string="My Projects" name="my_project" domain="[('project_id.user_id','=', uid)]" groups="project.group_project_user"/>
-                <filter string="My Tasks" name="my_task" domain="[('task_id.user_ids', 'in', [uid])]" groups="project.group_project_user"/>
             </xpath>
         </field>
     </record>

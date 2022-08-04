@@ -88,7 +88,7 @@
                         <table class="table table-sm o_mrp_report_table">
                             <thead>
                                 <tr class="o_mrp_report_header">
-                                    <th class="o_mrp_report_line_header"><span>Operator</span></th>
+                                    <th class="o_mrp_report_line_header"><span>Resource</span></th>
                                     <th class="o_mrp_report_line_header"><span>Operation</span></th>
                                     <th class="text-end o_mrp_report_line_header"><span>Working Time</span></th>
                                     <th class="text-end o_mrp_report_line_header"><span>Cost/hour</span></th>

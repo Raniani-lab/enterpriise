@@ -33,28 +33,26 @@ class MrpCostStructure(models.AbstractModel):
                                     wo.id,
                                     op.id,
                                     wo.name,
-                                    partner.name,
-                                    sum(t.duration),
+                                    wc.name,
+                                    wo.duration,
                                     CASE WHEN wo.costs_hour = 0.0 THEN wc.costs_hour ELSE wo.costs_hour END AS costs_hour,
                                     currency_table.rate
                                 FROM mrp_workcenter_productivity t
                                 LEFT JOIN mrp_workorder wo ON (wo.id = t.workorder_id)
                                 LEFT JOIN mrp_workcenter wc ON (wc.id = t.workcenter_id)
-                                LEFT JOIN res_users u ON (t.user_id = u.id)
-                                LEFT JOIN res_partner partner ON (u.partner_id = partner.id)
                                 LEFT JOIN mrp_routing_workcenter op ON (wo.operation_id = op.id)
                                 LEFT JOIN {currency_table} ON currency_table.company_id = t.company_id
                                 WHERE t.workorder_id IS NOT NULL AND t.workorder_id IN %s
-                                GROUP BY wo.production_id, wo.id, op.id, wo.name, wc.costs_hour, partner.name, t.user_id, currency_table.rate
-                                ORDER BY wo.name, partner.name
+                                GROUP BY wo.production_id, wo.id, op.id, wo.name, wc.costs_hour, wc.name, t.user_id, currency_table.rate
+                                ORDER BY wo.name, wc.name
                             """.format(currency_table=currency_table,)
                 self.env.cr.execute(query_str, (tuple(Workorders.ids), ))
-                for mo_id, dummy_wo_id, op_id, wo_name, user, duration, cost_hour, currency_rate in self.env.cr.fetchall():
+                for mo_id, dummy_wo_id, op_id, wo_name, wc_name, duration, cost_hour, currency_rate in self.env.cr.fetchall():
                     cost = duration / 60.0 * cost_hour * currency_rate
                     total_cost_by_mo[mo_id] += cost
                     operation_cost_by_mo[mo_id] += cost
                     total_cost_operations += cost
-                    operations.append([user, op_id, wo_name, duration / 60.0, cost_hour * currency_rate])
+                    operations.append([wc_name, op_id, wo_name, duration / 60.0, cost_hour * currency_rate])
 
             # Get the cost of raw material effectively used
             raw_material_moves = {}

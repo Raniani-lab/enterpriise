@@ -25,19 +25,25 @@
         }
     }
     .modal-content {
+        .note-editable {
+            border: 0;
+        }
         .o_field_one2many.o_sign_flat_o2m {
             table {
                 border-collapse: initial;
                 border: none;
+                --table-hover-bg: white;
+                --table-striped-bg: white;
             }
-            thead > tr > th{
+            thead > tr > th {
+                border: none;
                 .o_resize {
                     display: none;
                 }
-                &:nth-child(1) {
+                &:nth-child(-n+2) {
                     visibility: hidden;
                 }
-                &:nth-child(2) {
+                &:nth-child(3) {
                     // fix alignment bug on safari
                     width: initial !important;
                 }
@@ -47,11 +53,6 @@
                     color: $o-brand-secondary !important;
                     &:nth-child(1) {
                         display: none;
-                    }
-                    &:nth-child(2) {
-                        &:nth-last-child(1) {
-                            visibility: hidden;
-                        }
                     }
                     &:nth-child(3) {
                         width: 80px;

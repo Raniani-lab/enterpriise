@@ -150,7 +150,7 @@ class SignRequest(models.Model):
     @api.depends('request_item_ids.access_token')
     def _compute_share_link(self):
         for sign_request in self.filtered(lambda sr: sr.state == 'shared'):
-            sign_request.share_link = "%s/sign/document/mail/%s/%s" % (self.get_base_url(), sign_request.id, sign_request.request_item_ids[0].access_token)
+            sign_request.share_link = "%s/sign/document/mail/%s/%s" % (self.get_base_url(), sign_request.id, sign_request.request_item_ids[0].sudo().access_token)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -186,7 +186,7 @@ class SignRequest(models.Model):
 
     def _check_signers_roles_validity(self):
         for sign_request in self:
-            template_roles = sign_request.template_id.sign_item_ids.responsible_id
+            template_roles = sign_request.sudo().template_id.sign_item_ids.responsible_id
             sign_request_items = sign_request.request_item_ids
             if len(sign_request_items) != max(len(template_roles), 1) or \
                     set(sign_request_items.role_id.ids) != (set(template_roles.ids) if template_roles else set([self.env.ref('sign.sign_item_role_default').id])):
@@ -242,12 +242,12 @@ class SignRequest(models.Model):
             'tag': 'sign.SignableDocument',
             'context': {
                 'id': self.id,
-                'token': request_items[:1].access_token,
+                'token': request_items[:1].sudo().access_token,
                 'create_uid': self.create_uid.id,
                 'state': self.state,
                 'request_item_states': {item.id: item.is_mail_sent for item in self.request_item_ids},
                 'template_editable': self.nb_closed == 0,
-                'token_list': request_items[1:].mapped('access_token'),
+                'token_list': request_items[1:].sudo().mapped('access_token'),
                 'name_list': [item.partner_id.name for item in request_items[1:]],
             },
         }
@@ -308,12 +308,12 @@ class SignRequest(models.Model):
         self.request_item_ids._cancel(no_access=False)
 
         # cancel request and activities for other unsigned users
-        for user in self.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee')):
+        for user in self.request_item_ids.partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_user')):
             self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
 
         # send emails to signers and cc_partners
         for sign_request_item in self.request_item_ids:
-            self._send_refused_mail(refuser, refusal_reason, sign_request_item.partner_id, access_token=sign_request_item.access_token, force_send=True)
+            self._send_refused_mail(refuser, refusal_reason, sign_request_item.partner_id, access_token=sign_request_item.sudo().access_token, force_send=True)
         for partner in self.cc_partner_ids.filtered(lambda p: p.email_formatted) - self.request_item_ids.partner_id:
             self._send_refused_mail(refuser, refusal_reason, partner)
 
@@ -377,7 +377,7 @@ class SignRequest(models.Model):
         self.request_item_ids._cancel()
 
         # cancel activities for signers
-        for user in self.request_item_ids.sudo().partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_employee')):
+        for user in self.request_item_ids.sudo().partner_id.user_ids.filtered(lambda u: u.has_group('sign.group_sign_user')):
             self.activity_unlink(['mail.mail_activity_data_todo'], user_id=user.id)
 
         self.env['sign.log'].sudo().create([{'sign_request_id': sign_request.id, 'action': 'cancel'} for sign_request in self])
@@ -396,7 +396,7 @@ class SignRequest(models.Model):
         signers = [{'name': signer.partner_id.name, 'email': signer.signer_email, 'id': signer.partner_id.id} for signer in self.request_item_ids]
         request_edited = any(log.action == "update" for log in self.sign_log_ids)
         for sign_request_item in self.request_item_ids:
-            self._send_completed_document_mail(signers, request_edited, sign_request_item.partner_id, access_token=sign_request_item.access_token, with_message_cc=False, force_send=True)
+            self._send_completed_document_mail(signers, request_edited, sign_request_item.partner_id, access_token=sign_request_item.sudo().access_token, with_message_cc=False, force_send=True)
 
         cc_partners_valid = self.cc_partner_ids.filtered(lambda p: p.email_formatted)
         for cc_partner in cc_partners_valid:
@@ -641,7 +641,7 @@ class SignRequestItem(models.Model):
     reference = fields.Char(related='sign_request_id.reference', string="Document Name")
     mail_sent_order = fields.Integer(default=1)
 
-    access_token = fields.Char(required=True, default=_default_access_token, readonly=True, copy=False)
+    access_token = fields.Char(required=True, default=_default_access_token, readonly=True, copy=False, groups="base.group_system")
     access_via_link = fields.Boolean('Accessed Through Token', copy=False)
     role_id = fields.Many2one('sign.item.role', string="Role", required=True, readonly=True)
     sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True, copy=False)
@@ -697,7 +697,7 @@ class SignRequestItem(models.Model):
                 sign_request = request_item.sign_request_id
                 old_sign_user = request_item.partner_id.user_ids[:1]
                 # remove old activities for internal users if they are no longer one of the unsigned signers of their sign requests
-                if old_sign_user and old_sign_user.has_group('sign.group_sign_employee') and \
+                if old_sign_user and old_sign_user.has_group('sign.group_sign_user') and \
                         not sign_request.request_item_ids.filtered(
                             lambda sri: sri.partner_id == request_item.partner_id and sri.state == 'sent' and sri not in request_items_reassigned):
                     sign_request.activity_unlink(['mail.mail_activity_data_todo'], user_id=old_sign_user.id)
@@ -711,7 +711,7 @@ class SignRequestItem(models.Model):
             # add new activities for internal users
             new_sign_user = self.env['res.users'].search([
                 ('partner_id', '=', vals.get('partner_id')),
-                ('groups_id', 'in', [self.env.ref('sign.group_sign_employee').id])
+                ('groups_id', 'in', [self.env.ref('sign.group_sign_user').id])
             ], limit=1)
             if new_sign_user:
                 activity_ids = set(request_items_reassigned.sign_request_id.activity_search(['mail.mail_activity_data_todo'], user_id=new_sign_user.id).mapped('res_id'))
@@ -721,7 +721,7 @@ class SignRequestItem(models.Model):
 
         # change access token
         for request_item in request_items_reassigned.filtered(lambda sri: sri.is_mail_sent):
-            request_item.access_token = self._default_access_token()
+            request_item.sudo().update({'access_token': self._default_access_token()})
             request_item.is_mail_sent = False
         return res
 
@@ -731,11 +731,11 @@ class SignRequestItem(models.Model):
         """
         for request_item in self:
             request_item.write({
-                'access_token': self._default_access_token() if no_access else request_item.access_token,
                 'state': 'canceled' if request_item.state == 'sent' else request_item.state,
                 'signing_date': fields.Date.context_today(self) if request_item.state == 'sent' else request_item.signing_date,
                 'is_mail_sent': False if no_access else request_item.is_mail_sent,
             })
+            request_item.sudo().write({'access_token': self._default_access_token() if no_access else request_item.access_token})
 
     def _refuse(self, refusal_reason):
         self.ensure_one()
@@ -747,7 +747,7 @@ class SignRequestItem(models.Model):
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'refused'})
         refuse_user = self.partner_id.user_ids[:1]
         # mark the activity as done for the refuser
-        if refuse_user and refuse_user.has_group('sign.group_sign_employee'):
+        if refuse_user and refuse_user.has_group('sign.group_sign_user'):
             self.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=refuse_user.id)
         refusal_reason = _("No specified reason") if not refusal_reason or refusal_reason.isspace() else refusal_reason
         message_post = _("The signature has been refused by %s(%s)") % (self.partner_id.name, self.role_id.name)
@@ -760,7 +760,7 @@ class SignRequestItem(models.Model):
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
             body = self.env['ir.qweb']._render('sign.sign_template_mail_request', {
                 'record': signer,
-                'link': url_join(signer.get_base_url(), "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.access_token}),
+                'link': url_join(signer.get_base_url(), "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.sudo().access_token}),
                 'subject': signer.sign_request_id.subject,
                 'body': signer.sign_request_id.message if not is_html_empty(signer.sign_request_id.message) else False,
                 'use_sign_terms': self.env['ir.config_parameter'].sudo().get_param('sign.use_sign_terms'),
@@ -854,7 +854,7 @@ class SignRequestItem(models.Model):
         # mark signature as done in next activity
         if not self.sign_request_id.request_item_ids.filtered(lambda sri: sri.partner_id == self.partner_id and sri.state == 'sent'):
             sign_user = self.partner_id.user_ids[:1]
-            if sign_user and sign_user.has_group('sign.group_sign_employee'):
+            if sign_user and sign_user.has_group('sign.group_sign_user'):
                 self.sign_request_id.activity_feedback(['mail.mail_activity_data_todo'], user_id=sign_user.id)
         sign_request = self.sign_request_id
         if all(sri.state == 'completed' for sri in sign_request.request_item_ids):
@@ -898,7 +898,7 @@ class SignRequestItem(models.Model):
     def send_signature_accesses(self):
         self.sign_request_id._check_senders_validity()
         users = self.partner_id.user_ids
-        user_ids = set(users.sudo().search([('groups_id', 'in', self.env.ref('sign.group_sign_employee').id), ('id', 'in', users.ids)]).ids)
+        user_ids = set(users.sudo().search([('groups_id', 'in', self.env.ref('sign.group_sign_user').id), ('id', 'in', users.ids)]).ids)
         for sign_request, sign_request_items_list in groupby(self, lambda sri: sri.sign_request_id):
             notified_users = [sri.partner_id.user_ids[:1]
                               for sri in sign_request_items_list

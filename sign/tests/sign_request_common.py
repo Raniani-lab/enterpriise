@@ -92,7 +92,7 @@ class SignRequestCommon(TransactionCase):
         cls.employee_sign_values = cls.create_sign_values(cls, cls.template_3_roles.sign_item_ids, cls.role_employee.id)
         cls.company_sign_values = cls.create_sign_values(cls, cls.template_3_roles.sign_item_ids, cls.role_company.id)
 
-        cls.user_1 = new_test_user(cls.env, login="user_1", groups='sign.group_sign_employee')
+        cls.user_1 = new_test_user(cls.env, login="user_1", groups='sign.group_sign_user')
         cls.partner_1 = cls.user_1.partner_id
         cls.partner_1.write({
             'name': 'Laurie Poiret',
@@ -104,7 +104,7 @@ class SignRequestCommon(TransactionCase):
             'email': 'laurie.poiret.a@example.com',
         })
 
-        cls.user_2 = new_test_user(cls.env, login="user_2", groups='sign.group_sign_employee')
+        cls.user_2 = new_test_user(cls.env, login="user_2", groups='sign.group_sign_user')
         cls.partner_2 = cls.user_2.partner_id
         cls.partner_2.write({
             'name': 'Bernardo Ganador',
@@ -116,7 +116,7 @@ class SignRequestCommon(TransactionCase):
             'email': 'bernardo.ganador.a@example.com',
         })
 
-        cls.user_3 = new_test_user(cls.env, login="user_3", groups='sign.group_sign_employee')
+        cls.user_3 = new_test_user(cls.env, login="user_3", groups='sign.group_sign_user')
         cls.partner_3 = cls.user_3.partner_id
         cls.partner_3.write({
             'name': 'Martine Poulichette',
@@ -128,7 +128,7 @@ class SignRequestCommon(TransactionCase):
             'email': 'martine.poulichette.a@example.com',
         })
 
-        cls.user_4 = new_test_user(cls.env, login="user_4", groups='sign.group_sign_employee')
+        cls.user_4 = new_test_user(cls.env, login="user_4", groups='sign.group_sign_user')
         cls.partner_4 = cls.user_4.partner_id
         cls.partner_4.write({
             'name': 'Ignasse Reblochon',

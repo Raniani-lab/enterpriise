@@ -99,7 +99,7 @@
                 <button name="unlink" states="shared" string="Stop Sharing" type="object"/>
                 <button name="get_completed_document" states="signed" string="Download" type="object"/>
                 <button name="go_to_signable_document" string="sign" type="object" attrs="{'invisible': ['|', ('need_my_signature', '=', False), ('state', '!=', 'sent')]}"/>
-                <button name="send_signature_accesses" string="Resend" type="object" groups="sign.group_sign_employee" attrs="{'invisible': &quot;['|', ('state', '!=', 'sent'), ('create_uid', '!=', uid)]&quot;}"/>
+                <button name="send_signature_accesses" string="Resend" type="object" groups="sign.group_sign_user" attrs="{'invisible': &quot;['|', ('state', '!=', 'sent'), ('create_uid', '!=', uid)]&quot;}"/>
                 <button name="send_signature_accesses" string="Resend" type="object" groups="sign.group_sign_manager" attrs="{'invisible': &quot;['|', ('state', '!=', 'sent'), ('create_uid', '=', uid)]&quot;}"/>
             </tree>
         </field>
@@ -124,7 +124,7 @@
                                 <span class="o_stat_text">View</span>
                             </div>
                         </button>
-                        <button type="object" name="open_logs" class="oe_read_only oe_stat_button" icon="fa-pencil" groups="sign.group_sign_manager">
+                        <button type="object" name="open_logs" class="oe_read_only oe_stat_button" icon="fa-pencil">
                             <!-- TODO show only in debug to sign managers? -->
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">Activity Logs</span>

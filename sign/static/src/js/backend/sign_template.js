@@ -15,7 +15,6 @@ import { sign_utils } from "@sign/js/backend/utils";
 import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
 import {
   FormFieldMany2ManyTags,
-  FieldSelection as FormFieldSelection
 } from "web.relational_fields";
 import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
 
@@ -607,12 +606,31 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
             },
           },
         },
-        privacy: {
-          type: "selection",
-          selection: [
-            ["employee", _t("All Users")],
-            ["invite", _t("On Invitation")],
-          ],
+        authorized_ids: {
+          relation: "res.users",
+          type: "many2many",
+          relatedFields: {
+            id: {
+              type: "integer",
+            },
+            display_name: {
+              type: "char",
+            },
+            color: {
+              type: "integer",
+            },
+          },
+          fields: {
+            id: {
+              type: "integer",
+            },
+            display_name: {
+              type: "char",
+            },
+            color: {
+              type: "integer",
+            },
+          },
         },
       },
       fieldsInfo: {
@@ -677,22 +695,28 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
             },
             viewType: "default",
           },
-          privacy: {
+          authorized_ids: {
             relatedFields: {
               id: {
-                type: "selection",
+                type: "integer",
               },
               display_name: {
                 type: "char",
+              },
+              color: {
+                type: "integer",
               },
             },
             fieldsInfo: {
               default: {
                 id: {
-                  type: "selection",
+                  type: "integer",
                 },
                 display_name: {
                   type: "char",
+                },
+                color: {
+                  type: "integer",
                 },
               },
             },
@@ -724,11 +748,17 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
       self.tag_idsMany2Many.appendTo(self.$(".o_sign_template_tags"));
 
       if (config.isDebug()) {
-        self.privacy = new FormFieldSelection(self, "privacy", self.record, {
-          mode: "edit",
+        self.authorized_idsMany2many = new FormFieldMany2ManyTags(self, 'authorized_ids', self.record, {
+          mode: 'edit',
+          create: false,
+          attrs: {
+            options: {
+              color_field: 'color',
+            }
+          },
         });
-        self._registerWidget(self.handleRecordId, "privacy", self.privacy);
-        self.privacy.appendTo(self.$(".o_sign_template_privacy"));
+        self._registerWidget(self.handleRecordId, 'authorized_ids', self.authorized_idsMany2many);
+        self.authorized_idsMany2many.appendTo(self.$('.o_sign_template_authorized_ids'));
 
         self.group_idsMany2many = new FormFieldMany2ManyTags(
           self,
@@ -769,7 +799,7 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
     const defTemplates = this._rpc({
       model: "sign.template",
       method: "read",
-      args: [[this.templateID]],
+      args: [[this.templateID], ['id', 'attachment_id', 'has_sign_requests', 'responsible_count', 'display_name']],
     }).then(function prepare_template(template) {
       if (template.length === 0) {
         self.templateID = undefined;
@@ -781,7 +811,7 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
       }
       template = template[0];
       self.sign_template = template;
-      self.has_sign_requests = template.sign_request_ids.length > 0;
+      self.has_sign_requests = template.has_sign_requests;
 
       const defSignItems = self
         ._rpc({

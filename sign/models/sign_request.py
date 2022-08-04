@@ -607,6 +607,7 @@ class SignRequest(models.Model):
         body_html = self.env['ir.qweb']._render(email_layout_xmlid, dict(message=msg, **notif_values), minimal_qcontext=True)
         body_html = sign_request.env['mail.render.mixin']._replace_local_links(body_html)
 
+        mail_values['reply_to'] = mail_values.get('email_from')
         mail = sign_request.env['mail.mail'].sudo().create(dict(body_html=body_html, **mail_values))
         if force_send:
             mail.send()

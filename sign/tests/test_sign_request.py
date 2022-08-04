@@ -433,3 +433,21 @@ class TestSignRequest(SignRequestCommon):
         sign_request_item_employee._edit_and_sign(self.employee_sign_values)
         sign_request_item_company._edit_and_sign(self.company_sign_values)
         self.assertEqual(sign_request_3_roles.state, 'signed', 'The sign request should be signed')
+
+    def test_sign_request_mail_reply_to_exists(self):
+        sign_request = self.create_sign_request_1_role(self.partner_1, self.env['res.partner'])
+        responsible_email = sign_request.create_uid.email_formatted
+        mail = sign_request._message_send_mail(
+            "body", 'mail.mail_notification_light',
+            {'record_name': sign_request.reference},
+            {'model_description': 'signature', 'company': self.env.company},
+            {
+                'email_from': responsible_email,
+                'author_id': sign_request.create_uid.partner_id.id,
+                'email_to': sign_request.request_item_ids[0].partner_id.name,
+                'attachment_ids': [],
+                'subject': sign_request.subject
+            }
+        )
+
+        self.assertEqual(mail.reply_to, responsible_email, 'reply_to is not set as the responsible email')

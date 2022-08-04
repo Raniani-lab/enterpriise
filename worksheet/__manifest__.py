@@ -18,7 +18,13 @@ Create customizable worksheet
     ],
     'assets': {
         'web.assets_backend': [
-            'worksheet/static/**/*',
+            'worksheet/static/src/**/*',
+        ],
+        'web.assets_qweb': [
+            'worksheet/static/src/**/*.xml',
+        ],
+        'web.qunit_suite_tests': [
+            'worksheet/static/tests/*.js',
         ],
     },
     'license': 'OEEL-1',

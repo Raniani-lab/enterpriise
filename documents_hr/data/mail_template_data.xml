@@ -2,11 +2,12 @@
 <odoo>
     <data noupdate="1">
         <record id="mail_template_document_folder_link" model="mail.template">
-            <field name="name">HR: Your documents access link</field>
+            <field name="name">HR: Document Access Link</field>
             <field name="model_id" ref="hr.model_hr_employee"/>
             <field name="subject">{{ object.name }}, your personal documents access link is available</field>
             <field name="email_from">{{ user.email_formatted }}</field>
             <field name="partner_to">{{ object.address_home_id.id }}</field>
+            <field name="description">Sent manually when recording an employee departure</field>
             <field name="body_html" type="html">
     <table border="0" cellpadding="0" cellspacing="0" style="width:100%; margin:0px auto;"><tbody>
         <tr><td valign="top" style="text-align: left; font-size: 14px;">

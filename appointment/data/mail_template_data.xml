@@ -3,10 +3,11 @@
     <data>
 
         <record id="appointment_booked_mail_template" model="mail.template">
-            <field name="name">Appointment Booked</field>
+            <field name="name">Appointment: Appointment Booked</field>
             <field name="model_id" ref="calendar.model_calendar_event"/>
             <field name="subject">Appointment Booked: {{ object.appointment_type_id.name }}</field>
             <field name="email_from">{{ (user.email_formatted or object.user_id.email_formatted) }}</field>
+            <field name="description">Sent to people who book an appointment online</field>
             <field name="body_html" type="html">
 <div>
     <t t-set="colors" t-value="{'needsAction': 'grey', 'accepted': 'green', 'tentative': '#FFFF00', 'declined': 'red'}" />
@@ -88,10 +89,11 @@
         </record>
 
         <record id="appointment_canceled_mail_template" model="mail.template">
-            <field name="name">Appointment Canceled</field>
+            <field name="name">Appointment: Appointment Canceled</field>
             <field name="model_id" ref="calendar.model_calendar_event"/>
             <field name="subject">Appointment Canceled: {{ object.appointment_type_id.name }}</field>
             <field name="email_from">{{ (user.email_formatted or object.user_id.email_formatted) }}</field>
+            <field name="description">Sent to all attendees when an appointment is cancelled</field>
             <field name="body_html" type="html">
 <div>
     <t t-set="colors" t-value="{'needsAction': 'grey', 'accepted': 'green', 'tentative': '#FFFF00', 'declined': 'red'}"/>

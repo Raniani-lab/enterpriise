@@ -3,12 +3,13 @@
     <data>
 
         <record id="email_template_slot_single" model="mail.template">
-            <field name="name">Planning: new single shift</field>
+            <field name="name">Planning: New Shift</field>
             <field name="email_from">{{ object.company_id.email_formatted }}</field>
             <field name="subject">{{ ctx.get('mail_subject', '') }} {{ ctx.get('start_datetime' , '') }}</field>
             <field name="email_to">{{ ctx.get('work_email', '') }}</field>
             <field name="model_id" ref="model_planning_slot"/>
             <field name="auto_delete" eval="False"/>
+            <field name="description">Email sent automatically when publishing a shift</field>
             <field name="body_html" type="html">
                 <div>
                     <p>Dear <t t-out="ctx.get('employee_name', '')">Anita Oliver</t>,<br/><br/></p>
@@ -54,12 +55,13 @@
         </record>
 
         <record id="email_template_planning_planning" model="mail.template">
-            <field name="name">Planning: new schedule (multiple shifts)</field>
+            <field name="name">Planning: New Schedule</field>
             <field name="email_from">{{ object.company_id.email_formatted }}</field>
             <field name="subject">Your planning from {{ format_date(ctx.get('start_datetime')) }} to {{ format_date(ctx.get('end_datetime')) }}</field>
             <field name="email_to"></field><!-- Set in the code  -->
             <field name="model_id" ref="model_planning_planning"/>
             <field name="auto_delete" eval="False"/><!-- TODO JEM  change this as we are testing -->
+            <field name="description">Email sent automatically when publishing the schedule of your employees</field>
             <field name="body_html" type="html">
                 <div>
                     <p>

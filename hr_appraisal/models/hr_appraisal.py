@@ -42,8 +42,7 @@ class HrAppraisal(models.Model):
     avatar_1920 = fields.Image(related='employee_id.avatar_1920')
     last_appraisal_id = fields.Many2one('hr.appraisal', related='employee_id.last_appraisal_id')
     last_appraisal_date = fields.Date(related='employee_id.last_appraisal_date')
-    previous_appraisal_id = fields.Many2one('hr.appraisal')
-    previous_appraisal_date = fields.Date(related='previous_appraisal_id.date_close', string='Previous Appraisal Date')
+    employee_appraisal_count = fields.Integer(related='employee_id.appraisal_count')
     uncomplete_goals_count = fields.Integer(related='employee_id.uncomplete_goals_count')
     employee_feedback_template = fields.Html(compute='_compute_feedback_templates')
     manager_feedback_template = fields.Html(compute='_compute_feedback_templates')
@@ -251,22 +250,9 @@ class HrAppraisal(models.Model):
     def action_cancel(self):
         self.state = 'cancel'
 
-    def _update_previous_appraisal(self):
-        for employee in set(self.mapped('employee_id')):
-            appraisals = employee.appraisal_ids.filtered(lambda a: a.state != 'cancel').sorted('date_close')
-            appraisals_index = {v.id: i for i, v in enumerate(appraisals)}
-
-            for appraisal in appraisals:
-                index = appraisals_index[appraisal.id] - 1
-                if index >= 0 and index < len(appraisals):
-                    appraisal.previous_appraisal_id = appraisals[index]
-                else:
-                    appraisal.previous_appraisal_id = False
-
     @api.model_create_multi
     def create(self, vals_list):
         appraisals = super().create(vals_list)
-        appraisals.sudo()._update_previous_appraisal()
         appraisals_to_send = self.env['hr.appraisal']
         for appraisal, vals in zip(appraisals, vals_list):
             if vals.get('state') and vals['state'] == 'pending':
@@ -317,8 +303,6 @@ class HrAppraisal(models.Model):
             for appraisal in force_published:
                 role = _('Manager') if self.env.user.employee_id in appraisal.manager_ids else _('Appraisal Officer')
                 appraisal.message_post(body=_('%(user)s decided, as %(role)s, to publish the employee\'s feedback', user=self.env.user.name, role=role))
-        if 'employee_id' in vals or 'date_close' in vals:
-            self.sudo()._update_previous_appraisal()
         if 'manager_ids' in vals:
             self._sync_meeting_attendees(previous_managers)
         return result
@@ -417,17 +401,20 @@ class HrAppraisal(models.Model):
     def action_back(self):
         self.action_confirm()
 
-    def action_open_last_appraisals(self):
+    def action_open_employee_appraisals(self):
         self.ensure_one()
         view_id = self.env.ref('hr_appraisal.hr_appraisal_view_tree_orderby_create_date').id
         return {
             'name': _('Previous Appraisals'),
             'res_model': 'hr.appraisal',
             'view_mode': 'tree,kanban,form,gantt,calendar,activity',
-            'view_ids': [(view_id, 'tree'), (False, 'kanban'), (False, 'form'), (False, 'gantt'), (False, 'calendar'), (False, 'activity')],
+            'views': [(view_id, 'tree'), (False, 'kanban'), (False, 'form'), (False, 'gantt'), (False, 'calendar'), (False, 'activity')],
             'domain': [('employee_id', '=', self.employee_id.id)],
             'type': 'ir.actions.act_window',
             'target': 'current',
+            'context': {
+                'search_default_groupby_date_close': True,
+            }
         }
 
     def action_open_goals(self):

@@ -164,6 +164,41 @@ QUnit.module(
             });
         });
 
+        QUnit.test("Create a new many2many relational global filter", async function (assert) {
+            const serverData = getBasicServerData();
+            serverData.models["vehicle"] = {
+                fields: {},
+                records: [],
+            };
+            serverData.models["partner"].fields.vehicle_ids = {
+                relation: "vehicle",
+                string: "Vehicle",
+                type: "many2many",
+            };
+            serverData.models["ir.model"].records.push({
+                id: 34,
+                name: "Vehicle",
+                model: "vehicle",
+            });
+            const { model } = await createSpreadsheetFromPivotView({ serverData });
+            await click(target, ".o_topbar_filter_icon");
+            await click(target, ".o_global_filter_new_relation");
+            await click(target, ".o_side_panel_related_model input");
+            await click(target, ".o_sp_selector_vehicle");
+            assert.strictEqual(
+                target.querySelector(".o_field_selector_value").innerText,
+                "Vehicle"
+            );
+            await click(target, ".o_global_filter_save");
+            const globalFilter = model.getters.getGlobalFilters()[0];
+            assert.strictEqual(globalFilter.label, "Vehicle");
+            assert.deepEqual(globalFilter.defaultValue, []);
+            assert.deepEqual(globalFilter.pivotFields[1], {
+                field: "vehicle_ids",
+                type: "many2many",
+            });
+        });
+
         QUnit.test(
             "Prevent selection of a Field Matching before the Related model",
             async function (assert) {
@@ -241,7 +276,6 @@ QUnit.module(
         });
 
         QUnit.test("Only related models can be selected", async function (assert) {
-            assert.expect(2);
             const data = getBasicData();
             data["ir.model"].records.push(
                 {
@@ -253,12 +287,32 @@ QUnit.module(
                     id: 35,
                     name: "Document",
                     model: "documents.document",
+                },
+                {
+                    id: 34,
+                    name: "Vehicle",
+                    model: "vehicle",
+                },
+                {
+                    id: 33,
+                    name: "Computer",
+                    model: "computer",
                 }
             );
             data["partner"].fields.document = {
                 relation: "documents.document",
                 string: "Document",
                 type: "many2one",
+            };
+            data["partner"].fields.vehicle_ids = {
+                relation: "vehicle",
+                string: "Vehicle",
+                type: "many2many",
+            };
+            data["partner"].fields.computer_ids = {
+                relation: "computer",
+                string: "Computer",
+                type: "one2many",
             };
             await createSpreadsheetFromPivotView({
                 serverData: {
@@ -280,9 +334,13 @@ QUnit.module(
             await testUtils.dom.click(newRelation);
             const selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            const [model1, model2] = target.querySelectorAll(".o-autocomplete--dropdown-item a");
+            const [model1, model2, model3, model4] = target.querySelectorAll(
+                ".o-autocomplete--dropdown-item a"
+            );
             assert.equal(model1.innerText, "Product");
             assert.equal(model2.innerText, "Document");
+            assert.equal(model3.innerText, "Vehicle");
+            assert.equal(model4.innerText, "Computer");
         });
 
         QUnit.test("Edit an existing global filter", async function (assert) {

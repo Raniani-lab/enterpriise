@@ -154,7 +154,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             ...new Set(
                 all
                     .flat()
-                    .filter((field) => field.type === "many2one")
+                    .filter((field) => field.relation)
                     .map((field) => field.relation)
             ),
         ];
@@ -238,9 +238,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      */
     _findRelation(fields) {
         const field = Object.values(fields).find(
-            (field) =>
-                field.type === "many2one" &&
-                field.relation === this.state.relation.relatedModel.technical
+            (field) => field.relation === this.state.relation.relatedModel.technical
         );
         return field.name;
     }
@@ -339,7 +337,9 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     }
 
     getModelField(field) {
-        if (!field || !field.field || !field.type) return undefined;
+        if (!field || !field.field || !field.type) {
+            return undefined;
+        }
         return {
             field: field.field,
             type: field.type,

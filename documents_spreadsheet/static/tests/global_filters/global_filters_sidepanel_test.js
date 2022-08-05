@@ -110,6 +110,7 @@ QUnit.module(
             await testUtils.dom.click(
                 $(target).find(".o_field_selector_select_button[data-name='display_name']")
             );
+            assert.containsNone(target, ".o_filter_field_offset", "No offset for text filter");
             const save = $(target).find(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             )[0];
@@ -121,8 +122,6 @@ QUnit.module(
         });
 
         QUnit.test("Create a new relational global filter", async function (assert) {
-            assert.expect(4);
-
             const { model } = await createSpreadsheetFromPivotView({
                 serverData: {
                     models: getBasicData(),
@@ -145,7 +144,7 @@ QUnit.module(
             await testUtils.dom.click($(target).find(selector)[0]);
             let item = target.querySelector(".o_sp_selector_product");
             await click(item);
-
+            assert.containsNone(target, ".o_filter_field_offset", "No offset for relational filter");
             let save = $(target).find(
                 ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
             )[0];

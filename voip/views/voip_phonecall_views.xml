@@ -7,7 +7,7 @@
     <field name="model">voip.phonecall</field>
     <field name="arch" type="xml">
       <tree string="Phonecalls" editable="top">
-        <field name="phonecall_type"/>
+        <field name="direction"/>
         <field name="name"/>
         <field name="call_date"/>
         <field name="date_deadline"/>

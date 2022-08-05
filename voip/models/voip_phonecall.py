@@ -40,10 +40,10 @@ class VoipPhonecall(models.Model):
         help='The status is set to To Do, when a call is created.\n'
              'When the call is over, the status is set to Held.\n'
              'If the call is not applicable anymore, the status can be set to Cancelled.')
-    phonecall_type = fields.Selection([
+    direction = fields.Selection([
         ('incoming', 'Incoming'),
         ('outgoing', 'Outgoing')
-    ], string='Type', default='outgoing')
+    ], default='outgoing')
 
     def init_call(self):
         self.ensure_one()
@@ -214,10 +214,10 @@ class VoipPhonecall(models.Model):
     def create_from_missed_call(self, number, partner_id=False):
         self.ensure_one()
         vals = {
+            'direction': 'incoming',
             'name': _('Missed Call from %s', number),
             'phone': number,
             'state': 'missed',
-            'phonecall_type': 'incoming',
             'partner_id': partner_id,
         }
         return self._update_and_init(vals)
@@ -225,9 +225,9 @@ class VoipPhonecall(models.Model):
     def create_from_rejected_call(self, number, partner_id=False):
         self.ensure_one()
         vals = {
+            'direction': 'incoming',
             'name': _('Rejected Incoming Call from %s', number),
             'phone': number,
-            'phonecall_type': 'incoming',
             'state': 'rejected',
             'partner_id': partner_id,
         }
@@ -236,10 +236,10 @@ class VoipPhonecall(models.Model):
     def create_from_incoming_call_accepted(self, number, partner_id=False):
         self.ensure_one()
         vals = {
+            'direction': 'incoming',
             'name': _('Incoming call from %s', number),
             'phone': number,
             'state': 'done',
-            'phonecall_type': 'incoming',
             'partner_id': partner_id,
         }
         return self._update_and_init(vals)
@@ -251,9 +251,9 @@ class VoipPhonecall(models.Model):
         else:
             name = _('Incoming call from %s', number)
         vals = {
+            'direction': 'incoming',
             'name': name,
             'phone': number,
-            'phonecall_type': 'incoming',
             'partner_id': partner_id,
         }
         return self._create_and_init(vals)

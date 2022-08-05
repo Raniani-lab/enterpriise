@@ -14,7 +14,7 @@ class Project(models.Model):
 
     allow_forecast = fields.Boolean("Planning", default=True, help="Enable planning tasks on the project.")
     total_forecast_time = fields.Integer(compute='_compute_total_forecast_time',
-                                         help="Total number of forecast hours in the project rounded to the unit.")
+                                         help="Total number of forecast hours in the project rounded to the unit.", compute_sudo=True)
 
     def _compute_total_forecast_time(self):
         shifts_read_group = self.env['planning.slot']._read_group(

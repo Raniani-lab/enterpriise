@@ -38,8 +38,8 @@ class TimesheetForecastReport(models.Model):
                 F.project_id AS project_id,
                 F.user_id AS user_id,
                 0.0 AS effective_hours,
-                F.allocated_hours / NULLIF(F.working_days_count, 0) AS planned_hours,
-                F.allocated_hours / NULLIF(F.working_days_count, 0) AS difference,
+                F.allocated_hours / GREATEST(F.working_days_count, 1) AS planned_hours,
+                F.allocated_hours / GREATEST(F.working_days_count, 1) AS difference,
                 'forecast' AS line_type,
                 F.id AS id,
                 CASE WHEN F.state = 'published' THEN TRUE ELSE FALSE END AS is_published
@@ -56,20 +56,9 @@ class TimesheetForecastReport(models.Model):
             ) d
                 LEFT JOIN planning_slot F ON d::date >= F.start_datetime::date AND d::date <= F.end_datetime::date
                 LEFT JOIN hr_employee E ON F.employee_id = E.id
-                LEFT JOIN resource_resource R ON E.resource_id = R.id
                 LEFT JOIN project_task T ON T.id = F.task_id
         """
         return from_str
-
-    @api.model
-    def _where(self):
-        where_str = """
-            WHERE
-                EXTRACT(ISODOW FROM d.date) IN (
-                    SELECT A.dayofweek::integer+1 FROM resource_calendar_attendance A WHERE A.calendar_id = R.calendar_id
-                )
-        """
-        return where_str
 
     @api.model
     def _select_union(self):
@@ -115,10 +104,9 @@ class TimesheetForecastReport(models.Model):
         return where_str
 
     def init(self):
-        query = "(%s %s %s) UNION (%s %s %s)" % (
+        query = "(%s %s) UNION (%s %s %s)" % (
             self._select(),
             self._from(),
-            self._where(),
             self._select_union(),
             self._from_union(),
             self._where_union()

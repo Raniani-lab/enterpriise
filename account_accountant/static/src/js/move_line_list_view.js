@@ -1,291 +1,92 @@
-odoo.define('account_accountant.MoveLineListView', function (require) {
-"use strict";
+/** @odoo-module **/
 
-    const { insert } = require('@mail/model/model_field_command');
-    const { WebClientViewAttachmentViewContainer } = require('@mail/components/web_client_view_attachment_view_container/web_client_view_attachment_view_container');
 
-    var config = require('web.config');
-    var core = require('web.core');
-    var ListController = require('web.ListController');
-    var ListModel = require('web.ListModel');
-    var ListRenderer = require('web.ListRenderer');
-    var localStorage = require('web.local_storage');
-    var ListView = require('web.ListView');
-    var viewRegistry = require('web.view_registry');
-    const { ComponentWrapper } = require('web.OwlCompatibility');
+const { useState } = owl;
 
-    var _t = core._t;
+import { WebClientViewAttachmentViewContainer } from "@mail/components/web_client_view_attachment_view_container/web_client_view_attachment_view_container";
+import { registry } from "@web/core/registry";
+import { useService, useBus } from "@web/core/utils/hooks";
+import { listView } from "@web/views/list/list_view";
+import { ListRenderer } from "@web/views/list/list_renderer";
+import { ListController } from "@web/views/list/list_controller";
+import { insert } from '@mail/model/model_field_command';
+import { SIZES } from '@web/core/ui/ui_service';
 
-    var AccountMoveListModel = ListModel.extend({
-        /**
-         * Overridden to fetch extra fields even if `move_attachment_ids` is
-         * invisible in the view.
-         *
-         * @override
-         * @private
-         */
-        _fetchRelatedData: function (list, toFetch, fieldName) {
-            if (fieldName === 'move_attachment_ids' && config.device.size_class >= config.device.SIZES.XXL) {
-                var fieldsInfo = list.fieldsInfo[list.viewType][fieldName];
-                // force to fetch extra fields
-                fieldsInfo.__no_fetch = false;
-                fieldsInfo.relatedFields = {
-                    mimetype: {type: 'char'},
-                };
-            }
-            return this._super.apply(this, arguments);
-        },
-    });
-
-    var AccountMoveListController = ListController.extend({
-        events: _.extend({}, ListController.prototype.events, {
-            'click .o_attachment_control': '_onToggleAttachment',
-        }),
-        custom_events: _.extend({}, ListController.prototype.custom_events, {
-            row_selected: '_onRowSelected',
-        }),
-
-        /**
-         * @override
-         */
-        init: function () {
-            this._super.apply(this, arguments);
-
-            this.currentAttachments = [];
-            this.hide_attachment = localStorage.getItem('account.move_line_pdf_previewer_hidden') == 'true' ? true : false;
-            this.last_selected = false;
-
-        },
-
-        //--------------------------------------------------------------------------
-        // Private
-        //--------------------------------------------------------------------------
-
-        /**
-         * Overridden to add an attachment preview container.
-         *
-         * @override
-         * @private
-         */
-        _update: function () {
-            var self = this;
-            return this._super.apply(this, arguments).then(function () {
-                self.$('.o_content').addClass('o_move_line_list_view');
-                self.currentAttachments = [];
-                if (!self.$attachmentPreview && config.device.size_class >= config.device.SIZES.XXL) {
-                    self.$attachmentPreview = $('<div>', {
-                        class: 'o_attachment_preview',
-                    }).append($('<p>', {
-                        class: 'o_move_line_empty',
-                        text: _t("Choose a line to preview its attachments."),
-                    })).append($('<div>', {
-                        class: 'o_attachment_control',
-                    }));
-                    self.$attachmentPreview.appendTo(self.$('.o_content'));
-                    self.$attachmentPreview.toggleClass('hidden', self.hide_attachment);
-                }
-            }).then(function () {
-                if (!self.hide_attachment){
-                    self._renderAttachmentPreview();
-                }
-            });
-        },
-        /**
-         * Renders a preview of a record attachments.
-         *
-         * @param {string} recordId
-         * @private
-         */
-        async _renderAttachmentPreview(recordId) {
-            var self = this;
-            if (_.filter(this.model.localData, function(value, key, object) {return value.groupData == self.last_selected}).length) {
-                recordId = _.filter(this.model.localData, function(value, key, object) {return value.groupData == self.last_selected})[0].data[0]
-            }
-            if (!recordId) {
-                return Promise.resolve()
-            }
-            var record = this.model.get(recordId || this.last_selected);
-            // record type will be list when multi groupby while expanding group row
-            if (record.type === 'list') {
-                return;
-            }
-            const messaging = await owl.Component.env.services.messaging.get();
-            const thread = messaging.models['Thread'].insert({
-                attachments: insert(record.data.move_attachment_ids.data.map(function (attachment) {
-                    return {
-                        id: attachment.data.id,
-                        mimetype: attachment.data.mimetype,
-                    };
-                })),
-                id: record.res_id,
-                model: record.model,
-            });
-            const attachments = thread.attachmentsInWebClientView;
-            if (!this.webClientViewAttachmentViewContainer) {
-                this.webClientViewAttachmentViewContainer = new ComponentWrapper(this, WebClientViewAttachmentViewContainer, {
-                    threadId: thread.id,
-                    threadModel: thread.model,
-                });
-                await this.webClientViewAttachmentViewContainer.mount(this.$attachmentPreview.empty()[0]);
-            } else {
-                await this.webClientViewAttachmentViewContainer.update({
-                    threadId: thread.id,
-                    threadModel: thread.model,
-                });
-            }
-            return Promise.resolve().then(() => {
-                self.currentAttachments = attachments;
-                if (!attachments.length) {
-                    if (this.webClientViewAttachmentViewContainer) {
-                        this.webClientViewAttachmentViewContainer.destroy();
-                        this.webClientViewAttachmentViewContainer = undefined;
-                    }
-                    var $empty = $('<p>', {
-                        class: 'o_move_line_without_attachment',
-                        text: _t("No attachments linked."),
-                    });
-                    self.$attachmentPreview.empty().append($empty);
-                }
-                self.$attachmentPreview.find("div.o_attachment_control").remove();
-                $('<div>', {class: 'o_attachment_control'}).appendTo(self.$attachmentPreview);
-            });
-        },
-
-        _onToggleAttachment: function() {
-            this.hide_attachment = !this.hide_attachment;
-            localStorage.setItem('account.move_line_pdf_previewer_hidden', this.hide_attachment);
-            this.$attachmentPreview.toggleClass('hidden');
-            if (!this.hide_attachment) {
-                this._renderAttachmentPreview(this.last_selected)
-            }
-        },
-
-        //--------------------------------------------------------------------------
-        // Handlers
-        //--------------------------------------------------------------------------
-
-        /**
-         * @private
-         * @param {OdooEvent} ev
-         * @param {string} ev.data.recordId
-         */
-        _onRowSelected: function (ev) {
-            if (config.device.size_class >= config.device.SIZES.XXL) {
-                this.last_selected = ev.data.recordId;
-                if (this.last_selected.includes('line') && !this.hide_attachment) { // if it comes from _onToggleGroup, this._update is triggered but not if it comes from _selectRow
-                    this._renderAttachmentPreview(ev.data.recordId);
-                }
-            }
-        },
-    });
-    var AccountMoveListRenderer = ListRenderer.extend({
-        events: Object.assign({}, ListRenderer.prototype.events, {
-            'mouseover .o_list_table_grouped tbody tr': '_onToggleGroupButton',
-            'mouseout .o_list_table_grouped tbody tr': '_onToggleGroupButton',
-        }),
-
-        //--------------------------------------------------------------------------
-        // Private
-        //--------------------------------------------------------------------------
-
-        /**
-         *
-         * @param {integer} rowIndex
-         * @private
-         * @override
-         */
-        _selectRow: function (rowIndex) {
-            var self = this;
-            var recordId = this._getRecordID(rowIndex);
-            var currentRow = this.currentRow; // currentRow is updated in _super
-            return this._super.apply(this, arguments).then(function () {
-                if (rowIndex !== currentRow) {
-                    self.trigger_up('row_selected', {
-                        recordId: recordId,
-                    });
-                }
-            });
-        },
-
-        /*
-         * Show pdf when using mouse
-         */
-        _onRowClicked: function (ev) {
-            ev.stopPropagation();
-            var id = $(ev.currentTarget).data('id');
-            if (id) {
-                this.trigger_up('row_selected', {
-                    recordId: id,
-                });
-            }
-            return this._super.apply(this, arguments);
-        },
-
-        /*
-         * Show pdf when using keys
-         */
-        _findConnectedCell: function ($cell, direction, colIndex) {
-            var res = this._super.apply(this, arguments);
-            var id = res && res.closest('tr').data('id');
-            if (id) {
-                this.trigger_up('row_selected', {
-                    recordId: id,
-                });
-            }
-            return res;
-        },
-
-        _onToggleGroup: function (ev) {
-            var group = $(ev.currentTarget).closest('tr').data('group');
-            if (group.model === 'account.move.line' && group.groupData && group.groupData.model === 'account.move') {
-                this.trigger_up('row_selected', {
-                    recordId: group.groupData.id,
-                });
-            }
-            this._super.apply(this, arguments);
-        },
-        /**
-         * Toggle group buttons on mouseover and mouseout on group header or
-         * its content.
-         *
-         * @private
-         * @param {MouseEvent} ev
-         */
-        _onToggleGroupButton: function (ev) {
-            let tr = ev.currentTarget;
-            let groupHeader;
-            if (tr.classList.contains('o_group_header') && tr.querySelector(".o_group_buttons")) {
-                // we are hovering the group header itself
-                groupHeader = tr;
-            } else {
-                let tbody = ev.currentTarget.closest('tbody');
-                while (tbody && !tbody.querySelector(".o_group_buttons")) {
-                    tbody = tbody.previousElementSibling;
-                }
-                if (tbody) {
-                    groupHeader = tbody.querySelector(".o_group_header.o_group_open");
-                }
-            }
-            if (groupHeader) {
-                groupHeader.classList.toggle("show_group_buttons");
-            }
-        },
-    });
-
-    var AccountMoveListView = ListView.extend({
-        config: _.extend({}, ListView.prototype.config, {
-            Controller: AccountMoveListController,
-            Model: AccountMoveListModel,
-            Renderer: AccountMoveListRenderer,
-        }),
-    });
-
-    viewRegistry.add('account_move_line_list', AccountMoveListView);
-
-    return {
-        AccountMoveListView: AccountMoveListView,
-        AccountMoveListController: AccountMoveListController,
-        AccountMoveListModel: AccountMoveListModel,
-        AccountMoveListRenderer: AccountMoveListRenderer
+class AccountMoveListController extends ListController {
+    setup() {
+        super.setup();
+        this.messaging = useService("messaging");
+        this.ui = useService("ui");
+        this.attachmentPreviewState = useState({
+            isBigUI: this.ui.size >= SIZES.XXL,
+            displayAttachment: true,
+            selectedRecord: false,
+            thread: null,
+        });
+        useBus(this.ui.bus, "resize", this.evaluateIsBigUI);
     }
-});
+
+    togglePreview() {
+        this.attachmentPreviewState.displayAttachment = !this.attachmentPreviewState.displayAttachment;
+    }
+
+    evaluateIsBigUI() {
+        this.attachmentPreviewState.isBigUI = this.ui.size >= SIZES.XXL;
+    }
+
+    setSelectedRecord(accountMoveLineData) {
+        this.attachmentPreviewState.selectedRecord = accountMoveLineData;
+        this.setThread(this.attachmentPreviewState.selectedRecord);
+    }
+
+    async setThread(accountMoveLineData) {
+        if (!accountMoveLineData || !accountMoveLineData.data.move_attachment_ids.records.length) {
+            this.attachmentPreviewState.thread = null;
+            return;
+        }
+        const attachments = insert(
+            accountMoveLineData.data.move_attachment_ids.records.map(
+                attachment => ({ id: attachment.resId, mimetype: attachment.data.mimetype }),
+            ),
+        );
+        const messaging = await this.messaging.get();
+        // As the real thread is AccountMove and the attachment are from AccountMove
+        // We prevent this hack to leak into the WebClientViewAttachmentViewContainer here
+        // by declaring the model as account.move instead of account.move.line
+        const thread = messaging.models['Thread'].insert({
+            attachments,
+            id: accountMoveLineData.data.move_id[0],
+            model: accountMoveLineData.fields["move_id"].relation,
+        });
+        thread.update({ mainAttachment: thread.attachments[0] });
+        this.attachmentPreviewState.thread = thread;
+    }
+}
+AccountMoveListController.template = 'account_accountant.MoveLineListView';
+AccountMoveListController.components = {
+    ...AccountMoveListController.components,
+    WebClientViewAttachmentViewContainer,
+};
+
+class AccountMoveListRenderer extends ListRenderer {
+    onCellClicked(record, column, ev) {
+        this.props.setSelectedRecord(record);
+        super.onCellClicked(record, column, ev);
+    }
+
+    findFocusFutureCell(cell, cellIsInGroupRow, direction) {
+        const futureCell = super.findFocusFutureCell(cell, cellIsInGroupRow, direction);
+        const dataPointId = futureCell.closest('tr').dataset.id;
+        const record = this.props.list.records.filter(x=>x.id === dataPointId)[0];
+        this.props.setSelectedRecord(record);
+        return futureCell;
+    }
+}
+AccountMoveListRenderer.props = [...AccountMoveListRenderer.props, "setSelectedRecord?"];
+const AccountMoveListView = {
+    ...listView,
+    Renderer: AccountMoveListRenderer,
+    Controller: AccountMoveListController,
+};
+
+registry.category("views").add('account_move_line_list', AccountMoveListView);

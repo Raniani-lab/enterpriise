@@ -134,10 +134,10 @@ class TestRentalCommon(TransactionCase):
         })
 
         sale_order.write({'pricelist_id': pricelist_A.id})
-        sale_order.update_prices()
+        sale_order._recompute_prices()
         self.assertEqual(sol.price_unit, 3.5, "Pricing should take into account pricelist A")
         sale_order.write({'pricelist_id': pricelist_B.id})
-        sale_order.update_prices()
+        sale_order._recompute_prices()
         self.assertEqual(sol.price_unit, 15, "Pricing should take into account pricelist B")
 
     def test_delay_pricing(self):
@@ -216,10 +216,10 @@ class TestRentalCommon(TransactionCase):
             'price_unit': 1
         })
         sale_order.write({'pricelist_id': pricelist_A.id})
-        sale_order.update_prices()
+        sale_order._recompute_prices()
         self.assertEqual(sol.discount, 0, "Discount should always been 0 on pricelist change")
         sale_order.write({'pricelist_id': pricelist_B.id})
-        sale_order.update_prices()
+        sale_order._recompute_prices()
         self.assertEqual(sol.discount, 0, "Discount should always been 0 on pricelist change")
 
     def test_is_add_to_cart_possible(self):
@@ -262,7 +262,7 @@ class TestRentalCommon(TransactionCase):
         })
 
         self.assertEqual(sol.price_unit, 1, "No pricing should be taken into account if no pickup nor return date.")
-        sale_order.update_prices()
+        sale_order._recompute_prices()
         self.assertEqual(sol.price_unit, 1, "Update price should not alter first computed price.")
 
     def test_no_price_update_on_pickup_return_update(self):
@@ -296,7 +296,7 @@ class TestRentalCommon(TransactionCase):
             'is_rental': True,
         })
         self.assertEqual(sol.price_unit, 1, "Update price should not alter first computed price.")
-        sale_order.update_prices()
+        sale_order._recompute_prices()
         self.assertEqual(sol.price_unit, 3.5, "Update price should not alter first computed price.")
 
     def test_no_pricing_for_pricelist(self):

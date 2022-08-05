@@ -544,6 +544,10 @@ export default class BarcodePickingModel extends BarcodeModel {
                     continue;
                 }
                 barcodeData.stopped = true;
+                if (packageLine.qty_done) {
+                    const message = _t("This package is already scanned.");
+                    return this.notification.add(message, { type: 'danger' });
+                }
                 for (const line of packageLine.lines) {
                     await this._updateLineQty(line, { qty_done: line.reserved_uom_qty });
                     this._markLineAsDirty(line);

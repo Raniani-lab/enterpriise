@@ -3218,7 +3218,6 @@ tour.register('test_pack_common_content_scan', {test: true}, [
     },
 ]);
 
-
 tour.register('test_pack_multiple_location', {test: true}, [
 
     {
@@ -3242,18 +3241,32 @@ tour.register('test_pack_multiple_location', {test: true}, [
 
     {
         trigger: '.o_package_content',
+        run: function() {
+            const $line = $('.o_barcode_lines .o_barcode_line');
+            helper.assertLineQty($line, '1');
+        },
     },
 
+    { // Scan a second time the same package => Should raise a warning.
+        trigger: '.o_current_location:contains("WH/Stock/Section 1")',
+        run: 'scan PACK0000666',
+    },
+    { // A notification is shown and the package's qty. should be unchanged.
+        trigger: '.o_notification.border-danger',
+        run: function() {
+            const $line = $('.o_barcode_lines .o_barcode_line');
+            helper.assertLineQty($line, '1');
+        },
+    },
+
+    { trigger: '.o_package_content' },
     {
         trigger: '.o_legacy_kanban_view:contains("product1")',
         run: function () {
             helper.assertQuantsCount(2);
         },
     },
-
-    {
-        trigger: '.o_close',
-    },
+    { trigger: '.o_close' },
 
     {
         trigger: '.o_barcode_client_action',

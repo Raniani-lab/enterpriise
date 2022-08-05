@@ -15,6 +15,7 @@ from xml.sax.saxutils import escape
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, RedirectWarning, ValidationError
+from odoo.tools import check_barcode_encoding
 from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
@@ -231,42 +232,15 @@ class ProductTemplate(models.Model):
     def _ebay_encode(self, string):
         return escape(string.strip()) if string else ''
 
-    # returns the checksum of the ean13, or -1 if the ean has not the correct length, ean must be a string
-    def ean_checksum(self, ean):
-        code = list(ean)
-        if len(code) != 13:
-            return -1
-
-        oddsum = evensum = total = 0
-        code = code[:-1] # Remove checksum
-        for i in range(len(code)):
-            if i % 2 == 0:
-                evensum += int(code[i])
-            else:
-                oddsum += int(code[i])
-        total = oddsum * 3 + evensum
-        return int((10 - total % 10) % 10)
-
-    # returns true if the barcode string is encoded with the provided encoding.
-    def check_encoding(self, barcode, encoding):
-        if encoding == 'ean13':
-            return len(barcode) == 13 and re.match("^\d+$", barcode) and self.ean_checksum(barcode) == int(barcode[-1])
-        elif encoding == 'upc':
-            return len(barcode) == 12 and re.match("^\d+$", barcode) and self.ean_checksum("0"+barcode) == int(barcode[-1])
-        elif encoding == 'any':
-            return True
-        else:
-            return False
-
     def _prepare_non_variant_dict(self):
         item = self._prepare_item_dict()
         # Set default value to UPC
         item['Item']['ProductListingDetails']['UPC'] = 'Does not Apply'
         # Check the length of the barcode field to guess its type.
         if self.barcode:
-            if len(self.barcode) == 12 and self.check_encoding(self.barcode, 'upc'):
+            if check_barcode_encoding(self.barcode, 'upca'):
                 item['Item']['ProductListingDetails']['UPC'] = self.barcode
-            elif len(self.barcode) == 13 and self.check_encoding(self.barcode, 'ean13'):
+            elif check_barcode_encoding(self.barcode, 'ean13'):
                 item['Item']['ProductListingDetails']['EAN'] = self.barcode
         return item
 
@@ -295,9 +269,9 @@ class ProductTemplate(models.Model):
             upc = 'Does not apply'
             ean = 'Does not apply'
             if variant.barcode:
-                if len(variant.barcode) == 12 and self.check_encoding(variant.barcode, 'upc'):
+                if check_barcode_encoding(variant.barcode, 'upca'):
                     upc = variant.barcode
-                elif len(variant.barcode) == 13 and self.check_encoding(variant.barcode, 'ean13'):
+                elif check_barcode_encoding(variant.barcode, 'ean13'):
                     ean = variant.barcode
             variations.append({
                 'Quantity': variant.ebay_quantity,

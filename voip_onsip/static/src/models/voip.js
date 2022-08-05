@@ -13,9 +13,7 @@ patchRecordMethods("Voip", {
         if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
             return clear();
         }
-        return Boolean(
-            this.messaging.currentUser.res_users_settings_id.onsip_auth_username && this._super()
-        );
+        return Boolean(this.messaging.currentUser.res_users_settings_id.onsip_auth_username) && this._super();
     },
     /**
      * @override

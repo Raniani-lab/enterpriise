@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 
-import {AccountMoveFormView} from '@account/js/account_move_form';
+import {AccountMoveFormView} from '@account/js/legacy_account_move_form';
 import InvoiceExtractFormRenderer from '@account_invoice_extract/js/invoice_extract_form_renderer';
 import view_registry from 'web.view_registry';
 

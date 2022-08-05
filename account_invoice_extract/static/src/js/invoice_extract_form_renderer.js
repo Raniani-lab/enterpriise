@@ -3,7 +3,7 @@
 import InvoiceExtractBoxLayer from '@account_invoice_extract/js/invoice_extract_box_layer';
 import InvoiceExtractFields from '@account_invoice_extract/js/invoice_extract_fields';
 
-import {AccountMoveFormRenderer} from '@account/js/account_move_form';
+import {AccountMoveFormRenderer} from '@account/js/legacy_account_move_form';
 
 /**
  * This is the renderer of the subview that adds OCR features on the attachment

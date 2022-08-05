@@ -165,7 +165,6 @@ Wysiwyg.include({
         const restoreSelection = preserveCursor(this.odooEditor.document);
         const dialog = new KnowledgeArticleLinkModal(this, {});
         dialog.on('save', this, article => {
-            restoreSelection();
             if (article) {
                 const articleLinkFragment = new DocumentFragment();
                 const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
@@ -174,10 +173,11 @@ Wysiwyg.include({
                     article_id: article.id,
                 }))[0];
                 articleLinkFragment.append(articleLinkBlock);
+                dialog.close();
+                restoreSelection();
                 const [anchor] = this.odooEditor.execCommand('insertFragment', articleLinkFragment);
                 this._notifyNewBehaviors(anchor);
             }
-            dialog.close();
         });
         dialog.on('closed', this, () => {
             restoreSelection();

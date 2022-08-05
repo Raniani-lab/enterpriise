@@ -108,7 +108,7 @@ const KnowledgeArticleLinkModal = Dialog.extend({
                 const markup = [];
                 window.Select2.util.markMatch(display_name, query.term, markup, escapeMarkup);
                 if (subject !== display_name) {
-                    markup.push(`<span class="test-ellipsis small">  -  ${escapeMarkup(subject)}</span>`);
+                    markup.push(`<span class="text-ellipsis small">  -  ${escapeMarkup(subject)}</span>`);
                 }
                 return markup.join('');
             },

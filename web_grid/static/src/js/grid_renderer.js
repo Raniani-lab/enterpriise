@@ -233,6 +233,16 @@ odoo.define('web_grid.GridRenderer', function (require) {
             return classmap;
         }
         /**
+         * If there is a value in row it will return true otherwise false
+         *
+         * @private
+         * @param {object} row
+         * @returns {Boolean}
+         */
+        _showRowMuted(row) {
+            return !row.some(cell => cell.size);
+        }
+        /**
          * @private
          * @param {string} value
          * @returns {*}

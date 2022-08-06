@@ -2219,5 +2219,46 @@ QUnit.module('LegacyViews', {
         grid.destroy();
     });
 
+    QUnit.test('display whether the row is muted or not', async function (assert) {
+
+        this.data['analytic.line'].records = [
+            {id: 2, project_id: 31, task_id: 1, date: "2017-01-31", unit_amount: 0},
+            {id: 6, project_id: 142, task_id: 12, date: "2017-01-30", unit_amount: 3.5},
+        ];
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: `
+                <grid string="Timesheet" adjustment="action" adjust_name="123">
+                    <field name="project_id" type="row"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_toggle" options="{'factor': 0.125, 'range': [0.0, 0.5, 1.0]}"/>
+                </grid>`,
+            currentDate: "2017-01-31",
+            async mockRPC (route, args) {
+                const _super = this._super.bind(this);
+                if (args.method === 'read_grid') {
+                    const result = await _super(...arguments);
+                    // No value will be set in the first row
+                    for (const cell of result.grid[0]) {
+                        cell.size = 0;
+                    }
+                    return result
+                }
+                return _super(route, args);
+            },
+        });
+
+        assert.hasClass(grid.el.querySelectorAll('tbody>tr:nth-child(1)>th>div>div'), 'o_grid_text_muted', 'The first row should display muted.');
+        assert.doesNotHaveClass(grid.el.querySelector('tbody>tr:nth-child(2)>th>div>div'), 'o_grid_text_muted', 'The second row should display non-muted.');
+
+        grid.destroy();
+    });
+
 });
 });

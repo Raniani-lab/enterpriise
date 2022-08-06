@@ -16,7 +16,7 @@ tour.register('account_accountant_batch_payment_bank_rec_widget',
         {
             content: "Open the bank reconciliation widget",
             extra_trigger: ".breadcrumb",
-            trigger: "button.btn-primary[data-name='action_open_reconcile']",
+            trigger: "button.btn-primary[name='action_open_reconcile']",
         },
         {
             content: "The 'line1' should be selected by default",

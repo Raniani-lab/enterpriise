@@ -12,7 +12,7 @@ export const REINSERT_PIVOT_CHILDREN = (env) =>
             name: env.model.getters.getPivotDisplayName(pivotId),
             sequence: index,
             action: async (env) => {
-                const dataSource = env.model.getters.getSpreadsheetPivotDataSource(pivotId);
+                const dataSource = env.model.getters.getPivotDataSource(pivotId);
                 const model = await dataSource.copyModelWithOriginalDomain();
                 const table = model.getTableStructure().export();
                 const zone = env.model.getters.getSelectedZone();

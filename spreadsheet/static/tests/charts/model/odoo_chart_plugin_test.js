@@ -44,7 +44,7 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         const { model } = await createSpreadsheetWithGraph();
         const sheetId = model.getters.getActiveSheetId();
         const chartId = model.getters.getChartIds(sheetId)[0];
-        assert.ok(model.getters.getSpreadsheetGraphDataSource(chartId));
+        assert.ok(model.getters.getGraphDataSource(chartId));
     });
 
     QUnit.test("Can import/export an Odoo chart", async (assert) => {
@@ -60,7 +60,7 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         const sheetId = m1.getters.getActiveSheetId();
         assert.strictEqual(m1.getters.getChartIds(sheetId).length, 1);
         const chartId = m1.getters.getChartIds(sheetId)[0];
-        assert.ok(m1.getters.getSpreadsheetGraphDataSource(chartId));
+        assert.ok(m1.getters.getGraphDataSource(chartId));
         assert.strictEqual(m1.getters.getChartRuntime(chartId).chartJsConfig.type, "line");
     });
 
@@ -69,12 +69,12 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         insertGraphInSpreadsheet(model, "odoo_line");
         const sheetId = model.getters.getActiveSheetId();
         const chartId = model.getters.getChartIds(sheetId)[0];
-        assert.ok(model.getters.getSpreadsheetGraphDataSource(chartId));
+        assert.ok(model.getters.getGraphDataSource(chartId));
         model.dispatch("REQUEST_UNDO");
-        assert.notOk(model.getters.getSpreadsheetGraphDataSource(chartId));
+        assert.notOk(model.getters.getGraphDataSource(chartId));
         assert.strictEqual(model.getters.getChartIds(sheetId).length, 0);
         model.dispatch("REQUEST_REDO");
-        assert.ok(model.getters.getSpreadsheetGraphDataSource(chartId));
+        assert.ok(model.getters.getGraphDataSource(chartId));
         assert.strictEqual(model.getters.getChartIds(sheetId).length, 1);
     });
 

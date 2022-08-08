@@ -20,7 +20,7 @@ export default class PivotDetailsSidePanel extends Component {
                 this.props.pivotId
             );
             this.modelDisplayName = await this.env.model.getters
-                .getSpreadsheetPivotDataSource(this.props.pivotId)
+                .getPivotDataSource(this.props.pivotId)
                 .getModelLabel();
         });
     }
@@ -64,8 +64,7 @@ export default class PivotDetailsSidePanel extends Component {
      * @returns {string} date formatted
      */
     getLastUpdate() {
-        const lastUpdate = this.env.model.getters.getSpreadsheetPivotDataSource(this.props.pivotId)
-            .lastUpdate;
+        const lastUpdate = this.env.model.getters.getPivotDataSource(this.props.pivotId).lastUpdate;
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));
         }

@@ -229,9 +229,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.deepEqual(listDomain[0], "&");
         assert.deepEqual(listDomain[1], ["date", ">=", "2021-01-01"]);
         assert.deepEqual(listDomain[2], ["date", "<=", "2021-12-31"]);
-        const graphDomain = model.getters
-            .getSpreadsheetGraphDataSource(chartId)
-            .getComputedDomain();
+        const graphDomain = model.getters.getGraphDataSource(chartId).getComputedDomain();
         assert.deepEqual(graphDomain[0], "&");
         assert.deepEqual(graphDomain[1], ["date", ">=", "2021-01-01"]);
         assert.deepEqual(graphDomain[2], ["date", "<=", "2021-12-31"]);
@@ -278,9 +276,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
             graphFields: { [chartId]: { field: "date", type: "date", offset: -2 } },
         };
         await addGlobalFilter(model, { filter });
-        const graphDomain = model.getters
-            .getSpreadsheetGraphDataSource(chartId)
-            .getComputedDomain();
+        const graphDomain = model.getters.getGraphDataSource(chartId).getComputedDomain();
         assert.deepEqual(graphDomain[0], "&");
         assert.deepEqual(graphDomain[1], ["date", ">=", "2022-05-01"]);
         assert.deepEqual(graphDomain[2], ["date", "<=", "2022-05-31"]);

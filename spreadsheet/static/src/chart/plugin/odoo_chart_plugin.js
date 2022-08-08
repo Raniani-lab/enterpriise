@@ -37,7 +37,7 @@ export default class OdooGraphPlugin extends CorePlugin {
                 break;
             }
             case "ADD_GRAPH_DOMAIN":
-                this.getters.getSpreadsheetGraphDataSource(cmd.id).addDomain(cmd.domain);
+                this.getters.getGraphDataSource(cmd.id).addDomain(cmd.domain);
         }
     }
 
@@ -74,15 +74,15 @@ export default class OdooGraphPlugin extends CorePlugin {
      * @param {string} id
      * @returns {GraphDataSource|undefined}
      */
-    getSpreadsheetGraphDataSource(id) {
+    getGraphDataSource(id) {
         const dataSourceId = this.graphsDataSources[id];
         return this.dataSources.get(dataSourceId);
     }
 
     import(data) {
-        for (let sheet of data.sheets) {
+        for (const sheet of data.sheets) {
             if (sheet.figures) {
-                for (let figure of sheet.figures) {
+                for (const figure of sheet.figures) {
                     if (figure.tag === "chart" && figure.data.type.startsWith("odoo_")) {
                         this._addGraphDataSource(figure.id, this.uuidGenerator.uuidv4());
                     }
@@ -110,10 +110,6 @@ export default class OdooGraphPlugin extends CorePlugin {
     }
 }
 
-OdooGraphPlugin.getters = [
-    "getSpreadsheetGraphDataSource",
-    "getSpreadsheetGraphModel",
-    "getOdooChartIds",
-];
+OdooGraphPlugin.getters = ["getGraphDataSource", "getSpreadsheetGraphModel", "getOdooChartIds"];
 
 corePluginRegistry.add("odoo_graph_plugin", OdooGraphPlugin);

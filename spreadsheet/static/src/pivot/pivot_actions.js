@@ -21,7 +21,7 @@ export const SEE_RECORDS_PIVOT = async (env) => {
         argsDomain = argsDomain.slice(0, argsDomain.length - 2);
     }
     const domain = pivotModel.getPivotCellDomain(argsDomain);
-    const name = await env.model.getters.getSpreadsheetPivotDataSource(pivotId).getModelLabel();
+    const name = await env.model.getters.getPivotDataSource(pivotId).getModelLabel();
     await env.services.action.doAction({
         type: "ir.actions.act_window",
         name,

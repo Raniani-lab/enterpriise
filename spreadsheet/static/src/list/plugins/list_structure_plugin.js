@@ -90,7 +90,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      * @param {Array<Array<any>>} domain
      */
     _addDomain(listId, domain) {
-        this.getters.getSpreadsheetListDataSource(listId).addDomain(domain);
+        this.getters.getListDataSource(listId).addDomain(domain);
     }
 
     /**
@@ -98,7 +98,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      * @param {string} listId Id of the list
      */
     _refreshOdooList(listId) {
-        this.getters.getSpreadsheetListDataSource(listId).load({ reload: true });
+        this.getters.getListDataSource(listId).load({ reload: true });
     }
 
     /**
@@ -130,7 +130,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      * @returns {Array}
      */
     getListComputedDomain(listId) {
-        return this.getters.getSpreadsheetListDataSource(listId).getComputedDomain();
+        return this.getters.getListDataSource(listId).getComputedDomain();
     }
 
     /**

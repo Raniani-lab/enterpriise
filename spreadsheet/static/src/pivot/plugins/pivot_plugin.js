@@ -137,7 +137,7 @@ export default class PivotPlugin extends CorePlugin {
      * @param {number} id
      * @returns {PivotDataSource|undefined}
      */
-    getSpreadsheetPivotDataSource(id) {
+    getPivotDataSource(id) {
         const dataSourceId = this.pivots[id].dataSourceId;
         return this.dataSources.get(dataSourceId);
     }
@@ -308,8 +308,8 @@ export default class PivotPlugin extends CorePlugin {
         const colHeight = table.getColHeight();
         const colWidth = table.getColWidth();
         const lastRowBeforeMeasureRow = anchor[1] + colHeight - 2;
-        let right = anchor[0] + colWidth;
-        let left = right - table.getNumberOfMeasures() + 1;
+        const right = anchor[0] + colWidth;
+        const left = right - table.getNumberOfMeasures() + 1;
         for (let anchorTop = anchor[1]; anchorTop < lastRowBeforeMeasureRow; anchorTop++) {
             this._merge(sheetId, { top: anchorTop, bottom: anchorTop, left, right });
         }
@@ -510,5 +510,5 @@ PivotPlugin.getters = [
     "getSpreadsheetPivotModel",
     "getAsyncSpreadsheetPivotModel",
     "isExistingPivot",
-    "getSpreadsheetPivotDataSource",
+    "getPivotDataSource",
 ];

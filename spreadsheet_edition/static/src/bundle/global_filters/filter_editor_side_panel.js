@@ -147,7 +147,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             Object.values(this.getters.getSpreadsheetListModel(listId).getFields())
         );
         const graphs = this.graphIds.map((graphId) =>
-            Object.values(this.getters.getSpreadsheetGraphDataSource(graphId).getFields())
+            Object.values(this.getters.getGraphDataSource(graphId).getFields())
         );
         const all = pivots.concat(lists).concat(graphs);
         return [
@@ -196,7 +196,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         const proms = [];
         proms.push(this.fetchModelFromName());
         for (const pivotId of this.getters.getPivotIds()) {
-            const dataSource = this.getters.getSpreadsheetPivotDataSource(pivotId);
+            const dataSource = this.getters.getPivotDataSource(pivotId);
             proms.push(dataSource.loadModel());
             proms.push(
                 dataSource
@@ -205,7 +205,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             );
         }
         for (const listId of this.listIds) {
-            const dataSource = this.getters.getSpreadsheetListDataSource(listId);
+            const dataSource = this.getters.getListDataSource(listId);
             proms.push(dataSource.loadModel());
             proms.push(
                 dataSource
@@ -214,7 +214,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             );
         }
         for (const graphId of this.graphIds) {
-            const dataSource = this.getters.getSpreadsheetGraphDataSource(graphId);
+            const dataSource = this.getters.getGraphDataSource(graphId);
             proms.push(dataSource.loadModel());
             proms.push(
                 dataSource

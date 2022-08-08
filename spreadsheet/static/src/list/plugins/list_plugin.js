@@ -137,7 +137,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
      * @param {number} id
      * @returns {import("@spreadsheet/list/list_data_source").ListDataSource|undefined}
      */
-    getSpreadsheetListDataSource(id) {
+    getListDataSource(id) {
         const dataSourceId = this.lists[id].dataSourceId;
         return this.dataSources.get(dataSourceId);
     }
@@ -394,7 +394,7 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
 
 ListPlugin.getters = [
     "getSpreadsheetListModel",
-    "getSpreadsheetListDataSource",
+    "getListDataSource",
     "getListDisplayName",
     "getAsyncSpreadsheetListModel",
     "getListDefinition",

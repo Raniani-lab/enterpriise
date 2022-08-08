@@ -632,9 +632,7 @@ QUnit.module(
             assertDateDomainEqual(assert, "date", "2022-07-01", "2022-07-31", listDomain);
             assert.strictEqual(globalFilter.listFields["1"].offset, 0);
             const chartId = model.getters.getOdooChartIds()[0];
-            const graphDomain = model.getters
-                .getSpreadsheetGraphDataSource(chartId)
-                .getComputedDomain();
+            const graphDomain = model.getters.getGraphDataSource(chartId).getComputedDomain();
             assertDateDomainEqual(assert, "date", "2022-07-01", "2022-07-31", graphDomain);
             assert.equal(globalFilter.graphFields[chartId].offset, 0);
         });
@@ -705,9 +703,7 @@ QUnit.module(
             assert.notOk(globalFilter.listFields["1"].offset);
             assertDateDomainEqual(assert, "date", "2022-07-01", "2022-07-31", listDomain);
             const chartId = model.getters.getOdooChartIds()[0];
-            const graphDomain = model.getters
-                .getSpreadsheetGraphDataSource(chartId)
-                .getComputedDomain();
+            const graphDomain = model.getters.getGraphDataSource(chartId).getComputedDomain();
             assert.equal(globalFilter.graphFields[chartId].offset, -2);
             assertDateDomainEqual(assert, "date", "2022-05-01", "2022-05-31", graphDomain);
         });

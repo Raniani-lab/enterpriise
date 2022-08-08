@@ -23,9 +23,7 @@ QUnit.module("spreadsheet > Global filters chart", {}, () => {
         await addChartGlobalFilter(model);
         assert.equal(model.getters.getGlobalFilters().length, 1);
         const chartId = model.getters.getChartIds(model.getters.getActiveSheetId())[0];
-        const computedDomain = model.getters
-            .getSpreadsheetGraphDataSource(chartId)
-            .getComputedDomain();
+        const computedDomain = model.getters.getGraphDataSource(chartId).getComputedDomain();
         assert.equal(computedDomain.length, 3);
         assert.equal(computedDomain[0], "&");
     });

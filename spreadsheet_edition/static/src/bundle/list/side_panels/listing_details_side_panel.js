@@ -16,9 +16,7 @@ export class ListingDetailsSidePanel extends Component {
         this.getters = this.env.model.getters;
         this.dialog = useService("dialog");
         onWillStart(async () => {
-            const name = await this.getters
-                .getSpreadsheetListDataSource(this.props.listId)
-                .getModelLabel();
+            const name = await this.getters.getListDataSource(this.props.listId).getModelLabel();
             this.modelDisplayName = name;
         });
     }
@@ -41,7 +39,7 @@ export class ListingDetailsSidePanel extends Component {
     }
 
     getLastUpdate() {
-        const lastUpdate = this.getters.getSpreadsheetListDataSource(this.props.listId).lastUpdate;
+        const lastUpdate = this.getters.getListDataSource(this.props.listId).lastUpdate;
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));
         }

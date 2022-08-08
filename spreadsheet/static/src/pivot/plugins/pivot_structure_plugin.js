@@ -110,7 +110,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @returns {Array}
      */
     getPivotComputedDomain(pivotId) {
-        return this.getters.getSpreadsheetPivotDataSource(pivotId).getComputedDomain();
+        return this.getters.getPivotDataSource(pivotId).getComputedDomain();
     }
 
     /**
@@ -239,7 +239,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
         if (model) {
             model.clearUsedValues();
         }
-        this.getters.getSpreadsheetPivotDataSource(pivotId).load({ reload: true });
+        this.getters.getPivotDataSource(pivotId).load({ reload: true });
     }
 
     /**
@@ -260,7 +260,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @param {Array<Array<any>>} domain
      */
     _addDomain(pivotId, domain) {
-        this.getters.getSpreadsheetPivotDataSource(pivotId).addDomain(domain);
+        this.getters.getPivotDataSource(pivotId).addDomain(domain);
     }
 }
 

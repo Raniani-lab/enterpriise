@@ -33,15 +33,20 @@ functionRegistry.add("ODOO.LIST", {
     computeFormat: function (listId, index, fieldName) {
         const id = toString(listId.value);
         const position = toNumber(index.value) - 1;
-        const field = this.getters.getSpreadsheetListModel(id).getField((toString(fieldName.value)));
+        const field = this.getters.getListDataSource(id).getField(toString(fieldName.value));
         switch (field.type) {
             case "integer":
                 return "0";
             case "float":
                 return "#,##0.00";
-            case "monetary":
-                const currencyName = this.getters.getListCellValue(id, position, field.currency_field);
+            case "monetary": {
+                const currencyName = this.getters.getListCellValue(
+                    id,
+                    position,
+                    field.currency_field
+                );
                 return this.getters.getCurrencyFormat(currencyName);
+            }
             case "date":
                 return "m/d/yyyy";
             case "datetime":

@@ -89,7 +89,7 @@ export default class ListAutofillPlugin extends spreadsheet.UIPlugin {
             .map((arg) => this.getters.evaluateFormula(arg));
         if (isColumn || functionName === "ODOO.LIST.HEADER") {
             const fieldName = functionName === "ODOO.LIST" ? evaluatedArgs[2] : evaluatedArgs[1];
-            return this.getters.getSpreadsheetListModel(evaluatedArgs[0]).getListHeaderValue(fieldName);
+            return this.getters.getListDataSource(evaluatedArgs[0]).getListHeaderValue(fieldName);
         }
         return _t("Record #") + evaluatedArgs[1];
     }

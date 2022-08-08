@@ -174,14 +174,14 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         });
         const listId = model.getters.getListIds()[0];
         // remove forbidden field from the fields of the list.
-        delete model.getters.getSpreadsheetListModel(listId).getFields()[forbiddenFieldName];
+        delete model.getters.getListDataSource(listId).getFields()[forbiddenFieldName];
         spreadsheetLoaded = true;
         model.dispatch("REFRESH_ALL_DATA_SOURCES");
         setCellContent(model, "A1", `=ODOO.LIST.HEADER("1", "${forbiddenFieldName}")`);
         setCellContent(model, "A2", `=ODOO.LIST("1","1","${forbiddenFieldName}")`);
 
         assert.equal(
-            model.getters.getSpreadsheetListModel(listId).getFields()[forbiddenFieldName],
+            model.getters.getListDataSource(listId).getFields()[forbiddenFieldName],
             undefined
         );
         assert.strictEqual(getCellValue(model, "A1"), forbiddenFieldName);
@@ -413,9 +413,9 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         const { model } = await createSpreadsheetWithList();
         model.updateMode("dashboard");
         const listId = model.getters.getListIds()[0];
-        const listModel = model.getters.getSpreadsheetListModel(listId);
+        const dataSource = model.getters.getListDataSource(listId);
         selectCell(model, "A2");
-        assert.verifySteps(["partner", listModel.getIdFromPosition(0).toString()]);
+        assert.verifySteps(["partner", dataSource.getIdFromPosition(0).toString()]);
     });
 
     QUnit.test(

@@ -144,7 +144,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             Object.values(this.getters.getPivotDataSource(pivotId).getFields())
         );
         const lists = this.listIds.map((listId) =>
-            Object.values(this.getters.getSpreadsheetListModel(listId).getFields())
+            Object.values(this.getters.getListDataSource(listId).getFields())
         );
         const graphs = this.graphIds.map((graphId) =>
             Object.values(this.getters.getGraphDataSource(graphId).getFields())
@@ -260,7 +260,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         }
         for (const listId of this.listIds) {
             const fieldName = this._findRelation(
-                this.getters.getSpreadsheetListModel(listId).getFields()
+                this.getters.getListDataSource(listId).getFields()
             );
             this.selectedListField(listId, fieldName);
         }
@@ -307,7 +307,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * @param {string} fieldName
      */
     selectedListField(listId, fieldName) {
-        const field = this.getters.getSpreadsheetListModel(listId).getField(fieldName);
+        const field = this.getters.getListDataSource(listId).getField(fieldName);
         if (field) {
             this.state.listFields[listId] = {
                 field: fieldName,

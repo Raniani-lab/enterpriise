@@ -17,8 +17,8 @@ export const SEE_RECORD_LIST = async (env) => {
         .map((arg) => env.model.getters.evaluateFormula(arg));
     const listId = env.model.getters.getListIdFromPosition(sheetId, col, row);
     const { model } = env.model.getters.getListDefinition(listId);
-    const listModel = await env.model.getters.getAsyncSpreadsheetListModel(listId);
-    const recordId = listModel.getIdFromPosition(evaluatedArgs[1] - 1);
+    const dataSource = await env.model.getters.getAsyncListDataSource(listId);
+    const recordId = dataSource.getIdFromPosition(evaluatedArgs[1] - 1);
     if (!recordId) {
         return;
     }

@@ -94,7 +94,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
     QUnit.test("Add list in an existing spreadsheet", async (assert) => {
         const { model } = await createSpreadsheetFromListView();
         const list = model.getters.getListDefinition("1");
-        const fields = model.getters.getSpreadsheetListModel("1").getFields();
+        const fields = model.getters.getListDataSource("1").getFields();
         const callback = insertList.bind({ isEmptySpreadsheet: false })({
             list: list,
             threshold: 10,
@@ -189,7 +189,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
     QUnit.test("Can see record of a list", async function (assert) {
         const { webClient, model } = await createSpreadsheetFromListView();
         const listId = model.getters.getListIds()[0];
-        const listModel = model.getters.getSpreadsheetListModel(listId);
+        const dataSource = model.getters.getListDataSource(listId);
         const env = {
             ...webClient.env,
             model,
@@ -206,11 +206,11 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         selectCell(model, "A2");
         const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
         await root.action(env);
-        assert.verifySteps(["partner", listModel.getIdFromPosition(0).toString()]);
+        assert.verifySteps(["partner", dataSource.getIdFromPosition(0).toString()]);
 
         selectCell(model, "A3");
         await root.action(env);
-        assert.verifySteps(["partner", listModel.getIdFromPosition(1).toString()]);
+        assert.verifySteps(["partner", dataSource.getIdFromPosition(1).toString()]);
 
         // From a cell inside a merge
         model.dispatch("ADD_MERGE", {
@@ -220,7 +220,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         });
         selectCell(model, "B3");
         await root.action(env);
-        assert.verifySteps(["partner", listModel.getIdFromPosition(1).toString()]);
+        assert.verifySteps(["partner", dataSource.getIdFromPosition(1).toString()]);
     });
 
     QUnit.test(
@@ -333,6 +333,36 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             assert.ok(getCell(model, "A2").evaluated.value >= getCell(model, "A3").evaluated.value);
             assert.ok(getCell(model, "A3").evaluated.value >= getCell(model, "A4").evaluated.value);
             assert.ok(getCell(model, "A4").evaluated.value >= getCell(model, "A5").evaluated.value);
+        }
+    );
+
+    QUnit.test(
+        "Sorting from the list is displayed in the properties panel",
+        async function (assert) {
+            const serverData = getBasicServerData();
+            serverData.models.partner.fields.foo.sortable = true;
+            serverData.models.partner.fields.bar.sortable = true;
+            const { model, env } = await createSpreadsheetFromListView({
+                serverData,
+                orderBy: [
+                    { name: "foo", asc: true },
+                    { name: "bar", asc: false },
+                ],
+                linesNumber: 4,
+            });
+            const sheetId = model.getters.getActiveSheetId();
+            const listId = model.getters.getListIds(sheetId)[0];
+            model.dispatch("SELECT_ODOO_LIST", { listId });
+            env.openSidePanel("LIST_PROPERTIES_PANEL", {
+                listId,
+            });
+            await nextTick();
+            const fixture = getFixture();
+            const sortingSection = fixture.querySelectorAll(".o_side_panel_section")[3];
+            const barSortingText = sortingSection.querySelectorAll("div")[1].innerText;
+            const fooSortingText = sortingSection.querySelectorAll("div")[2].innerText;
+            assert.strictEqual(barSortingText, "Bar (descending)");
+            assert.strictEqual(fooSortingText, "Foo (ascending)");
         }
     );
 });

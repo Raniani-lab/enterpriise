@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
-import { LoadingDataError } from "../../o_spreadsheet/errors";
 import { getFirstListFunction } from "../list_helpers";
 
 const { astToFormula } = spreadsheet;
@@ -38,8 +37,8 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
                         }
                         const listId = this.getters.getListIdFromPosition(sheetId, col, row);
                         const { model } = this.getters.getListDefinition(listId);
-                        const listModel = this.getters.getSpreadsheetListModel(listId);
-                        const recordId = listModel.getIdFromPosition(evaluatedArgs[1] - 1);
+                        const dataSource = this.getters.getListDataSource(listId);
+                        const recordId = dataSource.getIdFromPosition(evaluatedArgs[1] - 1);
                         if (!recordId) {
                             return;
                         }
@@ -140,11 +139,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      * @param {string} fieldName
      */
     getListHeaderValue(listId, fieldName) {
-        const model = this.getters.getSpreadsheetListModel(listId);
-        if (!model) {
-            throw new LoadingDataError();
-        }
-        return model.getListHeaderValue(fieldName);
+        return this.getters.getListDataSource(listId).getListHeaderValue(fieldName);
     }
 
     /**
@@ -156,11 +151,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
      * @returns {string|undefined}
      */
     getListCellValue(listId, position, fieldName) {
-        const model = this.getters.getSpreadsheetListModel(listId);
-        if (!model) {
-            throw new LoadingDataError();
-        }
-        return model.getListCellValue(position, fieldName);
+        return this.getters.getListDataSource(listId).getListCellValue(position, fieldName);
     }
 
     /**

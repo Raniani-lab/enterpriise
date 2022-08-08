@@ -34,7 +34,7 @@ export class ListingDetailsSidePanel extends Component {
 
     formatSort(sort) {
         return `${this.getters
-            .getSpreadsheetListModel(this.props.listId)
+            .getListDataSource(this.props.listId)
             .getListHeaderValue(sort.name)} (${sort.asc ? _t("ascending") : _t("descending")})`;
     }
 

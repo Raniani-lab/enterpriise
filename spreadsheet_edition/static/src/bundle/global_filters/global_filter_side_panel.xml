@@ -158,7 +158,7 @@
                         <FieldSelectorAdapter
                             Component="FieldSelectorWidget"
                             model="getters.getListDefinition(listId).model"
-                            fields="getters.getSpreadsheetListModel(listId).getFields()"
+                            fields="getters.getListDataSource(listId).getFields()"
                             type="state.type"
                             relatedModel="state.relation.relatedModel.technical"
                             selected="getModelField(state.listFields[listId])"

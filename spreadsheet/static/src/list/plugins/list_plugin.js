@@ -126,15 +126,6 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
 
     /**
      * @param {number} id
-     * @returns {import("@spreadsheet/list/list_model").SpreadsheetListModel|undefined}
-     */
-    getSpreadsheetListModel(id) {
-        const dataSourceId = this.lists[id].dataSourceId;
-        return this.dataSources.getDataSourceModel(dataSourceId);
-    }
-
-    /**
-     * @param {number} id
      * @returns {import("@spreadsheet/list/list_data_source").ListDataSource|undefined}
      */
     getListDataSource(id) {
@@ -162,10 +153,10 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
      * @param {number} id
      * @returns {Promise<import("@spreadsheet/list/list_data_source").ListDataSource>}
      */
-    async getAsyncSpreadsheetListModel(id) {
+    async getAsyncListDataSource(id) {
         const dataSourceId = this.lists[id].dataSourceId;
         await this.dataSources.load(dataSourceId);
-        return this.dataSources.getDataSourceModel(dataSourceId);
+        return this.getListDataSource(id);
     }
 
     /**
@@ -393,10 +384,9 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
 }
 
 ListPlugin.getters = [
-    "getSpreadsheetListModel",
     "getListDataSource",
     "getListDisplayName",
-    "getAsyncSpreadsheetListModel",
+    "getAsyncListDataSource",
     "getListDefinition",
     "getListIdFromPosition",
     "getListIds",

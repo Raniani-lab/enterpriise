@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
 import { _t } from "@web/core/l10n/translation";
 import { OdooViewsDataSource } from "../data_sources/odoo_views_data_source";
 import { SpreadsheetPivotModel } from "./pivot_model";
@@ -256,12 +255,5 @@ export default class PivotDataSource extends OdooViewsDataSource {
     async prepareForTemplateGeneration() {
         this._assertModel();
         await this._model.prepareForTemplateGeneration();
-    }
-
-    _assertModel() {
-        if (this._model === undefined) {
-            this.load();
-            throw new LoadingDataError();
-        }
     }
 }

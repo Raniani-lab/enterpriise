@@ -11,9 +11,12 @@ export const REINSERT_LIST_CHILDREN = (env) =>
             sequence: index,
             action: async (env) => {
                 const zone = env.model.getters.getSelectedZone();
-                const model = await env.model.getters.getAsyncSpreadsheetListModel(listId);
+                const dataSource = await env.model.getters.getAsyncListDataSource(listId);
                 const list = env.model.getters.getListDefinition(listId);
-                const columns = list.columns.map((name) => ({ name, type: model.getField(name).type}));
+                const columns = list.columns.map((name) => ({
+                    name,
+                    type: dataSource.getField(name).type,
+                }));
                 env.getLinesNumber((linesNumber) => {
                     env.model.dispatch("RE_INSERT_ODOO_LIST", {
                         sheetId: env.model.getters.getActiveSheetId(),
@@ -22,7 +25,7 @@ export const REINSERT_LIST_CHILDREN = (env) =>
                         id: listId,
                         linesNumber,
                         columns: columns,
-                    })
+                    });
                 });
             },
         });

@@ -3,6 +3,8 @@
 import { OdooViewsDataSource } from "@spreadsheet/data_sources/odoo_views_data_source";
 import { SpreadsheetListModel } from "./list_model";
 
+/** @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field */
+
 export default class ListDataSource extends OdooViewsDataSource {
     /**
      * @override
@@ -19,6 +21,7 @@ export default class ListDataSource extends OdooViewsDataSource {
 
     async _createDataSourceModel() {
         await this._fetchMetadata();
+        /** @type {SpreadsheetListModel} */
         this._model = new SpreadsheetListModel(
             {
                 metaData: this._metaData,
@@ -30,5 +33,50 @@ export default class ListDataSource extends OdooViewsDataSource {
             }
         );
         this._model.addEventListener("limit-exceeded", () => this.load({ reload: true }));
+    }
+
+    /**
+     * @returns {Record<string, Field>}
+     */
+    getFields() {
+        this._assertModel();
+        return this._model.getFields();
+    }
+
+    /**
+     * @param {string} fieldName
+     * @returns {Field}
+     */
+    getField(fieldName) {
+        this._assertModel();
+        return this._model.getField(fieldName);
+    }
+
+    /**
+     * @param {number} position
+     * @returns {number}
+     */
+    getIdFromPosition(position) {
+        this._assertModel();
+        return this._model.getIdFromPosition(position);
+    }
+
+    /**
+     * @param {string} fieldName
+     * @returns {string}
+     */
+    getListHeaderValue(fieldName) {
+        this._assertModel();
+        return this._model.getListHeaderValue(fieldName);
+    }
+
+    /**
+     * @param {number} position
+     * @param {string} fieldName
+     * @returns {string|number|undefined}
+     */
+    getListCellValue(position, fieldName) {
+        this._assertModel();
+        return this._model.getListCellValue(position, fieldName);
     }
 }

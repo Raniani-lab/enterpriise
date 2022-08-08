@@ -2,6 +2,7 @@
 
 import { DataSource } from "./data_source";
 import { Domain } from "@web/core/domain";
+import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
 
 /**
  * Remove user specific info from the context
@@ -82,5 +83,15 @@ export class OdooViewsDataSource extends DataSource {
      */
     getModelLabel() {
         return this._metadataRepository.modelDisplayName(this._metaData.resModel);
+    }
+
+    /**
+     * @protected
+     */
+    _assertModel() {
+        if (this._model === undefined) {
+            this.load();
+            throw new LoadingDataError();
+        }
     }
 }

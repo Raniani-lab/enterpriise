@@ -15,6 +15,7 @@ CalendarController.include({
         'create_custom_appointment': '_onCreateCustomAppointment',
         'slots_discard': '_onDiscardSlots',
         'set_slots_creation_mode': '_setModeToSlotsCreation',
+        'search_create_anytime_appointment_type': '_onSearchCreateAnytimeAppointment',
     }),
     /**
      * Save in the clipboard in the URL of the appointment type selected
@@ -82,6 +83,20 @@ CalendarController.include({
         const slotEvents = events.filter(event => event.extendedProps.slot);
         slotEvents.forEach(event => event.remove());
         this.model.setCalendarMode('default');
+    },
+    /**
+     * Search/create the anytime appointment type of the user when
+     * they click on the button "Anytime".
+     * @param {Event} ev
+     */
+     async _onSearchCreateAnytimeAppointment(ev) {
+        const anytimeAppointment = await this._rpc({
+            route: '/appointment/appointment_type/search_create_anytime',
+        });
+        if (anytimeAppointment.appointment_type_id) {
+            browser.navigator.clipboard.writeText(anytimeAppointment.invite_url);
+            this.lastAppointmentURL = anytimeAppointment.invite_url;
+        }
     },
     /**
      * Update the mode of the calendar to slots-creation

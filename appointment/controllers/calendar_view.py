@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from werkzeug.urls import url_encode, url_join
+from werkzeug.exceptions import Forbidden
 
 from odoo import http, fields, _
 from odoo.exceptions import AccessError, ValidationError
@@ -45,7 +45,7 @@ class AppointmentCalendarView(http.Controller):
             raise ValidationError(_("A list of slots information is needed to create a custom appointment type"))
         # Check if the user is a member of group_user to avoid portal user and the like to create appointment types
         if not request.env.user.user_has_groups('base.group_user'):
-            raise AccessError(_("Access Denied"))
+            raise Forbidden()
         # Ignore the default_name in the context when creating a custom appointment type from the calendar view
         context = request.env.context.copy()
         if context.get('default_name'):
@@ -76,14 +76,40 @@ class AppointmentCalendarView(http.Controller):
     @route('/appointment/appointment_type/get_staff_user_appointment_types', type='json', auth='user')
     def appointment_get_user_appointment_types(self):
         appointment_types_info = []
-        domain = [('staff_user_ids', 'in', [request.env.user.id]), ('category', '!=', 'custom')]
+        domain = [('staff_user_ids', 'in', [request.env.user.id]), ('category', '=', 'website')]
         appointment_types_info = request.env['appointment.type'].search_read(domain, ['name', 'category'])
         return {
             'appointment_types_info': appointment_types_info,
         }
 
+    @route('/appointment/appointment_type/search_create_anytime', type='json', auth='user')
+    def appointment_type_search_create_anytime(self):
+        """
+        Return the info (id and url) of the anytime appointment type of the actual user.
+
+        Search and return the anytime appointment type for the user.
+        In case it doesn't exist yet, it creates an anytime appointment type.
+        """
+        # Check if the user is a member of group_user to avoid portal user and the like to create appointment types
+        if not request.env.user.user_has_groups('base.group_user'):
+            raise Forbidden()
+        appointment_type = request.env['appointment.type'].search([
+            ('category', '=', 'anytime'),
+            ('staff_user_ids', 'in', request.env.user.ids)])
+        if not appointment_type:
+            appt_type_vals = self._prepare_appointment_type_anytime_values()
+            appointment_type = request.env['appointment.type'].sudo().create(appt_type_vals)
+        return self._get_staff_user_appointment_invite_info(appointment_type)
+
     # Utility Methods
     # ----------------------------------------------------------
+
+    def _prepare_appointment_type_anytime_values(self):
+        return {
+            'max_schedule_days': 15,
+            'category': 'anytime',
+            'slot_ids': request.env['appointment.type']._get_default_slots('anytime'),
+        }
 
     def _get_staff_user_appointment_invite_info(self, appointment_type):
         appointment_invitation = request.env['appointment.invite'].search([

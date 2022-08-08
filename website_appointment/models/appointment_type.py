@@ -18,7 +18,7 @@ class AppointmentType(models.Model):
     @api.model
     def default_get(self, default_fields):
         result = super().default_get(default_fields)
-        if result.get('category') in ['custom', 'work_hours']:
+        if result.get('category') in ['custom', 'anytime']:
             result['is_published'] = True
         return result
 
@@ -38,7 +38,7 @@ class AppointmentType(models.Model):
     @api.depends('category')
     def _compute_is_published(self):
         for appointment_type in self:
-            if appointment_type.category in ['custom', 'work_hours']:
+            if appointment_type.category in ['custom', 'anytime']:
                 appointment_type.is_published = True
             else:
                 appointment_type.is_published = False

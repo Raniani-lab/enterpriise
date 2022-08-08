@@ -22,7 +22,6 @@ Allow clients to Schedule Appointments through your Website
         'views/appointment_templates_appointments.xml',
         'views/appointment_templates_registration.xml',
         'views/appointment_templates_validation.xml',
-        'views/appointment_type_add.xml',
         'security/calendar_security.xml',
         'security/ir.model.access.csv',
         'views/snippets.xml',

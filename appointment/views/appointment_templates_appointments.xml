@@ -20,14 +20,11 @@
                             t-attf-action="/appointment/#{appointment_types[0].id}?#{keep_query('*')}"
                             method="POST">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                            <div class="row pb-4">
-                                <div class="col-6">
-                                    <t t-call="appointment.appointment_type_select"/>
-                                    <button type="submit" class="mt-5 btn btn-primary">View availabilities</button>
-                                </div>
-                                <div class="col-6 mt-2 o_appointment_intro">
-                                    <div t-field="appointment_types[0].message_intro" class="text-muted"
-                                         placeholder="Add an intro message here..."/>
+                            <t t-call="appointment.appointment_type_select"/>
+                            <div t-out="appointment_types[0].message_intro" class="o_calendar_intro my-2"/>
+                            <div class="row">
+                                <div class="mx-auto">
+                                    <button type="submit" class="btn btn-primary">Preview <span class="fa fa-arrow-right"/></button>
                                 </div>
                             </div>
                         </form>

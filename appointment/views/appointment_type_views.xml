@@ -24,7 +24,7 @@
         <field name="name">appointment.type.kanban</field>
         <field name="model">appointment.type</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_dashboard o_appointment_kanban" sample="1">
+            <kanban class="o_kanban_dashboard o_appointment_kanban">
                 <field name="appointment_tz"/>
                 <templates>
                     <div t-name="kanban-box" class="oe_kanban_global_click oe_kanban_card o_appointment_kanban_card">
@@ -89,15 +89,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="o_kanban_ungrouped_action_buttons col-12 col-lg-3 py-0 pe-2 ps-md-2 pe-lg-5 my-md-auto my-2 d-none d-md-flex flex-wrap justify-content-lg-end"> <!--justify-content-lg-end-->
+                            <div class="o_kanban_ungrouped_action_buttons col-12 col-lg-3 py-0 pe-2 ps-md-2 my-md-auto my-2 d-none d-md-flex flex-wrap justify-content-lg-end"> <!--justify-content-lg-end-->
                                 <field name="active" invisible="1"/>
-                                <button name="action_share_invite" string="Share" type="object" class="btn btn-secondary border me-2"
+                                <button name="action_customer_preview" string="Preview" type="object"
+                                        class="btn btn-secondary border me-3 text-nowrap" attrs="{'invisible': [('active', '=', False)]}">
+                                    Preview
+                                </button>
+                                <button name="action_share_invite" string="Share" type="object" class="btn btn-secondary border"
                                         attrs="{'invisible': [('active', '=', False)]}">
                                     Share
-                                </button>
-                                <button name="action_customer_preview" string="View availabilities" type="object"
-                                        class="btn btn-secondary border me-2 text-nowrap" attrs="{'invisible': [('active', '=', False)]}">
-                                    View availabilities
                                 </button>
                             </div>
                         </div>
@@ -146,7 +146,7 @@
         <field name="name">appointment.type.tree</field>
         <field name="model">appointment.type</field>
         <field name="arch" type="xml">
-            <tree string="Appointment Type" class="o_appointment_type_view_list" multi_edit="1" sample="1" js_class="appointment_type_tree_view">
+            <tree string="Appointment Type" class="o_appointment_type_view_list" multi_edit="1" js_class="appointment_type_tree_view">
                 <header>
                     <button name="action_share_invite" type="object" string="Share"/>
                 </header>
@@ -181,9 +181,12 @@
         <field name="arch" type="xml">
             <form string="Appointment Type">
                 <field name="active" invisible="1"/>
+                <field name="is_published" invisible="1"/>
                 <header>
-                    <button name="action_share_invite" string="Share" type="object" class="btn btn-primary"
-                        attrs="{'invisible': [('active', '=', False)]}"/>/>
+                    <button name="action_customer_preview" string="Preview" type="object" class="btn btn-primary"
+                        attrs="{'invisible': [('active', '=', False)]}"/>
+                    <button name="action_share_invite" string="Share" type="object" class="btn btn-secondary"
+                        attrs="{'invisible': [('active', '=', False)]}"/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
@@ -208,10 +211,10 @@
                             <div attrs="{'invisible': [('category', '=', 'custom')]}">
                                 <field name="appointment_duration" class="oe_inline" widget="float_time"/><span> hours</span>
                             </div>
-                            <label for="min_schedule_hours" string="Schedule Appointment"/>
+                            <label for="min_schedule_hours" string="Scheduling"/>
                             <div>
                                 <span>at least <field name="min_schedule_hours" class="oe_inline" widget="float_time"/> hours before</span><br/>
-                                <div attrs="{'invisible': [('category', '=', 'custom')]}">
+                                <div class="my-2" attrs="{'invisible': [('category', '=', 'custom')]}">
                                     <span>and not after <field name="max_schedule_days" class="oe_inline mx-1"/> days</span>
                                 </div>
                             </div>
@@ -221,9 +224,10 @@
                             </div>
                         </group>
                         <group name="right_details">
-                            <field name="assign_method" attrs="{'invisible': [('category', '!=', 'website')]}" widget="radio" options="{'horizontal': true}"/>
-                            <field name="avatars_display" widget="radio" options="{'horizontal': true}" required="1"/>
+                            <field name="staff_user_count" invisible="1"/>
                             <field name="staff_user_ids" widget="many2many_tags_avatar" attrs="{'readonly': [('category', '!=', 'website')]}" options="{'no_open': False}"/>
+                            <field name="assign_method" attrs="{'invisible': ['|', ('category', '!=', 'website'), ('staff_user_count', '&lt;=', 1)]}" widget="radio" options="{'horizontal': true}"/>
+                            <field name="avatars_display" widget="radio" options="{'horizontal': true}" required="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -242,7 +246,7 @@
                                     <field name="start_datetime" attrs="{'column_invisible': [('parent.category', '!=', 'custom')]}"/>
                                     <field name="end_datetime" attrs="{'column_invisible': [('parent.category', '!=', 'custom')]}"/>
                                     <field name="restrict_to_user_ids" widget="many2many_avatar_user" domain="[('id', 'in', parent.staff_user_ids)]"
-                                        attrs="{'column_invisible': [('parent.category', 'in', ['custom', 'work_hours'])]}"
+                                        attrs="{'column_invisible': [('parent.category', 'in', ['custom', 'anytime'])]}"
                                         options="{'no_create': True}" optional="hide"/>
                                 </tree>
                             </field>
@@ -298,10 +302,10 @@
                             </field>
                         </page>
                         <page string="Messages" name="messages">
-                            <separator string="Appointment Introduction"/>
+                            <label for="message_intro" string="Introduction Message"/>
                             <field name="message_intro" class="oe-bordered-editor"
                                    placeholder="e.g. &quot;During this meeting, we will...&quot;"/>
-                            <separator string="Appointment Confirmation"/>
+                            <label for="message_confirmation" string="Extra Message on Confirmation"/>
                             <field name="message_confirmation" class="oe-bordered-editor"
                                    placeholder="e.g. &quot;Thank you for your trust, we look forward to meeting you!&quot;"/>
                         </page>
@@ -314,6 +318,19 @@
         </field>
     </record>
 
+    <record id="appointment_type_view_form_add_simplified" model="ir.ui.view">
+        <field name="name">appointment.type.view.form.add.simplified</field>
+        <field name="model">appointment.type</field>
+        <field name="mode">primary</field>
+        <field name="priority">20</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="replace"/>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="replace"/>
+            <xpath expr="//div[hasclass('oe_chatter')]" position="replace"/>
+        </field>
+    </record>
+
     <record id="appointment_type_action" model="ir.actions.act_window">
         <field name="name">Online Appointments</field>
         <field name="type">ir.actions.act_window</field>
@@ -322,14 +339,14 @@
         <field name="domain">[('category', '=', 'website')]</field>
         <field name="help" type="html">
             <p class="o_view_no_content_appointment_type">
-                Create an Appointment Type
+                No Appointment Configured
             </p><p>
-                Configure your service opening hours and let attendees book time slots online.
+                Share calendar link allowing people to book meetings with you or a team.
             </p>
         </field>
     </record>
 
-    <record id="appointment_type_action_custom_and_work_hours" model="ir.actions.act_window">
+    <record id="appointment_type_action_custom_and_anytime" model="ir.actions.act_window">
         <field name="name">Appointment Invitations</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">appointment.type</field>

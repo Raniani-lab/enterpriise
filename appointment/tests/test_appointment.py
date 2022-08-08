@@ -38,6 +38,28 @@ class AppointmentTest(AppointmentCommon):
                 'name': 'Custom with users',
             })
 
+    @users('apt_manager')
+    def test_appointment_type_create_anytime(self):
+        # Any Time: only 1 / employee
+        apt_type = self.env['appointment.type'].create({
+            'category': 'anytime',
+            'name': 'Any time on me',
+        })
+        self.assertEqual(apt_type.staff_user_ids, self.apt_manager)
+
+        with self.assertRaises(ValidationError):
+            self.env['appointment.type'].create({
+                'category': 'anytime',
+                'name': 'Any time on me, duplicate',
+            })
+
+        with self.assertRaises(ValidationError):
+            self.env['appointment.type'].create({
+                'name': 'Any time without employee',
+                'category': 'anytime',
+                'staff_user_ids': [self.staff_users.ids]
+            })
+
     @mute_logger('odoo.sql_db')
     @users('apt_manager')
     def test_appointment_slot_start_end_hour_auto_correction(self):

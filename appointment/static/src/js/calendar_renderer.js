@@ -11,6 +11,7 @@ AttendeeCalendarRenderer.include({
         'click .o_appointment_discard_slots': '_onDiscardSlots',
         'click .o_appointment_get_last_copy_link': '_onGetLastCopyLink',
         'click .o_appointment_select_slots': '_onSelectSlots',
+        'click .o_appointment_search_create_anytime_appointment': '_onSearchCreateAnytimeAppointment',
     }),
     /**
      * Add the group of buttons where the users can create custom
@@ -238,6 +239,17 @@ AttendeeCalendarRenderer.include({
             this.$sidebar.find('.o_appointment_create_custom_appointment').addClass('disabled');
             this._onChangeDisplay(ev);
         }
+    },
+    /**
+     * Used when clicking on the Anytime appointment type in the dropdown.
+     * We display an info box to the user to let them know that the url was copied
+     * and that it allows them to recopy it until they close the box
+     * @param {Event} ev
+     */
+     _onSearchCreateAnytimeAppointment(ev) {
+        ev.stopPropagation();
+        this.trigger_up('search_create_anytime_appointment_type', ev);
+        this._onChangeDisplay(ev);
     },
     /**
      * Switch the calendar mode to slots-creation to create slots for

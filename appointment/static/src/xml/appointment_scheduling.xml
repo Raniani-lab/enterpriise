@@ -28,7 +28,7 @@
                     <i class="fa fa-trash"/>
                 </button>
             </span>
-            <div t-if="appointments.length !== 0" class="btn-group px-0 o_appointment_calendar_group_buttons w-100">
+            <div class="btn-group px-0 o_appointment_calendar_group_buttons w-100">
                 <button class="btn btn-primary o_appointment_select_slots" aria-label="Share Availabilities" title="Share Availabilities">
                     Share Availabilities
                 </button>
@@ -39,19 +39,18 @@
                     <button id="select_availabilities" class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold ps-3 o_appointment_select_slots">
                         <span class="align-bottom">Select Dates</span>
                     </button>
-                    <div t-if="appointments.length" role="separator" class="dropdown-divider"/>
+                    <button
+                        class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold ps-3 o_appointment_button_link o_appointment_search_create_anytime_appointment">
+                        <span class="align-bottom">Any Time</span>
+                    </button>
+                    <div t-if="appointments.length > 0" role="separator" class="dropdown-divider"/>
                     <t t-foreach="appointments" t-as="appointment">
-                        <button t-if="appointment.category == 'website'" t-att-id="appointment.id" t-att-title="appointment.name"
+                        <button t-att-id="appointment.id" t-att-title="appointment.name"
                             class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold ps-3 o_appointment_button_link o_appointment_appointment_link_clipboard text-truncate">
                             <span class="align-bottom" t-out="appointment.name"/>
                         </button>
                     </t>
                 </div>
-            </div>
-            <div t-else="" class="btn-group col px-0 o_appointment_calendar_group_buttons">
-                <button class="btn btn-primary o_appointment_select_slots" aria-label="Share Availabilities" title="Share Availabilities">
-                    Select Dates
-                </button>
             </div>
         </div>
     </t>

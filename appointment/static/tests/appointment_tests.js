@@ -155,7 +155,7 @@ QUnit.module('appointment.appointment_link', {
 }, function () {
 
 QUnit.test('verify appointment links button are displayed', async function (assert) {
-    assert.expect(2);
+    assert.expect(3);
 
     const calendar = await createCalendarView({
         View: AttendeeCalendarView,
@@ -190,6 +190,80 @@ QUnit.test('verify appointment links button are displayed', async function (asse
     await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
 
     assert.containsOnce(calendar, 'button:contains("Test Appointment")');
+
+    assert.containsOnce(calendar, 'button:contains("Any Time")');
+
+    calendar.destroy();
+});
+
+QUnit.test('create/search anytime appointment type', async function (assert) {
+    assert.expect(9);
+
+    patchWithCleanup(browser, {
+        navigator: {
+            clipboard: {
+                writeText: (value) => {
+                    assert.strictEqual(
+                        value,
+                        `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`
+                    );
+                }
+            }
+        }
+    });
+
+    const calendar = await createCalendarView({
+        View: AttendeeCalendarView,
+        model: 'calendar.event',
+        data: this.data,
+        arch:
+        `<calendar class="o_calendar_test"
+                    js_class="attendee_calendar"
+                    all_day="allday"
+                    date_start="start"
+                    date_stop="stop"
+                    color="partner_id">
+            <field name="name"/>
+            <field name="partner_ids" write_model="filter_partner" write_field="partner_id"/>
+        </calendar>`,
+        viewOptions: {
+            initialDate: initialDate,
+        },
+        mockRPC: function (route, args) {
+            if (route === "/appointment/appointment_type/search_create_anytime") {
+                assert.step(route);
+            } else if (route === '/microsoft_calendar/sync_data') {
+                return Promise.resolve();
+            } else if (route === '/web/dataset/call_kw/res.partner/get_attendee_detail') {
+                return Promise.resolve([]);
+            }
+            return this._super.apply(this, arguments);
+        },
+        session: {
+            'web.base.url': 'http://amazing.odoo.com',
+        },
+    }, { positionalClicks: true });
+
+    assert.strictEqual(2, this.data['appointment.type'].records.length)
+
+    await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
+
+    await testUtils.dom.click(calendar.$('.o_appointment_search_create_anytime_appointment'));
+    await testUtils.nextTick();
+
+    assert.verifySteps(['/appointment/appointment_type/search_create_anytime']);
+    assert.strictEqual(3, this.data['appointment.type'].records.length,
+        "Create a new appointment type")
+
+    await testUtils.dom.click(calendar.$('.o_appointment_change_display'));
+    await testUtils.dom.click(calendar.$('#dropdownAppointmentLink'));
+
+    await testUtils.dom.click(calendar.$('.o_appointment_search_create_anytime_appointment'));
+    await testUtils.nextTick();
+
+    assert.verifySteps(['/appointment/appointment_type/search_create_anytime']);
+    assert.strictEqual(3, this.data['appointment.type'].records.length,
+        "Does not create a new appointment type");
 
     calendar.destroy();
 });

@@ -4,45 +4,25 @@
 import pytz
 
 from datetime import timedelta
-from odoo import api, fields, models, _, Command
-from odoo.exceptions import ValidationError
-from odoo.osv.expression import AND
+from odoo import api, fields, models
 
 
 class AppointmentType(models.Model):
     _name = "appointment.type"
     _inherit = "appointment.type"
 
-    @api.model
-    def default_get(self, default_fields):
-        result = super().default_get(default_fields)
-
-        if result.get('category') == 'work_hours' and result.get('staff_user_ids') == [Command.set(self.env.user.ids)]:
-            if not self.env.user.employee_id:
-                raise ValueError(_("An employee should be set on the current user to create an appointment type tied to the working schedule."))
-        return result
-
-    category = fields.Selection(
-        selection_add=[('work_hours', 'Work Hours')],
-        help="""Used to define this appointment type's category.
-        Can be one of:
-            - Website: the default category, the people can access and schedule the appointment with users from the website
-            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots
-            - Work Hours: a special type of appointment type that is used by one user and which takes the working hours of this
-                user as availabilities. This one uses recurring slot that englobe the entire week to display all possible slots
-                based on its working hours and availabilities """)
     work_hours_activated = fields.Boolean('Limit to Work Hours',
         help="When this option is activated the slots computation takes into account the working hours of the users.")
 
-    @api.constrains('category', 'staff_user_ids')
-    def _check_staff_user_configuration_work_hours(self):
-        for appointment_type in self:
-            if appointment_type.category == 'work_hours':
-                appointment_domain = [('category', '=', 'work_hours'), ('staff_user_ids', 'in', appointment_type.staff_user_ids.ids)]
-                if appointment_type.ids:
-                    appointment_domain = AND([appointment_domain, [('id', 'not in', appointment_type.ids)]])
-                if self.search_count(appointment_domain) > 0:
-                    raise ValidationError(_("Only one work hours appointment type is allowed for a specific employee."))
+    def _get_default_range_slots(self, category):
+        '''
+            Update the slots range from midnight to midnight to further
+            restrict the slots range to the user working hours.
+        '''
+        range_values = super()._get_default_range_slots(category)
+        if category == 'anytime' and self.work_hours_activated:
+            range_values.update(hours_range=((0, 0),))
+        return range_values
 
     def _slot_availability_is_user_available(self, slot, staff_user, availability_values):
         """ This method verifies if the employee is available on the given slot.

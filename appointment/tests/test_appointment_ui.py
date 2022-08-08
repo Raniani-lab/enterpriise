@@ -35,6 +35,21 @@ class AppointmentUICommon(AppointmentCommon, common.HttpCase):
 class AppointmentUITest(AppointmentUICommon):
 
     @users('apt_manager')
+    def test_route_apt_type_search_create_anytime(self):
+        self.authenticate(self.env.user.login, self.env.user.login)
+        request = self.url_open(
+            "/appointment/appointment_type/search_create_anytime",
+            data=json.dumps({}),
+            headers={"Content-Type": "application/json"},
+        ).json()
+        result = request.get('result', {})
+        self.assertTrue(result.get('appointment_type_id'), 'The request returns the id of the custom appointment type')
+        appointment_type = self.env['appointment.type'].browse(result['appointment_type_id'])
+        self.assertEqual(appointment_type.category, 'anytime')
+        self.assertEqual(len(appointment_type.slot_ids), 7, "7 slots have been created: (1 / days for 7 days)")
+        self.assertTrue(all(slot.slot_type == 'recurring' for slot in appointment_type.slot_ids), "All slots are 'recurring'")
+
+    @users('apt_manager')
     def test_route_apt_type_create_custom(self):
         self.authenticate(self.env.user.login, self.env.user.login)
 

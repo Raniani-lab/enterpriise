@@ -20,7 +20,7 @@ patch(NewContentModal.prototype, 'website_appointment_new_content', {
     },
 
     createNewAppointmentType() {
-        this.action.doAction('website_appointment.appointment_type_action_add', {
+        this.action.doAction('website_appointment.appointment_type_action_add_simplified', {
             onClose: (data) => {
                 if (data) {
                     this.website.goToWebsite({ path: data.path });

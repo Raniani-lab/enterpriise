@@ -119,6 +119,125 @@ class AppointmentTest(AppointmenHrPerformanceCase):
         self.assertTrue(all(employee.user_id for employee in self.staff_users_employees))
 
     @users('staff_user_bxls')
+    def test_get_appointment_slots_anytime(self):
+        """ Any time type: mono user, involved work hours check. """
+        self.apt_type_bxls_2days.write({
+            'category': 'anytime',
+            'max_schedule_days': 90,
+            'slot_ids': [(5, 0)] + [  # while loop in _slots_generate generates the actual slots
+                (0, 0, {'end_hour': 0,  # 0 hour of next day
+                        'start_hour': hour * 0.5,
+                        'weekday': str(day + 1),
+                       }
+                )
+                for hour in range(2)
+                for day in range(7)
+            ],
+            'staff_user_ids': [(5, 0), (4, self.staff_users[0].id)],
+            'work_hours_activated': True,
+            })
+        self.env.flush_all()
+        apt_type = self.apt_type_bxls_2days.with_user(self.env.user)
+
+        # with self.profile(collectors=['sql']) as profile:
+        with self.mockAppointmentCalls(), \
+             self.assertQueryCount(staff_user_bxls=46):  # apt_hr 40
+            t0 = time.time()
+            res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
+            t1 = time.time()
+
+        _logger.info('Called _get_appointment_slots, time %.3f', t1 - t0)
+        _logger.info('Called methods\nSearch calendar event called %s\n'
+                     'Search count calendar event called %s\n'
+                     'Partner calendar check called %s\n'
+                     'Resource Calendar work intervals batch called %s',
+                     self._mock_calevent_search.call_count,
+                     self._mock_calevent_search_count.call_count,
+                     self._mock_partner_calendar_check.call_count,
+                     self._mock_cal_work_intervals.call_count)
+        # Time before optimization: ~3.40
+        # Time after optimization: ~0.45
+        # Method count before optimization: 4186 - 4186 - 4186 - 1
+        # Method count after optimization: 1 - 0 - 0 - 1
+
+        global_slots_startdate = date(2022, 1, 30)  # starts on a Sunday, first week containing Feb day
+        global_slots_enddate = date(2022, 6, 4)  # last day of last week of May
+        self.assertSlots(
+            res,
+            [{'name_formated': 'February 2022',
+              'weeks_count': 5,  # 30/01 -> 27/02 (05/03)
+             },
+             {'name_formated': 'March 2022',
+              'weeks_count': 5,  # 27/02 -> 27/03 (02/04)
+             },
+             {'name_formated': 'April 2022',
+              'weeks_count': 5,
+             },
+             {'name_formated': 'May 2022',
+              'weeks_count': 5,
+             },
+            ],
+            {'enddate': global_slots_enddate,
+             'startdate': global_slots_startdate,
+            }
+        )
+
+    @users('staff_user_bxls')
+    def test_get_appointment_slots_anytime_short(self):
+        """ Any time type: mono user, involved any time check. """
+        self.apt_type_bxls_2days.write({
+            'category': 'anytime',
+            'max_schedule_days': 10,
+            'slot_ids': [(5, 0)] + [  # while loop in _slots_generate generates the actual slots
+                (0, 0, {'end_hour': 0,  # 0 hour of next day
+                        'start_hour': hour * 0.5,
+                        'weekday': str(day + 1),
+                       }
+                )
+                for hour in range(2)
+                for day in range(7)
+            ],
+            'staff_user_ids': [(5, 0), (4, self.staff_users[0].id)],
+            'work_hours_activated': True,
+        })
+        self.env.flush_all()
+        apt_type = self.apt_type_bxls_2days.with_user(self.env.user)
+
+        # with self.profile(collectors=['sql']) as profile:
+        with self.mockAppointmentCalls(), \
+             self.assertQueryCount(staff_user_bxls=46):  # apt_hr 40
+            t0 = time.time()
+            res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
+            t1 = time.time()
+
+        _logger.info('Called _get_appointment_slots, time %.3f', t1 - t0)
+        _logger.info('Called methods\nSearch calendar event called %s\n'
+                     'Search count calendar event called %s\n'
+                     'Partner calendar check called %s\n'
+                     'Resource Calendar work intervals batch called %s',
+                     self._mock_calevent_search.call_count,
+                     self._mock_calevent_search_count.call_count,
+                     self._mock_partner_calendar_check.call_count,
+                     self._mock_cal_work_intervals.call_count)
+        # Time before optimization: ~0.50
+        # Time before optimization: ~0.07
+        # Method count before optimization: 506 - 506 - 506 - 1
+        # Method count after optimization: 1 - 0 - 0 - 1
+
+        global_slots_startdate = self.reference_now_monthweekstart
+        global_slots_enddate = date(2022, 3, 5)  # last day of last week of Feb
+        self.assertSlots(
+            res,
+            [{'name_formated': 'February 2022',
+              'weeks_count': 5,  # 30/01 -> 27/02 (05/03)
+             },
+            ],
+            {'enddate': global_slots_enddate,
+             'startdate': global_slots_startdate,
+            }
+        )
+
+    @users('staff_user_bxls')
     def test_get_appointment_slots_custom(self):
         """ Custom type: mono user, unique slots, work hours check. """
         apt_type_custom_bxls = self.env['appointment.type'].sudo().create({
@@ -438,153 +557,17 @@ class AppointmentTest(AppointmenHrPerformanceCase):
             }
         )
 
-    @users('staff_user_bxls')
-    def test_get_appointment_slots_work_hours(self):
-        """ Work hours type: mono user, involved work hours check. """
-        self.apt_type_bxls_2days.write({
-            'category': 'work_hours',
-            'max_schedule_days': 90,
-            'slot_ids': [(5, 0)] + [  # while loop in _slots_generate generates the actual slots
-                (0, 0, {'end_hour': 0,  # 0 hour of next day
-                        'start_hour': hour * 0.5,
-                        'weekday': str(day + 1),
-                       }
-                )
-                for hour in range(2)
-                for day in range(7)
-            ],
-            'staff_user_ids': [(5, 0), (4, self.staff_users[0].id)],
-            'work_hours_activated': True,
-            })
-        self.env.flush_all()
-        apt_type = self.apt_type_bxls_2days.with_user(self.env.user)
-
-        # with self.profile(collectors=['sql']) as profile:
-        with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=46):  # apt_hr 40
-            t0 = time.time()
-            res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
-            t1 = time.time()
-
-        _logger.info('Called _get_appointment_slots, time %.3f', t1 - t0)
-        _logger.info('Called methods\nSearch calendar event called %s\n'
-                     'Search count calendar event called %s\n'
-                     'Partner calendar check called %s\n'
-                     'Resource Calendar work intervals batch called %s',
-                     self._mock_calevent_search.call_count,
-                     self._mock_calevent_search_count.call_count,
-                     self._mock_partner_calendar_check.call_count,
-                     self._mock_cal_work_intervals.call_count)
-        # Time before optimization: ~3.40
-        # Time after optimization: ~0.45
-        # Method count before optimization: 4186 - 4186 - 4186 - 1
-        # Method count after optimization: 1 - 0 - 0 - 1
-
-        global_slots_startdate = date(2022, 1, 30)  # starts on a Sunday, first week containing Feb day
-        global_slots_enddate = date(2022, 6, 4)  # last day of last week of May
-        self.assertSlots(
-            res,
-            [{'name_formated': 'February 2022',
-              'weeks_count': 5,  # 30/01 -> 27/02 (05/03)
-             },
-             {'name_formated': 'March 2022',
-              'weeks_count': 5,  # 27/02 -> 27/03 (02/04)
-             },
-             {'name_formated': 'April 2022',
-              'weeks_count': 5,
-             },
-             {'name_formated': 'May 2022',
-              'weeks_count': 5,
-             },
-            ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
-            }
-        )
-
-    @users('staff_user_bxls')
-    def test_get_appointment_slots_work_hours_short(self):
-        """ Work hours type: mono user, involved work hours check. """
-        self.apt_type_bxls_2days.write({
-            'category': 'work_hours',
-            'max_schedule_days': 10,
-            'slot_ids': [(5, 0)] + [  # while loop in _slots_generate generates the actual slots
-                (0, 0, {'end_hour': 0,  # 0 hour of next day
-                        'start_hour': hour * 0.5,
-                        'weekday': str(day + 1),
-                       }
-                )
-                for hour in range(2)
-                for day in range(7)
-            ],
-            'staff_user_ids': [(5, 0), (4, self.staff_users[0].id)],
-            'work_hours_activated': True,
-        })
-        self.env.flush_all()
-        apt_type = self.apt_type_bxls_2days.with_user(self.env.user)
-
-        # with self.profile(collectors=['sql']) as profile:
-        with self.mockAppointmentCalls(), \
-             self.assertQueryCount(staff_user_bxls=46):  # apt_hr 40
-            t0 = time.time()
-            res = apt_type._get_appointment_slots('Europe/Brussels', reference_date=self.reference_now)
-            t1 = time.time()
-
-        _logger.info('Called _get_appointment_slots, time %.3f', t1 - t0)
-        _logger.info('Called methods\nSearch calendar event called %s\n'
-                     'Search count calendar event called %s\n'
-                     'Partner calendar check called %s\n'
-                     'Resource Calendar work intervals batch called %s',
-                     self._mock_calevent_search.call_count,
-                     self._mock_calevent_search_count.call_count,
-                     self._mock_partner_calendar_check.call_count,
-                     self._mock_cal_work_intervals.call_count)
-        # Time before optimization: ~0.50
-        # Time before optimization: ~0.07
-        # Method count before optimization: 506 - 506 - 506 - 1
-        # Method count after optimization: 1 - 0 - 0 - 1
-
-        global_slots_startdate = self.reference_now_monthweekstart
-        global_slots_enddate = date(2022, 3, 5)  # last day of last week of Feb
-        self.assertSlots(
-            res,
-            [{'name_formated': 'February 2022',
-              'weeks_count': 5,  # 30/01 -> 27/02 (05/03)
-             },
-            ],
-            {'enddate': global_slots_enddate,
-             'startdate': global_slots_startdate,
-            }
-        )
-
 
 @tagged('appointment_performance', 'post_install', '-at_install')
 class OnlineAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrPerformanceCase):
 
     @warmup
-    def test_appointment_type_page_website_whours_user(self):
-        """ Website type: multi users (choose first available), with working hours
-        involved. """
-        random.seed(1871)  # fix shuffle in _slots_available
-
-        t0 = time.time()
-        with freeze_time(self.reference_now):
-            self.authenticate('staff_user_bxls', 'staff_user_bxls')
-            with self.assertQueryCount(default=50):  # apt_hr 38
-                self._test_url_open('/appointment/%i' % self.test_apt_type.id)
-        t1 = time.time()
-
-        _logger.info('Browsed /appointment/%i, time %.3f', self.test_apt_type.id, t1 - t0)
-        # Time before optimization: ~1.90 (but with boilerplate)
-        # Time after optimization: ~0.50 (but with boilerplate)
-
-    @warmup
-    def test_appointment_type_page_work_hours(self):
-        """ Work hours type: mono user, involved work hours check. """
+    def test_appointment_type_page_anytime(self):
+        """ Any time type: mono user, involved any time check. """
         random.seed(1871)  # fix shuffle in _slots_available
 
         self.test_apt_type.write({
-            'category': 'work_hours',
+            'category': 'anytime',
             'max_schedule_days': 90,
             'slot_ids': [(5, 0)] + [  # while loop in _slots_generate generates the actual slots
                 (0, 0, {'end_hour': 0,  # 0 hour of next day
@@ -609,3 +592,20 @@ class OnlineAppointmentPerformance(AppointmentUIPerformanceCase, AppointmenHrPer
         _logger.info('Browsed /appointment/%i, time %.3f', self.test_apt_type.id, t1 - t0)
         # Time before optimization: ~4.60 (but with boilerplate)
         # Time after optimization: ~1.10 (but with boilerplate)
+
+    @warmup
+    def test_appointment_type_page_website_whours_user(self):
+        """ Website type: multi users (choose first available), with working hours
+        involved. """
+        random.seed(1871)  # fix shuffle in _slots_available
+
+        t0 = time.time()
+        with freeze_time(self.reference_now):
+            self.authenticate('staff_user_bxls', 'staff_user_bxls')
+            with self.assertQueryCount(default=50):  # apt_hr 38
+                self._test_url_open('/appointment/%i' % self.test_apt_type.id)
+        t1 = time.time()
+
+        _logger.info('Browsed /appointment/%i, time %.3f', self.test_apt_type.id, t1 - t0)
+        # Time before optimization: ~1.90 (but with boilerplate)
+        # Time after optimization: ~0.50 (but with boilerplate)

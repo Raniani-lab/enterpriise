@@ -30,9 +30,9 @@
         sequence="10"/>
 
     <menuitem
-        id="menu_appointment_type_custom_and_work_hours"
+        id="menu_appointment_type_custom_and_anytime"
         parent="calendar.calendar_menu_config"
-        action="appointment_type_action_custom_and_work_hours"
+        action="appointment_type_action_custom_and_anytime"
         groups="base.group_no_one"/>
 
     <menuitem

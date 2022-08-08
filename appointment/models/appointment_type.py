@@ -12,7 +12,6 @@ from werkzeug.urls import url_encode, url_join
 
 from odoo import api, fields, models, _, Command
 from odoo.exceptions import ValidationError
-from odoo.tools import is_html_empty
 from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.res_partner import _tz_get
 
@@ -31,10 +30,12 @@ class AppointmentType(models.Model):
                 result['name'] = _("%s - Let's meet", self.env.user.name)
             if (not default_fields or 'staff_user_ids' in default_fields) and not result.get('staff_user_ids'):
                 result['staff_user_ids'] = [Command.set(self.env.user.ids)]
+        if result.get('category') == 'website':
+            result['slot_ids'] = self._get_default_slots(result.get('category'))
         return result
 
     sequence = fields.Integer('Sequence', default=10)
-    name = fields.Char('Appointment Type', required=True, translate=True)
+    name = fields.Char('Appointment Title', required=True, translate=True)
     active = fields.Boolean(default=True)
 
     # Technical field for backward compatibility with previous default published appointment type
@@ -42,15 +43,17 @@ class AppointmentType(models.Model):
     category = fields.Selection([
         ('website', 'Website'),
         ('custom', 'Custom'),
+        ('anytime', 'Any Time')
         ], string="Category", default="website",
-        help="""Used to define this appointment type's category.
-        Can be one of:
-            - Website: the default category, the people can access and schedule the appointment with users from the website
-            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots """)
+        help="""Used to define this appointment type's category.\n
+        Can be one of:\n
+            - Website: the default category, the people can access and schedule the appointment with users from the website\n
+            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots\n
+            - Anytime: the user will create and share to another user an appointment type covering all their time slots""")
     min_schedule_hours = fields.Float('Schedule before (hours)', required=True, default=1.0)
     max_schedule_days = fields.Integer('Schedule not after (days)', required=True, default=15)
     min_cancellation_hours = fields.Float('Cancel Before (hours)', required=True, default=1.0)
-    appointment_duration = fields.Float('Appointment Duration', required=True, default=1.0)
+    appointment_duration = fields.Float('Duration', required=True, default=1.0)
     appointment_duration_formatted = fields.Char(
         'Appointment Duration Formatted ', compute='_compute_appointment_duration_formatted', readonly=True,
         help='Appointment Duration formatted in words')
@@ -64,11 +67,13 @@ class AppointmentType(models.Model):
 
     meeting_ids = fields.One2many('calendar.event', 'appointment_type_id', string="Appointment Meetings")
 
-    message_confirmation = fields.Html('Confirmation Message', translate=True)
-    message_intro = fields.Html('Introduction Message', translate=True)
+    message_confirmation = fields.Html('Confirmation Message', translate=True,
+        help="Extra information provided once the appointment is booked.")
+    message_intro = fields.Html('Introduction Message', translate=True,
+        help="Small description of the appointment type.")
 
     country_ids = fields.Many2many(
-        'res.country', 'appointment_type_country_rel', string='Restrict Countries',
+        'res.country', 'appointment_type_country_rel', string='Allowed Countries',
         help="Keep empty to allow visitors from any country, otherwise you only allow visitors from selected countries")
     question_ids = fields.One2many('appointment.question', 'appointment_type_id', string='Questions', copy=True)
 
@@ -76,7 +81,13 @@ class AppointmentType(models.Model):
     appointment_tz = fields.Selection(
         _tz_get, string='Timezone', required=True, default=lambda self: self.env.user.tz,
         help="Timezone where appointment take place")
-    staff_user_ids = fields.Many2many('res.users', 'appointment_type_res_users_rel', domain="[('share', '=', False)]", string='Users')
+    staff_user_ids = fields.Many2many(
+        'res.users',
+        'appointment_type_res_users_rel',
+        domain="[('share', '=', False)]",
+        string='Users',
+        default=lambda self: self.env.user)
+    staff_user_count = fields.Integer('# Staff Users', compute='_compute_staff_user_count')
 
     assign_method = fields.Selection([
         ('chosen', 'Chosen by the Customer'),
@@ -88,7 +99,7 @@ class AppointmentType(models.Model):
     appointment_invite_ids = fields.Many2many('appointment.invite', string='Invitation Links')
 
     avatars_display = fields.Selection(
-        [('hide', 'No Avatars'), ('show', 'Avatars')],
+        [('hide', 'No Picture'), ('show', 'Show Users\' Pictures')],
         string='Front-End Display', compute='_compute_avatars_display', readonly=False, store=True,
         help="""This option toggles the display of avatars of the staff members during the frontend appointment process.
         When choosing amongst several users, a selection screen will also be used, if website is installed.""")
@@ -139,24 +150,31 @@ class AppointmentType(models.Model):
             else:
                 record.location = record.location_id.name or ''
 
+    @api.depends('staff_user_ids')
+    def _compute_staff_user_count(self):
+        for record in self:
+            record.staff_user_count = len(record.staff_user_ids)
+
     @api.constrains('category', 'staff_user_ids', 'slot_ids')
     def _check_staff_user_configuration(self):
+        anytime_appointments = self.search([('category', '=', 'anytime')])
         for appointment_type in self:
             if appointment_type.category != 'website' and len(appointment_type.staff_user_ids) != 1:
                 raise ValidationError(_("This category of appointment type should only have one user but got %s users", len(appointment_type.staff_user_ids)))
             invalid_restricted_users = appointment_type.slot_ids.restrict_to_user_ids - appointment_type.staff_user_ids
             if invalid_restricted_users:
                 raise ValidationError(_("The following users are in restricted slots but they are not part of the available staff: %s", ", ".join(invalid_restricted_users.mapped('name'))))
+            if appointment_type.category == 'anytime':
+                duplicate = anytime_appointments.filtered(lambda apt_type: apt_type.staff_user_ids.ids in appointment_type.staff_user_ids.ids)
+                if appointment_type.ids:
+                    duplicate = anytime_appointments.filtered(lambda apt_type: apt_type.id not in appointment_type.ids)
+                if duplicate:
+                    raise ValidationError(_("Only one anytime appointment type is allowed for a specific user."))
 
     @api.model_create_multi
     def create(self, vals_list):
         """ We don't want the current user to be follower of all created types """
         return super(AppointmentType, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
-
-    def create_and_get_website_url(self, **kwargs):
-        """Override WebsitePublishedMixin method to add default slots. """
-        kwargs['slot_ids'] = self._get_default_slots()
-        return super().create_and_get_website_url(**kwargs)
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):
@@ -183,6 +201,11 @@ class AppointmentType(models.Model):
         nbr_appointments_week_later = appointments.filtered_domain([
             ('start', '>=', datetime.today() + timedelta(weeks=1))
         ])
+
+        if not 'pivot' in action['view_mode']:
+            action['view_mode'] = 'pivot,' + action['view_mode']
+        if not any(view == 'pivot' for (_, view) in action['views']):
+            action['views'].insert(0, (False, 'pivot'))
 
         action['context'] = {
             'default_appointment_type_id': self.id,
@@ -221,15 +244,39 @@ class AppointmentType(models.Model):
     # --------------------------------------
 
     @api.model
-    def _get_default_slots(self):
-        return [(0, 0, {
-            'weekday': str(weekday),
-            'start_hour': start_hour,
-            'end_hour': end_hour
-        })
-            for weekday in range(1, 6)
-            for (start_hour, end_hour) in ((9, 12), (14, 17))
+    def _get_default_slots(self, category):
+        range_values = self._get_default_range_slots(category)
+        return [
+            Command.create({
+                'weekday': str(weekday),
+                'start_hour': start_hour,
+                'end_hour': end_hour
+            })
+            for weekday in range(*range_values['weekday_range'])
+            for (start_hour, end_hour) in range_values['hours_range']
         ]
+
+    def _get_default_range_slots(self, category):
+        '''
+            If the appointment type is of category website, we set the arbitrary 'standard'
+            appointment slots range (from monday to friday, 9AM-12PM and 2PM-5PM).
+            If the appointment type is of category anytime, we set the slots range
+            as any time between 2 arbitrary hours (monday to sunday, 7AM-7PM).
+            The slot range for the anytime category will be updated in appointment_hr
+            to match the user work hours.
+        '''
+        if category not in ['website', 'anytime']:
+            raise ValueError(_("Default slots cannot be applied to the %s appointment type category.", category))
+        if category == 'website':
+            weekday_range = (1, 6)
+            hours_range = ((9, 12), (14, 17))
+        else:
+            weekday_range = (1, 8)
+            hours_range = ((7, 19),)
+        return {
+            'weekday_range': weekday_range,
+            'hours_range': hours_range,
+        }
 
     def _slots_generate(self, first_day, last_day, timezone, reference_date=None):
         """ Generate all appointment slots (in naive UTC, appointment timezone, and given (visitors) timezone)

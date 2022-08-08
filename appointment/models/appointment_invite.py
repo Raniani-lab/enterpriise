@@ -26,16 +26,18 @@ class AppointmentShare(models.Model):
     redirect_url = fields.Char('Redirect URL', compute='_compute_redirect_url')
 
     appointment_type_ids = fields.Many2many('appointment.type', string='Appointment Types', domain="[('category', '=', 'website')]")
+    appointment_type_info_msg = fields.Html('No User Assigned Message', compute='_compute_appointment_type_info_msg')
     appointment_type_count = fields.Integer('Selected Appointments Count', compute='_compute_appointment_type_count', store=True)
     suggested_staff_user_ids = fields.Many2many(
         'res.users', related='appointment_type_ids.staff_user_ids', string='Possible users',
         help="Get the users linked to the appointment type selected to apply a domain on the users that can be selected")
+    suggested_staff_user_count = fields.Integer('# Staff Users', compute='_compute_suggested_staff_user_count')
     staff_users_choice = fields.Selection(
         selection=[
-            ('current_user', 'Personal Link'),
-            ('all_assigned_users', 'All Assigned Users'),
-            ('specific_users', 'Specific users')],
-        string='Link type', compute='_compute_staff_users_choice', store=True, readonly=False)
+            ('current_user', 'Me'),
+            ('all_assigned_users', 'Any User'),
+            ('specific_users', 'Specific Users')],
+        string='Assign to', compute='_compute_staff_users_choice', store=True, readonly=False)
     staff_user_ids = fields.Many2many('res.users', string='Users', domain="[('id','in',suggested_staff_user_ids)]",
         compute='_compute_staff_user_ids', store=True, readonly=False)
 
@@ -52,6 +54,22 @@ class AppointmentShare(models.Model):
             raise ValidationError(_(
                 "Only letters, numbers, underscores and dashes are allowed in your links. You need to adapt %s.", invalid_invite.short_code
             ))
+
+    @api.depends('appointment_type_ids', 'appointment_type_count')
+    def _compute_appointment_type_info_msg(self):
+        '''
+            When there is more than one appointment type selected to be shared and at least one doesn't have any staff user assigned,
+            display an alert info to tell the current user that, without staff users, an appointment type won't be published.
+        '''
+        for invite in self:
+            appt_without_staff_user = invite.appointment_type_ids.filtered_domain([('staff_user_ids', '=', False)])
+            if appt_without_staff_user and invite.appointment_type_count > 1:
+                invite.appointment_type_info_msg = _(
+                    'The following appointment type(s) have no staff assigned: %s.',
+                    ', '.join(appt_without_staff_user.mapped('name'))
+                )
+            else:
+                invite.appointment_type_info_msg = False
 
     @api.depends('appointment_type_ids')
     def _compute_appointment_type_count(self):
@@ -97,6 +115,11 @@ class AppointmentShare(models.Model):
                 invite.staff_user_ids = self.env.user
             else:
                 invite.staff_user_ids = False
+
+    @api.depends('suggested_staff_user_ids')
+    def _compute_suggested_staff_user_count(self):
+        for invite in self:
+            invite.suggested_staff_user_count = len(invite.suggested_staff_user_ids)
 
     @api.depends('base_book_url', 'short_code')
     def _compute_book_url(self):

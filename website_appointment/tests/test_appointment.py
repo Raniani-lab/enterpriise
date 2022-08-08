@@ -83,7 +83,7 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
         for category, default in [
                 ('custom', True),
                 ('website', False),
-                ('work_hours', True)
+                ('anytime', True)
             ]:
             appointment_type = self.env['appointment.type'].create({
                 'name': 'Custom Appointment',
@@ -100,7 +100,7 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
                 self.assertFalse(appointment_copied.is_published)
             else:
                 with self.assertRaises(ValidationError):
-                    # A maximum of 1 work_hours per employee is allowed
+                    # A maximum of 1 anytime appointment per employee is allowed
                     appointment_type.copy()
 
     @users('admin')
@@ -117,5 +117,5 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
         appointment.write({'category': 'website'})
         self.assertFalse(appointment.is_published, "Modifying an appointment type category to website unpublished it")
 
-        appointment.write({'category': 'work_hours'})
-        self.assertTrue(appointment.is_published, "Modifying an appointment type category to work_hours auto-published it")
+        appointment.write({'category': 'anytime'})
+        self.assertTrue(appointment.is_published, "Modifying an appointment type category to anytime auto-published it")

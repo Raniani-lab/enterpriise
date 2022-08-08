@@ -16,6 +16,9 @@
             <field name="remaining_hours" position="after">
                 <field name="remaining_hours_so" widget="timesheet_uom" optional="hide"/>
             </field>
+            <field name="partner_id" position="after">
+                <field name="sale_line_id" optional="hide" options="{'no_create': True}" readonly="1"/>
+            </field>
         </field>
     </record>
 

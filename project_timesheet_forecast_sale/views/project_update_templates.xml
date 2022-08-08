@@ -14,10 +14,5 @@
 </td>
 </t>
         </xpath>
-        <xpath expr="//tfoot/td[last()]" position="before">
-<t t-if="project.allow_forecast">
-<td style="font-weight: bolder; text-align: right; vertical-align: middle;"><t t-esc="format_value(services['total_planned'], services['is_hour'])"/> <t t-esc="services['company_unit_name']"/></td>
-</t>
-        </xpath>
     </template>
 </odoo>

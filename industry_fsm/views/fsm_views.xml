@@ -15,6 +15,8 @@
                 <field name="partner_id" optional="show" required="True"/>
                 <field name="user_ids" widget="many2many_avatar_user" optional="show" invisible="context.get('user_invisible', False)" domain="[('share', '=', False), ('active', '=', True)]"/>
                 <field name="company_id" optional="show" groups="base.group_multi_company" readonly="1"/>
+                <field name="create_date" optional="hide"/>
+                <field name="date_last_stage_update" optional="hide"/>
                 <field name="planned_date_begin" widget="daterange" options="{'related_end_date': 'planned_date_end'}" optional="show" attrs="{'required': [('planned_date_end', '!=', False)]}"/>
                 <field name="planned_date_end" widget="daterange" options="{'related_end_date': 'planned_date_begin'}" optional="show" attrs="{'required': [('planned_date_begin', '!=', False)]}"/>
                 <field name="planned_hours" widget="timesheet_uom_no_toggle" sum="Initially Planned Hours" optional="hide"/>
@@ -24,6 +26,7 @@
                 <field name="total_hours_spent" widget="timesheet_uom" optional="hide"/>
                 <field name="progress" widget="progressbar" optional="hide" groups="hr_timesheet.group_hr_timesheet_user"/>
                 <field name="activity_ids" widget="list_activity" invisible="context.get('set_visible',False)" optional="show" readonly="1"/>
+                <field name="my_activity_date_deadline" string="My Deadline" widget="remaining_days" optional="hide"/>
                 <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}" context="{'project_id': project_id}"/>
                 <field name="kanban_state" widget="state_selection" optional="hide" options="{'hide_label': True}" readonly="1"/>
                 <field name="stage_id" optional="hide"/>

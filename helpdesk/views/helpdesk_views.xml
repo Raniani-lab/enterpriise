@@ -548,6 +548,7 @@
                 <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
+                <field name="my_activity_date_deadline" string="My Deadline" widget="remaining_days" optional="hide"/>
                 <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide" readonly="1"/>
                 <field name="sla_deadline" attrs="{'invisible': ['|', ('use_sla', '=', False), ('fold', '=', True)]}" optional="show" widget="remaining_days"/>
                 <field name="create_date" optional="hide" readonly="1" string="Creation Date"/>

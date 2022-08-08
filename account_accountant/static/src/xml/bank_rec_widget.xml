@@ -79,7 +79,7 @@
 
     <div t-name="account_accountant.bank_rec_widget_form_lines_widget" owl="1">
         <t t-set="data" t-value="getRenderValues()"/>
-        <div class="o_list_view">
+        <div class="o_list_renderer">
             <div class="table-responsive">
                 <table class="o_list_table table table-sm table-hover table-striped o_bank_rec_lines_widget_table"
                        style="table-layout: auto">

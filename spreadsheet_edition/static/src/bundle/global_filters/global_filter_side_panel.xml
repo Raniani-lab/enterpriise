@@ -184,7 +184,7 @@
                         <FieldSelectorAdapter
                             Component="FieldSelectorWidget"
                             model="getters.getChartDefinition(graphId).metaData.resModel"
-                            fields="getters.getSpreadsheetGraphModel(graphId).metaData.fields"
+                            fields="getters.getGraphDataSource(graphId).getFields()"
                             type="state.type"
                             relatedModel="state.relation.relatedModelName"
                             selected="getModelField(state.graphFields[graphId])"

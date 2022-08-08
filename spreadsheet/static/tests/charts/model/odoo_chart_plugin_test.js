@@ -3,6 +3,7 @@
 import { OdooBarChart } from "@spreadsheet/chart/odoo_chart/odoo_bar_chart";
 import { OdooChart } from "@spreadsheet/chart/odoo_chart/odoo_chart";
 import { OdooLineChart } from "@spreadsheet/chart/odoo_chart/odoo_line_chart";
+import { nextTick } from "@web/../tests/helpers/utils";
 import { createSpreadsheetWithGraph, insertGraphInSpreadsheet } from "../../utils/chart";
 import { createModelWithDataSource } from "../../utils/model";
 
@@ -45,6 +46,100 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         const sheetId = model.getters.getActiveSheetId();
         const chartId = model.getters.getChartIds(sheetId)[0];
         assert.ok(model.getters.getGraphDataSource(chartId));
+    });
+
+    QUnit.test("Odoo bar chart runtime loads the data", async (assert) => {
+        const { model } = await createSpreadsheetWithGraph({
+            type: "odoo_bar",
+            mockRPC: async function (route, args) {
+                if (args.method === "web_read_group") {
+                    assert.step("web_read_group");
+                }
+            },
+        });
+        const sheetId = model.getters.getActiveSheetId();
+        const chartId = model.getters.getChartIds(sheetId)[0];
+        assert.verifySteps([], "it should not be loaded eagerly");
+        assert.deepEqual(model.getters.getChartRuntime(chartId).chartJsConfig.data, {
+            datasets: [],
+            labels: [],
+        });
+        await nextTick();
+        assert.deepEqual(model.getters.getChartRuntime(chartId).chartJsConfig.data, {
+            datasets: [
+                {
+                    backgroundColor: "rgb(31,119,180)",
+                    borderColor: "rgb(31,119,180)",
+                    data: [1, 3],
+                    label: "Count",
+                },
+            ],
+            labels: ["false", "true"],
+        });
+        assert.verifySteps(["web_read_group"], "it should have loaded the data");
+    });
+
+    QUnit.test("Odoo pie chart runtime loads the data", async (assert) => {
+        const { model } = await createSpreadsheetWithGraph({
+            type: "odoo_pie",
+            mockRPC: async function (route, args) {
+                if (args.method === "web_read_group") {
+                    assert.step("web_read_group");
+                }
+            },
+        });
+        const sheetId = model.getters.getActiveSheetId();
+        const chartId = model.getters.getChartIds(sheetId)[0];
+        assert.verifySteps([], "it should not be loaded eagerly");
+        assert.deepEqual(model.getters.getChartRuntime(chartId).chartJsConfig.data, {
+            datasets: [],
+            labels: [],
+        });
+        await nextTick();
+        assert.deepEqual(model.getters.getChartRuntime(chartId).chartJsConfig.data, {
+            datasets: [
+                {
+                    backgroundColor: ["rgb(31,119,180)", "rgb(255,127,14)", "rgb(174,199,232)"],
+                    borderColor: "#FFFFFF",
+                    data: [1, 3],
+                    label: "",
+                },
+            ],
+            labels: ["false", "true"],
+        });
+        assert.verifySteps(["web_read_group"], "it should have loaded the data");
+    });
+
+    QUnit.test("Odoo line chart runtime loads the data", async (assert) => {
+        const { model } = await createSpreadsheetWithGraph({
+            type: "odoo_line",
+            mockRPC: async function (route, args) {
+                if (args.method === "web_read_group") {
+                    assert.step("web_read_group");
+                }
+            },
+        });
+        const sheetId = model.getters.getActiveSheetId();
+        const chartId = model.getters.getChartIds(sheetId)[0];
+        assert.verifySteps([], "it should not be loaded eagerly");
+        assert.deepEqual(model.getters.getChartRuntime(chartId).chartJsConfig.data, {
+            datasets: [],
+            labels: [],
+        });
+        await nextTick();
+        assert.deepEqual(model.getters.getChartRuntime(chartId).chartJsConfig.data, {
+            datasets: [
+                {
+                    backgroundColor: "rgb(31,119,180)",
+                    borderColor: "rgb(31,119,180)",
+                    data: [1, 3],
+                    label: "Count",
+                    lineTension: 0,
+                },
+            ],
+            labels: ["false", "true"],
+        });
+        assert.verifySteps(["web_read_group"], "it should have loaded the data");
     });
 
     QUnit.test("Can import/export an Odoo chart", async (assert) => {

@@ -34,15 +34,9 @@ chartRegistry.add("odoo_line", {
 });
 
 function createOdooChartRuntime(chart, getters) {
-    const model = getters.getSpreadsheetGraphModel(chart.id);
+    const dataSource = getters.getGraphDataSource(chart.id);
     const background = chart.background || "#FFFFFF";
-    if (!model) {
-        return {
-            background,
-            chartJsConfig: getLineConfiguration(chart, []),
-        };
-    }
-    const { datasets, labels } = model.data;
+    const { datasets, labels } = dataSource.getData();
     const chartJsConfig = getLineConfiguration(chart, labels);
     const colors = new ChartColors();
     for (const { label, data } of datasets) {

@@ -53,13 +53,6 @@ export default class PivotDataSource extends OdooViewsDataSource {
     }
 
     /**
-     * @returns {boolean}
-     */
-    isReady() {
-        return this._model !== undefined;
-    }
-
-    /**
      * @returns {Record<string, Field>}
      */
     getFields() {

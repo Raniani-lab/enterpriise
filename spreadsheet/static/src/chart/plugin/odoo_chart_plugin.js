@@ -63,15 +63,6 @@ export default class OdooGraphPlugin extends CorePlugin {
 
     /**
      * @param {string} id
-     * @returns {GraphModel}
-     */
-    getSpreadsheetGraphModel(id) {
-        const dataSourceId = this.graphsDataSources[id];
-        return this.dataSources.getDataSourceModel(dataSourceId);
-    }
-
-    /**
-     * @param {string} id
      * @returns {GraphDataSource|undefined}
      */
     getGraphDataSource(id) {
@@ -110,6 +101,6 @@ export default class OdooGraphPlugin extends CorePlugin {
     }
 }
 
-OdooGraphPlugin.getters = ["getGraphDataSource", "getSpreadsheetGraphModel", "getOdooChartIds"];
+OdooGraphPlugin.getters = ["getGraphDataSource", "getOdooChartIds"];
 
 corePluginRegistry.add("odoo_graph_plugin", OdooGraphPlugin);

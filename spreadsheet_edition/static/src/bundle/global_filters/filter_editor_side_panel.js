@@ -266,7 +266,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         }
         for (const graphId of this.graphIds) {
             const fieldName = this._findRelation(
-                this.getters.getSpreadsheetGraphModel(graphId).metaData.fields
+                this.getters.getGraphDataSource(graphId).getFields()
             );
             this.selectedGraphField(graphId, fieldName);
         }
@@ -324,7 +324,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * @param {string} fieldName
      */
     selectedGraphField(graphId, fieldName) {
-        const field = this.getters.getSpreadsheetGraphModel(graphId).metaData.fields[fieldName];
+        const field = this.getters.getGraphDataSource(graphId).getField(fieldName);
         if (field) {
             this.state.graphFields[graphId] = {
                 field: fieldName,

@@ -21,14 +21,8 @@ chartRegistry.add("odoo_pie", {
 
 function createOdooChartRuntime(chart, getters) {
     const background = chart.background || "#FFFFFF";
-    const model = getters.getSpreadsheetGraphModel(chart.id);
-    if (!model) {
-        return {
-            background,
-            chartJsConfig: getPieConfiguration(chart, []),
-        };
-    }
-    const { datasets, labels } = model.data;
+    const dataSource = getters.getGraphDataSource(chart.id);
+    const { datasets, labels } = dataSource.getData();
     const chartJsConfig = getPieConfiguration(chart, labels);
     const colors = new ChartColors();
     for (const { label, data } of datasets) {

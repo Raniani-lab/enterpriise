@@ -4,7 +4,8 @@ import { OdooViewsDataSource } from "@spreadsheet/data_sources/odoo_views_data_s
 import { _t } from "@web/core/l10n/translation";
 import { GraphModel } from "@web/views/graph/graph_model";
 
-// @ts-ignore
+/** @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field */
+
 export default class GraphDataSource extends OdooViewsDataSource {
     /**
      * @override
@@ -15,10 +16,18 @@ export default class GraphDataSource extends OdooViewsDataSource {
     }
 
     /**
-     * @returns {object} field definitions
+     * @returns {Record<string, Field>} field definitions
      */
     getFields() {
         return this._metaData.fields;
+    }
+
+    /**
+     * @param {string} fieldName
+     * @returns {Field}
+     */
+    getField(fieldName) {
+        return this.getFields()[fieldName];
     }
 
     /**
@@ -39,5 +48,13 @@ export default class GraphDataSource extends OdooViewsDataSource {
                 orm: this._orm,
             }
         );
+    }
+
+    getData() {
+        if (!this.isReady()) {
+            this.load();
+            return { datasets: [], labels: [] };
+        }
+        return this._model.data;
     }
 }

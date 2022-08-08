@@ -57,6 +57,13 @@ export class OdooViewsDataSource extends DataSource {
     }
 
     /**
+     * @returns {boolean}
+     */
+    isReady() {
+        return this._model !== undefined;
+    }
+
+    /**
      * Get the computed domain of this source
      * @returns {Array}
      */

@@ -177,7 +177,7 @@ QUnit.test('autocall flow', async function (assert) {
             .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
-                span`)
+                strong`)
             .innerHTML,
         'Partner 110',
         "Details should have been shown");
@@ -200,7 +200,7 @@ QUnit.test('autocall flow', async function (assert) {
             .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
-                span`)
+                strong`)
             .innerHTML,
         'Partner 123',
         "Phonecall of second partner should have been displayed");
@@ -222,7 +222,7 @@ QUnit.test('autocall flow', async function (assert) {
             .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
-                span`)
+                strong`)
             .innerHTML,
         'Partner 123',
         "Phonecall of second partner should have been displayed");
@@ -256,7 +256,7 @@ QUnit.test('autocall flow', async function (assert) {
             .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
-                span`)
+                strong`)
             .innerHTML,
         'Partner 142',
         "Phonecall of third partner should have been displayed (second one has already been tried)");
@@ -272,7 +272,7 @@ QUnit.test('autocall flow', async function (assert) {
             .querySelector(`
                 .o_phonecall_details
                 .o_dial_phonecall_partner_name
-                span`)
+                strong`)
             .innerHTML,
         'Partner 123',
         "Phonecall of second partner should have been displayed");
@@ -427,7 +427,7 @@ QUnit.test('Call from Recent tab + keypad', async function (assert) {
             .querySelector(`
                 .o_phonecall_details
                 .o_phonecall_info_name
-                span`)
+                div`)
             .innerHTML,
         'Call to 123456789',
         "Details should have been shown");

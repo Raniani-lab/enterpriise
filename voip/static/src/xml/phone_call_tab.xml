@@ -3,7 +3,7 @@
 
     <t t-name="voip.PhoneCallTab">
         <div>
-            <div class="o_dial_phonecalls"></div>
+            <div class="o_dial_phonecalls list-group"></div>
         </div>
     </t>
 

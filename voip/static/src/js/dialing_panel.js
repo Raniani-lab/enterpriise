@@ -15,8 +15,6 @@ const { sprintf } = require('@web/core/utils/strings');
 const Widget = require('web.Widget');
 
 const { _t, _lt } = core;
-const HEIGHT_OPEN = '480px';
-const HEIGHT_FOLDED = '0px';
 const YOUR_ARE_ALREADY_IN_A_CALL = _lt("You are already in a call");
 
 const DialingPanel = Widget.extend({
@@ -103,7 +101,6 @@ const DialingPanel = Widget.extend({
         await this._tabs.nextActivities.appendTo(this.$('.o_dial_next_activities'));
         await this._tabs.recent.appendTo(this.$('.o_dial_recent'));
 
-        this.$el.css('bottom', 0);
         this.$el.hide();
         this._$incomingCallButtons.hide();
         this._$keypad.hide();
@@ -225,6 +222,8 @@ const DialingPanel = Widget.extend({
     _blockOverlay(message) {
         this._$tabsPanel.block({ message });
         this._$mainButtons.block();
+        this.$('.blockOverlay').addClass('cursor-default');
+        this.$('.blockMsg').addClass('w-50 mx-auto end-0 start-0 text-white cursor-default');
     },
     /**
      * @private
@@ -241,21 +240,14 @@ const DialingPanel = Widget.extend({
     /**
      * @private
      */
-    _fold(animate = true) {
+    _fold() {
         $('.o_dial_transfer_button').popover('hide');
-        if (animate) {
-            this.$el.animate({
-                height: this._isFolded ? HEIGHT_FOLDED : HEIGHT_OPEN,
-            });
-        } else {
-            this.$el.height(this._isFolded ? HEIGHT_FOLDED : HEIGHT_OPEN);
-        }
         if (this._isFolded) {
-            this.$('.o_dial_fold').css("bottom", "23px");
+            this.$el.addClass('folded');
             this.$('.o_dial_main_buttons').hide();
             this.$('.o_dial_incoming_buttons').hide();
         } else {
-            this.$('.o_dial_fold').css("bottom", 0);
+            this.$el.removeClass('folded');
             this.$('.o_dial_main_buttons').show();
         }
     },
@@ -291,7 +283,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _hidePostponeButton() {
-        this._$postponeButton.css('visibility', 'hidden');
+        this._$postponeButton.hide();
     },
     /**
      * @private
@@ -408,7 +400,7 @@ const DialingPanel = Widget.extend({
     _showCallButton() {
         this._resetMainButton();
         this._$callButton.addClass('o_dial_call_button');
-        this._$callButton.removeClass('o_dial_hangup_button');
+        this._$callButton.removeClass('o_dial_hangup_button text-danger');
         this._$callButton[0].setAttribute('aria-label', _t('Call'));
         this._$callButton[0].title = _t('Call');
     },
@@ -418,7 +410,7 @@ const DialingPanel = Widget.extend({
     _showHangupButton() {
         this._resetMainButton();
         this._$callButton.removeClass('o_dial_call_button');
-        this._$callButton.addClass('o_dial_hangup_button');
+        this._$callButton.addClass('o_dial_hangup_button text-danger');
         this._$callButton[0].setAttribute('aria-label', _t('End Call'));
         this._$callButton[0].title = _t('End Call');
     },
@@ -435,7 +427,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _showPostponeButton() {
-        this._$postponeButton.css('visibility', 'visible');
+        this._$postponeButton.show();
     },
     /**
      * @private

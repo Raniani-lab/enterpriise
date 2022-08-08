@@ -144,7 +144,7 @@ const PhoneCallDetails = Widget.extend({
         this.$('.o_dial_keypad_button_container').hide();
         this._$phoneCallInCall.hide();
         this._$phoneCallInfoName.hide();
-        this._$phoneCallDetails.addClass('details_incoming_call');
+        this._$phoneCallDetails.addClass('details_incoming_call pt-5');
 
         this._$phoneCallReceivingCall.show();
 
@@ -165,7 +165,7 @@ const PhoneCallDetails = Widget.extend({
      * Changes the display to show the in call layout.
      */
     showCallDisplay() {
-        this._$phoneCallDetails.addClass('details_in_call');
+        this._$phoneCallDetails.addClass('details_in_call py-4 bg-success bg-opacity-25');
         this._$closeDetails.hide();
         this._$phoneCallInfo.hide();
         this._$phoneCallInCall.show();
@@ -531,7 +531,7 @@ const PhoneCallDetails = Widget.extend({
                 nameBolt = name + ' (' + mobile.replace(number, '<b>' + number + '</b>') + ')';
                 default_phone = mobile;
             }
-            lines += '<tr class="transfer_contact_line" data-number="' + default_phone + '"><td>' + nameBolt + '</td></tr>';
+            lines += '<tr class="transfer_contact_line cursor-pointer" data-number="' + default_phone + '"><td>' + nameBolt + '</td></tr>';
             }
         $('#table_contact').empty().append(lines);
         $('#table_contact tr').on('click', async function(event){self._onClickContactLine(event);});

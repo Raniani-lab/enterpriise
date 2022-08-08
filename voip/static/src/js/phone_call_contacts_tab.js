@@ -17,7 +17,7 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
      */
     init() {
         this._super(...arguments);
-        this._limit = 9;
+        this._limit = 13;
         this._searchDomain = undefined;
     },
     /**

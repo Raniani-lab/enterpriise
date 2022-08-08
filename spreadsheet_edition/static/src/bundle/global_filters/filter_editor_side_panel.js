@@ -141,7 +141,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      */
     get relatedModels() {
         const pivots = this.pivotIds.map((pivotId) =>
-            Object.values(this.getters.getSpreadsheetPivotModel(pivotId).getFields())
+            Object.values(this.getters.getPivotDataSource(pivotId).getFields())
         );
         const lists = this.listIds.map((listId) =>
             Object.values(this.getters.getSpreadsheetListModel(listId).getFields())
@@ -254,7 +254,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.state.relation.relatedModel.label = label;
         for (const pivotId of this.pivotIds) {
             const fieldName = this._findRelation(
-                this.getters.getSpreadsheetPivotModel(pivotId).getFields()
+                this.getters.getPivotDataSource(pivotId).getFields()
             );
             this.selectedPivotField(pivotId, fieldName);
         }
@@ -290,7 +290,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * @param {string} fieldName
      */
     selectedPivotField(pivotId, fieldName) {
-        const field = this.getters.getSpreadsheetPivotModel(pivotId, fieldName).getField(fieldName);
+        const field = this.getters.getPivotDataSource(pivotId, fieldName).getField(fieldName);
         if (field) {
             this.state.pivotFields[pivotId] = {
                 field: fieldName,

@@ -44,7 +44,7 @@ QUnit.module(
             // opening from a pivot cell
             const sheetId = model.getters.getActiveSheetId();
             const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
-            await model.getters.getAsyncSpreadsheetPivotModel(pivotA3);
+            await model.getters.getAsyncPivotDataSource(pivotA3);
             model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
                 pivot: pivotA3,

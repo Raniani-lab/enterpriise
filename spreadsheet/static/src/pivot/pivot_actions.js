@@ -13,15 +13,15 @@ export const SEE_RECORDS_PIVOT = async (env) => {
         .map((arg) => env.model.getters.evaluateFormula(arg));
     const pivotId = env.model.getters.getPivotIdFromPosition(sheetId, col, row);
     const { model } = env.model.getters.getPivotDefinition(pivotId);
-    const pivotModel = await env.model.getters.getAsyncSpreadsheetPivotModel(pivotId);
+    const dataSource = await env.model.getters.getAsyncPivotDataSource(pivotId);
     const slice = functionName === "ODOO.PIVOT.HEADER" ? 1 : 2;
     let argsDomain = evaluatedArgs.slice(slice);
     if (argsDomain[argsDomain.length - 2] === "measure") {
         // We have to remove the measure from the domain
         argsDomain = argsDomain.slice(0, argsDomain.length - 2);
     }
-    const domain = pivotModel.getPivotCellDomain(argsDomain);
-    const name = await env.model.getters.getPivotDataSource(pivotId).getModelLabel();
+    const domain = dataSource.getPivotCellDomain(argsDomain);
+    const name = await dataSource.getModelLabel();
     await env.services.action.doAction({
         type: "ir.actions.act_window",
         name,

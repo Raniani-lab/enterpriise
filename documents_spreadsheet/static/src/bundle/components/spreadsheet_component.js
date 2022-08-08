@@ -31,9 +31,7 @@ patch(SpreadsheetComponent.prototype, "documents_spreadsheet.SpreadsheetComponen
         await model.config.dataSources.waitForAllLoaded();
         const proms = [];
         for (const pivotId of model.getters.getPivotIds()) {
-            proms.push(
-                model.getters.getSpreadsheetPivotModel(pivotId).prepareForTemplateGeneration()
-            );
+            proms.push(model.getters.getPivotDataSource(pivotId).prepareForTemplateGeneration());
         }
         await Promise.all(proms);
         model.dispatch("CONVERT_PIVOT_TO_TEMPLATE");

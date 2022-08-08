@@ -126,15 +126,6 @@ export default class PivotPlugin extends CorePlugin {
 
     /**
      * @param {number} id
-     * @returns {import("../pivot_model").SpreadsheetPivotModel|undefined}
-     */
-    getSpreadsheetPivotModel(id) {
-        const dataSourceId = this.pivots[id].dataSourceId;
-        return this.dataSources.getDataSourceModel(dataSourceId);
-    }
-
-    /**
-     * @param {number} id
      * @returns {PivotDataSource|undefined}
      */
     getPivotDataSource(id) {
@@ -162,10 +153,10 @@ export default class PivotPlugin extends CorePlugin {
      * @param {number} id
      * @returns {Promise<PivotDataSource>}
      */
-    async getAsyncSpreadsheetPivotModel(id) {
+    async getAsyncPivotDataSource(id) {
         const dataSourceId = this.pivots[id].dataSourceId;
         await this.dataSources.load(dataSourceId);
-        return this.dataSources.getDataSourceModel(dataSourceId);
+        return this.getPivotDataSource(id);
     }
 
     /**
@@ -507,8 +498,7 @@ PivotPlugin.getters = [
     "getPivotIdFromPosition",
     "getPivotIds",
     "getPivotName",
-    "getSpreadsheetPivotModel",
-    "getAsyncSpreadsheetPivotModel",
+    "getAsyncPivotDataSource",
     "isExistingPivot",
     "getPivotDataSource",
 ];

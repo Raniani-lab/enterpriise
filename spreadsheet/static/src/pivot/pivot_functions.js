@@ -68,9 +68,7 @@ functionRegistry
         computeFormat: function (pivotId, measureName, ...domain) {
             pivotId = toString(pivotId.value);
             const measure = toString(measureName.value);
-            const field = this.getters.getSpreadsheetPivotModel(pivotId).getReportMeasures()[
-                measure
-            ];
+            const field = this.getters.getPivotDataSource(pivotId).getReportMeasures()[measure];
             if (!field) {
                 return undefined;
             }
@@ -102,7 +100,7 @@ functionRegistry
         },
         computeFormat: function (pivotId, ...domain) {
             pivotId = toString(pivotId.value);
-            const pivot = this.getters.getSpreadsheetPivotModel(pivotId);
+            const pivot = this.getters.getPivotDataSource(pivotId);
             const len = domain.length;
             if (!len) {
                 return undefined;
@@ -112,7 +110,7 @@ functionRegistry
             if (fieldName === "measure" || value === "false") {
                 return undefined;
             }
-            const { aggregateOperator, field } = pivot.parseGroupField(fieldName, value);
+            const { aggregateOperator, field } = pivot.parseGroupField(fieldName);
             switch (field.type) {
                 case "integer":
                     return "0";

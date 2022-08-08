@@ -36,7 +36,7 @@ export const INSERT_PIVOT_CELL_CHILDREN = (env) =>
             action: async (env) => {
                 env.model.dispatch("REFRESH_PIVOT", { id: pivotId });
                 const sheetId = env.model.getters.getActiveSheetId();
-                await env.model.getters.getAsyncSpreadsheetPivotModel(pivotId);
+                await env.model.getters.getAsyncPivotDataSource(pivotId);
                 let { col, row } = env.model.getters.getPosition();
                 ({ col, row } = env.model.getters.getMainCellPosition(sheetId, col, row));
                 const insertPivotValueCallback = (formula) => {

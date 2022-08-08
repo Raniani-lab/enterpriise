@@ -12,16 +12,15 @@ const { Component, onWillStart } = owl;
 
 export default class PivotDetailsSidePanel extends Component {
     setup() {
-        this.spreadsheetModel = undefined;
         this.dialog = useService("dialog");
+        /** @type {import("@spreadsheet/pivot/pivot_data_source").default} */
+        this.dataSource = undefined;
 
         onWillStart(async () => {
-            this.spreadsheetModel = await this.env.model.getters.getAsyncSpreadsheetPivotModel(
+            this.dataSource = await this.env.model.getters.getAsyncPivotDataSource(
                 this.props.pivotId
             );
-            this.modelDisplayName = await this.env.model.getters
-                .getPivotDataSource(this.props.pivotId)
-                .getModelLabel();
+            this.modelDisplayName = await this.dataSource.getModelLabel();
         });
     }
 
@@ -32,10 +31,10 @@ export default class PivotDetailsSidePanel extends Component {
             modelDisplayName: this.modelDisplayName,
             domain: new Domain(definition.domain).toString(),
             dimensions: [...definition.rowGroupBys, ...definition.colGroupBys].map((fieldName) =>
-                this.spreadsheetModel.getFormattedGroupBy(fieldName)
+                this.dataSource.getFormattedGroupBy(fieldName)
             ),
             measures: definition.measures.map((measure) =>
-                this.spreadsheetModel.getGroupByDisplayLabel("measure", measure)
+                this.dataSource.getGroupByDisplayLabel("measure", measure)
             ),
             sortedColumn: definition.sortedColumn,
         };
@@ -51,7 +50,7 @@ export default class PivotDetailsSidePanel extends Component {
     formatSort() {
         const sortedColumn = this.pivotDefinition.sortedColumn;
         const order = sortedColumn.order === "asc" ? _t("ascending") : _t("descending");
-        const measureDisplayName = this.spreadsheetModel.getGroupByDisplayLabel(
+        const measureDisplayName = this.dataSource.getGroupByDisplayLabel(
             "measure",
             sortedColumn.measure
         );
@@ -64,7 +63,7 @@ export default class PivotDetailsSidePanel extends Component {
      * @returns {string} date formatted
      */
     getLastUpdate() {
-        const lastUpdate = this.env.model.getters.getPivotDataSource(this.props.pivotId).lastUpdate;
+        const lastUpdate = this.dataSource.lastUpdate;
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));
         }

@@ -42,9 +42,9 @@ export class PivotDialog extends Component {
         this.state = useState({
             showMissingValuesOnly: false,
         });
-        this.pivotModel = this.props.getters.getSpreadsheetPivotModel(this.props.pivotId);
+        this.dataSource = this.props.getters.getPivotDataSource(this.props.pivotId);
 
-        const table = this.pivotModel.getTableStructure();
+        const table = this.dataSource.getTableStructure();
         const id = this.props.pivotId;
         this.data = {
             columns: this._buildColHeaders(id, table),
@@ -103,13 +103,15 @@ export class PivotDialog extends Component {
      * @returns {Array<number>}
      */
     _addRecursiveRow(index) {
-        const rows = this.pivotModel.getTableStructure().getRowHeaders();
-        const row = [...rows[index].values]
+        const rows = this.dataSource.getTableStructure().getRowHeaders();
+        const row = [...rows[index].values];
         if (row.length <= 1) {
             return [index];
         }
         row.pop();
-        const parentRowIndex = rows.findIndex((r) => JSON.stringify(r.values) === JSON.stringify(row));
+        const parentRowIndex = rows.findIndex(
+            (r) => JSON.stringify(r.values) === JSON.stringify(row)
+        );
         return [index].concat(this._addRecursiveRow(parentRowIndex));
     }
     /**
@@ -131,9 +133,9 @@ export class PivotDialog extends Component {
         //      [0, 1, 2]
         //    ]
         const columnsMap = [];
-        for (let column of this.data.columns) {
+        for (const column of this.data.columns) {
             const columnMap = [];
-            for (let index in column) {
+            for (const index in column) {
                 for (let i = 0; i < column[index].span; i++) {
                     columnMap.push(index);
                 }
@@ -143,14 +145,14 @@ export class PivotDialog extends Component {
         // Remove the columns that are not present in indexes
         for (let i = columnsMap[columnsMap.length - 1].length; i >= 0; i--) {
             if (!indexes.includes(i)) {
-                for (let columnMap of columnsMap) {
+                for (const columnMap of columnsMap) {
                     columnMap.splice(i, 1);
                 }
             }
         }
         // Build the columns
         const columns = [];
-        for (let mapIndex in columnsMap) {
+        for (const mapIndex in columnsMap) {
             const column = [];
             let index = undefined;
             let span = 1;
@@ -196,8 +198,8 @@ export class PivotDialog extends Component {
      */
     _buildValuesMissing(colIndexes, rowIndexes) {
         const values = colIndexes.map(() => []);
-        for (let row of rowIndexes) {
-            for (let col in colIndexes) {
+        for (const row of rowIndexes) {
+            for (const col in colIndexes) {
                 values[col].push(this.data.values[colIndexes[col]][row]);
             }
         }
@@ -242,7 +244,7 @@ export class PivotDialog extends Component {
             if (this.data.rows[i].isMissing) {
                 rowIndexes.add(i);
             }
-            for (let col of this.data.values) {
+            for (const col of this.data.values) {
                 if (col[i].isMissing) {
                     this._addRecursiveRow(i).forEach((x) => rowIndexes.add(x));
                 }
@@ -258,7 +260,7 @@ export class PivotDialog extends Component {
         }
         const field = domain[len - 2];
         const value = domain[len - 1];
-        return this.pivotModel.getGroupByDisplayLabel(field, value);
+        return this.dataSource.getGroupByDisplayLabel(field, value);
     }
 
     // ---------------------------------------------------------------------
@@ -288,15 +290,15 @@ export class PivotDialog extends Component {
                     formula: makePivotFormula("ODOO.PIVOT.HEADER", [id, ...domain]),
                     value: this._getDisplayedPivotHeaderValue(domain),
                     span: cell.width,
-                    isMissing: !this.pivotModel.isUsedHeader(domain),
-                })
+                    isMissing: !this.dataSource.isUsedHeader(domain),
+                });
             }
             headers.push(current);
         }
-        const last = headers[headers.length-1];
+        const last = headers[headers.length - 1];
         headers[headers.length - 1] = last.map((cell) => {
             if (!cell.isMissing) {
-                cell.style = "color: #756f6f;"
+                cell.style = "color: #756f6f;";
             }
             return cell;
         });
@@ -323,7 +325,7 @@ export class PivotDialog extends Component {
                 args: domain,
                 formula: makePivotFormula("ODOO.PIVOT.HEADER", [id, ...domain]),
                 value: this._getDisplayedPivotHeaderValue(domain),
-                isMissing: !this.pivotModel.isUsedHeader(domain),
+                isMissing: !this.dataSource.isUsedHeader(domain),
             };
             if (row.indent > 1) {
                 cell.style = `padding-left: ${row.indent - 1 * 10}px`;
@@ -356,14 +358,14 @@ export class PivotDialog extends Component {
                     domain.push(col.fields[i]);
                     domain.push(col.values[i]);
                 }
-                const value = this.pivotModel.getPivotCellValue(measure, domain);
+                const value = this.dataSource.getPivotCellValue(measure, domain);
                 current.push({
                     args: {
                         formula: makePivotFormula("ODOO.PIVOT", [id, measure, ...domain]),
                         value: !value ? "" : formatValue(value),
                     },
-                    isMissing: !this.pivotModel.isUsedValue(domain, measure),
-                })
+                    isMissing: !this.dataSource.isUsedValue(domain, measure),
+                });
             }
             values.push(current);
         }

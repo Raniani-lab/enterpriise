@@ -21,7 +21,7 @@ async function convertFormula(params) {
 
     const proms = [];
     for (const pivotId of model.getters.getPivotIds()) {
-        proms.push(model.getters.getSpreadsheetPivotModel(pivotId).prepareForTemplateGeneration());
+        proms.push(model.getters.getPivotDataSource(pivotId).prepareForTemplateGeneration());
     }
     await Promise.all(proms);
     setCellContent(model, "A1", `=${params.formula}`);

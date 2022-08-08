@@ -92,7 +92,7 @@ export class DataSource {
      * Create a model
      *
      * @abstract
-     * @private
+     * @protected
      */
     async _createDataSourceModel() {
         throw new Error("This method should be implemented by child class");
@@ -102,7 +102,7 @@ export class DataSource {
      * Load the data in the model
      *
      * @abstract
-     * @private
+     * @protected
      */
     async _load() {
         throw new Error("This method should be implemented by child class");

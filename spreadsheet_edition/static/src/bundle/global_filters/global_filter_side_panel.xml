@@ -119,8 +119,8 @@
                 Match this filter to a field for each data source
             </div>
             <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingPivotField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
-                <t t-set="pivotModel" t-value="getters.getSpreadsheetPivotModel(pivotId)"/>
-                <t t-if="pivotModel !== undefined">
+                <t t-set="pivotDataSource" t-value="getters.getPivotDataSource(pivotId)"/>
+                <t t-if="pivotDataSource.isReady()">
                     <div>
                         <span class="font-weight-medium" t-esc="modelDisplayNames.pivots[pivotId]"/>
                         <span class="o_pivot_model_technical_name text-muted"> (Pivot #<t t-esc="pivotId"/>)</span>
@@ -131,7 +131,7 @@
                             <FieldSelectorAdapter
                                 Component="FieldSelectorWidget"
                                 model="getters.getPivotDefinition(pivotId).model"
-                                fields="pivotModel.getFields()"
+                                fields="pivotDataSource.getFields()"
                                 type="state.type"
                                 relatedModel="state.relation.relatedModel.technical"
                                 selected="getModelField(state.pivotFields[pivotId])"

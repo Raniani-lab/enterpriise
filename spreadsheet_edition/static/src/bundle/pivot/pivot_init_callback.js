@@ -14,18 +14,14 @@ export function insertPivot(pivotData) {
             fields: pivotData.metaData.fields,
             sortedColumn: pivotData.metaData.sortedColumn,
         },
-        searchParams: { ...pivotData.searchParams},
+        searchParams: { ...pivotData.searchParams },
         name: pivotData.name,
-    }
+    };
     return async (model) => {
         const dataSourceId = uuidGenerator.uuidv4();
-        model.config.dataSources.add(
-            dataSourceId,
-            PivotDataSource,
-            definition
-        );
+        model.config.dataSources.add(dataSourceId, PivotDataSource, definition);
         await model.config.dataSources.load(dataSourceId);
-        const pivotModel = model.config.dataSources.getDataSourceModel(dataSourceId);
+        const pivotDataSource = model.config.dataSources.get(dataSourceId);
         // Add an empty sheet in the case of an existing spreadsheet.
         if (!this.isEmptySpreadsheet) {
             const sheetId = uuidGenerator.uuidv4();
@@ -36,7 +32,7 @@ export function insertPivot(pivotData) {
             });
             model.dispatch("ACTIVATE_SHEET", { sheetIdFrom, sheetIdTo: sheetId });
         }
-        const structure = pivotModel.getTableStructure();
+        const structure = pivotDataSource.getTableStructure();
         const table = structure.export();
         const sheetId = model.getters.getActiveSheetId();
 

@@ -2,7 +2,6 @@
 
 import { _t } from "web.core";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
 import { getFirstPivotFunction } from "../pivot_helpers";
 import { FILTER_DATE_OPTION, monthsOptions } from "@spreadsheet/assets_backend/constants";
 
@@ -121,9 +120,7 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @returns {Array<string>}
      */
     getPivotGroupByValues(pivotId, fieldName) {
-        return this.getters
-            .getSpreadsheetPivotModel(pivotId)
-            .getPossibleValuesForGroupBy(fieldName);
+        return this.getters.getPivotDataSource(pivotId).getPossibleValuesForGroupBy(fieldName);
     }
 
     /**
@@ -133,16 +130,13 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @param {Array<string>} domain Domain
      */
     getDisplayedPivotHeaderValue(pivotId, domain) {
-        const model = this.getters.getSpreadsheetPivotModel(pivotId);
-        if (!model) {
-            throw new LoadingDataError();
-        }
-        model.markAsHeaderUsed(domain);
+        const dataSource = this.getters.getPivotDataSource(pivotId);
+        dataSource.markAsHeaderUsed(domain);
         const len = domain.length;
         if (len === 0) {
             return _t("Total");
         }
-        return model.getDisplayedPivotHeaderValue(domain);
+        return dataSource.getDisplayedPivotHeaderValue(domain);
     }
 
     /**
@@ -155,12 +149,9 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @returns {string|number|undefined}
      */
     getPivotCellValue(pivotId, measure, domain) {
-        const model = this.getters.getSpreadsheetPivotModel(pivotId);
-        if (!model) {
-            throw new LoadingDataError();
-        }
-        model.markAsValueUsed(domain, measure);
-        return model.getPivotCellValue(measure, domain);
+        const dataSource = this.getters.getPivotDataSource(pivotId);
+        dataSource.markAsValueUsed(domain, measure);
+        return dataSource.getPivotCellValue(measure, domain);
     }
 
     /**
@@ -185,10 +176,10 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
         const matchingFilters = [];
 
         for (const filter of filters) {
-            const model = this.getters.getSpreadsheetPivotModel(pivotId);
-            const { field, aggregateOperator: time } = model.parseGroupField(argField);
+            const dataSource = this.getters.getPivotDataSource(pivotId);
+            const { field, aggregateOperator: time } = dataSource.parseGroupField(argField);
             if (filter.pivotFields[pivotId].field === field.name) {
-                let value = model.getPivotHeaderValue(evaluatedArgs.slice(1));
+                let value = dataSource.getPivotHeaderValue(evaluatedArgs.slice(1));
                 let transformedValue;
                 const currentValue = this.getters.getGlobalFilterValue(filter.id);
                 switch (filter.type) {
@@ -235,11 +226,9 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      * @param {string} pivotId Id of the pivot
      */
     _refreshOdooPivot(pivotId) {
-        const model = this.getters.getSpreadsheetPivotModel(pivotId);
-        if (model) {
-            model.clearUsedValues();
-        }
-        this.getters.getPivotDataSource(pivotId).load({ reload: true });
+        const dataSource = this.getters.getPivotDataSource(pivotId);
+        dataSource.clearUsedValues();
+        dataSource.load({ reload: true });
     }
 
     /**

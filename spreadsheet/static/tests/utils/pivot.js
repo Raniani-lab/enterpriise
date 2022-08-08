@@ -9,7 +9,6 @@ import { createModelWithDataSource } from "./model";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
-
 /**
  * @param {Model} model
  * @param {object} params
@@ -35,8 +34,7 @@ export async function insertPivotInSpreadsheet(model, params) {
     };
     const dataSource = model.config.dataSources.create(PivotDataSource, definition);
     await dataSource.load();
-    const pivotModel = dataSource.model;
-    const { cols, rows, measures } = pivotModel.getTableStructure().export();
+    const { cols, rows, measures } = dataSource.getTableStructure().export();
     const table = {
         cols,
         rows,

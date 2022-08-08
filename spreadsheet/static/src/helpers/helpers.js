@@ -107,7 +107,7 @@ export async function getDataFromTemplate(env, orm, templateId) {
     await model.config.dataSources.waitForAllLoaded();
     const proms = [];
     for (const pivotId of model.getters.getPivotIds()) {
-        proms.push(model.getters.getSpreadsheetPivotModel(pivotId).prepareForTemplateGeneration());
+        proms.push(model.getters.getPivotDataSource(pivotId).prepareForTemplateGeneration());
     }
     await Promise.all(proms);
     model.dispatch("CONVERT_PIVOT_FROM_TEMPLATE");
@@ -170,7 +170,9 @@ export function camelToSnakeObject(obj) {
  * TODO : remove this and replace it by the one in o_spreadsheet xlsx import when its merged
  */
 export function isEmpty(item) {
-    if (!item) return true;
+    if (!item) {
+        return true;
+    }
     if (typeof item === "object") {
         if (
             Object.values(item).length === 0 ||

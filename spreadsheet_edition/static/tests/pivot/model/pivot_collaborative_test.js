@@ -3,11 +3,7 @@
 import { nextTick } from "@web/../tests/helpers/utils";
 
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
-import {
-    getCellContent,
-    getCellFormula,
-    getCellValue,
-} from "@spreadsheet/../tests/utils/getters";
+import { getCellContent, getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { setupCollaborativeEnv } from "../../utils/collaborative_helpers";
 import PivotDataSource from "@spreadsheet/pivot/pivot_data_source";
 
@@ -33,10 +29,8 @@ async function getPivotReady(model) {
         name: "Partner",
     };
     const dataSource = model.config.dataSources.create(PivotDataSource, definition);
-    await dataSource.loadModel();
-    const pivotModel = dataSource.model;
     await dataSource.load();
-    return { definition, dataSource, pivotModel };
+    return { definition, dataSource };
 }
 
 /**
@@ -45,13 +39,12 @@ async function getPivotReady(model) {
  * @param {Object} params
  * @param {Object} params.definition Pivot definition
  * @param {PivotDataSource} params.dataSource Pivot data source (ready)
- * @param {Object} params.pivotModel Pivot model
  * @param {string} [params.dataSourceId]
  * @param {[number, number]} [params.anchor]
  */
 function insertPreloadedPivot(model, params) {
-    const { definition, dataSource, pivotModel } = params;
-    const structure = pivotModel.getTableStructure();
+    const { definition, dataSource } = params;
+    const structure = dataSource.getTableStructure();
     const sheetId = model.getters.getActiveSheetId();
     const { cols, rows, measures } = structure.export();
     const table = {
@@ -82,11 +75,10 @@ function insertPreloadedPivot(model, params) {
  * @param {Model} model
  */
 export async function insertPivot(model) {
-    const { definition, dataSource, pivotModel } = await getPivotReady(model);
+    const { definition, dataSource } = await getPivotReady(model);
     insertPreloadedPivot(model, {
         definition,
         dataSource,
-        pivotModel,
     });
 }
 
@@ -140,19 +132,17 @@ QUnit.test("Add a pivot", async (assert) => {
 
 QUnit.test("Add two pivots concurrently", async (assert) => {
     assert.expect(6);
-    const { definition: def1, dataSource: ds1, pivotModel: pm1 } = await getPivotReady(alice);
-    const { definition: def2, dataSource: ds2, pivotModel: pm2 } = await getPivotReady(bob);
+    const { definition: def1, dataSource: ds1 } = await getPivotReady(alice);
+    const { definition: def2, dataSource: ds2 } = await getPivotReady(bob);
     await network.concurrent(() => {
         insertPreloadedPivot(alice, {
             definition: def1,
             dataSource: ds1,
             dataSourceId: "data1",
-            pivotModel: pm1,
         });
         insertPreloadedPivot(bob, {
             definition: def2,
             dataSource: ds2,
-            pivotModel: pm2,
             dataSourceId: "data2",
             anchor: [0, 25],
         });
@@ -190,7 +180,7 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
 });
 
 QUnit.test("Add a pivot in another sheet", async (assert) => {
-    const { definition: def1, dataSource: ds1, pivotModel: pm1 } = await getPivotReady(alice);
+    const { definition: def1, dataSource: ds1 } = await getPivotReady(alice);
     alice.dispatch("CREATE_SHEET", {
         sheetId: "sheetId",
         name: "Sheet",
@@ -203,7 +193,6 @@ QUnit.test("Add a pivot in another sheet", async (assert) => {
         definition: def1,
         dataSource: ds1,
         dataSourceId: "data1",
-        pivotModel: pm1,
     });
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => user.getters.getPivotIds(), [
         "1",
@@ -261,7 +250,7 @@ QUnit.test("Rename and remove a pivot concurrently", async (assert) => {
 QUnit.test("Re-insert and remove a pivot concurrently", async (assert) => {
     await insertPivot(alice);
     await network.concurrent(() => {
-        const structure = alice.getters.getSpreadsheetPivotModel("1").getTableStructure();
+        const structure = alice.getters.getPivotDataSource("1").getTableStructure();
         const table = structure.export();
         alice.dispatch("RE_INSERT_PIVOT", {
             id: "1",

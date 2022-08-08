@@ -21,7 +21,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 case "CONVERT_PIVOT_TO_TEMPLATE":
                 case "CONVERT_PIVOT_FROM_TEMPLATE": {
                     for (const pivotId of this.getters.getPivotIds()) {
-                        if (this.getters.getSpreadsheetPivotModel(pivotId) === undefined) {
+                        if (!this.getters.getPivotDataSource(pivotId).isReady()) {
                             return CommandResult.PivotCacheNotLoaded;
                         }
                     }
@@ -218,7 +218,9 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
         _pivotHeader_absoluteToRelative(ast) {
             ast = Object.assign({}, ast);
             const [pivotIdAst, ...domainAsts] = ast.args;
-            if (pivotIdAst.type !== "STRING" && pivotIdAst.type !== "NUMBER") return ast;
+            if (pivotIdAst.type !== "STRING" && pivotIdAst.type !== "NUMBER") {
+                return ast;
+            }
             ast.args = [pivotIdAst, ...this._domainToRelative(pivotIdAst, domainAsts)];
             return ast;
         }
@@ -232,7 +234,9 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
         _pivot_absoluteToRelative(ast) {
             ast = Object.assign({}, ast);
             const [pivotIdAst, measureAst, ...domainAsts] = ast.args;
-            if (pivotIdAst.type !== "STRING" && pivotIdAst.type !== "NUMBER") return ast;
+            if (pivotIdAst.type !== "STRING" && pivotIdAst.type !== "NUMBER") {
+                return ast;
+            }
             ast.args = [pivotIdAst, measureAst, ...this._domainToRelative(pivotIdAst, domainAsts)];
             return ast;
         }
@@ -284,7 +288,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
 
         _isAbsolute(pivotId, fieldName) {
             const field = this.getters
-                .getSpreadsheetPivotModel(pivotId)
+                .getPivotDataSource(pivotId)
                 .getField(fieldName.split(":")[0]);
             return field && field.type === "many2one";
         }
@@ -298,7 +302,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          * Invalid formulas next to valid ones (in the same row) are simply removed.
          */
         _removeInvalidPivotRows() {
-            for (let sheetId of this.getters.getSheetIds()) {
+            for (const sheetId of this.getters.getSheetIds()) {
                 const invalidRows = [];
 
                 for (let rowIndex = 0; rowIndex < this.getters.getNumberRows(sheetId); rowIndex++) {

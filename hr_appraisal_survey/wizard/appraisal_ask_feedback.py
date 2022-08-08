@@ -36,12 +36,10 @@ class AppraisalAskFeedback(models.TransientModel):
     email_from = fields.Char(
         'From', required=True,
         default=lambda self: self.env.user.email_formatted,
-        help="Email address of the sender",
     )
     author_id = fields.Many2one(
         'res.partner', string='Author', required=True,
         default=lambda self: self.env.user.partner_id.id,
-        help="Author of the message.",
     )
     survey_template_id = fields.Many2one('survey.survey', required=True, domain=[('is_appraisal', '=', True)])
     employee_ids = fields.Many2many(

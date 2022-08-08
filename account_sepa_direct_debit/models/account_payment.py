@@ -21,9 +21,9 @@ import re
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
 
+    # used to inform the end user there is a SDD mandate that could be used to register that payment
     sdd_mandate_usable = fields.Boolean(string="Could a SDD mandate be used?",
-        help="Technical field used to inform the end user there is a SDD mandate that could be used to register that payment",
-        compute='_compute_usable_mandate',)
+        compute='_compute_usable_mandate')
 
     @api.model
     def split_node(self, string_node, max_size):

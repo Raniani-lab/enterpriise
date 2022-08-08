@@ -10,8 +10,8 @@ class AccountMoveLine(models.Model):
         string='Discount reward', readonly=True,
         help='The loyalty reward that created this line.',
     )
-    price_taxcloud = fields.Float('Taxcloud Price', default=0,
-                                  help='Technical field to hold prices for TaxCloud.')
+    # Technical field to hold prices for TaxCloud
+    price_taxcloud = fields.Float('Taxcloud Price', default=0)
 
     def _get_taxcloud_price(self):
         self.ensure_one()

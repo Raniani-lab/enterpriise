@@ -892,7 +892,7 @@ class HrDMFAReport(models.Model):
         ('done', "Valid"),
         ('invalid', "Invalid"),
     ], default='normal', compute='_compute_validation_state', store=True)
-    error_message = fields.Char(store=True, compute='_compute_validation_state', help="Technical error message")
+    error_message = fields.Char(store=True, compute='_compute_validation_state', string="Error Message")
 
     _sql_constraints = [
         ('_unique', 'unique (company_id, year, quarter)', "Only one DMFA per year and per quarter is allowed. Another one already exists."),

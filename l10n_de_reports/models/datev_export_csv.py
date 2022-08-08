@@ -47,8 +47,7 @@ class ResPartner(models.Model):
 class AccountMoveL10NDe(models.Model):
     _inherit = 'account.move'
 
-    l10n_de_datev_main_account_id = fields.Many2one('account.account', compute='_get_datev_account',
-        help='Technical field needed for datev export', store=True)
+    l10n_de_datev_main_account_id = fields.Many2one('account.account', compute='_get_datev_account', store=True)
 
     def _auto_init(self):
         if column_exists(self.env.cr, "account_move", "l10n_de_datev_main_account_id"):

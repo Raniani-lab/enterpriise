@@ -35,7 +35,7 @@ class SaleOrderAlert(models.Model):
     subscription_template_ids = fields.Many2many('sale.order.template', string='Quotation templates', check_company=True)
     customer_ids = fields.Many2many('res.partner', string='Customers')
     company_id = fields.Many2one('res.company', string='Company')
-    mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id', help="Monthly Recurring Revenue")
+    mrr_min = fields.Monetary('MRR Range Min', currency_field='currency_id')
     team_ids = fields.Many2many('crm.team', string='Sales Team')
     mrr_max = fields.Monetary('MRR Range Max', currency_field='currency_id')
     product_ids = fields.Many2many(

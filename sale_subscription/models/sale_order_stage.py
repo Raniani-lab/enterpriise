@@ -17,4 +17,4 @@ class SaleOrderStage(models.Model):
                                          help="Send an email to the customer when the subscription is moved to this stage.",
                                          domain=[('model', '=', 'sale.order')])
     category = fields.Selection([('draft', 'Quotation'), ('progress', 'In Progress'), ('closed', 'Closed')],
-                                required=True, default='draft', help="Category of the stage")
+                                required=True, default='draft')

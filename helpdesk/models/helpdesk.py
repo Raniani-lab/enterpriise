@@ -81,7 +81,7 @@ class HelpdeskTeam(models.Model):
 
     use_alias = fields.Boolean('Email Alias', default=True)
     has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
-    allow_portal_ticket_closing = fields.Boolean('Closure by Customers', help="Allow customers to close their tickets")
+    allow_portal_ticket_closing = fields.Boolean('Closure by Customers')
     use_website_helpdesk_form = fields.Boolean('Website Form')
     use_website_helpdesk_livechat = fields.Boolean('Live Chat',
         help="In Channel: You can create a new ticket by typing /helpdesk [ticket title]. You can search ticket by typing /helpdesk_search [keyword],[ticket number],.")

@@ -63,12 +63,10 @@ class RequestAppraisal(models.TransientModel):
     email_from = fields.Char(
         'From', required=True,
         default=lambda self: self.env.user.email_formatted,
-        help="Email address of the sender",
     )
     author_id = fields.Many2one(
         'res.partner', 'Author', required=True,
         default=lambda self: self.env.user.partner_id.id,
-        help="Author of the message.",
     )
     employee_id = fields.Many2one('hr.employee', 'Appraisal Employee')
     recipient_ids = fields.Many2many('res.partner', string='Recipients', required=True)

@@ -18,7 +18,8 @@ class AssetModify(models.TransientModel):
     currency_id = fields.Many2one(related='asset_id.currency_id')
     date = fields.Date(default=lambda self: fields.Date.today(), string='Date')
     need_date = fields.Boolean(compute="_compute_need_date")
-    gain_value = fields.Boolean(compute="_compute_gain_value", help="Technical field to know if we should display the fields for the creation of gross increase asset")
+    # if we should display the fields for the creation of gross increase asset
+    gain_value = fields.Boolean(compute="_compute_gain_value")
     account_asset_id = fields.Many2one('account.account', string="Gross Increase Account", domain="[('deprecated', '=', False), ('company_id', '=', company_id)]")
     account_asset_counterpart_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", string="Asset Counterpart Account")
     account_depreciation_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", string="Depreciation Account")
@@ -32,7 +33,8 @@ class AssetModify(models.TransientModel):
     gain_account_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", compute="_compute_accounts", inverse="_inverse_gain_account", compute_sudo=True, help="Account used to write the journal item in case of gain", readonly=False)
     loss_account_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", compute="_compute_accounts", inverse="_inverse_loss_account", compute_sudo=True, help="Account used to write the journal item in case of loss", readonly=False)
 
-    gain_or_loss = fields.Selection([('gain', 'Gain'), ('loss', 'Loss'), ('no', 'No')], compute='_compute_gain_or_loss', help="Technical field to know if there was a profit or a loss in the selling of the asset")
+    # Technical field to know if there was a profit or a loss in the selling of the asset
+    gain_or_loss = fields.Selection([('gain', 'Gain'), ('loss', 'Loss'), ('no', 'No')], compute='_compute_gain_or_loss')
 
     @api.depends('modify_action')
     def _compute_default_name(self):

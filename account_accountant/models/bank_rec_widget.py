@@ -131,9 +131,9 @@ class BankRecWidget(models.Model):
         comodel_name='account.move.line',
         compute='_compute_selected_aml_ids',
     )
+    # Technical field to communicate from the JS code to the Python code
     todo_command = fields.Char(
         store=False,
-        help="Technical field to communicate from the JS code to the Python code.",
     )
     next_action_todo = fields.Binary()
 

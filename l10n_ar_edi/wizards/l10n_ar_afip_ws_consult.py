@@ -15,8 +15,8 @@ class L10nArAfipWsConsult(models.TransientModel):
     number = fields.Integer(required=True)
     journal_id = fields.Many2one('account.journal', domain="[('l10n_ar_afip_pos_system', 'in', ['RAW_MAW', 'BFEWS', 'FEEWS'])]", required=True)
     document_type_id = fields.Many2one('l10n_latam.document.type')
-    available_document_type_ids = fields.Many2many('l10n_latam.document.type', compute='_compute_available_document_types',
-        help="Technical field used to compute the domain of the documents available for the given journal")
+    # Technical field used to compute the domain of the documents available for the given journal
+    available_document_type_ids = fields.Many2many('l10n_latam.document.type', compute='_compute_available_document_types')
     consult_type = fields.Selection([('specific', 'Specific Invoice Number'), ('last', 'Get Last Invoice')], required=True,
         default="specific", string="Type", help="* Specific Invoice Number: consult all the invoice information in AFIP"
         " for the given number\n* Get Last Invoice: it connects to AFIP to get the last invoice number and show it in"

@@ -7,7 +7,8 @@ class Mod303BOEWizard(models.TransientModel):
 
     using_sii = fields.Boolean(string="Using SII Voluntarily", default=False)
     exempted_from_mod_390 = fields.Boolean(string="Exempted From Modelo 390", default=False)
-    exempted_from_mod_390_available = fields.Boolean(compute='_compute_show_exempted_from_mod_390', help="Technical field used to only make exempted_from_mod_390 avilable in the last period (12 or 4T)")
+    # used to only make exempted_from_mod_390 avilable in the last period (12 or 4T)
+    exempted_from_mod_390_available = fields.Boolean(compute='_compute_show_exempted_from_mod_390')
 
     def _compute_show_exempted_from_mod_390(self):
         report = self.env.ref('l10n_es_reports.mod_303')

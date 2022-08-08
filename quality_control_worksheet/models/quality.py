@@ -13,9 +13,9 @@ class QualityPoint(models.Model):
     worksheet_template_id = fields.Many2one(
         'worksheet.template', 'Template',
         domain="[('res_model', '=', 'quality.check'), '|', ('company_ids', '=', False), ('company_ids', 'in', company_id)]")
+    # tech field used by quality_field_domain widget
     worksheet_model_name = fields.Char(
-        'Model Name', related='worksheet_template_id.model_id.model', readonly=True, store=True,
-        help="tech field used by quality_field_domain widget")
+        'Model Name', related='worksheet_template_id.model_id.model', readonly=True, store=True)
     worksheet_success_conditions = fields.Char('Success Conditions')
 
 

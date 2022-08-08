@@ -39,8 +39,8 @@ class SocialStreamPost(models.Model):
 
     stream_post_image_ids = fields.One2many('social.stream.post.image', 'stream_post_id', string="Stream Post Images",
         help="Images that were shared with this post.")
+    # JSON array capturing the URLs of the images to make it easy to display them in the kanban view
     stream_post_image_urls = fields.Text("Stream Post Images URLs",
-        help="JSON array capturing the URLs of the images to make it easy to display them in the kanban view",
         compute='_compute_stream_post_image_urls')
 
     # Some social.medias (ex: Facebook) provide information on the link shared with the post.

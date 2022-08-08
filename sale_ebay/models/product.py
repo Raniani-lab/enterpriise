@@ -89,8 +89,7 @@ class ProductTemplate(models.Model):
     ebay_quantity = fields.Integer(related='product_variant_ids.ebay_quantity', store=True, readonly=False)
     ebay_last_sync = fields.Datetime(string="Last update", copy=False)
     ebay_template_id = fields.Many2one('mail.template', string='Description Template',
-        ondelete='set null',
-        help='This field contains the template that will be used.')
+        ondelete='set null')
 
     @api.model_create_multi
     def create(self, vals_list):

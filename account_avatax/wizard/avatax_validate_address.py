@@ -22,8 +22,9 @@ class AvataxValidateAddress(models.TransientModel):
     validated_city = fields.Char(compute='_compute_validated_address', string="Validated City")
     validated_state_id = fields.Many2one('res.country.state', compute='_compute_validated_address', string="Validated State")
     validated_country_id = fields.Many2one('res.country', compute='_compute_validated_address', string="Validated Country")
-    is_already_valid = fields.Boolean(string="Is Already Valid", compute='_compute_validated_address',
-                                      help="Technical field to determine whether to allow updating the address or not.")
+
+    # field used to determine whether to allow updating the address or not
+    is_already_valid = fields.Boolean(string="Is Already Valid", compute='_compute_validated_address')
 
     @api.depends('partner_id')
     def _compute_validated_address(self):

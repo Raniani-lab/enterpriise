@@ -40,7 +40,7 @@ class HrExpenseExtractionWords(models.Model):
     _name = "hr.expense.extract.words"
     _description = "Extracted words from expense scan"
 
-    expense_id = fields.Many2one("hr.expense", help="expense id")
+    expense_id = fields.Many2one("hr.expense", string="Expense")
     word_text = fields.Char()
     word_page = fields.Integer()
 
@@ -98,7 +98,7 @@ class HrExpense(models.Model):
                                      'Extract state', default='no_extract_requested', required=True, copy=False)
     extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
-    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Expense extract id", copy=False, readonly=True)
+    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", copy=False, readonly=True)
     extract_word_ids = fields.One2many("hr.expense.extract.words", inverse_name="expense_id", copy=False)
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)

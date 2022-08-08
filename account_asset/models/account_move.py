@@ -16,8 +16,10 @@ class AccountMove(models.Model):
     asset_asset_type = fields.Selection(related='asset_id.asset_type')
     asset_remaining_value = fields.Monetary(string='Depreciable Value', copy=False)
     asset_depreciated_value = fields.Monetary(string='Cumulative Depreciation', copy=False)
-    asset_manually_modified = fields.Boolean(help='This is a technical field stating that a depreciation line has been manually modified. It is used to recompute the depreciation table of an asset/deferred revenue.', copy=False)
-    asset_value_change = fields.Boolean(help='This is a technical field set to true when this move is the result of the changing of value of an asset')
+    # has a depreciation line been manually modified. It is used to recompute the depreciation table of an asset/deferred revenue.')
+    asset_manually_modified = fields.Boolean(copy=False)
+    # true when this move is the result of the changing of value of an asset
+    asset_value_change = fields.Boolean()
 
     asset_ids = fields.One2many('account.asset', string='Assets', compute="_compute_asset_ids")
     asset_ids_display_name = fields.Char(compute="_compute_asset_ids")  # just a button label. That's to avoid a plethora of different buttons defined in xml
@@ -334,7 +336,7 @@ class AccountMove(models.Model):
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
 
-    asset_ids = fields.Many2many('account.asset', 'asset_move_line_rel', 'line_id', 'asset_id', string='Asset Linked', help="Asset created from this Journal Item", copy=False)
+    asset_ids = fields.Many2many('account.asset', 'asset_move_line_rel', 'line_id', 'asset_id', string='Related Assets', copy=False)
     non_deductible_tax_value = fields.Monetary(compute='_compute_non_deductible_tax_value', currency_field='company_currency_id')
 
     def _turn_as_asset(self, asset_type, view_name, view):

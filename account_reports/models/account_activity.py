@@ -10,8 +10,10 @@ import base64
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    tax_closing_end_date = fields.Date(help="Technical field used for VAT closing, containing the end date of the period this entry closes.")
-    tax_report_control_error = fields.Boolean(help="technical field used to know if there was a failed control check")
+    # used for VAT closing, containing the end date of the period this entry closes
+    tax_closing_end_date = fields.Date()
+    # technical field used to know if there was a failed control check
+    tax_report_control_error = fields.Boolean()
 
     def action_open_tax_report(self):
         action = self.env["ir.actions.actions"]._for_xml_id("account_reports.action_account_report_gt")

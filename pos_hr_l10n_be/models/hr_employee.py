@@ -12,11 +12,11 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
     insz_or_bis_number = fields.Char("INSZ or BIS number", readonly=True)
+    # technical field used for tracking the status of the session for each employees
     clocked_session_ids = fields.Many2many(
         'pos.session',
         'employees_session_clocking_info',
         string='Users Clocked In',
-        help='This is a technical field used for tracking the status of the session for each employees.',
     )
 
     @api.constrains('insz_or_bis_number')
@@ -58,11 +58,11 @@ class PosConfig(models.Model):
 class PosSession(models.Model):
     _inherit = 'pos.session'
 
+    # This is a technical field used for tracking the status of the session for each employees
     employees_clocked_ids = fields.Many2many(
         'hr.employee',
         'employees_session_clocking_info',
         string='Employees Clocked In',
-        help='This is a technical field used for tracking the status of the session for each employees.',
     )
 
     def get_employee_session_work_status(self, employee_id):

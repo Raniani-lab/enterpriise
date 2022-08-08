@@ -7,8 +7,8 @@ from odoo.exceptions import UserError
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    price_taxcloud = fields.Float('Taxcloud Price', default=0,
-                                  help='Technical fields to hold prices for TaxCloud.')
+    # Technical fields to hold prices for TaxCloud
+    price_taxcloud = fields.Float('Taxcloud Price', default=0)
 
     def _check_taxcloud_promo(self, vals):
         """Ensure that users cannot modify sale order lines of a Taxcloud order

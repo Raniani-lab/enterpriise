@@ -19,8 +19,8 @@ class SocialStreamPostLinkedIn(models.Model):
     linkedin_author_vanity_name = fields.Char('LinkedIn Vanity Name', help='Vanity name, used to generate a link to the author')
     linkedin_author_image_url = fields.Char('LinkedIn author image URL')
 
-    linkedin_comments_count = fields.Integer('LinkedIn Comments', help='Number of comments')
-    linkedin_likes_count = fields.Integer('LinkedIn Likes', help='Number of likes')
+    linkedin_comments_count = fields.Integer('LinkedIn Comments')
+    linkedin_likes_count = fields.Integer('LinkedIn Likes')
 
     def _compute_linkedin_author_urn(self):
         for post in self:

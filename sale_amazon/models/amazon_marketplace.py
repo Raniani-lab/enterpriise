@@ -25,7 +25,6 @@ class AmazonMarketplace(models.Model):
     )
     seller_central_url = fields.Char(
         string="Seller Central URL",
-        help="The Seller Central URL",
         required=True,
     )
     tax_included = fields.Boolean(

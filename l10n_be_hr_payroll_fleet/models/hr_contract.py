@@ -36,10 +36,9 @@ class HrContract(models.Model):
         return [('can_be_requested', '=', True), ('vehicle_type', '=', vehicle_type)]
 
     car_id = fields.Many2one(
-        'fleet.vehicle', string='Catalog Company Car',
+        'fleet.vehicle', string='Company Car',
         tracking=True, compute="_compute_car_id", store=True, readonly=False,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), ('vehicle_type', '=', 'car')]",
-        help="Employee's company car.",
         groups='fleet.fleet_group_manager')
     car_atn = fields.Float(compute='_compute_car_atn_and_costs', string='Car BIK', help='Benefit in Kind (Company Car)', store=True, compute_sudo=True)
     wishlist_car_total_depreciated_cost = fields.Float(compute='_compute_car_atn_and_costs', store=True, compute_sudo=True)
@@ -65,11 +64,10 @@ class HrContract(models.Model):
         inverse="_inverse_recurring_cost_amount_depreciated")
     transport_mode_bike = fields.Boolean('Uses Bike')
     bike_id = fields.Many2one(
-        'fleet.vehicle', string="Catalog Company Bike",
+        'fleet.vehicle', string="Company Bike",
         tracking=True,
         compute='_compute_bike_id', store=True, readonly=False,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id), ('vehicle_type', '=', 'bike')]",
-        help="Employee's company bike.",
         groups='fleet.fleet_group_manager')
     company_bike_depreciated_cost = fields.Float(compute='_compute_company_bike_depreciated_cost', store=True, compute_sudo=True)
     new_bike = fields.Boolean(

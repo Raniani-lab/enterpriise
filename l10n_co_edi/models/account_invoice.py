@@ -46,7 +46,9 @@ class AccountMove(models.Model):
                                                   ('23', 'Inactivo: Nota Crédito para facturación electrónica V1 (Decreto 2242)'),
                                                   ('33', 'Inactivo: Nota Débito para facturación electrónica V1 (Decreto 2242)')],
                                                   string="Operation Type (CO)", compute='_compute_operation_type', default="10", required=True)
-    l10n_co_edi_transaction = fields.Char('Transaction ID (CO)', help='Technical field used to track the status of a submission.', copy=False)
+
+    # field used to track the status of a submission
+    l10n_co_edi_transaction = fields.Char('Transaction ID (CO)', copy=False)
     l10n_co_edi_cufe_cude_ref = fields.Char(string="CUFE/CUDE", copy=False, help='Unique ID received by the government when the invoice is signed.')
     l10n_co_edi_payment_option_id = fields.Many2one('l10n_co_edi.payment.option', string="Payment Option",
                                                     default=lambda self: self.env.ref('l10n_co_edi.payment_option_1', raise_if_not_found=False))

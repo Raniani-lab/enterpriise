@@ -32,9 +32,10 @@ class MarketingActivity(models.Model):
     mass_mailing_id = fields.Many2one(
         'mailing.mailing', string='Marketing Template', compute='_compute_mass_mailing_id',
         readonly=False, store=True)
+    # Technical field doing the mapping of activity type and mailing type
     mass_mailing_id_mailing_type = fields.Selection([
         ('mail', 'Email')], string='Mailing Type', compute='_compute_mass_mailing_id_mailing_type',
-        readonly=True, store=True, help='Technical field doing the mapping of activity type and mailing type.')
+        readonly=True, store=True)
     server_action_id = fields.Many2one(
         'ir.actions.server', string='Server Action', compute='_compute_server_action_id',
         readonly=False, store=True)

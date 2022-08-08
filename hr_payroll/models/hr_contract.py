@@ -24,7 +24,7 @@ class HrContract(models.Model):
     payslips_count = fields.Integer("# Payslips", compute='_compute_payslips_count', groups="hr_payroll.group_hr_payroll_user")
     calendar_changed = fields.Boolean(help="Whether the previous or next contract has a different schedule or not")
 
-    time_credit = fields.Boolean('Part Time', readonly=False, help='This is a part time contract.')
+    time_credit = fields.Boolean('Part Time', readonly=False)
     work_time_rate = fields.Float(
         compute='_compute_work_time_rate', store=True, readonly=True,
         string='Work time rate', help='Work time rate versus full time working schedule.')

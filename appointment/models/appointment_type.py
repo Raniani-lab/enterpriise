@@ -36,8 +36,9 @@ class AppointmentType(models.Model):
     sequence = fields.Integer('Sequence', default=10)
     name = fields.Char('Appointment Type', required=True, translate=True)
     active = fields.Boolean(default=True)
-    is_published = fields.Boolean('Is Published',
-        help="Technical field for backward compatibility with previous default published appointment type")
+
+    # Technical field for backward compatibility with previous default published appointment type
+    is_published = fields.Boolean('Is Published')
     category = fields.Selection([
         ('website', 'Website'),
         ('custom', 'Custom'),
@@ -56,7 +57,7 @@ class AppointmentType(models.Model):
     reminder_ids = fields.Many2many(
         'calendar.alarm', string="Reminders",
         default=lambda self: self.env['calendar.alarm'].search([('default_for_new_appointment_type', '=', True)]))
-    location_id = fields.Many2one('res.partner', string='Location', help="Location of the appointments")
+    location_id = fields.Many2one('res.partner', string='Location')
     location = fields.Char(
         'Location formatted', compute='_compute_location', compute_sudo=True,
         help='Location formatted for one line uses')

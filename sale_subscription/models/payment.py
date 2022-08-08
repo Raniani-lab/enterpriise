@@ -27,8 +27,8 @@ class PaymentAcquirer(models.Model):
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
+    # used to control the renewal flow based on the transaction state
     renewal_allowed = fields.Boolean(
-        help="Technical field used to control the renewal flow based on the transaction state",
         compute='_compute_renewal_allowed', store=False)
 
     @api.depends('state')

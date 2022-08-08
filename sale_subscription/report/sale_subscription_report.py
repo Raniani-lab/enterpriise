@@ -33,7 +33,7 @@ class sale_subscription_report(models.Model):
     stage_category = fields.Selection([
         ('draft', 'Draft'),
         ('progress', 'In Progress'),
-        ('closed', 'Closed')], readonly=True, help="Category of the stage")
+        ('closed', 'Closed')], readonly=True)
     health = fields.Selection([
         ('normal', 'Neutral'),
         ('done', 'Good'),

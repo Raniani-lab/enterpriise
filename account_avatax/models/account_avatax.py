@@ -29,10 +29,8 @@ class AccountAvatax(models.AbstractModel):
     _inherit = ['account.avatax.unique.code']
     _description = 'Mixin to manage taxes with Avatax on various business documents'
 
-    is_avatax = fields.Boolean(
-        compute='_compute_is_avatax',
-        help='Technical field used for the visibility of fields and buttons.',
-    )
+    # Technical field used for the visibility of fields and buttons
+    is_avatax = fields.Boolean(compute='_compute_is_avatax')
 
     @api.constrains('partner_id', 'fiscal_position_id')
     def _check_address(self):

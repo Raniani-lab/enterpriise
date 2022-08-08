@@ -73,7 +73,7 @@ class AccountInvoiceExtractionWords(models.Model):
     _name = "account.invoice_extract.words"
     _description = "Extracted words from invoice scan"
 
-    invoice_id = fields.Many2one("account.move", required=True, ondelete='cascade', index=True, help="Account move id")
+    invoice_id = fields.Many2one("account.move", required=True, ondelete='cascade', index=True, string="Invoice")
     field = fields.Char()
     selected_status = fields.Integer("Invoice extract selected status.",
                                      help="0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for 'ocr selected with user selection (user may have selected the same box)")
@@ -142,7 +142,7 @@ class AccountMove(models.Model):
                                      'Extract state', default='no_extract_requested', required=True, copy=False)
     extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
-    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", help="Invoice extract id", copy=False, readonly=True)
+    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", copy=False, readonly=True)
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)

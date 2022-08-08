@@ -39,12 +39,13 @@ class BatchErrorWizardLine(models.TransientModel):
     _name = 'account.batch.error.wizard.line'
     _description = "Batch payments error reporting wizard line"
 
-    description = fields.Char(string="Description", required=True, help="Description of the error")
-    help_message = fields.Char(string="Help", help="Additional help message about the error")
-    payment_ids = fields.Many2many(string='Payments', comodel_name='account.payment', required=True, help="Payments causing this error")
+    description = fields.Char(string="Description", required=True)
+    help_message = fields.Char(string="Help")
+    payment_ids = fields.Many2many(string='Payments', comodel_name='account.payment', required=True)
     error_wizard_id = fields.Many2one(comodel_name='account.batch.error.wizard')
     warning_wizard_id = fields.Many2one(comodel_name='account.batch.error.wizard')
-    show_remove_button = fields.Boolean(compute="_compute_show_remove_button", help="Whether or not this line should display a button allowing to remove its related payments from the batch")
+    # Whether or not this line should display a button allowing to remove its related payments from the batch
+    show_remove_button = fields.Boolean(compute="_compute_show_remove_button")
 
     def _compute_show_remove_button(self):
         for record in self:

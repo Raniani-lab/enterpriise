@@ -17,9 +17,9 @@ class L10nLuGenerateTaxReport(models.TransientModel):
     _description = 'Generate Tax Report'
 
     simplified_declaration = fields.Boolean(default=True)
+    # field used to show the correct button in the view
     period = fields.Selection(
         [('A', 'Annual'), ('M', 'Monthly'), ('T', 'Quarterly')],
-        help="Technical field used to show the correct button in the view"
     )
 
     @api.model

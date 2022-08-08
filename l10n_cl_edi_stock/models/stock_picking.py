@@ -40,8 +40,9 @@ class Picking(models.Model):
             ('9', '9. Export Sales')
         ], string='Reason of the Transfer', default='1')
 
-    l10n_cl_draft_status = fields.Boolean(help="Technical field making it possible to have a draft status for entering "
-                                               "the starting number for the guia in this company.  ")
+    # Technical field making it possible to have a draft status for entering
+    # the starting number for the guia in this company
+    l10n_cl_draft_status = fields.Boolean()
 
     # Common fields that will go into l10n_cl.edi.util in master (check copy=False as this flag was not in edi util):
     l10n_latam_document_type_id = fields.Many2one('l10n_latam.document.type', string='Document Type',

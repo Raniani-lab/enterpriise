@@ -7,8 +7,10 @@ from odoo import api, models, fields, _
 class ReportExportWizard(models.TransientModel):
     _inherit = 'account_reports.export.wizard'
 
-    l10n_es_reports_boe_wizard_id = fields.Integer(help="Technical field storing the id of the related BOE generation wizard when exporting a Spanish report")
-    l10n_es_reports_boe_wizard_model = fields.Char(help="Technical field storing the model of the related BOE generation wizard when exporting a Spanish report")
+    # id of the related BOE generation wizard when exporting a Spanish report
+    l10n_es_reports_boe_wizard_id = fields.Integer()
+    # model of the related BOE generation wizard when exporting a Spanish report
+    l10n_es_reports_boe_wizard_model = fields.Char()
 
     def export_report(self):
         self.ensure_one()

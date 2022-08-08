@@ -42,9 +42,9 @@ class SocialPostTemplate(models.Model):
     image_ids = fields.Many2many(
         'ir.attachment', string='Attach Images',
         help="Will attach images to your posts (if the social media supports it).")
+    # JSON array capturing the URLs of the images to make it easy to display them in the kanban view
     image_urls = fields.Text(
-        'Images URLs', compute='_compute_image_urls',
-        help="Technical JSON array capturing the URLs of the images to make it easy to display them in the kanban view.")
+        'Images URLs', compute='_compute_image_urls')
     # Account management
     account_ids = fields.Many2many('social.account', string='Social Accounts',
                                    help="The accounts on which this post will be published.",

@@ -41,8 +41,7 @@ class AccountBatchPayment(models.Model):
         switch_to_generic_warnings = {'no_iban', 'no_eur'}
         for record in self:
             sct_warnings = record._get_sct_genericity_warnings()
-            record.sct_generic = any(warning.get('code') in switch_to_generic_warnings for warning in sct_warnings) \
-                                 or any(payment.company_id.account_fiscal_country_id.code == 'CH' for payment in record.payment_ids)
+            record.sct_generic = any(warning.get('code') in switch_to_generic_warnings for warning in sct_warnings)
 
     def _get_methods_generating_files(self):
         rslt = super(AccountBatchPayment, self)._get_methods_generating_files()

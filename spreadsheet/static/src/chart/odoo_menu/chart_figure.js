@@ -20,4 +20,9 @@ patch(spreadsheet.components.ChartFigure.prototype, "spreadsheet.ChartFigure", {
     get hasOdooMenu() {
         return this.env.model.getters.getChartOdooMenu(this.props.figure.id) !== undefined;
     },
+    async onClick() {
+        if (this.env.isDashboard() && this.hasOdooMenu) {
+            this.navigateToOdooMenu();
+        }
+    },
 });

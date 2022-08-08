@@ -19,7 +19,7 @@ const chartId = "uuid1";
  * can't be triggered programmatically, so we artificially make it visible to be
  * able to interact with it.
  */
- async function showChartMenu(fixture) {
+async function showChartMenu(fixture) {
     const chartMenu = fixture.querySelector(".o-chart-menu");
     chartMenu.style.display = "flex";
     await nextTick();
@@ -30,6 +30,28 @@ async function clickChartExternalLink(fixture) {
     await showChartMenu(fixture);
     const chartMenuItem = fixture.querySelector(".o-chart-menu-item.o-chart-external-link");
     await click(chartMenuItem);
+}
+
+function mockActionService(assert, doActionStep) {
+    const serviceRegistry = registry.category("services");
+    serviceRegistry.add("actionMain", actionService);
+    const fakeActionService = {
+        dependencies: ["actionMain"],
+        start(env, { actionMain }) {
+            return {
+                ...actionMain,
+                doAction: (actionRequest, options = {}) => {
+                    if (actionRequest === "menuAction2") {
+                        assert.step(doActionStep);
+                    }
+                    return actionMain.doAction(actionRequest, options);
+                },
+            };
+        },
+    };
+    serviceRegistry.add("action", fakeActionService, {
+        force: true,
+    });
 }
 
 QUnit.module(
@@ -196,27 +218,30 @@ QUnit.module(
         );
 
         QUnit.test(
+            "icon external link isn't on the chart in dashboard mode",
+            async function (assert) {
+                const model = await createModelWithDataSource({
+                    serverData: this.serverData,
+                });
+                const fixture = await mountSpreadsheet(model);
+                createBasicChart(model, chartId);
+                model.dispatch("LINK_ODOO_MENU_TO_CHART", {
+                    chartId,
+                    odooMenuId: 1,
+                });
+                const chartMenu = model.getters.getChartOdooMenu(chartId);
+                assert.equal(chartMenu.id, 1, "Odoo menu is linked to chart");
+                model.updateMode("dashboard");
+                await nextTick();
+                assert.containsNone(fixture, ".o-chart-external-link", "No link icon in dashboard");
+            }
+        );
+
+        QUnit.test(
             "click on icon external link on chart redirect to the odoo menu",
             async function (assert) {
-                const serviceRegistry = registry.category("services");
-                serviceRegistry.add("actionMain", actionService);
-                const fakeActionService = {
-                    dependencies: ["actionMain"],
-                    start(env, { actionMain }) {
-                        return {
-                            ...actionMain,
-                            doAction: (actionRequest, options = {}) => {
-                                if (actionRequest === "menuAction2") {
-                                    assert.step("doAction");
-                                }
-                                return actionMain.doAction(actionRequest, options);
-                            },
-                        };
-                    },
-                };
-                serviceRegistry.add("action", fakeActionService, {
-                    force: true,
-                });
+                const doActionStep = "doAction";
+                mockActionService(assert, doActionStep);
 
                 const model = await createModelWithDataSource({
                     serverData: this.serverData,
@@ -234,7 +259,39 @@ QUnit.module(
 
                 await clickChartExternalLink(fixture);
 
-                assert.verifySteps(["doAction"]);
+                assert.verifySteps([doActionStep]);
+            }
+        );
+
+        QUnit.test(
+            "Click on chart in dashboard mode redirect to the odoo menu",
+            async function (assert) {
+                const doActionStep = "doAction";
+                mockActionService(assert, doActionStep);
+                const model = await createModelWithDataSource({
+                    serverData: this.serverData,
+                });
+                const fixture = await mountSpreadsheet(model);
+
+                createBasicChart(model, chartId);
+                model.dispatch("LINK_ODOO_MENU_TO_CHART", {
+                    chartId,
+                    odooMenuId: 2,
+                });
+                const chartMenu = model.getters.getChartOdooMenu(chartId);
+                assert.equal(chartMenu.id, 2, "Odoo menu is linked to chart");
+                await nextTick();
+
+                await click(fixture, ".o-chart-container");
+                assert.verifySteps([], "Clicking on a chart while not dashboard mode do nothing");
+
+                model.updateMode("dashboard");
+                await nextTick();
+                await click(fixture, ".o-chart-container");
+                assert.verifySteps(
+                    [doActionStep],
+                    "Clicking on a chart while on dashboard mode redirect to the odoo menu"
+                );
             }
         );
 

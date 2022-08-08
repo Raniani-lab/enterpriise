@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { DataSource } from "./data_source";
+import { LoadableDataSource } from "./data_source";
 import { Domain } from "@web/core/domain";
 import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
 
@@ -24,7 +24,7 @@ function removeContextUserInfo(context) {
  * @property {Array<Object>|undefined} fields
  */
 
-export class OdooViewsDataSource extends DataSource {
+export class OdooViewsDataSource extends LoadableDataSource {
     /**
      * @override
      * @param {Object} services
@@ -38,6 +38,15 @@ export class OdooViewsDataSource extends DataSource {
         this._searchParams = JSON.parse(JSON.stringify(params.searchParams));
         this._searchParams.context = removeContextUserInfo(this._searchParams.context);
         this._customDomain = this._searchParams.domain;
+
+        /**
+         * The model used by this dataSource
+         */
+        this._model = undefined;
+        /**
+         * Promise to control the creation of the model
+         */
+        this._createModelPromise = undefined;
     }
 
     async _fetchMetadata() {
@@ -49,6 +58,9 @@ export class OdooViewsDataSource extends DataSource {
     }
 
     async _load() {
+        if (!this._model) {
+            await this.loadModel();
+        }
         const searchParams = {
             ...this._searchParams,
             domain: this._customDomain,
@@ -61,6 +73,18 @@ export class OdooViewsDataSource extends DataSource {
      */
     isReady() {
         return this._model !== undefined;
+    }
+
+    /*
+     * Create a model
+     * @private
+     * @returns {Promise} Resolved when the model is created
+     */
+    async loadModel() {
+        if (!this._createModelPromise) {
+            this._createModelPromise = this._createDataSourceModel();
+        }
+        return this._createModelPromise;
     }
 
     /**
@@ -100,5 +124,15 @@ export class OdooViewsDataSource extends DataSource {
             this.load();
             throw new LoadingDataError();
         }
+    }
+
+    /**
+     * Create a model
+     *
+     * @abstract
+     * @protected
+     */
+    async _createDataSourceModel() {
+        throw new Error("This method should be implemented by child class");
     }
 }

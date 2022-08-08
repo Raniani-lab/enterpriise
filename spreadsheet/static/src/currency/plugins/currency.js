@@ -16,7 +16,6 @@ class CurrencyPlugin extends spreadsheet.UIPlugin {
         this.dataSources = config.dataSources;
         if (this.dataSources) {
             this.dataSources.add(DATA_SOURCE_ID, CurrencyDataSource);
-            this.dataSources.load(DATA_SOURCE_ID);
         }
     }
 
@@ -33,8 +32,7 @@ class CurrencyPlugin extends spreadsheet.UIPlugin {
      */
     getCurrencyRate(from, to, date) {
         return (
-            this.dataSources &&
-            this.dataSources.get(DATA_SOURCE_ID).getCurrencyRate(from, to, date)
+            this.dataSources && this.dataSources.get(DATA_SOURCE_ID).getCurrencyRate(from, to, date)
         );
     }
 

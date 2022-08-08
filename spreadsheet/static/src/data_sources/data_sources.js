@@ -1,11 +1,17 @@
 /** @odoo-module */
 
+import { LoadableDataSource } from "./data_source";
 import { MetadataRepository } from "./metadata_repository";
 
 const { EventBus } = owl;
 
-/**
- * @typedef {import("./data_source").DataSource} DataSource
+/** *
+ * @typedef {object} DataSourceServices
+ * @property {MetadataRepository} metadataRepository
+ * @property {import("@web/core/orm_service")} orm
+ * @property {() => void} notify
+ *
+ * @typedef {new (services: DataSourceServices, params: object) => any} DataSourceConstructor
  */
 
 export class DataSources extends EventBus {
@@ -14,17 +20,17 @@ export class DataSources extends EventBus {
         this._orm = orm;
         this._metadataRepository = new MetadataRepository(orm);
         this._metadataRepository.addEventListener("labels-fetched", () => this.notify());
-        /** @type {Object.<string, DataSource>} */
+        /** @type {Object.<string, any>} */
         this._dataSources = {};
     }
 
     /**
      * Create a new data source but do not register it.
      *
-     * @param {Class<DataSource>} cls Class to instantiate
-     * @param {Object} params Params to give to data source
+     * @param {DataSourceConstructor} cls Class to instantiate
+     * @param {object} params Params to give to data source
      *
-     * @returns {DataSource}
+     * @returns {any}
      */
     create(cls, params) {
         return new cls(
@@ -41,10 +47,10 @@ export class DataSources extends EventBus {
      * Create a new data source and register it with the following id.
      *
      * @param {string} id
-     * @param {Class<DataSource>} cls Class to instantiate
-     * @param {Object} params Params to give to data source
+     * @param {DataSourceConstructor} cls Class to instantiate
+     * @param {object} params Params to give to data source
      *
-     * @returns {DataSource}
+     * @returns {any}
      */
     add(id, cls, params) {
         this._dataSources[id] = this.create(cls, params);
@@ -52,7 +58,10 @@ export class DataSources extends EventBus {
     }
 
     async load(id, reload = false) {
-        await this.get(id).load({ reload });
+        const dataSource = this.get(id);
+        if (dataSource instanceof LoadableDataSource) {
+            await dataSource.load({ reload });
+        }
     }
 
     /**
@@ -60,28 +69,10 @@ export class DataSources extends EventBus {
      *
      * @param {string} id
      *
-     * @returns {DataSource|undefined}
+     * @returns {any}
      */
     get(id) {
         return this._dataSources[id];
-    }
-
-    /**
-     * Get the model of a data source
-     *
-     * @param {string} id
-     * @returns {Object|undefined}
-     */
-    getDataSourceModel(id) {
-        const ds = this._dataSources[id];
-        if (!ds) {
-            return undefined;
-        }
-        const model = ds.model;
-        if (!model) {
-            this.load(id);
-        }
-        return model;
     }
 
     /**
@@ -104,6 +95,10 @@ export class DataSources extends EventBus {
     }
 
     async waitForAllLoaded() {
-        await Promise.all(Object.values(this._dataSources).map((ds) => ds.load()));
+        await Promise.all(
+            Object.values(this._dataSources).map(
+                (ds) => ds instanceof LoadableDataSource && ds.load()
+            )
+        );
     }
 }

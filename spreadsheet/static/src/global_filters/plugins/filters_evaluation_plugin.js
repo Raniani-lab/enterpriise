@@ -70,6 +70,16 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
         return CommandResult.Success;
     }
 
+    beforeHandle(cmd) {
+        switch (cmd.type) {
+            case "START":
+                // make sure the domains are correctly set before
+                // any evaluation
+                this._updateAllDomains();
+                break;
+        }
+    }
+
     /**
      * Handle a spreadsheet command
      *
@@ -112,7 +122,6 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
                 break;
         }
         switch (cmd.type) {
-            case "START":
             case "ADD_GLOBAL_FILTER":
             case "EDIT_GLOBAL_FILTER":
             case "SET_GLOBAL_FILTER_VALUE":

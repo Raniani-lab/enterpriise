@@ -1,29 +1,19 @@
 /** @odoo-module */
 import { camelToSnakeObject, sum, toServerDateString } from "@spreadsheet/helpers/helpers";
-import { DataSource } from "@spreadsheet/data_sources/data_source";
 import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 
 import { ServerData } from "@spreadsheet/data_sources/server_data";
 
-const { EventBus } = owl;
-
 /**
  * @typedef {import("./accounting_functions").DateRange} DateRange
  */
 
-export class AccountingDataSource extends DataSource {
-    async _load() {
-        return true;
-    }
-
-    async _createDataSourceModel() {
-        /** @type {AccountingModel} */
-        this._model = new AccountingModel(this._orm);
-        this._model.addEventListener("account-aggregate-fetched", () => this._notify());
-        this._model.addEventListener("company-fiscal-year-fetched", () => this._notify());
-        // notify that the model now exists and can be called
-        this._notify();
+export class AccountingDataSource {
+    constructor(services) {
+        this.serverData = new ServerData(services.orm, {
+            whenDataIsFetched: () => services.notify(),
+        });
     }
 
     /**
@@ -36,7 +26,8 @@ export class AccountingDataSource extends DataSource {
      * @returns {number | undefined}
      */
     getCredit(codes, dateRange, offset, companyId, includeUnposted) {
-        return this._model && this._model.getCredit(codes, dateRange, offset, companyId, includeUnposted);
+        const data = this._fetchAccountData(codes, dateRange, offset, companyId, includeUnposted);
+        return data.credit;
     }
 
     /**
@@ -49,79 +40,13 @@ export class AccountingDataSource extends DataSource {
      * @returns {number | undefined}
      */
     getDebit(codes, dateRange, offset, companyId, includeUnposted) {
-        return this._model && this._model.getDebit(codes, dateRange, offset, companyId, includeUnposted);
-    }
-
-    /**
-     * @param {Date} date
-     * @param {number | null} companyId
-     * @returns {string}
-     */
-    getFiscalStartDate(date, companyId) {
-        return this._model && this._model.getFiscalStartDate(date, companyId);
-    }
-
-    /**
-     * @param {Date} date
-     * @param {number | null} companyId
-     * @returns {string}
-     */
-    getFiscalEndDate(date, companyId) {
-        return this._model && this._model.getFiscalEndDate(date, companyId);
-    }
-
-    /**
-     * @param {string} accountType
-     * @returns {string[]}
-     */
-    getAccountGroupCodes(accountType) {
-        return this._model && this._model.getAccountGroupCodes(accountType);
-    }
-}
-
-class AccountingModel extends EventBus {
-    constructor(orm) {
-        super();
-        this.serverData = new ServerData(orm, {
-            whenDataIsFetched: () => this.trigger("account-aggregate-fetched"),
-        });
-    }
-
-    // %%%%%%%%%%%%%%%%%
-    //      PUBLIC
-    // %%%%%%%%%%%%%%%%%
-
-    /**
-     * Gets the total credit for a given account code prefix
-     * @param {string[]} codes prefixes of the accounts codes
-     * @param {DateRange} dateRange start date of the period to look
-     * @param {number} offset end  date of the period to look
-     * @param {number | null} companyId specific companyId to target
-     * @param {boolean} includeUnposted wether or not select unposted entries
-     * @returns {number}
-     */
-    getCredit(codes, dateRange, offset, companyId, includeUnposted) {
-        const data = this._fetchAccountData(codes, dateRange, offset, companyId, includeUnposted);
-        return data.credit;
-    }
-
-    /**
-     * Gets the total debit for a given account code prefix
-     * @param {string[]} codes prefixes of the accounts codes
-     * @param {DateRange} dateRange start date of the period to look
-     * @param {number} offset end  date of the period to look
-     * @param {number | null} companyId specific companyId to target
-     * @param {boolean} includeUnposted wether or not select unposted entries
-     * @returns {number}
-     */
-    getDebit(codes, dateRange, offset, companyId, includeUnposted) {
         const data = this._fetchAccountData(codes, dateRange, offset, companyId, includeUnposted);
         return data.debit;
     }
 
     /**
-     * @param {Date} date Date included in the fiscal year
-     * @param {number | null} companyId specific company to target
+     * @param {Date} date
+     * @param {number | null} companyId
      * @returns {string}
      */
     getFiscalStartDate(date, companyId) {
@@ -129,8 +54,8 @@ class AccountingModel extends EventBus {
     }
 
     /**
-     * @param {Date} date Date included in the fiscal year
-     * @param {number | null} companyId specific company to target
+     * @param {Date} date
+     * @param {number | null} companyId
      * @returns {string}
      */
     getFiscalEndDate(date, companyId) {
@@ -145,12 +70,9 @@ class AccountingModel extends EventBus {
         return this.serverData.batch.get("account.account", "get_account_group", accountType);
     }
 
-    // %%%%%%%%%%%%%%%%%%
-    //      PRIVATE
-    // %%%%%%%%%%%%%%%%%%
-
     /**
      * Fetch the account information (credit/debit) for a given account code
+     * @private
      * @param {string[]} codes prefix of the accounts' codes
      * @param {DateRange} dateRange start date of the period to look
      * @param {number} offset end  date of the period to look
@@ -165,7 +87,7 @@ class AccountingModel extends EventBus {
         // Unfortunately, this check needs to be done right before the server
         // call as a date to low (year <= 1) can raise an error server side.
         if (dateRange.year < 1900) {
-            throw new Error(sprintf(_t("%s is not a valid year."), dateRange.year))
+            throw new Error(sprintf(_t("%s is not a valid year."), dateRange.year));
         }
         const results = [];
         let error = undefined;
@@ -194,7 +116,8 @@ class AccountingModel extends EventBus {
 
     /**
      * Fetch the start and end date of the fiscal year enclosing a given date
-     * Defaults on the currentuser company if not provided
+     * Defaults on the current user company if not provided
+     * @private
      * @param {Date} date
      * @param {number | null} companyId
      * @returns {{start: string, end: string}}

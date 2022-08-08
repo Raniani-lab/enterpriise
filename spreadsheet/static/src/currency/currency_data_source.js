@@ -1,9 +1,7 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import { DataSource } from "../data_sources/data_source";
 import { ServerData } from "../data_sources/server_data";
-const { EventBus } = owl;
 
 /**
  * @typedef Currency
@@ -13,48 +11,10 @@ const { EventBus } = owl;
  * @property {number} decimalPlaces
  * @property {"before" | "after"} position
  */
-export class CurrencyDataSource extends DataSource {
-    async _load() {
-        return true;
-    }
-
-    async _createDataSourceModel() {
-        this._model = new CurrencyModel(this._orm);
-        this._model.addEventListener("currency-fetched", () => this._notify());
-        this._notify();
-    }
-
-    /**
-     * Get the currency rate between the two given currencies
-     * @param {string} from Currency from
-     * @param {string} to Currency to
-     * @param {string|undefined} date
-     * @returns {number|undefined}
-     */
-    getCurrencyRate(from, to, date) {
-        return this._model && this._model.getCurrencyRate(from, to, date);
-    }
-
-    /**
-     * Get all currencies from the server
-     * @param {string} currencyName
-     * @returns {Currency}
-     */
-    getCurrency(currencyName) {
-        return this._model && this._model.getCurrency(currencyName);
-    }
-}
-
-class CurrencyModel extends EventBus {
-    constructor(orm) {
-        super();
-        this._orm = orm;
-
-        /**
-         * Rates values
-         */
-        this.serverData = new ServerData(this._orm, {
-            whenDataIsFetched: () => this.trigger("currency-fetched"),
+export class CurrencyDataSource {
+    constructor(services) {
+        this.serverData = new ServerData(services.orm, {
+            whenDataIsFetched: () => services.notify(),
         });
     }
 
@@ -79,11 +39,12 @@ class CurrencyModel extends EventBus {
     }
 
     /**
+     * Get all currencies from the server
      * @param {string} currencyName
      * @returns {Currency}
      */
     getCurrency(currencyName) {
-        return  this.serverData.batch.get(
+        return this.serverData.batch.get(
             "res.currency",
             "get_currencies_for_spreadsheet",
             currencyName

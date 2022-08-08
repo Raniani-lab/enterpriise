@@ -14,7 +14,6 @@ export default class AccountingPlugin extends spreadsheet.UIPlugin {
         this.dataSources = config.dataSources;
         if (this.dataSources) {
             this.dataSources.add(DATA_SOURCE_ID, AccountingDataSource);
-            this.dataSources.load(DATA_SOURCE_ID);
         }
     }
 

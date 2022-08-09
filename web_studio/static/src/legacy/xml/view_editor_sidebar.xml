@@ -1001,7 +1001,13 @@
             </button>
         </div>
     </div>
+    <div>
+        <label t-attf-for="rule_responsible_{{rule.id}}" title="This user will be assigned a next activity when approval is requested.">Responsible</label>
+        <div class="o_approval_responsible" t-att-data-rule-id="rule.id" t-att-data-responsible-id="rule.responsible_id[0]">
+        </div>
+    </div>
     <div class="o_web_studio_sidebar_text">
+        <label t-attf-for="approval_message_{{rule.id}}" title="The description will be shown to users to understand why they must ask for approval.">Description</label>
         <input t-attf-id="approval_message_{{rule.id}}" t-att-data-rule-id="rule.id" t-attf-name="approval_message_{{rule.id}}" type="text"
             t-att-value="rule.message || null" placeholder="Add a description..."/>
     </div>

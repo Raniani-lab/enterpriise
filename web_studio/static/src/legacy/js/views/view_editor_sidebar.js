@@ -382,6 +382,20 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         });
     },
     /**
+     * Called by _onFieldChanged when the field changed is the M2O of an approval
+     * rule for its res.users field. Update the according rule server-side.
+     * @private
+     */
+     _changeApprovalResponsible: function (approvalField) {
+        const record = this.model.get(this.approvalHandle);
+        const responsibleId = record.data[approvalField].res_id;
+        const ruleId = parseInt(/rule_responsible_(\d+)/.exec(approvalField)[1]);
+        this.trigger_up('approval_responsible_change', {
+            ruleId,
+            responsibleId,
+        });
+    },
+    /**
      * @private
      */
     _changeFieldGroup: function () {
@@ -649,15 +663,17 @@ return Widget.extend(StandaloneFieldManagerMixin, {
         return $components_container;
     },
     /**
-     * Render and attach group widget for each approval rule.
+     * Render and attach group and responsible widget for each approval rule.
      * @private
      * @returns {Promise}
      */
     _renderWidgetsApprovalRules: async function () {
         const groupTargets = this.el.querySelectorAll('.o_approval_group');
-        const fields = [];
+        const userTargets = this.el.querySelectorAll('.o_approval_responsible');
+        const groupFields = [];
+        const userFields = [];
         groupTargets.forEach((node) => {
-            fields.push({
+            groupFields.push({
                 name: 'rule_group_' + node.dataset.ruleId,
                 fields: [{
                     name: 'id',
@@ -671,7 +687,23 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 value: parseInt(node.dataset.groupId),
             })
         });
-        this.approvalHandle  = await this.model.makeRecord('ir.model.fields', fields);
+        userTargets.forEach((node) => {
+            userFields.push({
+                name: 'rule_responsible_' + node.dataset.ruleId,
+                fields: [{
+                    name: 'id',
+                    type: 'integer',
+                }, {
+                    name: 'display_name',
+                    type: 'char',
+                }],
+                relation: 'res.users',
+                domain: [['share', '=', false]],
+                type: 'many2one',
+                value: parseInt(node.dataset.responsibleId),
+            })
+        });
+        this.approvalHandle  = await this.model.makeRecord('ir.model.fields', groupFields.concat(userFields));
         const record = this.model.get(this.approvalHandle);
         const defs = [];
         groupTargets.forEach((node, index) => {
@@ -680,11 +712,23 @@ return Widget.extend(StandaloneFieldManagerMixin, {
                 mode: 'edit',
                 noOpen: true,
             };
-            const fieldName = fields[index].name;
+            const fieldName = groupFields[index].name;
             const many2one = new Many2One(this, fieldName, record, options);
             this._registerWidget(this.approvalHandle, 'group', many2one);
             defs.push(many2one.prependTo($(node)));
         });
+        userTargets.forEach((node, index) => {
+            const options = {
+                idForLabel: 'user',
+                mode: 'edit',
+                noOpen: true,
+            };
+            const fieldName = userFields[index].name;
+            const many2one = new Many2One(this, fieldName, record, options);
+            this._registerWidget(this.approvalHandle, 'user', many2one);
+            defs.push(many2one.prependTo($(node)));
+        });
+
         return Promise.all(defs);
     },
     /**
@@ -1104,18 +1148,23 @@ return Widget.extend(StandaloneFieldManagerMixin, {
      * @private
      */
     _onFieldChanged: async function (ev) {
-        const approvalChanges = Object.keys(ev.data.changes).filter(f => f.startsWith('rule_group_'));
-        const isApprovalChange = approvalChanges.length;
+        const approvalGroupChanges = Object.keys(ev.data.changes).filter(f => f.startsWith('rule_group_'));
+        const isApprovalGroupChange = approvalGroupChanges.length;
+        const approvalResponsibleChanges = Object.keys(ev.data.changes).filter(f => f.startsWith('rule_responsible_'));
+        const isApprovalResponsibleChange = approvalResponsibleChanges.length;
         const isMapChange = Object.keys(ev.data.changes).filter(f => f === 'map_popup').length;
         const isPivotChange = Object.keys(ev.data.changes).filter(f => f === 'pivot_popup').length;
-        const approvalField = isApprovalChange && approvalChanges[0];
+        const approvalGroupField = isApprovalGroupChange && approvalGroupChanges[0];
+        const approvalResponsibleField = isApprovalResponsibleChange && approvalResponsibleChanges[0];
         const oldMapPopupField = this.mapPopupFieldHandle && this.model.get(this.mapPopupFieldHandle).data.map_popup;
         const oldPivotMeasureField = this.pivotPopupFieldHandle && this.model.get(this.pivotPopupFieldHandle).data.pivot_popup;
         const result = await StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
         if (isMapChange) {
             this._changeMapPopupFields(ev, oldMapPopupField);
-        } else if (isApprovalChange) {
-            this._changeApprovalGroup(approvalField);
+        } else if (isApprovalGroupChange) {
+            this._changeApprovalGroup(approvalGroupField);
+        } else if (isApprovalResponsibleChange) {
+            this._changeApprovalResponsible(approvalResponsibleField);
         } else if (isPivotChange) {
             this._changePivotMeasuresFields(ev, oldPivotMeasureField);
         } else {

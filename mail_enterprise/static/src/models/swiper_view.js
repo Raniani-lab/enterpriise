@@ -87,7 +87,7 @@ registerModel({
                 return true;
             }
             if (this.threadPreviewViewOwner) {
-                return this.threadPreviewViewOwner.thread.localMessageUnreadCounter > 0;
+                return this.threadPreviewViewOwner.thread.channel.localMessageUnreadCounter > 0;
             }
             return false;
         },

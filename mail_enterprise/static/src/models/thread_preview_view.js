@@ -27,7 +27,7 @@ addRecordMethods('ThreadPreviewView', {
             this.messaging.device.isSmall &&
             (
                 (this.thread.isChatChannel && this.thread.isPinned) ||
-                (this.thread.localMessageUnreadCounter > 0)
+                (this.thread.channel.localMessageUnreadCounter > 0)
             )
         ) ? {} : clear();
     },

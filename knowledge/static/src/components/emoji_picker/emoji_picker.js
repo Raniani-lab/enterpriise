@@ -1,13 +1,14 @@
 /** @odoo-module **/
 
 import emojis from '@mail/js/emojis';
+import { useService } from "@web/core/utils/hooks";
 const { Component } = owl;
 
 class LegacyEmoji extends Component {
     /**
      * @override
      */
-    setup () {
+    setup() {
         // Mock the template variables:
         this.className = '';
         this.emojiListView = this.props.emojiListView;
@@ -23,15 +24,18 @@ class EmojiPicker extends Component {
     /**
      * @override
      */
-    setup () {
+    setup() {
+        this.orm = useService('orm');
+
         // Mock the template variables:
         this.className = '';
-        const viewEventHandlers =  {
+        const viewEventHandlers = {
             /**
              * @param {Event} event
              */
-            onClickEmoji: event => {
-                this.props.onClickEmoji(event.target.dataset.unicode);
+            onClickEmoji: async event => {
+                await this.orm.write('knowledge.article', [this.props.data.articleId], {'icon': event.target.dataset.unicode});
+                this.props.notifyChangedEmoji(event.target.dataset.unicode, this.props.data.articleId);
             },
         };
         this.emojiListView = {
@@ -45,16 +49,14 @@ class EmojiPicker extends Component {
         };
     }
 
-    /**
-     * @param {Event} event
-     */
-    onRemoveEmoji (event) {
-        this.props.onClickEmoji(false);
+    async onRemoveEmoji() {
+        await this.orm.write('knowledge.article', [this.props.data.articleId], {'icon': false});
+        this.props.notifyChangedEmoji(false, this.props.data.articleId);
     }
 }
 
 EmojiPicker.template = 'knowledge.LegacyEmojiList';
-EmojiPicker.props = ['onClickEmoji'];
+EmojiPicker.props = ['notifyChangedEmoji', 'data'];
 EmojiPicker.components = { LegacyEmoji };
 
 export default EmojiPicker;

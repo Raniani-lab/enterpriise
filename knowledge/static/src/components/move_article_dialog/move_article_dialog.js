@@ -1,60 +1,49 @@
 /** @odoo-module **/
 
-import Dialog from 'web.Dialog';
-import session from 'web.session';
+import { Dialog } from '@web/core/dialog/dialog';
+import { useService } from "@web/core/utils/hooks";
+const { Component, useRef, onMounted } = owl;
 import { _t } from 'web.core';
 
-const MoveArticleToDialog = Dialog.extend({
-    template: 'knowledge.knowledge_move_article_to_modal',
-    /**
-     * @override
-     * @param {Widget} parent
-     * @param {Object} options
-     * @param {Object} props
-     */
-    init: function (parent, options, props) {
-        // Set default options:
-        options.title = options.title || _t('Move an Article');
-        options.buttons = options.buttons || [{
-            text: _t('Ok'),
-            classes: 'btn-primary',
-            click: this.save.bind(this)
-        }, {
-            text: _t('Cancel'),
-            close: true
-        }];
-        this._super(...arguments);
-        this.props = props;
-        // Set template variables:
-        const { state } = props;
-        this.article_name = state.data.display_name;
-    },
+class MoveArticleDialog extends Component {
+    setup() {
+        this.size = 'lg';
+        this.title = _t("Move an Article");
 
-    /**
-     * @override
-     * @returns {Promise}
-     */
-    start: function () {
-        return this._super.apply(this, arguments).then(() => {
-            this.initSelect2();
+        this.rpc = useService("rpc");
+        this.orm = useService("orm");
+        this.user = useService("user");
+
+        this.input = useRef("input");
+        onMounted(() => this.initSelect2());
+    }
+
+    _onMoveArticleClick() {
+        const $input = $(this.input.el);
+        const selected = $input.select2('data').id;
+        const params = { article_id: this.props.articleId };
+        if (typeof selected === 'number') {
+            params.target_parent_id = selected;
+        } else {
+            params.newCategory = selected;
+            params.oldCategory = this.props.category;
+        }
+
+        this.props.moveArticle({...params,
+            onSuccess: () => {
+                this.props.close();
+                // ADSC: maybe remove when tree component
+                this.props.reloadTree(this.props.articleId, '/knowledge/tree_panel');
+            },
+            onReject: () => {}
         });
-    },
+    }
 
-    /**
-     * @returns {JQuery}
-     */
-    getInput: function () {
-        return this.$el.find('input');
-    },
+    get loggedUserPicture() {
+        return `/web/image?model=res.users&field=avatar_128&id=${this.user.userId}`;
+    }
 
-    /**
-     * @returns {String}
-     */
-    getLoggedUserPicture: function () {
-        return `/web/image?model=res.users&field=avatar_128&id=${session.uid}`;
-    },
-
-    initSelect2: function () {
+    initSelect2() {
         const cache = {
             results: [{
                 text: _t('Categories'),
@@ -69,7 +58,7 @@ const MoveArticleToDialog = Dialog.extend({
             }]
         };
 
-        const $input = this.getInput();
+        const $input = $(this.input.el);
         $input.select2({
             containerCssClass: 'o_knowledge_select2',
             dropdownCssClass: 'o_knowledge_select2',
@@ -87,13 +76,12 @@ const MoveArticleToDialog = Dialog.extend({
                  */
                 transport: async params => {
                     const { term } = params.data;
-                    const { state } = this.props;
-                    const results = await this._rpc({
-                        model: 'knowledge.article',
-                        method: 'get_valid_parent_options',
-                        args: [state.data.id],
-                        kwargs: { search_term: term }
-                    });
+                    const results = await this.orm.call(
+                        'knowledge.article',
+                        'get_valid_parent_options',
+                        [this.props.articleId],
+                        { search_term: term }
+                    );
                     params.success({ term, results });
                 },
                 /**
@@ -124,7 +112,7 @@ const MoveArticleToDialog = Dialog.extend({
                                     id: record.id,
                                     text: record.display_name,
                                     subject: record.root_article_id[1],
-                                }
+                                };
                             })
                         });
                     }
@@ -139,7 +127,7 @@ const MoveArticleToDialog = Dialog.extend({
             formatSelection: (data, container, escapeMarkup) => {
                 const markup = [];
                 if (data.id === 'private') {
-                    const src = escapeMarkup(this.getLoggedUserPicture());
+                    const src = escapeMarkup(this.loggedUserPicture);
                     markup.push(`<img src="${src}" class="rounded-circle me-1"/>`);
                 }
                 markup.push(escapeMarkup(data.text));
@@ -156,7 +144,7 @@ const MoveArticleToDialog = Dialog.extend({
                 const markup = [];
                 window.Select2.util.markMatch(text, query.term, markup, escapeMarkup);
                 if (result.id === 'private') {
-                    const src = escapeMarkup(this.getLoggedUserPicture());
+                    const src = escapeMarkup(this.loggedUserPicture);
                     markup.unshift(`<img src="${src}" class="rounded-circle me-1"/>`);
                 }
                 if (subject && subject !== text) {
@@ -165,18 +153,18 @@ const MoveArticleToDialog = Dialog.extend({
                 return markup.join('');
             },
         });
-    },
+    }
+}
 
-    /**
-     * @override
-     */
-    save: function () {
-        const $input = this.getInput();
-        const data = $input.select2('data');
-        this.props.onSave(data.id);
-    },
-});
-
-export {
-    MoveArticleToDialog,
+MoveArticleDialog.template = "knowledge.MoveArticleDialog";
+MoveArticleDialog.components = { Dialog };
+MoveArticleDialog.props = {
+    close: Function,
+    articleName: String,
+    articleId: Number,
+    category: String,
+    moveArticle: Function,
+    reloadTree: Function,
 };
+
+export default MoveArticleDialog;

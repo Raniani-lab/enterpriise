@@ -1,13 +1,15 @@
 .o_knowledge_form_view {
     --default-sidebar-size: 300px;
     --sidebar-size: clamp(300px, var(--default-sidebar-size), 50vw);
+    --knowledge-bg--active: 27, 161, 228;
+    padding: 0 !important;
 
     // = Navbar
     // --------------------------------------------------------------------------
-    .o_breadcrumb_article_name:not(:focus) {
+    .o_breadcrumb_article_name > input:not(:focus) {
         --o-input-border-color: transparent;
     }
-    .o_breadcrumb_article_name:not(.o_readonly_modifier):hover {
+    .o_breadcrumb_article_name > input:not(.o_readonly_modifier):hover {
         border-bottom: $input-border-width solid $o-brand-primary;
     }
 
@@ -47,14 +49,24 @@
         visibility: visible;
         opacity: 1;
     }
-    .o_knowledge_article_view_form_dynamic_width.o_invisible_modifier ~ .o_knowledge_icon,
-    .o_knowledge_article_view_form_dynamic_width.o_invisible_modifier ~ .o_knowledge_icon_cover_buttons,
-    .o_knowledge_article_view_form_dynamic_width.o_invisible_modifier ~ .o_knowledge_editor .oe_form_field .note-editable,
-    .o_knowledge_article_view_form_dynamic_width.o_invisible_modifier ~ .o_knowledge_editor .oe_form_field .o_readonly {
+    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon,
+    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon_cover_buttons,
+    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .oe_form_field .note-editable,
+    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .oe_form_field .o_readonly {
         width: 100%;
         max-width: 750px;
         margin-left: auto;
         margin-right: auto;
+    }
+    // Copy button in share panel
+    .o_field_CopyClipboardChar {
+        width: 100% !important;
+        white-space: nowrap;
+        > span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
     }
 
     // = Sidebar
@@ -221,6 +233,9 @@
     }
 
     .o_knowledge_chatter {
+        .oe_chatter {
+            padding: 0;
+        }
         li.nav-item {
             display: none;
         }
@@ -228,11 +243,13 @@
 
     .dropdown-menu.o_knowledge_more_options_panel {
         width: 250px;
+        transform: translate3d(0px, 30px, 0px) !important;
     }
     .dropdown-menu.o_knowledge_share_panel {
         width: 420px;
         overflow-x: hidden;
         overflow-y: auto;
+        right: 0;
         .o_clipboard_button {
             padding: 0 10px;
         }

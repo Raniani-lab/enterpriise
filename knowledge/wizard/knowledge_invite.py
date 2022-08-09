@@ -19,6 +19,9 @@ class KnowledgeInvite(models.TransientModel):
 
     def action_invite_members(self):
         self.article_id.invite_members(self.partner_ids, self.permission)
+        action = self.env['ir.actions.act_window']._for_xml_id('knowledge.knowledge_article_action_form')
+        action['res_id'] = self.article_id.id
+        return action
 
     @api.depends('partner_ids')
     def _compute_have_share_partners(self):

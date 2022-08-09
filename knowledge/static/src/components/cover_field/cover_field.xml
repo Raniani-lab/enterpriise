@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+<t t-name="knowledge.CoverField" owl="1" t-inherit-mode="primary" t-inherit="web.ImageField">
+    <xpath expr="//div[hasclass('d-inline-block')]" position="attributes">
+        <attribute name="class" add="w-100" separator=" " />
+    </xpath>
+    <xpath expr="//button[hasclass('o_select_file_button')]" position="attributes">
+        <attribute name="t-attf-class" add="#{props.value ? '': 'opacity-0 pe-none'}" separator=" " />
+    </xpath>
+    <xpath expr="//img" position="attributes">
+        <attribute name="t-if" add="props.value" />
+    </xpath>
+</t>
+</templates>

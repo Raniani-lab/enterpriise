@@ -1,333 +1,419 @@
 /** @odoo-module */
 
-import PermissionPanelWidget from './widgets/knowledge_permission_panel.js';
-import EmojiPickerWidget from './widgets/knowledge_emoji_picker.js';
-import FormRenderer from 'web.FormRenderer';
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import EmojiPicker from '@knowledge/components/emoji_picker/emoji_picker';
+import emojis from '@mail/js/emojis';
+import { FormRenderer } from '@web/views/form/form_renderer';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
+import { patch } from "@web/core/utils/patch";
+import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_article_dialog";
+import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
 import { qweb as QWeb } from 'web.core';
+import { sprintf } from '@web/core/utils/strings';
+import { useService } from "@web/core/utils/hooks";
 
+const disallowedEmojis = ['💩', '👎', '💔', '😭', '😢', '😐', '😕', '😞', '😢', '💀'];
+const emojisRandomPickerSource = emojis.filter(emoji => !disallowedEmojis.includes(emoji.unicode));
+const { onMounted, useRef, useState } = owl;
 
-const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin, {
-    className: 'o_knowledge_form_view',
-    events: _.extend({}, FormRenderer.prototype.events, {
-        'click .btn-chatter.active': '_onCloseChatter',
-        'click .btn-chatter:not(.active)': '_onOpenChatter',
-        'click .btn-create': '_onBtnCreateClick',
-        'click .btn-duplicate': '_onBtnDuplicateClick',
-        'click .btn-move': '_onBtnMoveClick',
-        'click .breadcrumb a[data-controller-id]': '_onBreadcrumbItemClick',
-        'click .o_article_caret': '_onFold',
-        'click .o_article_name': '_onOpen',
-        'click .o_article_create': '_onBtnArticleCreateClick',
-        'click .o_section_create': '_onBtnSectionCreateClick',
-        'click .o_knowledge_share_panel': '_preventDropdownClose',
-        'click .o_knowledge_more_options_panel': '_preventDropdownClose',
-        'show.bs.dropdown a.o_article_emoji': '_onEmojiPickerShow',
-        'hide.bs.dropdown a.o_article_emoji': '_onEmojiPickerHide',
-    }),
-    /**
-     * @override
-     */
-    init: function (parent, state, params) {
-        this._super(...arguments);
-        this.breadcrumbs = params.breadcrumbs;
-        /**
-         * Manually set values for the chatter props as it is custom handled
-         * and not loaded with the view (oe_chatter is not used in Knowledge,
-         * the chatter is only rendered when the user clicks on the button).
-         */
-        this.chatterFields = {
-            // `knowledge.article` has `mail.activity.mixin`
-            hasActivities: true,
-            hasFollowers: true,
-            hasMessageIds: true,
-        };
-    },
-    /**
-     * Called when the chatter triggers a reload on the Form view with the
-     * param 'keepChanges=true'. In this case, we only need to update the
-     * chatter.
-     *
-     * @returns {Promise}
-     */
-    updateChatter: function () {
-        if (this._chatterContainerComponent && this.state.res_id) {
-            const props = this._makeChatterContainerProps();
-            return this._chatterContainerComponent.update(props);
-        }
-        this._closeChatter();
-        return Promise.resolve();
-    },
-    /**
-     * @private
-     */
-    _closeChatter: function () {
-        this._chatterContainerTarget.replaceChildren();
-        if (this._chatterContainerComponent) {
-            this._chatterContainerComponent.destroy();
-            this._chatterContainerComponent = undefined;
-        }
-    },
-    /**
-     * @param {Event} event
-     */
-    _onBreadcrumbItemClick: function (event) {
-        const $target = $(event.target);
-        this.trigger_up('breadcrumb_clicked', {
-            controllerID: $target.data('controller-id'),
-        });
-    },
-    /**
-     * Callback function called when the user clicks on the '+' sign of an article
-     * list item. The callback function will create a new article under the target article.
-     * @param {Event} event
-     */
-    _onBtnArticleCreateClick: function (event) {
-        const $target = $(event.currentTarget);
-        const parentId = $target.closest('li').data('article-id');
-        this.trigger_up('create', {
-            target_parent_id: parentId
-        });
-        this._addUnfolded(parentId.toString());
-    },
-    /**
-     * @param {Event} event
-     */
-    _onBtnChatterClick: function (event) {
-        const $chatter = $('.o_knowledge_chatter');
-        $chatter.toggleClass('d-none');
-        $('.btn-chatter').toggleClass('active');
-    },
-    /**
-     * @param {Event} event
-     */
-    _onBtnCreateClick: function (event) {
-        this.trigger_up('create', {
-            category: 'private'
-        });
-    },
-    /**
-     * @param {Event} event
-     */
-    _onBtnDuplicateClick: function (event) {
-        event.preventDefault();
-        this.trigger_up('duplicate', {});
-    },
-    /**
-     * @param {Event} event
-     */
-    _onBtnMoveClick: function (event) {
-        event.preventDefault();
-        this.trigger_up('open_move_to_modal', {});
-    },
-    /**
-     * Callback function called when the user clicks on the '+' sign of a section
-     * (workspace, private, shared). The callback function will create a new article
-     * on the root of the target section.
-     * @param {Event} event
-     */
-    _onBtnSectionCreateClick: function (event) {
-        const $target = $(event.currentTarget);
-        const $section = $target.closest('.o_section');
-        this.trigger_up('create', {
-            category: $section.data('section')
-        });
-    },
-    /**
-     * Update the btn-chatter appearance and hide the chatter section in the
-     * view. Closes the chatter.
-     *
-     * @private
-     */
-    _onCloseChatter: function () {
-        this.el.querySelector('.o_knowledge_chatter').classList.add('d-none');
-        this.el.querySelector('.btn-chatter').classList.remove('active');
-        this._closeChatter();
-    },
-    /**
-     * Hide the container of the emoji picker since it also contains a page
-     * blocker (to force the user to close the emoji picker before continuing
-     * to use the page).
-     *
-     * @private
-     */
-    _onEmojiPickerHide: function () {
-        this.emojiPickerContainer.classList.remove('show');
-    },
-    /**
-     * Unlike Bootstrap 4, Bootstrap 5 requires that the dropdown-menu be inside
-     * a direct sibling of the dropdown toggle even though the real condition
-     * technically is that the dropdown-menu and the dropdown toggle must have a
-     * common ancestor with position: relative.
-     *
-     * In our case, we want to display a page blocker which will prevent the
-     * user to drag an article while the emoji picker is open, along with the
-     * emoji picker itself.
-     *
-     * To circumvent the harsher Bootstrap 5 limitation, the dropdown-menu
-     * element is set manually if the default selector did not find it.
-     *
-     * @see bootstrap.dropdown._getMenuElement
-     * @see bootstrap.selector-engine.next
-     *
-     * @private
-     */
-    _onEmojiPickerShow: function (ev) {
-        const dropdown = globalThis.Dropdown.getInstance(ev.currentTarget);
-        // the show class on the container allows to display the page blocker
-        this.emojiPickerContainer.classList.add('show');
-        if (!dropdown._menu) {
-            dropdown._menu = this.emojiPickerContainer.querySelector('.dropdown-menu');
-        }
-    },
-    /**
-     * Opens the selected record.
-     * @param {Event} event
-     */
-    _onOpen: async function (event) {
-        event.stopPropagation();
-        const $li = $(event.target).closest('li');
-        this.do_action('knowledge.ir_actions_server_knowledge_home_page', {
-            stackPosition: 'replaceCurrentAction',
-            additional_context: {
-                res_id: $li.data('article-id')
+export class KnowledgeArticleFormRenderer extends FormRenderer {
+
+    //--------------------------------------------------------------------------
+    // Component
+    //--------------------------------------------------------------------------
+    setup() {
+        super.setup();
+
+        this.actionService = useService("action");
+        this.dialog = useService("dialog");
+        this.orm = useService("orm");
+        this.rpc = useService("rpc");
+
+        this.emojiPickerData = useState({});
+        this.root = useRef('root');
+        this.tree = useRef('tree');
+
+        // ADSC: Remove when tree component
+        onMounted(() => {
+            this._renderTree(this.resId, '/knowledge/tree_panel');
+            this._setEmojiPickerListener();
+
+            // Focus inside the body (default_focus does not work yet, to check
+            // when field_html will be converted)
+            const body = this.root.el.querySelector('.o_knowledge_editor .note-editable');
+            if (body) {
+                body.focus();
             }
         });
-    },
+    }
+
+
+    //--------------------------------------------------------------------------
+    // Public
+    //--------------------------------------------------------------------------
+
     /**
-     * Update tbe btn-chatter appearance and show the chatter section in the
-     * view. Open the chatter.
-     *
-     * @private
-     * @param {OdooEvent} ev
+     * Open the browser file uploader allowing to add a cover to the article
      */
-    _onOpenChatter: function (ev) {
-        ev.stopPropagation();
-        if (this.state.res_id) {
-            this.el.querySelector('.o_knowledge_chatter').classList.remove('d-none');
-            this.el.querySelector('.btn-chatter').classList.add('active');
-            this._renderChatter();
+    addCover() {
+        this.root.el.querySelector('.o_knowledge_cover_image .o_select_file_button').click();
+    }
+
+    /**
+     * Add a random icon to the article.
+     */
+    addIcon() {
+        const icon = emojisRandomPickerSource[Math.floor(Math.random() * emojisRandomPickerSource.length)].unicode;
+        this._renderEmoji(icon, this.resId);
+    }
+
+    /**
+     * Create a new article and open it.
+     * @param {String} category - Category of the new article
+     * @param {integer} targetParentId - Id of the parent of the new article (optional)
+     */
+    async createArticle(category, targetParentId) {
+        const articleId = await this.orm.call(
+            "knowledge.article",
+            "article_create",
+            [],
+            {
+                is_private: category === 'private',
+                parent_id: targetParentId ? targetParentId : false
+            }
+        );
+        this.openArticle(articleId);
+    }
+
+    /**
+     * Duplicate the current article and open it.
+     */
+    async duplicateArticle() {
+        const articleId = await this.orm.call(
+            "knowledge.article",
+            "copy",
+            [this.resId]
+        );
+        this.openArticle(articleId);
+    }
+
+    /**
+     * @param {integer} - resId: id of the article to open
+     */
+    async openArticle(resId) {
+        // Focus out of name input to prevent showing an error when opening an
+        // article while the name input is focused and empty
+        if (document.activeElement.id === "name" && document.activeElement.value === "") {
+            document.activeElement.blur();
+        } else if (this.resId) {  // Don't save when NoRecord helper is shown
+            await this.props.record.save();
         }
-    },
-    /**
-     * By default, Bootstrap closes automatically the dropdown menu when the user
-     * clicks inside it. To avoid that behavior, we will add a new event listener
-     * on the dropdown menu that will prevent the click event from bubbling up and
-     * triggering the listener closing the dropdown menu.
-     * @param {Event} event
-     */
-    _preventDropdownClose: function (event) {
-        event.stopPropagation();
-    },
-    _renderArticleEmoji: function () {
-        const { data } = this.state;
-        const $dropdown = this.$('.o_knowledge_icon > .o_article_emoji_dropdown');
-        $dropdown.attr('data-article-id', this.state.res_id);
-        $dropdown.find('.o_article_emoji').text(data.icon || '');
-    },
-    /**
-     * Renders the breadcrumb
-     */
-    _renderBreadcrumb: function () {
-        const items = this.breadcrumbs.map(payload => {
-            return QWeb.render('knowledge.knowledge_breadcrumb_item', { payload });
+        this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
+            stackPosition: 'replaceCurrentAction',
+            additionalContext: {
+                res_id: resId ? resId : false
+            }
         });
-        this.$('.breadcrumb').prepend(items);
-    },
+    }
+
+    get resId() {
+        return this.props.record.resId;
+    }
+
     /**
-     * Render and mount the chatter of the current record.
-     *
-     * @private
-     * @returns {Promise}
+     * Resize the sidebar when the resizer is grabbed.
      */
-    _renderChatter: function () {
-        this._closeChatter();
-        return this.initChatter();
-    },
-    /**
-     * @private
-     * @returns {Promise}
-     */
-    _renderEmojiPicker: function () {
-        this.emojiPickerContainer = this.el.querySelector('.o_knowledge_emoji_picker_container');
-        this.emojiPicker = new EmojiPickerWidget(this);
-        return this.emojiPicker.appendTo($(this.emojiPickerContainer));
-    },
-    /**
-     * Renders the permission panel
-     */
-    _renderPermissionPanel: function () {
-        this.$('.btn-share').one('click', event => {
-            const $container = this.$('.o_knowledge_permission_panel');
-            const panel = new PermissionPanelWidget(this, {
-                article_id: this.state.data.id,
-                user_permission: this.state.data.user_permission
-            });
-            panel.attachTo($container);
-        });
-    },
-    /**
-     * @override
-     * @returns {Promise}
-     */
-    _renderView: async function () {
-        const result = await this._super.apply(this, arguments);
-        this._renderBreadcrumb();
-        await this._renderTree(this.state.res_id, '/knowledge/tree_panel');
-        this._renderArticleEmoji();
-        this._renderPermissionPanel();
-        this._setResizeListener();
-        await this._renderEmojiPicker();
-        this._chatterContainerTarget = this.el.querySelector('.o_knowledge_chatter_container');
-        return result;
-    },
-    /**
-     * @param {integer} id - Article id
-     * @param {String} unicode
-     */
-    _setEmoji: function (id, emoji) {
-        const emojis = this.$(`.o_article_emoji_dropdown[data-article-id="${id}"] > .o_article_emoji`);
-        emojis.text(emoji || '📄');
-    },
-    /**
-     * Setup the emoji picker listener(s) to open it when clicking on an emoji
-     *
-     * @param {JQuery} $emojiContainer element containing emoji_dropdown
-     *                 which need a click handler to open the
-     */
-    _setEmojiPickerListener: function ($emojiContainer) {
-        $emojiContainer = $emojiContainer || this.$el;
-        $emojiContainer.find('.o_article_emoji_dropdown').on('click', async event => {
-            this.emojiPicker.setArticleId(parseInt(event.currentTarget.dataset.articleId));
-        });
-    },
-    /**
-     * Enables the user to resize the aside block.
-     * Note: When the user grabs the resizer, a new listener will be attached
-     * to the document. The listener will be removed as soon as the user releases
-     * the resizer to free some resources.
-     */
-    _setResizeListener: function () {
-        /**
-         * @param {PointerEvent} event
-         */
+    resizeSidebar() {
         const onPointerMove = _.throttle(event => {
             event.preventDefault();
-            this.el.style.setProperty('--default-sidebar-size', `${event.pageX}px`);
+            document.querySelector('.o_knowledge_form_view').style.setProperty('--default-sidebar-size', `${event.pageX}px`);
         }, 100);
-        /**
-         * @param {PointerEvent} event
-         */
-        const onPointerUp = event => {
-            $(document).off('pointermove', onPointerMove);
+
+        this.root.el.addEventListener('pointermove', onPointerMove);
+        this.root.el.addEventListener('pointerup', () => this.root.el.removeEventListener('pointermove', onPointerMove), {once: true});
+    }
+
+    /**
+     * Show/hide the chatter. Before showing it, it is reloaded so that new messages,
+     * activities,... will be shown.
+     */
+    toggleChatter() {
+        if (this.resId) {
+            const chatter = this.root.el.querySelector('.o_knowledge_chatter');
+            if (chatter.classList.contains('d-none')) {
+                // Reload chatter
+                this.env.model.notify();
+            }
+            chatter.classList.toggle('d-none');
+            this.root.el.querySelector('.btn-chatter').classList.toggle('active');
+        }
+    }
+
+    /**
+     * Add/Remove article from favorites and reload the favorite tree.
+     * @param {event} Event
+     */
+    async toggleFavorite(event) {
+        await this.props.record.update({is_user_favorite: !this.props.record.data.is_user_favorite});
+        // ADSC: move when tree component
+        await this.props.record.save({stayInEdition: true});
+        const template = await this.rpc(
+            '/knowledge/tree_panel/favorites',
+            {
+                active_article_id: this.resId,
+            }
+        );
+        this.tree.el.querySelector('.o_favorite_container').innerHTML = template;
+        this._setTreeFavoriteListener();
+    }
+
+
+    //--------------------------------------------------------------------------
+    // Handlers
+    //--------------------------------------------------------------------------
+
+    /**
+     * Show the Dialog allowing to move the current article.
+     */
+    onMoveArticleClick() {
+        this.dialog.add(
+            MoveArticleDialog,
+            {
+                articleName: this.props.record.data.name,
+                articleId: this.resId,
+                category: this.props.record.data.category,
+                moveArticle: this._moveArticle.bind(this),
+                reloadTree: this._renderTree.bind(this),
+            }
+        );
+    }
+
+    /**
+     * When the user clicks on the name of the article, checks if the article
+     * name hasn't been set yet. If it hasn't, it will look for a title in the
+     * body of the article and set it as the name of the article.
+     * @param {Event} event
+     */
+    async _onNameClick(event) {
+        const name = event.target.value;
+        if (name === this.env._t('New Article')) {
+            this._rename(this.resId, '');
+        }
+    }
+
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------    
+
+    /**
+     * Try to move the given article to the new given position.
+     * @param {integer} articleId
+     * @param {Object} position
+     * @param {Function} onSuccess
+     * @param {Function} onReject
+     */
+    async _confirmMoveArticle(articleId, position, onSuccess, onReject) {
+        try {
+            const result = await this.orm.call(
+                'knowledge.article',
+                'move_to',
+                [articleId],
+                position
+            );
+            if (result) {
+                onSuccess();
+            } else {
+                onReject();
+            }
+        } catch {
+            onReject();
+        }
+    }
+    
+    /**
+     * Fetch the template of the children of the given article to add in the
+     * article tree.
+     * @param {integer} parentId
+     * 
+     * @returns {Promise}
+     */
+    _fetchChildrenArticles(parentId) {
+        return this.rpc(
+            '/knowledge/tree_panel/children',
+            {
+                parent_id: parentId
+            }
+        );
+    }
+
+    _hideEmojiPicker() {
+        this.root.el.querySelector('.o_knowledge_emoji_picker_container').classList.remove('show');
+    }
+
+    /**
+     * @param {Object} data
+     * @param {integer} data.article_id
+     * @param {String} data.oldCategory
+     * @param {String} data.newCategory
+     * @param {integer} [data.target_parent_id]
+     * @param {integer} [data.before_article_id]
+     * @param {Function} data.onSuccess
+     * @param {Function} data.onReject
+     */
+    async _moveArticle(data) {
+        var newPosition = {
+            category: data.newCategory,
         };
-        const $resizer = this.$('.o_knowledge_article_form_resizer');
-        $resizer.on('pointerdown', event => {
-            event.preventDefault();
-            $(document).on('pointermove', onPointerMove);
-            $(document).one('pointerup', onPointerUp);
+        if (typeof data.target_parent_id !== 'undefined') {
+            newPosition.parent_id = data.target_parent_id;
+        }
+        if (typeof data.before_article_id !== 'undefined') {
+            newPosition.before_article_id = data.before_article_id;
+        }
+        if (data.newCategory === data.oldCategory) {
+            await this._confirmMoveArticle(data.article_id, newPosition, data.onSuccess, data.onReject);
+        } else {
+            let message;
+            if (data.newCategory === 'workspace') {
+                message = this.env._t("Are you sure you want to move this article to the Workspace? It will be shared with all internal users.");
+            } else if (data.newCategory === 'private') {
+                message = this.env._t("Are you sure you want to move this to private? Only you will be able to access it.");
+            } else if (data.newCategory === 'shared' && data.target_parent_id) {
+                const article = document.querySelector(`[data-article-id='${data.target_parent_id}']`);
+                const emoji = article.querySelector('.o_article_emoji').textContent || '';
+                const name = article.querySelector('.o_article_name').textContent || '';
+                message = sprintf(this.env._t('Are you sure you want to move this article under "%s%s"? It will be shared with the same persons.'), emoji, name);
+            }
+            this.dialog.add(ConfirmationDialog, {
+                body: message,
+                confirm: async () => await this._confirmMoveArticle(data.article_id, newPosition, data.onSuccess, data.onReject),
+                cancel: data.onReject
+            });
+        }
+    }
+
+    /**
+     * Rename the article. To prevent empty names, checks for a valid title in
+     * the article, or renames the article to the default article name.
+     * @param {integer} id - Target id
+     * @param {string} name - Target Name
+     */
+    _rename(id, name) {
+        if (name === '') {
+            const articleTitle = this.root.el.querySelector('.o_knowledge_editor h1');
+            if (articleTitle) {
+                name = articleTitle.textContent.trim();
+            }
+            name = name || this.env._t('New Article');
+            this.props.record.update({'name': name});
+        }
+        // ADSC: Remove when tree component
+        // Updates the name in the sidebar
+        this.tree.el.querySelector(`.o_article[data-article-id="${id}"] > .o_article_handle > .o_article_name`).textContent = name;
+    }
+
+    /**
+     * Render the updated emoji of the given article (if the article is the
+     * current article, update the record first).
+     * @param {String} unicode
+     * @param {integer} articleId
+     */
+    _renderEmoji(unicode, articleId) {
+        if (articleId === this.resId) {
+            this.props.record.update({'icon': unicode});
+        }
+        // ADSC: remove when tree component
+        // Updates the emojis in the sidebar
+        const emojis = this.tree.el.querySelectorAll(`.o_article_emoji_dropdown[data-article-id="${articleId}"] > .o_article_emoji`);
+        for (let idx = 0; idx < emojis.length; idx++) {
+            emojis[idx].textContent = unicode || '📄';
+        }
+    }
+
+    /**
+     * Render the tree listing all articles.
+     * To minimize loading time, the function will initially load the root articles.
+     * The other articles will be loaded lazily: The user will have to click on
+     * the carret next to an article to load and see their children.
+     * The id of the unfolded articles will be cached so that they will
+     * automatically be displayed on page load.
+     * @param {integer} activeArticleId
+     * @param {String} route
+     */
+    async _renderTree(activeArticleId, route) {
+        let unfoldedArticles = localStorage.getItem('unfoldedArticles');
+        unfoldedArticles = unfoldedArticles ? unfoldedArticles.split(";").map(Number) : false;
+        try {
+            const htmlTree = await this.rpc(route,
+                {
+                    active_article_id: activeArticleId,
+                    unfolded_articles: unfoldedArticles,
+                }
+            );
+            this.tree.el.innerHTML = htmlTree;
+            this._setTreeListener();
+            this._setTreeFavoriteListener();
+
+            // ADSC: Make tree component with "t-on-"" instead of adding these eventListeners
+            this.tree.el.addEventListener('click', (ev) => {
+                const target = ev.target;
+                if (target.classList.contains('o_article_name')) {
+                    this.openArticle(parseInt(target.closest('.o_article').dataset.articleId));
+                } else {
+                    const button = target.closest('button');
+                    if (!button) {
+                        return;
+                    }
+                    if (button.classList.contains('o_section_create')) {
+                        this.createArticle(button.closest('.o_section').dataset.section);
+                    } else if (button.classList.contains('o_article_create')) {
+                        const parentId = parseInt(button.closest('.o_article').dataset.articleId);
+                        this.createArticle(undefined, parentId);
+                        this._addUnfolded(parentId.toString());
+                    } else if (button.classList.contains('o_article_caret')) {
+                        this._fold($(button));
+                    }
+                }
+            });
+        } catch {
+            this.tree.el.innerHTML = "";
+        }
+    }
+
+    /**
+     * Update the sequence of favortie articles for the curent user.
+     * @param {Array} favoriteIds - Updated sequence
+     */
+    _resequenceFavorites(favoriteIds) {
+        this.rpc(
+            '/web/dataset/resequence',
+            {
+                model: "knowledge.article.favorite",
+                ids: favoriteIds,
+                offset: 1,
+            }
+        );
+    }
+
+    /**
+     * Setup the emoji picker listener(s) to open it when clicking on an emoji
+     */
+    _setEmojiPickerListener() {
+        // Cannot add "t-on-show.bs.dropdown" in template
+        // Maybe can be removed when tree component
+        this.root.el.addEventListener('show.bs.dropdown', (ev) => {
+            if (ev.target.classList.contains('o_article_emoji')) {
+                this._showEmojiPicker(ev);
+            }
         });
-    },
+        this.root.el.addEventListener('hide.bs.dropdown', (ev) => {
+            if (ev.target.classList.contains('o_article_emoji')) {
+                this._hideEmojiPicker();
+            }
+        });
+    }
+
     /**
      * Initializes the drag-and-drop behavior of the tree listing all articles.
      * Once this function is called, the user will be able to move an article
@@ -340,9 +426,11 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
      * Unfortunately, `nestedSortable` can only restore one transformation. Disabling
      * the drag-and-drop behavior will ensure that the tree structure can be restored
      * if something went wrong.
+     * 
+     * ADSC TODO: Move to tree component
      */
-    _setTreeListener: function () {
-        const $sortable = this.$('.o_tree');
+    _setTreeListener() {
+        const $sortable = $('.o_tree');
         $sortable.nestedSortable({
             axis: 'y',
             handle: '.o_article_handle',
@@ -391,7 +479,7 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
             start: (event, ui) => {
                 const section = ui.item.data('nestedSortableItem').offsetParent[0].parentElement;
                 if (section.getAttribute('data-section') !== 'shared') {
-                    this.$('section[data-section="shared"]').addClass('o_no_root_placeholder');
+                    $('section[data-section="shared"]').addClass('o_no_root_placeholder');
                 }
             },
             /**
@@ -419,11 +507,11 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
                     data.before_article_id = $next.data('article-id');
                 }
                 $li.siblings('.o_knowledge_empty_info').addClass('d-none');
-                this.$('.o_knowledge_empty_info:only-child').removeClass('d-none');
+                $('.o_knowledge_empty_info:only-child').removeClass('d-none');
                 const confirmMove = async () => {
                     const id = $li.data('parent-id');
                     if (typeof id !== 'undefined') {
-                        const $parent = this.$(`.o_article[data-article-id="${id}"]`);
+                        const $parent = $(`.o_article[data-article-id="${id}"]`);
                         if (!$parent.children('ul').is(':parent')) {
                             const $caret = $parent.find('> .o_article_handle > .o_article_caret');
                             $caret.remove();
@@ -450,7 +538,7 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
                                     $li.detach();
                                     await this._fold($firstParent);
                                     if ($li.find('.o_article_handle').hasClass('o_article_active')) {
-                                        const $newLi = this.$(`#article_${$li.data('article-id')}`);
+                                        const $newLi = $(`#article_${$li.data('article-id')}`);
                                         $newLi.find('.o_article_handle').addClass('o_article_active');
                                     }
                                     
@@ -472,7 +560,7 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
                         $(child).data('category', data.newCategory);
                         $(child).attr('data-category', data.newCategory);
                     });
-                    const $sharedSection = this.$('section[data-section="shared"]');
+                    const $sharedSection = $('section[data-section="shared"]');
                     if ($sharedSection.length) {
                         $sharedSection.removeClass('o_no_root_placeholder');
                         if (!$sharedSection.find('.o_article').length) {
@@ -509,15 +597,15 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
                     // For consistency with the nestedSortable library,
                     // trigger the 'change' event from the moved $item
                     $item._trigger('change', null, $item._uiHash());
-                    this.$('section[data-section="shared"]').removeClass('o_no_root_placeholder');
+                    $('section[data-section="shared"]').removeClass('o_no_root_placeholder');
                     $sortable.sortable('enable');
-                    this.$('.o_knowledge_empty_info').addClass('d-none');
-                    this.$('.o_knowledge_empty_info:only-child').removeClass('d-none');
+                    $('.o_knowledge_empty_info').addClass('d-none');
+                    $('.o_knowledge_empty_info:only-child').removeClass('d-none');
                 };
                 // The stop method may be called before the library calls
                 // isAllowed (bug), so it has to be called again as a failsafe.
                 if ($sortable.data('mjsNestedSortable').options.isAllowed(ui.item, undefined, ui.item)) {
-                    this.trigger_up('move', {...data,
+                    this._moveArticle({...data,
                         onSuccess: confirmMove,
                         onReject: rejectMove,
                     });
@@ -526,28 +614,59 @@ const KnowledgeArticleFormRenderer = FormRenderer.extend(KnowledgeTreePanelMixin
                 }
             },
         });
-
         // Allow drag and drop between sections:
-
-        this.$('section[data-section="workspace"] .o_tree').nestedSortable(
+        $('section[data-section="workspace"] .o_tree').nestedSortable(
             'option',
             'connectWith',
             'section[data-section="private"] .o_tree, section[data-section="shared"] .o_tree'
         );
-        this.$('section[data-section="private"] .o_tree').nestedSortable(
+        $('section[data-section="private"] .o_tree').nestedSortable(
             'option',
             'connectWith',
             'section[data-section="workspace"] .o_tree, section[data-section="shared"] .o_tree'
         );
         // connectWith both workspace and private sections:
-        this.$('section[data-section="shared"] .o_tree').nestedSortable(
+        $('section[data-section="shared"] .o_tree').nestedSortable(
             'option',
             'connectWith',
             'section[data-section="workspace"] .o_tree, section[data-section="private"] .o_tree'
         );
-    },
-});
+    }
 
-export {
-    KnowledgeArticleFormRenderer,
+    /**
+     * Unlike Bootstrap 4, Bootstrap 5 requires that the dropdown-menu be inside
+     * a direct sibling of the dropdown toggle even though the real condition
+     * technically is that the dropdown-menu and the dropdown toggle must have a
+     * common ancestor with position: relative.
+     *
+     * In our case, we want to display a page blocker which will prevent the
+     * user to drag an article while the emoji picker is open, along with the
+     * emoji picker itself.
+     *
+     * To circumvent the harsher Bootstrap 5 limitation, the dropdown-menu
+     * element is set manually if the default selector did not find it.
+     *
+     * @see bootstrap.dropdown._getMenuElement
+     * @see bootstrap.selector-engine.next
+     *
+     * @private
+     */
+    _showEmojiPicker(ev) {
+        const dropdown = globalThis.Dropdown.getInstance(ev.target);
+        // the show class on the container allows to display the page blocker
+        this.root.el.querySelector('.o_knowledge_emoji_picker_container').classList.add('show');
+        this.emojiPickerData.articleId = parseInt(ev.target.closest('.o_article_emoji_dropdown').dataset.articleId) || this.resId;
+        if (!dropdown._menu) {
+            dropdown._menu = this.root.el.querySelector('.o_knowledge_emoji_picker_container .dropdown-menu');
+        }
+    }
+}
+
+patch(KnowledgeArticleFormRenderer.prototype, "knowledge_article_form_renderer", KnowledgeTreePanelMixin);
+KnowledgeArticleFormRenderer.components = {
+    ...FormRenderer.components,
+    PermissionPanel,
+    EmojiPicker
+};
+KnowledgeArticleFormRenderer.defaultProps = {
 };

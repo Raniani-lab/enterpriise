@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { session } from "@web/session";
-import Dialog from 'web.Dialog';
+import { ConfirmationDialog, AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _lt } from "@web/core/l10n/translation";
 import { _t } from 'web.core';
 import { useService } from '@web/core/utils/hooks';
@@ -17,7 +17,11 @@ class PermissionPanel extends Component {
      * @override
      */
     setup () {
+        this.actionService = useService('action');
+        this.dialog = useService('dialog');
+        this.orm = useService('orm');
         this.rpc = useService('rpc');
+
         this.state = useState({
             loading: true,
             partner_id: session.partner_id
@@ -33,19 +37,17 @@ class PermissionPanel extends Component {
             loading: false
         };
         this.render();
-        this._showPanel();
     }
 
     /**
      * @returns {Object}
      */
     loadData () {
-        return this.rpc({
-            route: '/knowledge/get_article_permission_panel_data',
-            params: {
+        return this.rpc("/knowledge/get_article_permission_panel_data",
+            {
                 article_id: this.props.article_id
             }
-        });
+        );
     }
 
     /**
@@ -68,12 +70,10 @@ class PermissionPanel extends Component {
      * @param {integer} id
      */
     openArticle (id) {
-        this.env.bus.trigger('do-action', {
-            action: 'knowledge.ir_actions_server_knowledge_home_page',
-            options: {
-                additional_context: {
-                    res_id: id
-                }
+        this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
+            stackPosition: 'replaceCurrentAction',
+            additionalContext: {
+                res_id: id
             }
         });
     }
@@ -92,18 +92,16 @@ class PermissionPanel extends Component {
         const willRestrict = this.state.based_on && permissionLevel[newPermission] < permissionLevel[oldPermission]
                                 && permissionLevel[newPermission] < permissionLevel[this.state.parent_permission];
         const willLoseAccess = $select.val() === 'none' && (index >= 0 && this.state.members[index].permission === 'none');
-        const confirm = () => {
-            this.rpc({
-                route: '/knowledge/article/set_internal_permission',
-                params: {
+        const confirm = async () => {
+            const res = await this.rpc('/knowledge/article/set_internal_permission',
+                {
                     article_id: this.props.article_id,
                     permission: newPermission,
                 }
-            }).then(res => {
-                if (this._onChangedPermission(res, willLoseAccess)) {
-                    this.loadPanel();
-                }
-            });
+            );
+            if (this._onChangedPermission(res, willLoseAccess)) {
+                this.loadPanel();
+            }
         };
 
         if (!willLoseAccess && !willRestrict) {
@@ -124,7 +122,7 @@ class PermissionPanel extends Component {
      * @param {Event} event
      * @param {Proxy} member
      */
-    _onChangeMemberPermission (event, member) {
+    async _onChangeMemberPermission (event, member) {
         const index = this.state.members.indexOf(member);
         if (index < 0) {
             return;
@@ -135,25 +133,28 @@ class PermissionPanel extends Component {
         const willLoseAccess = this.isLoggedUser(member) && newPermission === 'none';
         const willRestrict = this.state.based_on && permissionLevel[newPermission] < permissionLevel[oldPermission];
         const willLoseWrite = this.isLoggedUser(member) && newPermission !== 'write' && oldPermission === 'write';
-        const confirm = () => {
-            this.rpc({
-                route: '/knowledge/article/set_member_permission',
-                params: {
+        const willGainWrite = this.isLoggedUser(member) && newPermission === 'write' && oldPermission !== 'write';
+        const confirm = async () => {
+            const res = await this.rpc('/knowledge/article/set_member_permission',
+                {
                     article_id: this.props.article_id,
                     permission: newPermission,
                     member_id: member.based_on ? false : member.id,
                     inherited_member_id: member.based_on ? member.id: false,
                 }
-            }).then(res => {
-                const reloadArticleId = willLoseWrite && !willLoseAccess ? this.props.article_id : false;
-                if (this._onChangedPermission(res, willLoseAccess||willLoseWrite, reloadArticleId)) {
-                    this.loadPanel();
-                }
-            });
+            );
+            const reloadArticleId = willLoseWrite && !willLoseAccess ? this.props.article_id : false;
+            if (this._onChangedPermission(res, willLoseAccess || willLoseWrite, reloadArticleId)) {
+                this.loadPanel();
+            }
         };
 
         if (!willLoseAccess && !willRestrict && !willLoseWrite) {
-            confirm();
+            await confirm();
+            if (willGainWrite) {
+                // Reload article when admin gives himself write access
+                this.openArticle(this.props.article_id);
+            }
             return;
         }
 
@@ -188,19 +189,17 @@ class PermissionPanel extends Component {
 
         const willRestrict = member.based_on ? true : false;
         const willLoseAccess = this.isLoggedUser(member) && member.permission !== "none";
-        const confirm = () => {
-            this.rpc({
-                route: '/knowledge/article/remove_member',
-                params: {
+        const confirm = async () => {
+            const res = await this.rpc('/knowledge/article/remove_member',
+                {
                     article_id: this.props.article_id,
                     member_id: member.based_on ? false : member.id,
                     inherited_member_id: member.based_on ? member.id: false,
                 }
-            }).then(res => {
-                if (this._onChangedPermission(res, willLoseAccess)) {
-                    this.loadPanel();
-                }
-            });
+            );
+            if (this._onChangedPermission(res, willLoseAccess)) {
+                this.loadPanel();
+            }
         };
 
         if (!willLoseAccess && !willRestrict) {
@@ -231,18 +230,17 @@ class PermissionPanel extends Component {
      */
     _onRestore (event) {
         const articleId = this.props.article_id;
-        const confirm = () => {
-            this.rpc({
-                model: 'knowledge.article',
-                method: 'restore_article_access',
-                args: [[articleId]],
-            }).then(res => {
-                if (res) {
-                    if (this._onChangedPermission({success: res})) {
-                        this.loadPanel();
-                    }
+        const confirm = async () => {
+            const res = await this.orm.call(
+                'knowledge.article',
+                'restore_article_access',
+                [[articleId]],
+            );
+            if (res) {
+                if (this._onChangedPermission({success: res})) {
+                    this.loadPanel();
                 }
-            });
+            }
         };
 
         const message = _t('Are you sure you want to restore access? This means this article will now inherit any access set on its parent articles.');
@@ -256,11 +254,11 @@ class PermissionPanel extends Component {
      */
     async _onMemberAvatarClick (event, member) {
         if (!member.partner_share) {
-            const partnerRead = await this.rpc({
-                model: 'res.partner',
-                method: 'read',
-                args: [member.partner_id, ['user_ids']],
-            });
+            const partnerRead = await this.orm.read(
+                'res.partner',
+                [member.partner_id],
+                ['user_ids'],
+            );
             const userIds = partnerRead && partnerRead.length === 1 ? partnerRead[0]['user_ids'] : false;
             const userId = userIds && userIds.length === 1 ? userIds[0] : false;
 
@@ -284,18 +282,11 @@ class PermissionPanel extends Component {
         if (discard === undefined) {
             discard = this.loadPanel;
         }
-        Dialog.confirm(this, message, {
+        this.dialog.add(ConfirmationDialog, {
             title: title || _t("Confirmation"),
-            buttons: [{
-                text: _t('confirm'),
-                classes: 'btn-primary',
-                close: true,
-                click: confirm
-            }, {
-                text: _t('Discard'),
-                close: true,
-                click: discard
-            }],
+            body: message,
+            confirm: confirm,
+            cancel: discard
         });
     }
 
@@ -309,8 +300,9 @@ class PermissionPanel extends Component {
     */
     _onChangedPermission (result, reloadAll, reloadArticleId) {
         if (result.error) {
-            Dialog.alert(this, result.error,{
-              title: _t("Error"),
+            this.dialog.add(AlertDialog, {
+                title: _t("Error"),
+                body: result.error,
             });
         } else if (reloadAll && reloadArticleId) {  // Lose write access
             this.openArticle(reloadArticleId);
@@ -318,23 +310,17 @@ class PermissionPanel extends Component {
         } else if (reloadAll) {  // Lose access -> Hard Reload
             window.location.replace('/knowledge/home');
         } else if (result.reload_tree) {
-            this.env.bus.trigger('reload_tree', {});
+            this.props.renderTree(this.props.article_id, '/knowledge/tree_panel');
         }
         return true;
-    }
-
-    _showPanel () {
-        // TODO DBE: get permission panel with owl brol ??
-        const $permissionPanel = $('.o_knowledge_share_panel');
-        $permissionPanel.addClass('show');
-        $permissionPanel.parent().addClass('show');
     }
 }
 
 PermissionPanel.template = 'knowledge.PermissionPanel';
 PermissionPanel.props = [
     'article_id',
-    'user_permission'
+    'user_permission',
+    'renderTree', // ADSC: remove when tree component
 ];
 
 export default PermissionPanel;

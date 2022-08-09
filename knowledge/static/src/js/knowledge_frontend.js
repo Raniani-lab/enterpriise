@@ -1,10 +1,9 @@
 /** @odoo-module */
 'use strict';
 
-import publicWidget from 'web.public.widget';
-import KnowledgeTreePanelMixin from './tools/tree_panel_mixin.js'
 import { fetchValidHeadings } from './tools/knowledge_tools.js';
-
+import KnowledgeTreePanelMixin from './tools/tree_panel_mixin.js';
+import publicWidget from 'web.public.widget';
 
 publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTreePanelMixin, {
     selector: '.o_knowledge_form_view',
@@ -67,25 +66,74 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
     /**
      * @param {Event} event
      */
-    _toggleFavorite: function (event) {
-        const $star = $(event.currentTarget);
-        const id = $star.data('article-id');
-        return this._rpc({
+    _toggleFavorite: async function (event) {
+        const star = event.currentTarget;
+        const id = parseInt(star.dataset.articleId);
+        const result = await this._rpc({
             model: 'knowledge.article',
             method: 'action_toggle_favorite',
             args: [[id]]
-        }).then(result => {
-            $star.find('i').toggleClass('fa-star', result).toggleClass('fa-star-o', !result);
-            // Add/Remove the article to/from the favorite in the sidebar
-            return this._rpc({
-                route: '/knowledge/tree_panel/favorites',
+        });
+        const icon = star.querySelector('i');
+        icon.classList.toggle('fa-star', result);
+        icon.classList.toggle('fa-star-o', !result);
+        // Add/Remove the article to/from the favorite in the sidebar
+        const template = await this._rpc({
+            route: '/knowledge/tree_panel/favorites',
+            params: {
+                active_article_id: id,
+            }
+        });
+        document.querySelector('.o_favorite_container').innerHTML = template;
+        this._setTreeFavoriteListener();
+    },
+
+    /**
+     * Renders the tree listing all articles.
+     * To minimize loading time, the function will initially load the root articles.
+     * The other articles will be loaded lazily: The user will have to click on
+     * the carret next to an article to load and see their children.
+     * The id of the unfolded articles will be cached so that they will
+     * automatically be displayed on page load.
+     * @param {integer} active_article_id
+     * @param {String} route
+     */
+    _renderTree: async function (active_article_id, route) {
+        const container = this.el.querySelector('.o_knowledge_tree');
+        let unfoldedArticles = localStorage.getItem('unfoldedArticles');
+        unfoldedArticles = unfoldedArticles ? unfoldedArticles.split(";").map(Number) : false;
+        try {
+            const htmlTree = await this._rpc({
+                route: route,
                 params: {
-                    active_article_id: id,
+                    active_article_id: active_article_id,
+                    unfolded_articles: unfoldedArticles,
                 }
-            }).then(template => {
-                this.$('.o_favorite_container').replaceWith(template);
-                this._setTreeFavoriteListener();
             });
+            container.innerHTML = htmlTree;
+            this._setTreeFavoriteListener();
+        } catch {
+            container.innerHTML = "";
+        }
+    },
+
+    _resequenceFavorites: function (favoriteIds) {
+        this._rpc({
+            route: '/web/dataset/resequence',
+            params: {
+                model: "knowledge.article.favorite",
+                ids: favoriteIds,
+                offset: 1,
+            }
+        });
+    },
+
+    _fetchChildrenArticles: function (parentId) {
+        return this._rpc({
+            route: '/knowledge/tree_panel/children',
+            params: {
+                parent_id: parentId
+            }
         });
     },
 
@@ -99,7 +147,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
         event.preventDefault();
         const headingIndex = parseInt(event.target.getAttribute('data-oe-nodeid'));
         const targetHeading = fetchValidHeadings(this.$el[0])[headingIndex];
-        if (targetHeading){
+        if (targetHeading) {
             targetHeading.scrollIntoView({
                 behavior: 'smooth',
             });

@@ -69,7 +69,7 @@ tour.register('knowledge_main_flow_tour', {
     trigger: 'section[data-section="private"] .o_article .o_article_name:contains("New Article")',
     run: () => {},  // check that the article is correctly created (private section)
 }, {
-    trigger: '.o_breadcrumb_article_name',
+    trigger: '.o_breadcrumb_article_name > input',
     run: 'text My Private Article',  // modify the article name
 }, {
     trigger: '.note-editable.odoo-editor-editable',
@@ -87,7 +87,7 @@ tour.register('knowledge_main_flow_tour', {
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("New Article")',
     run: () => {},  // check that the article is correctly created (workspace section)
 }, {
-    trigger: '.o_breadcrumb_article_name',
+    trigger: '.o_breadcrumb_article_name > input',
     run: 'text My Workspace Article',  // modify the article name
 }, {
     trigger: '.note-editable.odoo-editor-editable',
@@ -105,7 +105,7 @@ tour.register('knowledge_main_flow_tour', {
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("New Article")',
     run: () => {},  // check that the article is correctly created (workspace section)
 }, {
-    trigger: '.o_breadcrumb_article_name',
+    trigger: '.o_breadcrumb_article_name > input',
     run: 'text Child Article 1',  // modify the article name
 }, {
     trigger: '.o_article:contains("My Workspace Article")',
@@ -120,7 +120,7 @@ tour.register('knowledge_main_flow_tour', {
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("New Article")',
     run: () => {},  // check that the article is correctly created (workspace section)
 }, {
-    trigger: '.o_breadcrumb_article_name',
+    trigger: '.o_breadcrumb_article_name > input',
     run: 'text Child Article 2',  // modify the article name
 }, {
     // move child article 2 above child article 1

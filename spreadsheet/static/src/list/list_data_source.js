@@ -20,7 +20,7 @@ export default class ListDataSource extends OdooViewsDataSource {
     }
 
     async _createDataSourceModel() {
-        await this._fetchMetadata();
+        await this.loadMetadata();
         /** @type {SpreadsheetListModel} */
         this._model = new SpreadsheetListModel(
             {
@@ -33,23 +33,6 @@ export default class ListDataSource extends OdooViewsDataSource {
             }
         );
         this._model.addEventListener("limit-exceeded", () => this.load({ reload: true }));
-    }
-
-    /**
-     * @returns {Record<string, Field>}
-     */
-    getFields() {
-        this._assertModel();
-        return this._model.getFields();
-    }
-
-    /**
-     * @param {string} fieldName
-     * @returns {Field}
-     */
-    getField(fieldName) {
-        this._assertModel();
-        return this._model.getField(fieldName);
     }
 
     /**

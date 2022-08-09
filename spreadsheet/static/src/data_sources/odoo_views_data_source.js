@@ -5,6 +5,10 @@ import { Domain } from "@web/core/domain";
 import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
 
 /**
+ * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
+ */
+
+/**
  * Remove user specific info from the context
  * @param {Object} context
  * @returns {Object}
@@ -49,7 +53,7 @@ export class OdooViewsDataSource extends LoadableDataSource {
         this._createModelPromise = undefined;
     }
 
-    async _fetchMetadata() {
+    async loadMetadata() {
         if (!this._metaData.fields) {
             this._metaData.fields = await this._metadataRepository.fieldsGet(
                 this._metaData.resModel
@@ -57,9 +61,28 @@ export class OdooViewsDataSource extends LoadableDataSource {
         }
     }
 
+    /**
+     * @returns {Record<string, Field>} List of fields
+     */
+    getFields() {
+        if (this._metaData.fields === undefined) {
+            this.loadMetadata();
+            throw new LoadingDataError();
+        }
+        return this._metaData.fields;
+    }
+
+    /**
+     * @param {string} field Field name
+     * @returns {Field | undefined} Field
+     */
+    getField(field) {
+        return this._metaData.fields[field];
+    }
+
     async _load() {
         if (!this._model) {
-            await this.loadModel();
+            await this._loadModel();
         }
         const searchParams = {
             ...this._searchParams,
@@ -80,11 +103,15 @@ export class OdooViewsDataSource extends LoadableDataSource {
      * @private
      * @returns {Promise} Resolved when the model is created
      */
-    async loadModel() {
+    async _loadModel() {
         if (!this._createModelPromise) {
             this._createModelPromise = this._createDataSourceModel();
         }
         return this._createModelPromise;
+    }
+
+    isMetaDataLoaded() {
+        return this._metaData.fields !== undefined;
     }
 
     /**

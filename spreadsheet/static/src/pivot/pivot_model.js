@@ -187,21 +187,6 @@ export class SpreadsheetPivotModel extends PivotModel {
     }
 
     /**
-     * @returns {Record<string, Field>} List of fields
-     */
-    getFields() {
-        return this.metaData.fields;
-    }
-
-    /**
-     * @param {string} field Field name
-     * @returns {Field | undefined} Field
-     */
-    getField(field) {
-        return this.metaData.fields[field];
-    }
-
-    /**
      * Get the display name of a group by
      * @param {string} fieldName
      * @returns {string}

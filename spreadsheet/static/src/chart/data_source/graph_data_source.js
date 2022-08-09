@@ -4,8 +4,6 @@ import { OdooViewsDataSource } from "@spreadsheet/data_sources/odoo_views_data_s
 import { _t } from "@web/core/l10n/translation";
 import { GraphModel } from "@web/views/graph/graph_model";
 
-/** @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field */
-
 export default class GraphDataSource extends OdooViewsDataSource {
     /**
      * @override
@@ -16,25 +14,10 @@ export default class GraphDataSource extends OdooViewsDataSource {
     }
 
     /**
-     * @returns {Record<string, Field>} field definitions
-     */
-    getFields() {
-        return this._metaData.fields;
-    }
-
-    /**
-     * @param {string} fieldName
-     * @returns {Field}
-     */
-    getField(fieldName) {
-        return this.getFields()[fieldName];
-    }
-
-    /**
      * @protected
      */
     async _createDataSourceModel() {
-        await this._fetchMetadata();
+        await this.loadMetadata();
         const metaData = {
             fieldAttrs: {},
             ...this._metaData,

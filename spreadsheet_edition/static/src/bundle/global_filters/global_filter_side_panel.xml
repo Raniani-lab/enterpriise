@@ -120,7 +120,7 @@
             </div>
             <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingPivotField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
                 <t t-set="pivotDataSource" t-value="getters.getPivotDataSource(pivotId)"/>
-                <t t-if="pivotDataSource.isReady()">
+                <t t-if="pivotDataSource.isMetaDataLoaded()">
                     <div>
                         <span class="font-weight-medium" t-esc="modelDisplayNames.pivots[pivotId]"/>
                         <span class="o_pivot_model_technical_name text-muted"> (Pivot #<t t-esc="pivotId"/>)</span>

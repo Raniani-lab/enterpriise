@@ -4,8 +4,6 @@ import { _t } from "@web/core/l10n/translation";
 import { OdooViewsDataSource } from "../data_sources/odoo_views_data_source";
 import { SpreadsheetPivotModel } from "./pivot_model";
 
-/** @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field */
-
 export default class PivotDataSource extends OdooViewsDataSource {
     /**
      *
@@ -20,7 +18,7 @@ export default class PivotDataSource extends OdooViewsDataSource {
     }
 
     async _createDataSourceModel() {
-        await this._fetchMetadata();
+        await this.loadMetadata();
         /** @type {SpreadsheetPivotModel} */
         this._model = new SpreadsheetPivotModel(
             { _t },
@@ -36,7 +34,7 @@ export default class PivotDataSource extends OdooViewsDataSource {
     }
 
     async copyModelWithOriginalDomain() {
-        await this._fetchMetadata();
+        await this.loadMetadata();
         const model = new SpreadsheetPivotModel(
             { _t },
             {
@@ -50,23 +48,6 @@ export default class PivotDataSource extends OdooViewsDataSource {
         );
         await model.load(this._searchParams);
         return model;
-    }
-
-    /**
-     * @returns {Record<string, Field>}
-     */
-    getFields() {
-        this._assertModel();
-        return this._model.getFields();
-    }
-
-    /**
-     * @param {string} fieldName
-     * @returns {Field}
-     */
-    getField(fieldName) {
-        this._assertModel();
-        return this._model.getField(fieldName);
     }
 
     getReportMeasures() {

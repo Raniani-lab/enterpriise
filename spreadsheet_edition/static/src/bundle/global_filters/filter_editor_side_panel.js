@@ -197,7 +197,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         proms.push(this.fetchModelFromName());
         for (const pivotId of this.getters.getPivotIds()) {
             const dataSource = this.getters.getPivotDataSource(pivotId);
-            proms.push(dataSource.loadModel());
+            proms.push(dataSource.loadMetadata());
             proms.push(
                 dataSource
                     .getModelLabel()
@@ -206,7 +206,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         }
         for (const listId of this.listIds) {
             const dataSource = this.getters.getListDataSource(listId);
-            proms.push(dataSource.loadModel());
+            proms.push(dataSource.loadMetadata());
             proms.push(
                 dataSource
                     .getModelLabel()
@@ -215,7 +215,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         }
         for (const graphId of this.graphIds) {
             const dataSource = this.getters.getGraphDataSource(graphId);
-            proms.push(dataSource.loadModel());
+            proms.push(dataSource.loadMetadata());
             proms.push(
                 dataSource
                     .getModelLabel()

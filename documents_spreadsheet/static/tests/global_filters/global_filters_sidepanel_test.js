@@ -16,6 +16,7 @@ import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
 import { insertListInSpreadsheet } from "@spreadsheet/../tests/utils/list";
 import { insertGraphInSpreadsheet } from "@spreadsheet/../tests/utils/chart";
 import { assertDateDomainEqual } from "@spreadsheet/../tests/utils/date_domain";
+import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 
 let target;
 
@@ -198,6 +199,68 @@ QUnit.module(
                 type: "many2many",
             });
         });
+
+        QUnit.test(
+            "open relational global filter panel then go to pivot on sheet 2",
+            async function (assert) {
+                const spreadsheetData = {
+                    sheets: [
+                        {
+                            id: "sheet1",
+                        },
+                        {
+                            id: "sheet2",
+                            cells: {
+                                A1: { content: `=ODOO.PIVOT("1", "probability")` },
+                            },
+                        },
+                    ],
+                    pivots: {
+                        1: {
+                            id: 1,
+                            colGroupBys: ["foo"],
+                            domain: [],
+                            measures: [{ field: "probability", operator: "avg" }],
+                            model: "partner",
+                            rowGroupBys: ["bar"],
+                            context: {},
+                        },
+                    },
+                };
+                const serverData = getBasicServerData();
+                serverData.models["documents.document"].records.push({
+                    id: 45,
+                    raw: JSON.stringify(spreadsheetData),
+                    name: "Spreadsheet",
+                    handler: "spreadsheet",
+                });
+                const { model } = await createSpreadsheet({
+                    serverData,
+                    spreadsheetId: 45,
+                });
+                const searchIcon = target.querySelector(".o_topbar_filter_icon");
+                await click(searchIcon);
+                const newRelation = target.querySelector(".o_global_filter_new_relation");
+                await click(newRelation);
+                const selector = `.o_side_panel_related_model input`;
+                await testUtils.dom.click($(target).find(selector)[0]);
+                const item = target.querySelector(".o_sp_selector_product");
+                await click(item);
+                const fieldMatching = target.querySelector(".o_pivot_field_matching div");
+                assert.equal(
+                    fieldMatching.innerText,
+                    "Partner (Pivot #1)",
+                    "model display name is loaded"
+                );
+                const save = target.querySelector(
+                    ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
+                );
+                await click(save);
+                model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: "sheet1", sheetIdTo: "sheet2" });
+                await nextTick();
+                assert.equal(getCellValue(model, "A1"), 131);
+            }
+        );
 
         QUnit.test(
             "Prevent selection of a Field Matching before the Related model",

@@ -147,13 +147,6 @@ export class SpreadsheetListModel extends EventBus {
     //--------------------------------------------------------------------------
 
     /**
-     * @returns {Record<string, Field>} List of fields
-     */
-    getFields() {
-        return this.metaData.fields;
-    }
-
-    /**
      * @param {string} field Field name
      * @returns {Field | undefined} Field
      */

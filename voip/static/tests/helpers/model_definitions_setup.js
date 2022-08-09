@@ -3,7 +3,7 @@
 import {
     addModelNamesToFetch,
     insertRecords,
-} from "@mail/../tests/helpers/model_definitions_helpers";
+} from "@bus/../tests/helpers/model_definitions_helpers";
 
 addModelNamesToFetch(["ir.config_parameter"]);
 

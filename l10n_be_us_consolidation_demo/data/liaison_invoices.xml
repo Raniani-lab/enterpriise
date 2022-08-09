@@ -10,20 +10,12 @@
             <field name="invoice_date" eval="time.strftime('%Y-%m')+'-01'"/>
             <field name="journal_id" model="account.journal"
                    search="[('type', '=', 'sale'), ('company_id', '=', ref('l10n_be.demo_company_be'))]"/>
-            <field name="line_ids" eval="[
+            <field name="invoice_line_ids" eval="[
                 (0,0,{
                     'name': 'IC Services',
                     'account_id': ref('be_specific_income_account'),
-                    'credit': 12500.0,
                     'price_unit': 12500.0,
                     'quantity': 1
-                }),
-                (0,0,{
-                    'name': 'IC Services',
-                    'account_id': ref('be_specific_receivable_account'),
-                    'debit': 12500.0,
-                    'quantity': 1,
-                    'display_type': 'payment_term',
                 })
             ]"/>
         </record>
@@ -37,20 +29,12 @@
             <field name="invoice_payment_term_id" ref="account.account_payment_term_end_following_month"/>
             <field name="move_type">in_invoice</field>
             <field name="invoice_date" eval="time.strftime('%Y-%m')+'-01'"/>
-            <field name="line_ids" eval="[
+            <field name="invoice_line_ids" eval="[
                 (0,0,{
                     'name': 'IC Services',
                     'account_id': ref('main_specific_expense_account'),
-                    'debit': 12500.0,
                     'price_unit': 12500.0,
                     'quantity': 1
-                }),
-                (0,0,{
-                    'name': 'IC Services',
-                    'account_id': ref('main_specific_payable_account'),
-                    'credit': 12500.0,
-                    'quantity': 1,
-                    'display_type': 'payment_term',
                 })
             ]"/>
         </record>

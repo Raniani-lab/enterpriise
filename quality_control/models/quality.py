@@ -367,7 +367,7 @@ class ProductTemplate(models.Model):
                 ('product_id', 'in', self.product_variant_ids.ids),
                 '&',
                     ('measure_on', '=', 'operation'),
-                    ('picking_id.move_ids.product_tmpl_id', 'in', self.ids),
+                    ('picking_id.move_ids.product_tmpl_id', '=', self.id),
         ]
         return action
 
@@ -389,7 +389,7 @@ class ProductProduct(models.Model):
         quality_pass_qty = 0
         domain = [
             '|',
-                ('product_id', '=', self.id),
+                ('product_id', 'in', self.ids),
                 '&',
                     ('measure_on', '=', 'operation'),
                     ('picking_id.move_ids.product_id', 'in', self.ids),
@@ -459,7 +459,7 @@ class ProductProduct(models.Model):
                 ('product_id', '=', self.id),
                 '&',
                     ('measure_on', '=', 'operation'),
-                    ('picking_id.move_ids.product_id', 'in', self.ids),
+                    ('picking_id.move_ids.product_id', '=', self.id),
         ]
         return action
 

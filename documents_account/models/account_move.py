@@ -15,6 +15,7 @@ class AccountMove(models.Model):
         main_attachment_id = vals.get('message_main_attachment_id')
         new_documents = [False for move in self]
         journals_changed = [('journal_id' in vals  and move.journal_id.id != vals['journal_id']) for move in self]
+        partner_changed = [(vals.get('partner_id', move.partner_id.id) != move.partner_id.id) for move in self]
         for i, move in enumerate(self):
             if main_attachment_id and not move.env.context.get('no_document') and move.move_type != 'entry':
                 previous_attachment_id = move.message_main_attachment_id.id
@@ -29,6 +30,9 @@ class AccountMove(models.Model):
         for new_document, journal_changed, move in zip(new_documents, journals_changed, self):
             if (new_document or journal_changed) and move.message_main_attachment_id:
                 move._update_or_create_document(move.message_main_attachment_id.id)
+        for partner_changed, move in zip(partner_changed, self):
+            if partner_changed:
+                move._sync_partner_on_document()
         return res
 
     def button_reconcile_with_st_line(self):
@@ -73,3 +77,12 @@ class AccountMove(models.Model):
                     # registered as attachments yet
                     values.update({'attachment_id': attachment_id})
                     doc.create(values)
+
+    def _sync_partner_on_document(self):
+        for move in self:
+            if not move.message_main_attachment_id:
+                continue
+            doc = self.env['documents.document'].sudo().search([('attachment_id', '=', move.message_main_attachment_id.id)], limit=1)
+            if not doc or doc.partner_id == move.partner_id:
+                continue
+            doc.partner_id = move.partner_id

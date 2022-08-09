@@ -191,3 +191,15 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         self.workflow_rule_vendor_bill.apply_actions([document_test.id])
         self.assertEqual(document_test.tag_ids, tag_a | tag_b,
             "The document should have the workflow action's tag(s)")
+
+    def test_bridge_account_sync_partner(self):
+        """
+        Tests that the partner is always synced on the document, regardless of settings
+        """
+        partner_1, partner_2 = self.env['res.partner'].create([{'name': 'partner_1'}, {'name': 'partner_2'}])
+        self.document_txt.partner_id = partner_1
+        self.workflow_rule_vendor_bill.apply_actions([self.document_txt.id, self.document_gif.id])
+        move = self.env['account.move'].browse(self.document_txt.res_id)
+        self.assertEqual(move.partner_id, partner_1)
+        move.partner_id = partner_2
+        self.assertEqual(self.document_txt.partner_id, partner_2)

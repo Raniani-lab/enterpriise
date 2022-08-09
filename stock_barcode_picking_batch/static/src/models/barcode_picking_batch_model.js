@@ -2,7 +2,7 @@
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import {_t} from "web.core";
-
+import { sprintf } from '@web/core/utils/strings';
 export default class BarcodePickingBatchModel extends BarcodePickingModel {
     constructor(params) {
         super(...arguments);
@@ -241,6 +241,13 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
         defaultContextValues.default_batch_id = batch.id;
         defaultContextValues.default_picking_id = batch.picking_ids[0];
         return defaultContextValues;
+    }
+
+    _getScanPackageMessage(line) {
+        if (line.suggested_package) {
+            return sprintf(_t("Scan the package %s"), line.suggested_package);
+        }
+        return super._getScanPackageMessage(...arguments);
     }
 
     _incrementTrackedLine() {

@@ -15,9 +15,8 @@
             <attribute name="t-if">line.package_id || line.result_package_id || line.suggested_package</attribute>
         </xpath>
         <xpath expr="//div[@name='package']" position="inside">
-            <t t-if="!line.result_package_id &amp;&amp; line.suggested_package">
-                <span class="text-muted" t-esc="' ' + line.suggested_package + ' ?'"/>
-            </t>
+            <span t-if="!line.result_package_id &amp;&amp; line.suggested_package"
+                  t-esc="line.suggested_package + ' ?'" class="text-muted ms-1"/>
         </xpath>
     </t>
 

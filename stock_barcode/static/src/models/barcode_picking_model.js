@@ -302,7 +302,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         // About package.
         if (this._lineNeedsToBePacked(line)) {
             if (this._lineIsComplete(line)) {
-                barcodeInfo.message = _t("Scan a package or put in pack");
+                barcodeInfo.message = this._getScanPackageMessage(line);
                 barcodeInfo.icon = 'archive';
             } else {
                 if (product.tracking == 'serial') {
@@ -820,6 +820,10 @@ export default class BarcodePickingModel extends BarcodeModel {
             };
         }
         return {};
+    }
+
+    _getScanPackageMessage() {
+        return _t("Scan a package or put in pack");
     }
 
     _groupSublines(sublines, ids, virtual_ids, qtyDemand, qtyDone) {

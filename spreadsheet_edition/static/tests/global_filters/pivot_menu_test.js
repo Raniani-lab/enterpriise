@@ -5,10 +5,10 @@ import { nextTick } from "@web/../tests/helpers/utils";
 import { addGlobalFilter, selectCell } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import { getCellContent } from "@spreadsheet/../tests/utils/getters";
+import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
-const { cellMenuRegistry } = spreadsheet.registries;
-const { getMenuChildren } = spreadsheet.helpers;
+const { topbarMenuRegistry } = spreadsheet.registries;
 
 QUnit.module("spreadsheet_edition > menu", {}, () => {
     QUnit.test(
@@ -34,9 +34,8 @@ QUnit.module("spreadsheet_edition > menu", {}, () => {
                 },
             });
             selectCell(model, "A6");
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_pivot");
-            const reinsertPivot = getMenuChildren(root, env)[0];
-            await reinsertPivot.action(env);
+            const reinsertPivotPath = ["data", "reinsert_pivot", "reinsert_pivot_1"];
+            await doMenuAction(topbarMenuRegistry, reinsertPivotPath, env);
             await nextTick();
             assert.equal(getCellContent(model, "B6"), getCellContent(model, "B1"));
         }

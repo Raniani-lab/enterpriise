@@ -10,9 +10,10 @@ import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/hel
 import { toggleFavoriteMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
-import { ListRenderer } from '@web/views/list/list_renderer';
+import { ListRenderer } from "@web/views/list/list_renderer";
 import { createSpreadsheetFromListView } from "../utils/list_helpers";
 import { dom } from "web.test_utils";
+import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 
 const { getMenuChildren } = spreadsheet.helpers;
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
@@ -118,9 +119,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
     QUnit.test("Re-insert a list correctly ask for lines number", async function (assert) {
         const { model, env } = await createSpreadsheetFromListView();
         selectCell(model, "Z26");
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "reinsert_list");
-        const reinsertList = getMenuChildren(root, env)[0];
-        await reinsertList.action(env);
+        await doMenuAction(topbarMenuRegistry, ["data", "reinsert_list", "reinsert_list_1"], env);
         await nextTick();
         /** @type {HTMLInputElement} */
         const input = document.body.querySelector(".modal-body input");

@@ -19,7 +19,7 @@
                     <Dim prop="EXTXVAL"
                          t-esc="'%.2f' % item['value']"/>
                     <Dim prop="EXWEIGHT"
-                         t-esc="item['weight']"/>
+                         t-esc="'%.2f' % item['weight']"/>
                     <Dim prop="EXUNITS"
                          t-esc="item['supplementary_units']"/>
                     <Dim prop="EXCNTORI"

@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="hr_timesheet.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='time_encoding_setting_container']" position="inside">
-                <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('module_project_timesheet_synchro', '=', False), ('is_encode_uom_days', '=', True)]}">
+                <div class="col-12 col-lg-6 o_setting_box" attrs="{'invisible': [('is_encode_uom_days', '=', True)]}">
                     <div class="o_setting_right_pane">
                         <strong>Time Rounding</strong>
                         <div class="text-muted">

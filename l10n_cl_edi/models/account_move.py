@@ -230,6 +230,7 @@ class AccountMove(models.Model):
         # To avoid double send on double-click
         if self.l10n_cl_dte_status != "not_sent":
             return None
+        _logger.info('Sending DTE for invoice with ID %s (name: %s)', self.id, self.name)
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
         response = self._send_xml_to_sii(
             self.company_id.l10n_cl_dte_service_provider,

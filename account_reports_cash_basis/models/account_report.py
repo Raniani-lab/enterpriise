@@ -85,8 +85,8 @@ class AccountReport(models.AbstractModel):
             )
             {where_journals};
         """.format(
-            all_fields=', '.join(unchanged_fields + changed_fields),
-            unchanged_fields=', '.join(['"account_move_line".' + f for f in unchanged_fields]),
+            all_fields=', '.join(f'"{f}"' for f in (unchanged_fields + changed_fields)),
+            unchanged_fields=', '.join([f'"account_move_line"."{f}"' for f in unchanged_fields]),
             where_journals=selected_journals and 'AND "account_move_line".journal_id IN %(journal_ids)s' or ''
         )
         params = {

@@ -394,6 +394,10 @@
             <field name="res_model">hr.appraisal</field>
             <field name="view_mode">tree,form</field>
             <field name="search_view_id" ref="hr_appraisal_search"/>
-            <field name="domain">[('department_id', '=', active_id), ('state', 'in', ['new', 'pending'])]</field>
+            <field name="context">{
+                'search_default_department_id': active_id,
+                'default_department_id': active_id,
+            }</field>
+            <field name="domain">[('state', 'in', ['new', 'pending'])]</field>
     </record>
 </odoo>

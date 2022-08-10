@@ -95,6 +95,24 @@ Wysiwyg.include({
                 callback: () => {
                     this._insertTableOfContent();
                 }
+            }, {
+                category: 'Knowledge',
+                name: _t('Index'),
+                priority: 40,
+                description: _t('Show the first level of nested articles.'),
+                fontawesome: 'fa-list',
+                callback: () => {
+                    this._insertArticlesStructure(true);
+                }
+            }, {
+                category: 'Knowledge',
+                name: _t('Outline'),
+                priority: 40,
+                description: _t('Show all nested articles.'),
+                fontawesome: 'fa-list',
+                callback: () => {
+                    this._insertArticlesStructure(false);
+                }
             });
         }
         return {...options, commands, categories};
@@ -144,6 +162,20 @@ Wysiwyg.include({
         const tableOfContentBlock = $(QWeb.render('knowledge.knowledge_table_of_content_wrapper', {}))[0];
         tableOfContentFragment.append(tableOfContentBlock);
         const [container] = this.odooEditor.execCommand('insertFragment', tableOfContentFragment);
+        this._notifyNewBehaviors(container);
+    },
+    /**
+     * Insert a /structure block.
+     * It will list all the articles that are direct children of this one.
+     */
+     _insertArticlesStructure: function (childrenOnly) {
+        const articlesStructureFragment = new DocumentFragment();
+        const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper', {
+            childrenOnly: childrenOnly
+        }))[0];
+        articlesStructureFragment.append(articlesStructureBlock);
+        const [container] = this.odooEditor.execCommand('insertFragment', articlesStructureFragment);
+        this._notifyNewToolbars(container);
         this._notifyNewBehaviors(container);
     },
     /**

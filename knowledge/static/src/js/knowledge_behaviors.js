@@ -27,11 +27,13 @@ const KnowledgeBehavior = Class.extend({
      *                         widget specific functions
      * @param {Element} anchor dom node to apply the behavior to
      * @param {string} mode edit/readonly
+     * @param {Integer} articleId this id of the currently edited knowledge.article
      */
-    init: function (handler, anchor, mode) {
+    init: function (handler, anchor, mode, articleId) {
         this.handler = handler;
         this.anchor = anchor;
         this.mode = mode;
+        this.articleId = articleId;
         if (this.handler.editor) {
             this.handler.editor.observerUnactive('knowledge_attributes');
         }
@@ -82,6 +84,26 @@ const ContentsContainerBehavior = KnowledgeBehavior.extend({
             });
             this.anchor.setAttribute('contenteditable', 'false');
         }
+    },
+
+    //--------------------------------------------------------------------------
+    // Proxies
+    //--------------------------------------------------------------------------
+
+    /**
+     * Since 'ContentsContainerBehavior' extends 'Class' and not Widget, we need to go through
+     * our handler to proxy the do_action calls. As the handler properly extends Widget.
+     */
+    do_action: async function () {
+        return this.handler.do_action.apply(this.handler, arguments);
+    },
+
+    /**
+     * Since 'ContentsContainerBehavior' extends 'Class' and not Widget, we need to go through
+     * our handler to proxy the _rpc calls. As the handler properly extends Widget.
+     */
+    _rpc: async function () {
+        return this.handler._rpc.apply(this.handler, arguments);
     },
 });
 /**

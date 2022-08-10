@@ -513,9 +513,9 @@ class MarketingActivity(models.Model):
         if view_filter in ('reply', 'bounce'):
             found_traces = self.trace_ids.filtered(lambda trace: trace.mailing_trace_status == view_filter)
         elif view_filter == 'sent':
-            found_traces = self.trace_ids.filtered(lambda trace: trace.mailing_trace_ids.sent_datetime)
+            found_traces = self.trace_ids.filtered('mailing_trace_ids.sent_datetime')
         elif view_filter == 'click':
-            found_traces = self.trace_ids.filtered(lambda trace: trace.mailing_trace_ids.links_click_datetime)
+            found_traces = self.trace_ids.filtered('mailing_trace_ids.links_click_datetime')
         else:
             found_traces = self.env['marketing.trace']
 

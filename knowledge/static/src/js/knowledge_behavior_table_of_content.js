@@ -180,12 +180,14 @@ const TableOfContentsBehavior = ContentsContainerBehavior.extend({
         let previousDepth = -1;
         let index = 0;
         const headingStructure = allHeadings.map((heading) => {
-            let depth = HEADINGS.indexOf(heading.tagName)
+            let depth = HEADINGS.indexOf(heading.tagName);
             if (depth !== previousDepth && heading.tagName === previousTag) {
                 depth = previousDepth;
             } else if (depth > previousDepth) {
-                if (heading.tagName !== previousTag) {
+                if (heading.tagName !== previousTag && HEADINGS.indexOf(previousTag) < depth) {
                     depth = previousDepth + 1;
+                } else {
+                    depth = previousDepth;
                 }
             } else if (depth < previousDepth) {
                 if (currentDepthByTag.hasOwnProperty(heading.tagName)) {
@@ -207,7 +209,7 @@ const TableOfContentsBehavior = ContentsContainerBehavior.extend({
                 index: index++,
                 name: heading.innerText,
                 tagName: heading.tagName,
-            }
+            };
         });
 
         const updatedToc = qweb.render('knowledge.knowledge_table_of_content', {

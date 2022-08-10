@@ -31,7 +31,7 @@ const insertTableOfContent = async (form) => {
     });
 
     await testUtils.form.clickEdit(form);
-    await testUtils.dom.click(form.$("h1:first"));
+    await testUtils.dom.click(form.$("h2:first"));
     const wysiwyg = form.$('.note-editable').data('wysiwyg');
     await nextTick();
     await behaviorInitialized;
@@ -87,6 +87,12 @@ QUnit.module('Knowledge Table of Content', {
                             '<h4>Sub 1-1-2</h4>' +
                     '<h1>Main 2</h1>' +
                         '<h2>Sub 2-1</h2>',
+                }, {
+                    id: 3,
+                    display_name: "My Article",
+                    body: `
+                    <h3>Main 1</h3>
+                    <h2>Main 2</h2>`,
                 }]
             },
         };
@@ -154,6 +160,33 @@ QUnit.module('Knowledge Table of Content', {
             {title: 'Main 2',      depth: 0},
             {title: 'Sub 2-1',     depth: 1},
         ]
+        assertHeadings(assert, $editorEl, expectedHeadings);
+
+        await testUtils.form.clickSave(form);
+
+        form.destroy();
+    });
+
+    QUnit.test('Check Table of Content is correctly built - starting with H3 followed by H2', async function (assert) {
+        assert.expect(4);
+
+        const form = await createView({
+            View: FormView,
+            model: 'knowledge_article',
+            data: this.data,
+            arch: getArch(),
+            res_id: 3,
+        });
+
+        await insertTableOfContent(form);
+
+        const $editorEl = form.$(".odoo-editor-editable");
+        const expectedHeadings = [
+            // The "Main 1" section is a <h3> at depth 0, and the next "Main 2" section
+            // is  <h2>, which should still be at the 0 depth instead of 1
+            {title: 'Main 1',      depth: 0},
+            {title: 'Main 2',      depth: 0},
+        ];
         assertHeadings(assert, $editorEl, expectedHeadings);
 
         await testUtils.form.clickSave(form);

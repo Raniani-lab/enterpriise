@@ -25,6 +25,9 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     start: function () {
         return this._super(...arguments).then(async () => {
             this.initSlots();
+            this.$('.o_appointment_slots_loading').remove();
+            this.$('#slots_availabilities').removeClass('d-none');
+            this.$first.click();
         });
     },
 
@@ -35,7 +38,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
      */
     initSlots: async function () {
         this.$slotsList = this.$('#slotsList');
-        this.$first = this.$('.o_day').first();
+        this.$first = this.$('.o_slot_button').first();
         await this._updateSlotAvailability();
     },
 

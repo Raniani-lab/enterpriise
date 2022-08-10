@@ -187,7 +187,10 @@
     </template>
 
     <template id="appointment_calendar" name="Online Appointment">
-        <div id="slots_availabilities" class="mb-3">
+        <div class="o_appointment_slots_loading d-flex align-items-center pb-5 mt-md-n5">
+            <i class="fa fa-3x fa-spin fa-spinner mx-auto text-o-color-2"/>
+        </div>
+        <div id="slots_availabilities" class="mb-3 d-none">
             <span t-if="month_first_available is False" class="col-lg-12">
                 <i class="mx-auto h3 fa fa-spinner fa-spin"/>
             </span>

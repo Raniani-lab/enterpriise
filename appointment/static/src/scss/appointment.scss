@@ -30,6 +30,12 @@
     }
 }
 
+.o_appointment_slots_loading {
+    @media screen and (min-device-width: 769px) {
+        min-height: 35em;
+    }
+}
+
 .modal-open {
     > .modal-backdrop {
         z-index: $zindex-dropdown - 1;

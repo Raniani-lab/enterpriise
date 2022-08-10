@@ -364,7 +364,7 @@
     <!-- Menus -->
     <menuitem id="menu_document" name="Sign" web_icon="sign,static/description/icon.svg" sequence="180"/>
     <menuitem id="sign.sign_template_menu" name="Dashboard" parent="sign.menu_document" action="sign_template_action" sequence="10"/>
-    <menuitem id="sign_request_menu" name="Documents" parent="menu_document" action="sign_request_action" sequence="20"/>
+    <menuitem id="sign_request_menu" name="Documents" parent="menu_document" sequence="20"/>
     <menuitem id="sign_reports" name="Reports" parent="menu_document" sequence="99"/>
     <menuitem id="menu_sign_configuration" sequence="100" name="Configuration" parent="menu_document"/>
     <!-- Menus -->
@@ -373,4 +373,7 @@
     <menuitem id="sign.sign_item_role_menu" name="Roles" parent="sign.menu_sign_configuration" action="sign_item_role_action" groups="sign.group_sign_manager"/>
     <menuitem id="sign_request_item_menu" name="Signature Requests Items" parent="menu_sign_configuration" action="sign_request_item_action" groups="base.group_no_one" sequence="30"/>
     <menuitem id="sign_report_green_savings" name="Green Savings" parent="sign_reports" action="sign.sign_report_green_savings_action"/>
+    <menuitem id="sign_request_documents" name="All documents" parent="sign_request_menu" action="sign_request_action"/>
+    <menuitem id="sign_request_waiting_for_me" name="Waiting for me" parent="sign_request_menu" action="sign_request_waiting_for_me_action"/>
+    <menuitem id="sign_request_my_requests" name="My requests" parent="sign_request_menu" action="sign_request_my_requests_action"/>
 </odoo>

@@ -23,6 +23,8 @@ class Employee(models.Model):
         help='Select the user responsible for approving "Timesheet" of this employee.\n'
              'If empty, the approval is done by an Administrator or Team Approver (determined in settings/users).')
 
+    last_validated_timesheet_date = fields.Date(groups="hr_timesheet.group_timesheet_manager")
+
     @api.depends('parent_id')
     def _compute_timesheet_manager(self):
         for employee in self:

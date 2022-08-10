@@ -1,6 +1,6 @@
 from odoo import fields
 
-from odoo.exceptions import AccessError, UserError
+from odoo.exceptions import AccessError
 
 from odoo.tests.common import new_test_user
 from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
@@ -291,39 +291,81 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
         res = self.timesheet.with_user(self.user_employee).read(['name'])
         self.assertEqual(res[0]['name'], 'My timesheet 1')
 
-    def test_employee_cannot_delete_locked_timesheet(self):
+    def test_last_validated_timesheet_date(self):
         """ Check if an employee cannot create, modify or
-            delete an old timesheet that has been locked.
+            delete a timesheet with date <= last_validated_timesheet_date
         """
+        self.assertFalse(self.empl_employee3.last_validated_timesheet_date)
+        self.assertFalse(self.empl_employee3.company_id.prevent_old_timesheets_encoding)
+        timesheet = self.env['account.analytic.line'].with_user(self.user_employee3).create({
+            'name': 'timesheet',
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'date': fields.Datetime.today() - timedelta(days=40),
+            'unit_amount': 2,
+            'employee_id': self.empl_employee3.id,
+        })
+        timesheet.with_user(self.user_approver).action_validate_timesheet()
+        self.assertFalse(self.empl_employee3.last_validated_timesheet_date)
 
         # Set the settings accordingly
         timesheet_settings = self.env["res.config.settings"].create({
             'prevent_old_timesheets_encoding': True,
-            'timesheets_past_days_encoding_limit': 5,
         })
         timesheet_settings.execute()
+        self.assertEqual(self.empl_employee3.last_validated_timesheet_date, timesheet.date)
+        timesheet.with_user(self.user_approver).action_invalidate_timesheet()
+        self.assertFalse(self.empl_employee3.last_validated_timesheet_date)
 
-        # An user without the timesheet approver rights should not be able to create, modify or delete old timesheets
+        # User can create timesheet with any date if timesheet.employee_id.last_validated_timesheet_date = False
+        timesheet1 = self.env['account.analytic.line'].with_user(self.user_employee3).create({
+            'name': 'timesheet 1',
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'date': fields.Datetime.today(),
+            'unit_amount': 2,
+            'employee_id': self.empl_employee3.id,
+        })
+        self.timesheet4.write({'date': self.timesheet2.date})
+        (self.timesheet3 + self.timesheet2 + self.timesheet4).action_validate_timesheet()
+        self.assertEqual(self.empl_employee3.last_validated_timesheet_date, max(self.timesheet3.date, self.timesheet2.date))
+
+        # User cannot delete timesheet if date <= timesheet.employee_id.last_validated_timesheet_date
         with self.assertRaises(AccessError):
-            self.timesheet3.with_user(self.user_employee3).write({
-                'date': fields.Datetime.today() - timedelta(days=15)
-            })
-            self.timesheet3.with_user(self.user_employee3).unlink()
+            timesheet1.unlink()
 
-        # An user with the timesheet approver rights should be to modify only his employees timesheets
-        self.timesheet3.with_user(self.user_approver).write({
-            'date': fields.Datetime.today() - timedelta(days=12)
+        # User cannot create timesheet if date <= timesheet.employee_id.last_validated_timesheet_date
+        with self.assertRaises(AccessError):
+            self.env['account.analytic.line'].with_user(self.user_employee3).create({
+                'name': 'timesheet',
+                'project_id': self.project_customer.id,
+                'task_id': self.task1.id,
+                'date': fields.Datetime.today() - timedelta(days=10),
+                'unit_amount': 2,
+                'employee_id': self.empl_employee3.id,
+            })
+
+        # User can create timesheet if date > timesheet.employee_id.last_validated_timesheet_date
+        timesheet = self.env['account.analytic.line'].with_user(self.user_employee3).create({
+            'name': 'timesheet',
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'date': fields.Datetime.today() + timedelta(days=10),
+            'unit_amount': 2,
+            'employee_id': self.empl_employee3.id,
         })
 
-        # But in this case, this user shouldn't be able to touch the timesheets belonging to an user which is not one of his employees
+        # User cannot modify timesheet if date <= timesheet.employee_id.last_validated_timesheet_date
         with self.assertRaises(AccessError):
-            self.timesheet4.with_user(self.user_employee3).write({
-                'date': fields.Datetime.today() - timedelta(days=15)
+            timesheet.with_user(self.user_employee3).write({
+                'date': fields.Datetime.today() - timedelta(days=10),
             })
-            self.timesheet4.with_user(self.user_employee3).unlink()
 
-        # The manager should be able to do what he wants
-        self.timesheet3.with_user(self.user_manager).write({
-            'date': fields.Datetime.today() - timedelta(days=15)
-        })
-        self.timesheet3.with_user(self.user_manager).unlink()
+        timesheet.with_user(self.user_approver).action_validate_timesheet()
+        self.assertEqual(self.empl_employee3.last_validated_timesheet_date, max([self.timesheet3.date, self.timesheet2.date, timesheet.date]))
+
+        (timesheet + self.timesheet2 + self.timesheet4).with_user(self.user_approver).action_invalidate_timesheet()
+        self.assertEqual(self.empl_employee3.last_validated_timesheet_date, self.timesheet3.date)
+
+        self.timesheet3.with_user(self.user_approver).action_invalidate_timesheet()
+        self.assertFalse(self.empl_employee3.last_validated_timesheet_date)

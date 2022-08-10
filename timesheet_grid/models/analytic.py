@@ -381,6 +381,47 @@ class AnalyticLine(models.Model):
             else:
                 line.user_can_validate = False
 
+    def _update_last_validated_timesheet_date(self):
+        max_date_per_employee = {
+            employee: employee.sudo().last_validated_timesheet_date
+            for employee in self.employee_id
+        }
+        for timesheet in self:
+            max_date = max_date_per_employee[timesheet.employee_id]
+            if not max_date or max_date < timesheet.date:
+                max_date_per_employee[timesheet.employee_id] = timesheet.date
+
+        employee_ids_per_date = defaultdict(list)
+        for employee, max_date in max_date_per_employee.items():
+            if not employee.last_validated_timesheet_date or (max_date and employee.last_validated_timesheet_date < max_date):
+                employee_ids_per_date[max_date].append(employee.id)
+
+        for date, employee_ids in employee_ids_per_date.items():
+            self.env['hr.employee'].sudo().browse(employee_ids).write({'last_validated_timesheet_date': date})
+
+    @api.model
+    def _search_last_validated_timesheet_date(self, employee_ids):
+        EmployeeSudo = self.env['hr.employee'].sudo()
+        timesheet_read_group = self.env['account.analytic.line']._read_group(
+            [
+                ('validated', '=', True),
+                ('project_id', '!=', False),
+                ('employee_id', 'in', employee_ids),
+            ],
+            ['employee_id', 'max_date:max(date)'],
+            ['employee_id'],
+        )
+
+        employees_per_date = defaultdict(list)
+        for res in timesheet_read_group:
+            employees_per_date[res['max_date']].append(res['employee_id'][0])
+
+        for date, employee_ids in employees_per_date.items():
+            EmployeeSudo.browse(employee_ids).write({'last_validated_timesheet_date': date})
+
+        employees_without_validated_timesheet = set(employee_ids) - set([r['employee_id'][0] for r in timesheet_read_group])
+        EmployeeSudo.browse(employees_without_validated_timesheet).write({'last_validated_timesheet_date': False})
+
     def action_validate_timesheet(self):
         notification = {
             'type': 'ir.actions.client',
@@ -411,6 +452,8 @@ class AnalyticLine(models.Model):
             running_analytic_lines.action_timer_stop()
 
         analytic_lines.sudo().write({'validated': True})
+        analytic_lines.filtered(lambda t: t.employee_id.sudo().company_id.prevent_old_timesheets_encoding) \
+                      ._update_last_validated_timesheet_date()
         if self.env.context.get('use_notification', True):
             notification['params'].update({
                 'title': _("The timesheets have successfully been validated."),
@@ -443,6 +486,12 @@ class AnalyticLine(models.Model):
             return notification
 
         analytic_lines.sudo().write({'validated': False})
+        employee_ids = set()
+        for analytic_line in analytic_lines:
+            employee = analytic_line.employee_id
+            if employee.sudo().company_id.prevent_old_timesheets_encoding and employee not in employee_ids:
+                employee_ids.add(employee.id)
+        self.env['account.analytic.line']._search_last_validated_timesheet_date(list(employee_ids))
         if self.env.context.get('use_notification', True):
             notification['params'].update({
                 'title': _("The timesheets have successfully been reset to draft."),
@@ -465,17 +514,22 @@ class AnalyticLine(models.Model):
             action = "delete" if delete else "modify" if vals is not None and "date" in vals else "create or edit"
             for line in self:
                 show_access_error = False
+                employee = line.employee_id
                 company = line.company_id
+                last_validated_timesheet_date = employee.sudo().last_validated_timesheet_date
                 # When an user having this group tries to modify the timesheets of another user in his own team, we shouldn't raise any validation error
-                if not is_timesheet_approver or line.employee_id not in employees:
-                    if line.is_timesheet and company.prevent_old_timesheets_encoding:
-                        if action == "modify" and (date.today() - fields.Date.to_date(str(vals['date']))).days > company.timesheets_past_days_encoding_limit:
+                if not is_timesheet_approver or employee not in employees:
+                    if line.is_timesheet and company.prevent_old_timesheets_encoding and last_validated_timesheet_date:
+                        if action == "modify" and fields.Date.to_date(str(vals['date'])) <= last_validated_timesheet_date:
                             show_access_error = True
-                        elif (date.today() - line.date).days > company.timesheets_past_days_encoding_limit:
+                        elif line.date <= last_validated_timesheet_date:
                             show_access_error = True
 
                 if show_access_error:
-                    raise AccessError(_('You cannot %s timesheets older than %d days.', action, company.timesheets_past_days_encoding_limit))
+                    last_validated_timesheet_date_str = str(last_validated_timesheet_date.strftime('%m/%d/%Y'))
+                    deleted = _('deleted')
+                    modified = _('modified')
+                    raise AccessError(_('Timesheets before the %s (included) have been validated, and can no longer be %s.', last_validated_timesheet_date_str, deleted if delete else modified))
 
     @api.model_create_multi
     def create(self, vals_list):

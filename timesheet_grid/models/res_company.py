@@ -13,7 +13,6 @@ class Company(models.Model):
     _inherit = 'res.company'
 
     prevent_old_timesheets_encoding = fields.Boolean(string="Lock Dates", help="If checked, encoding of timesheets older than a certain number of days will be blocked")
-    timesheets_past_days_encoding_limit = fields.Integer("Timesheets Encoding Limit in Days", required=True, default=30)
 
     # reminder for employees
     timesheet_mail_employee_allow = fields.Boolean("Employee Reminder", default=True,
@@ -34,10 +33,6 @@ class Company(models.Model):
         ('months', 'after the end of the month')
     ], string='Manager Reminder Frequency', required=True, default="weeks")
     timesheet_mail_manager_nextdate = fields.Datetime('Next scheduled date for manager reminder', readonly=True)
-
-    _sql_constraints = [
-        ('check_encoding_limit', 'CHECK(timesheets_past_days_encoding_limit >= 0)', 'The time limit for encoding timesheets must be positive.')
-    ]
 
     @api.model_create_multi
     def create(self, vals_list):

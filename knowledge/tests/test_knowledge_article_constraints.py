@@ -20,8 +20,21 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         """ Add some hierarchy to have mixed rights tests """
         super().setUpClass()
 
-        # - Playground     seq=20    workspace    w+      (admin-w+)
-        # - Shared         seq=21    shared       none    (admin-w+,employee-r+,manager-r+)
+        # - Employee Priv.  seq=19    private      none    (employee-w+)
+        # - Playground      seq=20    workspace    w+      (admin-w+)
+        # - Shared          seq=21    shared       none    (admin-w+,employee-r+,manager-r+)
+        # -   Shared Child1 seq=0     "            "       (employee-w+)
+        cls.article_private_employee = cls.env['knowledge.article'].create(
+            {'article_member_ids': [
+                (0, 0, {'partner_id': cls.partner_employee.id,
+                        'permission': 'write',
+                       }),
+             ],
+             'internal_permission': 'none',
+             'name': 'Employee Priv.',
+             'sequence': 19,
+            }
+        )
         cls.article_workspace = cls.env['knowledge.article'].create(
             {'article_member_ids': [
                 (0, 0, {'partner_id': cls.user_admin.partner_id.id,
@@ -51,6 +64,17 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
              'name': 'Shared',
              'sequence': 21,
             }
+        )
+        cls.shared_child = cls.env['knowledge.article'].create(
+            {'article_member_ids': [
+                (0, 0, {'partner_id': cls.partner_employee.id,
+                        'permission': 'write',
+                       }),
+             ],
+             'internal_permission': False,
+             'name': 'Shared Child1',
+             'parent_id': cls.article_shared.id,
+            },
         )
 
     @users('employee')
@@ -145,6 +169,25 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
                 'parent_id': readonly_article.id,
             })
 
+    @users('employee')
+    def test_article_move_to_shared_root(self):
+        """ Check constraints restricting moving as a shared root.
+        Anything that is not already a shared root can not be moved as a shared
+        root. """
+        shared_child_article = self.shared_child.with_env(self.env)
+        workspace_article = self.article_workspace.with_env(self.env)
+        private_article = self.article_private_employee.with_env(self.env)
+
+        with self.assertRaises(exceptions.ValidationError,
+                               msg='Cannot move a shared child article as a shared root'):
+            shared_child_article[0].move_to(category='shared')
+        with self.assertRaises(exceptions.ValidationError,
+                               msg='Cannot move a workspace article as a shared root'):
+            workspace_article.move_to(category='shared')
+        with self.assertRaises(exceptions.ValidationError,
+                               msg='Cannot move a private article as a shared root'):
+            private_article.move_to(category='shared')
+
     @mute_logger('odoo.addons.base.models.ir_rule')
     @users('employee')
     def test_article_parent_constraints_create(self):
@@ -206,7 +249,7 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         """ Checking the article private management. """
         article_workspace = self.article_workspace.with_env(self.env)
 
-        # Private-like article whoe parent is not in private category is under workspace
+        # Private-like article whose parent is not in private category is under workspace
         article_private_u2 = self.env['knowledge.article'].sudo().create({
             'article_member_ids': [(0, 0, {'partner_id': self.partner_employee2.id, 'permission': 'write'})],
             'internal_permission': 'none',
@@ -221,7 +264,7 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         with self.assertRaises(exceptions.AccessError):
             article_private_u2_asuser.body  # should trigger ACLs
 
-        # Moving a private article under a workspace category makes it workspace
+        # Private root article
         article_private = self._create_private_article('MyPrivate').with_user(self.env.user)
         self.assertTrue(article_private.category, 'private')
         self.assertTrue(article_private.user_has_write_access)
@@ -234,10 +277,12 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         # Move to workspace, makes it workspace
         article_private.move_to(parent_id=article_workspace.id)
         self.assertEqual(article_private.category, 'workspace')
+
+        # Should be accessible by any user of the workspace since its permission is now inherited
         article_private_asu2 = article_private.with_user(self.user_employee2)
-        # Still not accessible
-        with self.assertRaises(exceptions.AccessError):
-            article_private_asu2.body  # should trigger ACLs
+        article_private_asu2.body  # should not trigger ACLs
+        self.assertFalse(article_private.internal_permission)
+        self.assertEqual(article_private.inherited_permission, 'write')
 
     @mute_logger('odoo.sql_db')
     @users('employee')
@@ -322,7 +367,7 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         # moving the article to private will remove the second member
         # but should not trigger an error since we also add 'employee' as a write member
         article_workspace = self.article_workspace.with_env(self.env)
-        article_workspace.move_to(is_private=True)
+        article_workspace.move_to(category='private')
         self.assertEqual(article_workspace.category, 'private')
         self.assertTrue(article_workspace._has_write_member())
 

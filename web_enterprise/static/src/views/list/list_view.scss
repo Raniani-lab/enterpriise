@@ -15,8 +15,7 @@
 @mixin o-list-view-full-width-padding($base-x: $table-cell-padding-x, $base-y: $table-cell-padding-y, $ratio: 1) {
     $body-padding: floor((($base-y * $ratio * 0.7) / 1rem) * $o-root-font-size); // FIXME
 
-    > thead > tr > :not(:empty),
-    .o_optional_columns_dropdown_toggle {
+    > thead > tr > :not(:empty) {
         padding: ceil((($base-y * $ratio) / 1rem) * $o-root-font-size + 4px) 4px; // FIXME
     }
     > tbody > tr:not(.o_list_table_grouped) > td {
@@ -69,8 +68,7 @@
 
     // ------- Increase thead and tfoot vertical padding -------
     > thead, > tfoot {
-        > tr > *,
-        + .o_optional_columns_dropdown_toggle {
+        > tr > * {
             // List views always have the table-sm class, maybe we should
             // remove it (and consider it does not exist) and change the default
             // table paddings

@@ -51,6 +51,9 @@ export class OdooViewsDataSource extends LoadableDataSource {
          * Promise to control the creation of the model
          */
         this._createModelPromise = undefined;
+
+        /** @private */
+        this._isFullyLoaded = false;
     }
 
     async loadMetadata() {
@@ -141,16 +144,6 @@ export class OdooViewsDataSource extends LoadableDataSource {
      */
     getModelLabel() {
         return this._metadataRepository.modelDisplayName(this._metaData.resModel);
-    }
-
-    /**
-     * @protected
-     */
-    _assertModel() {
-        if (this._model === undefined) {
-            this.load();
-            throw new LoadingDataError();
-        }
     }
 
     /**

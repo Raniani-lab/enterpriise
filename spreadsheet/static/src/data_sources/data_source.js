@@ -1,5 +1,7 @@
 /** @odoo-module */
 
+import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
+
 /**
  * DataSource is an abstract class that contains the logic of fetching and
  * maintaining access to data that have to be loaded.
@@ -25,6 +27,7 @@ export class LoadableDataSource {
          * Promise to control the loading of data
          */
         this._loadPromise = undefined;
+        this._isFullyLoaded = false;
     }
 
     /**
@@ -39,8 +42,10 @@ export class LoadableDataSource {
             this._loadPromise = undefined;
         }
         if (!this._loadPromise) {
+            this._isFullyLoaded = false;
             this._loadPromise = this._load().then(() => {
                 this._lastUpdate = Date.now();
+                this._isFullyLoaded = true;
                 this._notify();
             });
         }
@@ -49,6 +54,16 @@ export class LoadableDataSource {
 
     get lastUpdate() {
         return this._lastUpdate;
+    }
+
+    /**
+     * @protected
+     */
+    _assertDataIsLoaded() {
+        if (!this._isFullyLoaded) {
+            this.load();
+            throw new LoadingDataError();
+        }
     }
 
     /**

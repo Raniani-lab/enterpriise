@@ -40,7 +40,7 @@ export default class ListDataSource extends OdooViewsDataSource {
      * @returns {number}
      */
     getIdFromPosition(position) {
-        this._assertModel();
+        this._assertDataIsLoaded();
         return this._model.getIdFromPosition(position);
     }
 
@@ -49,7 +49,7 @@ export default class ListDataSource extends OdooViewsDataSource {
      * @returns {string}
      */
     getListHeaderValue(fieldName) {
-        this._assertModel();
+        this._assertDataIsLoaded();
         return this._model.getListHeaderValue(fieldName);
     }
 
@@ -59,7 +59,7 @@ export default class ListDataSource extends OdooViewsDataSource {
      * @returns {string|number|undefined}
      */
     getListCellValue(position, fieldName) {
-        this._assertModel();
+        this._assertDataIsLoaded();
         return this._model.getListCellValue(position, fieldName);
     }
 }

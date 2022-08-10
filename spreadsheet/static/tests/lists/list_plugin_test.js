@@ -177,6 +177,7 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         delete model.getters.getListDataSource(listId).getFields()[forbiddenFieldName];
         spreadsheetLoaded = true;
         model.dispatch("REFRESH_ALL_DATA_SOURCES");
+        await nextTick();
         setCellContent(model, "A1", `=ODOO.LIST.HEADER("1", "${forbiddenFieldName}")`);
         setCellContent(model, "A2", `=ODOO.LIST("1","1","${forbiddenFieldName}")`);
 

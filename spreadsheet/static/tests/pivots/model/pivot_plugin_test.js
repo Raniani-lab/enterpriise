@@ -10,7 +10,7 @@ import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { createModelWithDataSource } from "@spreadsheet/../tests/utils/model";
-import { nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { makeDeferred, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { session } from "@web/session";
 
 QUnit.module("spreadsheet > pivot plugin", {}, () => {
@@ -389,6 +389,80 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         assert.equal(getCellValue(model, "A1"), 131);
     });
 
+    QUnit.test("display loading while data is not fully available", async function (assert) {
+        const metadataPromise = makeDeferred();
+        const dataPromise = makeDeferred();
+        const namePromise = makeDeferred();
+        const spreadsheetData = {
+            sheets: [
+                {
+                    id: "sheet1",
+                    cells: {
+                        A1: { content: `=ODOO.PIVOT.HEADER(1, "measure", "probability")` },
+                        A2: { content: `=ODOO.PIVOT.HEADER(1, "product_id", 37)` },
+                        A3: { content: `=ODOO.PIVOT(1, "probability")` },
+                    },
+                },
+            ],
+            pivots: {
+                1: {
+                    id: 1,
+                    colGroupBys: ["product_id"],
+                    domain: [],
+                    measures: [{ field: "probability", operator: "avg" }],
+                    model: "partner",
+                    rowGroupBys: [],
+                },
+            },
+        };
+        const model = await createModelWithDataSource({
+            spreadsheetData,
+            mockRPC: async function (route, args, performRPC) {
+                const { model, method, kwargs } = args;
+                const result = await performRPC(route, args);
+                if (model === "partner" && method === "fields_get") {
+                    assert.step(`${model}/${method}`);
+                    await metadataPromise;
+                }
+                if (
+                    model === "partner" &&
+                    method === "read_group" &&
+                    kwargs.groupby[0] === "product_id"
+                ) {
+                    assert.step(`${model}/${method}`);
+                    await dataPromise;
+                }
+                if (model === "product" && method === "name_get") {
+                    assert.step(`${model}/${method}`);
+                    await namePromise;
+                }
+                return result;
+            },
+        });
+        assert.strictEqual(getCellValue(model, "A1"), "Loading...");
+        assert.strictEqual(getCellValue(model, "A2"), "Loading...");
+        assert.strictEqual(getCellValue(model, "A3"), "Loading...");
+        metadataPromise.resolve();
+        await nextTick();
+        setCellContent(model, "A10", "1"); // trigger a new evaluation (might also be caused by other async formulas resolving)
+        assert.strictEqual(getCellValue(model, "A1"), "Loading...");
+        assert.strictEqual(getCellValue(model, "A2"), "Loading...");
+        assert.strictEqual(getCellValue(model, "A3"), "Loading...");
+        dataPromise.resolve();
+        await nextTick();
+        setCellContent(model, "A10", "2");
+        assert.strictEqual(getCellValue(model, "A1"), "Probability");
+        assert.strictEqual(getCellValue(model, "A2"), "Loading...");
+        assert.strictEqual(getCellValue(model, "A3"), 131);
+        namePromise.resolve();
+        await nextTick();
+        setCellContent(model, "A10", "3");
+        assert.strictEqual(getCellValue(model, "A1"), "Probability");
+        assert.strictEqual(getCellValue(model, "A2"), "xphone");
+        assert.strictEqual(getCellValue(model, "A3"), 131);
+        assert.verifySteps(["partner/fields_get", "partner/read_group", "product/name_get"]);
+    });
+
     QUnit.test("relational PIVOT.HEADER with missing id", async function (assert) {
         assert.expect(1);
 
@@ -520,22 +594,19 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
         assert.equal(getCellValue(model, "C5"), "");
     });
 
-    QUnit.test(
-        "PIVOT formulas are correctly formatted at evaluation",
-        async function (assert) {
-            const { model } = await createSpreadsheetWithPivot({
-                arch: /* xml */ `
+    QUnit.test("PIVOT formulas are correctly formatted at evaluation", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot({
+            arch: /* xml */ `
                 <pivot>
                     <field name="product_id" type="col"/>
                     <field name="name" type="row"/>
                     <field name="foo" type="measure"/>
                     <field name="probability" type="measure"/>
                 </pivot>`,
-            });
-            assert.strictEqual(getCell(model, "B3").evaluated.format, "0");
-            assert.strictEqual(getCell(model, "C3").evaluated.format, "#,##0.00");
-        }
-    );
+        });
+        assert.strictEqual(getCell(model, "B3").evaluated.format, "0");
+        assert.strictEqual(getCell(model, "C3").evaluated.format, "#,##0.00");
+    });
 
     QUnit.test(
         "PIVOT.HEADER formulas are correctly formatted at evaluation",

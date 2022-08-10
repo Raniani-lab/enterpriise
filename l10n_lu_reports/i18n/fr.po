@@ -666,15 +666,8 @@ msgstr "Annexe F. Noms et adresses à spécifier"
 
 #. module: l10n_lu_reports
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports.view_l10n_lu_yearly_tax_report_manual
-<<<<<<< HEAD
-msgid ""
-"Application for the purpose of business of goods produced in the course of "
-"the business (009)"
-msgstr ""
-=======
 msgid "Application for the purpose of business of goods produced in the course of the business (009)"
 msgstr "Affectation à l'entreprise de biens produits dans l'entreprise (009)"
->>>>>>> df99cf8ff7... temp
 
 #. module: l10n_lu_reports
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports.view_l10n_lu_yearly_tax_report_manual

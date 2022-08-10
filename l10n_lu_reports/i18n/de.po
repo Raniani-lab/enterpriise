@@ -1791,15 +1791,8 @@ msgstr "Dienstleistungen"
 
 #. module: l10n_lu_reports
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports.view_l10n_lu_yearly_tax_report_manual
-<<<<<<< HEAD
-msgid ""
-"Supply of services carried out free of charge for purposes other than those "
-"of the business (011)"
-msgstr ""
-=======
 msgid "Supply of services carried out free of charge for purposes other than those of the business (011)"
 msgstr "Erbringung von Dienstleistungen für unternehmensfremde Zwecke (011)"
->>>>>>> df99cf8ff7... temp
 
 #. module: l10n_lu_reports
 #: model:account.financial.html.report.line,name:l10n_lu_reports.account_financial_report_l10n_lu_bs_abr_line_1_6

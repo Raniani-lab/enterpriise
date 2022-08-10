@@ -432,7 +432,7 @@
         <field name="name">planning.role.tree</field>
         <field name="model">planning.role</field>
         <field name="arch" type="xml">
-            <tree string="Planning Role List" editable="bottom" multi_edit="1" sample="1">
+            <tree string="Planning Role List" editable="bottom" multi_edit="1" sample="1" js_class="legacy_list">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="employee_ids" widget="many2many_avatar_employee" optional="show"/>

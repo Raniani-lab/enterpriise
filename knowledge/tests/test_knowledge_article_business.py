@@ -884,6 +884,44 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
 @tagged('post_install', '-at_install', 'knowledge_internals', 'knowledge_management')
 class TestKnowledgeShare(KnowledgeCommonWData):
     """ Test share feature. """
+    def test_article_can_invite_members_with_wizard(self):
+        """Check that the administrator is allowed to invite a new member
+           without 'write' permission by using the invitation wizard."""
+        article = self.env['knowledge.article'].create({
+            'name': 'My article',
+            'internal_permission': 'write',
+            'article_member_ids': [
+                (0, 0, {'partner_id': self.partner_employee.id, 'permission': 'read'}),
+                (0, 0, {'partner_id': self.partner_admin.id, 'permission': 'read'})
+            ]
+        })
+
+        self.assertFalse(article.with_user(self.user_employee).user_has_write_access)
+        self.assertFalse(article.with_user(self.user_admin).user_has_write_access)
+
+        with self.assertRaises(exceptions.AccessError):
+            self.env['knowledge.invite'].with_user(self.user_employee).create({
+                'article_id': article.id,
+                'partner_ids': self.partner_public,
+                'permission': 'read',
+            })
+
+        self.assertMembers(article, 'write', {
+            self.partner_employee: 'read',
+            self.partner_admin: 'read'
+        })
+
+        self.env['knowledge.invite'].with_user(self.user_admin).create({
+            'article_id': article.id,
+            'partner_ids': self.partner_public,
+            'permission': 'read',
+        }).action_invite_members()
+
+        self.assertMembers(article, 'write', {
+            self.partner_employee: 'read',
+            self.partner_admin: 'read',
+            self.partner_public: 'read'
+        })
 
     @mute_logger('odoo.addons.base.models.ir_rule', 'odoo.addons.mail.models.mail_mail', 'odoo.models.unlink', 'odoo.tests')
     @users('employee2')

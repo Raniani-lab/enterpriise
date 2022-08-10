@@ -16,6 +16,8 @@ class CustomerPortal(SaleCustomerPortal, AccountCustomerPortal):
     def _task_get_page_view_values(self, task, access_token, **kwargs):
         values = super()._task_get_page_view_values(task, access_token, **kwargs)
         uid = request.env.uid
+        if not request.env['sale.order'].check_access_rights('read', False):
+            return values
         quotations = request.env['sale.order'].search([('task_id', '=', task.id)])
         if quotations and task.project_id.with_user(uid)._check_project_sharing_access():
             if len(quotations) == 1:

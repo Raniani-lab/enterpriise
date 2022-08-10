@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from bisect import bisect_left
 from collections import defaultdict
 from datetime import datetime
 from pytz import utc
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare, float_is_zero
+from odoo.tools import float_compare, float_is_zero, relativedelta
 from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
 
 
@@ -166,13 +167,16 @@ class MrpProductionWorkcenterLine(models.Model):
         """
         self.ensure_one()
         assert position in ['first', 'next', 'previous', 'last']
-        checks_to_consider = self.check_ids.filtered(lambda c: c.finished_product_sequence == self.qty_produced)
+        checks_to_consider = self.check_ids.filtered(lambda c: c.quality_state == 'none')
         if position == 'first':
             check = checks_to_consider.filtered(lambda check: not check.previous_check_id)
         elif position == 'next':
             check = self.current_quality_check_id.next_check_id
             if not check:
-                check = checks_to_consider.filtered(lambda check: not check.previous_check_id)
+                check = checks_to_consider[:1]
+            elif check.quality_state != 'none':
+                self.current_quality_check_id = check
+                return self._change_quality_check(position='next')
             if check.test_type in ('register_byproducts', 'register_consumed_materials'):
                 check._update_component_quantity()
         elif position == 'previous':
@@ -502,6 +506,8 @@ class MrpProductionWorkcenterLine(models.Model):
                 'no_breadcrumbs': True,
                 'search_default_workcenter_id': self.workcenter_id.id
             }
+        if 'list' in action.get('binding_view_types', ''):
+            action['binding_view_types'].replace("list", "tree")
         return action
 
     def get_workorder_data(self):
@@ -519,6 +525,35 @@ class MrpProductionWorkcenterLine(models.Model):
             'working_state': self.workcenter_id.working_state,
         }
         return data
+
+    def get_summary_data(self):
+        self.ensure_one()
+        # show rainbow man only the first time
+        show_rainbow = any(not t.date_end for t in self.time_ids)
+        self.end_all()
+        if any(step.quality_state == 'none' for step in self.check_ids):
+            raise UserError(_('You still need to do the quality checks!'))
+        last30op = self.env['mrp.workorder'].search_read([
+            ('operation_id', '=', self.operation_id.id),
+            ('date_finished', '>', fields.datetime.today() - relativedelta(days=30)),
+        ], ['duration'], order='duration')
+        last30op = [item['duration'] for item in last30op]
+
+        passed_checks = len(list(check.quality_state == 'pass' for check in self.check_ids))
+        if passed_checks:
+            score = int(3.0 * len(self.check_ids) / passed_checks)
+        elif not self.check_ids:
+            score = 3
+        else:
+            score = 0
+
+        return {
+            'duration': self.duration,
+            'position': bisect_left(last30op, self.duration), # which position regarded other workorders ranked by duration
+            'quality_score': score,
+            'show_rainbow': show_rainbow,
+        }
+
 
     def _action_confirm(self):
         res = super()._action_confirm()

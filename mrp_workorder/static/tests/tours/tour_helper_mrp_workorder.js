@@ -18,10 +18,27 @@ function assert(current, expected, info) {
     }
 }
 
+function assertRainbow(present = false) {
+    const $summaryStep = $('.o_tablet_summary');
+    const $rainbow = $('.o_reward_rainbow_man');
+    assert(Boolean($summaryStep.length && present ? $rainbow.length : !$rainbow.length), true, 'Rainbow man check');
+}
+
+function assertDoneButton(present = false) {
+    const $doneButton = $('button.btn-primary[name=do_finish');
+    assert(Boolean(present ? $doneButton.length : !$doneButton.length), true, 'mark as done check');
+}
+
 function assertQtyToProduce(qty_producing, qty_remaining) {
-    const $qty_producing = $('span[name="qty_producing"]');
+    let $qty_producing = $('span[name="qty_producing"]');
+    if ($qty_producing.length === 0) {
+        $qty_producing = $('input[name="qty_producing"]');
+        assert(Number($qty_producing[0].value), qty_producing, `wrong quantity done`);
+    } else {
+        assert(Number($qty_producing[0].textContent), qty_producing, `wrong quantity done`);
+    }
     assert($qty_producing.length, 1, `no qty_producing`);
-    assert(Number($qty_producing[0].textContent), qty_producing, `wrong quantity done`);
+
     const $qty_remaining = $('span[name="qty_remaining"]');
     assert($qty_remaining.length, 1, `no qty_remaining`);
     assert(Number($qty_remaining[0].textContent), qty_remaining, `wrong quantity remaining`);
@@ -68,6 +85,8 @@ return {
     assertComponent: assertComponent,
     assertValidatedCheckLength: assertValidatedCheckLength,
     assertQtyToProduce: assertQtyToProduce,
+    assertRainbow: assertRainbow,
+    assertDoneButton: assertDoneButton,
     fail: fail,
 };
 

@@ -22,15 +22,9 @@
                         <DocumentViewer t-props="worksheetData"/>
                     </t>
                 </t>
-                <t t-else="">
+                <t t-elif="steps.length !== 0">
                     <SummaryStep workorder="workorderId"/>
                 </t>
-                <div t-if="checkInstruction" class="o_tablet_instruction_note">
-                    <t t-out="checkInstruction"/>
-                </div>
-                <div t-if="worksheetData" class="o_tablet_document">
-                    <DocumentViewer t-props="worksheetData"/>
-                </div>
             </div>
         </div>
         <div t-if="popup['menu'].isShown" class="o_tablet_popups" >

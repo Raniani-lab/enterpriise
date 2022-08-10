@@ -108,6 +108,7 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                 <field name="product_tracking" invisible="1"/>
                 <field name="working_state" invisible="1"/>
                 <field name="production_id" invisible="1"/>
+                <field name="current_quality_check_id" invisible="1"/>
                 <div class="o_workorder_bar">
                     <div class="o_workorder_bar_left o_workorder_bar_content">
                         <button name="exit" class="btn btn-secondary o_exit workorder_event fa fa-arrow-left o_unblock" title="back"/>

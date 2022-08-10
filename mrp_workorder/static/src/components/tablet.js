@@ -8,6 +8,7 @@ import DocumentViewer from '@mrp_workorder/components/viewer';
 import StepComponent from '@mrp_workorder/components/step';
 import ViewsWidgetAdapter from '@mrp_workorder/components/views_widget_adapter';
 import MenuPopup from '@mrp_workorder/components/menuPopup';
+import SummaryStep from '@mrp_workorder/components/summary_step';
 
 const {useState, useEffect, onWillStart, EventBus, Component, markup} = owl;
 
@@ -86,8 +87,21 @@ class Tablet extends Component {
             [this.workorderId],
         );
         this.steps = this.data['quality.check'];
-        this.state.selectedStepId = this.data['mrp.workorder'].current_quality_check_id;
         this.state.workingState = this.data.working_state;
+        if (this.steps.length && this.steps.every(step => step.quality_state !== 'none')) {
+            this.createSummaryStep();
+        } else {
+            this.state.selectedStepId = this.data['mrp.workorder'].current_quality_check_id;
+        }
+    }
+
+    createSummaryStep() {
+        this.steps.push({
+            id: 0,
+            title: 'Summary',
+            test_type: '',
+        });
+        this.state.selectedStepId = 0;
     }
 
     async exit(ev) {
@@ -248,6 +262,7 @@ Tablet.components = {
     DocumentViewer,
     ViewsWidgetAdapter,
     MenuPopup,
+    SummaryStep,
 };
 
 registry.category('actions').add('tablet_client_action', Tablet);

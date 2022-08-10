@@ -89,7 +89,6 @@ tour.register('test_add_component', {test: true}, [
         position: 'bottom',
         run: 'text mc1',
     },
-    {trigger: '.btn[name=action_next]'},
     {trigger: '.o_workorder_icon_btn'},
     {trigger: '.o_tablet_popups'},
     {trigger: '.btn:contains("Add By-product")'},
@@ -113,7 +112,7 @@ tour.register('test_add_component', {test: true}, [
         trigger: '.o_tablet_client_action',
         run: function () {
             helper.assertCheckLength(4);
-            helper.assertValidatedCheckLength(2);
+            helper.assertValidatedCheckLength(1);
             helper.assertQtyToProduce(1, 1);
             helper.assertCurrentCheck('Register By-products "extra-bp"');
             helper.assertComponent('extra-bp', 'editable', 1, 1);
@@ -127,6 +126,67 @@ tour.register('test_add_component', {test: true}, [
         in_modal: false,
         auto: true,
     },
+    {trigger: '.btn[name=action_next]'},
+    {
+        trigger: 'span[name="component_id"]:contains("Metal")',
+        run: function () {
+            helper.assertCheckLength(4);
+            helper.assertValidatedCheckLength(2);
+            helper.assertQtyToProduce(1, 1);
+            helper.assertCurrentCheck('Register Consumed Materials "Metal cylinder"');
+            helper.assertComponent('Metal cylinder', 'editable', 2, 2);
+        }
+    },
+    {trigger: '.btn[name=action_next]'},
+    // go back to the first not done check
+    {
+        trigger: 'span[name="component_id"]:contains("extra")',
+        run: function () {
+            helper.assertComponent('extra', 'editable', 3, 3);
+            helper.assertCheckLength(4);
+            helper.assertValidatedCheckLength(3);
+            helper.assertQtyToProduce(1, 1);
+            helper.assertCurrentCheck('Register Consumed Materials "extra"');
+        }
+    },
+    {trigger: '.btn[name=action_next]'},
+    // we have the rainbow man once
+    {
+        trigger: '.o_tablet_step:nth-child(5)',
+        run: function () {
+            helper.assertRainbow(true);
+        }
+    },
+    {trigger: '.o_reward_rainbow_man'},
+    {
+        trigger: 'h1:contains("Good Job")',
+        run: function () {
+            helper.assertDoneButton(true);
+        }
+    },
+    // we do not have it twice
+    {trigger: '.o_tablet_step:nth-child(2)'},
+    {
+        trigger: 'span[name="component_id"]:contains("Elon")',
+        run: function () {
+            helper.assertCheckLength(5);
+            helper.assertValidatedCheckLength(4);
+            helper.assertQtyToProduce(1, 1);
+            helper.assertCurrentCheck('Register Consumed Materials "Elon Musk"');
+            helper.assertComponent('Elon Musk', 'readonly', 1, 0);
+        }
+    },
+    {trigger: '.o_tablet_step:nth-child(5)'},
+    {
+        trigger: 'h1:contains("Good Job")',
+        run: function () {
+            helper.assertRainbow(false);
+            helper.assertDoneButton(true);
+        }
+    },
+    {trigger: '.btn[name=action_generate_serial]'},
+    {trigger: '.btn[name=do_finish]'},
+    {trigger: '.o_searchview_input'},
 ]);
 
 tour.register('test_add_step', {test: true}, [

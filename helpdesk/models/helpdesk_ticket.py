@@ -466,9 +466,10 @@ class HelpdeskTicket(models.Model):
             if domain:
                 partner_ticket = self.search(domain)
             ticket.partner_ticket_ids = partner_ticket
-            ticket.partner_ticket_count = len(partner_ticket) - 1 if partner_ticket else 0
+            partner_ticket = partner_ticket - ticket._origin
+            ticket.partner_ticket_count = len(partner_ticket) if partner_ticket else 0
             open_ticket = partner_ticket.filtered(lambda ticket: not ticket.stage_id.fold)
-            ticket.partner_open_ticket_count = len(open_ticket) - 1 if not ticket.stage_id.fold else len(open_ticket)
+            ticket.partner_open_ticket_count = len(open_ticket)
 
     @api.depends('assign_date')
     def _compute_assign_hours(self):

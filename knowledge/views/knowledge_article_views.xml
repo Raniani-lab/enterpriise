@@ -353,6 +353,12 @@
         <field name="name">Article Items</field>
         <field name="res_model">knowledge.article</field>
         <field name="view_mode">tree,kanban,form</field>
+<!--        TODO: When calling this action window, should force the domain to
+            [('parent_id', '=', active_id), ('is_article_item', '=', True)]
+            Or just remove the menu items calling this act_window
+                + remove default filter on "knowledge_article_action"
+                + uncomment next line + remove context line.-->
+<!--        <field name="domain">[('parent_id', '=', active_id), ('is_article_item', '=', True)]</field>-->
         <field name="context">{'search_default_filter_not_is_article_item': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">

@@ -431,7 +431,7 @@
             <field name="model">project.task</field>
             <field name="inherit_id" ref="project.view_task_kanban"/>
             <field name="arch" type="xml">
-                <xpath expr="//div[@name='date_deadline']" position="before">
+                <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="inside">
                     <field name="display_timesheet_timer" invisible="1"/>
                     <field name="timer_start" invisible="1"/>
                     <field name="timer_pause" invisible="1"/>

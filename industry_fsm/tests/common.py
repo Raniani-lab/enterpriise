@@ -28,7 +28,7 @@ class TestIndustryFsmCommon(TransactionCase):
         })
         cls.employee_user = cls.env['hr.employee'].create({
             'name': 'Employee User',
-            'timesheet_cost': 15,
+            'hourly_cost': 15,
         })
         cls.george_user = new_test_user(cls.env, login='george', groups='industry_fsm.group_fsm_user')
         cls.marcel_user = new_test_user(cls.env, login='marcel', groups='industry_fsm.group_fsm_user')

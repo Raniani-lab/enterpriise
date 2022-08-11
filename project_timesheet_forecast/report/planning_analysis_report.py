@@ -18,12 +18,12 @@ class PlanningAnalysisReport(models.Model):
             S.effective_hours AS effective_hours,
             S.percentage_hours AS percentage_hours,
             (S.allocated_hours - S.effective_hours) AS remaining_hours,
-            S.allocated_hours * E.timesheet_cost AS allocated_hours_cost,
-            S.effective_hours * E.timesheet_cost AS effective_hours_cost
+            S.allocated_hours * E.hourly_cost AS allocated_hours_cost,
+            S.effective_hours * E.hourly_cost AS effective_hours_cost
         """
 
     @api.model
     def _group_by(self):
         return super()._group_by() + """,
-            S.effective_hours, S.allocated_hours, E.timesheet_cost
+            S.effective_hours, S.allocated_hours, E.hourly_cost
         """

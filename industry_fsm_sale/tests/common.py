@@ -14,12 +14,12 @@ class TestFsmFlowCommon(TransactionCase):
 
         cls.employee_user2 = cls.env['hr.employee'].create({
             'name': 'Employee User 2',
-            'timesheet_cost': 15,
+            'hourly_cost': 15,
         })
 
         cls.employee_user3 = cls.env['hr.employee'].create({
             'name': 'Employee User 2',
-            'timesheet_cost': 15,
+            'hourly_cost': 15,
         })
 
         cls.project_user = cls.env['res.users'].create({

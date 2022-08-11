@@ -1,5 +1,4 @@
-from odoo import tools
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class sale_subscription_report(models.Model):
@@ -40,23 +39,34 @@ class sale_subscription_report(models.Model):
         ('bad', 'Bad')], string="Health", readonly=True)
     stage_id = fields.Many2one('sale.order.stage', string='Stage', readonly=True)
 
+    def _case_value_or_one(self, value):
+        return f'CASE COALESCE({ value }, 0) WHEN 0 THEN 1.0 ELSE { value } END'
+
     def _select(self):
-        select_str = """
+        select_str = f"""
              SELECT min(l.id) as id,
                     sub.name as name,
                     l.product_id as product_id,
                     l.product_uom as product_uom,
                     sub.analytic_account_id as analytic_account_id,
-                    sum(
+                    SUM (
                         coalesce(l.price_subtotal / nullif(sub.amount_untaxed, 0), 0)
                         * sub.recurring_monthly
+                        * { self._case_value_or_one('sub.currency_rate') }
+                        * { self._case_value_or_one('currency_table.rate') }
                     ) as recurring_monthly,
-                    sum(
+                    SUM (
                         coalesce(l.price_subtotal / nullif(sub.amount_untaxed, 0), 0)
                         * sub.recurring_monthly * 12
+                        * { self._case_value_or_one('sub.currency_rate') }
+                        * { self._case_value_or_one('currency_table.rate') }
                     ) as recurring_yearly,
-                    sum(l.price_subtotal) as recurring_total,
-                    sum(l.product_uom_qty) as quantity,
+                    SUM (
+                        l.price_subtotal
+                        * { self._case_value_or_one('sub.currency_rate') }
+                        * { self._case_value_or_one('currency_table.rate') }
+                    ) as recurring_total,
+                    SUM(l.product_uom_qty) as quantity,
                     sub.date_order as date_order,
                     sub.end_date as end_date,
                     sub.partner_id as partner_id,
@@ -81,14 +91,21 @@ class sale_subscription_report(models.Model):
     def _from(self):
         from_str = """
                 sale_order_line l
-                      join sale_order sub on (l.order_id=sub.id)
-                      join sale_order_stage stage on sub.stage_id = stage.id
-                      left outer join account_analytic_account a on sub.id=a.id
-                      join res_partner partner on sub.partner_id = partner.id
-                        left join product_product p on (l.product_id=p.id)
-                            left join product_template t on (p.product_tmpl_id=t.id)
+                    join sale_order sub on (l.order_id=sub.id)
+                    join sale_order_stage stage on sub.stage_id = stage.id
+                    left outer join account_analytic_account a on sub.id=a.id
+                    join res_partner partner on sub.partner_id = partner.id
+                    left join product_product p on (l.product_id=p.id)
+                    left join product_template t on (p.product_tmpl_id=t.id)
                     left join uom_uom u on (u.id=l.product_uom)
-        """
+                    join {currency_table} ON currency_table.company_id = sub.company_id
+        """.format(
+            currency_table=self.env['res.currency']._get_query_currency_table(
+                {
+                    'multi_company': True,
+                    'date': {'date_to': fields.Date.today()}
+                }),
+        )
         return from_str
 
     def _where(self):
@@ -125,11 +142,14 @@ class sale_subscription_report(models.Model):
         """
         return group_by_str
 
-    def init(self):
-        tools.drop_view_if_exists(self.env.cr, self._table)
-        self.env.cr.execute("""CREATE or REPLACE VIEW %s as (
+    @property
+    def _table_query(self):
+        return self._query()
+
+    def _query(self):
+        return """
             %s
             FROM ( %s )
             %s
             %s
-            )""" % (self._table, self._select(), self._from(), self._where(), self._group_by()))
+            """ % (self._select(), self._from(), self._where(), self._group_by())

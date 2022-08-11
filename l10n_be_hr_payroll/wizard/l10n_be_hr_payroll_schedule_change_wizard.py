@@ -71,7 +71,8 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
         for wizard in self:
             #Compute full wage first since wage depends on it
             wizard.current_wage = wizard.contract_id._get_contract_wage()
-            wizard.full_wage = wizard.current_wage / (wizard.current_resource_calendar_id.work_time_rate / 100)
+            work_time_rate = wizard.current_resource_calendar_id.work_time_rate
+            wizard.full_wage = wizard.current_wage / ((work_time_rate / 100) if work_time_rate else 1)
             wizard.wage = wizard.full_wage * float(wizard.work_time_rate) / 100
 
     @api.depends('leave_type_id', 'full_resource_calendar_id')

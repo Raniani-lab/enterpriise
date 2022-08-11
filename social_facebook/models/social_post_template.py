@@ -24,8 +24,8 @@ class SocialPostTemplate(models.Model):
                     post.message,
                     'facebook',
                     **{field: post[field] for field in post._get_post_message_modifying_fields()}),
-                'images': [
-                    image.with_context(bin_size=False).datas
+                'image_urls': [
+                    f'/web/image/{image._origin.id or image.id}'
                     for image in post.image_ids.sorted(lambda image: image._origin.id or image.id, reverse=True)
                 ],
             })

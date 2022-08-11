@@ -69,7 +69,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
             # for more info, see: https://github.com/odoo/enterprise/pull/30169#pullrequestreview-1064657223
             ('prepend', 'web_enterprise/static/src/legacy/js/views/list/list_renderer_mobile.js'),
 
-            ('replace', 'web/static/src/legacy/js/fields/upgrade_fields.js', 'web_enterprise/static/src/legacy/js/apps.js'),
+            'web_enterprise/static/src/legacy/js/apps.js',
 
             'web_enterprise/static/src/core/**/*',
             'web_enterprise/static/src/search/**/*.js',
@@ -89,12 +89,9 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/tests/*.js',
         ],
         'web.qunit_suite_tests': [
-            ('remove', 'web/static/tests/legacy/fields/upgrade_fields_tests.js'),
-
             'web_enterprise/static/tests/views/**/*.js',
             'web_enterprise/static/tests/webclient/**/*.js',
 
-            'web_enterprise/static/tests/legacy/upgrade_fields_tests.js',
             'web_enterprise/static/tests/legacy/views/list_tests.js',
             'web_enterprise/static/tests/legacy/barcodes_tests.js',
         ],

@@ -34,13 +34,6 @@ class AccountJournal(models.Model):
     account_online_account_id = fields.Many2one('account.online.account', copy=False, ondelete='set null')
     account_online_link_id = fields.Many2one('account.online.link', related='account_online_account_id.account_online_link_id', readonly=True, store=True)
     account_online_link_state = fields.Selection(related="account_online_link_id.state", readonly=True)
-    bank_statement_creation_groupby = fields.Selection(
-        selection=_get_statement_creation_possible_values,
-        help="Defines when a new bank statement will be created when fetching "
-             "new transactions from your bank account.",
-        default='month',
-        string='Creation of Bank Statements'
-    )
 
     @api.depends('expiring_synchronization_date')
     def _compute_expiring_synchronization_due_day(self):

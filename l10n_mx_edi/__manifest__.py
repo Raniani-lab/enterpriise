@@ -15,6 +15,7 @@ This module allows the creation of the EDI documents and the communication with 
     """,
     'depends': [
         'account_edi',
+        'account_accountant',
         'l10n_mx',
         'base_vat',
         'product_unspsc'

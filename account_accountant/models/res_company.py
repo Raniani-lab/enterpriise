@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields
+from odoo import models, fields, _
 from odoo.tools.misc import DEFAULT_SERVER_DATE_FORMAT
 
-from datetime import timedelta, datetime
+from datetime import timedelta
 from odoo.tools import date_utils
+
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
@@ -141,7 +142,9 @@ class ResCompany(models.Model):
         return {'date_from': date_from, 'date_to': date_to}
 
     def _get_fiscalyear_lock_statement_lines_redirect_action(self, unreconciled_statement_lines):
-        # Extends 'account'
+        # OVERRIDE account
         return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            default_context={'search_default_not_matched': True},
             extra_domain=[('id', 'in', unreconciled_statement_lines.ids)],
+            name=_('Unreconciled statements lines'),
         )

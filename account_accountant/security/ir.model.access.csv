@@ -6,3 +6,4 @@ access_account_fiscal_year_manager,account.fiscal.year.manager,model_account_fis
 
 access_bank_rec_widget,access.bank.rec.widget,model_bank_rec_widget,account.group_account_user,1,1,1,1
 access_bank_rec_widget_line,access.bank.rec.widget.line,model_bank_rec_widget_line,account.group_account_user,1,1,1,1
+

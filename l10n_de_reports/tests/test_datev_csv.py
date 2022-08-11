@@ -238,19 +238,17 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         })
 
         statement = self.env['account.bank.statement'].create({
-            'date': '2020-01-01',
             'balance_end_real': 100.0,
-            'journal_id': self.company_data['default_journal_bank'].id,
             'line_ids': [
                 (0, 0, {
+                    'journal_id': self.company_data['default_journal_bank'].id,
                     'payment_ref': 'line1',
                     'amount': 100.0,
                     'date': '2020-01-01',
                 }),
             ],
         })
-        statement.button_post()
-        statement.move_line_ids.flush_recordset()
+        statement.line_ids.move_id.flush_recordset()
 
         suspense_account_code = str(self.env.company.account_journal_suspense_account_id.code).ljust(8, '0')
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
@@ -284,11 +282,10 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         move.action_post()
 
         statement = self.env['account.bank.statement'].create({
-            'date': '2020-01-01',
             'balance_end_real': 100.0,
-            'journal_id': self.company_data['default_journal_bank'].id,
             'line_ids': [
                 (0, 0, {
+                    'journal_id': self.company_data['default_journal_bank'].id,
                     'payment_ref': 'line_1',
                     'amount': 100.0,
                     'partner_id': self.partner_a.id,
@@ -296,7 +293,6 @@ class TestDatevCSV(AccountTestInvoicingCommon):
                 }),
             ],
         })
-        statement.button_post()
 
         receivable_line = move.line_ids.filtered(lambda line: line.account_id.account_type in ('asset_receivable', 'liability_payable'))
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=statement.line_ids.id).new({})

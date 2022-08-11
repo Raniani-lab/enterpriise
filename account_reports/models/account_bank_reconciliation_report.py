@@ -199,8 +199,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
         return self.env['account.bank.statement'].search([
             ('journal_id', '=', journal.id),
             ('date', '<=', options['date']['date_to']),
-            ('is_valid_balance_start', '=', False),
-            ('previous_statement_id', '!=', False),
+            ('is_complete', '=', False),
         ])
 
     def _get_bank_miscellaneous_move_lines_domain(self, options, journal):
@@ -675,21 +674,20 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
             'domain': self.env['account.bank.reconciliation.report.handler']._get_bank_miscellaneous_move_lines_domain(options, journal),
         }
 
-    def action_redirect_to_bank_statement_form(self, options, params):
-        ''' Redirect the user to the last bank statement found.
+    def action_redirect_to_bank_statement_widget(self, options, params):
+        ''' Redirect the user to the requested bank statement, if empty displays all bank transactions of the journal.
         :param options:     The report options.
-        :param params:      The action params containing at least 'statement_id'.
+        :param params:      The action params containing at least 'statement_id', can be false.
         :return:            A dictionary representing an ir.actions.act_window.
         '''
         last_statement = self.env['account.bank.statement'].browse(params['statement_id'])
 
-        return {
-            'name': last_statement.display_name,
-            'type': 'ir.actions.act_window',
-            'res_model': 'account.bank.statement',
-            'context': {'create': False},
-            'view_mode': 'form',
-            'views': [(False, 'form')],
-            'res_id': last_statement.id,
-        }
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            extra_domain=[
+                ('statement_id', '=', last_statement.id),
+                ('journal_id', '=', (last_statement.journal_id or self).id)
+            ],
+            default_context={'create': False},
+            name=last_statement.display_name,
+        )
 

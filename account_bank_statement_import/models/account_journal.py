@@ -75,26 +75,14 @@ class AccountJournal(models.Model):
                     statement.message_post(body=msg)
 
         statements = self.env['account.bank.statement'].browse(statement_ids_all)
-        # Dispatch to reconciliation interface if all statements are posted.
-        if all(s.state == 'posted' for s in statements):
-            return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
-                extra_domain=[('statement_id', 'in', statements.ids)],
-                default_context={
-                    'search_default_journal_id': journal.id,
-                    'search_default_not_matched': True,
-                },
-            )
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            extra_domain=[('statement_id', 'in', statements.ids)],
+            default_context={
+                'search_default_not_matched': True,
+                 'default_journal_id': statements[:1].journal_id.id,
+            },
+        )
 
-        # Dispatch to the statemtent list/form view instead.
-        result = self.env['ir.actions.act_window']._for_xml_id('account.action_bank_statement_tree')
-        if len(statements) > 1:
-            result['domain'] = [('id', 'in', statements.ids)]
-        elif len(statements) == 1:
-            result['res_id'] = statements.id
-        else:
-            result = {'type': 'ir.actions.act_window_close'}
-        result['views'] = [(False, 'list'), (False, 'form')]
-        return result
 
     def _parse_bank_statement_file(self, attachment) -> tuple:
         """ Each module adding a file support must extends this method. It processes the file if it can, returns super otherwise, resulting in a chain of responsability.
@@ -207,10 +195,10 @@ class AccountJournal(models.Model):
 
     def _complete_bank_statement_vals(self, stmts_vals, journal, account_number, attachment):
         for st_vals in stmts_vals:
-            st_vals['journal_id'] = journal.id
             if not st_vals.get('reference'):
                 st_vals['reference'] = attachment.name
             for line_vals in st_vals['transactions']:
+                line_vals['journal_id'] = journal.id
                 unique_import_id = line_vals.get('unique_import_id')
                 if unique_import_id:
                     sanitized_account_number = sanitize_account_number(account_number)
@@ -265,7 +253,7 @@ class AccountJournal(models.Model):
                 number = st_vals.pop('number', None)
                 # Create the statement
                 st_vals['line_ids'] = [[0, False, line] for line in filtered_st_lines]
-                statement = BankStatement.create(st_vals)
+                statement = BankStatement.with_context(default_journal_id=self.id).create(st_vals)
                 statement_ids.append(statement.id)
                 if number and number.isdecimal():
                     statement._set_next_sequence()
@@ -273,8 +261,6 @@ class AccountJournal(models.Model):
                     format_values['seq'] = int(number)
                     #build the full name like BNK/2016/00135 by just giving the number '135'
                     statement.name = format.format(**format_values)
-                if statement.balance_end == statement.balance_end_real:
-                    statement.button_post()
                 statement_line_ids.extend(statement.line_ids.ids)
         if len(statement_line_ids) == 0:
             raise UserError(_('You already have imported that file.'))

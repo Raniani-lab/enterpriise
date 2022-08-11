@@ -11,15 +11,14 @@ class TestInvoices(AccountTestInvoicingCommon):
 
     def test_suspense_statement_line_id(self):
         st = self.env['account.bank.statement'].create({
-            'journal_id': self.company_data['default_journal_bank'].id,
             'line_ids': [Command.create({
                 'amount': -1000.0,
                 'date': '2017-01-01',
+                'journal_id': self.company_data['default_journal_bank'].id,
                 'payment_ref': 'test_suspense_statement_line_id',
             })],
         })
         st.balance_end_real = st.balance_end
-        st.button_post()
         st_line = st.line_ids
         move = st_line.move_id
 

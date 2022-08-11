@@ -686,17 +686,18 @@ class CAMT:
 
         sign = 1 if CAMT._get_credit_debit_indicator(*nodes, namespaces=namespaces) == "CRDT" else -1
         total_amount, total_amount_currency = get_value_and_currency_name(entry, CAMT._total_amount_getters)
-        if total_amount and total_amount_currency == journal_currency_name:
-            if total_amount == entry_amount:
-                return sign * amount * rate
-        elif journal_currency:
+        result_amount = sign * amount * rate
+        if not total_amount or total_amount_currency != journal_currency_name and journal_currency:
             entry_amount = entry_details_amount or entry_amount
             total_amount = total_amount or amount
             if journal_currency.compare_amounts(total_amount * rate, entry_amount) == 0:
-                return journal_currency.round(sign * amount * rate)
+                result_amount = sign * amount * rate
             elif journal_currency.compare_amounts(total_amount / rate, entry_amount) == 0:
-                return journal_currency.round(sign * amount / rate)
-        return sign * amount * rate
+                result_amount = sign * amount / rate
+
+        if journal_currency:
+            result_amount = journal_currency.round(result_amount)
+        return result_amount
 
     @staticmethod
     def _get_counter_party(*nodes, namespaces):

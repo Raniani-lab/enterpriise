@@ -50,7 +50,7 @@ class AccountJournal(models.Model):
         for statement in root[0].findall('ns:Stmt', ns):
             statement_vals = {}
             statement_vals['name'] = statement.xpath('ns:Id/text()', namespaces=ns)[0]
-            statement_vals['date'] = CAMT._get_statement_date(statement, namespaces=ns)
+            statement_date = CAMT._get_statement_date(statement, namespaces=ns)
 
             # Transaction Entries 0..n
             transactions = []
@@ -69,7 +69,7 @@ class AccountJournal(models.Model):
 
             for entry in statement.findall('ns:Ntry', ns):
                 # Date 0..1
-                date = CAMT._get_transaction_date(entry, namespaces=ns) or statement_vals['date']
+                date = CAMT._get_transaction_date(entry, namespaces=ns) or statement_date
 
                 transaction_details = entry.xpath('.//ns:TxDtls', namespaces=ns)
                 for entry_details in transaction_details or [entry]:

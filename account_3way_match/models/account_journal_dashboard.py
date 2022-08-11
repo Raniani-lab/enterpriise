@@ -9,7 +9,7 @@ class AccountJournal(models.Model):
     def open_action(self):
         action = super(AccountJournal, self).open_action()
         view = self.env.ref('account.action_move_in_invoice_type')
-        if view and action["id"] == view.id:
+        if view and action.get("id") == view.id:
             account_purchase_filter = self.env.ref('account_3way_match.account_invoice_filter_inherit_account_3way_match', False)
             action['search_view_id'] = account_purchase_filter and [account_purchase_filter.id, account_purchase_filter.name] or False
         return action

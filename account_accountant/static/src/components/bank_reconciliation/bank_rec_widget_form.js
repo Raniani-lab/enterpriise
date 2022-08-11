@@ -33,6 +33,9 @@ export class BankRecWidgetFormController extends FormController {
 }
 BankRecWidgetFormController.props = {
     ...FormController.props,
+    // The views are needed because when loading the form view, owl tries to use it and if it is not available it
+    // falls back to the action's views ending up in rendering wrong list view
+    views: { optional: true },
 }
 
 export class BankRecNotebook extends Notebook {

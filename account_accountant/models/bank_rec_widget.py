@@ -1528,7 +1528,7 @@ class BankRecWidget(models.Model):
     def button_reset(self):
         self.ensure_one()
         assert self.state == 'reconciled'
-        self.st_line_id.button_undo_reconciliation()
+        self.st_line_id.action_undo_reconciliation()
 
         self._ensure_loaded_lines()
         self._action_trigger_matching_rules()
@@ -1613,13 +1613,14 @@ class BankRecWidget(models.Model):
         move = st_line.move_id
 
         # Update the move.
-        move.with_context(
+        move_ctx = move.with_context(
             skip_invoice_sync=True,
             skip_account_move_synchronization=True,
             force_delete=True,
-        ).write({
-            'line_ids': [Command.clear()] + params['command_list'],
-        })
+        )
+        move_ctx.write({'line_ids': [Command.clear()] + params['command_list']})
+        if move_ctx.state == 'draft':
+            move_ctx.action_post()
 
         # Perform the reconciliation.
         for index, counterpart_aml_id in params['to_reconcile']:
@@ -1673,4 +1674,5 @@ class BankRecWidget(models.Model):
             return {'balance_amount': formatLang(self.env, amount, currency_obj=currency)}
 
     def action_open_bank_reconciliation_report(self, journal_id):
+        # abstract
         raise UserWarning(_("Please install the 'Accounting Reports' module."))

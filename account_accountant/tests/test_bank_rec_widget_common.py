@@ -102,19 +102,13 @@ class TestBankRecWidgetCommon(AccountTestInvoicingCommon):
 
     @classmethod
     def _create_st_line(cls, amount, date='2019-01-01', payment_ref='turlututu', **kwargs):
-        st = cls.env['account.bank.statement'].create({
-            'name': '/',
+        return cls.env['account.bank.statement.line'].create({
+            'amount': amount,
+            'date': date,
+            'payment_ref': payment_ref,
             'journal_id': kwargs.get('journal_id', cls.company_data['default_journal_bank'].id),
-            'line_ids': [Command.create({
-                'amount': amount,
-                'date': date,
-                'payment_ref': payment_ref,
-                **kwargs,
-            })],
+            **kwargs,
         })
-        st.balance_end_real = st.balance_end
-        st.button_post()
-        return st.line_ids
 
     @classmethod
     def _create_reconcile_model(cls, **kwargs):

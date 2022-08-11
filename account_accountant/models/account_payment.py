@@ -32,16 +32,15 @@ class AccountPayment(models.Model):
             'context': action_context,
         }
 
-    def button_open_statements(self):
+    def button_open_statement_lines(self):
         # OVERRIDE
         """ Redirect the user to the statement line(s) reconciled to this payment.
             :return: An action to open the view of the payment in the reconciliation widget.
         """
         self.ensure_one()
 
-        return self.statement_line_id._action_open_bank_reconciliation_widget(
-                extra_domain=[('statement_id', 'in', self.reconciled_statement_ids.ids)],
-                default_context={
-                    'default_st_line_id': self.reconciled_statement_line_ids[:1].id,
-                }
-            )
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            extra_domain=[('id', 'in', self.reconciled_statement_line_ids.ids)],
+            default_context={'create': False},
+            name=_("Matched Transactions")
+        )

@@ -74,6 +74,7 @@ export class BankRecKanbanController extends KanbanController {
     get bankRecFormViewProps() {
         return {
             type: "form",
+            views: [[false, "form"]],
             context: {
                 form_view_ref: "account_accountant.view_bank_rec_widget_form",
                 default_st_line_id: this.state.selectedStLineId,

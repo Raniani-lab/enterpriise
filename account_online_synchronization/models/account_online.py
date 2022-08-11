@@ -193,7 +193,8 @@ class AccountOnlineLink(models.Model):
         if self.env.context.get('dont_show_transactions'):
             return
         return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
-            extra_domain=[('statement_id', 'in', stmt_line_ids.statement_id.ids)],
+            extra_domain=[('id', 'in', stmt_line_ids.ids)],
+            name=_('Fetched Transactions'),
         )
 
     #######################################################

@@ -64,14 +64,14 @@ class TestReconciliationWidget(ValuationReconciliationTestCommon):
         (move_1 + move_2).action_post()
 
         statement = self.env['account.bank.statement'].create({
-            'journal_id': self.company_data['default_journal_bank'].id,
             'balance_start': 0.0,
-            'balance_end': -100.0,
             'balance_end_real': -100.0,
-            'line_ids': [(0, 0, {'payment_ref': 'test', 'amount': -100.0})]
+            'line_ids': [(0, 0, {
+                'payment_ref': 'test',
+                'amount': -100.0,
+                'journal_id': self.company_data['default_journal_bank'].id,
+            })]
         })
-
-        statement.button_post()
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=statement.line_ids.id).new({})
         amls = self.env['account.move.line'].search(wizard.amls_widget['domain'])

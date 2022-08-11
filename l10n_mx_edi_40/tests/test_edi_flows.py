@@ -303,7 +303,6 @@ class TestEdiFlows(TestMxEdiCommon):
                    new=mocked_l10n_mx_edi_pac), \
              patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
                    new=mocked_l10n_mx_edi_pac):
-            self.statement.button_post()
 
             self.assertFalse(self.statement_line.edi_document_ids)
 

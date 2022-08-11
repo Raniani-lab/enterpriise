@@ -57,13 +57,11 @@ var DataImportStmt = BaseImport.DataImport.extend({
     },
     exit: function () {
         if (!this.statement_id) return this._super.apply(this, arguments);
-        this.do_action({
-            type: 'ir.actions.act_window',
-            res_model: 'account.bank.statement',
-            res_id: this.statement_id,
-            views: [[false, 'form']],
-            target: 'current',
-        });
+        this._rpc({
+            model: 'account.bank.statement',
+            method: 'action_open_bank_reconcile_widget',
+            args: [this.statement_id]
+        }).then(this.do_action);
     },
 
 });

@@ -7,39 +7,66 @@ from dateutil.relativedelta import relativedelta
 class AccountBankStatement(models.Model):
     _inherit = 'account.bank.statement'
 
-    def action_bank_reconcile_bank_statements(self):
+    def action_open_bank_reconcile_widget(self):
         self.ensure_one()
         return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
-            extra_domain=[('statement_id', '=', self.id)],
-            default_context={'search_default_journal_id': self.journal_id.id},
+            name=self.name,
+            default_context={
+                'default_statement_id': self.id,
+                'default_journal_id': self.journal_id.id,
+            },
+            extra_domain=[('statement_id', '=', self.id)]
         )
-
-    def button_post(self):
-        # EXTENDS 'account' to trigger the CRON auto-reconciling the statement lines.
-        res = super().button_post()
-        self.env.ref('account_accountant.auto_reconcile_bank_statement_line')._trigger()
-        return res
 
 
 class AccountBankStatementLine(models.Model):
     _inherit = 'account.bank.statement.line'
 
+    # Technical field holding the date of the last time the cron tried to auto-reconcile the statement line. Used to
+    # optimize the bank matching process"
     cron_last_check = fields.Datetime()
 
+    def action_post(self):
+        # EXTENDS 'account' to trigger the CRON auto-reconciling the statement lines.
+        res = super().action_post()
+        self.env.ref('account_accountant.auto_reconcile_bank_statement_line')._trigger()
+        return res
+
+    def action_save_close(self):
+        return {'type': 'ir.actions.act_window_close'}
+
+    def action_save_new(self):
+        action = self.env['ir.actions.act_window']._for_xml_id('account_accountant.action_bank_statement_line_form_bank_rec_widget')
+        action['context'] = {'default_journal_id': self._context['default_journal_id']}
+        return action
+
     @api.model
-    def _action_open_bank_reconciliation_widget(self, extra_domain=None, default_context=None):
+    def _action_open_bank_reconciliation_widget(self, extra_domain=None, default_context=None, name=None):
+        context = default_context or {}
         return {
-            'name': _("Bank Reconciliation"),
+            'name': name or _("Bank Reconciliation"),
             'type': 'ir.actions.act_window',
             'res_model': 'account.bank.statement.line',
-            'context': {
-                **(default_context or {}),
-                'create': False,
-                'search_view_ref': 'account_accountant.view_bank_statement_line_search_bank_rec_widget',
-            },
+            'context': context,
+            'search_view_id': [self.env.ref('account_accountant.view_bank_statement_line_search_bank_rec_widget').id, 'search'],
+            'view_mode': 'kanban,list',
+            'views': [
+                (self.env.ref('account_accountant.view_bank_statement_line_kanban_bank_rec_widget').id, 'kanban'),
+                (self.env.ref('account_accountant.view_bank_statement_line_tree_bank_rec_widget').id, 'list'),
+            ],
+            'domain': [('state', '!=', 'cancel')] + (extra_domain or []),
+        }
+
+    def action_open_recon_st_line(self):
+        return {
+            'name': _("Reconciliation of %s", self[:1].payment_ref),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.bank.statement.line',
+            'context': dict(self._context, return_mode=True, create=False, search_panel=False),
             'view_mode': 'kanban',
             'views': [(self.env.ref('account_accountant.view_bank_statement_line_kanban_bank_rec_widget').id, 'kanban')],
-            'domain': [('state', '=', 'posted')] + (extra_domain or []),
+            'domain': [('id', 'in', self.ids)],
+            'target': 'inline',
         }
 
     @api.model
@@ -69,7 +96,9 @@ class AccountBankStatementLine(models.Model):
         limit = batch_size + 1 if batch_size else None
         has_more_st_lines_to_reconcile = False
         datetime_now = fields.Datetime.now()
-        st_date_from_limit = datetime_now.date() - relativedelta(months=3)
+        companies = self.env['res.company'].browse(configured_company_ids)
+        lock_dates = companies.filtered('fiscalyear_lock_date').mapped('fiscalyear_lock_date')
+        st_date_from_limit = max([datetime_now.date() - relativedelta(months=3)] + lock_dates)
 
         self.env['account.bank.statement.line'].flush_model()
         domain = [

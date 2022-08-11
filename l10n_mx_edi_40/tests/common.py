@@ -6,6 +6,7 @@ from odoo.tools import misc
 import base64
 import datetime
 
+from freezegun import freeze_time
 from pytz import timezone
 
 
@@ -252,21 +253,16 @@ class TestMxEdiCommon(AccountEdiTestCommon):
             'journal_id': cls.company_data['default_journal_bank'].id,
         })
 
-        cls.statement = cls.env['account.bank.statement'].create({
-            'name': 'test_statement',
-            'date': '2017-01-01',
-            'journal_id': cls.company_data['default_journal_bank'].id,
-            'line_ids': [
-                (0, 0, {
-                    'payment_ref': 'mx_st_line',
-                    'partner_id': cls.partner_a.id,
-                    'foreign_currency_id': cls.currency_data['currency'].id,
-                    'amount': cls.invoice.amount_total_signed,
-                    'amount_currency': cls.invoice.amount_total,
-                }),
-            ],
-        })
-        cls.statement_line = cls.statement.line_ids
+        with freeze_time(cls.frozen_today):
+            cls.statement_line = cls.env['account.bank.statement.line'].create({
+                'journal_id': cls.company_data['default_journal_bank'].id,
+                'payment_ref': 'mx_st_line',
+                'partner_id': cls.partner_a.id,
+                'foreign_currency_id': cls.currency_data['currency'].id,
+                'amount': cls.invoice.amount_total_signed,
+                'amount_currency': cls.invoice.amount_total,
+                'date': '2017-01-01',
+            })
 
         # payment done on 2017-01-01 00:00:00 UTC is expected to be signed on 2016-12-31 17:00:00 in Mexico tz
         cls.expected_payment_cfdi_values = '''
@@ -277,7 +273,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                 LugarExpedicion="85134"
                 Moneda="XXX"
                 NoCertificado="''' + cls.certificate.serial_number + '''"
-                Serie="PBNK1/2017/01/"
+                Serie="PBNK1/2017/"
                 Sello="___ignore___"
                 SubTotal="0"
                 Total="0"

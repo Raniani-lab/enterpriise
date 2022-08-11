@@ -15,9 +15,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon, HttpCase):
             .write({'past_months_limit': None})
 
     def test_tour_bank_rec_widget(self):
-        st_line1 = self._create_st_line(1000.0, payment_ref="line1")
-        st_line2 = self._create_st_line(1000.0, payment_ref="line2")
-        self._create_st_line(1000.0, payment_ref="line3")
+        st_line1 = self._create_st_line(1000.0, payment_ref="line1", sequence=1)
+        st_line2 = self._create_st_line(1000.0, payment_ref="line2", sequence=2)
+        self._create_st_line(1000.0, payment_ref="line3", sequence=3)
 
         # INV/2019/00001:
         self._create_invoice_line(

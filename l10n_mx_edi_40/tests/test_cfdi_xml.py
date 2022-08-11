@@ -871,7 +871,6 @@ class TestEdiResults(TestMxEdiCommon):
             )
             self.assertXmlTreeEqual(current_etree, expected_etree)
 
-
     # -------------------------------------------------------------------------
     # STATEMENT LINES
     # -------------------------------------------------------------------------
@@ -886,7 +885,6 @@ class TestEdiResults(TestMxEdiCommon):
                    new=mocked_l10n_mx_edi_pac):
 
             self.invoice.action_post()
-            self.statement.button_post()
 
             # bank rec widget only in account_accountant
             receivable_line = self.invoice.line_ids.filtered(lambda line: line.account_type == 'asset_receivable')
@@ -910,7 +908,7 @@ class TestEdiResults(TestMxEdiCommon):
                 self.get_xml_tree_from_string(self.expected_payment_cfdi_values),
                 '''
                     <xpath expr="//Comprobante" position="attributes">
-                        <attribute name="Serie">BNK1/2017/01/</attribute>
+                        <attribute name="Serie">BNK1/2017/</attribute>
                     </xpath>
                 ''',
             )

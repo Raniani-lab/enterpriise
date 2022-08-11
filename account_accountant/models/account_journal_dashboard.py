@@ -10,6 +10,7 @@ class account_journal(models.Model):
         if self.type in ('bank', 'cash'):
             return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
                 default_context={
+                    'default_journal_id': self.id,
                     'search_default_journal_id': self.id,
                     'search_default_not_matched': True,
                 },
@@ -33,11 +34,27 @@ class account_journal(models.Model):
             default_context={
                 'search_default_to_check': True,
                 'search_default_journal_id': self.id,
+                'default_journal_id': self.id,
             },
         )
 
     def action_open_bank_transactions(self):
         self.ensure_one()
         return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
-            default_context={'search_default_journal_id': self.id},
+            default_context={
+                'search_default_journal_id': self.id,
+                'default_journal_id': self.id
+             },
         )
+
+    def open_action(self):
+        if self.type in ('bank', 'cash'):
+            return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+                extra_domain=[('journal_id', '=', self.id)],
+                default_context={'default_journal_id': self.id},
+            )
+        return super().open_action()
+
+    def create_cash_statement(self):
+        # EXTENDS account
+        return self.action_open_bank_transactions()

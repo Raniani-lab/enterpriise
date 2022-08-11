@@ -15,6 +15,26 @@
         .o_kanban_view {
             padding: 0px;
         }
+
+        .statement_separator {
+            height: 0;
+            margin: 0;
+            padding: 2px 0 0 0;
+            border: 0;
+            position: absolute;
+
+
+            .btn-sm {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        .statement_separator:hover {
+//             position: relative;
+            top: -12px;
+            z-index: 2;
+        }
     }
 
     .o_bank_rec_right_div{
@@ -76,6 +96,13 @@
             }
         }
     }
+    .o_btn_bank_rec_edit{
+        visibility: hidden;
+    }
+}
+
+.o_bank_rec_st_line_kanban_card:hover .o_btn_bank_rec_edit{
+    visibility: visible;
 }
 
 .o_bank_rec_selected_st_line{

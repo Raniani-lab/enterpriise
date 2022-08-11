@@ -3,7 +3,7 @@
 
 import psycopg2
 
-from odoo import _, api, models
+from odoo import api, models, Command
 from odoo.addons.base_import.models.base_import import FIELDS_RECURSION_LIMIT
 
 
@@ -44,16 +44,17 @@ class AccountBankStmtImportCSV(models.TransientModel):
         return float(value) if value else 0.0
 
     def _parse_import_data(self, data, import_fields, options):
-        data = super(AccountBankStmtImportCSV, self)._parse_import_data(data, import_fields, options)
-        statement_id = self._context.get('bank_statement_id', False)
-        if not statement_id:
+        # EXTENDS base
+        data = super()._parse_import_data(data, import_fields, options)
+        journal_id = self._context.get('default_journal_id')
+        if not journal_id:
             return data
-        statement = self.env['account.bank.statement'].browse(statement_id)
-        company_currency_name = statement.company_id.currency_id.name
+
+        journal = self.env['account.journal'].browse(journal_id)
+        statement_vals = options['statement_vals'] = {}
+
         ret_data = []
 
-        vals = {}
-        import_fields.append('statement_id/.id')
         import_fields.append('sequence')
         index_balance = False
         convert_to_amount = False
@@ -63,25 +64,23 @@ class AccountBankStmtImportCSV(models.TransientModel):
             self._parse_float_from_data(data, index_debit, 'debit', options)
             self._parse_float_from_data(data, index_credit, 'credit', options)
             import_fields.append('amount')
+            import_fields.remove('debit')
+            import_fields.remove('credit')
             convert_to_amount = True
+
         # add starting balance and ending balance to context
         if 'balance' in import_fields:
             index_balance = import_fields.index('balance')
             self._parse_float_from_data(data, index_balance, 'balance', options)
-            vals['balance_start'] = self._convert_to_float(data[0][index_balance])
-            vals['balance_start'] -= self._convert_to_float(data[0][import_fields.index('amount')]) \
+            statement_vals['balance_start'] = self._convert_to_float(data[0][index_balance])
+            statement_vals['balance_start'] -= self._convert_to_float(data[0][import_fields.index('amount')]) \
                                             if not convert_to_amount \
                                             else abs(self._convert_to_float(data[0][index_credit]))-abs(self._convert_to_float(data[0][index_debit]))
-            vals['balance_end_real'] = data[len(data)-1][index_balance]
+            statement_vals['balance_end_real'] = data[len(data)-1][index_balance]
             import_fields.remove('balance')
-        # Remove debit/credit field from import_fields
-        if convert_to_amount:
-            import_fields.remove('debit')
-            import_fields.remove('credit')
 
         currency_index = 'foreign_currency_id' in import_fields and import_fields.index('foreign_currency_id') or False
         for index, line in enumerate(data):
-            line.append(statement_id)
             line.append(index)
             remove_index = []
             if convert_to_amount:
@@ -98,14 +97,9 @@ class AccountBankStmtImportCSV(models.TransientModel):
             if line[import_fields.index('amount')]:
                 ret_data.append(line)
             # Don't set the currency_id on statement line if the currency is the same as the company one.
-            if currency_index is not False and line[currency_index] == company_currency_name:
+            if currency_index is not False and line[currency_index] == (journal.currency_id or journal.company_id.currency_id).name:
                 line[currency_index] = False
-        if 'date' in import_fields and data:
-            vals['date'] = data[-1][import_fields.index('date')]
 
-        # add starting balance and date if there is one set in fields
-        if vals:
-            statement.write(vals)
         return ret_data
 
     def parse_preview(self, options, count=10):
@@ -114,13 +108,14 @@ class AccountBankStmtImportCSV(models.TransientModel):
         return super(AccountBankStmtImportCSV, self).parse_preview(options, count=count)
 
     def execute_import(self, fields, columns, options, dryrun=False):
-        if options.get('bank_stmt_import', False):
+        if options.get('bank_stmt_import'):
             self._cr.execute('SAVEPOINT import_bank_stmt')
-            vals = {
-                'reference': self.file_name
-            }
-            statement = self.env['account.bank.statement'].create(vals)
-            res = super(AccountBankStmtImportCSV, self.with_context(bank_statement_id=statement.id)).execute_import(fields, columns, options, dryrun=dryrun)
+            res = super().execute_import(fields, columns, options, dryrun=dryrun)
+            statement = self.env['account.bank.statement'].create({
+                'reference': self.file_name,
+                'line_ids': [Command.set(res.get('ids', []))],
+                **options.get('statement_vals', {}),
+            })
 
             try:
                 if dryrun:

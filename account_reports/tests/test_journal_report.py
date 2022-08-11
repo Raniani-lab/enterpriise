@@ -233,7 +233,7 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('Bank (BNK1)',                                                                                                               ),
                 ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          'Amount In Currency'),
                 ('',                                    '',                       '',             'Starting Balance :', 100.00,             ''),
-                ('BNK1/2017/01/0001',                   '400000 Product Sales',   '',             200.00,               300.00,             ''),
+                ('BNK1/2017/00001',                   '400000 Product Sales',   '',             200.00,               300.00,             ''),
                 ('',                                    '',                       '',             'Ending Balance :',   300.00,             ''),
             ],
         )
@@ -276,8 +276,8 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('Bank (BNK1)',                                                                                                               ),
                 ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          'Amount In Currency'),
                 ('',                                    '',                       '',             'Starting Balance :', 100.00,             ''),
-                ('BNK1/2017/01/0001',                   '400000 Product Sales',   '',             200.00,               300.00,             ''),
-                ('BNK1/2017/01/0002',                   '400000 Product Sales',   '',             175.00,               475.00,             '150.000\xa0🍫'),
+                ('BNK1/2017/00001',                     '400000 Product Sales',   '',             200.00,               300.00,             ''),
+                ('BNK1/2017/00002',                     '400000 Product Sales',   '',             175.00,               475.00,             '150.000\xa0🍫'),
                 ('',                                    '',                       '',             'Ending Balance :',   475.00,             ''),
             ],
         )
@@ -313,8 +313,8 @@ class TestJournalAuditReport(TestAccountReportsCommon):
                 ('Bank (BNK1)',                                                                                                               ),
                 ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          ''),
                 ('',                                    '',                       '',             'Starting Balance :', 100.00,             ''),
-                ('BNK1/2017/01/0001',                   '400000 Product Sales',   '',             200.00,               300.00,             ''),
-                ('BNK1/2017/01/0002',                   '400000 Product Sales',   '',             175.00,               475.00,             ''),
+                ('BNK1/2017/00001',                     '400000 Product Sales',   '',             200.00,               300.00,             ''),
+                ('BNK1/2017/00002',                     '400000 Product Sales',   '',             175.00,               475.00,             ''),
                 ('',                                    '',                       '',             'Ending Balance :',   475.00,             ''),
             ],
         )

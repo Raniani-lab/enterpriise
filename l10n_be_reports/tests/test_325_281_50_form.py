@@ -489,9 +489,9 @@ class TestResPartner(AccountTestInvoicingCommon):
             'name': '281.50 test',
             'date': fields.Date.from_string('2000-05-12'),
             'balance_end_real': -1000.0,
-            'journal_id': self.company_data['default_journal_bank'].id,
             'line_ids': [
                 (0, 0, {
+                    'journal_id': self.company_data['default_journal_bank'].id,
                     'payment_ref': 'line2',
                     'partner_id': self.partner_b.id,
                     'amount': -1000.0,
@@ -499,7 +499,6 @@ class TestResPartner(AccountTestInvoicingCommon):
                 }),
             ],
         })
-        statement.button_post()
 
         st_line = statement.line_ids
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
@@ -534,9 +533,9 @@ class TestResPartner(AccountTestInvoicingCommon):
             'name': '281.50 test',
             'date': fields.Date.from_string('1999-05-12'),
             'balance_end_real': -1000.0,
-            'journal_id': self.company_data['default_journal_bank'].id,
             'line_ids': [
                 (0, 0, {
+                    'journal_id': self.company_data['default_journal_bank'].id,
                     'payment_ref': 'line2',
                     'partner_id': self.partner_b.id,
                     'amount': -1000.0,
@@ -544,7 +543,6 @@ class TestResPartner(AccountTestInvoicingCommon):
                 }),
             ],
         })
-        statement.button_post()
 
         st_line = statement.line_ids
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})

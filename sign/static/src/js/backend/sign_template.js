@@ -67,12 +67,14 @@ const SignItemCustomPopover = Widget.extend({
         this.$currentTarget.data("responsible"),
         this.parties
       );
+      const $optionsSelectInput = this.$optionsSelect.find("input");
       sign_utils.setAsOptionsSelect(
-        this.$optionsSelect.find("input"),
+        $optionsSelectInput,
         this.$currentTarget.data("itemId"),
         this.$currentTarget.data("option_ids"),
         this.select_options
       );
+      $optionsSelectInput.data("item_options", $optionsSelectInput.select2("val"));
       this.$('input[type="checkbox"]').prop(
         "checked",
         this.$currentTarget.data("required")

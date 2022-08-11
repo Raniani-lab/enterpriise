@@ -22,7 +22,7 @@ class SaleOrderLine(models.Model):
         string="Is overdue", compute='_compute_is_late',
         help="The products haven't been returned in time")
 
-    is_product_rentable = fields.Boolean(related='product_id.rent_ok')
+    is_product_rentable = fields.Boolean(related='product_id.rent_ok', depends=['product_id'])
     temporal_type = fields.Selection(selection_add=[('rental', 'Rental')])
 
     @api.depends('product_template_id', 'is_rental')

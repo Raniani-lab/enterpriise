@@ -20,11 +20,11 @@ INTERVAL_FACTOR = {
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    is_subscription_product = fields.Boolean(related='product_id.recurring_invoice')
+    is_subscription_product = fields.Boolean(related='product_id.recurring_invoice', depends=['product_id'])
     temporal_type = fields.Selection(selection_add=[('subscription', 'Subscription')])
     last_invoice_date = fields.Datetime(string='Last invoice date', compute='_compute_last_invoice_date')
     recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue")
-    product_pricing_ids = fields.One2many(related='product_id.product_pricing_ids')
+    product_pricing_ids = fields.One2many(related='product_id.product_pricing_ids', depends=['product_id'])
     parent_line_id = fields.Many2one('sale.order.line')
     end_date = fields.Date(related='order_id.end_date')
     pricing_id = fields.Many2one(

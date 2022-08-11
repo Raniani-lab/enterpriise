@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError
 class RentalOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    tracking = fields.Selection(related='product_id.tracking')
+    tracking = fields.Selection(related='product_id.tracking', depends=['product_id'])
 
     reserved_lot_ids = fields.Many2many('stock.lot', 'rental_reserved_lot_rel', domain="[('product_id','=',product_id)]", copy=False)
     pickedup_lot_ids = fields.Many2many('stock.lot', 'rental_pickedup_lot_rel', domain="[('product_id','=',product_id)]", copy=False)

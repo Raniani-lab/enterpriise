@@ -86,8 +86,7 @@ QUnit.module('ViewEditorManager', {
         pyEnv['ir.attachment'].create([{ name: '1.png' }, { name: '2.png' }]);
 
         registerStudioDependencies();
-        serverData = { models: this.data };
-        serverData.views = {};
+        serverData = { models: this.data, views: pyEnv.getViews() };
         serverData.actions = {};
 
         serverData.actions['studio.coucou_action'] = {

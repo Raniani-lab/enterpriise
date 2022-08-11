@@ -332,7 +332,7 @@
         <field name="code">LEAVE115</field>
         <field name="is_leave">True</field>
         <field name="color">5</field>
-        <field name="dmfa_code">60</field>
+        <field name="dmfa_code">1</field>
     </record>
 
     <record id="work_entry_type_partial_incapacity" model="hr.work.entry.type">

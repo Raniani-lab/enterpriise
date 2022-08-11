@@ -42,7 +42,7 @@ function dateOptions(type) {
     }
 }
 
-export default class DateFilterValue extends Component {
+export class DateFilterValue extends Component {
     setup() {
         this._setStateFromProps(this.props);
         onWillUpdateProps(this._setStateFromProps);

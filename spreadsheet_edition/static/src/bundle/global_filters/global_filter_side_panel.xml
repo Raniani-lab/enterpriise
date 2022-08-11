@@ -207,26 +207,4 @@
             <button t-on-click="onSave" class="o-sidePanelButton o_global_filter_save">Save</button>
         </div>
     </div>
-
-    <div t-name="spreadsheet_edition.DateFilterValue" class="date_filter_values" owl="1">
-        <select t-if="!isYear()" class="o_input" t-on-change="onPeriodChanged">
-            <option value="empty"/>
-            <t t-set="type" t-value="props.type"/>
-            <t t-foreach="dateOptions(type)" t-as="periodOption" t-key="periodOption.id">
-                <option t-if="isSelected(periodOption.id)" selected="1" t-att-value="periodOption.id">
-                    <t t-esc="periodOption.description"/>
-                </option>
-                <option t-else="" t-att-value="periodOption.id">
-                    <t t-esc="periodOption.description"/>
-                </option>
-            </t>
-        </select>
-        <YearPicker
-            date="date"
-            onDateTimeChanged.bind="onYearChanged"
-        />
-    </div>
-
-
-
 </templates>

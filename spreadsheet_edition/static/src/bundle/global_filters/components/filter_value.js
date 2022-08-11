@@ -1,8 +1,8 @@
 /** @odoo-module */
 
-import DateFilterValue from "@spreadsheet_edition/assets/components/filter_date_value";
 import { X2ManyTagSelector } from "@spreadsheet_edition/assets/widgets/tag_selector_widget";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
+import { DateFilterValue } from "./filter_date_value";
 
 const { Component } = owl;
 

@@ -2,7 +2,6 @@
 
 import { _t, _lt } from "@web/core/l10n/translation";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import DateFilterValue from "@spreadsheet_edition/assets/components/filter_date_value";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import {
     FieldSelectorWidget,
@@ -15,6 +14,7 @@ import { ModelSelector } from "@spreadsheet_edition/assets/components/model_sele
 import { sprintf } from "@web/core/utils/strings";
 import { FilterFieldOffset } from "./components/filter_field_offset";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
+import { DateFilterValue } from "./components/filter_date_value";
 
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();

@@ -951,10 +951,38 @@ tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
         run: 'scan productlot1'
     },
 
+    { trigger: '.o_barcode_line .o_edit' },
+
+    {
+        trigger: '.o_input[id=lot_id]',
+        run: function () {
+            const $lot_name = $('#lot_name');
+            // Check if the lot_name is invisible
+            helper.assert($lot_name.length, 0);
+        }
+    },
+
+    { trigger: '.o_save' },
+
     {
         trigger: '.o_barcode_line',
         run: 'scan lot1',
     },
+
+    { trigger: '.o_line_lot_name:contains(lot1)' },
+
+    { trigger: '.o_barcode_line .o_edit' },
+
+    {
+        trigger: '.o_input[id="lot_name"]',
+        run: function () {
+            const $lot_id = $('#lot_id');
+            // check that the lot_id is invisible
+            helper.assert($lot_id.length, 0);
+         }
+    },
+
+    { trigger: '.o_save' },
 
     {
         trigger: '.o_line_lot_name:contains(lot1)',

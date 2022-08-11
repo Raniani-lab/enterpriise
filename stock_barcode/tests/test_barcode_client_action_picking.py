@@ -165,6 +165,11 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
         self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
 
+        self.picking_type_in.write({
+            "use_existing_lots": True,
+            "use_create_lots": True,
+        })
+
         receipt_picking = self.env['stock.picking'].create({
             'location_id': self.supplier_location.id,
             'location_dest_id': self.stock_location.id,

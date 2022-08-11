@@ -9,9 +9,12 @@ import {
     click,
     getFixture,
     nextTick,
+    triggerEvent,
 } from '@web/../tests/helpers/utils';
+import { patch, unpatch } from "@web/core/utils/patch";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { documentsFileUploadService } from '@documents/views/helper/documents_file_upload_service';
+import { DocumentsListRenderer } from '@documents/views/list/documents_list_renderer';
 
 const serviceRegistry = registry.category("services");
 
@@ -23,7 +26,16 @@ QUnit.module('documents_kanban_mobile_tests.js', {
         setupViewRegistries();
         target = getFixture();
         serviceRegistry.add("documents_file_upload", documentsFileUploadService);
-    }
+        patch(DocumentsListRenderer, "document_mobile_long_press", {
+            init() {
+                this._super(...arguments);
+                this.LONG_TOUCH_THRESHOLD = 0;
+            },
+        });
+    },
+    afterEach() {
+        unpatch(DocumentsListRenderer, "document_mobile_long_press");
+    },
 }, function () {
     QUnit.module('DocumentsKanbanViewMobile', function () {
 
@@ -236,10 +248,13 @@ QUnit.module('documents_kanban_mobile_tests.js', {
     QUnit.module('DocumentsInspector');
 
     QUnit.test('toggle inspector based on selection', async function (assert) {
-        assert.expect(13);
+        assert.expect(15);
 
         const pyEnv = await startServer();
-        const documentsFolderId1 = pyEnv['documents.folder'].create({ name: 'Workspace1', description: '_F1-test-description_' });
+        const documentsFolderId1 = pyEnv['documents.folder'].create({
+            name: 'Workspace1',
+            description: '_F1-test-description_',
+        });
         pyEnv['documents.document'].create([
             { folder_id: documentsFolderId1 },
             { folder_id: documentsFolderId1 },
@@ -250,7 +265,11 @@ QUnit.module('documents_kanban_mobile_tests.js', {
                     <field name="name"/>
                 </tree>`,
         };
-         const { openView } = await createDocumentsViewWithMessaging({
+        const { openView } = await createDocumentsViewWithMessaging({
+            touchScreen: true,
+            legacyParams: {
+                touchScreen: true,
+            },
             serverData: { views },
         });
         await openView({
@@ -263,37 +282,46 @@ QUnit.module('documents_kanban_mobile_tests.js', {
         assert.containsN(document.body, '.o_data_row', 2,
             "should have 2 records in the renderer");
 
-        // select a first record
-        await click(document.querySelector('.o_data_row .o_list_record_selector input'));
-        await nextTick();
-        assert.containsOnce(document.body, '.o_data_row .o_list_record_selector input:checked',
-        "should have 1 record selected");
+        // select a first record (enter selection mode)
+        await click(document.querySelector('.o_data_row'));
         const toggleInspectorSelector = '.o_documents_mobile_inspector > .o_documents_toggle_inspector';
-        assert.isVisible(document.querySelector(toggleInspectorSelector),
-        "toggle inspector's button should be displayed when selection is not empty");
-        assert.strictEqual(document.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '1 DOCUMENT SELECTED');
-
-        assert.isVisible(document.querySelector('.o_documents_mobile_inspector'),
+        await nextTick();
+        assert.isVisible(document.querySelector('.o_documents_mobile_inspector > *:not(.o_documents_toggle_inspector)'),
             "inspector should be opened");
 
         await click(document.querySelector('.o_documents_close_inspector'));
-        assert.isNotVisible(document.querySelector('.o_documents_mobile_inspector'),
+        assert.isNotVisible(document.querySelector('.o_documents_mobile_inspector > *:not(.o_documents_toggle_inspector)'),
             "inspector should be closed");
 
+        assert.isVisible(document.querySelector(toggleInspectorSelector),
+            "toggle inspector's button should be displayed when selection is not empty");
+        assert.strictEqual(document.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '1 DOCUMENT SELECTED');
+        assert.containsOnce(document.body, '.o_data_row.o_data_row_selected',
+            "should have 1 record selected");
+
         // select a second record
-        await click(document.querySelectorAll('.o_data_row .o_list_record_selector input')[1]);
+        await triggerEvent(document.querySelectorAll('.o_data_row .o_list_record_selector input')[1], null, 'touchstart');
+        await triggerEvent(document.querySelectorAll('.o_data_row .o_list_record_selector input')[1], null, 'touchend');
         await nextTick();
-        assert.containsN(document.body, '.o_data_row .o_list_record_selector input:checked', 2,
+        assert.containsN(document.body, '.o_data_row.o_data_row_selected', 2,
             "should have 2 records selected");
         assert.strictEqual(document.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '2 DOCUMENTS SELECTED');
+        assert.isNotVisible(document.querySelector('.o_documents_mobile_inspector > *:not(.o_documents_toggle_inspector)'),
+            "inspector should stay closed");
+
+        // disable selection mode
+        await click(document.querySelector('.o_discard_selection'));
+        await nextTick();
+        assert.containsNone(document.body, '.o_document_list_record.o_data_row_selected',
+            "shouldn't have record selected");
 
         // click on the record
         await click(document.querySelector('.o_data_row'));
         await nextTick();
-        assert.containsOnce(document.body, '.o_data_row .o_list_record_selector input:checked',
+        assert.containsOnce(document.body, '.o_data_row.o_data_row_selected',
             "should have 1 record selected");
         assert.strictEqual(document.querySelector(toggleInspectorSelector).innerText.replace(/\s+/g, " ").trim(), '1 DOCUMENT SELECTED');
-        assert.isVisible(document.querySelector('.o_documents_mobile_inspector'),
+        assert.isVisible(document.querySelector('.o_documents_mobile_inspector > *:not(.o_documents_toggle_inspector)'),
             "inspector should be opened");
 
         // close inspector

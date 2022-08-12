@@ -17,8 +17,8 @@ export default class PivotDataSource extends OdooViewsDataSource {
         super(services, params);
     }
 
-    async _createDataSourceModel() {
-        await this.loadMetadata();
+    async _load() {
+        await super._load();
         /** @type {SpreadsheetPivotModel} */
         this._model = new SpreadsheetPivotModel(
             { _t },
@@ -31,6 +31,7 @@ export default class PivotDataSource extends OdooViewsDataSource {
                 metadataRepository: this._metadataRepository,
             }
         );
+        await this._model.load(this._searchParams);
     }
 
     async copyModelWithOriginalDomain() {
@@ -39,14 +40,14 @@ export default class PivotDataSource extends OdooViewsDataSource {
             { _t },
             {
                 metaData: this._metaData,
-                searchParams: this._searchParams,
+                searchParams: this._initialSearchParams,
             },
             {
                 orm: this._orm,
                 metadataRepository: this._metadataRepository,
             }
         );
-        await model.load(this._searchParams);
+        await model.load(this._initialSearchParams);
         return model;
     }
 

@@ -16,8 +16,8 @@ export default class GraphDataSource extends OdooViewsDataSource {
     /**
      * @protected
      */
-    async _createDataSourceModel() {
-        await this.loadMetadata();
+    async _load() {
+        await super._load();
         const metaData = {
             fieldAttrs: {},
             ...this._metaData,
@@ -31,6 +31,7 @@ export default class GraphDataSource extends OdooViewsDataSource {
                 orm: this._orm,
             }
         );
+        await this._model.load(this._searchParams);
     }
 
     getData() {

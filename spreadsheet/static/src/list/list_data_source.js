@@ -19,8 +19,8 @@ export default class ListDataSource extends OdooViewsDataSource {
         this.limit = params.limit;
     }
 
-    async _createDataSourceModel() {
-        await this.loadMetadata();
+    async _load() {
+        await super._load();
         /** @type {SpreadsheetListModel} */
         this._model = new SpreadsheetListModel(
             {
@@ -33,6 +33,7 @@ export default class ListDataSource extends OdooViewsDataSource {
             }
         );
         this._model.addEventListener("limit-exceeded", () => this.load({ reload: true }));
+        await this._model.load(this._searchParams);
     }
 
     /**

@@ -39,21 +39,23 @@ export class OdooViewsDataSource extends LoadableDataSource {
     constructor(services, params) {
         super(services);
         this._metaData = JSON.parse(JSON.stringify(params.metaData));
-        this._searchParams = JSON.parse(JSON.stringify(params.searchParams));
-        this._searchParams.context = removeContextUserInfo(this._searchParams.context);
-        this._customDomain = this._searchParams.domain;
-
-        /**
-         * The model used by this dataSource
-         */
-        this._model = undefined;
-        /**
-         * Promise to control the creation of the model
-         */
-        this._createModelPromise = undefined;
-
+        /** @protected */
+        this._initialSearchParams = JSON.parse(JSON.stringify(params.searchParams));
+        this._initialSearchParams.context = removeContextUserInfo(
+            this._initialSearchParams.context
+        );
         /** @private */
-        this._isFullyLoaded = false;
+        this._customDomain = this._initialSearchParams.domain;
+    }
+
+    /**
+     * @protected
+     */
+    get _searchParams() {
+        return {
+            ...this._initialSearchParams,
+            domain: this._customDomain,
+        };
     }
 
     async loadMetadata() {
@@ -83,34 +85,18 @@ export class OdooViewsDataSource extends LoadableDataSource {
         return this._metaData.fields[field];
     }
 
+    /**
+     * @protected
+     */
     async _load() {
-        if (!this._model) {
-            await this._loadModel();
-        }
-        const searchParams = {
-            ...this._searchParams,
-            domain: this._customDomain,
-        };
-        await this._model.load(searchParams);
+        await this.loadMetadata();
     }
 
     /**
      * @returns {boolean}
      */
     isReady() {
-        return this._model !== undefined;
-    }
-
-    /*
-     * Create a model
-     * @private
-     * @returns {Promise} Resolved when the model is created
-     */
-    async _loadModel() {
-        if (!this._createModelPromise) {
-            this._createModelPromise = this._createDataSourceModel();
-        }
-        return this._createModelPromise;
+        return this._isFullyLoaded;
     }
 
     isMetaDataLoaded() {
@@ -126,7 +112,7 @@ export class OdooViewsDataSource extends LoadableDataSource {
     }
 
     addDomain(domain) {
-        const newDomain = Domain.and([this._searchParams.domain, domain]);
+        const newDomain = Domain.and([this._initialSearchParams.domain, domain]);
         if (newDomain.toString() === new Domain(this._customDomain).toString()) {
             return;
         }
@@ -144,15 +130,5 @@ export class OdooViewsDataSource extends LoadableDataSource {
      */
     getModelLabel() {
         return this._metadataRepository.modelDisplayName(this._metaData.resModel);
-    }
-
-    /**
-     * Create a model
-     *
-     * @abstract
-     * @protected
-     */
-    async _createDataSourceModel() {
-        throw new Error("This method should be implemented by child class");
     }
 }

@@ -870,9 +870,9 @@ class SaleOrder(models.Model):
         else:
             return super(SaleOrder, self)._get_portal_return_action()
 
-    def _find_mail_template(self, force_confirmation_template=False):
-        template = super()._find_mail_template(force_confirmation_template=False)
-        if not force_confirmation_template and self.is_subscription:
+    def _find_mail_template(self):
+        template = super()._find_mail_template()
+        if self.is_subscription:
             if self.to_renew:
                 subscription_template = self.env.ref(
                     'sale_subscription.mail_template_subscription_alert', raise_if_not_found=False)

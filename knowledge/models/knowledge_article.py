@@ -38,7 +38,10 @@ class Article(models.Model):
     article_url = fields.Char('Article URL', compute='_compute_article_url', readonly=True)
     # Hierarchy and sequence
     parent_id = fields.Many2one("knowledge.article", string="Parent Article", tracking=30)
-    child_ids = fields.One2many("knowledge.article", "parent_id", string="Child Articles")
+    child_ids = fields.One2many("knowledge.article", "parent_id", string="Child Articles and Items")
+    has_item_children = fields.Boolean('Has article item children?', compute="_compute_has_article_children")
+    has_article_children = fields.Boolean('Has normal article children?', compute="_compute_has_article_children")
+    is_article_item = fields.Boolean('Is Item?', index=True)
     is_desynchronized = fields.Boolean(
         string="Desyncronized with parents",
         help="If set, this article won't inherit access rules from its parents anymore.")
@@ -121,6 +124,10 @@ class Article(models.Model):
          'check(parent_id IS NOT NULL OR is_desynchronized IS NOT TRUE)',
          'Root articles cannot be desynchronized.'
         ),
+        ('check_article_item_parent',
+         'check(is_article_item IS NOT TRUE OR parent_id IS NOT NULL)',
+         'Article items must have a parent.'
+        ),
     ]
 
     # ------------------------------------------------------------
@@ -152,6 +159,18 @@ class Article(models.Model):
                  )
             )
 
+    @api.constrains('child_ids')
+    def _check_article_item_children(self):
+        for article in self:
+            if article.has_item_children and article.has_article_children:
+                raise ValidationError(_('Article %s can only contain one type of article.', article.display_name))
+
+    @api.constrains('parent_id', 'is_article_item')
+    def _check_article_item_parent(self):
+        for article in self:
+            if article.parent_id.has_item_children and article.parent_id.has_article_children:
+                raise ValidationError(_('Article %s can only contain one type of article.', article.parent_id.display_name))
+
     def name_get(self):
         return [(rec.id, "%s %s" % (rec.icon or "📄", rec.name)) for rec in self]
 
@@ -165,6 +184,17 @@ class Article(models.Model):
                 article.article_url = False
             else:
                 article.article_url = url_join(article.get_base_url(), 'knowledge/article/%s' % article.id)
+
+    @api.depends('child_ids', 'child_ids.is_article_item')
+    def _compute_has_article_children(self):
+        results = self.env['knowledge.article'].read_group(
+            [('parent_id', 'in', self.ids)],
+            ['parent_id', 'is_article_item'], ['parent_id', 'is_article_item'], lazy=False)
+        items_count_by_article_id = {result['parent_id'][0]: result['__count'] for result in results if result['is_article_item']}
+        article_count_by_article_id = {result['parent_id'][0]: result['__count'] for result in results if not result['is_article_item']}
+        for article in self:
+            article.has_item_children = bool(items_count_by_article_id.get(article.id, 0))
+            article.has_article_children = bool(article_count_by_article_id.get(article.id, 0))
 
     @api.depends('parent_id', 'parent_id.root_article_id')
     def _compute_root_article_id(self):
@@ -761,6 +791,14 @@ class Article(models.Model):
                 'internal_permission': 'write',
                 'is_desynchronized': False
             })
+
+        # Handle article items:
+        # - both types cannot co-exist under same parent
+        # - article item must have parent
+        if self.is_article_item and (not parent or parent.has_article_children):
+            values['is_article_item'] = False
+        elif not self.is_article_item and parent.has_item_children:
+            values['is_article_item'] = True
 
         return self.write(values)
 

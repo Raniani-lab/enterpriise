@@ -20,10 +20,13 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         """ Add some hierarchy to have mixed rights tests """
         super().setUpClass()
 
+        # (i) means is_article_item = True
         # - Employee Priv.  seq=19    private      none    (employee-w+)
         # - Playground      seq=20    workspace    w+      (admin-w+)
         # - Shared          seq=21    shared       none    (admin-w+,employee-r+,manager-r+)
         # -   Shared Child1 seq=0     "            "       (employee-w+)
+        # - Playground Item  seq=22    worksapce    w+
+        # - Item Child       seq=0     ""           ""
         cls.article_private_employee = cls.env['knowledge.article'].create(
             {'article_member_ids': [
                 (0, 0, {'partner_id': cls.partner_employee.id,
@@ -76,6 +79,19 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
              'parent_id': cls.article_shared.id,
             },
         )
+        cls.items_parent = cls.env['knowledge.article'].create([
+            {'internal_permission': 'write',
+             'name': 'Parent of items',
+             'parent_id': False,
+             'sequence': 22,
+             }
+        ])
+        cls.item_child = cls.env['knowledge.article'].create([{
+            'internal_permission': False,
+            'name': 'Child Item',
+            'parent_id': cls.items_parent.id,
+            'is_article_item': True,
+        }])
 
     @users('employee')
     def test_article_acyclic_graph(self):
@@ -120,7 +136,7 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         self.assertMembers(private, 'none', {self.env.user.partner_id: 'write'})
         self.assertEqual(private.category, 'private')
         self.assertFalse(private.parent_id)
-        self.assertEqual(private.sequence, 22)
+        self.assertEqual(private.sequence, 23)
 
         _title = 'Fthagn, with parent (workspace)'
         children = self.env['knowledge.article'].create([
@@ -456,3 +472,109 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
                                       ],
             })
         self.assertEqual(len(self.env['knowledge.article.member'].sudo().search([('article_id', '=', article.id)])), 1)
+
+    @mute_logger('odoo.sql_db')
+    @users('employee')
+    def test_article_item_create(self):
+        with self.assertRaises(IntegrityError, msg='Cannot create an article item without parent'):
+            self.env['knowledge.article'].create([{
+                'internal_permission': False,
+                'name': 'Orphan Item',
+                'parent_id': False,
+                'is_article_item': True,
+            }])
+
+        # Checking children.
+        self.assertEqual(len(self.items_parent.child_ids), 1)
+        self.assertTrue(self.items_parent.has_item_children)
+
+        # Can create an article item under a parent of items
+        self.env['knowledge.article'].create([{
+            'internal_permission': False,
+            'name': 'Child Item 2',
+            'parent_id': self.items_parent.id,
+            'is_article_item': True,
+        }])
+        self.assertEqual(len(self.items_parent.child_ids), 2)
+        self.assertTrue(self.items_parent.has_item_children)
+
+        # Cannot create a normal article under a parent of items
+        with self.assertRaises(exceptions.ValidationError, msg='Cannot create a normal article under an items parent'):
+            self.env['knowledge.article'].create([{
+                'internal_permission': False,
+                'name': 'Child Item 3',
+                'parent_id': self.items_parent.id,
+                'is_article_item': False,
+            }])
+
+        # Can create an article item under parent with no child. A parent item can be an item itself.
+        self.assertTrue(len(self.item_child.child_ids) == 0)
+        self.env['knowledge.article'].create([{
+            'internal_permission': False,
+            'name': 'grand child item',
+            'parent_id': self.item_child.id,
+            'is_article_item': True,
+        }])
+        self.assertEqual(len(self.item_child.child_ids), 1)
+        self.assertTrue(self.item_child.has_item_children)
+
+    @mute_logger('odoo.sql_db')
+    @users('employee')
+    def test_article_item_write(self):
+        # Can move an article item under any parent
+        # - Under an item parent: it stays an article item
+        items_parent_2 = self.env['knowledge.article'].create([{
+            'internal_permission': 'write',
+            'name': 'item parent 2',
+            'parent_id': False,
+        }])
+        self.env['knowledge.article'].create([{
+            'internal_permission': False,
+            'name': 'item child 2',
+            'parent_id': items_parent_2.id,
+            'is_article_item': True,
+        }])
+        self.item_child.move_to(items_parent_2.id)
+        self.assertTrue(self.item_child.is_article_item)
+
+        # - Under a parent that is not an item parent and has no children :
+        #     it stays an article item and the parent becomes an item parent
+        self.assertTrue(len(self.shared_child.child_ids) == 0)
+        self.item_child.move_to(self.shared_child.id)
+        self.assertTrue(self.item_child.is_article_item)
+        self.assertEqual(len(self.shared_child.child_ids), 1)
+        self.assertTrue(self.shared_child.has_item_children)
+
+        # - Under a parent that is not an item parent and already has children :
+        #     it becomes a normal article
+        self.env['knowledge.article'].create([{
+            'internal_permission': False,
+            'name': 'workspace child',
+            'parent_id': self.article_workspace.id,
+            'is_article_item': False,
+        }])
+        self.assertEqual(len(self.article_workspace.child_ids), 1)
+        self.assertTrue(self.article_workspace.has_article_children)
+
+        self.item_child.move_to(self.article_workspace.id)
+
+        self.assertFalse(self.item_child.is_article_item)
+        self.assertEqual(len(self.article_workspace.child_ids), 2)
+        self.assertTrue(self.article_workspace.has_article_children)
+
+        with self.assertRaises(exceptions.ValidationError, msg='Cannot set an article as item under a parent with no items'):
+            with self.cr.savepoint():
+                self.item_child.write({'is_article_item': True})
+
+        # Can move a normal article under an item parent: the article becomes an article item.
+        self.assertFalse(self.item_child.is_article_item)
+        self.item_child.move_to(items_parent_2.id)
+        self.assertTrue(self.item_child.is_article_item)
+
+        with self.assertRaises(exceptions.ValidationError, msg='Cannot set an article item as normal under an item parent'):
+            with self.cr.savepoint():
+                self.item_child.write({'is_article_item': False})
+
+        # TODO DBE: Maybe check this one on another record (and remove savepoint) in order to blablabla... uh'
+        with self.assertRaises(IntegrityError, msg='An article item must have a parent'):
+            self.item_child.write({'parent_id': False})

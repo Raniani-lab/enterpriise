@@ -29,6 +29,9 @@
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
     ],
+    'demo': [
+        'data/knowledge_demo_data.xml',
+    ],
     'installable': True,
     'application': True,
     'auto_install': False,

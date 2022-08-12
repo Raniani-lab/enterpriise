@@ -222,6 +222,7 @@
     const BACKGROUND_HEADER_SELECTED_COLOR = "#E8EAED";
     const BACKGROUND_HEADER_ACTIVE_COLOR = "#595959";
     const TEXT_HEADER_COLOR = "#666666";
+    const FIGURE_BORDER_COLOR = "#c9ccd2";
     const SELECTION_BORDER_COLOR = "#3266ca";
     const HEADER_BORDER_COLOR = "#C0C0C0";
     const CELL_BORDER_COLOR = "#E2E3E3";
@@ -248,7 +249,7 @@
     const PADDING_AUTORESIZE_HORIZONTAL = MIN_CELL_TEXT_MARGIN;
     // Menus
     const MENU_WIDTH = 250;
-    const MENU_ITEM_HEIGHT = 24;
+    const MENU_ITEM_HEIGHT = 28;
     const MENU_SEPARATOR_BORDER_WIDTH = 1;
     const MENU_SEPARATOR_PADDING = 5;
     const MENU_SEPARATOR_HEIGHT = MENU_SEPARATOR_BORDER_WIDTH + 2 * MENU_SEPARATOR_PADDING;
@@ -1711,6 +1712,20 @@
         }
         return n;
     }
+    function percentile(values, percent, isInclusive) {
+        const sortedValues = [...values].sort((a, b) => a - b);
+        let percentIndex = (sortedValues.length + (isInclusive ? -1 : 1)) * percent;
+        if (!isInclusive) {
+            percentIndex--;
+        }
+        if (Number.isInteger(percentIndex)) {
+            return sortedValues[percentIndex];
+        }
+        const indexSup = Math.ceil(percentIndex);
+        const indexLow = Math.floor(percentIndex);
+        return (sortedValues[indexSup] * (percentIndex - indexLow) +
+            sortedValues[indexLow] * (indexSup - percentIndex));
+    }
 
     class RangeImpl {
         constructor(args, getSheetSize) {
@@ -2952,10 +2967,16 @@
     };
 
     function getMenuChildren(node, env) {
-        if (typeof node.children === "function") {
-            return node.children(env).sort((a, b) => a.sequence - b.sequence);
+        const children = [];
+        for (const child of node.children) {
+            if (typeof child === "function") {
+                children.push(...child(env));
+            }
+            else {
+                children.push(child);
+            }
         }
-        return node.children.sort((a, b) => a.sequence - b.sequence);
+        return children.sort((a, b) => a.sequence - b.sequence);
     }
     function getMenuName(node, env) {
         if (typeof node.name === "function") {
@@ -3126,6 +3147,7 @@
     .o-menu-item {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       box-sizing: border-box;
       height: ${MENU_ITEM_HEIGHT}px;
       padding: 4px 16px;
@@ -3151,7 +3173,8 @@
       }
 
       &:not(.disabled) {
-        &:hover {
+        &:hover,
+        &.o-menu-item-active {
           background-color: #ebebeb;
         }
         .o-menu-item-description {
@@ -3189,7 +3212,7 @@
             owl.useExternalListener(window, "contextmenu", this.onContextMenu);
             owl.onWillUpdateProps((nextProps) => {
                 if (nextProps.menuItems !== this.props.menuItems) {
-                    this.subMenu.isOpen = false;
+                    this.closeSubMenu();
                 }
             });
         }
@@ -3227,7 +3250,7 @@
             (_b = (_a = this.props).onMenuClicked) === null || _b === void 0 ? void 0 : _b.call(_a, { detail: result });
         }
         close() {
-            this.subMenu.isOpen = false;
+            this.closeSubMenu();
             this.props.onClose();
         }
         /**
@@ -3252,7 +3275,7 @@
             if (el && isChildEvent(el, ev)) {
                 return;
             }
-            this.subMenu.isOpen = false;
+            this.closeSubMenu();
         }
         /**
          * Return the total height (in pixels) needed for some
@@ -3293,6 +3316,11 @@
             };
             this.subMenu.menuItems = getMenuChildren(menu, this.env);
             this.subMenu.isOpen = true;
+            this.subMenu.parentMenu = menu;
+        }
+        closeSubMenu() {
+            this.subMenu.isOpen = false;
+            this.subMenu.parentMenu = undefined;
         }
         onClickMenu(menu, position) {
             if (this.isEnabled(menu)) {
@@ -3310,7 +3338,7 @@
                     this.openSubMenu(menu, position);
                 }
                 else {
-                    this.subMenu.isOpen = false;
+                    this.closeSubMenu();
                 }
             }
         }
@@ -3436,6 +3464,9 @@
     function createFullMenuItem(key, value) {
         return Object.assign({}, DEFAULT_MENU_ITEM(key), value);
     }
+    function isMenuItem(value) {
+        return typeof value !== "function";
+    }
     /**
      * The class Registry is extended in order to add the function addChild
      *
@@ -3460,17 +3491,17 @@
                 throw new Error(`Path ${root + ":" + path.join(":")} not found`);
             }
             for (let p of path) {
-                if (typeof node.children === "function") {
-                    node = undefined;
-                }
-                else {
-                    node = node.children.find((elt) => elt.id === p);
-                }
+                node = node.children.filter(isMenuItem).find((elt) => elt.id === p);
                 if (!node) {
                     throw new Error(`Path ${root + ":" + path.join(":")} not found`);
                 }
             }
-            node.children.push(createFullMenuItem(key, value));
+            if (typeof value !== "function") {
+                node.children.push(createFullMenuItem(key, value));
+            }
+            else {
+                node.children.push(value);
+            }
             return this;
         }
         /**
@@ -3486,23 +3517,24 @@
     // Link Menu Registry
     //------------------------------------------------------------------------------
     const linkMenuRegistry = new MenuItemRegistry();
-    linkMenuRegistry.add("sheet", {
+    linkMenuRegistry
+        .add("sheet", {
         name: _lt("Link sheet"),
         sequence: 10,
-        children: (env) => {
-            const sheets = env.model.getters
-                .getSheetIds()
-                .map((sheetId) => env.model.getters.getSheet(sheetId));
-            return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
-                name: sheet.name,
-                sequence: i,
-                action: () => ({
-                    link: { label: sheet.name, url: buildSheetLink(sheet.id) },
-                    urlRepresentation: sheet.name,
-                    isUrlEditable: false,
-                }),
-            }));
-        },
+    })
+        .addChild("sheet_list", ["sheet"], (env) => {
+        const sheets = env.model.getters
+            .getSheetIds()
+            .map((sheetId) => env.model.getters.getSheet(sheetId));
+        return sheets.map((sheet, i) => createFullMenuItem(sheet.id, {
+            name: sheet.name,
+            sequence: i,
+            action: () => ({
+                link: { label: sheet.name, url: buildSheetLink(sheet.id) },
+                urlRepresentation: sheet.name,
+                isUrlEditable: false,
+            }),
+        }));
     });
 
     const MENU_OFFSET_X = 320;
@@ -4564,22 +4596,6 @@
         sequence: 20,
         action: PASTE_FORMAT_ACTION,
     })
-        .add("sort_range", {
-        name: _lt("Sort range"),
-        sequence: 50,
-        isVisible: IS_ONLY_ONE_RANGE,
-        separator: true,
-    })
-        .addChild("sort_ascending", ["sort_range"], {
-        name: _lt("Ascending (A ⟶ Z)"),
-        sequence: 10,
-        action: SORT_CELLS_ASCENDING,
-    })
-        .addChild("sort_descending", ["sort_range"], {
-        name: _lt("Descending (Z ⟶ A)"),
-        sequence: 20,
-        action: SORT_CELLS_DESCENDING,
-    })
         .add("add_row_before", {
         name: CELL_INSERT_ROWS_BEFORE_NAME,
         sequence: 70,
@@ -4635,27 +4651,11 @@
         sequence: 20,
         action: DELETE_CELL_SHIFT_LEFT,
     })
-        .add("clear_cell", {
-        name: _lt("Clear cells"),
-        sequence: 140,
-        action: DELETE_CONTENT_ACTION,
-        isEnabled: (env) => {
-            const cell = env.model.getters.getActiveCell();
-            return Boolean(cell);
-        },
-        separator: true,
-    })
         .add("insert_link", {
         name: _lt("Insert link"),
         separator: true,
         sequence: 150,
         action: INSERT_LINK,
-    })
-        .add("conditional_formatting", {
-        name: _lt("Conditional formatting"),
-        sequence: 160,
-        action: OPEN_CF_SIDEPANEL_ACTION,
-        separator: true,
     });
 
     const colMenuRegistry = new MenuItemRegistry();
@@ -5080,18 +5080,18 @@
         sequence: 20,
         action: PASTE_FORMAT_ACTION,
     })
-        .addChild("sort_range", ["edit"], {
+        .addChild("sort_range", ["data"], {
         name: _lt("Sort range"),
         sequence: 62,
-        isVisible: IS_ONLY_ONE_RANGE,
+        isEnabled: IS_ONLY_ONE_RANGE,
         separator: true,
     })
-        .addChild("sort_ascending", ["edit", "sort_range"], {
+        .addChild("sort_ascending", ["data", "sort_range"], {
         name: _lt("Ascending (A ⟶ Z)"),
         sequence: 10,
         action: SORT_CELLS_ASCENDING,
     })
-        .addChild("sort_descending", ["edit", "sort_range"], {
+        .addChild("sort_descending", ["data", "sort_range"], {
         name: _lt("Descending (Z ⟶ A)"),
         sequence: 20,
         action: SORT_CELLS_DESCENDING,
@@ -6900,6 +6900,11 @@
                     text: chart.title,
                     fontColor,
                 },
+                legend: {
+                    // Disable default legend onClick (show/hide dataset), to allow us to set a global onClick on the chart container.
+                    // If we want to re-enable this in the future, we need to override the default onClick to stop the event propagation
+                    onClick: undefined,
+                },
             },
             data: {
                 labels: labels.map(truncateLabel),
@@ -7074,6 +7079,7 @@
         }
     }
     function getBarConfiguration(chart, labels) {
+        var _a;
         const fontColor = chartFontColor(chart.background);
         const config = getDefaultChartJsRuntime(chart, labels, fontColor);
         const legend = {
@@ -7085,7 +7091,7 @@
         else {
             legend.position = chart.legendPosition;
         }
-        config.options.legend = legend;
+        config.options.legend = { ...(_a = config.options) === null || _a === void 0 ? void 0 : _a.legend, ...legend };
         config.options.layout = {
             padding: { left: 20, right: 20, top: chart.title ? 10 : 25, bottom: 10 },
         };
@@ -7759,6 +7765,7 @@
         return true;
     }
     function getLineConfiguration(chart, labels) {
+        var _a;
         const fontColor = chartFontColor(chart.background);
         const config = getDefaultChartJsRuntime(chart, labels, fontColor);
         const legend = {
@@ -7770,7 +7777,7 @@
         else {
             legend.position = chart.legendPosition;
         }
-        config.options.legend = legend;
+        config.options.legend = { ...(_a = config.options) === null || _a === void 0 ? void 0 : _a.legend, ...legend };
         config.options.layout = {
             padding: { left: 20, right: 20, top: chart.title ? 10 : 25, bottom: 10 },
         };
@@ -7942,6 +7949,7 @@
         }
     }
     function getPieConfiguration(chart, labels) {
+        var _a;
         const fontColor = chartFontColor(chart.background);
         const config = getDefaultChartJsRuntime(chart, labels, fontColor);
         const legend = {
@@ -7953,7 +7961,7 @@
         else {
             legend.position = chart.legendPosition;
         }
-        config.options.legend = legend;
+        config.options.legend = { ...(_a = config.options) === null || _a === void 0 ? void 0 : _a.legend, ...legend };
         config.options.layout = {
             padding: { left: 20, right: 20, top: chart.title ? 10 : 25, bottom: 10 },
         };
@@ -9449,7 +9457,6 @@
     }
 
     .o-title-text {
-      color: #757575;
       text-align: left;
       height: ${LINE_HEIGHT + "em"};
       line-height: ${LINE_HEIGHT + "em"};
@@ -9474,7 +9481,6 @@
     }
 
     .o-baseline-text {
-      color: #757575;
       line-height: ${LINE_HEIGHT + "em"};
       height: ${LINE_HEIGHT + "em"};
       overflow: hidden;
@@ -9519,9 +9525,12 @@
             var _a;
             return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.background) || "white";
         }
-        get fontColor() {
+        get primaryFontColor() {
             var _a;
-            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.fontColor) || "black";
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.fontColor) || "#000000";
+        }
+        get secondaryFontColor() {
+            return relativeLuminance(this.primaryFontColor) <= 0.3 ? "#757575" : "#bbbbbb";
         }
         get figure() {
             return this.props.figure;
@@ -9532,7 +9541,6 @@
       width:${this.figure.width}px;
       padding:${this.chartPadding}px;
       background:${this.backgroundColor};
-      color:${this.fontColor};
     `;
         }
         get chartContentStyle() {
@@ -9557,10 +9565,12 @@
             return {
                 titleStyle: this.getTextStyle({
                     fontSize: TITLE_FONT_SIZE,
+                    color: this.secondaryFontColor,
                 }),
                 keyStyle: this.getTextStyle({
                     fontSize: keyFontSize,
                     cellStyle: (_a = this.runtime) === null || _a === void 0 ? void 0 : _a.keyValueStyle,
+                    color: this.primaryFontColor,
                 }),
                 baselineStyle: this.getTextStyle({
                     fontSize: baselineFontSize,
@@ -9568,10 +9578,11 @@
                 baselineValueStyle: this.getTextStyle({
                     fontSize: baselineFontSize,
                     cellStyle: (_b = this.runtime) === null || _b === void 0 ? void 0 : _b.baselineStyle,
-                    color: (_c = this.runtime) === null || _c === void 0 ? void 0 : _c.baselineColor,
+                    color: ((_c = this.runtime) === null || _c === void 0 ? void 0 : _c.baselineColor) || this.secondaryFontColor,
                 }),
                 baselineDescrStyle: this.getTextStyle({
                     fontSize: baselineFontSize * BASELINE_DESCR_FONT_RATIO,
+                    color: this.secondaryFontColor,
                 }),
             };
         }
@@ -10141,11 +10152,25 @@
         description: _lt(`Apply a large number format`),
         args: args(`
       value (number) ${_lt("The number.")}
+      unit (string, optional) ${_lt("The formatting unit. Use 'k', 'm', or 'b' to force the unit")}
     `),
         returns: ["NUMBER"],
-        computeFormat: (arg) => {
+        computeFormat: (arg, unit) => {
             const value = Math.abs(toNumber(arg.value));
             const format = arg.format;
+            if (unit !== undefined) {
+                const postFix = unit === null || unit === void 0 ? void 0 : unit.value;
+                switch (postFix) {
+                    case "k":
+                        return createLargeNumberFormat(format, 1e3, "k");
+                    case "m":
+                        return createLargeNumberFormat(format, 1e6, "m");
+                    case "b":
+                        return createLargeNumberFormat(format, 1e9, "b");
+                    default:
+                        throw new Error(_lt("The formatting unit should be 'k', 'm' or 'b'."));
+                }
+            }
             if (value < 1e5) {
                 return format || "#,##0";
             }
@@ -11336,18 +11361,11 @@
             }
         });
         assert(() => count !== 0, _lt(`[[FUNCTION_NAME]] has no valid input data.`));
-        let percentIndex = (count + (isInclusive ? -1 : 1)) * _percent;
         if (!isInclusive) {
-            assert(() => 1 <= percentIndex && percentIndex <= count, _lt(`Function [[FUNCTION_NAME]] parameter 2 value is out of range.`));
-            percentIndex--;
+            // 2nd argument must be between 1/(n+1) and n/(n+1) with n the number of data
+            assert(() => 1 / (count + 1) <= _percent && _percent <= count / (count + 1), _lt(`Function [[FUNCTION_NAME]] parameter 2 value is out of range.`));
         }
-        if (Number.isInteger(percentIndex)) {
-            return sortedArray[percentIndex];
-        }
-        const indexSup = Math.ceil(percentIndex);
-        const indexLow = Math.floor(percentIndex);
-        return (sortedArray[indexSup] * (percentIndex - indexLow) +
-            sortedArray[indexLow] * (indexSup - percentIndex));
+        return percentile(sortedArray, _percent, isInclusive);
     }
     // -----------------------------------------------------------------------------
     // AVEDEV
@@ -13954,7 +13972,7 @@
         description: _lt("Logical `and` operator."),
         args: args(`
       logical_expression1 (boolean, range<boolean>) ${_lt("An expression or reference to a cell containing an expression that represents some logical value, i.e. TRUE or FALSE, or an expression that can be coerced to a logical value.")}
-      logical_expression1 (boolean, range<boolean>, repeating) ${_lt("More expressions that represent logical values.")}
+      logical_expression2 (boolean, range<boolean>, repeating) ${_lt("More expressions that represent logical values.")}
     `),
         returns: ["BOOLEAN"],
         compute: function (...logicalExpressions) {
@@ -17564,7 +17582,15 @@
         }
         get containerStyle() {
             const isFormula = this.env.model.getters.getCurrentContent().startsWith("=");
-            const style = this.env.model.getters.getCurrentStyle();
+            const cell = this.env.model.getters.getActiveCell();
+            let style = {};
+            if (cell) {
+                const cellPosition = this.env.model.getters.getCellPosition(cell.id);
+                style = {
+                    ...cell.style,
+                    ...this.env.model.getters.getConditionalStyle(cellPosition.col, cellPosition.row),
+                };
+            }
             // position style
             const { x: left, y: top, width, height } = this.rect;
             // color style
@@ -17578,7 +17604,6 @@
             // align style
             let textAlign = "left";
             if (!isFormula) {
-                const cell = this.env.model.getters.getActiveCell();
                 textAlign = style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign) || "left";
             }
             return `
@@ -17622,7 +17647,6 @@
   }
 
   div.o-figure {
-    border: 1px solid black;
     box-sizing: border-box;
     position: absolute;
     bottom: 3px;
@@ -17724,13 +17748,14 @@
                 };
             });
         }
-        getDims(info) {
+        getFigureStyle(info) {
             const { figure, isSelected } = info;
             const borders = 2 * (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
             const { width, height } = isSelected && this.dnd.figureId ? this.dnd : figure;
-            return `width:${width + borders}px;height:${height + borders}px`;
+            const borderStyle = this.env.isDashboard() || isSelected ? "" : `1px solid ${FIGURE_BORDER_COLOR}`;
+            return `width:${width + borders}px;height:${height + borders}px; border: ${borderStyle};`;
         }
-        getStyle(info) {
+        getWrapperStyle(info) {
             const { figure, isSelected } = info;
             const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
             const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
@@ -17747,7 +17772,7 @@
                 return `position:absolute;display:none;`;
             }
             const offset = ANCHOR_SIZE + ACTIVE_BORDER_WIDTH + (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px`;
+            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px;`;
         }
         setup() {
             owl.onMounted(() => {
@@ -18905,7 +18930,7 @@
                         target: this.env.model.getters.getSelectedZones(),
                     });
                 },
-                "CTRL+A": () => this.env.model.selection.selectAll(),
+                "CTRL+A": () => this.env.model.selection.loopSelection(),
                 "CTRL+S": () => {
                     var _a, _b;
                     (_b = (_a = this.props).onSaveRequested) === null || _b === void 0 ? void 0 : _b.call(_a);
@@ -19688,21 +19713,11 @@
                         type: CellValueType.text,
                     };
                     break;
-                // `null` and `undefined` values are not allowed according to `CellValue`
-                // but it actually happens with empty evaluated cells.
-                // TODO fix `CellValue`
                 case "object": // null
                     this.evaluated = {
-                        value,
+                        value: 0,
                         format,
-                        type: CellValueType.empty,
-                    };
-                    break;
-                case "undefined":
-                    this.evaluated = {
-                        value,
-                        format,
-                        type: CellValueType.empty,
+                        type: CellValueType.number,
                     };
                     break;
             }
@@ -24297,12 +24312,7 @@
             const sheet = this.getters.tryGetSheet(sheetId);
             if (!sheet)
                 return 24 /* InvalidSheetId */;
-            const sheetZone = {
-                top: 0,
-                left: 0,
-                bottom: this.getters.getNumberRows(sheetId) - 1,
-                right: this.getters.getNumberCols(sheetId) - 1,
-            };
+            const sheetZone = this.getters.getSheetZone(sheetId);
             return isInside(col, row, sheetZone) ? 0 /* Success */ : 16 /* TargetOutOfSheet */;
         }
     }
@@ -26152,6 +26162,14 @@
                 width: this.getNumberCols(sheetId),
             };
         }
+        getSheetZone(sheetId) {
+            return {
+                top: 0,
+                left: 0,
+                bottom: this.getNumberRows(sheetId) - 1,
+                right: this.getNumberCols(sheetId) - 1,
+            };
+        }
         // ---------------------------------------------------------------------------
         // Row/Col manipulation
         // ---------------------------------------------------------------------------
@@ -26600,12 +26618,7 @@
                 return 22 /* InvalidRange */;
             }
             else if (zones.length && "sheetId" in cmd) {
-                const sheetZone = {
-                    top: 0,
-                    left: 0,
-                    bottom: this.getNumberRows(cmd.sheetId) - 1,
-                    right: this.getNumberRows(cmd.sheetId) - 1,
-                };
+                const sheetZone = this.getSheetZone(cmd.sheetId);
                 return zones.every((zone) => isZoneInside(zone, sheetZone))
                     ? 0 /* Success */
                     : 16 /* TargetOutOfSheet */;
@@ -26638,6 +26651,7 @@
         "getNextSheetName",
         "isEmpty",
         "getSheetSize",
+        "getSheetZone",
     ];
 
     /**
@@ -28190,12 +28204,7 @@
                 }
                 // Performance issue: Avoid fetching data on positions that are out of the spreadsheet
                 // e.g. A1:ZZZ9999 in a sheet with 10 cols and 10 rows should ignore everything past J10 and return a 10x10 array
-                const sheetZone = {
-                    top: 0,
-                    bottom: getters.getNumberRows(sheetId) - 1,
-                    left: 0,
-                    right: getters.getNumberCols(sheetId) - 1,
-                };
+                const sheetZone = getters.getSheetZone(sheetId);
                 const result = [];
                 const zone = intersection(range.zone, sheetZone);
                 if (!zone) {
@@ -28529,18 +28538,23 @@
             }
         }
         parsePoint(range, threshold, functionName) {
+            const sheetId = this.getters.getActiveSheetId();
+            const rangeValues = this.getters
+                .getRangeValues(this.getters.getRangeFromSheetXC(sheetId, range))
+                .filter(this.isCellValueNumber);
             switch (threshold.type) {
                 case "value":
-                    return this.getters.evaluateFormula(`=${functionName}(${range})`);
+                    const result = functionName === "max" ? Math.max(...rangeValues) : Math.min(...rangeValues);
+                    return result;
                 case "number":
                     return Number(threshold.value);
                 case "percentage":
-                    const min = this.getters.evaluateFormula(`=min(${range})`);
-                    const max = this.getters.evaluateFormula(`=max(${range})`);
+                    const min = Math.min(...rangeValues);
+                    const max = Math.max(...rangeValues);
                     const delta = max - min;
                     return min + (delta * Number(threshold.value)) / 100;
                 case "percentile":
-                    return this.getters.evaluateFormula(`=PERCENTILE(${range},${Number(threshold.value) / 100})`);
+                    return percentile(rangeValues, Number(threshold.value) / 100, true);
                 case "formula":
                     const value = threshold.value && this.getters.evaluateFormula(threshold.value);
                     return !(value instanceof Promise) ? value : null;
@@ -28705,6 +28719,9 @@
                     }
                 }
             }
+        }
+        isCellValueNumber(value) {
+            return typeof value === "number";
         }
     }
     EvaluationConditionalFormatPlugin.getters = ["getConditionalStyle", "getConditionalIcon"];
@@ -32284,6 +32301,7 @@
     overflow-x: hidden;
     background-color: white;
     border: 1px solid darkgray;
+    user-select: none;
     .o-sidePanelHeader {
       padding: 6px;
       height: 30px;
@@ -32593,7 +32611,8 @@
           cursor: pointer;
         }
 
-        .o-topbar-menu:hover {
+        .o-topbar-menu:hover,
+        .o-topbar-menu-active {
           background-color: #f1f3f4;
           border-radius: 2px;
         }
@@ -32830,12 +32849,14 @@
             this.state.menuState.isOpen = true;
             this.state.menuState.position = { x: left, y: top + height };
             this.state.menuState.menuItems = getMenuChildren(menu, this.env).filter((item) => !item.isVisible || item.isVisible(this.env));
+            this.state.menuState.parentMenu = menu;
             this.isSelectingMenu = true;
             this.openedEl = ev.target;
         }
         closeMenus() {
             this.state.activeTool = "";
             this.state.menuState.isOpen = false;
+            this.state.menuState.parentMenu = undefined;
             this.isSelectingMenu = false;
             this.openedEl = null;
         }
@@ -35006,6 +35027,54 @@
             });
         }
         /**
+         * Loop the current selection while keeping the same anchor. The selection will loop through:
+         *  1) the smallest zone that contain the anchor and that have only empty cells bordering it
+         *  2) the whole sheet
+         *  3) the anchor cell
+         */
+        loopSelection() {
+            const sheetId = this.getters.getActiveSheetId();
+            const anchor = this.anchor;
+            /** Try to expand the zone by one col/row in any direction to include a new non-empty cell */
+            const expandZone = (zone) => {
+                for (const col of range(zone.left, zone.right + 1)) {
+                    if (!this.isCellEmpty({ col, row: zone.top - 1 })) {
+                        return { ...zone, top: zone.top - 1 };
+                    }
+                    if (!this.isCellEmpty({ col, row: zone.bottom + 1 })) {
+                        return { ...zone, bottom: zone.bottom + 1 };
+                    }
+                }
+                for (const row of range(zone.top, zone.bottom + 1)) {
+                    if (!this.isCellEmpty({ col: zone.left - 1, row })) {
+                        return { ...zone, left: zone.left - 1 };
+                    }
+                    if (!this.isCellEmpty({ col: zone.right + 1, row })) {
+                        return { ...zone, right: zone.right + 1 };
+                    }
+                }
+                return zone;
+            };
+            // The whole sheet is selected, select the anchor cell
+            if (isEqual(this.anchor.zone, this.getters.getSheetZone(sheetId))) {
+                return this.selectZone({ ...anchor, zone: positionToZone(anchor.cell) });
+            }
+            let hasExpanded = false;
+            let hasExpandedOnce = false;
+            let zone = anchor.zone;
+            do {
+                hasExpandedOnce = hasExpandedOnce || hasExpanded;
+                hasExpanded = false;
+                const newZone = expandZone(zone);
+                if (!isEqual(zone, newZone)) {
+                    hasExpanded = true;
+                    zone = newZone;
+                    continue;
+                }
+            } while (hasExpanded);
+            return hasExpandedOnce ? this.selectZone({ ...anchor, zone }) : this.selectAll();
+        }
+        /**
          * Select the entire sheet
          */
         selectAll() {
@@ -35016,7 +35085,7 @@
             return this.processEvent({
                 type: "HeadersSelected",
                 mode: "overrideSelection",
-                anchor: { zone, cell: { col: 0, row: 0 } },
+                anchor: { zone, cell: this.anchor.cell },
             });
         }
         /**
@@ -35208,7 +35277,7 @@
          * Check if a cell is empty or undefined in the model. If the cell is part of a merge,
          * check if the merge containing the cell is empty.
          */
-        isCellEmpty({ col, row }, sheetId) {
+        isCellEmpty({ col, row }, sheetId = this.getters.getActiveSheetId()) {
             const mainCellPosition = this.getters.getMainCellPosition(sheetId, col, row);
             const cell = this.getters.getCell(sheetId, mainCellPosition.col, mainCellPosition.row);
             return !cell || cell.isEmpty();
@@ -37036,8 +37105,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-08-04T07:14:10.353Z';
-    exports.__info__.hash = '2c40373';
+    exports.__info__.date = '2022-08-11T14:45:19.840Z';
+    exports.__info__.hash = '6f5082c';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

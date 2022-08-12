@@ -7,9 +7,11 @@ import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { getCellFormula } from "@spreadsheet/../tests/utils/getters";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";
+import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 
-const { cellMenuRegistry } = spreadsheet.registries;
-const { getMenuChildren } = spreadsheet.helpers;
+const { topbarMenuRegistry } = spreadsheet.registries;
+
+const insertPivotCellPath = ["data", "insert_pivot_cell", "insert_pivot_cell_1"];
 
 QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
     QUnit.test("Open pivot dialog and insert a value, with UNDO/REDO", async function (assert) {
@@ -18,9 +20,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
         const { model, env } = await createSpreadsheetFromPivotView();
         selectCell(model, "D8");
         const sheetId = model.getters.getActiveSheetId();
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-        const insertValue = getMenuChildren(root, env)[0];
-        await insertValue.action(env);
+        await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
         assert.containsOnce(document.body, ".o_pivot_table_dialog");
         await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
@@ -44,9 +44,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
                 target: model.getters.getSelectedZones(),
             });
             selectCell(model, "D8");
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-            const insertValue = getMenuChildren(root, env)[0];
-            await insertValue.action(env);
+            await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
             await dom.click(document.body.querySelector("input#missing_values"));
@@ -82,9 +80,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
             target: model.getters.getSelectedZones(),
         });
         selectCell(model, "D8");
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-        const insertValue = getMenuChildren(root, env)[0];
-        await insertValue.action(env);
+        await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
         assert.containsOnce(document.body, ".o_missing_value");
         await dom.click(document.body.querySelector("input#missing_values"));
@@ -121,9 +117,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
                 target: model.getters.getSelectedZones(),
             });
             selectCell(model, "J10");
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-            const insertValue = getMenuChildren(root, env)[0];
-            await insertValue.action(env);
+            await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
             await nextTick();
             assert.containsOnce(document.body, ".o_missing_value");
             await dom.click(document.body.querySelector("input#missing_values"));
@@ -156,9 +150,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
                 },
             });
             selectCell(model, "D8");
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-            const insertValue = getMenuChildren(root, env)[0];
-            await insertValue.action(env);
+            await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
             await nextTick();
             assert.containsOnce(document.body, ".o_pivot_table_dialog");
             await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
@@ -189,9 +181,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
             sheetId: model.getters.getActiveSheetId(),
             target: model.getters.getSelectedZones(),
         });
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-        const insertValue = getMenuChildren(root, env)[0];
-        await insertValue.action(env);
+        await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
         await dom.click(document.body.querySelector("input#missing_values"));
         await nextTick();
@@ -221,9 +211,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
             sheetId: model.getters.getActiveSheetId(),
             target: model.getters.getSelectedZones(),
         });
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-        const insertValue = getMenuChildren(root, env)[0];
-        await insertValue.action(env);
+        await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
         await dom.click(document.body.querySelector("input#missing_values"));
         await nextTick();
@@ -257,9 +245,7 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
                 sheetId: model.getters.getActiveSheetId(),
                 target: model.getters.getSelectedZones(),
             });
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "insert_pivot_cell");
-            const insertValue = getMenuChildren(root, env)[0];
-            await insertValue.action(env);
+            await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
             await nextTick();
             await dom.click(document.body.querySelector("input#missing_values"));
             await nextTick();

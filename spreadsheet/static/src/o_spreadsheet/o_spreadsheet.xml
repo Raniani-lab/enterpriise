@@ -270,12 +270,12 @@
       <t t-foreach="getVisibleFigures()" t-as="info" t-key="info.id">
         <div
           class="o-figure-wrapper"
-          t-att-style="getStyle(info)"
+          t-att-style="getWrapperStyle(info)"
           t-on-mousedown.stop="(ev) => this.onMouseDown(info.figure, ev)">
           <div
             class="o-figure"
             t-att-class="{active: info.isSelected, 'o-dragging': info.id === dnd.figureId}"
-            t-att-style="getDims(info)"
+            t-att-style="getFigureStyle(info)"
             tabindex="0"
             t-on-keydown.stop="(ev) => this.onKeyDown(info.figure, ev)"
             t-on-keyup.stop="">
@@ -330,8 +330,8 @@
     <div
       class="o-chart-container"
       t-ref="chartContainer"
-      t-on-contextmenu.prevent.stop="onContextMenu">
-      <div class="o-chart-menu">
+      t-on-contextmenu.prevent.stop="(ev) => !env.isDashboard() and this.onContextMenu(ev)">
+      <div class="o-chart-menu" t-if="!env.isDashboard()">
         <div
           class="o-chart-menu-item"
           t-on-click="showMenu"
@@ -1194,7 +1194,7 @@
             t-on-click="() => this.onClickMenu(menuItem, menuItem_index)"
             t-on-mouseover="() => this.onMouseOver(menuItem, menuItem_index)"
             class="o-menu-item"
-            t-att-class="{ 'o-menu-root': isMenuRoot, 'disabled': !isMenuEnabled}"
+            t-att-class="{ 'o-menu-root': isMenuRoot, 'disabled': !isMenuEnabled, 'o-menu-item-active': subMenu.parentMenu === menuItem}"
             t-att-style="getColor(menuItem)">
             <span class="o-menu-item-name" t-esc="getName(menuItem)"/>
             <span
@@ -2608,6 +2608,7 @@
             <div
               t-if="menu.children.length !== 0"
               class="o-topbar-menu"
+              t-att-class="{'o-topbar-menu-active': state.menuState.parentMenu and state.menuState.parentMenu.id === menu.id}"
               t-on-click="(ev) => this.toggleContextMenu(menu, ev)"
               t-on-mouseover="(ev) => this.onMenuMouseOver(menu, ev)"
               t-att-data-id="menu.id">

@@ -49,9 +49,8 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
     QUnit.test("Can display a field which is not in the columns", async function (assert) {
         const { model } = await createSpreadsheetWithList();
         setCellContent(model, "A1", `=ODOO.LIST(1,1,"active")`);
-        assert.strictEqual(getCellValue(model, "A1"), undefined);
+        assert.strictEqual(getCellValue(model, "A1"), "Loading...");
         await nextTick(); // Await for batching collection of missing fields
-        await waitForDataSourcesLoaded(model);
         assert.strictEqual(getCellValue(model, "A1"), true);
     });
 
@@ -66,34 +65,30 @@ QUnit.module("spreadsheet > list plugin", {}, () => {
         assert.equal(model.getters.getListIds().length, 0);
     });
 
-    QUnit.test(
-        "List formulas are correctly formatted at evaluation",
-        async function (assert) {
-            const { model } = await createSpreadsheetWithList({
-                columns: ["foo", "probability", "bar", "date", "create_date", "product_id", "pognon"],
-                linesNumber: 2,
-            });
-            await waitForDataSourcesLoaded(model);
-            assert.strictEqual(getCell(model, "A2").format, undefined);
-            assert.strictEqual(getCell(model, "B2").format, undefined);
-            assert.strictEqual(getCell(model, "C2").format, undefined);
-            assert.strictEqual(getCell(model, "D2").format, undefined);
-            assert.strictEqual(getCell(model, "E2").format, undefined);
-            assert.strictEqual(getCell(model, "F2").format, undefined);
-            assert.strictEqual(getCell(model, "G2").format, undefined);
-            assert.strictEqual(getCell(model, "G3").format, undefined);
-            
+    QUnit.test("List formulas are correctly formatted at evaluation", async function (assert) {
+        const { model } = await createSpreadsheetWithList({
+            columns: ["foo", "probability", "bar", "date", "create_date", "product_id", "pognon"],
+            linesNumber: 2,
+        });
+        await waitForDataSourcesLoaded(model);
+        assert.strictEqual(getCell(model, "A2").format, undefined);
+        assert.strictEqual(getCell(model, "B2").format, undefined);
+        assert.strictEqual(getCell(model, "C2").format, undefined);
+        assert.strictEqual(getCell(model, "D2").format, undefined);
+        assert.strictEqual(getCell(model, "E2").format, undefined);
+        assert.strictEqual(getCell(model, "F2").format, undefined);
+        assert.strictEqual(getCell(model, "G2").format, undefined);
+        assert.strictEqual(getCell(model, "G3").format, undefined);
 
-            assert.strictEqual(getCell(model, "A2").evaluated.format, "0");
-            assert.strictEqual(getCell(model, "B2").evaluated.format, "#,##0.00");
-            assert.strictEqual(getCell(model, "C2").evaluated.format, undefined);
-            assert.strictEqual(getCell(model, "D2").evaluated.format, "m/d/yyyy");
-            assert.strictEqual(getCell(model, "E2").evaluated.format, "m/d/yyyy hh:mm:ss");
-            assert.strictEqual(getCell(model, "F2").evaluated.format, undefined);
-            assert.strictEqual(getCell(model, "G2").evaluated.format, "#,##0.00[$€]");
-            assert.strictEqual(getCell(model, "G3").evaluated.format, "[$$]#,##0.00");
-        }
-    );
+        assert.strictEqual(getCell(model, "A2").evaluated.format, "0");
+        assert.strictEqual(getCell(model, "B2").evaluated.format, "#,##0.00");
+        assert.strictEqual(getCell(model, "C2").evaluated.format, undefined);
+        assert.strictEqual(getCell(model, "D2").evaluated.format, "m/d/yyyy");
+        assert.strictEqual(getCell(model, "E2").evaluated.format, "m/d/yyyy hh:mm:ss");
+        assert.strictEqual(getCell(model, "F2").evaluated.format, undefined);
+        assert.strictEqual(getCell(model, "G2").evaluated.format, "#,##0.00[$€]");
+        assert.strictEqual(getCell(model, "G3").evaluated.format, "[$$]#,##0.00");
+    });
 
     QUnit.test("can select a List from cell formula", async function (assert) {
         const { model } = await createSpreadsheetWithList();

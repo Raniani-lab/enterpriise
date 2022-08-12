@@ -28,14 +28,10 @@ class SaleOrder(models.Model):
            lines it originated from, these cannot be invoiced separately as it be
            incoherent with what was computed on the order.
         """
-        deposit_product = self.env['product.product'].browse(int(
-            self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
-        )).exists()
-
         def not_totally_invoiceable(order):
             return any(
                 line.qty_to_invoice != line.product_uom_qty
-                and line.product_id != deposit_product
+                and not line.is_downpayment
                 for line in order.order_line
             )
 

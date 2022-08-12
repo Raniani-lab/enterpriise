@@ -183,6 +183,13 @@
         flex: none;
     }
 }
+
+@media only screen and (max-width:768px) {
+    .mobile-tablet-hide {
+        display: none !important;
+    }
+}
+
 @include media-breakpoint-down(md) {
 
     .o_sign_item_bottom_sheet {

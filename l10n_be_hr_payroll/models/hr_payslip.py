@@ -69,7 +69,7 @@ class Payslip(models.Model):
         # double remunerations for some line codes
         self.ensure_one()
         if self.env.context.get('salary_simulation'):
-            return self.contract_id.id
+            return self.env.context['origin_contract_id']
         contracts = self.employee_id._get_contracts(
             self.date_from,
             self.date_to,

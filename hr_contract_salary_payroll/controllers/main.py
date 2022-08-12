@@ -49,7 +49,12 @@ class HrContractSalary(main.HrContractSalary):
                 'number_of_hours': work_days_data.get('hours', 0),
             })
 
-        payslip.with_context(salary_simulation=True, lang=None).compute_sheet()
+        payslip.with_context(
+            salary_simulation=True,
+            origin_contract_id=new_contract.env.context['origin_contract_id'],
+            lang=None
+        ).compute_sheet()
+
         result['payslip_lines'] = [(
             line.name,
             abs(round(line.total, 2)),

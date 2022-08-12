@@ -652,6 +652,7 @@ class HrContractSalary(http.Controller):
         })
 
         result['new_gross'] = round(new_gross, 2)
+        new_contract = new_contract.with_context(origin_contract_id=contract.id)
         result.update(self._get_compute_results(new_contract))
 
         request.env.cr.rollback()

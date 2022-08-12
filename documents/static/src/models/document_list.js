@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registerModel } from "@mail/model/model_core";
-import { clear, replace } from "@mail/model/model_field_command";
+import { clear } from "@mail/model/model_field_command";
 import { attr, many, one } from "@mail/model/model_field";
 
 registerModel({
@@ -10,21 +10,21 @@ registerModel({
         selectNextAttachment() {
             const index = this.viewableDocuments.findIndex((document) => document === this.selectedDocument);
             const nextIndex = index === this.viewableDocuments.length - 1 ? 0 : index + 1;
-            this.update({ selectedDocument: replace(this.viewableDocuments[nextIndex]) });
+            this.update({ selectedDocument: this.viewableDocuments[nextIndex] });
         },
         selectPreviousAttachment() {
             const index = this.viewableDocuments.findIndex((document) => document === this.selectedDocument);
             const prevIndex = index === 0 ? this.viewableDocuments.length - 1 : index - 1;
-            this.update({ selectedDocument: replace(this.viewableDocuments[prevIndex]) });
+            this.update({ selectedDocument: this.viewableDocuments[prevIndex] });
         },
         _computeSelectedDocument() {
             if (!this.viewableDocuments.length) {
                 return clear();
             }
-            return replace(this.viewableDocuments[0]);
+            return this.viewableDocuments[0];
         },
         _computeViewableDocuments() {
-            return replace(this.documents.filter((doc) => doc.isViewable));
+            return this.documents.filter((doc) => doc.isViewable);
         },
         openPdfManager() {
             return this.pdfManagerOpenCallback();

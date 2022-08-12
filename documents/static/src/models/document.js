@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registerModel } from "@mail/model/model_core";
-import { clear, insertAndReplace, replace } from "@mail/model/model_field_command";
+import { clear, insertAndReplace } from "@mail/model/model_field_command";
 import { attr, one } from "@mail/model/model_field";
 
 registerModel({
@@ -27,7 +27,7 @@ registerModel({
          */
         _computeAttachmentViewerViewable() {
             return insertAndReplace({
-                documentOwner: replace(this),
+                documentOwner: this,
             });
         },
         /**

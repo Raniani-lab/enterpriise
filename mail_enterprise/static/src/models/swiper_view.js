@@ -2,7 +2,7 @@
 
 import { registerModel } from '@mail/model/model_core';
 import { attr, one } from '@mail/model/model_field';
-import { clear, replace } from '@mail/model/model_field_command';
+import { clear } from '@mail/model/model_field_command';
 
 registerModel({
     name: 'SwiperView',
@@ -117,16 +117,16 @@ registerModel({
          */
         _computeRecord() {
             if (this.messageViewOwner) {
-                return replace(this.messageViewOwner);
+                return this.messageViewOwner;
             }
             if (this.notificationGroupViewOwner) {
-                return replace(this.notificationGroupViewOwner);
+                return this.notificationGroupViewOwner;
             }
             if (this.threadNeedactionPreviewViewOwner) {
-                return replace(this.threadNeedactionPreviewViewOwner);
+                return this.threadNeedactionPreviewViewOwner;
             }
             if (this.threadPreviewViewOwner) {
-                return replace(this.threadPreviewViewOwner);
+                return this.threadPreviewViewOwner;
             }
             return clear();
         },

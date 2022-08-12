@@ -6,7 +6,6 @@ import "@documents/models/document_list";
 import "@documents/models/document";
 
 import { DocumentsUploadStore } from "./helper/documents_upload_store";
-import { replace } from "@mail/model/model_field_command";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { useSetupView } from "@web/views/view_hook";
 import { x2ManyCommands } from "@web/core/orm_service";
@@ -165,22 +164,20 @@ export const DocumentsControllerMixin = (component) => class extends component {
             return;
         }
         const documentList = messaging.models["DocumentList"].insert({
-            documents: replace(
-                documents.map((rec) => {
-                    return messaging.models["Document"].insert({
-                        id: rec.resId,
-                        attachmentId: rec.data.attachment_id && rec.data.attachment_id[0],
-                        name: rec.data.name,
-                        mimetype: rec.data.mimetype,
-                        url: rec.data.url,
-                        displayName: rec.data.display_name,
-                    });
-                })
-            ),
+            documents: documents.map((rec) => {
+                            return messaging.models["Document"].insert({
+                                id: rec.resId,
+                                attachmentId: rec.data.attachment_id && rec.data.attachment_id[0],
+                                name: rec.data.name,
+                                mimetype: rec.data.mimetype,
+                                url: rec.data.url,
+                                displayName: rec.data.display_name,
+                            });
+                        }),
             pdfManagerOpenCallback: openPdfSplitter,
         });
         this.dialog = messaging.models["Dialog"].insert({
-            documentListOwnerAsDocumentViewer: replace(documentList),
+            documentListOwnerAsDocumentViewer: documentList,
         });
         this.dialog.attachmentViewer.update({ hasPdfSplit: hasPdfSplit || true });
     }

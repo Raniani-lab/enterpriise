@@ -14,7 +14,7 @@
         </record>
 
         <record id="planning_role_tester" model="planning.role">
-            <field name="name">Fuctional Tester</field>
+            <field name="name">Functional Tester</field>
             <field name="color">6</field>
         </record>
 

@@ -31,8 +31,7 @@ addRecordMethods('MessageView', {
             this.message &&
             this.message.isNeedaction &&
             this.messageListViewMessageViewItemOwner &&
-            this.messageListViewMessageViewItemOwner.messageListViewOwner.threadViewOwner.thread &&
-            this.messageListViewMessageViewItemOwner.messageListViewOwner.threadViewOwner.thread === this.messaging.inbox
+            this.messageListViewMessageViewItemOwner.messageListViewOwner.threadViewOwner.thread === this.messaging.inbox.thread
         ) ? insertAndReplace() : clear();
     },
 });

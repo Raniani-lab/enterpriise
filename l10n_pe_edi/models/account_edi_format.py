@@ -15,7 +15,7 @@ from copy import deepcopy
 from odoo import models, api, _, _lt
 from odoo.addons.iap.tools.iap_tools import iap_jsonrpc
 from odoo.exceptions import AccessError
-from odoo.tools import html_escape
+from odoo.tools import float_round, html_escape
 
 DEFAULT_IAP_ENDPOINT = 'https://iap-pe-edi.odoo.com'
 DEFAULT_IAP_TEST_ENDPOINT = 'https://l10n-pe-edi-proxy-demo.odoo.com'
@@ -289,6 +289,7 @@ class AccountEdiFormat(models.Model):
 
     def _l10n_pe_edi_get_edi_values(self, invoice):
         self.ensure_one()
+        price_precision = self.env['decimal.precision'].precision_get('Product Price')
 
         def format_float(amount, precision=2):
             ''' Helper to format monetary amount as a string with 2 decimal places. '''
@@ -319,6 +320,7 @@ class AccountEdiFormat(models.Model):
             'PaymentMeansID': invoice._l10n_pe_edi_get_payment_means(),
             'is_refund': invoice.move_type in ('out_refund', 'in_refund'),
             'certificate_date': invoice.invoice_date,
+            'price_precision': price_precision,
             'format_float': format_float,
             'invoice_date_due_vals_list': invoice_date_due_vals_list,
         }
@@ -327,6 +329,8 @@ class AccountEdiFormat(models.Model):
         for line_vals in values['invoice_line_vals_list']:
             line = line_vals['line']
             line_vals['price_unit_type_code'] = '01' if not line.currency_id.is_zero(line_vals['price_unit_after_discount']) else '02'
+            line_vals['price_subtotal_unit'] = float_round(line.price_subtotal / line.quantity, precision_digits=price_precision) if line.quantity else 0.0
+            line_vals['price_total_unit'] = float_round(line.price_total / line.quantity, precision_digits=price_precision) if line.quantity else 0.0
 
         # Tax details.
         def grouping_key_generator(tax_values):

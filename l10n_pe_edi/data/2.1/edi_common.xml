@@ -22,7 +22,7 @@
                     <cac:AlternativeConditionPrice>
                         <cbc:PriceAmount
                                 t-att-currencyID="line.currency_id.name"
-                                t-esc="format_float(line_vals['price_total_unit'])"/>
+                                t-esc="format_float(line_vals['price_total_unit'], precision=price_precision)"/>
                         <cbc:PriceTypeCode
                                 t-esc="line_vals['price_unit_type_code']"/>
                     </cac:AlternativeConditionPrice>
@@ -74,7 +74,7 @@
                 <cac:Price>
                     <cbc:PriceAmount
                             t-att-currencyID="line.currency_id.name"
-                            t-esc="format_float(line_vals['price_subtotal_unit'])"/>
+                            t-esc="format_float(line_vals['price_subtotal_unit'], precision=price_precision)"/>
                 </cac:Price>
             </t>
         </template>

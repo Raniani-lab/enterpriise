@@ -1,39 +1,62 @@
 /** @odoo-module */
 
 import { OdooViewsDataSource } from "@spreadsheet/data_sources/odoo_views_data_source";
-import { SpreadsheetListModel } from "./list_model";
+import { orderByToString } from "@spreadsheet/helpers/helpers";
+import { LoadingDataError } from "@spreadsheet/o_spreadsheet/errors";
+import { _t } from "@web/core/l10n/translation";
+import { sprintf } from "@web/core/utils/strings";
 
-/** @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field */
+import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
+
+const { toNumber } = spreadsheet.helpers;
+
+/**
+ * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
+ *
+ * @typedef {Object} ListMetaData
+ * @property {Array<string>} columns
+ * @property {string} resModel
+ * @property {Record<string, Field>} fields
+ *
+ * @typedef {Object} ListSearchParams
+ * @property {Array<string>} orderBy
+ * @property {Object} domain
+ * @property {Object} context
+ */
 
 export default class ListDataSource extends OdooViewsDataSource {
     /**
      * @override
      * @param {Object} services Services (see DataSource)
      * @param {Object} params
-     * @param {import("./list_model").ListMetaData} params.metaData
-     * @param {import("./list_model").ListSearchParams} params.searchParams
+     * @param {ListMetaData} params.metaData
+     * @param {ListSearchParams} params.searchParams
      * @param {number} params.limit
      */
     constructor(services, params) {
         super(services, params);
         this.limit = params.limit;
+        this._orm = services.orm;
+        this.data = [];
     }
 
     async _load() {
         await super._load();
-        /** @type {SpreadsheetListModel} */
-        this._model = new SpreadsheetListModel(
+        if (this.limit === 0) {
+            this.data = [];
+            return;
+        }
+        const { domain, orderBy, context } = this._searchParams;
+        this.data = await this._orm.searchRead(
+            this._metaData.resModel,
+            domain,
+            this._metaData.columns.filter((f) => this.getField(f)),
             {
-                metaData: this._metaData,
+                order: orderByToString(orderBy),
                 limit: this.limit,
             },
-            {
-                orm: this._orm,
-                metadataRepository: this._metadataRepository,
-            }
+            context
         );
-        this._model.addEventListener("limit-exceeded", () => this.load({ reload: true }));
-        await this._model.load(this._searchParams);
     }
 
     /**
@@ -42,7 +65,8 @@ export default class ListDataSource extends OdooViewsDataSource {
      */
     getIdFromPosition(position) {
         this._assertDataIsLoaded();
-        return this._model.getIdFromPosition(position);
+        const record = this.data[position];
+        return record ? record.id : undefined;
     }
 
     /**
@@ -51,7 +75,8 @@ export default class ListDataSource extends OdooViewsDataSource {
      */
     getListHeaderValue(fieldName) {
         this._assertDataIsLoaded();
-        return this._model.getListHeaderValue(fieldName);
+        const field = this.getField(fieldName);
+        return field ? field.string : fieldName;
     }
 
     /**
@@ -61,6 +86,75 @@ export default class ListDataSource extends OdooViewsDataSource {
      */
     getListCellValue(position, fieldName) {
         this._assertDataIsLoaded();
-        return this._model.getListCellValue(position, fieldName);
+        if (position >= this.limit) {
+            this.limit = position + 1;
+            // A reload is needed because the asked position is not already loaded.
+            this._triggerFetching();
+            throw new LoadingDataError();
+        }
+        const record = this.data[position];
+        if (!record) {
+            return "";
+        }
+        const field = this.getField(fieldName);
+        if (!field) {
+            throw new Error(
+                sprintf(
+                    _t("The field %s does not exist or you do not have access to that field"),
+                    fieldName
+                )
+            );
+        }
+        if (!(fieldName in record)) {
+            this._metaData.columns.push(fieldName);
+            this._metaData.columns = [...new Set(this._metaData.columns)]; //Remove duplicates
+            this._triggerFetching();
+            return undefined;
+        }
+        switch (field.type) {
+            case "many2one":
+                return record[fieldName].length === 2 ? record[fieldName][1] : "";
+            case "one2many":
+            case "many2many": {
+                const labels = record[fieldName]
+                    .map((id) => this._metadataRepository.getRecordDisplayName(field.relation, id))
+                    .filter((value) => value !== undefined);
+                return labels.join(", ");
+            }
+            case "selection": {
+                const key = record[fieldName];
+                const value = field.selection.find((array) => array[0] === key);
+                return value ? value[1] : "";
+            }
+            case "boolean":
+                return record[fieldName] ? "TRUE" : "FALSE";
+            case "date":
+            case "datetime":
+                return record[fieldName] ? toNumber(record[fieldName]) : "";
+            default:
+                return record[fieldName] || "";
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * Ask the parent data source to force a reload of this data source in the
+     * next clock cycle. It's necessary when this.limit was updated and new
+     * records have to be fetched.
+     */
+    _triggerFetching() {
+        if (this._fetchingPromise) {
+            return;
+        }
+        this._fetchingPromise = Promise.resolve().then(() => {
+            new Promise((resolve) => {
+                this.load({ reload: true });
+                this._fetchingPromise = undefined;
+                resolve();
+            });
+        });
     }
 }

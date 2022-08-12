@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests.common import Form, tagged
+from odoo.fields import Command
+from odoo.tests import Form, tagged
 from odoo.addons.partner_commission.tests.setup import TestCommissionsSetup
 
 
@@ -113,7 +114,11 @@ class TestSaleOrder(TestCommissionsSetup):
         so = form.save()
         so.action_confirm()
 
-        invoice_wizard = self.env['sale.advance.payment.inv'].with_context(tracking_disable=True).create({})
+        invoice_wizard = self.env['sale.advance.payment.inv'].with_context(tracking_disable=True).create({
+            'advance_payment_method': 'fixed',
+            'sale_order_ids': [Command.set(so.ids)],
+            'fixed_amount': 100,
+        })
 
-        inv = invoice_wizard._create_invoice(so, so.order_line[0], 100)
+        inv = invoice_wizard._create_invoices(so)
         self.assertEqual(inv.referrer_id, so.referrer_id)

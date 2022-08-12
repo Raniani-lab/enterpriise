@@ -15,22 +15,20 @@ class SaleAdvancePaymentInv(models.TransientModel):
        Otherwise, taxes are applied on downpayments, but not subtracted from the
        regular invoice, since we ignore negative lines, so get counted twice.
     """
-    _inherit = "sale.advance.payment.inv"
+    _inherit = 'sale.advance.payment.inv'
+
+    def _compute_product_id(self):
+        super()._compute_product_id()
+        dp_products = self.product_id
+        deposit_category = self._get_deposit_category()
+        if deposit_category and dp_products.tic_category_id != deposit_category:
+            dp_products.tic_category_id = deposit_category
 
     @api.model
     def _get_deposit_category(self):
-        category = self.env['product.tic.category'].search([('code', '=', '10005')], limit=1)
-        return category
+        return self.env['product.tic.category'].search([('code', '=', '10005')], limit=1)
 
-    @api.model
-    def _default_product_id(self):
-        product = super(SaleAdvancePaymentInv, self)._default_product_id()
-        deposit_category = self._get_deposit_category()
-        if product and product.tic_category_id != deposit_category:
-            product.tic_category_id = deposit_category
-        return product
-
-    def _prepare_deposit_product(self):
-        product_dict = super(SaleAdvancePaymentInv, self)._prepare_deposit_product()
-        product_dict.update(tic_category_id=self._get_deposit_category().id)
-        return product_dict
+    def _prepare_down_payment_product_values(self):
+        values = super()._prepare_down_payment_product_values()
+        values['tic_category_id'] = self._get_deposit_category().id
+        return values

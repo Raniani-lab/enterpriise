@@ -631,7 +631,7 @@
                     <record id="account_financial_report_be_charges0_balance" model="account.report.expression">
                         <field name="label">balance</field>
                         <field name="engine">aggregation</field>
-                        <field name="formula">BE_60_61.balance + BE_62.balance + BE_630.balance + BE_631_4.balance + BE_635_7.balance + BE_640_8.balance + BE_649.balance</field>
+                        <field name="formula">BE_60_61.balance + BE_62.balance + BE_630.balance + BE_631_4.balance + BE_635_8.balance + BE_640_8.balance + BE_649.balance</field>
                         <field name="date_scope">normal</field>
                     </record>
                 </field>
@@ -693,15 +693,15 @@
                         </field>
                     </record>
                     <record id="account_financial_report_be_provisions_pour_risques_et_charges0" model="account.report.line">
-                        <field name="name">635/7 - Provisions pour risques et charges: dotations (utilisations et reprises)</field>
-                        <field name="code">BE_635_7</field>
+                        <field name="name">635/8 - Provisions pour risques et charges: dotations (utilisations et reprises)</field>
+                        <field name="code">BE_635_8</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_be_provisions_pour_risques_et_charges0_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">account_codes</field>
-                                <field name="formula">637 + 635 + 636</field>
+                                <field name="formula">637 + 635 + 636 + 638</field>
                                 <field name="date_scope">normal</field>
                             </record>
                         </field>

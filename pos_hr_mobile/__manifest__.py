@@ -16,8 +16,6 @@
             'pos_hr_mobile/static/src/js/LoginScreenMobile.js',
             'pos_hr_mobile/static/src/scss/barcode_mobile.scss',
             'barcodes_mobile/static/src/scss/barcode_mobile.scss',
-        ],
-        'web.assets_qweb': [
             'pos_hr_mobile/static/src/xml/**/*',
         ],
     }

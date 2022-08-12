@@ -14,8 +14,6 @@
     'assets': {
         'web.assets_backend': [
             'hr_attendance_mobile/static/src/js/**/*',
-        ],
-        'web.assets_qweb': [
             'hr_attendance_mobile/static/src/xml/**/*',
         ],
     }

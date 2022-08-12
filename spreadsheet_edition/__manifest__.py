@@ -17,13 +17,15 @@
     'assets': {
         'spreadsheet.o_spreadsheet': [
             'spreadsheet_edition/static/src/bundle/**/*.js',
+            'spreadsheet_edition/static/src/bundle/**/*.xml',
+            ('remove', 'spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_breadcrumbs.xml'),
+            ('remove', 'spreadsheet_edition/static/src/bundle/pivot/pivot.xml'),
         ],
         'web.assets_backend': [
-            'spreadsheet_edition/static/src/assets/**/*.js',
             'spreadsheet_edition/static/src/**/*.scss',
-        ],
-        'web.assets_qweb': [
-            'spreadsheet_edition/static/src/**/*.xml',
+            'spreadsheet_edition/static/src/bundle/pivot/pivot.xml',
+            'spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_breadcrumbs.xml',
+            'spreadsheet_edition/static/src/assets/**/*',
         ],
         'web.qunit_suite_tests': [
             'spreadsheet_edition/static/tests/**/*',

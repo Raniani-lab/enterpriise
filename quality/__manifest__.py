@@ -30,9 +30,6 @@ Quality Base
         'web.assets_backend': [
             'quality/static/src/**/*',
         ],
-        'web.assets_qweb': [
-            'quality/static/src/**/*.xml',
-        ],
         'web.qunit_suite_tests': [
             'quality/static/tests/*.js',
         ],

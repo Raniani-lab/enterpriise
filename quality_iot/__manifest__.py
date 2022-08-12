@@ -17,10 +17,7 @@ This module provides the link between quality steps and IoT devices.
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'quality_iot/static/src/**/*.js',
-        ],
-        'web.assets_qweb': [
-            'quality_iot/static/src/**/*.xml',
+            'quality_iot/static/src/**/*',
         ],
     }
 }

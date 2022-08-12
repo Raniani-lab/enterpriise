@@ -18,10 +18,7 @@ Allows using IoT devices, such as scales and printers, for delivery operations.
     'auto_install': True,
     'assets': {
         'web.assets_backend': [
-            'delivery_iot/static/src/**/*.js',
-        ],
-        'web.assets_qweb': [
-            'delivery_iot/static/src/**/*.xml',
+            'delivery_iot/static/src/**/*',
         ],
     }
 }

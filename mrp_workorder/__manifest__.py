@@ -36,9 +36,6 @@
         'web.assets_backend': [
             'mrp_workorder/static/src/**/*.scss',
             'mrp_workorder/static/src/**/*.js',
-
-        ],
-        'web.assets_qweb': [
             'mrp_workorder/static/src/**/*.xml',
             'mrp_workorder/static/src/xml/**/*',
         ],

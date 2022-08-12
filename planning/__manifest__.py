@@ -47,6 +47,7 @@
             'planning/static/src/js/widgets/*',
             'planning/static/src/scss/planning_gantt.scss',
             'planning/static/src/js/tours/planning.js',
+            'planning/static/src/xml/**/*',
         ],
         'web.assets_frontend': [
             'planning/static/src/scss/planning_calendar_report.scss',
@@ -55,9 +56,6 @@
         ],
         'web.qunit_suite_tests': [
             'planning/static/tests/**/*',
-        ],
-        'web.assets_qweb': [
-            'planning/static/src/xml/**/*',
         ],
         'web.assets_tests': [
             'planning/static/tests/tours/*',

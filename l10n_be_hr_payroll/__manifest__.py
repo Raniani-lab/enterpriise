@@ -139,8 +139,6 @@ Prerequisites:
     'assets': {
         'web.assets_backend': [
             'l10n_be_hr_payroll/static/src/js/**/*',
-        ],
-        'web.assets_qweb': [
             'l10n_be_hr_payroll/static/src/xml/**/*',
         ],
     },

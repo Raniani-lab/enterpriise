@@ -1,7 +1,7 @@
 odoo.define('project_timeshee.ui', function (require ) {
     "use strict";
 
-    var ajax = require('web.ajax');
+    const { loadBundle } = require("@web/core/assets");
     var config = require('web.config');
     var Context = require('web.Context');
     var core = require('web.core');
@@ -46,7 +46,6 @@ odoo.define('project_timeshee.ui', function (require ) {
     //Main widget to instantiate the app
     var ProjectTimesheet = Widget.extend(ServiceProviderMixin, {
         template: "app",
-        xmlDependencies: ['/project_timesheet_synchro/static/src/xml/project_timesheet.xml'],
         jsLibs: [
             rootPath + '/web/static/lib/Chart/Chart.js'
         ],
@@ -84,7 +83,7 @@ odoo.define('project_timeshee.ui', function (require ) {
         willStart: function() {
             var self = this;
             var defs = [
-                ajax.loadLibs(this)
+                loadBundle(this)
             ];
             if(isDesktop) {
                 defs.push(session.session_reload().then(function() {

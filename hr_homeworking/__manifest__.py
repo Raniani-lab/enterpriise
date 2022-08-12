@@ -30,8 +30,6 @@
         'web.assets_backend': [
             'hr_homeworking/static/src/js/**/*',
             'hr_homeworking/static/src/scss/**/*',
-        ],
-        'web.assets_qweb': [
             'hr_homeworking/static/src/xml/**/*',
         ],
     },

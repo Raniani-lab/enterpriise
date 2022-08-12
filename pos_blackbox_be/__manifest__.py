@@ -39,11 +39,9 @@ No modified version is certified and supported by Odoo SA.
     'installable': False,
     'license': 'OEEL-1',
     'assets': {
-        'web.assets_qweb': [
-            'pos_blackbox_be/static/src/xml/**/*',
-        ],
         'point_of_sale.assets': [
             'pos_blackbox_be/static/src/js/**/*',
+            'pos_blackbox_be/static/src/xml/**/*',
         ],
     }
 }

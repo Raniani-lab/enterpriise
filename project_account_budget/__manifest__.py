@@ -17,9 +17,6 @@
         'web.assets_backend': [
             'project_account_budget/static/src/components/**/*',
         ],
-        'web.assets_qweb': [
-            'project_account_budget/static/src/components/**/*.xml',
-        ],
     },
     'auto_install': True,
     'license': 'OEEL-1',

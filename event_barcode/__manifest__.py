@@ -23,8 +23,6 @@ the registration is confirmed.
         'web.assets_backend': [
             'event_barcode/static/src/js/event_barcode.js',
             'event_barcode/static/src/scss/event_barcode.scss',
-        ],
-        'web.assets_qweb': [
             'event_barcode/static/src/xml/**/*',
         ],
         'web.report_assets_common': [

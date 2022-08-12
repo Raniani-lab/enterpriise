@@ -34,8 +34,6 @@
             'account_consolidation/static/src/js/move_line_list/renderer.js',
             'account_consolidation/static/src/js/move_line_list/view.js',
             'account_consolidation/static/src/js/json_field.js',
-        ],
-        'web.assets_qweb': [
             'account_consolidation/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [

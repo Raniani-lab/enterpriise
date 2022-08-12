@@ -10,9 +10,6 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
     events: {
         'change select[id="appointment_type_id"]': '_onAppointmentTypeChange',
     },
-    xmlDependencies: [
-        '/appointment/static/src/xml/appointment_svg.xml',
-    ],
 
     /**
      * @constructor

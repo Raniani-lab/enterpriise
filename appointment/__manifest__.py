@@ -49,7 +49,11 @@
             'appointment/static/src/scss/appointment.scss',
             'appointment/static/src/js/appointment_select_appointment_type.js',
             'appointment/static/src/js/appointment_select_appointment_slot.js',
+            'appointment/static/src/xml/appointment_svg.xml',
             'appointment/static/src/js/appointment_form.js',
+            'appointment/static/src/xml/appointment_slots.xml',
+            'appointment/static/src/xml/appointment_svg.xml',
+            'appointment/static/src/xml/appointment_no_slot.xml',
         ],
         'web.assets_backend': [
             'appointment/static/src/scss/appointment_type_views.scss',
@@ -60,12 +64,10 @@
             'appointment/static/src/js/calendar_model.js',
             'appointment/static/src/js/calendar_renderer.js',
             'appointment/static/src/views/*',
+            'appointment/static/src/xml/appointment_scheduling.xml',
         ],
         'web_studio.studio_assets': [
             'appointment/static/src/scss/legacy_appointment_type_views.scss',
-        ],
-        'web.assets_qweb': [
-            'appointment/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [
             'appointment/static/tests/*',

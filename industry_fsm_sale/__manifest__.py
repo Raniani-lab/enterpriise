@@ -34,9 +34,6 @@ Create Sales order with timesheets and products from tasks
         'web.qunit_suite_tests': [
             'industry_fsm_sale/static/tests/**/*',
         ],
-        'web.assets_qweb': [
-            'industry_fsm_sale/static/src/components/**/*.xml',
-        ],
     },
     'license': 'OEEL-1',
 }

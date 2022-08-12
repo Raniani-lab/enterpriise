@@ -16,7 +16,7 @@ Validate stock moves for Field Service
         'wizard/fsm_stock_tracking_views.xml',
     ],
     'assets': {
-        'web.assets_qweb': [
+        'web.assets_backend': [
             'industry_fsm_stock/static/src/fsm_product_quantity/*.xml',
         ],
         'web.qunit_suite_tests': [

@@ -20,9 +20,6 @@ Create customizable worksheet
         'web.assets_backend': [
             'worksheet/static/src/**/*',
         ],
-        'web.assets_qweb': [
-            'worksheet/static/src/**/*.xml',
-        ],
         'web.qunit_suite_tests': [
             'worksheet/static/tests/*.js',
         ],

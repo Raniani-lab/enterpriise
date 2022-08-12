@@ -1,7 +1,7 @@
 odoo.define('web_studio.AbstractViewEditor', function (require) {
 "use strict";
 
-var ajax = require('web.ajax');
+const { loadBundle } = require("@web/core/assets");
 var AbstractView = require('web.AbstractView');
 const RendererWrapper = require('web.RendererWrapper');
 const { ComponentWrapper } = require("web.OwlCompatibility");
@@ -75,7 +75,7 @@ AbstractView.include({
             const withSampleData = ['graph', 'pivot'].includes(options.viewType) ? true : false;
             return Promise.all([
                 self._loadData(model, { withSampleData }),
-                ajax.loadLibs(self)
+                loadBundle(self)
             ]).then(function (results) {
                 var { state } = results[0];
                 if (options.x2mField) {

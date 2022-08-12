@@ -25,8 +25,5 @@ can embed graph and/or pivot views, and displays aggregate values.
         'web.qunit_suite_tests': [
             'web_dashboard/static/tests/**/*.js',
         ],
-        'web.assets_qweb': [
-            'web_dashboard/static/src/**/*.xml',
-        ],
     }
 }

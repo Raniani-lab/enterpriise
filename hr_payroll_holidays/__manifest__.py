@@ -23,8 +23,6 @@
     'assets': {
         'web.assets_backend': [
             'hr_payroll_holidays/static/src/js/**/*',
-        ],
-        'web.assets_qweb': [
             'hr_payroll_holidays/static/src/xml/**/*',
         ],
     },

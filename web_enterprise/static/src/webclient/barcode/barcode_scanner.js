@@ -3,7 +3,7 @@
 
 import Dialog from "web.OwlDialog";
 import { delay } from "web.concurrency";
-import { loadJS } from "@web/core/assets";
+import { loadJS, templates } from "@web/core/assets";
 
 const { App, Component, EventBus, onMounted, onWillStart, onWillUnmount, useRef } = owl;
 import { _t } from "web.core";
@@ -265,7 +265,7 @@ export async function scanBarcode(facingMode = 'environment') {
     const appForBarcodeDialog = new App(BarcodeDialog, {
         env: owl.Component.env,
         dev: owl.Component.env.isDebug(),
-        templates: window.__OWL_TEMPLATES__,
+        templates,
         translatableAttributes: ["data-tooltip"],
         translateFn: _t,
         props: {

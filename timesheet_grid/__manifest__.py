@@ -62,6 +62,7 @@
             'timesheet_grid/static/src/js/widgets/timesheets_m2o_widget.js',
             'timesheet_grid/static/src/js/widgets/timesheets_m2o_task.js',
             'timesheet_grid/static/src/js/widgets/timesheets_m2o_project.js',
+            'timesheet_grid/static/src/xml/**/*',
         ],
         'web.assets_tests': [
             'timesheet_grid/static/tests/tours/timesheet_record_time.js',
@@ -71,9 +72,6 @@
             ('after', 'web_grid/static/tests/mock_server.js', 'timesheet_grid/static/tests/timesheet_grid_tests.js'),
             ('after', 'web_grid/static/tests/mock_server.js', 'timesheet_grid/static/tests/timesheet_timer_grid_tests.js'),
             ('after', 'web_grid/static/tests/mock_server.js', 'timesheet_grid/static/tests/task_progress_gantt_test.js'),
-        ],
-        'web.assets_qweb': [
-            'timesheet_grid/static/src/xml/**/*',
         ],
     }
 }

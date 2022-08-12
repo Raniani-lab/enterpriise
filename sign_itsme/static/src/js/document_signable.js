@@ -1,9 +1,8 @@
 /** @odoo-module **/
 
-import ajax from "web.ajax";
 import session from "web.session";
 import config from "web.config";
-import { _t, qweb } from "web.core";
+import { _t } from "web.core";
 import { SignableDocument, SignInfoDialog, ThankYouDialog } from '@sign/js/common/document_signable';
 
 function deleteQueryParamFromURL(param) {
@@ -68,8 +67,6 @@ const ItsmeDialog = SignInfoDialog.extend({
 SignableDocument.include({
     start: async function () {
         const res = this._super(this, arguments);
-        // Check if it's possible to add my templates.xml file content inside the XML file that is loaded in sign module so we don't have to load 2 XML files
-        await ajax.loadXML("/sign_itsme/static/src/xml/templates.xml", qweb);
         this.showThankYouDialog = this.$("#o_sign_show_thank_you_dialog").length > 0;
         this.errorMessage = this.$("#o_sign_show_error_message").val();
         if (this.errorMessage) {

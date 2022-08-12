@@ -13,6 +13,8 @@ import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
 import testUtils from "web.test_utils";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { session } from "@web/session";
+import { templates } from "@web/core/assets";
+
 
 const { App, EventBus } = owl;
 const patchDate = testUtils.mock.patchDate;
@@ -28,7 +30,7 @@ async function createHomeMenu(homeMenuProps) {
     const app = new App(HomeMenu, {
         env,
         props: homeMenuProps,
-        templates: window.__OWL_TEMPLATES__,
+        templates,
         test: true,
     });
     const homeMenu = await app.mount(target);

@@ -22,12 +22,10 @@
             'social_facebook/static/src/js/stream_post_facebook_comments.js',
             'social_facebook/static/src/js/stream_post_kanban_controller.js',
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_facebook/static/src/js/social_post_formatter_mixin.js'),
+            'social_facebook/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [
             'social_facebook/static/src/js/tests/**/*',
-        ],
-        'web.assets_qweb': [
-            'social_facebook/static/src/xml/**/*',
         ],
     },
     'license': 'OEEL-1',

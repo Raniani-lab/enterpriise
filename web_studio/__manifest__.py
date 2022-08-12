@@ -62,7 +62,12 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/home_menu/**/*.js',
             'web_studio/static/src/views/**/*.js',
             'web_studio/static/src/approval/**/*',
+            'web_studio/static/src/**/*.xml',
+            ('remove', 'web_studio/static/src/legacy/xml/sidebar_web_editor.xml'),
         ],
+        'web_editor.assets_wysiwyg': {
+            'web_studio/static/src/legacy/xml/sidebar_web_editor.xml',
+        },
         'web.assets_backend_prod_only': [
             'web_studio/static/src/client_action/studio_action_loader.js',
             'web_studio/static/src/client_action/app_creator/app_creator_shortcut.js',
@@ -116,6 +121,8 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/scss/sidebar.scss',
             'web_studio/static/src/legacy/scss/view_editor_manager.scss',
             'web_studio/static/src/legacy/scss/xml_editor.scss',
+
+            'web_studio/static/src/legacy/xml/new_model.xml',
         ],
         'web.assets_tests': [
             'web_studio/static/tests/legacy/tours/**/*',
@@ -142,10 +149,6 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/tests/legacy/test_utils.js',
             'web_studio/static/tests/legacy/reports/**/*.js',
             'web_studio/static/tests/legacy/views/**/*.js',
-        ],
-        'web.assets_qweb': [
-            'web_studio/static/src/home_menu/home_menu.xml',
-            'web_studio/static/src/**/*.xml',
         ],
         'web.qunit_mobile_suite_tests': [
             'web_studio/static/tests/views/disable_patch.js',

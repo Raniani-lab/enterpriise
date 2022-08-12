@@ -16,9 +16,6 @@
         'views/views.xml',
     ],
     'assets': {
-        'web.assets_qweb': [
-            'web_mobile/static/src/xml/**/*',
-        ],
         'web.assets_backend': [
             'web_mobile/static/src/**/*',
         ],

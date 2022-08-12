@@ -12,11 +12,9 @@
         'views/locations_fedex_templates.xml'
     ],
     'assets': {
-        'web.assets_qweb': [
-            'website_delivery_fedex/static/src/xml/fedex_pickup_locations.xml',
-        ],
         'web.assets_frontend': [
             'website_delivery_fedex/static/src/js/website_sale_delivery.js',
+            'website_delivery_fedex/static/src/xml/fedex_pickup_locations.xml',
         ],
     },
 

@@ -35,8 +35,6 @@ Product Life Management
         'web.assets_backend': [
             'mrp_plm/static/src/**/*.js',
             'mrp_plm/static/src/**/*.scss',
-        ],
-        'web.assets_qweb': [
             'mrp_plm/static/src/**/*.xml',
         ],
     }

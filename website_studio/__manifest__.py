@@ -27,8 +27,6 @@ model. Furthermore, you can create a new website form or edit an existing one.
         'web_studio.studio_assets': [
             'website_studio/static/src/js/**/*.js',
             'website_studio/static/src/scss/**/*.scss',
-        ],
-        'web.assets_qweb': [
             'website_studio/static/src/xml/*.xml',
         ],
         'web.qunit_suite_tests': [

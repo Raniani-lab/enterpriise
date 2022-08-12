@@ -148,7 +148,6 @@ var TweetWall = Widget.extend({
 
 publicWidget.registry.websiteTwitterWall = publicWidget.Widget.extend({
     selector: '.o-tw-container',
-    xmlDependencies: ['/website_twitter_wall/static/src/xml/website_twitter_wall_tweet.xml'],
     events: {
         'click .o-tw-tweet-delete': '_onDeleteTweet',
         'click .o-tw-live-btn': '_onLiveButton',

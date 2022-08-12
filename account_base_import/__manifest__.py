@@ -25,8 +25,6 @@ Accounting Import
             'account_base_import/static/src/js/account_import_buttons.js',
             'account_base_import/static/src/js/account_import_guide.js',
             'account_base_import/static/src/js/account_setup_import.js',
-        ],
-        'web.assets_qweb': [
             'account_base_import/static/src/xml/**/*',
         ],
     }

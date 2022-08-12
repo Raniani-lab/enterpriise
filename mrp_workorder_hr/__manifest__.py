@@ -25,9 +25,6 @@ The actual till still requires one user but an unlimited number of employees can
         'web.assets_backend': [
             'mrp_workorder_hr/static/src/**/*.js',
             'mrp_workorder_hr/static/src/**/*.scss',
-
-        ],
-        'web.assets_qweb': [
             'mrp_workorder_hr/static/src/**/*.xml',
         ],
         'web.assets_tests': [

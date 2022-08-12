@@ -31,8 +31,6 @@
             'sale_timesheet_enterprise/static/src/js/sale_timesheet_grid_renderer.js',
             'sale_timesheet_enterprise/static/src/js/sale_timesheet_grid_model.js',
             'sale_timesheet_enterprise/static/src/js/timesheets_m2o_soline.js',
-        ],
-        'web.assets_qweb': [
             'sale_timesheet_enterprise/static/src/xml/*',
         ],
     }

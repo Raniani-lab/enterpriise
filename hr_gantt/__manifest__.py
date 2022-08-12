@@ -13,12 +13,10 @@
     'assets': {
         'web.assets_backend': [
             'hr_gantt/static/src/js/**/*',
+            'hr_gantt/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [
             'hr_gantt/static/tests/**/*',
-        ],
-        'web.assets_qweb': [
-            'hr_gantt/static/src/xml/**/*',
         ],
     }
 }

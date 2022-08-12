@@ -29,6 +29,8 @@
             'account_invoice_extract/static/src/js/invoice_extract_form_view.js',
             'account_invoice_extract/static/src/scss/account_invoice_extract.scss',
             'account_invoice_extract/static/src/css/account_invoice_extract_box_layer.css',
+            'account_invoice_extract/static/src/xml/invoice_extract_box.xml',
+            'account_invoice_extract/static/src/xml/invoice_extract_button.xml',
         ],
         'web.qunit_suite_tests': [
             'account_invoice_extract/static/src/tests/helpers/*',
@@ -39,10 +41,6 @@
             'account_invoice_extract/static/src/tests/invoice_extract_fields_tests.js',
             'account_invoice_extract/static/src/tests/invoice_extract_field_button_tests.js',
             'account_invoice_extract/static/src/tests/invoice_extract_form_view_tests.js',
-        ],
-        'web.assets_qweb': [
-            'account_invoice_extract/static/src/xml/invoice_extract_box.xml',
-            'account_invoice_extract/static/src/xml/invoice_extract_button.xml',
         ],
     }
 }

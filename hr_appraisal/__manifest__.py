@@ -54,8 +54,5 @@ Key Features
         'web.assets_backend': [
             'hr_appraisal/static/src/**/*',
         ],
-        'web.assets_qweb': [
-            'hr_appraisal/static/src/**/*.xml',
-        ],
     }
 }

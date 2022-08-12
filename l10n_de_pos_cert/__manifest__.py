@@ -40,8 +40,6 @@ Install this if you are using the Point of Sale app in Germany.
             'l10n_de_pos_cert/static/src/js/ProductScreen.js',
             'l10n_de_pos_cert/static/src/js/TicketScreen.js',
             'l10n_de_pos_cert/static/src/js/utils.js',
-        ],
-        'web.assets_qweb': [
             'l10n_de_pos_cert/static/src/xml/**/*',
         ],
     },

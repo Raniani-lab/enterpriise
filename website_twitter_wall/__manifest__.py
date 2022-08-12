@@ -26,6 +26,7 @@ Turn your event into an interactive experience by letting everybody post to your
         'web.assets_frontend': [
             'website_twitter_wall/static/src/js/website_twitter_wall.js',
             'website_twitter_wall/static/src/scss/website_twitter_wall.scss',
+            'website_twitter_wall/static/src/xml/website_twitter_wall_tweet.xml',
         ],
     }
 }

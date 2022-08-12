@@ -20,8 +20,6 @@
             'social_linkedin/static/src/js/stream_post_linkedin_comments.js',
             'social_linkedin/static/src/scss/social_linkedin.scss',
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_linkedin/static/src/js/social_post_formatter_mixin.js'),
-        ],
-        'web.assets_qweb': [
             'social_linkedin/static/src/xml/**/*',
         ],
     },

@@ -68,6 +68,11 @@
             'documents/static/src/owl/components/pdf_manager/pdf_manager.scss',
             'documents/static/src/owl/components/pdf_page/pdf_page.scss',
             'documents/static/src/owl/components/pdf_group_name/pdf_group_name.scss',
+            'documents/static/src/components/*/*.xml',
+            'documents/static/src/views/**/*.xml',
+            'documents/static/src/owl/components/pdf_manager/pdf_manager.xml',
+            'documents/static/src/owl/components/pdf_page/pdf_page.xml',
+            'documents/static/src/owl/components/pdf_group_name/pdf_group_name.xml',
         ],
         'documents.public_page_assets': [
             ('include', 'web._assets_helpers'),
@@ -91,13 +96,6 @@
         'web.qunit_mobile_suite_tests': [
             'documents/static/tests/documents_test_utils.js',
             'documents/static/tests/documents_kanban_mobile_tests.js',
-        ],
-        'web.assets_qweb': [
-            'documents/static/src/components/*/*.xml',
-            'documents/static/src/views/**/*.xml',
-            'documents/static/src/owl/components/pdf_manager/pdf_manager.xml',
-            'documents/static/src/owl/components/pdf_page/pdf_page.xml',
-            'documents/static/src/owl/components/pdf_group_name/pdf_group_name.xml',
         ],
     }
 }

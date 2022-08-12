@@ -14,8 +14,6 @@
     'assets': {
         'web.assets_backend': [
             'event_barcode_mobile/static/src/js/**/*',
-        ],
-        'web.assets_qweb': [
             'event_barcode_mobile/static/src/xml/**/*',
         ],
     }

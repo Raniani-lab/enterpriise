@@ -8,10 +8,6 @@ const {qweb, _t} = require('web.core');
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
-    xmlDependencies: [
-        '/hr_contract_salary/static/src/xml/resume_sidebar.xml',
-    ],
-
     events: {
         "change .advantage_input": "onchangeAdvantage",
         "change input.folded": "onchangeFolded",

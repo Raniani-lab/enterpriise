@@ -36,8 +36,6 @@ Allows use of stock application to manage rentals inventory
     'assets': {
         'web.assets_backend': [
             'sale_stock_renting/static/src/js/**/*',
-        ],
-        'web.assets_qweb': [
             'sale_stock_renting/static/src/xml/**/*',
         ],
     },

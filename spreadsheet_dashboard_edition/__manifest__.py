@@ -21,8 +21,6 @@
         'web.assets_backend': [
             'spreadsheet_dashboard_edition/static/src/assets/**/*.js',
             'spreadsheet_dashboard_edition/static/src/**/*.scss',
-        ],
-        'web.assets_qweb': [
             'spreadsheet_dashboard_edition/static/src/**/*.xml',
         ],
         'web.qunit_suite_tests': [

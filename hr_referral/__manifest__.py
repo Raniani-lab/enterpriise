@@ -43,9 +43,7 @@
             'hr_referral/static/src/scss/hr_referral.scss',
             'hr_referral/static/src/scss/hr_onboarding.scss',
             'hr_referral/static/src/scss/progress_bar.scss',
-        ],
-        'web.assets_qweb': [
-            'hr_referral/static/src/views/*.xml',
+            'hr_referral/static/src/**/*.xml',
         ],
     },
     'license': 'OEEL-1',

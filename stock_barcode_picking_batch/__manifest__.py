@@ -21,14 +21,10 @@
     'auto_install': True,
     'assets': {
         'web.assets_backend': [
-            'stock_barcode_picking_batch/static/src/**/*.js',
-            'stock_barcode_picking_batch/static/src/**/*.scss',
+            'stock_barcode_picking_batch/static/src/**/*',
         ],
         'web.assets_tests': [
             'stock_barcode_picking_batch/static/tests/tours/**/*.js',
-        ],
-        'web.assets_qweb': [
-            'stock_barcode_picking_batch/static/src/**/*.xml',
         ],
     },
     'license': 'OEEL-1',

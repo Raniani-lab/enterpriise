@@ -27,11 +27,7 @@
     'post_init_hook': '_populate_skills_for_confirmed',
     'assets': {
         'web.assets_backend': [
-            'hr_appraisal_skills/static/src/**/**.js',
-            'hr_appraisal_skills/static/src/**/**.scss',
-        ],
-        'web.assets_qweb': [
-            'hr_appraisal_skills/static/src/**/**.xml',
+            'hr_appraisal_skills/static/src/**/**',
         ],
     },
     'license': 'OEEL-1',

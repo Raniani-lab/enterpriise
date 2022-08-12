@@ -75,6 +75,7 @@ Let your customers follow the signature process easily.
         ],
         'web.assets_common': [
             'sign/static/src/js/common/*',
+            'sign/static/src/xml/sign_common.xml',
             'sign/static/src/scss/sign_common.scss',
         ],
         'web.assets_backend': [
@@ -83,6 +84,9 @@ Let your customers follow the signature process easily.
             'sign/static/src/js/activity.js',
             'sign/static/src/components/sign_request/sign_request.js',
             'sign/static/src/scss/sign_backend.scss',
+            'sign/static/src/xml/*.xml',
+            'sign/static/src/components/activity/activity.xml',
+            'sign/static/src/components/sign_request/sign_request.xml',
         ],
         'web.assets_frontend': [
             'sign/static/src/scss/sign_frontend.scss',
@@ -92,11 +96,6 @@ Let your customers follow the signature process easily.
         ],
         'web.qunit_suite_tests': [
             'sign/static/tests/document_backend_tests.js',
-        ],
-        'web.assets_qweb': [
-            'sign/static/src/xml/*.xml',
-            'sign/static/src/components/activity/activity.xml',
-            'sign/static/src/components/sign_request/sign_request.xml',
         ],
     }
 }

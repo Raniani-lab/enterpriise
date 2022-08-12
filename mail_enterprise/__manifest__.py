@@ -30,15 +30,13 @@ screen devices.
             'mail_enterprise/static/src/components/*/*.js',
             'mail_enterprise/static/src/scss/mail_enterprise_mobile.scss',
             'mail_enterprise/static/src/widgets/*/*.js',
+            'mail_enterprise/static/src/components/*/*.xml',
         ],
         'web.assets_tests': [
             'mail_enterprise/static/tests/tours/**/*',
         ],
         'web.qunit_suite_tests': [
             'mail_enterprise/static/tests/qunit_suite_tests/**/*.js',
-        ],
-        'web.assets_qweb': [
-            'mail_enterprise/static/src/components/*/*.xml',
         ],
     }
 }

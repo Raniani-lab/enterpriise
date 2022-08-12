@@ -20,7 +20,7 @@
         'data/mrp_workorder_demo.xml'
     ],
     'assets': {
-        'web.assets_qweb': [
+        'web.assets_backend': [
             'quality_mrp_workorder/static/src/**/*.xml',
         ],
     },

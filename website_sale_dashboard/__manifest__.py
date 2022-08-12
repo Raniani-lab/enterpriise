@@ -18,6 +18,7 @@ It also provides new tools to analyse your data.
     'assets': {
         'web.assets_backend': [
             'website_sale_dashboard/static/src/js/website_sale_dashboard_view.js',
+            'website_sale_dashboard/static/src/xml/website_sale_dashboard.xml',
         ],
         'web.assets_backend_legacy_lazy': [
             'website_sale_dashboard/static/src/js/website_sale_dashboard_legacy.js',
@@ -25,9 +26,6 @@ It also provides new tools to analyse your data.
         ],
         'web.qunit_suite_tests': [
             'website_sale_dashboard/static/tests/**/*',
-        ],
-        'web.assets_qweb': [
-            'website_sale_dashboard/static/src/xml/*.xml',
         ],
     }
 }

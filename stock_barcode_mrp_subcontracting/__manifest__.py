@@ -16,8 +16,6 @@
     'assets': {
         'web.assets_backend': [
             'stock_barcode_mrp_subcontracting/static/src/**/*.js',
-        ],
-        'web.assets_qweb': [
             'stock_barcode_mrp_subcontracting/static/src/**/*.xml',
         ],
         'web.assets_tests': [

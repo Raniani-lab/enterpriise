@@ -33,8 +33,6 @@ This module enables the barcode scanning feature for the warehouse management sy
         'web.assets_backend': [
             'stock_barcode/static/src/**/*.js',
             'stock_barcode/static/src/**/*.scss',
-        ],
-        'web.assets_qweb': [
             'stock_barcode/static/src/**/*.xml',
         ],
         'web.qunit_suite_tests': [

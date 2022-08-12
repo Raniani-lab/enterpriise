@@ -75,12 +75,10 @@ Features:
             'helpdesk/static/src/js/helpdesk_widget.js',
             'helpdesk/static/src/views/**/*',
             'helpdesk/static/src/js/tours/helpdesk.js',
+            'helpdesk/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [
             'helpdesk/static/tests/**/*',
-        ],
-        'web.assets_qweb': [
-            'helpdesk/static/src/xml/**/*',
         ],
     }
 }

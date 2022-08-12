@@ -19,6 +19,7 @@
     'assets': {
         'web.assets_frontend': [
             'hr_contract_salary_payroll/static/src/js/*.js',
+            'hr_contract_salary_payroll/static/src/xml/*.xml',
         ],
         'web.assets_backend': [
             'hr_contract_salary_payroll/static/src/js/tours/*.js',

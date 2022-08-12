@@ -684,7 +684,7 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("basic rendering of a graph tag", async function (assert) {
-        assert.expect(10);
+        assert.expect(11);
 
         serverData.views["test_report,some_xmlid,graph"] = `
             <graph>
@@ -730,7 +730,7 @@ QUnit.module("Views", (hooks) => {
             "should have rendered an additional switch button"
         );
 
-        assert.verifySteps(["get_views", "get_views", "web_read_group"]);
+        assert.verifySteps(["get_views", "get_views", "web_read_group", "/web/static/lib/Chart/Chart.js"]);
     });
 
     QUnit.test("graph tag without aggregate and invisible field", async function (assert) {

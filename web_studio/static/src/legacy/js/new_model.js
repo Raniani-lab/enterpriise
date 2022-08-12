@@ -9,7 +9,6 @@ const CommonMenuDialog = require('web_studio.CommonMenuDialog');
 const _t = core._t;
 
 const NewModelItem = Widget.extend({
-    xmlDependencies: ['/web_studio/static/src/legacy/xml/new_model.xml'],
     template: 'web_studio.NewModel',
     events: {
         'click .o_web_create_new_model': '_onClick',

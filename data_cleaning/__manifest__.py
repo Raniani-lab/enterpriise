@@ -26,8 +26,6 @@
     'assets': {
         'web.assets_backend': [
             'data_cleaning/static/src/views/*.js',
-        ],
-        'web.assets_qweb': [
             'data_cleaning/static/src/views/*.xml',
         ],
     },

@@ -44,7 +44,7 @@ creates next activities for the related approvers.
             'approvals/static/src/components/*/*',
         ],
         'web.assets_backend': [
-            'approvals/static/src/components/*/*.js',
+            'approvals/static/src/components/*/*',
         ],
         'web.assets_tests': [
             'approvals/static/tests/tours/**/*',
@@ -54,10 +54,6 @@ creates next activities for the related approvers.
         ],
         'web.qunit_suite_tests': [
             'approvals/static/tests/qunit_suite_tests/**/*.js',
-        ],
-        'web.assets_qweb': [
-            'approvals/static/src/components/*/*.xml',
-            'approvals/static/src/xml/*.xml',
         ],
     },
     'license': 'OEEL-1',

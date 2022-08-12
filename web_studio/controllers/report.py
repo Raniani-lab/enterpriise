@@ -284,8 +284,17 @@ class WebStudioReportController(main.WebStudioController):
         })
         root = etree.fromstring(html).getroottree()
         links = [link.get('href') for link in root.findall("//link")]
-        link_ids = [int(link.replace('/web/assets/', '').split('-', 1)[0]) for link in links]
-        css = {a.name: base64.b64decode(a.datas) for a in Attachment.browse(link_ids)}
+        if 'assets' in request.session.debug:
+            domain = []
+            for link in links:
+                if domain:
+                    domain = ['|'] + domain
+                domain.append(('name', '=', link.replace('/web/assets/debug/', '')))
+            attachments = Attachment.search(domain)
+        else:
+            link_ids = [int(link.replace('/web/assets/', '').split('-', 1)[0]) for link in links]
+            attachments = Attachment.browse(link_ids)
+        css = {a.name: base64.b64decode(a.datas) for a in attachments}
 
         return {
             "css": css

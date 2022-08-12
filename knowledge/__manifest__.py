@@ -44,10 +44,11 @@
             'knowledge/static/src/scss/knowledge_common.scss',
             'knowledge/static/src/components/*/*.scss',
             'knowledge/static/src/components/*/*.js',
+            'knowledge/static/src/components/*/*.xml',
             'knowledge/static/src/scss/knowledge_views.scss',
             'knowledge/static/src/scss/knowledge_editor.scss',
+            'knowledge/static/src/xml/knowledge_editor.xml',
             'knowledge/static/src/scss/knowledge_blocks.scss',
-            'knowledge/static/src/components/*/*.js',
             'knowledge/static/src/js/knowledge_controller.js',
             'knowledge/static/src/js/knowledge_renderers.js',
             'knowledge/static/src/js/knowledge_views.js',
@@ -65,7 +66,11 @@
             'knowledge/static/src/js/knowledge_plugin.js',
             'knowledge/static/src/js/field_html.js',
             'knowledge/static/src/js/knowledge_service.js',
-            'knowledge/static/src/views/*.js'
+            'knowledge/static/src/views/*.js',
+            'knowledge/static/src/xml/knowledge_templates.xml',
+            'knowledge/static/src/xml/chatter_topbar.xml',
+            'knowledge/static/src/xml/knowledge_command_palette.xml',
+            'knowledge/static/src/xml/knowledge_toolbars.xml',
         ],
         'web.assets_frontend': [
             'knowledge/static/src/scss/knowledge_common.scss',
@@ -79,17 +84,10 @@
         ],
         'web_editor.assets_wysiwyg': [
             'knowledge/static/src/js/wysiwyg/knowledge_article_link.js',
+            'knowledge/static/src/xml/knowledge_editor.xml',
             'knowledge/static/src/js/wysiwyg.js',
             'knowledge/static/src/js/knowledge_toolbars_edit.js',
             'knowledge/static/src/js/knowledge_clipboard_whitelist.js'
-        ],
-        'web.assets_qweb': [
-            'knowledge/static/src/components/*/*.xml',
-            'knowledge/static/src/xml/knowledge_editor.xml',
-            'knowledge/static/src/xml/knowledge_templates.xml',
-            'knowledge/static/src/xml/chatter_topbar.xml',
-            'knowledge/static/src/xml/knowledge_command_palette.xml',
-            'knowledge/static/src/xml/knowledge_toolbars.xml',
         ],
         'web.assets_tests': [
             'knowledge/static/tests/tours/*.js',

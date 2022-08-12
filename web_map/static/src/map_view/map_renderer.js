@@ -81,7 +81,9 @@ export class MapRenderer extends Component {
     onWillUnmount() {
         this.removeMarkers();
         this.removeRoutes();
-        this.leafletMap.remove();
+        if (this.leafletMap) {
+            this.leafletMap.remove();
+        }
     }
 
     /**

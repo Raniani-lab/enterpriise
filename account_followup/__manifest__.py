@@ -55,12 +55,10 @@ of recall defined. You can define different policies for different companies.
             'account_followup/static/src/js/followup_form_renderer.js',
             'account_followup/static/src/js/followup_form_controller.js',
             'account_followup/static/src/scss/account_followup_report.scss',
+            'account_followup/static/src/xml/**/*',
         ],
         'web.assets_tests': [
             'account_followup/static/tests/tours/**/*',
-        ],
-        'web.assets_qweb': [
-            'account_followup/static/src/xml/**/*',
         ],
     }
 }

@@ -13,10 +13,7 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'stock_barcode_product_expiry/static/src/**/*.js',
-        ],
-        'web.assets_qweb': [
-            'stock_barcode_product_expiry/static/src/**/*.xml',
+            'stock_barcode_product_expiry/static/src/**/*',
         ],
         'web.assets_tests': [
             'stock_barcode_product_expiry/static/tests/tours/**/*',

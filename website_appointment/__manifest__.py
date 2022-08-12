@@ -40,10 +40,8 @@ Allow clients to Schedule Appointments through your Website
         'web.assets_frontend': [
             'website_appointment/static/src/scss/website_appointment.scss',
             'website_appointment/static/src/scss/website_appointment_editor.scss',
-            'website_appointment/static/src/js/appointment_select_appointment_slot.js',
-        ],
-        'web.assets_qweb': [
-            'website_appointment/static/src/xml/**/*',
+            'website_appointment/static/src/xml/website_appointment_templates.xml',
+            'website_appointment/static/src/xml/appointment_no_slot.xml',
         ],
         'website.assets_editor': [
             'website_appointment/static/src/js/systray_items/*.js',

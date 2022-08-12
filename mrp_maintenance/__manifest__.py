@@ -23,7 +23,7 @@ Maintenance in MRP
     ],
     'demo': ['data/mrp_maintenance_demo.xml'],
     'assets': {
-        'web.assets_qweb': [
+        'web.assets_backend': [
             'mrp_maintenance/static/src/**/*.xml',
         ],
     },

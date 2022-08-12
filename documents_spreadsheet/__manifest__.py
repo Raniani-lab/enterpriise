@@ -26,14 +26,17 @@
     'assets': {
         'spreadsheet.o_spreadsheet': [
             'documents_spreadsheet/static/src/bundle/**/*.js',
+            'documents_spreadsheet/static/src/bundle/**/*.xml',
+            ('remove', 'documents_spreadsheet/static/src/bundle/components/control_panel/spreadsheet_breadcrumbs.xml'),
         ],
         'web.assets_backend': [
-            'documents_spreadsheet/static/src/**/*.js',
-            'documents_spreadsheet/static/src/**/*.scss',
-            ('remove', 'documents_spreadsheet/static/src/bundle/**/*.js',),
-        ],
-        'web.assets_qweb': [
-            'documents_spreadsheet/static/src/**/*.xml',
+            'documents_spreadsheet/static/src/bundle/**/*.scss',
+            'documents_spreadsheet/static/src/documents_view/**/*',
+            'documents_spreadsheet/static/src/spreadsheet_selector_dialog/**/*',
+            'documents_spreadsheet/static/src/spreadsheet_template/**/*',
+            'documents_spreadsheet/static/src/helpers.js',
+            'documents_spreadsheet/static/src/spreadsheet_action_loader.js',
+            'documents_spreadsheet/static/src/bundle/components/control_panel/spreadsheet_breadcrumbs.xml',
         ],
         'web.assets_tests': [
             'documents_spreadsheet/static/tests/utils/tour.js',
@@ -41,6 +44,7 @@
         ],
         'web.qunit_suite_tests': [
             'documents_spreadsheet/static/tests/**/*',
+            'spreadsheet/static/lib/chartjs-gauge/chartjs-gauge.js',
         ]
     }
 }

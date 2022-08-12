@@ -6,8 +6,8 @@ import { computeMultiSelection } from 'documents.utils';
 import { isEventHandled, markEventHandled } from '@mail/utils/utils';
 import { useService } from '@web/core/utils/hooks';
 import { Dialog } from "@web/core/dialog/dialog";
+import { getBundle, loadBundle } from "@web/core/assets";
 
-import ajax from 'web.ajax';
 import { csrf_token, _t } from 'web.core';
 
 const { Component, onMounted, onWillUnmount, onWillStart, useRef, useState } = owl;
@@ -349,13 +349,13 @@ export class PdfManager extends Component {
      * @private
      */
     async _loadAssets() {
-        let asset;
+        let libs;
         try {
-            asset = await ajax.loadAsset('documents.pdf_js_assets');
+            libs = await getBundle('documents.pdf_js_assets');
         } catch (_error) {
-            asset = await ajax.loadAsset('web.pdf_js_lib');
+            libs = await getBundle('web.pdf_js_lib');
         } finally {
-            await ajax.loadLibs(asset);
+            await loadBundle(libs);
         }
     }
     /**

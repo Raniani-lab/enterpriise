@@ -32,12 +32,10 @@
     'assets': {
         'web.assets_backend': [
             'sale_planning/static/src/js/backend/**/*',
+            'sale_planning/static/src/xml/**/*',
         ],
         'web.assets_frontend': [
             'sale_planning/static/src/js/frontend/**/*',
-        ],
-        'web.assets_qweb': [
-            'sale_planning/static/src/xml/**/*',
         ],
         'web.assets_tests': [
             'sale_planning/static/tests/tours/*',

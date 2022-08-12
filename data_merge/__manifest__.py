@@ -28,8 +28,6 @@
     'assets': {
         'web.assets_backend': [
             'data_merge/static/src/views/*.js',
-        ],
-        'web.assets_qweb': [
             'data_merge/static/src/views/*.xml',
         ],
     },

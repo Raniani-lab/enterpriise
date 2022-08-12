@@ -25,12 +25,10 @@ Supported devices include payment terminals, receipt printers, scales and custom
         'point_of_sale.assets': [
             'pos_iot/static/src/js/**/*.js',
             'pos_iot/static/src/css/pos.css',
+            'pos_iot/static/src/xml/**/*',
         ],
         'web.assets_tests': [
             'pos_iot/static/tests/**/*',
-        ],
-        'web.assets_qweb': [
-            'pos_iot/static/src/xml/**/*',
         ],
     }
 }

@@ -50,6 +50,7 @@ It assigns manager and user access rights to the Administrator for the accountin
             'account_accountant/static/src/js/reconciliation/*.js',
             'account_accountant/static/src/scss/*.scss',
             'account_accountant/static/src/components/**/*',
+            'account_accountant/static/src/**/*.xml',
         ],
         'web.assets_tests': [
             'account_accountant/static/tests/tours/**/*',
@@ -57,9 +58,6 @@ It assigns manager and user access rights to the Administrator for the accountin
         'web.qunit_suite_tests': [
             'account_accountant/static/tests/*.js',
             'account_accountant/static/tests/helpers/*.js',
-        ],
-        'web.assets_qweb': [
-            'account_accountant/static/src/**/*.xml',
         ],
     }
 }

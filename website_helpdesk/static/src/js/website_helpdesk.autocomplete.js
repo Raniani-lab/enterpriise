@@ -7,7 +7,6 @@ import { qweb } from 'web.core';
 
 publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
     selector: '.o_helpdesk_knowledge_search',
-    xmlDependencies: ['/website_helpdesk/static/src/xml/website_helpdesk.xml'],
     events: {
         'input .search-query': '_onInput',
         'focusout': '_onFocusOut',

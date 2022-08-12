@@ -7,11 +7,9 @@
     'version': '0.1',
     'depends': ['web'],
     'assets': {
-        'web.assets_qweb': [
-            'web_grid/static/src/xml/**/*',
-        ],
         'web.assets_backend': [
             'web_grid/static/src/**/*',
+            'web_grid/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [
             'web_grid/static/tests/grid_tests.js',

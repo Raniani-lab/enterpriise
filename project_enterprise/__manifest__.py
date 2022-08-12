@@ -28,8 +28,6 @@ Bridge module for project and enterprise
             'project_enterprise/static/src/js/**/*',
             'project_enterprise/static/src/scss/**/*',
             'project_enterprise/static/src/components/**/*',
-        ],
-        'web.assets_qweb': [
             'project_enterprise/static/src/**/*.xml',
         ],
         'web.qunit_suite_tests': [
@@ -37,7 +35,7 @@ Bridge module for project and enterprise
         ],
         'project.webclient': [
             ('remove', 'web_enterprise/static/src/legacy/legacy_service_provider.js'),
-            ('remove', 'web_enterprise/static/src/webclient/home_menu/*'),
+            ('remove', 'web_enterprise/static/src/webclient/home_menu/*.js'),
             ('remove', 'project/static/src/project_sharing/main.js'),
             'project_enterprise/static/src/project_sharing/**/*',
         ],

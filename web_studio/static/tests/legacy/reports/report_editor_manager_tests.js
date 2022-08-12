@@ -2,9 +2,7 @@ odoo.define('web_studio.ReportEditorManager_tests', function (require) {
 "use strict";
 
 var ace = require('web_editor.ace');
-const ajax = require('web.ajax');
 var config = require('web.config');
-const core = require('web.core');
 const { Markup } = require('web.utils');
 const { MediaDialogWrapper } = require('@web_editor/components/media_dialog/media_dialog');
 var testUtils = require('web.test_utils');
@@ -82,7 +80,6 @@ QUnit.module('Studio', {}, function () {
 
 QUnit.module('ReportEditorManager', {
     beforeEach: async function () {
-        await ajax.loadXML('/web_editor/static/src/xml/editor.xml', core.qweb);
         this.models = {
             'model.test': 'Model Test',
             'model.test.child': 'Model Test Child',

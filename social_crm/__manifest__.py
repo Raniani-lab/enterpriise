@@ -19,8 +19,6 @@
     'assets': {
         'web.assets_backend': [
             ('after', 'social/static/src/js/stream_post_comments.js', 'social_crm/static/src/js/social_stream_post_comments.js'),
-        ],
-        'web.assets_qweb': [
             'social_crm/static/src/xml/**/*',
         ],
     },

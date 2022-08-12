@@ -28,8 +28,6 @@
             'social_youtube/static/src/js/stream_post_kanban_controller.js',
             'social_youtube/static/src/js/stream_post_kanban_renderer.js',
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_youtube/static/src/js/social_post_formatter_mixin.js'),
-        ],
-        'web.assets_qweb': [
             'social_youtube/static/src/xml/**/*',
         ],
     },

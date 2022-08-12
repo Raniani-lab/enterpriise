@@ -24,8 +24,6 @@ Allow to generate lead from Scheduled Appointments through your Website
     'assets': {
         'web.assets_backend': [
             'appointment_crm/static/src/js/calendar_renderer.js',
-        ],
-        'web.assets_qweb': [
             'appointment_crm/static/src/xml/**/*',
         ],
     },

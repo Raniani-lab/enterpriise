@@ -9,7 +9,7 @@
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
-        'web.assets_qweb': [
+        'web.assets_backend': [
             'stock_barcode_mrp/static/src/**/*.xml',
         ],
     }

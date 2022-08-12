@@ -7,10 +7,6 @@ import "website_sale_delivery.checkout";
 const WebsiteSaleDeliveryWidget = publicWidget.registry.websiteSaleDelivery;
 
 WebsiteSaleDeliveryWidget.include({
-    xmlDependencies: (WebsiteSaleDeliveryWidget.prototype.xmlDependencies || []).concat([
-        "/website_delivery_fedex/static/src/xml/fedex_pickup_locations.xml",
-    ]),
-
     events: _.extend(
         {
             "click .o_fedex_address_select": "_onClickFedexLocation",

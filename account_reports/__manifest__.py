@@ -61,6 +61,7 @@ Accounting Reports
             'account_reports/static/src/js/action_manager_account_report_dl.js',
             'account_reports/static/src/scss/account_financial_report.scss',
             'account_reports/static/src/components/**/*.js',
+            'account_reports/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [
             'account_reports/static/tests/action_manager_account_report_dl_tests.js',
@@ -68,9 +69,6 @@ Accounting Reports
         ],
         'web.assets_tests': [
             'account_reports/static/tests/tours/**/*',
-        ],
-        'web.assets_qweb': [
-            'account_reports/static/src/xml/**/*',
         ],
     }
 }

@@ -18,10 +18,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
         'views/webclient_templates.xml',
     ],
     'assets': {
-        'web.assets_qweb': [
-            'web_enterprise/static/src/**/*.xml',
-            'web_enterprise/static/src/core/**/*.xml',
-        ],
         'web._assets_primary_variables': [
             ('after', 'web/static/src/legacy/scss/primary_variables.scss', 'web_enterprise/static/src/**/**/*.variables.scss'),
             ('before', 'web/static/src/legacy/scss/primary_variables.scss', 'web_enterprise/static/src/legacy/scss/primary_variables.scss'),
@@ -73,10 +69,14 @@ This module modifies the web addon to provide Enterprise design and responsivene
 
             'web_enterprise/static/src/core/**/*',
             'web_enterprise/static/src/search/**/*.js',
+            'web_enterprise/static/src/search/**/*.xml',
             'web_enterprise/static/src/webclient/**/*.js',
+            'web_enterprise/static/src/webclient/**/*.xml',
             'web_enterprise/static/src/views/**/*.js',
+            'web_enterprise/static/src/views/**/*.xml',
 
             'web_enterprise/static/src/legacy/**/*.js',
+            'web_enterprise/static/src/legacy/**/*.xml',
             ("remove", "web_enterprise/static/src/legacy/js/views/pivot_renderer.js"),
         ],
         "web.assets_backend_legacy_lazy": [

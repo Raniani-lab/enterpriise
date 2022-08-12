@@ -15,9 +15,7 @@
     'assets': {
         'web.assets_common': [
             'sign_itsme/static/src/js/*',
-        ],
-        'web.assets_qweb': [
-            'sign_itsme/static/src/xml/*.xml',
+            'sign_itsme/static/src/xml/*',
         ],
     },
     'installable': True,

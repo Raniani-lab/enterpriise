@@ -24,12 +24,14 @@ If you use the external timesheet application, this module alows you to synchron
         'web.qunit_suite_tests': [
             'project_timesheet_synchro/static/src/js/project_timesheet.js',
             'project_timesheet_synchro/static/tests/timesheet_app_tests.js',
+            'project_timesheet_synchro/static/src/xml/project_timesheet.xml',
         ],
         'web.assets_tests': [
             'project_timesheet_synchro/static/tests/tours/**/*',
         ],
         'project_timesheet_synchro.assets_timesheet_app': [
             'project_timesheet_synchro/static/src/css/**/*',
+            'project_timesheet_synchro/static/src/xml/**/*',
             'web/static/src/legacy/legacy_setup.js',
         ],
     }

@@ -30,7 +30,7 @@
     ],
     'license': 'OEEL-1',
     'assets': {
-        'web.assets_qweb': [
+        'web.assets_backend': [
             'l10n_fr_fec_import/static/src/xml/**/*',
         ],
     },

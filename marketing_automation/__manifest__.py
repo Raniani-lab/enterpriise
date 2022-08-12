@@ -34,12 +34,10 @@
         'web._assets_primary_variables': [
             'marketing_automation/static/src/scss/variables.scss',
         ],
-        'web.assets_qweb': [
-            'marketing_automation/static/src/xml/*.xml',
-        ],
         'web.assets_backend': [
             'marketing_automation/static/src/js/*.js',
             'marketing_automation/static/src/scss/*.scss',
+            'marketing_automation/static/src/xml/*.xml',
         ],
         'web.qunit_suite_tests': [
             'marketing_automation/static/tests/**/*',

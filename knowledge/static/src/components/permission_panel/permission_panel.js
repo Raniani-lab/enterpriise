@@ -234,7 +234,7 @@ class PermissionPanel extends Component {
             });
         };
 
-        const message = _t('Are you sure you want to restore access?');
+        const message = _t('Are you sure you want to restore access? This means this article will now inherit any access set on its parent articles.');
         this._showConfirmDialog(message, confirm);
     }
 

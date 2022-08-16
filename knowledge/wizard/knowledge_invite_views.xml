@@ -19,7 +19,7 @@
                     <group>
                         <field name="permission"/>
                         <field name="partner_ids" widget="many2many_tags_email"
-                            placeholder="Invite users (email address)..."
+                            placeholder="Add people or email addresses"
                             context="{'force_email': True, 'show_email': True}"/>
                     </group>
                 </sheet>

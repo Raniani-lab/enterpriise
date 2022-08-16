@@ -233,11 +233,23 @@
         width: 420px;
         overflow-x: hidden;
         overflow-y: auto;
-        .o_m2m_avatar {
-            max-width: 30px;
-        }
         .o_clipboard_button {
             padding: 0 10px;
+        }
+        .form-switch .form-check-input {
+            margin-left: 0;
+            cursor: pointer;
+        }
+        .o_knowledge_share_panel_image,
+        .o_knowledge_share_panel_icon {
+            width: 30px;
+            height: 30px;
+        }
+        .o_knowledge_share_panel_image {
+            object-fit: cover;
+        }
+        .o_knowledge_share_panel_invite .form-control {
+            color: $gray-400 !important;
         }
     }
 }

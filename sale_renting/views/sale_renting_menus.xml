@@ -65,6 +65,12 @@
                 action="action_rental_config_settings"
                 groups="base.group_system"/>
 
+            <menuitem id="menu_sale_renting_periods"
+                name="Rental periods"
+                action="sale_temporal.sale_temporal_recurrence_action"
+                groups="sales_team.group_sale_manager"
+                sequence="20" />
+
         </menuitem>
     </menuitem>
 </odoo>

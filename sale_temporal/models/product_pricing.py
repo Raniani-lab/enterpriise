@@ -26,13 +26,11 @@ class ProductPricing(models.Model):
 
     _name = 'product.pricing'
     _description = 'Pricing rule of temporal products'
-    _order = 'product_template_id,price,pricelist_id,unit,duration'
+    _order = 'product_template_id,price,pricelist_id,recurrence_id'
 
     name = fields.Char(compute='_compute_name')
     description = fields.Char(compute='_compute_description')
-    duration = fields.Integer(string="Duration", required=True, default=1, help="Minimum duration before this rule is applied. If set to 0, it represents a fixed temporal price.")
-    unit = fields.Selection([("hour", "Hours"), ("day", "Days"), ("week", "Weeks"), ("month", "Months"), ('year', 'Years')],
-                            string="Unit", required=True, default='day')
+    recurrence_id = fields.Many2one('sale.temporal.recurrence', string='Recurrency', required=True)
     price = fields.Monetary(string="Price", required=True, default=1.0)
     currency_id = fields.Many2one('res.currency', 'Currency', compute='_compute_currency_id', store=True)
     product_template_id = fields.Many2one('product.template', string="Product Templates", ondelete='cascade',
@@ -42,11 +40,7 @@ class ProductPricing(models.Model):
     pricelist_id = fields.Many2one('product.pricelist', ondelete='cascade')
     company_id = fields.Many2one('res.company', related='pricelist_id.company_id')
 
-    _sql_constraints = [
-        ('temporal_pricing_duration', "CHECK(duration >= 0)", "The pricing duration has to be greater or equal to 0."),
-    ]
-
-    @api.constrains('product_template_id', 'pricelist_id', 'duration', 'unit', 'product_variant_ids')
+    @api.constrains('product_template_id', 'pricelist_id', 'recurrence_id', 'product_variant_ids')
     def _check_unique_parameters(self):
         """ We want to avoid having several lines that applies for the same conditions.
         The pricing must differ by at least one parameter among
@@ -57,7 +51,7 @@ class ProductPricing(models.Model):
             key_list = [
                 price.product_template_id.id,
                 price.pricelist_id,
-                price.duration, price.unit
+                price.recurrence_id,
             ]
             variants = price.product_variant_ids.ids or [_('all variants')]
             pricing_has_all_variants = price.product_template_id.product_variant_count == len(price.product_variant_ids)
@@ -68,12 +62,12 @@ class ProductPricing(models.Model):
                 conflict_counter[key_val] += 1
         pricing_issues = [k for k, v in conflict_counter.items() if v > 1]
         if pricing_issues:
-            raise ValidationError(_("You cannot have multiple pricing for the same variant, duration, unit, and pricelist"))
+            raise ValidationError(_("You cannot have multiple pricing for the same variant, recurrence and pricelist"))
 
-    @api.depends('duration', 'unit')
+    @api.depends('recurrence_id')
     def _compute_name(self):
         for pricing in self:
-            pricing.name = _("%s %s", pricing.duration, pricing.unit)
+            pricing.name = _("%s %s", pricing.recurrence_id.duration, pricing.recurrence_id.unit)
 
     def _compute_description(self):
         for pricing in self:
@@ -82,7 +76,7 @@ class ProductPricing(models.Model):
                 description += format_amount(self.env, amount=pricing.price, currency=pricing.currency_id)
             else:
                 description += format_amount(self.env, amount=pricing.price, currency=pricing.currency_id)
-            description += _("/%s", pricing.unit)
+            description += _("/%s", pricing.recurrence_id.unit)
             pricing.description = description
 
     @api.depends('pricelist_id', 'pricelist_id.currency_id')
@@ -100,12 +94,12 @@ class ProductPricing(models.Model):
         :return float: price
         """
         self.ensure_one()
-        if duration <= 0 or self.duration <= 0:
+        if duration <= 0 or self.recurrence_id.duration <= 0:
             return self.price
-        if unit != self.unit:
-            converted_duration = math.ceil((duration * PERIOD_RATIO[unit]) / (self.duration * PERIOD_RATIO[self.unit]))
+        if unit != self.recurrence_id.unit:
+            converted_duration = math.ceil((duration * PERIOD_RATIO[unit]) / (self.recurrence_id.duration * PERIOD_RATIO[self.recurrence_id.unit]))
         else:
-            converted_duration = math.ceil(duration / self.duration)
+            converted_duration = math.ceil(duration / self.recurrence_id.duration)
         return self.price * converted_duration
 
     @api.model
@@ -138,10 +132,10 @@ class ProductPricing(models.Model):
         """ Get the pricing matching each type of periodicity.
         :returns: recordset containing one pricing per periodicity type
         """
-        available_periodicities = set(self.mapped(lambda p: (p.duration, p.unit)))
+        available_periodicities = set(self.mapped(lambda p: (p.recurrence_id.duration, p.recurrence_id.unit)))
         result = self.env['product.pricing']
         for period in available_periodicities:
-            result |= self.filtered(lambda p: p.duration == period[0] and p.unit == period[1])[:1]
+            result |= self.filtered(lambda p: p.recurrence_id.duration == period[0] and p.recurrence_id.unit == period[1])[:1]
         return result
 
     @api.model

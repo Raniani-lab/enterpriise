@@ -41,7 +41,6 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
             'product_id': cls.computer.id,
             'start_date': cls.now + relativedelta(days=1),
             'return_date': cls.now + relativedelta(days=3),
-            'next_invoice_date': cls.now + relativedelta(days=3),
             'is_rental': True,
             'product_uom_qty': 3,
         })

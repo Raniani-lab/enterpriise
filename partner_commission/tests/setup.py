@@ -80,6 +80,7 @@ class TestCommissionsSetup(TransactionCase):
             'recurring_rule_type': 'year',
             'recurring_rule_count': 1,
             'recurring_rule_boundary': 'unlimited',
+            'recurrence_id': self.recurrence_year.id
         })
 
         # odoo sh
@@ -96,7 +97,7 @@ class TestCommissionsSetup(TransactionCase):
             'property_account_income_id': self.account_sale.id,
             'invoice_policy': 'order',
         })
-        self.worker_pricing = self.env['product.pricing'].create({'duration': 1, 'unit': 'year', 'price': 100, 'product_template_id': self.worker.product_tmpl_id.id})
+        self.worker_pricing = self.env['product.pricing'].create({'recurrence_id': self.recurrence_year.id, 'price': 100, 'product_template_id': self.worker.product_tmpl_id.id})
         self.staging = self.env['product.product'].create({
             'name': 'Odoo.sh Staging Branch',
             'categ_id': self.odoo_sh.id,
@@ -107,7 +108,7 @@ class TestCommissionsSetup(TransactionCase):
             'invoice_policy': 'order',
         })
         self.staging_pricing = self.env['product.pricing'].create(
-            {'duration': 1, 'unit': 'year', 'price': 420, 'product_template_id': self.staging.product_tmpl_id.id})
+            {'recurrence_id': self.recurrence_year.id, 'price': 420, 'product_template_id': self.staging.product_tmpl_id.id})
 
         # apps support
         self.apps_support = self.env['product.category'].create({
@@ -124,7 +125,7 @@ class TestCommissionsSetup(TransactionCase):
             'invoice_policy': 'order',
         })
         self.crm_pricing = self.env['product.pricing'].create(
-            {'duration': 1, 'unit': 'month', 'price': 15, 'product_template_id': self.crm.product_tmpl_id.id})
+            {'recurrence_id': self.recurrence_month.id, 'price': 15, 'product_template_id': self.crm.product_tmpl_id.id})
 
         self.invoicing = self.env['product.product'].create({
             'name': 'Invoicing',
@@ -136,7 +137,7 @@ class TestCommissionsSetup(TransactionCase):
             'invoice_policy': 'order',
         })
         self.invoicing_pricing = self.pricing_worker = self.env['product.pricing'].create(
-            {'duration': 1, 'unit': 'month', 'price': 20, 'product_template_id': self.invoicing.product_tmpl_id.id})
+            {'recurrence_id': self.recurrence_month.id, 'price': 20, 'product_template_id': self.invoicing.product_tmpl_id.id})
 
     def _make_commission_plans(self):
         self.learning_plan = self.env['commission.plan'].create({
@@ -236,6 +237,12 @@ class TestCommissionsSetup(TransactionCase):
             # Billing Administrator
             self.ref('account.group_account_manager'),
         ]
+        currency_usd_id = self.env.ref("base.USD")
+        currency_usd_id.active = True
+        currency_eur_id = self.env.ref("base.EUR")
+        currency_eur_id.active = True
+        self.recurrence_month = self.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'month'})
+        self.recurrence_year = self.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'year'})
 
         self.salesman = self.env['res.users'].create({
             'name': '...',

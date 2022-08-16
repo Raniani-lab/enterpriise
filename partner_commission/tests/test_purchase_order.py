@@ -92,13 +92,14 @@ class TestPurchaseOrder(TestCommissionsSetup):
         form.partner_invoice_id = self.customer
         form.partner_shipping_id = self.customer
         form.referrer_id = self.referrer
+        # form.commission_plan_frozen = False
+        form.recurrence_id = self.recurrence_year
 
         # Testing same rules, with cap reached, are grouped together.
         with form.order_line.new() as line:
             line.name = self.worker.name
             line.product_id = self.worker
             line.product_uom_qty = 20
-            line.pricing_id = self.worker.product_tmpl_id.product_pricing_ids[-1]
 
         so = form.save()
         so.pricelist_id = self.eur_20
@@ -158,7 +159,7 @@ class TestPurchaseOrder(TestCommissionsSetup):
                 'property_account_income_id': self.account_sale.id,
                 'invoice_policy': 'order',
             })
-            self.env['product.pricing'].create({'duration': 1, 'unit': 'month', 'price': 20, 'product_template_id': bar.product_tmpl_id.id})
+            self.env['product.pricing'].create({'recurrence_id': self.recurrence_month.id, 'price': 20, 'product_template_id': bar.product_tmpl_id.id})
             rule = self.env['commission.rule'].create({
                 'plan_id': self.gold_plan.id,
                 'category_id': foo.id,

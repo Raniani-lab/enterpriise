@@ -4,26 +4,6 @@
 from odoo import api, fields, models
 
 
-class PaymentAcquirer(models.Model):
-
-    _inherit = 'payment.acquirer'
-
-    def _is_tokenization_required(self, sale_order_id=None, **kwargs):
-        """ Override of payment to return whether confirming the order will create a subscription.
-
-        The order is a subscription tokenization of the payment transaction is required.
-
-        :param int sale_order_id: The sale order to be paid, if any, as a `sale.order` id
-        :return: Whether confirming the order will create a subscription
-        :rtype: bool
-        """
-        if sale_order_id:
-            sale_order = self.env['sale.order'].browse(sale_order_id).exists()
-            if sale_order.payment_mode == 'success_payment' or sale_order.subscription_id.payment_mode == 'success_payment':
-                return True
-        return super()._is_tokenization_required(sale_order_id=sale_order_id, **kwargs)
-
-
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
 
@@ -36,6 +16,22 @@ class PaymentTransaction(models.Model):
         for tx in self:
             tx.renewal_allowed = tx.state in ('done', 'authorized')
 
+    def _invoice_sale_orders(self):
+        """ Override of payment to increase next_invoice_date when needed. """
+        # Update the next_invoice_date of SOL when the payment_mode is 'success_payment'
+        # We have to do it here because when a client confirms and pay a SO from the portal with success_payment
+        # The next_invoice_date won't be update by the reconcile_pending_transaction callback (do_payment is not called)
+        # Create invoice
+        res = super()._invoice_sale_orders()
+        today = fields.Date.today()
+        if self.env['ir.config_parameter'].sudo().get_param('sale.automatic_invoice'):
+            order_to_update_ids = self.env['sale.order']
+            for order in self.invoice_ids.invoice_line_ids.sale_line_ids.order_id:
+                if order.recurrence_id and order.payment_token_id and order.start_date <= order.next_invoice_date <= today:
+                    order_to_update_ids |= order
+            order_to_update_ids._update_next_invoice_date()
+            order_to_update_ids.order_line._reset_subscription_qty_to_invoice()
+        return res
 
 class PaymentToken(models.Model):
     _name = 'payment.token'

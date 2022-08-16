@@ -33,7 +33,7 @@ tour.register('rental_tour', {
     content: _t("Save the product."),
     position: 'bottom',
 }, {
-    trigger: ".nav-item a.nav-link:contains(Recurring Price)",
+    trigger: ".nav-item a.nav-link:contains(Price)",
     content: _t("The rental configuration is available here."),
     position: 'top',
 }, {

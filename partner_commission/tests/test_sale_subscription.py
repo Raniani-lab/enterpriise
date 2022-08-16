@@ -36,7 +36,6 @@ class TestSaleSubscription(TestCommissionsSetup):
             line.name = self.worker.name
             line.product_id = self.worker
             line.product_uom_qty = 1
-            line.pricing_id = self.worker.product_tmpl_id.product_pricing_ids[-1]
         sub = form.save()
 
         # Auto assignation mode.
@@ -62,7 +61,6 @@ class TestSaleSubscription(TestCommissionsSetup):
             line.name = self.worker.name
             line.product_id = self.worker
             line.product_uom_qty = 1
-            line.pricing_id = self.worker.product_tmpl_id.product_pricing_ids[-1]
         sub = form.save()
 
         # Auto assignation mode.
@@ -84,12 +82,12 @@ class TestSaleSubscription(TestCommissionsSetup):
                     view=self.env.ref('sale_subscription.sale_subscription_primary_form_view'))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
-
+        # form.commission_plan_frozen = False
+        form.recurrence_id = self.recurrence_month
         with form.order_line.new() as line:
             line.name = self.worker.name
             line.product_id = self.worker
             line.product_uom_qty = 1
-            line.pricing_id = self.worker.product_tmpl_id.product_pricing_ids[-1]
 
         form.end_date = fields.Date.today()
         so = form.save()
@@ -138,7 +136,6 @@ class TestSaleSubscription(TestCommissionsSetup):
             line.name = self.worker.name
             line.product_id = self.worker
             line.product_uom_qty = 2
-            line.pricing_id = self.worker_pricing
 
         # `commission_plan_frozen` and `end_date` are invisible until `is_subscription` is True
         # `is_subscription` is True when there are recurring lines in the sale order.
@@ -163,35 +160,35 @@ class TestSaleSubscription(TestCommissionsSetup):
         self.assertFalse(inv.commission_po_line_id)
 
         # Switch to the greedy plan and renew again.
-        sub.commission_plan_id = self.greedy_plan
+        renewal_so.commission_plan_id = self.greedy_plan
 
         # renew
-        res = sub.prepare_renewal_order()
+        res = renewal_so.prepare_renewal_order()
         res_id = res['res_id']
-        renewal_so = self.env['sale.order'].browse(res_id)
-        renewal_so.order_line.product_uom_qty = 1
-        renewal_so.action_confirm()
+        renewal_so_2 = self.env['sale.order'].browse(res_id)
+        renewal_so_2.order_line.product_uom_qty = 1
+        renewal_so_2.action_confirm()
 
         # pay
-        inv = renewal_so._create_invoices()
+        inv = renewal_so_2._create_invoices()
         inv.action_post()
         self._pay_invoice(inv)
 
         self.assertEqual(inv.commission_po_line_id.price_subtotal, 18, 'Commission is wrong')
 
         # Switch to unfrozen and check that the gold plan is used.
-        sub.commission_plan_frozen = False
-        self.assertEqual(sub.commission_plan_id, self.gold_plan)
+        renewal_so_2.commission_plan_frozen = False
+        self.assertEqual(renewal_so_2.commission_plan_id, self.gold_plan)
 
         # renew
-        res = sub.prepare_renewal_order()
+        res = renewal_so_2.prepare_renewal_order()
         res_id = res['res_id']
-        renewal_so = self.env['sale.order'].browse(res_id)
-        renewal_so.order_line.product_uom_qty = 2
-        renewal_so.action_confirm()
+        renewal_so_3 = self.env['sale.order'].browse(res_id)
+        renewal_so_3.order_line.product_uom_qty = 2
+        renewal_so_3.action_confirm()
 
         # pay
-        inv = renewal_so._create_invoices()
+        inv = renewal_so_3._create_invoices()
         inv.action_post()
         self._pay_invoice(inv)
 

@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Action Show all sales documents related to a subscription (upsells)-->
+    <!-- Action Show all sales documents related to a subscription (upsells, renew etc)-->
     <record id="sale_order_view_tree_subscription" model="ir.ui.view">
         <field name="name">sale.order.list.subscription</field>
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
-            <tree string="Sales Orders" decoration-muted="state=='cancel'">
+            <tree string="Sales Orders" class="o_sale_order" decoration-info="state in ['draft', 'sent']" decoration-muted="state == 'cancel'">
                 <field name="message_needaction" invisible="1"/>
-                <field name="name" string="Order Number"/>
-                <field name="state"/>
+                <field name="name" string="Order Number" decoration-bf="1"/>
+                <field name="state"
+                    decoration-success="state == 'sale' or state == 'done'"
+                    decoration-info="state == 'draft' or state == 'sent'"
+                    widget="badge"/>
                 <field name="subscription_management"/>
                 <field name="date_order"/>
                 <field name="partner_id"/>
                 <field name="user_id"/>
                 <field name="amount_total" sum="Total Tax Included" widget="monetary"/>
                 <field name="invoice_status"/>
-                <field name="state" invisible="1"/>
                 <field name="currency_id" invisible="1"/>
            </tree>
         </field>
@@ -66,16 +68,8 @@
         <field name="model">sale.order.line</field>
         <field name="inherit_id" ref="sale.view_order_line_tree"/>
         <field name="arch" type="xml">
-            <tree position="attributes">
-                <attribute name="decoration-muted">start_date &lt;= current_date and next_invoice_date &lt;= current_date</attribute>
-                <attribute name="decoration-success">start_date &lt;= current_date and next_invoice_date &gt; current_date</attribute>
-                <attribute name="decoration-info">start_date &gt; current_date</attribute>
-            </tree>
             <field name="name" position="after">
-                <field name="pricing_id" string="Recurrency" options="{'no_open': True}"/>
-                <field name="start_date" optional="show" widget="date"/>
-                <field name="next_invoice_date" optional="hide" widget="date"/>
-                <field name="end_date" optional="show"/>
+                <field name="pricing_id" string="Recurrence" options="{'no_open': True}"/>
             </field>
 
         </field>
@@ -107,11 +101,14 @@
                 <filter name="is_subscription" string="Subscriptions" domain="[('is_subscription', '=', True)]"/>
                 <separator/>
                 <filter name="alive" string="Alive" domain="[('recurring_live','=', True), ]" help="Running Subscriptions"/>
+                <separator/>
                 <filter name="pending" string="To Renew" domain="[('to_renew','=',True)]" help="Pending subscriptions"/>
-                <filter name="failed_payment" string="Failed Payment" domain="[('payment_exception','=',True)]"/>
+                <separator/>
+                <filter name="payment_exception" string="Failed Payments" domain="[('payment_exception','=', True)]" help="Contracts whose payment has failed"/>
+                <separator/>
                 <filter name="closed" string="Closed" domain="[('stage_category','=','closed')]" help="Closed subscriptions"/>
                 <filter name="future" string="Not Started Yet" domain="[('stage_category','=','progress'), ('start_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]" help="Confirmed and not yet started"/>
-                <filter name="payment_exception" string="Failed Payments" domain="[('payment_exception','=', True)]" help="Contracts whose payment has failed"/>
+                <separator/>
                 <separator/>
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
@@ -134,6 +131,8 @@
                     <filter string="Template" name="template" domain="[]" context="{'group_by':'sale_order_template_id'}"/>
                     <filter string="Stage" name="stage" domain="[]" context="{'group_by':'stage_id'}"/>
                     <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'end_date'}" />
+                    <filter string="Next Invoice Date" name="next_invoice_date" domain="[]" context="{'group_by' : 'next_invoice_date'}" />
+                    <filter string="Recurrence" name="recurrence" domain="[]" context="{'group_by' : 'recurrence_id'}" />
                 </group>
             </search>
         </field>
@@ -154,10 +153,9 @@
         <field name="res_model">sale.order</field>
         <field name="view_mode">kanban,tree,form,pivot,graph,cohort,activity</field>
         <field name="context">{
-            'search_default_is_subscription': 1,
             'default_is_subscription': 1
         }</field>
-        <field name="domain">[]</field>
+        <field name="domain">[('is_subscription', '=', True)]</field>
         <field name="search_view_id" eval='sale_subscription_view_search'/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -168,7 +166,7 @@
                 one month from the end date.
             </p><p>
                 Subscriptions can be automatically generated from sales orders in Sales or eCommerce
-                apps. To do so, set a Quotation Template on your subscription products.
+                apps.
             </p>
         </field>
     </record>
@@ -221,6 +219,14 @@
         </field>
     </record>
 
+    <record id="sale_subscription_action_upsell" model="ir.actions.act_window">
+        <field name="name">Upsells</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">tree,form,pivot,graph,kanban,cohort,activity</field>
+        <field name="domain">[('subscription_management', '=', 'upsell')]</field>
+        <field name="search_view_id" eval='sale_subscription_view_search'/>
+    </record>
+
     <!-- Kanban from subscription App -->
     <record id="sale_subscription_view_kanban" model="ir.ui.view">
         <field name="name">sale.order.kanban</field>
@@ -240,6 +246,9 @@
                 <field name="activity_state" />
                 <field name="rating_last_value" />
                 <field name="next_invoice_date"/>
+                <field name="renew_state"/>
+                <field name="is_upselling"/>
+                 <field name="subscription_management"/>
                 <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}' help="This bar allows to filter the opportunities based on scheduled activities."/>
                 <templates>
                     <t t-name="kanban-box">
@@ -252,11 +261,24 @@
                                     <field name="partner_id"/>
                                 </div>
                                 <div class="o_kanban_record_body">
-                                    <div t-if="record.to_renew.raw_value" class="badge text-bg-warning border-0 float-end mt4">
+                                    <div t-if="record.to_renew.raw_value &amp;&amp; record.renew_state.raw_value != 'renewing'" class="badge text-bg-warning border-0 float-end mt4">
                                         To Renew
                                     </div>
                                     <div t-if="record.payment_exception.raw_value" class="badge text-bg-danger border-0 float-end mt4">
                                         Payment Failure
+                                    </div>
+                                    <div t-if="record.subscription_management.raw_value == 'upsell' or  record.subscription_management.raw_value == 'renew'"
+                                         class="badge bg-light border-1 float-end mt4">
+                                        <field name="subscription_management"/>
+                                    </div>
+                                    <div t-if="record.renew_state.raw_value == 'renewing'" class="badge bg-warning border-0 float-end mt4">
+                                        <field name="renew_state"/>
+                                    </div>
+                                    <div t-if="record.renew_state.raw_value == 'renewed'" class="badge bg-success border-0 float-end mt4">
+                                        <field name="renew_state"/>
+                                    </div>
+                                    <div t-if="record.is_upselling.raw_value" class="badge bg-info border-0 float-end mt4">
+                                        Upselling
                                     </div>
                                     <field name="name"/>
                                 </div>
@@ -338,8 +360,13 @@
             <field name="next_invoice_date" position="attributes">
                  <attribute name="optional">show</attribute>
             </field>
-            <field name="option_pricing_id" position="attributes">
-                <attribute name="optional">show</attribute>
+            <field name="recurrence_id" position="attributes">
+                <attribute name="required">1</attribute>
+            </field>
+            <field name="sale_order_template_id" position="replace">
+                <field name="sale_order_template_id" string="Subscription Plan"
+                       attrs="{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('subscription_management', '=', 'upsell')]}"
+                       domain="[('is_subscription', '=', True)]"/>
             </field>
         </field>
     </record>
@@ -394,6 +421,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <!-- company_id invisible to be available in domains -->
+                    <field name="company_id" invisible="1"/>
                        <button name="run_cron_manually" string="Trigger Now" type="object" class="btn-primary"
                        confirm="This will trigger the action on all linked subsccriptions, regardless of possible timed conditions. Are you sure you want to proceed?"/>
                 </header>
@@ -449,7 +478,6 @@
                         </group>
                         <group name="subscription_details">
                             <field name="active" invisible="1"/>
-                            <field name="company_id" invisible="1"/>
                             <field name="subscription_template_ids" widget="many2many_tags"/>
                             <field name="product_ids" string="Products" widget="many2many_tags"/>
                             <field name="customer_ids" widget="many2many_tags"/>
@@ -610,12 +638,13 @@
     </record>
 
     <record id="sale_subscription_template_action" model="ir.actions.act_window">
-        <field name="name">Quotation Templates</field>
+        <field name="name">Plans</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.template</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{
             'default_is_subscription': 1,
+            'search_default_is_subscription': 1,
         }</field>
         <field name="search_view_id" eval='sale_order_template_view_search'/>
         <field name="help" type="html">
@@ -629,66 +658,82 @@
         </field>
     </record>
 
+    <record id="sale_order_template_view_tree" model="ir.ui.view">
+        <field name="name">sale.order.template.tree</field>
+        <field name="model">sale.order.template</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="sale_management.sale_order_template_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="recurrence_id"/>
+            </field>
+        </field>
+    </record>
+
      <record id="sale_subscription_template_tree" model="ir.actions.act_window.view">
         <field name="sequence" eval="2"/>
         <field name="view_mode">tree</field>
-        <field name="view_id" ref="sale_management.sale_order_template_view_tree"/>
+        <field name="view_id" ref="sale_order_template_view_tree"/>
         <field name="act_window_id" ref="sale_subscription_template_action"/>
     </record>
+
 
     <record id="sale_subscription_template_view_form" model="ir.ui.view">
         <field name="name">sale.order.template.form</field>
         <field name="model">sale.order.template</field>
         <field name="inherit_id" ref="sale_management.sale_order_template_view_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//label[@id='sale_order_template_title']" position="replace">
+                <label for="name" attrs="{'invisible': [('recurrence_id', '!=', False)]}"/>
+                <label for="name" string="Subscription Plan" attrs="{'invisible': [('recurrence_id', '=', False)]}"/>
+            </xpath>
             <xpath expr="//field[@name='active']" position="after">
                 <field name="is_subscription" invisible="1"/>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position="after">
                 <field name="recurring_invoice" invisible="1"/>
-                <field name="product_pricing_ids" invisible="1"/>
-                <field name="pricing_id" string="Recurrency"
-                       attrs="{'invisible': [('recurring_invoice', '=', False)], 'required': [('recurring_invoice', '=', True)]}"
-                       options="{'no_open': True}"/>
+                <field name="recurrence_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_uom_id']" position="after">
+                 <button name="open_product_pricing" string="prices" type="object" class="btn btn-primary"
+                        attrs="{'invisible': ['|', ('recurring_invoice', '=', False), ('recurrence_id', '=', False)]}"/>
             </xpath>
             <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position="after">
                 <field name="recurring_invoice" invisible="1"/>
-                <field name="product_pricing_ids" invisible="1"/>
-                <field name="option_pricing_id" string="Recurrency"
-                       attrs="{'invisible': [('recurring_invoice', '=', False)], 'required': [('recurring_invoice', '=', True)]}"
-                       options="{'no_open': True}"/>
             </xpath>
-            <xpath expr="//page[@name='confirmation']" position="after">
-                <page string="Subscription" name="subscription">
-                    <group>
-                        <group>
-                            <field name="recurring_rule_boundary" widget="radio" options="{'horizontal': true}"/>
-                            <label for="recurring_rule_count" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}"/>
-                            <div class="o_row" attrs="{'invisible': [('recurring_rule_boundary','=','unlimited')]}">
-                                <field name="recurring_rule_count"/>
-                                <field name="recurring_rule_type"/>
-                            </div>
-                            <field name="payment_mode" string="Create Invoice" widget="radio"/>
-                            <field name="invoice_mail_template_id"
-                                   string="Invoice Email"
-                                   attrs="{'invisible': [('payment_mode', '!=', 'validate_send')],
-                                           'required': [('payment_mode', '==', 'validate_send')]}"/>
-                        </group>
-                            <group name="online">
-                                <group colspan="2">
-                                    <field name="user_closable"/>
-                                    <label for="auto_close_limit" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice', 'validate_send'])]}"/>
-                                    <div class="o_row" attrs="{'invisible': [('payment_mode', 'in', ['manual', 'draft_invoice', 'validate_send'])]}">
-                                        <field name="auto_close_limit"/>
-                                        <span class="ms-1">days</span>
-                                    </div>
-                                    <field name="tag_ids" string="Account Tags" widget="many2many_tags" options="{'color_field': 'color'}" />
-                                    <field name="journal_id" options="{'no_create': True}" groups="account.group_account_manager"/>
-                                </group>
-                            </group>
-                    </group>
-                </page>
-                <page name="health" string="Health Check" attrs="{'invisible': [('is_subscription', '=', False)]}">
+            <group name="sale_info" position="inside">
+                <field name="invoice_mail_template_id" string="Invoice Email" groups="base.group_no_one"/>
+            </group>
+            <group name="sale_info" position="after">
+                <group name="sale_info2">
+                    <field name="recurrence_id" placeholder="None"/>
+                    <field name="recurring_rule_boundary" widget="radio" options="{'horizontal': true}"
+                           attrs="{'invisible': [('recurrence_id','=', False)]}"/>
+                    <label for="recurring_rule_count"
+                           attrs="{'invisible': ['|', ('recurrence_id','=', False), ('recurring_rule_boundary','=','unlimited')]}"/>
+                    <div class="o_row"
+                         attrs="{'invisible': ['|', ('recurrence_id','=', False), ('recurring_rule_boundary','=','unlimited')]}">
+                        <field name="recurring_rule_count"/>
+                        <field name="recurring_rule_type"/>
+                    </div>
+                    <field name="user_closable" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
+                    <label for="auto_close_limit" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
+                    <!--  ARJ TODO master ir config parameter or a company setting -->
+                    <div class="o_row" attrs="{'invisible': [('recurrence_id','=', False),]}">
+                        <field name="auto_close_limit"/>
+                        <span class="ms-1">days</span>
+                    </div>
+                    <field name="journal_id" options="{'no_create': True}"
+                           attrs="{'invisible': [('recurrence_id','=', False)]}"
+                           groups="account.group_account_manager"/>
+                    <!-- company_id invisible to be available in domains -->
+                    <field name="company_id" invisible="1"/>
+                    <field name="tag_ids" string="Account Tags" widget="many2many_tags"
+                           attrs="{'invisible': [('recurrence_id','=', False)]}" options="{'color_field': 'color'}"/>
+                </group>
+            </group>
+            <xpath expr="//page[@name='terms_and_conditions']" position="after">
+                <page name="health" string="Health Check" attrs="{'invisible': [('is_subscription', '=', False)]}" groups="base.group_no_one">
                     <label for="good_health_domain" string="Good Health"/><span class="o_status o_status_green"/>
                     <field name="good_health_domain" widget="domain" options="{'model': 'sale.order'}"/>
                     <separator/>
@@ -710,10 +755,11 @@
     <menuitem id="menu_sale_subscription_root" name="Subscriptions" sequence="40" web_icon="sale_subscription,static/description/icon.svg" groups="sales_team.group_sale_salesman"/>
 
     <menuitem id="menu_sale_subscription" name="Subscriptions" parent="menu_sale_subscription_root" sequence="5"/>
-    <menuitem action="sale_subscription_action" id="menu_sale_subscription_action" sequence="1" parent="menu_sale_subscription"/>
-    <menuitem action="sale_subscription_action_pending" id="menu_sale_subscription_pending" sequence="2" parent="menu_sale_subscription"/>
+    <menuitem action="sale_subscription_action" id="menu_sale_subscription_action" sequence="10" parent="menu_sale_subscription"/>
+    <menuitem action="sale_subscription_action_pending" id="menu_sale_subscription_pending" sequence="20" parent="menu_sale_subscription"/>
+    <menuitem action="sale_subscription_action_upsell" id="menu_sale_subscription_upsell" sequence="30" parent="menu_sale_subscription"/>
 
-    <menuitem action="product_action_subscription" id="menu_sale_subscription_product" sequence="3" parent="menu_sale_subscription"/>
+    <menuitem action="product_action_subscription" id="menu_sale_subscription_product" sequence="40" parent="menu_sale_subscription"/>
 
     <menuitem id="menu_sale_subscription_config" name="Configuration" sequence="10" parent="menu_sale_subscription_root"/>
     <menuitem action="sale_subscription_close_reason_action" id="menu_sale_subscription_close_reason_action" parent="menu_sale_subscription_config" sequence="10" groups="sales_team.group_sale_manager"/>

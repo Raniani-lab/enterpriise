@@ -17,5 +17,7 @@ def _pre_init_rental(cr):
         ADD COLUMN "next_action_date" timestamp
     """)
     cr.execute("""
-        ALTER TABLE "sale_order_line" ADD COLUMN "reservation_begin" timestamp
+        ALTER TABLE "sale_order_line"
+        ADD COLUMN "reservation_begin" timestamp,
+        ADD COLUMN "start_date" timestamp
     """)

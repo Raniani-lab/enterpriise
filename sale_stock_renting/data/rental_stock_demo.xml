@@ -25,19 +25,16 @@
   </record>
 
   <record id="rental_stock_pricing_1" model="product.pricing">
-      <field name="duration" eval="1"/>
+      <field name="recurrence_id" ref="sale_renting.recurrence_hourly"/>
       <field name="price" eval="5.0"/>
-      <field name="unit">hour</field>
   </record>
   <record id="rental_stock_pricing_2" model="product.pricing">
-      <field name="duration" eval="1"/>
+      <field name="recurrence_id" ref="sale_temporal.recurrence_daily"/>
       <field name="price" eval="20.0"/>
-      <field name="unit">day</field>
   </record>
   <record id="rental_stock_pricing_3" model="product.pricing">
-      <field name="duration" eval="7"/>
+      <field name="recurrence_id" ref="sale_temporal.recurrence_weekly"/>
       <field name="price" eval="100.0"/>
-      <field name="unit">day</field>
   </record>
 
   <record id="rental_stock_product_1" model="product.product"> <!-- House -->
@@ -115,7 +112,6 @@
       <field name="is_rental" eval="True"/>
       <field name="start_date" eval="DateTime.today() + relativedelta(days=1)"/>
       <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>
-      <field name="next_invoice_date" eval="DateTime.today() + relativedelta(days=5)"/>
       <field name="price_unit" eval="100.0"/>
   </record>
 
@@ -128,7 +124,6 @@
       <field name="is_rental" eval="True"/>
       <field name="start_date" eval="DateTime.today() + relativedelta(days=4)"/>
       <field name="return_date" eval="DateTime.today() + relativedelta(days=10)"/>
-      <field name="next_invoice_date" eval="DateTime.today() + relativedelta(days=10)"/>
       <field name="price_unit" eval="150.0"/>
       <field name="reserved_lot_ids" eval="[(6,0,[ref('rental_stock_lot_1'), ref('rental_stock_lot_2')])]"/>
   </record>

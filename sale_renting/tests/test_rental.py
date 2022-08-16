@@ -27,24 +27,24 @@ class TestRentalCommon(TransactionCase):
         cls.product_template_id = cls.product_id.product_tmpl_id
 
         cls.product_template_id.product_pricing_ids.unlink()
+        cls.recurrence_hourly = cls.env['sale.temporal.recurrence'].create({'duration': 1.0, 'unit': 'hour'})
+        cls.recurrence_5_hours = cls.env['sale.temporal.recurrence'].create({'duration': 5.0, 'unit': 'hour'})
+        cls.recurrence_15_hours = cls.env['sale.temporal.recurrence'].create({'duration': 15.0, 'unit': 'hour'})
+        cls.recurrence_daily = cls.env['sale.temporal.recurrence'].create({'duration': 1.0, 'unit': 'day'})
         # blank the demo pricings
 
         PRICINGS = [
             {
-                'duration': 1.0,
-                'unit': 'hour',
+                'recurrence_id': cls.recurrence_hourly.id,
                 'price': 3.5,
             }, {
-                'duration': 5.0,
-                'unit': 'hour',
+                'recurrence_id': cls.recurrence_5_hours.id,
                 'price': 15.0,
             }, {
-                'duration': 15.0,
-                'unit': 'hour',
+                'recurrence_id': cls.recurrence_15_hours.id,
                 'price': 40.0,
             }, {
-                'duration': 1.0,
-                'unit': 'day',
+                'recurrence_id': cls.recurrence_daily.id,
                 'price': 60.0,
             },
         ]
@@ -98,13 +98,11 @@ class TestRentalCommon(TransactionCase):
 
         PRICINGS = [
             {
-                'duration': 1.0,
-                'unit': 'hour',
+                'recurrence_id': self.recurrence_hourly.id,
                 'price': 3.5,
                 'pricelist_id': pricelist_A.id,
             }, {
-                'duration': 5.0,
-                'unit': 'hour',
+                'recurrence_id': self.recurrence_5_hours.id,
                 'price': 15.0,
                 'pricelist_id': pricelist_B.id,
             }
@@ -129,7 +127,6 @@ class TestRentalCommon(TransactionCase):
             'reservation_begin': reservation_begin,
             'start_date': pickup_date,
             'return_date': return_date,
-            'next_invoice_date': return_date,
             'is_rental': True,
         })
 
@@ -180,13 +177,11 @@ class TestRentalCommon(TransactionCase):
 
         PRICINGS = [
             {
-                'duration': 1.0,
-                'unit': 'hour',
+                'recurrence_id': self.recurrence_hourly.id,
                 'price': 3.5,
                 'pricelist_id': pricelist_A.id,
             }, {
-                'duration': 5.0,
-                'unit': 'hour',
+                'recurrence_id': self.recurrence_5_hours.id,
                 'price': 15.0,
                 'pricelist_id': pricelist_B.id,
             }
@@ -211,7 +206,6 @@ class TestRentalCommon(TransactionCase):
             'reservation_begin': reservation_begin,
             'start_date': pickup_date,
             'return_date': return_date,
-            'next_invoice_date': return_date,
             'is_rental': True,
             'price_unit': 1
         })
@@ -241,10 +235,10 @@ class TestRentalCommon(TransactionCase):
     def test_no_pickup_nor_return(self):
         partner = self.env['res.partner'].create({'name': 'A partner'})
 
+        recurrence_hour = self.env['sale.temporal.recurrence'].create({'duration': 1.0, 'unit': 'hour'})
         PRICINGS = [
             {
-                'duration': 1.0,
-                'unit': 'hour',
+                'recurrence_id': recurrence_hour.id,
                 'price': 3.5,
             }
         ]
@@ -268,10 +262,10 @@ class TestRentalCommon(TransactionCase):
     def test_no_price_update_on_pickup_return_update(self):
         partner = self.env['res.partner'].create({'name': 'A partner'})
 
+        recurrence_hour = self.env['sale.temporal.recurrence'].create({'duration': 1.0, 'unit': 'hour'})
         PRICINGS = [
             {
-                'duration': 1.0,
-                'unit': 'hour',
+                'recurrence_id': recurrence_hour.id,
                 'price': 3.5,
             }
         ]
@@ -292,7 +286,6 @@ class TestRentalCommon(TransactionCase):
         sol.write({
             'start_date': fields.Datetime.now() + relativedelta(days=1),
             'return_date': fields.Datetime.now() + relativedelta(days=1, hours=1),
-            'next_invoice_date': fields.Datetime.now() + relativedelta(days=1, hours=1),
             'is_rental': True,
         })
         self.assertEqual(sol.price_unit, 1, "Update price should not alter first computed price.")
@@ -304,11 +297,10 @@ class TestRentalCommon(TransactionCase):
         pricelist_A = self.env['product.pricelist'].create({
             'name': 'Pricelist A',
         })
-
+        recurrence_hour = self.env['sale.temporal.recurrence'].create({'duration': 1.0, 'unit': 'hour'})
         PRICINGS = [
             {
-                'duration': 1.0,
-                'unit': 'hour',
+                'recurrence_id': recurrence_hour.id,
                 'price': 3.5,
                 'pricelist_id': pricelist_A.id,
             }
@@ -326,7 +318,6 @@ class TestRentalCommon(TransactionCase):
             'order_id': sale_order.id,
             'start_date': fields.Datetime.now() + relativedelta(days=1),
             'return_date': fields.Datetime.now() + relativedelta(days=1, hours=1),
-            'next_invoice_date': fields.Datetime.now() + relativedelta(days=1, hours=1),
             'is_rental': True,
         })
 
@@ -336,10 +327,10 @@ class TestRentalCommon(TransactionCase):
         pricelist_A = self.env['product.pricelist'].create({
             'name': 'Pricelist A',
         })
+        recurrence_hour = self.env['sale.temporal.recurrence'].create({'duration': 1.0, 'unit': 'hour'})
         PRICINGS = [
             {
-                'duration': 1.0,
-                'unit': 'hour',
+                'recurrence_id': recurrence_hour.id,
                 'price': 3.5,
             }
         ]

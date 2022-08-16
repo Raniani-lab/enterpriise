@@ -14,22 +14,19 @@
     </record>
 
     <record id="product_pricing_insurance1" model="product.pricing">
-        <field name="duration" eval="1"/>
-        <field name="unit">month</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
         <field name="price" eval="30"/>
         <field name="currency_id" ref="base.USD"/>
     </record>
 
     <record id="product_pricing_insurance2" model="product.pricing">
-        <field name="duration" eval="1"/>
-        <field name="unit">year</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
         <field name="price" eval="300"/>
         <field name="currency_id" ref="base.USD"/>
     </record>
 
     <record id="product_pricing_insurance3" model="product.pricing">
-        <field name="duration" eval="3"/>
-        <field name="unit">year</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_3_year"/>
         <field name="price" eval="750"/>
         <field name="currency_id" ref="base.USD"/>
     </record>
@@ -41,7 +38,7 @@
 
     <record id="template_draft_multi" model="sale.order.template">
         <field name="name">Multi Line template</field>
-        <field name="payment_mode">draft_invoice</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
         <field name="recurring_rule_boundary">limited</field>
         <field name="recurring_rule_type">year</field>
         <field name="recurring_rule_count">5</field>
@@ -54,7 +51,6 @@
         <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
         <field name="product_uom_qty">4</field>
         <field name="product_uom_id" ref="uom.product_uom_unit"/>
-        <field name="pricing_id" ref="sale_subscription.product_pricing_2"/>
     </record>
 
     <record id="template_draft_multi_line_1" model="sale.order.template.line">
@@ -63,7 +59,6 @@
         <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
         <field name="product_uom_qty">4</field>
         <field name="product_uom_id" ref="uom.product_uom_unit"/>
-        <field name="pricing_id" ref="sale_subscription.product_pricing_1"/>
     </record>
 
     <record id="template_draft_multi_line_2" model="sale.order.template.line">
@@ -72,7 +67,6 @@
         <field name="product_id" ref="product_fire_insurance"/>
         <field name="product_uom_qty">1</field>
         <field name="product_uom_id" ref="uom.product_uom_unit"/>
-        <field name="pricing_id" ref="product_pricing_insurance1"/>
     </record>
 
     <record id="test_subscription_portal_0" model="sale.order">
@@ -81,6 +75,7 @@
         <field name="pricelist_id" ref="product.list0"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="client_order_ref">test_subscription_portal_0</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
     </record>
 
     <function model="sale.order" name="_onchange_sale_order_template_id" eval="[ref('test_subscription_portal_0')]"/>
@@ -92,6 +87,7 @@
         <field name="user_id" ref="base.user_admin"/>
         <field name="note">Full flow 2</field>
         <field name="client_order_ref">test_subscription_portal_1</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
     </record>
 
     <function
@@ -105,6 +101,7 @@
         <field name="pricelist_id" ref="product.list0"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="client_order_ref">test_subscription_portal_2</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
     </record>
 
     <function model="sale.order"
@@ -117,6 +114,7 @@
         <field name="pricelist_id" ref="product.list0"/>
         <field name="user_id" ref="base.user_admin"/>
         <field name="client_order_ref">test_subscription_portal_3</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
     </record>
 
     <function model="sale.order"
@@ -135,6 +133,7 @@
         <field name="user_id" ref="base.user_admin"/>
         <field name="state">draft</field>
         <field name="client_order_ref">test_subscription_portal_4</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_quarterly"/>
     </record>
 
     <record id="rec_line_1" model="sale.order.line">

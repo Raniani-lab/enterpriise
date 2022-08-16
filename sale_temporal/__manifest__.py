@@ -12,8 +12,11 @@
     'depends': ['sale'],
     'data': [
         'security/ir.model.access.csv',
+        'views/product_pricing_views.xml',
         'views/product_pricelist_views.xml',
         'views/product_template_views.xml',
+        'views/sale_temporal_recurrence_views.xml',
+        'views/sale_order_views.xml',
+        'data/sale_temporal_data.xml',
     ],
-    'pre_init_hook': '_pre_init_temporal',
 }

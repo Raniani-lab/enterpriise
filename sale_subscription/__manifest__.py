@@ -53,9 +53,6 @@ Features:
     'assets': {
         'web.assets_backend': [
             'sale_subscription/static/src/js/tours/sale_subscription.js',
-            'sale_subscription/static/src/js/product_update_widgets.js',
-            'sale_subscription/static/src/js/sale_order_controller.js',
-            'sale_subscription/static/src/js/sale_order_views.js',
         ],
         'web.assets_frontend': [
             'sale_subscription/static/src/js/portal_subscription.js',

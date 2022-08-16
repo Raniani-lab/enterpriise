@@ -15,22 +15,19 @@
         </record>
 
         <record id="product_pricing_1" model="product.pricing">
-            <field name="duration" eval="1"/>
-            <field name="unit">month</field>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
             <field name="price" eval="10"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
         <record id="product_pricing_2" model="product.pricing">
-            <field name="duration" eval="1"/>
-            <field name="unit">year</field>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
             <field name="price" eval="100"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
         <record id="product_pricing_3" model="product.pricing">
-            <field name="duration" eval="3"/>
-            <field name="unit">year</field>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_3_year"/>
             <field name="price" eval="250"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
@@ -47,22 +44,19 @@
         </record>
 
         <record id="product_pricing_4" model="product.pricing">
-            <field name="duration" eval="1"/>
-            <field name="unit">month</field>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
             <field name="price" eval="20"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
         <record id="product_pricing_5" model="product.pricing">
-            <field name="duration" eval="1"/>
-            <field name="unit">year</field>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
             <field name="price" eval="200"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
 
         <record id="product_pricing_6" model="product.pricing">
-            <field name="duration" eval="3"/>
-            <field name="unit">year</field>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_3_year"/>
             <field name="price" eval="500"/>
             <field name="currency_id" ref="base.USD"/>
         </record>
@@ -81,10 +75,10 @@
         <!-- Default Subscription Templates
              Defined in data and extended here to add demo values for some fields -->
         <record id="monthly_template" model="sale.order.template">
-            <field name="name">Monthly Template</field>
+            <field name="name">Monthly</field>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
             <field name="good_health_domain">[('recurring_monthly', '&gt;=', 20)]</field>
             <field name="bad_health_domain">[('recurring_monthly', '&lt;', 20)]</field>
-            <field name="payment_mode">draft_invoice</field>
             <field name="recurring_rule_boundary">limited</field>
             <field name="recurring_rule_count">6</field>
             <field name="recurring_rule_type">year</field>
@@ -96,12 +90,11 @@
             <field name="product_id" ref="product_office_cleaning"/>
             <field name="product_uom_qty">1</field>
             <field name="product_uom_id" ref="uom.product_uom_unit"/>
-            <field name="pricing_id" ref="product_pricing_1"/>
         </record>
 
         <record id="yearly_template" model="sale.order.template">
-            <field name="name">Yearly Template</field>
-            <field name="payment_mode">draft_invoice</field>
+            <field name="name">Yearly</field>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_yearly"/>
             <field name="recurring_rule_boundary">limited</field>
             <field name="recurring_rule_type">year</field>
             <field name="recurring_rule_count">6</field>
@@ -113,7 +106,6 @@
             <field name="product_id" ref="product_office_cleaning"/>
             <field name="product_uom_qty">2</field>
             <field name="product_uom_id" ref="uom.product_uom_unit"/>
-            <field name="pricing_id" ref="product_pricing_2"/>
         </record>
 
         <!-- Demo Subscriptions -->
@@ -136,14 +128,12 @@
             <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
             <field name="product_uom_qty">3</field>
             <field name="price_unit">20.0</field>
-            <field name="pricing_id" ref="product_pricing_1"/>
             <field name="product_uom" ref="uom.product_uom_unit"/>
         </record>
 
         <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_1')]]"/>
 
         <record id="subscription_portal_2" model="sale.order">
-<!--            <field name="name">PORTAL_22</field>-->
             <field name="partner_id" ref="base.partner_demo_portal"/>
             <field name="sale_order_template_id" ref="sale_subscription.yearly_template"/>
             <field name="pricelist_id" ref="product.list0"/>
@@ -161,6 +151,7 @@
         <record id="subscription_portal_3" model="sale.order">
             <field name="partner_id" ref="base.partner_demo_portal"/>
             <field name="pricelist_id" ref="product.list0"/>
+            <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
             <field name="user_id" ref="base.user_admin"/>
             <field name="state">draft</field>
             <field name="client_order_ref">subscription_portal_3</field>
@@ -172,14 +163,13 @@
             <field name="product_id" ref="sale_subscription.product_office_cleaning"/>
             <field name="product_uom_qty">3</field>
             <field name="price_unit">20.0</field>
-            <field name="pricing_id" ref="sale_subscription.product_pricing_1"/>
             <field name="product_uom" ref="uom.product_uom_unit"/>
         </record>
 
         <!-- Confirm some Sales Orders-->
         <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_2')]]"/>
         <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_3')]]"/>
-        <function model="sale.order" name="action_cancel" eval="[[ref('subscription_portal_3')]]"/>
+        <function model="sale.order" name="set_close" eval="[[ref('subscription_portal_3')]]"/>
 
         <!-- Demo Alerts-->
 

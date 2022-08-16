@@ -38,13 +38,11 @@ class SaleOrder(models.Model):
     ):
         """Add corresponding pickup and return date to rental line"""
         values = super()._prepare_order_line_values(product_id, quantity, **kwargs)
-
         product = self.env['product.product'].browse(product_id)
         if product.rent_ok and start_date and end_date:
             values.update({
                 'start_date': start_date,
                 'return_date': end_date,
-                'next_invoice_date': end_date,
                 'is_rental': True,
             })
             self.is_rental_order = True

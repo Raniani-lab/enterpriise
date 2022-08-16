@@ -48,7 +48,7 @@
           <field name="is_temporal" invisible="1"/>
       </xpath>
       <page name="sales" position="after">
-        <page string="Recurring Price" name="pricing" attrs="{'invisible': [('is_temporal','=',False)]}">
+        <page string="Price" name="pricing" attrs="{'invisible': [('is_temporal','=',False)]}">
           <group>
             <group name="pricing">
                 <field name="product_pricing_ids" nolabel="1">
@@ -60,8 +60,7 @@
                       groups="product.group_product_variant"
                       domain="[('product_tmpl_id', '=', parent.id)]"
                       attrs="{'column_invisible': [('parent.product_variant_count', '&lt;', 2)]}"/>
-                    <field name="duration"/>
-                    <field name="unit"/>
+                    <field name="recurrence_id"/>
                     <field name="pricelist_id" groups="product.group_product_pricelist"/>
                     <field name="currency_id" invisible="1"/>
                     <field name="price"/>

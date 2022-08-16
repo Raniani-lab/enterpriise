@@ -38,7 +38,7 @@ class RevenueKPIsDashboard(http.Controller):
                 for key, stat in FORECAST_STAT_TYPES.items()
             },
             'currency_id': request.env.company.currency_id.id,
-            'contract_templates': request.env['sale.order.template'].search_read([], fields=['name']),
+            'contract_templates': request.env['sale.order.template'].search_read([('recurrence_id', '!=', False)], fields=['name']),
             'tags': request.env['account.analytic.tag'].search_read([], fields=['name']),
             'companies': request.env['res.company'].search_read([], fields=['name']),
             'has_template': bool(request.env['sale.order.template'].search_count([])),
@@ -118,7 +118,7 @@ class RevenueKPIsDashboard(http.Controller):
 
         results = []
 
-        domain = []
+        domain = [('recurrence_id', '!=', False)]
         if filters.get('template_ids'):
             domain += [('id', 'in', filters.get('template_ids'))]
 
@@ -138,6 +138,7 @@ class RevenueKPIsDashboard(http.Controller):
             value = self.compute_stat(stat_type, start_date, end_date, specific_filters)
             results.append({
                 'name': template.name,
+                'recurrence': template.recurrence_id.name,
                 'nb_customers': len(recurring_invoice_line_ids.mapped('subscription_id')),
                 'value': value,
             })

@@ -248,7 +248,7 @@
         <!-- Subscriptions -->
         <div t-if="widget.contract_templates &amp;&amp; widget.contract_templates.length > 1" class="dropdown btn-group">
             <button class="dropdown-toggle btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                <span class="fa fa-file-o"/> Subscriptions
+                <span class="fa fa-file-o"/> Subscriptions plans
             </button>
             <div class="dropdown-menu o_filter_menu" role="menu">
                 <t t-foreach="widget.contract_templates" t-as="template">
@@ -301,11 +301,13 @@
         <table class="table table-striped">
             <tr>
                 <th>Plan</th>
+                <th>Recurrency</th>
                 <th># of Subscriptions</th>
                 <th t-if="stat_type != 'nb_contracts'"><t t-esc="stat_types[stat_type]['name']"/></th>
             </tr>
             <tr t-foreach="stats_by_plan" t-as="plan">
                 <td><t t-esc="plan['name']"/></td>
+                <td><t t-esc="plan['recurrence']"/></td>
                 <td><t t-esc="plan['nb_customers']"/></td>
                 <td t-if="stat_type != 'nb_contracts'"><t t-esc="format_number(plan['value'], stat_types[stat_type]['add_symbol'])"/></td>
             </tr>

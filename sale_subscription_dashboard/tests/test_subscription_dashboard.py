@@ -40,16 +40,17 @@ class TestSubscriptionDashboard(HttpCase):
         )
 
         # Test Subscription Template
-        container.pricing_month = container.env['product.pricing'].create({'duration': 1, 'unit': 'month', 'product_template_id': container.product_tmpl.id})
+        recurrence_month = container.recurrence_week = container.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'month'})
+        container.pricing_month = container.env['product.pricing'].create({'recurrence_id': recurrence_month.id, 'product_template_id': container.product_tmpl.id})
         container.subscription_tmpl = SubTemplate.create({
             "name": "TestSubscriptionTemplate",
             "note": "Test Subscription Template 1",
+            'recurrence_id': recurrence_month.id,
             "sale_order_template_line_ids": [(0, 0, {
                 'product_id': container.product.id,
                 'name': 'Test monthly product',
                 'product_uom_qty': 1,
                 'product_uom_id': container.env.ref("uom.product_uom_unit").id,
-                'pricing_id': container.pricing_month.id
             })],
         })
         # Test Subscription
@@ -112,7 +113,6 @@ class TestSubscriptionDashboard(HttpCase):
         self.subscription.action_confirm()
         self.subscription._create_recurring_invoice()
         invoice_id = self.subscription.invoice_ids
-        invoice_id._post()
 
         res = self.url_open(
             url,
@@ -140,7 +140,6 @@ class TestSubscriptionDashboard(HttpCase):
     def _test_mrr(self):
         start_date = fields.Date.to_string(fields.Date.start_of(datetime.date.today(), "month"))
         end_date = fields.Date.to_string(fields.Date.end_of(datetime.date.today(), "month"))
-
         self.subscription.write(
             {
                 "partner_id": self.partner_id.id,
@@ -152,18 +151,16 @@ class TestSubscriptionDashboard(HttpCase):
                         {
                             "product_id": self.product.id,
                             "name": "TestRecurringLine",
-                            "price_unit": 50,
                             "product_uom": self.product.uom_id.id,
-                            "pricing_id": self.pricing_month.id
                         },
                     )
                 ],
             }
         )
+        self.subscription.order_line.price_unit = 50 # price_unit is computed from the pricing.price value. We override it
         self.subscription.action_confirm()
         self.subscription._create_recurring_invoice()
         invoice = self.subscription.invoice_ids
-        invoice._post()
 
         self._check_mrr(start_date, end_date, 50)
 

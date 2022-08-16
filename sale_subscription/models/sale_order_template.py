@@ -10,18 +10,16 @@ class SaleOrderTemplate(models.Model):
     _inherit = 'sale.order.template'
 
     is_subscription = fields.Boolean(compute='_compute_is_subscription', search='_search_is_subscription')
-    recurring_rule_type = fields.Selection([('month', 'Months'), ('year', 'Years'), ], string='Recurrence', help="Contract duration", default='month')
+    recurrence_id = fields.Many2one('sale.temporal.recurrence', string='Recurrence')
     recurring_rule_boundary = fields.Selection([
         ('unlimited', 'Forever'),
         ('limited', 'Fixed')
     ], string='Duration', default='unlimited')
     recurring_rule_count = fields.Integer(string="End After", default=1)
+    recurring_rule_type = fields.Selection([('month', 'Months'), ('year', 'Years'), ], help="Contract duration", default='month')
 
-    user_closable = fields.Boolean(string="Closable by Customer",
+    user_closable = fields.Boolean(string="Self closable",
                                    help="If checked, the user will be able to close his account from the frontend")
-    payment_mode = fields.Selection([
-        ('manual', 'Manually'), ('draft_invoice', 'Draft'), ('validate_send', 'Post and Send'), ('success_payment', 'Send after successful payment'),
-    ], default='draft_invoice')
     journal_id = fields.Many2one(
         'account.journal', string="Invoicing Journal",
         domain="[('type', '=', 'sale')]", company_dependent=True, check_company=True,
@@ -41,41 +39,23 @@ class SaleOrderTemplate(models.Model):
                                      help="Domain used to change subscription's Kanban state with a 'Good' rating")
     bad_health_domain = fields.Char(string='Bad Health', default='[]',
                                     help="Domain used to change subscription's Kanban state with a 'Bad' rating")
+
+    # ARJ TODO master: use a setting or a config parameter
     invoice_mail_template_id = fields.Many2one(
         'mail.template', string='Invoice Email Template', domain=[('model', '=', 'account.move')],
         default=lambda self: self.env.ref('sale_subscription.mail_template_subscription_invoice', raise_if_not_found=False))
 
-    @api.constrains('recurring_rule_boundary', 'recurring_rule_type')
-    def _check_template_duration(self):
-        weight = {'day': 1, 'week': 10, 'month': 100, 'year': 1000}
-        error_message = _("Make sure that the template duration is longer than the lines periodicity")
-        for line in self.filtered(lambda t: t.recurring_rule_boundary == 'limited').sale_order_template_line_ids:
-            if line.pricing_id.unit and line.sale_order_template_id.recurring_rule_type and \
-                    weight[line.pricing_id.unit] > weight[line.sale_order_template_id.recurring_rule_type]:
-                raise ValidationError(error_message)
-            elif line.pricing_id.unit and line.sale_order_template_id.recurring_rule_type and \
-                    weight[line.pricing_id.unit] == weight[line.sale_order_template_id.recurring_rule_type] and \
-                    line.pricing_id.duration > line.sale_order_template_id.recurring_rule_count:
-                raise ValidationError(error_message)
-
-    @api.constrains('payment_mode')
-    def _check_payment_mode(self):
-        for template in self:
-            if template.is_subscription and not template.payment_mode:
-                raise ValidationError(_("The payment mode is mandatory on recurring templates"))
-
-    @api.depends('sale_order_template_line_ids.product_id', 'sale_order_template_line_ids.pricing_id')
+    @api.depends('sale_order_template_line_ids.product_id', 'recurrence_id')
     def _compute_is_subscription(self):
         for template in self:
             recurring_product = template.sale_order_template_line_ids.mapped('recurring_invoice')
-            pricing_id = template.sale_order_template_line_ids.pricing_id
-            template.is_subscription = recurring_product and pricing_id
+            template.is_subscription = recurring_product and template.recurrence_id
 
     @api.model
     def _search_is_subscription(self, operator, value):
         if operator not in ['=', '!='] or not isinstance(value, bool):
             raise NotImplementedError(_('Operation not supported'))
-        recurring_templates = self.env['sale.order.template.line'].search([('recurring_invoice', '=', True), ('pricing_id', '!=', False)]).mapped('sale_order_template_id')
+        recurring_templates = self.env['sale.order.template'].search([('recurrence_id', '!=', False)])
         if (operator == '=' and value) or (operator == '!=' and not value):
             # Look for subscription templates
             domain = [('id', 'in', recurring_templates.ids)]
@@ -89,55 +69,21 @@ class SaleOrderTemplateLine(models.Model):
     _name = "sale.order.template.line"
     _inherit = ['sale.order.template.line']
 
-    product_pricing_ids = fields.One2many('product.pricing', compute='_compute_product_pricing_ids')
-    pricing_id = fields.Many2one('product.pricing', domain="[('id', 'in', product_pricing_ids)]")
     recurring_invoice = fields.Boolean(related='product_id.recurring_invoice')
+    recurrence_id = fields.Many2one(related="sale_order_template_id.recurrence_id")
 
-    @api.depends('product_id')
-    def _compute_product_pricing_ids(self):
-        available_pricings_ids = self.product_id.product_pricing_ids
-        for line in self:
-            product_pricing_ids = self.env['product.pricing']
-            if line.product_id and line.product_id.product_pricing_ids:
-                # We allow to display one type of pricing per periocitiy
-                pricing_ids = available_pricings_ids.filtered(lambda p: p.product_template_id.id == line.product_id.product_tmpl_id.id)
-                # We keep only one periodicity to avoid duplicate pricing for each pricelist
-                product_pricing_ids |= pricing_ids._get_pricing_samples()
-            line.product_pricing_ids = product_pricing_ids
-
-    #=== BUSINESS METHODS ===#
-
-    def _prepare_order_line_values(self):
-        res = super()._prepare_order_line_values()
-        res['pricing_id'] = self.pricing_id.id
-        return res
+    # ARJ TODO MASTER move that in temporal to make it work with rental
+    def open_product_pricing(self):
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('sale_temporal.product_pricing_action')
+        action['domain'] = [('product_template_id', 'in', self.product_id.product_tmpl_id.ids),
+                            ('recurrence_id', '=', self.recurrence_id.id)]
+        return action
 
 
 class SaleOrderTemplateOption(models.Model):
     _name = "sale.order.template.option"
     _inherit = ['sale.order.template.option']
 
-    product_pricing_ids = fields.One2many('product.pricing', compute='_compute_product_pricing_ids')
-    option_pricing_id = fields.Many2one('product.pricing', domain="[('id', 'in', product_pricing_ids)]")
     recurring_invoice = fields.Boolean(related='product_id.recurring_invoice')
-
-    @api.depends('product_id')
-    def _compute_product_pricing_ids(self):
-        """ copy pasted, it should be in a mixin or something """
-        available_pricings_ids = self.product_id.product_pricing_ids
-        for line in self:
-            product_pricing_ids = self.env['product.pricing']
-            if line.product_id and line.product_id.product_pricing_ids:
-                # We allow to display one type of pricing per periocitiy
-                pricing_ids = available_pricings_ids.filtered(
-                    lambda p: p.product_template_id.id == line.product_id.product_tmpl_id.id)
-                # We keep only one periodicity to avoid duplicate pricing for each pricelist
-                product_pricing_ids |= pricing_ids._get_pricing_samples()
-            line.product_pricing_ids = product_pricing_ids
-
-    #=== BUSINESS METHODS ===#
-
-    def _prepare_option_line_values(self):
-        res = super()._prepare_option_line_values()
-        res['option_pricing_id'] = self.option_pricing_id.id
-        return res
+    recurrence_id = fields.Many2one(related="sale_order_template_id.recurrence_id")

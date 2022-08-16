@@ -141,12 +141,11 @@ class CustomerPortal(portal.CustomerPortal):
         display_close = active_plan_sudo.user_closable and order_sudo.stage_category == 'progress'
         is_follower = request.env.user.partner_id in order_sudo.message_follower_ids.partner_id
         periods = {'day': 'days', 'week': 'weeks', 'month': 'months', 'year': 'years'}
-        next_invoiced_line = order_sudo.order_line.filtered('next_invoice_date').sorted('next_invoice_date')
         # Calculate the duration when the customer can reopen his subscription
         missing_periods = 1
-        if next_invoiced_line:
-            rel_period = relativedelta(datetime.datetime.today(), next_invoiced_line[0].next_invoice_date)
-            missing_periods = getattr(rel_period, periods[next_invoiced_line[0].pricing_id.unit]) + 1
+        if order_sudo.next_invoice_date:
+            rel_period = relativedelta(datetime.datetime.today(), order_sudo.next_invoice_date)
+            missing_periods = getattr(rel_period, periods[order_sudo.recurrence_id.unit]) + 1
         action = request.env.ref('sale_subscription.sale_subscription_action')
         values = {
             'page_name': 'subscription',
@@ -156,7 +155,6 @@ class CustomerPortal(portal.CustomerPortal):
             'is_follower': is_follower,
             'close_reasons': request.env['sale.order.close.reason'].search([]),
             'missing_periods': missing_periods,
-            'payment_mode': active_plan_sudo.payment_mode,
             'user': request.env.user,
             'is_salesman': request.env.user.has_group('sales_team.group_sale_salesman'),
             'action': action,

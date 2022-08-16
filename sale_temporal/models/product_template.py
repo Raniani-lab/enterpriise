@@ -77,7 +77,7 @@ class ProductTemplate(models.Model):
             if duration and unit:
                 price = pricing._compute_price(duration, unit)
             else:
-                price = pricing._compute_price(duration_dict[pricing.unit], pricing.unit)
+                price = pricing._compute_price(duration_dict[pricing.recurrence_id.unit], pricing.recurrence_id.unit)
             if pricing.currency_id != currency:
                 price = pricing.currency_id._convert(
                     from_amount=price,
@@ -85,6 +85,8 @@ class ProductTemplate(models.Model):
                     company=company,
                     date=fields.Date.today(),
                 )
-            if price < min_price:
+            # We compare the abs of prices because negative pricing (as a promotion) would trigger the
+            # highest discount without it.
+            if abs(price) < abs(min_price):
                 min_price, best_pricing_rule = price, pricing
         return best_pricing_rule

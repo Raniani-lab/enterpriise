@@ -38,7 +38,7 @@ class SaleOrder(models.Model):
     def _compute_rental_status(self):
         for order in self:
             if order.state in ['sale', 'done'] and order.is_rental_order:
-                rental_order_lines = order.order_line.filtered(lambda l: l.is_rental and l.start_date and l.next_invoice_date)
+                rental_order_lines = order.order_line.filtered(lambda l: l.is_rental and l.start_date and l.return_date)
                 pickeable_lines = rental_order_lines.filtered(lambda sol: sol.qty_delivered < sol.product_uom_qty)
                 returnable_lines = rental_order_lines.filtered(lambda sol: sol.qty_returned < sol.qty_delivered)
                 min_pickup_date = min(pickeable_lines.mapped('start_date')) if pickeable_lines else 0

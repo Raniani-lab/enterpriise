@@ -15,6 +15,6 @@ class ProductPricing(models.Model):
             'week': _lt("Week"),
             'month': _lt("Month"),
         }
-        if self.unit in labels:
-            return labels[self.unit]
-        return dict(self.env['product.pricing']._fields['unit']._description_selection(self.env))[self.unit]
+        if self.recurrence_id.unit in labels:
+            return labels[self.recurrence_id.unit]
+        return dict(self.env['sale.temporal.recurrence']._fields['unit']._description_selection(self.env))[self.recurrence_id.unit]

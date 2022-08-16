@@ -14,6 +14,7 @@ class SaleOrderLine(models.Model):
     is_rental = fields.Boolean(default=False)
 
     qty_returned = fields.Float("Returned", default=0.0, copy=False)
+    start_date = fields.Datetime(string='Start Date')
     return_date = fields.Datetime(string="Return")
     reservation_begin = fields.Datetime(
         string="Pickup date - padding time", compute='_compute_reservation_begin', store=True)
@@ -34,14 +35,6 @@ class SaleOrderLine(models.Model):
             # To compare with subscription where temporal type depends on recurrency and recurring_invoice
             if line.is_rental:
                 line.temporal_type = 'rental'
-
-    def _compute_start_date(self):
-        rental = self.filtered('is_rental')
-        super(SaleOrderLine, self - rental)._compute_start_date()
-
-    def _compute_next_invoice_date(self):
-        rental = self.filtered('is_rental')
-        super(SaleOrderLine, self - rental)._compute_next_invoice_date()
 
     @api.depends('return_date')
     def _compute_is_late(self):
@@ -65,7 +58,6 @@ class SaleOrderLine(models.Model):
                 'is_rental': False,
                 'start_date': False,
                 'return_date': False,
-                'next_invoice_date': False
             })
 
     @api.onchange('qty_delivered')
@@ -74,7 +66,7 @@ class SaleOrderLine(models.Model):
         if self.qty_delivered > self.product_uom_qty:
             self.product_uom_qty = self.qty_delivered
 
-    @api.depends('start_date', 'next_invoice_date', 'temporal_type')
+    @api.depends('start_date', 'return_date', 'temporal_type')
     def _compute_name(self):
         """Override to add the compute dependency.
 
@@ -92,7 +84,7 @@ class SaleOrderLine(models.Model):
             "CHECK(NOT is_rental OR qty_returned <= qty_delivered)",
             "You cannot return more than what has been picked up."),
         ('rental_period_coherence',
-            "CHECK(NOT is_rental OR start_date < next_invoice_date)",
+            "CHECK(NOT is_rental OR start_date < return_date)",
             "Please choose a return date that is after the pickup date."),
     ]
 
@@ -105,13 +97,13 @@ class SaleOrderLine(models.Model):
 
     def _get_rental_order_line_description(self):
         tz = self._get_tz()
-        if self.start_date and self.next_invoice_date\
+        if self.start_date and self.return_date\
            and self.start_date.replace(tzinfo=UTC).astimezone(timezone(tz)).date()\
                == self.return_date.replace(tzinfo=UTC).astimezone(timezone(tz)).date():
             # If return day is the same as pickup day, don't display return_date Y/M/D in description.
             return_date_part = format_time(self.with_context(use_babel=True).env, self.return_date, tz=tz, time_format=False)
         else:
-            return_date_part = format_datetime(self.with_context(use_babel=True).env, self.next_invoice_date, tz=tz, dt_format=False)
+            return_date_part = format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=tz, dt_format=False)
 
         return "\n%s %s %s" % (
             format_datetime(self.with_context(use_babel=True).env, self.start_date, tz=tz, dt_format=False),
@@ -199,15 +191,23 @@ class SaleOrderLine(models.Model):
             format_datetime(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=tz, dt_format=False)
         )
 
+    #=== ONCHANGE METHODS ===#
+
+    @api.onchange('product_id')
+    def _onchange_product_id(self):
+        """Clean product related data if new product is not temporal."""
+        if not self.temporal_type:
+            values = self._get_clean_up_values()
+            self.update(values)
+
     def _get_clean_up_values(self):
-        values = super()._get_clean_up_values()
-        values.update({'return_date': False})
-        return values
+        """Helper to allow reset lines values."""
+        return {'return_date': False}
 
     def _get_tz(self):
         return self.env.context.get('tz') or self.env.user.tz or 'UTC'
 
-    #=== PRICE COMPUTING HOOKS ===#
+    # === PRICE COMPUTING HOOKS === #
 
     def _get_price_computing_kwargs(self):
         """ Override to add the pricing duration or the start and end date of temporal line """

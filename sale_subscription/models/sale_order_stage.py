@@ -16,5 +16,5 @@ class SaleOrderStage(models.Model):
     rating_template_id = fields.Many2one('mail.template', string='Rating Email Template',
                                          help="Send an email to the customer when the subscription is moved to this stage.",
                                          domain=[('model', '=', 'sale.order')])
-    category = fields.Selection([('draft', 'Quotation'), ('progress', 'In Progress'), ('closed', 'Closed')],
+    category = fields.Selection([('draft', 'Quotation'), ('progress', 'In Progress'), ('paused', 'Invoicing Pause'), ('closed', 'Closed')],
                                 required=True, default='draft')

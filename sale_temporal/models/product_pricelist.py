@@ -38,16 +38,18 @@ class Pricelist(models.Model):
                     )
                     if not duration:
                         duration_vals = Pricing._compute_duration_vals(start_date, end_date)
-                        duration = pricing and duration_vals[pricing.unit or 'day'] or 0
+                        duration = pricing and duration_vals[pricing.recurrence_id.unit or 'day'] or 0
                 else:
                     pricing = Pricing._get_first_suitable_pricing(product, self)
-                    duration = pricing.duration
+                    duration = pricing.recurrence_id.duration
 
                 if pricing:
-                    price = pricing._compute_price(duration, unit or pricing.unit)
-                    results[product.id] = pricing.currency_id._convert(
-                        price, self.currency_id, self.env.company, date
-                    ), False
+                    price = pricing._compute_price(duration, unit or pricing.recurrence_id.unit)
+                else:
+                    price = product.list_price
+                results[product.id] = pricing.currency_id._convert(
+                    price, self.currency_id, self.env.company, date
+                ), False
 
         price_computed_products = self.env[products._name].browse(results.keys())
         return {

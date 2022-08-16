@@ -11,4 +11,22 @@
         <field name="value" model="product.template" eval="obj().env.company.extra_day"/>
         <field name="type">float</field>
     </record>
+
+    <record id="recurrence_hourly" model="sale.temporal.recurrence">
+        <field name="name">Hourly</field>
+        <field name="duration">1</field>
+        <field name="unit">hour</field>
+    </record>
+
+    <record id="recurrence_3_hours" model="sale.temporal.recurrence">
+        <field name="name">3 Hours</field>
+        <field name="duration">3</field>
+        <field name="unit">hour</field>
+    </record>
+
+    <record id="recurrence_2_weeks" model="sale.temporal.recurrence">
+        <field name="name">2 Weeks</field>
+        <field name="duration">2</field>
+        <field name="unit">week</field>
+    </record>
 </odoo>

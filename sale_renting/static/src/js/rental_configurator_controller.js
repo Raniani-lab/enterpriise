@@ -13,7 +13,6 @@ var RentalConfiguratorFormController = FormController.extend({
     _getRentalInfo: function (state) {
         return {
             start_date: state.pickup_date,
-            next_invoice_date: state.return_date,
             return_date: state.return_date,
             price_unit: state.unit_price,
             product_uom_qty: state.quantity,

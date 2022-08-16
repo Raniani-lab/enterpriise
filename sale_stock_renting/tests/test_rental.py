@@ -103,7 +103,6 @@ class TestRentalCommon(common.TransactionCase):
             'is_rental': True,
             'start_date': fields.Datetime.today(),
             'return_date': fields.Datetime.today() + timedelta(days=3),
-            'next_invoice_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 150,
         })
 
@@ -133,7 +132,6 @@ class TestRentalCommon(common.TransactionCase):
             'is_rental': True,
             'start_date': fields.Datetime.today(),
             'return_date': fields.Datetime.today() + timedelta(days=3),
-            'next_invoice_date': fields.Datetime.today() + timedelta(days=3),
             'price_unit': 250,
         })
 

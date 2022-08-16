@@ -44,11 +44,13 @@ class TestSaleOrder(TestCommissionsSetup):
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
+        # form.commission_plan_frozen = False
+        form.recurrence_id = self.recurrence_year
+
         with form.order_line.new() as line:
             line.name = self.worker.name
             line.product_id = self.worker
             line.product_uom_qty = 1
-            line.pricing_id = self.worker_pricing
 
         so = form.save()
         so.action_confirm()
@@ -101,7 +103,7 @@ class TestSaleOrder(TestCommissionsSetup):
     def test_so_referrer_id_to_invoice(self):
         """Referrer_id should be the same in the new created invoice"""
         self.referrer.commission_plan_id = self.gold_plan
-
+        self.worker.recurring_invoice = False # test on a non recurring SO
         form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
         form.partner_id = self.customer
         form.referrer_id = self.referrer

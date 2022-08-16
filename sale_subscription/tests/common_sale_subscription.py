@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+import datetime
+
 from odoo.addons.sale.tests.common import TestSaleCommon
 from odoo.tests import tagged
 from odoo import Command
@@ -36,22 +39,21 @@ class TestSubscriptionCommon(TestSaleCommon):
         cls.journal = cls.company_data['default_journal_sale']
 
         # Test products
-        cls.pricing_month = cls.env['product.pricing'].create({
-            'duration': 1,
-            'unit': 'month',
-            'price': 50
-        })
-        cls.pricing_year = cls.env['product.pricing'].create({
-            'duration': 1,
-            'unit': 'year',
-            'price': 50,
-        })
+        cls.recurrence_week = cls.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'week'})
+        cls.recurrence_month = cls.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'month'})
+        cls.recurrence_year = cls.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'year'})
+        cls.recurrence_2_month = cls.env['sale.temporal.recurrence'].create({'duration': 2, 'unit': 'month'})
+
+        cls.pricing_month = cls.env['product.pricing'].create({'recurrence_id': cls.recurrence_month.id})
+        cls.pricing_year = cls.env['product.pricing'].create({'recurrence_id': cls.recurrence_year.id, 'price': 100})
+        cls.pricing_year_2 = cls.env['product.pricing'].create({'recurrence_id': cls.recurrence_year.id, 'price': 200})
+        cls.pricing_year_3 = cls.env['product.pricing'].create({'recurrence_id': cls.recurrence_year.id, 'price': 300})
         cls.sub_product_tmpl = ProductTmpl.create({
             'name': 'BaseTestProduct',
             'type': 'service',
             'recurring_invoice': True,
             'uom_id': cls.env.ref('uom.product_uom_unit').id,
-            'product_pricing_ids': [Command.set((cls.pricing_month + cls.pricing_year).ids)]
+            'product_pricing_ids': [(6, 0, (cls.pricing_month | cls.pricing_year).ids)]
         })
         cls.product = cls.sub_product_tmpl.product_variant_id
         cls.product.write({
@@ -117,19 +119,18 @@ class TestSubscriptionCommon(TestSaleCommon):
             'recurring_rule_count': 2,
             'note': "This is the template description",
             'auto_close_limit': 5,
+            'recurrence_id': cls.recurrence_month.id,
             'sale_order_template_line_ids': [Command.create({
-                'name': "monthly",
+                'name': "Product 1",
                 'product_id': cls.product.id,
-                'pricing_id': cls.pricing_month.id,
                 'product_uom_qty': 1,
                 'product_uom_id': cls.product.uom_id.id
             }),
                 Command.create({
-                    'name': "yearly",
-                    'product_id': cls.product.id,
-                    'pricing_id': cls.pricing_year.id,
+                    'name': "Product 2",
+                    'product_id': cls.product2.id,
                     'product_uom_qty': 1,
-                    'product_uom_id': cls.product.uom_id.id,
+                    'product_uom_id': cls.product2.uom_id.id,
                 })
             ]
         })
@@ -181,13 +182,14 @@ class TestSubscriptionCommon(TestSaleCommon):
         cls.subscription = SaleOrder.create({
             'name': 'TestSubscription',
             'is_subscription': True,
+            'recurrence_id': cls.recurrence_month.id,
             'note': "original subscription description",
             'partner_id': cls.user_portal.partner_id.id,
             'pricelist_id': cls.company_data['default_pricelist'].id,
             'sale_order_template_id': cls.subscription_tmpl.id,
         })
         cls.subscription._onchange_sale_order_template_id()
-        cls.subscription.order_line.start_date = False # the confirmation will set the start_date
+        cls.subscription.start_date = False # the confirmation will set the start_date
         cls.subscription.end_date = False # reset the end_date too
         cls.company = cls.env.company
         cls.company.country_id = cls.env.ref('base.us')
@@ -238,6 +240,40 @@ class TestSubscriptionCommon(TestSaleCommon):
             'parent_id': cls.partner_a.id,
             'type': 'delivery',
         })
+
+    # Mocking for 'test_auto_payment_with_token'
+    # Necessary to have a valid and done transaction when the cron on subscription passes through
+    def _mock_subscription_do_payment(self, payment_method, invoice):
+        tx_obj = self.env['payment.transaction']
+        reference = "CONTRACT-%s-%s" % (self.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S%f'))
+        values = {
+            'amount': invoice.amount_total,
+            'acquirer_id': self.acquirer.id,
+            'operation': 'offline',
+            'currency_id': invoice.currency_id.id,
+            'reference': reference,
+            'token_id': payment_method.id,
+            'partner_id': invoice.partner_id.id,
+            'partner_country_id': invoice.partner_id.country_id.id,
+            'invoice_ids': [(6, 0, [invoice.id])],
+            'state': 'done',
+        }
+        tx = tx_obj.create(values)
+        return tx
+
+    # Mocking for 'test_auto_payment_with_token'
+    # Otherwise the whole sending mail process will be triggered
+    # And we are not here to test that flow, and it is a heavy one
+    def _mock_subscription_send_success_mail(self, tx, invoice):
+        self.mock_send_success_count += 1
+        return 666
+
+    # Mocking for 'test_auto_payment_with_token'
+    # Avoid account_id is False when creating the invoice
+    def _mock_prepare_invoice_data(self):
+        invoice = self.original_prepare_invoice()
+        invoice['partner_bank_id'] = False
+        return invoice
 
     def flush_tracking(self):
         self.env.flush_all()

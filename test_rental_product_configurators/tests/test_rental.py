@@ -34,11 +34,10 @@ class TestRentalProductConfigUi(TestMatrixCommon, TestProductConfiguratorCommon)
 
         # Update the product template that can be sold and rented
         cls.product_product_custo_desk.update({'rent_ok': True})
-
+        recurrence_day = cls.recurrence_week = cls.env['sale.temporal.recurrence'].create({'duration': 1, 'unit': 'day'})
         # Add rental pricing
         cls.env['product.pricing'].create({
-            'duration': 1.0,
-            'unit': 'day',
+            'recurrence_id': recurrence_day.id,
             'price': 60.0,
             'product_template_id': cls.product_product_custo_desk.id
         })
@@ -50,8 +49,7 @@ class TestRentalProductConfigUi(TestMatrixCommon, TestProductConfiguratorCommon)
         ])
         variant_desk_alu_white = cls.product_product_custo_desk._get_variant_for_combination(ptav)
         cls.env['product.pricing'].create({
-            'duration': 1.0,
-            'unit': 'day',
+            'recurrence_id': recurrence_day.id,
             # FIXME edm: right now, only work with a variant cheaper than the normal price,
             #            otherwise this pricing is ignored
             'price': 25.0,
@@ -69,8 +67,7 @@ class TestRentalProductConfigUi(TestMatrixCommon, TestProductConfiguratorCommon)
 
         # Set the rental pricing
         cls.env['product.pricing'].create({
-            'duration': 1.0,
-            'unit': 'day',
+            'recurrence_id': recurrence_day.id,
             'price': 20.0,
             'product_template_id': cls.rental_projector_id.id,
         })

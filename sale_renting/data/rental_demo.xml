@@ -35,35 +35,30 @@
     <!-- Rental pricings -->
 
     <record id="rental_pricing_1" model="product.pricing">
-        <field name="duration" eval="3"/>
-        <field name="unit">hour</field>
+        <field name="recurrence_id" ref="sale_renting.recurrence_3_hours"/>
         <field name="price" eval="5.00"/>
         <field name="currency_id" ref="base.USD"/>
     </record>
     <record id="rental_pricing_2" model="product.pricing">
-        <field name="duration" eval="1"/>
-        <field name="unit">day</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_daily"/>
         <field name="price" eval="25"/>
         <field name="currency_id" ref="base.USD"/>
     </record>
 
     <record id="rental_pricing_3" model="product.pricing">
-        <field name="duration" eval="1"/>
-        <field name="unit">day</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_daily"/>
         <field name="price" eval="150.00"/>
         <field name="currency_id" ref="base.USD"/>
     </record>
 
     <record id="rental_pricing_4" model="product.pricing">
-        <field name="duration" eval="7"/>
-        <field name="unit">day</field>
+        <field name="recurrence_id" ref="sale_temporal.recurrence_weekly"/>
         <field name="price" eval="900.00"/> <!-- One day of reduction -->
         <field name="currency_id" ref="base.USD"/>
     </record>
 
     <record id="rental_pricing_5" model="product.pricing">
-        <field name="duration" eval="14"/>
-        <field name="unit">day</field>
+        <field name="recurrence_id" ref="sale_renting.recurrence_2_weeks"/>
         <field name="price" eval="1750"/> <!-- 3 days of reduction -->
         <field name="currency_id" ref="base.USD"/>
     </record>
@@ -99,8 +94,7 @@
         <field name="product_uom" ref="uom.product_uom_unit"/>
         <field name="is_rental" eval="True"/>
         <field name="start_date" eval="DateTime.today()"/>
-        <field name="next_invoice_date" eval="DateTime.today() + relativedelta(days=3)"/>
-        <field name="return_date" eval="DateTime.today() + relativedelta(days=3)"/>
+        <field  name="return_date" eval="DateTime.today() + relativedelta(days=3)"/>
         <field name="price_unit" eval="450.0"/>
     </record>
 
@@ -137,9 +131,21 @@
         <field name="qty_delivered">3</field>
         <field name="start_date" eval="DateTime.today() - relativedelta(days=5)"/>
         <field name="return_date" eval="DateTime.today() - relativedelta(days=1)"/>
-        <field name="next_invoice_date" eval="DateTime.today() - relativedelta(days=1)"/>
+        <field name="return_date" eval="DateTime.today() - relativedelta(days=1)"/>
         <field name="price_unit" eval="100.0"/>
     </record>
+  <record id="rental_order_line_3" model="sale.order.line"> <!-- NOTE: late return -->
+      <field name="order_id" ref="rental_order_2"/>
+      <field name="product_id" ref="rental_product_1"/>
+      <field name="product_uom_qty">3</field>
+      <field name="product_uom" ref="uom.product_uom_unit"/>
+      <field name="name" eval="'[RENT001] Projector'"/>
+      <field name="is_rental" eval="True"/>
+      <field name="qty_delivered">3</field>
+      <field name="start_date" eval="DateTime.today() - relativedelta(days=5)"/>
+      <field name="return_date" eval="DateTime.today() - relativedelta(days=1)"/>
+      <field name="price_unit" eval="100.0"/>
+  </record>
 
     <record id="rental_order_line_4" model="sale.order.line"> <!-- NOTE: partial pickup -->
         <field name="order_id" ref="rental_order_2"/>
@@ -151,9 +157,21 @@
         <field name="qty_delivered">2</field>
         <field name="start_date" eval="DateTime.today() - relativedelta(days=1)"/>
         <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>
-        <field name="next_invoice_date" eval="DateTime.today() + relativedelta(days=5)"/>
+        <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>
         <field name="price_unit" eval="150.0"/>
     </record>
+  <record id="rental_order_line_4" model="sale.order.line"> <!-- NOTE: partial pickup -->
+      <field name="order_id" ref="rental_order_2"/>
+      <field name="product_id" ref="rental_product_1"/>
+      <field name="product_uom_qty">3</field>
+      <field name="product_uom" ref="uom.product_uom_unit"/>
+      <field name="name" eval="'[RENT001] Projector'"/>
+      <field name="is_rental" eval="True"/>
+      <field name="qty_delivered">2</field>
+      <field name="start_date" eval="DateTime.today() - relativedelta(days=1)"/>
+      <field name="return_date" eval="DateTime.today() + relativedelta(days=5)"/>
+      <field name="price_unit" eval="150.0"/>
+  </record>
 
     <record id="rental_order_line_5" model="sale.order.line">
         <field name="order_id" ref="rental_order_2"/>

@@ -19,18 +19,7 @@ INTERVAL_FACTOR = {
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    start_date = fields.Datetime(string='Start Date', compute='_compute_start_date', readonly=False, store=True, precompute=True)
-    next_invoice_date = fields.Datetime(compute='_compute_next_invoice_date', readonly=False, store=True, precompute=True,
-                                        help="The next invoice will be created on this date then the period will be extended.")
-    pricelist_id = fields.Many2one(related='order_id.pricelist_id')
     temporal_type = fields.Selection([], compute="_compute_temporal_type")
-
-    #=== COMPUTE METHODS ===#
-    def _compute_start_date(self):
-        self.start_date = False
-
-    def _compute_next_invoice_date(self):
-        self.next_invoice_date = False
 
     @api.depends('order_id', 'product_template_id')
     def _compute_temporal_type(self):
@@ -54,19 +43,7 @@ class SaleOrderLine(models.Model):
         super(SaleOrderLine, self - temporal_lines)._compute_product_updatable()
         temporal_lines.product_updatable = True
 
-    #=== ONCHANGE METHODS ===#
-
-    @api.onchange('product_id')
-    def _onchange_product_id(self):
-        """Clean product related data if new product is not temporal."""
-        if not self.temporal_type:
-            values = self._get_clean_up_values()
-            self.update(values)
-
-    #=== BUSINESS METHODS ===#
-
-    def _get_clean_up_values(self):
-        return {'start_date': False, 'next_invoice_date': False}
+    # === BUSINESS METHODS ===#
 
     def _get_pricelist_price(self):
         """ Custom price computation for temporal lines.

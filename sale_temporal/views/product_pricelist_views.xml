@@ -15,8 +15,7 @@
                                    groups="product.group_product_variant"
                                    domain="[('product_tmpl_id', '=', product_template_id)]"
                                    options="{'no_create': 1}"/>
-                            <field name="duration"/>
-                            <field name="unit"/>
+                            <field name="recurrence_id"/>
                             <field name="currency_id" invisible="1"/>
                             <field name="price" widget="monetary"/>
                             <field name="company_id" optional="hide"/>

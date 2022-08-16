@@ -79,8 +79,8 @@ class RentalWizard(models.TransientModel):
                 duration_dict = self.env['product.pricing']._compute_duration_vals(wizard.pickup_date, wizard.return_date)
                 if wizard.pricing_id:
                     values = {
-                        'duration_unit': wizard.pricing_id.unit,
-                        'duration': duration_dict[wizard.pricing_id.unit]
+                        'duration_unit': wizard.pricing_id.recurrence_id.unit,
+                        'duration': duration_dict[wizard.pricing_id.recurrence_id.unit]
                     }
                 else:
                     values = {
@@ -151,15 +151,15 @@ class RentalWizard(models.TransientModel):
     @api.depends('unit_price', 'pricing_id')
     def _compute_pricing_explanation(self):
         translated_pricing_duration_unit = dict()
-        for key, value in self.pricing_id._fields['unit']._description_selection(self.env):
+        for key, value in self.pricing_id.recurrence_id._fields['unit']._description_selection(self.env):
             translated_pricing_duration_unit[key] = value
         for wizard in self:
             if wizard.pricing_id and wizard.duration > 0 and wizard.unit_price != 0.0:
-                if wizard.pricing_id.duration > 0:
+                if wizard.pricing_id.recurrence_id.duration > 0:
                     pricing_explanation = "%i * %i %s (%s)" % (
-                        math.ceil(wizard.duration / wizard.pricing_id.duration),
-                        wizard.pricing_id.duration,
-                        translated_pricing_duration_unit[wizard.pricing_id.unit],
+                        math.ceil(wizard.duration / wizard.pricing_id.recurrence_id.duration),
+                        wizard.pricing_id.recurrence_id.duration,
+                        translated_pricing_duration_unit[wizard.pricing_id.recurrence_id.unit],
                         self.env['ir.qweb.field.monetary'].value_to_html(
                             wizard.pricing_id.price, {
                                 'from_currency': wizard.pricing_id.currency_id,

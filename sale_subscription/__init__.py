@@ -14,7 +14,8 @@ def _pre_init_sale_subscription(cr):
     """
     cr.execute("""
         ALTER TABLE "sale_order_line"
-        ADD COLUMN "parent_line_id" int4
+        ADD COLUMN "parent_line_id" int4,
+        ADD COLUMN "pricing_id" int4
     """)
     cr.execute("""
         ALTER TABLE "sale_order"

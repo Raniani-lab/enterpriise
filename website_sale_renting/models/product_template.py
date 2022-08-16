@@ -69,19 +69,19 @@ class ProductTemplate(models.Model):
                 start_date=start_date, end_date=end_date, pricelist=pricelist,
                 currency=pricelist.currency_id
             )
-            current_unit = current_pricing.unit
+            current_unit = current_pricing.recurrence_id.unit
             current_duration = self.env['product.pricing']._compute_duration_vals(
                 start_date, end_date
             )[current_unit]
         else:
-            current_unit = pricing.unit
-            current_duration = pricing.duration
+            current_unit = pricing.recurrence_id.unit
+            current_duration = pricing.recurrence_id.duration
             current_pricing = pricing
 
         # Compute current price
         quantity = self.env.context.get('quantity', add_qty)
         if not pricelist:
-            current_price = combination_info['price'] * (current_duration / pricing.duration)
+            current_price = combination_info['price'] * (current_duration / pricing.recurrence_id.duration)
         else:
             # Here we don't add the current_attributes_price_extra nor the
             # no_variant_attributes_price_extra to the context since those prices are not added
@@ -94,8 +94,8 @@ class ProductTemplate(models.Model):
             start_date, end_date, only_template, website, current_duration, current_unit
         )
 
-        ratio = ceil(current_duration) / pricing.duration
-        if current_unit != pricing.unit:
+        ratio = ceil(current_duration) / pricing.recurrence_id.duration
+        if current_unit != pricing.recurrence_id.unit:
             ratio *= PERIOD_RATIO[current_unit] / PERIOD_RATIO[pricing.unit]
 
         if website:
@@ -114,9 +114,9 @@ class ProductTemplate(models.Model):
         return {
             **combination_info,
             'is_rental': True,
-            'rental_duration': pricing.duration,
-            'rental_duration_unit': pricing.unit,
-            'rental_unit': pricing._get_unit_label(pricing.duration),
+            'rental_duration': pricing.recurrence_id.duration,
+            'rental_duration_unit': pricing.recurrence_id.unit,
+            'rental_unit': pricing._get_unit_label(pricing.recurrence_id.duration),
             'default_start_date': default_start_date,
             'default_end_date': default_end_date,
             'current_rental_duration': ceil(current_duration),
@@ -206,8 +206,8 @@ class ProductTemplate(models.Model):
             if not template.rent_ok:
                 continue
             pricing = self.env['product.pricing']._get_first_suitable_pricing(template, pricelist)
-            prices[template.id]['rental_duration'] = pricing.duration
-            prices[template.id]['rental_unit'] = pricing._get_unit_label(pricing.duration)
+            prices[template.id]['rental_duration'] = pricing.recurrence_id.duration
+            prices[template.id]['rental_unit'] = pricing._get_unit_label(pricing.recurrence_id.duration)
 
         return prices
 

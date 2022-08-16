@@ -41,6 +41,12 @@ API_OPERATIONS_MAPPING = {
         'url_path': '/sellers/v1/marketplaceParticipations',
         'restricted_resource_path': None,
     },
+    'getOrder': {
+        'url_path': '/orders/v0/orders/{param}',
+        # Amazon requires the path to include the placeholder "{orderID}" to grant the RDT.
+        'restricted_resource_path': '/orders/v0/orders/{orderId}',
+        'restricted_resource_data_elements': ['buyerInfo', 'shippingAddress'],
+    },
     'getOrders': {
         'url_path': '/orders/v0/orders',
         'restricted_resource_path': '/orders/v0/orders',

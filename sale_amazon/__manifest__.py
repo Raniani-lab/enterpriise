@@ -35,6 +35,7 @@ Key Features
         'views/res_config_settings_views.xml',
         'views/sale_order_views.xml',
         'views/stock_picking_views.xml',
+        'wizards/recover_order_wizard_views.xml',
     ],
     'license': 'OEEL-1',
 }

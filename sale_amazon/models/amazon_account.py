@@ -8,7 +8,7 @@ import psycopg2
 from werkzeug import urls
 
 from odoo import _, api, exceptions, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.service.model import PG_CONCURRENCY_ERRORS_TO_RETRY as CONCURRENCY_ERRORS
 
 from odoo.addons.sale_amazon import const, utils as amazon_utils
@@ -329,6 +329,16 @@ class AmazonAccount(models.Model):
     def action_sync_pickings(self):
         self.env['stock.picking']._sync_pickings(tuple(self.ids))
 
+    def action_recover_order(self):
+        self.ensure_one()
+        return {
+            'name': _("Recover Order"),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'amazon.recover.order.wizard',
+            'target': 'new',
+        }
+
     #=== BUSINESS METHODS ===#
 
     def _get_available_marketplaces(self):
@@ -457,6 +467,50 @@ class AmazonAccount(models.Model):
             # There are no more orders to pull and the synchronization went through. Set the API
             # upper limit on order status update to be the last synchronization date of the account.
             account.last_orders_sync = status_update_upper_limit.replace(tzinfo=None)
+
+    def _sync_order_by_reference(self, amazon_order_ref):
+        """ Synchronize an order based on its Amazon order reference.
+
+        Note: `self.ensure_one()`
+
+        :param str amazon_order_ref: The amazon reference of the order to re-synchronize.
+        :return: The synchronized Amazon order act window.
+        :rtype: dict
+        :raise UserError: If the order reference is incorrect or the order is not for an active
+                          marketplace.
+        :raise ValidationError: If the order is in a status that prevents its synchronization.
+        """
+        self.ensure_one()
+        amazon_utils.ensure_account_is_set_up(self)
+        amazon_utils.refresh_aws_credentials(self)
+
+        order_data = amazon_utils.make_sp_api_request(
+            self, 'getOrder', path_parameter=amazon_order_ref
+        )['payload']
+        if not order_data:  # Order not found by Amazon
+            raise UserError(_("The provided reference does not match any Amazon order."))
+        if order_data['MarketplaceId'] not in self.active_marketplace_ids.mapped('api_ref'):
+            raise UserError(_("The order was not found on this account's marketplaces."))
+
+        order = self._process_order_data(order_data)
+        if not order:
+            amazon_status = order_data['OrderStatus']
+            fulfillment_channel = order_data['FulfillmentChannel']
+            raise ValidationError(_(
+                "The Amazon order with reference %(ref)s was not recovered because its status"
+                " (%(status)s) is not eligible for synchronization for its fulfillment channel"
+                " (%(channel)s).",
+                ref=amazon_order_ref,
+                status=amazon_status,
+                channel=fulfillment_channel,
+            ))
+        return {
+            'name': order.display_name,
+            'type': 'ir.actions.act_window',
+            'res_model': 'sale.order',
+            'view_mode': 'form',
+            'res_id': order.id,
+        }
 
     def _process_order_data(self, order_data):
         """ Process the provided order data and return the matching sales order, if any.

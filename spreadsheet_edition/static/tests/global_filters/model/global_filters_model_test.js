@@ -3,7 +3,7 @@
 import { nextTick } from "@web/../tests/helpers/utils";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
-import { addGlobalFilter, selectCell } from "@spreadsheet/../tests/utils/commands";
+import { addGlobalFilter, selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 
 const { registries } = spreadsheet;
@@ -42,6 +42,17 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
         assert.strictEqual(getCellValue(model, "B3"), 10);
         assert.strictEqual(getCellValue(model, "B4"), 121);
     });
+
+    QUnit.test(
+        "Set as filter is not visible if there is no pivot formula",
+        async function (assert) {
+            const { env, model } = await createSpreadsheetWithPivot();
+            selectCell(model, "A1");
+            setCellContent(model, "A1", "=1");
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+            assert.strictEqual(root.isVisible(env), false);
+        }
+    );
 
     QUnit.test(
         "menu to set filter value is not visible if no filter matches",

@@ -168,10 +168,14 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
      *
      * @param {string} formula Formula of the pivot cell
      *
-     * @returns {Object}
+     * @returns {Array<Object>}
      */
     getFiltersMatchingPivot(formula) {
-        const { args } = getFirstPivotFunction(formula);
+        const functionDescription = getFirstPivotFunction(formula);
+        if (!functionDescription) {
+            return [];
+        }
+        const { args } = functionDescription;
         const evaluatedArgs = args
             .map(astToFormula)
             .map((arg) => this.getters.evaluateFormula(arg));

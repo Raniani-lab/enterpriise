@@ -1460,6 +1460,15 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
     );
 
     QUnit.test(
+        "getFiltersMatchingPivot return an empty array if there is no pivot formula",
+        async function (assert) {
+            const model = await createModelWithDataSource();
+            const result = model.getters.getFiltersMatchingPivot("=1");
+            assert.deepEqual(result, []);
+        }
+    );
+
+    QUnit.test(
         "getFiltersMatchingPivot return correctly matching filter according to cell formula with multi-levels grouping",
         async function (assert) {
             const { model } = await createSpreadsheetWithPivot({

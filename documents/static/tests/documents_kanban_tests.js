@@ -2681,7 +2681,7 @@ QUnit.module('documents_kanban_tests.js', {
             resModel: 'documents.document',
             arch: `
             <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                <div draggable="true" class="oe_kanban_global_area o_document_draggable">
+                <div draggable="true" class="oe_kanban_global_area">
                     <i class="fa fa-circle-thin o_record_selector"/>
                     <field name="name"/>
                 </div>
@@ -2732,7 +2732,7 @@ QUnit.module('documents_kanban_tests.js', {
             resModel: 'documents.document',
             arch: `
             <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                <div draggable="true" class="oe_kanban_global_area o_document_draggable">
+                <div draggable="true" class="oe_kanban_global_area">
                     <i class="fa fa-circle-thin o_record_selector"/>
                     <field name="name"/>
                 </div>
@@ -2775,7 +2775,7 @@ QUnit.module('documents_kanban_tests.js', {
             resModel: 'documents.document',
             arch: `
                 <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                    <div draggable="true" class="oe_kanban_global_area o_document_draggable">
+                    <div draggable="true" class="oe_kanban_global_area">
                         <i class="fa fa-circle-thin o_record_selector"/>
                         <field name="name"/>
                     </div>

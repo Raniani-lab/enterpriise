@@ -159,6 +159,31 @@
     .o_data_row.o_selected_row > .o_list_record_remove {
         border-bottom: 1px solid $table-border-color;
     }
+    /**
+    Because of border-collapse, border top and border bottom are 'merged'.
+
+    * cell border overlaps row border
+    * when there is a border collapse the first cell (e.g. A1) take over the following cell (e.g. B1 or A2)
+    ┌──┬──┐
+    │A1│B1│
+    ├──┼──┤
+    │A2│B2│
+    └──┴──┘
+
+    So we apply some rules to have the style wanted:
+    */
+    // 1. we set the global separator (gray line) of the table on the row (bottom) and not on the cell (bottom)
+    .o_data_row {
+        border-bottom-width: 1px;
+    }
+    // 2. we remove the bottom border (added by BS5) on all cells (this force to show the top border of selected cell)
+    .o_data_row > .o_data_cell {
+        border-bottom-width: 0;
+    }
+    // 3. we add only a bottom border to selected cells (this force to show the bottom border of the selected cell)
+    .o_data_row.o_data_row_selected > .o_data_cell {
+        border-bottom-width: 1px;
+    }
 }
 
 // Standalone list views
@@ -185,7 +210,7 @@
     .o_data_row_selected {
         user-select: none; // Prevent text selection when editing
         > td {
-            border-top-color: $primary;
+            border-top: 1px solid $primary;
             border-bottom: 1px solid $primary;
             background-color: rgba($primary, .1);
         }

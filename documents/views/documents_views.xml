@@ -79,7 +79,7 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div draggable="true"
-                            t-attf-class="oe_kanban_global_area o_document_draggable o_kanban_attachment o_documents_attachment {{record.type.raw_value === 'empty' ? 'oe_file_request' : ''}} {{props.record.selected ? 'o_record_selected' : ''}}"
+                            t-attf-class="oe_kanban_global_area o_kanban_attachment o_documents_attachment {{record.type.raw_value === 'empty' ? 'oe_file_request' : ''}} {{props.record.selected ? 'o_record_selected' : ''}}"
                             t-att-data-id="record.id.raw_value">
                             <t t-set="fileRequest" t-value="record.type.raw_value === 'empty'"/>
                             <t t-set="fileUpload" t-value="getFileUpload(props.record)"/>

@@ -52,16 +52,6 @@ export class DocumentsListRenderer extends DocumentsRendererMixin(ListRenderer) 
         return "documents.DocumentsFileUploadProgressLine";
     }
 
-    /**
-     * @override
-     */
-    getRowClass(record) {
-        let result = super.getRowClass(record) + " o_document_draggable";
-        if (record.selected) {
-            result += " o_data_row_selected";
-        }
-        return result;
-    }
 }
 
 // We need the actual event when clicking on a checkbox (to support multi select), only accept onClick

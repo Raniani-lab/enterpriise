@@ -576,6 +576,7 @@ class Article(models.Model):
 
             # allow private articles creation if given values are considered as safe
             check_for_sudo = not self.env.su and \
+                             not self.env.user._is_system() and \
                              not any(fname in vals for fname in ['favorite_ids', 'child_ids']) and \
                              not parent_id and internal_permission == 'none' and \
                              member_ids and len(member_ids) == 1
@@ -666,7 +667,7 @@ class Article(models.Model):
             {"name": _("%s (copy)", self.name)},
             **(default or {})
         )
-        if not self.env.su and not self.user_has_write_access:
+        if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
             defaults.pop('article_member_ids', None)
             defaults.pop('favorite_ids', None)
             defaults.pop('child_ids', None)
@@ -976,7 +977,7 @@ class Article(models.Model):
         self.ensure_one()
         if not self.parent_id:
             return False
-        if not self.env.su and not self.user_has_write_access:
+        if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
             raise AccessError(
                 _('You have to be editor on %(article_name)s to restore it.',
                   article_name=self.display_name))
@@ -1048,7 +1049,7 @@ class Article(models.Model):
                     ARTICLE_PERMISSION_LEVEL[self.parent_id.inherited_permission] > ARTICLE_PERMISSION_LEVEL[permission]
         if downgrade:
             # desync is done as sudo, explicitly check access
-            if not self.env.su and not self.user_has_write_access:
+            if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
                 raise AccessError(
                     _('You have to be editor on %(article_name)s to change its internal permission.',
                       article_name=self.display_name))
@@ -1081,7 +1082,7 @@ class Article(models.Model):
         :param bool is_based_on: whether rights are inherited or through membership;
         """
         self.ensure_one()
-        if not self.env.su and not self.user_has_write_access:
+        if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
             raise AccessError(
                 _('You have to be editor on %(article_name)s to modify members permissions.',
                   article_name=self.display_name))
@@ -1127,7 +1128,7 @@ class Article(models.Model):
                 members_command = [(0, 0, {'partner_id': current_user_partner.id, 'permission': 'none'})]
             self.sudo().write({'article_member_ids': members_command})
         else:
-            if not self.env.su and not self.user_has_write_access:
+            if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
                 raise AccessError(
                     _("You have to be editor on %(article_name)s to remove or exclude member %(member_name)s.",
                       article_name=self.display_name,
@@ -1156,7 +1157,7 @@ class Article(models.Model):
           this can be used to create default members and left existing one untouched;
         """
         self.ensure_one()
-        if not self.env.su and not self.user_has_write_access:
+        if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
             raise AccessError(
                 _("You have to be editor on %(article_name)s to add members.",
                   article_name=self.display_name))

@@ -102,3 +102,97 @@ class TestDocumentsFolder(TransactionCase):
 
         workflow_actions = self.env['documents.workflow.action'].search([('workflow_rule_id', '=', workflow_rule_copy.id), ('facet_id', '=', facet_copy.id), ('tag_id', '=', tag_2_copy.id)])
         self.assertEqual(len(workflow_actions), 1, "The actions linked to the workspace should be copied and retain their properties")
+
+    def test_folder_copy_rule_move_folder(self):
+        """
+        Tests copying a folder with an associated action that moves the document
+        to a different unrelated folder and adds a tag from that other folder.
+        The references to the other folder and its tag should be kept identical.
+        """
+        original_folder, other_folder = self.env['documents.folder'].create([
+            {'name': 'Original Folder'}, {'name': 'Other Folder'},
+        ])
+        other_folder_facet = self.env['documents.facet'].create({
+            'name': 'Other Folder Facet',
+            'folder_id': other_folder.id,
+        })
+        other_folder_tag = self.env['documents.tag'].create({
+            'name': 'Other Folder Tag',
+            'facet_id': other_folder_facet.id,
+        })
+        workflow_rule = self.env['documents.workflow.rule'].create({
+            'name': 'Rule',
+            'domain_folder_id': original_folder.id,
+            'condition_type': 'criteria',
+            'folder_id': other_folder.id,
+        })
+        workflow_action = self.env['documents.workflow.action'].create({
+            'workflow_rule_id': workflow_rule.id,
+            'facet_id': other_folder_facet.id,
+            'tag_id': other_folder_tag.id,
+        })
+
+        copied_folder = original_folder.copy()
+        workflow_rule_copy = self.env['documents.workflow.rule'].search([('domain_folder_id', '=', copied_folder.id)])[0]
+        self.assertEqual(workflow_rule.folder_id.id, workflow_rule_copy.folder_id.id, "The value of the folder the documents are moved to should be kept identical.")
+
+        workflow_action_copy = self.env['documents.workflow.action'].search([('workflow_rule_id', '=', workflow_rule_copy.id)])[0]
+        self.assertEqual(workflow_action_copy.facet_id.id, workflow_action.facet_id.id, "The value of the facet should be kept identical.")
+        self.assertEqual(workflow_action_copy.tag_id.id, workflow_action.tag_id.id, "The value of the tag should be kept identical.")
+
+    def test_folder_copy_ancestor_tag(self):
+        """
+        Tests copying subfolders with associated workflow actions using tags from ancestor folders.
+        If the ancestor is being copied in the same copy, the tags should be changed accordingly.
+        Else, the tags should not be set on the copied folder.
+        """
+        folder = self.env['documents.folder'].create({'name': 'Folder'})
+        sub_folder = self.env['documents.folder'].create({
+            'name': 'Sub Folder',
+            'parent_folder_id': folder.id,
+        })
+        sub_sub_folder = self.env['documents.folder'].create({
+            'name': 'Sub sub folder',
+            'parent_folder_id': sub_folder.id,
+        })
+        folder_facet, sub_folder_facet = self.env['documents.facet'].create([
+            {'name': 'Folder facet', 'folder_id': folder.id},
+            {'name': 'Sub folder facet', 'folder_id': sub_folder.id},
+        ])
+        folder_tag, sub_folder_tag = self.env['documents.tag'].create([
+            {'name': 'Folder tag', 'facet_id': folder_facet.id},
+            {'name': 'Sub folder tag', 'facet_id': sub_folder_facet.id},
+        ])
+        rule = self.env['documents.workflow.rule'].create({
+            'name': 'Rule',
+            'domain_folder_id': sub_sub_folder.id,
+            'required_tag_ids': [Command.link(folder_tag.id)],
+            'excluded_tag_ids': [Command.link(sub_folder_tag.id)],
+        })
+        self.env['documents.workflow.action'].create([
+            {
+                'workflow_rule_id': rule.id,
+                'action': 'remove',
+                'facet_id': folder_facet.id,
+                'tag_id': folder_tag.id,
+            },
+            {
+                'workflow_rule_id': rule.id,
+                'action': 'add',
+                'facet_id': sub_folder_facet.id,
+                'tag_id': sub_folder_tag.id,
+            },
+        ])
+
+        sub_folder_copy = sub_folder.copy()
+        sub_folder_facet_copy = sub_folder_copy.facet_ids[0]
+        sub_folder_tag_copy = sub_folder_facet_copy.tag_ids[0]
+        sub_sub_folder_copy = sub_folder_copy.children_folder_ids[0]
+        rule_copy = self.env['documents.workflow.rule'].search([('domain_folder_id', '=', sub_sub_folder_copy.id)])
+        action_1_copy = self.env['documents.workflow.action'].search([('workflow_rule_id', '=', rule_copy.id), ('action', '=', 'remove')])
+        action_2_copy = self.env['documents.workflow.action'].search([('workflow_rule_id', '=', rule_copy.id), ('action', '=', 'add')])
+
+        self.assertEqual(rule_copy.required_tag_ids.ids, [], "The required tags of the copied rule should be empty.")
+        self.assertCountEqual(rule_copy.excluded_tag_ids.ids, sub_folder_tag_copy.ids, "The excluded tags of the copied rule should be updated to use the copied tags of the parent folder.")
+        self.assertFalse(action_1_copy.facet_id and action_1_copy.tag_id, "The copy of the first action should have no facet and tag set")
+        self.assertEqual((action_2_copy.facet_id.id, action_2_copy.tag_id.id), (sub_folder_facet_copy.id, sub_folder_tag_copy.id), "The facet and tag of the copy of the second action should be updated to use the copied tag and facet of the parent folder.")

@@ -137,6 +137,9 @@ class DocumentFolder(models.Model):
         folder.flush_recordset(['children_folder_ids'])
         self.env['documents.tag'].flush_model(['folder_id'])
 
+        ancestors_facet_map = self.env.context.get('ancestors_facet_map') or {}
+        ancestors_tag_map = self.env.context.get('ancestors_tag_map') or {}
+
         def get_old_id_to_new_id_map(old_folder_id, new_folder_id, table):
             query = f"""
                 SELECT t1.id AS old_id, t2.id AS new_id
@@ -152,35 +155,49 @@ class DocumentFolder(models.Model):
 
         old_facet_id_to_new_facet_id, old_tag_id_to_new_tag_id = \
             [get_old_id_to_new_id_map(self.id, folder.id, table) for table in ('documents_facet', 'documents_tag')]
+        all_tag_map = {**old_tag_id_to_new_tag_id, **ancestors_tag_map}
 
         old_workflow_rule_id_to_new_workflow_rule_id = {}
         for workflow_rule in self.env['documents.workflow.rule'].search([('domain_folder_id', '=', self.id)]):
             new_workflow_rule = workflow_rule.copy({
                 'domain_folder_id': folder.id,
-                'required_tag_ids': [Command.set(old_tag_id_to_new_tag_id[tag_id] for tag_id in workflow_rule.required_tag_ids.ids)],
-                'excluded_tag_ids': [Command.set(old_tag_id_to_new_tag_id[tag_id] for tag_id in workflow_rule.excluded_tag_ids.ids)],
+                'required_tag_ids': [Command.set(all_tag_map[tag_id] for tag_id in workflow_rule.required_tag_ids.ids if tag_id in all_tag_map)],
+                'excluded_tag_ids': [Command.set(all_tag_map[tag_id] for tag_id in workflow_rule.excluded_tag_ids.ids if tag_id in all_tag_map)],
             })
             old_workflow_rule_id_to_new_workflow_rule_id[workflow_rule.id] = new_workflow_rule.id
 
         old_workflow_actions = self.env['documents.workflow.action'].search([
-            '|',
-                '|',
-                    ('workflow_rule_id', 'in', list(old_workflow_rule_id_to_new_workflow_rule_id)),
-                    ('facet_id', 'in', list(old_facet_id_to_new_facet_id)),
-                ('tag_id', 'in', list(old_tag_id_to_new_tag_id)),
+            ('workflow_rule_id', 'in', list(old_workflow_rule_id_to_new_workflow_rule_id)),
         ])
         for workflow_action in old_workflow_actions:
+            facet_id, tag_id = False, False
+            if workflow_action.facet_id:
+                if workflow_action.facet_id.folder_id.id == self.id:
+                    facet_id = old_facet_id_to_new_facet_id[workflow_action.facet_id.id]
+                    tag_id = workflow_action.tag_id and old_tag_id_to_new_tag_id[workflow_action.tag_id.id]
+                else:
+                    # If the facet/tag set on the action is from a parent folder,
+                    # update the value if that parent is being copied in the same copy,
+                    # else remove it
+                    if str(workflow_action.facet_id.folder_id.id) in self.parent_path[:-1].split('/'):
+                        facet_id = ancestors_facet_map.get(workflow_action.facet_id.id, False)
+                        tag_id = ancestors_tag_map.get(workflow_action.tag_id.id, False)
+                    # If the facet/tag comes from an unrelated folder, keep the values
+                    else:
+                        facet_id = workflow_action.facet_id.id
+                        tag_id = workflow_action.tag_id.id
+
             workflow_action.copy({
                 'workflow_rule_id': old_workflow_rule_id_to_new_workflow_rule_id[workflow_action.workflow_rule_id.id],
-                'facet_id': old_facet_id_to_new_facet_id[workflow_action.facet_id.id],
-                'tag_id': old_tag_id_to_new_tag_id[workflow_action.tag_id.id],
+                'facet_id': facet_id,
+                'tag_id': tag_id,
             })
 
-        # We cannot just put `copy=True` on the children_folder_ids field,
-        # because this will call copy_data instead of copy, which won't copy
-        # workflow rules and actions for the children folders
         for child in self.children_folder_ids:
-            child.copy({'parent_folder_id': folder.id})
+            child.with_context({
+                'ancestors_facet_map': {**ancestors_facet_map, **old_facet_id_to_new_facet_id},
+                'ancestors_tag_map': {**ancestors_tag_map, **old_tag_id_to_new_tag_id},
+            }).copy({'parent_folder_id': folder.id})
 
         return folder
 

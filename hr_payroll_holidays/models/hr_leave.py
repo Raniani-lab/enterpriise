@@ -116,13 +116,11 @@ class HrLeave(models.Model):
                 raise UserError(_('Only an employee time off to defer can be reported to next month'))
             if (leave.date_to.year - leave.date_from.year) * 12 + leave.date_to.month - leave.date_from.month > 1:
                 raise UserError(_('The time off %s can not be reported because it is defined over more than 2 months', leave.display_name))
-            max_date_to = min(leave.date_to, leave.date_from + relativedelta(months=1, day=1, days=-1))
-            work_entries_date_to = datetime.combine(Datetime.to_datetime(max_date_to), datetime.max.time())
             leave_work_entries = self.env['hr.work.entry'].search([
                 ('employee_id', '=', leave.employee_id.id),
                 ('company_id', '=', self.env.company.id),
-                ('date_start', '>=', Datetime.to_datetime(leave.date_from)),
-                ('date_stop', '<=', work_entries_date_to)
+                ('date_start', '>=', leave.date_from),
+                ('date_stop', '<=', leave.date_to),
             ])
             next_month_work_entries = self.env['hr.work.entry'].search([
                 ('employee_id', '=', leave.employee_id.id),

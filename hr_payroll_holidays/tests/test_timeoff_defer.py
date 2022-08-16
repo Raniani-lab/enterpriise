@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
+from datetime import date, datetime
 
 from odoo.exceptions import ValidationError, UserError
 from odoo.fields import Datetime
@@ -168,14 +168,18 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         payslip.action_payslip_done()
         self.assertEqual(payslip.state, 'done')
 
-        leave = self.env['hr.leave'].create({
+        leave = self.env['hr.leave'].new({
             'name': 'Tennis',
-            'holiday_status_id': self.leave_type.id,
             'employee_id': self.emp.id,
-            'date_from': '2022-01-31',
-            'date_to': '2022-01-31',
+            'holiday_status_id': self.leave_type.id,
+            'request_date_from': date(2022, 1, 31),
+            'request_date_to': date(2022, 1, 31),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
             'number_of_days': 1,
         })
+        leave._compute_date_from_to()
+        leave = self.env['hr.leave'].create(leave._convert_to_write(leave._cache))
         leave.action_validate()
         self.assertEqual(leave.payslip_state, 'blocked', 'Leave should be to defer')
 
@@ -206,14 +210,18 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         payslip.action_payslip_done()
         self.assertEqual(payslip.state, 'done')
 
-        leave = self.env['hr.leave'].create({
+        leave = self.env['hr.leave'].new({
             'name': 'Tennis',
-            'holiday_status_id': self.leave_type.id,
             'employee_id': self.emp.id,
-            'date_from': '2022-01-31',
-            'date_to': '2022-02-02',
+            'holiday_status_id': self.leave_type.id,
+            'request_date_from': date(2022, 1, 31),
+            'request_date_to': date(2022, 2, 2),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
             'number_of_days': 3,
         })
+        leave._compute_date_from_to()
+        leave = self.env['hr.leave'].create(leave._convert_to_write(leave._cache))
         leave.action_validate()
         self.assertEqual(leave.payslip_state, 'blocked', 'Leave should be to defer')
 
@@ -226,6 +234,8 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
             ('date_start', '>=', Datetime.to_datetime('2022-02-01')),
             ('date_stop', '<=', datetime.combine(Datetime.to_datetime('2022-02-28'), datetime.max.time()))
         ])
+        self.assertEqual(len(reported_work_entries), 6)
+        self.assertEqual(list(set(we.date_start.day for we in reported_work_entries)), [1, 2, 3])
         self.assertEqual(reported_work_entries[0].date_start, datetime(2022, 2, 1, 7, 0))
         self.assertEqual(reported_work_entries[0].date_stop, datetime(2022, 2, 1, 11, 0))
         self.assertEqual(reported_work_entries[1].date_start, datetime(2022, 2, 1, 12, 0))
@@ -244,14 +254,18 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         payslip.action_payslip_done()
         self.assertEqual(payslip.state, 'done')
 
-        leave = self.env['hr.leave'].create({
+        leave = self.env['hr.leave'].new({
             'name': 'Tennis',
-            'holiday_status_id': self.leave_type.id,
             'employee_id': self.emp.id,
-            'date_from': '2022-01-01',
-            'date_to': '2022-01-31',
+            'holiday_status_id': self.leave_type.id,
+            'request_date_from': date(2022, 1, 1),
+            'request_date_to': date(2022, 1, 31),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
             'number_of_days': 21, # February only contains 20 open days
         })
+        leave._compute_date_from_to()
+        leave = self.env['hr.leave'].create(leave._convert_to_write(leave._cache))
         leave.action_validate()
         self.assertEqual(leave.payslip_state, 'blocked', 'Leave should be to defer')
 
@@ -271,16 +285,62 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         payslip.action_payslip_done()
         self.assertEqual(payslip.state, 'done')
 
-        leave = self.env['hr.leave'].create({
+        leave = self.env['hr.leave'].new({
             'name': 'Tennis',
-            'holiday_status_id': self.leave_type.id,
             'employee_id': self.emp.id,
-            'date_from': '2022-01-01',
-            'date_to': '2022-03-10',
+            'holiday_status_id': self.leave_type.id,
+            'request_date_from': date(2022, 1, 1),
+            'request_date_to': date(2022, 3, 10),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
             'number_of_days': 21,
         })
+        leave._compute_date_from_to()
+        leave = self.env['hr.leave'].create(leave._convert_to_write(leave._cache))
         leave.action_validate()
         self.assertEqual(leave.payslip_state, 'blocked', 'Leave should be to defer')
 
         with self.assertRaises(UserError):
             leave.action_report_to_next_month()
+
+    def test_report_to_next_month_half_days(self):
+        self.leave_type.request_unit = 'half_day'
+        self.emp.contract_ids._generate_work_entries(datetime(2022, 1, 1), datetime(2022, 2, 28))
+        payslip = self.env['hr.payslip'].create({
+            'name': 'toto payslip',
+            'employee_id': self.emp.id,
+            'date_from': '2022-01-01',
+            'date_to': '2022-01-31',
+        })
+        payslip.compute_sheet()
+        payslip.action_payslip_done()
+        self.assertEqual(payslip.state, 'done')
+
+        leave = self.env['hr.leave'].new({
+            'name': 'Tennis',
+            'holiday_status_id': self.leave_type.id,
+            'employee_id': self.emp.id,
+            'request_date_from': date(2022, 1, 31),
+            'request_date_to': date(2022, 1, 31),
+            'request_unit_half': True,
+            'request_date_from_period': 'am',
+            'number_of_days': 0.5,
+        })
+        leave._compute_date_from_to()
+        leave = self.env['hr.leave'].create(leave._convert_to_write(leave._cache))
+
+        leave.action_validate()
+        self.assertEqual(leave.payslip_state, 'blocked', 'Leave should be to defer')
+
+        leave.action_report_to_next_month()
+        reported_work_entries = self.env['hr.work.entry'].search([
+            ('employee_id', '=', self.emp.id),
+            ('company_id', '=', self.env.company.id),
+            ('state', '=', 'draft'),
+            ('work_entry_type_id', '=', self.leave_type.work_entry_type_id.id),
+            ('date_start', '>=', Datetime.to_datetime('2022-02-01')),
+            ('date_stop', '<=', datetime.combine(Datetime.to_datetime('2022-02-28'), datetime.max.time()))
+        ])
+        self.assertEqual(len(reported_work_entries), 1)
+        self.assertEqual(reported_work_entries[0].date_start, datetime(2022, 2, 1, 7, 0))
+        self.assertEqual(reported_work_entries[0].date_stop, datetime(2022, 2, 1, 11, 0))

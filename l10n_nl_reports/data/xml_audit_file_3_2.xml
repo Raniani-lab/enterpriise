@@ -115,7 +115,7 @@
                             <trLine t-foreach="m[1].get('move_line_data').items()" t-as="l" t-if="l[1].get('line_display_type') not in ('line_note', 'line_section')">
                                 <nr t-esc="l[1].get('line_id')"/>
                                 <accID t-esc="l[1].get('line_account_code')"/>
-                                <docRef t-esc="l[1].get('line_ref')"/>
+                                <docRef t-esc="l[1].get('line_ref')[:999]"/>
                                 <effDate t-esc="l[1].get('line_date')"/>
                                 <desc t-esc="l[1].get('line_name')"/>
                                 <amnt t-esc="l[1].get('line_credit') or l[1].get('line_debit')"/>

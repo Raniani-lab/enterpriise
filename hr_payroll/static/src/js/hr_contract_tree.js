@@ -1,60 +1,29 @@
-odoo.define('hr_payroll.hr_contract_tree', function (require) {
-    'use strict';
+/** @odoo-module  */
 
-    var core = require('web.core');
+import { registry } from '@web/core/registry';
+import { listView } from '@web/views/list/list_view';
+import { ListController } from "@web/views/list/list_controller";
+const { onWillStart } = owl;
 
-    var viewRegistry = require('web.view_registry');
-    var ListView = require('web.ListView');
-    var ListController = require('web.ListController');
+export class HRContractTreeController extends ListController {
+    setup () {
+        super.setup();
+        onWillStart(async () => {
+            this.isUserContractManager = await this.userService.hasGroup("hr_contract.group_hr_contract_manager");
+        });
+    }
 
-    var QWeb = core.qweb;
+    async indexWage () {
+        this.actionService.doAction('hr_payroll.action_hr_payroll_index', {
+            additionalContext: {
+                active_ids: await this.getSelectedResIds(),
+            },
+        });
+    }
+}
 
-    var IndexWageButton = {
-        /**
-         * @override
-         */
-        renderButtons: function() {
-            this._super.apply(this, arguments);
-            this.getSession().user_has_group('hr_contract.group_hr_contract_manager').then(
-                has_group => {
-                    if (has_group) {
-                        this.$buttons.append(this._renderIndexContractButton());
-                    }
-                }
-            );
-        },
-
-        /*
-            Private
-        */
-       _renderIndexContractButton: function() {
-            return $(QWeb.render('ContractListView.index_button', {})).on('click', this._onIndexWage.bind(this));
-       },
-
-        _indexWage: function () {
-            return this.do_action('hr_payroll.action_hr_payroll_index', {
-                additional_context: {
-                    active_ids: this.getSelectedIds(),
-                },
-            });
-        },
-
-        _onIndexWage: function (e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            this._indexWage();
-        },
-    };
-
-    var HrContractTreeController = ListController.extend(IndexWageButton);
-
-    var HrContractListView = ListView.extend({
-        config: _.extend({}, ListView.prototype.config, {
-            Controller: HrContractTreeController,
-        }),
-    });
-
-    viewRegistry.add('hr_contract_tree', HrContractListView);
-
-    return HrContractListView;
-});
+registry.category('views').add('hr_contract_tree', {
+    ...listView,
+    Controller: HRContractTreeController,
+    buttonTemplate: 'hr_payroll.ContractTreeIndexButton',
+})

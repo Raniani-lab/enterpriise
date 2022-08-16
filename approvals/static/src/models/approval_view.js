@@ -5,7 +5,6 @@ import { attr, one } from '@mail/model/model_field';
 
 registerModel({
     name: 'ApprovalView',
-    identifyingFields: ['activityViewOwner'],
     recordMethods: {
         async onClickApprove() {
             if (!this.exists()) {
@@ -30,6 +29,7 @@ registerModel({
     },
     fields: {
         activityViewOwner: one('ActivityView', {
+            identifying: true,
             inverse: 'approvalView',
             readonly: true,
             required: true,

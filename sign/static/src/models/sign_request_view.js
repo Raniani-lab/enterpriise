@@ -5,7 +5,6 @@ import { attr, one } from '@mail/model/model_field';
 
 registerModel({
     name: 'SignRequestView',
-    identifyingFields: ['activityViewOwner'],
     recordMethods: {
         async onClickRequestSign() {
             this.env.services.action.doAction(
@@ -32,6 +31,7 @@ registerModel({
     },
     fields: {
         activityViewOwner: one('ActivityView', {
+            identifying: true,
             inverse: 'signRequestView',
             readonly: true,
             required: true,

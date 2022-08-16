@@ -1,17 +1,13 @@
 /** @odoo-module **/
 
-import { addFields, patchIdentifyingFields, patchRecordMethods } from "@mail/model/model_core";
+import { addFields, patchRecordMethods } from "@mail/model/model_core";
 import { insertAndReplace } from "@mail/model/model_field_command";
 import { one } from "@mail/model/model_field";
 import "@mail/models/dialog";
 
-
-patchIdentifyingFields("Dialog", (identifyingFields) => {
-    identifyingFields[0].push("documentListOwnerAsDocumentViewer");
-});
-
 addFields("Dialog", {
     documentListOwnerAsDocumentViewer: one("DocumentList", {
+        identifying: true,
         inverse: "documentViewerDialog",
         readonly: true,
     }),

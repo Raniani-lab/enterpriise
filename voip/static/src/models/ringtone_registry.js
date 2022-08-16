@@ -6,7 +6,6 @@ import { insertAndReplace } from "@mail/model/model_field_command";
 
 registerModel({
     name: "RingtoneRegistry",
-    identifyingFields: ["voip"],
     recordMethods: {
         stopAll() {
             this.dialTone.stop();
@@ -16,6 +15,7 @@ registerModel({
     },
     fields: {
         voip: one("Voip", {
+            identifying: true,
             inverse: "ringtoneRegistry",
             readonly: true,
             required: true,

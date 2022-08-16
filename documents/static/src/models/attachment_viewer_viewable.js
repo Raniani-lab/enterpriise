@@ -1,16 +1,12 @@
 /** @odoo-module **/
 
-import { addFields, patchIdentifyingFields, patchRecordMethods } from "@mail/model/model_core";
+import { addFields, patchRecordMethods } from "@mail/model/model_core";
 import { one } from "@mail/model/model_field";
 import "@mail/models/attachment_viewer_viewable";
 
-
-patchIdentifyingFields("AttachmentViewerViewable", (identifyingFields) => {
-    identifyingFields[0].push("documentOwner");
-});
-
 addFields("AttachmentViewerViewable", {
     documentOwner: one("Document", {
+        identifying: true,
         readonly: true,
     }),
 });

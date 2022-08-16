@@ -9,7 +9,6 @@ import { clear, insertAndReplace } from "@mail/model/model_field_command";
  */
 registerModel({
     name: "Voip",
-    identifyingFields: ["messaging"],
     recordMethods: {
         /**
          * Remove whitespaces, dashes, slashes and periods from a phone number.

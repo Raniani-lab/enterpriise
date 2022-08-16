@@ -6,7 +6,6 @@ import { attr, one } from "@mail/model/model_field";
 
 registerModel({
     name: "Document",
-    identifyingFields: ["id"],
     recordMethods: {
         /**
          * @private
@@ -152,6 +151,7 @@ registerModel({
             readonly: true,
         }),
         id: attr({
+            identifying: true,
             required: true,
             readonly: true,
         }),

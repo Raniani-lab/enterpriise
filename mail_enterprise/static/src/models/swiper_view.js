@@ -6,7 +6,7 @@ import { clear, replace } from '@mail/model/model_field_command';
 
 registerModel({
     name: 'SwiperView',
-    identifyingFields: [['messageViewOwner', 'notificationGroupViewOwner', 'threadNeedactionPreviewViewOwner', 'threadPreviewViewOwner']],
+    identifyingMode: 'xor',
     recordMethods: {
         /**
          * Handles left swipe on this swiper view.
@@ -189,10 +189,12 @@ registerModel({
             compute: '_computeLeftSwipeIcon',
         }),
         messageViewOwner: one('MessageView', {
+            identifying: true,
             inverse: 'swiperView',
             readonly: true,
         }),
         notificationGroupViewOwner: one('NotificationGroupView', {
+            identifying: true,
             inverse: 'swiperView',
             readonly: true,
         }),
@@ -208,10 +210,12 @@ registerModel({
             compute: '_computeRightSwipeIcon',
         }),
         threadNeedactionPreviewViewOwner: one('ThreadNeedactionPreviewView', {
+            identifying: true,
             inverse: 'swiperView',
             readonly: true,
         }),
         threadPreviewViewOwner: one('ThreadPreviewView', {
+            identifying: true,
             inverse: 'swiperView',
             readonly: true,
         }),

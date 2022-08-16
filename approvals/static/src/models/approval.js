@@ -5,7 +5,6 @@ import { attr, one } from '@mail/model/model_field';
 
 registerModel({
     name: 'Approval',
-    identifyingFields: ['id'],
     recordMethods: {
         /**
          * Approves the current `approval.approver`.
@@ -49,6 +48,7 @@ registerModel({
             inverse: 'approval',
         }),
         id: attr({
+            identifying: true,
             readonly: true,
             required: true,
         }),

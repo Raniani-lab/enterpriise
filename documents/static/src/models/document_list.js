@@ -6,7 +6,6 @@ import { attr, many, one } from "@mail/model/model_field";
 
 registerModel({
     name: "DocumentList",
-    identifyingFields: ["messaging"],
     recordMethods: {
         selectNextAttachment() {
             const index = this.viewableDocuments.findIndex((document) => document === this.selectedDocument);

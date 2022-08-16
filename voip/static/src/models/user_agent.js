@@ -5,7 +5,6 @@ import { attr, one } from "@mail/model/model_field";
 
 registerModel({
     name: "UserAgent",
-    identifyingFields: ["voip"],
     fields: {
         legacyUserAgent: attr(),
         registerer: one("Registerer", {
@@ -13,6 +12,7 @@ registerModel({
             isCausal: true,
         }),
         voip: one("Voip", {
+            identifying: true,
             inverse: "userAgent",
             readonly: true,
             required: true,

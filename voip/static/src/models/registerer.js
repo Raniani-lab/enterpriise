@@ -14,7 +14,6 @@ import { Markup } from "web.utils";
  */
 registerModel({
     name: "Registerer",
-    identifyingFields: ["userAgent"],
     lifecycleHooks: {
         _created() {
             const sipJsRegisterer = new window.SIP.Registerer(this.userAgent.__sipJsUserAgent, { expires: 3600 });
@@ -93,6 +92,7 @@ registerModel({
             compute: "_computeState",
         }),
         userAgent: one("UserAgent", {
+            identifying: true,
             inverse: "registerer",
             readonly: true,
             required: true,

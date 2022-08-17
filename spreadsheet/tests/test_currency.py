@@ -17,7 +17,16 @@ class TestCurrencyRates(TransactionCase):
                 },
             ]
         )
-
+        eur_company = cls.env["res.company"].create(
+            {"name": "Company with EUR", "currency_id": cls.env.ref("base.EUR").id}
+        )
+        usd_company = cls.env["res.company"].create(
+            {"name": "Company with USD", "currency_id": cls.env.ref("base.USD").id}
+        )
+        cls.env.user.company_ids |= eur_company
+        cls.env.user.company_ids |= usd_company
+        cls.env.user.company_id = eur_company
+        cls.usd_company_id = usd_company.id
 
     def test_get_currencies_for_spreadsheet(self):
         self.assertEqual(
@@ -49,4 +58,28 @@ class TestCurrencyRates(TransactionCase):
                     "position": "after",
                 },
             ],
+        )
+
+    def test_get_company_currency_for_spreadsheet(self):
+        self.assertEqual(
+            self.env["res.currency"].get_company_currency_for_spreadsheet(),
+            {
+                "code": "EUR",
+                "symbol": "€",
+                "decimalPlaces": 2,
+                "position": "after",
+            }
+        )
+        self.assertEqual(
+            self.env["res.currency"].get_company_currency_for_spreadsheet(self.usd_company_id),
+            {
+                "code": "USD",
+                "symbol": "$",
+                "decimalPlaces": 2,
+                "position": "before",
+            }
+        )
+        self.assertEqual(
+            self.env["res.currency"].get_company_currency_for_spreadsheet(123456),
+            False
         )

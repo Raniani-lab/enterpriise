@@ -609,6 +609,21 @@ QUnit.module("spreadsheet > pivot plugin", {}, () => {
     });
 
     QUnit.test(
+        "PIVOT formulas with monetary measure are correctly formatted at evaluation",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /* xml */ `
+                <pivot>
+                    <field name="product_id" type="col"/>
+                    <field name="name" type="row"/>
+                    <field name="pognon" type="measure"/>
+                </pivot>`,
+            });
+            assert.strictEqual(getCell(model, "B3").evaluated.format, "#,##0.00[$€]");
+        }
+    );
+
+    QUnit.test(
         "PIVOT.HEADER formulas are correctly formatted at evaluation",
         async function (assert) {
             const { model } = await createSpreadsheetWithPivot({

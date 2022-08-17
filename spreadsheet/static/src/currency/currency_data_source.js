@@ -39,6 +39,21 @@ export class CurrencyDataSource {
     }
 
     /**
+     *
+     * @param {number|undefined} companyId
+     * @returns {Currency}
+     */
+    getCompanyCurrencyFormat(companyId) {
+        const result = this.serverData.get("res.currency", "get_company_currency_for_spreadsheet", [
+            companyId,
+        ]);
+        if (result === false) {
+            throw new Error(_t("Currency not available for this company."));
+        }
+        return result;
+    }
+
+    /**
      * Get all currencies from the server
      * @param {string} currencyName
      * @returns {Currency}

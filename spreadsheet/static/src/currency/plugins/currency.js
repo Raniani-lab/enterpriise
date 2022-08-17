@@ -37,15 +37,13 @@ class CurrencyPlugin extends spreadsheet.UIPlugin {
     }
 
     /**
-     * Returns the default display format of a given currency
-     * @param {string} currencyName
+     *
+     * @param {Currency | undefined} currency
+     * @private
+     *
      * @returns {string | undefined}
      */
-    getCurrencyFormat(currencyName) {
-        const currency =
-            currencyName &&
-            this.dataSources &&
-            this.dataSources.get(DATA_SOURCE_ID).getCurrency(currencyName);
+    computeFormatFromCurrency(currency) {
         if (!currency) {
             return undefined;
         }
@@ -58,9 +56,34 @@ class CurrencyPlugin extends spreadsheet.UIPlugin {
             ? numberFormat + symbolFormatPart
             : symbolFormatPart + numberFormat;
     }
+
+    /**
+     * Returns the default display format of a given currency
+     * @param {string} currencyName
+     * @returns {string | undefined}
+     */
+    getCurrencyFormat(currencyName) {
+        const currency =
+            currencyName &&
+            this.dataSources &&
+            this.dataSources.get(DATA_SOURCE_ID).getCurrency(currencyName);
+        return this.computeFormatFromCurrency(currency);
+    }
+
+    /**
+     * Returns the default display format of a the company currency
+     * @param {number|undefined} companyId
+     * @returns {string | undefined}
+     */
+    getCompanyCurrencyFormat(companyId) {
+        const currency =
+            this.dataSources &&
+            this.dataSources.get(DATA_SOURCE_ID).getCompanyCurrencyFormat(companyId);
+        return this.computeFormatFromCurrency(currency);
+    }
 }
 
 CurrencyPlugin.modes = ["normal", "headless"];
-CurrencyPlugin.getters = ["getCurrencyRate", "getCurrencyFormat"];
+CurrencyPlugin.getters = ["getCurrencyRate", "getCurrencyFormat", "getCompanyCurrencyFormat"];
 
 uiPluginRegistry.add("odooCurrency", CurrencyPlugin);

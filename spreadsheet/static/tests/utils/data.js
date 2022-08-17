@@ -224,16 +224,19 @@ export function getBasicData() {
                 { id: 2, name: "Template 2", data: btoa("{}") },
             ],
         },
-        "currency": {
+        "res.currency": {
             fields: {
                 name: { string: "Code", type: "char" },
-                symbol: {string: "Symbol", type: "char"},
+                symbol: { string: "Symbol", type: "char" },
                 position: {
                     string: "Position",
                     type: "selection",
-                    selection: [['after', 'A'], ['before', 'B']],
+                    selection: [
+                        ["after", "A"],
+                        ["before", "B"],
+                    ],
                 },
-                decimal_places : { string: "decimal", type: "integer" },
+                decimal_places: { string: "decimal", type: "integer" },
             },
             records: [
                 {
@@ -251,8 +254,7 @@ export function getBasicData() {
                     decimal_places: 2,
                 },
             ],
-        }
-        ,
+        },
         partner: {
             fields: {
                 foo: {
@@ -302,7 +304,7 @@ export function getBasicData() {
                 currency_id: {
                     string: "Currency",
                     type: "many2one",
-                    relation: "currency",
+                    relation: "res.currency",
                     store: true,
                     sortable: true,
                 },
@@ -312,6 +314,7 @@ export function getBasicData() {
                     currency_field: "currency_id",
                     store: true,
                     sortable: true,
+                    group_operator: "avg",
                 },
             },
             records: [

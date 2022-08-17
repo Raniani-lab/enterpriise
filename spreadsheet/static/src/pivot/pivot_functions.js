@@ -76,8 +76,9 @@ functionRegistry
                 case "integer":
                     return "0";
                 case "float":
-                case "monetary":
                     return "#,##0.00";
+                case "monetary":
+                    return this.getters.getCompanyCurrencyFormat() || "#,##0.00";
                 default:
                     return undefined;
             }

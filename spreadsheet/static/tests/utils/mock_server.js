@@ -8,7 +8,7 @@ registry
         const currencyNames = args.args[0];
         const result = [];
         for (let currencyName of currencyNames) {
-            const curr = this.models["currency"].records.find(
+            const curr = this.models["res.currency"].records.find(
                 (curr) => curr.name === currencyName
             );
 
@@ -20,4 +20,12 @@ registry
             });
         }
         return result;
+    })
+    .add("res.currency/get_company_currency_for_spreadsheet", function (route, args) {
+        return {
+            code: "EUR",
+            symbol: "€",
+            position: "after",
+            decimalPlaces: 2,
+        };
     });

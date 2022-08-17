@@ -32,8 +32,7 @@ import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 import { loadJS } from "@web/core/assets";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
 
-const { Component, App } = owl;
-const { afterNextRender } = App;
+const { Component } = owl;
 const serviceRegistry = registry.category("services");
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 const legacyFavoriteMenuRegistry = LegacyFavoriteMenu.registry;
@@ -59,7 +58,7 @@ async function openView(viewType, options = {}) {
         { sequence: 1 }
     );
     serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
-    serviceRegistry.add("spreadsheetLinkMenuCell", spreadsheetLinkMenuCellService);
+    serviceRegistry.add('spreadsheetLinkMenuCell', spreadsheetLinkMenuCellService);
     const webClient = await createWebClient({
         serverData,
         mockRPC: options.mockRPC,
@@ -75,14 +74,14 @@ async function insertInSpreadsheetAndClickLink(target) {
     patchWithCleanup(Grid.prototype, {
         setup() {
             this._super();
-            this.hoveredCell = { col: 0, row: 0 };
+            this.hoveredCell = {col : 0, row : 0};
         },
     });
     await click(target, ".o_favorite_menu button");
     await click(target, ".o_insert_action_spreadsheet_menu");
     await click(document, ".modal-footer button.btn-primary");
-    await afterNextRender(() => {});
-    await afterNextRender(() => {});
+    await nextTick();
+    await nextTick();
     await click(target, ".o-link-tool a");
     await nextTick();
     await legacyExtraNextTick();

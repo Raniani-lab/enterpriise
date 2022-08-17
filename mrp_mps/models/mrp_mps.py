@@ -37,9 +37,15 @@ class MrpProductionSchedule(models.Model):
         'mrp.bom', "Bill of Materials",
         domain="[('product_tmpl_id', '=', product_tmpl_id), '|', ('product_id', '=', product_id), ('product_id', '=', False)]", check_company=True)
 
-    forecast_target_qty = fields.Float('Safety Stock Target')
-    min_to_replenish_qty = fields.Float('Minimum to Replenish')
-    max_to_replenish_qty = fields.Float('Maximum to Replenish', default=1000)
+    forecast_target_qty = fields.Float(
+        'Safety Stock Target',
+        help="This is the minimum free stock you want to keep for that product at all times.")
+    min_to_replenish_qty = fields.Float(
+        'Minimum to Replenish',
+        help="Unless the demand is 0, Odoo will always at least replenish this quantity.")
+    max_to_replenish_qty = fields.Float(
+        'Maximum to Replenish', default=1000,
+        help="The maximum replenishment you would like to launch for each period in the MPS. Note that if the demand is higher than that amount, the remaining quantity will be transferred to the next period automatically.")
 
     _sql_constraints = [
         ('warehouse_product_ref_uniq', 'unique (warehouse_id, product_id)', 'The combination of warehouse and product must be unique !'),
@@ -643,6 +649,8 @@ class MrpProductionSchedule(models.Model):
 
         if optimal_qty > self.max_to_replenish_qty:
             replenish_qty = self.max_to_replenish_qty
+        elif optimal_qty <= 0:
+            replenish_qty = 0
         elif optimal_qty < self.min_to_replenish_qty:
             replenish_qty = self.min_to_replenish_qty
         else:

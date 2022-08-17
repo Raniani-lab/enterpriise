@@ -165,6 +165,9 @@ export default GanttModel.extend({
 
         const data = this.rescheduleData(schedule, isUTC);
         const end_date = moment(data.planned_date_end).endOf(this.get().scale);
+        if (data.hasOwnProperty('name')){
+            delete data.name;
+        }
         return this.mutex.exec(() => {
             return this._rpc({
                 model: this.modelName,

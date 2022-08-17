@@ -6,14 +6,6 @@
         <field name="inherit_id" ref="project.edit_project"/>
         <field name="priority">33</field>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_all_rating']" position="before">
-                <field name="document_count" invisible="1"/>
-                <field name="use_documents" invisible="1"/>
-                <button class="oe_stat_button" name="action_view_documents_project" groups="documents.group_documents_user"
-                    type="object" icon="fa-file-text-o" attrs="{'invisible': [('use_documents', '=', False)]}">
-                    <field string="Documents" name="document_count" widget="statinfo"/>
-                </button>
-            </xpath>
             <xpath expr="//div[@id='task_dependencies_setting']" position="after">
                 <field name="company_use_documents" invisible="1"/>
                 <div class="col-lg-6 o_setting_box" id="documents_setting" attrs="{'invisible': [('company_use_documents', '=', False)]}">

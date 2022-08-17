@@ -9,9 +9,6 @@
     'summary': 'Project sales subscriptions',
     'description': 'Bridge created to add the number of subscriptions linked to an AA to a project form',
     'depends': ['sale_project', 'sale_subscription'],
-    'data': [
-        'views/project_project_views.xml',
-    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

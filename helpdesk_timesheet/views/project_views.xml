@@ -13,26 +13,4 @@
     <record id="project.open_view_project_all" model="ir.actions.act_window">
         <field name="domain">[('is_internal_project', '=', False), ('helpdesk_team', '=', False)]</field>
     </record>
-
-   <record id="project_project_view_form_inherit_helpdesk_timesheet" model="ir.ui.view">
-        <field name="name">project.form.inherit.helpdesk.timesheet</field>
-        <field name="model">project.project</field>
-        <field name="inherit_id" ref="project.edit_project"/>
-        <field name="priority">30</field>
-        <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_view_analytic_account_entries']" position="after">
-                <button
-                    class="oe_stat_button"
-                    type="object"
-                    name="action_open_project_tickets"
-                    groups="helpdesk.group_helpdesk_user"
-                    context="{'default_project_id': active_id}"
-                    icon="fa-life-ring"
-                    attrs="{'invisible': [('ticket_count', '=', 0)]}">
-                    <field name="ticket_count" string="Tickets" widget="statinfo"/>
-                </button>
-            </xpath>
-        </field>
-   </record>
-
 </odoo>

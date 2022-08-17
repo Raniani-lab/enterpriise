@@ -216,7 +216,7 @@
         <field name="arch" type="xml">
             <field name="display_project_id" position="after">
                 <field name="allow_worksheets" invisible="1"/>
-                <field name="worksheet_template_id" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button', 'default_res_model': 'project.task'}" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
+                <field name="worksheet_template_id" options="{'no_open': True}" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button', 'default_res_model': 'project.task'}" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
             </field>
             <xpath expr="//button[@name='action_recurring_tasks']" position="before">
                 <field name="worksheet_count" invisible="1"/>

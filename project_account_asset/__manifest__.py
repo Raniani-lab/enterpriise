@@ -9,9 +9,6 @@
     'summary': 'Project accounting assets',
     'description': 'Bridge created to add the number of assets linked to an AA to a project form',
     'depends': ['project', 'account_asset'],
-    'data': [
-        'views/project_project_views.xml',
-    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

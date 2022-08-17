@@ -348,9 +348,9 @@
         </select>
     </t>
 
-    <div t-name="social.AddStreamMedia" class="o_social_media_cards d-flex" owl="1">
+    <div t-name="social.AddStreamMedia" class="o_social_media_cards d-flex flex-wrap" owl="1">
         <t t-foreach="props.socialMedia" t-as="media" t-key="media_index">
-            <div class="o_social_media card text-center justify-content-center align-items-center me-3 p-3" t-att-data-media-id="media.id" style="min-width: 90px;" t-on-click.prevent="_onClickSocialMedia">
+            <div class="o_social_media card text-center justify-content-center align-items-center me-3 mb-3 p-3" t-att-data-media-id="media.id" style="width: 90px;" t-on-click.prevent="_onClickSocialMedia">
                 <img width="48" height="48" t-attf-src="/web/image/social.media/{{ media.id }}/image/48x48" />
                 <h5 t-esc="media.name" class="o_social_media_name mb-0 mt-2" />
             </div>

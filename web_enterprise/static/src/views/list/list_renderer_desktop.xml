@@ -6,7 +6,7 @@
         <t t-if="isStudioEditable">
             <hr t-if="getOptionalFields.length" />
             <DropdownItem parentClosingMode="'none'" onSelected="() => this.onSelectedAddCustomField()" class="'dropdown-item-studio'">
-                <i class="fa fa-plus"></i>
+                <i class="fa fa-plus fa-fw"></i>
                 <span>Add Custom Field</span>
             </DropdownItem>
         </t>

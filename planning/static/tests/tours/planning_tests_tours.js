@@ -73,7 +73,7 @@ tour.register('planning_test_tour', {
     trigger: ".o_gantt_button_send_all",
     content: "If you are happy with your planning, you can now <b>send</b> it to your employees.",
 }, {
-    trigger: "button[name='action_send']",
+    trigger: "button[name='action_check_emails']",
     content: "<b>Publish & send</b> your planning to make it available to your employees.",
 }, {
     trigger: ".o_gantt_progressbar",

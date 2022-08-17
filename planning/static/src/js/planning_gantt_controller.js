@@ -5,7 +5,6 @@ import {_t} from 'web.core';
 import {Markup} from 'web.utils';
 import Dialog from 'web.Dialog';
 import {FormViewDialog} from 'web.view_dialogs';
-import {_displayDialogWhenEmployeeNoEmail} from './planning_send/form_controller';
 import { PlanningControllerMixin } from './planning_mixins';
 
 const PlanningGanttController = GanttController.extend(PlanningControllerMixin, {
@@ -57,9 +56,37 @@ const PlanningGanttController = GanttController.extend(PlanningControllerMixin, 
     },
 
     /**
-     * @see {/planning_send/form_controller.js}
+     * Display a dialog form view of employee model for each employee who has no work email
+     *
+     * This function is only useable in Controller class
+     *
+     * @param {Object} [result] result containing the employees without work email, context and relation to display the form view of the employee model.
+     * @param {Array<number>} [result.res_ids] the employee ids without work email.
+     * @param {Object} [result.context] context.
+     * @param {string} [result.relation] the model name to display the form view.
+     *
+     * @returns {Promise}
      */
-    _displayDialogWhenEmployeeNoEmail,
+    _displayDialogWhenEmployeeNoEmail: function (result) {
+        if (!result) {
+            // then we have nothing to do.
+            return Promise.resolve();
+        }
+        return Promise.all(result.res_ids.map((employee_id) => {
+            const def = new Promise((resolve, reject) => {
+                const formDialog = new FormViewDialog(this, {
+                    title: "",
+                    res_model: result.relation,
+                    res_id: employee_id,
+                    readonly: false,
+                    context: result.context,
+                    on_saved: () => resolve(),
+                }).open();
+                formDialog.on('form_dialog_discarded', this, () => reject());
+            });
+            return def;
+        }));
+    },
 
     /**
      * Opens dialog to add/edit/view a record

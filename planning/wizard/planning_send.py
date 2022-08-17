@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models, fields, _
-from odoo.exceptions import UserError
 from odoo.osv import expression
 
 
@@ -25,6 +24,8 @@ class PlanningSend(models.TransientModel):
                                     help="Employees who will receive planning by email if you click on publish & send.",
                                     compute='_compute_slots_data', inverse='_inverse_employee_ids', store=True)
     slot_ids = fields.Many2many('planning.slot', compute='_compute_slots_data', store=True)
+    employees_no_email = fields.Many2many('hr.employee', string="Employees without email",
+                                    compute="_compute_employees_no_email", inverse="_inverse_employees_no_email")
 
     def _get_slot_domain(self):
         return []
@@ -43,6 +44,15 @@ class PlanningSend(models.TransientModel):
             domain = expression.AND([[('start_datetime', '>=', wiz.start_datetime), ('end_datetime', '<=', wiz.end_datetime)], slot_domain])
             wiz.slot_ids = self.env['planning.slot'].with_user(self.env.user).search(domain)
 
+    @api.depends('employee_ids')
+    def _compute_employees_no_email(self):
+        for planning in self:
+            planning.employees_no_email = planning.employee_ids.filtered(lambda employee: not employee.work_email)
+
+    def _inverse_employees_no_email(self):
+        for planning in self:
+            planning.employee_ids = planning.employees_no_email + planning.employee_ids.filtered('work_email')
+
     def get_employees_without_work_email(self):
         self.ensure_one()
         if not self.employee_ids.check_access_rights('write', raise_exception=False):
@@ -56,6 +66,20 @@ class PlanningSend(models.TransientModel):
             'res_ids': employee_ids_without_work_email,
             'context': context,
         }
+
+    def action_check_emails(self):
+        if self.employees_no_email:
+            return {
+                'name': _('No Email Address For Some Employees'),
+                'view_mode': 'form',
+                'res_model': 'planning.send',
+                'views': [(self.env.ref('planning.employee_no_email_list_wizard').id, 'form')],
+                'type': 'ir.actions.act_window',
+                'res_id': self.id,
+                'target': 'new',
+            }
+        else:
+            self.action_send()
 
     def action_send(self):
         if self.include_unassigned:

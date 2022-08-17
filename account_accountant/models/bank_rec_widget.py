@@ -1259,6 +1259,7 @@ class BankRecWidget(models.Model):
             line_ids_commands.append(Command.update(line.id, {
                 'balance': balance,
                 'amount_currency': amount_currency,
+                'tax_tag_ids': to_update['tax_tag_ids'],
             }))
 
         # Tax lines that are no longer needed.

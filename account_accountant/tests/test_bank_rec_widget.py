@@ -602,9 +602,39 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
     def test_validation_with_taxes(self):
         st_line = self._create_st_line(1000.0)
 
+        tax_tags = self.env['account.account.tag'].create({
+            'name': f'tax_tag_{i}',
+            'applicability': 'taxes',
+            'country_id': self.env.company.account_fiscal_country_id.id,
+        } for i in range(4))
+
         tax_21 = self.env['account.tax'].create({
             'name': "tax_21",
             'amount': 21,
+            'invoice_repartition_line_ids': [
+                Command.create({
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'tag_ids': [Command.set(tax_tags[0].ids)],
+                }),
+                Command.create({
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'tag_ids': [Command.set(tax_tags[1].ids)],
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                Command.create({
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                    'tag_ids': [Command.set(tax_tags[2].ids)],
+                }),
+                Command.create({
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                    'tag_ids': [Command.set(tax_tags[3].ids)],
+                }),
+            ],
         })
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
@@ -616,9 +646,24 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
-            {'flag': 'liquidity',   'balance': 1000.0},
-            {'flag': 'manual',      'balance': -826.45},
-            {'flag': 'tax_line',    'balance': -173.55},
+            {'flag': 'liquidity',   'balance': 1000.0,  'tax_tag_ids': []},
+            {'flag': 'manual',      'balance': -826.45, 'tax_tag_ids': tax_tags[0].ids},
+            {'flag': 'tax_line',    'balance': -173.55, 'tax_tag_ids': tax_tags[1].ids},
+        ])
+
+        # Edit the base line. The tax tags should be the refund ones.
+        line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
+        form = WizardForm(wizard)
+        form.todo_command = f'mount_line_in_edit,{line.index}'
+        form.form_balance = 500.0
+        wizard = form.save()
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'balance': 1000.0,      'tax_tag_ids': []},
+            {'flag': 'manual',          'balance': 500.0,       'tax_tag_ids': tax_tags[2].ids},
+            {'flag': 'tax_line',        'balance': 105.0,       'tax_tag_ids': tax_tags[3].ids},
+            {'flag': 'auto_balance',    'balance': -1605.0,     'tax_tag_ids': []},
         ])
 
         # Edit the base line.
@@ -630,10 +675,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
-            {'flag': 'liquidity',       'balance': 1000.0},
-            {'flag': 'manual',          'balance': -500.0},
-            {'flag': 'tax_line',        'balance': -105.0},
-            {'flag': 'auto_balance',    'balance': -395.0},
+            {'flag': 'liquidity',       'balance': 1000.0,  'tax_tag_ids': []},
+            {'flag': 'manual',          'balance': -500.0,  'tax_tag_ids': tax_tags[0].ids},
+            {'flag': 'tax_line',        'balance': -105.0,  'tax_tag_ids': tax_tags[1].ids},
+            {'flag': 'auto_balance',    'balance': -395.0,  'tax_tag_ids': []},
         ])
 
         # Edit the tax line.
@@ -645,10 +690,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
-            {'flag': 'liquidity',       'balance': 1000.0},
-            {'flag': 'manual',          'balance': -500.0},
-            {'flag': 'tax_line',        'balance': -100.0},
-            {'flag': 'auto_balance',    'balance': -400.0},
+            {'flag': 'liquidity',       'balance': 1000.0,  'tax_tag_ids': []},
+            {'flag': 'manual',          'balance': -500.0,  'tax_tag_ids': tax_tags[0].ids},
+            {'flag': 'tax_line',        'balance': -100.0,  'tax_tag_ids': tax_tags[1].ids},
+            {'flag': 'auto_balance',    'balance': -400.0,  'tax_tag_ids': []},
         ])
 
         # Add a new tax.

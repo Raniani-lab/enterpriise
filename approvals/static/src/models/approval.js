@@ -49,8 +49,6 @@ registerModel({
         }),
         id: attr({
             identifying: true,
-            readonly: true,
-            required: true,
         }),
         isCurrentPartnerApprover: attr({
             default: false,

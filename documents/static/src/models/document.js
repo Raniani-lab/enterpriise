@@ -152,8 +152,6 @@ registerModel({
         }),
         id: attr({
             identifying: true,
-            required: true,
-            readonly: true,
         }),
         defaultSource: attr({
             compute: "_computeDefaultSource",

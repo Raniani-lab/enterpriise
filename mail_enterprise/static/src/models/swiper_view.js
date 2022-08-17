@@ -191,12 +191,10 @@ registerModel({
         messageViewOwner: one('MessageView', {
             identifying: true,
             inverse: 'swiperView',
-            readonly: true,
         }),
         notificationGroupViewOwner: one('NotificationGroupView', {
             identifying: true,
             inverse: 'swiperView',
-            readonly: true,
         }),
         record: one('Record', {
             compute: '_computeRecord',
@@ -212,12 +210,10 @@ registerModel({
         threadNeedactionPreviewViewOwner: one('ThreadNeedactionPreviewView', {
             identifying: true,
             inverse: 'swiperView',
-            readonly: true,
         }),
         threadPreviewViewOwner: one('ThreadPreviewView', {
             identifying: true,
             inverse: 'swiperView',
-            readonly: true,
         }),
     },
 });

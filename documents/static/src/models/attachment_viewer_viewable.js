@@ -7,7 +7,6 @@ import "@mail/models/attachment_viewer_viewable";
 addFields("AttachmentViewerViewable", {
     documentOwner: one("Document", {
         identifying: true,
-        readonly: true,
     }),
 });
 

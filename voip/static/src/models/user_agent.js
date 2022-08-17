@@ -14,8 +14,6 @@ registerModel({
         voip: one("Voip", {
             identifying: true,
             inverse: "userAgent",
-            readonly: true,
-            required: true,
         }),
         __sipJsUserAgent: attr(),
     },

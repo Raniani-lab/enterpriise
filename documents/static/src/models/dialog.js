@@ -9,7 +9,6 @@ addFields("Dialog", {
     documentListOwnerAsDocumentViewer: one("DocumentList", {
         identifying: true,
         inverse: "documentViewerDialog",
-        readonly: true,
     }),
 });
 

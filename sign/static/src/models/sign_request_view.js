@@ -33,8 +33,6 @@ registerModel({
         activityViewOwner: one('ActivityView', {
             identifying: true,
             inverse: 'signRequestView',
-            readonly: true,
-            required: true,
         }),
         component: attr(),
     },

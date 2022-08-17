@@ -17,8 +17,6 @@ registerModel({
         voip: one("Voip", {
             identifying: true,
             inverse: "ringtoneRegistry",
-            readonly: true,
-            required: true,
         }),
         dialTone: one("SoundEffect", {
             default: insertAndReplace({

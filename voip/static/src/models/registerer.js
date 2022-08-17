@@ -94,8 +94,6 @@ registerModel({
         userAgent: one("UserAgent", {
             identifying: true,
             inverse: "registerer",
-            readonly: true,
-            required: true,
         }),
         /**
          * An instance of the Registerer class from the SIP.js library. It

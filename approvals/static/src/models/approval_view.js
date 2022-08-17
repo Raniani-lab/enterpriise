@@ -31,8 +31,6 @@ registerModel({
         activityViewOwner: one('ActivityView', {
             identifying: true,
             inverse: 'approvalView',
-            readonly: true,
-            required: true,
         }),
         component: attr(),
     },

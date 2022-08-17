@@ -19,5 +19,4 @@ class Project(models.Model):
     @api.depends('is_fsm')
     def _compute_allow_forecast(self):
         for project in self:
-            if not project._origin:
-                project.allow_forecast = not project.is_fsm
+            project.allow_forecast = not project.is_fsm

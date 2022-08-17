@@ -432,8 +432,8 @@ msgstr "Precio para la Guía de despacho"
 
 #. module: l10n_cl_edi_stock
 #: model:ir.actions.report,name:l10n_cl_edi_stock.action_delivery_guide_report_pdf
-msgid "Delivery Guide SII (DTE 52)"
-msgstr "Guía de Despacho SII (DTE 52)"
+msgid "Delivery Guide SII DTE 52 (CL)"
+msgstr "Guía Despacho SII DTE 52 (CL)"
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0

@@ -379,7 +379,7 @@ msgstr ""
 
 #. module: l10n_cl_edi_stock
 #: model:ir.actions.report,name:l10n_cl_edi_stock.action_delivery_guide_report_pdf
-msgid "Delivery Guide SII (DTE 52)"
+msgid "Delivery Guide SII DTE 52 (CL)"
 msgstr ""
 
 #. module: l10n_cl_edi_stock

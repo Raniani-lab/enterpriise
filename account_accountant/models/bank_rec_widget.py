@@ -73,36 +73,6 @@ class BankRecWidget(models.Model):
     )
     matching_rules_allow_auto_reconcile = fields.Boolean()
 
-    # ==== Stat buttons ====
-    reconciled_in_invoice_ids = fields.Many2many(
-        comodel_name='account.move',
-        compute='_compute_reconciled_entries',
-    )
-    reconciled_in_invoice_ids_count = fields.Integer(
-        compute='_compute_reconciled_entries',
-    )
-    reconciled_out_invoice_ids = fields.Many2many(
-        comodel_name='account.move',
-        compute='_compute_reconciled_entries',
-    )
-    reconciled_out_invoice_ids_count = fields.Integer(
-        compute='_compute_reconciled_entries',
-    )
-    reconciled_payment_ids = fields.Many2many(
-        comodel_name='account.move',
-        compute='_compute_reconciled_entries',
-    )
-    reconciled_payment_ids_count = fields.Integer(
-        compute='_compute_reconciled_entries',
-    )
-    reconciled_misc_entry_ids = fields.Many2many(
-        comodel_name='account.move',
-        compute='_compute_reconciled_entries',
-    )
-    reconciled_misc_entry_ids_count = fields.Integer(
-        compute='_compute_reconciled_entries',
-    )
-
     # ==== Display fields ====
     state = fields.Selection(
         selection=[
@@ -562,27 +532,6 @@ class BankRecWidget(models.Model):
     def _compute_selected_aml_ids(self):
         for wizard in self:
             wizard.selected_aml_ids = [Command.set(wizard.line_ids.source_aml_id.ids)]
-
-    @api.depends('st_line_id')
-    def _compute_reconciled_entries(self):
-        for wizard in self:
-            move = wizard.st_line_id.move_id
-            reconciled_lines = move.line_ids.matched_debit_ids.debit_move_id + move.line_ids.matched_credit_ids.credit_move_id
-            reconciled_moves = reconciled_lines.move_id
-
-            reconciled_in_invoices = reconciled_moves.filtered(lambda x: x.is_purchase_document(include_receipts=True))
-            reconciled_out_invoices = reconciled_moves.filtered(lambda x: x.is_sale_document(include_receipts=True))
-            reconciled_payments = reconciled_moves.filtered('payment_id')
-            reconciled_misc_entries = reconciled_moves - reconciled_in_invoices - reconciled_out_invoices - reconciled_payments
-
-            wizard.reconciled_in_invoice_ids = reconciled_in_invoices
-            wizard.reconciled_in_invoice_ids_count = len(reconciled_in_invoices)
-            wizard.reconciled_out_invoice_ids = reconciled_out_invoices
-            wizard.reconciled_out_invoice_ids_count = len(reconciled_out_invoices)
-            wizard.reconciled_payment_ids = reconciled_payments
-            wizard.reconciled_payment_ids_count = len(reconciled_payments)
-            wizard.reconciled_misc_entry_ids = reconciled_misc_entries
-            wizard.reconciled_misc_entry_ids_count = len(reconciled_misc_entries)
 
     @api.depends('form_index', 'form_amount_currency', 'form_balance', 'form_force_negative_sign')
     def _compute_amount_suggestion(self):
@@ -1548,14 +1497,25 @@ class BankRecWidget(models.Model):
 
     def button_form_redirect_to_move_form(self, move_id):
         self.ensure_one()
+        move = self.env['account.move'].browse(int(move_id))
 
         action = {
             'type': 'ir.actions.act_window',
-            'res_model': 'account.move',
             'context': {'create': False},
             'view_mode': 'form',
-            'res_id': int(move_id),
         }
+
+        if move.payment_id:
+            action.update({
+                'res_model': 'account.payment',
+                'res_id': move.payment_id.id,
+            })
+        else:
+            action.update({
+                'res_model': 'account.move',
+                'res_id': move.id,
+            })
+
         self.next_action_todo = clean_action(action, self.env)
 
     @api.model
@@ -1577,34 +1537,6 @@ class BankRecWidget(models.Model):
                 'domain': [('id', 'in', records.ids)],
             })
         return action
-
-    def button_show_reconciled_in_invoices(self):
-        self.ensure_one()
-        self.next_action_todo = clean_action(
-            self._prepare_button_show_reconciled_action(self.reconciled_in_invoice_ids._origin, name=_("Paid Bills")),
-            self.env,
-        )
-
-    def button_show_reconciled_out_invoices(self):
-        self.ensure_one()
-        self.next_action_todo = clean_action(
-            self._prepare_button_show_reconciled_action(self.reconciled_out_invoice_ids._origin, name=_("Paid Invoices")),
-            self.env,
-        )
-
-    def button_show_reconciled_payments(self):
-        self.ensure_one()
-        self.next_action_todo = clean_action(
-            self._prepare_button_show_reconciled_action(self.reconciled_payment_ids.payment_id._origin, name=_("Payments")),
-            self.env,
-        )
-
-    def button_show_reconciled_misc_entries(self):
-        self.ensure_one()
-        self.next_action_todo = clean_action(
-            self._prepare_button_show_reconciled_action(self.reconciled_misc_entry_ids._origin, name=_("Miscellaneous Entries")),
-            self.env,
-        )
 
     def js_action_reconcile_st_line(self, st_line_id, params):
         st_line = self.env['account.bank.statement.line'].browse(st_line_id)

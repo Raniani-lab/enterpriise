@@ -89,8 +89,17 @@ class BankRecWidgetLine(models.Model):
     )
 
     source_aml_id = fields.Many2one(comodel_name='account.move.line')
-    source_aml_move_id = fields.Many2one(related='source_aml_id.move_id', depends=['source_aml_id'])
-    source_aml_move_name = fields.Char(related='source_aml_id.move_name', depends=['source_aml_id'])
+    source_aml_move_id = fields.Many2one(
+        comodel_name='account.move',
+        compute='_compute_source_aml_fields',
+        store=True,
+        readonly=False,
+    )
+    source_aml_move_name = fields.Char(
+        compute='_compute_source_aml_fields',
+        store=True,
+        readonly=False,
+    )
     analytic_account_id = fields.Many2one(
         comodel_name='account.analytic.account',
         compute='_compute_analytic_account_id',
@@ -268,3 +277,19 @@ class BankRecWidgetLine(models.Model):
                 line.tax_base_amount_currency = line.tax_base_amount_currency
             else:
                 line.tax_base_amount_currency = line.amount_currency
+
+    @api.depends('flag')
+    def _compute_source_aml_fields(self):
+        for line in self:
+            line.source_aml_move_id = None
+            line.source_aml_move_name = None
+            if line.flag in ('new_aml', 'liquidity'):
+                line.source_aml_move_id = line.source_aml_id.move_id
+                line.source_aml_move_name = line.source_aml_id.move_id.name
+            elif line.flag == 'aml':
+                partials = line.source_aml_id.matched_debit_ids + line.source_aml_id.matched_credit_ids
+                all_counterpart_lines = partials.debit_move_id + partials.credit_move_id
+                counterpart_lines = all_counterpart_lines - line.source_aml_id - partials.exchange_move_id.line_ids
+                if len(counterpart_lines) == 1:
+                    line.source_aml_move_id = counterpart_lines.move_id
+                    line.source_aml_move_name = counterpart_lines.move_id.name

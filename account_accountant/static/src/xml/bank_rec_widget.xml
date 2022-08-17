@@ -149,11 +149,27 @@
                                                 t-on-click="_onClickExpandCollapseExtraNote">
                                                 <div class="o_bank_rec_widget_lines_widget_label">
                                                     <t t-if="data.extra_notes">
+                                                        <t t-if="data.state == 'reconciled'">
+                                                            <span class="o_form_uri"
+                                                                  style="cursor: pointer"
+                                                                  t-att-move-id="line.source_aml_move_id.id"
+                                                                  t-esc="line.source_aml_move_name.value"
+                                                                  t-on-click="_onClickShowMove"/>
+                                                            <span class="mr4">:</span>
+                                                        </t>
                                                         <span t-att-title="data.extra_notes" t-esc="line.name.value"/>
                                                         <br/>
                                                         <span class="text-muted extra-notes d-none" t-esc="data.extra_notes"/>
                                                     </t>
                                                     <t t-else="">
+                                                        <t t-if="data.state == 'reconciled'">
+                                                            <span class="o_form_uri"
+                                                                  style="cursor: pointer"
+                                                                  t-att-move-id="line.source_aml_move_id.id"
+                                                                  t-esc="line.source_aml_move_name.value"
+                                                                  t-on-click="_onClickShowMove"/>
+                                                            <span class="mr4">:</span>
+                                                        </t>
                                                         <span t-att-title="line.name.value" t-esc="line.name.value"/>
                                                     </t>
                                                 </div>
@@ -165,12 +181,14 @@
                                                 t-att-title="line.name.value"
                                                 t-on-click="_onClickExpandCollapseExtraNote">
                                                 <div class="o_bank_rec_widget_lines_widget_label">
-                                                    <span class="o_form_uri"
-                                                          style="cursor: pointer"
-                                                          t-att-move-id="line.source_aml_move_id.id"
-                                                          t-esc="line.source_aml_move_name.value"
-                                                          t-on-click="_onClickShowMove"/>
-                                                    <span class="mr4">:</span>
+                                                    <t t-if="line.source_aml_move_id.id">
+                                                        <span class="o_form_uri"
+                                                              style="cursor: pointer"
+                                                              t-att-move-id="line.source_aml_move_id.id"
+                                                              t-esc="line.source_aml_move_name.value"
+                                                              t-on-click="_onClickShowMove"/>
+                                                        <span class="mr4">:</span>
+                                                    </t>
                                                     <span t-esc="line.name.value"/>
                                                 </div>
                                             </td>

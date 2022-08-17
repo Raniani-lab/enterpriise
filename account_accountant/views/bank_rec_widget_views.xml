@@ -201,49 +201,7 @@
 
                         <div name="button_box"
                              class="oe_button_box o_bank_rec_stats_buttons_aside_right"
-                             attrs="{'invisible': [('state', '!=', 'reconciled')]}">
-
-                            <button name="button_show_reconciled_in_invoices"
-                                    type="object"
-                                    class="oe_stat_button"
-                                    icon="fa-bars"
-                                    attrs="{'invisible': [('reconciled_in_invoice_ids_count','=', 0)]}">
-                                <field name="reconciled_in_invoice_ids_count"/>
-                                <span attrs="{'invisible': [('reconciled_in_invoice_ids_count','&gt;', 1)]}">Bill</span>
-                                <span attrs="{'invisible': [('reconciled_in_invoice_ids_count','&lt;=', 1)]}">Bills</span>
-                            </button>
-
-                            <button name="button_show_reconciled_out_invoices"
-                                    type="object"
-                                    class="oe_stat_button"
-                                    icon="fa-bars"
-                                    attrs="{'invisible': [('reconciled_out_invoice_ids_count','=', 0)]}">
-                                <field name="reconciled_out_invoice_ids_count"/>
-                                <span attrs="{'invisible': [('reconciled_out_invoice_ids_count','&gt;', 1)]}">Invoice</span>
-                                <span attrs="{'invisible': [('reconciled_out_invoice_ids_count','&lt;=', 1)]}">Invoices</span>
-                            </button>
-
-                            <button name="button_show_reconciled_payments"
-                                    type="object"
-                                    class="oe_stat_button"
-                                    icon="fa-bars"
-                                    attrs="{'invisible': [('reconciled_payment_ids_count','=', 0)]}">
-                                <field name="reconciled_payment_ids_count"/>
-                                <span attrs="{'invisible': [('reconciled_payment_ids_count','&gt;', 1)]}">Payment</span>
-                                <span attrs="{'invisible': [('reconciled_payment_ids_count','&lt;=', 1)]}">Payments</span>
-                            </button>
-
-                            <button name="button_show_reconciled_misc_entries"
-                                    type="object"
-                                    class="oe_stat_button"
-                                    icon="fa-bars"
-                                    attrs="{'invisible': [('reconciled_misc_entry_ids_count','=', 0)]}">
-                                <field name="reconciled_misc_entry_ids_count"/>
-                                <span attrs="{'invisible': [('reconciled_misc_entry_ids_count','&gt;', 1)]}">Entry</span>
-                                <span attrs="{'invisible': [('reconciled_misc_entry_ids_count','&lt;=', 1)]}">Entries</span>
-                            </button>
-
-                        </div>
+                             attrs="{'invisible': [('state', '!=', 'reconciled')]}"/>
                     </div>
 
                     <field name="lines_widget"

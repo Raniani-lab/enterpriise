@@ -63,7 +63,7 @@
                                    t-on-click="event => this._onRemoveMember(event, member)" type="button">
                                 </i>
                             </div>
-                            <select t-attf-class="o_permission form-select rounded"
+                            <select t-attf-class="o_permission form-select rounded {{ member.partner_share ? 'o_knowledge_share_partner' : '' }}"
                                 t-att-value="member.permission"
                                 t-on-change="event => this._onChangeMemberPermission(event, member)"
                                 t-att-disabled="member.is_unique_writer || member.partner_share

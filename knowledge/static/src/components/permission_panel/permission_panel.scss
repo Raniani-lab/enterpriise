@@ -25,9 +25,11 @@
     .o_permission {
         width: 100px;
         cursor: pointer;
-        &[disabled] {
+        &:disabled {
             cursor: not-allowed;
-            background-image: none; // hide carret
+            &.o_knowledge_share_partner {
+                background-image: none;
+            }
         }
     }
 }

@@ -82,11 +82,12 @@
                                                 <i class="rounded-circle text-center fa fa-comments" title="Open chatter"/>
                                             </a>
                                             <div class="o_knowledge_share_panel dropdown-menu user-select-none" role="menu">
-                                                <div class="input-group px-3 pb-2" attrs="{'invisible': [('user_has_write_access', '=', False)]}">
-                                                    <div class="form-control">Add people or email addresses</div>
-                                                    <button type="action" name="%(knowledge_invite_action_from_article)d"
-                                                            class="btn btn-primary">Invite</button>
-                                                </div>
+                                                <button type="action" name="%(knowledge_invite_action_from_article)d"
+                                                        class="input-group o_cursor_pointer px-3 pb-2 d-flex"
+                                                        attrs="{'invisible': [('user_has_write_access', '=', False)]}">
+                                                    <div class="form-control text-start">Add people or email addresses...</div>
+                                                    <button class="btn btn-primary">Invite</button>
+                                                </button>
                                                 <div class="o_knowledge_permission_panel"/>
                                             </div>
                                         </div>

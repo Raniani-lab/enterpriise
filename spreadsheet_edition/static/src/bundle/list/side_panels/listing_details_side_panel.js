@@ -9,16 +9,20 @@ import { time_to_str } from "web.time";
 
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 
-const { Component, onWillStart } = owl;
+const { Component, onWillStart, onWillUpdateProps } = owl;
 
 export class ListingDetailsSidePanel extends Component {
     setup() {
         this.getters = this.env.model.getters;
         this.dialog = useService("dialog");
-        onWillStart(async () => {
-            const name = await this.getters.getListDataSource(this.props.listId).getModelLabel();
-            this.modelDisplayName = name;
-        });
+        const loadData = async () => {
+            this.dataSource = await this.env.model.getters.getAsyncListDataSource(
+                this.props.listId
+            );
+            this.modelDisplayName = await this.dataSource.getModelLabel();
+        };
+        onWillStart(loadData);
+        onWillUpdateProps(loadData);
     }
 
     get listDefinition() {
@@ -33,13 +37,13 @@ export class ListingDetailsSidePanel extends Component {
     }
 
     formatSort(sort) {
-        return `${this.getters
-            .getListDataSource(this.props.listId)
-            .getListHeaderValue(sort.name)} (${sort.asc ? _t("ascending") : _t("descending")})`;
+        return `${this.dataSource.getListHeaderValue(sort.name)} (${
+            sort.asc ? _t("ascending") : _t("descending")
+        })`;
     }
 
     getLastUpdate() {
-        const lastUpdate = this.getters.getListDataSource(this.props.listId).lastUpdate;
+        const lastUpdate = this.dataSource.lastUpdate;
         if (lastUpdate) {
             return time_to_str(new Date(lastUpdate));
         }

@@ -365,4 +365,27 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             assert.strictEqual(fooSortingText, "Foo (ascending)");
         }
     );
+
+    QUnit.test("can refresh a sorted list in the properties panel", async function (assert) {
+        const serverData = getBasicServerData();
+        serverData.models.partner.fields.foo.sortable = true;
+        serverData.models.partner.fields.bar.sortable = true;
+        const { model, env } = await createSpreadsheetFromListView({
+            serverData,
+            orderBy: [{ name: "foo", asc: true }],
+            linesNumber: 4,
+        });
+        const sheetId = model.getters.getActiveSheetId();
+        const listId = model.getters.getListIds(sheetId)[0];
+        model.dispatch("SELECT_ODOO_LIST", { listId });
+        env.openSidePanel("LIST_PROPERTIES_PANEL", {
+            listId,
+        });
+        await nextTick();
+        const fixture = getFixture();
+        const sortingSection = fixture.querySelectorAll(".o_side_panel_section")[3];
+        assert.strictEqual(sortingSection.querySelectorAll("div")[1].innerText, "Foo (ascending)");
+        await click(fixture, ".o_refresh_list");
+        assert.strictEqual(sortingSection.querySelectorAll("div")[1].innerText, "Foo (ascending)");
+    });
 });

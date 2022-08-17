@@ -8,20 +8,21 @@ import { _t } from "web.core";
 import { time_to_str } from "web.time";
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 
-const { Component, onWillStart } = owl;
+const { Component, onWillStart, onWillUpdateProps } = owl;
 
 export default class PivotDetailsSidePanel extends Component {
     setup() {
         this.dialog = useService("dialog");
         /** @type {import("@spreadsheet/pivot/pivot_data_source").default} */
         this.dataSource = undefined;
-
-        onWillStart(async () => {
+        const loadData = async () => {
             this.dataSource = await this.env.model.getters.getAsyncPivotDataSource(
                 this.props.pivotId
             );
             this.modelDisplayName = await this.dataSource.getModelLabel();
-        });
+        };
+        onWillStart(loadData);
+        onWillUpdateProps(loadData);
     }
 
     get pivotDefinition() {

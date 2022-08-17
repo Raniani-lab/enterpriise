@@ -137,6 +137,35 @@ QUnit.module(
             assert.equal(pivotSorting.children[1].innerText, "Probability (descending)");
         });
 
+        QUnit.test("can refresh a sorted pivot", async function (assert) {
+            const { model, env } = await createSpreadsheetFromPivotView({
+                actions: async (target) => {
+                    await click(target.querySelector("thead .o_pivot_measure_row"));
+                },
+            });
+            // opening from a pivot cell
+            const sheetId = model.getters.getActiveSheetId();
+            const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+            model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
+                pivot: pivotA3,
+            });
+            await nextTick();
+
+            let sections = target.querySelectorAll(".o_side_panel_section");
+            assert.equal(sections.length, 6, "it should have 6 sections");
+            let pivotSorting = sections[4];
+
+            assert.equal(pivotSorting.children[0].innerText, "Sorting");
+            assert.equal(pivotSorting.children[1].innerText, "Probability (ascending)");
+            await click(target, ".o_refresh_measures");
+            sections = target.querySelectorAll(".o_side_panel_section");
+            assert.equal(sections.length, 6, "it should have 6 sections");
+            pivotSorting = sections[4];
+            assert.equal(pivotSorting.children[0].innerText, "Sorting");
+            assert.equal(pivotSorting.children[1].innerText, "Probability (ascending)");
+        });
+
         QUnit.test("Pivot focus changes on side panel click", async function (assert) {
             assert.expect(6);
             const { model, env } = await createSpreadsheetFromPivotView();

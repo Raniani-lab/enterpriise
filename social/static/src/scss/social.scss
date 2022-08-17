@@ -303,7 +303,7 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
 .o_social_add_stream_form {
     margin: $modal-inner-padding * -1;
     padding: ($spacer * 1.5);
-    padding-bottom: ($spacer * 5);
+    padding-bottom: ($spacer * 4);
 
     .o_social_media {
         background-color: $list-group-bg;
@@ -509,5 +509,5 @@ $o-social-font-family-reset: $o-font-family-sans-serif;
 }
 
 .o_social_media_cards {
-    width: min-content;
+    width: fit-content;
 }

@@ -53,6 +53,7 @@ export class MainMenu extends Component {
                     It won't appear anymore, so make sure you don't need the barcodes sheet or you have a copy."),
             confirm: () => {
                 this.rpc('/stock_barcode/rid_of_message_demo_barcodes');
+                location.reload();
             },
             cancel: () => {},
             confirmLabel: this.env._t("Remove it"),

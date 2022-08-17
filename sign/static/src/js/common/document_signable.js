@@ -2,6 +2,7 @@
 
 // Signing part
 "use strict";
+/* global html2canvas */
 
 import ajax from "web.ajax";
 import config from "web.config";
@@ -19,6 +20,10 @@ const _t = core._t;
 // The goal of this override is to fetch a default signature if one was
 // already set by the user for this request.
 const SignNameAndSignature = NameAndSignature.extend({
+    template: 'sign.sign_name_and_signature',
+    events: _.extend({}, NameAndSignature.prototype.events, {
+        'click .o_web_frame_button': '_onClickFrameButton'
+    }),
   //----------------------------------------------------------------------
   // Public
   //----------------------------------------------------------------------
@@ -33,20 +38,45 @@ const SignNameAndSignature = NameAndSignature.extend({
    * @param {string} accessToken
    * @param {Array<String>} signatureFonts array of base64 encoded fonts
    */
-  init: function (parent, options, requestID, accessToken, signatureFonts) {
+  init: function (parent, options, requestID, accessToken, signatureFonts, hash, activeFrame) {
     this._super.apply(this, arguments);
 
     this.requestID = requestID;
     this.accessToken = accessToken;
     this.defaultSignature = options.defaultSignature || "";
-    this.signatureChanged = false;
+    this.signatureChanged = !options.defaultSignature;
     this.fonts = signatureFonts;
+    this.hash = hash;
+    this.signLabel = _t('Signed with Odoo Sign');
+    this.activeFrame = activeFrame;
+    this.frame = options.defaultFrame;
+    this.frameChanged = false;
 
     // if defaultSignature exists, we don't want to have mode set to auto
     if (this.defaultSignature) {
       this.signMode = 'draw';
     }
   },
+
+  willStart: function () {
+    return Promise.all([
+      session.user_has_group('base.group_user').then(
+      (res) => {
+         this.showFrameCheck = res;
+      }),
+      this._super.apply(this, arguments)
+    ]);
+  },
+
+  start: function () {
+    const res = this._super.apply(this, arguments);
+    this.$frameButton = this.$('.o_web_frame_button');
+    this.$frameDiv = this.$('.o_sign_frame');
+    this.$frameButton.prop('checked', this.activeFrame);
+    this.$frameDiv.toggleClass('active', this.activeFrame);
+    return res;
+  },
+
   /**
    * Sets the existing signature.
    *
@@ -83,6 +113,36 @@ const SignNameAndSignature = NameAndSignature.extend({
   _onChangeSignLoadInput: function () {
     this.signatureChanged = true;
     return this._super.apply(this, arguments);
+  },
+
+  _onClickFrameButton: function () {
+    this.signatureChanged = true;
+    this.activeFrame = !this.activeFrame;
+    this.$frameButton.prop('checked', this.activeFrame);
+    this.$frameDiv.toggleClass('active', this.activeFrame);
+  },
+
+  _updateFrame: function () {
+    if (this.activeFrame && !this.frameChanged) {
+      this.signatureChanged = true;
+      this.frameChanged = true;
+      return html2canvas(this.$frameDiv[0],
+        {
+          'backgroundColor': null,
+          'width': this.$signatureField.width(),
+          'height': this.$signatureField.height(),
+          'x': -this.$signatureField.width() * 0.06, // TODO VISUEL
+          'y': -this.$signatureField.height() * 0.09, // TODO VISUEL
+        }
+      ).then(canvas => {
+        this.frame = canvas.toDataURL('image/png');
+      });
+    }
+    return Promise.resolve(false);
+  },
+
+  _getFrameImageSrc: function () {
+    return this.activeFrame ? this.frame : false;
   },
   /**
    * If a user clicks on draw, we overwrite the signature in the server.
@@ -138,7 +198,6 @@ export const SignInfoDialog = Dialog.extend({
 // It uses @see SignNameAndSignature for the name and signature fields.
 const SignatureDialog = SignInfoDialog.extend({
   template: "sign.signature_dialog",
-
   custom_events: {
     signature_changed: "_onChangeSignature",
   },
@@ -161,7 +220,7 @@ const SignatureDialog = SignInfoDialog.extend({
    * @param {string} accessToken
    * @param {Array<String>} signatureFonts array of base64 encoded fonts
    */
-  init: function (parent, options, requestID, accessToken, signatureFonts) {
+  init: function (parent, options, requestID, accessToken, signatureFonts, hash='', activeFrame=false) {
     options = options || {};
 
     options.title = options.title || _t("Adopt Your Signature");
@@ -180,12 +239,16 @@ const SignatureDialog = SignInfoDialog.extend({
 
     this.confirmFunction = function () {};
 
+    const hashText = hash && hash.substring(0, 10) + '...' || '';
+
     this.nameAndSignature = new SignNameAndSignature(
       this,
       options.nameAndSignatureOptions,
       requestID,
       accessToken,
-      signatureFonts
+      signatureFonts,
+      hashText,
+      activeFrame
     );
   },
   /**
@@ -1025,7 +1088,13 @@ export const SignableDocument = Document.extend({
       this.create_uid = parent.create_uid;
       this.state = parent.state;
       this.documentID = parent.documentID;
+      this.frame_hash = parent
     }
+  },
+
+  start: function () {
+    this.frame_hash = this.$("#o_sign_input_sign_frame_hash").val();
+    return this._super.apply(this, arguments);
   },
 
   get_pdfiframe_class: function () {
@@ -1084,6 +1153,7 @@ export const SignableDocument = Document.extend({
         width,
         height,
         value,
+        frame_value,
         options,
         name,
         tooltip,
@@ -1215,14 +1285,24 @@ export const SignableDocument = Document.extend({
         ) {
           this.adjustSignatureSize(type.auto_value, $signatureItem).then(
             (data) => {
-              $signatureItem
-                .data("signature", data)
-                .empty()
-                .append(
-                  $("<span/>").addClass("o_sign_helper"),
-                  $("<img/>", { src: $signatureItem.data("signature") })
-                );
-              $signatureItem.trigger("input");
+              this.adjustSignatureSize(type.frame_value, $signatureItem).then(
+                (frame_data) => {
+                  $signatureItem
+                    .data("signature", data)
+                    .empty()
+                    .append($("<span/>").addClass("o_sign_helper"));
+                  if (frame_data) {
+                    $signatureItem
+                      .data({
+                        frameHash: "0",
+                        frame: frame_data,
+                      })
+                      .append($("<img/>", { src: $signatureItem.data("frame"), class: 'o_sign_frame'}));
+                  }
+                  $signatureItem.append($("<img/>", { src: $signatureItem.data("signature") }));
+                  $signatureItem.trigger("input");
+                }
+              );
             }
           );
         } else if (
@@ -1254,6 +1334,7 @@ export const SignableDocument = Document.extend({
           fontColor: "DarkBlue",
           signatureType: type.item_type,
           defaultSignature: type.auto_value,
+          defaultFrame: type.frame_value,
           displaySignatureRatio:
             parseFloat($signatureItem.css("width")) /
             parseFloat($signatureItem.css("height")),
@@ -1263,33 +1344,45 @@ export const SignableDocument = Document.extend({
           { nameAndSignatureOptions: nameAndSignatureOptions },
           this.getParent().requestID,
           this.getParent().accessToken,
-          this.fonts
+          this.fonts,
+          this.getParent().frame_hash,
+          $signatureItem.find('.o_sign_frame').length > 0 || !type.auto_value,
         );
 
-        signDialog.open().onConfirm(() => {
-          if (!signDialog.isSignatureEmpty()) {
+        signDialog.open().onConfirm(async() => {
+          if (!signDialog.isSignatureEmpty() && signDialog.nameAndSignature.signatureChanged) {
             const name = signDialog.getName();
             const signature = signDialog.getSignatureImageSrc();
+            await signDialog.nameAndSignature._updateFrame();
+            const frame = signDialog.nameAndSignature._getFrameImageSrc();
             this.getParent().signerName = name;
 
             type.auto_value = signature;
+            type.frame_value = frame;
 
-            if (session.user_id && signDialog.nameAndSignature.signatureChanged) {
+            if (session.user_id) {
               this.updateUserSignature(type);
             }
-
-            $signatureItem
+            $signatureItem.empty()
               .data({
-                signature: signature,
+                signature: signature
               })
-              .empty()
-              .append(
-                $("<span/>").addClass("o_sign_helper"),
-                $("<img/>", { src: $signatureItem.data("signature") })
-              );
-          } else {
+              .append($("<span/>").addClass("o_sign_helper"));
+              if (frame && signDialog.nameAndSignature.activeFrame) {
+                $signatureItem
+                  .data({
+                    frameHash: signDialog.nameAndSignature.hash,
+                    frame: frame,
+                  }).append($("<img/>", { src: $signatureItem.data("frame"), class: 'o_sign_frame' }));
+              }
+              else {
+                $signatureItem.removeData("frame");
+              }
+              $signatureItem.append($("<img/>", { src: $signatureItem.data("signature") }));
+          } else if (signDialog.nameAndSignature.signatureChanged) {
             $signatureItem
               .removeData("signature")
+              .removeData("frame")
               .empty()
               .append($("<span/>").addClass("o_sign_helper"), type.placeholder);
           }
@@ -1301,9 +1394,13 @@ export const SignableDocument = Document.extend({
         signDialog.onConfirmAll(async () => {
           const name = signDialog.getName();
           const signature = signDialog.getSignatureImageSrc();
-          this.getParent().signerName = name;
+          await signDialog.nameAndSignature._updateFrame();
+          const frame = signDialog.nameAndSignature._getFrameImageSrc();
+          const frameHash = signDialog.nameAndSignature.hash;
 
+          this.getParent().signerName = name;
           type.auto_value = signature;
+          type.frame_value = frame;
 
           if (session.user_id && signDialog.nameAndSignature.signatureChanged) {
             this.updateUserSignature(type);
@@ -1319,13 +1416,22 @@ export const SignableDocument = Document.extend({
                 ) {
                   promise.push(
                     this.adjustSignatureSize(signature, item).then((data) => {
-                      item
+                      this.adjustSignatureSize(frame, item).then((frame_data) => {
+                        item
                         .data("signature", data)
                         .empty()
-                        .append(
-                          $("<span/>").addClass("o_sign_helper"),
-                          $("<img/>", { src: item.data("signature") })
-                        );
+                        .append($("<span/>").addClass("o_sign_helper"));
+                        if (signDialog.nameAndSignature.activeFrame && frame_data) {
+                          item.data({
+                            frameHash: frameHash,
+                            frame: frame_data,
+                          }).append($("<img/>", { src: item.data("frame"), class: 'o_sign_frame'}));
+                        }
+                        else {
+                          item.removeData("frame");
+                        }
+                        item.append($("<img/>", { src: item.data("signature") }));
+                      })
                     })
                   );
                 }
@@ -1351,6 +1457,7 @@ export const SignableDocument = Document.extend({
             signature_type:
               type.item_type === "signature" ? "sign_signature" : "sign_initials",
             datas: type.auto_value,
+            frame_datas: type.frame_value,
           },
         });
       },
@@ -1362,6 +1469,7 @@ export const SignableDocument = Document.extend({
        * @returns { Promise }
        */
       adjustSignatureSize: function (data, signatureItem) {
+        if (!data) { return Promise.resolve(false); }
         return new Promise(function (resolve, reject) {
           const img = new Image();
           img.onload = function () {
@@ -1445,7 +1553,7 @@ export const SignableDocument = Document.extend({
         this.signInfo.mail = value;
       }
     });
-    [this.signInfo.signatureValues, this.signInfo.newSignItems] = this.getSignatureValuesFromConfiguration();
+    [this.signInfo.signatureValues, this.signInfo.frameValues, this.signInfo.newSignItems] = this.getSignatureValuesFromConfiguration();
     if (!this.signInfo.signatureValues) {
       this.iframeWidget.checkSignItemsCompletion();
       Dialog.alert(this, _t("Some fields have still to be completed !"), {
@@ -1491,6 +1599,7 @@ export const SignableDocument = Document.extend({
 
         this.signInfo.name = signDialog.getName();
         this.signInfo.signatureValues = signDialog.getSignatureImage()[1];
+        this.signInfo.frameValues = [];
         this.signInfo.hasNoSignature = false;
 
         signDialog.close();
@@ -1542,12 +1651,18 @@ export const SignableDocument = Document.extend({
     return false;
   },
 
-  _sign: async function () {
-    const route = "/sign/sign/" + this.requestID + "/" + this.accessToken + "/" + this.signInfo.smsToken;
+  _getRouteAndParams: function () {
+    const route = "/sign/sign/" + this.requestID + "/" + this.accessToken + "/" + this.signInfo.smsToken || '';
     const params = {
       signature: this.signInfo.signatureValues,
+      frame: this.signInfo.frameValues,
       new_sign_items: this.signInfo.newSignItems,
     };
+    return [route, params];
+  },
+
+  _sign: async function () {
+    const [route, params] = this._getRouteAndParams();
     return session.rpc(route, params).then((response) => {
       this.$validateButton.text(this.validateButtonText).removeAttr("disabled", true);
       if (response.success) {
@@ -1592,6 +1707,7 @@ export const SignableDocument = Document.extend({
    */
   getSignatureValuesFromConfiguration() {
     let signatureValues = {};
+    let frameValues = {};
     let newSignItems = {};
     for (let page in this.iframeWidget.configuration) {
       for (let i = 0; i < this.iframeWidget.configuration[page].length; i++) {
@@ -1613,8 +1729,13 @@ export const SignableDocument = Document.extend({
               $elem.text() && $elem.text().trim() ? $elem.text() : false;            
         }
 
+        let frameValue = false;
+        let frameHash = false;
+
         if ($elem.data("signature")) {
           value = $elem.data("signature");
+          frameValue = $elem.data("frame");
+          frameHash = $elem.data('frameHash');
         }
         if ($elem[0].type === "checkbox") {
           value = false;
@@ -1634,6 +1755,7 @@ export const SignableDocument = Document.extend({
         }
 
         signatureValues[parseInt($elem.data("item-id"))] = value;
+        frameValues[parseInt($elem.data("item-id"))] = {frameValue, frameHash};
 
         if ($elem.data("isEditMode")) {
           const id = $elem.data("item-id");
@@ -1653,7 +1775,7 @@ export const SignableDocument = Document.extend({
       }
     }
 
-    return [signatureValues, newSignItems];
+    return [signatureValues, frameValues, newSignItems];
   },
 
   openThankYouDialog(nextSign) {

@@ -24,8 +24,8 @@ class SignContract(Sign):
         '/sign/sign/<int:sign_request_id>/<token>',
         '/sign/sign/<int:sign_request_id>/<token>/<sms_token>'
         ], type='json', auth='public')
-    def sign(self, sign_request_id, token, sms_token=False, signature=None, new_sign_items=None):
-        result = super(SignContract, self).sign(sign_request_id, token, sms_token=sms_token, signature=signature, new_sign_items=new_sign_items)
+    def sign(self, sign_request_id, token, sms_token=False, signature=None, **kwargs):
+        result = super(SignContract, self).sign(sign_request_id, token, sms_token=sms_token, signature=signature, **kwargs)
         if result.get('success'):
             request_item = request.env['sign.request.item'].sudo().search([('access_token', '=', token)])
             contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([

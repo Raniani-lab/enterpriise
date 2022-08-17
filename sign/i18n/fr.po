@@ -44,6 +44,10 @@ msgid "# Signatures"
 msgstr "# Signatures"
 
 #. module: sign
+msgid "Signed with Odoo Sign"
+msgstr "Signé avec Odoo Sign"
+
+#. module: sign
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "%s : Signature request"

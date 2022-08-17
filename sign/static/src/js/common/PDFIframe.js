@@ -308,6 +308,7 @@ export const PDFIframe = Widget.extend(
             parseFloat(el.width),
             parseFloat(el.height),
             el.value,
+            el.frame_value,
             el.option_ids,
             el.name,
             el.responsible_name ? el.responsible_name : "",
@@ -450,6 +451,7 @@ export const PDFIframe = Widget.extend(
       width,
       height,
       value,
+      frame_value,
       option_ids,
       name,
       tooltip,
@@ -466,7 +468,6 @@ export const PDFIframe = Widget.extend(
         (responsible > 0 && responsible !== this.role) ||
         !!value;
       const selected_options = option_ids || [];
-
       const $signatureItem = $(
         core.qweb.render("sign.sign_item", {
           editMode: isSignItemEditable || this.editMode,
@@ -474,6 +475,7 @@ export const PDFIframe = Widget.extend(
           role: tooltip,
           type: type.item_type,
           value: value || "",
+          frame_value: frame_value || "",
           options: selected_options,
           placeholder: name || "",
           isSignItemEditable: isSignItemEditable,

@@ -287,9 +287,9 @@ class SignTemplate(models.Model):
 
     def _get_sign_items_by_page(self):
         self.ensure_one()
-        items = defaultdict(list)
+        items = defaultdict(lambda: self.env['sign.item'])
         for item in self.sign_item_ids:
-            items[item.page].append(item)
+            items[item.page] += item
         return items
 
 

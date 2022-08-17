@@ -23,10 +23,7 @@ const ItsmeDialog = SignInfoDialog.extend({
     },
 
     onItsmeClick: async function () {
-        const route = "/sign/sign/" + this.requestID + "/" + this.accessToken;
-        const params = {
-            signature: this.signInfo.signatureValues
-        };
+        const [route, params] = this._getRouteAndParams();
         return session.rpc(route, params).then(({success, authorization_url, message}) => {
             if (success) {
                 window.location.replace(authorization_url);

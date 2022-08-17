@@ -76,7 +76,9 @@ Let your customers follow the signature process easily.
         'web.assets_common': [
             'sign/static/src/js/common/*',
             'sign/static/src/xml/sign_common.xml',
+            'sign/static/src/xml/sign_modal.xml',
             'sign/static/src/scss/sign_common.scss',
+            'web_editor/static/lib/html2canvas.js',
         ],
         'web.assets_backend': [
             'sign/static/src/js/backend/*',

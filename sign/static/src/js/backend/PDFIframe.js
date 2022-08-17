@@ -159,6 +159,7 @@ PDFIframe.include({
               type.default_width || type.defaultWidth,
               type.default_height || type.defaultHeight,
               "",
+              "",
               [],
               type.placeholder,
               "",

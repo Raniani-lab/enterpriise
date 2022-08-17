@@ -318,8 +318,8 @@ class TestSignRequest(SignRequestCommon):
         value = 'edit and sign'
         new_sign_item_config = self.get_sign_item_config(sign_request_item.role_id.id)
         with self.assertRaises(UserError, msg='The key for new sign item should always < 0'):
-            sign_request_item._edit_and_sign({'1': value}, {'1': new_sign_item_config})
-        sign_request_item._edit_and_sign({'-1': value}, {'-1': new_sign_item_config})
+            sign_request_item._edit_and_sign({'1': value}, new_sign_items={'1': new_sign_item_config})
+        sign_request_item._edit_and_sign({'-1': value}, new_sign_items={'-1': new_sign_item_config})
         self.assertEqual(sign_request_item.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_no_item.state, 'signed', 'The sign request should be signed')
         self.assertEqual(len(sign_request_no_item.completed_document_attachment_ids), 2, 'The completed document and the certificate should be created')
@@ -345,8 +345,8 @@ class TestSignRequest(SignRequestCommon):
         value = 'edit and sign'
         new_sign_item_config = self.get_sign_item_config(sign_request_item_customer.role_id.id)
         with self.assertRaises(UserError, msg='The key for new sign item should always < 0'):
-            sign_request_item_customer._edit_and_sign(dict(self.customer_sign_values, **{'1': value}), {'1': new_sign_item_config})
-        sign_request_item_customer._edit_and_sign(dict(self.customer_sign_values, **{'-1': value}), {'-1': new_sign_item_config})
+            sign_request_item_customer._edit_and_sign(dict(self.customer_sign_values, **{'1': value}), new_sign_items={'1': new_sign_item_config})
+        sign_request_item_customer._edit_and_sign(dict(self.customer_sign_values, **{'-1': value}), new_sign_items={'-1': new_sign_item_config})
         self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')
         self.assertEqual(sign_request_3_roles.state, 'sent', 'The sign request should be signed')
         self.assertNotEqual(sign_request_3_roles.template_id, template, 'An edited sign request should use a different template')
@@ -361,7 +361,7 @@ class TestSignRequest(SignRequestCommon):
         with self.assertRaises(UserError, msg='Only the first signer can edit while signing'):
             sign_request_item_employee._edit_and_sign(
                 dict(self.create_sign_values(sign_request_3_roles.template_id.sign_item_ids, sign_request_item_employee.role_id.id), **{'1': value}),
-                {'-1': new_sign_item_config})
+                new_sign_items={'-1': new_sign_item_config})
         sign_request_item_employee._edit_and_sign(
             self.create_sign_values(sign_request_3_roles.template_id.sign_item_ids, sign_request_item_employee.role_id.id))
         self.assertEqual(sign_request_item_customer.state, 'completed', 'The sign.request.item should be completed')

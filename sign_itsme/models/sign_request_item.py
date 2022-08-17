@@ -26,7 +26,7 @@ class SignRequestItem(models.Model):
                 raise ValidationError(_("Sign request item is not validated yet."))
         return super()._post_fill_request_item()
 
-    def _edit_and_sign(self, signature, new_sign_items=None):
+    def _edit_and_sign(self, signature, **kwargs):
         if self.role_id.auth_method == 'itsme':
-            return self._sign(signature, validation_required=True)
-        return super()._edit_and_sign(signature, new_sign_items)
+            return self._sign(signature, validation_required=True, **kwargs)
+        return super()._edit_and_sign(signature, **kwargs)

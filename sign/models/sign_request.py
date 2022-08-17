@@ -19,6 +19,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from werkzeug.urls import url_join, url_quote
 from random import randint
 from markupsafe import Markup
+from hashlib import sha256
 
 from odoo import api, fields, models, http, _, Command
 from odoo.tools import config, get_lang, is_html_empty, formataddr, groupby, format_date
@@ -473,7 +474,20 @@ class SignRequest(models.Model):
             packet = io.BytesIO()
             can = canvas.Canvas(packet)
             itemsByPage = self.template_id._get_sign_items_by_page()
-            SignItemValue = self.env['sign.request.item.value']
+            items_ids = [id for items in itemsByPage.values() for id in items.ids]
+            values_dict = self.env['sign.request.item.value'].read_group(
+                [('sign_item_id', 'in', items_ids), ('sign_request_id', '=', self.id)],
+                fields=['value:array_agg', 'frame_value:array_agg', 'frame_has_hash:array_agg'],
+                groupby=['sign_item_id']
+            )
+            values = {
+                val['sign_item_id'][0] : {
+                    'value': val['value'][0],
+                    'frame': val['frame_value'][0],
+                    'frame_has_hash': val['frame_has_hash'][0],
+                } for val in values_dict if 'value' in val
+            }
+
             for p in range(0, old_pdf.getNumPages()):
                 page = old_pdf.getPage(p)
                 # Absolute values are taken as it depends on the MediaBox template PDF metadata, they may be negative
@@ -497,11 +511,25 @@ class SignRequest(models.Model):
 
                 items = itemsByPage[p + 1] if p + 1 in itemsByPage else []
                 for item in items:
-                    value = SignItemValue.search([('sign_item_id', '=', item.id), ('sign_request_id', '=', self.id)], limit=1)
-                    if not value or not value.value:
+                    value_dict = values.get(item.id)
+                    if not value_dict:
                         continue
+                    # only get the 1st
+                    value = value_dict['value']
+                    frame = value_dict['frame']
 
-                    value = value.value
+                    if frame:
+                        image_reader = ImageReader(io.BytesIO(base64.b64decode(frame[frame.find(',')+1:])))
+                        _fix_image_transparency(image_reader._image)
+                        can.drawImage(
+                            image_reader,
+                            width*item.posX,
+                            height*(1-item.posY-item.height),
+                            width*item.width,
+                            height*item.height,
+                            'auto',
+                            True
+                        )
 
                     if item.type_id.item_type == "text":
                         can.setFont(font, height*item.height*0.8)
@@ -655,6 +683,7 @@ class SignRequestItem(models.Model):
     sms_token = fields.Char('SMS Token', readonly=True, copy=False)
 
     signature = fields.Binary(attachment=True, copy=False)
+    frame_hash = fields.Char(size=256, compute='_compute_frame_hash')
     signing_date = fields.Date('Signed on', readonly=True, copy=False)
     state = fields.Selection([
         ("sent", "To Sign"),
@@ -681,6 +710,15 @@ class SignRequestItem(models.Model):
         # this check allows one signer to be False, which is used to "share" a sign template
         self.sign_request_id._check_signers_roles_validity()
         self.sign_request_id._check_signers_partners_validity()
+
+    @api.depends('signer_email')
+    def _compute_frame_hash(self):
+        db_uuid = self.env['ir.config_parameter'].sudo().get_param('database.uuid')
+        for sri in self:
+            if sri.partner_id:
+                sri.frame_hash = sha256((sri.signer_email + db_uuid).encode()).hexdigest()
+            else:
+                sri.frame_hash = ''
 
     @api.depends('partner_id.name')
     def _compute_display_name(self):
@@ -789,7 +827,7 @@ class SignRequestItem(models.Model):
             )
             signer.is_mail_sent = True
 
-    def _edit_and_sign(self, signature, new_sign_items=None):
+    def _edit_and_sign(self, signature, **kwargs):
         """ Sign sign request items at once.
         :param signature: dictionary containing signature values and corresponding ids
         :param dict new_sign_items: {id (str): values (dict)}
@@ -803,6 +841,7 @@ class SignRequestItem(models.Model):
             raise UserError(_("This sign request item cannot be signed"))
 
         # edit request template while signing
+        new_sign_items = kwargs.get('new_sign_items', False)
         if new_sign_items:
             if any(int(item_id) >= 0 for item_id in new_sign_items):
                 raise UserError(_("Existing sign items are not allowed to be changed"))
@@ -836,9 +875,10 @@ class SignRequestItem(models.Model):
             body = _("The signature request has been edited by: %s.", self.partner_id.name)
             sign_request.message_post(body=body)
 
-        self._sign(signature)
+        self._sign(signature, **kwargs)
 
-    def _sign(self, signature, validation_required=False):
+
+    def _sign(self, signature, **kwargs):
         """ Stores the sign request item values.
         :param signature: dictionary containing signature values and corresponding ids / signature image
         :param validation_required: boolean indicating whether the sign request item will after a further validation process or now
@@ -855,8 +895,8 @@ class SignRequestItem(models.Model):
         if not (required_ids <= signature_ids):  # Security check
             raise UserError(_("Some required items are not filled"))
 
-        self._fill(signature)
-        if not validation_required:
+        self._fill(signature, **kwargs)
+        if not kwargs.get('validation_required', False):
             self._post_fill_request_item()
 
     def _post_fill_request_item(self):
@@ -873,7 +913,7 @@ class SignRequestItem(models.Model):
         elif all(sri.state == 'completed' for sri in sign_request.request_item_ids.filtered(lambda sri: sri.mail_sent_order == self.mail_sent_order)):
             sign_request.send_signature_accesses()
 
-    def _fill(self, signature):
+    def _fill(self, signature, **kwargs):
         """ Stores the sign request item values. (Can be used to pre-fill the document as a hack)
         :param signature: dictionary containing signature values and corresponding ids / signature image
         """
@@ -897,11 +937,21 @@ class SignRequestItem(models.Model):
             item_values_dict = {str(sign_item_value.sign_item_id.id): sign_item_value for sign_item_value in self.sign_item_value_ids}
             signature_item_ids = set(sign_request.template_id.sign_item_ids.filtered(lambda r: r.type_id.item_type == 'signature').ids)
             for itemId in signature:
+                frame = kwargs.get('frame', False)
+                if frame and itemId in frame:
+                    frame_value = frame[itemId].get('frameValue', False)
+                    frame_has_hash = bool(frame[itemId].get('frameHash', False))
+                else:
+                    frame_value = False
+                    frame_has_hash = False
                 if itemId not in item_values_dict:
                     new_item_values_list.append({'sign_item_id': int(itemId), 'sign_request_id': sign_request.id,
-                                                 'value': signature[itemId], 'sign_request_item_id': self.id})
+                                                 'value': signature[itemId], 'frame_value': frame_value,
+                                                 'frame_has_hash': frame_has_hash, 'sign_request_item_id': self.id})
                 else:
-                    item_values_dict[itemId].write({'value': signature[itemId]})
+                    item_values_dict[itemId].write({
+                        'value': signature[itemId], 'frame_value': frame_value, 'frame_has_hash': frame_has_hash
+                    })
                 if int(itemId) in signature_item_ids:
                     self.signature = signature[itemId][signature[itemId].find(',')+1:]
             SignItemValue.create(new_item_values_list)
@@ -933,6 +983,17 @@ class SignRequestItem(models.Model):
         self.ensure_one()
         sign_user = self.partner_id.user_ids[:1]
         if sign_user and signature_type in ['sign_signature', 'sign_initials']:
+            return sign_user[signature_type]
+        return False
+
+    def _get_user_signature_frame(self, signature_type='sign_signature_frame'):
+        """ Gets the user's stored sign_signature/sign_initials (needs sudo permission)
+            :param str signature_type: 'sign_signature' or 'sign_initials'
+            :returns bytes or False
+        """
+        self.ensure_one()
+        sign_user = self.partner_id.user_ids[:1]
+        if sign_user and signature_type in ['sign_signature_frame', 'sign_initials_frame']:
             return sign_user[signature_type]
         return False
 
@@ -976,3 +1037,5 @@ class SignRequestItemValue(models.Model):
     sign_request_id = fields.Many2one(string="Signature Request", required=True, ondelete='cascade', related='sign_request_item_id.sign_request_id')
 
     value = fields.Text()
+    frame_value = fields.Text()
+    frame_has_hash = fields.Boolean()

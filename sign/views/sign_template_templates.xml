@@ -33,7 +33,9 @@
                     t-att-data-width="item.width"
                     t-att-data-height="item.height"
                     t-att-data-alignment="item.alignment"
-                    t-att-data-value="item_values[item.id] if item_values and item.id in item_values else None"/>
+                    t-att-data-value="item_values.get(item.id) if item_values else None"
+                    t-att-data-frame_value="frame_values.get(item.id) if frame_values else None"
+                />
             </t>
         </t>
     </template>
@@ -49,7 +51,8 @@
                 t-att-data-default-height="item_type['default_height']"
                 t-att-data-default-width="item_type['default_width']"
                 t-att-data-edit-while-signing-allowed="item_type['edit_while_signing_allowed']"
-                t-att-data-auto_value="item_type.get('auto_value')"/>
+                t-att-data-auto_value="item_type.get('auto_value')"
+                t-att-data-frame_value="item_type.get('frame_value')"/>
         </t>
     </template>
 

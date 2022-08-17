@@ -67,6 +67,11 @@
                                             </t>
                                         </td>
                                     </tr>
+                                    <tr t-if="sri.frame_hash">
+                                        <td colspan="7" class="text-end text-muted small" style="border-end-style:hidden;border-start-style:hidden;">
+                                            Signatory's hash : <pre style="display:inline" t-field="sri.frame_hash"/>
+                                        </td>
+                                    </tr>
                                 </t>
                             </tbody>
                         </thead>

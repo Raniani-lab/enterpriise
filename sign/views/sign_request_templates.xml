@@ -41,6 +41,7 @@
         <input id="o_sign_input_optional_redirect_url" type="hidden" t-att-value="sign_request.template_id.redirect_url"/>
         <input id="o_sign_input_optional_redirect_url_text" type="hidden" t-att-value="sign_request.template_id.redirect_url_text"/>
         <input t-if="current_request_item and current_request_item.state == 'sent'" id="o_sign_ask_location_input" type="hidden"/>
+        <input id="o_sign_input_sign_frame_hash" type="hidden" t-att-value="frame_hash"/>
         <t t-if="not current_request_item.partner_id">
             <input id="o_sign_is_public_user" type="hidden"/>
         </t>

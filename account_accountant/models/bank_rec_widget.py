@@ -1351,7 +1351,10 @@ class BankRecWidget(models.Model):
                     remaining_amls |= aml_values['aml']
 
             if remaining_amls:
-                self._action_add_new_amls(remaining_amls, reco_model=matching['model'])
+                # In case there is a write-off, keep the whole amount and let the write-off doing the auto-balancing.
+                allow_partial = matching.get('status') != 'write_off'
+
+                self._action_add_new_amls(remaining_amls, reco_model=matching['model'], allow_partial=allow_partial)
 
             self._lines_widget_add_auto_balance_line()
 
@@ -1412,7 +1415,7 @@ class BankRecWidget(models.Model):
         self.ensure_one()
 
         # Cleanup a previously selected model.
-        self.line_ids = [Command.unlink(x.id) for x in self.line_ids if x.flag != 'liquidity' and x.reconcile_model_id]
+        self.line_ids = [Command.unlink(x.id) for x in self.line_ids if x.flag != 'liquidity' and x.reconcile_model_id != reco_model]
         self._lines_widget_recompute_taxes()
 
         # Compute the residual balance on which apply the newly selected model.

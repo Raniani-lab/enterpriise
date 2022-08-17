@@ -959,3 +959,30 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # Trigger the compute
         with self.assertRaises(UserError), self.cr.savepoint():
             wizard.lines_widget
+
+    @freeze_time('2017-01-01')
+    def test_reconcile_model_with_payment_tolerance(self):
+        self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
+
+        invoice_line = self._create_invoice_line(1000.0, self.partner_a, 'out_invoice', inv_date='2017-01-01')
+        st_line = self._create_st_line(998.0, partner_id=self.partner_a.id, date='2017-01-01', payment_ref=invoice_line.move_id.name)
+
+        rule = self.env['account.reconcile.model'].create({
+            'name': "test_reconcile_model_with_payment_tolerance",
+            'rule_type': 'invoice_matching',
+            'allow_payment_tolerance': True,
+            'payment_tolerance_type': 'percentage',
+            'payment_tolerance_param': 2.0,
+            'line_ids': [Command.create({'account_id': self.company_data['default_account_revenue'].id})],
+        })
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        form = WizardForm(wizard)
+        form.todo_command = 'trigger_matching_rules'
+        wizard = form.save()
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'balance': 998.0,   'reconcile_model_id': False},
+            {'flag': 'new_aml',         'balance': -1000.0, 'reconcile_model_id': rule.id},
+            {'flag': 'manual',          'balance': 2.0,     'reconcile_model_id': rule.id},
+        ])

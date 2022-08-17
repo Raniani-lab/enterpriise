@@ -20,6 +20,14 @@ export default class GlobalFiltersSidePanel extends LegacyComponent {
         return this.env.model.getters.getGlobalFilters();
     }
 
+    hasDataSources() {
+        return (
+            this.env.model.getters.getPivotIds().length +
+            this.env.model.getters.getListIds().length +
+            this.env.model.getters.getOdooChartIds().length
+        );
+    }
+
     newText() {
         this.env.openSidePanel("FILTERS_SIDE_PANEL", { type: "text" });
     }

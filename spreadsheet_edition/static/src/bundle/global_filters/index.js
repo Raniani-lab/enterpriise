@@ -25,13 +25,7 @@ sidePanelRegistry.add("GLOBAL_FILTERS_SIDE_PANEL", {
 topbarComponentRegistry.add("filter_component", {
     component: FilterComponent,
     isVisible: (env) => {
-        return (
-            (!env.model.getters.isReadonly() &&
-                env.model.getters.getPivotIds().length +
-                    env.model.getters.getListIds().length +
-                    env.model.getters.getOdooChartIds().length) ||
-            (env.model.getters.isReadonly() && env.model.getters.getGlobalFilters().length)
-        );
+        return !env.model.getters.isReadonly() || env.model.getters.getGlobalFilters().length;
     },
 });
 

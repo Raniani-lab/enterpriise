@@ -200,6 +200,40 @@ QUnit.module(
             });
         });
 
+        QUnit.test("Filter component is visible even without data source", async function (assert) {
+            await createSpreadsheet();
+            assert.containsOnce(target, ".o_topbar_filter_icon");
+        });
+
+        QUnit.test("Cannot create a relation filter without data source", async function (assert) {
+            await createSpreadsheet();
+            await click(target, ".o_topbar_filter_icon");
+            assert.containsOnce(target, ".o_global_filter_new_time");
+            assert.containsNone(target, ".o_global_filter_new_relation");
+            assert.containsOnce(target, ".o_global_filter_new_text");
+        });
+
+        QUnit.test(
+            "Can create a relation filter with at least a data source",
+            async function (assert) {
+                await createSpreadsheetFromPivotView();
+                await click(target, ".o_topbar_filter_icon");
+                assert.containsOnce(target, ".o_global_filter_new_time");
+                assert.containsOnce(target, ".o_global_filter_new_relation");
+                assert.containsOnce(target, ".o_global_filter_new_text");
+            }
+        );
+
+        QUnit.test(
+            "Creating a date filter without a data source does not display Field Matching",
+            async function (assert) {
+                await createSpreadsheet();
+                await click(target, ".o_topbar_filter_icon");
+                await click(target, ".o_global_filter_new_time");
+                assert.containsNone(target, ".o_field_matching_title");
+            }
+        );
+
         QUnit.test(
             "open relational global filter panel then go to pivot on sheet 2",
             async function (assert) {

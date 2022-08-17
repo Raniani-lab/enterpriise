@@ -131,6 +131,13 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         );
     }
 
+    shouldDisplayFieldMatching() {
+        return (
+            this.pivotIds.length + this.listIds.length + this.graphIds.length &&
+            (this.state.type !== "relation" || this.state.relation.relatedModel.technical)
+        );
+    }
+
     isDateTypeSelected(dateType) {
         return dateType === this.state.date.type;
     }

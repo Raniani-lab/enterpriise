@@ -83,7 +83,12 @@ export class BankRecWidgetFormLinesWidget extends AbstractFieldOwl{
 
     _onClickExpandCollapseExtraNote(ev) {
         ev.stopPropagation();
-        let classList = ev.currentTarget.querySelector(".extra-notes").classList;
+        let el = ev.currentTarget.querySelector(".extra-notes");
+        if (!el) {
+            return;
+        }
+
+        let classList = el.classList;
         let foldedClass = "d-none";
 
         if (classList.contains(foldedClass)) {

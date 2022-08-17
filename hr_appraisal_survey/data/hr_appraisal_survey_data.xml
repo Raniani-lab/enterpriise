@@ -8,7 +8,7 @@
         <field name="is_appraisal" eval="True"/>
         <field name="is_attempts_limited" eval="True"/>
         <field name="users_can_go_back" eval="True" />
-        <field name="description" type="xml">
+        <field name="description" type="html">
             <p>This survey allows you to give a feedback about your collaboration with an employee. Filling it helps us improving the appraisal process.</p>
         </field>
     </record>
@@ -19,7 +19,7 @@
         <field name="is_page" eval="True"/>
         <field name="question_type" eval="False"/>
         <field name="sequence">1</field>
-        <field name="description" type="xml">
+        <field name="description" type="html">
             <h2>Overall Purpose Of Employee Appraisal</h2>
             <ul>
                 <li>To initiate a clear and open communication of performance expectations</li>
@@ -85,7 +85,7 @@
         <field name="is_appraisal" eval="True"/>
         <field name="is_attempts_limited" eval="True"/>
         <field name="users_can_go_back" eval="True" />
-        <field name="description" type="xml">
+        <field name="description" type="html">
             <p>360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.
             This typically includes the employee's manager, peers, and direct reports.</p>
         </field>
@@ -96,7 +96,7 @@
         <field name="is_page" eval="True"/>
         <field name="question_type" eval="False"/>
         <field name="sequence">1</field>
-        <field name="description" type="xml"><p> </p></field>
+        <field name="description" type="html"><p> </p></field>
     </record>
     <record model="survey.question" id="appraisal_360_2">
         <field name="survey_id" ref="appraisal_360_feedback_template" />
@@ -143,7 +143,7 @@
         <field name="is_page" eval="True"/>
         <field name="question_type" eval="False"/>
         <field name="sequence">4</field>
-        <field name="description" type="xml"><p> </p></field>
+        <field name="description" type="html"><p> </p></field>
     </record>
     <record model="survey.question" id="appraisal_360_5">
         <field name="survey_id" ref="appraisal_360_feedback_template" />
@@ -239,7 +239,7 @@
         <field name="is_page" eval="True"/>
         <field name="question_type" eval="False"/>
         <field name="sequence">9</field>
-        <field name="description" type="xml"><p> </p></field>
+        <field name="description" type="html"><p> </p></field>
     </record>
     <record model="survey.question" id="appraisal_360_10">
         <field name="survey_id" ref="appraisal_360_feedback_template" />

@@ -32,9 +32,9 @@
             <field name="date_close" eval="(DateTime.now() + relativedelta(months=-12)).strftime('%Y-%m-%d')"/>
             <field name="manager_ids" eval="[(4, ref('hr.employee_admin'))]"/>
             <field name="manager_feedback_published" eval="True"/>
-            <field name="manager_feedback" type="xml"><p>The employee is autonomous</p></field>
+            <field name="manager_feedback" type="html"><p>The employee is autonomous</p></field>
             <field name="employee_feedback_published" eval="True"/>
-            <field name="employee_feedback" type="xml"><p>I feel much more comfortable than last year</p></field>
+            <field name="employee_feedback" type="html"><p>I feel much more comfortable than last year</p></field>
             <field name="assessment_note" model="hr.appraisal.note" eval="obj().search([], order='id desc', limit=1)"/>
         </record>
         <function model="hr.appraisal" name="action_confirm" eval="[ref('hr_appraisal.hr_appraisal_3')]"/>
@@ -56,9 +56,9 @@
             <field name="date_close" eval="(DateTime.now() + relativedelta(months=1)).strftime('%Y-%m-%d')"/>
             <field name="manager_ids" eval="[(4, ref('hr.employee_admin'))]"/>
             <field name="manager_feedback_published" eval="True"/>
-            <field name="manager_feedback" type="xml"><p>The employee is autonomous</p></field>
+            <field name="manager_feedback" type="html"><p>The employee is autonomous</p></field>
             <field name="employee_feedback_published" eval="True"/>
-            <field name="employee_feedback" type="xml"><p>I feel much more comfortable than last year</p></field>
+            <field name="employee_feedback" type="html"><p>I feel much more comfortable than last year</p></field>
         </record>
         <function model="hr.appraisal" name="action_confirm" eval="[ref('hr_appraisal.hr_appraisal_4bis')]"/>
 

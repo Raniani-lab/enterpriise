@@ -8,7 +8,7 @@
                file="payment_sepa_direct_debit/static/src/img/sepa_direct_debit_icon.jpg"/>
         <field name="inline_form_view_id" ref="inline_form"/>
         <field name="allow_tokenization">True</field>
-        <field name="pending_msg" type="xml">
+        <field name="pending_msg" type="html">
             <p>Your payment request has been received. Waiting for bank approval.</p>
         </field>
         <!-- Eurozone countries -->

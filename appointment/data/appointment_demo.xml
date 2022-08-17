@@ -4,10 +4,10 @@
     <record id="appointment_type_1" model="appointment.type">
         <field name="name">Schedule a Demo</field>
         <field name="max_schedule_days">45</field>
-        <field name="message_intro" type="xml">
+        <field name="message_intro" type="html">
             <p>Get a <strong>customized demo</strong> and an <strong>analysis of your needs</strong>.</p>
         </field>
-        <field name="message_confirmation" type="xml">
+        <field name="message_confirmation" type="html">
             <p style="text-align:center;">We thank you for your interest in our products!<br/>
                Please make sure to arrive <strong>10 minutes</strong> before your appointment.</p>
         </field>

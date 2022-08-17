@@ -7,7 +7,7 @@
         <field name="is_page" eval="True"/>
         <field name="question_type" eval="False"/>
         <field name="sequence">7</field>
-        <field name="description" type="xml"><p> </p></field>
+        <field name="description" type="html"><p> </p></field>
     </record>
     <record model="survey.question" id="appraisal_2_1">
         <field name="survey_id" ref="appraisal_feedback_template" />
@@ -36,7 +36,7 @@
         <field name="is_page" eval="True"/>
         <field name="question_type" eval="False"/>
         <field name="sequence">11</field>
-        <field name="description" type="xml">
+        <field name="description" type="html">
             <p>The appraiser should rate the employee’s major work accomplishments and performance according to the metric provided below:</p>
             <ol>
                 <li> Significantly exceeds standards and expectations required of the position</li>
@@ -219,7 +219,7 @@
         <field name="is_page" eval="True"/>
         <field name="question_type" eval="False"/>
         <field name="sequence">14</field>
-        <field name="description" type="xml">
+        <field name="description" type="html">
             <p>Identify professional, performance, or project objectives you recommend for employee’s continued career development over the coming year.</p></field>
     </record>
     <record model="survey.question" id="appraisal_4_1">
@@ -246,7 +246,7 @@
         <field name="survey_id" ref="appraisal_feedback_template" />
         <field name="is_page" eval="True"/>
         <field name="question_type" eval="False"/>
-        <field name="description" type="xml"><p></p></field>
+        <field name="description" type="html"><p></p></field>
         <field name="sequence">18</field>
     </record>
     <record model="survey.question" id="appraisal_5_1">
@@ -261,6 +261,6 @@
         <field name="user_id" ref="base.user_admin"/>
         <field name="access_mode">token</field>
         <field name="users_can_go_back" eval="True"/>
-        <field name="description" type="xml"><p> </p></field>
+        <field name="description" type="html"><p> </p></field>
     </record>
 </odoo>

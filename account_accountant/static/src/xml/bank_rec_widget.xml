@@ -300,7 +300,7 @@
                 <t t-set="is_selected" t-value="reco_model.id === data.selected_reconcile_model_id"/>
                 <button t-on-click="_onClickRecoModel"
                         class="btn"
-                        t-att-class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase': is_selected}"
+                        t-att-class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase text-white': is_selected}"
                         t-esc="reco_model.display_name"
                         t-att-selected="is_selected"
                         t-att-key="reco_model.id"/>

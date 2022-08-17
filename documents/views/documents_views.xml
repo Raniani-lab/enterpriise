@@ -691,7 +691,7 @@
         <field name="arch" type="xml">
             <tree editable="bottom">
                 <field name="action"/>
-                <field name="facet_id"/>
+                <field name="facet_id" options="{'no_quick_create': True}"/>
                 <field name="tag_id"/>
             </tree>
         </field>

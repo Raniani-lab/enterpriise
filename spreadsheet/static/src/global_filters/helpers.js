@@ -87,11 +87,8 @@ export function getRelativeDateDomain(now, offset, rangeType, fieldName, fieldTy
 
     let leftBound, rightBound;
     if (fieldType === "date") {
-        // TODO : simplify this once "serializeDate()" is fixed
-        // We have to use setZone utc + keepLocalTime to make sure the date don't change because of
-        // timezones in serializeDate.
-        leftBound = serializeDate(startDate.setZone("utc", { keepLocalTime: true }));
-        rightBound = serializeDate(endDate.setZone("utc", { keepLocalTime: true }));
+        leftBound = serializeDate(startDate);
+        rightBound = serializeDate(endDate);
     } else {
         leftBound = serializeDateTime(startDate);
         rightBound = serializeDateTime(endDate);

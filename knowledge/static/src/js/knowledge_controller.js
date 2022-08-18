@@ -118,19 +118,20 @@ const KnowledgeArticleFormController = FormController.extend({
      * body of the article and set it as the name of the article.
      * @param {Event} event
      */
-    _onArticleBreadcrumbClick: async function (event) {
+    _onArticleBreadcrumbClick: function (event) {
         const name = event.currentTarget.value;
         if (name === _t('New Article')) {
-            const $articleTitle = this.$('.o_knowledge_editor h1');
-            if ($articleTitle.text().length !== 0) {
-                this.$('.o_breadcrumb_article_name').val($articleTitle.text());
+            const title = this.$('.o_knowledge_editor .note-editable h1').first().text().trim();
+            if (title) {
                 this.trigger_up('field_changed', {
                     dataPointID: this.handle,
                     changes: {
-                        'name': $articleTitle.text(),
-                    }
+                        name: title,
+                    },
+                    onSuccess: async () => {
+                        this._rename(await this._getId(), title);
+                    },
                 });
-                this._rename(await this._getId(), $articleTitle.text());
             }
         }
     },

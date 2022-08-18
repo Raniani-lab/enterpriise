@@ -1,5 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import date
+
 from odoo import Command
 from odoo.tests import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
@@ -769,4 +771,96 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
             [
                 {"credit": 888, "debit": 1388},
             ],
+        )
+
+    def test_no_code(self):
+        self.assertEqual(
+            self.env["account.account"].spreadsheet_fetch_debit_credit(
+                [
+                    {
+                        "date_range": {
+                            "range_type": "year",
+                            "year": 2022,
+                        },
+                        "code": "",
+                        "company_id": None,
+                        "include_unposted": False,
+                    }
+                ]
+            ),
+            [
+                {"credit": 0, "debit": 0},
+            ],
+        )
+
+    def test_see_records_action(self):
+        action = self.env["account.account"].spreadsheet_move_line_action(
+            {
+                "date_range": {
+                    "range_type": "year",
+                    "year": 2022,
+                },
+                "code": self.account_revenue_c1.code,
+                "company_id": self.account_revenue_c1.company_id.id,
+                "include_unposted": True,
+            }
+        )
+        self.assertEqual(
+            action,
+            {
+                "type": "ir.actions.act_window",
+                "res_model": "account.move.line",
+                "view_mode": "list",
+                "views": [[False, "list"]],
+                "target": "current",
+                "domain": [
+                    "|",
+                    "&",
+                    "&",
+                    "&",
+                    ("account_id.code", "=like", "@sp1234566%"),
+                    ("company_id", "=", self.account_revenue_c1.company_id.id),
+                    ("move_id.state", "!=", "cancel"),
+                    "&",
+                    ("account_id.include_initial_balance", "=", True),
+                    ("date", "<=", date(2022, 12, 31)),
+                    "&",
+                    "&",
+                    "&",
+                    ("account_id.code", "=like", "@sp1234566%"),
+                    ("company_id", "=", self.account_revenue_c1.company_id.id),
+                    ("move_id.state", "!=", "cancel"),
+                    "&",
+                    "&",
+                    ("account_id.include_initial_balance", "=", False),
+                    ("date", ">=", date(2022, 1, 1)),
+                    ("date", "<=", date(2022, 12, 31)),
+                ],
+                "name": "Journal items for account prefix @sp1234566",
+            },
+        )
+
+    def test_see_records_action_no_code(self):
+        action = self.env["account.account"].spreadsheet_move_line_action(
+            {
+                "date_range": {
+                    "range_type": "year",
+                    "year": 2022,
+                },
+                "code": "",
+                "company_id": None,
+                "include_unposted": True,
+            }
+        )
+        self.assertEqual(
+            action,
+            {
+                "type": "ir.actions.act_window",
+                "res_model": "account.move.line",
+                "view_mode": "list",
+                "views": [[False, "list"]],
+                "target": "current",
+                "domain": [(0, "=", 1)],
+                "name": "Journal items for account prefix ",
+            },
         )

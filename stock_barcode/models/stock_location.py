@@ -15,4 +15,4 @@ class Location(models.Model):
 
     @api.model
     def _get_fields_stock_barcode(self):
-        return ['display_name', 'barcode', 'parent_path']
+        return ['barcode', 'display_name', 'name', 'parent_path', 'usage']

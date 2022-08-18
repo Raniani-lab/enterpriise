@@ -19,6 +19,10 @@ export default class BarcodeModel extends EventBus {
         this.notification = services.notification;
         this.params = params;
         this.unfoldLineKey = false;
+        this.currentSortIndex = 0;
+        // Keeps track of list scanned record(s) by type.
+        this.lastScanned = { packageId: false, product: false, sourceLocation: false };
+        this._currentLocation = false; // Reminds the current source when the scanned one is forgotten.
     }
 
     setData(data) {
@@ -49,10 +53,6 @@ export default class BarcodeModel extends EventBus {
         // UI stuff.
         this.name = this._getName();
         this.view = 'barcodeLines'; // Could be also 'printMenu' or 'editFormView'.
-        // Manage pages
-        this.pageIndex = 0;
-        this._groupLinesByPage(this.currentState);
-        this._defineLocationId();
         // Barcode's commands are returned by a method for override purpose.
         this.commands = this._getCommands();
     }
@@ -99,71 +99,69 @@ export default class BarcodeModel extends EventBus {
         throw new Error('Not Implemented');
     }
 
+    askBeforeNewLinesCreation(product) {
+        return false;
+    }
+
     get barcodeInfo() {
         // Takes the parent line if the current line is part of a group.
         let line = this._getParentLine(this.selectedLine) || this.selectedLine;
-        if (!line && this.lastScannedPackage) {
+        if (!line && this.lastScanned.packageId) {
             const lines = this._moveEntirePackage() ? this.packageLines : this.pageLines;
-            line = lines.find(l => l.package_id && l.package_id.id === this.lastScannedPackage);
+            line = lines.find(l => l.package_id && l.package_id.id === this.lastScanned.packageId);
         }
 
-        // First page and the user didn't scan nothing yet -> We assume the operation was just started.
-        if (this.pageIndex === 0 && !line) {
-            this.messageType = this._getDefaultMessageType();
-        } else if (line) { // Message depends of the selected line.
-            const tracking = line.product_id.tracking;
+        if (line) { // Message depends of the selected line's state.
+            const { tracking } = line.product_id;
             const trackingNumber = (line.lot_id && line.lot_id.name) || line.lot_name;
             if (this._lineIsNotComplete(line)) {
-                if (tracking === 'lot') {
-                    this.messageType = 'scan_lot';
-                } else if (tracking === 'serial') {
-                    this.messageType = 'scan_serial';
-                } else {
+                if (tracking === 'none') {
                     this.messageType = 'scan_product';
-                }
-            } else { // Line's quantity is fulfilled.
-                if (tracking !== 'none' && !trackingNumber) { // Line is waiting a tracking number.
-                    if (tracking === 'lot') {
-                        this.messageType = 'scan_lot';
-                    } else {
-                        this.messageType = 'scan_serial';
-                    }
                 } else {
-                    this.messageType = this._getLocationMessage();
+                    this.messageType = tracking === 'lot' ? 'scan_lot' : 'scan_serial';
                 }
+            } else if (tracking !== 'none' && !trackingNumber) {
+                // Line's quantity is fulfilled but still waiting a tracking number.
+                this.messageType = tracking === 'lot' ? 'scan_lot' : 'scan_serial';
+            } else { // Line's quantity is fulfilled.
+                this.messageType = this._getLocationMessage();
             }
         } else { // Message depends of the operation.
-            if (this.groups.group_stock_multi_locations) {
-                this.messageType = this._getDefaultMessageType();
-            } else {
-                this.messageType = 'scan_product';
-            }
+            this.messageType = this.groups.group_stock_multi_locations ?
+                this._getDefaultMessageType() :
+                'scan_product';
         }
 
-        const barcodeInformations = {
-            class: this.messageType,
-            warning: false,
-        };
+        const barcodeInformations = { class: this.messageType, warning: false };
         switch (this.messageType) {
             case 'scan_product':
-                barcodeInformations.message = _t("Scan a product"); break;
+                barcodeInformations.message = _t("Scan a product");
+                barcodeInformations.icon = 'tags';
+                break;
             case 'scan_src':
-                barcodeInformations.message = _t("Scan the source location, or scan a product"); break;
+                barcodeInformations.message = _t("Scan the source location, or scan a product");
+                barcodeInformations.icon = 'sign-out';
+                break;
             case 'scan_product_or_src':
-                barcodeInformations.message = _t("Scan more products, or scan a new source location"); break;
+                barcodeInformations.message = _t("Scan more products, or scan a new source location");
+                break;
             case 'scan_product_or_dest':
-                barcodeInformations.message = _t("Scan more products, or scan the destination location"); break;
+                barcodeInformations.message = _t("Scan more products, or scan the destination location");
+                barcodeInformations.icon = 'sign-in';
+                break;
             case 'scan_lot':
                 barcodeInformations.message = sprintf(
                     _t("Scan lot numbers for product %s to change their quantity"),
                     line.product_id.display_name
                 );
+                barcodeInformations.icon = 'barcode';
                 break;
             case 'scan_serial':
                 barcodeInformations.message = sprintf(
                     _t("Scan serial numbers for product %s to change their quantity"),
                     line.product_id.display_name
                 );
+                barcodeInformations.icon = 'barcode';
                 break;
         }
         return barcodeInformations;
@@ -182,7 +180,7 @@ export default class BarcodeModel extends EventBus {
      * @returns {boolean}
      */
     get canBeValidate() {
-        return this.pages[this.pageIndex].lines.length;
+        return this.pageLines.length + this.packageLines.length;
     }
 
     get canSelectLocation() {
@@ -209,12 +207,8 @@ export default class BarcodeModel extends EventBus {
         return this.groups.group_stock_multi_locations;
     }
 
-    get displayValidateButton() {
-        return false;
-    }
-
     groupKey(line) {
-        return `${line.product_id.id}`;
+        return `${line.product_id.id}_${line.location_id.id}`;
     }
 
     /**
@@ -263,10 +257,6 @@ export default class BarcodeModel extends EventBus {
         return this._sortLine(lines);
     }
 
-    get highlightNextButton() {
-        return false;
-    }
-
     get highlightValidateButton() {
         return false;
     }
@@ -302,41 +292,19 @@ export default class BarcodeModel extends EventBus {
     }
 
     get location() {
-        return this.cache.getRecord('stock.location', this.currentLocationId);
-    }
-
-    /**
-     * Retuns the current page if it exists, or a new empty page if it doesn't.
-     *
-     * @returns {Object}
-     */
-    get page() {
-        const page = this.pages[this.pageIndex];
-        if (!page) {
-            const emptyPage = {
-                index: this.pages.length,
-                lines: [],
-                sourceLocationId: this.currentLocationId,
-            };
-            this.pages.push(emptyPage);
-            return emptyPage;
+        if (this.lastScanned.sourceLocation) { // Get last scanned location.
+            return this.cache.getRecord('stock.location', this.lastScanned.sourceLocation.id);
         }
-        return page;
+        // Get last defined source location (if applicable) or the default location.
+        return this._currentLocation || this._defaultLocation();
+    }
+    set location(location) {
+        this._currentLocation = location;
+        this.lastScanned.sourceLocation = location;
     }
 
-    /**
-     * Returns only the lines from the current page.
-     *
-     * @returns {Array<Object>}
-     */
     get pageLines() {
-        let lines = this.page.lines;
-        // If we show entire package, we don't return lines with package (they
-        // will be treated as "package lines").
-        if (this.record.picking_type_entire_packs) {
-            lines = lines.filter(line => !(line.package_id && line.result_package_id));
-        }
-        return this._sortLine(lines);
+        return this.currentState.lines;
     }
 
     get packageLines() {
@@ -347,7 +315,7 @@ export default class BarcodeModel extends EventBus {
         const lines = [];
         const alreadyDone = [];
         for (const virtualId of this.scannedLinesVirtualId) {
-            if (alreadyDone.indexOf(virtualId) != -1) {
+            if (alreadyDone.includes(virtualId)) {
                 continue;
             }
             alreadyDone.push(virtualId);
@@ -356,10 +324,17 @@ export default class BarcodeModel extends EventBus {
                 lines.push(foundLine);
             }
         }
-        if (this.lastScannedPackage) {
-            lines.push(...this.currentState.lines.filter(l => l.package_id.id === this.lastScannedPackage));
+        if (this.groups.group_stock_packaging) {
+            lines.push(...this.previousScannedLinesByPackage);
         }
         return lines;
+    }
+
+    get previousScannedLinesByPackage() {
+        if (this.lastScanned.packageId) {
+            return this.currentState.lines.filter(l => l.package_id && l.package_id.id === this.lastScanned.packageId);
+        }
+        return [];
     }
 
     get printButtons() {
@@ -371,14 +346,9 @@ export default class BarcodeModel extends EventBus {
     }
 
     get selectedLine() {
-        const selectedLine = this.selectedLineVirtualId && this.currentState.lines.find(
+        return this.selectedLineVirtualId && this.currentState.lines.find(
             l => (l.dummy_id || l.virtual_id) === this.selectedLineVirtualId
         );
-        // Returns the selected line only if it is in the current location.
-        if (selectedLine && selectedLine.location_id === this.currentLocationId) {
-            return selectedLine;
-        }
-        return false;
     }
 
     get useExistingLots() {
@@ -394,108 +364,26 @@ export default class BarcodeModel extends EventBus {
 
     // ACTIONS
 
-    async changeSourceLocation(id, applyChangeToPageLines = false) {
-        this.scannedLinesVirtualId = [];
-        this.currentLocationId = id;
-        let pageFound = false;
-        let emptyPage = false;
-        const currentPage = this.pages[this.pageIndex];
-        // We take either the current dest. location (if we move barcode line),
-        // either the default dest. location (if we just want to create/change
-        // page without move lines) to use while searching for an existing page.
-        const refDestLocationId = applyChangeToPageLines ? this.currentDestLocationId : this._defaultDestLocationId();
-        // If the scanned location is the current want, keep it.
-        if (currentPage && this.currentLocationId === currentPage.sourceLocationId) {
-            pageFound = currentPage;
-        } else { // Otherwise, searches for a page with these src./dest. locations.
-            for (let i = 0; i < this.pages.length; i++) {
-                const page = this.pages[i];
-                if (page.sourceLocationId === this.currentLocationId &&
-                    page.destinationLocationId === refDestLocationId) {
-                    this.pageIndex = i;
-                    pageFound = page;
-                    break;
-                }
-                if (page.lines.length === 0) {
-                    emptyPage = page;
-                }
-            }
-        }
-        // Resets highlighting.
-        this.selectedLineVirtualId = false;
-        this.highlightDestinationLocation = false;
-        await this.save();
-        if (pageFound) {
-            await this._changePage(pageFound.index);
-        } else {
-            if (emptyPage) {
-                // If no matching page was found but an empty page was, reuses it.
-                emptyPage.sourceLocationId = this.currentLocationId;
-                emptyPage.destinationLocationId = this._defaultDestLocationId();
-                pageFound = emptyPage;
-            } else {
-                // Otherwise, creates a new one.
-                pageFound = {
-                    index: this.pages.length,
-                    lines: [],
-                    sourceLocationId: this.currentLocationId,
-                    destinationLocationId: this._defaultDestLocationId(),
-                };
-                this.pages.push(pageFound);
-            }
-            await this._changePage(pageFound.index);
-        }
-    }
-
-    /**
-     * Must be overridden to make something when the user selects a specific destination location.
-     *
-     * @param {int} id location's id
-     */
-    changeDestinationLocation(id) {
-        throw new Error('Not Implemented');
-    }
-
     displayBarcodeActions() {
         this.view = 'actionsView';
         this.trigger('update');
     }
 
     /**
-     * @param {integer} [lineId] if provided, it will define the line record's page as current page
+     * @param {integer} [lineId] if provided it checks if the line still exist (selects it or removes it from the lines' list)
      */
     async displayBarcodeLines(lineId) {
         this.view = 'barcodeLines';
-        if (lineId) { // If we pass a record id...
-            // ... checks if the record still exist...
+        if (lineId) { // If we pass a record id checks if the record still exist.
             const res = await this.orm.search(this.lineModel, [['id', '=', lineId]]);
             if (!res.length) { // The record was deleted, we remove the corresponding line.
                 const lineIndex = this.currentState.lines.findIndex(l => l.id == lineId);
                 this.currentState.lines.splice(lineIndex, 1);
-                this._groupLinesByPage(this.currentState);
-            }
-            if (this.pages.length > 1) { // ... then looks to go to this record's page...
-                for (const [index, page] of this.pages.entries()) {
-                    const lineIds = page.lines.map(line => line.id);
-                    if (lineIds.includes(lineId)) {
-                        this.pageIndex = index;
-                        break;
-                    }
-                }
-            }
-            // ... and add this record on the scanned lines list.
-            const line = this.currentState.lines.find(line => line.id === lineId);
-            if (line) {
+            } else { // If it still exist, selects the record's line.
+                const line = this.currentState.lines.find(line => line.id === lineId);
                 this.selectLine(line);
-                if (this.record.picking_type_code === 'incoming') {
-                    // TODO ? SVS: highlight the destination if coming from the edit form view (see
-                    // `test_reload_flow` tour) but I don't get the reason why ? I would like to remove that
-                    // and only highlight the src/dest location only when they are actually changed by something.
-                    this.highlightDestinationLocation = true;
-                }
             }
         }
-        this._defineLocationId();
         this.trigger('update');
     }
 
@@ -514,35 +402,32 @@ export default class BarcodeModel extends EventBus {
         this.trigger('update');
     }
 
-    async nextPage() {
-        let pageIndex = this.pageIndex + 1;
-        if (pageIndex >= this.pages.length) {
-            pageIndex = 0;
+    /**
+     * Searches for a line in the current source location. Will favor a line with no quantity
+     * (or less than expected) as we assume this kind of line still need to be processed.
+     * @returns {Object | Boolean} Returns a matching line or false.
+     */
+    findLineForCurrentLocation() {
+        if (!this.lastScanned.sourceLocation) {
+            return false; // Can't find anything if no location was scanned.
         }
-        this.highlightSourceLocation = false;
-        await this._changePage(pageIndex);
-        this.trigger('update');
-    }
-
-    async previousPage() {
-        let pageIndex = this.pageIndex - 1;
-        if (pageIndex < 0) {
-            pageIndex = this.pages.length - 1;
+        let foundLine = false;
+        for (const line of this.pageLines) {
+            if (line.location_id.id != this.lastScanned.sourceLocation.id) {
+                continue; // Not the same location.
+            }
+            const [ qtyDone, qtyDemand ] = [this.getQtyDone(line), this.getQtyDemand(line)];
+            if (qtyDone == 0 || (qtyDemand && qtyDone < qtyDemand)) {
+                return line; // If the line still need to be processed, returns it immediately.
+            }
+            foundLine = !foundLine || qtyDone < this.getQtyDone(foundLine) ? line : foundLine;
         }
-        this.highlightSourceLocation = false;
-        await this._changePage(pageIndex);
-        this.trigger('update');
+        return foundLine;
     }
 
     async refreshCache(records) {
         this.cache.setCache(records);
         this._createState();
-        // Creates the pages as they are bound to the state.
-        await this._groupLinesByPage(this.currentState);
-        // Changes the current page index if a page was removed.
-        // if (this.pageIndex >= this.pages.length) {
-        //     this.pageIndex = this.pages.length - 1;
-        // }
     }
 
     async save() {
@@ -560,8 +445,10 @@ export default class BarcodeModel extends EventBus {
         }
     }
 
-    selectPackageLine(packageId) {
-        this.lastScannedPackage = packageId;
+    selectPackageLine(packageLine) {
+        if (this.lineCanBeSelected(packageLine)) {
+            this.lastScanned.packageId = packageLine.package_id.id;
+        }
     }
 
     toggleSublines(line) {
@@ -571,13 +458,22 @@ export default class BarcodeModel extends EventBus {
     }
 
     async updateLine(line, args) {
-        let {lot_id, owner_id, package_id} = args;
+        let { location_id, lot_id, owner_id, package_id } = args;
         if (!line) {
             throw new Error('No line found');
         }
         if (!line.product_id && args.product_id) {
             line.product_id = args.product_id;
             line.product_uom_id = this.cache.getRecord('uom.uom', args.product_id.uom_id);
+        }
+        if (location_id) {
+            if (typeof location_id === 'number') {
+                location_id = this.cache.getRecord('stock.location', args.location_id);
+            }
+            line.location_id = location_id;
+        }
+        if (!location_id && this.lastScanned.sourceLocation) {
+            line.location_id = this.lastScanned.sourceLocation;
         }
         if (lot_id) {
             if (typeof lot_id === 'number') {
@@ -659,18 +555,6 @@ export default class BarcodeModel extends EventBus {
         return false;
     }
 
-    async _changePage(pageIndex) {
-        if (this.pageIndex === pageIndex) {
-            return;
-        }
-        this.pageIndex = pageIndex;
-        this.currentLocationId = this.page.sourceLocationId;
-        // Forgets which lines was scanned as the user isn't on the same page anymore.
-        this.scannedLinesVirtualId = [];
-        this.lastScannedPackage = false;
-        await this.save();
-    }
-
     _checkBarcode(barcodeData) {
         return true;
     }
@@ -689,8 +573,7 @@ export default class BarcodeModel extends EventBus {
 
     createNewLine(params) {
         const product = params.fieldsParams.product_id;
-        if (this.askBeforeNewLinesCreation && product &&
-            !this.currentState.lines.some(line => line.product_id.id === product.id)) {
+        if (this.askBeforeNewLinesCreation(product)) {
             const confirmationPromise = new Promise((resolve, reject) => {
                 const body = product.code ?
                     sprintf(
@@ -746,45 +629,23 @@ export default class BarcodeModel extends EventBus {
             params.copyOf,
             this._getNewLineDefaultValues(params.fieldsParams)
         );
+        const previousIndex = (params.copyOf || this.selectedLine || {}).sortIndex;
+        newLine.sortIndex = (previousIndex && previousIndex + "1") || this._getLineIndex();
         await this.updateLine(newLine, params.fieldsParams);
         this.currentState.lines.push(newLine);
-        this.page.lines.push(newLine);
         return newLine;
     }
 
-    _defaultLocationId() {
-        throw new Error('Not Implemented');
+    _defaultLocation() {
+        return Object.values(this.cache.dbIdCache['stock.location'])[0];
     }
 
-    _defaultDestLocationId() {
-        throw new Error('Not Implemented');
-    }
-
-    /**
-     * Defines the page's location ID (get it from the lines or get the default one).
-     *
-     * @private
-     */
-    _defineLocationId() {
-        if (this.page.lines.length) {
-            this.currentLocationId = this.page.lines[0].location_id;
-        } else {
-            this.currentLocationId = this.page.sourceLocationId || this._defaultLocationId();
-        }
+    _defaultDestLocation() {
+        return undefined;
     }
 
     _getCommands() {
         return {
-            'O-CMD.PREV': this.previousPage.bind(this),
-            'O-CMD.NEXT': this.nextPage.bind(this),
-            'O-CMD.PAGER-FIRST': () => {
-                this._changePage(0);
-                this.trigger('update');
-            },
-            'O-CMD.PAGER-LAST': () => {
-                this._changePage(this.pages.length - 1);
-                this.trigger('update');
-            },
             'O-CMD.MAIN-MENU': this._goToMainMenu.bind(this),
             'O-BTN.validate': () => {
                 if (this.canBeValidate) {
@@ -796,6 +657,12 @@ export default class BarcodeModel extends EventBus {
 
     _getDefaultMessageType() {
         return this.groups.group_stock_multi_locations ? 'scan_src' : 'scan_product';
+    }
+
+    _getLineIndex() {
+        const sortIndex = String(this.currentSortIndex).padStart(4, '0');
+        this.currentSortIndex++;
+        return sortIndex;
     }
 
     /**
@@ -818,7 +685,7 @@ export default class BarcodeModel extends EventBus {
         return {
             id: (fieldsParams && fieldsParams.id) || false,
             virtual_id: this._uniqueVirtualId,
-            location_id: this.location.id,
+            location_id: this._defaultLocation(),
         };
     }
 
@@ -827,7 +694,7 @@ export default class BarcodeModel extends EventBus {
     }
 
     _getParentLine(line) {
-        return this.groupedLines.find(gl => (gl.virtual_ids || []).includes(line.virtual_id));
+        return Boolean(line) && this.groupedLines.find(gl => (gl.virtual_ids || []).includes(line.virtual_id));
     }
 
     _getFieldToWrite() {
@@ -872,46 +739,11 @@ export default class BarcodeModel extends EventBus {
         throw new Error('Not Implemented');
     }
 
-    /**
-     * Groups the lines by their locations and will create a page for each ones.
-     * If there is no lines, it will create at least one page for the default location.
-     *
-     * @param {Object} state record's data fetched from the server.
-     */
-    _groupLinesByPage(state) {
-        const groups = {};
-        for (const line of state.lines) { // Groups the barcode lines by src/dest locations.
-            const sourceLocationName = this.cache.getRecord('stock.location', line.location_id).display_name;
-            const destLocationName = line.location_dest_id ? this.cache.getRecord('stock.location', line.location_dest_id).display_name : "";
-            const key = `${sourceLocationName.toLowerCase()}\x00${destLocationName.toLowerCase()}`;
-            if (!groups[key]) {
-                groups[key] = [];
-            }
-            groups[key].push(line);
-        }
-        const sortedGroups = Object.entries(groups).sort((l1, l2) => l1[0] < l2[0] ? -1 : 0);
-        const pages = sortedGroups.map(([, lines], index) => new Object({
-            index,
-            lines,
-            sourceLocationId: lines[0].location_id,
-            destinationLocationId: lines[0].location_dest_id,
-        }));
-        if (pages.length === 0) { // If no pages, creates a default one.
-            const page = {
-                index: pages.length,
-                lines: [],
-                sourceLocationId: this.currentLocationId,
-                destinationLocationId: this.currentLocationId,
-            };
-            pages.push(page);
-        }
-        this.pages = pages;
-    }
-
     _groupSublines(sublines, ids, virtual_ids, qtyDemand, qtyDone) {
-        return Object.assign({}, sublines[0], {
+        const sortedSublines = this._sortLine(sublines);
+        return Object.assign({}, sortedSublines[0], {
             ids,
-            lines: this._sortLine(sublines),
+            lines: sortedSublines,
             opened: false,
             virtual_ids,
         });
@@ -1179,15 +1011,17 @@ export default class BarcodeModel extends EventBus {
         // Depending of the configuration, the user can be forced to scan a specific barcode type.
         const check = this._checkBarcode(barcodeData);
         if (check.error) {
-            return this.dialogService.add(ConfirmationDialog, {
-                body: check.message, title: check.title || _t("Not the expected scan"),
-            });
+            return this.notification.add(check.message, { title: check.title, type: "danger" });
         }
 
         if (barcodeData.packaging) {
             barcodeData.product = this.cache.getRecord('product.product', barcodeData.packaging.product_id);
             barcodeData.quantity = ("quantity" in barcodeData ? barcodeData.quantity : 1) * barcodeData.packaging.qty;
             barcodeData.uom = this.cache.getRecord('uom.uom', barcodeData.product.uom_id);
+        }
+
+        if (barcodeData.product) { // Remembers the product if a (packaging) product was scanned.
+            this.lastScanned.product = barcodeData.product;
         }
 
         if (barcodeData.lot && !barcodeData.product) {
@@ -1349,18 +1183,18 @@ export default class BarcodeModel extends EventBus {
         this.trigger('update');
     }
 
-    async _processLocation(barcodeData) {
+    _processLocation(barcodeData) {
         if (barcodeData.location) {
-            await this._processLocationSource(barcodeData);
+            this._processLocationSource(barcodeData);
             this.trigger('update');
         }
     }
 
-    async _processLocationSource(barcodeData) {
-        this.highlightSourceLocation = true;
-        this.highlightDestinationLocation = false;
-        await this.changeSourceLocation(barcodeData.location.id);
+    _processLocationSource(barcodeData) {
+        this.location = barcodeData.location;
         barcodeData.stopped = true;
+        // Unselects the line.
+        this.selectedLineVirtualId = false;
     }
 
     async _processPackage(barcodeData) {
@@ -1372,7 +1206,21 @@ export default class BarcodeModel extends EventBus {
     }
 
     lineCanBeEdited() {
-        return this;
+        return true;
+    }
+
+    /**
+     * Check if a given line can be taken depending of the current location (if no current location,
+     * it will always be true).
+     * @param {Object} line
+     * @returns {Boolean}
+     */
+    lineCanBeTakenFromTheCurrentLocation(line) {
+        return Boolean(
+            !this.lastScanned.sourceLocation || // No current location so we don't care.
+            this.lastScanned.sourceLocation.id == line.location_id.id || // Line at the right location !
+            !this.getQtyDone(line) // Line has no qty. done so we can take it (its location will be overrided).
+        );
     }
 
     _selectLine(line) {
@@ -1384,6 +1232,7 @@ export default class BarcodeModel extends EventBus {
         this.scannedLinesVirtualId.push(virtualId);
         // Unfolds the group where the line is, folds other lines' group.
         this.unfoldLineKey = this.groupKey(line);
+        this.lastScanned.destLocation = false;
     }
 
     _setLocationFromBarcode(result, location) {
@@ -1392,39 +1241,56 @@ export default class BarcodeModel extends EventBus {
     }
 
     _sortingMethod(l1, l2) {
-        // New lines always on top.
-        if (!l1.id && l2.id) {
+        // Sort by source location.
+        const sourceLocation1 = l1.location_id.display_name;
+        const sourceLocation2 = l2.location_id.display_name;
+        if (sourceLocation1 < sourceLocation2) {
             return -1;
-        } else if (l1.id && !l2.id) {
+        } else if (sourceLocation1 > sourceLocation2) {
             return 1;
-        } else if (l1.id && l2.id) {
-            // Sort by display name of product.
-            const product1 = l1.product_id.display_name;
-            const product2 = l2.product_id.display_name;
-            if (product1 < product2) {
+        }
+        // Sort by (source) package.
+        const package1 = l1.package_id.name;
+        const package2 = l2.package_id.name;
+        if (package1 < package2) {
+            return -1;
+        } else if (package1 > package2) {
+            return 1;
+        }
+        // Sort by destination location.
+        if (l1.location_dest_id && l2.location_dest_id) {
+            const destinationLocation1 = l1.location_dest_id.display_name;
+            const destinationLocation2 = l2.location_dest_id.display_name;
+            if (destinationLocation1 < destinationLocation2) {
                 return -1;
-            } else if (product1 > product2) {
-                return 1;
-            }
-            // Sort by picking name.
-            const picking1 = l1.picking_id && l1.picking_id.name || '';
-            const picking2 = l2.picking_id && l2.picking_id.name || '';
-            if (picking1 < picking2) {
-                return -1;
-            } else if (picking1 > picking2) {
-                return 1;
-            }
-
-            if (l1.id < l2.id) {
-                return -1;
-            } else if (l1.id > l2.id) {
+            } else if (destinationLocation1 > destinationLocation2) {
                 return 1;
             }
         }
-        // Sort by id and/or virtual_id (creation of the line).
-        if (l1.virtual_id > l2.virtual_id) {
+        // Sort by result package.
+        if (l1.result_package_id && l2.result_package_id) {
+            const resultPackage1 = l1.result_package_id.name;
+            const resultPackage2 = l2.result_package_id.name;
+            if (resultPackage1 < resultPackage2) {
+                return -1;
+            } else if (resultPackage1 > resultPackage2) {
+                return 1;
+            }
+        }
+        // Sort by product's category.
+        const categ1 = l1.categ_id;
+        const categ2 = l2.categ_id;
+        if (categ1 < categ2) {
             return -1;
-        } else if (l1.virtual_id < l2.virtual_id) {
+        } else if (categ1 > categ2) {
+            return 1;
+        }
+        // Sort by product's display name.
+        const product1 = l1.product_id.display_name;
+        const product2 = l2.product_id.display_name;
+        if (product1 < product2) {
+            return -1;
+        } else if (product1 > product2) {
             return 1;
         }
         return 0;
@@ -1437,7 +1303,9 @@ export default class BarcodeModel extends EventBus {
      * @returns {Array<Object>}
      */
     _sortLine(lines) {
-        return lines.sort(this._sortingMethod.bind(this));
+        return lines.sort((l1, l2) => {
+            return l1.sortIndex > l2.sortIndex ? 1 : -1;
+        });
     }
 
     _findLine(barcodeData) {
@@ -1466,19 +1334,32 @@ export default class BarcodeModel extends EventBus {
             if ((
                     !dataLotName || !lineLotName || dataLotName !== lineLotName
                 ) && (
-                    line.qty_done && line.qty_done > line.reserved_uom_qty &&
+                    line.qty_done && line.qty_done >= line.reserved_uom_qty &&
                     line.id && line.virtual_id != this.selectedLine.virtual_id
             )) {
                 continue;
             }
             if (this._lineIsNotComplete(line)) {
-                // Found a uncompleted compatible line, stop searching.
+                // Found a uncompleted compatible line, stop searching if it has the same location
+                // than the scanned one (or if no location was scanned).
                 foundLine = line;
-                break;
+                if ((!this.lastScanned.sourceLocation || line.location_id.id == this.lastScanned.sourceLocation.id) &&
+                    (this.tracking === 'none' || !dataLotName || dataLotName === lineLotName)) {
+                    break;
+                }
             }
             // The line matches but there could be a better candidate, so keep searching.
-            // If multiple lines can match, prioritises the selected line if relevant.
-            foundLine = this.selectedLine && this.selectedLine.virtual_id === line.virtual_id ? line : foundLine || line;
+            // If multiple lines can match, prioritises the one at the right location (if a location
+            // source was previously selected) or the selected one if relevant.
+            const currentLocationId = this.lastScanned.sourceLocation && this.lastScanned.sourceLocation.id;
+            if (this.selectedLine && this.selectedLine.virtual_id === line.virtual_id && (
+                !currentLocationId || !foundLine || foundLine.location_id.id != currentLocationId)) {
+                foundLine = this.lineCanBeTakenFromTheCurrentLocation(line) ? line : foundLine;
+            } else if (!foundLine || (currentLocationId &&
+                       foundLine.location_id.id != currentLocationId &&
+                       line.location_id.id == currentLocationId)) {
+                foundLine = this.lineCanBeTakenFromTheCurrentLocation(line) ? line : foundLine;
+            }
         }
         return foundLine;
     }
@@ -1524,9 +1405,13 @@ export default class BarcodeModel extends EventBus {
     // Response -> UI State
     _createState() {
         this.record = this._getModelRecord();
-        this.initialState = {
-            lines: this._createLinesState(), // object lines to show {product_id: {<product_record>}}
-        };
+        const lines = this._createLinesState();
+        // Sorts the lines following some criterea and then assign an index for the sort (so they keep the same place).
+        lines.sort(this._sortingMethod.bind(this));
+        for (const line of lines) {
+            line.sortIndex = this._getLineIndex();
+        }
+        this.initialState = { lines };
         this.currentState = JSON.parse(JSON.stringify(this.initialState)); // Deep copy
     }
 

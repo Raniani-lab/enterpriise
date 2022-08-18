@@ -39,47 +39,11 @@
                     </div>
                     <div name="barcode_messages" class="d-flex align-items-center justify-content-center w-100">
                         <span t-if="info.icon" class="fa fa-3x me-3" t-attf-class="fa-{{info.icon}}"/>
-                        <span class="o_scan_message" t-attf-class="o_scan_message_{{info.class}}">
+                        <span class="o_scan_message" t-attf-class="o_{{info.class}}">
                             <span t-if="info.warning" name="warning" class="fa fa-exclamation-triangle me-1"/>
                             <span t-out="info.message"/>
                         </span>
                     </div>
-                </div>
-                <div t-if="displayLocations" class="d-flex justify-content-between align-items-center p-2 px-md-3">
-                    <div class="o_barcode_locations">
-                        <t t-if="displaySourceLocation">
-                            <span t-if="isTransfer" class="o_barcode_location_label">From </span>
-                            <span t-if="sourceLocations" t-on-click="toggleSourceSelection"
-                                class="o_barcode_summary_location_src o_barcode_summary_location_highlight"
-                                t-attf-class="
-                                    {{highlightSourceLocation ? 'o_strong' : ''}}
-                                    {{env.model.canSelectLocation ? 'o_clickable' : ''}}">
-                                <span class="o_current_location" t-esc="currentSourceLocation"/>
-                                <ul t-if="state.displaySourceSelection &amp;&amp; env.model.canSelectLocation" class="o_barcode_list_locations o_source_locations">
-                                    <t t-foreach="sourceLocations" t-as="location" t-key="location.id">
-                                        <LocationButton t-key="location.id" location="location" source="true"/>
-                                    </t>
-                                </ul>
-                            </span>
-                        </t>
-                        <br t-if="displaySourceLocation &amp;&amp; displayDestinationLocation" class="d-md-none"/>
-                        <span t-if="displayDestinationLocation" class="text-truncate">
-                            <span class="o_barcode_location_label"> To </span>
-                            <span t-if="destinationLocations" t-on-click="toggleDestinationSelection"
-                                class="o_barcode_summary_location_dest o_barcode_summary_location_highlight"
-                                t-attf-class="
-                                    {{highlightDestinationLocation ? 'o_strong' : ''}}
-                                    {{env.model.canSelectLocation ? 'o_clickable' : ''}}">
-                                <span class="o_current_dest_location" t-esc="currentDestinationLocation"/>
-                                <ul t-if="state.displayDestinationSelection &amp;&amp; env.model.canSelectLocation" class="o_barcode_list_locations o_destination_locations">
-                                    <t t-foreach="destinationLocations" t-as="location" t-key="location.id">
-                                        <LocationButton t-key="location.id" location="location" source="false"/>
-                                    </t>
-                                </ul>
-                            </span>
-                        </span>
-                    </div>
-                    <span class="o_barcode_move_number fw-bold" t-esc="currentPageIndex + '/' + numberOfPages"/>
                 </div>
             </t>
         </div>
@@ -140,15 +104,6 @@
                         t-att-disabled="!env.model.canPutInPack"
                         class="o_put_in_pack btn btn-secondary text-uppercase">
                     <i class="fa fa-cube me-1"/> Put In Pack
-                </button>
-                <button t-if="numberOfPages > 1" t-on-click="previousPage"
-                    class="btn btn-secondary text-uppercase o_previous_page">
-                    <i class="fa fa-angle-left me-1"/> Previous
-                </button>
-                <button t-if="displayNextButton" t-on-click="nextPage"
-                    class="btn text-uppercase o_next_page"
-                    t-attf-class="{{highlightNextButton ? 'btn-primary' : 'btn-secondary'}}">
-                    Next <i class="fa fa-angle-right ms-1"/>
                 </button>
                 <button t-if="env.model.displayValidateButton" t-on-click="validate"
                     class="btn text-uppercase o_validate_page"

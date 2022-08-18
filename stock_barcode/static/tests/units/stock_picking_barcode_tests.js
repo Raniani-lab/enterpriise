@@ -30,8 +30,6 @@ QUnit.module('Barcode', {
                         'stock.picking': [],
                     },
                     nomenclature_id: 1,
-                    source_location_ids: [],
-                    destination_locations_ids: [],
                 },
                 groups: {},
             },

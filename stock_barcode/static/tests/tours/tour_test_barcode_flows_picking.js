@@ -3,329 +3,7 @@
 import helper from 'stock_barcode.tourHelper';
 import tour from 'web_tour.tour';
 
-tour.register('test_internal_picking_from_scratch_1', {test: true}, [
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(0);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-        }
-    },
-
-    //Check show information.
-    {
-        trigger: '.o_show_information',
-    },
-
-    {
-        trigger: '.o_form_label:contains("Status")',
-    },
-
-    {
-        trigger: '.o_close',
-    },
-
-    /* We'll create a movement for 2 product1 from shelf1 to shelf2. The flow for this to happen is
-     * to scan shelf1, product1, shelf2.
-     */
-    {
-        trigger: '.o_barcode_client_action',
-        extra_trigger: '.o_barcode_summary_location_dest:contains("Stock")',
-        run: 'scan LOC-01-01-00'
-    },
-
-    {
-        trigger: '.o_current_location:contains("Section 1")',
-        run: function () {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(0);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_line',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product_or_dest');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-            var $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, true);
-            // Checks the product code and name are on separate lines.
-            helper.assert($line.find('.o_barcode_line_details > .o_barcode_line_title > .o_barcode_product_ref').length, 1);
-            helper.assert($line.find('.o_barcode_line_details .product-label').length, 1);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_scanner_qty:contains("2")',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product_or_dest');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-            var $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, "2");
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-02-00'
-    },
-
-    {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 2")',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('1/1');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-            var $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, false);
-        }
-    },
-
-    /* We'll create a movement for product2 from shelf1 to shelf3. The flow for this to happen is
-     * to scan shelf1, product2, shelf3.
-     */
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-01-00'
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_dest:not(.o_strong)',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-            var $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, false);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2'
-    },
-
-    {
-        trigger: '.o_barcode_line[data-barcode="product2"]',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product_or_dest');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, true);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan shelf3'
-    },
-
-    {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 3")',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 3');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('2/2');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, false);
-        }
-    },
-
-    /* We'll now move a product2 from shelf1 to shelf2. As we're still on the shel1 to shelf3 page
-     * where a product2 was processed, we make sure the newly scanned product will be added in a
-     * new move line that will change page at the time we scan shelf2.
-     */
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-01-00'
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_dest:not(.o_strong)',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 3');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('2/2');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, false);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2'
-    },
-
-    {
-        trigger: '.o_barcode_line:nth-child(2)',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 3');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product_or_dest');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('2/2');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-            var $lines = helper.getLine({barcode: 'product2'});
-            if ($lines.filter('.o_highlight').length !== 1) {
-                helper.fail('one of the two lins of product2 should be highlighted.');
-            }
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-02-00'
-    },
-
-    {
-        trigger: '.o_next_page',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(true);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('1/2');
-            helper.assertValidateVisible(false);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            var $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, false);
-        }
-    },
-]);
-
-tour.register('test_internal_picking_from_scratch_2', {test: true}, [
+tour.register('test_internal_picking_from_scratch', {test: true}, [
     /* Move 2 product1 from WH/Stock/Section 1 to WH/Stock/Section 2.
      */
     {
@@ -370,8 +48,8 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("Section 1")',
-        extra_trigger: '.o_current_dest_location:contains("Section 2")',
+        trigger: '.o_barcode_line .o_line_source_location:contains("Section 1")',
+        extra_trigger: '.o_barcode_line .o_line_destination_location:contains("Section 2")',
         run: function() {
             helper.assertLinesCount(1);
         },
@@ -416,42 +94,19 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("Section 1")',
-        extra_trigger: '.o_current_dest_location:contains("Section 3")',
+        trigger: '.o_barcode_line .o_line_source_location:contains("Section 1")',
+        extra_trigger: '.o_barcode_line .o_line_destination_location:contains("Section 3")',
         run: function() {
-            helper.assertLinesCount(1);
-        },
-    },
-    /*
-    * Go back to the previous page and edit the first line. We check the transaction
-    * doesn't crash and the form view is correctly filled.
-    */
-
-    {
-        trigger: '.o_previous_page',
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_src:contains("Section 1")',
-        extra_trigger: '.o_barcode_summary_location_dest:contains("Section 2")',
-        run: function() {
-            helper.assertPager('1/2');
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertLinesCount(1);
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(true);
-            var $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, false);
+            helper.assertLinesCount(2);
+            const $lineProduct1 = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted($lineProduct1, false);
+            const $lineProduct2 = helper.getLine({barcode: 'product2'});
+            helper.assertLineIsHighlighted($lineProduct2, true);
         },
     },
 
-    {
-        trigger: '.o_edit',
-    },
-
+    // Edits the first line to check the transaction doesn't crash and the form view is correctly filled.
+    { trigger: '.o_barcode_line:first-child .o_edit' },
     {
         trigger: '.o_field_widget[name="product_id"]',
         run: function() {
@@ -504,64 +159,59 @@ tour.register('test_internal_picking_from_scratch_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("Section 1")',
-        extra_trigger: '.o_barcode_summary_location_dest:contains("Section 2")',
+        trigger: '.o_barcode_line.o_selected .o_line_source_location:contains("Section 1")',
+        extra_trigger: '.o_barcode_line.o_selected .o_line_destination_location:contains("Section 2")',
         run: function() {
-            helper.assertLinesCount(2);
+            helper.assertLinesCount(3);
         },
     },
+    // Scans the destination (Section 2) for the current line...
+    { trigger: '.o_barcode_line:nth-child(2).o_selected', run: 'scan LOC-01-02-00' },
+    // ...then scans the source (Section 1) for the next line.
+    { trigger: '.o_barcode_client_action', run: 'scan LOC-01-01-00' },
     // On this page, scans product1 which will create a new line and then opens its edit form view.
-    {
-        trigger: '.o_next_page',
-    },
 
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-01-00'
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_dest:contains("Section 3")',
+        trigger: '.o_line_source_location .fw-bold:contains("Section 1")',
         run: 'scan product1'
     },
 
-    {
-        trigger: '.o_barcode_line[data-barcode="product1"] .o_edit',
+    { // First call to write.
+        trigger: '.o_barcode_line[data-barcode="product1"].o_selected .o_edit',
     },
 
     {
         trigger :'.o_save',
         extra_trigger: '.o_field_widget[name="product_id"]:contains("product1")',
     },
+    { // Scans the line's destination before to validate the picking.
+        trigger: '.o_barcode_line[data-barcode="product1"].o_selected',
+        run: 'scan shelf3',
+    },
 
     {
-        extra_trigger: "body:not(:has(.o_loading_indicator))",
+        extra_trigger: '.o_barcode_line:last-child() .o_line_destination_location:contains("Section 3")',
         trigger: '.o_validate_page',
-    }
+    },
+    { trigger: '.o_notification.border-success' } // Second call to write (change the dest. location).
 ]);
 
 tour.register('test_internal_picking_reserved_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/2');
-            helper.assertValidateVisible(false);
+            helper.assertLinesCount(3);
+            helper.assertScanMessage('scan_src');
+            helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, false);
+            helper.assertValidateEnabled(true);
+            const [line1, line2, line3] = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineIsHighlighted($(line1), false);
+            helper.assertLineLocations(line1, '.../Section 1', '.../Section 2');
+            helper.assertLineIsHighlighted($(line2), false);
+            helper.assertLineLocations(line2, '.../Section 1', '.../Section 2');
+            helper.assertLineIsHighlighted($(line3), false);
+            helper.assertLineLocations(line3, '.../Section 3', '.../Section 4');
         }
     },
 
@@ -573,196 +223,32 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_current_location:contains("Section 3")',
+        trigger: '.o_barcode_line .o_line_source_location .fw-bold:contains("Section 3")',
         run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 3 To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(0);
+            helper.assertLinesCount(3);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('3/3');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
+            const locationInBold = document.querySelector('.o_line_source_location .fw-bold');
+            const lineInSection3 = locationInBold.closest('.o_barcode_line');
+            helper.assertLineLocations(lineInSection3, '.../Section 3', '.../Section 4');
         }
     },
 
-    {
+    { // Scanning product1 after scanned shelf3 will select the existing line but change its source.
         trigger: '.o_barcode_client_action',
         run: 'scan product1'
     },
 
     {
-        trigger: '.o_barcode_line',
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 3 To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product_or_dest');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('3/3');
+            helper.assertLinesCount(3);
+            helper.assertScanMessage('scan_dest');
             helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
+            helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, true);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action', // First WRITE call
-        run: 'scan LOC-01-02-00'
-    },
-
-    {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 2")',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 3 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(true);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('2/3');
-            helper.assertValidateVisible(false);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-        }
-    },
-
-    /* Hit previous to get from shelf1 to shelf2 page.
-    */
-   {
-       'trigger': '.o_previous_page',
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_src:contains("Section 1")',
-        extra_trigger: '.o_current_dest_location:contains("Section 2")',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/3');
-            helper.assertValidateVisible(false);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, false);
-        }
-    },
-
-    /* Process the reservation.
-     */
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-01-00'
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_src.o_strong',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/3');
-            helper.assertValidateVisible(false);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, false);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_scan_message_scan_product_or_dest',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product_or_dest');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/3');
-            helper.assertValidateVisible(false);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, true);
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, false);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2'
-    },
-
-    {
-        trigger: '.o_next_page.btn-primary',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(true);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product_or_dest');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/3');
-            helper.assertValidateVisible(false);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, true);
+            const lineproduct1 = document.querySelector('.o_barcode_line.o_selected');
+            helper.assertLineIsHighlighted($(lineproduct1), true);
+            helper.assertLineLocations(lineproduct1, '.../Section 3', '.../Section 2');
         }
     },
 
@@ -772,327 +258,117 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_scan_message_scan_next_or_validate',
+        trigger: '.o_barcode_line:not(.o_selected):first-child .o_line_destination_location:contains(".../Section 2")',
         run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(true);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('1/3');
-            helper.assertValidateVisible(false);
+            helper.assertLinesCount(3);
+            helper.assertScanMessage('scan_src');
+            helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-
+            helper.assertValidateEnabled(true);
             var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            var $line1_qty = $lineproduct1.find('.fa-cube').parent();
             helper.assertLineIsHighlighted($lineproduct1, false);
-            helper.assert($line1_qty.text().trim(), '1/ 1');
-            var $lineproduct2 = helper.getLine({barcode: 'product2'});
-            var $line2_qty = $lineproduct2.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($lineproduct2, false);
-            helper.assert($line2_qty.text().trim(), '1/ 1');
+            helper.assertLineLocations($lineproduct1[0], '.../Section 3', '.../Section 2');
         }
     },
 
-    /*
-    Hit next 2 times to go to the end and have the validate button.
-    The write should happen.
-     */
-    {
-        'trigger': '.o_next_page', // Second WRITE call
-    },
-    {
-        'trigger': '.o_next_page',
-    },
+    // Scans Section 1 as source location.
+    { 'trigger': '.o_barcode_client_action', run: 'scan LOC-01-01-00' },
 
     {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 4")',
+        trigger: '.o_line_source_location .fw-bold:contains("Section 1")',
         run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 3 To WH/Stock/Section 4');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
+            helper.assertLinesCount(3);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('3/3');
+            const [line1, line2, line3] = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineIsHighlighted($(line1), false);
+            helper.assertLineIsHighlighted($(line2), false);
+            helper.assertLineIsHighlighted($(line3), false);
+        }
+    },
+
+    // Process the reservation for product1 (create a new line as the previous one was overrided).
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+    {
+        trigger: '.o_barcode_line:nth-child(4).o_selected',
+        run: function() {
+            helper.assertLinesCount(4);
+            helper.assertScanMessage('scan_product_or_dest');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
+            const [line1, line2, line3, line4] = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineIsHighlighted($(line1), false);
+            helper.assertLineIsHighlighted($(line2), false);
+            helper.assertLineIsHighlighted($(line3), false);
+            helper.assertLineIsHighlighted($(line4), true);
+            helper.assertLineLocations(line4, '.../Section 1', 'WH/Stock');
+        }
+    },
+    { trigger: '.o_barcode_client_action', run: 'scan LOC-01-02-00' },
 
-            var $line = helper.getLine({barcode: 'product2'});
-            var $line_qty = $line.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($line, false);
-            helper.assert($line_qty.text().trim(), '0/ 1');
+    // Process the reservation for product2 (Section 1 to Section 2).
+    { trigger: '.o_scan_message.o_scan_src', run: 'scan LOC-01-01-00' },
+    { trigger: '.o_scan_message.o_scan_product', run: 'scan product2' },
+    {
+        trigger: '.o_barcode_line:nth-child(2).o_selected',
+        run: function() {
+            helper.assertLinesCount(4);
+            helper.assertScanMessage('scan_dest');
+            helper.assertValidateIsHighlighted(false);
+            const [line1, line2, line3, line4] = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineIsHighlighted($(line1), false);
+            helper.assertLineIsHighlighted($(line2), true);
+            helper.assertLineIsHighlighted($(line3), false);
+            helper.assertLineIsHighlighted($(line4), false);
         }
     },
-]);
+    { trigger: '.o_barcode_client_action', run: 'scan LOC-01-02-00' },
 
-tour.register('test_internal_change_location', {test: true}, [
+    // Process the reservation for product2 (Section 3 to Section 4).
+    { trigger: '.o_scan_message.o_scan_src', run: 'scan shelf3' },
+    { trigger: '.o_scan_message.o_scan_product', run: 'scan product2' },
     {
-        trigger: '.o_barcode_client_action',
-        run: function () {
-            helper.assertPageSummary('From Stock House/Abandonned Ground Floor To Stock House');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/2');
-            helper.assertValidateVisible(false);
+        trigger: '.o_barcode_line:nth-child(3).o_selected',
+        run: function() {
+            helper.assertLinesCount(4);
+            helper.assertScanMessage('scan_dest');
             helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            const $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
+            const [line1, line2, line3, line4] = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineIsHighlighted($(line1), false);
+            helper.assertLineIsHighlighted($(line2), false);
+            helper.assertLineIsHighlighted($(line3), true);
+            helper.assertLineIsHighlighted($(line4), false);
         }
     },
-    // Clicks on the source location and checks the locations list is correclty displayed.
+    { trigger: '.o_scan_message.o_scan_dest', run: 'scan shelf4' },
+
     {
-        trigger: '.o_barcode_summary_location_src',
-    },
-    {
-        trigger: '.o_barcode_list_locations.o_source_locations',
-        run: function () {
-            const srcLocationList = document.querySelector('.o_barcode_list_locations.o_source_locations');
-            helper.assert(window.getComputedStyle(srcLocationList).display, 'block');
-            helper.assert(srcLocationList.querySelectorAll('li').length, 3);
-            const destLocationList = document.querySelector('.o_barcode_list_locations.o_destination_locations');
-            helper.assert(destLocationList, null);
-        }
-    },
-    // Clicks on the destination location and checks the locations list is correclty displayed.
-    {
-        trigger: '.o_barcode_summary_location_dest',
-    },
-    {
-        trigger: '.o_barcode_list_locations.o_destination_locations',
-        run: function () {
-            const srcLocationList = document.querySelector('.o_barcode_list_locations.o_source_locations');
-            helper.assert(srcLocationList, null);
-            const destLocationList = document.querySelector('.o_barcode_list_locations.o_destination_locations');
-            helper.assert(window.getComputedStyle(destLocationList).display, 'block');
-            helper.assert(destLocationList.querySelectorAll('li').length, 3);
-        }
-    },
-    // Changes the destination location for 'Poorly lit floor'...
-    {
-        trigger: '.o_destination_locations li:contains("Poorly lit floor")',
-    },
-    {
-        trigger: '.o_current_dest_location:contains("Poorly lit floor")',
-        run: function () {
-            helper.assertPageSummary('From Stock House/Abandonned Ground Floor To Stock House/Poorly lit floor');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/2');
-            helper.assertValidateVisible(false);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-            const $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-        }
-    },
-    // ... then checks the dest location is really updated on the move line.
-    {
-        trigger: '.o_edit i',
-    },
-    {
-        trigger: '.o_field_widget[name="location_dest_id"]',
-        run: function () {
-            helper.assert(
-                $('.o_field_widget[name="location_dest_id"] input').val(),
-                'Stock House/Poorly lit floor'
-            );
-        },
-    },
-    {
-        trigger: '.o_save',
-    },
-    // Scans the product1 then changes the page.
-    {
-        trigger: '.o_barcode_lines',
-        run: 'scan product1',
-    },
-    {
-        trigger: '.o_next_page.btn-primary',
-        run: function () {
-            const $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, true);
-            helper.assertLineQty($lineproduct1, "1");
-        }
-    },
-    {
-        trigger: '.o_next_page',
-    },
-    {
-        trigger: '.o_barcode_client_action:contains("product2")',
-        run: function () {
-            helper.assertPageSummary('From Stock House/Poorly lit floor To Stock House');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('2/2');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(true);
-            const $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, false);
-        }
-    },
-    // Clicks on the destination location and checks the locations list is correclty displayed.
-    {
-        trigger: '.o_barcode_summary_location_dest',
-    },
-    {
-        trigger: '.o_barcode_list_locations',
-        run: function () {
-            const srcLocationList = document.querySelector('.o_barcode_list_locations.o_source_locations');
-            helper.assert(srcLocationList, null);
-            const destLocationList = document.querySelector('.o_barcode_list_locations.o_destination_locations');
-            helper.assert(window.getComputedStyle(destLocationList).display, 'block');
-            helper.assert(destLocationList.querySelectorAll('li').length, 3);
-        }
-    },
-    // Scans product2 and changes the destination location for 'Poorly lit floor'...
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2',
-    },
-    {
-        trigger: '.o_destination_locations li:contains("Poorly lit floor")',
-        extra_trigger: '.o_barcode_line.o_highlight'
-    },
-    // ... then checks the dest location is really updated on the move line.
-    {
-        trigger: '.o_edit i',
-    },
-    {
-        trigger: '.o_field_widget[name="location_dest_id"]',
-        run: function () {
-            helper.assert(
-                $('.o_field_widget[name="location_dest_id"] input').val(),
-                'Stock House/Poorly lit floor'
-            );
-        },
-    },
-    {
-        trigger: '.o_save',
-    },
-    // Now, changes the source location for 'Abandonned Ground Floor'.
-    // The purpose of this operation is to get the 2 lines on the same page.
-    {
-        trigger: '.o_barcode_summary_location_src',
-    },
-    {
-        trigger: '.o_source_locations li:contains("Abandonned Ground Floor")',
-    },
-    {
-        trigger: '.o_current_location:contains("Abandonned Ground Floor")',
-        run: function () {
-            helper.assertPageSummary('From Stock House/Abandonned Ground Floor To Stock House/Poorly lit floor');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
+        trigger: '.o_scan_message.o_scan_validate',
+        run: function() {
+            helper.assertLinesCount(4);
+            helper.assertScanMessage('scan_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
-            const $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-            const $lineproduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineproduct2, false);
+
+            const [line1, line2, line3, line4] = document.querySelectorAll('.o_barcode_line');
+
+            helper.assertLineIsHighlighted($(line1), false);
+            helper.assertLineQuantityOnReservedQty(0, '1 / 1');
+            helper.assertLineLocations(line1, '.../Section 3', '.../Section 2');
+
+            helper.assertLineIsHighlighted($(line2), false);
+            helper.assertLineQuantityOnReservedQty(1, '1 / 1');
+            helper.assertLineLocations(line2, '.../Section 1', '.../Section 2');
+
+            helper.assertLineIsHighlighted($(line3), false);
+            helper.assertLineQuantityOnReservedQty(2, '1 / 1');
+            helper.assertLineLocations(line3, '.../Section 3', '.../Section 4');
+
+            helper.assertLineIsHighlighted($(line4), false);
+            helper.assertLineQuantityOnReservedQty(3, '1');
+            helper.assertLineLocations(line4, '.../Section 1', '.../Section 2');
         }
-    },
-    // Changes the destination location for 'Stock House'...
-    {
-        trigger: '.o_barcode_summary_location_dest',
-    },
-    {
-        trigger: '.o_destination_locations li:first-child',
-    },
-    {
-        trigger: '.o_current_dest_location:contains("Stock House"):not(:contains("/"))',
-        run: function () {
-            helper.assertPageSummary('From Stock House/Abandonned Ground Floor To Stock House');
-        }
-    },
-    // ... then checks the dest location is really updated on the two move lines.
-    {
-        trigger: '.o_barcode_line:first-child .o_edit i',
-    },
-    {
-        trigger: '.o_field_widget[name="location_id"]',
-        run: function () {
-            helper.assert(
-                $('.o_field_widget[name="location_id"] input').val(),
-                'Stock House/Abandonned Ground Floor'
-            );
-            helper.assert(
-                $('.o_field_widget[name="location_dest_id"] input').val(),
-                'Stock House'
-            );
-        },
-    },
-    {
-        trigger: '.o_save',
-    },
-    {
-        trigger: '.o_barcode_line:last-child .o_edit i',
-    },
-    {
-        trigger: '.o_field_widget[name="location_id"]',
-        run: function () {
-            helper.assert(
-                $('.o_field_widget[name="location_id"] input').val(),
-                'Stock House/Abandonned Ground Floor'
-            );
-            helper.assert(
-                $('.o_field_widget[name="location_dest_id"] input').val(),
-                'Stock House'
-            );
-        },
-    },
-    {
-        trigger: '.o_save',
-    },
-    // Validate the delivery.
-    {
-        trigger: '.o_validate_page'
-    },
-    {
-        trigger: '.o_notification.border-success',
     },
 ]);
 
@@ -1100,17 +376,8 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertPageSummary(' To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -1138,7 +405,12 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: 'scan LOC-01-01-00'
+    },
+
+    {
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan product1'
     },
 
@@ -1177,18 +449,10 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 1")',
+        trigger: '.o_scan_message.o_scan_validate',
         run: function() {
-            helper.assertPageSummary(' To WH/Stock/Section 1');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('1/1');
+            helper.assertScanMessage('scan_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -1201,262 +465,7 @@ tour.register('test_receipt_reserved_1', {test: true}, [
     {
         trigger: '.o_field_widget[name="product_id"]',
         run: function() {
-            helper.assertFormLocationDest('WH/Stock/Section 1');
-        },
-    },
-    ...tour.stepUtils.discardBarcodeForm(),
-]);
-
-tour.register('test_receipt_reserved_2', {test: true}, [
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.assertPageSummary(' To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/1');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(true);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2'
-    },
-    {
-        trigger: '.o_barcode_line[data-barcode="product2"]:contains("1/ 4")',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_line[data-barcode="product1"].o_highlight',
-        run: function() {
-            helper.assertValidateIsHighlighted(false);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-01-00'
-    },
-
-    {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 1")',
-        run: function() {
-            helper.assertPageSummary(' To WH/Stock/Section 1');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('2/2');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-
-            const $line1 = helper.getLine({barcode: 'product1'});
-            const $line2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineQty($line1, "1");
-            helper.assertLineQty($line2, "1");
-        }
-    },
-
-    {
-        trigger: '.o_add_line',
-    },
-    {
-        trigger: '.o_field_widget[name="product_id"]',
-        run: function() {
-            helper.assertFormLocationDest('WH/Stock/Section 1');
-        },
-    },
-    {
-        trigger: '.o_discard',
-    },
-
-    {
-        trigger: '.o_barcode_line',
-        run: 'scan product2'
-    },
-    {
-        trigger: '.o_barcode_line:nth-child(3)',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_line:nth-child(4)',
-        run: function() {
-            helper.assertValidateIsHighlighted(true);
-            helper.assertLinesCount(4);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-02-00'
-    },
-
-    {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 2")',
-        run: function() {
-            helper.assertPageSummary(' To WH/Stock/Section 2');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('3/3');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-
-            const $line1 = helper.getLine({barcode: 'product1'});
-            const $line2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineQty($line1, "1");
-            helper.assertLineQty($line2, "1");
-        }
-    },
-
-    {
-        trigger: '.o_add_line',
-    },
-    {
-        trigger: '.o_field_widget[name="product_id"]',
-        run: function() {
-            helper.assertFormLocationDest('WH/Stock/Section 2');
-        },
-    },
-    {
-        trigger: '.o_discard',
-    },
-
-    {
-        trigger: '.o_barcode_line',
-        run: 'scan product2'
-    },
-    {
-        trigger: '.o_barcode_line:nth-child(3)',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_line:nth-child(4)',
-        run: function() {
-            helper.assertValidateIsHighlighted(true);
-            helper.assertLinesCount(4);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan shelf3'
-    },
-
-    {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 3")',
-        run: function() {
-            helper.assertPageSummary(' To WH/Stock/Section 3');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('4/4');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-
-            const $line1 = helper.getLine({barcode: 'product1'});
-            const $line2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineQty($line1, "1");
-            helper.assertLineQty($line2, "1");
-        }
-    },
-
-    {
-        trigger: '.o_add_line',
-    },
-    {
-        trigger: '.o_field_widget[name="product_id"]',
-        run: function() {
-            helper.assertFormLocationDest('WH/Stock/Section 3');
-        },
-    },
-    {
-        trigger: '.o_discard',
-    },
-
-    {
-        trigger: '.o_barcode_line',
-        run: 'scan product2'
-    },
-    {
-        trigger: '.o_barcode_line:nth-child(3)',
-        run: 'scan product1'
-    },
-
-    {
-        trigger: '.o_barcode_line:nth-child(4)',
-        run: function() {
-            helper.assertValidateIsHighlighted(true);
-            helper.assertLinesCount(4);
-        }
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan shelf4'
-    },
-
-    {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 4")',
-        run: function() {
-            helper.assertPageSummary(' To WH/Stock/Section 4');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
-            helper.assertScanMessage('scan_next_or_validate');
-            helper.assertDestinationLocationHighlight(true);
-            helper.assertPager('5/5');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(true);
-            helper.assertValidateEnabled(true);
-
-            const $line1 = helper.getLine({barcode: 'product1'});
-            const $line2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineQty($line1, "1");
-            helper.assertLineQty($line2, "1");
-        }
-    },
-
-    {
-        trigger: '.o_add_line',
-    },
-    {
-        trigger: '.o_field_widget[name="product_id"]',
-        run: function() {
-            helper.assertFormLocationDest('WH/Stock/Section 4');
+            helper.assertFormLocationDest('WH/Stock');
         },
     },
     ...tour.stepUtils.discardBarcodeForm(),
@@ -1523,29 +532,28 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
         run: function() {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(4);
-            helper.assertScanMessage('scan_next_or_validate');
-            const $line1 = helper.getSubline(':eq(0)');
-            const $line2 = helper.getSubline(':eq(1)');
-            const $line3 = helper.getSubline(':eq(2)');
-            const $line4 = helper.getSubline(':eq(3)');
-            helper.assert($line1.find('.o_line_lot_name').text(), 'sn4');
-            helper.assert($line1.find('.fa-user-o').parent().text().trim(), "Particulier");
-            helper.assert($line1.find('.fa-archive').parent().text().includes("pack_sn_2"), true);
-            helper.assert($line2.find('.o_line_lot_name').text(), 'sn3');
-            helper.assert($line2.find('.fa-user-o').length, 0);
-            helper.assert($line2.find('.fa-archive').parent().text().includes("pack_sn_2"), true);
-            helper.assert($line3.find('.o_line_lot_name').text(), 'sn1');
-            helper.assert($line3.find('.fa-user-o').length, 0);
-            helper.assert($line3.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
-            helper.assert($line4.find('.o_line_lot_name').text(), 'sn2');
-            helper.assert($line4.find('.fa-user-o').length, 0);
-            helper.assert($line4.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
+            helper.assertScanMessage('scan_validate');
+            const [line1, line2, line3, line4] = document.querySelectorAll('.o_sublines .o_barcode_line');
+            helper.assert(line1.querySelector('.o_line_lot_name').innerText, "sn1");
+            helper.assert(line1.querySelector('.o_line_owner'), null);
+            helper.assert(line1.querySelector('.result-package').innerText, "pack_sn_1");
+            helper.assert(line1.querySelector('.package').innerText, "pack_sn_1");
+            helper.assert(line2.querySelector('.o_line_lot_name').innerText, "sn3");
+            helper.assert(line2.querySelector('.o_line_owner'), null);
+            helper.assert(line2.querySelector('.package').innerText, "pack_sn_2");
+            helper.assert(line3.querySelector('.o_line_lot_name').innerText, "sn4");
+            helper.assert(line3.querySelector('.o_line_owner').innerText, "Particulier");
+            helper.assert(line3.querySelector('.package').innerText, "pack_sn_2");
+            helper.assert(line4.querySelector('.o_line_lot_name').innerText, "sn2");
+            helper.assert(line4.querySelector('.o_line_owner'), null);
+            helper.assert(line4.querySelector('.result-package').innerText, "pack_sn_1");
+            helper.assert(line4.querySelector('.package').innerText, "pack_sn_1");
         }
     },
 
     // Open the form view to trigger a save
     {
-        trigger: '.o_sublines .o_barcode_line:eq(0) .fa-pencil',
+        trigger: '.o_sublines .o_barcode_line:nth-child(3) .fa-pencil',
     },
     {
         trigger: '.o_field_widget[name="product_id"]',
@@ -1581,16 +589,8 @@ tour.register('test_delivery_reserved_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertPageSummary('From WH/Stock ');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
             helper.assertScanMessage('scan_src');
-            helper.assertLocationHighlight(false);
-            helper.assertPager('1/1');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -1603,18 +603,10 @@ tour.register('test_delivery_reserved_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src.o_strong',
+        trigger: '.o_scan_message.o_scan_product',
         run: function() {
-            helper.assertPageSummary('From WH/Stock ');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(true);
-            helper.assertPager('1/1');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -1631,44 +623,18 @@ tour.register('test_delivery_reserved_1', {test: true}, [
         run: 'scan product2'
     },
 
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-01-00'
-    },
-
-    {
-        trigger: '.o_current_location:contains("WH/Stock/Section 1")',
-        run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1 ');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(0);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(true);
-            helper.assertPager('2/2');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-        }
-    },
+    // Display the picking's information to trigger a save.
+    { trigger: '.o_show_information' },
+    { trigger: '.o_barcode_control .btn.o_discard' },
+    { trigger: '.o_barcode_line' },
 ]);
 
 tour.register('test_delivery_reserved_2', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(2);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -1692,14 +658,8 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     tour.stepUtils.confirmAddingUnreservedProduct(),
 
     {
-        trigger: '.o_barcode_line:first-child:contains("product2")',
+        trigger: '.o_barcode_line.o_selected:contains("product2")',
         run: function() {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(3);
             helper.assertScanMessage('scan_product');
             helper.assertValidateVisible(true);
@@ -1714,21 +674,15 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:not(.o_line_completed)',
         run: 'scan product1'
     },
 
     {
-        trigger: '.o_barcode_line.o_line_completed:nth-child(2)',
+        trigger: '.o_barcode_line.o_line_completed',
         run: function() {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(3);
-            helper.assertScanMessage('scan_next_or_validate');
+            helper.assertScanMessage('scan_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -1748,14 +702,8 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     {
         trigger: '.o_barcode_line:nth-child(4)',
         run: function () {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(4);
-            helper.assertScanMessage('scan_next_or_validate');
+            helper.assertScanMessage('scan_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -1767,15 +715,8 @@ tour.register('test_delivery_reserved_3', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -1786,14 +727,8 @@ tour.register('test_delivery_reserved_3', {test: true}, [
     {
         trigger: '.o_barcode_line.o_highlight',
         run: function() {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_next_or_validate');
+            helper.assertScanMessage('scan_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -1808,15 +743,8 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(3);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -1848,45 +776,30 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
         }
     },
-    // Press +1 button again, now its buttons must be hidden and it is moved to the end of the list.
-    // Second line (product2) gets pushed up to 1st place in list.
+    // Press +1 button again, now its buttons must be hidden.
     {
         trigger: '.o_barcode_line:first-child .o_add_quantity'
     },
     {
-        trigger: '.o_barcode_line:last-child.o_selected',
+        trigger: '.o_barcode_line:first-child.o_selected.o_line_completed',
         run: function() {
-            helper.assert($('.o_barcode_line:eq(2) .o_add_quantity').length, 0);
-            helper.assertLineQuantityOnReservedQty(2, '2 / 2');
-            helper.assert($('.o_barcode_line:eq(0) .o_add_quantity').length, 1);
-            helper.assertLineQuantityOnReservedQty(0, '0 / 3');
+            helper.assert($('.o_barcode_line:eq(0) .o_add_quantity').length, 0);
+            helper.assertLineQuantityOnReservedQty(0, '2 / 2');
+            helper.assert($('.o_barcode_line:eq(1) .o_add_quantity').length, 1);
+            helper.assertLineQuantityOnReservedQty(1, '0 / 3');
         }
     },
-    // Press the add remaining quantity button after triggering "shift" button so it is visible, now its buttons must be hidden.
+    // Press the add remaining quantity button.
+    { trigger: '.o_barcode_line:nth-child(2) .o_add_quantity' },
+    // Product2 is now done, its button must be hidden.
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:nth-child(2).o_selected.o_line_completed',
         run: function() {
-            helper.pressShift();
-        }
-    },
-    {
-        trigger: '.o_barcode_line:first-child .o_add_quantity'
-    },
-    {
-        trigger: '.o_barcode_client_action',
-        run: function () {
-            helper.releaseShift();
-        },
-    },
-    // Product2 is now done + last line, its button must be hidden.
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.assertLineButtonsAreVisible(2, false, '[name=incrementButton]');
-            helper.assertLineQuantityOnReservedQty(2, '3 / 3');
+            helper.assertLineButtonsAreVisible(1, false, '[name=incrementButton]');
+            helper.assertLineQuantityOnReservedQty(1, '3 / 3');
             helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), true);
+            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
         }
     },
 
@@ -1894,8 +807,8 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
-            helper.assertLineQuantityOnReservedQty(0, '0 / 4');
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(2), 'add_quantity');
+            helper.assertLineQuantityOnReservedQty(2, '0 / 4');
         }
     },
     // Scan product3 one time, then checks the quantities.
@@ -1904,17 +817,17 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         run: 'scan product3',
     },
     {
-        trigger: '.o_barcode_line:first-child .qty-done:contains("1")',
+        trigger: '.o_barcode_line:last-child.o_selected .qty-done:contains("1")',
         run: function() {
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
-            helper.assertLineQuantityOnReservedQty(0, '1 / 4');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(2), 'add_quantity');
+            helper.assertLineQuantityOnReservedQty(2, '1 / 4');
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), true); // Can't use 'last-child' because the tip is place at the same DOM level just behind this line...
         }
     },
     // Goes on the form view and press digipad +1 button.
-    { trigger: '.o_barcode_line:first-child .o_edit' },
+    { trigger: '.o_barcode_line:last-child .o_edit' },
     { trigger: '.o_digipad_button.o_increase' },
     { trigger: '.o_save' },
     {
@@ -1924,48 +837,32 @@ tour.register('test_delivery_using_buttons', {test: true}, [
             helper.assertLineQuantityOnReservedQty(0, '2 / 4');
         }
     },
-    // Press the add remaining quantity button, now its buttons must be hidden
+    // Press the add remaining quantity button, then the button must be hidden.
+    { trigger: '.o_barcode_line:first-child .o_add_quantity' },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:first-child .qty-done:contains("4")',
         run: function() {
-            helper.pressShift();
-        }
-    },
-    {
-        trigger: '.o_barcode_line:first-child .o_add_quantity'
-    },
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.releaseShift();
-
-        },
-    },
-    // and it is the last line again
-    {
-        trigger: '.o_barcode_line:last-child:contains("product3")',
-        run: function() {
-            helper.assertLineButtonsAreVisible(2, false, '[name=incrementButton]');
-            helper.assertLineQuantityOnReservedQty(2, '4 / 4');
+            helper.assertLineButtonsAreVisible(0, false, '[name=incrementButton]');
+            helper.assertLineQuantityOnReservedQty(0, '4 / 4');
             helper.assertValidateIsHighlighted(true);
         }
     },
 
-    // Now, scan one more time the product3...
-    // ... So, a new line must be created and the +1 button must be visible.
+    // Now, scan one more time the product3 to create a new line (its +1 button must be visible).
     {
         trigger: '.o_barcode_client_action',
         run: 'scan product3',
     },
+    // The new line is created at the second position (directly below the previous selected line).
     {
-        trigger: '.o_barcode_line:nth-child(4)',
+        trigger: '.o_barcode_line:nth-child(2).o_selected',
         run: function() {
             helper.assertLinesCount(4);
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), false);
             helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
-            const $line = $('.o_barcode_line:first-child');
+            const $line = $('.o_barcode_line:nth-child(2)');
             helper.assertLineQty($line, '1');
             // +1 button must be present on new line.
             helper.assertButtonIsVisible($line, 'add_quantity');
@@ -1973,16 +870,16 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     },
     // Press +1 button of the new line.
     {
-        trigger: '.o_barcode_line:first-child .o_add_quantity'
+        trigger: '.o_barcode_line:nth-child(2) .o_add_quantity'
     },
     {
-        trigger: '.o_barcode_line:first-child .qty-done:contains("2")',
+        trigger: '.o_barcode_line:nth-child(2) .qty-done:contains("2")',
         run: function() {
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
+            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), true);
             helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), false);
             helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
-            const $line = $('.o_barcode_line:first-child');
+            const $line = $('.o_barcode_line:nth-child(2)');
             helper.assertLineQty($line, '2');
             // +1 button must still be present.
             helper.assertButtonIsVisible($line, 'add_quantity');
@@ -1999,13 +896,6 @@ tour.register('test_delivery_using_buttons', {test: true}, [
 ]);
 
 tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
-    {
-        trigger: '.o_current_dest_location',
-        run: function() {
-            helper.assertPageSummary(' To WH/Stock');
-        }
-    },
-
     {
         trigger: '.o_barcode_client_action',
         run: 'scan lot1',
@@ -2038,7 +928,7 @@ tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest.o_strong',
+        trigger: '.o_scan_message.o_scan_validate',
         run: 'scan productserial1'
     },
 
@@ -2051,24 +941,10 @@ tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
         trigger: '.o_line_lot_name:contains("lot2")',
         run: 'scan LOC-01-01-00'
     },
-
-    {
-        trigger: '.o_barcode_summary_location_highlight:contains("Section 1")',
-        run: function() {
-            helper.assertPageSummary('To WH/Stock/Section 1');
-            helper.assertPreviousVisible(true);
-        }
-    },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.assertPageSummary(' To WH/Stock');
-        }
-    },
-
     {
         trigger: '.o_barcode_client_action',
         run: 'scan productlot1'
@@ -2098,24 +974,10 @@ tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
-
-    {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 1")',
-        run: function() {
-            helper.assertPageSummary(' To WH/Stock/Section 1');
-            helper.assertPreviousVisible(true);
-        }
-    },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
-    {
-        trigger: '.o_barcode_client_action',
-        run: function() {
-            helper.assertPageSummary('To WH/Stock');
-        }
-    },
-
     {
         trigger: '.o_barcode_client_action',
         run: 'scan product1'
@@ -2487,7 +1349,7 @@ tour.register('test_receipt_reserved_lots_multiloc_1', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("Section 2")',
+        trigger: '.o_barcode_line .o_line_destination_location:contains("Section 2")',
         run: 'scan productlot1',
     },
 
@@ -2502,14 +1364,10 @@ tour.register('test_receipt_reserved_lots_multiloc_1', {test: true}, [
     },
 
     {
-        trigger: '.o_sublines .o_barcode_line:contains("lot2") .qty-done:contains("2")',
+        trigger: '.o_barcode_line.o_selected:contains("lot2") .qty-done:contains("2")',
         run: 'scan LOC-01-01-00',
     },
-
-    {
-        trigger: '.o_barcode_summary_location_dest:contains("Section 1")',
-        run(){ },
-    },
+    ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
 tour.register('test_receipt_duplicate_serial_number', {test: true}, [
@@ -2541,7 +1399,7 @@ tour.register('test_receipt_duplicate_serial_number', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Section 1")',
+        trigger: '.o_barcode_line .o_line_destination_location:contains("../Section 1")',
         run: 'scan productserial1',
     },
 
@@ -2566,10 +1424,12 @@ tour.register('test_receipt_duplicate_serial_number', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-02-00',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
-
     {
-        trigger: '.o_stock_barcode_main_menu',
+        trigger: '.o_barcode_line:nth-child(2) .o_line_destination_location:contains("../Section 2")',
+        run: 'scan O-BTN.validate'
+    },
+    {
+        trigger: '.o_notification.border-success',
         run: function () {
             helper.assertErrorMessage('The transfer has been validated');
         },
@@ -2586,12 +1446,12 @@ tour.register('test_delivery_duplicate_serial_number', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_scan_message.o_scan_src',
         run: 'scan LOC-01-01-00',
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Section 1")',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan productserial1',
     },
 
@@ -2606,7 +1466,7 @@ tour.register('test_delivery_duplicate_serial_number', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_scan_message.o_scan_validate',
         run: 'scan productserial1',
     },
 
@@ -2644,20 +1504,11 @@ tour.register('test_bypass_source_scan', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
-            helper.assertPageSummary('From WH/Stock/Section 1');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(1);
+            helper.assertLinesCount(3);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/2');
-            helper.assertValidateVisible(false);
+            helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
+            helper.assertValidateEnabled(true);
         }
     },
 
@@ -2715,12 +1566,12 @@ tour.register('test_bypass_source_scan', {test: true}, [
     },
 
     {
-        trigger: '.o_next_page.btn-primary',
+        trigger: '.o_scan_message.o_scan_product_or_src',
         run: 'scan LOC-01-02-00',
     },
 
     {
-        trigger: '.o_current_location:contains("WH/Stock/Section 2")',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan THEPACK',
     },
 
@@ -2766,13 +1617,13 @@ tour.register('test_picking_type_mandatory_scan_settings_pick_int_1', {test: tru
         run: 'scan LOC-01-01-00',
     },
     {
-        trigger: '.modal-content',
-        in_modal: true,
+        trigger: '.o_notification.border-danger',
         run: function() {
-            helper.assert(document.querySelector('.modal-body').innerText, "You must scan a product");
+            helper.assert(
+                document.querySelector('.o_notification_content').innerText,
+                "You must scan a product");
         },
     },
-    tour.stepUtils.closeModal(),
     // Scans product1, its buttons should be displayed/enabled.
     {
         trigger: '.o_barcode_client_action',
@@ -2829,28 +1680,24 @@ tour.register('test_picking_type_mandatory_scan_settings_pick_int_2', {test: tru
         }
     },
     // Scans a product, it should display an error.
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1',
-    },
-    {
-        trigger: '.modal-content',
-        in_modal: true,
+        trigger: '.o_notification.border-danger',
         run: function() {
             helper.assert(
-                document.querySelector('.modal-body').innerText,
-                "You are supposed to scan WH/Stock/Section 1 or another source location");
+                document.querySelector('.o_notification_content').innerText,
+                "You are supposed to scan WH/Stock or another source location");
         },
     },
-    tour.stepUtils.closeModal(),
+    { trigger: '.btn.o_notification_close' },
 
-    // Scans the source location, the for the product without barcode should be enabled.
+    // Scans the source location, the buttons for the product without barcode should be enabled.
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-01-00',
+        run: 'scan LOC-01-00-00',
     },
     {
-        trigger: '.o_scan_message_scan_product',
+        trigger: '.o_scan_message.o_scan_product',
         run: function () {
             const [ lineProductNoBarcode, lineProduct1 ] = document.querySelectorAll('.o_barcode_line');
             helper.assert(
@@ -2867,19 +1714,11 @@ tour.register('test_picking_type_mandatory_scan_settings_pick_int_2', {test: tru
                 "Since the source of this line was scanned and it has no barcode, its buttons should be enabled");
         }
     },
-    // Scans the destination, it should raise an error as it expects a product now.
+    // Scans another location, it replaces the previous scanned source as no product was scanned yet.
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-00-00',
+        run: 'scan LOC-01-01-00',
     },
-    {
-        trigger: '.modal-content',
-        in_modal: true,
-        run: function() {
-            helper.assert(document.querySelector('.modal-body').innerText, "You must scan a product");
-        },
-    },
-    tour.stepUtils.closeModal(),
 
     // Scans product1.
     {
@@ -2902,20 +1741,16 @@ tour.register('test_picking_type_mandatory_scan_settings_pick_int_2', {test: tru
         }
     },
     // Scans another product: it should raise an error as the destination should be scanned between each product.
+    { trigger: '.o_barcode_client_action', run: 'scan product2' },
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2',
-    },
-    {
-        trigger: '.modal-content',
-        in_modal: true,
+        trigger: '.o_notification.border-danger',
         run: function() {
             helper.assert(
-                document.querySelector('.modal-body').innerText,
+                document.querySelector('.o_notification_content').innerText,
                 "Please scan destination location for product1 before scanning other product");
         },
     },
-    tour.stepUtils.closeModal(),
+    { trigger: '.btn.o_notification_close' },
 
     // Uses button to complete the line, then scan the destination.
     { trigger: '.o_barcode_line.o_selected .btn.o_add_quantity' },
@@ -2924,20 +1759,16 @@ tour.register('test_picking_type_mandatory_scan_settings_pick_int_2', {test: tru
         run: 'scan LOC-01-00-00',
     },
     // Scans again product1: should raise an error as it expects the source (should be scanned after each product).
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1',
-    },
-    {
-        trigger: '.modal-content',
-        in_modal: true,
+        trigger: '.o_notification.border-danger',
         run: function() {
             helper.assert(
-                document.querySelector('.modal-body').innerText,
-                "You are supposed to scan WH/Stock/Section 1 or another source location");
+                document.querySelector('.o_notification_content').innerText,
+                "You are supposed to scan WH/Stock or another source location");
         },
     },
-    tour.stepUtils.closeModal(),
+    { trigger: '.btn.o_notification_close' },
 
     // Scans the source and updates the remaining product qty with its button (because no barcode).
     {
@@ -2946,7 +1777,7 @@ tour.register('test_picking_type_mandatory_scan_settings_pick_int_2', {test: tru
     },
     {
         trigger: '.o_barcode_line .btn.o_add_quantity',
-        extra_trigger: '.o_scan_message_scan_product',
+        extra_trigger: '.o_scan_message.o_scan_product',
     },
     // Tries to validate without scanning the destination: display a warning.
     {
@@ -3002,7 +1833,7 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_receipt', {test: t
     },
     // The message should ask to scan a product, so scans product tracked by lots.
     {
-        trigger: '.o_scan_message.o_scan_message_scan_product',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan productlot1'
     },
     // Scans lot-001 x2, lot-002 x2 and lot-003 x2.
@@ -3038,7 +1869,7 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_receipt', {test: t
     },
     // Scans the product tracked by serial numbers and scans three serials.
     {
-        trigger: '.o_scan_message.o_scan_message_scan_product_or_dest',
+        trigger: '.o_scan_message.o_scan_product_or_dest',
         run: 'scan productserial1'
     },
     {
@@ -3055,13 +1886,12 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_receipt', {test: t
     },
     // It should ask to scan the destination, so scans it.
     {
-        trigger: 'div[name="barcode_messages"] .o_scan_message_scan_product_or_dest',
-        extra_trigger: 'div[name="barcode_messages"] .fa-sign-in',
+        trigger: 'div[name="barcode_messages"] .o_scan_product_or_dest',
         run: 'scan WH-INPUT',
     },
     // Now the destination was scanned, it should say the operation can be validate.
     {
-        extra_trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press validate" message icon.
+        extra_trigger: 'div[name="barcode_messages"] .o_scan_validate',
         trigger: '.o_validate_page.btn-success',
     },
     { trigger: '.o_notification.border-success' },
@@ -3082,70 +1912,52 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_internal', {test: 
     { trigger: '.o_barcode_client_action', run: 'scan product1' },
     { trigger: '.o_barcode_line.o_selected', run: 'scan product2' }, // Should raise an error.
     {
-        trigger: '.modal-content',
-        in_modal: true,
+        trigger: '.o_notification.border-danger',
         run: function() {
-            helper.assert(
-                document.querySelector('.modal-body').innerText,
+            helper.assertErrorMessage(
                 "Please scan destination location for product1 before scanning other product");
         },
     },
-    tour.stepUtils.closeModal(),
+    { trigger: '.btn.o_notification_close' },
 
-    { // Scans the destination (Section 1) then returns to previous page.
+    { // Scans the destination (Section 1).
         trigger: '.o_barcode_line.o_selected',
         run: 'scan LOC-01-01-00'
-    },
-    {
-        trigger: '.btn.o_previous_page',
-        extra_trigger: '.o_barcode_move_number:contains(2/2)',
     },
 
     // Scans product1 again and move it to Section 3.
     {
-        trigger: '.o_scan_message.o_scan_message_scan_product',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan product1'
     },
     {
         trigger: '.o_barcode_line.o_selected',
         run: 'scan shelf3'
     },
-    { // Returns on the first page.
-        trigger: '.o_barcode_move_number:contains(3/3)',
-        run: 'scan O-CMD.PAGER-FIRST'
-    },
 
     // Scans product2 and moves it into Section 2.
     {
-        trigger: '.o_scan_message.o_scan_message_scan_product',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan product2'
     },
     {
         trigger: '.o_barcode_line.o_selected',
         run: 'scan LOC-01-02-00'
     },
-    { // Returns on the first page.
-        trigger: '.o_barcode_move_number:contains(3/4)',
-        run: 'scan O-CMD.PAGER-FIRST'
-    },
 
     // Process quantities for the product with no barcode and move it to Section 1.
     {
         trigger: '.o_barcode_line:not([data-barcode]) .btn.o_add_quantity',
-        extra_trigger: '.o_scan_message.o_scan_message_scan_product',
+        extra_trigger: '.o_scan_message.o_scan_product',
     },
     {
         trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: 'scan LOC-01-01-00'
     },
-    { // Returns on the first page.
-        trigger: '.btn.o_previous_page',
-        extra_trigger: '.o_barcode_move_number:contains(2/4)',
-    },
 
     // The message should ask to scan a product, so scans product tracked by lots.
     {
-        trigger: '.o_scan_message.o_scan_message_scan_product',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan productlot1'
     },
     // Scans lot-001 x2, lot-002 x2 and moves them in Section 3.
@@ -3169,15 +1981,10 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_internal', {test: 
         trigger: '.o_sublines .o_barcode_line.o_selected.o_line_completed',
         run: 'scan shelf3'
     },
-    { // Returns on the first page.
-        trigger: '.o_barcode_move_number:contains(4/4)',
-        run: 'scan O-CMD.PAGER-FIRST'
-    },
 
     // Scans lot-003 x2 and moves them in Section 4.
     {
-        trigger: '.o_barcode_move_number:contains(1/4)',
-        extra_trigger: '.o_scan_message.o_scan_message_scan_product',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan lot-003'
     },
     {
@@ -3188,14 +1995,10 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_internal', {test: 
         trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
         run: 'scan shelf4'
     },
-    { // Returns on the first page.
-        trigger: '.o_barcode_move_number:contains(5/5)',
-        run: 'scan O-CMD.PAGER-FIRST'
-    },
 
     // Scans the product tracked by serial numbers and scans three serials.
     {
-        trigger: '.o_scan_message.o_scan_message_scan_product',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan productserial1'
     },
     {
@@ -3226,51 +2029,41 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertLinesCount(2);
-            helper.assertPager('1/4');
+            helper.assertLinesCount(6);
             helper.assertScanMessage('scan_src');
-            helper.assertValidateVisible(false);
-            const [ lineProductNoBarcode, lineProduct1 ] = document.querySelectorAll('.o_barcode_line');
-            helper.assert(
-                lineProduct1.querySelector('.btn.o_edit').disabled, true,
-                "All lines' buttons are disabled until a source location was scanned");
-            helper.assert(
-                lineProduct1.querySelector('.btn.o_add_quantity').disabled, true,
-                "All lines' buttons are disabled until a source location was scanned");
-            helper.assert(
-                lineProductNoBarcode.querySelector('.btn.o_edit').disabled, true,
-                "All lines' buttons are disabled until a source location was scanned");
-            helper.assert(
-                lineProductNoBarcode.querySelector('.btn.o_add_quantity').disabled, true,
-                "All lines' buttons are disabled until a source location was scanned");
+            helper.assertValidateVisible(true);
+            helper.assertValidateEnabled(false);
+            const lineButtons = document.querySelectorAll('.btn.o_edit,.btn.o_add_quantity');
+            helper.assert(lineButtons.length, 8, "Should have 1 edit & 1 add qty. buttons on 4 lines");
+            for (const button of lineButtons) {
+                helper.assert(button.disabled, true,
+                    "All lines' buttons are disabled until a source location was scanned");
+            }
         }
     },
     // Scans product1 -> raise an error because it expects the source location.
     {
-        trigger: '.o_scan_message.o_scan_message_scan_src',
+        trigger: '.o_scan_message.o_scan_src',
         run: 'scan product1'
     },
     {
-        trigger: '.modal-content',
-        in_modal: true,
+        trigger: '.o_notification',
         run: function() {
-            helper.assert(
-                document.querySelector('.modal-body').innerText,
-                "You are supposed to scan WH/Stock/Section 1 or another source location");
+            helper.assertErrorMessage(
+                "You are supposed to scan WH/Stock or another source location");
         },
     },
-    tour.stepUtils.closeModal(),
+    { trigger: '.btn.o_notification_close' },
 
     // Scan another location (Section 2 for the instance).
     {
-        trigger: '.o_scan_message.o_scan_message_scan_src',
+        trigger: '.o_scan_message.o_scan_src',
         run: 'scan LOC-01-02-00'
     },
     {
-        trigger: '.o_barcode_move_number:contains(2/4)',
+        trigger: '.o_line_source_location:contains(".../Section 2") .fw-bold',
         run: function() {
-            helper.assertLinesCount(1);
-            helper.assertPager('2/4');
+            helper.assertLinesCount(6);
             helper.assertScanMessage('scan_product');
             const lineProduct2 = document.querySelector('.o_barcode_line');
             helper.assert(
@@ -3281,35 +2074,49 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
                 "Since the source location was scanned, its buttons should be enabled");
         }
     },
-    // Scans product2 then scans another source location (Section 3).
+    // Scans product2 then scans another source location (Section 3) => Should raise a warning.
+    { trigger: '.o_barcode_client_action', run: 'scan product2' },
+    { trigger: '.o_barcode_line.o_line_completed', run: 'scan shelf3' },
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2',
-    },
-    {
-        trigger: '.o_barcode_line.o_line_completed',
-        run: 'scan shelf3',
-    },
-    {
-        trigger: '.o_barcode_move_number:contains(3/4)',
+        trigger: '.o_notification',
         run: function() {
-            helper.assertLinesCount(2);
-            helper.assertPager('3/4');
+            helper.assertErrorMessage("You must scan a package or put in pack");
+        },
+    },
+    { trigger: '.btn.o_notification_close' },
+
+    // Scans a pack then scans again Section 3.
+    { trigger: '.o_barcode_line.o_line_completed', run: 'scan cluster-pack-01' },
+    { trigger: '.o_barcode_line.o_selected .result-package', run: 'scan shelf3' },
+    {
+        trigger: '.o_line_source_location:contains(".../Section 3") .fw-bold',
+        run: function() {
+            helper.assertLinesCount(6);
             helper.assertScanMessage('scan_product');
         }
     },
-    // Scans product1, lot-001 and lot-002.
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1',
-    },
-    // Checks we can't edit a line for a tracked product until the tracking number was scan.
+    // Scans product1 (x2), pack it then scans lot-001 and lot-002.
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
     {
         trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: 'scan productlot1'
     },
     {
-        trigger: '.o_barcode_line.o_selected:not(.o_line_completed)',
+        trigger: '.o_notification',
+        run: function() {
+            helper.assertErrorMessage("You must scan a package or put in pack");
+        },
+    },
+    { trigger: '.btn.o_notification_close' },
+    { trigger: '.o_barcode_client_action', run: 'scan cluster-pack-01' },
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed .result-package',
+        run: 'scan productlot1'
+    },
+    // Checks we can't edit a line for a tracked product until the tracking number was scan.
+    {
+        trigger: '.o_barcode_line.o_selected .o_sublines',
         run: function() {
             const [ lot001Line, lot002Line ] = document.querySelectorAll('.o_sublines .o_barcode_line');
             helper.assert(lot001Line.querySelector('.btn.o_add_quantity').disabled, true,
@@ -3371,36 +2178,28 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
                 "Demand quantity was scanned, the button shouldn't be visible.");
         }
     },
+    { trigger: '.o_barcode_client_action', run: 'scan cluster-pack-02' },
 
-    // Returns to Section 1 to process the remaining products.
+    // Scans Section 1 (source) and processes the remaining products.
+    { trigger: '.o_barcode_line.o_selected.o_line_completed .result-package', run: 'scan LOC-01-01-00' },
     {
-        trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press next/validate" message icon.
-        run: 'scan LOC-01-01-00'
-    },
-    {
-        trigger: '.o_barcode_move_number:contains(1/4)',
-        run: 'scan product1'
-    },
-    {
+        extra_trigger: '.o_line_source_location:contains(".../Section 1") .fw-bold',
         trigger: '.o_barcode_line:not([data-barcode]) .btn.o_add_quantity',
-        extra_trigger: '.o_barcode_line.o_selected.o_line_completed',
+    },
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed:not([data-barcode])',
+        run: 'scan cluster-pack-01'
     },
 
-    // Scans the next source location.
+    // Scans Section 4 (source).
     {
-        trigger: 'div[name="barcode_messages"] .fa-check-square', // "Press next/validate" message icon.
+        trigger: '.o_barcode_line.o_selected.o_line_completed .result-package',
         run: 'scan shelf4'
     },
+    // Scans the remaining lot and the serial numbers.
     {
-        trigger: '.o_barcode_move_number:contains(4/4)',
-        run: function() {
-            helper.assertLinesCount(2);
-            helper.assertPager('4/4');
-            helper.assertScanMessage('scan_product');
-        }
-    },
-    { // Scans the remaining lot and the serial numbers.
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_line_source_location:contains(".../Section 4") .fw-bold',
+        extra_trigger: '.o_scan_message.o_scan_product',
         run: 'scan lot-003',
     },
     {
@@ -3416,8 +2215,17 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
         run: 'scan sn-002',
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        extra_trigger: '.o_scan_message.o_scan_package',
+        run: 'scan cluster-pack-02'
+    },
+    {
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan lot-003',
+    },
+    {
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
+        run: 'scan cluster-pack-02'
     },
     // It should say the operation can be validate.
     {
@@ -3428,11 +2236,59 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
 ]);
 
 tour.register('test_picking_type_mandatory_scan_complete_flux_pack', {test: true}, [
-    // TODO
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLinesCount(5);
+            helper.assertScanMessage('scan_product');
+            helper.assertValidateVisible(true);
+            helper.assertValidateEnabled(true);
+            helper.assertValidateIsHighlighted(false);
+        }
+    },
+    // Scans first cluster pack.
+    { trigger: '.o_barcode_client_action', run: 'scan cluster-pack-01'},
+    // Scans second cluster pack.
+    { trigger: '.o_barcode_client_action', run: 'scan cluster-pack-02'},
+    // Tries to validate: it should ask to put in pack.
+    { trigger: '.o_validate_page.btn-success' },
+    {
+        trigger: '.o_notification',
+        run: function() {
+            helper.assertErrorMessage("All products need to be packed");
+        },
+    },
+    { trigger: '.btn.o_notification_close' },
+    // Puts in pack.
+    { trigger: '.o_barcode_client_action', run: 'scan O-BTN.pack'},
+    // Validates the operation.
+    {
+        extra_trigger: '.o_scan_message.o_scan_validate',
+        trigger: '.o_validate_page.btn-success',
+    },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_picking_type_mandatory_scan_complete_flux_delivery', {test: true}, [
-    // TODO
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLinesCount(1);
+            helper.assertScanMessage('scan_product_or_package');
+        }
+    },
+    // Scans the pack, then validate.
+    {
+        trigger: '.o_barcode_line:contains("PACK0000001")',
+        run: 'scan PACK0000001'
+    },
+    // It should say the operation can be validate.
+    {
+        extra_trigger: '.o_scan_message.o_scan_validate', // "Press validate" message icon.
+        trigger: '.o_barcode_line.o_line_completed',
+        run: 'scan O-BTN.validate',
+    },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_pack_multiple_scan', {test: true}, [
@@ -3567,12 +2423,12 @@ tour.register('test_pack_multiple_location', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_client_action .o_scan_message.o_scan_src',
         run: 'scan LOC-01-01-00'
     },
 
     {
-        trigger: '.o_current_location:contains("WH/Stock/Section 1")',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan PACK0000666',
     },
 
@@ -3585,7 +2441,7 @@ tour.register('test_pack_multiple_location', {test: true}, [
     },
 
     { // Scan a second time the same package => Should raise a warning.
-        trigger: '.o_current_location:contains("WH/Stock/Section 1")',
+        trigger: '.o_barcode_client_action',
         run: 'scan PACK0000666',
     },
     { // A notification is shown and the package's qty. should be unchanged.
@@ -3606,12 +2462,12 @@ tour.register('test_pack_multiple_location', {test: true}, [
     { trigger: '.o_close' },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_scan_message.o_scan_dest',
         run: 'scan LOC-01-02-00',
     },
 
     {
-        trigger: '.o_current_dest_location:contains("WH/Stock/Section 2")',
+        trigger: '.o_scan_message.o_scan_validate',
         run: 'scan O-BTN.validate',
     },
 
@@ -3634,7 +2490,7 @@ tour.register('test_pack_multiple_location_02', {test: true}, [
     },
 
     {
-        trigger: '.o_strong .o_current_location:contains("WH/Stock/Section 1")',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan PACK0002020',
     },
 
@@ -3645,7 +2501,7 @@ tour.register('test_pack_multiple_location_02', {test: true}, [
     },
 
     {
-        trigger: '.o_strong .o_current_dest_location:contains("WH/Stock/Section 2")',
+        trigger: '.o_barcode_line .o_line_destination_location:contains("WH/Stock/Section 2")',
         run: 'scan O-BTN.validate',
     },
 
@@ -3658,20 +2514,11 @@ tour.register('test_put_in_pack_from_multiple_pages', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
+            helper.assertLinesCount(4);
             helper.assertScanMessage('scan_src');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/2');
-            helper.assertValidateVisible(false);
+            helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
+            helper.assertValidateEnabled(true);
         },
     },
 
@@ -3681,22 +2528,13 @@ tour.register('test_put_in_pack_from_multiple_pages', {test: true}, [
     },
 
     {
-        trigger: '.o_scan_message:contains("Scan a product")',
+        trigger: '.o_scan_message.o_scan_product',
         run: function () {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(true);
-            helper.assertNextEnabled(true);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(2);
+            helper.assertLinesCount(4);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('1/2');
-            helper.assertValidateVisible(false);
+            helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
+            helper.assertValidateEnabled(true);
         },
     },
 
@@ -3711,11 +2549,7 @@ tour.register('test_put_in_pack_from_multiple_pages', {test: true}, [
     },
 
     {
-        trigger: '.o_next_page',
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Section 2")',
+        trigger: '.o_barcode_line:nth-child(2).o_line_completed',
         run: 'scan LOC-01-02-00',
     },
 
@@ -3788,21 +2622,24 @@ tour.register('test_reload_flow', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock")',
+        trigger: '.o_barcode_line:nth-child(2).o_selected',
         run: function () {
             helper.assertScanMessage('scan_product_or_dest');
-            helper.assertLocationHighlight(false);
-            helper.assertDestinationLocationHighlight(true);
         },
     },
 
+    { trigger: '.o_barcode_client_action', run: 'scan LOC-01-01-00' },
+    // Select first line and scans Section 1 to move it to this location.
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock")',
-        run: 'scan LOC-01-01-00',
+        extra_trigger: '.o_barcode_line:nth-child(2) .o_line_destination_location:contains(".../Section 1")',
+        trigger: '.o_barcode_line:first-child()',
     },
-
     {
-        trigger: '.o_barcode_summary_location_dest:contains("WH/Stock/Section 1")',
+        trigger: '.o_barcode_line:first-child().o_selected',
+        run: 'scan LOC-01-01-00'
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(1) .o_line_destination_location:contains(".../Section 1")',
     },
     ...tour.stepUtils.validateBarcodeForm(),
 ]);
@@ -3849,25 +2686,11 @@ tour.register('test_highlight_packs', {test: true}, [
 tour.register('test_put_in_pack_from_different_location', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan LOC-01-01-00',
-    },
-
-    {
-        trigger: '.o_barcode_client_action',
         run: 'scan product1',
     },
 
     {
-        trigger: '.o_next_page.btn-primary',
-    },
-
-    {
-        trigger: '.o_barcode_line:contains("product2")',
-        run: 'scan shelf3',
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Section 3")',
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: 'scan product2',
     },
 
@@ -3885,37 +2708,8 @@ tour.register('test_put_in_pack_from_different_location', {test: true}, [
     },
     // Scans dest. location.
     {
-        trigger: '.o_scan_message_scan_product_or_dest',
+        trigger: '.o_scan_message.o_scan_product_or_dest',
         run: 'scan LOC-01-02-00',
-    },
-    // Scans source location.
-    {
-        trigger: '.o_scan_message_scan_next_or_validate',
-        run: 'scan LOC-01-01-00',
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Section 1")',
-        run: function () {
-            helper.assertPageSummary('From WH/Stock/Section 1 To WH/Stock');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(true);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
-            helper.assertLinesCount(0);
-            helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(true);
-            helper.assertDestinationLocationHighlight(false);
-            helper.assertPager('3/3');
-            helper.assertValidateVisible(true);
-            helper.assertValidateIsHighlighted(false);
-            helper.assertValidateEnabled(false);
-        },
-    },
-
-    {
-        trigger: '.o_previous_page',
     },
     ...tour.stepUtils.validateBarcodeForm(),
 ]);
@@ -3927,21 +2721,18 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src.o_strong',
+        trigger: '.o_barcode_line .o_line_source_location:contains(".../Section 1") .fw-bold',
         run: 'scan product1',
     },
+    { trigger: '.o_barcode_client_action', run: 'scan LOC-01-02-00' },
 
     {
-        trigger: '.o_next_page.btn-primary',
-    },
-
-    {
-        trigger: '.o_barcode_summary_location_src:contains("Section 3")',
+        trigger: '.o_scan_message.o_scan_src',
         run: 'scan shelf3',
     },
 
     {
-        trigger: '.o_barcode_summary_location_src.o_strong',
+        trigger: '.o_barcode_line .o_line_source_location:contains(".../Section 3") .fw-bold',
         run: 'scan product2',
     },
 
@@ -3951,7 +2742,7 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_dest.o_strong',
+        trigger: '.o_scan_message.o_scan_validate',
         run: 'scan O-BTN.pack'
     },
 
@@ -3990,14 +2781,16 @@ tour.register('test_put_in_pack_scan_package', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertPageSummary('From WH/Stock/Section 1');
-            helper.assertLinesCount(2);
-            helper.assertPager('1/2');
+            helper.assertLinesCount(3);
         }
+    },
+    {
+        trigger: '.o_scan_message.o_scan_src',
+        run: 'scan LOC-01-01-00'
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan product1',
     },
     {
@@ -4034,13 +2827,13 @@ tour.register('test_put_in_pack_scan_package', {test: true}, [
         }
     },
 
-    // Goes to next page and scans again product1 and PACK0000001.
+    // Scans next location then scans again product1 and PACK0000001.
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan O-CMD.NEXT',
+        run: 'scan LOC-01-02-00',
     },
     {
-        trigger: '.o_current_location:contains("Section 2")',
+        trigger: '.o_barcode_line .o_line_source_location .fw-bold:contains("Section 2")',
         run: 'scan product1',
     },
     {
@@ -4176,7 +2969,7 @@ tour.register('test_show_entire_package', {test: true}, [
         trigger: '.o_barcode_line:contains("1/ 1")',
         run: function () {
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_next_or_validate');
+            helper.assertScanMessage('scan_validate');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
@@ -4198,7 +2991,7 @@ tour.register('test_show_entire_package', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(1);
-            helper.assertScanMessage('scan_product_or_package');
+            helper.assertScanMessage('scan_product');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);

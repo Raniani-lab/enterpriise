@@ -30,14 +30,20 @@ tour.register('test_receipt_classic_subcontracted_product', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00',
     },
-
+    // Adds a line with the "Add Product" button, then scans its destination location.
+    { trigger: '.o_add_line' },
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product_subcontracted',
+        trigger: '.o_field_widget[name=product_id] input',
+        run: 'text Chocolate Eclairs',
     },
-
+    { trigger: ".ui-menu-item > a:contains('Chocolate Eclairs')" },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '[name=qty_done] input',
+        run: 'text 1',
+    },
+    { trigger: '.o_save' },
+    {
+        trigger: '.o_barcode_line',
         run: 'scan LOC-01-02-00',
     },
     ...tour.stepUtils.validateBarcodeForm(),

@@ -54,60 +54,6 @@
         }
     }
 
-    // Locations
-    // =====================================
-    .o_barcode_locations {
-        .o_barcode_location_label {
-            padding: 1px 0 0;
-            line-height: 19px;
-        }
-
-        .o_barcode_summary_location_src, .o_barcode_summary_location_dest {
-            position: relative;
-            padding: 1px 4px 0 2px;
-
-            @include media-breakpoint-down(sm) {
-                // Used to display the location list on all width on small
-                // screen instead of below the current location.
-                position: initial;
-            }
-
-            &.o_strong {
-                background-color: transparent;
-                animation-name: highlighting-flash-white;
-                animation-duration: 0.5s;
-            }
-            &.o_clickable {
-                cursor: pointer;
-                border-bottom: 1px solid white;
-
-                &:hover {
-                    background-color: white;
-                    color: $o-enterprise-color;
-                }
-            }
-
-            .o_barcode_list_locations {
-                width: max-content;
-                position: absolute;
-                top: 0;
-                left: 0;
-                padding: 0;
-                text-align: left;
-                color: $gray-800;
-                background-color: white;
-                border: 1px solid $o-brand-secondary;
-                z-index: 1;
-                max-height: 50vh;
-                overflow: auto;
-
-                @include media-breakpoint-down(sm) {
-                    width: 100%;
-                }
-            }
-        }
-    }
-
     // Lines Block
     // =====================================
     .o_barcode_lines {

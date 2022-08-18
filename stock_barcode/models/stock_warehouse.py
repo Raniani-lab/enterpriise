@@ -19,6 +19,6 @@ class StockWarehouse(models.Model):
                 values['out_type_id']['restrict_scan_source_location'] = 'no'
                 values['pick_type_id']['restrict_scan_source_location'] = self.out_type_id.restrict_scan_source_location
             values['pick_type_id']['restrict_scan_dest_location'] = 'no'
-        elif not values['pick_type_id'].get('active') and self.pick_type_id:
+        elif not values['pick_type_id'].get('active') and self.pick_type_id.active:
             values['out_type_id']['restrict_scan_source_location'] = self.pick_type_id.restrict_scan_source_location
         return values

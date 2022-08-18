@@ -12,7 +12,7 @@ export default class PackageLineComponent extends Component {
     }
 
     get isSelected() {
-        return this.line.package_id.id === this.env.model.lastScannedPackage;
+        return this.line.package_id.id === this.env.model.lastScanned.packageId;
     }
 
     get line() {
@@ -34,7 +34,7 @@ export default class PackageLineComponent extends Component {
 
     select(ev) {
         ev.stopPropagation();
-        this.env.model.selectPackageLine(this.line.package_id.id);
+        this.env.model.selectPackageLine(this.line);
         this.env.model.trigger('update');
     }
 }

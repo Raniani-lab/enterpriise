@@ -291,6 +291,7 @@
                 <separator/>
                 <filter name="unpublished_shifts" string="Draft" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
                 <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
+                <filter name="publication_warning" string="To Resend" domain="[('publication_warning', '=', True), ('overlap_slot_count', '=', 0)]" groups="planning.group_planning_manager"/>
                 <separator groups="planning.group_planning_manager"/>
                 <filter name="future" string="Future" domain="[('start_datetime', '&gt;=', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]" />
                 <filter name="today" string="Today" domain="[('start_datetime', '&gt;=', context_today().strftime('%Y-%m-%d')), ('end_datetime', '&lt;', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]" />

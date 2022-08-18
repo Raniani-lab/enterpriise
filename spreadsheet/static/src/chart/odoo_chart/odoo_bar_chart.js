@@ -60,6 +60,8 @@ function getBarConfiguration(chart, labels) {
     const config = getDefaultChartJsRuntime(chart, labels, fontColor);
     config.type = chart.type.replace("odoo_", "");
     const legend = {
+        ...config.options.legend,
+        display: chart.legendPosition !== "none",
         labels: { fontColor },
     };
     legend.position = chart.legendPosition;

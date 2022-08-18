@@ -173,6 +173,65 @@ QUnit.module("spreadsheet > odoo chart plugin", {}, () => {
         assert.strictEqual(model.getters.getChartIds(sheetId).length, 1);
     });
 
+    QUnit.test("charts with no legend", async (assert) => {
+        const { model } = await createSpreadsheetWithGraph({ type: "odoo_pie" });
+        insertGraphInSpreadsheet(model, "odoo_bar");
+        insertGraphInSpreadsheet(model, "odoo_line");
+        const sheetId = model.getters.getActiveSheetId();
+        const [pieChartId, barChartId, lineChartId] = model.getters.getChartIds(sheetId);
+        const pie = model.getters.getChartDefinition(pieChartId);
+        const bar = model.getters.getChartDefinition(barChartId);
+        const line = model.getters.getChartDefinition(lineChartId);
+        assert.strictEqual(
+            model.getters.getChartRuntime(pieChartId).chartJsConfig.options.legend.display,
+            true
+        );
+        assert.strictEqual(
+            model.getters.getChartRuntime(barChartId).chartJsConfig.options.legend.display,
+            true
+        );
+        assert.strictEqual(
+            model.getters.getChartRuntime(lineChartId).chartJsConfig.options.legend.display,
+            true
+        );
+        model.dispatch("UPDATE_CHART", {
+            definition: {
+                ...pie,
+                legendPosition: "none",
+            },
+            id: pieChartId,
+            sheetId,
+        });
+        model.dispatch("UPDATE_CHART", {
+            definition: {
+                ...bar,
+                legendPosition: "none",
+            },
+            id: barChartId,
+            sheetId,
+        });
+        model.dispatch("UPDATE_CHART", {
+            definition: {
+                ...line,
+                legendPosition: "none",
+            },
+            id: lineChartId,
+            sheetId,
+        });
+        assert.strictEqual(
+            model.getters.getChartRuntime(pieChartId).chartJsConfig.options.legend.display,
+            false
+        );
+        assert.strictEqual(
+            model.getters.getChartRuntime(barChartId).chartJsConfig.options.legend.display,
+            false
+        );
+        assert.strictEqual(
+            model.getters.getChartRuntime(lineChartId).chartJsConfig.options.legend.display,
+            false
+        );
+    });
+
     QUnit.test("Bar chart with stacked attribute is supported", async (assert) => {
         const { model } = await createSpreadsheetWithGraph({ type: "odoo_bar" });
         const sheetId = model.getters.getActiveSheetId();

@@ -5,7 +5,7 @@
         <field name="provider">sepa_direct_debit</field>
         <field name="image_128"
                type="base64"
-               file="payment_sepa_direct_debit/static/src/img/sepa_direct_debit_icon.jpg"/>
+               file="payment_sepa_direct_debit/static/description/icon.png"/>
         <field name="inline_form_view_id" ref="inline_form"/>
         <field name="allow_tokenization">True</field>
         <field name="pending_msg" type="html">

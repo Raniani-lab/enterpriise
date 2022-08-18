@@ -41,7 +41,7 @@
         <field name="model">payment.acquirer</field>
         <field name="inherit_id" ref="payment.payment_acquirer_kanban"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[hasclass('o_payment_acquirer_bottom')]//field[@name='state']"
+            <xpath expr="//div[hasclass('o_payment_acquirer_desc')]//field[@name='state']"
                    position="attributes">
                 <attribute name="attrs">{'invisible': [('provider', '=', 'sepa_direct_debit')]}</attribute>
             </xpath>

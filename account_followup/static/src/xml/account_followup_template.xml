@@ -40,13 +40,13 @@
             <button type="button" class="btn btn-primary o_account_followup_manual_action_button">
                 Manual Action
             </button>
-            <button type="button" class="btn btn-secondary o_account_followup_do_it_later_button" data-toggle='tooltip' title='Odoo will remind you to take care of this follow-up on the next reminder date.'>
+            <button type="button" class="btn btn-secondary o_account_followup_do_it_later_button" data-bs-toggle='tooltip' title='Odoo will remind you to take care of this follow-up on the next reminder date.'>
                 Remind me later
             </button>
             <button type="button" class="btn btn-primary o_account_followup_done_button" style="display:none">
                 Done
             </button>
-            <button type="button" class="btn btn-secondary o_account_followup_reconcile" data-toggle='tooltip'>
+            <button type="button" class="btn btn-secondary o_account_followup_reconcile" data-bs-toggle='tooltip'>
                 Reconcile
             </button>
         </div>

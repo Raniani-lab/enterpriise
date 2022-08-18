@@ -1167,7 +1167,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         # add the dropdown before the rest
         dropdown_node = etree.fromstring("""
             <div class="o_dropdown_kanban dropdown" name="kanban_dropdown">
-                <a class="dropdown-toggle o-no-caret btn" data-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu" role="button">
+                <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu" role="button">
                     <span class="fa fa-ellipsis-v"/>
                 </a>
                 <div class="dropdown-menu" role="menu">

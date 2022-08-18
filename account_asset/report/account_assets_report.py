@@ -43,7 +43,7 @@ class assets_report(models.AbstractModel):
                 {'name': _('Acquisition Date'), 'class': 'text-center'},  # Characteristics
                 {'name': _('First Depreciation'), 'class': 'text-center'},
                 {'name': _('Method'), 'class': 'text-center'},
-                {'name': _('Duration / Rate'), 'class': 'number', 'title': _('In percent.<br>For a linear method, the depreciation rate is computed per year.<br>For a declining method, it is the declining factor'), 'data-toggle': 'tooltip'},
+                {'name': _('Duration / Rate'), 'class': 'number', 'title': _('In percent.<br>For a linear method, the depreciation rate is computed per year.<br>For a declining method, it is the declining factor'), 'data-bs-toggle': 'tooltip'},
                 {'name': start_date, 'class': 'number'},  # Assets
                 {'name': _('+'), 'class': 'number'},
                 {'name': _('-'), 'class': 'number'},

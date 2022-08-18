@@ -363,7 +363,7 @@ class View(models.Model):
         dropdown_toggle = E.a({
             'role': 'button',
             'class': 'dropdown-toggle o-no-caret btn',
-            'data-toggle': 'dropdown',
+            'data-bs-toggle': 'dropdown',
             'data-display': 'static',
             'href': '#',
             'aria-label': _('Dropdown Menu'),

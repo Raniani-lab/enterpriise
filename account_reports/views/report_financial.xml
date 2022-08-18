@@ -267,7 +267,7 @@
                         t-att-colspan="cell.get('colspan')"
                         t-att-style="cell.get('style', '')"
                         t-att-title="cell.get('title')"
-                        t-att-data-toggle="cell.get('data-toggle')">
+                        t-att-data-bs-toggle="cell.get('data-bs-toggle')">
                         <t t-call="{{cell.get('template', 'account_reports.cell_template')}}"/>
                     </th>
                 </t>

@@ -37,6 +37,7 @@ class MainComponent extends Component {
                 ...getDefaultConfig(),
                 offset: 0,
                 limit: defaultPagerSize,
+                mpsImportRecords: true,
             },
         })
 

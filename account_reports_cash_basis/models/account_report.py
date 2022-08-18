@@ -100,6 +100,11 @@ class AccountReport(models.AbstractModel):
             ctx['cash_basis'] = options['cash_basis']
         return ctx
 
+    def open_document(self, options, params=None):
+        action = super().open_document(options, params)
+        action['context'].pop('cash_basis', '')
+        return action
+
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"

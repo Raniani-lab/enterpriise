@@ -327,7 +327,7 @@ class Article(models.Model):
 
         articles_with_access = {}
         if not self.env.user.share:
-            articles_with_access = Article._get_internal_permission(filter_domain=[('internal_permission', '!=', 'none')])
+            articles_with_access = Article._get_internal_permission(filter_domain=['!', ('internal_permission', '=?', 'none')])
         member_permissions = Article._get_partner_member_permissions(self.env.user.partner_id)
         articles_with_no_member_access = [article_id for article_id, perm in member_permissions.items() if perm == 'none']
         articles_with_member_access = list(set(member_permissions.keys() - set(articles_with_no_member_access)))

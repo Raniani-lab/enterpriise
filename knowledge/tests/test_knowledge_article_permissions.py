@@ -507,7 +507,7 @@ class TestKnowledgeArticleSearch(KnowledgeArticlePermissionsCase):
         })
         articles = self.env['knowledge.article'].search([])
         # not reachable: 'none', desynchronized 'none' (and their children)
-        expected = self.articles_all - self.article_read_contents[3] - self.article_write_desync
+        expected = self.articles_all - self.article_read_contents[3] - self.article_write_desync - self.article_read_contents[3].child_ids
         self.assertEqual(articles, expected,
                          'Search on main article: aka everything except "none"-based articles (additional: %s, missing: %s)' %
                          ((articles - expected).mapped('name'), (expected - articles).mapped('name'))

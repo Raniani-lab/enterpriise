@@ -41,7 +41,7 @@ class Document(models.Model):
             return super().search_panel_select_range(field_name, **kwargs)
 
         res_id = self._context.get('active_id')
-        fields = ['display_name', 'description', 'parent_folder_id']
+        fields = ['display_name', 'description', 'parent_folder_id', 'has_write_access']
 
         project = self.env['project.project'].browse(res_id) \
             if res_model == 'project.project' \

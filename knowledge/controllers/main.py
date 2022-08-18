@@ -29,7 +29,7 @@ class KnowledgeController(http.Controller):
     def redirect_to_article(self, article_id):
         """ This route will redirect internal users to the backend view of the
         article and the share users to the frontend view instead."""
-        article = self._fetch_article(article_id)
+        article = request.env['knowledge.article'].search([('id', '=', article_id)])
         if request.env.user.has_group('base.group_user'):
             if not article:
                 return werkzeug.exceptions.Forbidden()
@@ -62,18 +62,6 @@ class KnowledgeController(http.Controller):
             return request.redirect(signup_url)
 
         return request.redirect('/web/login?redirect=/knowledge/article/%s' % article.id)
-
-    def _fetch_article(self, article_id):
-        """ Check the access of the given article for the current user. """
-        article = request.env['knowledge.article'].browse(int(article_id)).exists()
-        if not article:
-            return request.env['knowledge.article']
-        try:
-            article.check_access_rights('read')
-            article.check_access_rule('read')
-        except AccessError:
-            return request.env['knowledge.article']
-        return article
 
     def _redirect_to_backend_view(self, article):
         return request.redirect("/web#id=%s&model=knowledge.article&action=%s&menu_id=%s" % (
@@ -139,7 +127,7 @@ class KnowledgeController(http.Controller):
     def get_tree_panel_all(self, active_article_id=False, unfolded_articles=False):
         return self._prepare_articles_tree_html(
             'knowledge.knowledge_article_tree',
-            self._fetch_article(active_article_id),
+            request.env['knowledge.article'].search([('id', '=', active_article_id)]),
             unfolded_articles=unfolded_articles
         )
 
@@ -148,13 +136,13 @@ class KnowledgeController(http.Controller):
         """ Frontend access for left panel. """
         return self._prepare_articles_tree_html(
             'knowledge.knowledge_article_tree_frontend',
-            self._fetch_article(active_article_id),
+            request.env['knowledge.article'].search([('id', '=', active_article_id)]),
             unfolded_articles=unfolded_articles
         )
 
     @http.route('/knowledge/tree_panel/children', type='json', auth='user')
     def get_tree_panel_children(self, parent_id):
-        parent = self._fetch_article(parent_id)
+        parent = request.env['knowledge.article'].search([('id', '=', parent_id)])
         if not parent:
             return werkzeug.exceptions.NotFound()
         return request.env['ir.qweb']._render('knowledge.articles_template', {
@@ -182,7 +170,7 @@ class KnowledgeController(http.Controller):
         Returns a dictionnary containing all values required to render the permission panel.
         :param article_id: (int) article id
         """
-        article = self._fetch_article(article_id)
+        article = request.env['knowledge.article'].search([('id', '=', article_id)])
         if not article:
             return werkzeug.exceptions.Forbidden()
         is_sync = not article.is_desynchronized
@@ -268,7 +256,7 @@ class KnowledgeController(http.Controller):
         :param int inherited_member_id: id of a member from one of the article's
           parent (indicates rights are inherited from parents);
         """
-        article = self._fetch_article(article_id)
+        article = request.env['knowledge.article'].search([('id', '=', article_id)])
         if not article:
             return werkzeug.exceptions.Forbidden()
         member = request.env['knowledge.article.member'].browse(member_id or inherited_member_id).exists()
@@ -303,7 +291,7 @@ class KnowledgeController(http.Controller):
         :param int inherited_member_id: id of a member from one of the article's
           parent (indicates rights are inherited from parents);
         """
-        article = self._fetch_article(article_id)
+        article = request.env['knowledge.article'].search([('id', '=', article_id)])
         if not article:
             return werkzeug.exceptions.Forbidden()
         member = request.env['knowledge.article.member'].browse(member_id or inherited_member_id).exists()
@@ -342,7 +330,7 @@ class KnowledgeController(http.Controller):
         :param string permission: permission to set on member, one of 'none',
           'read' or 'write';
         """
-        article = self._fetch_article(article_id)
+        article = request.env['knowledge.article'].search([('id', '=', article_id)])
         if not article:
             return werkzeug.exceptions.Forbidden()
 

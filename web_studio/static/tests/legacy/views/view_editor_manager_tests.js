@@ -60,7 +60,6 @@ QUnit.module('ViewEditorManager', {
             request_partner_id: resPartnerId1,
             summary: 'shaktiman',
         });
-        pyEnv['res.groups'].create({ display_name: "Admin" });
         pyEnv['ir.model.fields'].create([
             {
                 name: "abc",
@@ -1028,7 +1027,7 @@ QUnit.module('ViewEditorManager', {
                             children: [],
                             tag: 'field',
                         },
-                        new_attrs: {groups: pyEnv['res.groups'].search([['display_name', '=', 'Admin']])},
+                        new_attrs: {groups: pyEnv['res.groups'].search([['name', '=', 'Internal User']])},
                         position: 'attributes',
                         target: {
                             attrs: {name: 'display_name'},

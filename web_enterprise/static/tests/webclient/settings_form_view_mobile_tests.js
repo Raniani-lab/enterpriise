@@ -2,8 +2,13 @@
 
 import { getFixture, triggerEvent, mockTimeout, nextTick } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { registry } from "@web/core/registry";
 
-let target, serverData;
+const { EventBus } = owl;
+
+let serverData, target;
+
+const serviceRegistry = registry.category("services");
 
 QUnit.module("Mobile SettingsFormView", (hooks) => {
     hooks.beforeEach(() => {
@@ -25,6 +30,18 @@ QUnit.module("Mobile SettingsFormView", (hooks) => {
 
     QUnit.test("swipe settings in mobile [REQUIRE TOUCHEVENT]", async function (assert) {
         const { execRegisteredTimeouts } = mockTimeout();
+        serviceRegistry.add("ui", {
+            start(env) {
+                Object.defineProperty(env, "isSmall", {
+                    value: true,
+                });
+                return {
+                    bus: new EventBus(),
+                    size: 0,
+                    isSmall: true,
+                };
+            },
+        });
         await makeView({
             type: "form",
             resModel: "project",
@@ -129,6 +146,94 @@ QUnit.module("Mobile SettingsFormView", (hooks) => {
             "data-key",
             "crm",
             "current setting should be crm"
+        );
+    });
+
+    QUnit.test("swipe settings on larger screen sizes has no effect [REQUIRE TOUCHEVENT]", async function (assert) {
+        const { execRegisteredTimeouts } = mockTimeout();
+        serviceRegistry.add("ui", {
+            start(env) {
+                Object.defineProperty(env, "isSmall", {
+                    value: false,
+                });
+                return {
+                    bus: new EventBus(),
+                    size: 9,
+                    isSmall: false,
+                };
+            },
+        });
+        await makeView({
+            type: "form",
+            resModel: "project",
+            serverData,
+            arch: `
+                <form string="Settings" class="oe_form_configuration o_base_settings" js_class="base_settings">
+                    <div class="o_setting_container">
+                        <div class="settings">
+                            <div class="app_settings_block" string="CRM" data-key="crm">
+                                <div class="row mt16 o_settings_container">
+                                    <div class="col-12 col-lg-6 o_setting_box">
+                                        <div class="o_setting_left_pane">
+                                            <field name="bar"/>
+                                        </div>
+                                        <div class="o_setting_right_pane">
+                                            <label for="bar"/>
+                                            <div class="text-muted">this is bar</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app_settings_block" string="Project" data-key="project">
+                                <div class="row mt16 o_settings_container">
+                                    <div class="col-12 col-lg-6 o_setting_box">
+                                        <div class="o_setting_left_pane">
+                                            <field name="foo"/>
+                                        </div>
+                                        <div class="o_setting_right_pane">
+                                            <label for="foo"/>
+                                            <div class="text-muted">this is foo</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>`,
+        });
+
+        const touchTarget = target.querySelector(".settings");
+        // The scrollable element is set at its right limit
+        touchTarget.scrollLeft = touchTarget.scrollWidth - touchTarget.offsetWidth;
+        //swipeLeft
+        await triggerEvent(target, ".settings", "touchstart", {
+            touches: [
+                {
+                    identifier: 0,
+                    clientX: 0,
+                    clientY: 0,
+                    target: touchTarget,
+                },
+            ],
+        });
+        await triggerEvent(target, ".settings", "touchmove", {
+            touches: [
+                {
+                    identifier: 0,
+                    clientX: -touchTarget.clientWidth,
+                    clientY: 0,
+                    target: touchTarget,
+                },
+            ],
+        });
+        await triggerEvent(target, ".settings", "touchend", {});
+        execRegisteredTimeouts();
+        await nextTick();
+        assert.hasAttrValue(
+            target.querySelector(".selected"),
+            "data-key",
+            "crm",
+            "current setting should still be crm"
         );
     });
 });

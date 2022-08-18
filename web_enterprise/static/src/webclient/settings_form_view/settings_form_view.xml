@@ -9,6 +9,7 @@
                     onLeftSwipe = " hasLeftSwipe() ? {
                         action: onLeftSwipe.bind(this),
                     } : undefined"
+                    isActive="env.isSmall"
                     animationOnMove="false"
                     animationType="'forwards'"
                     swipeDistanceRatio="6"

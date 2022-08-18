@@ -5,15 +5,8 @@ const tour = require('web_tour.tour');
 const helper = require('stock_barcode_picking_batch.tourHelper');
 
 function checkState(state) {
-    helper.assertPageSummary(state.pageSummary);
-    helper.assertPreviousVisible(state.previous.isVisible);
-    helper.assertPreviousEnabled(state.previous.isEnabled);
-    helper.assertNextVisible(state.next.isVisible);
-    helper.assertNextEnabled(state.next.isEnabled);
-    helper.assertNextIsHighlighted(state.next.isHighlighted);
     helper.assertLinesCount(state.linesCount);
     helper.assertScanMessage(state.scanMessage);
-    helper.assertPager(state.pager);
     helper.assertValidateVisible(state.validate.isVisible);
     helper.assertValidateIsHighlighted(state.validate.isHighlighted);
     helper.assertValidateEnabled(state.validate.isEnabled);
@@ -21,36 +14,17 @@ function checkState(state) {
 
 function updateState(oldState, newState) {
     const state = Object.assign({}, oldState, newState);
-    const buttonNames = ['next', 'previous', 'validate'];
-    for (const buttonName of buttonNames) {
-        state[buttonName] = Object.assign({}, oldState[buttonName], newState[buttonName]);
-    }
+    state.validate = Object.assign({}, oldState.validate, newState.validate);
     return state;
 }
 
 const defaultViewState = {
-    destLocationHighlight: false,
-    locationHighlight: false,
     linesCount: 0,
-    next: {
-        isEnabled: false,
-        isHighlighted: false,
-        isVisible: false,
-    },
-    nextEnabled: false,
-    nextIsHighlighted: false,
-    nextVisible: false,
-    pageSummary: '',
-    pager: '0/0',
-    previous: {
-        isEnabled: false,
-        isVisible: false,
-    },
     scanMessage: '',
     validate: {
-        isEnabled: false,
+        isEnabled: true,
         isHighlighted: false,
-        isVisible: false,
+        isVisible: true,
     },
 };
 let currentViewState;
@@ -64,9 +38,6 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: function () {
             currentViewState = updateState(defaultViewState, {
                 linesCount: 5, // 6 move lines but 5 visibles as tracked by SN lines are grouped.
-                pager: '1/1',
-                pageSummary: 'To WH/Stock',
-                previous: {isVisible: false},
                 scanMessage: 'scan_product',
                 validate: {
                     isEnabled: true,
@@ -109,14 +80,15 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan product1'
     },
     {
-        trigger: '.o_barcode_line[data-barcode="product1"] .qty-done:contains("1")',
+        trigger: '.o_barcode_line:first-child.o_selected.o_line_completed',
         run: function() {
             currentViewState.scanMessage = 'scan_product_or_dest';
             checkState(currentViewState);
             const $lines =  helper.getLines({barcode: 'product1'});
             helper.assert($lines.length, 2, "Expect 2 lines for product1");
-            helper.assertLineIsHighlighted($lines, true);
-            helper.assertLineQty($($lines[1]), '1');
+            helper.assertLineIsHighlighted($($lines[0]), true);
+            helper.assertLineQty($($lines[0]), '1');
+            helper.assertLineQty($($lines[1]), '0');
         }
     },
 
@@ -160,13 +132,13 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
             const $line1 = $($lines[0]);
             const $line2 = $($lines[1]);
             const $line3 = $($lines[2]);
-            helper.assertLineQty($line1, '1'); // Last added line:      qty 1
-            helper.assertLineIsHighlightedGreen($line1, true);
-            helper.assert($line1.find('.o_picking_label').text(), 'picking_receipt_2');
-            helper.assertLineQty($line2, '1'); // First product1 line:  qty 1/1
+            helper.assertLineQty($line1, '1'); // First product1 line:  qty 1/1
+            helper.assertLineIsHighlighted($line1, false);
+            helper.assertLineQty($line2, '3'); // Second product1 line: qty 3/3
             helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineQty($line3, '3'); // Second product1 line: qty 3/3
-            helper.assertLineIsHighlighted($line3, false);
+            helper.assertLineQty($line3, '1'); // Last added line:      qty 1
+            helper.assertLineIsHighlightedGreen($line3, true);
+            helper.assert($line3.find('.o_picking_label').text(), 'picking_receipt_2');
         }
     },
 
@@ -176,7 +148,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         run: 'scan productserial1'
     },
     {
-        trigger: '.o_barcode_line:nth-child(4).o_highlight[data-barcode="productserial1"]',
+        trigger: '.o_barcode_line:nth-child(6).o_highlight[data-barcode="productserial1"]',
         run: function() {
             currentViewState.scanMessage = 'scan_serial';
             checkState(currentViewState);
@@ -201,8 +173,8 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
             checkState(currentViewState);
             const sublines = document.querySelectorAll('.o_sublines [data-barcode=productserial1]');
             helper.assert(sublines.length, 2, "Expect 2 lines for productserial1");
-            helper.assertLineQty($(sublines[0]), '0');
-            helper.assertLineQty($(sublines[1]), '1');
+            helper.assertLineQty($(sublines[0]), '1');
+            helper.assertLineQty($(sublines[1]), '0');
         }
     },
     // Scan the same serial number -> Should show an warning message.
@@ -381,7 +353,7 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
     },
     // Selects the subline with the lot0002 and scans it again, it should increment the selected line.
     { trigger: '.o_barcode_line:contains("productlot1") .o_toggle_sublines' },
-    { trigger: '.o_sublines:contains("lot0002")' },
+    { trigger: '.o_sublines .o_barcode_line:contains("lot0002")' },
     {
         trigger: '.o_sublines .o_selected:contains("lot0002")',
         run: 'scan lot0002'
@@ -404,192 +376,149 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             currentViewState = updateState(defaultViewState, {
-                linesCount: 4,
-                pager: '1/5',
-                pageSummary: 'From WH/Stock/Section 1',
-                next: {
-                    isEnabled: true,
-                    isVisible: true,
-                },
-                previous: {
-                    isEnabled: true,
-                    isVisible: true
-                },
-                scanMessage: 'scan_product',
+                linesCount: 10,
+                scanMessage: 'scan_src',
             });
             checkState(currentViewState);
-            const $lineFromPicking1 = helper.getLines({index: 1});
-            const $linesFromPicking2 = helper.getLines({from: 2, to: 3});
-            const $linesFromPickingSN = helper.getLines({index: 4});
-            helper.assertLineBelongTo($lineFromPicking1, 'picking_delivery_1');
-            helper.assertLinesBelongTo($linesFromPicking2, 'picking_delivery_2');
-            helper.assertLinesBelongTo($linesFromPickingSN, 'picking_delivery_sn');
-            helper.assert($linesFromPickingSN.find('.o_line_lot_name').text(), 'sn1');
+            const lines = document.querySelectorAll('.o_barcode_line')
+
+            // Products comming from Section 1.
+            helper.assertLineLocations(lines[0], '.../Section 1');
+            helper.assertLineProduct(lines[0], 'product1');
+
+            helper.assertLineLocations(lines[1], '.../Section 1');
+            helper.assertLineProduct(lines[1], 'product1');
+
+            helper.assertLineLocations(lines[2], '.../Section 1');
+            helper.assertLineProduct(lines[2], 'product4');
+
+            helper.assertLineLocations(lines[3], '.../Section 1');
+            helper.assertLineProduct(lines[3], 'productserial1');
+            helper.assert(lines[3].querySelector('.o_line_lot_name').innerText, 'sn1');
+
+            // Products coming from Section 2.
+            helper.assertLineLocations(lines[4], '.../Section 2');
+            helper.assertLineProduct(lines[4], 'product2');
+
+            // Products coming from Section 3.
+            helper.assertLineLocations(lines[5], '.../Section 3');
+            helper.assertLineProduct(lines[5], 'product2');
+
+            helper.assertLineLocations(lines[6], '.../Section 3');
+            helper.assertLineProduct(lines[6], 'product3');
+
+            // Products coming from Section 4.
+            helper.assertLineLocations(lines[7], '.../Section 4');
+            helper.assertLineProduct(lines[7], 'product4');
+
+            // Products coming from Section 5.
+            helper.assertLineLocations(lines[8], '.../Section 5');
+            helper.assertLineProduct(lines[8], 'product5');
+
+            helper.assertLineLocations(lines[9], '.../Section 5');
+            helper.assertLineProduct(lines[9], 'product5');
+
+            // Checks each line belong to the right picking.
+            helper.assertLinesBelongTo($([lines[0], lines[4], lines[5]]), 'picking_delivery_1');
+            helper.assertLinesBelongTo($([lines[1], lines[2], lines[6], lines[7]]), 'picking_delivery_2');
+            helper.assertLinesBelongTo($([lines[8], lines[9]]), 'picking_delivery_package');
+            helper.assertLineBelongTo($(lines[3]), 'picking_delivery_sn');
         },
     },
-    // Scan product1 x2, product4 x1
+    // Scans the source (Section 1) then scans product1 x2, product4 x1
+    { trigger: '.o_barcode_client_action', run: 'scan LOC-01-01-00' },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_scan_message.o_scan_product',
+        extra_trigger: '.o_barcode_line .o_line_source_location:contains(".../Section 1") .fw-bold',
         run: 'scan product1'
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:first-child.o_line_completed ',
         run: 'scan product1'
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:nth-child(2).o_line_completed ',
         run: 'scan product4'
     },
 
     // Scan wrong SN.
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:nth-child(3).o_line_completed ',
         run: 'scan sn2'
     },
 
+    // Scans the next source (Section 2)
     {
-        trigger: '.o_next_page.btn-primary',
-        run: function () {
-            currentViewState.next.isHighlighted = true;
-            currentViewState.scanMessage = 'scan_next_or_validate';
-            checkState(currentViewState);
-            const $linesFromPickingSN = helper.getLines({index: 4});
-            helper.assert($linesFromPickingSN.find('.o_line_lot_name').text(), 'sn2');
-        },
+        trigger: '.o_scan_message.o_scan_product_or_src',
+        extra_trigger: '.o_barcode_line:nth-child(4).o_line_completed ',
+        run: 'scan LOC-01-02-00'
     },
-
-    // Change the location
-    {
-        trigger: '.o_next_page.btn-primary',
-    },
-    {
-        trigger: '.o_next_page:not(.btn-primary)',
-        run: function () {
-            currentViewState.pageSummary = 'From WH/Stock/Section 2';
-            currentViewState.linesCount = 1;
-            currentViewState.next.isHighlighted = false;
-            currentViewState.pager = '2/5';
-            currentViewState.scanMessage = 'scan_product';
-            checkState(currentViewState);
-        },
-    },
-
     // Scan product2 x2
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product2' // Must complete the existing line.
+        trigger: '.o_barcode_line .o_line_source_location:contains(".../Section 2") .fw-bold',
+        run: 'scan product2' // Must complete the line from Section 2.
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(5).o_selected.o_line_completed',
+        run: function() {
+            const lines = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineBelongTo($('.o_barcode_line:nth-child(5)'), 'picking_delivery_1');
+            helper.assertLineLocations(lines[4], '.../Section 2');
+            helper.assertLineBelongTo($('.o_barcode_line:nth-child(6)'), 'picking_delivery_1');
+            helper.assertLineLocations(lines[5], '.../Section 3');
+        }
     },
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan product2' // Must create a new line with same picking.
+        run: 'scan product2' // Must complete the line from Section 3 but change its source for Section 2.
     },
 
     {
-        trigger: '.o_barcode_line:nth-child(2)',
+        trigger: '.o_barcode_line:nth-child(6).o_selected.o_line_completed .product-label:contains("product2")',
         run: function () {
-            currentViewState.linesCount = 2;
-            helper.assert($('.o_barcode_line:nth-child(1) .o_picking_label').text(), 'picking_delivery_1');
-            helper.assert($('.o_barcode_line:nth-child(2) .o_picking_label').text(), 'picking_delivery_1');
-            currentViewState.next.isHighlighted = true;
-            currentViewState.scanMessage = 'scan_next_or_validate';
+            currentViewState.scanMessage = 'scan_product_or_src';
             checkState(currentViewState);
+            const lines = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineBelongTo($('.o_barcode_line:nth-child(5)'), 'picking_delivery_1');
+            helper.assertLineLocations(lines[4], '.../Section 2');
+            helper.assertLineBelongTo($('.o_barcode_line:nth-child(6)'), 'picking_delivery_1');
+            helper.assertLineLocations(lines[5], '.../Section 2');
         },
     },
 
-    // Change the location
-    {
-        trigger: '.o_next_page.btn-primary',
-    },
-    {
-        trigger: '.o_next_page:not(.btn-primary)',
-        run: function () {
-            currentViewState.pageSummary = 'From WH/Stock/Section 3';
-            currentViewState.linesCount = 2;
-            currentViewState.next.isHighlighted = false;
-            currentViewState.pager = '3/5';
-            currentViewState.scanMessage = 'scan_product';
-            checkState(currentViewState);
-        },
-    },
-
-    // Scan product2 x1, product3 x2
+    // Scans next source location (Section 3)
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan product2'
-    },
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product3'
-    },
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product3'
+        run: 'scan shelf3'
     },
 
-    {
-        trigger: '.o_next_page.btn-primary',
-        run: function () {
-            currentViewState.next.isHighlighted = true;
-            currentViewState.scanMessage = 'scan_next_or_validate';
-            checkState(currentViewState);
-        },
-    },
+    // Scan product3 x2
+    { trigger: '.o_scan_message.o_scan_product', run: 'scan product3' },
+    { trigger: '.o_barcode_line:nth-child(7).o_selected', run: 'scan product3' },
 
-    // Change the location for shelf 4.
+    // Change the location for shelf 4.// Scans next source location (Section 3)
     {
-        trigger: '.o_next_page.btn-primary',
-    },
-    {
-        trigger: '.o_next_page:not(.btn-primary)',
-        run: function () {
-            currentViewState.pageSummary = 'From WH/Stock/Section 4';
-            currentViewState.linesCount = 1;
-            currentViewState.next.isHighlighted = false;
-            currentViewState.pager = '4/5';
-            currentViewState.scanMessage = 'scan_product';
-            checkState(currentViewState);
-        },
+        trigger: '.o_barcode_line:nth-child(7).o_line_completed.o_selected',
+        run: 'scan shelf4'
     },
 
     // Scan product4 x1
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line .o_line_source_location:contains(".../Section 4") .fw-bold',
         run: 'scan product4'
     },
-    {
-        trigger: '.o_next_page.btn-primary',
-        run: function () {
-            currentViewState.next.isHighlighted = true;
-            currentViewState.scanMessage = 'scan_next_or_validate';
-            checkState(currentViewState);
-        },
-    },
 
-    // Change the location (shelf 5 is the last page).
+    // Change the location for shelf 5 (the last one).
     {
-        trigger: '.o_next_page.btn-primary',
-    },
-    {
-        trigger: '.o_validate_page',
-        run: function () {
-            currentViewState.pageSummary = 'From WH/Stock/Section 5';
-            currentViewState.linesCount = 2;
-            currentViewState.next.isEnabled = false;
-            currentViewState.next.isHighlighted = false;
-            currentViewState.next.isVisible = false;
-            currentViewState.validate.isEnabled = true;
-            currentViewState.validate.isVisible = true;
-            currentViewState.pager = '5/5';
-            currentViewState.scanMessage = 'scan_product';
-            checkState(currentViewState);
-        },
+        trigger: '.o_barcode_line:nth-child(8).o_line_completed.o_selected',
+        run: 'scan shelf5'
     },
 
     // Scan p5pack01 which is attended.
-        {
-            trigger: '.o_barcode_client_action',
-            run: 'scan p5pack01'
-        },
+    {
+        trigger: '.o_barcode_line .o_line_source_location:contains(".../Section 5") .fw-bold',
+        run: 'scan p5pack01'
+    },
     // Scan p5pack02 which isn't attended.
     {
         trigger: '.o_barcode_client_action',
@@ -599,24 +528,24 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
     {
         trigger: '.o_barcode_line:contains("p5pack02")',
         run: function () {
-            currentViewState.linesCount = 3;
+            currentViewState.linesCount = 11;
             currentViewState.scanMessage = 'scan_product_or_src';
             checkState(currentViewState);
-            const $packagedLines = helper.getLines();
-            const $line1 = $($packagedLines[0]); // p5pack02, qty 4
-            const $line2 = $($packagedLines[1]); // no pack, qty 0/4
-            const $line3 = $($packagedLines[2]); // p5pack01, qty 4/4
-            helper.assertLineQty($line1, '4');
-            helper.assertLineQty($line2, '0');
-            helper.assertLineQty($line3, '4');
-            helper.assert($line1.find('div[name="package"]:contains("p5pack02")').length, 1);
-            helper.assert($line2.find('div[name="package"]:contains("p5pack01 ?")').length, 1);
-            helper.assert($line3.find('div[name="package"]:contains("p5pack01")').length, 1);
+            const lines = document.querySelectorAll('.o_barcode_line');
+            const line1 = lines[8]; // no pack, qty 0/4
+            const line2 = lines[9]; // p5pack01, qty 4/4
+            const line3 = lines[10]; // p5pack02, qty 4
+            helper.assertLineQuantityOnReservedQty(8, '0 / 4');
+            helper.assertLineQuantityOnReservedQty(9, '4 / 4');
+            helper.assertLineQuantityOnReservedQty(10, '4');
+            helper.assert(line1.querySelector('[name="package"]>span').innerText, "p5pack01 ?");
+            helper.assert(line2.querySelector('[name="package"]>span').innerText, "p5pack01");
+            helper.assert(line3.querySelector('[name="package"]>span').innerText, "p5pack02");
         },
     },
-    {
-        trigger: '.o_validate_page',
-    },
+    { trigger: '.o_validate_page' },
+    { trigger: '.btn-primary[name="process_cancel_backorder"]' },
+    { trigger: '.o_notification.border-success' },
 ]);
 
 tour.register('test_batch_create', {test: true}, [
@@ -668,24 +597,40 @@ tour.register('test_batch_create', {test: true}, [
         trigger: '.o_picking_label',
         run: function () {
             currentViewState = updateState(defaultViewState, {
-                linesCount: 3,
-                pager: '1/4',
-                pageSummary: 'From WH/Stock/Section 1',
-                next: {
-                    isEnabled: true,
-                    isVisible: true,
-                },
-                previous: {
-                    isEnabled: true,
-                    isVisible: true
-                },
-                scanMessage: 'scan_product',
+                linesCount: 7,
+                scanMessage: 'scan_src',
             });
             checkState(currentViewState);
-            const $lineFromPicking1 = helper.getLines({index: 1});
-            const $linesFromPicking2 = helper.getLines({from: 2});
-            helper.assertLineBelongTo($lineFromPicking1, 'picking_delivery_1');
-            helper.assertLinesBelongTo($linesFromPicking2, 'picking_delivery_2');
+            const lines = document.querySelectorAll('.o_barcode_line')
+
+            // Products comming from Section 1.
+            helper.assertLineLocations(lines[0], '.../Section 1');
+            helper.assertLineProduct(lines[0], 'product1');
+
+            helper.assertLineLocations(lines[1], '.../Section 1');
+            helper.assertLineProduct(lines[1], 'product1');
+
+            helper.assertLineLocations(lines[2], '.../Section 1');
+            helper.assertLineProduct(lines[2], 'product4');
+
+            // Products coming from Section 2.
+            helper.assertLineLocations(lines[3], '.../Section 2');
+            helper.assertLineProduct(lines[3], 'product2');
+
+            // Products coming from Section 3.
+            helper.assertLineLocations(lines[4], '.../Section 3');
+            helper.assertLineProduct(lines[4], 'product2');
+
+            helper.assertLineLocations(lines[5], '.../Section 3');
+            helper.assertLineProduct(lines[5], 'product3');
+
+            // Products coming from Section 4.
+            helper.assertLineLocations(lines[6], '.../Section 4');
+            helper.assertLineProduct(lines[6], 'product4');
+
+            // Checks each line belong to the right picking.
+            helper.assertLinesBelongTo($([lines[0], lines[3], lines[4]]), 'picking_delivery_1');
+            helper.assertLinesBelongTo($([lines[1], lines[2], lines[5], lines[6]]), 'picking_delivery_2');
         },
     },
 ]);
@@ -695,44 +640,55 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             currentViewState = updateState(defaultViewState, {
-                linesCount: 3,
-                pager: '1/2',
-                pageSummary: 'From WH/Stock/Section 1',
-                next: {
-                    isEnabled: true,
-                    isVisible: true,
-                },
-                previous: {
-                    isEnabled: true,
-                    isVisible: true
-                },
-                scanMessage: 'scan_product',
+                linesCount: 5,
+                scanMessage: 'scan_src',
             });
             checkState(currentViewState);
-            const $linesFromPicking1 = helper.getLines({index: [1, 3]});
-            const $linesFromPicking2 = helper.getLines({index: 2});
-            helper.assertLineBelongTo($($linesFromPicking1[0]), 'test_delivery_1');
-            helper.assertLineBelongTo($($linesFromPicking1[1]), 'test_delivery_1');
-            helper.assertLinesBelongTo($linesFromPicking2, 'test_delivery_2');
+            const lines = document.querySelectorAll('.o_barcode_line')
+
+            // Products comming from Section 1.
+            helper.assertLineLocations(lines[0], '.../Section 1');
+            helper.assertLineProduct(lines[0], 'product1');
+
+            helper.assertLineLocations(lines[1], '.../Section 1');
+            helper.assertLineProduct(lines[1], 'product1');
+
+            helper.assertLineLocations(lines[2], '.../Section 1');
+            helper.assertLineProduct(lines[2], 'product3');
+
+            // Products coming from Section 2.
+            helper.assertLineLocations(lines[3], '.../Section 2');
+            helper.assertLineProduct(lines[3], 'product2');
+
+            helper.assertLineLocations(lines[4], '.../Section 2');
+            helper.assertLineProduct(lines[4], 'product2');
+
+            // Checks each line belong to the right picking.
+            helper.assertLinesBelongTo($([lines[0], lines[2], lines[3]]), 'test_delivery_1');
+            helper.assertLinesBelongTo($([lines[1], lines[4]]), 'test_delivery_2');
         },
     },
 
-    // Scans the delivery 1 line's product and put it in pack.
+    // Scans the source (Section 1), the delivery 1 line's product and put it in pack.
     {
         trigger: '.o_barcode_client_action',
+        run: 'scan LOC-01-01-00',
+    },
+    {
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan product1',
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line:first-child.o_selected.o_line_completed',
         run: 'scan O-BTN.pack',
     },
     {
         trigger: '.o_barcode_line:contains("test_delivery_1"):contains("PACK")',
         run: function() {
-            const product1_package = $('.o_selected div[name="package"]').text().trim();
-            const product3_package = $('[data-barcode="product3"] [name="package"]').text().trim();
-            helper.assert(product1_package, 'PACK0000001');
-            helper.assert(product3_package, 'PACK0000001 ?'); // Display suggested package.
+            const [, line2, line3, , line4] = document.querySelectorAll('.o_barcode_line')
+            helper.assert(line2.querySelector('[name=package]').innerText, 'PACK0000001 ?'); // Display suggested package.
+            helper.assert(line3.querySelector('[name=package]').innerText, 'PACK0000001 ?'); // Display suggested package.
+            helper.assert(line4.querySelector('[name=package]').innerText, 'PACK0000001');
         }
     },
     // Selects product3's line then scans PACK0000001 and product3.
@@ -742,10 +698,10 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
     {
         trigger: '.o_line_completed[data-barcode="product3"]',
         run: function() {
-            const product1_package = $('[data-barcode="product1"] [name="package"]').text().trim();
-            const product3_package = $('.o_selected div[name="package"]').text().trim();
-            helper.assert(product1_package, 'PACK0000001');
-            helper.assert(product3_package, 'PACK0000001'); // Display suggested package.
+            const [, line2, line3, , line5] = document.querySelectorAll('.o_barcode_line')
+            helper.assert(line2.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line3.querySelector('[name=package]').innerText, 'PACK0000001 ?'); // Display suggested package.
+            helper.assert(line5.querySelector('[name=package]').innerText, 'PACK0000001');
         }
     },
 
@@ -755,50 +711,44 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
         run: 'scan product1',
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: 'scan O-BTN.pack',
     },
     {
         trigger: '.o_barcode_line:contains("test_delivery_2"):contains("PACK")',
         run: function() {
-            const $lineFromPicking2 = $('.o_barcode_line:contains("test_delivery_2")');
-            const product2_package = $lineFromPicking2.find('div[name="package"]').text().trim();
-            helper.assert(product2_package, 'PACK0000002');
+            const [line1, line2, line3, line4, line5] = document.querySelectorAll('.o_barcode_line')
+            helper.assert(line1.querySelector('[name=package]').innerText, 'PACK0000001 ?'); // Display suggested package.
+            helper.assert(line2.querySelector('[name=package]').innerText, 'PACK0000002 ?'); // Display suggested package.
+            helper.assert(line3.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line4.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line5.querySelector('[name=package]').innerText, 'PACK0000002');
         }
     },
 
-    // Goes to next page and checks the lines have the right package suggestion.
+    // Scans the nex source location (Section 2).
     {
         trigger: '.o_barcode_client_action',
-        run: 'scan O-CMD.NEXT',
+        run: 'scan LOC-01-02-00',
     },
-    {
-        trigger: '.btn.o_validate_page',
-        run: function() {
-            const $lineFromPicking1 = $('.o_barcode_line:contains("test_delivery_1")');
-            const $lineFromPicking2 = $('.o_barcode_line:contains("test_delivery_2")');
-            const package_suggestion1 = $lineFromPicking1.find('div[name="package"]').text().trim();
-            const package_suggestion2 = $lineFromPicking2.find('div[name="package"]').text().trim();
-            helper.assert(package_suggestion1, 'PACK0000001 ?');
-            helper.assert(package_suggestion2, 'PACK0000002 ?');
-        }
-    },
-
     // Scans the delivery 1 line's product and put it in pack.
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_line_source_location:contains("Section 2") .fw-bold',
         run: 'scan product2',
     },
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: 'scan PACK0000001',
     },
     {
-        trigger: '.o_barcode_line:contains("test_delivery_1"):contains("PACK0000001"):not(:contains("?"))',
+        trigger: '.o_barcode_line.o_selected:contains("PACK0000001"):not(:contains("?"))',
         run: function() {
-            const $lineFromPicking1 = $('.o_barcode_line:contains("test_delivery_1")');
-            const product1_package = $lineFromPicking1.find('div[name="package"]').text().trim();
-            helper.assert(product1_package, 'PACK0000001');
+            const [line1, line2, line3, line4, line5] = document.querySelectorAll('.o_barcode_line')
+            helper.assert(line1.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line2.querySelector('[name=package]').innerText, 'PACK0000002 ?'); // Display suggested package.
+            helper.assert(line3.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line4.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line5.querySelector('[name=package]').innerText, 'PACK0000002');
         }
     },
 
@@ -812,11 +762,14 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
         run: 'scan PACK0000002',
     },
     {
-        trigger: '.o_barcode_line:contains("test_delivery_2"):contains("PACK0000002"):not(:contains("?"))',
+        trigger: '.o_scan_message.o_scan_validate',
         run: function() {
-            const $lineFromPicking2 = $('.o_barcode_line:contains("test_delivery_2")');
-            const product2_package = $lineFromPicking2.find('div[name="package"]').text().trim();
-            helper.assert(product2_package, 'PACK0000002');
+            const [line1, line2, line3, line4, line5] = document.querySelectorAll('.o_barcode_line')
+            helper.assert(line1.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line2.querySelector('[name=package]').innerText, 'PACK0000002');
+            helper.assert(line3.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line4.querySelector('[name=package]').innerText, 'PACK0000001');
+            helper.assert(line5.querySelector('[name=package]').innerText, 'PACK0000002');
         }
     },
     ...tour.stepUtils.validateBarcodeForm(),

@@ -224,7 +224,6 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         Change the location when all products of the page has been scanned.
         """
         batch_form = Form(self.env['stock.picking.batch'])
-        self.picking_type_out.restrict_scan_source_location = 'no'
         # Adds two quantities for product tracked by SN.
         sn1 = self.env['stock.lot'].create({'name': 'sn1', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
         sn2 = self.env['stock.lot'].create({'name': 'sn2', 'product_id': self.productserial1.id, 'company_id': self.env.company.id})
@@ -353,6 +352,8 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         destination in this test (since it doesn't matter).
         """
         self.picking_type_internal.active = True
+        self.picking_type_internal.restrict_scan_dest_location = 'mandatory'
+        self.picking_type_internal.restrict_scan_source_location = 'mandatory'
 
         self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
         self.env['stock.quant']._update_available_quantity(self.product2, self.shelf3, 1)
@@ -417,7 +418,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
         grp_pack = self.env.ref('stock.group_tracking_lot')
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
-        self.picking_type_out.restrict_scan_source_location = 'no'
+        self.picking_type_out.barcode_validation_all_product_packed = True
 
         self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 2)
         self.env['stock.quant']._update_available_quantity(self.product2, self.shelf2, 2)

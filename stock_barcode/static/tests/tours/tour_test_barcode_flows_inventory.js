@@ -10,13 +10,8 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        trigger: '.o_scan_message_scan_product',
+        trigger: '.o_scan_message.o_scan_product',
         run: function () {
-            helper.assertPreviousVisible(false);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertScanMessage('scan_product');
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
@@ -91,7 +86,7 @@ tour.register('test_inventory_adjustment', {test: true}, [
     },
 
     {
-        extra_trigger: '.o_scan_message.o_scan_message_scan_product',
+        extra_trigger: '.o_scan_message.o_scan_product',
         trigger: '.o_barcode_line',
         run: 'scan O-BTN.validate',
     },
@@ -120,7 +115,7 @@ tour.register('test_inventory_adjustment_multi_location', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock")',
+        trigger: '.o_scan_message:contains("WH/Stock")',
     },
 
     {
@@ -144,7 +139,7 @@ tour.register('test_inventory_adjustment_multi_location', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Section 1")',
+        trigger: '.o_scan_message:contains("WH/Stock/Section 1")',
     },
 
     {
@@ -158,7 +153,7 @@ tour.register('test_inventory_adjustment_multi_location', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_summary_location_src:contains("WH/Stock/Section 2")',
+        trigger: '.o_scan_message:contains("WH/Stock/Section 2")',
     },
 
     {

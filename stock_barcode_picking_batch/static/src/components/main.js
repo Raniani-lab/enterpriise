@@ -20,10 +20,6 @@ patch(MainComponent.prototype, 'stock_barcode_picking_batch', {
         return this._super() || this.isConfiguring || !this.env.model.canBeProcessed;
     },
 
-    get displayLocations() {
-        return this._super() && !(this.env.model.needPickings || this.env.model.needPickingType);
-    },
-
     async exit(ev) {
         if (this.displayBarcodeLines && this.env.model.needPickings && !this.env.model.needPickingType && this.env.model.pickingTypes) {
             this.env.model.record.picking_type_id = false;

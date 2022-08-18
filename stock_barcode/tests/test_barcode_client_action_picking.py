@@ -9,90 +9,70 @@ from odoo.addons.stock_barcode.tests.test_barcode_client_action import TestBarco
 
 @tagged('post_install', '-at_install')
 class TestPickingBarcodeClientAction(TestBarcodeClientAction):
-    def test_internal_picking_from_scratch_1(self):
-        """ Open an empty internal picking
+    def test_internal_picking_from_scratch(self):
+        """ Opens an empty internal picking and creates following move through the form view:
           - move 2 `self.product1` from shelf1 to shelf2
           - move 1 `self.product2` from shelf1 to shelf3
           - move 1 `self.product2` from shelf1 to shelf2
-        Test all these operations only by scanning barcodes.
+        Then creates a fourth move by scanning product1 (from shelf1 to shelf3).
+        Counts the number of picking's write.
         """
         self.clean_access_rights()
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
+        self.picking_type_internal.restrict_scan_dest_location = 'mandatory'
+        self.picking_type_internal.restrict_scan_source_location = 'mandatory'
         internal_picking = self.env['stock.picking'].create({
             'location_id': self.stock_location.id,
             'location_dest_id': self.stock_location.id,
             'picking_type_id': self.picking_type_internal.id,
             'immediate_transfer': True,
         })
-        picking_write_orig = odoo.addons.stock.models.stock_picking.Picking.write
         url = self._get_client_action_url(internal_picking.id)
 
         # Mock the calls to write and run the phantomjs script.
+        picking_write_orig = odoo.addons.stock.models.stock_picking.Picking.write
+        picking_button_validate_orig = odoo.addons.stock.models.stock_picking.Picking.button_validate
         product1 = self.product1
-        product2 = self.product2
+        stock_location = self.stock_location
         shelf1 = self.shelf1
-        shelf2 = self.shelf2
         shelf3 = self.shelf3
         assertEqual = self.assertEqual
         self1 = self
+        self1.stop_count_write = False
 
         def picking_write_mock(self, vals):
+            if self1.stop_count_write:
+                # Stops to count before `stock.picking` `button_validate` was called because
+                # that method and its overrides can call an unpredictable amount of write.
+                return picking_write_orig(self, vals)
             self1.call_count += 1
-            cmd = vals['move_line_ids'][0]
-            write_vals = cmd[2]
-            if self1.call_count == 1:
+            if self1.call_count == 1:  # Open the edit form view for a line added by scanning its product.
+                cmd = vals['move_line_ids'][0]
+                write_vals = cmd[2]
                 assertEqual(cmd[0], 0)
                 assertEqual(cmd[1], 0)
                 assertEqual(write_vals['product_id'], product1.id)
                 assertEqual(write_vals['picking_id'], internal_picking.id)
                 assertEqual(write_vals['location_id'], shelf1.id)
-                assertEqual(write_vals['location_dest_id'], shelf2.id)
-                assertEqual(write_vals['qty_done'], 2)
-            elif self1.call_count == 2:
-                assertEqual(cmd[0], 0)
-                assertEqual(cmd[1], 0)
-                assertEqual(write_vals['product_id'], product2.id)
-                assertEqual(write_vals['picking_id'], internal_picking.id)
-                assertEqual(write_vals['location_id'], shelf1.id)
+                assertEqual(write_vals['location_dest_id'], stock_location.id)
+                assertEqual(write_vals['qty_done'], 1)
+            elif self1.call_count == 2:  # Write before the validate.
+                cmd = vals['move_line_ids'][0]
+                write_vals = cmd[2]
+                assertEqual(cmd[0], 1)
                 assertEqual(write_vals['location_dest_id'], shelf3.id)
-                assertEqual(write_vals['qty_done'], 1)
-            elif self1.call_count == 3:
-                assertEqual(cmd[0], 0)
-                assertEqual(cmd[1], 0)
-                assertEqual(write_vals['product_id'], product2.id)
-                assertEqual(write_vals['picking_id'], internal_picking.id)
-                assertEqual(write_vals['location_id'], shelf1.id)
-                assertEqual(write_vals['location_dest_id'], shelf2.id)
-                assertEqual(write_vals['qty_done'], 1)
             return picking_write_orig(self, vals)
 
+        def picking_button_validate_mock(self):
+            self1.stop_count_write = True  # Stops to count write once validate is called.
+            return picking_button_validate_orig(self)
+
         with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
-            self.start_tour(url, 'test_internal_picking_from_scratch_1', login='admin', timeout=180)
-            self.assertEqual(self.call_count, 3)
+            with patch('odoo.addons.stock.models.stock_picking.Picking.button_validate', new=picking_button_validate_mock):
+                self.start_tour(url, 'test_internal_picking_from_scratch', login='admin', timeout=180)
 
-        self.assertEqual(len(internal_picking.move_line_ids), 3)
-
-    def test_internal_picking_from_scratch_2(self):
-        """ Open an empty internal picking
-          - move 2 `self.product1` from shelf1 to shelf2
-          - move 1 `self.product2` from shelf1 to shelf3
-          - move 1 `self.product2` from shelf1 to shelf2
-        Test all these operations only by using the embedded form views.
-        """
-        self.clean_access_rights()
-        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
-        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
-        internal_picking = self.env['stock.picking'].create({
-            'location_id': self.stock_location.id,
-            'location_dest_id': self.stock_location.id,
-            'picking_type_id': self.picking_type_internal.id,
-            'immediate_transfer': True,
-        })
-        url = self._get_client_action_url(internal_picking.id)
-
-        self.start_tour(url, 'test_internal_picking_from_scratch_2', login='admin', timeout=180)
-
+        self.assertEqual(self.call_count, 2)
         self.assertEqual(len(internal_picking.move_line_ids), 4)
         prod1_ml = internal_picking.move_line_ids.filtered(lambda ml: ml.product_id.id == self.product1.id)
         prod2_ml = internal_picking.move_line_ids.filtered(lambda ml: ml.product_id.id == self.product2.id)
@@ -116,6 +96,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         Before doing the reservation, move 1 `self.product1` from shelf3 to shelf2
         """
         self.clean_access_rights()
+        self.picking_type_internal.restrict_scan_dest_location = 'mandatory'
+        self.picking_type_internal.restrict_scan_source_location = 'mandatory'
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
         internal_picking = self.env['stock.picking'].create({
@@ -157,87 +139,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             else:
                 ml.location_dest_id = self.shelf4.id
 
-        # Mock the calls to write and run the phantomjs script.
-        product1 = self.product1
-        shelf2 = self.shelf2
-        shelf3 = self.shelf3
-        assertEqual = self.assertEqual
-        self1 = self
-
-        def picking_write_mock(self, vals):
-            self1.call_count += 1
-            cmd = vals['move_line_ids'][0]
-            write_vals = cmd[2]
-            if self1.call_count == 1:
-                assertEqual(cmd[0], 0)
-                assertEqual(cmd[1], 0)
-                assertEqual(write_vals['product_id'], product1.id)
-                assertEqual(write_vals['picking_id'], internal_picking.id)
-                assertEqual(write_vals['location_id'], shelf3.id)
-                assertEqual(write_vals['location_dest_id'], shelf2.id)
-                assertEqual(write_vals['qty_done'], 1)
-            return picking_write_orig(self, vals)
-
-        with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
-            self.start_tour(url, 'test_internal_picking_reserved_1', login='admin', timeout=180)
-            self.assertEqual(self.call_count, 2)
-
-    def test_internal_picking_change_location(self):
-        """ Changes the locations directly with the location list displayed in the header.
-        """
-        # Activates multilocations.
-        self.clean_access_rights()
-        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
-        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
-        # Creates some locations.
-        parent_location = self.env["stock.location"].create({
-            'name': 'Stock House',
-            'barcode': 'stock-house',
-        })
-        sub_location_1 = self.env["stock.location"].create({
-            'name': 'Abandonned Ground Floor',
-            'location_id': parent_location.id,
-            'barcode': 'first-floor',
-        })
-        sub_location_2 = self.env["stock.location"].create({
-            'name': 'Poorly lit floor',
-            'location_id': parent_location.id,
-            'barcode': 'second-floor',
-        })
-        # Creates some quants.
-        self.env['stock.quant']._update_available_quantity(self.product1, sub_location_1, 1)
-        self.env['stock.quant']._update_available_quantity(self.product2, sub_location_2, 1)
-
-        # Creates an internal transfer, from WH/Stock to WH/Stock.
-        picking_form = Form(self.env['stock.picking'])
-        picking_form.picking_type_id = self.picking_type_internal
-        picking_form.location_id = parent_location
-        picking_form.location_dest_id = parent_location
-        # Adds two products from two distinct locations.
-        with picking_form.move_ids_without_package.new() as move:
-            move.product_id = self.product1
-            move.product_uom_qty = 1
-        with picking_form.move_ids_without_package.new() as move:
-            move.product_id = self.product2
-            move.product_uom_qty = 1
-
-        internal_transfer = picking_form.save()
-        internal_transfer.action_confirm()
-        internal_transfer.action_assign()
-
-        move_lines = internal_transfer.move_line_ids
-        self.assertEqual(move_lines[0].location_id.id, sub_location_1.id)
-        self.assertEqual(move_lines[1].location_id.id, sub_location_2.id)
-        self.assertEqual(move_lines[0].location_dest_id.id, parent_location.id)
-        self.assertEqual(move_lines[1].location_dest_id.id, parent_location.id)
-
-        url = self._get_client_action_url(internal_transfer.id)
-        self.start_tour(url, 'test_internal_change_location', login='admin', timeout=180)
-
-        self.assertEqual(move_lines[0].location_id.id, sub_location_1.id)
-        self.assertEqual(move_lines[1].location_id.id, sub_location_1.id)
-        self.assertEqual(move_lines[0].location_dest_id.id, parent_location.id)
-        self.assertEqual(move_lines[1].location_dest_id.id, parent_location.id)
+        self.start_tour(url, 'test_internal_picking_reserved_1', login='admin', timeout=180)
 
     def test_receipt_from_scratch_with_lots_1(self):
         self.clean_access_rights()
@@ -421,66 +323,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             self.assertEqual(receipt_picking.move_line_ids[0].location_dest_id.id, shelf1.id)
             self.assertEqual(receipt_picking.move_line_ids[1].location_dest_id.id, shelf1.id)
 
-    def test_receipt_reserved_2(self):
-        """ Open a receipt. Move an unit of `self.product1` into shelf1, shelf2, shelf3 and shelf 4.
-        Move an unit of `self.product2` into shelf1, shelf2, shelf3 and shelf4 too.
-        """
-        self.clean_access_rights()
-        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
-        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
-        receipt_picking = self.env['stock.picking'].create({
-            'location_id': self.supplier_location.id,
-            'location_dest_id': self.stock_location.id,
-            'picking_type_id': self.picking_type_in.id,
-        })
-        picking_write_orig = odoo.addons.stock.models.stock_picking.Picking.write
-        url = self._get_client_action_url(receipt_picking.id)
-
-        self.env['stock.move'].create({
-            'name': 'test_receipt_reserved_1_1',
-            'location_id': self.supplier_location.id,
-            'location_dest_id': self.stock_location.id,
-            'product_id': self.product1.id,
-            'product_uom': self.uom_unit.id,
-            'product_uom_qty': 4,
-            'picking_id': receipt_picking.id,
-        })
-        self.env['stock.move'].create({
-            'name': 'test_receipt_reserved_1_2',
-            'location_id': self.supplier_location.id,
-            'location_dest_id': self.stock_location.id,
-            'product_id': self.product2.id,
-            'product_uom': self.uom_unit.id,
-            'product_uom_qty': 4,
-            'picking_id': receipt_picking.id,
-        })
-        receipt_picking.action_confirm()
-        receipt_picking.action_assign()
-
-        # Mock the calls to write and run the phantomjs script.
-        product1, product2 = self.product1, self.product2
-        assertEqual = self.assertEqual
-        locations = [self.shelf1, self.shelf2, self.shelf3, self.shelf4]
-        self1 = self
-
-        def picking_write_mock(self, vals):
-            assertEqual(len(vals['move_line_ids']), 2)
-            vml1 = vals['move_line_ids'][0][2]
-            vml2 = vals['move_line_ids'][1][2]
-            assertEqual(vml1['product_id'], product2.id)
-            assertEqual(vml2['product_id'], product1.id)
-            assertEqual(vml1['location_dest_id'], locations[self1.call_count].id)
-            assertEqual(vml2['location_dest_id'], locations[self1.call_count].id)
-            self1.call_count += 1
-            return picking_write_orig(self, vals)
-
-        self.assertEqual(len(receipt_picking.move_line_ids), 2)
-        with patch('odoo.addons.stock.models.stock_picking.Picking.write', new=picking_write_mock):
-            self.start_tour(url, 'test_receipt_reserved_2', login='admin', timeout=180)
-            self.assertEqual(self.call_count, 4)
-            self.assertEqual(len(receipt_picking.move_line_ids), 10)
-            self.assertEqual(sum(receipt_picking.move_line_ids.mapped('qty_done')), 8)
-
     def test_receipt_product_not_consecutively(self):
         """ Check that there is no new line created when scanning the same product several times but not consecutively."""
         self.clean_access_rights()
@@ -499,8 +341,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(receipt_picking.move_line_ids.mapped('qty_done'), [2, 1])
 
     def test_delivery_lot_with_package(self):
-        """ Have a delivery for on product tracked by SN, scan a non-reserved SN
-        and check the new created line has the right SN's package & owner.
+        """ Have a delivery for a product tracked by SN, scan a non-reserved SN
+        and checks the new created line has the right SN's package & owner.
         """
         self.clean_access_rights()
         grp_lot = self.env.ref('stock.group_production_lot')
@@ -587,7 +429,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.clean_access_rights()
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
-        self.picking_type_out.restrict_scan_source_location = 'mandatory'
         delivery_picking = self.env['stock.picking'].create({
             'location_id': self.stock_location.id,
             'location_dest_id': self.customer_location.id,
@@ -1032,17 +873,13 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(receipts_picking.user_id.id, self.env.user.id)
         self.env.invalidate_all()
         lines = receipts_picking.move_line_ids
-        self.assertEqual(lines[0].qty_done, 0.0)
-        self.assertEqual(lines[0].reserved_qty, 4.0)
+        self.assertEqual(len(lines), 2)
+        self.assertEqual(lines.mapped('qty_done'), [2, 2])
         self.assertEqual(lines.mapped('location_id.name'), ['Vendors'])
-
-        self.assertEqual(lines[1].lot_name, 'lot2')
-        self.assertEqual(lines[1].qty_done, 2)
-        self.assertEqual(lines[1].location_dest_id.name, 'Section 1')
-
-        self.assertEqual(lines[2].lot_name, 'lot1')
-        self.assertEqual(lines[2].qty_done, 2)
-        self.assertEqual(lines[2].location_dest_id.name, 'Section 2')
+        self.assertEqual(lines[0].location_dest_id.name, 'Section 1')
+        self.assertEqual(lines[0].lot_name, 'lot2')
+        self.assertEqual(lines[1].location_dest_id.name, 'Section 2')
+        self.assertEqual(lines[1].lot_name, 'lot1')
 
     def test_pack_multiple_scan(self):
         """ Make a reception of two products, put them in pack and validate.
@@ -1127,6 +964,9 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
         self.picking_type_internal.active = True
+        self.picking_type_internal.show_entire_packs = True
+        self.picking_type_internal.restrict_scan_dest_location = 'mandatory'
+        self.picking_type_internal.restrict_scan_source_location = 'mandatory'
 
         action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
         url = "/web#action=" + str(action_id.id)
@@ -1149,7 +989,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             package_id=pack1,
         )
 
-        self.picking_type_internal.show_entire_packs = True
         self.start_tour(url, 'test_pack_multiple_location', login='admin', timeout=180)
 
         # Check the new package is well transfered
@@ -1359,12 +1198,17 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_bypass_source_scan', login='admin', timeout=180)
 
     def test_put_in_pack_from_different_location(self):
+        """ Scans two different products from two different locations, then put them in pack and
+        scans a destination location. Checks the package is in the right location.
+        """
         self.clean_access_rights()
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
         grp_pack = self.env.ref('stock.group_tracking_lot')
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
         self.picking_type_internal.active = True
+        self.picking_type_internal.restrict_scan_source_location = 'no'
+        self.picking_type_internal.restrict_scan_dest_location = 'optional'
         self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
         self.env['stock.quant']._update_available_quantity(self.product2, self.shelf3, 1)
 
@@ -1408,6 +1252,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         grp_pack = self.env.ref('stock.group_tracking_lot')
         self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
         self.picking_type_internal.active = True
+        self.picking_type_internal.restrict_scan_dest_location = 'mandatory'
+        self.picking_type_internal.restrict_scan_source_location = 'mandatory'
 
         self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
         self.env['stock.quant']._update_available_quantity(self.product2, self.shelf3, 1)
@@ -1476,7 +1322,6 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         delivery = delivery_form.save()
         delivery.action_confirm()
         delivery.action_assign()
-        self.picking_type_out.restrict_scan_source_location = 'no'
 
         url = self._get_client_action_url(delivery.id)
         self.start_tour(url, 'test_put_in_pack_scan_package', login='admin', timeout=180)
@@ -1657,6 +1502,19 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         warehouse.reception_steps = 'two_steps'
         warehouse.delivery_steps = 'pick_pack_ship'
 
+        # Creates two cluster packs.
+        self.env['stock.quant.package'].create({
+            'name': 'cluster-pack-01',
+            'package_use': 'reusable',
+        })
+        self.env['stock.quant.package'].create({
+            'name': 'cluster-pack-02',
+            'package_use': 'reusable',
+        })
+        # Resets package sequence to be sure we'll have the attended packages name.
+        seq = self.env['ir.sequence'].search([('code', '=', 'stock.quant.package')])
+        seq.number_next_actual = 1
+
         # Configures the picking type's scan settings.
         # Receipt: no put in pack, can not be directly validate.
         self.picking_type_in.barcode_validation_full = False
@@ -1668,17 +1526,19 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         # Pick: source mandatory, lots reserved only.
         warehouse.pick_type_id.barcode_validation_full = False
         warehouse.pick_type_id.restrict_scan_source_location = 'mandatory'
-        warehouse.pick_type_id.restrict_put_in_pack = 'no'
+        warehouse.pick_type_id.restrict_put_in_pack = 'mandatory'  # Will use cluster packs.
         warehouse.pick_type_id.restrict_scan_tracking_number = 'mandatory'
         warehouse.pick_type_id.restrict_scan_dest_location = 'no'
         # Pack: pack after group, all products have to be packed to be validate.
         warehouse.pack_type_id.restrict_put_in_pack = 'optional'
         warehouse.pack_type_id.restrict_scan_tracking_number = 'mandatory'
         warehouse.pack_type_id.barcode_validation_all_product_packed = True
+        warehouse.pick_type_id.restrict_scan_dest_location = 'no'
         # Delivery: pack after group, all products have to be packed to be validate.
         self.picking_type_out.restrict_put_in_pack = 'optional'
         self.picking_type_out.restrict_scan_tracking_number = 'mandatory'
         self.picking_type_out.barcode_validation_all_product_packed = True
+        self.picking_type_out.show_entire_packs = True
 
         # Creates and assigns the receipt.
         picking_receipt = create_picking(self.picking_type_in)
@@ -1689,8 +1549,9 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
 
         # Creates the pick, pack, ship.
         picking_pick = create_picking(warehouse.pick_type_id)
-        # picking_pack = create_picking(warehouse.pack_type_id)
-        # picking_delivery = create_picking(self.picking_type_out)
+        picking_pack = create_picking(warehouse.pack_type_id)
+        picking_delivery = create_picking(self.picking_type_out)
+        picking_pack.location_dest_id = picking_delivery.location_id
 
         # Process each picking one by one.
         url = self._get_client_action_url(picking_receipt.id)
@@ -1707,19 +1568,19 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_picking_type_mandatory_scan_complete_flux_pick', login='admin', timeout=180)
         self.assertEqual(picking_pick.state, 'done')
 
-        # TODO
-        # picking_pack.action_confirm()
-        # picking_pack.action_assign()
-        # url = self._get_client_action_url(picking_pack.id)
-        # self.start_tour(url, 'test_picking_type_mandatory_scan_complete_flux_pack', login='admin', timeout=180)
-        # self.assertEqual(picking_pack.state, 'done')
+        picking_pack.action_confirm()
+        picking_pack.action_assign()
+        for move_line in picking_pack.move_line_ids:  # TODO: shouldn't have to do that, reusable packages shouldn't be set in `result_package_id` for the next move.
+            move_line.result_package_id = False
+        url = self._get_client_action_url(picking_pack.id)
+        self.start_tour(url, 'test_picking_type_mandatory_scan_complete_flux_pack', login='admin', timeout=180)
+        self.assertEqual(picking_pack.state, 'done')
 
-        # TODO
-        # picking_delivery.action_confirm()
-        # picking_delivery.action_assign()
-        # url = self._get_client_action_url(picking_delivery.id)
-        # self.start_tour(url, 'test_picking_type_mandatory_scan_complete_flux_delivery', login='admin', timeout=180)
-        # self.assertEqual(picking_delivery.state, 'done')
+        picking_delivery.action_confirm()
+        picking_delivery.action_assign()
+        url = self._get_client_action_url(picking_delivery.id)
+        self.start_tour(url, 'test_picking_type_mandatory_scan_complete_flux_delivery', login='admin', timeout=180)
+        self.assertEqual(picking_delivery.state, 'done')
 
     def test_receipt_delete_button(self):
         """ Scan products that not part of a receipt. Check that products not part of original receipt

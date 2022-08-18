@@ -8,7 +8,6 @@ import { bus } from 'web.core';
 import config from 'web.config';
 import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
-import LocationButton from '@stock_barcode/components/location_button';
 import PackageLineComponent from '@stock_barcode/components/package_line';
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -16,7 +15,7 @@ import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { View } from "@web/views/view";
 
-const { Component, onMounted, onPatched, onWillStart, onWillUnmount, reactive, useSubEnv } = owl;
+const { Component, onMounted, onPatched, onWillStart, onWillUnmount, useSubEnv } = owl;
 
 /**
  * Main Component
@@ -33,14 +32,6 @@ class MainComponent extends Component {
         this.rpc = useService('rpc');
         this.orm = useService('orm');
         this.notification = useService('notification');
-        this.state = reactive(
-            {
-                displayDestinationSelection: false,
-                displaySourceSelection: false,
-                productPageOpened: false,
-            },
-            () => this.render(true)
-        );
         this.props.model = this.props.action.res_model;
         this.props.id = this.props.action.context.active_id;
         const model = this._getModel(this.props);
@@ -97,41 +88,6 @@ class MainComponent extends Component {
         return this.env.model.isDone || this.env.model.isCancelled;
     }
 
-    get currentPageIndex() {
-        return this.env.model.pageIndex + 1;
-    }
-
-    get displayDestinationLocation() {
-        return this.env.model.displayDestinationLocation;
-    }
-
-    get displayLocations() {
-        return this.groups.group_stock_multi_locations && this.displayBarcodeLines;
-    }
-
-    get displaySourceLocation() {
-        return this.env.model.displaySourceLocation;
-    }
-
-    get currentSourceLocation() {
-        return this.env.model.location.display_name;
-    }
-
-    get sourceLocations() {
-        return this.env.model.locationList;
-    }
-
-    get destinationLocations() {
-        return this.env.model.destLocationList;
-    }
-
-    get currentDestinationLocation() {
-        if (!this.env.model.destLocation) {
-            return null;
-        }
-        return this.env.model.destLocation.display_name;
-    }
-
     get displayBarcodeApplication() {
         return this.env.model.view === 'barcodeLines';
     }
@@ -146,10 +102,6 @@ class MainComponent extends Component {
 
     get displayInformation() {
         return this.env.model.view === 'infoFormView';
-    }
-
-    get displayNextButton() {
-        return this.numberOfPages > 1 && this.currentPageIndex < this.numberOfPages;
     }
 
     get displayNote() {
@@ -171,18 +123,6 @@ class MainComponent extends Component {
         return data;
     }
 
-    get highlightDestinationLocation() {
-        return this.env.model.highlightDestinationLocation;
-    }
-
-    get highlightSourceLocation() {
-        return this.env.model.highlightSourceLocation;
-    }
-
-    get highlightNextButton() {
-        return this.env.model.highlightNextButton;
-    }
-
     get highlightValidateButton() {
         return this.env.model.highlightValidateButton;
     }
@@ -201,10 +141,6 @@ class MainComponent extends Component {
 
     get mobileScanner() {
         return BarcodeScanner.isBarcodeScannerSupported();
-    }
-
-    get numberOfPages() {
-        return this.env.model.pages.length;
     }
 
     get packageLines() {
@@ -280,19 +216,11 @@ class MainComponent extends Component {
         this.render();
     }
 
-    nextPage(ev) {
-        this.env.model.nextPage();
-    }
-
     async openProductPage() {
         if (!this._editedLineParams) {
             await this.env.model.save();
         }
         this.env.model.displayProductPage();
-    }
-
-    previousPage(ev) {
-        this.env.model.previousPage();
     }
 
     async print(action, method) {
@@ -337,30 +265,6 @@ class MainComponent extends Component {
         this.env.model.displayInformation();
     }
 
-    toggleDestinationSelection(ev) {
-        ev.stopPropagation();
-        if (!this.env.model.canSelectLocation) {
-            return;
-        }
-        this.state.displayDestinationSelection = !this.state.displayDestinationSelection;
-        this.state.displaySourceSelection = false;
-        document.addEventListener('click', () => {
-            this.state.displayDestinationSelection = false;
-        }, {once: true});
-    }
-
-    toggleSourceSelection(ev) {
-        ev.stopPropagation();
-        if (!this.env.model.canSelectLocation) {
-            return;
-        }
-        this.state.displaySourceSelection = !this.state.displaySourceSelection;
-        this.state.displayDestinationSelection = false;
-        document.addEventListener('click', () => {
-            this.state.displaySourceSelection = false;
-        }, {once: true});
-    }
-
     /**
      * Calls `validate` on the model and then triggers up the action because OWL
      * components don't seem able to manage wizard without doing custom things.
@@ -393,30 +297,24 @@ class MainComponent extends Component {
         if (!selectedLine) {
             selectedLine = document.querySelector('.o_barcode_line.o_highlight');
         }
+        if (!selectedLine) {
+            const matchingLine = this.env.model.findLineForCurrentLocation();
+            if (matchingLine) {
+                selectedLine = document.querySelector(`.o_barcode_line[data-virtual-id="${matchingLine.virtual_id}"]`);
+            }
+        }
         if (selectedLine) {
-            // If a line is selected, checks if this line is entirely visible
-            // and if it's not, scrolls until the line is.
-            const footer = document.querySelector('.fixed-bottom');
+            // If a line is selected, checks if this line is on the top of the
+            // page, and if it's not, scrolls until the line is on top.
             const header = document.querySelector('.o_barcode_header');
             const lineRect = selectedLine.getBoundingClientRect();
             const navbar = document.querySelector('.o_main_navbar');
-            // On mobile, overflow is on the html.
-            const page = document.querySelector(this.isMobile ? 'html' : '.o_barcode_lines');
+            const page = document.querySelector('.o_barcode_lines');
             // Computes the real header's height (the navbar is present if the page was refreshed).
             const headerHeight = navbar ? navbar.offsetHeight + header.offsetHeight : header.offsetHeight;
-            let scrollCoordY = false;
-            if (lineRect.top < headerHeight) {
-                scrollCoordY = lineRect.top - headerHeight + page.scrollTop;
-            } else if (lineRect.bottom > window.innerHeight - footer.offsetHeight) {
-                const pageRect = page.getBoundingClientRect();
-                scrollCoordY = page.scrollTop - (pageRect.bottom - lineRect.bottom);
-                if (this.isMobile) {
-                    // The footer can hide the line on mobile, we increase the scroll coord to avoid that.
-                    scrollCoordY += footer.offsetHeight;
-                }
-            }
-            if (scrollCoordY !== false) { // Scrolls to the line only if it's not entirely visible.
-                page.scroll({ left: 0, top: scrollCoordY, behavior: this._scrollBehavior });
+            if (lineRect.top < headerHeight || lineRect.bottom > headerHeight + (lineRect.bottom - lineRect.top)) {
+                const top = lineRect.top - headerHeight + page.scrollTop;
+                page.scroll({ left: 0, top, behavior: this._scrollBehavior });
                 this._scrollBehavior = 'smooth';
             }
         }
@@ -477,7 +375,6 @@ MainComponent.components = {
     View,
     GroupedLineComponent,
     LineComponent,
-    LocationButton,
     PackageLineComponent,
     ChatterContainer,
 };

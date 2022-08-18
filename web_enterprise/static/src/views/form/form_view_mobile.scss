@@ -7,7 +7,8 @@
         }
 
         .o_form_sheet_bg > .o_form_sheet {
-            border: 0;
+            border-top: 0;
+            border-bottom: 0;
             margin: 0 auto;
         }
 
@@ -50,7 +51,7 @@
                         width: 100% !important;
                         tr {
                             > td {
-                                width: 35% !important;
+                                width: 0% !important;
                                 &:first-child {
                                     width: 65% !important;
                                 }

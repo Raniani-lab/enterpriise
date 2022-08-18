@@ -142,13 +142,11 @@ registerModel({
     fields: {
         attachment: one("Attachment", {
             compute: "_computeAttachment",
-            readonly: true,
         }),
         attachmentId: attr(),
         attachmentViewerViewable: one("AttachmentViewerViewable", {
             compute: "_computeAttachmentViewerViewable",
             isCausal: true,
-            readonly: true,
         }),
         id: attr({
             identifying: true,

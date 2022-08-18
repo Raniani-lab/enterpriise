@@ -10,18 +10,21 @@ registerModel({
         selectNextAttachment() {
             const index = this.viewableDocuments.findIndex((document) => document === this.selectedDocument);
             const nextIndex = index === this.viewableDocuments.length - 1 ? 0 : index + 1;
-            this.update({ selectedDocument: this.viewableDocuments[nextIndex] });
+            this.update({ userSelectedDocument: this.viewableDocuments[nextIndex] });
         },
         selectPreviousAttachment() {
             const index = this.viewableDocuments.findIndex((document) => document === this.selectedDocument);
             const prevIndex = index === 0 ? this.viewableDocuments.length - 1 : index - 1;
-            this.update({ selectedDocument: this.viewableDocuments[prevIndex] });
+            this.update({ userSelectedDocument: this.viewableDocuments[prevIndex] });
         },
         _computeSelectedDocument() {
-            if (!this.viewableDocuments.length) {
-                return clear();
+            if (this.userSelectedDocument) {
+                return this.userSelectedDocument;
             }
-            return this.viewableDocuments[0];
+            if (this.viewableDocuments.length > 0) {
+                return this.viewableDocuments[0];
+            }
+            return clear();
         },
         _computeViewableDocuments() {
             return this.documents.filter((doc) => doc.isViewable);
@@ -40,9 +43,9 @@ registerModel({
             required: true,
         }),
         selectedDocument: one("Document", {
-            compute: "_computeSelectedDocument",
-            readonly: false,
+            compute: '_computeSelectedDocument'
         }),
+        userSelectedDocument: one("Document"),
         viewableDocuments: many("Document", {
             compute: "_computeViewableDocuments",
         }),

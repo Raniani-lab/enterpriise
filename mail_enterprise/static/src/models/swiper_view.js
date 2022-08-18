@@ -198,7 +198,6 @@ registerModel({
         }),
         record: one('Record', {
             compute: '_computeRecord',
-            readonly: true,
             required: true,
         }),
         rightSwipeBackgroundColor: attr({

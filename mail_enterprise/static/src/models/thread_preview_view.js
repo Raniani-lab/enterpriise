@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { one } from '@mail/model/model_field';
-import { clear, insertAndReplace } from '@mail/model/model_field_command';
+import { clear } from '@mail/model/model_field_command';
 import { addFields, addRecordMethods } from '@mail/model/model_core';
 import '@mail/models/thread_preview_view'; // ensure the model definition is loaded before the patch
 
@@ -29,6 +29,6 @@ addRecordMethods('ThreadPreviewView', {
                 (this.thread.isChatChannel && this.thread.isPinned) ||
                 (this.thread.localMessageUnreadCounter > 0)
             )
-        ) ? insertAndReplace() : clear();
+        ) ? {} : clear();
     },
 });

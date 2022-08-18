@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { one } from '@mail/model/model_field';
-import { clear, insertAndReplace } from '@mail/model/model_field_command';
+import { clear } from '@mail/model/model_field_command';
 import { addFields, addRecordMethods } from '@mail/model/model_core';
 import '@mail/models/notification_group_view'; // ensure the model definition is loaded before the patch
 
@@ -23,6 +23,6 @@ addRecordMethods('NotificationGroupView', {
      * @returns {FieldCommand}
      */
     _computeSwiperView() {
-        return (this.messaging.device.isSmall && this.notificationGroup.notifications.length) > 0 ? insertAndReplace() : clear();
+        return (this.messaging.device.isSmall && this.notificationGroup.notifications.length) > 0 ? {} : clear();
     },
 });

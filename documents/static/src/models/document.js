@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registerModel } from "@mail/model/model_core";
-import { clear, insertAndReplace } from "@mail/model/model_field_command";
+import { clear } from "@mail/model/model_field_command";
 import { attr, one } from "@mail/model/model_field";
 
 registerModel({
@@ -12,12 +12,12 @@ registerModel({
          */
         _computeAttachment() {
             if (this.attachmentId) {
-                return insertAndReplace({
+                return {
                     id: this.attachmentId,
                     filename: this.name,
                     mimetype: this.mimetype,
                     url: this.url,
-                });
+                };
             }
             return clear();
         },
@@ -26,9 +26,9 @@ registerModel({
          * @private
          */
         _computeAttachmentViewerViewable() {
-            return insertAndReplace({
+            return {
                 documentOwner: this,
-            });
+            };
         },
         /**
          * @private

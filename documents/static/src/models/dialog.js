@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { addFields, patchRecordMethods } from "@mail/model/model_core";
-import { insertAndReplace } from "@mail/model/model_field_command";
 import { one } from "@mail/model/model_field";
 import "@mail/models/dialog";
 
@@ -29,7 +28,7 @@ patchRecordMethods("Dialog", {
      */
     _computeAttachmentViewer() {
         if (this.documentListOwnerAsDocumentViewer) {
-            return insertAndReplace();
+            return {};
         }
         return this._super();
     },

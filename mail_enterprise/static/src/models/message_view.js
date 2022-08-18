@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { one } from '@mail/model/model_field';
-import { clear, insertAndReplace } from '@mail/model/model_field_command';
+import { clear } from '@mail/model/model_field_command';
 import { addFields, addRecordMethods } from '@mail/model/model_core';
 // ensure the model definition is loaded before the patch
 import '@mail/models/message_view';
@@ -32,6 +32,6 @@ addRecordMethods('MessageView', {
             this.message.isNeedaction &&
             this.messageListViewMessageViewItemOwner &&
             this.messageListViewMessageViewItemOwner.messageListViewOwner.threadViewOwner.thread === this.messaging.inbox.thread
-        ) ? insertAndReplace() : clear();
+        ) ? {} : clear();
     },
 });

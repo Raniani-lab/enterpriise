@@ -1,8 +1,6 @@
 odoo.define('voip.UserAgent', function (require) {
 "use strict";
 
-const { insertAndReplace } = require('@mail/model/model_field_command');
-
 const Class = require('web.Class');
 const concurrency = require('web.concurrency');
 const core = require('web.core');
@@ -386,7 +384,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 this.voip.triggerError(_t("Failed to start the user agent. The URL of the websocket server may be wrong. Please have an administrator verify the websocket server URL in the General Settings."));
                 return;
             }
-            this.voip.userAgent.update({ registerer: insertAndReplace() });
+            this.voip.userAgent.update({ registerer: {} });
             this.voip.userAgent.registerer.register();
         }
         this._configureDomElements();

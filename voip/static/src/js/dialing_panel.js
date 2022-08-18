@@ -1,8 +1,6 @@
 odoo.define('voip.DialingPanel', function (require) {
 "use strict";
 
-const { insertAndReplace } = require('@mail/model/model_field_command');
-
 const PhoneCallActivitiesTab = require('voip.PhoneCallActivitiesTab');
 const PhoneCallContactsTab = require('voip.PhoneCallContactsTab');
 const PhoneCallRecentTab = require('voip.PhoneCallRecentTab');
@@ -126,12 +124,12 @@ const DialingPanel = Widget.extend({
          * using sip_error are caught.
          */
         this._messaging.voip.update({
-            userAgent: insertAndReplace({
+            userAgent: {
                 legacyUserAgent: new UserAgent(this),
-            }),
+            },
         });
         core.bus.on('transfer_call', this, this._onTransferCall);
-        core.bus.on('voip_onToggleDisplay', this,  function () {
+        core.bus.on('voip_onToggleDisplay', this, function () {
             this._resetMissedCalls();
             this._onToggleDisplay();
         });

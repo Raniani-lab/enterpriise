@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { addFields, addRecordMethods, patchRecordMethods } from "@mail/model/model_core";
-import { insertAndReplace } from "@mail/model/model_field_command";
 import { attr, one } from "@mail/model/model_field";
 
 addRecordMethods("AttachmentViewer", {
@@ -39,9 +38,9 @@ patchRecordMethods("AttachmentViewer", {
      */
     _computeAttachmentViewerViewables() {
         if (this.documentList) {
-            return insertAndReplace(this.documentList.documents.map(doc => {
+            return this.documentList.documents.map(doc => {
                 return { documentOwner: doc };
-            }));
+            });
         }
         return this._super();
     },

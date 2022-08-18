@@ -2,7 +2,7 @@
 
 import { registerModel } from "@mail/model/model_core";
 import { attr, one } from "@mail/model/model_field";
-import { clear, insertAndReplace } from "@mail/model/model_field_command";
+import { clear } from "@mail/model/model_field_command";
 
 /**
  * Models the global state of the VoIP module.
@@ -132,7 +132,7 @@ registerModel({
          */
         pbxAddress: attr(),
         ringtoneRegistry: one("RingtoneRegistry", {
-            default: insertAndReplace(),
+            default: {},
             inverse: "voip",
             isCausal: true,
         }),

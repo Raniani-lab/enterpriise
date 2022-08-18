@@ -2,7 +2,6 @@
 
 import { registerModel } from "@mail/model/model_core";
 import { one } from "@mail/model/model_field";
-import { insertAndReplace } from "@mail/model/model_field_command";
 
 registerModel({
     name: "RingtoneRegistry",
@@ -19,25 +18,25 @@ registerModel({
             inverse: "ringtoneRegistry",
         }),
         dialTone: one("SoundEffect", {
-            default: insertAndReplace({
+            default: {
                 defaultVolume: 0.7,
                 filename: "dialtone",
                 path: "/voip/static/src/sounds/",
-            }),
+            },
             isCausal: true,
         }),
         incomingCallRingtone: one("SoundEffect", {
-            default: insertAndReplace({
+            default: {
                 filename: "incomingcall",
                 path: "/voip/static/src/sounds/",
-            }),
+            },
             isCausal: true,
         }),
         ringbackTone: one("SoundEffect", {
-            default: insertAndReplace({
+            default: {
                 filename: "ringbacktone",
                 path: "/voip/static/src/sounds/",
-            }),
+            },
             isCausal: true,
         }),
     },

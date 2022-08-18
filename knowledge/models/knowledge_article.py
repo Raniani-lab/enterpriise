@@ -917,47 +917,34 @@ class Article(models.Model):
                 })]
         return self.create(values)
 
-    def get_user_sorted_articles(self, search_query, limit=10):
+    def get_user_sorted_articles(self, search_query, limit=40):
         """ Called when using the Command palette to search for articles matching the search_query.
         As the article should be sorted also in function of the current user's favorite sequence, a search_read rpc
         won't be enough to returns the articles in the correct order.
         This method returns a list of article proposal matching the search_query sorted by:
-            - is_user_favorite - by Favorite sequence
-            - Favorite count
+            - name = query & is_user_favorite - by Favorite sequence
+            - name = query & Favorite count
+            - root.name = query & is_user_favorite - by Favorite sequence
+            - root.name = query & Favorite count
         and returned result mimic a search_read result structure.
         """
+        search_query = search_query.casefold()
         search_domain = [
             "&",
                 ('user_has_access', '=', True), # Admins won't see other's private articles.
                 "|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query)
         ]
-        articles = self.search(
-            expression.AND([search_domain, [("is_user_favorite", "=", True)]]),
-            limit=None,
-        )
-        sorted_articles = articles.sorted(
-            key=lambda a: (-1 * a.user_favorite_sequence,
+
+        matching_articles = self.search(search_domain)
+        sorted_articles = matching_articles.sorted(
+            key=lambda a: (search_query in a.name.casefold(),
+                           a.is_user_favorite,
+                           -1 * a.user_favorite_sequence,
                            a.favorite_count,
                            a.write_date,
                            a.id),
             reverse=True
-        )
-
-        # fill with not favorites articles
-        if len(sorted_articles) < limit:
-            articles = self.search(
-                expression.AND([search_domain, [("is_user_favorite", "=", False)]]),
-                limit=(limit-len(sorted_articles)),
-                order='favorite_count desc, write_date desc, id desc'
-            )
-            sorted_articles += articles.sorted(
-                key=lambda a: (a.favorite_count,
-                               a.write_date,
-                               a.id),
-                reverse=True
-            )
-        elif len(sorted_articles) > limit:
-            sorted_articles = sorted_articles[:limit]
+        )[:limit]
 
         return sorted_articles.read(['id', 'name', 'is_user_favorite',
                                      'favorite_count', 'root_article_id', 'icon'])

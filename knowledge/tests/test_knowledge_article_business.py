@@ -858,7 +858,7 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
 
         # search also includes descendants of articles having the term in their name
         result = self.env['knowledge.article'].get_user_sorted_articles('laygroun', limit=4)
-        expected = self.article_workspace + self.workspace_children[1] + self.wkspace_grandchildren[2] + self.workspace_children[0]
+        expected = self.article_workspace + self.workspace_children[1] + self.workspace_children[0] + self.wkspace_grandchildren[2]
         found_ids = [a['id'] for a in result]
         self.assertEqual(found_ids, expected.ids)
         # check returned result once (just to be sure)
@@ -871,8 +871,8 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
 
         # test with bigger limit, both favorites and unfavorites
         result = self.env['knowledge.article'].get_user_sorted_articles('laygroun', limit=10)
-        expected = self.article_workspace + self.workspace_children[1] + self.wkspace_grandchildren[2] + \
-                   self.workspace_children[0] + self.wkspace_grandgrandchildren[1] + self.wkspace_grandgrandchildren[0] + \
+        expected = self.article_workspace + self.workspace_children[1] + self.workspace_children[0] + \
+                   self.wkspace_grandchildren[2] + self.wkspace_grandgrandchildren[1] + self.wkspace_grandgrandchildren[0] + \
                    self.wkspace_grandchildren[1] + self.wkspace_grandchildren[0]
         self.assertEqual([a['id'] for a in result], expected.ids)
 

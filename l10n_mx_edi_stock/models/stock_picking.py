@@ -18,7 +18,7 @@ MAPBOX_MATRIX_URL = 'https://api.mapbox.com/directions-matrix/v1/mapbox/driving/
 class Picking(models.Model):
     _inherit = 'stock.picking'
 
-    country_code = fields.Char(related='company_id.country_id.code')
+    country_code = fields.Char(related='company_id.country_id.code', depends=['company_id.country_id'])
     l10n_mx_edi_is_export = fields.Char(compute='_l10n_mx_edi_compute_is_export')
     l10n_mx_edi_content = fields.Binary(compute='_l10n_mx_edi_compute_edi_content', compute_sudo=True)
     l10n_mx_edi_error = fields.Char(copy=False)

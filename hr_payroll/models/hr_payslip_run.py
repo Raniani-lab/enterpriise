@@ -35,7 +35,7 @@ class HrPayslipRun(models.Model):
         'res.country', string='Country',
         related='company_id.country_id', readonly=True
     )
-    country_code = fields.Char(related='country_id.code', readonly=True)
+    country_code = fields.Char(related='country_id.code', depends=['country_id'], readonly=True)
 
     def _compute_payslip_count(self):
         for payslip_run in self:

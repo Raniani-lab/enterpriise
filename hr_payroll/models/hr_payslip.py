@@ -82,7 +82,7 @@ class HrPayslip(models.Model):
         'res.country', string='Country',
         related='company_id.country_id', readonly=True
     )
-    country_code = fields.Char(related='country_id.code', readonly=True)
+    country_code = fields.Char(related='country_id.code', depends=['country_id'], readonly=True)
     worked_days_line_ids = fields.One2many(
         'hr.payslip.worked_days', 'payslip_id', string='Payslip Worked Days', copy=True,
         compute='_compute_worked_days_line_ids', store=True, readonly=False,

@@ -36,7 +36,8 @@ class Picking(models.Model):
         string='Delivery Guide Status (PE)',
         copy=False)
     country_code = fields.Char(
-        related='company_id.country_id.code')
+        related='company_id.country_id.code',
+        depends=['company_id.country_id'])
     l10n_pe_edi_error = fields.Html(
         copy=False)
     l10n_pe_edi_reason_for_transfer = fields.Selection(

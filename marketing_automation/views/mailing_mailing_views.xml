@@ -75,7 +75,7 @@
                 <group>
                     <label for="subject">Subject</label>
                     <div class="o_mass_mailing_subject d-flex flex-row align-items-baseline">
-                        <field class="o_text_overflow" name="subject" string="Subject"/>
+                        <field class="o_text_overflow" options="{'dynamic_placeholder': true}" name="subject" string="Subject"/>
                         <field name="favorite" invisible="1"/>
                         <button type="object" name="action_set_favorite"
                             class="o_mass_mailing_favorite"

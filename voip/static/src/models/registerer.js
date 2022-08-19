@@ -2,7 +2,6 @@
 
 import { registerModel } from "@mail/model/model_core";
 import { attr, one } from "@mail/model/model_field";
-import { clear } from "@mail/model/model_field_command";
 import { OnChange } from "@mail/model/model_onchange";
 
 import { sprintf } from "@web/core/utils/strings";
@@ -16,9 +15,12 @@ registerModel({
     name: "Registerer",
     lifecycleHooks: {
         _created() {
-            const sipJsRegisterer = new window.SIP.Registerer(this.userAgent.__sipJsUserAgent, { expires: 3600 });
+            const sipJsRegisterer = new window.SIP.Registerer(this.userAgent.__sipJsUserAgent, { expires: this.expirationInterval });
             sipJsRegisterer.stateChange.addListener((state) => this.update({ state }));
-            this.update({ __sipJsRegisterer: sipJsRegisterer });
+            this.update({
+                state: sipJsRegisterer.state,
+                __sipJsRegisterer: sipJsRegisterer,
+            });
         },
         _willDelete() {
             this.__sipJsRegisterer.dispose();
@@ -34,18 +36,6 @@ registerModel({
                     onReject: (response) => this._onRegistrationRejected(response),
                 },
             });
-        },
-        /**
-         * Notes: only used to retrieve the initial state of the SIP.js
-         * Registerer.
-         *
-         * @returns {SIP.RegistererState|FieldCommand}
-         */
-        _computeState() {
-            if (!this.__sipJsRegisterer) {
-                return clear();
-            }
-            return this.__sipJsRegisterer.state;
         },
         _onChangeState() {
             if (this.state === window.SIP.RegistererState.Registered) {
@@ -82,15 +72,29 @@ registerModel({
     },
     fields: {
         /**
+         * When sending a REGISTER request, an "expires" parameter with the
+         * value of this field is added to the Contact header. It is used to
+         * indicate how long we would like the registration to remain valid.
+         * Note however that the definitive value is decided by the server based
+         * on its own policy and may therefore differ.
+         *
+         * The library automatically renews the registration for the same
+         * duration shortly before it expires.
+         *
+         * The value is expressed in seconds.
+         */
+        expirationInterval: attr({
+            default: 3600,
+            readonly: true,
+        }),
+        /**
          * Possible values:
          * - SIP.RegistererState.Initial
          * - SIP.RegistererState.Registered
          * - SIP.RegistererState.Unregistered
          * - SIP.RegistererState.Terminated
          */
-        state: attr({
-            compute: "_computeState",
-        }),
+        state: attr(),
         userAgent: one("UserAgent", {
             identifying: true,
             inverse: "registerer",
@@ -105,7 +109,7 @@ registerModel({
     onChanges: [
         new OnChange({
             dependencies: ["state"],
-            methodName: '_onChangeState',
+            methodName: "_onChangeState",
         }),
     ],
 });

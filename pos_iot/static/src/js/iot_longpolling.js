@@ -3,7 +3,7 @@ odoo.define('pos_iot.IoTLongpolling', function (require) {
 'use strict';
 
 var core = require('web.core');
-var { IoTLongpolling } = require('@iot/js/iot_longpolling');
+var { IoTLongpolling } = require('@iot/iot_longpolling');
 const { patch } = require('@web/core/utils/patch');
 const { Gui } = require('point_of_sale.Gui');
 

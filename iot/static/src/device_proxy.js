@@ -8,6 +8,7 @@ const { EventDispatcherMixin } = require('web.mixins');
 
 /**
  * Frontend interface to iot devices
+ * TODO: This can be replaced by the new DeviceController.
  */
 var DeviceProxy = core.Class.extend(EventDispatcherMixin, ServicesMixin, {
     /**

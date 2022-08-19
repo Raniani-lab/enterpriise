@@ -25,7 +25,10 @@ This module provides management of your IoT Boxes inside Odoo.
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'iot/static/src/**/*',
+            'iot/static/src/**/*.js',
         ],
+        'web.assets_qweb': [
+            'iot/static/src/**/*.xml',
+        ]
     }
 }

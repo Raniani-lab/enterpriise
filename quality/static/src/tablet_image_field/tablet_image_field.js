@@ -9,7 +9,7 @@ const { Component } = owl;
 
 class ImagePreviewDialog extends Component {}
 ImagePreviewDialog.components = { Dialog };
-ImagePreviewDialog.template = "mrp.ImagePreviewDialog";
+ImagePreviewDialog.template = "quality.ImagePreviewDialog";
 
 export class TabletImageField extends ImageField {
     setup() {
@@ -24,6 +24,6 @@ export class TabletImageField extends ImageField {
     }
 }
 
-TabletImageField.template = "mrp.TabletImageField";
+TabletImageField.template = "quality.TabletImageField";
 
 registry.category("fields").add("tablet_image", TabletImageField);

@@ -49,6 +49,7 @@ const PosIotPosGlobalState = (PosGlobalState) => class PosIotPosGlobalState exte
                 case 'payment':
                     for (let pm of this.payment_methods) {
                         if (pm.iot_device_id[0] == device.id) {
+                            // TODO: manufacturer is unused. Remove it?
                             pm.terminal_proxy = new DeviceProxy(this, { iot_ip: device.iot_ip, identifier: device.identifier, manufacturer: device.manufacturer});
                         }
                     };

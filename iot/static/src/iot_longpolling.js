@@ -1,13 +1,10 @@
 /** @odoo-module **/
 
 import { registry } from '@web/core/registry';
-
-import { IoTConnectionMixin } from 'iot.mixins';
+import { IoTConnectionErrorDialog } from './iot_connection_error_dialog';
 
 export class IoTLongpolling {
-    constructor() {
-        Object.assign(this, IoTConnectionMixin);
-
+    constructor(dialogService) {
         // CONSTANTS
         this.POLL_TIMEOUT = 60000;
         this.POLL_ROUTE = '/hw_drivers/event';
@@ -23,6 +20,7 @@ export class IoTLongpolling {
         this._session_id = this._createUUID();
         this._listeners = {};
         this._delayedStartPolling(this.RPC_DELAY);
+        this.dialogService = dialogService;
     }
 
     //--------------------------------------------------------------------------
@@ -234,11 +232,20 @@ export class IoTLongpolling {
         this._retries++;
         this._delayedStartPolling(Math.min(this.RPC_DELAY * this._retries, this.MAX_RPC_DELAY));
     }
+
+    /**
+     * This method is needed in _poll.
+     * @param {string} url
+     */
+    _doWarnFail(url) {
+        this.dialogService.add(IoTConnectionErrorDialog, { href: url });
+    }
 }
 
 export const iotLongpollingService = {
-    start() {
-        return new IoTLongpolling(...arguments);
+    dependencies: ['dialog'],
+    start(_, { dialog }) {
+        return new IoTLongpolling(dialog);
     }
 };
 

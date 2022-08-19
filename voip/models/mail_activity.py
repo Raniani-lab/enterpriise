@@ -126,38 +126,39 @@ class MailActivity(models.Model):
 
     def _action_done(self, feedback=False, attachment_ids=None):
         # extract potential required data to update phonecalls
-        phonecall_values_to_keep = {}  # mapping index of self and acitivty value to keep {index: {key1: value1, key2: value2}}
-        for index, activity in enumerate(self):
-            if activity.voip_phonecall_id:
-                phonecall_values_to_keep[index] = {
-                    'note': activity.note,
-                    'voip_phonecall_id': activity.voip_phonecall_id,
-                    'call_date': activity.voip_phonecall_id.call_date,
-                    'partner_id': activity.user_id.partner_id.id
-                }
+        now = fields.Datetime.now()
+        phonecall_values_list = [
+            {
+                'call_date': activity.voip_phonecall_id.call_date,
+                'note': activity.note,
+                'partner_id': activity.user_id.partner_id.id,
+                'voip_phonecall_id': activity.voip_phonecall_id,
+            } if activity.voip_phonecall_id else {}
+            for activity in self
+        ]
 
         # call super, and unlink `self`
         messages, activities = super(MailActivity, self)._action_done(feedback=feedback, attachment_ids=attachment_ids)
 
         # update phonecalls and broadcast refresh notifications on bus
-        if phonecall_values_to_keep:
-            bus_notifications = []
-            for index, message in enumerate(messages):
-                if index in phonecall_values_to_keep:
-                    values_to_keep = phonecall_values_to_keep[index]
-                    phonecall = values_to_keep['voip_phonecall_id']
-                    values_to_write = {
-                        'state': 'done',
-                        'mail_message_id': message.id,
-                        'note': feedback if feedback else values_to_keep['note'],
-                    }
-                    if not values_to_keep['call_date']:
-                        values_to_write['call_date'] = fields.Datetime.now()
-                    phonecall.write(values_to_write)
+        pids_to_notify = set()
+        for phonecall_values, message in zip(phonecall_values_list, messages):
+            if not phonecall_values:
+                continue
+            values_to_write = {
+                'call_date': phonecall_values['call_date'] or now,
+                'mail_message_id': message.id,
+                'state': 'done',
+                'note': feedback if feedback else phonecall_values['note'],
+            }
+            phonecall_values['voip_phonecall_id'].write(values_to_write)
+            if phonecall_values['partner_id']:
+                pids_to_notify.add(phonecall_values['partner_id'])
 
-                    partner = self.env['res.partner'].browse(values_to_keep['partner_id'])
-                    bus_notifications.append([partner, 'refresh_voip', {}])
-
-            self.env['bus.bus']._sendmany(bus_notifications)
+        if pids_to_notify:
+            self.env['bus.bus']._sendmany([
+                [partner, 'refresh_voip', {}]
+                for partner in self.env['res.partner'].browse(list(pids_to_notify))
+            ])
 
         return messages, activities

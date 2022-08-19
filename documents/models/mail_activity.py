@@ -26,14 +26,21 @@ class MailActivity(models.Model):
         return vals
 
     def _action_done(self, feedback=False, attachment_ids=None):
-        if attachment_ids:
-            for record in self:
-                document = self.env['documents.document'].search([('request_activity_id', '=', record.id)], limit=1)
-                if document and not document.attachment_id:
-                    self.env['documents.document'].search([('attachment_id', '=', attachment_ids[0])]).unlink()
-                    if not feedback:
-                        feedback = _("Document Request: %s Uploaded by: %s") % (document.name, self.env.user.name)
-                    document.write({'attachment_id': attachment_ids[0], 'request_activity_id': False})
+        if self and attachment_ids:
+            documents = self.env['documents.document'].search([
+                ('request_activity_id', 'in', self.ids),
+                ('attachment_id', '=', False)
+            ])
+            if documents:
+                to_remove = self.env['documents.document'].search([('attachment_id', '=', attachment_ids[0])])
+                if to_remove:
+                    to_remove.unlink()
+                if not feedback:
+                    feedback = _("Document Request: %s Uploaded by: %s") % (documents[0].name, self.env.user.name)
+                documents.write({
+                    'attachment_id': attachment_ids[0],
+                    'request_activity_id': False
+                })
 
         return super(MailActivity, self)._action_done(feedback=feedback, attachment_ids=attachment_ids)
 

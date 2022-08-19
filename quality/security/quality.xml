@@ -18,19 +18,12 @@
         <field name="name">Administrator</field>
         <field name="category_id" ref="base.module_category_manufacturing_quality"/>
         <field name="implied_ids" eval="[(4, ref('quality.group_quality_user'))]"/>
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         <field name="comment">The quality manager manages the quality process</field>
     </record>
 
     <record id="stock.group_stock_user" model="res.groups">
         <field name="implied_ids" eval="[(4, ref('quality.group_quality_user'))]"/>
-    </record>
-
-    <record model="res.users" id="base.user_root">
-       <field eval="[(4,ref('quality.group_quality_manager'))]" name="groups_id"/>
-    </record>
-
-    <record model="res.users" id="base.user_admin">
-       <field eval="[(4,ref('quality.group_quality_manager'))]" name="groups_id"/>
     </record>
 
     <data noupdate="1">

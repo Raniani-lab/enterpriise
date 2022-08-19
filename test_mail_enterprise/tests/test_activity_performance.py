@@ -198,7 +198,7 @@ class TestActivityPerformance(BaseMailPerformance):
         ])
         self.env.flush_all()
 
-        with self.assertQueryCount(employee=140):
+        with self.assertQueryCount(employee=101):
             activities.action_feedback(
                 feedback='Intense feedback',
                 attachment_ids=attachments.ids,
@@ -226,7 +226,7 @@ class TestActivityPerformance(BaseMailPerformance):
         self.assertEqual(activities.activity_type_id, self.phonecall_activity)
         self.assertEqual(len(activities.voip_phonecall_id), 10)
 
-        with self.assertQueryCount(employee=107):
+        with self.assertQueryCount(employee=105):
             activities[:3].write({'user_id': self.user_root.id})
             activities[3:6].write({'user_id': self.env.uid})
             activities[6:].write({'user_id': self.user_admin.id})
@@ -241,7 +241,7 @@ class TestActivityPerformance(BaseMailPerformance):
         ])
         self.env.flush_all()
 
-        with self.assertQueryCount(employee=150):  # tme 149
+        with self.assertQueryCount(employee=110):
             activities.action_feedback(
                 feedback='Intense feedback',
                 attachment_ids=attachments.ids,

@@ -28,6 +28,7 @@ class AccountPayment(models.Model):
     @api.model
     def split_node(self, string_node, max_size):
         # Split a string node according to its max_size in byte
+        string_node = self._sanitize_communication(string_node)
         byte_node = string_node.encode()
         if len(byte_node) <= max_size:
             return string_node, ''
@@ -56,10 +57,8 @@ class AccountPayment(models.Model):
                 - it contains only latin characters
                 - it does not contain any //
                 - it does not start or end with /
-                - it is maximum 140 characters long
             (these are the SEPA compliance criteria)
         """
-        communication = self.split_node(communication, 140)[0]
         while '//' in communication:
             communication = communication.replace('//', '/')
         if communication.startswith('/'):
@@ -123,10 +122,10 @@ class AccountPayment(models.Model):
         create_xml_node(PmtInf, 'CtrlSum', float_repr(sum(x.amount for x in self), precision_digits=2))  # This sum ignores the currency, it is used as a checksum (see SEPA rulebook)
 
         PmtTpInf = create_xml_node_chain(PmtInf, ['PmtTpInf','SvcLvl','Cd'], 'SEPA')[0]
-        
+
         sdd_scheme = self[0].sdd_mandate_id.sdd_scheme or 'CORE'
         create_xml_node_chain(PmtTpInf, ['LclInstrm','Cd'], sdd_scheme)
-        
+
         create_xml_node(PmtTpInf, 'SeqTp', 'RCUR')
         #Note: RCUR refers to the COLLECTION of payments, not the type of mandate used
         #This value is only used for informatory purpose.
@@ -173,8 +172,10 @@ class AccountPayment(models.Model):
         if self.sdd_mandate_id.partner_bank_id.bank_id.bic:
             create_xml_node_chain(DrctDbtTxInf, ['DbtrAgt', 'FinInstnId', 'BIC'], self.sdd_mandate_id.partner_bank_id.bank_id.bic.replace(' ', '').upper())
         else:
-            create_xml_node_chain(DrctDbtTxInf, ['DbtrAgt', 'FinInstnId', 'Othr', 'Id'], "NOTPROVIDED")
-        Dbtr = create_xml_node_chain(DrctDbtTxInf, ['Dbtr', 'Nm'], self.sdd_mandate_id.partner_bank_id.acc_holder_name or partner.name or partner.parent_id.name)[0]
+            create_xml_node_chain(DrctDbtTxInf, ['DbtrAgt', 'FinInstnId', 'Othr', 'Id'], 'NOTPROVIDED')
+
+        debtor_name = self.sdd_mandate_id.partner_bank_id.acc_holder_name or partner.name or partner.parent_id.name
+        Dbtr = create_xml_node_chain(DrctDbtTxInf, ['Dbtr', 'Nm'], self.split_node(debtor_name, 70)[0])[0]
 
         if partner.contact_address:
             PstlAdr = create_xml_node(Dbtr, 'PstlAdr')
@@ -196,7 +197,7 @@ class AccountPayment(models.Model):
         create_xml_node_chain(DrctDbtTxInf, ['DbtrAcct','Id','IBAN'], self.sdd_mandate_id.partner_bank_id.sanitized_acc_number)
 
         if self.ref:
-            create_xml_node_chain(DrctDbtTxInf, ['RmtInf', 'Ustrd'], self._sanitize_communication(self.ref))
+            create_xml_node_chain(DrctDbtTxInf, ['RmtInf', 'Ustrd'], self.split_node(self.ref, 140)[0])
 
     def _group_payments_per_bank_journal(self):
         """ Groups the payments of this recordset per associated journal, in a dictionnary of recordsets.

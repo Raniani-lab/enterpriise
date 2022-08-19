@@ -1129,17 +1129,11 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             return super()._check_move_configuration(move)
         return self._l10n_mx_edi_check_configuration(move)
 
-    def _get_invoice_edi_content(self, move):
-        #OVERRIDE
-        if self.code != 'cfdi_3_3':
-            return super()._get_invoice_edi_content(move)
-        return self._l10n_mx_edi_export_invoice_cfdi(move).get('cfdi_str')
+    def _l10n_mx_edi_xml_invoice_content(self, invoice):
+        return self._l10n_mx_edi_export_invoice_cfdi(invoice).get('cfdi_str')
 
-    def _get_payment_edi_content(self, move):
-        #OVERRIDE
-        if self.code != 'cfdi_3_3':
-            return super()._get_payment_edi_content(move)
-        return self._l10n_mx_edi_export_payment_cfdi(move).get('cfdi_str')
+    def _l10n_mx_edi_xml_payment_content(self, payment):
+        return self._l10n_mx_edi_export_payment_cfdi(payment).get('cfdi_str')
 
     def _needs_web_services(self):
         # OVERRIDE
@@ -1153,224 +1147,173 @@ Content-Disposition: form-data; name="xml"; filename="xml"
         return journal.type == 'sale' and journal.country_code == 'MX' and \
             journal.company_id.currency_id.name == 'MXN'
 
-    def _is_required_for_invoice(self, invoice):
-        # OVERRIDE
+    def _get_move_applicability(self, move):
+        # EXTENDS account_edi
         self.ensure_one()
         if self.code != 'cfdi_3_3':
-            return super()._is_required_for_invoice(invoice)
+            return super()._get_move_applicability(move)
 
-        # Determine on which invoices the Mexican CFDI must be generated.
-        return invoice.move_type in ('out_invoice', 'out_refund') and \
-            invoice.country_code == 'MX' and \
-            invoice.company_id.currency_id.name == 'MXN'
-
-    def _is_required_for_payment(self, move):
-        # OVERRIDE
-        self.ensure_one()
-        if self.code != 'cfdi_3_3':
-            return super()._is_required_for_payment(move)
-
-        # Determine on which invoices the Mexican CFDI must be generated.
         if move.country_code != 'MX':
-            return False
+            return None
 
-        if (move.payment_id or move.statement_line_id).l10n_mx_edi_force_generate_cfdi:
-            return True
+        if move.move_type in ('out_invoice', 'out_refund') and move.company_id.currency_id.name == 'MXN':
+            return {
+                'post': self._l10n_mx_edi_post_invoice,
+                'cancel': self._l10n_mx_edi_cancel_invoice,
+                'edi_content': self._l10n_mx_edi_xml_invoice_content,
+            }
 
-        reconciled_invoices = move._get_reconciled_invoices()
-        return 'PPD' in reconciled_invoices.mapped('l10n_mx_edi_payment_policy')
+        if (move.payment_id or move.statement_line_id).l10n_mx_edi_force_generate_cfdi \
+            or 'PPD' in move._get_reconciled_invoices().mapped('l10n_mx_edi_payment_policy'):
+            return {
+                'post': self._l10n_mx_edi_post_payment,
+                'cancel': self._l10n_mx_edi_cancel_payment,
+                'edi_content': self._l10n_mx_edi_xml_payment_content,
+            }
 
-    def _post_invoice_edi(self, invoices):
-        # OVERRIDE
-        edi_result = super()._post_invoice_edi(invoices)
-        if self.code != 'cfdi_3_3':
-            return edi_result
+    def _l10n_mx_edi_post_invoice(self, invoice):
+        # == Check the configuration ==
+        errors = self._l10n_mx_edi_check_configuration(invoice)
+        if errors:
+            return {invoice: {'error': self._l10n_mx_edi_format_error_message(_("Invalid configuration:"), errors)}}
 
-        for invoice in invoices:
+        # == Generate the CFDI ==
+        res = self._l10n_mx_edi_export_invoice_cfdi(invoice)
+        if res.get('errors'):
+            return {invoice: {'error': self._l10n_mx_edi_format_error_message(_("Failure during the generation of the CFDI:"), res['errors'])}}
 
-            # == Check the configuration ==
-            errors = self._l10n_mx_edi_check_configuration(invoice)
-            if errors:
-                edi_result[invoice] = {
-                    'error': self._l10n_mx_edi_format_error_message(_("Invalid configuration:"), errors),
-                }
-                continue
+        # == Call the web-service ==
+        res = self._l10n_mx_edi_post_invoice_pac(invoice, res)
+        if res.get('error'):
+            return {invoice: res}
 
-            # == Generate the CFDI ==
-            res = self._l10n_mx_edi_export_invoice_cfdi(invoice)
-            if res.get('errors'):
-                edi_result[invoice] = {
-                    'error': self._l10n_mx_edi_format_error_message(_("Failure during the generation of the CFDI:"), res['errors']),
-                }
-                continue
-
-            # == Call the web-service ==
-            res = self._l10n_mx_edi_post_invoice_pac(invoice, res)
-            if res.get('error'):
-                edi_result[invoice] = res
-                continue
-
-            addenda = invoice.partner_id.l10n_mx_edi_addenda or invoice.partner_id.commercial_partner_id.l10n_mx_edi_addenda
-            if addenda:
-                if res['cfdi_encoding'] == 'base64':
-                    res.update({
-                        'cfdi_signed': base64.decodebytes(res['cfdi_signed']),
-                        'cfdi_encoding': 'str',
-                    })
-                res['cfdi_signed'] = self._l10n_mx_edi_cfdi_append_addenda(invoice, res['cfdi_signed'], addenda)
-
-            if res['cfdi_encoding'] == 'str':
+        addenda = invoice.partner_id.l10n_mx_edi_addenda or invoice.partner_id.commercial_partner_id.l10n_mx_edi_addenda
+        if addenda:
+            if res['cfdi_encoding'] == 'base64':
                 res.update({
-                    'cfdi_signed': base64.encodebytes(res['cfdi_signed']),
-                    'cfdi_encoding': 'base64',
+                    'cfdi_signed': base64.decodebytes(res['cfdi_signed']),
+                    'cfdi_encoding': 'str',
                 })
+            res['cfdi_signed'] = self._l10n_mx_edi_cfdi_append_addenda(invoice, res['cfdi_signed'], addenda)
 
-            # == Create the attachment ==
-            cfdi_filename = ('%s-%s-MX-Invoice-3.3.xml' % (invoice.journal_id.code, invoice.payment_reference)).replace('/', '')
-            cfdi_attachment = self.env['ir.attachment'].create({
-                'name': cfdi_filename,
-                'res_id': invoice.id,
-                'res_model': invoice._name,
-                'type': 'binary',
-                'datas': res['cfdi_signed'],
-                'mimetype': 'application/xml',
-                'description': _('Mexican invoice CFDI generated for the %s document.') % invoice.name,
+        if res['cfdi_encoding'] == 'str':
+            res.update({
+                'cfdi_signed': base64.encodebytes(res['cfdi_signed']),
+                'cfdi_encoding': 'base64',
             })
-            edi_result[invoice] = {'success': True, 'attachment': cfdi_attachment}
 
-            # == Chatter ==
-            invoice.with_context(no_new_invoice=True).message_post(
-                body=_("The CFDI document was successfully created and signed by the government."),
-                attachment_ids=cfdi_attachment.ids,
-            )
+        # == Create the attachment ==
+        cfdi_filename = ('%s-%s-MX-Invoice-3.3.xml' % (invoice.journal_id.code, invoice.payment_reference)).replace('/', '')
+        cfdi_attachment = self.env['ir.attachment'].create({
+            'name': cfdi_filename,
+            'res_id': invoice.id,
+            'res_model': invoice._name,
+            'type': 'binary',
+            'datas': res['cfdi_signed'],
+            'mimetype': 'application/xml',
+            'description': _('Mexican invoice CFDI generated for the %s document.') % invoice.name,
+        })
+        edi_result = {invoice: {'success': True, 'attachment': cfdi_attachment}}
+
+        # == Chatter ==
+        invoice.with_context(no_new_invoice=True).message_post(
+            body=_("The CFDI document was successfully created and signed by the government."),
+            attachment_ids=cfdi_attachment.ids,
+        )
         return edi_result
 
-    def _cancel_invoice_edi(self, invoices):
-        # OVERRIDE
-        edi_result = super()._cancel_invoice_edi(invoices)
-        if self.code != 'cfdi_3_3':
-            return edi_result
+    def _l10n_mx_edi_cancel_invoice(self, invoice):
+        # == Check the configuration ==
+        errors = self._l10n_mx_edi_check_configuration(invoice)
+        if errors:
+            return {invoice: {'error': self._l10n_mx_edi_format_error_message(_("Invalid configuration:"), errors)}}
 
-        for invoice in invoices:
+        # == Call the web-service ==
+        pac_name = invoice.company_id.l10n_mx_edi_pac
 
-            # == Check the configuration ==
-            errors = self._l10n_mx_edi_check_configuration(invoice)
-            if errors:
-                edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("Invalid configuration:"), errors)}
-                continue
+        credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice.company_id)
+        if credentials.get('errors'):
+            return {invoice: {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}}
 
-            # == Call the web-service ==
-            pac_name = invoice.company_id.l10n_mx_edi_pac
+        uuid_replace = invoice.l10n_mx_edi_cancel_move_id.l10n_mx_edi_cfdi_uuid
+        res = getattr(self, '_l10n_mx_edi_%s_cancel' % pac_name)(invoice.l10n_mx_edi_cfdi_uuid, invoice.company_id,
+                                                                 credentials, uuid_replace=uuid_replace)
+        if res.get('errors'):
+            return {invoice: {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}}
 
-            credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(invoice.company_id)
-            if credentials.get('errors'):
-                edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
-                continue
+        edi_result = {invoice: res}
 
-            uuid_replace = invoice.l10n_mx_edi_cancel_move_id.l10n_mx_edi_cfdi_uuid
-            res = getattr(self, '_l10n_mx_edi_%s_cancel' % pac_name)(invoice.l10n_mx_edi_cfdi_uuid, invoice.company_id,
-                                                                     credentials, uuid_replace=uuid_replace)
-            if res.get('errors'):
-                edi_result[invoice] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
-                continue
-
-            edi_result[invoice] = res
-
-            # == Chatter ==
-            invoice.with_context(no_new_invoice=True).message_post(
-                body=_("The CFDI document has been successfully cancelled."),
-                subtype_xmlid='account.mt_invoice_validated',
-            )
-
-        return edi_result
-
-    def _post_payment_edi(self, payments):
-        # OVERRIDE
-        edi_result = super()._post_payment_edi(payments)
-        if self.code != 'cfdi_3_3':
-            return edi_result
-
-        for move in payments:
-
-            # == Check the configuration ==
-            errors = self._l10n_mx_edi_check_configuration(move)
-            if errors:
-                edi_result[move] = {
-                    'error': self._l10n_mx_edi_format_error_message(_("Invalid configuration:"), errors),
-                }
-                continue
-
-            # == Generate the CFDI ==
-            res = self._l10n_mx_edi_export_payment_cfdi(move)
-            if res.get('errors'):
-                edi_result[move] = {
-                    'error': self._l10n_mx_edi_format_error_message(_("Failure during the generation of the CFDI:"), res['errors']),
-                }
-                continue
-
-            # == Call the web-service ==
-            res = self._l10n_mx_edi_post_payment_pac(move, res)
-            if res.get('error'):
-                edi_result[move] = res
-                continue
-
-            # == Create the attachment ==
-            cfdi_signed = res['cfdi_signed'] if res['cfdi_encoding'] == 'base64' else base64.encodebytes(res['cfdi_signed'])
-            cfdi_filename = ('%s-%s-MX-Payment-10.xml' % (move.journal_id.code, move.name)).replace('/', '')
-            cfdi_attachment = self.env['ir.attachment'].create({
-                'name': cfdi_filename,
-                'res_id': move.id,
-                'res_model': move._name,
-                'type': 'binary',
-                'datas': cfdi_signed,
-                'mimetype': 'application/xml',
-                'description': _('Mexican payment CFDI generated for the %s document.') % move.name,
-            })
-            edi_result[move] = {'success': True, 'attachment': cfdi_attachment}
-
-            # == Chatter ==
-            message = _("The CFDI document has been successfully signed.")
-            move.message_post(body=message, attachment_ids=cfdi_attachment.ids)
-            if move.payment_id:
-                move.payment_id.message_post(body=message, attachment_ids=cfdi_attachment.ids)
+        # == Chatter ==
+        invoice.with_context(no_new_invoice=True).message_post(
+            body=_("The CFDI document has been successfully cancelled."),
+            subtype_xmlid='account.mt_invoice_validated',
+        )
 
         return edi_result
 
-    def _cancel_payment_edi(self, moves, ):
-        # OVERRIDE
-        edi_result = super()._cancel_payment_edi(moves)
-        if self.code != 'cfdi_3_3':
-            return edi_result
+    def _l10n_mx_edi_post_payment(self, payment):
+        # == Check the configuration ==
+        errors = self._l10n_mx_edi_check_configuration(payment)
+        if errors:
+            return {payment: {'error': self._l10n_mx_edi_format_error_message(_("Invalid configuration:"), errors)}}
 
-        for move in moves:
+        # == Generate the CFDI ==
+        res = self._l10n_mx_edi_export_payment_cfdi(payment)
+        if res.get('errors'):
+            return {payment: {'error': self._l10n_mx_edi_format_error_message(_("Failure during the generation of the CFDI:"), res['errors'])}}
 
-            # == Check the configuration ==
-            errors = self._l10n_mx_edi_check_configuration(move)
-            if errors:
-                edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("Invalid configuration:"), errors)}
-                continue
+        # == Call the web-service ==
+        res = self._l10n_mx_edi_post_payment_pac(payment, res)
+        if res.get('error'):
+            return {payment: res}
 
-            # == Call the web-service ==
-            pac_name = move.company_id.l10n_mx_edi_pac
+        # == Create the attachment ==
+        cfdi_signed = res['cfdi_signed'] if res['cfdi_encoding'] == 'base64' else base64.encodebytes(res['cfdi_signed'])
+        cfdi_filename = f'{payment.journal_id.code}-{payment.name}-MX-Payment-10.xml'.replace('/', '')
+        cfdi_attachment = self.env['ir.attachment'].create({
+            'name': cfdi_filename,
+            'res_id': payment.id,
+            'res_model': payment._name,
+            'type': 'binary',
+            'datas': cfdi_signed,
+            'mimetype': 'application/xml',
+            'description': _('Mexican payment CFDI generated for the %s document.', payment.name),
+        })
+        edi_result = {payment: {'success': True, 'attachment': cfdi_attachment}}
 
-            credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(move.company_id)
-            if credentials.get('errors'):
-                edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}
-                continue
+        # == Chatter ==
+        message = _("The CFDI document has been successfully signed.")
+        payment.message_post(body=message, attachment_ids=cfdi_attachment.ids)
+        if payment.payment_id:
+            payment.payment_id.message_post(body=message, attachment_ids=cfdi_attachment.ids)
 
-            uuid_replace = move.l10n_mx_edi_cancel_move_id.l10n_mx_edi_cfdi_uuid
-            res = getattr(self, '_l10n_mx_edi_%s_cancel' % pac_name)(move.l10n_mx_edi_cfdi_uuid, move.company_id,
-                                                                     credentials, uuid_replace=uuid_replace)
-            if res.get('errors'):
-                edi_result[move] = {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}
-                continue
+        return edi_result
 
-            edi_result[move] = res
+    def _l10n_mx_edi_cancel_payment(self, payment):
+        # == Check the configuration ==
+        errors = self._l10n_mx_edi_check_configuration(payment)
+        if errors:
+            return {payment: {'error': self._l10n_mx_edi_format_error_message(_("Invalid configuration:"), errors)}}
 
-            # == Chatter ==
-            message = _("The CFDI document has been successfully cancelled.")
-            move.message_post(body=message)
-            if move.payment_id:
-                move.payment_id.message_post(body=message)
+        # == Call the web-service ==
+        pac_name = payment.company_id.l10n_mx_edi_pac
+
+        credentials = getattr(self, '_l10n_mx_edi_get_%s_credentials' % pac_name)(payment.company_id)
+        if credentials.get('errors'):
+            return {payment: {'error': self._l10n_mx_edi_format_error_message(_("PAC authentification error:"), credentials['errors'])}}
+
+        uuid_replace = payment.l10n_mx_edi_cancel_move_id.l10n_mx_edi_cfdi_uuid
+        res = getattr(self, '_l10n_mx_edi_%s_cancel' % pac_name)(payment.l10n_mx_edi_cfdi_uuid, payment.company_id,
+                                                                 credentials, uuid_replace=uuid_replace)
+        if res.get('errors'):
+            return {payment: {'error': self._l10n_mx_edi_format_error_message(_("PAC failed to cancel the CFDI:"), res['errors'])}}
+
+        edi_result = {payment: res}
+
+        # == Chatter ==
+        message = _("The CFDI document has been successfully cancelled.")
+        payment.message_post(body=message)
+        if payment.payment_id:
+            payment.payment_id.message_post(body=message)
 
         return edi_result

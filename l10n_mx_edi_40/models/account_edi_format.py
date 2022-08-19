@@ -46,9 +46,9 @@ class AccountEdiFormat(models.Model):
     def _l10n_mx_edi_get_payment_template(self):
         return 'l10n_mx_edi_40.payment20'
 
-    def _post_invoice_edi(self, invoices):
+    def _l10n_mx_edi_post_invoice(self, invoices):
         # EXTENDS l10n_mx_edi - rename attachment
-        edi_result = super()._post_invoice_edi(invoices)
+        edi_result = super()._l10n_mx_edi_post_invoice(invoices)
         if self.code != 'cfdi_3_3':
             return edi_result
         for invoice in invoices:
@@ -57,9 +57,9 @@ class AccountEdiFormat(models.Model):
                 edi_result[invoice]['attachment'].name = cfdi_filename
         return edi_result
 
-    def _post_payment_edi(self, payments):
+    def _l10n_mx_edi_post_payment(self, payments):
         # EXTENDS l10n_mx_edi - rename attachment
-        edi_result = super()._post_payment_edi(payments)
+        edi_result = super()._l10n_mx_edi_post_payment(payments)
         if self.code != 'cfdi_3_3':
             return edi_result
         for move in payments:

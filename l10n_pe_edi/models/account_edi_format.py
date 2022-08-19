@@ -824,37 +824,26 @@ class AccountEdiFormat(models.Model):
     # EDI OVERRIDDEN METHODS
     # -------------------------------------------------------------------------
 
-    def _is_required_for_invoice(self, invoice):
-        # OVERRIDE
+    def _get_move_applicability(self, move):
+        # EXTENDS account_edi
         self.ensure_one()
         if self.code != 'pe_ubl_2_1':
-            return super()._is_required_for_invoice(invoice)
+            return super()._get_move_applicability(move)
 
-        return invoice.l10n_pe_edi_is_required
+        if move.l10n_pe_edi_is_required:
+            return {
+                'post': self._l10n_pe_edi_sign_invoice,
+                'cancel': self._l10n_pe_edi_cancel_invoices,
+                'cancel_batching': lambda invoice: (invoice.l10n_pe_edi_cancel_cdr_number,),
+                'edi_content': self._l10n_pe_edi_xml_invoice_content,
+            }
 
-    def _get_invoice_edi_content(self, move):
-        #OVERRIDE
-        if self.code != 'pe_ubl_2_1':
-            return super()._get_invoice_edi_content(move)
-        return self._generate_edi_invoice_bstr(move)
+    def _l10n_pe_edi_xml_invoice_content(self, invoice):
+        return self._generate_edi_invoice_bstr(invoice)
 
     def _needs_web_services(self):
         # OVERRIDE
         return self.code == 'pe_ubl_2_1' or super()._needs_web_services()
-
-    def _support_batching(self, move, state, company):
-        # OVERRIDE
-        if self.code == 'pe_ubl_2_1':
-            return state == 'to_cancel' and move.is_invoice()
-
-        return super()._support_batching(move=move, state=state, company=company)
-
-    def _get_batch_key(self, move, state):
-        # OVERRIDE
-        # Handle the 2 steps cancel by creating an indirection in jobs.
-        if self.code == 'pe_ubl_2_1' and state == 'to_cancel':
-            return (move.l10n_pe_edi_cancel_cdr_number,)
-        return super()._get_batch_key(move, state)
 
     def _check_move_configuration(self, move):
         # OVERRIDE
@@ -898,13 +887,7 @@ class AccountEdiFormat(models.Model):
         }
         return template_by_latam_type_mapping.get(code, False)
 
-    def _post_invoice_edi(self, invoices):
-        # OVERRIDE
-        if self.code != 'pe_ubl_2_1':
-            return super()._post_invoice_edi(invoices)
-
-        invoice = invoices # Batching is disabled for this EDI.
-
+    def _l10n_pe_edi_sign_invoice(self, invoice):
         edi_filename = '%s-%s-%s' % (
             invoice.company_id.vat,
             invoice.l10n_latam_document_type_id.code,
@@ -1000,7 +983,7 @@ class AccountEdiFormat(models.Model):
         invoices.write({'l10n_pe_edi_cancel_cdr_number': False})
         return {invoice: {'success': True} for invoice in invoices}
 
-    def _cancel_invoice_edi(self, invoices):
+    def _l10n_pe_edi_cancel_invoices(self, invoices):
         # OVERRIDE
         if self.code != 'pe_ubl_2_1':
             return super()._cancel_invoice_edi(invoices)

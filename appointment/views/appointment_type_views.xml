@@ -146,7 +146,7 @@
         <field name="name">appointment.type.tree</field>
         <field name="model">appointment.type</field>
         <field name="arch" type="xml">
-            <tree string="Appointment Type" multi_edit="1" sample="1" js_class="appointment_type_tree_view">
+            <tree string="Appointment Type" class="o_appointment_type_view_list" multi_edit="1" sample="1" js_class="appointment_type_tree_view">
                 <header>
                     <button name="action_share_invite" type="object" string="Share"/>
                 </header>
@@ -200,7 +200,7 @@
                     </div>
                     <div class="oe_title">
                         <label for="name"/>
-                        <h1><field name="name" placeholder='e.g. "Schedule a Demo"'/></h1>
+                        <h1><field name="name" placeholder='e.g. "Technical Demo"'/></h1>
                     </div>
                     <group>
                         <group name="left_details">
@@ -222,6 +222,7 @@
                         </group>
                         <group name="right_details">
                             <field name="assign_method" attrs="{'invisible': [('category', '!=', 'website')]}" widget="radio" options="{'horizontal': true}"/>
+                            <field name="avatars_display" widget="radio" options="{'horizontal': true}" required="1"/>
                             <field name="staff_user_ids" widget="many2many_tags_avatar" attrs="{'readonly': [('category', '!=', 'website')]}" options="{'no_open': False}"/>
                         </group>
                     </group>
@@ -320,7 +321,7 @@
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('category', '=', 'website')]</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
+            <p class="o_view_no_content_appointment_type">
                 Create an Appointment Type
             </p><p>
                 Configure your service opening hours and let attendees book time slots online.

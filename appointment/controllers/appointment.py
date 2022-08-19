@@ -5,7 +5,7 @@ import pytz
 import re
 import uuid
 
-from babel.dates import format_datetime, format_date
+from babel.dates import format_datetime, format_date, format_time
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 from werkzeug.exceptions import Forbidden, NotFound
@@ -15,6 +15,7 @@ from odoo import exceptions, http, fields, _
 from odoo.http import request, route
 from odoo.osv import expression
 from odoo.tools import plaintext2html, DEFAULT_SERVER_DATETIME_FORMAT as dtf
+from odoo.tools.mail import is_html_empty
 from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.http_routing.models.ir_http import unslug
@@ -153,19 +154,18 @@ class Appointment(http.Controller):
 
     @route(['/appointment/<int:appointment_type_id>'],
            type='http', auth="public", website=True, sitemap=True)
-    def appointment_type_page(self, appointment_type_id, state=False, **kwargs):
+    def appointment_type_page(self, appointment_type_id, state=False, staff_user_id=False, **kwargs):
         """
-        Render the appointment information alongside the calendar for the slot selection
+        This route renders the appointment page: It first computes a dict of values useful for all potential
+        views and to choose between them in _get_appointment_type_page_view, that renders the chosen one.
 
         :param appointment_type_id: the appointment_type_id of the appointment type that we want to access
-        :param filter_staff_user_ids: the users that will be displayed for the appointment registration, if not given
-            all users set for the appointment type are used
         :param state: the type of message that will be displayed in case of an error/info. Possible values:
             - cancel: Info message to confirm that an appointment has been canceled
             - failed-staff-user: Error message displayed when the slot has been taken while doing the registration
             - failed-partner: Info message displayed when the partner has already an event in the time slot selected
+        :param staff_user_id: id of the selected user, from upstream or coming back from an error.
         """
-
         appointment_type = self._fetch_and_check_private_appointment_types(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
@@ -175,39 +175,115 @@ class Appointment(http.Controller):
         if not appointment_type:
             raise NotFound()
 
-        filter_staff_user_ids = json.loads(kwargs.get('filter_staff_user_ids') or '[]')
+        page_values = self._prepare_appointment_type_page_values(appointment_type, staff_user_id, **kwargs)
+        return self._get_appointment_type_page_view(appointment_type, page_values, state, **kwargs)
 
-        if appointment_type.assign_method == 'chosen' and not filter_staff_user_ids:
-            suggested_staff_users = appointment_type.staff_user_ids
-        else:
-            suggested_staff_users = appointment_type.staff_user_ids.filtered(lambda staff_user: staff_user.id in filter_staff_user_ids)
+    def _get_appointment_type_page_view(self, appointment_type, page_values, state=False, **kwargs):
+        """
+        Renders the appointment information alongside the calendar for the slot selection, after computation of
+        the slots and preparation of other values, depending on the arguments values. This is the method to override
+        in order to select another view for the appointment page.
 
+        :param appointment_type: the appointment type that we want to access.
+        :param page_values: dict containing common appointment page values. See _prepare_appointment_type_page_values for details.
+        :param state: the type of message that will be displayed in case of an error/info. See appointment_type_page.
+        """
         request.session.timezone = self._get_default_timezone(appointment_type)
         slots = appointment_type._get_appointment_slots(
             request.session['timezone'],
-            suggested_staff_users[0] if suggested_staff_users else request.env['res.users']
+            filter_users=page_values['user_selected'] or page_values['user_default'] or page_values['users_possible'],
         )
         formated_days = _formated_weekdays(get_lang(request.env).code)
         month_first_available = next((month['id'] for month in slots if month['has_availabilities']), False)
 
-        return request.render("appointment.appointment_info", {
+        render_params = dict({
             'appointment_type': appointment_type,
+            'is_html_empty': is_html_empty,
+            'formated_days': formated_days,
+            'main_object': appointment_type,
+            'month_first_available': month_first_available,
+            'month_kept_from_update': False,
+            'slots': slots,
+            'state': state,
+            'timezone': request.session['timezone'],  # bw compatibility
+        }, **page_values
+        )
+        return request.render("appointment.appointment_info", render_params)
+
+    def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, **kwargs):
+        """ Computes all values needed to choose between / common to all appointment_type page templates.
+
+        :return: a dict containing:
+            - available_appointments: all available appointments according to current filters and invite tokens.
+            - filter_appointment_type_ids, filter_staff_user_ids and invite_token parameters.
+            - user_default: the first of possible staff users. It will be selected by default (in the user select dropdown)
+            if no user_selected. Otherwise, the latter will be preselected instead. It is only set if there is at least one
+            possible user and if the choice is activated in appointment_type.
+            - user_selected: the user corresponding to staff_user_id in the url and to the selected one. It can be selected
+            upstream, from the operator_select screen (see WebsiteAppointment controller), or coming back from an error.
+            It is only set if among the possible users.
+            - users_possible: all possible staff users considering filter_staff_user_ids and staff members of appointment_type.
+            - hide_select_dropdown: True if the user select dropdown should be hidden. (e.g. an operator has been selected before)
+            Even if hidden, it can still be in the view and used to update availabilities according to the selected user in the js.
+        """
+        filter_staff_user_ids = json.loads(kwargs.get('filter_staff_user_ids') or '[]')
+        users_possible = self._get_possible_staff_users(appointment_type, filter_staff_user_ids)
+        user_default = user_selected = request.env['res.users']
+        staff_user_id = int(staff_user_id) if staff_user_id else False
+
+        if appointment_type.assign_method == 'chosen' and users_possible:
+            if staff_user_id and staff_user_id in users_possible.ids:
+                user_selected = next(user for user in users_possible if user.id == staff_user_id)
+            user_default = users_possible[0]
+
+        return {
             'available_appointments': self._fetch_available_appointments(
                 kwargs.get('filter_appointment_type_ids'),
                 kwargs.get('filter_staff_user_ids'),
                 kwargs.get('invite_token')
             ),
-            'suggested_staff_users': suggested_staff_users,
-            'main_object': appointment_type,
-            'timezone': request.session['timezone'],  # bw compatibility
-            'slots': slots,
-            'state': state,
-            'invite_token': kwargs.get('invite_token'),
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
-            'formated_days': formated_days,
-            'month_first_available': month_first_available,
-        })
+            'hide_select_dropdown': len(users_possible) <= 1,
+            'invite_token': kwargs.get('invite_token'),
+            'user_default': user_default,
+            'user_selected': user_selected,
+            'users_possible': users_possible
+        }
+
+    # Staff User tools
+    # ------------------------------------------------------------
+
+    @http.route('/appointment/<int:appointment_type_id>/avatar', type='http', auth="public", cors="*")
+    def appointment_staff_user_avatar(self, appointment_type_id, user_id=False, avatar_size=512):
+        """
+        Route used to bypass complicated access rights like 'website_published'. We consider we can display the avatar
+        of the user of id user_id if it belongs to the appointment_type_id and if the option avatars_display is set to 'show'
+        for that appointment type. In that case we consider that the avatars can be made public. Default field is avatar_512.
+        Another avatar_size corresponding to an existing avatar field on res.users can be given as route parameter.
+        """
+        user = request.env['res.users'].sudo().browse(int(user_id))
+        appointment_type = request.env['appointment.type'].sudo().browse(appointment_type_id)
+
+        user = user if appointment_type.avatars_display == 'show' and user in appointment_type.staff_user_ids else request.env['res.users']
+        return request.env['ir.binary']._get_image_stream_from(
+            user,
+            field_name='avatar_%s' % (avatar_size if int(avatar_size) in [128, 256, 512, 1024, 1920] else 512),
+            placeholder='mail/static/src/img/smiley/avatar.jpg',
+        ).get_response()
+
+    def _get_possible_staff_users(self, appointment_type, filter_staff_user_ids):
+        """
+        This method filters the staff members of given appointment_type using filter_staff_user_ids that are possible to pick.
+        If no filter exist and assign method is 'chosen', we allow all users existing on the appointment type.
+
+        :param appointment_type_id: the appointment_type_id of the appointment type that we want to access
+        :param filter_staff_user_ids: list of user ids used to filter the ones of the appointment_type.
+        :return: a res.users recordset containing all possible staff users to choose from.
+        """
+        if appointment_type.assign_method == 'chosen' and not filter_staff_user_ids:
+            return appointment_type.staff_user_ids
+        return appointment_type.staff_user_ids.filtered(lambda staff_user: staff_user.id in filter_staff_user_ids)
 
     # Tools / Data preparation
     # ------------------------------------------------------------
@@ -290,8 +366,10 @@ class Appointment(http.Controller):
             raise NotFound()
         partner = self._get_customer_partner()
         partner_data = partner.read(fields=['name', 'mobile', 'email'])[0] if partner else {}
-        day_name = format_datetime(datetime.strptime(date_time, dtf), 'EEE', locale=get_lang(request.env).code)
-        date_formated = format_datetime(datetime.strptime(date_time, dtf), locale=get_lang(request.env).code)
+        date_time_object = datetime.strptime(date_time, dtf)
+        day_name = format_datetime(date_time_object, 'EEE', locale=get_lang(request.env).code)
+        date_formated = format_date(date_time_object.date(), locale=get_lang(request.env).code)
+        time_locale = format_time(date_time_object.time(), locale=get_lang(request.env).code, format='short')
         return request.render("appointment.appointment_form", {
             'partner_data': partner_data,
             'appointment_type': appointment_type,
@@ -302,11 +380,14 @@ class Appointment(http.Controller):
             ),
             'main_object': appointment_type,
             'datetime': date_time,
-            'datetime_locale': day_name + ' ' + date_formated,
+            'date_locale': day_name + ' ' + date_formated,
+            'time_locale': time_locale,
             'datetime_str': date_time,
             'duration_str': duration,
-            'staff_user_id': staff_user_id,
+            'duration': float(duration),
+            'staff_user': request.env['res.users'].browse(int(staff_user_id)),
             'timezone': request.session['timezone'] or appointment_type.timezone,  # bw compatibility
+            'users_possible': self._get_possible_staff_users(appointment_type, json.loads(kwargs.get('filter_staff_user_ids') or '[]')),
         })
 
     @http.route(['/appointment/<int:appointment_type_id>/submit'],
@@ -537,9 +618,16 @@ class Appointment(http.Controller):
             raise ValueError()
 
         request.session['timezone'] = timezone or appointment_type.appointment_tz
-        staff_user = request.env['res.users'].sudo().browse(int(staff_user_id)) if staff_user_id else None
-        slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], staff_user)
+        filter_staff_user_ids = json.loads(kwargs.get('filter_staff_user_ids') or '[]')
+        # If no staff_user_id is set, use only the filtered staff users to compute slots.
+        if staff_user_id:
+            filter_users = request.env['res.users'].sudo().browse(int(staff_user_id))
+        else:
+            filter_users = self._get_possible_staff_users(appointment_type, filter_staff_user_ids)
+        slots = appointment_type.sudo()._get_appointment_slots(request.session['timezone'], filter_users)
         month_first_available = next((month['id'] for month in slots if month['has_availabilities']), False)
+        month_before_update = kwargs.get('month_before_update')
+        month_kept_from_update = next((month['id'] for month in slots if month['month'] == month_before_update), False) if month_before_update else False
         formated_days = _formated_weekdays(get_lang(request.env).code)
 
         return request.env['ir.qweb']._render('appointment.appointment_calendar', {
@@ -552,5 +640,6 @@ class Appointment(http.Controller):
             'timezone': request.session['timezone'],
             'formated_days': formated_days,
             'slots': slots,
+            'month_kept_from_update': month_kept_from_update,
             'month_first_available': month_first_available,
         })

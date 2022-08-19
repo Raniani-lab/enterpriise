@@ -5,6 +5,7 @@ from odoo import http
 from odoo.http import request
 from odoo.osv import expression
 
+from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.appointment.controllers.appointment import Appointment
 from odoo.addons.website.controllers.main import QueryURL
 
@@ -34,7 +35,7 @@ class WebsiteAppointment(Appointment):
         )
         if len(available_appointment_types) == 1 and not kwargs.get('search'):
             # If there is only one appointment type available in the selection, skip the appointment type selection view
-            return request.redirect('/appointment/%s' % available_appointment_types.id)
+            return request.redirect('/appointment/%s?%s' % (available_appointment_types.id, keep_query('*')))
 
         cards_layout = request.website.viewref('website_appointment.opt_appointments_list_cards').active
 
@@ -54,6 +55,57 @@ class WebsiteAppointment(Appointment):
                     **kwargs
                 )
             )
+
+    # ----------------------------------------------------------------
+    # APPOINTMENT TYPE PAGE VIEW : WITH NEW OPERATOR SELECTION VIEW
+    # ----------------------------------------------------------------
+
+    def _get_appointment_type_operator_selection_view(self, appointment_type, page_values):
+        """
+        Renders the appointment_select_operator template. This displays a card view of available staff users to
+        select from for appointment_type, containing their picture, job description and website_description.
+
+        :param appointment_type: the appointment_type that we want to access.
+        :param page_values: dict of precomputed values in the appointment_page route.
+        """
+        return request.render("website_appointment.appointment_select_operator", {
+            'appointment_type': appointment_type,
+            'available_appointments': page_values['available_appointments'],
+            'main_object': appointment_type,
+            'users_possible': page_values['users_possible'],
+        })
+
+    def _get_appointment_type_page_view(self, appointment_type, page_values, state=False, **kwargs):
+        """
+        Override: when website_appointment is installed, instead of the default appointment type page, renders the
+        operator selection template, if the condition below is met.
+        """
+        # If the user skips the user selection to see all availabilities, make sure we do not show the selection.
+        # As the operator view is mainly user cards, we only show it if avatars are 'on'. Also, it makes no sense in
+        # random appointment types since it is a selection screen. Moreover, the selection should not have already
+        # been made before in order to avoid loops. Finally, in order to choose, one needs at least 2 possible users.
+        if not kwargs.get('skip_operator_selection') and \
+                appointment_type.assign_method == 'chosen' and \
+                appointment_type.avatars_display == 'show' and \
+                not page_values['user_selected'] and \
+                len(page_values['users_possible']) > 1:
+            return self._get_appointment_type_operator_selection_view(appointment_type, page_values)
+        return super()._get_appointment_type_page_view(appointment_type, page_values, state, **kwargs)
+
+    def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, skip_operator_selection=False, **kwargs):
+        """
+        Override: Take into account the operator selection flow. When skipping the selection,
+        no user_selected or user_default should be set. The display is also properly managed according to this new flow.
+
+        :param skip_operator_selection: If true, skip the selection, and instead see all availabilities. No user should be selected.
+        """
+        values = super()._prepare_appointment_type_page_values(appointment_type, staff_user_id, **kwargs)
+        values['skip_operator_selection'] = skip_operator_selection
+        if skip_operator_selection:
+            values['user_selected'] = values['user_default'] = request.env['res.users']
+        else:
+            values['hide_select_dropdown'] = len(values['users_possible']) <= 1 or (appointment_type.avatars_display == 'show' and values['user_selected'])
+        return values
 
     # Tools / Data preparation
     # ------------------------------------------------------------

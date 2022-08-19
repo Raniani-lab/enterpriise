@@ -13,7 +13,7 @@ Allow clients to Schedule Appointments through your Website
 -------------------------------------------------------------
 
 """,
-    'depends': ['appointment', 'website_enterprise'],
+    'depends': ['appointment', 'website_enterprise', 'website_partner'],
     'data': [
         'data/calendar_data.xml',
         'data/website_data.xml',
@@ -31,13 +31,14 @@ Allow clients to Schedule Appointments through your Website
         'data/appointment_demo.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['appointment', 'website_enterprise'],
     'license': 'OEEL-1',
     'assets': {
         'web.assets_tests': [
             'website_appointment/static/tests/tours/*',
         ],
         'web.assets_frontend': [
+            'website_appointment/static/src/scss/website_appointment.scss',
             'website_appointment/static/src/scss/website_appointment_editor.scss',
             'website_appointment/static/src/js/appointment_select_appointment_slot.js',
         ],

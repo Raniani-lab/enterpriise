@@ -421,6 +421,70 @@ class AppointmentTest(AppointmentCommon):
         )
 
     @users('apt_manager')
+    def test_multi_user_slot_availabilities(self):
+        """ Check that when called with no user / one user / several users, the methods computing the slots work as expected:
+        if no user is set, all users of the appointment_type will be used. If one or more users are set, they will be used to
+        compute availabilities. If users given as argument is not among the staff of the appointment type, return empty list.
+        This test only concern random appointments: if it were 'chosen' assignment, then the dropdown of user selection would
+        be in the view. Hence, in practice, only one user would be used to generate / update the slots : the one selected. For
+        random ones, the users can be multiple if a filter is set, assigning randomly among several users. This tests asserts
+        that _get_appointment_slots returns slots properly when called with several users too. If no filter, then the update
+        method would be called with staff_users = False (since select not in view, getting the input value returns false) """
+        reference_monday = self.reference_monday.replace(microsecond=0)
+        reccuring_slots_utc = [{
+            'weekday': '1',
+            'start_hour': 6.0,  # 1 slot : Monday 06:00 -> 07:00
+            'end_hour': 7.0,
+        }, {
+            'weekday': '2',
+            'start_hour': 9.0,  # 2 slots : Tuesday 09:00 -> 11:00
+            'end_hour': 11.0,
+        }]
+        apt_type_UTC = self.env['appointment.type'].create({
+            'appointment_tz': 'UTC',
+            'assign_method': 'random',
+            'category': 'website',
+            'max_schedule_days': 5,  # Only consider the first three slots
+            'name': 'Private Guitar Lesson',
+            'slot_ids': [(0, False, {
+                'weekday': slot['weekday'],
+                'start_hour': slot['start_hour'],
+                'end_hour': slot['end_hour'],
+            }) for slot in reccuring_slots_utc],
+            'staff_user_ids': [self.staff_user_aust.id, self.staff_user_bxls.id],
+        })
+
+        exterior_staff_user = self.apt_manager
+        # staff_user_bxls is only available on Wed and staff_user_aust only on Mon and Tue
+        self._create_meetings(
+            self.staff_user_bxls,
+            [(reference_monday - timedelta(hours=1),  # Monday 06:00 -> 07:00
+              reference_monday,
+              False
+              )]
+        )
+        self._create_meetings(
+            self.staff_user_aust,
+            [(reference_monday + timedelta(days=1, hours=2),  # Tuesday 09:00 -> 11:00
+              reference_monday + timedelta(days=1, hours=4),
+              False
+              )]
+        )
+
+        with freeze_time(self.reference_now):
+            slots_no_user = apt_type_UTC._get_appointment_slots('UTC')
+            slots_exterior_user = apt_type_UTC._get_appointment_slots('UTC', exterior_staff_user)
+            slots_user_aust = apt_type_UTC._get_appointment_slots('UTC', self.staff_user_aust)
+            slots_user_all = apt_type_UTC._get_appointment_slots('UTC', self.staff_user_bxls | self.staff_user_aust)
+            slots_user_bxls_exterior_user = apt_type_UTC._get_appointment_slots('UTC', self.staff_user_bxls | exterior_staff_user)
+
+        self.assertTrue(len(self._filter_appointment_slots(slots_no_user)) == 3)
+        self.assertFalse(slots_exterior_user)
+        self.assertTrue(len(self._filter_appointment_slots(slots_user_aust)) == 1)
+        self.assertTrue(len(self._filter_appointment_slots(slots_user_all)) == 3)
+        self.assertTrue(len(self._filter_appointment_slots(slots_user_bxls_exterior_user)) == 2)
+
+    @users('apt_manager')
     def test_slots_for_today(self):
         test_reference_now = datetime(2022, 2, 14, 11, 0, 0)  # is a Monday
         appointment = self.env['appointment.type'].create({
@@ -458,7 +522,7 @@ class AppointmentTest(AppointmentCommon):
 
         # Do what the controller actually does, aka sudo
         with freeze_time(self.reference_now):
-            slots = apt_type.sudo()._get_appointment_slots('Australia/West', staff_user=None)
+            slots = apt_type.sudo()._get_appointment_slots('Australia/West', filter_users=None)
 
         global_slots_startdate = self.reference_now_monthweekstart
         global_slots_enddate = date(2022, 4, 2)  # last day of last week of March

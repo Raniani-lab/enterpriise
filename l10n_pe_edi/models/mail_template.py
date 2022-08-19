@@ -7,4 +7,4 @@ class MailTemplate(models.Model):
     def _get_edi_attachments(self, document):
         if not document.attachment_id or document.edi_format_id.code != 'pe_ubl_2_1':
             return super()._get_edi_attachments(document)
-        return document.edi_format_id._l10n_pe_edi_unzip_all_edi_documents(document.attachment_id.datas)
+        return {'attachments': document.edi_format_id._l10n_pe_edi_unzip_all_edi_documents(document.attachment_id.datas)}

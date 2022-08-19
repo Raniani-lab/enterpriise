@@ -88,12 +88,12 @@
                 <a t-if="latitude and longitude" href="" t-on-click.prevent="() => this.centerAndOpenPin(record)">
                     <t t-esc="record.display_name"/>
                 </a>
-                <div t-else="" class="text-muted d-flex">
-                    <span t-esc="record.display_name"/>
-                    <span class="ms-auto" t-if="record.partner and record.partner.fetchingCoordinate">
+                <t t-else="">
+                    <span class="text-muted" t-esc="record.display_name"/>
+                    <span class="float-end" t-if="record.partner and record.partner.fetchingCoordinate">
                         <i class="fa fa-spin fa-circle-o-notch"/>
                     </span>
-                </div>
+                </t>
             </li>
         </t>
     </t>

@@ -68,6 +68,7 @@ def _generate_payslips(cr, registry):
 
         # Generate skills logs
         logs_vals = []
+        data_vals = []
         today = fields.Date.today()
         all_skills = env['hr.skill'].search([])
         all_employees = env['hr.employee'].search([])
@@ -82,4 +83,16 @@ def _generate_payslips(cr, registry):
                         'skill_level_id': level.id,
                         'date': today - relativedelta(months=(index + 1) * 3 + index % 3)
                     })
-        env['hr.employee.skill.log'].create(logs_vals)
+        skill_logs = env['hr.employee.skill.log'].create(logs_vals)
+        prefix = 'test_l10n_be_hr_payroll_account'
+        for log in skill_logs:
+            employee_id = log.employee_id.id
+            skill_id = log.skill_id.id
+            level_id = log.skill_level_id.id
+            data_vals.append({
+                'name': f'{prefix}.skill_log_employee_{employee_id}_skill_{skill_id}_level_{level_id}',
+                'module': prefix,
+                'res_id': log.id,
+                'model': 'hr.employee.skill.log',
+            })
+        env['ir.model.data'].create(data_vals)

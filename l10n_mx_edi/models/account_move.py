@@ -522,3 +522,10 @@ class AccountMove(models.Model):
             if move.l10n_mx_edi_cfdi_uuid:
                 default_vals['l10n_mx_edi_origin'] = move._l10n_mx_edi_write_cfdi_origin('01', [move.l10n_mx_edi_cfdi_uuid])
         return super()._reverse_moves(default_values_list, cancel=cancel)
+
+    @api.model
+    def get_invoice_localisation_fields_required_to_invoice(self, country_id):
+        res = super().get_invoice_localisation_fields_required_to_invoice(country_id)
+        if country_id.code == 'MX':
+            res.extend([self.env['ir.model.fields']._get(self._name, 'l10n_mx_edi_usage')])
+        return res

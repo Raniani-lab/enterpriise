@@ -12,7 +12,7 @@ class SocialPushNotificationsController(http.Controller):
     @http.route('/social_push_notifications/fetch_push_configuration', type='json', auth='public', website=True)
     def fetch_push_configuration(self):
         """ Fetches the firebase push configuration for the current website (if any). """
-        current_website = request.env['website'].get_current_website()
+        current_website = request.website
         if not current_website or not current_website.firebase_enable_push_notifications:
             return {}
 

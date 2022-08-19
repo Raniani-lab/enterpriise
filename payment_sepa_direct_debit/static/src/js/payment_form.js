@@ -42,22 +42,23 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                     'partner_id': parseInt(this.txContext.partnerId),
                 },
             }).then(formConfiguration => {
-                const sepaForm = document.getElementById(`o_sdd_form_${paymentOptionId}`);
                 // Update the form with the partner information
                 if (formConfiguration.partner_name && formConfiguration.partner_email) {
-                    sepaForm.querySelector('div[name="o_sdd_signature_config"]').setAttribute(
-                        'data-name', formConfiguration.partner_name
-                    );
-                    sepaForm.querySelector('span[name="o_sdd_partner_email"]')
+                    document.getElementById(`o_sdd_signature_config_${paymentOptionId}`)
+                        .setAttribute('data-name', formConfiguration.partner_name);
+                    document.getElementById(`o_sdd_partner_email_${paymentOptionId}`)
                         .innerText = formConfiguration.partner_email;
                 }
                 // Show the phone number input if enabled on the acquirer
                 if (formConfiguration.sms_verification_required) {
-                    sepaForm.querySelectorAll('div[name="o_sdd_sms"]').forEach(el => {
-                        el.querySelector('input').required = true;
-                        el.classList.remove('d-none');
-                    });
-                    sepaForm.querySelector('button[name="o_sms_button"]').addEventListener(
+                    this.sdd_sms_verification_required = true;
+                    this._setupInputContainer(
+                        document.getElementById(`o_sdd_phone_div_${paymentOptionId}`)
+                    );
+                    this._setupInputContainer(
+                        document.getElementById(`o_sdd_verification_code_div_${paymentOptionId}`)
+                    );
+                    document.getElementById(`o_sdd_sms_button_${paymentOptionId}`).addEventListener(
                         'click', () => {
                             this._sendVerificationSms(paymentOptionId, parseInt(
                                 this.txContext.partnerId
@@ -68,7 +69,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                 // Show the signature form if required on the acquirer
                 if (formConfiguration.signature_required) {
                     this.sdd_signature_required = true;
-                    this._setupSignatureForm(sepaForm);
+                    this._setupSignatureForm(paymentOptionId);
                 }
             });
         },
@@ -89,17 +90,17 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
             }
 
             // Retrieve and store inputs
-            const sepaForm = document.getElementById(`o_sdd_form_${paymentOptionId}`);
-            const ibanInput = sepaForm.querySelector('input[name="iban"]');
-            const phoneInput = sepaForm.querySelector('input[name="phone"]');
-            const verificationCodeInput = sepaForm.querySelector('input[name="verification_code"]');
-            const signerInput = sepaForm.querySelector('input[name="signer"]');
+            const ibanInput = document.getElementById(`o_sdd_iban_${paymentOptionId}`);
+            const phoneInput = document.getElementById(`o_sdd_phone_${paymentOptionId}`);
+            const codeInput = document.getElementById(`o_sdd_verification_code_${paymentOptionId}`);
+            const signerInput = document.getElementById(`o_sdd_signature_form_${paymentOptionId}`)
+                .querySelector('input[name="signer"]');
 
             // Check that all required inputs are filled at this step
             if (
                 !ibanInput.reportValidity()
-                || !phoneInput.reportValidity()
-                || !verificationCodeInput.reportValidity()
+                || (this.sdd_sms_verification_required && !phoneInput.reportValidity())
+                || (this.sdd_sms_verification_required && !codeInput.reportValidity())
                 || (this.sdd_signature_required && signerInput && !signerInput.reportValidity())
             ) {
                 this._enableButton(); // The submit button is disabled at this point, enable it
@@ -125,7 +126,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                     'iban': ibanInput.value,
                     'mandate_id': this.mandate_id,
                     'phone': phoneInput.value,
-                    'verification_code': verificationCodeInput.value,
+                    'verification_code': codeInput.value,
                     // If the submit button was hit before that the signature widget was loaded, the
                     // input will be null. Pass undefined to let the server raise an error.
                     'signer': this.sdd_signature_required && signerInput
@@ -170,10 +171,9 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
             this._hideError(); // Remove any previous error
 
             // Retrieve and store inputs
-            const sepaForm = document.getElementById(`o_sdd_form_${acquirerId}`);
-            const ibanInput = sepaForm.querySelector('input[name="iban"]');
-            const phoneInput = sepaForm.querySelector('input[name="phone"]');
-            const verificationCodeInput = sepaForm.querySelector('input[name="verification_code"]');
+            const ibanInput = document.getElementById(`o_sdd_iban_${acquirerId}`);
+            const phoneInput = document.getElementById(`o_sdd_phone_${acquirerId}`);
+            const codeInput = document.getElementById(`o_sdd_verification_code_${acquirerId}`);
 
             // Check that all required inputs are filled at this step
             if (!ibanInput.reportValidity() || !phoneInput.reportValidity()) {
@@ -181,7 +181,7 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
             }
 
             // Disable the button to avoid spamming
-            const sendSmsButton = sepaForm.querySelector('button[name="o_sms_button"]');
+            const sendSmsButton = document.getElementById(`o_sdd_sms_button_${acquirerId}`);
             sendSmsButton.setAttribute('disabled', true);
 
             // Fetch the mandate to verify. It is needed as it stores the verification code.
@@ -206,15 +206,22 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
                 });
             }).then(() => {
                 // Enable the validation code field
-                verificationCodeInput.removeAttribute('readonly');
-                sendSmsButton.innerText = _t("SMS Sent");
-                sendSmsButton.classList.add('fa', 'fa-check');
+                codeInput.removeAttribute('disabled');
+
+                // Update the button to show the SMS has been sent.
+                sendSmsButton.innerText = "";
+                const sendSmsButtonIcon = document.createElement('i');
+                sendSmsButtonIcon.classList.add('fa', 'fa-check', 'pe-1');
+                sendSmsButton.appendChild(sendSmsButtonIcon);
+                const sendSmsButtonText = document.createTextNode(_t("SMS Sent"));
+                sendSmsButton.appendChild(sendSmsButtonText);
 
                 // Show the button again after a few moments to allow sending a new SMS
                 setTimeout(() => {
                     sendSmsButton.removeAttribute('disabled');
-                    sendSmsButton.innerText = _t('Re-send SMS');
-                    sendSmsButton.classList.remove('fa', 'fa-check');
+                    sendSmsButton.innerText = _t("Re-send SMS");
+                    sendSmsButtonIcon.remove();
+                    sendSmsButtonText.remove();
                 }, 15000);
             }).guardedCatch(error => {
                 error.event.preventDefault();
@@ -228,20 +235,31 @@ odoo.define('payment_sepa_direct_debit.payment_form', require => {
         },
 
         /**
+         * Show the container and make the input required.
+         *
+         * @private
+         * @param {HTMLElement} inputContainer - The element containing the inputs to show.
+         * @return {undefined}
+         */
+        _setupInputContainer: function (inputContainer) {
+            inputContainer.querySelector('input').required = true;
+            inputContainer.classList.remove('d-none');
+        },
+
+        /**
          * Show the signature form and attach the signature widget
          *
          * @private
-         * @param {HTMLElement} sepaForm - The SEPA payment form
+         * @param {number} acquirerId - The id of the selected payment acquirer
          * @return {undefined}
          */
-        _setupSignatureForm: function (sepaForm) {
-            const signatureForm = sepaForm.querySelector('div[name="o_sdd_signature_form"]');
-            signatureForm.querySelector('input').required = true;
-            signatureForm.classList.remove('d-none');
-            const signatureConfig = sepaForm.querySelectorAll('div[name="o_sdd_signature_config"]');
+        _setupSignatureForm: function (acquirerId) {
+            const signatureForm = document.getElementById(`o_sdd_signature_form_${acquirerId}`);
+            this._setupInputContainer(signatureForm);
+            const signatureConfig = document.getElementById(`o_sdd_signature_config_${acquirerId}`);
             this.signatureWidget = new sepaSignatureForm(this, {
                 mode: 'draw',
-                nameAndSignatureOptions: signatureConfig[0].dataset
+                nameAndSignatureOptions: signatureConfig.dataset
             });
             this.signatureWidget.insertAfter(signatureConfig);
         },

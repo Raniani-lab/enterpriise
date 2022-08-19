@@ -17,7 +17,6 @@
     'uninstall_hook': 'uninstall_hook',
     'assets': {
         'web.assets_frontend': [
-            'payment_sepa_direct_debit/static/src/scss/payment_form.scss',
             'payment_sepa_direct_debit/static/src/js/payment_form.js',
             'payment_sepa_direct_debit/static/src/js/signature_form.js',
         ],

@@ -286,10 +286,11 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
         fy = datetime.strftime(fy.get('date_from'), '%Y%m%d')
         datev_info = self._l10n_de_datev_get_client_number()
+        account_length = self._l10n_de_datev_get_account_length()
 
         output = io.BytesIO()
         writer = pycompat.csv_writer(output, delimiter=';', quotechar='"', quoting=2)
-        preheader = ['EXTF', 510, 16, 'Debitoren/Kreditoren', 4, None, None, '', '', '', datev_info[0], datev_info[1], fy, 8,
+        preheader = ['EXTF', 510, 16, 'Debitoren/Kreditoren', 4, None, None, '', '', '', datev_info[0], datev_info[1], fy, account_length,
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         header = ['Konto', 'Name (AdressatentypUnternehmen)', 'Name (Adressatentypnatürl. Person)', '', '', '', 'Adressatentyp']
         lines = [preheader, header]
@@ -339,10 +340,15 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         writer.writerows(lines)
         return output.getvalue()
 
-    def _l10n_de_datev_find_partner_account(self, account, partner):
+    def _l10n_de_datev_get_account_length(self):
         param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count', "100000000")[:9]
         param_start_vendors = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count_vendors', "700000000")[:9]
-        len_param = max(param_start.isdigit() and len(param_start) or 9, param_start_vendors.isdigit() and len(param_start_vendors) or 9, 5)
+
+        # The gegentokonto should be 1 length higher than the account length, so we have to substract 1 to the params length
+        return max(param_start.isdigit() and len(param_start) or 9, param_start_vendors.isdigit() and len(param_start_vendors) or 9, 5) - 1
+
+    def _l10n_de_datev_find_partner_account(self, account, partner):
+        len_param = self._l10n_de_datev_get_account_length() + 1
         if (account.account_type in ('asset_receivable', 'liability_payable') and partner):
             # Check if we have a property as receivable/payable on the partner
             # We use the property because in datev and in germany, partner can be of 2 types
@@ -357,8 +363,10 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             if prop:
                 return str(account.code).ljust(len_param - 1, '0')
             if account.account_type == 'asset_receivable':
+                param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count', "100000000")[:9]
                 start_count = param_start.isdigit() and int(param_start) or 100000000
             else:
+                param_start_vendors = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count_vendors', "700000000")[:9]
                 start_count = param_start_vendors.isdigit() and int(param_start_vendors) or 700000000
             start_count = int(str(start_count).ljust(len_param, '0'))
             return partner.l10n_de_datev_identifier or start_count + partner.id
@@ -375,10 +383,11 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         date_to = datetime.strftime(date_to, '%Y%m%d')
         fy = datetime.strftime(fy.get('date_from'), '%Y%m%d')
         datev_info = self._l10n_de_datev_get_client_number()
+        account_length = self._l10n_de_datev_get_account_length()
 
         output = io.BytesIO()
         writer = pycompat.csv_writer(output, delimiter=';', quotechar='"', quoting=2)
-        preheader = ['EXTF', 510, 21, 'Buchungsstapel', 7, '', '', '', '', '', datev_info[0], datev_info[1], fy, 8,
+        preheader = ['EXTF', 510, 21, 'Buchungsstapel', 7, '', '', '', '', '', datev_info[0], datev_info[1], fy, account_length,
             date_from, date_to, '', '', '', '', 0, 'EUR', '', '', '', '', '', '', '', '', '']
         header = ['Umsatz (ohne Soll/Haben-Kz)', 'Soll/Haben-Kennzeichen', 'WKZ Umsatz', 'Kurs', 'Basis-Umsatz', 'WKZ Basis-Umsatz', 'Konto', 'Gegenkonto (ohne BU-Schlüssel)', 'BU-Schlüssel', 'Belegdatum', 'Belegfeld 1', 'Belegfeld 2', 'Skonto', 'Buchungstext']
 

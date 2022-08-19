@@ -397,16 +397,30 @@ class AccountEdiFormat(models.Model):
             return super()._is_compatible_with_journal(journal)
         return journal.type in ['sale', 'purchase'] and journal.country_code == 'CO'
 
-    def _is_required_for_invoice(self, invoice):
-        # OVERRIDE
+    def _get_move_applicability(self, move):
+        # EXTENDS account_edi
         self.ensure_one()
         if self.code != 'ubl_carvajal':
-            return super()._is_required_for_invoice(invoice)
+            return super()._get_move_applicability(move)
 
         # Determine on which invoices the EDI must be generated.
-        if invoice.move_type in ('in_invoice', 'in_refund') and invoice.country_code == 'CO':
-            return bool(self.env.ref('l10n_co_edi.electronic_invoice_vendor_document_xml', False))
-        return invoice.move_type in ('out_invoice', 'out_refund') and invoice.country_code == 'CO'
+        co_edi_needed = move.country_code == 'CO' and (
+            move.move_type in ('in_invoice', 'in_refund')
+            and bool(self.env.ref('l10n_co_edi.electronic_invoice_vendor_document_xml', raise_if_not_found=False))
+        ) or (
+            move.move_type in ('out_invoice', 'out_refund')
+        )
+        if co_edi_needed:
+            if move.l10n_co_edi_transaction:
+                return {
+                    'post': self._l10n_co_edi_post_invoice_step_2,
+                    'cancel': self._l10n_co_edi_cancel_invoice,
+                }
+            else:
+                return {
+                    'post': self._l10n_co_edi_post_invoice_step_1,
+                    'cancel': self._l10n_co_edi_cancel_invoice,
+                }
 
     def _check_move_configuration(self, move):
         # OVERRIDE
@@ -448,19 +462,11 @@ class AccountEdiFormat(models.Model):
 
         return edi_result
 
-    def _post_invoice_edi(self, invoices):
-        # OVERRIDE
-        self.ensure_one()
-        if self.code != 'ubl_carvajal':
-            return super()._post_invoice_edi(invoices)
+    def _l10n_co_edi_post_invoice_step_1(self, invoice):
+        return {invoice: self._l10n_co_post_invoice_step_1(invoice)}
 
-        invoice = invoices  # No batching ensures that only one invoice is given as parameter
-        if not invoice.l10n_co_edi_transaction:
-            return {invoice: self._l10n_co_post_invoice_step_1(invoice)}
-        else:
-            return {invoice: self._l10n_co_post_invoice_step_2(invoice)}
+    def _l10n_co_edi_post_invoice_step_2(self, invoice):
+        return {invoice: self._l10n_co_post_invoice_step_2(invoice)}
 
-    def _cancel_invoice_edi(self, invoices):
-        # OVERRIDE
-        self.ensure_one()
-        return {invoice: {'success': True} for invoice in invoices}  # By default, cancel succeeds doing nothing.
+    def _l10n_co_edi_cancel_invoice(self, invoice):
+        return {invoice: {'success': True}}

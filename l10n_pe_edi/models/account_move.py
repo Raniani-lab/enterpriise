@@ -283,7 +283,7 @@ class AccountMove(models.Model):
     def button_cancel_posted_moves(self):
         # OVERRIDE
         pe_edi_format = self.env.ref('l10n_pe_edi.edi_pe_ubl_2_1')
-        pe_invoices = self.filtered(pe_edi_format._is_required_for_invoice)
+        pe_invoices = self.filtered(pe_edi_format._get_move_applicability)
         if pe_invoices:
             credit_notes_needed = pe_invoices.filtered(lambda move: move.l10n_latam_document_type_id.code == '03')
             if credit_notes_needed:

@@ -40,7 +40,7 @@ class TestEdiFlows(TestMxEdiCommon):
         with freeze_time(self.frozen_today), \
              patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
                    new=mocked_l10n_mx_edi_pac), \
-             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._cancel_invoice_edi',
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_cancel_invoice',
                    new=_mocked_cancel_success):
             self.invoice.action_post()
 
@@ -181,7 +181,7 @@ class TestEdiFlows(TestMxEdiCommon):
                    new=mocked_l10n_mx_edi_pac), \
              patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
                    new=mocked_l10n_mx_edi_pac), \
-             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._cancel_payment_edi',
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_cancel_payment',
                    new=_mocked_cancel_success):
             self.payment.action_post()
             self.invoice.action_post()
@@ -236,11 +236,11 @@ class TestEdiFlows(TestMxEdiCommon):
         with freeze_time(self.frozen_today), \
              patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
                    new=mocked_l10n_mx_edi_pac), \
-             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._cancel_invoice_edi',
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_cancel_invoice',
                    new=_mocked_cancel_success), \
              patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_payment_pac',
                    new=mocked_l10n_mx_edi_pac), \
-             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._cancel_payment_edi',
+             patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_cancel_payment',
                    new=_mocked_cancel_success):
             self.payment.action_post()
             self.invoice.action_post()

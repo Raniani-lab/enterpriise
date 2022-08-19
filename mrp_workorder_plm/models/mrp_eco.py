@@ -11,19 +11,21 @@ class MrpEco(models.Model):
         'bom_id.operation_ids.quality_point_ids',
         'new_bom_id.operation_ids.quality_point_ids',
         'bom_id.operation_ids.quality_point_ids.test_type_id',
-        'new_bom_id.operation_ids.quality_point_ids.test_type_id')
+        'new_bom_id.operation_ids.quality_point_ids.test_type_id',
+        'bom_id.operation_ids.quality_point_ids.note',
+        'new_bom_id.operation_ids.quality_point_ids.note')
     def _compute_routing_change_ids(self):
         return super()._compute_routing_change_ids()
 
     def _prepare_detailed_change_commands(self, new_op, old_op):
         commands = []
         new_points = new_op.quality_point_ids
-        new_point_dict = dict((p.title, p) for p in new_points)
+        new_point_dict = dict(((p.title, p.note), p) for p in new_points)
         if old_op:
             for old_point in old_op.quality_point_ids:
-                new_point = new_point_dict.get(old_point.title, False)
+                new_point = new_point_dict.get((old_point.title, old_point.note), False)
                 if new_point:
-                    del new_point_dict[old_point.title]
+                    del new_point_dict[(old_point.title, old_point.note)]
                     if old_point.test_type_id == new_point.test_type_id:
                         continue
                     else:

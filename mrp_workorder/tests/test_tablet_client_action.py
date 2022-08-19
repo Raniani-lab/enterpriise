@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+# from odoo.fields import Markup
 from odoo.tests import Form, HttpCase, tagged
 from .test_workorder import TestWorkOrder
 
@@ -56,3 +57,33 @@ class TestPickingWorkorderClientAction(TestWorkOrder, HttpCase):
         }])
         url = self._get_client_action_url(wo.id)
         self.start_tour(url, 'test_add_component', login='admin', timeout=80)
+
+    def test_add_step(self):
+        """ Add a step as instruction in the tablet view via the 'suggest
+        worksheet improvement' """
+        self.bom_submarine.consumption = 'flexible'
+        self.env['stock.lot'].create([{
+            'product_id': self.submarine_pod.id,
+            'name': 'sn1',
+            'company_id': self.env.company.id,
+        }])
+        mrp_order_form = Form(self.env['mrp.production'])
+        mrp_order_form.product_id = self.submarine_pod
+        production = mrp_order_form.save()
+        production.action_confirm()
+        production.action_assign()
+        production.button_plan()
+        self.assertEqual(len(production.workorder_ids.check_ids), 2)
+        wo = production.workorder_ids[0]
+        wo.button_start()
+        url = self._get_client_action_url(wo.id)
+
+        self.start_tour(url, 'test_add_step', login='admin', timeout=80)
+        # activities = production.bom_id.activity_ids
+        # self.assertEqual(len(activities), 2, 'should be 2 activities')
+        # activity = activities[0]
+        # self.assertEqual(activity.summary, 'BoM feedback Instructions "Cutting Machine" (%s)' % production.name)
+        # self.assertEqual(activity.note, Markup('<span><b>New Step suggested by Mitchell Admin</b><br><b>Reason:</b>why am I adding a step</span>'))
+        # activity = activities[1]
+        # self.assertEqual(activity.summary, 'BoM feedback Register Consumed Materials "Metal cylinder" (%s)' % production.name)
+        # self.assertEqual(activity.note, Markup('<span><b>New Instruction suggested by Mitchell Admin</b><br>False<br><b>Reason: my reason</b></span>'))

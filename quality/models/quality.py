@@ -255,7 +255,7 @@ class QualityCheck(models.Model):
         default=lambda self: self.env.company)
     alert_ids = fields.One2many('quality.alert', 'check_id', string='Alerts')
     alert_count = fields.Integer('# Quality Alerts', compute="_compute_alert_count")
-    note = fields.Html(related='point_id.note', readonly=True)
+    note = fields.Html('Note')
     test_type_id = fields.Many2one(
         'quality.point.test_type', 'Test Type',
         required=True)
@@ -292,6 +292,8 @@ class QualityCheck(models.Model):
                 vals['name'] = self.env['ir.sequence'].next_by_code('quality.check') or _('New')
             if 'point_id' in vals and not vals.get('test_type_id'):
                 vals['test_type_id'] = self.env['quality.point'].browse(vals['point_id']).test_type_id.id
+            if 'point_id' in vals and not vals.get('note'):
+                vals['note'] = self.env['quality.point'].browse(vals['point_id']).note
         return super().create(vals_list)
 
     def do_fail(self):

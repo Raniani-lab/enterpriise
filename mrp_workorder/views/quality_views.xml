@@ -174,19 +174,14 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="move_line_id" invisible="1"/>
-                    <field name="test_type" invisible="1"/>
-                    <field name="product_id" invisible="1" force_save="1"/>
-                    <field name="team_id" invisible="1" force_save="1"/>
-                    <field name="workorder_id" invisible="1" force_save="1"/>
                     <field name="company_id" invisible="1"/>
-                    <field string="Type" name="test_type_id" options="{'no_open': True, 'no_create': True}"/>
-                    <field name="additional_note"/>
-                    <field name="picture"/>
-                    <field name="product_id" attrs="{'invisible': [('test_type', 'not in', ('register_consumed_materials', 'register_byproducts'))]}"/>
+                    <field name="product_id" invisible="1"/>
+                    <field name="workorder_id" invisible="1"/>
+                    <field name="name" string="Instructions"/>
+                    <field name="additional_note" string="Reason"/>
                 </group>
                 <footer>
-                    <button class="btn btn-primary" special="save" string="Save"/>
+                    <button class="btn btn-primary" type="object" name="add_check_in_chain" string="Save"/>
                 </footer>
             </form>
         </field>

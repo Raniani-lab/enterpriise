@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from markupsafe import Markup
+from odoo import SUPERUSER_ID, api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.fields import Command
 from odoo.tools import float_compare, float_round
@@ -153,6 +154,12 @@ class QualityPoint(models.Model):
         products = bom_id.product_id or bom_id.product_tmpl_id.product_variant_ids
         self.product_ids = [Command.set(products.ids)]
 
+    def _get_comparison_values(self):
+        if not self:
+            return False
+        self.ensure_one()
+        return tuple(self[key] for key in ('test_type_id', 'title', 'component_id', 'sequence'))
+
     @api.onchange('operation_id')
     def _onchange_operation_id(self):
         if self.operation_id:
@@ -208,7 +215,7 @@ class QualityCheck(models.Model):
     # Used to group the steps belonging to the same production
     # We use a float because it is actually filled in by the produced quantity at the step creation.
     finished_product_sequence = fields.Float('Finished Product Sequence Number')
-    worksheet_document = fields.Binary(related='point_id.worksheet_document')
+    worksheet_document = fields.Binary('Image/PDF')
     worksheet_page = fields.Integer(related='point_id.worksheet_page')
 
     @api.model_create_multi
@@ -316,6 +323,24 @@ class QualityCheck(models.Model):
     def action_continue(self):
         self.ensure_one()
         self._next(continue_production=True)
+
+    def add_check_in_chain(self, activity=True):
+        self.ensure_one()
+        self.title = 'New step from manufacturing feedback'
+        self._insert_in_chain('after', self.workorder_id.current_quality_check_id)
+        if self.workorder_id.production_id.bom_id and activity:
+            body = Markup(_("<b>New Step suggested by %s</b><br/>"
+                 "<b>Reason:</b>"
+                 "%s", self.env.user.name, self.additional_note
+            ))
+            self.env['mail.activity'].sudo().create({
+                'res_model_id': self.env.ref('mrp.model_mrp_bom').id,
+                'res_id': self.workorder_id.production_id.bom_id.id,
+                'user_id': self.workorder_id.product_id.responsible_id.id or SUPERUSER_ID,
+                'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
+                'summary': _('BoM feedback %s (%s)', self.title, self.workorder_id.production_id.name),
+                'note': body,
+            })
 
     @api.model
     def _prepare_component_quantity(self, move, qty_producing):
@@ -475,12 +500,6 @@ class QualityCheck(models.Model):
             new_next.previous_check_id = self
             relative.next_check_id = self
 
-    def _get_comparison_values(self):
-        if not self:
-            return False
-        self.ensure_one()
-        return tuple(self[key] for key in ('test_type_id', 'title', 'component_id', 'sequence', 'operation_id'))
-
     def _get_fields_for_tablet(self, sorted_check_list):
         """ List of fields on the quality check object that are needed by the tablet
         client action. The purpose of this function is to be overridden in order
@@ -493,6 +512,7 @@ class QualityCheck(models.Model):
             'move_id',
             'move_line_id',
             'note',
+            'additional_note',
             'title',
             'quality_state',
             'qty_done',

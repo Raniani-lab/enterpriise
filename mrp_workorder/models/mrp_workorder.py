@@ -181,7 +181,10 @@ class MrpProductionWorkcenterLine(models.Model):
         else:
             check = checks_to_consider.filtered(lambda check: not check.next_check_id)
         self.write({
-            'allow_producing_quantity_change': not check.previous_check_id and all(c.quality_state == 'none' for c in checks_to_consider) and self.is_first_started_wo,
+            'allow_producing_quantity_change':
+                not check.previous_check_id.filtered(lambda c: c.quality_state != 'fail')
+                and all(c.quality_state != 'fail' for c in checks_to_consider)
+                and self.is_first_started_wo,
             'current_quality_check_id': check.id,
             'worksheet_page': check.point_id.worksheet_page,
         })
@@ -230,6 +233,39 @@ class MrpProductionWorkcenterLine(models.Model):
                 check._update_component_quantity()
         return res
 
+    def action_propose_change(self, change_type, title):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'propose.change',
+            'views': [[self.env.ref('mrp_workorder.view_propose_change_wizard').id, 'form']],
+            'name': title,
+            'target': 'new',
+            'context': {
+                'default_workorder_id': self.id,
+                'default_step_id': self.current_quality_check_id.id,
+                'default_change_type': change_type,
+            }
+        }
+
+    def action_add_step(self):
+        self.ensure_one()
+        if self.current_quality_check_id:
+            team = self.current_quality_check_id.team_id
+        else:
+            team = self.env['quality.alert.team'].search(['|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)], limit=1)
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'quality.check',
+            'views': [[self.env.ref('mrp_workorder.add_quality_check_from_tablet').id, 'form']],
+            'name': _('Add a Step'),
+            'target': 'new',
+            'context': {
+                'default_test_type_id': self.env.ref('quality.test_type_instructions').id,
+                'default_workorder_id': self.id,
+                'default_product_id': self.product_id.id,
+                'default_team_id': team.id,
+            }
+        }
 
     def _compute_check(self):
         for workorder in self:
@@ -274,6 +310,7 @@ class MrpProductionWorkcenterLine(models.Model):
                         # if and only if the produced quantities at the time they were created are equal.
                         'finished_product_sequence': wo.qty_produced,
                         'previous_check_id': previous_check.id,
+                        'worksheet_document': point.worksheet_document,
                     }
                     if point.test_type == 'register_byproducts':
                         moves = move_finished_ids.filtered(lambda m: m.product_id == point.component_id)

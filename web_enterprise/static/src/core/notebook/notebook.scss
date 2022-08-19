@@ -1,0 +1,28 @@
+// Custom SCSS for enterprise version of notebook tabs
+
+.o_notebook {
+    --notebook-padding-x: #{$o-horizontal-padding};
+    --notebook-margin-x: -#{$o-horizontal-padding};
+    --notebook-link-border-color: #{$border-color};
+    --notebook-link-border-color-hover : #{$border-color};
+    --notebook-link-border-color-active-accent: #{$o-brand-odoo};
+
+    .nav-item {
+        margin: 0 -1px 0 0;
+    }
+
+    .modal & {
+        --notebook-padding-x: #{$modal-inner-padding};
+        --notebook-margin-x: -#{$modal-inner-padding};
+    }
+
+    .o_form_view & {
+        --notebook-padding-x: #{$o-horizontal-padding};
+        --notebook-margin-x: -#{$o-horizontal-padding};
+        
+        @include media-breakpoint-up(lg) {
+            --notebook-padding-x: #{$o-horizontal-padding * 2};
+            --notebook-margin-x: -#{$o-horizontal-padding * 2};
+        }
+    }
+}

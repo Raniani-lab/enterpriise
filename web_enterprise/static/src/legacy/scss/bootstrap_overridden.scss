@@ -110,12 +110,12 @@ $custom-checkbox-indicator-border-radius: 1px !default; // Just a slight smoothi
 // $zindex-modal-backdrop: $zindex-modal;
 
 // Navs
+$nav-link-color: $o-gray-700 !default;
+$nav-link-border-color: $o-gray-300 !default;
+$nav-tabs-border-color: $o-gray-300 !default;
+$nav-tabs-link-hover-color: $o-brand-primary !default;
+$nav-tabs-link-active-color: $o-gray-900 !default;
 
-$nav-tabs-border-color: transparent !default;
-$nav-tabs-link-hover-border-color:  $o-gray-200 !default;
-$nav-tabs-link-active-color: $o-brand-primary !default;
-$nav-tabs-link-active-bg: $o-gray-200 !default;
-$nav-tabs-link-active-border-color: transparent !default;
 
 // Badges
 

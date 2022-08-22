@@ -130,50 +130,113 @@ const ODOO_FIN_ARGS = `
 `
 
 functionRegistry.add("ODOO.CREDIT", {
-    description: _t(
-        "Get the total credit for the specified account(s) and period."
-    ),
+    description: _t("Get the total credit for the specified account(s) and period."),
     args: args(ODOO_FIN_ARGS),
     returns: ["NUMBER"],
-    compute: function (accountCodes, dateRange, offset = 0, company_id = null, includeUnposted=true) {
+    compute: function (
+        accountCodes,
+        dateRange,
+        offset = 0,
+        companyId = null,
+        includeUnposted = true
+    ) {
         accountCodes = toString(accountCodes).split(",").sort();
         offset = toNumber(offset);
         dateRange = parseAccountingDate(dateRange);
         includeUnposted = toBoolean(includeUnposted);
-        return this.getters.getAccountPrefixCredit(accountCodes, dateRange, offset, company_id, includeUnposted);
+        return this.getters.getAccountPrefixCredit(
+            accountCodes,
+            dateRange,
+            offset,
+            companyId,
+            includeUnposted
+        );
+    },
+    computeFormat: function (
+        accountCodes,
+        dateRange,
+        offset = 0,
+        companyId = null,
+        includeUnposted = true
+    ) {
+        return this.getters.getCompanyCurrencyFormat(companyId && companyId.value) || "#,##0.00";
     },
 });
 
 functionRegistry.add("ODOO.DEBIT", {
-    description: _t(
-        "Get the total debit for the specified account(s) and period."
-    ),
+    description: _t("Get the total debit for the specified account(s) and period."),
     args: args(ODOO_FIN_ARGS),
     returns: ["NUMBER"],
-    compute: function (accountCodes, dateRange, offset = 0, company_id = null, includeUnposted=true) {
+    compute: function (
+        accountCodes,
+        dateRange,
+        offset = 0,
+        companyId = null,
+        includeUnposted = true
+    ) {
         accountCodes = toString(accountCodes).split(",").sort();
         offset = toNumber(offset);
         dateRange = parseAccountingDate(dateRange);
         includeUnposted = toBoolean(includeUnposted);
-        return this.getters.getAccountPrefixDebit(accountCodes, dateRange, offset, company_id, includeUnposted);
+        return this.getters.getAccountPrefixDebit(
+            accountCodes,
+            dateRange,
+            offset,
+            companyId,
+            includeUnposted
+        );
+    },
+    computeFormat: function (
+        accountCodes,
+        dateRange,
+        offset = 0,
+        companyId = null,
+        includeUnposted = true
+    ) {
+        return this.getters.getCompanyCurrencyFormat(companyId && companyId.value) || "#,##0.00";
     },
 });
 
 functionRegistry.add("ODOO.BALANCE", {
-    description: _t(
-        "Get the total balance for the specified account(s) and period."
-    ),
+    description: _t("Get the total balance for the specified account(s) and period."),
     args: args(ODOO_FIN_ARGS),
     returns: ["NUMBER"],
-    compute: function (accountCodes, dateRange, offset = 0, company_id = null, includeUnposted=true) {
+    compute: function (
+        accountCodes,
+        dateRange,
+        offset = 0,
+        companyId = null,
+        includeUnposted = true
+    ) {
         accountCodes = toString(accountCodes).split(",").sort();
         offset = toNumber(offset);
         dateRange = parseAccountingDate(dateRange);
         includeUnposted = toBoolean(includeUnposted);
         return (
-            this.getters.getAccountPrefixDebit(accountCodes, dateRange, offset, company_id, includeUnposted) -
-            this.getters.getAccountPrefixCredit(accountCodes, dateRange, offset, company_id, includeUnposted)
+            this.getters.getAccountPrefixDebit(
+                accountCodes,
+                dateRange,
+                offset,
+                companyId,
+                includeUnposted
+            ) -
+            this.getters.getAccountPrefixCredit(
+                accountCodes,
+                dateRange,
+                offset,
+                companyId,
+                includeUnposted
+            )
         );
+    },
+    computeFormat: function (
+        accountCodes,
+        dateRange,
+        offset = 0,
+        companyId = null,
+        includeUnposted = true
+    ) {
+        return this.getters.getCompanyCurrencyFormat(companyId && companyId.value) || "#,##0.00";
     },
 });
 

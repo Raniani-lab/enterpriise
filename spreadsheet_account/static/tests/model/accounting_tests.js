@@ -36,6 +36,33 @@ QUnit.module("spreadsheet_account > Accounting", { beforeEach }, () => {
         assert.verifySteps(["spreadsheet_fetch_debit_credit"]);
     });
 
+    QUnit.test("Functions are correctly formatted", async (assert) => {
+        const model = await createModelWithDataSource();
+        setCellContent(model, "A1", `=ODOO.CREDIT("100", "2022")`);
+        setCellContent(model, "A2", `=ODOO.DEBIT("100", "2022")`);
+        setCellContent(model, "A3", `=ODOO.BALANCE("100", "2022")`);
+        await nextTick();
+        assert.strictEqual(getCell(model, "A1").evaluated.format, "#,##0.00[$€]");
+        assert.strictEqual(getCell(model, "A2").evaluated.format, "#,##0.00[$€]");
+        assert.strictEqual(getCell(model, "A3").evaluated.format, "#,##0.00[$€]");
+    });
+
+    QUnit.test("Functions with a wrong company id is correctly in error", async (assert) => {
+        const model = await createModelWithDataSource({
+            mockRPC: async function (route, args) {
+                if (args.method === "get_company_currency_for_spreadsheet") {
+                    return false;
+                }
+            },
+        });
+        setCellContent(model, "A1", `=ODOO.CREDIT("100", "2022", 0, 123456)`);
+        await nextTick();
+        assert.strictEqual(
+            getCell(model, "A1").evaluated.error.message,
+            "Currency not available for this company."
+        );
+    });
+
     QUnit.test("formula with invalid date", async (assert) => {
         const model = await createModelWithDataSource();
         setCellContent(model, "A1", `=ODOO.CREDIT("100",)`);

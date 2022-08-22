@@ -14,7 +14,6 @@ class AccountReportController(http.Controller):
     @http.route('/account_reports', type='http', auth='user', methods=['POST'], csrf=False)
     def get_report(self, options, file_generator, **kwargs):
         uid = request.uid
-        account_report_model = request.env['account.report']
         options = json.loads(options)
 
         allowed_company_ids = [company_data['id'] for company_data in options.get('multi_company', [])]
@@ -22,11 +21,11 @@ class AccountReportController(http.Controller):
             company_str = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
             allowed_company_ids = [int(str_id) for str_id in company_str.split(',')]
 
-        report = account_report_model.with_user(uid).with_context(allowed_company_ids=allowed_company_ids).browse(options['report_id'])
+        report = request.env['account.report'].with_user(uid).with_context(allowed_company_ids=allowed_company_ids).browse(options['report_id'])
 
         try:
             check_method_name(file_generator)
-            generated_file_data = getattr(report, file_generator)(options)
+            generated_file_data = report.dispatch_report_action(options, file_generator)
             file_content = generated_file_data['file_content']
             file_type = generated_file_data['file_type']
             response_headers = self._get_response_headers(file_type, generated_file_data['file_name'], file_content)

@@ -53,7 +53,7 @@ class L10nLuGenerateXML(models.TransientModel):
                 )
         report = self.env['account.report'].browse(self.env.context.get('report_generation_options', {}).get('report_id'))
         options = report._get_options()
-        filename = report.l10n_lu_get_report_filename(options)
+        filename = self.env['l10n_lu.report.handler'].get_report_filename(options)
         agent_vat = agent.vat if agent else self._get_export_vat()
         company_vat = self._get_export_vat()
         agent_vat = agent_vat[2:] if agent_vat and agent_vat.startswith("LU") else agent_vat
@@ -137,7 +137,7 @@ class L10nLuGenerateXML(models.TransientModel):
 
         content = "\n".join(re.split(r'\n\s*\n', rendered_content))
         self._lu_validate_xml_content(content)
-        self.env['account.report']._l10n_lu_validate_ecdf_prefix()
+        self.env['l10n_lu.report.handler']._validate_ecdf_prefix()
         vals = {
             'report_data': base64.b64encode(bytes(content, 'utf-8')),
             'filename': filename + '.xml'

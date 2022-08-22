@@ -94,7 +94,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
                 ("Total",              '',                      '',                      '',    f'3,000.00{NON_BREAKING_SPACE}€'),
             ],
         )
-        report.l10n_lu_sales_report_get_file_name(options)
+        self.env[report.custom_handler_model_name].get_file_name(options)
         file_ref = options['filename']
         expected_xml = f'''
             <eCDFDeclarations xmlns="http://www.ctie.etat.lu/2011/ecdf">
@@ -164,14 +164,14 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
             </eCDFDeclarations>
             '''
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.l10n_lu_sales_report_export_to_xml(options)),
+            self.get_xml_tree_from_string(self.env[report.custom_handler_model_name].export_to_xml(options)),
             self.get_xml_tree_from_string(expected_xml)
         )
 
     def test_empty_comparisons(self):
         report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
         options = self._generate_options(report, '2020-04-01', '2020-04-30')
-        corrections, compared_declarations = report.l10n_lu_sales_report_get_correction_data(options, comparison_files=[])
+        corrections, compared_declarations = self.env[report.custom_handler_model_name].get_correction_data(options, comparison_files=[])
         self.assertFalse(compared_declarations)
         self.assertFalse(any([bool(c) for c in corrections.values()]))
 
@@ -181,7 +181,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         report, options = self._get_report_and_options(report, '2020-04-01', '2020-04-30')
         wizard = self.env['l10n_lu.generate.vat.intra.report'].create({})
         wizard.save_report = False
-        wizard.with_context(report.l10n_lu_sales_report_open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
+        wizard.with_context(self.env[report.custom_handler_model_name].open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
         declaration_to_compare = base64.b64decode(wizard.report_data.decode("utf-8"))
         invoices = [
             {'partner': self.partner_be, 'product': self.product_1, 'tax': self.l_tax},
@@ -200,7 +200,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         attachment = self.env['ir.attachment'].create({'datas': wizard.report_data, 'name': 'discard'})
         stored_report = self.env['l10n_lu.stored.intra.report'].create({'attachment_id': attachment.id, 'year': '2020', 'period': '5', 'codes': 'LTS'})
         wizard2.l10n_lu_stored_report_ids = stored_report
-        wizard2.with_context(report.l10n_lu_sales_report_open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
+        wizard2.with_context(self.env[report.custom_handler_model_name].open_report_export_wizard(options)['context'], skip_xsd=True).get_xml()
         declaration_to_compare_2 = base64.b64decode(wizard2.report_data.decode("utf-8"))
         filename = wizard2.filename[:-4]  # remove '.xml' postfix
         expected_xml_tree = self.get_xml_tree_from_string(
@@ -318,7 +318,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         # Case 2: correct a previous declaration (05), which contains corrections for an earlier declaration
         # but the corrected declaration is not in the comparison files, hence it shouldn't be corrected
         report, options = self._get_report_and_options(report, '2020-06-01', '2020-06-30')
-        corrections, compared_declarations = report.l10n_lu_sales_report_get_correction_data(options, comparison_files=[('', declaration_to_compare_2)])  # problem with the options here
+        corrections, compared_declarations = self.env[report.custom_handler_model_name].get_correction_data(options, comparison_files=[('', declaration_to_compare_2)])  # problem with the options here
         self.assertListEqual(compared_declarations, [('', 'TVA_LICM', '2020', '5'), ('', 'TVA_PSIM', '2020', '5')])
         expected = {
             'l_sum': 2.0,
@@ -337,7 +337,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         # then the correction for (4) should take into account the corrections in (5)
         # Case 2: correct a previous declaration (05), which contains corrections for an earlier declaration
         # but the corrected declaration is not in the comparison files, hence it shouldn't be corrected
-        corrections, compared_declarations = report.l10n_lu_sales_report_get_correction_data(
+        corrections, compared_declarations = self.env[report.custom_handler_model_name].get_correction_data(
             options, comparison_files=[('', declaration_to_compare), ('', declaration_to_compare_2)]
         )
         self.assertListEqual(compared_declarations, [('', 'TVA_LICM', '2020', '4'), ('', 'TVA_PSIM', '2020', '4'), ('', 'TVA_LICM', '2020', '5'), ('', 'TVA_PSIM', '2020', '5')])
@@ -366,7 +366,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
         report, options = self._get_report_and_options(report, '2020-04-01', '2020-04-30')
         with self.assertRaises(ValidationError):
-            report.l10n_lu_sales_report_get_correction_data(options, comparison_files=[('', '')])
+            self.env[report.custom_handler_model_name].get_correction_data(options, comparison_files=[('', '')])
         # Case 2: ecdf declaration without VAT Intra declarations inside
         asset_report = self.env.ref('account_asset.assets_report')
         options = asset_report._get_options(None)
@@ -374,7 +374,7 @@ class LuxembourgSalesReportTest(AccountSalesReportCommon):
         wizard.with_context({'model': 'account.report', 'report_generation_options': options, 'skip_xsd': True}).get_xml()
         declaration_to_compare = base64.b64decode(wizard.report_data.decode("utf-8"))
         with self.assertRaises(ValidationError):
-            report.l10n_lu_sales_report_get_correction_data(options, comparison_files=[('', declaration_to_compare)])
+            self.env[report.custom_handler_model_name].get_correction_data(options, comparison_files=[('', declaration_to_compare)])
 
     def _get_report_and_options(self, report, date_from, date_to):
         options = self._generate_options(report, date_from, date_to)

@@ -54,7 +54,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         """
         report = self.env.ref('l10n_lu.tax_report')
         options = report._get_options()
-        form = self.env.ref('l10n_lu.tax_report').l10n_lu_get_tax_electronic_report_values(options)['forms'][0]
+        form = self.env[report.custom_handler_model_name].get_tax_electronic_report_values(options)['forms'][0]
         self.period = form['declaration_type'][-1]
         form['field_values'] = self._remove_zero_fields(form['field_values'], report.id)
         if self.period == 'A':

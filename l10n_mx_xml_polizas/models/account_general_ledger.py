@@ -7,12 +7,13 @@ from odoo import _, models
 
 _logger = logging.getLogger(__name__)
 
-class AccountGeneralLedger(models.AbstractModel):
-    _inherit = "account.report"
 
-    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
+class GeneralLedgerCustomHandler(models.AbstractModel):
+    _inherit = 'account.general.ledger.report.handler'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
         # Overridden to add export button on GL for Mexican companies
-        super()._custom_options_initializer_general_ledger(options, previous_options=previous_options)
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
 
         if self.env.company.account_fiscal_country_id.code == 'MX':
             options['buttons'].append({

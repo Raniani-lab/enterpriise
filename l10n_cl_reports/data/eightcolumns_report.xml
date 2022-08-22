@@ -10,7 +10,7 @@
         <field name="filter_analytic" eval="True"/>
         <field name="filter_unfold_all" eval="False"/>
         <field name="filter_journals" eval="True"/>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_l10n_cl_8columns</field>
+        <field name="custom_handler_model_id" ref="model_l10n_cl_report_handler"/>
         <field name="load_more_limit" eval="80"/>
         <field name="column_ids">
             <record id="cl_eightcolumns_report_column_debit" model="account.report.column">

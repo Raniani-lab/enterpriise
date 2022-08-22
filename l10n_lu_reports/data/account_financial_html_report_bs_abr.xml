@@ -8,7 +8,7 @@
         <field name="filter_journals" eval="True"/>
         <field name="country_id" ref="base.lu"/>
         <field name="filter_multi_company">selector</field>
-        <field name="custom_options_initializer">_custom_options_initializer_l10n_lu_financial_report</field>
+        <field name="custom_handler_model_id" ref="model_l10n_lu_report_handler"/>
         <field name="column_ids">
             <record id="account_financial_report_l10n_lu_bs_abr_column" model="account.report.column">
                 <field name="name">Balance</field>

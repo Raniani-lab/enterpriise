@@ -4,9 +4,7 @@
     <record id="tpar_report" model="account.report">
         <field name="name">Taxable Payments Annual Reports (TPAR)</field>
         <field name="filter_cash_basis" eval="True"/>
-        <field name="custom_options_initializer">_l10n_au_tpar_init_custom_options</field>
-        <field name="dynamic_lines_generator">_l10n_au_tpar_get_dynamic_lines</field>
-        <field name="caret_options_initializer">_l10n_au_tpar_caret_options_initializer</field>
+        <field name="custom_handler_model_id" ref="model_l10n_au_report_handler"/>
         <field name="load_more_limit" eval="80"/>
         <field name="column_ids">
             <record id="l10n_au_tpar_abn" model="account.report.column">

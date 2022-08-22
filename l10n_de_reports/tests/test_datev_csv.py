@@ -70,7 +70,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         move.action_post()
         move.line_ids.flush_recordset()
 
-        with zipfile.ZipFile(BytesIO(report.l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
+        with zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
@@ -103,7 +103,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         move.action_post()
         move.line_ids.flush_recordset()
 
-        with zipfile.ZipFile(BytesIO(report.l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
+        with zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
@@ -142,7 +142,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         move.action_post()
         move.line_ids.flush_recordset()
 
-        with zipfile.ZipFile(BytesIO(report.l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
+        with zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
@@ -179,7 +179,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
         debit_account_code = str(self.env.company.account_journal_payment_debit_account_id.code).ljust(8, '0')
 
-        with zipfile.ZipFile(BytesIO(report.l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
+        with zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
@@ -219,7 +219,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         self.env.flush_all()
 
         credit_account_code = str(self.env.company.account_journal_payment_credit_account_id.code).ljust(8, '0')
-        with zipfile.ZipFile(BytesIO(report.l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
+        with zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
@@ -255,7 +255,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         suspense_account_code = str(self.env.company.account_journal_suspense_account_id.code).ljust(8, '0')
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
 
-        with zipfile.ZipFile(BytesIO(report.l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
+        with zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[9], x[10], x[13]] for x in reader][2:]
@@ -306,7 +306,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         bank_account_code = str(self.env.company.bank_journal_ids.default_account_id.code).ljust(8, '0')
 
         self.env.flush_all()
-        file_dict = report.l10n_de_datev_export_to_zip(options)
+        file_dict = self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)
         with zipfile.ZipFile(BytesIO(file_dict['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
@@ -361,7 +361,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         move.action_post()
         move.line_ids.flush_recordset()
 
-        with zipfile.ZipFile(BytesIO(report.l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
+        with zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
@@ -399,7 +399,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         self.env['ir.config_parameter'].sudo().set_param('l10n_de.datev_start_count', 2)
         self.env['ir.config_parameter'].sudo().set_param('l10n_de.datev_start_count_vendors', 800000)
 
-        with zipfile.ZipFile(BytesIO(report.l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
+        with zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r') as zf:
             csv = zf.open('EXTF_accounting_entries.csv')
         reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
         data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]

@@ -6,12 +6,83 @@ from collections import OrderedDict
 from datetime import timedelta
 
 
-class CL8ColumnsReport(models.AbstractModel):
-    _inherit = "account.report"
+class ChileanReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_cl.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Chilean Report Custom Handler'
+
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        # dict of the form {account_id: {column_group_key: {expression_label: value}}}
+        lines_dict = {}
+
+        # totals dictionaries: dicts of the form {column_group_key: {expression_label: total_value}}
+        subtotals_dict = {}
+        fiscalyear_result_dict = {}
+        previous_years_unallocated_earnings_dict = {}
+        totals_dict = {}
+
+        # Build query
+        query_list = []
+        full_query_params = []
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            query, query_params = self._prepare_query(report, column_group_options, column_group_key)
+            query_list.append(f"({query})")
+            full_query_params += query_params
+
+            # Set defaults here since the results of the query for this column_group_key might be empty
+            subtotals_dict[column_group_key] = dict.fromkeys([col['expression_label'] for col in column_group_options['columns']], 0.0)
+
+        full_query = " UNION ALL ".join(query_list)
+        self._cr.execute(full_query, full_query_params)
+
+        # Fill lines and subtotals dictionaries
+        for result in self._cr.dictfetchall():
+            account_id = result['id']
+            column_group_key = result['column_group_key']
+
+            lines_dict.setdefault(account_id, {})
+
+            lines_dict[account_id]['full_name'] = f"{result['code']} {result['name']}"
+            lines_dict[account_id][column_group_key] = result
+
+            for expression_label in subtotals_dict[column_group_key]:
+                subtotals_dict[column_group_key][expression_label] += result[expression_label]
+
+        # Compute other 'total' lines
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            subtotals = subtotals_dict[column_group_key]
+
+            fiscalyear_result = self._calculate_fiscalyear_result(column_group_options, subtotals)
+            fiscalyear_result_dict[column_group_key] = fiscalyear_result
+
+            previous_years_unallocated_earnings = self._calculate_previous_years_unallocated_earnings(report, column_group_options)
+            previous_years_unallocated_earnings_dict[column_group_key] = previous_years_unallocated_earnings
+
+            totals = self._calculate_totals(column_group_options, subtotals, fiscalyear_result, previous_years_unallocated_earnings)
+            totals_dict[column_group_key] = totals
+
+        lines = []
+        for account_id, line_vals in lines_dict.items():
+            line = self._create_report_line(report, options, line_vals, account_id)
+            lines.append((0, line))
+
+        # Subtotals line
+        lines.append((0, self._create_report_total_line(report, options, subtotals_dict, _("Subtotal"), 2)))
+        # Fiscal year results line
+        lines.append((0, self._create_report_total_line(report, options, fiscalyear_result_dict, _("Profit and Loss"), 3)))
+        # Previous year unallocated earnings line
+        unalloc_line = self._create_report_total_line(
+            report, options, previous_years_unallocated_earnings_dict, _("Previous years unallocated earnings"), 3)
+        if any(not self.env.company.currency_id.is_zero(column['no_format']) for column in unalloc_line['columns']):
+            lines.append((0, unalloc_line))
+        # General total line
+        lines.append((0, self._create_report_total_line(report, options, totals_dict, _("Total"), 1)))
+
+        return lines
 
     @api.model
-    def _l10n_cl_8columns_prepare_query(self, options, column_group_key):
-        tables, where_clause, where_params = self._query_get(options, 'normal')
+    def _prepare_query(self, report, options, column_group_key):
+        tables, where_clause, where_params = report._query_get(options, 'normal')
 
         sql_query = """
             SELECT %s AS column_group_key,
@@ -36,77 +107,7 @@ class CL8ColumnsReport(models.AbstractModel):
         """
         return sql_query, [column_group_key, *where_params]
 
-    @api.model
-    def _dynamic_lines_generator_l10n_cl_8columns(self, options, all_column_groups_expression_totals):
-        # dict of the form {account_id: {column_group_key: {expression_label: value}}}
-        lines_dict = {}
-
-        # totals dictionaries: dicts of the form {column_group_key: {expression_label: total_value}}
-        subtotals_dict = {}
-        fiscalyear_result_dict = {}
-        previous_years_unallocated_earnings_dict = {}
-        totals_dict = {}
-
-        # Build query
-        query_list = []
-        full_query_params = []
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            query, query_params = self._l10n_cl_8columns_prepare_query(column_group_options, column_group_key)
-            query_list.append(f"({query})")
-            full_query_params += query_params
-
-            # Set defaults here since the results of the query for this column_group_key might be empty
-            subtotals_dict[column_group_key] = dict.fromkeys([col['expression_label'] for col in column_group_options['columns']], 0.0)
-
-        full_query = " UNION ALL ".join(query_list)
-        self._cr.execute(full_query, full_query_params)
-
-        # Fill lines and subtotals dictionaries
-        for result in self._cr.dictfetchall():
-            account_id = result['id']
-            column_group_key = result['column_group_key']
-
-            lines_dict.setdefault(account_id, {})
-
-            lines_dict[account_id]['full_name'] = f"{result['code']} {result['name']}"
-            lines_dict[account_id][column_group_key] = result
-
-            for expression_label in subtotals_dict[column_group_key]:
-                subtotals_dict[column_group_key][expression_label] += result[expression_label]
-
-        # Compute other 'total' lines
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            subtotals = subtotals_dict[column_group_key]
-
-            fiscalyear_result = self._l10n_cl_8columns_calculate_fiscalyear_result(column_group_options, subtotals)
-            fiscalyear_result_dict[column_group_key] = fiscalyear_result
-
-            previous_years_unallocated_earnings = self._l10n_cl_8columns_calculate_previous_years_unallocated_earnings(column_group_options)
-            previous_years_unallocated_earnings_dict[column_group_key] = previous_years_unallocated_earnings
-
-            totals = self._l10n_cl_8columns_calculate_totals(column_group_options, subtotals, fiscalyear_result, previous_years_unallocated_earnings)
-            totals_dict[column_group_key] = totals
-
-        lines = []
-        for account_id, line_vals in lines_dict.items():
-            line = self._l10n_cl_8columns_create_report_line(options, line_vals, account_id)
-            lines.append((0, line))
-
-        # Subtotals line
-        lines.append((0, self._l10n_cl_8columns_create_report_total_line(options, subtotals_dict, _("Subtotal"), 2)))
-        # Fiscal year results line
-        lines.append((0, self._l10n_cl_8columns_create_report_total_line(options, fiscalyear_result_dict, _("Profit and Loss"), 3)))
-        # Previous year unallocated earnings line
-        unalloc_line = self._l10n_cl_8columns_create_report_total_line(
-            options, previous_years_unallocated_earnings_dict, _("Previous years unallocated earnings"), 3)
-        if any(not self.env.company.currency_id.is_zero(column['no_format']) for column in unalloc_line['columns']):
-            lines.append((0, unalloc_line))
-        # General total line
-        lines.append((0, self._l10n_cl_8columns_create_report_total_line(options, totals_dict, _("Total"), 1)))
-
-        return lines
-
-    def _l10n_cl_8columns_create_report_line(self, options, vals, vals_id):
+    def _create_report_line(self, report, options, vals, vals_id):
         """ Create a standard (non total) line for the report
         :param options: report options
         :param vals: values necessary for the line
@@ -119,20 +120,20 @@ class CL8ColumnsReport(models.AbstractModel):
             value = vals.get(column['column_group_key'], {}).get(expression_label, False)
 
             columns.append({
-                'name': self.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
                 'class': 'number',
             })
 
         return {
-            'id': self._get_generic_line_id('account.account', vals_id),
+            'id': report._get_generic_line_id('account.account', vals_id),
             'caret_options': 'account.account',
             'name': vals['full_name'],
             'columns': columns,
             'level': 2,
         }
 
-    def _l10n_cl_8columns_create_report_total_line(self, options, total_vals, name, level=1):
+    def _create_report_total_line(self, report, options, total_vals, name, level=1):
         """ Create a total line for the report
         :param options: report options
         :param total_vals: values necessary for the line
@@ -148,19 +149,19 @@ class CL8ColumnsReport(models.AbstractModel):
             value = total_vals.get(column['column_group_key'], {}).get(expression_label, False)
 
             columns.append({
-                'name': self.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
                 'class': 'number',
             })
         return {
-            'id': self._get_generic_line_id(None, None, markup='total'),
+            'id': report._get_generic_line_id(None, None, markup='total'),
             'name': name,
             'class': 'total',
             'level': level,
             'columns': columns,
         }
 
-    def _l10n_cl_8columns_calculate_fiscalyear_result(self, options, subtotal_line):
+    def _calculate_fiscalyear_result(self, options, subtotal_line):
         exercise_result = OrderedDict.fromkeys([col['expression_label'] for col in options['columns']], 0)
         if subtotal_line['gain'] >= subtotal_line['loss']:
             exercise_result['loss'] = subtotal_line['gain'] - subtotal_line['loss']
@@ -170,7 +171,7 @@ class CL8ColumnsReport(models.AbstractModel):
             exercise_result['assets'] = exercise_result['gain']
         return exercise_result
 
-    def _l10n_cl_8columns_calculate_unallocated_earnings_value(self, options):
+    def _calculate_unallocated_earnings_value(self, report, options):
         """
             Get all the unallocated earnings value from the previous fiscal years.
             The past moves that target Income and expense account (+ special type of expenses)
@@ -181,12 +182,12 @@ class CL8ColumnsReport(models.AbstractModel):
         date_from_str = new_options.get('date', {}).get('date_from', '')
         date_from = fields.Date.from_string(date_from_str) or fields.Date.today()
         fiscal_dates = self.env.company.compute_fiscalyear_dates(date_from)
-        new_options['date'] = self._get_dates_period(
+        new_options['date'] = report._get_dates_period(
             None,
             fiscal_dates['date_from'] - timedelta(days=1),
             'range',
             period_type='custom')
-        tables, where_clause, where_params = self._query_get(new_options, 'strict_range')
+        tables, where_clause, where_params = report._query_get(new_options, 'strict_range')
         account_types = (
             'equity_unaffected',
             'income',
@@ -206,8 +207,8 @@ class CL8ColumnsReport(models.AbstractModel):
         value = self.env.cr.fetchone()[0] or 0.0
         return self.env.company.currency_id.round(value)
 
-    def _l10n_cl_8columns_calculate_previous_years_unallocated_earnings(self, options):
-        earning = self._l10n_cl_8columns_calculate_unallocated_earnings_value(options)
+    def _calculate_previous_years_unallocated_earnings(self, report, options):
+        earning = self._calculate_unallocated_earnings_value(report, options)
         if not earning:
             return {}
 
@@ -223,7 +224,7 @@ class CL8ColumnsReport(models.AbstractModel):
         row['liabilities'] = liabilities_sign * abs_earning
         return row
 
-    def _l10n_cl_8columns_calculate_totals(self, options, subtotal_line, exercise_result_line, previous_years_unallocated_earnings):
+    def _calculate_totals(self, options, subtotal_line, exercise_result_line, previous_years_unallocated_earnings):
         parts = [subtotal_line, exercise_result_line]
         if previous_years_unallocated_earnings:
             parts.append(previous_years_unallocated_earnings)

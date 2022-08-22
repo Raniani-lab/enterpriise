@@ -307,7 +307,7 @@ class TestReports(TestAr, TestAccountReportsCommon):
 
     def _test_txt_file(self, filename, journal_type):
         filetype = 1 if 'IVA' in filename else 0
-        out_txt = self.report._ar_vat_book_get_txt_files(self.options, journal_type)[filetype].decode('ISO-8859-1')
+        out_txt = self.env['l10n_ar.tax.report.handler']._vat_book_get_txt_files(self.options, journal_type)[filetype].decode('ISO-8859-1')
         res_file = file_open('l10n_ar_reports/tests/' + filename, 'rb').read().decode('ISO-8859-1')
         self.assertEqual(out_txt, res_file)
 

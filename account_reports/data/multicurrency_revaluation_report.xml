@@ -58,9 +58,7 @@
         <field name="filter_date_range" eval="False"/>
         <field name="filter_show_draft" eval="True"/>
         <field name="default_opening_date_filter">last_month</field>
-        <field name="custom_options_initializer">_custom_options_initializer_multi_currency_revaluation</field>
-        <field name="custom_line_postprocessor">_custom_line_postprocessor_multi_currency_revaluation</field>
-        <field name="custom_groupby_line_completer">_custom_groupby_line_completer_multi_currency_revaluation</field>
+        <field name="custom_handler_model_id" ref="model_account_multicurrency_revaluation_report_handler"/>
         <field name="main_template">account_reports.multicurrency_report_main_template</field>
         <field name="line_template">account_reports.multicurrency_report_line_template</field>
         <field name="search_template">account_reports.multicurrency_report_search_template</field>

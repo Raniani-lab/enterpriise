@@ -183,16 +183,16 @@ class AccountMoveL10NDe(models.Model):
             move.l10n_de_datev_main_account_id = value
 
 
-class DatevExportCSV(models.Model):
-    _inherit = 'account.report'
+class GeneralLedgerCustomHandler(models.AbstractModel):
+    _inherit = 'account.general.ledger.report.handler'
 
-    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
+    def _custom_options_initializer(self, report, options, previous_options=None):
         """
         Add the invoice lines search domain that common for all countries.
         :param dict options: Report options
         :param dict previous_options: Previous report options
         """
-        super()._custom_options_initializer_general_ledger(options, previous_options)
+        super()._custom_options_initializer(report, options, previous_options)
         if self.env.company.country_code == 'DE':
             options.setdefault('buttons', []).extend((
                 {
@@ -223,18 +223,18 @@ class DatevExportCSV(models.Model):
         Don't need to unlink as it will be done automatically by garbage collector
         of attachment cron
         """
-
+        report = self.env['account.report'].browse(options['report_id'])
         with tempfile.NamedTemporaryFile(mode='w+b', delete=True) as buf:
             with zipfile.ZipFile(buf, mode="w", compression=zipfile.ZIP_DEFLATED, allowZip64=False) as zf:
                 move_line_ids = []
-                for line in self._get_lines({**options, 'unfold_all': True}):
-                    model, model_id = self._get_model_info_from_id(line['id'])
+                for line in report._get_lines({**options, 'unfold_all': True}):
+                    model, model_id = report._get_model_info_from_id(line['id'])
                     if model == 'account.move.line':
                         move_line_ids.append(model_id)
 
                 domain = [
                     ('line_ids', 'in', move_line_ids),
-                    ('company_id', 'in', self.get_report_company_ids(options)),
+                    ('company_id', 'in', report.get_report_company_ids(options)),
                 ]
                 if options.get('all_entries'):
                     domain += [('state', '!=', 'cancel')]
@@ -243,7 +243,7 @@ class DatevExportCSV(models.Model):
                 if options.get('date'):
                     domain += [('date', '<=', options['date']['date_to'])]
                     # cannot set date_from on move as domain depends on the move line account if "strict_range" is False
-                domain += self._get_options_journals_domain(options)
+                domain += report._get_options_journals_domain(options)
                 moves = self.env['account.move'].search(domain)
                 zf.writestr('EXTF_accounting_entries.csv', self._l10n_de_datev_get_csv(options, moves))
                 zf.writestr('EXTF_customer_accounts.csv', self._l10n_de_datev_get_partner_list(options, customer=True))
@@ -266,7 +266,7 @@ class DatevExportCSV(models.Model):
             buf.seek(0)
             content = buf.read()
         return {
-            'file_name': self.get_default_report_filename('ZIP'),
+            'file_name': report.get_default_report_filename('ZIP'),
             'file_content': content,
             'file_type': 'zip'
         }
@@ -295,8 +295,9 @@ class DatevExportCSV(models.Model):
         lines = [preheader, header]
 
         move_line_ids = set()
-        for line in self._get_lines({**options, 'unfold_all': True}):
-            model, model_id = self._parse_line_id(line['id'])[-1][-2:]
+        report = self.env['account.report'].browse(options['report_id'])
+        for line in report._get_lines({**options, 'unfold_all': True}):
+            model, model_id = report._parse_line_id(line['id'])[-1][-2:]
             if model == 'account.move.line':
                 move_line_ids.add(str(model_id))
 
@@ -383,8 +384,9 @@ class DatevExportCSV(models.Model):
 
         # if we do _get_lines with some unfolded lines, only those will be returned, but we want all of them
         move_line_ids = []
-        for line in self._get_lines({**options, 'unfold_all': True}):
-            model, model_id = self._parse_line_id(line['id'])[-1][-2:]
+        report = self.env['account.report'].browse(options['report_id'])
+        for line in report._get_lines({**options, 'unfold_all': True}):
+            model, model_id = report._parse_line_id(line['id'])[-1][-2:]
             if model == 'account.move.line':
                 move_line_ids.append(int(model_id))
 

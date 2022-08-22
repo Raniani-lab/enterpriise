@@ -4,16 +4,23 @@ from lxml import etree
 from datetime import date, datetime
 
 
-class AccountGenericTaxReport(models.Model):
-    _inherit = 'account.report'
+class GermanTaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_de.tax.report.handler'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'German Tax Report Custom Handler'
 
-    def _custom_options_initializer_l10n_de_tax_report(self, options, previous_options=None):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        # Overridden to prevent having unnecessary lines from the generic tax report.
+        return []
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
         options.setdefault('buttons', []).extend((
             {
                 'name': _('XML'),
                 'sequence': 30,
                 'action': 'export_file',
-                'action_param': 'l10n_de_export_tax_report_to_xml',
+                'action_param': 'export_tax_report_to_xml',
                 'file_export_type': _('XML'),
             },
             {
@@ -23,9 +30,10 @@ class AccountGenericTaxReport(models.Model):
             },
         ))
 
-    def l10n_de_export_tax_report_to_xml(self, options):
+    def export_tax_report_to_xml(self, options):
+        report = self.env['account.report'].browse(options['report_id'])
         template_context = {}
-        options = self._get_options(options)
+        options = report._get_options(options)
         date_to = datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
         template_context['year'] = date_to.year
         if options['date']['period_type'] == 'month':
@@ -37,7 +45,7 @@ class AccountGenericTaxReport(models.Model):
             # For quarters, the period should be 41, 42, 43, 44 depending on the quarter.
             template_context['period'] = int(month_end / 3 + 40)
         template_context['creation_date'] = date.today().strftime("%Y%m%d")
-        template_context['company'] = self._get_sender_company_for_export(options)
+        template_context['company'] = report._get_sender_company_for_export(options)
 
         qweb = self.env['ir.qweb']
         doc = qweb._render('l10n_de_reports.tax_export_xml', values=template_context)
@@ -50,7 +58,7 @@ class AccountGenericTaxReport(models.Model):
         elem = etree.SubElement(taxes, "Kz09")
         elem.text = "0.00" #please keep "0.00" until Odoo has "Kz09"
 
-        report_lines = self._get_lines(options)
+        report_lines = report._get_lines(options)
         colname_to_idx = {col['name']: idx for idx, col in enumerate(options.get('columns', []))}
         report_line_ids = [line['columns'][colname_to_idx['Balance']]['report_line_id'] for line in report_lines]
         codes_context = {}
@@ -76,7 +84,7 @@ class AccountGenericTaxReport(models.Model):
                     elem.text = "0.00"
 
         return {
-            'file_name': self.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename('xml'),
             'file_content': etree.tostring(tree, pretty_print=True, standalone=False, encoding='ISO-8859-1',),
             'file_type': 'xml',
         }

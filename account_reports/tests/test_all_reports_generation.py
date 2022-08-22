@@ -67,10 +67,19 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
                     if option_button.get('action_param'):
                         function_params.append(option_button['action_param'])
 
-                    action_dict = getattr(report, option_button['action'])(*function_params)
+                    action = option_button['action']
+                    if report.custom_handler_model_id and hasattr(self.env[report.custom_handler_model_name], action):
+                        action_dict = getattr(self.env[report.custom_handler_model_name], action)(*function_params)
+                    else:
+                        action_dict = getattr(report, action)(*function_params)
 
                     if action_dict['type'] == 'ir_actions_account_report_download':
-                        file_gen_res = getattr(report, action_dict['data']['file_generator'])(options)
+                        file_gen = action_dict['data']['file_generator']
+                        if report.custom_handler_model_id and hasattr(self.env[report.custom_handler_model_name], file_gen):
+                            file_gen_res = getattr(self.env[report.custom_handler_model_name], file_gen)(options)
+                        else:
+                            file_gen_res = getattr(report, file_gen)(options)
+
                         self.assertEqual(
                             set(file_gen_res.keys()), {'file_name', 'file_content', 'file_type'},
                             "File generator's result should always contain the same 3 keys."

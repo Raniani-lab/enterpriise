@@ -15,9 +15,7 @@
         <field name="load_more_limit" eval="80"/>
         <field name="filter_journals" eval="False"/>
         <field name="search_bar" eval="True"/>
-        <field name="caret_options_initializer">_caret_options_initializer_sales_report</field>
-        <field name="custom_options_initializer">_custom_options_initializer_l10n_se_sales_report</field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_l10n_se_sales_report</field>
+        <field name="custom_handler_model_id" ref="model_l10n_se_ec_sales_report_handler"/>
         <field name="column_ids">
             <record id="account_financial_report_ec_sales_vat" model="account.report.column">
                 <field name="name">VAT Number</field>

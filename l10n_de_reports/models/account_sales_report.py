@@ -7,10 +7,12 @@ import zipfile
 from odoo import _, api, models
 
 
-class ECSalesReport(models.Model):
-    _inherit = 'account.report'
+class GermanECSalesReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_de.ec.sales.report.handler'
+    _inherit = 'account.ec.sales.report.handler'
+    _description = 'German EC Sales Report Custom Handler'
 
-    def _custom_options_initializer_l10n_de_sales_report(self, options, previous_options=None):
+    def _custom_options_initializer(self, report, options, previous_options=None):
         """
         Add the invoice lines search domain that is specific to the country.
         Typically, the taxes account.report.expression ids relative to the country for the triangular, sale of goods
@@ -18,8 +20,7 @@ class ECSalesReport(models.Model):
         :param dict options: Report options
         :return dict: The modified options dictionary
         """
-        self.ensure_one()
-        self._sales_report_init_core_custom_options(options, previous_options)
+        super()._init_core_custom_options(report, options, previous_options)
         ec_operation_category = options.get('sales_report_taxes', {'goods': tuple(), 'triangular': tuple(), 'services': tuple()})
 
         ec_operation_category['goods'] = tuple(self.env.ref('l10n_de.tax_report_de_tag_41_tag')._get_matching_tags().ids)
@@ -41,15 +42,15 @@ class ECSalesReport(models.Model):
             'name': _('CSV'),
             'sequence': 30,
             'action': 'export_file',
-            'action_param': 'l10n_de_datev_print_de_csvs_zip',
+            'action_param': 'print_de_csvs_zip',
             'file_export_type': _('ZIP')
         })
 
     @api.model
-    def l10n_de_datev_get_csvs(self, options):
+    def get_csvs(self, report, options):
         options['get_file_data'] = True
         lines = []
-        for line in self._get_lines(options)[:-1]:
+        for line in report._get_lines(options)[:-1]:
             l = []
             for column in line['columns']:
                 l.append(column['no_format'])
@@ -64,8 +65,9 @@ class ECSalesReport(models.Model):
             line_chunks.append(content)
         return line_chunks
 
-    def l10n_de_datev_print_de_csvs_zip(self, options):
-        csvs = self.l10n_de_datev_get_csvs(options)
+    def print_de_csvs_zip(self, options):
+        report = self.env['account.report'].browse(options['report_id'])
+        csvs = self.get_csvs(report, options)
         with tempfile.NamedTemporaryFile() as buf:
             with zipfile.ZipFile(buf, mode="w", compression=zipfile.ZIP_DEFLATED, allowZip64=False) as zip_buffer:
                 for i, csv in enumerate(csvs):
@@ -73,7 +75,7 @@ class ECSalesReport(models.Model):
             buf.seek(0)
             res = buf.read()
         return {
-            'file_name': self.get_default_report_filename('ZIP'),
+            'file_name': report.get_default_report_filename('ZIP'),
             'file_content': res,
             'file_type': 'zip'
         }

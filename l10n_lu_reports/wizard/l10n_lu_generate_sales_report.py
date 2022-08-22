@@ -32,7 +32,7 @@ class L10nLuGenerateSalesReport(models.TransientModel):
                               "Either both 'L' and 'T' codes should be selected, or none of them"))
         comparison_files = [(d.attachment_id.name, base64.b64decode(d.attachment_id.datas)) for d in self.l10n_lu_stored_report_ids]
         ec_sales_report = self.env.ref('l10n_lu_reports.lux_ec_sales_report')
-        forms, year, period, codes = ec_sales_report.l10n_lu_sales_report_get_xml_2_0_report_values(report_generation_options, comparison_files)
+        forms, year, period, codes = self.env[ec_sales_report.custom_handler_model_name].get_xml_2_0_report_values(report_generation_options, comparison_files)
         declarations = {'declaration_singles': {'forms': forms}, 'declaration_groups': []}
         declarations.update(declaration_template_values)
         return {'declarations': [declarations], 'year': year, 'period': period, 'codes': codes}

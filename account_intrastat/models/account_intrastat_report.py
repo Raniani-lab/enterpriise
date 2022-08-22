@@ -26,23 +26,59 @@ _unknown_country_code = {
 
 _qn_unknown_individual_vat_country_codes = ('FI', 'SE', 'SK', 'DE', 'AT')
 
-class IntrastatReport(models.Model):
-    _inherit = 'account.report'
 
-    ####################################################
-    # OVERRIDES
-    ####################################################
+class IntrastatReportCustomHandler(models.AbstractModel):
+    _name = 'account.intrastat.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Intrastat Report Custom Handler'
 
-    def _intrastat_show_region_code(self):
-        """Return a bool indicating if the region code is to be displayed for the country concerned in this localisation."""
-        # TO OVERRIDE
-        return True
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        # dict of the form {move_id: {column_group_key: {expression_label: value}}}
+        move_info_dict = {}
 
-    ####################################################
-    # OPTIONS: INIT
-    ####################################################
+        # dict of the form {column_group_key: total_value}
+        total_values_dict = {}
 
-    def _custom_options_initializer_intrastat(self, options, previous_options=None):
+        # Build query
+        query_list = []
+        full_query_params = []
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            query, params = self._prepare_query(column_group_options, column_group_key)
+            query_list.append(f"({query})")
+            full_query_params += params
+
+        full_query = " UNION ALL ".join(query_list)
+        self._cr.execute(full_query, full_query_params)
+        results = self._cr.dictfetchall()
+        results = self._fill_supplementary_units(results)
+
+        # Fill dictionaries
+        for result in self._fill_missing_values(results):
+            move_id = result['id']
+            column_group_key = result['column_group_key']
+
+            current_move_info = move_info_dict.setdefault(move_id, {})
+
+            current_move_info[column_group_key] = result
+            current_move_info['name'] = result['name']
+
+            total_values_dict.setdefault(column_group_key, 0)
+            total_values_dict[column_group_key] += result['value']
+
+        # Create lines
+        lines = []
+        for move_id, move_info in move_info_dict.items():
+            line = self._create_report_line(options, move_info, move_id, ['value'])
+            lines.append((0, line))
+
+        # Create total line if only one type of invoice is selected
+        if options.get('intrastat_total_line'):
+            total_line = self._create_report_total_line(options, total_values_dict)
+            lines.append((0, total_line))
+        return lines
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
         previous_options = previous_options or {}
 
         # Filter only partners with VAT
@@ -81,7 +117,7 @@ class IntrastatReport(models.Model):
         excluded_columns = set()
         if not options['intrastat_extended']:
             excluded_columns |= {'transport_code', 'incoterm_code'}
-        if not self._intrastat_show_region_code():
+        if not self._show_region_code():
             excluded_columns.add('region_code')
 
         new_columns = []
@@ -97,69 +133,37 @@ class IntrastatReport(models.Model):
                         col['expression_label'] = 'intrastat_product_origin_country_code'
 
         # Only pick Sale/Purchase journals (+ divider)
-        self._init_options_journals(options, previous_options=previous_options, additional_journals_domain=[('type', 'in', ('sale', 'purchase'))])
+        report._init_options_journals(options, previous_options=previous_options, additional_journals_domain=[('type', 'in', ('sale', 'purchase'))])
 
         # When printing the report to xlsx, we want to use country codes instead of names
         xlsx_button_option = next(button_opt for button_opt in options['buttons'] if button_opt.get('action_param') == 'export_to_xlsx')
-        xlsx_button_option['action_param'] = 'intrastat_export_to_xlsx'
+        xlsx_button_option['action_param'] = 'export_to_xlsx'
 
-    def intrastat_export_to_xlsx(self, options, response=None):
+    ####################################################
+    # OVERRIDES
+    ####################################################
+
+    def _show_region_code(self):
+        """Return a bool indicating if the region code is to be displayed for the country concerned in this localisation."""
+        # TO OVERRIDE
+        return True
+
+    ####################################################
+    # OPTIONS: INIT
+    ####################################################
+
+    def export_to_xlsx(self, options, response=None):
         # We need to regenerate the options to make sure we hide the country name columns as expected.
-        new_options = self._get_options(previous_options={**options, 'country_format': 'code', 'commodity_flow': 'code'})
-        return self.export_to_xlsx(new_options, response=response)
+        report = self.env['account.report'].browse(options['report_id'])
+        new_options = report._get_options(previous_options={**options, 'country_format': 'code', 'commodity_flow': 'code'})
+        return report.export_to_xlsx(new_options, response=response)
 
     ####################################################
     # REPORT LINES: CORE
     ####################################################
 
     @api.model
-    def _dynamic_lines_generator_intrastat(self, options, all_column_groups_expression_totals):
-        # dict of the form {move_id: {column_group_key: {expression_label: value}}}
-        move_info_dict = {}
-
-        # dict of the form {column_group_key: total_value}
-        total_values_dict = {}
-
-        # Build query
-        query_list = []
-        full_query_params = []
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            query, params = self._intrastat_prepare_query(column_group_options, column_group_key)
-            query_list.append(f"({query})")
-            full_query_params += params
-
-        full_query = " UNION ALL ".join(query_list)
-        self._cr.execute(full_query, full_query_params)
-        results = self._cr.dictfetchall()
-        results = self._intrastat_fill_supplementary_units(results)
-
-        # Fill dictionaries
-        for result in self._intrastat_fill_missing_values(results):
-            move_id = result['id']
-            column_group_key = result['column_group_key']
-
-            current_move_info = move_info_dict.setdefault(move_id, {})
-
-            current_move_info[column_group_key] = result
-            current_move_info['name'] = result['name']
-
-            total_values_dict.setdefault(column_group_key, 0)
-            total_values_dict[column_group_key] += result['value']
-
-        # Create lines
-        lines = []
-        for move_id, move_info in move_info_dict.items():
-            line = self._intrastat_create_report_line(options, move_info, move_id, ['value'])
-            lines.append((0, line))
-
-        # Create total line if only one type of invoice is selected
-        if options.get('intrastat_total_line'):
-            total_line = self._intrastat_create_report_total_line(options, total_values_dict)
-            lines.append((0, total_line))
-        return lines
-
-    @api.model
-    def _intrastat_create_report_line(self, options, line_vals, line_id, number_values):
+    def _create_report_line(self, options, line_vals, line_id, number_values):
         """ Create a standard (non-total) line for the report
 
         :param options: report options
@@ -167,6 +171,7 @@ class IntrastatReport(models.Model):
         :param line_id: id of the line
         :param number_values: list of expression labels that need to have the 'number' class
         """
+        report = self.env['account.report']
         columns = []
         for column in options['columns']:
             expression_label = column['expression_label']
@@ -176,7 +181,7 @@ class IntrastatReport(models.Model):
                 value = f"{value} ({line_vals.get(column['column_group_key'], {}).get('type', False)})"
 
             columns.append({
-                'name': self.format_value(value, figure_type=column['figure_type']) if value else None,
+                'name': report.format_value(value, figure_type=column['figure_type']) if value else None,
                 'no_format': value,
                 'class': 'number' if expression_label in number_values else '',
             })
@@ -195,7 +200,7 @@ class IntrastatReport(models.Model):
                     options.setdefault('intrastat_warnings', defaultdict(list))
                     options['intrastat_warnings'][error].append(line_vals[column_group][val_key])
         return {
-            'id': self._get_generic_line_id('account.move.line', line_id),
+            'id': report._get_generic_line_id('account.move.line', line_id),
             'caret_options': 'account.move',
             'name': line_vals['name'],
             'columns': columns,
@@ -203,24 +208,25 @@ class IntrastatReport(models.Model):
         }
 
     @api.model
-    def _intrastat_create_report_total_line(self, options, total_vals):
+    def _create_report_total_line(self, options, total_vals):
         """ Create a total line for the report
 
         :param options: report options
         :param total_vals: total values dict
         """
+        report = self.env['account.report']
         columns = []
         for column in options['columns']:
             expression_label = column['expression_label']
             value = total_vals.get(column['column_group_key'], {}).get(expression_label, False)
 
             columns.append({
-                'name': self.format_value(value, figure_type=column['figure_type']) if value else None,
+                'name': report.format_value(value, figure_type=column['figure_type']) if value else None,
                 'no_format': value,
                 'class': 'number',
             })
         return {
-            'id': self._get_generic_line_id(None, None, markup='total'),
+            'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
             'class': 'total',
             'level': 1,
@@ -232,17 +238,17 @@ class IntrastatReport(models.Model):
     ####################################################
 
     @api.model
-    def _intrastat_prepare_query(self, options, column_group_key=None):
-        query_blocks, where_params = self._intrastat_build_query(options, column_group_key)
+    def _prepare_query(self, options, column_group_key=None):
+        query_blocks, where_params = self._build_query(options, column_group_key)
         query = f"{query_blocks['select']} {query_blocks['from']} {query_blocks['where']} {query_blocks['order']}"
         return query, where_params
 
     @api.model
-    def _intrastat_build_query(self, options, column_group_key=None):
+    def _build_query(self, options, column_group_key=None):
         # triangular use cases are handled by letting the intrastat_country_id editable on
         # invoices. Modifying or emptying it allow to alter the intrastat declaration
         # accordingly to specs (https://www.nbb.be/doc/dq/f_pdf_ex/intra2017fr.pdf (§ 4.x))
-        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+        tables, where_clause, where_params = self.env['account.report'].browse(options['report_id'])._query_get(options, 'strict_range')
 
         import_merchandise_code = _merchandise_import_code.get(self.env.company.country_id.code, '29')
         export_merchandise_code = _merchandise_export_code.get(self.env.company.country_id.code, '19')
@@ -365,7 +371,7 @@ class IntrastatReport(models.Model):
     ####################################################
 
     @api.model
-    def _intrastat_fill_missing_values(self, vals_list):
+    def _fill_missing_values(self, vals_list):
         """ Some values are too complex to be retrieved in the SQL query.
         Then, this method is used to compute the missing values fetched from the database.
         :param vals_list:    A dictionary created by the dictfetchall method.
@@ -400,8 +406,7 @@ class IntrastatReport(models.Model):
 
         return vals_list
 
-
-    def _intrastat_fill_supplementary_units(self, query_results):
+    def _fill_supplementary_units(self, query_results):
         """ Although the default measurement provided is the weight in kg, some commodities require a supplementary unit
         in the report.
 

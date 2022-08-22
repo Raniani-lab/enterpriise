@@ -16,31 +16,34 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 _logger = logging.getLogger(__name__)
 
 
-class MxReportPartnerLedger(models.Model):
-    _inherit = "account.report"
+class MexicanAccountReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_mx.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Mexican Account Report Custom Handler'
 
-    def _custom_options_initializer_l10n_mx_diot_report(self, options, previous_options=None):
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
         options['columns'] = [column for column in options['columns']]
         options.setdefault('buttons', []).extend((
-            {'name': _('DIOT (txt)'), 'sequence': 40, 'action': 'export_file', 'action_param': 'l10n_mx_action_get_diot_txt', 'file_export_type': _('DIOT')},
-            {'name': _('DPIVA (txt)'), 'sequence': 60, 'action': 'export_file', 'action_param': 'l10n_mx_action_get_dpiva_txt', 'file_export_type': _('DPIVA')},
+            {'name': _('DIOT (txt)'), 'sequence': 40, 'action': 'export_file', 'action_param': 'action_get_diot_txt', 'file_export_type': _('DIOT')},
+            {'name': _('DPIVA (txt)'), 'sequence': 60, 'action': 'export_file', 'action_param': 'action_get_dpiva_txt', 'file_export_type': _('DPIVA')},
         ))
 
-    def _custom_engine_l10n_mx_diot_report(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
-        def build_dict(current_groupby, query_res):
+    def _custom_engine_diot_report(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        def build_dict(report, current_groupby, query_res):
             if not current_groupby:
-                return query_res[0] if query_res else {k: None for k in self.column_ids.mapped('expression_label')}
+                return query_res[0] if query_res else {k: None for k in report.column_ids.mapped('expression_label')}
             return [(group_res["grouping_key"], group_res) for group_res in query_res]
 
-        self.ensure_one()
-        query_res = self._l10n_mx_diot_execute_query(current_groupby, options, offset, limit)
-        return build_dict(current_groupby, query_res)
+        report = self.env['account.report'].browse(options['report_id'])
+        query_res = self._execute_query(report, current_groupby, options, offset, limit)
+        return build_dict(report, current_groupby, query_res)
 
-    def _l10n_mx_diot_execute_query(self, current_groupby, options, offset, limit):
-        self._check_groupby_fields([current_groupby] if current_groupby else [])
+    def _execute_query(self, report, current_groupby, options, offset, limit):
+        report._check_groupby_fields([current_groupby] if current_groupby else [])
 
         cash_basis_journal_ids = self.env.companies.filtered('tax_cash_basis_journal_id').tax_cash_basis_journal_id
-        tables, where_clause, where_params = self._query_get(options, 'strict_range', domain=[
+        tables, where_clause, where_params = report._query_get(options, 'strict_range', domain=[
             ('parent_state', '=', 'posted'),
             ('journal_id', 'in', cash_basis_journal_ids.ids),
         ])
@@ -85,7 +88,7 @@ class MxReportPartnerLedger(models.Model):
             for column_name in ('paid_16', 'paid_16_non_cred', 'paid_8', 'paid_8_non_cred', 'importation_16', 'paid_0', 'exempt')
         ]
 
-        tail_query, tail_params = self._get_engine_query_tail(offset, limit)
+        tail_query, tail_params = report._get_engine_query_tail(offset, limit)
         self._cr.execute(f"""
             WITH raw_results as (
                 SELECT
@@ -155,14 +158,15 @@ class MxReportPartnerLedger(models.Model):
         )
         return self.env.cr.dictfetchall()
 
-    def l10n_mx_action_get_diot_txt(self, options):
+    def action_get_diot_txt(self, options):
+        report = self.env['account.report'].browse(options['report_id'])
         partner_and_values_to_report = {
-            p: v for p, v in self._l10n_mx_get_diot_values_per_partner(options).items()
+            p: v for p, v in self._get_diot_values_per_partner(report, options).items()
             # don't report those for which all amount are 0
             if sum([v[x] for x in ('paid_16', 'paid_16_non_cred', 'paid_8', 'paid_8_non_cred', 'importation_16', 'paid_0', 'exempt', 'withheld', 'refunds')])
         }
 
-        self.l10n_mx_check_for_error_on_partner([partner for partner in partner_and_values_to_report])
+        self.check_for_error_on_partner([partner for partner in partner_and_values_to_report])
 
         lines = []
         for partner, values in partner_and_values_to_report.items():
@@ -176,9 +180,9 @@ class MxReportPartnerLedger(models.Model):
             data[1] = values['operation_type_code']  # Operation Type
             data[2] = values['partner_vat_number'] if not is_foreign_partner else '' # Tax Number
             data[3] = values['partner_vat_number'] if is_foreign_partner else ''  # Tax Number for Foreigners
-            data[4] = ''.join(self.l10n_mx_str_format(partner.name)).encode('utf-8').strip().decode('utf-8') if is_foreign_partner else ''  # Name
+            data[4] = ''.join(self.str_format(partner.name)).encode('utf-8').strip().decode('utf-8') if is_foreign_partner else ''  # Name
             data[5] = values['country_code'] if is_foreign_partner else '' # Country
-            data[6] = ''.join(self.l10n_mx_str_format(values['partner_nationality'])).encode('utf-8').strip().decode('utf-8') if is_foreign_partner else '' # Nationality
+            data[6] = ''.join(self.str_format(values['partner_nationality'])).encode('utf-8').strip().decode('utf-8') if is_foreign_partner else '' # Nationality
             data[7] = str(round(float(values['paid_16'])) or '')  # 16%
             data[9] = str(round(float(values['paid_16_non_cred'])) or '')  # 16% Non-Creditable
             data[12] = str(round(float(values['paid_8'])) or '')  # 8%
@@ -193,19 +197,20 @@ class MxReportPartnerLedger(models.Model):
 
         diot_txt_result = '\n'.join(lines)
         return {
-            'file_name': self.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename('txt'),
             'file_content': diot_txt_result.encode(),
             'file_type': 'txt',
         }
 
-    def l10n_mx_action_get_dpiva_txt(self, options):
+    def action_get_dpiva_txt(self, options):
+        report = self.env['account.report'].browse(options['report_id'])
         partner_and_values_to_report = {
-            p: v for p, v in self._l10n_mx_get_diot_values_per_partner(options).items()
+            p: v for p, v in self._get_diot_values_per_partner(report, options).items()
             # don't report those for which all amount are 0
             if sum([v[x] for x in ('paid_16', 'paid_16_non_cred', 'paid_8', 'paid_8_non_cred', 'importation_16', 'paid_0', 'exempt', 'withheld', 'refunds')])
         }
 
-        self.l10n_mx_check_for_error_on_partner([partner for partner in partner_and_values_to_report])
+        self.check_for_error_on_partner([partner for partner in partner_and_values_to_report])
 
         date = fields.datetime.strptime(options['date']['date_from'], DEFAULT_SERVER_DATE_FORMAT)
         with self._custom_setlocale():
@@ -232,9 +237,9 @@ class MxReportPartnerLedger(models.Model):
             data[27] = values['operation_type_code']  # Operation Type
             data[28] = values['partner_vat_number'] if not is_foreign_partner else ''  # Federal Taxpayer Registry Code
             data[29] = values['partner_vat_number'] if is_foreign_partner else ''  # Fiscal ID
-            data[30] = ''.join(self.l10n_mx_str_format(partner.name)).encode('utf-8').strip().decode('utf-8') if is_foreign_partner else ''  # Name
+            data[30] = ''.join(self.str_format(partner.name)).encode('utf-8').strip().decode('utf-8') if is_foreign_partner else ''  # Name
             data[31] = values['country_code'] if is_foreign_partner else ''  # Country
-            data[32] = ''.join(self.l10n_mx_str_format(values['partner_nationality'])).encode('utf-8').strip().decode('utf-8') if is_foreign_partner else ''  # Nationality
+            data[32] = ''.join(self.str_format(values['partner_nationality'])).encode('utf-8').strip().decode('utf-8') if is_foreign_partner else ''  # Nationality
             data[33] = str(round(float(values['paid_16'])) or '')  # 16%
             data[36] = str(round(float(values['paid_8'])) or '')  # 8%
             data[39] = str(round(float(values['importation_16'])) or '')  # 16% - Importation
@@ -247,14 +252,14 @@ class MxReportPartnerLedger(models.Model):
 
         dpiva_txt_result = '\n'.join(lines)
         return {
-            'file_name': self.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename('txt'),
             'file_content': dpiva_txt_result.encode(),
             'file_type': 'txt',
         }
 
-    def _l10n_mx_get_diot_values_per_partner(self, options):
+    def _get_diot_values_per_partner(self, report, options):
         options['unfolded_lines'] = {}  # This allows to only get the first groupby level: partner_id
-        col_group_results = self._compute_expression_totals_for_each_column_group(self.line_ids.expression_ids, options, groupby_to_expand="partner_id")
+        col_group_results = report._compute_expression_totals_for_each_column_group(report.line_ids.expression_ids, options, groupby_to_expand="partner_id")
         if len(col_group_results) != 1:
             raise UserError(_("You can only export one period at a time with this file format!"))
         expression_list = list(col_group_results.values())
@@ -265,7 +270,7 @@ class MxReportPartnerLedger(models.Model):
                 partner_to_label_val.setdefault(self.env['res.partner'].browse(partner_id), {})[label] = value
         return partner_to_label_val
 
-    def l10n_mx_check_for_error_on_partner(self, partners):
+    def check_for_error_on_partner(self, partners):
         partner_missing_information = self.env['res.partner']
         for partner in partners:
             if partner.country_id.code == "MX" and not partner.vat:
@@ -286,7 +291,7 @@ class MxReportPartnerLedger(models.Model):
             raise RedirectWarning(msg, action_error, _("See the list of partners"))
 
     @staticmethod
-    def l10n_mx_str_format(text):
+    def str_format(text):
         if not text:
             return ''
         trans_tab = {

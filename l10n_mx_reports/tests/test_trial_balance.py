@@ -97,7 +97,7 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
         """
 
         options = self._generate_options(self.report, '2021-01-01', '2021-12-31')
-        coa_report = self.report.with_context(skip_xsd=True).action_l10n_mx_generate_coa_sat_xml(options)['file_content']
+        coa_report = self.env[self.report.custom_handler_model_name].with_context(skip_xsd=True).action_l10n_mx_generate_coa_sat_xml(options)['file_content']
         self.assertXmlTreeEqual(
             self.get_xml_tree_from_string(coa_report),
             self.get_xml_tree_from_string(expected_coa_xml),
@@ -126,7 +126,7 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
         """
 
         options = self._generate_options(self.report, '2021-01-01', '2021-12-31')
-        sat_report = self.report.with_context(skip_xsd=True).action_l10n_mx_generate_trial_balance_sat_xml(options)['file_content']
+        sat_report = self.env[self.report.custom_handler_model_name].with_context(skip_xsd=True).action_l10n_mx_generate_sat_xml(options)['file_content']
         self.assertXmlTreeEqual(
             self.get_xml_tree_from_string(sat_report),
             self.get_xml_tree_from_string(expected_sat_xml),
@@ -137,14 +137,14 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
         self.company_data['default_account_payable'].tag_ids = [Command.clear()]
         options = self._generate_options(self.report, '2021-01-01', '2021-12-31')
         with self.assertRaises(RedirectWarning):
-            self.report.action_l10n_mx_generate_coa_sat_xml(options)
+            self.env[self.report.custom_handler_model_name].action_l10n_mx_generate_coa_sat_xml(options)
 
     def test_generate_coa_xml_with_too_much_tag(self):
         """This test verifies that all accounts present in the trial balance have exactly one Debit or Credit balance account tag"""
         self.company_data['default_account_payable'].tag_ids = self.env.ref('l10n_mx.tag_debit_balance_account') + self.env.ref('l10n_mx.tag_credit_balance_account')
         options = self._generate_options(self.report, '2021-01-01', '2021-12-31')
         with self.assertRaises(RedirectWarning):
-            self.report.action_l10n_mx_generate_coa_sat_xml(options)
+            self.env[self.report.custom_handler_model_name].action_l10n_mx_generate_coa_sat_xml(options)
 
     def test_mx_trial_balance(self):
         """ This test will test the Mexican Trial Balance (with and without the hierarchy) """

@@ -8,28 +8,32 @@ from odoo.exceptions import UserError, RedirectWarning
 from odoo.osv import expression
 
 
-class AccountGenericTaxReport(models.Model):
-    _inherit = 'account.report'
+class GenericTaxReportCustomHandler(models.AbstractModel):
+    _name = 'account.generic.tax.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Generic Tax Report Custom Handler'
 
-    # -------------------------------------------------------------------------
-    # GENERIC TAX REPORT COMPUTATION (DYNAMIC LINES)
-    # -------------------------------------------------------------------------
-    def _dynamic_lines_generator_generic_tax_report(self, options, all_column_groups_expression_totals):
-        return self._generic_tax_report_get_dynamic_lines(options, 'default')
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        return self._get_dynamic_lines(report, options, 'default')
 
-    def _dynamic_lines_generator_generic_tax_report_tax_account_grouping(self, options, all_column_groups_expression_totals):
-        return self._generic_tax_report_get_dynamic_lines(options, 'tax_account')
+    def _caret_options_initializer(self):
+        return {
+            'generic_tax_report': [
+                {'name': _("Audit"), 'action': 'caret_option_audit_tax'},
+            ]
+        }
 
-    def _dynamic_lines_generator_generic_tax_report_account_tax_grouping(self, options, all_column_groups_expression_totals):
-        return self._generic_tax_report_get_dynamic_lines(options, 'account_tax')
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 80})
 
-    def _generic_tax_report_get_dynamic_lines(self, options, grouping):
+    def _get_dynamic_lines(self, report, options, grouping):
         """ Compute the report lines for the generic tax report.
 
         :param options: The report options.
         :return:        A list of lines, each one being a python dictionary.
         """
-        options_by_column_group = self._split_options_per_column_group(options)
+        options_by_column_group = report._split_options_per_column_group(options)
 
         # Compute tax_base_amount / tax_amount for each selected groupby.
         if grouping == 'tax_account':
@@ -42,7 +46,7 @@ class AccountGenericTaxReport(models.Model):
             groupby_fields = [('src_tax', 'type_tax_use'), ('src_tax', 'id')]
             comodels = [None, 'account.tax']
 
-        tax_amount_hierarchy = self._read_generic_tax_report_amounts(options_by_column_group, groupby_fields)
+        tax_amount_hierarchy = self._read_generic_tax_report_amounts(report, options_by_column_group, groupby_fields)
 
         # Fetch involved records in order to ensure all lines are sorted according the comodel order.
         # To do so, we compute 'sorting_map_list' allowing to retrieve each record by id and the order
@@ -71,7 +75,8 @@ class AccountGenericTaxReport(models.Model):
 
         # Compute report lines.
         lines = []
-        self._generic_tax_report_populate_lines_recursively(
+        self._populate_lines_recursively(
+            report,
             options,
             lines,
             sorting_map_list,
@@ -80,7 +85,11 @@ class AccountGenericTaxReport(models.Model):
         )
         return lines
 
-    def _read_generic_tax_report_amounts(self, options_by_column_group, groupby_fields):
+    # -------------------------------------------------------------------------
+    # GENERIC TAX REPORT COMPUTATION (DYNAMIC LINES)
+    # -------------------------------------------------------------------------
+
+    def _read_generic_tax_report_amounts(self, report, options_by_column_group, groupby_fields):
         """ Read the tax details to compute the tax amounts.
 
         :param options_list:    The list of report options, one for each period.
@@ -120,7 +129,7 @@ class AccountGenericTaxReport(models.Model):
 
         res = {}
         for column_group_key, options in options_by_column_group.items():
-            tables, where_clause, where_params = self._query_get(options, 'strict_range')
+            tables, where_clause, where_params = report._query_get(options, 'strict_range')
             tax_details_query, tax_details_params = self.env['account.move.line']._get_query_tax_details(tables, where_clause, where_params)
 
             # Avoid adding multiple times the same base amount sharing the same grouping_key.
@@ -186,7 +195,7 @@ class AccountGenericTaxReport(models.Model):
 
         return res
 
-    def _generic_tax_report_populate_lines_recursively(self, options, lines, sorting_map_list, groupby_fields, values_node, index=0, type_tax_use=None, parent_line_id=None):
+    def _populate_lines_recursively(self, report, options, lines, sorting_map_list, groupby_fields, values_node, index=0, type_tax_use=None, parent_line_id=None):
         ''' Populate the list of report lines passed as parameter recursively. At this point, every amounts is already
         fetched for every periods and every groupby.
 
@@ -230,7 +239,7 @@ class AccountGenericTaxReport(models.Model):
                 if index == len(groupby_fields) - 1:
                     columns.append({
                        'no_format': sign * tax_base_amount,
-                       'name': self.format_value(sign * tax_base_amount, figure_type='monetary'),
+                       'name': report.format_value(sign * tax_base_amount, figure_type='monetary'),
                        'style': 'white-space:nowrap;',
                     })
                 else:
@@ -239,7 +248,7 @@ class AccountGenericTaxReport(models.Model):
                 # Add the tax amount.
                 columns.append({
                    'no_format': sign * tax_amount,
-                   'name': self.format_value(sign * tax_amount, figure_type='monetary'),
+                   'name': report.format_value(sign * tax_amount, figure_type='monetary'),
                    'style': 'white-space:nowrap;',
                 })
 
@@ -249,7 +258,7 @@ class AccountGenericTaxReport(models.Model):
                 'level': index + 1,
                 'unfoldable': False,
             }
-            report_line = self._generic_tax_report_build_report_line(options, default_vals, groupby_key, sorting_map[key][0], parent_line_id)
+            report_line = self._build_report_line(report, options, default_vals, groupby_key, sorting_map[key][0], parent_line_id)
 
             if groupby_key == 'src_tax_id':
                 report_line['caret_options'] = 'generic_tax_report'
@@ -257,7 +266,8 @@ class AccountGenericTaxReport(models.Model):
             lines.append((0, report_line))
 
             # Process children recursively.
-            self._generic_tax_report_populate_lines_recursively(
+            self._populate_lines_recursively(
+                report,
                 options,
                 lines,
                 sorting_map_list,
@@ -268,7 +278,7 @@ class AccountGenericTaxReport(models.Model):
                 parent_line_id=report_line['id'],
             )
 
-    def _generic_tax_report_build_report_line(self, options, default_vals, groupby_key, value, parent_line_id):
+    def _build_report_line(self, report, options, default_vals, groupby_key, value, parent_line_id):
         """ Build the report line accordingly to its type.
         :param options:         The report options.
         :param default_vals:    The pre-computed report line values.
@@ -283,12 +293,12 @@ class AccountGenericTaxReport(models.Model):
 
         if groupby_key == 'src_tax_type_tax_use':
             type_tax_use_option = value
-            report_line['id'] = self._get_generic_line_id(None, None, markup=type_tax_use_option[0], parent_line_id=parent_line_id)
+            report_line['id'] = report._get_generic_line_id(None, None, markup=type_tax_use_option[0], parent_line_id=parent_line_id)
             report_line['name'] = type_tax_use_option[1]
 
         elif groupby_key == 'src_tax_id':
             tax = value
-            report_line['id'] = self._get_generic_line_id(tax._name, tax.id, parent_line_id=parent_line_id)
+            report_line['id'] = report._get_generic_line_id(tax._name, tax.id, parent_line_id=parent_line_id)
 
             if tax.amount_type == 'percent':
                 report_line['name'] = f"{tax.name} ({tax.amount}%)"
@@ -302,7 +312,7 @@ class AccountGenericTaxReport(models.Model):
 
         elif groupby_key == 'account_id':
             account = value
-            report_line['id'] = self._get_generic_line_id(account._name, account.id, parent_line_id=parent_line_id)
+            report_line['id'] = report._get_generic_line_id(account._name, account.id, parent_line_id=parent_line_id)
 
             if options.get('multi-company'):
                 report_line['name'] = f"{account.display_name} - {account.company_id.display_name}"
@@ -315,18 +325,9 @@ class AccountGenericTaxReport(models.Model):
      # BUTTONS & CARET OPTIONS
      # -------------------------------------------------------------------------
 
-    def _custom_options_initializer_tax_report(self, options, previous_options=None):
-        options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 80})
-
-    def _caret_options_initializer_generic_tax_report(self):
-        return {
-            'generic_tax_report': [
-                {'name': _("Audit"), 'action': 'generic_tax_report_caret_option_audit_tax'},
-            ]
-        }
-
-    def generic_tax_report_caret_option_audit_tax(self, options, params):
-        model, tax_id = self._get_model_info_from_id(params['line_id'])
+    def caret_option_audit_tax(self, options, params):
+        report = self.env.ref('account.generic_tax_report')
+        model, tax_id = report._get_model_info_from_id(params['line_id'])
 
         if model != 'account.tax':
             raise UserError(_("Cannot audit tax from another model than account.tax."))
@@ -345,7 +346,7 @@ class AccountGenericTaxReport(models.Model):
                 ('tax_repartition_line_id', '!=', False),
             ]
 
-        domain = self._get_options_domain(options, 'strict_range') + expression.OR((
+        domain = report._get_options_domain(options, 'strict_range') + expression.OR((
             # Base lines
             [
                 ('tax_ids', 'in', tax.ids),
@@ -378,7 +379,8 @@ class AccountGenericTaxReport(models.Model):
 
     def action_periodic_vat_entries(self, options):
         # Return action to open form view of newly entry created
-        moves = self._generate_tax_closing_entries(options)
+        report = self.env.ref('account.generic_tax_report')
+        moves = self._generate_tax_closing_entries(report, options)
         action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_journal_line")
         action = clean_action(action, env=self.env)
         if len(moves) == 1:
@@ -388,7 +390,7 @@ class AccountGenericTaxReport(models.Model):
             action['domain'] = [('id', 'in', moves.ids)]
         return action
 
-    def _generate_tax_closing_entries(self, options, closing_moves=None):
+    def _generate_tax_closing_entries(self, report, options, closing_moves=None):
         """Generates and/or updates VAT closing entries.
 
         This method computes the content of the tax closing in the following way:
@@ -408,7 +410,6 @@ class AccountGenericTaxReport(models.Model):
 
         :return: The closing moves.
         """
-        self.ensure_one()
         options_company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])]
         companies = self.env['res.company'].browse(options_company_ids) if options_company_ids else self.env.company
         end_date = fields.Date.from_string(options['date']['date_to'])
@@ -420,7 +421,7 @@ class AccountGenericTaxReport(models.Model):
         else:
             closing_moves = self.env['account.move']
             for company in companies:
-                include_domestic, fiscal_positions = self._get_fpos_info_for_tax_closing(company, options)
+                include_domestic, fiscal_positions = self._get_fpos_info_for_tax_closing(company, report, options)
                 company_closing_moves = company._get_and_update_tax_closing_moves(end_date, fiscal_positions=fiscal_positions, include_domestic=include_domestic)
                 closing_moves_by_company[company] = company_closing_moves
                 closing_moves += company_closing_moves
@@ -501,10 +502,10 @@ class AccountGenericTaxReport(models.Model):
         new_options['date']['date_from'] = fields.Date.to_string(period_start)
         new_options['date']['date_to'] = fields.Date.to_string(period_end)
 
-        tables, where_clause, where_params = self._query_get(
+        tables, where_clause, where_params = self.env.ref('account.generic_tax_report')._query_get(
             new_options,
             'strict_range',
-            domain=self._tax_report_get_vat_closing_entry_additional_domain()
+            domain=self._get_vat_closing_entry_additional_domain()
         )
         query = sql % (tables, where_clause)
         self.env.cr.execute(query, where_params)
@@ -582,7 +583,7 @@ class AccountGenericTaxReport(models.Model):
 
         return move_vals_lines, tax_group_subtotal
 
-    def _tax_report_get_vat_closing_entry_additional_domain(self):
+    def _get_vat_closing_entry_additional_domain(self):
         return []
 
     @api.model
@@ -662,7 +663,7 @@ class AccountGenericTaxReport(models.Model):
             additional_context={'allowed_company_ids': company.ids, 'force_account_company': company.id}
         )
 
-    def _get_fpos_info_for_tax_closing(self, company, options):
+    def _get_fpos_info_for_tax_closing(self, company, report, options):
         """ Returns the fiscal positions information to use to generate the tax closing
         for this company, with the provided options.
 
@@ -681,9 +682,27 @@ class AccountGenericTaxReport(models.Model):
         if options['fiscal_position'] == 'all':
             fiscal_country = company.account_fiscal_country_id
             include_domestic = not fiscal_positions \
-                               or not self.country_id \
+                               or not report.country_id \
                                or fiscal_country == fiscal_positions[0].country_id
         else:
             include_domestic = options['fiscal_position'] == 'domestic'
 
         return include_domestic, fiscal_positions
+
+
+class GenericTaxReportCustomHandlerAT(models.AbstractModel):
+    _name = 'account.generic.tax.report.handler.account.tax'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'Generic Tax Report Custom Handler (Account -> Tax)'
+
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        return super()._get_dynamic_lines(report, options, 'account_tax')
+
+
+class GenericTaxReportCustomHandlerTA(models.AbstractModel):
+    _name = 'account.generic.tax.report.handler.tax.account'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'Generic Tax Report Custom Handler (Tax -> Account)'
+
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        return super()._get_dynamic_lines(report, options, 'tax_account')

@@ -7,22 +7,21 @@ from odoo import models, fields, _
 from odoo.exceptions import UserError, RedirectWarning
 
 
-class L10nMXTrialBalance(models.Model):
-    _inherit = 'account.report'
+class TrialBalanceCustomHandler(models.AbstractModel):
+    _inherit = 'account.trial.balance.report.handler'
 
-    def _custom_options_initializer_trial_balance(self, options, previous_options=None):
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options)
         if self.env.company.account_fiscal_country_id.code == 'MX':
             options['buttons'] += [
-                {'name': _("SAT (XML)"), 'action': 'export_file', 'action_param': 'action_l10n_mx_generate_trial_balance_sat_xml', 'file_export_type': _("SAT (XML)"), 'sequence': 15},
+                {'name': _("SAT (XML)"), 'action': 'export_file', 'action_param': 'action_l10n_mx_generate_sat_xml', 'file_export_type': _("SAT (XML)"), 'sequence': 15},
                 {'name': _("COA SAT (XML)"), 'action': 'export_file', 'action_param': 'action_l10n_mx_generate_coa_sat_xml', 'file_export_type': _("COA SAT (XML)"), 'sequence': 16},
             ]
-        super()._custom_options_initializer_trial_balance(options, previous_options)
 
-    def action_l10n_mx_generate_trial_balance_sat_xml(self, options):
+    def action_l10n_mx_generate_sat_xml(self, options):
         if self.env.company.account_fiscal_country_id.code != 'MX':
             raise UserError(_("Only Mexican company can generate SAT report."))
 
-        self.ensure_one()
         sat_values = self._l10n_mx_get_sat_values(options)
         file_name = f"{sat_values['vat']}{sat_values['year']}{sat_values['month']}"
         sat_report = etree.fromstring(self.env['ir.qweb']._render('l10n_mx_reports.cfdibalance', sat_values))
@@ -36,13 +35,13 @@ class L10nMXTrialBalance(models.Model):
         }
 
     def _l10n_mx_get_sat_values(self, options):
-        self.ensure_one()
+        report = self.env['account.report'].browse(options['report_id'])
         sat_options = self._l10n_mx_get_sat_options(options)
-        report_lines = self._get_lines(sat_options)
+        report_lines = report._get_lines(sat_options)
 
         account_lines = []
         for line in [line for line in report_lines if line.get('level') in (2, 3)]:
-            res_model, dummy = self._get_model_info_from_id(line['id'])
+            res_model, dummy = report._get_model_info_from_id(line['id'])
             if res_model != 'account.group':
                 continue
             cols = line.get('columns', [])
@@ -87,11 +86,11 @@ class L10nMXTrialBalance(models.Model):
         }
 
     def _l10n_mx_get_coa_values(self, options):
-        def define_group_nature(lines, selected_level):
+        def define_group_nature(report, lines, selected_level):
             for line in [line for line in lines if line['level'] == selected_level]:
                 children_group_lines_nature = set([
                     children['nature']
-                    for children in self._get_unfolded_lines(lines, line['id'])
+                    for children in report._get_unfolded_lines(lines, line['id'])
                     if children['level'] == line['level'] + 1 and children.get('nature')
                 ])
                 if len(children_group_lines_nature) == 1:
@@ -102,7 +101,7 @@ class L10nMXTrialBalance(models.Model):
                     line['nature'] = None
             return lines
 
-        self.ensure_one()
+        report = self.env['account.report'].browse(options['report_id'])
         # Checking if debit/credit tags are installed
         debit_balance_account_tag = self.env.ref('l10n_mx.tag_debit_balance_account', raise_if_not_found=False)
         credit_balance_account_tag = self.env.ref('l10n_mx.tag_credit_balance_account', raise_if_not_found=False)
@@ -110,9 +109,9 @@ class L10nMXTrialBalance(models.Model):
             raise UserError(_("Missing Debit or Credit balance account tag in database."))
 
         coa_options = self._l10n_mx_get_sat_options(options)
-        report_lines = self._get_lines(coa_options)
+        report_lines = report._get_lines(coa_options)
         for line in report_lines:
-            res_model, res_id = self._get_model_info_from_id(line['id'])
+            res_model, res_id = report._get_model_info_from_id(line['id'])
             if res_model == 'account.account':
                 account = self.env['account.account'].browse(res_id)
                 if account.account_type == 'equity_unaffected':
@@ -123,10 +122,10 @@ class L10nMXTrialBalance(models.Model):
                 if credit_balance_account_tag in account.tag_ids:
                     line['nature'] += 'A'
 
-        report_lines = define_group_nature(report_lines, selected_level=3)
-        report_lines = define_group_nature(report_lines, selected_level=2)
+        report_lines = define_group_nature(report, report_lines, selected_level=3)
+        report_lines = define_group_nature(report, report_lines, selected_level=2)
 
-        self._l10n_mx_verify_coa_nature(report_lines)
+        self._l10n_mx_verify_coa_nature(report, report_lines)
 
         account_lines = []
         for line in [line for line in report_lines if line.get('level') in (2, 3) and line.get('nature')]:
@@ -148,22 +147,21 @@ class L10nMXTrialBalance(models.Model):
         }
 
     def _l10n_mx_get_sat_options(self, options):
-        self.ensure_one()
         sat_options = options.copy()
         del sat_options['comparison']
-        return self._get_options(
+        return self.env['account.report'].browse(options['report_id'])._get_options(
             previous_options={
                 **sat_options,
                 'hierarchy': True,  # We need the hierarchy activated to get group lines
             }
         )
 
-    def _l10n_mx_verify_coa_nature(self, report_lines):
+    def _l10n_mx_verify_coa_nature(self, report, report_lines):
         def get_problematic_accounts(lines, specific_line):
-            unfolded_lines = self._get_unfolded_lines(lines, specific_line['id'])
+            unfolded_lines = report._get_unfolded_lines(lines, specific_line['id'])
             accounts = self.env['account.account']
             for unfolded_line in unfolded_lines:
-                res_model, res_id = self._get_model_info_from_id(unfolded_line['id'])
+                res_model, res_id = report._get_model_info_from_id(unfolded_line['id'])
                 if res_model == 'account.account':
                     accounts |= self.env['account.account'].browse(res_id)
             return accounts

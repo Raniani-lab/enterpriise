@@ -9,58 +9,12 @@ import zipfile
 import io
 
 
-class L10nARVatBook(models.Model):
-    _inherit = "account.report"
+class ArgentinianReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_ar.tax.report.handler'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'Argentinian Report Custom Handler'
 
-    ####################################################
-    # OPTIONS: INIT
-    ####################################################
-
-    def _custom_options_initializer_l10n_ar_vat_book(self, options, previous_options=None):
-        if previous_options is None:
-            previous_options = {}
-
-        # Add export button
-        zip_export_button = {
-            'name': _('VAT Book (ZIP)'),
-            'sequence': 30,
-            'action': 'export_file',
-            'action_param': 'ar_vat_book_export_files_to_zip',
-            'file_export_type': _('ZIP'),
-        }
-        options['buttons'].append(zip_export_button)
-
-        options['ar_vat_book_tax_types_available'] = {
-            'sale': _('Sales'),
-            'purchase': _('Purchases'),
-            'all': _('All'),
-        }
-        options['ar_vat_book_tax_type_selected'] = previous_options.get('ar_vat_book_tax_type_selected', 'all')
-
-        tax_types = self._ar_vat_book_get_selected_tax_types(options)
-
-        # 2 columns are conditional, depending on some taxes being active or inactive
-        columns_to_remove = []
-        if not self.env['account.tax'].search([('type_tax_use', 'in', tax_types), ('tax_group_id.l10n_ar_vat_afip_code', '=', '9')]):
-            columns_to_remove.append('vat_25')
-        if not self.env['account.tax'].search([('type_tax_use', 'in', tax_types), ('tax_group_id.l10n_ar_vat_afip_code', '=', '8')]):
-            columns_to_remove.append('vat_5')
-        options['columns'] = [col for col in options['columns'] if col['expression_label'] not in columns_to_remove]
-
-    ####################################################
-    # REPORT LINES: CORE
-    ####################################################
-
-    def _ar_vat_book_build_query(self, options, column_group_key):
-        tables, where_clause, where_params = self._query_get(options, 'strict_range')
-
-        where_clause = f"AND {where_clause}"
-        tax_types = tuple(self._ar_vat_book_get_selected_tax_types(options))
-
-        return self.env['account.ar.vat.line']._ar_vat_line_build_query(tables, where_clause, where_params, column_group_key, tax_types)
-
-    @api.model
-    def _dynamic_lines_generator_l10n_ar_vat_book(self, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         # dict of the form {move_id: {column_group_key: {expression_label: value}}}
         move_info_dict = {}
 
@@ -73,8 +27,8 @@ class L10nARVatBook(models.Model):
         # Build full query
         query_list = []
         full_query_params = []
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            query, params = self._ar_vat_book_build_query(column_group_options, column_group_key)
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            query, params = self._build_query(report, column_group_options, column_group_key)
             query_list.append(f"({query})")
             full_query_params += params
 
@@ -106,17 +60,61 @@ class L10nARVatBook(models.Model):
         lines = []
         for move_id, move_info in move_info_dict.items():
             # 1 line for each move_id
-            line = self._ar_vat_book_create_report_line(options, move_info, move_id, number_keys)
+            line = self._create_report_line(report, options, move_info, move_id, number_keys)
             lines.append((0, line))
         # Single total line if only one type of journal is selected
-        selected_tax_types = self._ar_vat_book_get_selected_tax_types(options)
+        selected_tax_types = self._vat_book_get_selected_tax_types(options)
         if len(selected_tax_types) < 2:
-            total_line = self._ar_vat_book_create_report_total_line(options, total_values_dict)
+            total_line = self._create_report_total_line(report, options, total_values_dict)
             lines.append((0, total_line))
 
         return lines
 
-    def _ar_vat_book_create_report_line(self, options, move_vals, move_id, number_values):
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        if previous_options is None:
+            previous_options = {}
+
+        # Add export button
+        zip_export_button = {
+            'name': _('VAT Book (ZIP)'),
+            'sequence': 30,
+            'action': 'export_file',
+            'action_param': 'vat_book_export_files_to_zip',
+            'file_export_type': _('ZIP'),
+        }
+        options['buttons'].append(zip_export_button)
+
+        options['ar_vat_book_tax_types_available'] = {
+            'sale': _('Sales'),
+            'purchase': _('Purchases'),
+            'all': _('All'),
+        }
+        options['ar_vat_book_tax_type_selected'] = previous_options.get('ar_vat_book_tax_type_selected', 'all')
+
+        tax_types = self._vat_book_get_selected_tax_types(options)
+
+        # 2 columns are conditional, depending on some taxes being active or inactive
+        columns_to_remove = []
+        if not self.env['account.tax'].search([('type_tax_use', 'in', tax_types), ('tax_group_id.l10n_ar_vat_afip_code', '=', '9')]):
+            columns_to_remove.append('vat_25')
+        if not self.env['account.tax'].search([('type_tax_use', 'in', tax_types), ('tax_group_id.l10n_ar_vat_afip_code', '=', '8')]):
+            columns_to_remove.append('vat_5')
+        options['columns'] = [col for col in options['columns'] if col['expression_label'] not in columns_to_remove]
+
+    ####################################################
+    # REPORT LINES: CORE
+    ####################################################
+
+    def _build_query(self, report, options, column_group_key):
+        tables, where_clause, where_params = report._query_get(options, 'strict_range')
+
+        where_clause = f"AND {where_clause}"
+        tax_types = tuple(self._vat_book_get_selected_tax_types(options))
+
+        return self.env['account.ar.vat.line']._ar_vat_line_build_query(tables, where_clause, where_params, column_group_key, tax_types)
+
+    def _create_report_line(self, report, options, move_vals, move_id, number_values):
         """ Create a standard (non total) line for the report
         :param options: report options
         :param move_vals: values necessary for the line
@@ -129,20 +127,20 @@ class L10nARVatBook(models.Model):
             value = move_vals.get(column['column_group_key'], {}).get(expression_label)
 
             columns.append({
-                'name': self.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
                 'class': 'number' if expression_label in number_values else '',
             })
 
         return {
-            'id': self._get_generic_line_id('account.move', move_id),
+            'id': report._get_generic_line_id('account.move', move_id),
             'caret_options': 'account.move',
             'name': move_vals['line_name'],
             'columns': columns,
             'level': 2,
         }
 
-    def _ar_vat_book_create_report_total_line(self, options, total_vals):
+    def _create_report_total_line(self, report, options, total_vals):
         """ Create a total line for the report
         :param options: report options
         :param total_vals: values necessary for the line
@@ -153,12 +151,12 @@ class L10nARVatBook(models.Model):
             value = total_vals.get(column['column_group_key'], {}).get(expression_label)
 
             columns.append({
-                'name': self.format_value(value, figure_type=column['figure_type']) if value is not None else None,
+                'name': report.format_value(value, figure_type=column['figure_type']) if value is not None else None,
                 'no_format': value,
                 'class': 'number',
             })
         return {
-            'id': self._get_generic_line_id(None, None, markup='total'),
+            'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
             'class': 'total',
             'level': 1,
@@ -169,10 +167,10 @@ class L10nARVatBook(models.Model):
     # EXPORT/PRINT
     ####################################################
 
-    def ar_vat_book_export_files_to_zip(self, options):
+    def vat_book_export_files_to_zip(self, options):
         """ Export method that lets us export the VAT book to a zip archive.
         It contains the files that we upload to AFIP for Purchase VAT Book """
-        tax_type = self._ar_vat_book_get_selected_tax_types(options)
+        tax_type = self._vat_book_get_selected_tax_types(options)
         if len(tax_type) > 1:
             raise UserError("Only one tax type should be selected.")
         tax_type = tax_type[0]
@@ -197,7 +195,7 @@ class L10nARVatBook(models.Model):
         with zipfile.ZipFile(stream, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
             for txt_type in txt_types:
                 options.update({'txt_type': txt_type})
-                vouchers_data, aliquots_data = self._ar_vat_book_get_txt_files(options, tax_type)
+                vouchers_data, aliquots_data = self._vat_book_get_txt_files(options, tax_type)
                 if vouchers_data:
                     zf.writestr(filenames.get(txt_type) + '.txt', vouchers_data)
                 if aliquots_data:
@@ -209,30 +207,30 @@ class L10nARVatBook(models.Model):
             'file_type': 'zip',
         }
 
-    def _ar_vat_book_get_txt_files(self, options, tax_type):
+    def _vat_book_get_txt_files(self, options, tax_type):
         """ Compute the date to be printed in the txt files"""
         lines = []
-        invoices = self._ar_vat_book_get_txt_invoices(options)
-        aliquots = self._ar_vat_book_get_REGINFO_CV_ALICUOTAS(options, tax_type, invoices)
+        invoices = self._vat_book_get_txt_invoices(options)
+        aliquots = self._vat_book_get_REGINFO_CV_ALICUOTAS(options, tax_type, invoices)
         for v in aliquots.values():
             lines += v
         aliquots_data = '\r\n'.join(lines).encode('ISO-8859-1')
-        vouchers_data = '\r\n'.join(self._ar_vat_book_get_REGINFO_CV_CBTE(options, aliquots, tax_type, invoices)).encode('ISO-8859-1', 'ignore')
+        vouchers_data = '\r\n'.join(self._vat_book_get_REGINFO_CV_CBTE(options, aliquots, tax_type, invoices)).encode('ISO-8859-1', 'ignore')
         return vouchers_data, aliquots_data
 
     ####################################################
     # HELPERS
     ####################################################
 
-    def _ar_vat_book_get_selected_tax_types(self, options):
+    def _vat_book_get_selected_tax_types(self, options):
         # If no particular one is selected, then select them all
         selected = options['ar_vat_book_tax_type_selected']
         return ['sale', 'purchase'] if selected == 'all' else [selected]
 
     @api.model
-    def _ar_vat_book_get_lines_domain(self, options):
+    def _vat_book_get_lines_domain(self, options):
         company_ids = self.env.company.ids
-        selected_journal_types = self._ar_vat_book_get_selected_tax_types(options)
+        selected_journal_types = self._vat_book_get_selected_tax_types(options)
         domain = [('journal_id.type', 'in', selected_journal_types),
                   ('journal_id.l10n_latam_use_documents', '=', True), ('company_id', 'in', company_ids)]
         state = options.get('all_entries') and 'all' or 'posted'
@@ -245,7 +243,7 @@ class L10nARVatBook(models.Model):
         return domain
 
     @api.model
-    def _ar_vat_book_format_amount(self, amount, padding=15, decimals=2):
+    def _vat_book_format_amount(self, amount, padding=15, decimals=2):
         """ We need to represent float numbers as  integers, with a certain padding and taking into account certain
         decimals to take into account. For example:
 
@@ -258,7 +256,7 @@ class L10nARVatBook(models.Model):
         return template.format(int(unitary_part + decimal_part))
 
     @api.model
-    def _ar_vat_book_get_partner_document_code_and_number(self, partner):
+    def _vat_book_get_partner_document_code_and_number(self, partner):
         """ For a given partner turn the identification coda and identification number in the expected format for the
         txt files """
         # CUIT is mandatory for all except for final consummer
@@ -279,18 +277,18 @@ class L10nARVatBook(models.Model):
         return doc_code, doc_number.rjust(20, '0')
 
     @api.model
-    def _ar_vat_book_get_pos_and_invoice_invoice_number(self, invoice):
+    def _vat_book_get_pos_and_invoice_invoice_number(self, invoice):
         res = invoice._l10n_ar_get_document_number_parts(
             invoice.l10n_latam_document_number, invoice.l10n_latam_document_type_id.code)
         return f"{res['invoice_number']:0>20d}", f"{res['point_of_sale']:0>5d}"
 
-    def _ar_vat_book_get_txt_invoices(self, options):
+    def _vat_book_get_txt_invoices(self, options):
         state = options.get('all_entries') and 'all' or 'posted'
         if state != 'posted':
             raise UserError(_('Can only generate TXT files using posted entries.'
                               ' Please remove Include unposted entries filter and try again'))
 
-        domain = [('l10n_latam_document_type_id.code', '!=', False)] + self._ar_vat_book_get_lines_domain(options)
+        domain = [('l10n_latam_document_type_id.code', '!=', False)] + self._vat_book_get_lines_domain(options)
         txt_type = options.get('txt_type')
         if txt_type == 'purchases':
             domain += [('l10n_latam_document_type_id.code', 'not in', ['66', '30', '32'])]
@@ -300,27 +298,27 @@ class L10nARVatBook(models.Model):
             domain += [('l10n_latam_document_type_id.code', 'in', ['30', '32'])]
         return self.env['account.move'].search(domain, order='invoice_date asc, name asc, id asc')
 
-    def _ar_vat_book_get_tax_row(self, invoice, base, code, tax_amount, options, tax_type):
+    def _vat_book_get_tax_row(self, invoice, base, code, tax_amount, options, tax_type):
         inv = invoice
         impo = options.get('txt_type') == 'goods_import'
 
-        invoice_number, pos_number = self._ar_vat_book_get_pos_and_invoice_invoice_number(inv)
-        doc_code, doc_number = self._ar_vat_book_get_partner_document_code_and_number(inv.commercial_partner_id)
+        invoice_number, pos_number = self._vat_book_get_pos_and_invoice_invoice_number(inv)
+        doc_code, doc_number = self._vat_book_get_partner_document_code_and_number(inv.commercial_partner_id)
         if tax_type == 'sale':
             row = [
                 f"{int(inv.l10n_latam_document_type_id.code):0>3d}",  # Field 1: Tipo de Comprobante
                 pos_number,  # Field 2: Punto de Venta
                 invoice_number,  # Field 3: Número de Comprobante
-                self._ar_vat_book_format_amount(base),  # Field 4: Importe Neto Gravado
+                self._vat_book_format_amount(base),  # Field 4: Importe Neto Gravado
                 str(code).rjust(4, '0'),  # Field 5: Alícuota de IVA.
-                self._ar_vat_book_format_amount(tax_amount),  # Field 6: Impuesto Liquidado.
+                self._vat_book_format_amount(tax_amount),  # Field 6: Impuesto Liquidado.
             ]
         elif impo:
             row = [
                 (inv.l10n_latam_document_number or inv.name or '').rjust(16, '0'),  # Field 1: Despacho de importación.
-                self._ar_vat_book_format_amount(base),  # Field 2: Importe Neto Gravado
+                self._vat_book_format_amount(base),  # Field 2: Importe Neto Gravado
                 str(code).rjust(4, '0'),  # Field 3: Alícuota de IVA
-                self._ar_vat_book_format_amount(tax_amount),  # Field 4: Impuesto Liquidado.
+                self._vat_book_format_amount(tax_amount),  # Field 4: Impuesto Liquidado.
             ]
         else:
             row = [
@@ -329,13 +327,13 @@ class L10nARVatBook(models.Model):
                 invoice_number,  # Field 3: Número de Comprobante
                 doc_code,  # Field 4: Código de documento del vendedor
                 doc_number,  # Field 5: Número de identificación del vendedor
-                self._ar_vat_book_format_amount(base),  # Field 6: Importe Neto Gravado
+                self._vat_book_format_amount(base),  # Field 6: Importe Neto Gravado
                 str(code).rjust(4, '0'),  # Field 7: Alícuota de IVA.
-                self._ar_vat_book_format_amount(tax_amount),  # Field 8: Impuesto Liquidado.
+                self._vat_book_format_amount(tax_amount),  # Field 8: Impuesto Liquidado.
             ]
         return row
 
-    def _ar_vat_book_get_REGINFO_CV_CBTE(self, options, aliquots, tax_type, invoices):
+    def _vat_book_get_REGINFO_CV_CBTE(self, options, aliquots, tax_type, invoices):
         res = []
 
         for inv in invoices:
@@ -344,8 +342,8 @@ class L10nARVatBook(models.Model):
             currency_rate = inv.l10n_ar_currency_rate
             currency_code = inv.currency_id.l10n_ar_afip_code
 
-            invoice_number, pos_number = self._ar_vat_book_get_pos_and_invoice_invoice_number(inv)
-            doc_code, doc_number = self._ar_vat_book_get_partner_document_code_and_number(inv.partner_id)
+            invoice_number, pos_number = self._vat_book_get_pos_and_invoice_invoice_number(inv)
+            doc_code, doc_number = self._vat_book_get_partner_document_code_and_number(inv.partner_id)
 
             amounts = inv._l10n_ar_get_amounts()
             vat_amount = amounts['vat_amount']
@@ -398,31 +396,31 @@ class L10nARVatBook(models.Model):
                 doc_code,  # Field 6: Código de documento del comprador.
                 doc_number,  # Field 7: Número de Identificación del comprador
                 inv.commercial_partner_id.name.ljust(30, ' ')[:30],  # Field 8: Apellido y Nombre del comprador.
-                self._ar_vat_book_format_amount(amount_total),  # Field 9: Importe Total de la Operación.
-                self._ar_vat_book_format_amount(vat_untaxed_base_amount),  # Field 10: Importe total de conceptos que no integran el precio neto gravado
+                self._vat_book_format_amount(amount_total),  # Field 9: Importe Total de la Operación.
+                self._vat_book_format_amount(vat_untaxed_base_amount),  # Field 10: Importe total de conceptos que no integran el precio neto gravado
             ]
 
             if tax_type == 'sale':
                 row += [
-                    self._ar_vat_book_format_amount(0.0),  # Field 11: Percepción a no categorizados
+                    self._vat_book_format_amount(0.0),  # Field 11: Percepción a no categorizados
                     # the "uncategorized / responsible not registered" figure is not used anymore
-                    self._ar_vat_book_format_amount(vat_exempt_base_amount),  # Field 12: Importe de operaciones exentas
-                    self._ar_vat_book_format_amount(perc_imp_nacionales_amount + vat_perc_amount),  # Field 13: Importe de percepciones o pagos a cuenta de impuestos Nacionales
+                    self._vat_book_format_amount(vat_exempt_base_amount),  # Field 12: Importe de operaciones exentas
+                    self._vat_book_format_amount(perc_imp_nacionales_amount + vat_perc_amount),  # Field 13: Importe de percepciones o pagos a cuenta de impuestos Nacionales
                 ]
             else:
                 row += [
-                    self._ar_vat_book_format_amount(vat_exempt_base_amount),  # Field 11: Importe de operaciones exentas
-                    self._ar_vat_book_format_amount(vat_perc_amount),  # Field 12: Importe de percepciones o pagos a cuenta del Impuesto al Valor Agregado
-                    self._ar_vat_book_format_amount(perc_imp_nacionales_amount),  # Field 13: Importe de percepciones o pagos a cuenta otros impuestos nacionales
+                    self._vat_book_format_amount(vat_exempt_base_amount),  # Field 11: Importe de operaciones exentas
+                    self._vat_book_format_amount(vat_perc_amount),  # Field 12: Importe de percepciones o pagos a cuenta del Impuesto al Valor Agregado
+                    self._vat_book_format_amount(perc_imp_nacionales_amount),  # Field 13: Importe de percepciones o pagos a cuenta otros impuestos nacionales
                 ]
 
             row += [
-                self._ar_vat_book_format_amount(iibb_perc_amount),  # Field 14: Importe de percepciones de ingresos brutos
-                self._ar_vat_book_format_amount(mun_perc_amount),  # Field 15: Importe de percepciones de impuestos municipales
-                self._ar_vat_book_format_amount(intern_tax_amount),  # Field 16: Importe de impuestos internos
+                self._vat_book_format_amount(iibb_perc_amount),  # Field 14: Importe de percepciones de ingresos brutos
+                self._vat_book_format_amount(mun_perc_amount),  # Field 15: Importe de percepciones de impuestos municipales
+                self._vat_book_format_amount(intern_tax_amount),  # Field 16: Importe de impuestos internos
                 str(currency_code),  # Field 17: Código de Moneda
 
-                self._ar_vat_book_format_amount(currency_rate, padding=10, decimals=6),  # Field 18: Tipo de Cambio
+                self._vat_book_format_amount(currency_rate, padding=10, decimals=6),  # Field 18: Tipo de Cambio
                 # new modality of currency_rate
 
                 str(aliquots_count),  # Field 19: Cantidad de alícuotas de IVA
@@ -439,18 +437,18 @@ class L10nARVatBook(models.Model):
                     '201', '202', '203', '206', '207', '208', '211', '212', '213', '331', '332']
                 row += [
                     # Field 21: Otros Tributos
-                    self._ar_vat_book_format_amount(other_taxes_amount),
+                    self._vat_book_format_amount(other_taxes_amount),
 
                     # Field 22: vencimiento comprobante
                     # NOTE: it does not appear in instructions but it does in application. for ticket and export invoice is not reported, also for some others but that we do not have implemented
                     inv.l10n_latam_document_type_id.code in document_codes and '00000000' or inv.invoice_date_due.strftime('%Y%m%d')
                 ]
             else:
-                row.append(self._ar_vat_book_format_amount(0.0 if inv.company_id.l10n_ar_computable_tax_credit == 'global' else vat_amount))  # Field 21: Crédito Fiscal Computable
+                row.append(self._vat_book_format_amount(0.0 if inv.company_id.l10n_ar_computable_tax_credit == 'global' else vat_amount))  # Field 21: Crédito Fiscal Computable
 
                 liquido_type = inv.l10n_latam_document_type_id.code in ['33', '58', '59', '60', '63']
                 row += [
-                    self._ar_vat_book_format_amount(other_taxes_amount),  # Field 22: Otros Tributos
+                    self._vat_book_format_amount(other_taxes_amount),  # Field 22: Otros Tributos
 
                     # NOTE: still not implemented on this three fields for use case with third pary commisioner
 
@@ -462,12 +460,12 @@ class L10nARVatBook(models.Model):
 
                     # Field 25: IVA Comisión
                     # If field 23 is different from zero, then we will add the VAT tax base amount of thecommission
-                    self._ar_vat_book_format_amount(0),
+                    self._vat_book_format_amount(0),
                 ]
             res.append(''.join(row))
         return res
 
-    def _ar_vat_book_get_REGINFO_CV_ALICUOTAS(self, options, tax_type, invoices):
+    def _vat_book_get_REGINFO_CV_ALICUOTAS(self, options, tax_type, invoices):
         """ We return a dict to calculate the number of aliquots when we make the vouchers """
         res = OrderedDict()
 
@@ -478,11 +476,11 @@ class L10nARVatBook(models.Model):
 
             # tipically this is for invoices with zero amount
             if not vat_taxes and inv.l10n_latam_document_type_id.purchase_aliquots == 'not_zero':
-                lines.append(''.join(self._ar_vat_book_get_tax_row(inv, 0.0, 3, 0.0, options, tax_type)))
+                lines.append(''.join(self._vat_book_get_tax_row(inv, 0.0, 3, 0.0, options, tax_type)))
 
             # we group by afip_code
             for vat_tax in vat_taxes:
-                lines.append(''.join(self._ar_vat_book_get_tax_row(inv, vat_tax['BaseImp'], vat_tax['Id'], vat_tax['Importe'], options, tax_type)))
+                lines.append(''.join(self._vat_book_get_tax_row(inv, vat_tax['BaseImp'], vat_tax['Id'], vat_tax['Importe'], options, tax_type)))
 
             res[inv] = lines
 

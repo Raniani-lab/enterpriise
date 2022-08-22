@@ -6,17 +6,22 @@ import re
 from odoo import fields, models, tools, _
 from odoo.exceptions import UserError
 
-class AccountGenericTaxReport(models.Model):
-    _inherit = "account.report"
 
-    def _custom_options_initializer_l10n_lu_reports_tax_report(self, options, previous_options=None):
+class LuxembourgishTaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_lu.tax.report.handler'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'Luxembourgish Tax Report Custom Handler'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
         options.setdefault('buttons', []).append(
-            {'name': _('XML'), 'sequence': 30, 'action': 'l10n_lu_open_report_export_wizard', 'file_export_type': _('XML')}
+            {'name': _('XML'), 'sequence': 30, 'action': 'open_report_export_wizard', 'file_export_type': _('XML')}
         )
 
-    def l10n_lu_get_tax_electronic_report_values(self, options):
-        lu_template_values = self.l10n_lu_get_electronic_report_values(options)
-        lines = self._get_lines({'unfold_all': True, **options})
+    def get_tax_electronic_report_values(self, options):
+        report = self.env['account.report'].browse(options['report_id'])
+        lu_template_values = self.env['l10n_lu.report.handler'].get_electronic_report_values(options)
+        lines = report._get_lines({'unfold_all': True, **options})
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         date_to = fields.Date.from_string(options['date'].get('date_to'))
 
@@ -43,7 +48,7 @@ class AccountGenericTaxReport(models.Model):
             # tax report's `code` would contain alpha-numeric string like `LUTAX_XXX` where characters
             # at last three positions will be digits, hence we split `code` with ` - ` and build dictionary
             # having `code` as dictionary key
-            if len(self._parse_line_id(line.get('id'))) == 1:
+            if len(report._parse_line_id(line.get('id'))) == 1:
                 continue
             split_line_code = line.get('name', '').split(' - ')[0]
             if split_line_code and split_line_code.isdigit():
@@ -51,7 +56,7 @@ class AccountGenericTaxReport(models.Model):
                 values[split_line_code] = {'value': balance, 'field_type': 'number'}
 
         on_payment = self.env['account.tax'].search([
-            ('company_id', 'in', self.get_report_company_ids(options)),
+            ('company_id', 'in', report.get_report_company_ids(options)),
             ('tax_exigibility', '=', 'on_payment')
         ], limit=1)
         values['204'] = {'value': on_payment and '0' or '1', 'field_type': 'boolean'}
@@ -73,10 +78,10 @@ class AccountGenericTaxReport(models.Model):
         })
         return lu_template_values
 
-    def l10n_lu_export_tax_report_to_xml(self, options):
-        self._l10n_lu_validate_ecdf_prefix()
+    def export_tax_report_to_xml(self, options):
+        self.env['l10n_lu.report.handler']._validate_ecdf_prefix()
 
-        lu_template_values = self.l10n_lu_get_tax_electronic_report_values(options)
+        lu_template_values = self.get_tax_electronic_report_values(options)
         for form in lu_template_values['forms']:
             values = form["field_values"]
             ordered_values = {}
@@ -85,17 +90,17 @@ class AccountGenericTaxReport(models.Model):
             form["field_values"] = ordered_values
         rendered_content = self.env['ir.qweb']._render('l10n_lu_reports.l10n_lu_electronic_report_template_1_1', lu_template_values, minimal_qcontext=True)
         content = "\n".join(re.split(r'\n\s*\n', rendered_content))  # Remove empty lines
-        self._l10n_lu_validate_xml_content(content)
+        self.env['l10n_lu.report.handler']._validate_xml_content(content)
 
         return {
-            'file_name': self.l10n_lu_get_report_filename(options) + '.xml',
+            'file_name': self.env['l10n_lu.report.handler'].get_report_filename(options) + '.xml',
             'file_content': "<?xml version='1.0' encoding='UTF-8'?>" + content,
             'file_type': 'xml',
         }
 
-    def l10n_lu_open_report_export_wizard(self, options):
+    def open_report_export_wizard(self, options):
         """ Creates a new export wizard for this report."""
         new_context = self.env.context.copy()
         new_context['report_generation_options'] = options
-        new_context['report_generation_options']['report_id'] = self.id
+        new_context['report_generation_options']['report_id'] = options['report_id']
         return self.env['l10n_lu.generate.tax.report'].with_context(new_context).create({}).get_xml()

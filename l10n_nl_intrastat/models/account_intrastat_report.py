@@ -7,12 +7,11 @@ from datetime import datetime, date
 from math import copysign
 
 
-class IntrastatReport(models.Model):
-    # OVERRIDE: account_intrastat/IntrastatReport
-    _inherit = 'account.report'
+class IntrastatReportCustomHandler(models.AbstractModel):
+    _inherit = 'account.intrastat.report.handler'
 
-    def _custom_options_initializer_intrastat(self, options, previous_options):
-        super()._custom_options_initializer_intrastat(options, previous_options)
+    def _custom_options_initializer(self, report, options, previous_options):
+        super()._custom_options_initializer(report, options, previous_options)
 
         if self.env.company.partner_id.country_id.code != 'NL':
             return
@@ -21,20 +20,20 @@ class IntrastatReport(models.Model):
             'name': _('CBS'),
             'sequence': 30,
             'action': 'export_file',
-            'action_param': '_l10n_nl_intrastat_export_to_csv',
+            'action_param': '_l10n_nl_export_to_csv',
             'file_export_type': _('CBS'),
         }
         options['buttons'].append(cbs_button)
 
-    def _intrastat_show_region_code(self):
+    def _show_region_code(self):
         # The region code is irrelevant for the Netherlands and will always be an empty column, with
         # this function we can conditionally exclude it from the report.
         if self.env.company.account_fiscal_country_id.code == 'NL':
             return False
-        return super()._intrastat_show_region_code()
+        return super()._show_region_code()
 
     @api.model
-    def _l10n_nl_intrastat_export_to_csv(self, options):
+    def _l10n_nl_export_to_csv(self, options):
         """ Export the Centraal Bureau voor de Statistiek (CBS) file.
 
         Documentation found in:
@@ -53,12 +52,12 @@ class IntrastatReport(models.Model):
         date_from = options['date']['date_from']
         date_to = options['date']['date_to']
 
-        query, params = self._intrastat_prepare_query(options)
+        query, params = self._prepare_query(options)
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
-        query_res = self._intrastat_fill_supplementary_units(query_res)
-        query_res = self._intrastat_fill_missing_values(query_res)
+        query_res = self._fill_supplementary_units(query_res)
+        query_res = self._build_query(query_res)
         line_map = dict((l.id, l) for l in self.env['account.move.line'].browse(res['id'] for res in query_res))
 
         # Create csv file content.
@@ -181,7 +180,7 @@ class IntrastatReport(models.Model):
             ''.ljust(111)                                                       # Reserve               length=111
         ])
         return {
-            'file_name': self.get_default_report_filename('csv'),
+            'file_name': self.env['account.report'].browse(options['report_id']).get_default_report_filename('csv'),
             'file_content': file_content,
             'file_type': 'csv',
         }

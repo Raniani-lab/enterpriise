@@ -107,6 +107,6 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
             </ns2:IntraConsignment>
                 '''
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.l10n_be_export_to_xml_sales_report(options)['file_content']),
+            self.get_xml_tree_from_string(self.env[report.custom_handler_model_name].export_to_xml_sales_report(options)['file_content']),
             self.get_xml_tree_from_string(expected_xml)
         )

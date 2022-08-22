@@ -4,11 +4,105 @@
 from odoo import api, models, _
 
 
-class ICPReport(models.Model):
-    _inherit = 'account.report'
+class DutchECSalesReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_nl.ec.sales.report.handler'
+    _inherit = 'account.ec.sales.report.handler'
+    _description = 'Dutch EC Sales Report Custom Handler'
 
-    def _l10n_nl_icp_get_lines_query_params(self, options, column_group_key):
-        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        # dict of the form {partner_id: {column_group_key: {expression_label: value}}}
+        partner_info_dict = {}
+
+        # dict of the form {column_group_key: total_value}
+        total_values_dict = {}
+
+        query_list = []
+        full_query_params = []
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            query, params = self._get_lines_query_params(report, column_group_options, column_group_key)
+            query_list.append(f"({query})")
+            full_query_params += params
+
+            total_values_dict[column_group_key] = 0
+
+        full_query = " UNION ALL ".join(query_list)
+        self._cr.execute(full_query, full_query_params)
+        results = self._cr.dictfetchall()
+
+        for result in results:
+            column_group_key = result['column_group_key']
+            partner_id = result['partner_id']
+
+            current_partner_info = partner_info_dict.setdefault(partner_id, {})
+
+            line_total = result['amount_product'] + result['amount_service']
+            result['total'] = line_total
+
+            current_partner_info[column_group_key] = result
+            current_partner_info['name'] = result['partner_name']
+
+            total_values_dict[column_group_key] += line_total
+
+        lines = []
+        for partner_id, partner_info in partner_info_dict.items():
+            columns = []
+            for column in options['columns']:
+                expression_label = column['expression_label']
+                value = partner_info.get(column['column_group_key'], {}).get(expression_label)
+
+                if expression_label == 'vat':
+                    column_name = self._format_vat(value, partner_info[column['column_group_key']].get('country_code'))
+                else:
+                    column_name = report.format_value(value, figure_type=column['figure_type']) if value else None
+
+                columns.append({
+                    'name': column_name,
+                    'no_format': value,
+                    'class': 'number' if expression_label in ('amount_product', 'amount_service', 'total') else '',
+                })
+
+            lines.append((0, {
+                'id': report._get_generic_line_id('res.partner', partner_id),
+                'caret_options': 'nl_icp_partner',
+                'name': partner_info['name'],
+                'level': 2,
+                'columns': columns,
+                'unfoldable': False,
+                'unfolded': False,
+            }))
+
+        if lines:
+            columns = []
+            for column in options['columns']:
+                expression_label = column['expression_label']
+                value = total_values_dict.get(column['column_group_key']) if expression_label == 'total' else None
+                columns.append({
+                    'name': report.format_value(value, figure_type=column['figure_type']) if value else None,
+                    'no_format': value,
+                    'class': 'number',
+                })
+            lines.append((0, {
+                'id': report._get_generic_line_id(None, None, markup='total'),
+                'name': _('Total'),
+                'class': 'total',
+                'level': 1,
+                'columns': columns,
+            }))
+
+        return lines
+
+    def _caret_options_initializer(self):
+        """
+        Add custom caret option for the report to link to the partner and allow cleaner overrides.
+        """
+        return {
+            'nl_icp_partner': [
+                {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
+            ],
+        }
+
+    def _get_lines_query_params(self, report, options, column_group_key):
+        tables, where_clause, where_params = report._query_get(options, 'strict_range')
         query = f"""
             SELECT %s AS column_group_key,
                    account_move_line.partner_id,
@@ -47,100 +141,7 @@ class ICPReport(models.Model):
         return query, params
 
     @api.model
-    def _nl_icp_get_dynamic_lines(self, options, all_column_groups_expression_totals):
-        # dict of the form {partner_id: {column_group_key: {expression_label: value}}}
-        partner_info_dict = {}
-
-        # dict of the form {column_group_key: total_value}
-        total_values_dict = {}
-
-        query_list = []
-        full_query_params = []
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            query, params = self._l10n_nl_icp_get_lines_query_params(column_group_options, column_group_key)
-            query_list.append(f"({query})")
-            full_query_params += params
-
-            total_values_dict[column_group_key] = 0
-
-        full_query = " UNION ALL ".join(query_list)
-        self._cr.execute(full_query, full_query_params)
-        results = self._cr.dictfetchall()
-
-        for result in results:
-            column_group_key = result['column_group_key']
-            partner_id = result['partner_id']
-
-            current_partner_info = partner_info_dict.setdefault(partner_id, {})
-
-            line_total = result['amount_product'] + result['amount_service']
-            result['total'] = line_total
-
-            current_partner_info[column_group_key] = result
-            current_partner_info['name'] = result['partner_name']
-
-            total_values_dict[column_group_key] += line_total
-
-        lines = []
-        for partner_id, partner_info in partner_info_dict.items():
-            columns = []
-            for column in options['columns']:
-                expression_label = column['expression_label']
-                value = partner_info.get(column['column_group_key'], {}).get(expression_label)
-
-                if expression_label == 'vat':
-                    column_name = self._l10n_nl_icp_format_vat(value, partner_info[column['column_group_key']].get('country_code'))
-                else:
-                    column_name = self.format_value(value, figure_type=column['figure_type']) if value else None
-
-                columns.append({
-                    'name': column_name,
-                    'no_format': value,
-                    'class': 'number' if expression_label in ('amount_product', 'amount_service', 'total') else '',
-                })
-
-            lines.append((0, {
-                'id': self._get_generic_line_id('res.partner', partner_id),
-                'caret_options': 'nl_icp_partner',
-                'name': partner_info['name'],
-                'level': 2,
-                'columns': columns,
-                'unfoldable': False,
-                'unfolded': False,
-            }))
-
-        if lines:
-            columns = []
-            for column in options['columns']:
-                expression_label = column['expression_label']
-                value = total_values_dict.get(column['column_group_key']) if expression_label == 'total' else None
-                columns.append({
-                    'name': self.format_value(value, figure_type=column['figure_type']) if value else None,
-                    'no_format': value,
-                    'class': 'number',
-                })
-            lines.append((0, {
-                'id': self._get_generic_line_id(None, None, markup='total'),
-                'name': _('Total'),
-                'class': 'total',
-                'level': 1,
-                'columns': columns,
-            }))
-
-        return lines
-
-    def _nl_icp_custom_caret_options(self):
-        """
-        Add custom caret option for the report to link to the partner and allow cleaner overrides.
-        """
-        return {
-            'nl_icp_partner': [
-                {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
-            ],
-        }
-
-    @api.model
-    def _l10n_nl_icp_format_vat(self, vat, country_code):
+    def _format_vat(self, vat, country_code):
         """ VAT numbers must be reported without country code, and grouped by 4
         characters, with a space between each pair of groups.
         """

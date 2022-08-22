@@ -7,8 +7,58 @@ from dateutil.relativedelta import relativedelta
 from itertools import chain
 
 
-class AccountReport(models.Model):
-    _inherit = 'account.report'
+class AgedPartnerBalanceCustomHandler(models.AbstractModel):
+    _name = 'account.aged.partner.balance.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Aged Partner Balance Custom Handler'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        if not report.user_has_groups('base.group_multi_currency'):
+            options['columns'] = [
+                column for column in options['columns']
+                if column['expression_label'] not in {'amount_currency', 'currency'}
+            ]
+
+        default_order_column = 0
+        for index, column in enumerate(options.get('columns')):
+            if column.get('expression_label') == 'due_date':
+                default_order_column = index + 1
+                break
+        options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
+
+    def _custom_line_postprocessor(self, report, options, lines):
+        partner_lines_map = {}
+
+        # Sort line dicts by partner
+        for line in lines:
+            model, model_id = report._get_model_info_from_id(line['id'])
+            if model == 'res.partner':
+                partner_lines_map[model_id] = line
+
+        if partner_lines_map:
+            # Query trust for the required partners
+            self._cr.execute("""
+                SELECT res_id, value_text
+                FROM ir_property
+                WHERE res_id IN %s
+                AND name = 'trust'
+                AND company_id IN %s
+            """, [
+                tuple(f"res.partner,{partner_id}" for partner_id in partner_lines_map),
+                tuple(comp['id'] for comp in options.get('multi_company', [])) or (self.env.company.id,),
+            ])
+
+            trust_map = {}
+            for res_id_str, trust in self._cr.fetchall():
+                partner_id = int(res_id_str.split(',')[1])
+                trust_map[partner_id] = trust
+
+            # Set the trust key into the line dicts
+            for partner_id, line_dict in partner_lines_map.items():
+                line_dict['trust'] = trust_map.get(partner_id, 'normal')
+
+        return lines
 
     def _custom_engine_aged_receivable(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         return self._aged_partner_report_custom_engine_common(options, 'asset_receivable', current_groupby, next_groupby, offset=offset, limit=limit)
@@ -17,8 +67,8 @@ class AccountReport(models.Model):
         return self._aged_partner_report_custom_engine_common(options, 'liability_payable', current_groupby, next_groupby, offset=offset, limit=limit)
 
     def _aged_partner_report_custom_engine_common(self, options, internal_type, current_groupby, next_groupby, offset=0, limit=None):
-        self.ensure_one()
-        self._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
+        report = self.env['account.report'].browse(options['report_id'])
+        report._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
 
         def minus_days(date_obj, days):
             return fields.Date.to_string(date_obj - relativedelta(days=days))
@@ -33,7 +83,7 @@ class AccountReport(models.Model):
             (minus_days(date_to, 121), False),
         ]
 
-        def build_result_dict(query_res_lines):
+        def build_result_dict(report, query_res_lines):
             rslt = {f'period{i}': 0 for i in range(len(periods))}
 
             for query_res in query_res_lines:
@@ -46,7 +96,7 @@ class AccountReport(models.Model):
                 currency = self.env['res.currency'].browse(query_res['currency_id'][0]) if len(query_res['currency_id']) == 1 else None
                 rslt.update({
                     'due_date': query_res['due_date'][0] if len(query_res['due_date']) == 1 else None,
-                    'amount_currency': self.format_value(query_res['amount_currency'], currency=currency),
+                    'amount_currency': report.format_value(query_res['amount_currency'], currency=currency),
                     'currency': currency.display_name if currency else None,
                     'account_name': query_res['account_name'][0] if len(query_res['account_name']) == 1 else None,
                     'expected_date': query_res['expected_date'][0] if len(query_res['expected_date']) == 1 else None,
@@ -75,7 +125,7 @@ class AccountReport(models.Model):
         period_table = self.env.cr.mogrify(period_table_format, params).decode(self.env.cr.connection.encoding)
 
         # Build query
-        tables, where_clause, where_params = self._query_get(options, 'strict_range', domain=[('account_id.account_type', '=', internal_type)])
+        tables, where_clause, where_params = report._query_get(options, 'strict_range', domain=[('account_id.account_type', '=', internal_type)])
 
         currency_table = self.env['res.currency']._get_query_currency_table(options)
         always_present_groupby = "period_table.period_index, currency_table.rate, currency_table.precision"
@@ -98,7 +148,7 @@ class AccountReport(models.Model):
             for i in range(len(periods))
         )
 
-        tail_query, tail_params = self._get_engine_query_tail(offset, limit)
+        tail_query, tail_params = report._get_engine_query_tail(offset, limit)
         query = f"""
             WITH period_table(date_start, date_stop, period_index) AS ({period_table})
 
@@ -172,7 +222,7 @@ class AccountReport(models.Model):
         query_res_lines = self._cr.dictfetchall()
 
         if not current_groupby:
-            return build_result_dict(query_res_lines)
+            return build_result_dict(report, query_res_lines)
         else:
             rslt = []
 
@@ -182,53 +232,6 @@ class AccountReport(models.Model):
                 all_res_per_grouping_key.setdefault(grouping_key, []).append(query_res)
 
             for grouping_key, query_res_lines in all_res_per_grouping_key.items():
-                rslt.append((grouping_key, build_result_dict(query_res_lines)))
+                rslt.append((grouping_key, build_result_dict(report, query_res_lines)))
 
             return rslt
-
-    def _custom_options_initializer_aged_report(self, options, previous_options=None):
-        if not self.user_has_groups('base.group_multi_currency'):
-            options['columns'] = [
-                column for column in options['columns']
-                if column['expression_label'] not in {'amount_currency', 'currency'}
-            ]
-
-        default_order_column = 0
-        for index, column in enumerate(options.get('columns')):
-            if column.get('expression_label') == 'due_date':
-                default_order_column = index + 1
-                break
-        options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
-
-    def _custom_line_postprocessor_aged_report(self, lines, options):
-        partner_lines_map = {}
-
-        # Sort line dicts by partner
-        for line in lines:
-            model, model_id = self._get_model_info_from_id(line['id'])
-            if model == 'res.partner':
-                partner_lines_map[model_id] = line
-
-        if partner_lines_map:
-            # Query trust for the required partners
-            self._cr.execute("""
-                SELECT res_id, value_text
-                FROM ir_property
-                WHERE res_id IN %s
-                AND name = 'trust'
-                AND company_id IN %s
-            """, [
-                tuple(f"res.partner,{partner_id}" for partner_id in partner_lines_map),
-                tuple(comp['id'] for comp in options.get('multi_company', [])) or (self.env.company.id,),
-            ])
-
-            trust_map = {}
-            for res_id_str, trust in self._cr.fetchall():
-                partner_id = int(res_id_str.split(',')[1])
-                trust_map[partner_id] = trust
-
-            # Set the trust key into the line dicts
-            for partner_id, line_dict in partner_lines_map.items():
-                line_dict['trust'] = trust_map.get(partner_id, 'normal')
-
-        return lines

@@ -62,12 +62,10 @@
         <field name="filter_multi_company">selector</field>
         <field name="default_opening_date_filter">last_month</field>
         <field name="load_more_limit" eval="80"/>
-        <field name="custom_options_initializer">_custom_options_initializer_sales_report_no_country</field>
-        <field name="caret_options_initializer">_caret_options_initializer_sales_report</field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_sales_report</field>
         <field name="main_template">account_reports.sales_report_main_template</field>
         <field name="search_template">account_reports.search_template</field>
         <field name="search_bar" eval="True"/>
+        <field name="custom_handler_model_id" ref="model_account_ec_sales_report_handler"/>
         <field name="column_ids">
             <record id="account_financial_report_ec_sales_country" model="account.report.column">
                 <field name="name">Country Code</field>

@@ -183,7 +183,7 @@ class TestItalianTaxReport(TestAccountReportsCommon):
         self.env.flush_all()
 
         with patch.object(type(self.env['account.move']), '_get_vat_report_attachments', autospec=True, side_effect=_get_attachment):
-            vat_closing_move = self.report._generate_tax_closing_entries(first_month_options)
+            vat_closing_move = self.env['account.generic.tax.report.handler']._generate_tax_closing_entries(self.report, first_month_options)
             vat_closing_move.action_post()
 
             # Get to the next month

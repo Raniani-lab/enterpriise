@@ -14,8 +14,7 @@
             <field name="load_more_limit" eval="80"/>
             <field name="search_bar" eval="True"/>
             <field name="filter_journals" eval="False"/>
-            <field name="caret_options_initializer">_nl_icp_custom_caret_options</field>
-            <field name="dynamic_lines_generator">_nl_icp_get_dynamic_lines</field>
+            <field name="custom_handler_model_id" ref="model_l10n_nl_ec_sales_report_handler"/>
             <field name="main_template">account_reports.sales_report_main_template</field>
             <field name="search_template">account_reports.ec_sales_with_tax_filter_search_template</field>
             <field name="column_ids">

@@ -3,12 +3,15 @@
 from odoo import models, _
 
 
-class TaxFinancialReport(models.Model):
-    _inherit = 'account.report'
+class BritishGenericTaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_uk.tax.report.handler'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'British Tax Report Custom Handler'
 
-    def _custom_options_initializer_tax_report(self, options, previous_options=None):
-        super()._custom_options_initializer_tax_report(options)
-        if self.env.company.account_fiscal_country_id.code == 'GB' and self.availability_condition == 'always':
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options)
+        report = self.env['account.report'].browse(options['report_id'])
+        if self.env.company.account_fiscal_country_id.code == 'GB' and report.availability_condition == 'always':
             # If token, but no refresh_token, check if you got the refresh_token on the server first
             # That way, you can see immediately if your login was successful after logging in
             # and the label of the button will be correct

@@ -22,9 +22,10 @@ class AccountGeneralLedger(models.AbstractModel):
         }
 
         # Fill 'account_vals_list'.
-        accounts_results = self._general_ledger_query_values(options)
+        handler = self.env['account.general.ledger.report.handler']
+        accounts_results = handler._query_values(self, options)
         rslts_array = tuple((account, res_col_gr[options['single_column_group']]) for account, res_col_gr in accounts_results)
-        init_bal_res = self._general_ledger_get_initial_balance_values(tuple(account.id for account, results in rslts_array), options)
+        init_bal_res = handler._get_initial_balance_values(self, tuple(account.id for account, results in rslts_array), options)
         initial_balances_map = {}
         initial_balance_gen = ((account, init_bal_dict.get(options['single_column_group'])) for account, init_bal_dict in init_bal_res.values())
         for account, initial_balance in initial_balance_gen:
@@ -201,10 +202,11 @@ class AccountGeneralLedger(models.AbstractModel):
             {'id': 'trade_payable', 'selected': True},
             {'id': 'non_trade_payable', 'selected': True},
         ]
-        partners_results = report._partner_ledger_query_partners(new_options)
+        handler = self.env['account.partner.ledger.report.handler']
+        partners_results = handler._query_partners(new_options)
         partner_vals_list = []
         rslts_array = tuple((partner, res_col_gr[options['single_column_group']]) for partner, res_col_gr in partners_results)
-        init_bal_res = self._partner_ledger_get_initial_balance_values(tuple(partner.id for partner, results in rslts_array), options)
+        init_bal_res = handler._get_initial_balance_values(tuple(partner.id for partner, results in rslts_array), options)
         initial_balances_map = {}
         initial_balance_gen = ((partner_id, init_bal_dict.get(options['single_column_group'])) for partner_id, init_bal_dict in init_bal_res.items())
 

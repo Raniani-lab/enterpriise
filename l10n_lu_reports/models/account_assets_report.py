@@ -69,7 +69,7 @@ class AssetsReport(models.Model):
                     tax_amounts[asset_ids.get(asset['id'])] = total_tax
             return depreciable_values, tax_amounts
 
-        lu_template_values = self.l10n_lu_get_electronic_report_values((self._get_options(options)))
+        lu_template_values = self.env['l10n_lu.report.handler'].get_electronic_report_values((self._get_options(options)))
 
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         date_to = fields.Date.from_string(options['date'].get('date_to'))

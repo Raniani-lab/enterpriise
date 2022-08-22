@@ -122,7 +122,7 @@ class OSSTaxReportTest(TestAccountReportsCommon):
         """
 
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report._oss_export_to_xml(options)['file_content']),
+            self.get_xml_tree_from_string(self.env[report.custom_handler_model_name]._export_to_xml(options)['file_content']),
             self.get_xml_tree_from_string(expected_xml)
         )
 
@@ -226,7 +226,7 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
             fields.Date.from_string('2022-02-01'),
             fields.Date.from_string('2022-02-28'),
         )
-        tax_closing_entry_lines = self.tax_report._generate_tax_closing_entries(options).line_ids.filtered(lambda l: l.balance != 0.0)
+        tax_closing_entry_lines = self.env['account.generic.tax.report.handler']._generate_tax_closing_entries(self.tax_report, options).line_ids.filtered(lambda l: l.balance != 0.0)
 
         self.assertEqual(len(tax_closing_entry_lines), 0, "The tax closing entry shouldn't take amls wearing the OSS tag into account")
 

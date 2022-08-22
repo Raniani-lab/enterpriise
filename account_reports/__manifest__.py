@@ -24,6 +24,7 @@ Accounting Reports
         'data/partner_ledger.xml',
         'data/multicurrency_revaluation_report.xml',
         'data/journal_report.xml',
+        'data/generic_tax_report.xml',
         'views/account_report_view.xml',
         'data/account_report_actions.xml',
         'data/menuitems.xml',

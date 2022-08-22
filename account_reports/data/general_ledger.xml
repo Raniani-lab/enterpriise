@@ -32,10 +32,7 @@
         <field name="load_more_limit" eval="80"/>
         <field name="main_template">account_reports.template_general_ledger_report</field>
         <field name="line_template">account_reports.line_template_general_ledger_report</field>
-        <field name="custom_options_initializer">_custom_options_initializer_general_ledger</field>
-        <field name="custom_unfold_all_batch_data_generator">_custom_unfold_all_batch_data_generator_general_ledger</field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_general_ledger</field>
-        <field name="caret_options_initializer">_caret_options_initializer_generic_tax_report</field>
+        <field name="custom_handler_model_id" ref="model_account_general_ledger_report_handler"/>
         <field name="column_ids">
             <record id="general_ledger_report_date" model="account.report.column">
                 <field name="name">Date</field>

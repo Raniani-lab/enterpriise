@@ -45,8 +45,7 @@
         <field name="filter_date_range" eval="False"/>
         <field name="search_bar" eval="True"/>
         <field name="main_template">account_reports.bank_reconciliation_report_main_template</field>
-        <field name="custom_options_initializer">_custom_options_initializer_bank_reconciliation_report</field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_bank_reconciliation</field>
+        <field name="custom_handler_model_id" ref="model_account_bank_reconciliation_report_handler"/>
         <field name="column_ids">
             <record id="bank_reconciliation_report_date" model="account.report.column">
                 <field name="name">Date</field>

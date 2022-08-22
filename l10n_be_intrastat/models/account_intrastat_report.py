@@ -8,12 +8,11 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from datetime import datetime, timedelta
 
 
-class IntrastatReport(models.Model):
-    # OVERRIDE: account_intrastat/IntrastatReport
-    _inherit = 'account.report'
+class IntrastatReportCustomHandler(models.AbstractModel):
+    _inherit = 'account.intrastat.report.handler'
 
-    def _custom_options_initializer_intrastat(self, options, previous_options):
-        super()._custom_options_initializer_intrastat(options, previous_options)
+    def _custom_options_initializer(self, report, options, previous_options):
+        super()._custom_options_initializer(report, options, previous_options)
 
         if self.env.company.partner_id.country_id.code != 'BE':
             return
@@ -51,11 +50,11 @@ class IntrastatReport(models.Model):
             }
             raise RedirectWarning(error_msg, action_error, _('Add company registry'))
 
-        query, params = self._intrastat_prepare_query(options)
+        query, params = self._prepare_query(options)
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
-        query_res = self._intrastat_fill_supplementary_units(query_res)
-        query_res = self._intrastat_fill_missing_values(query_res)
+        query_res = self._fill_supplementary_units(query_res)
+        query_res = self._build_query(query_res)
 
         # create in_vals (resp. out_vals) corresponding to invoices with cash-in (resp. cash-out)
         in_vals = []
@@ -76,7 +75,7 @@ class IntrastatReport(models.Model):
         })
 
         return {
-            'file_name': self.get_default_report_filename('xml'),
+            'file_name': self.env['account.report'].browse(options['report_id']).get_default_report_filename('xml'),
             'file_content': file_content,
             'file_type': 'xml',
         }

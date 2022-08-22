@@ -199,7 +199,7 @@ class XmlPolizasExportWizard(models.TransientModel):
         options.pop('multi_company', None)
 
         # Retrieve --------------------------------
-        aml_query, aml_query_params = ledger._general_ledger_get_query_amls(options, None)
+        aml_query, aml_query_params = self.env['account.general.ledger.report.handler']._get_query_amls(ledger, options, None)
         self._cr.execute(aml_query, aml_query_params)
 
         # Group data for (year, month / move)

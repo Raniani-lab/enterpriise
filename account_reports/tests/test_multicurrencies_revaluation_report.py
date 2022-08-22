@@ -243,7 +243,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
         # Test the report in 2017.
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
         options['unfold_all'] = True
-        self.report.action_multi_currency_revaluation_toggle_provision(
+        self.env['account.multicurrency.revaluation.report.handler'].action_multi_currency_revaluation_toggle_provision(
             options,
             {
                 'account_id': self.receivable_account_1.id,

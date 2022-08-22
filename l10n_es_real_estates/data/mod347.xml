@@ -65,7 +65,7 @@
                     <record id="mod_347_statistics_operations_real_estates_bought" model="account.report.expression">
                         <field name="label">balance</field>
                         <field name="engine">custom</field>
-                        <field name="formula">_custom_engine_l10n_es_mod347_operations_real_estates_bought</field>
+                        <field name="formula">_custom_engine_operations_real_estates_bought</field>
                         <field name="subformula">sum</field>
                     </record>
                 </field>
@@ -82,7 +82,7 @@
                     <record id="mod_347_statistics_operations_real_estates_sold" model="account.report.expression">
                         <field name="label">balance</field>
                         <field name="engine">custom</field>
-                        <field name="formula">_custom_engine_l10n_es_mod347_operations_real_estates_sold</field>
+                        <field name="formula">_custom_engine_operations_real_estates_sold</field>
                         <field name="subformula">sum</field>
                     </record>
                 </field>

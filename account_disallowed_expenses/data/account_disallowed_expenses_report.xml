@@ -16,8 +16,7 @@
         <field name="filter_unfold_all" eval="False"/>
         <field name="main_template">account_disallowed_expenses.disallowed_expenses_main_template</field>
         <field name="search_bar" eval="True"/>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_disallowed_expenses</field>
-        <field name="custom_options_initializer">_custom_options_initializer_disallowed_expenses</field>
+        <field name="custom_handler_model_id" ref="model_account_disallowed_expenses_report_handler"/>
         <field name="column_ids">
             <record id="disallowed_expenses_report_total_amount" model="account.report.column">
                 <field name="name">Total Amount</field>

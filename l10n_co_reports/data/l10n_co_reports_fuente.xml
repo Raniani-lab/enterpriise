@@ -11,8 +11,7 @@
         <field name="filter_date_range" eval="True"/>
         <field name="default_opening_date_filter">this_year</field>
         <field name="search_bar" eval="True"/>
-        <field name="dynamic_lines_generator">_l10n_co_reports_fuente_get_dynamic_lines</field>
-        <field name="custom_options_initializer">_l10n_co_reports_custom_options_initializer</field>
+        <field name="custom_handler_model_id" ref="model_l10n_co_fuente_report_handler"/>
         <field name="column_ids">
             <record id="l10n_co_reports_fuente_communication" model="account.report.column">
                 <field name="name">Concepto de retención</field>

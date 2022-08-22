@@ -10,7 +10,7 @@
         <field name="country_id" ref="base.es"/>
         <field name="filter_multi_company">disabled</field>
         <field name="root_report_id" ref="account.generic_tax_report"/>
-        <field name="custom_options_initializer">_custom_options_initializer_l10n_es_mod_111</field>
+        <field name="custom_handler_model_id" ref="model_l10n_es_mod111_tax_report_handler"/>
         <field name="column_ids">
             <record id="mod_111_column" model="account.report.column">
                 <field name="name">Balance</field>

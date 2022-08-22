@@ -27,7 +27,7 @@ class AEATBOEExportWizard(models.TransientModel):
             return self.calling_export_wizard_id.export_report()
         else:
             options = self.env.context.get('l10n_es_reports_report_options', {})
-            return self.report_id.export_file({**options, 'l10n_es_reports_boe_wizard_id': self.id}, f'l10n_es_boe_export_mod{self.MODELO_NUMBER}')
+            return self.report_id.export_file({**options, 'l10n_es_reports_boe_wizard_id': self.id}, 'export_boe')
 
 class Mod111And115And303CommonBOEWizard(models.TransientModel):
     _inherit = 'l10n_es_reports.aeat.boe.export.wizard'
@@ -107,7 +107,7 @@ class Mod303BOEWizard(models.TransientModel):
     def _compute_show_exempted_from_mod_390(self):
         report = self.env.ref('l10n_es_reports.mod_303')
         options = self.env.context.get('l10n_es_reports_report_options', {})
-        period = report._l10n_es_get_mod_period_and_year(options)[0]
+        period = self.env[report.custom_handler_model_name]._get_mod_period_and_year(options)[0]
         for record in self:
             record.exempted_from_mod_390_available = period in ('12', '4T')
 

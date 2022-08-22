@@ -30,8 +30,7 @@
         <field name="filter_period_comparison" eval="False"/>
         <field name="filter_growth_comparison" eval="False"/>
         <field name="search_template">l10n_ar_reports.search_template_ar_vat_book</field>
-        <field name="custom_options_initializer">_custom_options_initializer_l10n_ar_vat_book</field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_l10n_ar_vat_book</field>
+        <field name="custom_handler_model_id" ref="model_l10n_ar_tax_report_handler"/>
         <field name="load_more_limit" eval="80"/>
         <field name="column_ids">
             <record id="l10n_ar_vat_book_report_column_invoice_date" model="account.report.column">

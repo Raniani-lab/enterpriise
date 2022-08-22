@@ -112,7 +112,7 @@ class AccountMove(models.Model):
     def refresh_tax_entry(self):
         for move in self.filtered(lambda m: m.tax_closing_end_date and m.state == 'draft'):
             report, options = move._get_report_options_from_tax_closing_entry()
-            report._generate_tax_closing_entries(options, closing_moves=move)
+            self.env[report.custom_handler_model_name]._generate_tax_closing_entries(report, options, closing_moves=move)
 
     def _get_report_options_from_tax_closing_entry(self):
         self.ensure_one()

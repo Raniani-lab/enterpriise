@@ -5,12 +5,24 @@ from odoo import models, _
 from odoo.exceptions import UserError
 from markupsafe import Markup
 from itertools import groupby
+from .account_report import _raw_phonenumber, _get_xml_export_representative_node
 
 
-class ReportL10nBePartnerVatListing(models.Model):
-    _inherit = 'account.report'
+class PartnerVATListingCustomHandler(models.AbstractModel):
+    _name = 'l10n_be.partner.vat.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Partner VAT Listing Custom Handler'
 
-    def _custom_options_initializer_l10n_be_partner_vat_listing(self, options, previous_options=None):
+    def _caret_options_initializer(self):
+        return {
+            'res.partner': [
+                {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
+                {'name': _("Audit"), 'action': 'partner_vat_listing_open_invoices'},
+            ]
+        }
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
         operations_tags_expr = [
             'l10n_be.tax_report_line_00_tag', 'l10n_be.tax_report_line_01_tag', 'l10n_be.tax_report_line_02_tag',
             'l10n_be.tax_report_line_03_tag', 'l10n_be.tax_report_line_45_tag', 'l10n_be.tax_report_line_49_tag',
@@ -35,19 +47,11 @@ class ReportL10nBePartnerVatListing(models.Model):
             'name': _('XML'),
             'sequence': 30,
             'action': 'export_file',
-            'action_param': 'l10n_be_partner_vat_listing_export_to_xml',
+            'action_param': 'partner_vat_listing_export_to_xml',
             'file_export_type': _('XML')
         }]
 
-    def _caret_options_initializer_l10n_be_partner_vat_listing(self):
-        return {
-            'res.partner': [
-                {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
-                {'name': _("Audit"), 'action': 'l10n_be_partner_vat_listing_open_invoices'},
-            ]
-        }
-
-    def _custom_engine_l10n_be_partner_vat_listing(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _custom_engine_partner_vat_listing(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         def build_result_dict(query_res_lines):
             if current_groupby:
                 rslt = {
@@ -73,7 +77,8 @@ class ReportL10nBePartnerVatListing(models.Model):
 
             return rslt
 
-        self._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
+        report = self.env.ref('l10n_be_reports.l10n_be_partner_vat_listing')
+        report._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
 
         if current_groupby == 'id':
             raise UserError(_('Grouping by ID key is not supported by partner VAT custom engine.'))
@@ -83,7 +88,7 @@ class ReportL10nBePartnerVatListing(models.Model):
         if not partner_ids:
             return []
 
-        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+        tables, where_clause, where_params = report._query_get(options, 'strict_range')
 
         query = f'''
             SELECT
@@ -201,7 +206,7 @@ class ReportL10nBePartnerVatListing(models.Model):
 
             return rslt
 
-    def l10n_be_partner_vat_listing_open_invoices(self, options, params=None):
+    def partner_vat_listing_open_invoices(self, options, params=None):
         domain = [
             ('move_id.move_type', 'in', self.env['account.move'].get_sale_types(include_receipts=True)),
             ('move_id.date', '>=', options['date']['date_from']),
@@ -222,17 +227,18 @@ class ReportL10nBePartnerVatListing(models.Model):
             'views': [[self.env.ref('account.view_move_line_tree').id, 'list'], [False, 'form']],
             'res_model': 'account.move.line',
             'context': {
-                'search_default_partner_id': self._get_model_info_from_id(params['line_id'])[1],
+                'search_default_partner_id': self.env['account.report']._get_model_info_from_id(params['line_id'])[1],
                 'search_default_group_by_partner': 1,
                 'expand': 1,
             },
             'domain': domain,
         }
 
-    def l10n_be_partner_vat_listing_export_to_xml(self, options):
+    def partner_vat_listing_export_to_xml(self, options):
         # Precheck
         company = self.env.company
         company_vat = company.partner_id.vat
+        report = self.env['account.report'].browse(options['report_id'])
 
         if not company_vat:
             raise UserError(_('No VAT number associated with your company.'))
@@ -257,7 +263,7 @@ class ReportL10nBePartnerVatListing(models.Model):
 
         if addr.get('invoice', False):
             addr_partner = self.env['res.partner'].browse([addr['invoice']])
-            phone = addr_partner.phone and self._raw_phonenumber(addr_partner.phone) or address.phone and self._raw_phonenumber(address.phone)
+            phone = addr_partner.phone and _raw_phonenumber(addr_partner.phone) or address.phone and _raw_phonenumber(address.phone)
             email = addr_partner.email or ''
             city = addr_partner.city or ''
             zip_code = addr_partner.zip or ''
@@ -274,7 +280,7 @@ class ReportL10nBePartnerVatListing(models.Model):
         # Turnover and Farmer tags are not included
         options['date']['date_from'] = options['date']['date_from'][0:4] + '-01-01'
         options['date']['date_to'] = options['date']['date_to'][0:4] + '-12-31'
-        lines = self._get_lines(options)
+        lines = report._get_lines(options)
 
         data_client_info = ''
         seq = 0
@@ -286,7 +292,7 @@ class ReportL10nBePartnerVatListing(models.Model):
             vat_amount = 0.0
 
             for value in list(values):
-                line_model = self._get_model_info_from_id(value['id'])[0]
+                line_model = report._get_model_info_from_id(value['id'])[0]
 
                 if line_model != 'res.partner':
                     continue
@@ -327,12 +333,12 @@ class ReportL10nBePartnerVatListing(models.Model):
             'phone': phone,
             'SenderId': SenderId,
             'period': options['date'].get('date_from')[0:4],
-            'comments': self._get_report_manager(options).summary or '',
+            'comments': report._get_report_manager(options).summary or '',
             'seq': str(seq),
             'dnum': dnum,
             'sum_turnover': sum_turnover,
             'sum_tax': sum_tax,
-            'representative_node': self._get_belgian_xml_export_representative_node(),
+            'representative_node': _get_xml_export_representative_node(report),
         }
 
         data_begin = Markup("""<?xml version="1.0" encoding="ISO-8859-1"?>
@@ -358,7 +364,7 @@ class ReportL10nBePartnerVatListing(models.Model):
 </ns2:ClientListingConsignment>""") % annual_listing_data
 
         return {
-            'file_name': self.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename('xml'),
             'file_content': (data_begin + data_client_info + data_end).encode('ISO-8859-1', 'ignore'),
             'file_type': 'xml',
         }

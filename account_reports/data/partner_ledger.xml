@@ -17,7 +17,7 @@
         </xpath>
         <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
             <t t-if="report._get_model_info_from_id(line.get('id'))[0] == 'res.partner' and line.get('unfoldable')">
-                &amp;nbsp;<a t-att-data-id="line.get('id')" action="partner_ledger_action_open_partner" class="no_print oe_link_reports">Open</a>
+                &amp;nbsp;<a t-att-data-id="line.get('id')" action="action_open_partner" class="no_print oe_link_reports">Open</a>
                 &amp;nbsp;<a t-att-data-line_id="line.get('id')"
                          t-att-data-name="line.get('name')"
                          t-att-data-view_ref="'account.view_move_line_tree_grouped_partner'"
@@ -48,9 +48,7 @@
         <field name="default_opening_date_filter">this_year</field>
         <field name="search_bar" eval="True"/>
         <field name="load_more_limit" eval="80"/>
-        <field name="custom_options_initializer">_custom_options_initializer_partner_ledger</field>
-        <field name="custom_unfold_all_batch_data_generator">_custom_unfold_all_batch_data_generator_partner_ledger</field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_partner_ledger</field>
+        <field name="custom_handler_model_id" ref="model_account_partner_ledger_report_handler"/>
         <field name="main_template">account_reports.template_partner_ledger_report</field>
         <field name="line_template">account_reports.line_template_partner_ledger_report</field>
         <field name="load_more_limit" eval="80"/>

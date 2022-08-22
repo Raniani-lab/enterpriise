@@ -10,6 +10,7 @@
         <field name="filter_hierarchy">by_default</field>
         <field name="default_opening_date_filter">this_month</field>
         <field name="search_bar" eval="True"/>
+        <field name="custom_handler_model_id" ref="model_account_trial_balance_report_handler"/>
         <field name="column_ids">
             <record id="trial_balance_report_debit" model="account.report.column">
                 <field name="name">Debit</field>
@@ -22,9 +23,5 @@
                 <field name="figure_type">monetary</field>
             </record>
         </field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_trial_balance</field>
-        <field name="custom_options_initializer">_custom_options_initializer_trial_balance</field>
-        <field name="custom_line_postprocessor">_custom_line_postprocessor_trial_balance</field>
-        <field name="caret_options_initializer">_caret_options_initializer_trial_balance</field>
     </record>
 </odoo>

@@ -7,8 +7,7 @@
         <field name="filter_journals" eval="True"/>
         <field name="filter_period_comparison" eval="False"/>
         <field name="filter_multi_company">selector</field>
-        <field name="custom_options_initializer">_custom_options_initializer_cash_flow_report</field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_cash_flow_report</field>
+        <field name="custom_handler_model_id" ref="model_account_cash_flow_report_handler"/>
         <field name="column_ids">
             <record id="cash_flow_report_balance" model="account.report.column">
                 <field name="name">Balance</field>

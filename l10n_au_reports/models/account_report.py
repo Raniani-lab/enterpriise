@@ -14,29 +14,105 @@ RUN_TYPE = 'P'  # T for test or P for production
 VALID_STATES = {'ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA', 'OTH'}
 
 
-class TaxReport(models.Model):
+class AustralianReportCustomHandler(models.AbstractModel):
     """Generate the TPAR for Australia.
 
     This file was generated using https://softwaredevelopers.ato.gov.au/TPARspecification
     as a reference.
     """
-    _inherit = 'account.report'
+    _name = 'l10n_au.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Australian Report Custom Handler'
 
-    def _l10n_au_tpar_init_custom_options(self, options, previous_options=None):
-        options['buttons'] += [{
-            'name': _('TPAR'), 'sequence': 30, 'action': 'export_file', 'action_param': '_l10n_au_tpar_get_txt', 'file_export_type': _('TPAR')
-        }]
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        # dict of the form {partner_id: {column_group_key: {expression_label: value}}}
+        partner_info_dict = {}
 
-    def _l10n_au_tpar_caret_options_initializer(self):
+        # dict of the form {column_group_key: total_value}
+        total_values_dict = {}
+
+        # Build and execute query
+        results = self._execute_query(options)
+
+        # Fill dictionaries
+        for result in results:
+            partner_id = result['id']
+            column_group_key = result['column_group_key']
+            current_partner_info = partner_info_dict.setdefault(partner_id, {})
+
+            current_partner_info[column_group_key] = result
+            current_partner_info['name'] = result['name']
+
+            column_group_total = total_values_dict.setdefault(
+                column_group_key, {'total_gst': 0, 'gross_paid': 0, 'tax_withheld': 0}
+            )
+            column_group_total['total_gst'] += result['total_gst']
+            column_group_total['gross_paid'] += result['gross_paid']
+            column_group_total['tax_withheld'] += result['tax_withheld']
+
+        # Create lines
+        report = self.env['account.report']
+        lines = []
+        company_currency = self.env.company.currency_id
+        for partner_id, partner_info in partner_info_dict.items():
+            columns = []
+            for column in options['columns']:
+                expression_label = column['expression_label']
+                value = partner_info.get(column['column_group_key'], {}).get(expression_label, False)
+                columns.append({
+                    'name': report.format_value(
+                        value, company_currency, figure_type=column['figure_type']
+                    ) if column['figure_type'] == 'monetary' else value,
+                    'no_format': value,
+                    'class': column['figure_type'],
+                })
+            line = {
+                'id': report._get_generic_line_id('res.partner', partner_id),
+                'caret_options': 'res.partner',
+                'model': 'res.partner',
+                'name': partner_info['name'],
+                'columns': columns,
+            }
+            lines.append((0, line))
+
+        # Add total line
+        if lines:
+            total_columns = []
+            for column in options['columns']:
+                expression_label = column['expression_label']
+                value = total_values_dict.get(column['column_group_key'], {}).get(expression_label, False)
+                total_columns.append({
+                    'name': report.format_value(value, figure_type=column['figure_type']) if value else None,
+                    'no_format': value,
+                    'class': 'number',
+                })
+            total_line = {
+                'id': report._get_generic_line_id(None, None, markup='total'),
+                'name': _('Total'),
+                'class': 'total',
+                'level': 1,
+                'columns': total_columns,
+            }
+            lines.append((0, total_line))
+
+        return lines
+
+    def _caret_options_initializer(self):
         return {
             'res.partner': [
-                {'name': _("Open Invoices"), 'action': 'l10n_au_tpar_caret_option_open_invoices'},
+                {'name': _("Open Invoices"), 'action': 'caret_option_open_invoices'},
                 {'name': _("View Partner"), 'action': 'caret_option_open_record_form'},
             ]
         }
 
-    def _l10n_au_tpar_build_query(self, options, column_group_key=None):
-        tables, where_clause, where_params = self._query_get(options, 'strict_range')
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        options['buttons'] += [{
+            'name': _('TPAR'), 'sequence': 30, 'action': 'export_file', 'action_param': '_get_txt', 'file_export_type': _('TPAR')
+        }]
+
+    def _build_query(self, options, column_group_key=None):
+        tables, where_clause, where_params = self.env.ref('l10n_au_reports.tpar_report')._query_get(options, 'strict_range')
 
         self.env['account.move'].flush_model()
         self.env['account.move.line'].flush_model()
@@ -100,12 +176,12 @@ class TaxReport(models.Model):
 
         return query, query_params
 
-    def _l10n_au_tpar_execute_query(self, options, raise_warning=False):
+    def _execute_query(self, options, raise_warning=False):
         query_list = []
         full_query_params = []
 
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            query, params = self._l10n_au_tpar_build_query(column_group_options, column_group_key)
+        for column_group_key, column_group_options in self.env['account.report']._split_options_per_column_group(options).items():
+            query, params = self._build_query(column_group_options, column_group_key)
             query_list.append(f"({query})")
             full_query_params += params
 
@@ -121,81 +197,9 @@ class TaxReport(models.Model):
 
         return results
 
-    def _l10n_au_tpar_get_dynamic_lines(self, options, all_column_groups_expression_totals):
-        # dict of the form {partner_id: {column_group_key: {expression_label: value}}}
-        partner_info_dict = {}
-
-        # dict of the form {column_group_key: total_value}
-        total_values_dict = {}
-
-        # Build and execute query
-        results = self._l10n_au_tpar_execute_query(options)
-
-        # Fill dictionaries
-        for result in results:
-            partner_id = result['id']
-            column_group_key = result['column_group_key']
-            current_partner_info = partner_info_dict.setdefault(partner_id, {})
-
-            current_partner_info[column_group_key] = result
-            current_partner_info['name'] = result['name']
-
-            column_group_total = total_values_dict.setdefault(
-                column_group_key, {'total_gst': 0, 'gross_paid': 0, 'tax_withheld': 0}
-            )
-            column_group_total['total_gst'] += result['total_gst']
-            column_group_total['gross_paid'] += result['gross_paid']
-            column_group_total['tax_withheld'] += result['tax_withheld']
-
-        # Create lines
-        lines = []
-        company_currency = self.env.company.currency_id
-        for partner_id, partner_info in partner_info_dict.items():
-            columns = []
-            for column in options['columns']:
-                expression_label = column['expression_label']
-                value = partner_info.get(column['column_group_key'], {}).get(expression_label, False)
-                columns.append({
-                    'name': self.format_value(
-                        value, company_currency, figure_type=column['figure_type']
-                    ) if column['figure_type'] == 'monetary' else value,
-                    'no_format': value,
-                    'class': column['figure_type'],
-                })
-            line = {
-                'id': self._get_generic_line_id('res.partner', partner_id),
-                'caret_options': 'res.partner',
-                'model': 'res.partner',
-                'name': partner_info['name'],
-                'columns': columns,
-            }
-            lines.append((0, line))
-
-        # Add total line
-        if lines:
-            total_columns = []
-            for column in options['columns']:
-                expression_label = column['expression_label']
-                value = total_values_dict.get(column['column_group_key'], {}).get(expression_label, False)
-                total_columns.append({
-                    'name': self.format_value(value, figure_type=column['figure_type']) if value else None,
-                    'no_format': value,
-                    'class': 'number',
-                })
-            total_line = {
-                'id': self._get_generic_line_id(None, None, markup='total'),
-                'name': _('Total'),
-                'class': 'total',
-                'level': 1,
-                'columns': total_columns,
-            }
-            lines.append((0, total_line))
-
-        return lines
-
-    def _l10n_au_tpar_get_txt(self, options):
+    def _get_txt(self, options):
         sender_data = {
-            'vat': self.get_vat_for_export(options),
+            'vat': self.env['account.report'].get_vat_for_export(options),
             'name': self.env.company.name,
             'commercial_partner_name': self.env.company.name,
             'street': self.env.company.street,
@@ -209,7 +213,7 @@ class TaxReport(models.Model):
             'email': self.env.company.email,
         }
         self._validate_partner(sender_data)
-        data = self._l10n_au_tpar_execute_query(options, raise_warning=True)
+        data = self._execute_query(options, raise_warning=True)
         lines = [self._sender_data_record_1(options, sender_data), self._sender_data_record_2(sender_data), self._sender_data_record_3(sender_data)]
         lines += [self._payer_identity_data_record(options, sender_data), self._software_data_record()]
         lines += [self._payee_data_record(d) for d in data]
@@ -221,7 +225,7 @@ class TaxReport(models.Model):
         file_content = ''.join(lines)
 
         return {
-            'file_name': self.get_default_report_filename('txt'),
+            'file_name': self.env['account.report'].get_default_report_filename('txt'),
             'file_content': file_content,
             'file_type': 'txt',
         }
@@ -383,8 +387,8 @@ class TaxReport(models.Model):
             return [_('The Australian Business Number is not valid')]
         return []
 
-    def l10n_au_tpar_caret_option_open_invoices(self, options, params=None):
-        dummy, record_id = self._get_model_info_from_id(params['line_id'])
+    def caret_option_open_invoices(self, options, params=None):
+        dummy, record_id = self.env['account.report']._get_model_info_from_id(params['line_id'])
         partner = self.env['res.partner'].browse(record_id)
         tags = self.env.ref('l10n_au.service_tag') + self.env.ref('l10n_au.tax_withheld_tag')
         return {

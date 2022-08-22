@@ -10,99 +10,27 @@ from datetime import timedelta
 from collections import defaultdict
 
 
-class AccountGeneralLedgerReport(models.Model):
-    _inherit = 'account.report'
+class GeneralLedgerCustomHandler(models.AbstractModel):
+    _name = 'account.general.ledger.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'General Ledger Custom Handler'
 
-    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
+    def _custom_options_initializer(self, report, options, previous_options=None):
         # Remove multi-currency columns if needed
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
         if not self.user_has_groups('base.group_multi_currency'):
             options['columns'] = [
                 column for column in options['columns']
                 if column['expression_label'] != 'amount_currency'
             ]
 
-    def _expand_unfoldable_line_general_ledger(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
-        def init_load_more_progress(line_dict):
-            return {
-                column['column_group_key']: line_col.get('no_format', 0)
-                for column, line_col in  zip(options['columns'], line_dict['columns'])
-                if column['expression_label'] == 'balance'
-            }
-
-        model, model_id = self._get_model_info_from_id(line_dict_id)
-
-        if model != 'account.account':
-            raise UserError(_("Wrong ID for general ledger line to expand: %s", line_dict_id))
-
-        lines = []
-
-        # Get initial balance
-        if offset == 0:
-            if unfold_all_batch_data:
-                account, init_balance_by_col_group = unfold_all_batch_data['initial_balances'][model_id]
-            else:
-                account, init_balance_by_col_group = self._general_ledger_get_initial_balance_values([model_id], options)[model_id]
-
-            initial_balance_line = self._get_partner_and_general_ledger_initial_balance_line(options, line_dict_id, init_balance_by_col_group, account.currency_id)
-
-            if initial_balance_line:
-                lines.append(initial_balance_line)
-
-                # For the first expansion of the line, the initial balance line gives the progress
-                progress = init_load_more_progress(initial_balance_line)
-
-        # Get move lines
-        limit_to_load = self.load_more_limit + 1 if self.load_more_limit and not self._context.get('print_mode') else None
-
-        if unfold_all_batch_data:
-            aml_results = unfold_all_batch_data['aml_values'][model_id]
-        else:
-            aml_results = self._general_ledger_get_aml_values(options, [model_id], offset=offset, limit=limit_to_load)[model_id]
-
-        has_more = False
-        treated_results_count = 0
-        next_progress = progress
-        for aml_result in aml_results.values():
-            if limit_to_load and treated_results_count == self.load_more_limit:
-                # Enough elements loaded. Only the one due to the +1 in the limit passed when computing aml_results is left.
-                # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
-                has_more = True
-                break
-
-            new_line = self._general_ledger_get_aml_line(line_dict_id, options, aml_result, next_progress)
-            lines.append(new_line)
-            next_progress = init_load_more_progress(new_line)
-            treated_results_count += 1
-
-        return {
-            'lines': lines,
-            'offset_increment': treated_results_count,
-            'has_more': has_more,
-            'progress': json.dumps(next_progress),
-        }
-
-    def _custom_unfold_all_batch_data_generator_general_ledger(self, options, lines_to_expand_by_function):
-        account_ids_to_expand = []
-        for line_dict in lines_to_expand_by_function.get('_expand_unfoldable_line_general_ledger', []):
-            model, model_id = self._get_model_info_from_id(line_dict['id'])
-            if model == 'account.account':
-                account_ids_to_expand.append(model_id)
-
-        return {
-            'initial_balances': self._general_ledger_get_initial_balance_values(account_ids_to_expand, options),
-
-            # load_more_limit canno( be passed to this call, otherwise it won't be applied per account but on the whole result.
-            # We gain perf from batching, but load every result, even if the limit restricts them later.
-            'aml_values': self._general_ledger_get_aml_values(options, account_ids_to_expand),
-        }
-
-    def _dynamic_lines_generator_general_ledger(self, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         lines = []
         date_from = fields.Date.from_string(options['date']['date_from'])
         company_currency = self.env.company.currency_id
 
         totals_by_column_group = defaultdict(lambda: {'debit': 0, 'credit': 0, 'balance': 0})
-        for account, column_group_results in self._general_ledger_query_values(options):
+        for account, column_group_results in self._query_values(report, options):
             eval_dict = {}
             has_lines = False
             for column_group_key, results in column_group_results.items():
@@ -127,37 +55,55 @@ class AccountGeneralLedgerReport(models.Model):
                 totals_by_column_group[column_group_key]['credit'] += account_credit
                 totals_by_column_group[column_group_key]['balance'] += account_balance
 
-            lines.append(self._general_ledger_get_account_title_line(options, account, has_lines, eval_dict))
+            lines.append(self._get_account_title_line(report, options, account, has_lines, eval_dict))
 
         # Report total line.
         for totals in totals_by_column_group.values():
             totals['balance'] = company_currency.round(totals['balance'])
 
         # Tax Declaration lines.
-        journal_options = self._get_options_journals(options)
+        journal_options = report._get_options_journals(options)
         if len(options['column_groups']) == 1 and len(journal_options) == 1 and journal_options[0]['type'] in ('sale', 'purchase'):
-            lines += self._general_ledger_get_tax_declaration_lines(options, journal_options[0]['type'])
+            lines += self._tax_declaration_lines(report, options, journal_options[0]['type'])
 
         # Total line
-        lines.append(self._general_ledger_get_total_line(options, totals_by_column_group))
+        lines.append(self._get_total_line(report, options, totals_by_column_group))
 
         return [(0, line) for line in lines]
 
-    def _general_ledger_get_tax_declaration_lines(self, options, tax_type):
+    def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
+        account_ids_to_expand = []
+        for line_dict in lines_to_expand_by_function.get('_expand_unfoldable_line_general_ledger', []):
+            model, model_id = report._get_model_info_from_id(line_dict['id'])
+            if model == 'account.account':
+                account_ids_to_expand.append(model_id)
+
+        return {
+            'initial_balances': self._get_initial_balance_values(report, account_ids_to_expand, options),
+
+            # load_more_limit canno( be passed to this call, otherwise it won't be applied per account but on the whole result.
+            # We gain perf from batching, but load every result, even if the limit restricts them later.
+            'aml_values': self._get_aml_values(report, options, account_ids_to_expand),
+        }
+
+    def _caret_options_initializer(self):
+        return self.env['account.generic.tax.report.handler']._caret_options_initializer()
+
+    def _tax_declaration_lines(self, report, options, tax_type):
         labels_replacement = {
             'debit': _("Base Amount"),
             'credit': _("Tax Amount"),
         }
 
         rslt = [{
-            'id': self._get_generic_line_id(None, None, markup='tax_decl_header_1'),
+            'id': report._get_generic_line_id(None, None, markup='tax_decl_header_1'),
             'name': _('Tax Declaration'),
             'columns': [{} for column in options['columns']],
             'level': 1,
             'unfoldable': False,
             'unfolded': False,
         }, {
-            'id': self._get_generic_line_id(None, None, markup='tax_decl_header_1'),
+            'id': report._get_generic_line_id(None, None, markup='tax_decl_header_1'),
             'name': _('Name'),
             'columns': [{'name': labels_replacement.get(col['expression_label'], '')} for col in options['columns']],
             'level': 2,
@@ -184,7 +130,7 @@ class AccountGeneralLedgerReport(models.Model):
 
         return rslt
 
-    def _general_ledger_query_values(self, options):
+    def _query_values(self, report, options):
         """ Executes the queries, and performs all the computations.
 
         :return:    [(record, values_by_column_group), ...],  where
@@ -197,7 +143,7 @@ class AccountGeneralLedgerReport(models.Model):
                             - (optional) unaffected_earnings:   {'debit': float, 'credit': float, 'balance': float}
         """
         # Execute the queries and dispatch the results.
-        query, params = self._general_ledger_get_query_sums(options)
+        query, params = self._get_query_sums(report, options)
 
         groupby_accounts = {}
         groupby_companies = {}
@@ -253,7 +199,7 @@ class AccountGeneralLedgerReport(models.Model):
 
         return [(account, groupby_accounts[account.id]) for account in accounts]
 
-    def _general_ledger_get_query_sums(self, options):
+    def _get_query_sums(self, report, options):
         """ Construct a query retrieving all the aggregated sums to build the report. It includes:
         - sums for all accounts.
         - sums for the initial balances.
@@ -261,7 +207,7 @@ class AccountGeneralLedgerReport(models.Model):
         - sums for the tax declaration.
         :return:                    (query, params)
         """
-        options_by_column_group = self._split_options_per_column_group(options)
+        options_by_column_group = report._split_options_per_column_group(options)
 
         params = []
         queries = []
@@ -282,7 +228,7 @@ class AccountGeneralLedgerReport(models.Model):
             #   ('account_id.include_initial_balance', '=', True),
             # ]
 
-            new_options = self._general_ledger_get_options_sum_balance(options_group)
+            new_options = self._get_options_sum_balance(options_group)
 
             # Sum is computed including the initial balance of the accounts configured to do so, unless a special option key is used
             # (this is required for trial balance, which is based on general ledger)
@@ -296,7 +242,7 @@ class AccountGeneralLedgerReport(models.Model):
             if options_group.get('include_current_year_in_unaff_earnings'):
                 query_domain += [('account_id.include_initial_balance', '=', True)]
 
-            tables, where_clause, where_params = self._query_get(new_options, sum_date_scope, domain=query_domain)
+            tables, where_clause, where_params = report._query_get(new_options, sum_date_scope, domain=query_domain)
             params.append(column_group_key)
             params += where_params
             queries.append(f"""
@@ -327,8 +273,8 @@ class AccountGeneralLedgerReport(models.Model):
                 #   ('account_id.include_initial_balance', '=', False),
                 # ]
 
-                new_options = self._general_ledger_get_options_unaffected_earnings(options_group)
-                tables, where_clause, where_params = self._query_get(new_options, 'strict_range', domain=unaff_earnings_domain)
+                new_options = self._get_options_unaffected_earnings(options_group)
+                tables, where_clause, where_params = report._query_get(new_options, 'strict_range', domain=unaff_earnings_domain)
                 params.append(column_group_key)
                 params += where_params
                 queries.append(f"""
@@ -349,7 +295,7 @@ class AccountGeneralLedgerReport(models.Model):
 
         return ' UNION ALL '.join(queries), params
 
-    def _general_ledger_get_options_sum_balance(self, options):
+    def _get_options_sum_balance(self, options):
         ''' Create options used to compute the aggregated sums on accounts.
         The resulting dates domain will be:
         [
@@ -374,7 +320,7 @@ class AccountGeneralLedgerReport(models.Model):
 
         return new_options
 
-    def _general_ledger_get_options_unaffected_earnings(self, options):
+    def _get_options_unaffected_earnings(self, options):
         ''' Create options used to compute the unaffected earnings.
         The unaffected earnings are the amount of benefits/loss that have not been allocated to
         another account in the previous fiscal years.
@@ -400,9 +346,9 @@ class AccountGeneralLedgerReport(models.Model):
 
         return new_options
 
-    def _general_ledger_get_aml_values(self, options, expanded_account_ids, offset=0, limit=None):
+    def _get_aml_values(self, report, options, expanded_account_ids, offset=0, limit=None):
         rslt = {account_id: {} for account_id in expanded_account_ids}
-        aml_query, aml_params = self._general_ledger_get_query_amls(options, expanded_account_ids, offset=offset, limit=limit)
+        aml_query, aml_params = self._get_query_amls(report, options, expanded_account_ids, offset=offset, limit=limit)
         self._cr.execute(aml_query, aml_params)
         for aml_result in self._cr.dictfetchall():
             # The same aml can return multiple results when using account_report_cash_basis module, if the receivable/payable
@@ -428,7 +374,7 @@ class AccountGeneralLedgerReport(models.Model):
 
         return rslt
 
-    def _general_ledger_get_query_amls(self, options, expanded_account_ids, offset=0, limit=None):
+    def _get_query_amls(self, report, options, expanded_account_ids, offset=0, limit=None):
         """ Construct a query retrieving the account.move.lines when expanding a report line with or without the load
         more.
         :param options:               The report options.
@@ -440,10 +386,10 @@ class AccountGeneralLedgerReport(models.Model):
         additional_domain = [('account_id', 'in', expanded_account_ids)] if expanded_account_ids is not None else None
         queries = []
         all_params = []
-        for column_group_key, group_options in self._split_options_per_column_group(options).items():
+        for column_group_key, group_options in report._split_options_per_column_group(options).items():
             # Get sums for the account move lines.
             # period: [('date' <= options['date_to']), ('date', '>=', options['date_from'])]
-            tables, where_clause, where_params = self._query_get(group_options, domain=additional_domain, date_scope='strict_range')
+            tables, where_clause, where_params = report._query_get(group_options, domain=additional_domain, date_scope='strict_range')
             ct_query = self.env['res.currency']._get_query_currency_table(group_options)
             query = f'''
                 (SELECT
@@ -498,16 +444,16 @@ class AccountGeneralLedgerReport(models.Model):
 
         return (full_query, all_params)
 
-    def _general_ledger_get_initial_balance_values(self, account_ids, options):
+    def _get_initial_balance_values(self, report, account_ids, options):
         """
         Get sums for the initial balance.
         """
         queries = []
         params = []
-        for column_group_key, options_group in self._split_options_per_column_group(options).items():
-            new_options = self._general_ledger_get_options_initial_balance(options_group)
+        for column_group_key, options_group in report._split_options_per_column_group(options).items():
+            new_options = self._get_options_initial_balance(options_group)
             ct_query = self.env['res.currency']._get_query_currency_table(new_options)
-            tables, where_clause, where_params = self._query_get(new_options, 'normal', domain=[
+            tables, where_clause, where_params = report._query_get(new_options, 'normal', domain=[
                 ('account_id', 'in', account_ids),
                 ('account_id.include_initial_balance', '=', True),
             ])
@@ -544,7 +490,7 @@ class AccountGeneralLedgerReport(models.Model):
             for account in accounts
         }
 
-    def _general_ledger_get_options_initial_balance(self, options):
+    def _get_options_initial_balance(self, options):
         """ Create options used to compute the initial balances.
         The initial balances depict the current balance of the accounts at the beginning of
         the selected period in the report.
@@ -572,7 +518,7 @@ class AccountGeneralLedgerReport(models.Model):
     ####################################################
     # COLUMN/LINE HELPERS
     ####################################################
-    def _general_ledger_get_account_title_line(self, options, account, has_lines, eval_dict):
+    def _get_account_title_line(self, report, options, account, has_lines, eval_dict):
         line_columns = []
         for column in options['columns']:
             col_value = eval_dict[column['column_group_key']].get(column['expression_label'])
@@ -583,9 +529,9 @@ class AccountGeneralLedgerReport(models.Model):
 
             else:
                 if col_expr_label == 'amount_currency':
-                    formatted_value = self.format_value(col_value, currency=account.currency_id, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(col_value, currency=account.currency_id, figure_type=column['figure_type'])
                 else:
-                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=col_expr_label != 'balance')
+                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=col_expr_label != 'balance')
 
                 line_columns.append({
                     'name': formatted_value,
@@ -594,7 +540,7 @@ class AccountGeneralLedgerReport(models.Model):
                 })
 
         unfold_all = self._context.get('print_mode') or options.get('unfold_all')
-        line_id = self._get_generic_line_id('account.account', account.id)
+        line_id = report._get_generic_line_id('account.account', account.id)
         return {
             'id': line_id,
             'name': f'{account.code} {account.name}',
@@ -607,7 +553,7 @@ class AccountGeneralLedgerReport(models.Model):
             'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
         }
 
-    def _general_ledger_get_aml_line(self, parent_line_id, options, eval_dict, init_bal_by_col_group):
+    def _get_aml_line(self, report, parent_line_id, options, eval_dict, init_bal_by_col_group):
         line_columns = []
         for column in options['columns']:
             col_expr_label = column['expression_label']
@@ -622,7 +568,7 @@ class AccountGeneralLedgerReport(models.Model):
                     currency = self.env['res.currency'].browse(eval_dict[column['column_group_key']]['currency_id'])
 
                     if currency != self.env.company.currency_id:
-                        formatted_value = self.format_value(col_value, currency=currency, figure_type=column['figure_type'])
+                        formatted_value = report.format_value(col_value, currency=currency, figure_type=column['figure_type'])
                     else:
                         formatted_value = ''
                 elif col_expr_label == 'date':
@@ -630,12 +576,12 @@ class AccountGeneralLedgerReport(models.Model):
                     col_class = 'date'
                 elif col_expr_label == 'balance':
                     col_value += init_bal_by_col_group[column['column_group_key']]
-                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=False)
+                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=False)
                 elif col_expr_label == 'communication' or col_expr_label == 'partner_name':
                     col_class = 'o_account_report_line_ellipsis'
-                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
                 else:
-                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
                     if col_expr_label not in ('debit', 'credit'):
                         col_class = ''
 
@@ -652,7 +598,7 @@ class AccountGeneralLedgerReport(models.Model):
             caret_type = 'account.move.line'
 
         return {
-            'id': self._get_generic_line_id('account.move.line', eval_dict[first_column_group_key]['id'], parent_line_id=parent_line_id),
+            'id': report._get_generic_line_id('account.move.line', eval_dict[first_column_group_key]['id'], parent_line_id=parent_line_id),
             'caret_options': caret_type,
             'parent_id': parent_line_id,
             'name': eval_dict[first_column_group_key]['move_name'],
@@ -661,14 +607,14 @@ class AccountGeneralLedgerReport(models.Model):
         }
 
     @api.model
-    def _general_ledger_get_total_line(self, options, eval_dict):
+    def _get_total_line(self, report, options, eval_dict):
         line_columns = []
         for column in options['columns']:
             col_value = eval_dict[column['column_group_key']].get(column['expression_label'])
             if col_value is None:
                 line_columns.append({})
             else:
-                formatted_value = self.format_value(col_value, blank_if_zero=False, figure_type='monetary')
+                formatted_value = report.format_value(col_value, blank_if_zero=False, figure_type='monetary')
                 line_columns.append({
                     'name': formatted_value,
                     'no_format': col_value,
@@ -676,12 +622,73 @@ class AccountGeneralLedgerReport(models.Model):
                 })
 
         return {
-            'id': self._get_generic_line_id(None, None, markup='total'),
+            'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
             'class': 'total',
             'level': 1,
             'columns': line_columns,
         }
 
-    def generic_tax_report_caret_option_audit_tax(self, options, params):
-        return self.env.ref('account.generic_tax_report').generic_tax_report_caret_option_audit_tax(options, params)
+    def caret_option_audit_tax(self, options, params):
+        return self.env['account.generic.tax.report.handler'].caret_option_audit_tax(options, params)
+
+    def _expand_unfoldable_line_general_ledger(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+        def init_load_more_progress(line_dict):
+            return {
+                column['column_group_key']: line_col.get('no_format', 0)
+                for column, line_col in  zip(options['columns'], line_dict['columns'])
+                if column['expression_label'] == 'balance'
+            }
+
+        report = self.env.ref('account_reports.general_ledger_report')
+        model, model_id = report._get_model_info_from_id(line_dict_id)
+
+        if model != 'account.account':
+            raise UserError(_("Wrong ID for general ledger line to expand: %s", line_dict_id))
+
+        lines = []
+
+        # Get initial balance
+        if offset == 0:
+            if unfold_all_batch_data:
+                account, init_balance_by_col_group = unfold_all_batch_data['initial_balances'][model_id]
+            else:
+                account, init_balance_by_col_group = self._get_initial_balance_values(report, [model_id], options)[model_id]
+
+            initial_balance_line = report._get_partner_and_general_ledger_initial_balance_line(options, line_dict_id, init_balance_by_col_group, account.currency_id)
+
+            if initial_balance_line:
+                lines.append(initial_balance_line)
+
+                # For the first expansion of the line, the initial balance line gives the progress
+                progress = init_load_more_progress(initial_balance_line)
+
+        # Get move lines
+        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not self._context.get('print_mode') else None
+
+        if unfold_all_batch_data:
+            aml_results = unfold_all_batch_data['aml_values'][model_id]
+        else:
+            aml_results = self._get_aml_values(report, options, [model_id], offset=offset, limit=limit_to_load)[model_id]
+
+        has_more = False
+        treated_results_count = 0
+        next_progress = progress
+        for aml_result in aml_results.values():
+            if limit_to_load and treated_results_count == report.load_more_limit:
+                # Enough elements loaded. Only the one due to the +1 in the limit passed when computing aml_results is left.
+                # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
+                has_more = True
+                break
+
+            new_line = self._get_aml_line(report, line_dict_id, options, aml_result, next_progress)
+            lines.append(new_line)
+            next_progress = init_load_more_progress(new_line)
+            treated_results_count += 1
+
+        return {
+            'lines': lines,
+            'offset_increment': treated_results_count,
+            'has_more': has_more,
+            'progress': json.dumps(next_progress),
+        }

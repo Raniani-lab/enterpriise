@@ -77,8 +77,7 @@
             <field name="filter_period_comparison" eval="True"/>
             <field name="filter_growth_comparison" eval="False"/>
             <field name="filter_journals" eval="True"/>
-            <field name="custom_options_initializer">_custom_options_initializer_intrastat</field>
-            <field name="dynamic_lines_generator">_dynamic_lines_generator_intrastat</field>
+            <field name="custom_handler_model_id" ref="model_account_intrastat_report_handler"/>
             <field name="search_template">account_intrastat.search_template_intrastat</field>
             <field name="load_more_limit" eval="80"/>
             <field name="column_ids">

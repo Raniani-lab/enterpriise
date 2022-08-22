@@ -60,5 +60,5 @@ class SwedishSalesReportTest(AccountSalesReportCommon):
                          'SE123456789701;1912;Because I am accountman!;;accountman@test.com;\r\n' \
                          'FR23334175221;6000.0;;7000.0\r\n' \
                          'BE0477472701;;2000.0;4000.0\r\n'
-        gen_report = report.l10n_se_export_sales_report_to_kvr(options)['file_content'].decode()
+        gen_report = self.env[report.custom_handler_model_name].export_sales_report_to_kvr(options)['file_content'].decode()
         self.assertEqual(gen_report, correct_report, "Error creating KVR")

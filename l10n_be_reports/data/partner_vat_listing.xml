@@ -4,8 +4,7 @@
         <field name="name">VAT Listing Audit</field>
         <field name="filter_show_draft" eval="False"/>
         <field name="filter_period_comparison" eval="False"/>
-        <field name="custom_options_initializer">_custom_options_initializer_l10n_be_partner_vat_listing</field>
-        <field name="caret_options_initializer">_caret_options_initializer_l10n_be_partner_vat_listing</field>
+        <field name="custom_handler_model_id" ref="model_l10n_be_partner_vat_handler"/>
         <field name="load_more_limit" eval="80"/>
         <field name="column_ids">
             <record id="l10n_be_partner_vat_listing_vat_number" model="account.report.column">
@@ -32,19 +31,19 @@
                     <record id="l10n_be_partner_vat_listing_line_vat_number" model="account.report.expression">
                         <field name="label">vat_number</field>
                         <field name="engine">custom</field>
-                        <field name="formula">_custom_engine_l10n_be_partner_vat_listing</field>
+                        <field name="formula">_custom_engine_partner_vat_listing</field>
                         <field name="subformula">vat_number</field>
                     </record>
                     <record id="l10n_be_partner_vat_listing_line_turnover" model="account.report.expression">
                         <field name="label">turnover</field>
                         <field name="engine">custom</field>
-                        <field name="formula">_custom_engine_l10n_be_partner_vat_listing</field>
+                        <field name="formula">_custom_engine_partner_vat_listing</field>
                         <field name="subformula">turnover</field>
                     </record>
                     <record id="l10n_be_partner_vat_listing_line_vat_amount" model="account.report.expression">
                         <field name="label">vat_amount</field>
                         <field name="engine">custom</field>
-                        <field name="formula">_custom_engine_l10n_be_partner_vat_listing</field>
+                        <field name="formula">_custom_engine_partner_vat_listing</field>
                         <field name="subformula">vat_amount</field>
                     </record>
                 </field>

@@ -4,47 +4,47 @@
 from odoo import models, fields
 
 
-class AccountReport(models.Model):
-    _inherit = 'account.report'
+class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
+    _inherit = 'l10n_es.mod347.tax.report.handler'
 
-    def _l10n_es_mod347_get_real_estates_data(self, boe_report_options, currency_id):
+    def _get_real_estates_data(self, boe_report_options, currency_id):
         # Overrides the placeholder defined in l10n_reports
-        count = self._l10n_es_retrieve_report_expression(boe_report_options, 'l10n_es_real_estates.mod_347_statistics_real_estates_count_balance')
-        total = currency_id.round(self._l10n_es_retrieve_report_expression(boe_report_options, 'l10n_es_real_estates.mod_347_real_estates_balance'))
+        count = self._retrieve_report_expression(boe_report_options, 'l10n_es_real_estates.mod_347_statistics_real_estates_count_balance')
+        total = currency_id.round(self._retrieve_report_expression(boe_report_options, 'l10n_es_real_estates.mod_347_real_estates_balance'))
         return {'count': count, 'total': total}
 
-    def l10n_es_boe_export_mod347(self, options):
+    def export_boe(self, options):
         """ Overridden from l10n_es_reports to append the real estates record at
         the end of the generated BOE file.
         """
-        result = super().l10n_es_boe_export_mod347(options)
+        result = super().export_boe(options)
         file_content = result['file_content']
-        dummy, year = self._l10n_es_get_mod_period_and_year(options)
+        dummy, year = self._get_mod_period_and_year(options)
         current_company = self.env.company
 
-        boe_report_options = self._l10n_es_mod347_build_boe_report_options(options, year)
-        boe_wizard = self._l10n_es_retrieve_boe_manual_wizard(options, 347)
+        boe_report_options = self._build_boe_report_options(options, year)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 347)
         manual_params = boe_wizard.l10n_es_get_partners_manual_parameters_map()
-        negocio_required_a = self._l10n_es_mod347_get_required_partner_ids_for_boe('real_estates', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'local_negocio')
-        file_content += self._l10n_es_call_on_partner_sublines(boe_report_options, 'l10n_es_real_estates.mod_347_operations_real_estates_sold', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'A', manual_parameters_map=manual_params, local_negocio=True), required_ids_set=negocio_required_a)
+        negocio_required_a = self._get_required_partner_ids_for_boe('real_estates', year + '-01-01', year + '-12-31', boe_wizard, 'A', 'local_negocio')
+        file_content += self._call_on_partner_sublines(boe_report_options, 'l10n_es_real_estates.mod_347_operations_real_estates_sold', lambda report_data: self._write_type2_partner_record(report_data, year, current_company, 'A', manual_parameters_map=manual_params, local_negocio=True), required_ids_set=negocio_required_a)
 
-        negocio_required_b = self._l10n_es_mod347_get_required_partner_ids_for_boe('real_estates', year+'-01-01', year+'-12-31', boe_wizard, 'B', 'local_negocio')
-        file_content += self._l10n_es_call_on_partner_sublines(boe_report_options, 'l10n_es_real_estates.mod_347_operations_real_estates_bought', lambda report_data: self._mod347_write_type2_partner_record(report_data, year, current_company, 'B', manual_parameters_map=manual_params, local_negocio=True), required_ids_set=negocio_required_b)
+        negocio_required_b = self._get_required_partner_ids_for_boe('real_estates', year + '-01-01', year + '-12-31', boe_wizard, 'B', 'local_negocio')
+        file_content += self._call_on_partner_sublines(boe_report_options, 'l10n_es_real_estates.mod_347_operations_real_estates_bought', lambda report_data: self._write_type2_partner_record(report_data, year, current_company, 'B', manual_parameters_map=manual_params, local_negocio=True), required_ids_set=negocio_required_b)
 
-        file_content += self._l10n_es_call_on_partner_sublines(boe_report_options, 'l10n_es_real_estates.mod_347_real_estates', lambda report_data: self._l10n_es_mod347_write_type2_real_estates_records(report_data, year, current_company))
+        file_content += self._call_on_partner_sublines(boe_report_options, 'l10n_es_real_estates.mod_347_real_estates', lambda report_data: self._write_type2_real_estates_records(report_data, year, current_company))
 
         result['file_content'] = file_content
         return result
 
-    def _l10n_es_mod347_get_required_partner_ids_for_boe(self, mod_invoice_type, date_from, date_to, boe_wizard, operation_key, operation_class):
-        rslt = super()._l10n_es_mod347_get_required_partner_ids_for_boe(mod_invoice_type, date_from, date_to, boe_wizard, operation_key, operation_class)
+    def _get_required_partner_ids_for_boe(self, mod_invoice_type, date_from, date_to, boe_wizard, operation_key, operation_class):
+        rslt = super()._get_required_partner_ids_for_boe(mod_invoice_type, date_from, date_to, boe_wizard, operation_key, operation_class)
 
         real_estates_vat_data = boe_wizard.real_estates_vat_mod347_data.filtered(lambda x: x.operation_key == operation_key and x.operation_class == operation_class)
         rslt.update(real_estates_vat_data.mapped('partner_id.id'))
 
         return rslt
 
-    def _l10n_es_mod347_write_type2_real_estates_records(self, report_data, year, current_company):
+    def _write_type2_real_estates_records(self, report_data, year, current_company):
         line_real_estate = self.env['l10n_es_reports.real.estate'].browse(report_data['line_data']['id'])
         currency_id = current_company.currency_id
 
@@ -85,8 +85,8 @@ class AccountReport(models.Model):
             rslt += self._l10n_es_boe_format_number(2)
             rslt += self._l10n_es_boe_format_number(347)
             rslt += self._l10n_es_boe_format_string(year, length=4)
-            rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
-            rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(partner, except_if_foreign=False), length=9)
+            rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
+            rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(partner, except_if_foreign=False), length=9)
             rslt += self._l10n_es_boe_format_string(' ' * 9) # TIN of the legal representative (only useful if under 14 years of age)
             rslt += self._l10n_es_boe_format_string(partner.display_name, length=40)
             rslt += self._l10n_es_boe_format_string('I')
@@ -104,20 +104,20 @@ class AccountReport(models.Model):
 
         return rslt
 
-    def _custom_engine_l10n_es_mod347_operations_real_estates_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, order=None):
+    def _custom_engine_operations_real_estates_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         domain = [
             ('debit', '>', 0.0),
             ('move_id.l10n_es_reports_mod347_invoice_type', '=', 'real_estates'),
             ('move_id.move_type', 'in', ['in_invoice', 'in_refund'])
         ]
 
-        return self._l10n_es_mod347_custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit, order=order)
+        return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _custom_engine_l10n_es_mod347_operations_real_estates_sold(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, order=None):
+    def _custom_engine_operations_real_estates_sold(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         domain = [
             ('debit', '>', 0.0),
             ('move_id.l10n_es_reports_mod347_invoice_type', '=', 'real_estates'),
             ('move_id.move_type', 'in', ['out_invoice', 'out_refund'])
         ]
 
-        return self._l10n_es_mod347_custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit, order=order)
+        return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)

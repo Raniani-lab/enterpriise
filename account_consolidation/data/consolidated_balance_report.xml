@@ -182,7 +182,7 @@
                                        t-att-data-id="column['journal_id']"
                                        role="menuitem"
                                        tabindex="-1"
-                                       action="consolidated_balance_report_action_open_audit"
+                                       action="action_open_audit"
                                        class="dropdown-item"
                                     >
                                         Audit
@@ -213,7 +213,6 @@
         <field name="main_table_header_template">account_consolidation.main_table_header_template_consolidation_report</field>
         <field name="search_template">account_consolidation.search_template_consolidation_report</field>
         <field name="line_template">account_consolidation.line_template_consolidation_report</field>
-        <field name="custom_options_initializer">_custom_options_initializer_consolidated_balance_report</field>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_consolidated_balance_report</field>
+        <field name="custom_handler_model_id" ref="model_consolidation_trial_balance_report_handler"/>
     </record>
 </odoo>

@@ -23,6 +23,7 @@ from odoo.tools import config, date_utils, get_lang, float_compare, float_is_zer
 from odoo.tools.float_utils import float_round
 from odoo.tools.misc import formatLang, format_date, xlsxwriter
 from odoo.tools.safe_eval import expr_eval, safe_eval
+from odoo.models import check_method_name
 
 _logger = logging.getLogger(__name__)
 
@@ -69,6 +70,24 @@ class AccountReport(models.Model):
     footnotes_template = fields.Char(string="Footnotes Template", required=True, default='account_reports.footnotes_template')
     search_template = fields.Char(string="Search Template", required=True, default='account_reports.search_template')
     horizontal_group_ids = fields.Many2many(string="Horizontal Groups", comodel_name='account.report.horizontal.group')
+
+    #  CUSTOM REPORTS ================================================================================================================================
+    # Those fields allow case-by-case fine-tuning of the engine, for custom reports.
+
+    custom_handler_model_id = fields.Many2one(string='Custom Handler Model', comodel_name='ir.model')
+    custom_handler_model_name = fields.Char(string='Custom Handler Model Name', related='custom_handler_model_id.model')
+
+    @api.constrains('custom_handler_model_id')
+    def _validate_custom_handler_model(self):
+        for report in self:
+            if report.custom_handler_model_id:
+                custom_handler_model = self.env['account.report.custom.handler']
+                current_model = self.env[report.custom_handler_model_name]
+                if not isinstance(current_model, type(custom_handler_model)):
+                    raise ValidationError(_(
+                        "Field 'Custom Handler Model' can only reference records inheriting from [%s].",
+                        custom_handler_model._name
+                    ))
 
     @api.constrains('main_template', 'main_table_header_template', 'line_template', 'footnotes_template', 'search_template')
     def _validate_templates(self):
@@ -1315,9 +1334,8 @@ class AccountReport(models.Model):
     # OPTIONS: CUSTOM
     ####################################################
     def _init_options_custom(self, options, previous_options=None):
-        if self.custom_options_initializer:
-            method = self._get_custom_report_function(self.custom_options_initializer, 'custom_options_initializer')
-            method(options, previous_options)
+        if self.custom_handler_model_id:
+            self.env[self.custom_handler_model_name]._custom_options_initializer(self, options, previous_options)
 
     ####################################################
     # OPTIONS: CORE
@@ -1502,7 +1520,9 @@ class AccountReport(models.Model):
         :param line_id (str): the generic line id to parse
         """
         return line_id and [
-            (markup, model or None, int(value) if value else None)
+            # 'value' can sometimes be a string percentage, i.e. "20.0".
+            # To prevent a ValueError, we need to convert it into a float first, then into an int.
+            (markup, model or None, int(float(value)) if value else None)
             for markup, model, value in (key.split('-') for key in line_id.split('|'))
         ] or []
 
@@ -1527,7 +1547,9 @@ class AccountReport(models.Model):
     ####################################################
 
     def _get_caret_options(self):
-        return self._get_custom_report_function(self.caret_options_initializer, 'caret_options_initializer')()
+        if self.custom_handler_model_id:
+            return self.env[self.custom_handler_model_name]._caret_options_initializer()
+        return self._caret_options_initializer_default()
 
     def _caret_options_initializer_default(self):
         return {
@@ -1620,14 +1642,34 @@ class AccountReport(models.Model):
     ####################################################
     # MISC
     ####################################################
+    def dispatch_report_action(self, options, action, action_param=None):
+        """ Dispatches calls made by the client to either the report itself, or its custom handler if it exists.
+            The action should be a public method, by definition, but a check is made to make sure
+            it is not trying to call a private method.
+        """
+        self.ensure_one()
+        check_method_name(action)
+        args = [options, action_param] if action_param is not None else [options]
+        if self.custom_handler_model_id:
+            handler = self.env[self.custom_handler_model_name]
+            if hasattr(handler, action):
+                return getattr(handler, action)(*args)
+        return getattr(self, action)(*args)
+
     def _get_custom_report_function(self, function_name, prefix):
-        """ Returns a report function from its name, first checking is to ensure it's private (and raising if it isn't).
-        This helper is used by custom report fields containing function names.
+        """ Returns a report function from its name, first checking it to ensure it's private (and raising if it isn't).
+            This helper is used by custom report fields containing function names.
+            The function will be called on the report's custom handler if it exists, or on the report itself otherwise.
         """
         self.ensure_one()
         function_name_prefix = f'_{prefix}_'
         if not function_name.startswith(function_name_prefix):
             raise UserError(_("Method '%s' must start with the '%s' prefix.", function_name, function_name_prefix))
+
+        if self.custom_handler_model_id:
+            handler = self.env[self.custom_handler_model_name]
+            if hasattr(handler, function_name):
+                return getattr(handler, function_name)
 
         # Call the check method without the private prefix to check for others security risks.
         return getattr(self, function_name)
@@ -1748,8 +1790,8 @@ class AccountReport(models.Model):
 
                 lines = lines_with_totals_below
 
-        if self.custom_line_postprocessor:
-            lines = self._get_custom_report_function(self.custom_line_postprocessor, 'custom_line_postprocessor')(lines, options)
+        if self.custom_handler_model_id:
+            lines = self.env[self.custom_handler_model_name]._custom_line_postprocessor(self, options, lines)
 
         return lines
 
@@ -1760,15 +1802,13 @@ class AccountReport(models.Model):
         custom_unfold_all_batch_data = None
 
         # If it's possible to batch unfold and we're unfolding all lines, compute the batch, so that individual expansions are more efficient
-        if (self._context.get('print_mode') or options.get('unfold_all')) and self.custom_unfold_all_batch_data_generator:
+        if (self._context.get('print_mode') or options.get('unfold_all')) and self.custom_handler_model_id:
             lines_to_expand_by_function = {}
             for line_dict in lines:
                 if line_need_expansion(line_dict):
                     lines_to_expand_by_function.setdefault(line_dict['expand_function'], []).append(line_dict)
 
-            custom_unfold_all_batch_function = self._get_custom_report_function(
-                self.custom_unfold_all_batch_data_generator, 'custom_unfold_all_batch_data_generator')
-            custom_unfold_all_batch_data = custom_unfold_all_batch_function(options, lines_to_expand_by_function)
+            custom_unfold_all_batch_data = self.env[self.custom_handler_model_name]._custom_unfold_all_batch_data_generator(self, options, lines_to_expand_by_function)
 
         i = 0
         while i < len(lines):
@@ -1953,9 +1993,8 @@ class AccountReport(models.Model):
         return columns
 
     def _get_dynamic_lines(self, options, all_column_groups_expression_totals):
-        if self.dynamic_lines_generator:
-            method = self._get_custom_report_function(self.dynamic_lines_generator, 'dynamic_lines_generator')
-            return method(options, all_column_groups_expression_totals)
+        if self.custom_handler_model_id:
+            return self.env[self.custom_handler_model_name]._dynamic_lines_generator(self, options, all_column_groups_expression_totals)
         return []
 
     def _compute_expression_totals_for_each_column_group(self, expressions, options, groupby_to_expand=None, forced_all_column_groups_expression_totals=None, offset=0, limit=None):
@@ -4165,9 +4204,8 @@ class AccountReportLine(models.Model):
                 'caret_options': groupby_model if not next_groupby else None,
             }
 
-            if self.report_id.custom_groupby_line_completer:
-                method = self.report_id._get_custom_report_function(self.report_id.custom_groupby_line_completer, 'custom_groupby_line_completer')
-                method(options, group_line_dict)
+            if self.report_id.custom_handler_model_id:
+                self.env[self.report_id.custom_handler_model_name]._custom_groupby_line_completer(self.report_id, options, group_line_dict)
 
             # Growth comparison column.
             if self.report_id._display_growth_comparison(options):
@@ -4322,3 +4360,46 @@ class AccountReportHorizontalGroupRule(models.Model):
         model_name = self.env['account.move.line']._fields[self.field_name].comodel_name
         domain = ast.literal_eval(self.domain)
         return self.env[model_name].search(domain)
+
+
+class AccountReportCustomHandler(models.AbstractModel):
+    _name = 'account.report.custom.handler'
+    _description = 'Account Report Custom Handler'
+
+    # This abstract model allows case-by-case localized changes of behaviors of reports.
+    # This is used for custom reports, for cases that cannot be supported by the standard engines.
+
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        """ Generates lines dynamically for reports that require a custom processing which cannot be handled
+        by regular report engines.
+        :return:    A list of tuples [(sequence, line_dict), ...], where:
+                    - sequence is the sequence to apply when rendering the line (can be mixed with static lines),
+                    - line_dict is a dict containing all the line values.
+        """
+        return []
+
+    def _caret_options_initializer(self):
+        """ Returns the caret options dict to be used when rendering this report,
+        in the same format as the one used in _caret_options_initializer_default (defined on 'account.report').
+        If the result is empty, the engine will use the default caret options.
+        """
+        return {}
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        """ To be overridden to add report-specific _init_options... code to the report. """
+        if report.root_report_id and not hasattr(report, '_init_options_custom'):
+            report.root_report_id._init_options_custom(options, previous_options)
+
+    def _custom_line_postprocessor(self, report, options, lines):
+        """ Postprocesses the result of the report's _get_lines() before returning it. """
+        return lines
+
+    def _custom_groupby_line_completer(self, report, options, line_dict):
+        """ Postprocesses the dict generated by the group_by_line, to customize its content. """
+
+    def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
+        """ When using the 'unfold all' option, some reports might end up recomputing the same query for
+        each line to unfold, leading to very inefficient computation. This function allows batching this computation,
+        and returns a dictionary where all results are cached, for use in expansion functions.
+        """
+        return None

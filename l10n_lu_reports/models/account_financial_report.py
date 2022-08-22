@@ -8,15 +8,64 @@ from odoo.exceptions import UserError
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-class ReportAccountFinancialReport(models.Model):
-    _inherit = "account.report"
 
-    def _custom_options_initializer_l10n_lu_financial_report(self, options, previous_options=None):
+class LuxembourgishFinancialReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_lu.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Luxembourgish Financial Report Custom Handler'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
         options.setdefault('buttons', []).append(
-            {'name': _('XML'), 'sequence': 30, 'action': 'l10n_lu_open_report_export_wizard_accounts_report'}
+            {'name': _('XML'), 'sequence': 30, 'action': 'open_report_export_wizard_accounts_report'}
         )
 
-    def l10n_lu_get_financial_reports(self):
+    def get_report_filename(self, options):
+        # we can't determine milliseconds using fields.Datetime, hence used python's `datetime`
+        company = self.env.company
+        agent = company.account_representative_id
+        now_datetime = datetime.now()
+        file_ref_data = {
+            'ecdf_prefix': agent and agent.l10n_lu_agent_ecdf_prefix or company.ecdf_prefix,
+            'datetime': now_datetime.strftime('%Y%m%dT%H%M%S%f')[:-4]
+        }
+        filename = '{ecdf_prefix}X{datetime}'.format(**file_ref_data)
+        # `FileReference` element of exported XML must have same `filename` as above. So, we pass it from
+        # here and get it from options in `_get_lu_electronic_report_values` and pass it further to template.
+        if options:
+            options['filename'] = filename
+        return filename
+
+    def get_electronic_report_values(self, options):
+        company = self.env.company
+        report = self.env['account.report'].browse(options['report_id'])
+        vat = report.get_vat_for_export(options)
+        if vat and vat.startswith("LU"):  # Remove LU prefix in the XML
+            vat = vat[2:]
+        return {
+            'filename': options.get('filename'),
+            'lang': 'EN',
+            'interface' : 'MODL5',
+            'vat_number' : vat or "NE",
+            'matr_number' : company.matr_number or "NE",
+            'rcs_number' : company.company_registry or "NE",
+        }
+
+    def _validate_ecdf_prefix(self):
+        ecdf_prefix = self.env.company.ecdf_prefix
+        if not ecdf_prefix:
+            raise UserError(_('Please set valid eCDF Prefix for your company.'))
+        re_valid_prefix = re.compile(r'[0-9|A-Z]{6}$')
+        if not re_valid_prefix.match(ecdf_prefix):
+            msg = _('eCDF Prefix `{0}` associated with `{1}` company is invalid.\nThe expected format is ABCD12 (Six digits of numbers or capital letters)')
+            raise UserError(msg.format(ecdf_prefix, self.env.company.display_name))
+        return True
+
+    def _validate_xml_content(self, content):
+        self.env['ir.attachment'].l10n_lu_reports_validate_xml_from_attachment(content, 'xsd_lu_eCDF.xsd')
+        return True
+
+    def get_financial_reports(self):
         return {
             self.env.ref("l10n_lu_reports.account_financial_report_l10n_lu_bs").id : 'CA_BILAN',
             self.env.ref("l10n_lu_reports.account_financial_report_l10n_lu_bs_abr").id : 'CA_BILANABR',
@@ -24,7 +73,7 @@ class ReportAccountFinancialReport(models.Model):
             self.env.ref("l10n_lu_reports.account_financial_report_l10n_lu_pl_abr").id : 'CA_COMPPABR'
         }
 
-    def l10n_lu_get_financial_electronic_report_values(self, options):
+    def get_financial_electronic_report_values(self, options):
 
         def _format_amount(amount):
             return float_repr(amount, 2).replace('.', ',') if amount else '0,00'
@@ -40,15 +89,16 @@ class ReportAccountFinancialReport(models.Model):
                 if parent_code and not values.get(parent_code):
                     values.update({parent_field: {'value': '0,00', 'field_type': 'number'}})
 
-        lu_template_values = self.l10n_lu_get_electronic_report_values(options)
+        report = self.env['account.report'].browse(options['report_id'])
+        lu_template_values = report.get_electronic_report_values(options)
 
         # Add comparison filter to get data from last year
-        self._init_options_comparison(options, {**options, 'comparison': {
+        report._init_options_comparison(options, {**options, 'comparison': {
             'filter': 'same_last_year',
             'number_period': 1,
         }})
 
-        lines = self._get_lines(options)
+        lines = report._get_lines(options)
 
         report_line = self.env['account.report.line']
         date_from = fields.Date.from_string(options['date'].get('date_from'))
@@ -87,7 +137,7 @@ class ReportAccountFinancialReport(models.Model):
 
         lu_template_values.update({
             'forms': [{
-                'declaration_type': self.l10n_lu_get_financial_reports()[self.id],
+                'declaration_type': self.get_financial_reports()[report.id],
                 'year': date_from.year,
                 'period': "1",
                 'field_values': values
@@ -95,32 +145,32 @@ class ReportAccountFinancialReport(models.Model):
         })
         return lu_template_values
 
-    def l10n_lu_financial_export_to_xml(self, options):
-        self._l10n_lu_validate_ecdf_prefix()
+    def export_to_xml(self, options):
+        self._validate_ecdf_prefix()
 
-        lu_template_values = self.l10n_lu_get_financial_electronic_report_values(options)
+        lu_template_values = self.get_financial_electronic_report_values(options)
 
         rendered_content = self.env['ir.qweb']._render('l10n_lu_reports.l10n_lu_electronic_report_template_2_0', lu_template_values)
         content = "\n".join(re.split(r'\n\s*\n', rendered_content))
-        self._l10n_lu_validate_xml_content(content)
+        self._validate_xml_content(content)
 
         return {
-            'file_name': self.l10n_lu_get_report_filename(options) + '.xml',
+            'file_name': self.env['account.report'].browse(options['report_id']).get_report_filename(options) + '.xml',
             'file_content':  "<?xml version='1.0' encoding='UTF-8'?>" + content,
             'file_type': 'xml',
         }
-    def l10n_lu_financial_report_get_xml_2_0_report_values(self, options, references=False):
+    def get_xml_2_0_report_values(self, options, references=False):
         """Returns the formatted report values for this financial report.
            (Balance sheet: https://ecdf-developer.b2g.etat.lu/ecdf/forms/popup/CA_BILAN_COMP/2020/en/2/preview),
             Profit&Loss: https://ecdf-developer.b2g.etat.lu/ecdf/forms/popup/CA_COMPP_COMP/2020/en/2/preview)
            Adds the possibility to add references to the report and the form model number to
-           l10n_lu_get_electronic_report_values.
+           get_electronic_report_values.
 
            :param options: the report options
            :param references: whether the annotations on the financial report should be added to the report as references
            :returns: the formatted report values
         """
-        def _get_references():
+        def _get_references(report):
             """
             This returns the annotations on all financial reports, linked to the corresponding report reference field.
             These will be used as references in the report.
@@ -129,7 +179,7 @@ class ReportAccountFinancialReport(models.Model):
             names = {}
             notes = self.env['account.report.manager'].search([
                 ('company_id', '=', self.env.company.id),
-                ('report_id', '=', self.id)
+                ('report_id', '=', report.id)
             ]).footnotes_ids
             for note in notes:
                 # for footnotes on accounts on financial reports, the line field will be:
@@ -145,10 +195,11 @@ class ReportAccountFinancialReport(models.Model):
                         names[code] = self.env['account.account'].search([("id", "=", split[-1])]).mapped('code')[0]
             return references, names
 
-        lu_template_values = self.l10n_lu_get_financial_electronic_report_values(self._get_options(options))
+        report = self.env['account.report'].browse(options['report_id'])
+        lu_template_values = self.get_financial_electronic_report_values(report._get_options(options))
         for form in lu_template_values['forms']:
             if references:
-                references, names = _get_references()
+                references, names = _get_references(report)
                 # Only add those references on accounts with reported values (for the current or previous year);
                 # the reference has an eCDF code equal to the report code of the referred account for the current year + 1000,
                 # ot equal to the report code of the ref. account for the previous year + 999
@@ -169,11 +220,11 @@ class ReportAccountFinancialReport(models.Model):
             form['model'] = model
         return lu_template_values['forms']
 
-    def l10n_lu_open_report_export_wizard_accounts_report(self, options):
+    def open_report_export_wizard_accounts_report(self, options):
         """ Creates a new export wizard for this report."""
         new_context = self.env.context.copy()
         new_context['report_generation_options'] = options
-        new_context['report_generation_options']['report_id'] = self.id
+        new_context['report_generation_options']['report_id'] = options['report_id']
         # When exporting from the balance sheet, the date_from must be adjusted
         if options['date']['mode'] == 'single':
             date_from = datetime.strptime(options['date']['date_to'], '%Y-%m-%d') + relativedelta(years=-1, days=1)

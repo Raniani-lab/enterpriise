@@ -46,7 +46,7 @@ class L10nLuGenerateAccountsReport(models.TransientModel):
                 bs_report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_bs')
             bs_report_options = self._get_report_options(bs_report)
             bs_report_options['date'].update({'period_type': 'today', 'mode': 'single'})
-            bs_declaration = bs_report.l10n_lu_financial_report_get_xml_2_0_report_values(bs_report_options,
+            bs_declaration = self.env[bs_report.custom_handler_model_name].get_xml_2_0_report_values(bs_report_options,
                                                                                           self.import_notes_as_references)[0]
 
         # Profit&Loss Report
@@ -56,7 +56,7 @@ class L10nLuGenerateAccountsReport(models.TransientModel):
             else:
                 pl_report = self.env.ref('l10n_lu_reports.account_financial_report_l10n_lu_pl')
             pl_report_options = self._get_report_options(pl_report)
-            pl_declaration = pl_report.l10n_lu_financial_report_get_xml_2_0_report_values(pl_report_options,
+            pl_declaration = self.env[pl_report.custom_handler_model_name].get_xml_2_0_report_values(pl_report_options,
                                                                                           self.import_notes_as_references)[0]
 
         # Chart of Accounts Report

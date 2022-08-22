@@ -90,7 +90,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
         self.env.flush_all()
 
         with patch.object(type(self.env['account.move']), '_get_vat_report_attachments', autospec=True, side_effect=lambda *args, **kwargs: []):
-            vat_closing_move = self.report._generate_tax_closing_entries(options)
+            vat_closing_move = self.env['account.generic.tax.report.handler']._generate_tax_closing_entries(self.report, options)
             vat_closing_move.action_post()
 
         # There should be an external value of -1000.0
@@ -191,7 +191,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
 
             # Closes both companies
             options = self._generate_options(self.report, '2021-01-01', '2021-12-31')
-            vat_closing_move = self.report._generate_tax_closing_entries(options)
+            vat_closing_move = self.env['account.generic.tax.report.handler']._generate_tax_closing_entries(self.report, options)
             vat_closing_move.action_post()
 
         # There should be two external value for company_1: -1000.0 and 1000.0

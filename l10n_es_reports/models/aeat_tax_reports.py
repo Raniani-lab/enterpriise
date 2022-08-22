@@ -67,40 +67,64 @@ SPANISH_PROVINCES_REPORT_CODES = {
         'Z': '50',
         'CE': '51',
         'ME': '52',
-    }
+}
+
+MOD_347_CUSTOM_ENGINES_DOMAINS = {
+    'l10n_es_mod347_threshold_insurance_bought': [
+        ('move_id.l10n_es_reports_mod347_invoice_type', '=', 'insurance'),
+        ('move_id.move_type', 'in', ('in_invoice', 'in_refund')),
+        ('account_type', '=', 'liability_payable'),
+    ],
+
+    'l10n_es_mod347_threshold_regular_bought': [
+        ('move_id.l10n_es_reports_mod347_invoice_type', '=', 'regular'),
+        ('move_id.move_type', 'in', ('in_invoice', 'in_refund')),
+        ('account_type', '=', 'liability_payable'),
+    ],
+
+    'l10n_es_mod347_threshold_regular_sold': [
+        ('move_id.l10n_es_reports_mod347_invoice_type', '=', 'regular'),
+        ('move_id.move_type', 'in', ('out_invoice', 'out_refund')),
+        ('account_type', '=', 'asset_receivable'),
+    ],
+
+    'l10n_es_mod347_threshold_all_operations': [
+        ('move_id.l10n_es_reports_mod347_invoice_type', '!=', None),
+        ('account_type', 'in', ('asset_receivable', 'liability_payable'))
+    ],
+}
 
 
 class AccountReport(models.Model):
     _inherit = 'account.report'
 
-    def _custom_options_initializer_l10n_es_mod_111(self, options, previous_options=None):
-        self._l10n_es_append_boe_button(options, 111)
+    def _get_expression_audit_aml_domain(self, expression, options):
+        # Overridden to allow auditing mod347's threshold lines (for consistency: this way all the lines of the report are audited in the same way)
+        if expression.engine == 'custom' and expression.formula in MOD_347_CUSTOM_ENGINES_DOMAINS:
+            return MOD_347_CUSTOM_ENGINES_DOMAINS[expression.formula]
+        else:
+            return super()._get_expression_audit_aml_domain(expression, options)
 
-    def _custom_options_initializer_l10n_es_mod_115(self, options, previous_options=None):
-        self._l10n_es_append_boe_button(options, 115)
 
-    def _custom_options_initializer_l10n_es_mod_303(self, options, previous_options=None):
-        self._l10n_es_append_boe_button(options, 303)
+class SpanishTaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_es.tax.report.handler'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'Spanish Tax Report Custom Handler'
 
-    def _custom_options_initializer_l10n_es_mod_347(self, options, previous_options=None):
-        self._l10n_es_append_boe_button(options, 347)
-
-    def _custom_options_initializer_l10n_es_mod_349(self, options, previous_options=None):
-        self._l10n_es_append_boe_button(options, 349)
-
-    def _l10n_es_append_boe_button(self, options, boe_number):
+    def _append_boe_button(self, options, boe_number):
         options.setdefault('buttons', []).append(
-            {'name': _('BOE'), 'sequence': 0, 'action': 'l10n_es_export_boe', 'action_param': boe_number, 'file_export_type': _('BOE')},
+            {'name': _('BOE'), 'sequence': 0, 'action': 'open_boe_wizard', 'action_param': boe_number, 'file_export_type': _('BOE')},
         )
 
-    def l10n_es_export_boe(self, options, boe_number):
+    def open_boe_wizard(self, options, boe_number):
         """ Triggers the generation of the BOE file for the current mod report.
         In case this BOE file needs some more data to be entered manually by
         the user, it show instead a wizard prompting for them, which will, once
         validated and closed, trigger the generation of the BOE itself.
         """
+        report = self.env['account.report'].browse(options['report_id'])
         boe_wizard_model = self.env[f'l10n_es_reports.aeat.boe.mod{boe_number}.export.wizard']
-        boe_wizard = boe_wizard_model.create({'report_id': self.id})
+        boe_wizard = boe_wizard_model.create({'report_id': report.id})
 
         context = self.env.context.copy()
         context.update({'l10n_es_reports_report_options': options})
@@ -116,7 +140,7 @@ class AccountReport(models.Model):
             'context': context,
         }
 
-    def _l10n_es_get_mod_period_and_year(self, options):
+    def _get_mod_period_and_year(self, options):
         """ Returns the period and year (in terms of AEAT modulo reports regulation)
         corresponding to the report options given in parameters, in the form
         of a tuple (period, year). Period will be None if the dates do not fit
@@ -139,13 +163,13 @@ class AccountReport(models.Model):
         rslt_year = str(date_from.year) # Identical to date_to.year thanks to the previous conditions
         if date_from.month == date_to.month:
             rslt_period = '%02d' % (date_from.month)
-        elif date_from.month == date_to.month - 2 and self._l10n_es_retrieve_period_and_year(date_from, trimester=True)[0] == self._l10n_es_retrieve_period_and_year(date_to, trimester=True)[0]:
+        elif date_from.month == date_to.month - 2 and self._retrieve_period_and_year(date_from, trimester=True)[0] == self._retrieve_period_and_year(date_to, trimester=True)[0]:
             rslt_period = '%01dT' % (date_to.month / 3)
         # Period stays None otherwize, so we can use rslt_period == None to check if a trimester or year is selected
 
         return rslt_period, rslt_year
 
-    def _l10n_es_retrieve_period_and_year(self, date, trimester=False):
+    def _retrieve_period_and_year(self, date, trimester=False):
         """ Retrieves the period and year (in the form of a tuple) corresponding
         to a given date.
 
@@ -156,7 +180,7 @@ class AccountReport(models.Model):
         else:
             return '%02d' % date.month, str(date.year)
 
-    def _l10n_es_convert_period_to_dates(self, period, year):
+    def _convert_period_to_dates(self, period, year):
         """ Converts a period and a year to a tuple of two dates, respectively its
         start and end date.
         """
@@ -226,7 +250,7 @@ class AccountReport(models.Model):
         # Done in two parts, so that sign str is always in front of the filling characters
         return self._l10n_es_boe_format_string(sign_str) + self._l10n_es_boe_format_string(str_number, length=length - len(sign_str), align='right', fill_char=b'0')
 
-    def _l10n_es_retrieve_casilla_lines(self, report_lines):
+    def _retrieve_casilla_lines(self, report_lines):
         """ Retrieves the values of the casillas contained in report_lines, using
         the fact that these lines' names are prefixed by their number between [] to
         identify them. Returns a dictionnary, with casillas as keys and their values
@@ -248,16 +272,16 @@ class AccountReport(models.Model):
 
         return rslt
 
-    def _l10n_es_retrieve_report_expression(self, options, xmlid):
+    def _retrieve_report_expression(self, options, xmlid):
         """ Retrieves the data of the report line denoted by xmlid, with respect
         to the given options.
         """
         expression = self.env.ref(xmlid)
-        expression_totals = self._compute_expression_totals_for_each_column_group(expression._expand_aggregations(), options)
+        expression_totals = self.env['account.report'].browse(options['report_id'])._compute_expression_totals_for_each_column_group(expression._expand_aggregations(), options)
         # This considers we have but one column group
         return next(expr_total[expression]['value'] for expr_total in expression_totals.values())
 
-    def _l10n_es_get_bic_and_iban(self, res_partner_bank):
+    def _get_bic_and_iban(self, res_partner_bank):
         """ Convenience method returning (bic,iban) of the given account if
         this account exists, or a tuple of empty strings otherwize.
         """
@@ -266,13 +290,13 @@ class AccountReport(models.Model):
 
         return '', ''
 
-    def _l10n_es_retrieve_boe_manual_wizard(self, options, modelo_number):
+    def _retrieve_boe_manual_wizard(self, options, modelo_number):
         """ Retrieves a BOE manual wizard object from its id, contained within the
         options dict.
         """
         return self.env[f'l10n_es_reports.aeat.boe.mod{modelo_number}.export.wizard'].browse(options['l10n_es_reports_boe_wizard_id'])
 
-    def _l10n_es_call_on_partner_sublines(self, report_options, line_xml_id, fun_to_call, required_ids_set=None):
+    def _call_on_partner_sublines(self, report_options, line_xml_id, fun_to_call, required_ids_set=None):
         """ Calls a function on the data of all the sublines generated by a
         groupby parameter for a report line (except the one giving the total).
 
@@ -289,10 +313,11 @@ class AccountReport(models.Model):
         if required_ids_set is None:
             required_ids_set = set()
         rslt = self._l10n_es_boe_format_string('')
+        report = self.env['account.report'].browse(report_options['report_id'])
         report_line = self.env.ref(line_xml_id)
-        line_dict_id = self._get_generic_line_id('account.report.line', report_line.id)
-        for subline in self._expand_unfoldable_line_with_groupby(line_dict_id, report_line.groupby, report_options, None, 0)['lines']:
-            subline_model, subline_model_id = self._get_model_info_from_id(subline['id'])
+        line_dict_id = report._get_generic_line_id('account.report.line', report_line.id)
+        for subline in report._expand_unfoldable_line_with_groupby(line_dict_id, report_line.groupby, report_options, None, 0)['lines']:
+            subline_model, subline_model_id = report._get_model_info_from_id(subline['id'])
 
             if subline_model == 'res.partner':
                 rslt += fun_to_call({'line_data': subline, 'line_xml_id': line_xml_id, 'report_options': report_options})
@@ -301,14 +326,14 @@ class AccountReport(models.Model):
 
         for element in required_ids_set: # These elements are the ones for wich no line was generated, but that were into the original required ids set. So, we still treat them.
             rslt += fun_to_call({
-                'line_data': {'id': self._get_generic_line_id('res.partner', element)},
+                'line_data': {'id': report._get_generic_line_id('res.partner', element)},
                 'line_xml_id': line_xml_id,
                 'report_options': report_options
             })
 
         return rslt
 
-    def _l10n_es_get_partner_subline(self, report_options, line_xml_id, partner_id):
+    def _get_partner_subline(self, report_options, line_xml_id, partner_id):
         """ Returns the data of a subline generated by a groupby parameter, if its
         'id' (i.e. the actual id of the model denoted by groupby represented by the
         line) is equal to a given value.
@@ -317,14 +342,15 @@ class AccountReport(models.Model):
         :param line_xml_id: the xml id of the parent line
         :param sub_line_id: the id of the "grouped by" model corresponding to the subline we want to retrieve
         """
+        report = self.env['account.report'].browse(report_options['report_id'])
         report_line = self.env.ref(line_xml_id)
-        line_dict_id = self._get_generic_line_id('account.report.line', report_line.id)
-        for subline in self._expand_unfoldable_line_with_groupby(line_dict_id, report_line.groupby, report_options, None, 0)['lines']:
-            subline_model, model_id = self._get_model_info_from_id(subline['id'])
+        line_dict_id = report._get_generic_line_id('account.report.line', report_line.id)
+        for subline in report._expand_unfoldable_line_with_groupby(line_dict_id, report_line.groupby, report_options, None, 0)['lines']:
+            subline_model, model_id = report._get_model_info_from_id(subline['id'])
             if subline_model == 'res.partner' and model_id == partner_id:
                 return subline
 
-    def _l10n_es_extract_tin(self, partner, error_if_no_tin=True):
+    def _extract_tin(self, partner, error_if_no_tin=True):
         if not partner.vat:
             if error_if_no_tin:
                 raise UserError(_("No TIN set for partner %s (id %d). Please define one.") % (partner.name, partner.id))
@@ -334,8 +360,8 @@ class AccountReport(models.Model):
         country_code, number = partner._split_vat(partner.vat)
         return country_code.upper() + number
 
-    def _l10n_es_extract_spanish_tin(self, partner, except_if_foreign=False):
-        formatted_tin = self._l10n_es_extract_tin(partner, error_if_no_tin=True)
+    def _extract_spanish_tin(self, partner, except_if_foreign=False):
+        formatted_tin = self._extract_tin(partner, error_if_no_tin=True)
         if formatted_tin[:2] != 'ES':
             if except_if_foreign:
                 raise UserError(_("Reading a non-Spanish TIN as a Spanish TIN."))
@@ -343,11 +369,11 @@ class AccountReport(models.Model):
                 return ''
         return formatted_tin[2:]
 
-    def _l10n_es_generate_111_115_common_header(self, options, period, year, modelo_number):
+    def _generate_111_115_common_header(self, options, period, year, modelo_number):
         rslt = b''
 
         # Wizard with manually-entered data
-        boe_wizard = self._l10n_es_retrieve_boe_manual_wizard(options, modelo_number)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, modelo_number)
 
         # Header
         current_company = self.env.company
@@ -357,7 +383,7 @@ class AccountReport(models.Model):
         odoo_version = odoo.release.version.split('.')
         rslt += self._l10n_es_boe_format_string(str(odoo_version[0]) + str(odoo_version[1]), length=4)
         rslt += self._l10n_es_boe_format_string(' ' * 4) # Reserved for AEAT
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
         rslt += self._l10n_es_boe_format_string(' ' * 213) # Reserved for AEAT
         rslt += self._l10n_es_boe_format_string('</AUX>')
 
@@ -365,7 +391,7 @@ class AccountReport(models.Model):
         rslt += self._l10n_es_boe_format_string(f"<T{modelo_number}01000>")
         rslt += self._l10n_es_boe_format_string(' ')
         rslt += self._l10n_es_boe_format_string(boe_wizard.declaration_type)
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
         rslt += self._l10n_es_boe_format_string(current_company.name, length=60)
         rslt += self._l10n_es_boe_format_string(' ' * 20) # We keep the name of the declaring party blank here, as it is a company
         rslt += self._l10n_es_boe_format_string(year)
@@ -373,18 +399,29 @@ class AccountReport(models.Model):
 
         return rslt
 
-    def l10n_es_boe_export_mod111(self, options):
-        period, year = self._l10n_es_get_mod_period_and_year(options)
+
+class SpanishMod111TaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_es.mod111.tax.report.handler'
+    _inherit = 'l10n_es.tax.report.handler'
+    _description = 'Spanish Tax Report Custom Handler (Mod111)'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        super()._append_boe_button(options, 111)
+
+    def export_boe(self, options):
+        period, year = self._get_mod_period_and_year(options)
 
         if not period:
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
-        rslt = self._l10n_es_generate_111_115_common_header(options, period, year, 111)
-        report_lines = self._get_lines(options)
-        casilla_lines_map = self._l10n_es_retrieve_casilla_lines(report_lines)
+        rslt = self._generate_111_115_common_header(options, period, year, 111)
+        report = self.env['account.report'].browse(options['report_id'])
+        report_lines = report._get_lines(options)
+        casilla_lines_map = self._retrieve_casilla_lines(report_lines)
 
         # Wizard with manually-entered data
-        boe_wizard = self._l10n_es_retrieve_boe_manual_wizard(options, 111)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 111)
 
         # Content of the report
         rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['01'], length=8, signed=True)
@@ -421,33 +458,44 @@ class AccountReport(models.Model):
         rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
         rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and boe_wizard.previous_report_number or '', length=13)
         rslt += self._l10n_es_boe_format_string(' ') # Reserved for AEAT
-        dummy, iban = self._l10n_es_get_bic_and_iban(boe_wizard.partner_bank_id)
+        dummy, iban = self._get_bic_and_iban(boe_wizard.partner_bank_id)
         rslt += self._l10n_es_boe_format_string(iban, length=34)
         rslt += self._l10n_es_boe_format_string(' ' * 389) # Reserved for AEAT
         rslt += self._l10n_es_boe_format_string(' ' * 13) # Reserved for AEAT
 
-        # We close the tags... (They have been opened by _l10n_es_generate_111_115_common_header)
+        # We close the tags... (They have been opened by _generate_111_115_common_header)
         rslt += self._l10n_es_boe_format_string('</T11101000>')
         rslt += self._l10n_es_boe_format_string('</T1110' + year + period + '0000>')
 
         return {
-            'file_name': self.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename('txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }
 
-    def l10n_es_boe_export_mod115(self, options):
-        period, year = self._l10n_es_get_mod_period_and_year(options)
+
+class SpanishMod115TaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_es.mod115.tax.report.handler'
+    _inherit = 'l10n_es.tax.report.handler'
+    _description = 'Spanish Tax Report Custom Handler (Mod115)'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        super()._append_boe_button(options, 115)
+
+    def export_boe(self, options):
+        period, year = self._get_mod_period_and_year(options)
 
         if not period:
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
-        rslt = self._l10n_es_generate_111_115_common_header(options, period, year, 115)
-        report_lines = self._get_lines(options)
-        casilla_lines_map = self._l10n_es_retrieve_casilla_lines(report_lines)
+        rslt = self._generate_111_115_common_header(options, period, year, 115)
+        report = self.env['account.report'].browse(options['report_id'])
+        report_lines = report._get_lines(options)
+        casilla_lines_map = self._retrieve_casilla_lines(report_lines)
 
         # Wizard with manually-entered data
-        boe_wizard = self._l10n_es_retrieve_boe_manual_wizard(options, 115)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 115)
 
         # Content of the report
         rslt += self._l10n_es_boe_format_number(options, casilla_lines_map['01'], length=15, signed=True)
@@ -458,29 +506,40 @@ class AccountReport(models.Model):
 
         rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
         rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and boe_wizard.previous_report_number or '', length=13)
-        dummy, iban = self._l10n_es_get_bic_and_iban(boe_wizard.partner_bank_id)
+        dummy, iban = self._get_bic_and_iban(boe_wizard.partner_bank_id)
         rslt += self._l10n_es_boe_format_string(iban, length=34)
         rslt += self._l10n_es_boe_format_string(' ' * 236) # Reserved for AEAT
         rslt += self._l10n_es_boe_format_string(' ' * 13) # Reserved for AEAT
 
-        # We close the tags... (They have been opened by _l10n_es_generate_111_115_common_header)
+        # We close the tags... (They have been opened by _generate_111_115_common_header)
         rslt += self._l10n_es_boe_format_string('</T11501000>')
         rslt += self._l10n_es_boe_format_string('</T1150' + year + period + '0000>')
 
         return {
-            'file_name': self.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename('txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }
 
-    def l10n_es_boe_export_mod303(self, options):
-        period, year = self._l10n_es_get_mod_period_and_year(options)
+
+class SpanishMod303TaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_es.mod303.tax.report.handler'
+    _inherit = 'l10n_es.tax.report.handler'
+    _description = 'Spanish Tax Report Custom Handler (Mod303)'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        super()._append_boe_button(options, 303)
+
+    def export_boe(self, options):
+        period, year = self._get_mod_period_and_year(options)
 
         if not period:
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
-        report_lines = self._get_lines(options)
-        casilla_lines_map = self._l10n_es_retrieve_casilla_lines(report_lines)
+        report = self.env['account.report'].browse(options['report_id'])
+        report_lines = report._get_lines(options)
+        casilla_lines_map = self._retrieve_casilla_lines(report_lines)
         current_company = self.env.company
 
         # Header
@@ -490,31 +549,31 @@ class AccountReport(models.Model):
         odoo_version = odoo.release.version.split('.')
         rslt += self._l10n_es_boe_format_string(str(odoo_version[0]) + str(odoo_version[1]), length=4)
         rslt += self._l10n_es_boe_format_string(' ' * 4)
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
         rslt += self._l10n_es_boe_format_string(' ' * 213)
         rslt += self._l10n_es_boe_format_string('</AUX>')
 
-        rslt += self._l10n_es_generate_mod_303_page1(options, current_company, period, year, casilla_lines_map)
-        rslt += self._l10n_es_generate_mod_303_page3(options, current_company, period, year, casilla_lines_map)
+        rslt += self._generate_page1(report, options, current_company, period, year, casilla_lines_map)
+        rslt += self._generate_page3(report, options, current_company, period, year, casilla_lines_map)
         # We don't need page 2 and 4 (specified in AEAT doc)
 
         # We close the tags...
         rslt += self._l10n_es_boe_format_string('</T3030' + year + period + '0000>')
 
         return {
-            'file_name': self.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename('txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }
 
-    def _l10n_es_generate_mod_303_page1(self, options, current_company, period, year, casilla_lines_map):
+    def _generate_page1(self, report, options, current_company, period, year, casilla_lines_map):
         # Wizard with manually-entered data
-        boe_wizard = self._l10n_es_retrieve_boe_manual_wizard(options, 303)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 303)
 
         rslt = self._l10n_es_boe_format_string('<T30301000>')
         rslt += self._l10n_es_boe_format_string(' ')
         rslt += self._l10n_es_boe_format_string(boe_wizard.declaration_type)
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
         rslt += self._l10n_es_boe_format_string(current_company.name, length=80)
         rslt += self._l10n_es_boe_format_string(year)
         rslt += self._l10n_es_boe_format_string(period)
@@ -548,7 +607,7 @@ class AccountReport(models.Model):
                 },
             })
 
-            transactions_volume = self._l10n_es_retrieve_report_expression(transactions_volume_options, 'l10n_es_reports.es_profit_and_loss_line_1_balance')
+            transactions_volume = self._retrieve_report_expression(transactions_volume_options, 'l10n_es_reports.es_profit_and_loss_line_1_balance')
             annual_volume_indicator = current_company.currency_id.is_zero(transactions_volume) and 2 or 1
         else:
             annual_volume_indicator = 0
@@ -597,11 +656,11 @@ class AccountReport(models.Model):
 
         return rslt
 
-    def _l10n_es_generate_mod_303_page3(self, options, current_company, period, year, casilla_lines_map):
+    def _generate_page3(self, report, options, current_company, period, year, casilla_lines_map):
         rslt = self._l10n_es_boe_format_string('<T30303000>')
 
         # Wizard with manually-entered data
-        boe_wizard = self._l10n_es_retrieve_boe_manual_wizard(options, 303)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 303)
 
         # Casillas
         to_treat = ['59', '60']
@@ -614,7 +673,8 @@ class AccountReport(models.Model):
                 # not displayed in the report anymore, it's not in get_lines's result, and we hence can't rely on it as usual.
                 # Therefore, we compute it manually.
                 tag_61 = self.env.ref('l10n_es.mod_303_61')
-                tables, where_clause, where_params = self._query_get(options, 'strict_range', domain=[('tax_tag_ids', 'in', tag_61.ids)])
+                report = self.env['account.report'].browse(options['report_id'])
+                tables, where_clause, where_params = report._query_get(options, 'strict_range', domain=[('tax_tag_ids', 'in', tag_61.ids)])
                 query = """
                     SELECT -COALESCE(sum(account_move_line.balance), 0)
                     FROM """ + tables + """
@@ -659,7 +719,7 @@ class AccountReport(models.Model):
         gov_giving_back = current_company.currency_id.compare_amounts(casilla_lines_map['71'], 0) == -1
         partner_bank = boe_wizard.partner_bank_id
 
-        bic, iban = self._l10n_es_get_bic_and_iban(partner_bank)
+        bic, iban = self._get_bic_and_iban(partner_bank)
 
         rslt += self._l10n_es_boe_format_string(bic if gov_giving_back and iban and iban[:2] != 'ES' else '', length=11)
         rslt += self._l10n_es_boe_format_string(iban, length=34)
@@ -706,55 +766,76 @@ class AccountReport(models.Model):
 
         return rslt
 
-    def l10n_es_boe_export_mod347(self, options):
-        dummy, year = self._l10n_es_get_mod_period_and_year(options)
-        current_company = self.env.company
 
-        # Report options to use to retrieve data for the BOE
-        boe_report_options = self._l10n_es_mod347_build_boe_report_options(options, year)
+class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_es.mod347.tax.report.handler'
+    _inherit = 'l10n_es.tax.report.handler'
+    _description = 'Spanish Tax Report Custom Handler (Mod347)'
 
-        # Wizard with manually-entered data
-        boe_wizard = self._l10n_es_retrieve_boe_manual_wizard(options, 347)
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        super()._append_boe_button(options, 347)
 
-        manual_params = boe_wizard.l10n_es_get_partners_manual_parameters_map()
+    def _custom_engine_threshold_insurance_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_insurance_bought']
+        return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-        # Header
-        rslt = self._l10n_es_mod347_write_type2_header_record(current_company, boe_wizard, boe_report_options, year=year)
-        seguros_required_b = self._l10n_es_mod347_get_required_partner_ids_for_boe('insurance', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'seguros')
-        rslt += self._l10n_es_call_on_partner_sublines(
-            boe_report_options,
-            'l10n_es_reports.mod_347_operations_insurance_bought',
-            lambda report_data: self._l10n_es_mod347_write_type2_partner_record(boe_report_options, report_data, year, current_company, 'A',
-                                                                                manual_parameters_map=manual_params, insurance=True),
-            required_ids_set=seguros_required_b
-        )
+    def _custom_engine_threshold_regular_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_regular_bought']
+        return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-        otras_required_a = self._l10n_es_mod347_get_required_partner_ids_for_boe('regular', year+'-01-01', year+'-12-31', boe_wizard, 'B', 'otras')
-        rslt += self._l10n_es_call_on_partner_sublines(
-            boe_report_options,
-            'l10n_es_reports.mod_347_operations_regular_sold',
-            lambda report_data: self._l10n_es_mod347_write_type2_partner_record(boe_report_options, report_data, year, current_company, 'B',
-                                                                                manual_parameters_map=manual_params),
-            required_ids_set=otras_required_a
-        )
+    def _custom_engine_threshold_regular_sold(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_regular_sold']
+        return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-        otras_required_b = self._l10n_es_mod347_get_required_partner_ids_for_boe('regular', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'otras')
-        rslt += self._l10n_es_call_on_partner_sublines(
-            boe_report_options,
-            'l10n_es_reports.mod_347_operations_regular_bought',
-            lambda report_data: self._l10n_es_mod347_write_type2_partner_record(boe_report_options, report_data, year, current_company, 'A',
-                                                                                manual_parameters_map=manual_params),
-            required_ids_set=otras_required_b
-        )
+    def _custom_engine_threshold_all_operations(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_all_operations']
+        return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-        return {
-            'file_name': self.get_default_report_filename('txt'),
-            'file_content': rslt,
-            'file_type': 'txt',
-        }
+    def _custom_threshold_common(self, domain, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        """ Some lines of mod 347 report need to be grouped by partner, only keeping the partners whose balance for the line is above 3005.06€.
+        This function serves as a common helper to the custom engines handling these lines.
+        """
+        report = self.env['account.report'].browse(options['report_id'])
+        report._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
 
-    def _l10n_es_mod347_build_boe_report_options(self, options, year):
-        return self._get_options(
+        # First get all the partners that match the domain but don't reach the threshold. We'll have to exclude them
+        ct_query = self.env['res.currency']._get_query_currency_table(options)
+        tables, where_clause, where_params = report._query_get(options, date_scope, domain=domain + options.get('forced_domain', []))
+        threshold_value = self._convert_threshold_to_company_currency(3005.06, options)
+        partners_to_exclude_params = [*where_params, threshold_value]
+        partners_to_exclude_query = f"""
+            SELECT account_move_line.partner_id
+            FROM {tables}
+            JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
+            WHERE {where_clause}
+            GROUP BY account_move_line.partner_id
+            HAVING(SUM(currency_table.rate * account_move_line.balance) <= %s)
+        """
+
+        self._cr.execute(partners_to_exclude_query, partners_to_exclude_params)
+        partner_ids_to_exclude = [partner_id for (partner_id,) in self._cr.fetchall()]
+
+        # Then, compute the domain, ensuring we esclude the partners who don't reach the threshold
+        new_domain = domain + [('partner_id', 'not in', partner_ids_to_exclude)]
+        domain_formulas_dict = {str(new_domain): expressions}
+        domain_result = report._compute_formula_batch_with_engine_domain(options, date_scope, domain_formulas_dict, current_groupby, next_groupby,
+                                                                         offset=0, limit=None)
+        return next(result for result in domain_result.values())
+
+    def _convert_threshold_to_company_currency(self, threshold, options):
+        """ Returns a EUR threshold to company currency, using the options' date_to for conversion
+        """
+        threshold_currency = self.env.ref('base.EUR')
+
+        if not threshold_currency.active:
+            raise UserError(_("Currency %s, used for a threshold in this report, is either nonexistent or inactive. Please create or activate it.", threshold_currency.name))
+
+        company_currency = self.env.company.currency_id
+        return threshold_currency._convert(threshold, company_currency, self.env.company, options['date']['date_to'])
+
+    def _build_boe_report_options(self, options, year):
+        return self.env['account.report'].browse(options['report_id'])._get_options(
             previous_options={
                 **options,
 
@@ -775,7 +856,7 @@ class AccountReport(models.Model):
            }
        )
 
-    def _l10n_es_mod347_get_required_partner_ids_for_boe(self, mod_invoice_type, date_from, date_to, boe_wizard, operation_key, operation_class):
+    def _get_required_partner_ids_for_boe(self, mod_invoice_type, date_from, date_to, boe_wizard, operation_key, operation_class):
         cash_basis_manual_data = boe_wizard.cash_basis_mod347_data.filtered(lambda x: x.operation_key == operation_key and x.operation_class == operation_class)
         all_partners = cash_basis_manual_data.mapped('partner_id')
 
@@ -792,14 +873,14 @@ class AccountReport(models.Model):
 
         return set(all_partners.ids)
 
-    def _l10n_es_mod347_write_type2_header_record(self, current_company, boe_wizard, boe_report_options, year=None):
+    def _write_type2_header_record(self, current_company, boe_wizard, boe_report_options, year=None):
         if not year:
             year = str(fields.Date.today().year)
 
         # The header is there once for the whole year. It should use the year as date range and not quarterly. No comparison.
         yearly_options = boe_report_options.copy()
         del yearly_options['comparison']
-        yearly_options = self._get_options(
+        yearly_options = self.env['account.report'].browse(boe_report_options['report_id'])._get_options(
             previous_options={
                 **yearly_options,
                 'date': {'date_from': '%s-01-01' % year, 'date_to': '%s-12-31' % year, 'filter': 'custom', 'mode': 'range'},
@@ -809,7 +890,7 @@ class AccountReport(models.Model):
         rslt = self._l10n_es_boe_format_number(yearly_options, 1)
         rslt += self._l10n_es_boe_format_number(yearly_options, 347)
         rslt += self._l10n_es_boe_format_string(year, length=4)
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
         rslt += self._l10n_es_boe_format_string(current_company.name, length=40)
         rslt += self._l10n_es_boe_format_string('T')
         rslt += self._l10n_es_boe_format_string(boe_wizard.get_formatted_contact_phone(), length=9)
@@ -820,12 +901,12 @@ class AccountReport(models.Model):
         rslt += self._l10n_es_boe_format_string(boe_wizard.substitutive_declaration and 'X' or ' ')
         rslt += self._l10n_es_boe_format_string(boe_wizard.previous_report_number or '', length=13, fill_char=b'0', align='right')
 
-        declarados_count = self._l10n_es_retrieve_report_expression(yearly_options, 'l10n_es_reports.mod_347_statistics_operations_count_balance')
+        declarados_count = self._retrieve_report_expression(yearly_options, 'l10n_es_reports.mod_347_statistics_operations_count_balance')
         rslt += self._l10n_es_boe_format_number(yearly_options, declarados_count, length=9)
-        declarados_total = self._l10n_es_retrieve_report_expression(yearly_options, 'l10n_es_reports.mod_347_operations_title_balance')
+        declarados_total = self._retrieve_report_expression(yearly_options, 'l10n_es_reports.mod_347_operations_title_balance')
         rslt += self._l10n_es_boe_format_number(yearly_options, declarados_total, length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
 
-        real_estates_data = self._l10n_es_mod347_get_real_estates_data(yearly_options, current_company.currency_id)
+        real_estates_data = self._get_real_estates_data(yearly_options, current_company.currency_id)
         rslt += self._l10n_es_boe_format_number(yearly_options, real_estates_data['count'], length=9)
 
         rslt += self._l10n_es_boe_format_number(yearly_options, real_estates_data['total'], length=16, decimal_places=2, signed=True, sign_pos=' ', in_currency=True)
@@ -838,25 +919,24 @@ class AccountReport(models.Model):
 
         return rslt
 
-    def _l10n_es_mod347_get_real_estates_data(self, boe_report_options, currency_id):
+    def _get_real_estates_data(self, boe_report_options, currency_id):
         """ Real estates are not directly supported by l10n_es_reports, but by the
         submodule l10n_es_real_estates. This function is used as a hook, so that we
-        don't have to access the result of _l10n_es_mod347_write_type2_header_record by indexes
+        don't have to access the result of _write_type2_header_record by indexes
         in order to write the real estates data at the right place in the BOE
         (which is better in case the code of the header function needs to be extended).
         """
         return {'count': 0, 'total': 0}
 
-
-    def _l10n_es_mod347_write_type2_partner_record(self, options, report_data, year, current_company, operation_key, manual_parameters_map, insurance=False, local_negocio=False):
+    def _write_type2_partner_record(self, options, report_data, year, current_company, operation_key, manual_parameters_map, insurance=False, local_negocio=False):
         currency_id = current_company.currency_id
-        line_partner = self.env['res.partner'].browse(self._get_model_info_from_id(report_data['line_data']['id'])[1])
+        line_partner = self.env['res.partner'].browse(self.env['account.report']._get_model_info_from_id(report_data['line_data']['id'])[1])
 
         rslt = self._l10n_es_boe_format_number(options, 2)
         rslt += self._l10n_es_boe_format_number(options, 347)
         rslt += self._l10n_es_boe_format_string(year, length=4)
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
-        rslt += self._l10n_es_boe_format_string(line_partner.country_id.code == 'ES' and self._l10n_es_extract_spanish_tin(line_partner) or '', length=9)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(line_partner.country_id.code == 'ES' and self._extract_spanish_tin(line_partner) or '', length=9)
         rslt += self._l10n_es_boe_format_string(' ' * 9) # TIN of the legal representant; blank if 14 years or older
         rslt += self._l10n_es_boe_format_string(line_partner.display_name, length=40)
         rslt += self._l10n_es_boe_format_string('D') # 'Tipo de hoja', constant
@@ -936,7 +1016,7 @@ class AccountReport(models.Model):
         europe_countries = self.env.ref('base.europe').country_ids
         intracom_tin = ''
         if line_partner.country_id in europe_countries:
-            partner_tin = self._l10n_es_extract_tin(line_partner, error_if_no_tin=False)
+            partner_tin = self._extract_tin(line_partner, error_if_no_tin=False)
             intracom_tin = (partner_tin[:2] != 'es') and partner_tin or ''  # We write an empty string if the partner has a Spanish TIN (because it then has already been written previously)
         rslt += self._l10n_es_boe_format_string(intracom_tin.upper(), length=17)
 
@@ -956,15 +1036,160 @@ class AccountReport(models.Model):
 
         return rslt
 
-    def l10n_es_boe_export_mod349(self, options):
-        period, year = self._l10n_es_get_mod_period_and_year(options)
+    def export_boe(self, options):
+        dummy, year = self._get_mod_period_and_year(options)
+        current_company = self.env.company
+        report = self.env['account.report'].browse(options['report_id'])
+
+        # Report options to use to retrieve data for the BOE
+        boe_report_options = self._build_boe_report_options(options, year)
+
+        # Wizard with manually-entered data
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 347)
+
+        manual_params = boe_wizard.l10n_es_get_partners_manual_parameters_map()
+
+        # Header
+        rslt = self._write_type2_header_record(current_company, boe_wizard, boe_report_options, year=year)
+        seguros_required_b = self._get_required_partner_ids_for_boe('insurance', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'seguros')
+        rslt += self._call_on_partner_sublines(
+            boe_report_options,
+            'l10n_es_reports.mod_347_operations_insurance_bought',
+            lambda report_data: self._write_type2_partner_record(boe_report_options, report_data, year, current_company, 'A',
+                                                                                manual_parameters_map=manual_params, insurance=True),
+            required_ids_set=seguros_required_b
+        )
+
+        otras_required_a = self._get_required_partner_ids_for_boe('regular', year+'-01-01', year+'-12-31', boe_wizard, 'B', 'otras')
+        rslt += self._call_on_partner_sublines(
+            boe_report_options,
+            'l10n_es_reports.mod_347_operations_regular_sold',
+            lambda report_data: self._write_type2_partner_record(boe_report_options, report_data, year, current_company, 'B',
+                                                                                manual_parameters_map=manual_params),
+            required_ids_set=otras_required_a
+        )
+
+        otras_required_b = self._get_required_partner_ids_for_boe('regular', year+'-01-01', year+'-12-31', boe_wizard, 'A', 'otras')
+        rslt += self._call_on_partner_sublines(
+            boe_report_options,
+            'l10n_es_reports.mod_347_operations_regular_bought',
+            lambda report_data: self._write_type2_partner_record(boe_report_options, report_data, year, current_company, 'A',
+                                                                                manual_parameters_map=manual_params),
+            required_ids_set=otras_required_b
+        )
+
+        return {
+            'file_name': report.get_default_report_filename('txt'),
+            'file_content': rslt,
+            'file_type': 'txt',
+        }
+
+
+class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_es.mod349.tax.report.handler'
+    _inherit = 'l10n_es.tax.report.handler'
+    _description = 'Spanish Tax Report Custom Handler (Mod349)'
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        super()._append_boe_button(options, 349)
+
+    def _write_type1_header_record(self, options, period, year, current_company, boe_wizard):
+        rslt = self._l10n_es_boe_format_string('1349')
+        rslt += self._l10n_es_boe_format_string(year, length=4)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(current_company.name, length=40)
+        rslt += self._l10n_es_boe_format_string('T')
+        rslt += self._l10n_es_boe_format_string(boe_wizard.get_formatted_contact_phone(), length=9)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.contact_person_name, length=40)
+        mod_349_boe_sequence = self.env['ir.sequence'].search([('company_id','=',current_company.id), ('code','=','l10n_es.boe.mod_349')])
+        rslt += self._l10n_es_boe_format_number(options, 349) + self._l10n_es_boe_format_string(mod_349_boe_sequence.next_by_id(), length=10)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
+        rslt += self._l10n_es_boe_format_string(boe_wizard.substitutive_declaration and 'X' or ' ')
+        rslt += self._l10n_es_boe_format_string(boe_wizard.previous_report_number or '', length=13, fill_char=b'0', align='right')
+        rslt += self._l10n_es_boe_format_string(period, length=2)
+        rslt += self._l10n_es_boe_format_number(options, self._retrieve_report_expression(options, 'l10n_es_reports.mod_349_statistics_invoices_partners_count_balance'), length=9)
+        rslt += self._l10n_es_boe_format_number(options, self._retrieve_report_expression(options, 'l10n_es_reports.mod_349_statistics_invoices_total_amount_balance'), length=15, in_currency=True, decimal_places=2)
+        rslt += self._l10n_es_boe_format_number(options, self._retrieve_report_expression(options, 'l10n_es_reports.mod_349_statistics_refunds_partners_count_balance'), length=9)
+        rslt += self._l10n_es_boe_format_number(options, self._retrieve_report_expression(options, 'l10n_es_reports.mod_349_statistics_refunds_total_amount_balance'), length=15, in_currency=True, decimal_places=2)
+        rslt += self._l10n_es_boe_format_string(boe_wizard.trimester_2months_report and 'X' or ' ')
+        rslt += self._l10n_es_boe_format_string(' ' * 204)
+        rslt += self._l10n_es_boe_format_string(' ' * 9) # TIN of the legal representative, if under 14 years old
+        rslt += self._l10n_es_boe_format_string(' ' * 101) # Constant
+        rslt += b'\r\n'
+        return rslt
+
+    def _write_type2_invoice_record(self, options, report_data, year, key, current_company):
+        line_partner = self.env['res.partner'].browse(self.env['account.report']._get_model_info_from_id(report_data['line_data']['id'])[1])
+        rslt = self._l10n_es_boe_format_string('2349')
+        rslt += self._l10n_es_boe_format_string(year, length=4)
+        rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
+        rslt += self._l10n_es_boe_format_string(' ' * 58)
+        rslt += self._l10n_es_boe_format_string(self._extract_tin(line_partner), length=17)
+        rslt += self._l10n_es_boe_format_string(line_partner.name, length=40)
+        rslt += self._l10n_es_boe_format_string(key, length=1)
+        rslt += self._l10n_es_boe_format_number(options, report_data['line_data']['columns'][0]['no_format'], length=13, decimal_places=2, in_currency=True)
+        rslt += self._l10n_es_boe_format_string(' ' * 354)
+        rslt += b'\r\n'
+
+        return rslt
+
+    def _write_type2_refund_records(self, options, report_data, current_company, mod_349_type, invoice_report_line_xml_id):
+        line_partner = self.env['res.partner'].browse(self.env['account.report']._get_model_info_from_id(report_data['line_data']['id'])[1])
+        report_date_from = options['date']['date_from']
+        report_date_to = options['date']['date_to']
+        report_period, report_year = self._get_mod_period_and_year(options)
+
+        rslt = self._l10n_es_boe_format_string('')
+        for refund_invoice in self.env['account.move'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('move_type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
+            original_invoice = refund_invoice.reversed_entry_id
+            if not original_invoice:
+                raise UserError(_('Refund Invoice %s was created without a link to the original invoice that was credited, '
+                                  'while we need that information for this report. ') % (refund_invoice.display_name,))
+
+            invoice_period, invoice_year = self._retrieve_period_and_year(original_invoice.date, trimester=report_period[-1] == 'T')
+            group_key = (invoice_period, invoice_year, refund_invoice.l10n_es_reports_mod349_invoice_type)
+
+            # We compute the total refund for this invoice until the current period
+            all_previous_refunds = self.env['account.move'].search([('reversed_entry_id', '=', original_invoice.id), ('date', '<=', report_date_to)])
+            total_refund = sum(all_previous_refunds.mapped('amount_total'))
+
+            # Compute invoice report line at the time of the original invoice
+            line_options = options.copy()
+            line_date_from, line_date_to = self._convert_period_to_dates(invoice_period, invoice_year)
+            line_options['date']['date_from'] =  datetime.strftime(line_date_from, '%Y-%m-%d')
+            line_options['date']['date_to'] =  datetime.strftime(line_date_to, '%Y-%m-%d')
+
+            invoice_line_data = self._get_partner_subline(line_options, invoice_report_line_xml_id, line_partner.id)
+            previous_report_amount = invoice_line_data['columns'][0]['no_format']
+
+            # Now, we can report the record !
+            rslt += self._l10n_es_boe_format_string('2349')
+            rslt += self._l10n_es_boe_format_string(report_year, length=4)
+            rslt += self._l10n_es_boe_format_string(self._extract_spanish_tin(current_company.partner_id), length=9)
+            rslt += self._l10n_es_boe_format_string(' ' * 58)
+            rslt += self._l10n_es_boe_format_string(self._extract_tin(line_partner), length=17)
+            rslt += self._l10n_es_boe_format_string(line_partner.name, length=40)
+            rslt += self._l10n_es_boe_format_string(mod_349_type, length=1)
+            rslt += self._l10n_es_boe_format_string(' ' * 13) # Constant
+            rslt += self._l10n_es_boe_format_string(invoice_year, length=4)
+            rslt += self._l10n_es_boe_format_string(invoice_period, length=2)
+            rslt += self._l10n_es_boe_format_number(options, current_company.currency_id.round(previous_report_amount - total_refund), length=13, decimal_places=2, in_currency=True)
+            rslt += self._l10n_es_boe_format_number(options, previous_report_amount, length=13, decimal_places=2, in_currency=True)
+            rslt += self._l10n_es_boe_format_string(' ' * 322)
+            rslt += b'\r\n'
+
+        return rslt
+
+    def export_boe(self, options):
+        period, year = self._get_mod_period_and_year(options)
         current_company = self.env.company
 
         if not period:
             raise UserError(_("Wrong report dates for BOE generation : please select a range of one month or a trimester."))
 
         # Wizard with manually-entered data
-        boe_wizard = self._l10n_es_retrieve_boe_manual_wizard(options, 349)
+        boe_wizard = self._retrieve_boe_manual_wizard(options, 349)
 
         rslt = self._l10n_es_boe_format_string('')
 
@@ -977,115 +1202,28 @@ class AccountReport(models.Model):
                 raise UserError(_("You cannot generate a BOE file for the first two months of a trimester if only one month is selected!"))
 
         # Header
-        rslt = self._l10n_es_mod_349_write_type1_header_record(options, period, year, current_company, boe_wizard)
+        rslt = self._write_type1_header_record(options, period, year, current_company, boe_wizard)
 
         # Invoices lines
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies', lambda report_data: self._l10n_es_mod_349_write_type2_invoice_record(options, report_data, year, 'E', current_company))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_acquisitions', lambda report_data: self._l10n_es_mod_349_write_type2_invoice_record(options, report_data, year, 'A', current_company))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_triangular', lambda report_data: self._l10n_es_mod_349_write_type2_invoice_record(options, report_data, year, 'T', current_company))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_sold', lambda report_data: self._l10n_es_mod_349_write_type2_invoice_record(options, report_data, year, 'S', current_company))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_acquired', lambda report_data: self._l10n_es_mod_349_write_type2_invoice_record(options, report_data, year, 'I', current_company))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes', lambda report_data: self._l10n_es_mod_349_write_type2_invoice_record(options, report_data, year, 'M', current_company))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative', lambda report_data: self._l10n_es_mod_349_write_type2_invoice_record(options, report_data, year, 'H', current_company))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies', lambda report_data: self._write_type2_invoice_record(options, report_data, year, 'E', current_company))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_acquisitions', lambda report_data: self._write_type2_invoice_record(options, report_data, year, 'A', current_company))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_triangular', lambda report_data: self._write_type2_invoice_record(options, report_data, year, 'T', current_company))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_sold', lambda report_data: self._write_type2_invoice_record(options, report_data, year, 'S', current_company))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_acquired', lambda report_data: self._write_type2_invoice_record(options, report_data, year, 'I', current_company))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes', lambda report_data: self._write_type2_invoice_record(options, report_data, year, 'M', current_company))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative', lambda report_data: self._write_type2_invoice_record(options, report_data, year, 'H', current_company))
 
         # Refunds lines
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_refunds', lambda report_data: self._l10n_es_mod_349_write_type2_refund_records(options, report_data, current_company, 'E', 'l10n_es_reports.mod_349_supplies'))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_acquisitions_refunds', lambda report_data: self._l10n_es_mod_349_write_type2_refund_records(options, report_data, current_company, 'A', 'l10n_es_reports.mod_349_acquisitions'))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_triangular_refunds', lambda report_data: self._l10n_es_mod_349_write_type2_refund_records(options, report_data, current_company, 'T', 'l10n_es_reports.mod_349_triangular'))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_sold_refunds', lambda report_data: self._l10n_es_mod_349_write_type2_refund_records(options, report_data, current_company, 'S', 'l10n_es_reports.mod_349_services_sold'))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_acquired_refunds', lambda report_data: self._l10n_es_mod_349_write_type2_refund_records(options, report_data, current_company, 'I', 'l10n_es_reports.mod_349_services_acquired'))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_refunds', lambda report_data: self._l10n_es_mod_349_write_type2_refund_records(options, report_data, current_company, 'M', 'l10n_es_reports.mod_349_supplies_without_taxes'))
-        rslt += self._l10n_es_call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative_refunds', lambda report_data: self._l10n_es_mod_349_write_type2_refund_records(options, report_data, current_company, 'H', 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative'))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'E', 'l10n_es_reports.mod_349_supplies'))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_acquisitions_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'A', 'l10n_es_reports.mod_349_acquisitions'))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_triangular_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'T', 'l10n_es_reports.mod_349_triangular'))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_sold_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'S', 'l10n_es_reports.mod_349_services_sold'))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_acquired_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'I', 'l10n_es_reports.mod_349_services_acquired'))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'M', 'l10n_es_reports.mod_349_supplies_without_taxes'))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'H', 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative'))
 
         return {
-            'file_name': self.get_default_report_filename('txt'),
+            'file_name': self.env['account.report'].browse(options['report_id']).get_default_report_filename('txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }
-
-    def _l10n_es_mod_349_write_type1_header_record(self, options, period, year, current_company, boe_wizard):
-        rslt = self._l10n_es_boe_format_string('1349')
-        rslt += self._l10n_es_boe_format_string(year, length=4)
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
-        rslt += self._l10n_es_boe_format_string(current_company.name, length=40)
-        rslt += self._l10n_es_boe_format_string('T')
-        rslt += self._l10n_es_boe_format_string(boe_wizard.get_formatted_contact_phone(), length=9)
-        rslt += self._l10n_es_boe_format_string(boe_wizard.contact_person_name, length=40)
-        mod_349_boe_sequence = self.env['ir.sequence'].search([('company_id','=',current_company.id), ('code','=','l10n_es.boe.mod_349')])
-        rslt += self._l10n_es_boe_format_number(options, 349) + self._l10n_es_boe_format_string(mod_349_boe_sequence.next_by_id(), length=10)
-        rslt += self._l10n_es_boe_format_string(boe_wizard.complementary_declaration and 'X' or ' ')
-        rslt += self._l10n_es_boe_format_string(boe_wizard.substitutive_declaration and 'X' or ' ')
-        rslt += self._l10n_es_boe_format_string(boe_wizard.previous_report_number or '', length=13, fill_char=b'0', align='right')
-        rslt += self._l10n_es_boe_format_string(period, length=2)
-        rslt += self._l10n_es_boe_format_number(options, self._l10n_es_retrieve_report_expression(options, 'l10n_es_reports.mod_349_statistics_invoices_partners_count_balance'), length=9)
-        rslt += self._l10n_es_boe_format_number(options, self._l10n_es_retrieve_report_expression(options, 'l10n_es_reports.mod_349_statistics_invoices_total_amount_balance'), length=15, in_currency=True, decimal_places=2)
-        rslt += self._l10n_es_boe_format_number(options, self._l10n_es_retrieve_report_expression(options, 'l10n_es_reports.mod_349_statistics_refunds_partners_count_balance'), length=9)
-        rslt += self._l10n_es_boe_format_number(options, self._l10n_es_retrieve_report_expression(options, 'l10n_es_reports.mod_349_statistics_refunds_total_amount_balance'), length=15, in_currency=True, decimal_places=2)
-        rslt += self._l10n_es_boe_format_string(boe_wizard.trimester_2months_report and 'X' or ' ')
-        rslt += self._l10n_es_boe_format_string(' ' * 204)
-        rslt += self._l10n_es_boe_format_string(' ' * 9) # TIN of the legal representative, if under 14 years old
-        rslt += self._l10n_es_boe_format_string(' ' * 101) # Constant
-        rslt += b'\r\n'
-        return rslt
-
-    def _l10n_es_mod_349_write_type2_invoice_record(self, options, report_data, year, key, current_company):
-        line_partner = self.env['res.partner'].browse(self._get_model_info_from_id(report_data['line_data']['id'])[1])
-        rslt = self._l10n_es_boe_format_string('2349')
-        rslt += self._l10n_es_boe_format_string(year, length=4)
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
-        rslt += self._l10n_es_boe_format_string(' ' * 58)
-        rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_tin(line_partner), length=17)
-        rslt += self._l10n_es_boe_format_string(line_partner.name, length=40)
-        rslt += self._l10n_es_boe_format_string(key, length=1)
-        rslt += self._l10n_es_boe_format_number(options, report_data['line_data']['columns'][0]['no_format'], length=13, decimal_places=2, in_currency=True)
-        rslt += self._l10n_es_boe_format_string(' ' * 354)
-        rslt += b'\r\n'
-
-        return rslt
-
-    def _l10n_es_mod_349_write_type2_refund_records(self, options, report_data, current_company, mod_349_type, invoice_report_line_xml_id):
-        line_partner = self.env['res.partner'].browse(self._get_model_info_from_id(report_data['line_data']['id'])[1])
-        report_date_from = options['date']['date_from']
-        report_date_to = options['date']['date_to']
-        report_period, report_year = self._l10n_es_get_mod_period_and_year(options)
-
-        rslt = self._l10n_es_boe_format_string('')
-        for refund_invoice in self.env['account.move'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('move_type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
-            original_invoice = refund_invoice.reversed_entry_id
-            if not original_invoice:
-                raise UserError(_('Refund Invoice %s was created without a link to the original invoice that was credited, '
-                                  'while we need that information for this report. ') % (refund_invoice.display_name,))
-
-            invoice_period, invoice_year = self._l10n_es_retrieve_period_and_year(original_invoice.date, trimester=report_period[-1] == 'T')
-            group_key = (invoice_period, invoice_year, refund_invoice.l10n_es_reports_mod349_invoice_type)
-
-            # We compute the total refund for this invoice until the current period
-            all_previous_refunds = self.env['account.move'].search([('reversed_entry_id', '=', original_invoice.id), ('date', '<=', report_date_to)])
-            total_refund = sum(all_previous_refunds.mapped('amount_total'))
-
-            # Compute invoice report line at the time of the original invoice
-            line_options = options.copy()
-            line_date_from, line_date_to = self._l10n_es_convert_period_to_dates(invoice_period, invoice_year)
-            line_options['date']['date_from'] =  datetime.strftime(line_date_from, '%Y-%m-%d')
-            line_options['date']['date_to'] =  datetime.strftime(line_date_to, '%Y-%m-%d')
-
-            invoice_line_data = self._l10n_es_get_partner_subline(line_options, invoice_report_line_xml_id, line_partner.id)
-            previous_report_amount = invoice_line_data['columns'][0]['no_format']
-
-            # Now, we can report the record !
-            rslt += self._l10n_es_boe_format_string('2349')
-            rslt += self._l10n_es_boe_format_string(report_year, length=4)
-            rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_spanish_tin(current_company.partner_id), length=9)
-            rslt += self._l10n_es_boe_format_string(' ' * 58)
-            rslt += self._l10n_es_boe_format_string(self._l10n_es_extract_tin(line_partner), length=17)
-            rslt += self._l10n_es_boe_format_string(line_partner.name, length=40)
-            rslt += self._l10n_es_boe_format_string(mod_349_type, length=1)
-            rslt += self._l10n_es_boe_format_string(' ' * 13) # Constant
-            rslt += self._l10n_es_boe_format_string(invoice_year, length=4)
-            rslt += self._l10n_es_boe_format_string(invoice_period, length=2)
-            rslt += self._l10n_es_boe_format_number(options, current_company.currency_id.round(previous_report_amount - total_refund), length=13, decimal_places=2, in_currency=True)
-            rslt += self._l10n_es_boe_format_number(options, previous_report_amount, length=13, decimal_places=2, in_currency=True)
-            rslt += self._l10n_es_boe_format_string(' ' * 322)
-            rslt += b'\r\n'
-
-        return rslt

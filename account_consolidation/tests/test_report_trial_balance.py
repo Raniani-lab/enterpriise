@@ -77,14 +77,16 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         self.assertListEqual(expected_levels, levels, 'Levels are not all corrects')
 
     def test_hierarchy_all_journals(self):
+        self.default_company.totals_below_sections = False
         report = self.env.ref('account_consolidation.consolidated_balance_report')
         report = report.with_context(default_period_id=self.periods[0].id)
+        custom_handler = self.env[report.custom_handler_model_name]
         options = report._get_options(None)
-        headers = report._consolidated_balance_report_get_column_headers(options)
+        headers = custom_handler._get_column_headers(options)
         self.assertEqual(len(headers), len(self.journals) + 2, 'Report should have a header by journal + a total column and a first blank column')
         real_headers = headers[1:-1]
-        self.assertEqual(real_headers[0]['name'], report._consolidated_balance_report_get_journal_col(self.journals['be'][0], options)['name'], 'First column should be the column of "BE company" journal')
-        self.assertEqual(real_headers[1]['name'], report._consolidated_balance_report_get_journal_col(self.journals['us'][0], options)['name'], 'First column should be the column of "US company" journal')
+        self.assertEqual(real_headers[0]['name'], custom_handler._get_journal_col(self.journals['be'][0], options)['name'], 'First column should be the column of "BE company" journal')
+        self.assertEqual(real_headers[1]['name'], custom_handler._get_journal_col(self.journals['us'][0], options)['name'], 'First column should be the column of "US company" journal')
 
         lines = report._get_lines(options)
         # first line is the orphan
@@ -135,17 +137,19 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         self.assertListEqual(expected_levels, levels, 'Levels are not all corrects')
 
     def test_hierarchy_one_journal_selected(self):
+        self.default_company.totals_below_sections = False
         report = self.env.ref('account_consolidation.consolidated_balance_report')
         report = report.with_context(default_period_id=self.periods[0].id)
+        custom_handler = self.env[report.custom_handler_model_name]
         options = report._get_options(None)
         options['consolidation_journals'][0]['selected'] = True
-        headers = report._consolidated_balance_report_get_column_headers(options)
+        headers = custom_handler._get_column_headers(options)
         self.assertEqual(len(headers), len(self.journals) + 1, 'Report should have a header by selected journal + a total column and a first blank column')
         real_headers = headers[1:-1]
-        self.assertEqual(real_headers[0]['name'], report._consolidated_balance_report_get_journal_col(self.journals['be'][0], options)['name'], '"%s" journal should be in headers' % self.journals['be'][0].name)
+        self.assertEqual(real_headers[0]['name'], custom_handler._get_journal_col(self.journals['be'][0], options)['name'], '"%s" journal should be in headers' % self.journals['be'][0].name)
 
         for real_header in real_headers:
-            self.assertNotEqual(real_header['name'], report._consolidated_balance_report_get_journal_col(self.journals['us'][0], options)['name'], '"US Company" journal should be in headers')
+            self.assertNotEqual(real_header['name'], custom_handler._get_journal_col(self.journals['us'][0], options)['name'], '"US Company" journal should be in headers')
 
         lines = report._get_lines(options)
         self.assertEqual(int(report._parse_line_id(lines[0]['id'])[0][0]), self.consolidation_accounts['alone in the dark'].id)

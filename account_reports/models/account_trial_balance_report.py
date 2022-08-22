@@ -6,20 +6,14 @@ from odoo.tools import float_compare
 from odoo.tools.misc import DEFAULT_SERVER_DATE_FORMAT
 
 
-class TrialBalanceReport(models.Model):
-    _inherit = "account.report"
+class TrialBalanceCustomHandler(models.AbstractModel):
+    _name = 'account.trial.balance.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Trial Balance Custom Handler'
 
-    def _caret_options_initializer_trial_balance(self):
-        return {
-            'trial_balance': [
-                {'name': _("General Ledger"), 'action': 'caret_option_open_general_ledger'},
-                {'name': _("Journal Items"), 'action': 'open_journal_items'},
-            ],
-        }
-
-    def _dynamic_lines_generator_trial_balance(self, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         def _update_column(line, column_key, new_value, blank_if_zero=True):
-            line['columns'][column_key]['name'] = self.format_value(new_value, figure_type='monetary', blank_if_zero=blank_if_zero)
+            line['columns'][column_key]['name'] = self.env['account.report'].format_value(new_value, figure_type='monetary', blank_if_zero=blank_if_zero)
             line['columns'][column_key]['no_format'] = new_value
 
         def _update_balance_columns(line, debit_column_key, credit_column_key, total_diff_values_key):
@@ -40,7 +34,7 @@ class TrialBalanceReport(models.Model):
                 _update_column(line, debit_column_key, new_debit_value)
                 _update_column(line, credit_column_key, new_credit_value)
 
-        lines = [line[1] for line in self._dynamic_lines_generator_general_ledger(options, all_column_groups_expression_totals)]
+        lines = [line[1] for line in self.env['account.general.ledger.report.handler']._dynamic_lines_generator(report, options, all_column_groups_expression_totals)]
 
         total_diff_values = {
             'initial_balance': 0.0,
@@ -49,7 +43,7 @@ class TrialBalanceReport(models.Model):
 
         for line in lines[:-1]:
             # Initial balance
-            res_model = self._get_model_info_from_id(line['id'])[0]
+            res_model = report._get_model_info_from_id(line['id'])[0]
             if res_model == 'account.account':
                 _update_balance_columns(line, 0, 1, 'initial_balance')
 
@@ -64,7 +58,7 @@ class TrialBalanceReport(models.Model):
                 'class': 'o_account_searchable_line o_account_coa_column_contrast',
             })
 
-            res_model = self._get_model_info_from_id(line['id'])[0]
+            res_model = report._get_model_info_from_id(line['id'])[0]
             if res_model == 'account.account':
                 line['caret_options'] = 'trial_balance'
 
@@ -78,9 +72,18 @@ class TrialBalanceReport(models.Model):
 
         return [(0, line) for line in lines]
 
-    def _custom_options_initializer_trial_balance(self, options, previous_options=None):
+    def _caret_options_initializer(self):
+        return {
+            'trial_balance': [
+                {'name': _("General Ledger"), 'action': 'caret_option_open_general_ledger'},
+                {'name': _("Journal Items"), 'action': 'open_journal_items'},
+            ],
+        }
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
         """ Modifies the provided options to add a column group for initial balance and end balance, as well as the appropriate columns.
         """
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
         default_group_vals = {'horizontal_groupby_element': {}, 'forced_options': {}}
 
         # Columns between initial and end balance must not include initial balance; we use a special option key for that in general ledger
@@ -106,15 +109,15 @@ class TrialBalanceReport(models.Model):
             options['column_headers'][0][:] = reversed(options['column_headers'][0])
 
         # Initial balance
-        initial_balance_options = self._general_ledger_get_options_initial_balance(options)
+        initial_balance_options = self.env['account.general.ledger.report.handler']._get_options_initial_balance(options)
         initial_forced_options = {'date': initial_balance_options['date'], 'include_current_year_in_unaff_earnings': True}
         initial_header_element = [{'name': _("Initial Balance"), 'forced_options': initial_forced_options}]
         col_headers_initial = [
             initial_header_element,
             *options['column_headers'][1:],
         ]
-        initial_column_group_vals = self._generate_columns_group_vals_recursively(col_headers_initial, default_group_vals)
-        initial_columns, initial_column_groups = self._build_columns_from_column_group_vals(initial_forced_options, initial_column_group_vals)
+        initial_column_group_vals = report._generate_columns_group_vals_recursively(col_headers_initial, default_group_vals)
+        initial_columns, initial_column_groups = report._build_columns_from_column_group_vals(initial_forced_options, initial_column_group_vals)
 
         # End balance
         end_date_to = options['date']['date_to']
@@ -131,8 +134,8 @@ class TrialBalanceReport(models.Model):
             end_header_element,
             *options['column_headers'][1:],
         ]
-        end_column_group_vals = self._generate_columns_group_vals_recursively(col_headers_end, default_group_vals)
-        end_columns, end_column_groups = self._build_columns_from_column_group_vals(end_forced_options, end_column_group_vals)
+        end_column_group_vals = report._generate_columns_group_vals_recursively(col_headers_end, default_group_vals)
+        end_columns, end_column_groups = report._build_columns_from_column_group_vals(end_forced_options, end_column_group_vals)
 
         # Update options
         options['column_headers'][0] = initial_header_element + options['column_headers'][0] + end_header_element
@@ -141,11 +144,11 @@ class TrialBalanceReport(models.Model):
         options['columns'] = initial_columns + options['columns'] + end_columns
         options['ignore_totals_below_sections'] = True # So that GL does not compute them
 
-    def _custom_line_postprocessor_trial_balance(self, lines, options):
+    def _custom_line_postprocessor(self, report, options, lines):
         # If the hierarchy is enabled, ensure to add the o_account_coa_column_contrast class to the hierarchy lines
         if options.get('hierarchy'):
             for line in lines:
-                model, dummy = self._get_model_info_from_id(line['id'])
+                model, dummy = report._get_model_info_from_id(line['id'])
                 if model == 'account.group':
                     line_classes = line.get('class', '')
                     line['class'] = line_classes + ' o_account_coa_column_contrast'

@@ -290,7 +290,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         </eCDFDeclarations>
         """ % options['filename']
         # Remove the <?xml version='1.0' encoding='UTF-8'?> from the string since the assert doesn't work with it
-        xml = report.with_context(skip_xsd=True).l10n_lu_export_tax_report_to_xml(options)['file_content'][38:]
+        xml = self.env[report.custom_handler_model_name].with_context(skip_xsd=True).export_tax_report_to_xml(options)['file_content'][38:]
         self.assertXmlTreeEqual(
             self.get_xml_tree_from_string(xml),
             self.get_xml_tree_from_string(expected_xml)

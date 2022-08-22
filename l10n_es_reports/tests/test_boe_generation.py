@@ -59,10 +59,10 @@ class TestBOEGeneration(TestAccountReportsCommon):
         cls.env.company.vat = "ESA12345674"
 
     def _check_boe_export(self, report, options, modelo_number):
-        wizard_action = report.l10n_es_export_boe(options, modelo_number)
+        wizard_action = self.env[report.custom_handler_model_name].open_boe_wizard(options, modelo_number)
         self.assertEqual(f'l10n_es_reports.aeat.boe.mod{modelo_number}.export.wizard', wizard_action['res_model'], "Wrong BOE export wizard returned")
         options['l10n_es_reports_boe_wizard_id'] = wizard_action['res_id']
-        self.assertTrue(getattr(report, f'l10n_es_boe_export_mod{modelo_number}')(options), "Empty BOE")
+        self.assertTrue(self.env[report.custom_handler_model_name].export_boe(options), "Empty BOE")
 
     def _check_boe_111_to_303(self, modelo_number):
         self.init_invoice('out_invoice', partner=self.spanish_partner, amounts=[10000], invoice_date=fields.Date.today(), taxes=self.spanish_test_tax, post=True)

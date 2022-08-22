@@ -4,15 +4,22 @@
 from odoo import models
 
 
-class ReportCertificationReportFuente(models.Model):
-    _inherit = 'account.report'
+class FuenteReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_co.fuente.report.handler'
+    _inherit = 'l10n_co.report.handler'
+    _description = 'Fuente Report Custom Handler'
 
-    def _l10n_co_reports_fuente_get_query_results(self, options, domain, account=False):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        domain = self._get_domain(report, options)
+        query_results = self._get_query_results(report, options, domain)
+        return super()._get_partner_values(report, options, query_results, 'expand_function')
+
+    def _get_query_results(self, report, options, domain, account=False):
         queries = []
         params = []
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
 
-            tables, where_clause, where_params = self._query_get(column_group_options, 'strict_range', domain=domain)
+            tables, where_clause, where_params = report._query_get(column_group_options, 'strict_range', domain=domain)
             queries.append(f"""
                 SELECT
                     %s AS column_group_key,
@@ -40,17 +47,13 @@ class ReportCertificationReportFuente(models.Model):
         self._cr.execute(' UNION ALL '.join(queries), params)
         return self._cr.dictfetchall()
 
-    def _l10n_co_reports_fuente_get_domain(self, options, line_dict_id=None):
-        domain = super()._l10n_co_reports_get_domain(options, line_dict_id=line_dict_id)
+    def _get_domain(self, report, options, line_dict_id=None):
+        domain = super()._get_domain(report, options, line_dict_id=line_dict_id)
         domain += [('account_id.code', '=like', '2365%'), ('account_id.code', '!=', '236505')]
         return domain
 
-    def _l10n_co_reports_fuente_get_dynamic_lines(self, options, all_column_groups_expression_totals):
-        domain = self._l10n_co_reports_fuente_get_domain(options)
-        query_results = self._l10n_co_reports_fuente_get_query_results(options, domain)
-        return super()._l10n_co_reports_get_partner_values(options, query_results, 'l10n_co_reports_fuente_expand_function')
-
-    def l10n_co_reports_fuente_expand_function(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
-        domain = self._l10n_co_reports_fuente_get_domain(options, line_dict_id=line_dict_id)
-        query_results = self._l10n_co_reports_fuente_get_query_results(options, domain, account=True)
-        return super()._l10n_co_reports_get_grouped_values(options, query_results, group_by='account_id')
+    def expand_function(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+        report = self.env['account.report'].browse(options['report_id'])
+        domain = self._get_domain(report, options, line_dict_id=line_dict_id)
+        query_results = self._get_query_results(report, options, domain, account=True)
+        return super()._get_grouped_values(report, options, query_results, group_by='account_id')

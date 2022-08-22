@@ -6,7 +6,7 @@
             <field name="name">DIOT</field>
             <field name="filter_show_draft" eval="False"/>
             <field name="filter_period_comparison" eval="False"/>
-            <field name="custom_options_initializer">_custom_options_initializer_l10n_mx_diot_report</field>
+            <field name="custom_handler_model_id" ref="model_l10n_mx_report_handler"/>
             <field name="load_more_limit" eval="80"/>
 
             <field name="filter_unfold_all" eval="False"/>
@@ -86,91 +86,91 @@
                         <record id="diot_report_line_counter" model="account.report.expression">
                             <field name="label">counter</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">counter</field>
                         </record>
                         <record id="diot_report_line_third_party_code" model="account.report.expression">
                             <field name="label">third_party_code</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">third_party_code</field>
                         </record>
                         <record id="diot_report_line_operation_type_code" model="account.report.expression">
                             <field name="label">operation_type_code</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">operation_type_code</field>
                         </record>
                         <record id="diot_report_line_partner_vat_number" model="account.report.expression">
                             <field name="label">partner_vat_number</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">partner_vat_number</field>
                         </record>
                         <record id="diot_report_line_country_code" model="account.report.expression">
                             <field name="label">country_code</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">country_code</field>
                         </record>
                         <record id="diot_report_line_partner_nationality" model="account.report.expression">
                             <field name="label">partner_nationality</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">partner_nationality</field>
                         </record>
                         <record id="diot_report_line_paid_16" model="account.report.expression">
                             <field name="label">paid_16</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">paid_16</field>
                         </record>
                         <record id="diot_report_line_paid_16_non_cred" model="account.report.expression">
                             <field name="label">paid_16_non_cred</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">paid_16_non_cred</field>
                         </record>
                         <record id="diot_report_line_paid_8" model="account.report.expression">
                             <field name="label">paid_8</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">paid_8</field>
                         </record>
                         <record id="diot_report_line_paid_8_non_cred" model="account.report.expression">
                             <field name="label">paid_8_non_cred</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">paid_8_non_cred</field>
                         </record>
                         <record id="diot_report_line_importation_16" model="account.report.expression">
                             <field name="label">importation_16</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">importation_16</field>
                         </record>
                         <record id="diot_report_line_paid_0" model="account.report.expression">
                             <field name="label">paid_0</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">paid_0</field>
                         </record>
                         <record id="diot_report_line_exempt" model="account.report.expression">
                             <field name="label">exempt</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">exempt</field>
                         </record>
                         <record id="diot_report_line_withheld" model="account.report.expression">
                             <field name="label">withheld</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">withheld</field>
                         </record>
                         <record id="diot_report_line_refunds" model="account.report.expression">
                             <field name="label">refunds</field>
                             <field name="engine">custom</field>
-                            <field name="formula">_custom_engine_l10n_mx_diot_report</field>
+                            <field name="formula">_custom_engine_diot_report</field>
                             <field name="subformula">refunds</field>
                         </record>
                     </field>

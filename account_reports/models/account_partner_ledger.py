@@ -10,33 +10,12 @@ from datetime import timedelta
 from collections import defaultdict
 
 
-class ReportPartnerLedger(models.Model):
-    _inherit = "account.report"
+class PartnerLedgerCustomHandler(models.AbstractModel):
+    _name = 'account.partner.ledger.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Partner Ledger Custom Handler'
 
-
-    def partner_ledger_action_open_partner(self, options, params):
-        dummy, record_id = self._get_model_info_from_id(params['id'])
-
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'res.partner',
-            'res_id': record_id,
-            'views': [[False, 'form']],
-            'view_mode': 'form',
-            'target': 'current',
-        }
-
-    def _custom_options_initializer_partner_ledger(self, options, previous_options=None):
-        domain = []
-
-        company_ids = [company_opt['id'] for company_opt in options.get('multi_company', self.env.company)]
-        exch_code = self.env['res.company'].browse(company_ids).mapped('currency_exchange_journal_id')
-        if exch_code:
-            domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id', 'in', exch_code.ids)]
-
-        options['forced_domain'] = options.get('forced_domain', []) + domain
-
-    def _dynamic_lines_generator_partner_ledger(self, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         if self.env.context.get('print_mode') and options.get('filter_search_bar'):
             # Handled here instead of in custom options initializer as init_options functions aren't re-called when printing the report.
             options.setdefault('forced_domain', []).append(('partner_id', 'ilike', options['filter_search_bar']))
@@ -50,7 +29,7 @@ class ReportPartnerLedger(models.Model):
             }
             for column_group_key in options['column_groups']
         }
-        for partner, results in self._partner_ledger_query_partners(options):
+        for partner, results in self._query_partners(options):
             partner_values = defaultdict(dict)
             for column_group_key in options['column_groups']:
                 partner_sum = results.get(column_group_key, {})
@@ -63,14 +42,52 @@ class ReportPartnerLedger(models.Model):
                 totals_by_column_group[column_group_key]['credit'] += partner_values[column_group_key]['credit']
                 totals_by_column_group[column_group_key]['balance'] += partner_values[column_group_key]['balance']
 
-            lines.append((0, self._partner_ledger_get_report_line_partner(options, partner, partner_values)))
+            lines.append((0, self._get_report_line_partners(options, partner, partner_values)))
 
         # Report total line.
-        lines.append((0, self._partner_ledger_get_report_line_total(options, totals_by_column_group)))
+        lines.append((0, self._get_report_line_total(options, totals_by_column_group)))
 
         return lines
 
-    def _partner_ledger_query_partners(self, options):
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        domain = []
+
+        company_ids = [company_opt['id'] for company_opt in options.get('multi_company', self.env.company)]
+        exch_code = self.env['res.company'].browse(company_ids).mapped('currency_exchange_journal_id')
+        if exch_code:
+            domain += ['!', '&', '&', '&', ('credit', '=', 0.0), ('debit', '=', 0.0), ('amount_currency', '!=', 0.0), ('journal_id', 'in', exch_code.ids)]
+
+        options['forced_domain'] = options.get('forced_domain', []) + domain
+
+    def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
+        partner_ids_to_expand = []
+        for line_dict in lines_to_expand_by_function.get('_expand_unfoldable_line_partner_ledger', []):
+            model, model_id = self.env['account.report']._get_model_info_from_id(line_dict['id'])
+            if model == 'res.partner':
+                partner_ids_to_expand.append(model_id)
+
+        return {
+            'initial_balances': self._get_initial_balance_values(partner_ids_to_expand, options) if partner_ids_to_expand else {},
+
+            # load_more_limit cannot be passed to this call, otherwise it won't be applied per partner but on the whole result.
+            # We gain perf from batching, but load every result, even if the limit restricts them later.
+            'aml_values': self._get_aml_values(options, partner_ids_to_expand) if partner_ids_to_expand else {},
+        }
+
+    def action_open_partner(self, options, params):
+        dummy, record_id = self.env['account.report']._get_model_info_from_id(params['id'])
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'res.partner',
+            'res_id': record_id,
+            'views': [[False, 'form']],
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
+    def _query_partners(self, options):
         """ Executes the queries and performs all the computation.
         :return:        A list of tuple (partner, column_group_values) sorted by the table's model _order:
                         - partner is a res.parter record.
@@ -91,7 +108,7 @@ class ReportPartnerLedger(models.Model):
         company_currency = self.env.company.currency_id
 
         # Execute the queries and dispatch the results.
-        query, params = self._partner_ledger_get_query_sums(options)
+        query, params = self._get_query_sums(options)
 
         groupby_partners = {}
 
@@ -100,7 +117,7 @@ class ReportPartnerLedger(models.Model):
             assign_sum(res)
 
         # Correct the sums per partner, for the lines without partner reconciled with a line having a partner
-        query, params = self._partner_ledger_get_sums_without_partner(options)
+        query, params = self._get_sums_without_partner(options)
 
         self._cr.execute(query, params)
         totals = {}
@@ -140,7 +157,7 @@ class ReportPartnerLedger(models.Model):
 
         return [(partner, groupby_partners[partner.id if partner else None]) for partner in partners]
 
-    def _partner_ledger_get_query_sums(self, options):
+    def _get_query_sums(self, options):
         """ Construct a query retrieving all the aggregated sums to build the report. It includes:
         - sums for all partners.
         - sums for the initial balances.
@@ -149,11 +166,12 @@ class ReportPartnerLedger(models.Model):
         """
         params = []
         queries = []
+        report = self.env.ref('account_reports.partner_ledger_report')
 
         # Create the currency table.
         ct_query = self.env['res.currency']._get_query_currency_table(options)
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            tables, where_clause, where_params = self._query_get(column_group_options, 'normal')
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = report._query_get(column_group_options, 'normal')
             params.append(column_group_key)
             params += where_params
             queries.append(f"""
@@ -171,15 +189,16 @@ class ReportPartnerLedger(models.Model):
 
         return ' UNION ALL '.join(queries), params
 
-    def _partner_ledger_get_initial_balance_values(self, partner_ids, options):
+    def _get_initial_balance_values(self, partner_ids, options):
         queries = []
         params = []
+        report = self.env.ref('account_reports.partner_ledger_report')
         ct_query = self.env['res.currency']._get_query_currency_table(options)
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             # Get sums for the initial balance.
             # period: [('date' <= options['date_from'] - 1)]
-            new_options = self._partner_ledger_get_options_initial_balance(column_group_options)
-            tables, where_clause, where_params = self._query_get(new_options, 'normal', domain=[('partner_id', 'in', partner_ids)])
+            new_options = self._get_options_initial_balance(column_group_options)
+            tables, where_clause, where_params = report._query_get(new_options, 'normal', domain=[('partner_id', 'in', partner_ids)])
             params.append(column_group_key)
             params += where_params
             queries.append(f"""
@@ -206,7 +225,7 @@ class ReportPartnerLedger(models.Model):
 
         return init_balance_by_col_group
 
-    def _partner_ledger_get_options_initial_balance(self, options):
+    def _get_options_initial_balance(self, options):
         """ Create options used to compute the initial balances for each partner.
         The resulting dates domain will be:
         [('date' <= options['date_from'] - 1)]
@@ -217,14 +236,15 @@ class ReportPartnerLedger(models.Model):
         new_date_options = dict(options['date'], date_from=False, date_to=fields.Date.to_string(new_date_to))
         return dict(options, date=new_date_options)
 
-    def _partner_ledger_get_sums_without_partner(self, options):
+    def _get_sums_without_partner(self, options):
         """ Get the sum of lines without partner reconciled with a line with a partner, grouped by partner. Those lines
         should be considered as belonging to the partner for the reconciled amount as it may clear some of the partner
         invoice/bill and they have to be accounted in the partner balance."""
         queries = []
         params = []
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            dummy, where_clause, where_params = self._query_get(column_group_options, 'normal')
+        report = self.env.ref('account_reports.partner_ledger_report')
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            dummy, where_clause, where_params = report._query_get(column_group_options, 'normal')
             params += [
                 column_group_key,
                 column_group_options['date']['date_to'],
@@ -258,7 +278,8 @@ class ReportPartnerLedger(models.Model):
                 if column['expression_label'] == 'balance'
             }
 
-        markup, model, record_id = self._parse_line_id(line_dict_id)[-1]
+        report = self.env.ref('account_reports.partner_ledger_report')
+        markup, model, record_id = report._parse_line_id(line_dict_id)[-1]
 
         if markup != 'no_partner' and model != 'res.partner':
             raise UserError(_("Wrong ID for partner ledger line to expand: %s", line_dict_id))
@@ -270,31 +291,31 @@ class ReportPartnerLedger(models.Model):
             if unfold_all_batch_data:
                 init_balance_by_col_group = unfold_all_batch_data['initial_balances'][record_id]
             else:
-                init_balance_by_col_group = self._partner_ledger_get_initial_balance_values([record_id], options)[record_id]
-            initial_balance_line = self._get_partner_and_general_ledger_initial_balance_line(options, line_dict_id, init_balance_by_col_group)
+                init_balance_by_col_group = self._get_initial_balance_values([record_id], options)[record_id]
+            initial_balance_line = report._get_partner_and_general_ledger_initial_balance_line(options, line_dict_id, init_balance_by_col_group)
             if initial_balance_line:
                 lines.append(initial_balance_line)
 
                 # For the first expansion of the line, the initial balance line gives the progress
                 progress = init_load_more_progress(initial_balance_line)
 
-        limit_to_load = self.load_more_limit + 1 if self.load_more_limit and not self._context.get('print_mode') else None
+        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not self._context.get('print_mode') else None
 
         if unfold_all_batch_data:
             aml_results = unfold_all_batch_data['aml_values'][record_id]
         else:
-            aml_results = self._partner_ledger_get_aml_values(options, [record_id], offset=offset, limit=limit_to_load)[record_id]
+            aml_results = self._get_aml_values(options, [record_id], offset=offset, limit=limit_to_load)[record_id]
 
         has_more = False
         treated_results_count = 0
         next_progress = progress
         for result in aml_results:
-            if self.load_more_limit and treated_results_count == self.load_more_limit:
+            if report.load_more_limit and treated_results_count == report.load_more_limit:
                 # We loaded one more than the limit on purpose: this way we know we need a "load more" line
                 has_more = True
                 break
 
-            new_line = self._partner_ledger_get_report_line_move_line(options, result, line_dict_id, next_progress)
+            new_line = self._get_report_line_move_line(options, result, line_dict_id, next_progress)
             lines.append(new_line)
             next_progress = init_load_more_progress(new_line)
             treated_results_count += 1
@@ -306,7 +327,7 @@ class ReportPartnerLedger(models.Model):
             'progress': json.dumps(next_progress)
         }
 
-    def _partner_ledger_get_aml_values(self, options, partner_ids, offset=0, limit=None):
+    def _get_aml_values(self, options, partner_ids, offset=0, limit=None):
         rslt = {partner_id: [] for partner_id in partner_ids}
 
         partner_ids_wo_none = [x for x in partner_ids if x]
@@ -326,8 +347,9 @@ class ReportPartnerLedger(models.Model):
         ct_query = self.env['res.currency']._get_query_currency_table(options)
         queries = []
         all_params = []
-        for column_group_key, group_options in self._split_options_per_column_group(options).items():
-            tables, where_clause, where_params = self._query_get(group_options, 'strict_range')
+        report = self.env.ref('account_reports.partner_ledger_report')
+        for column_group_key, group_options in report._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = report._query_get(group_options, 'strict_range')
 
             all_params += [
                 column_group_key,
@@ -453,38 +475,24 @@ class ReportPartnerLedger(models.Model):
 
         return rslt
 
-    def _custom_unfold_all_batch_data_generator_partner_ledger(self, options, lines_to_expand_by_function):
-        partner_ids_to_expand = []
-        for line_dict in lines_to_expand_by_function.get('_expand_unfoldable_line_partner_ledger', []):
-            model, model_id = self._get_model_info_from_id(line_dict['id'])
-            if model == 'res.partner':
-                partner_ids_to_expand.append(model_id)
-
-        return {
-            'initial_balances': self._partner_ledger_get_initial_balance_values(partner_ids_to_expand, options) if partner_ids_to_expand else {},
-
-            # load_more_limit canno( be passed to this call, otherwise it won't be applied per partner but on the whole result.
-            # We gain perf from batching, but load every result, even if the limit restricts them later.
-            'aml_values': self._partner_ledger_get_aml_values(options, partner_ids_to_expand) if partner_ids_to_expand else {},
-        }
-
     ####################################################
     # COLUMNS/LINES
     ####################################################
-    def _partner_ledger_get_report_line_partner(self, options, partner, partner_values):
+    def _get_report_line_partners(self, options, partner, partner_values):
         company_currency = self.env.company.currency_id
         unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
 
         unfoldable = False
         column_values = []
+        report = self.env['account.report']
         for column in options['columns']:
             col_expr_label = column['expression_label']
             value = partner_values[column['column_group_key']].get(col_expr_label)
 
             if col_expr_label in {'debit', 'credit', 'balance'}:
-                formatted_value = self.format_value(value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
+                formatted_value = report.format_value(value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
             else:
-                formatted_value = self.format_value(value, figure_type=column['figure_type']) if value is not None else value
+                formatted_value = report.format_value(value, figure_type=column['figure_type']) if value is not None else value
 
             unfoldable = unfoldable or (col_expr_label in ('debit', 'credit') and not company_currency.is_zero(value))
 
@@ -494,7 +502,7 @@ class ReportPartnerLedger(models.Model):
                 'class': 'number'
             })
 
-        line_id = self._get_generic_line_id('res.partner', partner.id) if partner else self._get_generic_line_id(None, None, markup='no_partner')
+        line_id = report._get_generic_line_id('res.partner', partner.id) if partner else report._get_generic_line_id(None, None, markup='no_partner')
 
         return {
             'id': line_id,
@@ -507,17 +515,18 @@ class ReportPartnerLedger(models.Model):
             'expand_function': '_expand_unfoldable_line_partner_ledger',
         }
 
-    def _partner_ledger_get_report_line_move_line(self, options, aml_query_result, partner_line_id, init_bal_by_col_group):
+    def _get_report_line_move_line(self, options, aml_query_result, partner_line_id, init_bal_by_col_group):
         if aml_query_result['payment_id']:
             caret_type = 'account.payment'
         else:
             caret_type = 'account.move.line'
 
         columns = []
+        report = self.env['account.report']
         for column in options['columns']:
             col_expr_label = column['expression_label']
             if col_expr_label == 'ref':
-                col_value = self._format_aml_name(aml_query_result['name'], aml_query_result['ref'], aml_query_result['move_name'])
+                col_value = report._format_aml_name(aml_query_result['name'], aml_query_result['ref'], aml_query_result['move_name'])
             else:
                 col_value = aml_query_result[col_expr_label] if column['column_group_key'] == aml_query_result['column_group_key'] else None
 
@@ -531,16 +540,16 @@ class ReportPartnerLedger(models.Model):
                     col_class = 'date'
                 elif col_expr_label == 'amount_currency':
                     currency = self.env['res.currency'].browse(aml_query_result['currency_id'])
-                    formatted_value = self.format_value(col_value, currency=currency, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(col_value, currency=currency, figure_type=column['figure_type'])
                 elif col_expr_label == 'balance':
                     col_value += init_bal_by_col_group[column['column_group_key']]
-                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
+                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
                 else:
                     if col_expr_label == 'ref':
                         col_class = 'o_account_report_line_ellipsis'
                     elif col_expr_label not in ('debit', 'credit'):
                         col_class = ''
-                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'])
+                    formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
 
                 columns.append({
                     'name': formatted_value,
@@ -549,7 +558,7 @@ class ReportPartnerLedger(models.Model):
                 })
 
         return {
-            'id': self._get_generic_line_id('account.move.line', aml_query_result['id'], parent_line_id=partner_line_id),
+            'id': report._get_generic_line_id('account.move.line', aml_query_result['id'], parent_line_id=partner_line_id),
             'parent_id': partner_line_id,
             'name': format_date(self.env, aml_query_result['date']),
             'class': 'text-muted' if aml_query_result['key'] == 'indirectly_linked_aml' else 'text',  # do not format as date to prevent text centering
@@ -558,16 +567,17 @@ class ReportPartnerLedger(models.Model):
             'level': 2,
         }
 
-    def _partner_ledger_get_report_line_total(self, options, totals_by_column_group):
+    def _get_report_line_total(self, options, totals_by_column_group):
         column_values = []
+        report = self.env['account.report']
         for column in options['columns']:
             col_expr_label = column['expression_label']
             value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
 
             if col_expr_label in {'debit', 'credit', 'balance'}:
-                formatted_value = self.format_value(value, figure_type=column['figure_type'], blank_if_zero=False)
+                formatted_value = report.format_value(value, figure_type=column['figure_type'], blank_if_zero=False)
             else:
-                formatted_value = self.format_value(value, figure_type=column['figure_type']) if value else None
+                formatted_value = report.format_value(value, figure_type=column['figure_type']) if value else None
 
             column_values.append({
                 'name': formatted_value,
@@ -576,7 +586,7 @@ class ReportPartnerLedger(models.Model):
             })
 
         return {
-            'id': self._get_generic_line_id(None, None, markup='total'),
+            'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
             'class': 'total',
             'level': 1,

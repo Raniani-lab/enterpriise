@@ -780,8 +780,8 @@ var accountReportsWidget = AbstractAction.extend({
 
                 return self._rpc({
                         model: 'account.report',
-                        method: $(el).attr('action'),
-                        args: [self.report_options.report_id, self.report_options].concat(action_param ? action_param : []),
+                        method: 'dispatch_report_action',
+                        args: [self.report_options.report_id, self.report_options, $(el).attr('action')].concat(action_param ? action_param : []),
                         context: self.odoo_context,
                     })
                     .then(function(result){
@@ -1118,8 +1118,8 @@ var accountReportsWidget = AbstractAction.extend({
         if (action) {
             return this._rpc({
                     model: 'account.report',
-                    method: action,
-                    args: [this.report_options.report_id, this.report_options, params],
+                    method: 'dispatch_report_action',
+                    args: [this.report_options.report_id, this.report_options, action, params],
                     context: context.eval(),
                 })
                 .then(function(result){

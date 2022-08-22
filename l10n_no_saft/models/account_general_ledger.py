@@ -7,11 +7,11 @@ import re
 from odoo import api, models, tools, _
 
 
-class AccountGeneralLedger(models.AbstractModel):
-    _inherit = 'account.report'
+class GeneralLedgerCustomHandler(models.AbstractModel):
+    _inherit = 'account.general.ledger.report.handler'
 
-    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
-        super()._custom_options_initializer_general_ledger(options, previous_options)
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options)
         if self.env.company.account_fiscal_country_id.code == 'NO':
             options.setdefault('buttons', []).append({
                 'name': _('SAF-T'),
@@ -22,8 +22,8 @@ class AccountGeneralLedger(models.AbstractModel):
             })
 
     @api.model
-    def _l10n_no_prepare_saft_report_values(self, options):
-        template_vals = self._saft_prepare_report_values(options)
+    def _l10n_no_prepare_saft_report_values(self, report, options):
+        template_vals = report._saft_prepare_report_values(options)
 
         template_vals.update({
             'xmlns': 'urn:StandardAuditFile-Taxation-Financial:NO',
@@ -34,7 +34,8 @@ class AccountGeneralLedger(models.AbstractModel):
 
     @api.model
     def l10n_no_export_saft_to_xml(self, options):
-        template_vals = self._l10n_no_prepare_saft_report_values(options)
+        report = self.env['account.report'].browse(options['report_id'])
+        template_vals = self._l10n_no_prepare_saft_report_values(report, options)
         content = self.env['ir.qweb']._render('l10n_no_saft.saft_template_inherit_l10n_no_saft', template_vals)
 
         self.env['ir.attachment'].l10n_no_saft_validate_xml_from_attachment(content, 'xsd_no_saft.xsd')
@@ -44,7 +45,7 @@ class AccountGeneralLedger(models.AbstractModel):
             with io.BytesIO(base64.b64decode(xsd_attachment.with_context(bin_size=False).datas)) as xsd:
                 tools.xml_utils._check_with_xsd(content, xsd)
         return {
-            'file_name': self.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename('xml'),
             'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
             'file_type': 'xml',
         }

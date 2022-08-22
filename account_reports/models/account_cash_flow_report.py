@@ -3,45 +3,51 @@ from odoo import models, fields, api, _
 from odoo.tools.misc import get_lang
 
 
-class AccountCashFlowReport(models.Model):
-    _inherit = 'account.report'
+class CashFlowReportCustomHandler(models.AbstractModel):
+    _name = 'account.cash.flow.report.handler'
+    _inherit = 'account.report.custom.handler'
+    _description = 'Cash Flow Report Custom Handler'
 
-    def _dynamic_lines_generator_cash_flow_report(self, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         # Compute the cash flow report using the direct method: https://www.investopedia.com/terms/d/direct_method.asp
         lines = []
 
-        layout_data = self._cash_flow_report_get_layout_data()
-        report_data = self._cash_flow_report_get_report_data(options, layout_data)
+        layout_data = self._get_layout_data()
+        report_data = self._get_report_data(report, options, layout_data)
 
         for layout_line_id, layout_line_data in layout_data.items():
-            lines.append((0, self._cash_flow_report_get_layout_line(options, layout_line_id, layout_line_data, report_data)))
+            lines.append((0, self._get_layout_line(report, options, layout_line_id, layout_line_data, report_data)))
 
             if layout_line_id in report_data and 'aml_groupby_account' in report_data[layout_line_id]:
                 for aml_data in report_data[layout_line_id]['aml_groupby_account'].values():
-                    lines.append((0, self._cash_flow_report_get_aml_line(options, aml_data)))
+                    lines.append((0, self._get_aml_line(report, options, aml_data)))
 
-        unexplained_difference_line = self._cash_flow_report_get_unexplained_difference_line(options, report_data)
+        unexplained_difference_line = self._get_unexplained_difference_line(report, options, report_data)
 
         if unexplained_difference_line:
             lines.append((0, unexplained_difference_line))
 
         return lines
 
-    def _cash_flow_report_get_report_data(self, options, layout_data):
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        report._init_options_journals(options, previous_options=previous_options, additional_journals_domain=[('type', 'in', ('bank', 'cash'))])
+
+    def _get_report_data(self, report, options, layout_data):
         report_data = {}
 
         currency_table_query = self.env['res.currency']._get_query_currency_table(options)
 
-        payment_move_ids, payment_account_ids = self._cash_flow_report_get_liquidity_move_ids(options)
+        payment_move_ids, payment_account_ids = self._get_liquidity_move_ids(report, options)
 
         # Compute 'Cash and cash equivalents, beginning of period'
-        for aml_data in self._cash_flow_report_compute_liquidity_balance(options, currency_table_query, payment_account_ids, 'to_beginning_of_period'):
-            self._cash_flow_report_add_report_data('opening_balance', aml_data, layout_data, report_data)
-            self._cash_flow_report_add_report_data('closing_balance', aml_data, layout_data, report_data)
+        for aml_data in self._compute_liquidity_balance(report, options, currency_table_query, payment_account_ids, 'to_beginning_of_period'):
+            self._add_report_data('opening_balance', aml_data, layout_data, report_data)
+            self._add_report_data('closing_balance', aml_data, layout_data, report_data)
 
         # Compute 'Cash and cash equivalents, closing balance'
-        for aml_data in self._cash_flow_report_compute_liquidity_balance(options, currency_table_query, payment_account_ids, 'strict_range'):
-            self._cash_flow_report_add_report_data('closing_balance', aml_data, layout_data, report_data)
+        for aml_data in self._compute_liquidity_balance(report, options, currency_table_query, payment_account_ids, 'strict_range'):
+            self._add_report_data('closing_balance', aml_data, layout_data, report_data)
 
         tags_ids = {
             'operating': self.env.ref('account.account_tag_operating').id,
@@ -50,18 +56,18 @@ class AccountCashFlowReport(models.Model):
         }
 
         # Process liquidity moves
-        for aml_groupby_account in self._cash_flow_report_get_liquidity_moves(options, currency_table_query, payment_account_ids, payment_move_ids):
+        for aml_groupby_account in self._get_liquidity_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids):
             for aml_data in aml_groupby_account.values():
-                self._cash_flow_report_dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
+                self._dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
         # Process reconciled moves
-        for aml_groupby_account in self._cash_flow_report_get_reconciled_moves(options, currency_table_query, payment_account_ids, payment_move_ids):
+        for aml_groupby_account in self._get_reconciled_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids):
             for aml_data in aml_groupby_account.values():
-                self._cash_flow_report_dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
+                self._dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
         return report_data
 
-    def _cash_flow_report_add_report_data(self, layout_line_id, aml_data, layout_data, report_data):
+    def _add_report_data(self, layout_line_id, aml_data, layout_data, report_data):
         """
         Add or update the report_data dictionnary with aml_data.
 
@@ -114,35 +120,35 @@ class AccountCashFlowReport(models.Model):
 
         _report_update_parent(layout_line_id, aml_column_group_key, aml_balance, layout_data, report_data)
 
-    def _cash_flow_report_dispatch_aml_data(self, tags_ids, aml_data, layout_data, report_data):
+    def _dispatch_aml_data(self, tags_ids, aml_data, layout_data, report_data):
         # Dispatch the aml_data in the correct layout_line
         if aml_data['account_account_type'] == 'asset_receivable':
-            self._cash_flow_report_add_report_data('advance_payments_customer', aml_data, layout_data, report_data)
+            self._add_report_data('advance_payments_customer', aml_data, layout_data, report_data)
         elif aml_data['account_account_type'] == 'liability_payable':
-            self._cash_flow_report_add_report_data('advance_payments_suppliers', aml_data, layout_data, report_data)
+            self._add_report_data('advance_payments_suppliers', aml_data, layout_data, report_data)
         elif aml_data['balance'] < 0:
             if aml_data['account_tag_id'] == tags_ids['operating']:
-                self._cash_flow_report_add_report_data('paid_operating_activities', aml_data, layout_data, report_data)
+                self._add_report_data('paid_operating_activities', aml_data, layout_data, report_data)
             elif aml_data['account_tag_id'] == tags_ids['investing']:
-                self._cash_flow_report_add_report_data('investing_activities_cash_out', aml_data, layout_data, report_data)
+                self._add_report_data('investing_activities_cash_out', aml_data, layout_data, report_data)
             elif aml_data['account_tag_id'] == tags_ids['financing']:
-                self._cash_flow_report_add_report_data('financing_activities_cash_out', aml_data, layout_data, report_data)
+                self._add_report_data('financing_activities_cash_out', aml_data, layout_data, report_data)
             else:
-                self._cash_flow_report_add_report_data('unclassified_activities_cash_out', aml_data, layout_data, report_data)
+                self._add_report_data('unclassified_activities_cash_out', aml_data, layout_data, report_data)
         elif aml_data['balance'] > 0:
             if aml_data['account_tag_id'] == tags_ids['operating']:
-                self._cash_flow_report_add_report_data('received_operating_activities', aml_data, layout_data, report_data)
+                self._add_report_data('received_operating_activities', aml_data, layout_data, report_data)
             elif aml_data['account_tag_id'] == tags_ids['investing']:
-                self._cash_flow_report_add_report_data('investing_activities_cash_in', aml_data, layout_data, report_data)
+                self._add_report_data('investing_activities_cash_in', aml_data, layout_data, report_data)
             elif aml_data['account_tag_id'] == tags_ids['financing']:
-                self._cash_flow_report_add_report_data('financing_activities_cash_in', aml_data, layout_data, report_data)
+                self._add_report_data('financing_activities_cash_in', aml_data, layout_data, report_data)
             else:
-                self._cash_flow_report_add_report_data('unclassified_activities_cash_in', aml_data, layout_data, report_data)
+                self._add_report_data('unclassified_activities_cash_in', aml_data, layout_data, report_data)
 
     # -------------------------------------------------------------------------
     # QUERIES
     # -------------------------------------------------------------------------
-    def _cash_flow_report_get_liquidity_move_ids(self, options):
+    def _get_liquidity_move_ids(self, report, options):
         ''' Retrieve all liquidity moves to be part of the cash flow statement and also the accounts making them.
 
         :param options: The report options.
@@ -151,7 +157,7 @@ class AccountCashFlowReport(models.Model):
         '''
         # Fetch liquidity accounts:
         # Accounts being used by at least one bank/cash journal.
-        selected_journal_ids = [j['id'] for j in self._get_options_journals(options)]
+        selected_journal_ids = [j['id'] for j in report._get_options_journals(options)]
 
         where_clause = "account_journal.id IN %s" if selected_journal_ids else "account_journal.type IN ('bank', 'cash')"
         where_params = [tuple(selected_journal_ids)] if selected_journal_ids else []
@@ -179,8 +185,8 @@ class AccountCashFlowReport(models.Model):
         queries = []
         params = []
 
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            tables, where_clause, where_params = self._query_get(column_group_options, 'strict_range', [('account_id', 'in', list(payment_account_ids))])
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = report._query_get(column_group_options, 'strict_range', [('account_id', 'in', list(payment_account_ids))])
 
             queries.append(f'''
                 SELECT
@@ -203,7 +209,7 @@ class AccountCashFlowReport(models.Model):
 
         return payment_move_ids, tuple(payment_account_ids)
 
-    def _cash_flow_report_compute_liquidity_balance(self, options, currency_table_query, payment_account_ids, date_scope):
+    def _compute_liquidity_balance(self, report, options, currency_table_query, payment_account_ids, date_scope):
         ''' Compute the balance of all liquidity accounts to populate the following sections:
             'Cash and cash equivalents, beginning of period' and 'Cash and cash equivalents, closing balance'.
 
@@ -215,8 +221,8 @@ class AccountCashFlowReport(models.Model):
         queries = []
         params = []
 
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
-            tables, where_clause, where_params = self._query_get(column_group_options, date_scope, domain=[('account_id', 'in', payment_account_ids)])
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            tables, where_clause, where_params = report._query_get(column_group_options, date_scope, domain=[('account_id', 'in', payment_account_ids)])
 
             queries.append(f'''
                 SELECT
@@ -245,7 +251,7 @@ class AccountCashFlowReport(models.Model):
 
         return self._cr.dictfetchall()
 
-    def _cash_flow_report_get_liquidity_moves(self, options, currency_table_query, payment_account_ids, payment_move_ids):
+    def _get_liquidity_moves(self, report, options, currency_table_query, payment_account_ids, payment_move_ids):
         ''' Fetch all information needed to compute lines from liquidity moves.
         The difficulty is to represent only the not-reconciled part of balance.
 
@@ -263,7 +269,7 @@ class AccountCashFlowReport(models.Model):
         queries = []
         params = []
 
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             queries.append(f'''
                 -- Credit amount of each account
                 SELECT
@@ -380,7 +386,7 @@ class AccountCashFlowReport(models.Model):
 
         return list(reconciled_aml_groupby_account.values())
 
-    def _cash_flow_report_get_reconciled_moves(self, options, currency_table_query, payment_account_ids, payment_move_ids):
+    def _get_reconciled_moves(self, report, options, currency_table_query, payment_account_ids, payment_move_ids):
         ''' Retrieve all moves being not a liquidity move to be shown in the cash flow statement.
         Each amount must be valued at the percentage of what is actually paid.
         E.g. An invoice of 1000 being paid at 50% must be valued at 500.
@@ -400,7 +406,7 @@ class AccountCashFlowReport(models.Model):
         queries = []
         params = []
 
-        for column_group_key, column_group_options in self._split_options_per_column_group(options).items():
+        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             queries.append('''
                 SELECT
                     %s AS column_group_key,
@@ -588,15 +594,9 @@ class AccountCashFlowReport(models.Model):
         return list(reconciled_aml_per_account.values())
 
     # -------------------------------------------------------------------------
-    # OPTIONS
-    # -------------------------------------------------------------------------
-    def _custom_options_initializer_cash_flow_report(self, options, previous_options=None):
-        self._init_options_journals(options, previous_options=previous_options, additional_journals_domain=[('type', 'in', ('bank', 'cash'))])
-
-    # -------------------------------------------------------------------------
     # COLUMNS / LINES
     # -------------------------------------------------------------------------
-    def _cash_flow_report_get_layout_data(self):
+    def _get_layout_data(self):
         # Indentation of the following dict reflects the structure of the report.
         return {
             'opening_balance': {'name': _('Cash and cash equivalents, beginning of period'), 'level': 0},
@@ -618,8 +618,8 @@ class AccountCashFlowReport(models.Model):
             'closing_balance': {'name': _('Cash and cash equivalents, closing balance'), 'level': 0},
         }
 
-    def _cash_flow_report_get_layout_line(self, options, layout_line_id, layout_line_data, report_data):
-        line_id = self._get_generic_line_id(None, None, markup=layout_line_id)
+    def _get_layout_line(self, report, options, layout_line_id, layout_line_data, report_data):
+        line_id = report._get_generic_line_id(None, None, markup=layout_line_id)
         unfold_all = self._context.get('print_mode') or options.get('unfold_all')
         unfoldable = 'aml_groupby_account' in report_data[layout_line_id] if layout_line_id in report_data else False
 
@@ -632,7 +632,7 @@ class AccountCashFlowReport(models.Model):
             value = report_data[layout_line_id].get(expression_label, 0.0).get(column_group_key, 0.0) if layout_line_id in report_data else 0.0
 
             column_values.append({
-                'name': self.format_value(value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
+                'name': report.format_value(value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
                 'no_format': value,
                 'class': 'number',
             })
@@ -647,9 +647,9 @@ class AccountCashFlowReport(models.Model):
             'unfolded': line_id in options['unfolded_lines'] or unfold_all,
         }
 
-    def _cash_flow_report_get_aml_line(self, options, aml_data):
-        parent_line_id = self._get_generic_line_id(None, None, aml_data['parent_line_id'])
-        line_id = self._get_generic_line_id('account.account', aml_data['account_id'], parent_line_id=parent_line_id)
+    def _get_aml_line(self, report, options, aml_data):
+        parent_line_id = report._get_generic_line_id(None, None, aml_data['parent_line_id'])
+        line_id = report._get_generic_line_id('account.account', aml_data['account_id'], parent_line_id=parent_line_id)
 
         column_values = []
 
@@ -660,7 +660,7 @@ class AccountCashFlowReport(models.Model):
             value = aml_data[expression_label].get(column_group_key, 0.0)
 
             column_values.append({
-                'name': self.format_value(value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
+                'name': report.format_value(value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
                 'no_format': value,
                 'class': 'number',
             })
@@ -673,7 +673,7 @@ class AccountCashFlowReport(models.Model):
             'columns': column_values,
         }
 
-    def _cash_flow_report_get_unexplained_difference_line(self, options, report_data):
+    def _get_unexplained_difference_line(self, report, options, report_data):
         unexplained_difference = False
         column_values = []
 
@@ -691,14 +691,14 @@ class AccountCashFlowReport(models.Model):
                 unexplained_difference = True
 
             column_values.append({
-                'name': self.format_value(delta, blank_if_zero=False, figure_type='monetary'),
+                'name': report.format_value(delta, blank_if_zero=False, figure_type='monetary'),
                 'no_format': delta,
                 'class': 'number',
             })
 
         if unexplained_difference:
             return {
-                'id': self._get_generic_line_id(None, None, markup='unexplained_difference'),
+                'id': report._get_generic_line_id(None, None, markup='unexplained_difference'),
                 'name': 'Unexplained Difference',
                 'level': 0,
                 'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',

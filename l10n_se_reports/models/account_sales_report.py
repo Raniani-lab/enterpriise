@@ -9,44 +9,16 @@ from odoo.exceptions import UserError
 from odoo.tools import pycompat, date_utils
 
 
-class ECSalesReport(models.Model):
-    _inherit = "account.report"
+class SwedishECSalesReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_se.ec.sales.report.handler'
+    _inherit = 'account.ec.sales.report.handler'
+    _description = 'Swedish EC Sales Report Custom Handler'
 
-    def _custom_options_initializer_l10n_se_sales_report(self, options, previous_options=None):
-        """
-        Called in _sales_report_init_core_custom_options to add the invoice lines search domain that is specific to the
-        country.
-        Typically, the taxes account.report.expression ids relative to the country for the triangular, sale of goods
-        or services.
-        :param dict options: Report options
-        :param dict previous_options: Previous report options
-        :return dict[Any]: The modified options dictionary
-        """
-        self.ensure_one()
-        self._sales_report_init_core_custom_options(options, previous_options)
-        ec_operation_category = options.get('sales_report_taxes', {'goods': tuple(), 'triangular': tuple(), 'services': tuple()})
-
-        ec_operation_category['goods'] = tuple(self.env.ref('l10n_se.tax_report_line_35_tag')._get_matching_tags().ids)
-        ec_operation_category['triangular'] = tuple(self.env.ref('l10n_se.tax_report_line_38_tag')._get_matching_tags().ids)
-        ec_operation_category['services'] = tuple(self.env.ref('l10n_se.tax_report_line_39_tag')._get_matching_tags().ids)
-        options.update({'sales_report_taxes': ec_operation_category})
-
-        # Buttons
-        options.setdefault('buttons', []).append({
-            'name': _('KVR'),
-            'sequence': 60,
-            'action': 'export_file',
-            'action_param': 'l10n_se_export_sales_report_to_kvr',
-            'file_export_type': _('KVR'),
-            'active': self.country_id.code in ('SE', None),
-        })
-
-    def _dynamic_lines_generator_l10n_se_sales_report(self, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         """
         Generate the dynamic lines for the report in a horizontal style
         (one line partner, one column per operation type).
         """
-        self.ensure_one()
         lines = []
 
         totals_by_column_group = {
@@ -57,7 +29,7 @@ class ECSalesReport(models.Model):
             }
             for column_group_key in options['column_groups']
         }
-        for partner, results in self._sales_report_query_partners(options):
+        for partner, results in super()._query_partners(report, options):
             partner_values = defaultdict(dict)
             for column_group_key in options['column_groups']:
                 partner_sum = results.get(column_group_key, {})
@@ -70,13 +42,41 @@ class ECSalesReport(models.Model):
                 totals_by_column_group[column_group_key]['goods'] += partner_sum.get('goods', 0.0)
                 totals_by_column_group[column_group_key]['triangular'] += partner_sum.get('triangular', 0.0)
                 totals_by_column_group[column_group_key]['services'] += partner_sum.get('services', 0.0)
-            lines.append((0, self._sales_report_get_report_line_partner(options, partner, partner_values)))
+            lines.append((0, super()._get_report_line_partner(report, options, partner, partner_values)))
         # Report total line.
-        lines.append((0, self._sales_report_get_report_line_total(options, totals_by_column_group)))
+        lines.append((0, super()._get_report_line_total(report, options, totals_by_column_group)))
         return lines
 
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        """
+        Called in _sales_report_init_core_custom_options to add the invoice lines search domain that is specific to the
+        country.
+        Typically, the taxes account.report.expression ids relative to the country for the triangular, sale of goods
+        or services.
+        :param dict options: Report options
+        :param dict previous_options: Previous report options
+        :return dict[Any]: The modified options dictionary
+        """
+        super()._init_core_custom_options(report, options, previous_options)
+        ec_operation_category = options.get('sales_report_taxes', {'goods': tuple(), 'triangular': tuple(), 'services': tuple()})
+
+        ec_operation_category['goods'] = tuple(self.env.ref('l10n_se.tax_report_line_35_tag')._get_matching_tags().ids)
+        ec_operation_category['triangular'] = tuple(self.env.ref('l10n_se.tax_report_line_38_tag')._get_matching_tags().ids)
+        ec_operation_category['services'] = tuple(self.env.ref('l10n_se.tax_report_line_39_tag')._get_matching_tags().ids)
+        options.update({'sales_report_taxes': ec_operation_category})
+
+        # Buttons
+        options.setdefault('buttons', []).append({
+            'name': _('KVR'),
+            'sequence': 60,
+            'action': 'export_file',
+            'action_param': 'export_sales_report_to_kvr',
+            'file_export_type': _('KVR'),
+            'active': report.country_id.code in ('SE', None),
+        })
+
     @api.model
-    def _l10n_se_reports_get_se_period(self, options):
+    def _get_se_period(self, options):
         """
         Ensures that the period is in the correct format for the exporting format.
         """
@@ -87,7 +87,7 @@ class ECSalesReport(models.Model):
             return '%s-%s' % (date_to.strftime('%y'), date_utils.get_quarter_number(date_to))
         raise UserError(_('You can only export Monthly or Quarterly reports.'))
 
-    def l10n_se_export_sales_report_to_kvr(self, options):
+    def export_sales_report_to_kvr(self, options):
         """
         Collect the data for the KVR report.
         """
@@ -96,7 +96,7 @@ class ECSalesReport(models.Model):
             ['SKV574008'],
             [
                 self.env.company.vat,
-                self._l10n_se_reports_get_se_period(options),
+                self._get_se_period(options),
                 self.env.user.name,
                 self.env.user.phone or '',
                 self.env.user.email or '',
@@ -104,8 +104,9 @@ class ECSalesReport(models.Model):
             ],
         ]
         currency = self.env.company.currency_id
+        report = self.env['account.report'].browse(options['report_id'])
 
-        for data_line in self._get_lines(options)[:-1]:  # [:-1] to skip total line
+        for data_line in report._get_lines(options)[:-1]:  # [:-1] to skip total line
             columns = []
             for column in data_line['columns']:
                 if not (isinstance(column.get('no_format'), (int, float)) and currency.is_zero(column.get('no_format', 0))):
@@ -118,7 +119,7 @@ class ECSalesReport(models.Model):
             writer.writerows(lines)
             content = buf.getvalue()
         return {
-            'file_name': self.get_default_report_filename('KVR'),
+            'file_name': report.get_default_report_filename('KVR'),
             'file_content': content,
             'file_type': 'csv',  # KVR is just csv with extra steps
         }

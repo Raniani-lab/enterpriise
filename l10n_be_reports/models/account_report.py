@@ -10,16 +10,81 @@ from odoo import models, _
 from odoo.exceptions import RedirectWarning, UserError
 
 
-class AccountReport(models.Model):
-    _inherit = 'account.report'
+def _raw_phonenumber(phonenumber):
+    return re.sub("[^+0-9]", "", phonenumber)[:20]
 
-    def _custom_options_initializer_l10n_be_tax_report(self, options, previous_options=None):
-        self._custom_options_initializer_tax_report(options, previous_options=previous_options)
+
+def _get_xml_export_representative_node(report):
+    """ The <Representative> node is common to XML exports made for VAT Listing, VAT Intra,
+    and tax declaration. It is used in case the company isn't submitting its report directly,
+    but through an external accountant.
+
+    :return: The string containing the complete <Representative> node or an empty string,
+             in case no representative has been configured.
+    """
+    representative = report.env.company.account_representative_id
+    if representative:
+        vat_no, country_from_vat = report.env[report.custom_handler_model_name]._split_vat_number_and_country_code(representative.vat or "")
+        country = report.env['res.country'].search([('code', '=', country_from_vat)], limit=1)
+        phone = representative.phone or representative.mobile or ''
+        node_values = {
+            'vat': stdnum.get_cc_module('be', 'vat').compact(vat_no),   # Sanitize VAT number
+            'name': representative.name,
+            'street': "%s %s" % (representative.street or "", representative.street2 or ""),
+            'zip': representative.zip,
+            'city': representative.city,
+            'country_code': (country or representative.country_id).code,
+            'email': representative.email,
+            'phone': _raw_phonenumber(phone)
+        }
+
+        missing_fields = [k for k, v in node_values.items() if not v or v == ' ']
+        if missing_fields:
+            message = _('Some fields required for the export are missing. Please specify them.')
+            action = {
+                'name': _("Company : %s", representative.name),
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'res.partner',
+                'views': [[False, 'form']],
+                'target': 'new',
+                'res_id': representative.id,
+                'context': {'create': False},
+            }
+            button_text = _('Specify')
+            additional_context = {'required_fields': missing_fields}
+            raise RedirectWarning(message, action, button_text, additional_context)
+
+        return Markup("""<ns2:Representative>
+    <RepresentativeID identificationType="NVAT" issuedBy="%(country_code)s">%(vat)s</RepresentativeID>
+    <Name>%(name)s</Name>
+    <Street>%(street)s</Street>
+    <PostCode>%(zip)s</PostCode>
+    <City>%(city)s</City>
+    <CountryCode>%(country_code)s</CountryCode>
+    <EmailAddress>%(email)s</EmailAddress>
+    <Phone>%(phone)s</Phone>
+</ns2:Representative>""") % node_values
+
+    return Markup()
+
+class BelgianTaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_be.tax.report.handler'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'Belgian Tax Report Custom Handler'
+
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        # Add the control lines in the report, with a high sequence to ensure they appear at the end.
+        control_lines = self._dynamic_check_lines(options, all_column_groups_expression_totals)
+        return control_lines or []
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
 
         options.setdefault('buttons', []).append({
             'name': _('XML'),
             'sequence': 30,
-            'action': 'l10n_be_print_tax_report_to_xml',
+            'action': 'print_tax_report_to_xml',
             'file_export_type': _('XML'),
         })
 
@@ -28,7 +93,7 @@ class AccountReport(models.Model):
         # Localizations without tax report checks don't set it ; thanks to that we don't degrade their performances.
         options['tax_report_control_error'] = False
 
-    def l10n_be_print_tax_report_to_xml(self, options):
+    def print_tax_report_to_xml(self, options):
         # add options to context and return action to open transient model
         new_wizard = self.env['l10n_be_reports.periodic.vat.xml.export'].create({})
         view_id = self.env.ref('l10n_be_reports.view_account_financial_report_export').id
@@ -43,9 +108,10 @@ class AccountReport(models.Model):
             'context': dict(self._context, l10n_be_reports_generation_options=options),
         }
 
-    def l10n_be_export_tax_report_to_xml(self, options):
-        vat_no, country_from_vat = self._split_vat_number_and_country_code(self.get_vat_for_export(options))
-        sender_company = self._get_sender_company_for_export(options)
+    def export_tax_report_to_xml(self, options):
+        report = self.env['account.report'].browse(options['report_id'])
+        vat_no, country_from_vat = self._split_vat_number_and_country_code(report.get_vat_for_export(options))
+        sender_company = report._get_sender_company_for_export(options)
         default_address = sender_company.partner_id.address_get()
         address = self.env['res.partner'].browse(default_address.get("default")) or sender_company.partner_id
         if not address.email:
@@ -80,7 +146,7 @@ class AccountReport(models.Model):
             'city': address.city or "",
             'country_code': address.country_id and address.country_id.code or "",
             'email': address.email or "",
-            'phone': self._raw_phonenumber(address.phone),
+            'phone': _raw_phonenumber(address.phone),
             'send_ref': send_ref,
             'quarter': quarter,
             'month': starting_month,
@@ -88,8 +154,8 @@ class AccountReport(models.Model):
             'client_nihil': (data['client_nihil'] and 'YES' or 'NO'),
             'ask_restitution': (data['ask_restitution'] and 'YES' or 'NO'),
             'ask_payment': (data['ask_payment'] and 'YES' or 'NO'),
-            'comments': self._get_report_manager(options).summary or '',
-            'representative_node': self._get_belgian_xml_export_representative_node(),
+            'comments': report._get_report_manager(options).summary or '',
+            'representative_node': _get_xml_export_representative_node(report),
         }
 
         rslt = Markup(f"""<?xml version="1.0"?>
@@ -115,11 +181,11 @@ class AccountReport(models.Model):
         grids_list = []
         currency_id = self.env.company.currency_id
 
-        options = self._get_options({'no_format': True, 'date_from': date_from, 'date_to': date_to, 'filter_unfold_all': True})
-        lines = self._get_lines(options)
+        options = report._get_options({'no_format': True, 'date_from': date_from, 'date_to': date_to, 'filter_unfold_all': True})
+        lines = report._get_lines(options)
 
         # Create a mapping between report line ids and actual grid names
-        non_compound_rep_lines = self.line_ids.expression_ids.filtered(
+        non_compound_rep_lines = report.line_ids.expression_ids.filtered(
                 lambda x: x.formula not in {'48s44', '48s46L', '48s46T', '46L', '46T'})
         lines_grids_map = {
             expr.report_line_id.id: expr.formula.split('.')[0].replace('c', '') for expr in non_compound_rep_lines
@@ -131,7 +197,7 @@ class AccountReport(models.Model):
         colname_to_idx = {col['name']: idx for idx, col in enumerate(options.get('columns', []))}
         # Iterate on the report lines, using this mapping
         for line in lines:
-            model, line_id = self._parse_line_id(line['id'])[-1][1:]
+            model, line_id = report._parse_line_id(line['id'])[-1][1:]
             if (
                     model == 'account.report.line'
                     and line_id in lines_grids_map
@@ -155,7 +221,7 @@ class AccountReport(models.Model):
         grids_list = sorted(grids_list, key=lambda a: a[0])
         for code, amount, carryover_bounds, tax_line in grids_list:
             if carryover_bounds:
-                amount, dummy = self.get_amounts_after_carryover(tax_line, amount,
+                amount, dummy = report.get_amounts_after_carryover(tax_line, amount,
                                                                  carryover_bounds, options, 0)
                 # Do not add grids that became 0 after carry over
                 if amount == 0:
@@ -177,7 +243,7 @@ class AccountReport(models.Model):
         """) % file_data
 
         return {
-            'file_name': self.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename('xml'),
             'file_content': rslt.encode(),
             'file_type': 'xml',
         }
@@ -199,64 +265,7 @@ class AccountReport(models.Model):
 
         return vat_number, country_code
 
-    def _get_belgian_xml_export_representative_node(self):
-        """ The <Representative> node is common to XML exports made for VAT Listing, VAT Intra,
-        and tax declaration. It is used in case the company isn't submitting its report directly,
-        but through an external accountant.
-
-        :return: The string containing the complete <Representative> node or an empty string,
-                 in case no representative has been configured.
-        """
-        representative = self.env.company.account_representative_id
-        if representative:
-            vat_no, country_from_vat = self._split_vat_number_and_country_code(representative.vat or "")
-            country = self.env['res.country'].search([('code', '=', country_from_vat)], limit=1)
-            phone = representative.phone or representative.mobile or ''
-            node_values = {
-                'vat': stdnum.get_cc_module('be', 'vat').compact(vat_no),   # Sanitize VAT number
-                'name': representative.name,
-                'street': "%s %s" % (representative.street or "", representative.street2 or ""),
-                'zip': representative.zip,
-                'city': representative.city,
-                'country_code': (country or representative.country_id).code,
-                'email': representative.email,
-                'phone': self._raw_phonenumber(phone)
-            }
-
-            missing_fields = [k for k, v in node_values.items() if not v or v == ' ']
-            if missing_fields:
-                message = _('Some fields required for the export are missing. Please specify them.')
-                action = {
-                    'name': _("Company : %s", representative.name),
-                    'type': 'ir.actions.act_window',
-                    'view_mode': 'form',
-                    'res_model': 'res.partner',
-                    'views': [[False, 'form']],
-                    'target': 'new',
-                    'res_id': representative.id,
-                    'context': {'create': False},
-                }
-                button_text = _('Specify')
-                additional_context = {'required_fields': missing_fields}
-                raise RedirectWarning(message, action, button_text, additional_context)
-
-            return Markup("""<ns2:Representative>
-        <RepresentativeID identificationType="NVAT" issuedBy="%(country_code)s">%(vat)s</RepresentativeID>
-        <Name>%(name)s</Name>
-        <Street>%(street)s</Street>
-        <PostCode>%(zip)s</PostCode>
-        <City>%(city)s</City>
-        <CountryCode>%(country_code)s</CountryCode>
-        <EmailAddress>%(email)s</EmailAddress>
-        <Phone>%(phone)s</Phone>
-    </ns2:Representative>""") % node_values
-
-        return Markup()
-
-    def _raw_phonenumber(self, phonenumber):
-        return re.sub("[^+0-9]", "", phonenumber)[:20]
-
-    def _tax_report_be_dynamic_check_lines(self, options, all_column_groups_expression_totals):
+    def _dynamic_check_lines(self, options, all_column_groups_expression_totals):
         def _evaluate_check(check_func):
             columns = []
             all_check_passed = False
@@ -276,10 +285,10 @@ class AccountReport(models.Model):
 
             return columns
 
-        self.ensure_one()
+        report = self.env['account.report'].browse(options['report_id'])
         expr_map = {
             line.code: line.expression_ids.filtered(lambda x: x.label == 'balance')
-            for line in self.line_ids
+            for line in report.line_ids
             if line.code
         }
 
@@ -336,7 +345,7 @@ class AccountReport(models.Model):
 
             if columns:
                 failed_control_lines.append((1000 + index, {
-                    'id': self._get_generic_line_id(None, None, markup=f"l10n_be_report_check_{index}"),
+                    'id': report._get_generic_line_id(None, None, markup=f"l10n_be_report_check_{index}"),
                     'name': check_name,
                     'columns': columns,
                     'level': 1,
@@ -345,7 +354,7 @@ class AccountReport(models.Model):
 
         if failed_control_lines:
             failed_control_lines.insert(0, (999, {
-                'id': self._get_generic_line_id(None, None, markup="l10n_be_tax_report_check_header"),
+                'id': report._get_generic_line_id(None, None, markup="l10n_be_tax_report_check_header"),
                 'name': _("Controls failed"),
                 'columns': [{} for i in range(len(options['columns']))],
                 'level': 0,
@@ -356,8 +365,3 @@ class AccountReport(models.Model):
             options['tax_report_control_error'] = True
 
         return failed_control_lines
-
-    def _dynamic_lines_generator_l10n_be_tax_report(self, options, all_column_groups_expression_totals):
-        # Add the control lines in the report, with a high sequence to ensure they appear at the end.
-        control_lines = self._tax_report_be_dynamic_check_lines(options, all_column_groups_expression_totals)
-        return control_lines or []

@@ -36,6 +36,6 @@ class AccountFinancialReportXMLReportExport(models.TransientModel):
                 'data': {
                     'model': self.env.context.get('model'),
                     'options': json.dumps(options),
-                    'file_generator': 'l10n_be_export_tax_report_to_xml',
+                    'file_generator': 'export_tax_report_to_xml',
                 }
             }

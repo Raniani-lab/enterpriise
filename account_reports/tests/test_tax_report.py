@@ -315,7 +315,7 @@ class TestTaxReport(TestAccountReportsCommon):
                                      fiscal_position key
         """
         with patch.object(type(self.env['account.move']), '_get_vat_report_attachments', autospec=True, side_effect=lambda *args, **kwargs: []):
-            vat_closing_moves = report._generate_tax_closing_entries(options)
+            vat_closing_moves = self.env['account.generic.tax.report.handler']._generate_tax_closing_entries(report, options)
 
             if options.get('multi_company'):
                 closing_moves_by_fpos = {(move.company_id, move.fiscal_position_id): move for move in vat_closing_moves}

@@ -10,12 +10,11 @@ from odoo.exceptions import UserError
 from odoo.tools.misc import street_split
 
 
-class ReportAccountGeneralLedger(models.Model):
-    # inherit account_reports/account_general_ledger
-    _inherit = 'account.report'
+class GeneralLedgerCustomHandler(models.AbstractModel):
+    _inherit = 'account.general.ledger.report.handler'
 
-    def _custom_options_initializer_general_ledger(self, options, previous_options=None):
-        super()._custom_options_initializer_general_ledger(options, previous_options)
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options)
 
         if self.env.company.account_fiscal_country_id.code != 'NL':
             return
@@ -24,16 +23,16 @@ class ReportAccountGeneralLedger(models.Model):
             'name': _('XAF'),
             'sequence': 30,
             'action': 'export_file',
-            'action_param': '_l10n_nl_general_ledger_get_xaf',
+            'action_param': '_l10n_nl_get_xaf',
             'file_export_type': _('XAF'),
         }
         options['buttons'].append(xaf_export_button)
 
-    def _l10n_nl_general_ledger_compute_period_number(self, date_str):
+    def _l10n_nl_compute_period_number(self, date_str):
         date = fields.Date.from_string(date_str)
         return date.strftime('%y%m')[1:]
 
-    def _l10n_nl_general_ledger_get_xaf(self, options):
+    def _l10n_nl_get_xaf(self, options):
         def cust_sup_tp(customer, supplier):
             if supplier and customer:
                 return 'B'
@@ -69,8 +68,8 @@ class ReportAccountGeneralLedger(models.Model):
         def change_date_time(date):
             return date.strftime('%Y-%m-%dT%H:%M:%S')
 
-        def get_vals_dict():
-            tables, where_clause, where_params = self._query_get(options, 'strict_range')
+        def get_vals_dict(report):
+            tables, where_clause, where_params = report._query_get(options, 'strict_range')
 
             # Count the total number of lines to be used in the batching
             self.env.cr.execute(f"SELECT COUNT(*) FROM {tables} WHERE {where_clause}", where_params)
@@ -241,7 +240,7 @@ class ReportAccountGeneralLedger(models.Model):
                     'move_name': row['move_name'],
                     'move_date': row['move_date'],
                     'move_amount': round(row['move_amount'], 2),
-                    'move_period_number': self._l10n_nl_general_ledger_compute_period_number(row['move_date']),
+                    'move_period_number': self._l10n_nl_compute_period_number(row['move_date']),
                     'move_line_data': {},
                 })
                 vals_dict['journal_data'][row['journal_id']]['journal_move_data'][row['move_id']]['move_line_data'].setdefault(row['line_id'], {
@@ -266,6 +265,7 @@ class ReportAccountGeneralLedger(models.Model):
             return vals_dict
 
         company = self.env.company
+        report = self.env['account.report'].browse(options['report_id'])
         msgs = []
 
         if not company.vat:
@@ -289,15 +289,15 @@ class ReportAccountGeneralLedger(models.Model):
             period_to = period.replace(day=calendar.monthrange(period.year, period.month)[1])
             period_to = fields.Date.to_string(period_to.date())
             periods.append(Period(
-                number=self._l10n_nl_general_ledger_compute_period_number(period_from),
+                number=self._l10n_nl_compute_period_number(period_from),
                 name=period.strftime('%B') + ' ' + date_from[0:4],
                 date_from=period_from,
                 date_to=period_to
             ))
 
         # Retrieve opening balance values
-        new_options = self._general_ledger_get_options_initial_balance(options)
-        tables, where_clause, where_params = self._query_get(new_options, 'normal')
+        new_options = self._get_options_initial_balance(options)
+        tables, where_clause, where_params = report._query_get(new_options, 'normal')
         self._cr.execute(f"""
             SELECT acc.id AS account_id,
                    acc.code AS account_code,
@@ -326,7 +326,7 @@ class ReportAccountGeneralLedger(models.Model):
                 'balance': query_res['sum_debit'] - query_res['sum_credit'],
             })
 
-        vals_dict = get_vals_dict()
+        vals_dict = get_vals_dict(report)
 
         values = {
             'opening_lines_count': lines_count,
@@ -342,7 +342,7 @@ class ReportAccountGeneralLedger(models.Model):
             'fiscal_year': date_from[0:4],
             'date_from': date_from,
             'date_to': date_to,
-            'date_created': fields.Date.context_today(self),
+            'date_created': fields.Date.context_today(report),
             'software_version': release.version,
             'moves_count': vals_dict['moves_count'],
             'moves_debit': round(vals_dict['moves_debit'], 2) or 0.0,
@@ -352,7 +352,7 @@ class ReportAccountGeneralLedger(models.Model):
         self.env['ir.attachment'].l10n_nl_reports_validate_xml_from_attachment(audit_content, 'XmlAuditfileFinancieel3.2.xsd')
 
         return {
-            'file_name': self.get_default_report_filename('xaf'),
+            'file_name': report.get_default_report_filename('xaf'),
             'file_content': audit_content,
             'file_type': 'xml',
         }

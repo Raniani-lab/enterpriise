@@ -63,4 +63,4 @@ class GermanySalesReportTest(AccountSalesReportCommon):
                 ('Total',              '',                      '',                      '',   f'3,000.00{NON_BREAKING_SPACE}€'),
             ],
         )
-        self.assertTrue(report.l10n_de_datev_export_to_zip(options).get('file_content'), 'Error creating CSV')
+        self.assertTrue(self.env['account.general.ledger.report.handler'].l10n_de_datev_export_to_zip(options).get('file_content'), 'Error creating CSV')

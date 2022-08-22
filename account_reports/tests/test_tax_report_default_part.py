@@ -25,7 +25,7 @@ class TestTaxReportDefaultPart(TestAccountReportsCommon):
         # Check the caret options of the tax lines redirect to the correct amls
         for tax_line in tax_lines_with_caret_options:
             expected_amls = expected_amls_based_on_tax_dict.get(tax_line['name'])
-            action = report.generic_tax_report_caret_option_audit_tax(options, {'line_id': tax_line['id']})
+            action = self.env[report.custom_handler_model_name].caret_option_audit_tax(options, {'line_id': tax_line['id']})
             domain = action['domain']
             actual_amls = self.env['account.move.line'].search(domain)
             self.assertEqual(set(actual_amls), set(expected_amls))

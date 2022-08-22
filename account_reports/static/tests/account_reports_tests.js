@@ -50,7 +50,7 @@ odoo.define('account_reports/static/tests/account_reports_tests', function (requ
                         },
                         main_html: '<a action="go_to_details">Go to detail view</a>',
                     });
-                } else if (route === '/web/dataset/call_kw/account.report/go_to_details') {
+                } else if (route === '/web/dataset/call_kw/account.report/dispatch_report_action') {
                     return Promise.resolve({
                         type: "ir.actions.act_window",
                         res_id: 1,

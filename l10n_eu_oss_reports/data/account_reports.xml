@@ -4,8 +4,7 @@
     <record id="oss_sales_report" model="account.report">
         <field name="name">OSS Sales</field>
         <field name="root_report_id" ref="account.generic_tax_report"/>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_oss_report</field>
-        <field name="custom_options_initializer">_custom_options_initializer_oss_sales</field>
+        <field name="custom_handler_model_id" ref="model_l10n_eu_oss_sales_tax_report_handler"/>
         <field name="column_ids">
           <record id="oss_sales_report_net" model="account.report.column">
               <field name="name">NET</field>
@@ -21,8 +20,7 @@
     <record id="oss_imports_report" model="account.report">
         <field name="name">OSS Imports</field>
         <field name="root_report_id" ref="account.generic_tax_report"/>
-        <field name="dynamic_lines_generator">_dynamic_lines_generator_oss_report</field>
-        <field name="custom_options_initializer">_oss_imports_custom_options_initializer</field>
+        <field name="custom_handler_model_id" ref="model_l10n_eu_oss_imports_tax_report_handler"/>
         <field name="column_ids">
           <record id="oss_imports_report_net" model="account.report.column">
               <field name="name">NET</field>

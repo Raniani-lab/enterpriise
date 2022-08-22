@@ -34,13 +34,11 @@
                         <div class="d-flex flex-column h-100">
                             <!-- Article header -->
                             <div class="o_knowledge_header d-sm-flex flex-row justify-content-between border-bottom">
-                                <div class="d-flex align-items-center p-3" t-if="not article">
-                                    <h3>Error</h3>
-                                </div>
-                                <div class="d-flex align-items-center p-3" t-else="">
+                                <div class="d-flex align-items-center p-3">
                                     <!-- Title -->
-                                    <span t-out="article.name" />
-                                    <a href="#" class="o_favorites_toggle_button ps-1" t-att-data-article-id="article.id">
+                                    <span t-if="article" t-out="article.name"/>
+                                    <a t-if="article" href="#" class="o_favorites_toggle_button ps-1"
+                                       t-att-data-article-id="article.id">
                                         <i t-if="article.is_user_favorite" class="fa fa-star" />
                                         <i t-else="" class="fa fa-star-o" />
                                     </a>
@@ -58,9 +56,9 @@
                             </div>
                             <div class="p-3 text-center" t-if="not article">
                                 <p class="o_view_nocontent_empty_folder">
-                                    <h2>Not found</h2>
+                                    <h2>Article not found</h2>
                                     <br />
-                                    <p>The requested article does not exist or you do not have access to it.</p>
+                                    <p>The article you are trying the read has either been removed or you do not have access to it.</p>
                                 </p>
                             </div>
                             <div class="flex-grow-1 position-relative" t-else="">

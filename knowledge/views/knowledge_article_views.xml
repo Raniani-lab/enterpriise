@@ -74,7 +74,7 @@
                                         <div class="o-dropdown dropdown o-dropdown--no-caret">
                                             <a type="button" role="button" class="btn btn-light btn-share dropdown-toggle me-1"
                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hotkey="s"
-                                               attrs="{'invisible': [('id', '=', False)]}">
+                                               attrs="{'invisible': ['|', ('id', '=', False), ('active', '=', False)]}">
                                                 <i class="fa fa-share-alt"/> Share
                                             </a>
                                             <a type="button" role="button" class="btn btn-light btn-chatter me-1" data-hotkey="d"
@@ -99,19 +99,21 @@
                                                 <i class="fa fa-ellipsis-v"/>
                                             </a>
                                             <div class="o_knowledge_more_options_panel dropdown-menu" role="menu">
-                                                <a class="dropdown-item btn-duplicate" href="#" role="button">
+                                                <a class="dropdown-item btn-duplicate" href="#" role="button"
+                                                   attrs="{'invisible': [('active', '=', False)]}">
                                                     <i class="fa fa-fw fa-copy"/> Duplicate
                                                 </a>
                                                 <div attrs="{'invisible': [('user_has_write_access', '=', False)]}">
-                                                    <a class="dropdown-item btn-move" href="#" role="button">
+                                                    <a class="dropdown-item btn-move" href="#" role="button"
+                                                       attrs="{'invisible': [('active', '=', False)]}">
                                                         <i class="fa fa-fw fa-angle-double-right"/> Move To
                                                     </a>
                                                     <button class="dropdown-item btn-lock" href="#" type="object" name="action_set_lock"
-                                                        attrs="{'invisible': [('is_locked', '=', True)]}">
+                                                        attrs="{'invisible': ['|', ('is_locked', '=', True), ('active', '=', False)]}">
                                                         <i class="fa fa-fw fa-lock"/> Lock
                                                     </button>
                                                     <button class="dropdown-item btn-lock" href="#" type="object" name="action_set_unlock"
-                                                        attrs="{'invisible': [('is_locked', '=', False)]}">
+                                                        attrs="{'invisible': ['|', ('is_locked', '=', False), ('active', '=', False)]}">
                                                         <i class="fa fa-fw fa-unlock"/> Unlock
                                                     </button>
                                                     <button class="dropdown-item" type="object" name="action_article_archive"
@@ -122,8 +124,8 @@
                                                             attrs="{'invisible': [('active', '=', True)]}">
                                                         <i class="fa fa-fw fa-archive"/> Unarchive
                                                     </button>
-                                                    <div class="dropdown-divider"/>
-                                                    <div class="px-3">
+                                                    <div class="dropdown-divider" attrs="{'invisible': [('active', '=', False)]}"/>
+                                                    <div class="px-3" attrs="{'invisible': [('active', '=', False)]}">
                                                         <field name="full_width" widget="boolean_toggle" force_save="1"/>
                                                         <label for="full_width" class="m-0"/>
                                                     </div>

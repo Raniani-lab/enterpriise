@@ -417,9 +417,9 @@ class View(models.Model):
         kanban = E.kanban(default_group_by='x_studio_stage_id', default_order=order)
         kanban.extend(pre_fields)
         if 'x_studio_value' in model._fields:
-            progressbar = E.progressbar(field='x_studio_kanban_state', colors='{"normal": "muted", "done": "success", "blocked": "danger"}', sum_field='x_studio_value')
+            progressbar = E.progressbar(field='x_studio_kanban_state', colors='{"normal": "200", "done": "success", "blocked": "danger"}', sum_field='x_studio_value')
         else:
-            progressbar = E.progressbar(field='x_studio_kanban_state', colors='{"normal": "muted", "done": "success", "blocked": "danger"}')
+            progressbar = E.progressbar(field='x_studio_kanban_state', colors='{"normal": "200", "done": "success", "blocked": "danger"}')
         kanban.append(progressbar)
         kanban.append(templates)
         arch = etree.tostring(kanban, encoding='unicode', pretty_print=True)

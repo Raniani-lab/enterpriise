@@ -13,7 +13,9 @@
                           attrs="{'invisible': [('state', 'in', ('reconciled', 'to_check'))]}">
                         <field name="batch_payments_widget" invisible="1"/>
                         <field name="selected_batch_payment_ids" invisible="1"/>
-                        <div class="bank_rec_widget_form_batch_payments_list_anchor"/>
+                        <div class="bank_rec_widget_form_batch_payments_list_anchor">
+                            <widget name="bank_rec_form_list" resModel="account.batch.payment" dataField="batch_payments_widget"/>
+                        </div>
                     </page>
                 </page>
             </field>

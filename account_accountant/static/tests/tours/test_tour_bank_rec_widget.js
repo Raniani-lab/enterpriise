@@ -39,8 +39,8 @@ tour.register('account_accountant_bank_rec_widget',
         },
         {
             content: "The 'discuss_tab' should be active and the chatter loaded",
-            extra_trigger: "div.bank_rec_widget_form_discuss_anchor div.o_view_controller",
-            trigger: "a.active[name='discuss_tab']",
+            trigger: "div.bank_rec_widget_form_discuss_anchor div.o_ChatterContainer",
+            extra_trigger: "a.active[name='discuss_tab']",
             run: function() {},
         },
         // Check 'manual_operations_tab'.
@@ -55,7 +55,7 @@ tour.register('account_accountant_bank_rec_widget',
         },
         {
             content: "The 'form_name' field should be focus automatically",
-            trigger: "div.tab-pane.active input[name='form_name']:focus",
+            trigger: "div.tab-pane.active input[id='form_name']:focus",
             run: function() {},
         },
         {

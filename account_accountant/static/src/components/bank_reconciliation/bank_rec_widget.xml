@@ -1,83 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <!--
-    Custom control panel template for the kanban view.
-    -->
-    <t t-name="account_accountant.BankRecWidgetKanbanControlPanel"
-       t-inherit="web.Legacy.ControlPanel"
-       t-inherit-mode="primary"
-       owl="1">
-        <xpath expr="//GroupByMenu" position="replace"/>
-        <xpath expr="//ComparisonMenu" position="replace"/>
-    </t>
-
-    <t t-name="account_accountant.BankRecWidgetKanbanControlPanelMobile"
-       t-inherit="web_enterprise._ControlPanel"
-       t-inherit-mode="primary"
-       owl="1">
-        <xpath expr="//GroupByMenu" position="replace"/>
-        <xpath expr="//ComparisonMenu" position="replace"/>
-    </t>
-
-    <!--
-    Custom control panel template for the edit form embedded views.
-    -->
-    <t t-name="account_accountant.BankRecWidgetFormInnerTabControlPanel"
-       t-inherit="web.Legacy.ControlPanel"
-       t-inherit-mode="primary"
-       owl="1">
-        <xpath expr="//div[hasclass('o_cp_top_left')]" position="inside">
-            <xpath expr="//div[hasclass('o_cp_searchview')]" position="move"/>
+    <t t-name="account.BankReconKanbanController" t-inherit="web.KanbanView" t-inherit-mode="primary" owl="1">
+        <xpath expr="//Layout" position="attributes">
+            <attribute name="className">model.useSampleModel ? 'o_view_sample_data o_bank_rec_main_div' : 'o_bank_rec_main_div'</attribute>
         </xpath>
-        <xpath expr="//div[hasclass('o_cp_top_right')]" position="replace">
-            <div class="o_cp_bottom_right">
-                <FilterMenu class="o_filter_menu" fields="fields"/>
-                <div class="o_cp_pager" role="search" t-ref="pager">
-                    <Pager t-if="props.pager and props.pager.limit" t-props="props.pager"/>
-                </div>
+        <xpath expr="//t[@t-component='props.Renderer']" position="after">
+            <div class="o_bank_rec_right_div">
+                <t t-if="!!state.selectedStLineId">
+                    <View t-props="bankRecFormViewProps" t-key="state.selectedStLineId"/>
+                </t>
             </div>
         </xpath>
-        <xpath expr="//ol[hasclass('breadcrumb')]" position="replace"/>
-        <xpath expr="//div[hasclass('o_cp_bottom')]" position="replace"/>
+        <xpath expr="//t[@t-component='props.Renderer']" position="attributes">
+            <attribute name="selectedStLineId">state.selectedStLineId</attribute>
+        </xpath>
     </t>
 
-    <t t-name="account_accountant.BankRecWidgetFormInnerTabControlPanelMobile"
-       t-inherit="web_enterprise._ControlPanel"
-       t-inherit-mode="primary"
-       owl="1">
-        <xpath expr="//GroupByMenu" position="replace"/>
-        <xpath expr="//ComparisonMenu" position="replace"/>
-        <xpath expr="//FavoriteMenu" position="replace"/>
+    <t t-name="account.BankRecKanbanRenderer" t-inherit="web.KanbanRenderer" t-inherit-mode="primary" owl="1">
+        <xpath expr="//div[@t-ref='root']" position="attributes">
+            <attribute name="class" add="o_bank_rec_kanban_div" separator=" "/>
+        </xpath>
+        <xpath expr="//div/t/t[2]/KanbanRecord" position="attributes">
+            <attribute name="selectedStLineId">props.selectedStLineId</attribute>
+        </xpath>
     </t>
 
-    <t t-name="account_accountant.bank_rec_widget_global_info" owl="1">
-        <div t-if="data.balance_amount" class="text-nowrap d-flex">
+    <t t-name="account.BankRecKanbanRenderer.Buttons" t-inherit="web.KanbanView.Buttons" t-inherit-mode="primary" owl="1">
+        <xpath expr="//div" position="inside">
+            <BankRecWidgetGlobalInfo journal_id="default_journal_id"/>
+        </xpath>
+    </t>
+
+    <t t-name="account_accountant.BankRecWidgetGlobalInfo" owl="1">
+        <div t-if="data and data.balance_amount" class="text-nowrap d-flex">
             <span class="text-900"
                   style="font-size: 18px;">Balance: </span>
             <span class="btn btn-secondary p-0"
                   style="font-size: 18px;"
-                  t-on-click="_onClickBalance"
+                  t-on-click.stop="openReport"
                   t-esc="data.balance_amount"/>
         </div>
     </t>
 
-    <t t-name="account_accountant.bank_rec_widget_form_lines_widget_tags" owl="1">
-        <t t-set="i" t-value="0"/>
-        <t t-foreach="tag_names" t-as="tag_name" t-key="i">
-            <t t-set="i" t-value="i + 1"/>
-            <div class="badge rounded-pill o_tag_color_0">
-                <span>
-                    <span class="o_badge_text" t-att-title="tag_name">
-                        <span role="img"/>
-                        <span class="o_tag_badge_text" t-esc="tag_name"/>
-                    </span>
-                </span>
-            </div>
-        </t>
+    <t t-name="account_accountant.bank_rec_widget_form_reco_models_widget" owl="1">
+        <t t-set="data" t-value="getRenderValues()"/>
+        <div class="o_bank_rec_reco_models_widget_div">
+            <t t-if="data.display_widget"
+               t-foreach="data.available_reconcile_model_ids"
+               t-as="reco_model"
+               t-key="reco_model.id">
+                <t t-set="is_selected" t-value="reco_model.id === data.selected_reconcile_model_id"/>
+                <button t-on-click="() => this.selectRecoModel(reco_model.id, is_selected)"
+                        class="btn"
+                        t-att-class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase text-white': is_selected}"
+                        t-esc="reco_model.display_name"/>
+            </t>
+        </div>
     </t>
 
-    <div t-name="account_accountant.bank_rec_widget_form_lines_widget" owl="1">
+    <t t-name="account_accountant.bank_rec_widget_form_lines_widget" owl="1">
         <t t-set="data" t-value="getRenderValues()"/>
         <div class="o_list_renderer">
             <div class="table-responsive">
@@ -97,7 +79,7 @@
                         </t>
                     </thead>
                     <tbody>
-                        <t t-foreach="data.lines" t-as="line" t-key="line.index.value">
+                        <t t-foreach="data.lines" t-as="line" t-key="line_index">
 
                             <t t-set="add_liquidity_class"
                                t-value="line.flag == 'liquidity' and 'o_bank_rec_liquidity_line' or ''"/>
@@ -106,8 +88,7 @@
 
                             <tr class="o_data_row o_list_no_open"
                                 t-att-class="{'o_bank_rec_liquidity_line': line.flag.value == 'liquidity', 'o_bank_rec_auto_balance_line': line.flag.value == 'auto_balance', 'o_bank_rec_selected_line': line.index.value == data.form_index}"
-                                t-on-click="_onClickMountLine"
-                                t-att-index="line.index.value">
+                                t-on-click="(ev) => this.mountLine(ev, line.index.value)">
 
                                 <t t-foreach="data.columns" t-as="column" t-key="column[0]">
                                     <t t-if="column[0] === 'account'">
@@ -133,7 +114,7 @@
                                     <t t-if="column[0] === 'date'">
                                         <t t-if="['manual', 'auto_balance', 'tax_line'].includes(line.flag.value)">
                                             <td class="o_data_cell o_field_cell" field="date">
-                                                <span class="badge text-bg-secondary">New</span>
+                                                <span field="date" class="badge text-bg-secondary">New</span>
                                             </td>
                                         </t>
                                         <t t-else="">
@@ -146,31 +127,25 @@
                                         <t t-if="line.flag.value == 'liquidity'">
                                             <td class="o_data_cell o_field_cell o_list_char"
                                                 field="name"
-                                                t-on-click="_onClickExpandCollapseExtraNote">
+                                                t-on-click="() => state.extraNoteVisible = !state.extraNoteVisible">
                                                 <div class="o_bank_rec_widget_lines_widget_label">
-                                                    <t t-if="data.extra_notes">
-                                                        <t t-if="data.state == 'reconciled'">
-                                                            <span class="o_form_uri"
-                                                                  style="cursor: pointer"
-                                                                  t-att-move-id="line.source_aml_move_id.id"
-                                                                  t-esc="line.source_aml_move_name.value"
-                                                                  t-on-click="_onClickShowMove"/>
-                                                            <span class="mr4">:</span>
-                                                        </t>
-                                                        <span t-att-title="data.extra_notes" t-esc="line.name.value"/>
-                                                        <br/>
-                                                        <span class="text-muted extra-notes d-none" t-esc="data.extra_notes"/>
+                                                    <t t-if="data.state == 'reconciled'">
+                                                        <span class="o_form_uri"
+                                                                style="cursor: pointer"
+                                                                t-att-move-id="line.source_aml_move_id.id"
+                                                                t-esc="line.source_aml_move_name.value"
+                                                                t-on-click.stop="() => this.showMove(line.source_aml_move_id.id)"/>
+                                                        <span class="mr4">:</span>
                                                     </t>
-                                                    <t t-else="">
-                                                        <t t-if="data.state == 'reconciled'">
-                                                            <span class="o_form_uri"
-                                                                  style="cursor: pointer"
-                                                                  t-att-move-id="line.source_aml_move_id.id"
-                                                                  t-esc="line.source_aml_move_name.value"
-                                                                  t-on-click="_onClickShowMove"/>
-                                                            <span class="mr4">:</span>
-                                                        </t>
-                                                        <span t-att-title="line.name.value" t-esc="line.name.value"/>
+                                                    <span t-att-title="!!data.extra_notes and !state.extraNoteVisible ? data.extra_notes : line.name.value"
+                                                          t-esc="line.name.value"
+                                                          field="name"/>
+                                                    <t t-if="data.extra_notes and state.extraNoteVisible">
+                                                        <br/>
+                                                        <span t-att-class="'text-muted'"
+                                                              t-att-title="data.extra_notes"
+                                                              t-esc="data.extra_notes"
+                                                              field="extra_notes"/>
                                                     </t>
                                                 </div>
                                             </td>
@@ -178,15 +153,14 @@
                                         <t t-elif="['new_aml', 'aml'].includes(line.flag.value)">
                                             <td class="o_data_cell o_field_cell o_list_char"
                                                 field="name"
-                                                t-att-title="line.name.value"
-                                                t-on-click="_onClickExpandCollapseExtraNote">
+                                                t-att-title="line.name.value">
                                                 <div class="o_bank_rec_widget_lines_widget_label">
                                                     <t t-if="line.source_aml_move_id.id">
                                                         <span class="o_form_uri"
                                                               style="cursor: pointer"
                                                               t-att-move-id="line.source_aml_move_id.id"
                                                               t-esc="line.source_aml_move_name.value"
-                                                              t-on-click="_onClickShowMove"/>
+                                                              t-on-click="() => this.showMove(line.source_aml_move_id.id)"/>
                                                         <span class="mr4">:</span>
                                                     </t>
                                                     <span t-esc="line.name.value"/>
@@ -198,7 +172,7 @@
                                                 field="name"
                                                 t-att-title="line.name.value">
                                                 <div class="o_bank_rec_widget_lines_widget_label">
-                                                    <span t-esc="line.name.value"/>
+                                                    <span field="name" t-esc="line.name.value"/>
                                                 </div>
                                             </td>
                                         </t>
@@ -209,22 +183,15 @@
                                             t-att-title="line.analytic_account_id.display"
                                             t-esc="line.analytic_account_id.display"/>
                                     </t>
-                                    <t t-if="column[0] === 'analytic_tags'">
-                                        <td class="o_data_cell o_field_cell o_many2many_tags_cell"
-                                            field="analytic_tag_ids">
-                                            <t t-call="account_accountant.bank_rec_widget_form_lines_widget_tags">
-                                                <t t-set="tag_names" t-value="line.analytic_tag_ids.display"/>
-                                            </t>
-                                        </td>
-                                    </t>
                                     <t t-if="column[0] === 'amount_currency'">
                                         <t t-if="line.display_stroked_amount_currency.value">
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="amount_currency"
                                                 style="justify-content: right; display: flex; flex-direction: column;">
-                                                <span t-esc="line.amount_currency.display"/>
+                                                <span field="amount_currency" t-esc="line.amount_currency.display"/>
                                                 <span class="text-muted"
                                                       style="text-decoration: line-through;"
+                                                      field="amount_currency"
                                                       t-esc="line.source_amount_currency.display"/>
                                             </td>
                                         </t>
@@ -254,9 +221,10 @@
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="debit"
                                                 style="justify-content: right; display: flex; flex-direction: column;">
-                                                <span t-esc="line.debit.display"/>
+                                                <span field="debit" t-esc="line.debit.display"/>
                                                 <span class="text-muted"
                                                       style="text-decoration: line-through;"
+                                                      field="debit"
                                                       t-esc="line.source_debit.display"/>
                                             </td>
                                         </t>
@@ -272,9 +240,10 @@
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="credit"
                                                 style="justify-content: right; display: flex; flex-direction: column;">
-                                                <span t-esc="line.credit.display"/>
+                                                <span field="credit" t-esc="line.credit.display"/>
                                                 <span class="text-muted"
                                                       style="text-decoration: line-through;"
+                                                      field="credit"
                                                       t-esc="line.source_credit.display"/>
                                             </td>
                                         </t>
@@ -282,15 +251,15 @@
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="credit"
                                                 style="justify-content: right;"
-                                                t-esc="line.credit.is_zero ? '' : line.credit.display"/>
+                                                t-esc="line.credit.is_zero ? '' : line.credit.display"
+                                                t-on-click="(ev) => this.mountLine(ev, line.index.value, column[0])"/>
                                         </t>
                                     </t>
                                     <t t-if="column[0] === '__trash'">
                                         <td class="o_list_record_remove">
                                             <button t-if="['valid', 'invalid'].includes(data.state) &amp;&amp; !['liquidity', 'auto_balance', 'tax_line'].includes(line.flag.value)"
-                                                    t-on-click="_onClickRemoveLine"
-                                                    class="fa fa-trash-o"
-                                                    t-att-index="line.index.value"/>
+                                                    t-on-click.prevent.stop="(ev) => this.removeLine(line.index.value)"
+                                                    class="btn fa fa-trash-o"/>
                                         </td>
                                     </t>
                                 </t>
@@ -306,23 +275,40 @@
                 </table>
             </div>
         </div>
-    </div>
+    </t>
 
-    <t t-name="account_accountant.bank_rec_widget_form_reco_models_widget" owl="1">
-        <t t-set="data" t-value="getRenderValues()"/>
-        <div class="o_bank_rec_reco_models_widget_div">
-            <t t-if="data.display_widget"
-               t-foreach="data.available_reconcile_model_ids"
-               t-as="reco_model"
-               t-key="reco_model.id">
-                <t t-set="is_selected" t-value="reco_model.id === data.selected_reconcile_model_id"/>
-                <button t-on-click="_onClickRecoModel"
-                        class="btn"
-                        t-att-class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase text-white': is_selected}"
-                        t-esc="reco_model.display_name"
-                        t-att-selected="is_selected"
-                        t-att-key="reco_model.id"/>
-            </t>
+    <t t-name="account_accountant.bank_rec_widget_form_lines_widget_tags" owl="1">
+        <t t-foreach="tag_names" t-as="tag_name" t-key="tag_name_index">
+            <div class="badge rounded-pill o_tag_color_0">
+                <span>
+                    <span class="o_badge_text" t-att-title="tag_name">
+                        <span role="img"/>
+                        <span class="o_tag_badge_text" t-esc="tag_name"/>
+                    </span>
+                </span>
+            </div>
+        </t>
+    </t>
+
+    <t t-name="account_accountant.FormChatterContainer" owl="1">
+        <ChatterContainer threadModel="this.props.record.fields[this.props.m2oField].relation" threadId="this.props.record.data[this.props.m2oField][0]"/>
+    </t>
+
+    <t t-name="account_accountant.FormEmbeddedListView" owl="1">
+        <t t-if="props.record.id">
+            <View t-props="bankRecListViewProps" bankRecRecord="props.record"/>
+        </t>
+    </t>
+
+    <t t-name="account_accountant.BankRecWidgetFormInnerTabAmlsController" t-inherit="web.ListView" t-inherit-mode="primary" owl="1">
+        <xpath expr="//t[@t-component='props.Renderer']" position="attributes">
+            <attribute name="bankRecRecord">props.bankRecRecord</attribute>
+        </xpath>
+    </t>
+
+    <t t-name="account_accountant.BankRecWidgetHTML" owl="1">
+        <div t-on-click="handleButtonsClicks">
+            <t t-out="props.value"/>
         </div>
     </t>
 

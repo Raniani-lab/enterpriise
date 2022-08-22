@@ -17,7 +17,10 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'account_accountant_batch_payment/static/src/js/*.js',
+            'account_accountant_batch_payment/static/src/components/**/*.js',
+        ],
+        'web.assets_qweb': [
+            'account_accountant_batch_payment/static/src/components/**/*.xml',
         ],
         'web.assets_tests': [
             'account_accountant_batch_payment/static/tests/tours/*.js',

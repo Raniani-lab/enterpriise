@@ -120,21 +120,6 @@
             </field>
         </record>
 
-        <record id="view_move_form_bank_rec_widget" model="ir.ui.view">
-            <field name="name">account.move.form.bank_rec_widget</field>
-            <field name="model">account.move</field>
-            <field name="priority">999</field>
-            <field name="arch" type="xml">
-                <form>
-                    <div class="oe_chatter">
-                        <field name="message_follower_ids" groups="base.group_user"/>
-                        <field name="activity_ids"/>
-                        <field name="message_ids"/>
-                    </div>
-                </form>
-            </field>
-        </record>
-
         <!--
         Form view injected inside the form (view_bank_rec_widget) to perform the reconciliation for a single
         statement line.
@@ -213,10 +198,11 @@
                         <page name="amls_tab"
                               string="Match Existing Entries"
                               attrs="{'invisible': [('state', '=', 'reconciled')]}">
-
                             <field name="amls_widget" invisible="1"/>
                             <field name="selected_aml_ids" invisible="1"/>
-                            <div class="bank_rec_widget_form_amls_list_anchor"/>
+                            <div class="bank_rec_widget_form_amls_list_anchor">
+                                <widget name="bank_rec_form_list" resModel="account.move.line" dataField="amls_widget"/>
+                            </div>
                         </page>
                         <page name="manual_operations_tab"
                               string="Manual Operations"
@@ -314,12 +300,15 @@
                                            attrs="{'invisible': ['|', ('form_extra_text', '=', False), ('form_index', '=', False)]}"/>
                                     <field name="form_extra_text"
                                            nolabel="1"
-                                           attrs="{'invisible': ['|', ('form_extra_text', '=', False), ('form_index', '=', False)]}"/>
+                                           attrs="{'invisible': ['|', ('form_extra_text', '=', False), ('form_index', '=', False)]}"
+                                           widget="bank_rec_html"/>
                                 </group>
                             </group>
                         </page>
                         <page name="discuss_tab" string="Discuss">
-                            <div class="bank_rec_widget_form_discuss_anchor"/>
+                            <div class="bank_rec_widget_form_discuss_anchor">
+                                <widget name="bank_rec_form_chatter" m2oField="move_id"/>
+                            </div>
                         </page>
                     </notebook>
                 </form>

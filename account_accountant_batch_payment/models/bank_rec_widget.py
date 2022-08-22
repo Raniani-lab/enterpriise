@@ -10,7 +10,7 @@ from odoo.addons.web.controllers.utils import clean_action
 class BankRecWidget(models.Model):
     _inherit = 'bank.rec.widget'
 
-    batch_payments_widget = fields.Char(
+    batch_payments_widget = fields.Binary(
         compute='_compute_batch_payments_widget',
         readonly=False,
     )
@@ -69,7 +69,7 @@ class BankRecWidget(models.Model):
             journal = st_line.journal_id
             dynamic_filters.append({
                 'name': 'same_journal',
-                'string': journal.display_name,
+                'description': journal.display_name,
                 'domain': [('journal_id', '=', journal.id)],
             })
             context['search_default_same_journal'] = True
@@ -85,13 +85,13 @@ class BankRecWidget(models.Model):
             # Collect the available batch payments.
             available_amls_in_batch_payments = self._fetch_available_amls_in_batch_payments()
 
-            wizard.batch_payments_widget = json.dumps({
+            wizard.batch_payments_widget = {
                 'domain': [('id', 'in', list(available_amls_in_batch_payments.keys()))],
 
                 'dynamic_filters': dynamic_filters,
 
                 'context': context,
-            })
+            }
 
     @api.depends('company_id', 'line_ids.source_batch_payment_id')
     def _compute_selected_batch_payment_ids(self):
@@ -170,7 +170,7 @@ class BankRecWidget(models.Model):
                     'type': 'ir.actions.act_window',
                     'res_model': 'account.batch.payment.rejection',
                     'view_mode': 'form',
-                    'target': 'current',
+                    'target': 'new',
                     'context': {
                         'default_in_reconcile_payment_ids': [Command.set(payments_with_batch.ids)],
                         'default_next_action_todo': self.next_action_todo,

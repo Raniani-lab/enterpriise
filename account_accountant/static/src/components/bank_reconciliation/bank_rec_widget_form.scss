@@ -7,12 +7,12 @@
     margin-right: -16px;
     height: $o-statbutton-height;
     white-space: nowrap;
+    border-bottom: 1px solid $border-color;
 
     .o_bank_rec_stats_buttons_aside_left{
         flex-grow: 0;
         display: flex !important;
         flex-flow: row nowrap;
-        border-bottom: 1px solid $border-color;
 
         .btn {
             margin-right: $o-statbutton-spacing;
@@ -23,13 +23,17 @@
         width: 100%;
         overflow: auto;
         overflow-y: hidden;
+        display: flex !important;
 
-        .o_bank_rec_reco_models_widget_div{
-            display: flex;
-            flex-flow: row nowrap;
-            height: 100%;
-            border-left: 1px solid $border-color;
-            border-bottom: 1px solid $border-color;
+        .o_field_bank_rec_widget_form_reco_models_widget {
+            margin-bottom: 0;
+
+            .o_bank_rec_reco_models_widget_div{
+                display: flex;
+                flex-flow: row nowrap;
+                height: 100%;
+                border-left: 1px solid $border-color;
+            }
         }
     }
 

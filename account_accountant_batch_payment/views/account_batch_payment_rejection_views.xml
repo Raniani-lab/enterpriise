@@ -6,7 +6,7 @@
             <field name="name">account.batch.payment.rejection.form</field>
             <field name="model">account.batch.payment.rejection</field>
             <field name="arch" type="xml">
-                <form string="Batch Payment">
+                <form string="Batch Payment" js_class="bank_rec_batch_reject_wizard">
                     <!-- Invisible fields -->
                     <field name="in_reconcile_payment_ids" invisible="1"/>
                     <field name="rejected_payment_ids" invisible="1"/>

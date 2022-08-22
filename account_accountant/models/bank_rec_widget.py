@@ -482,7 +482,7 @@ class BankRecWidget(models.Model):
 
             dynamic_filters.append({
                 'name': 'receivable_matching',
-                'string': _("Receivable"),
+                'description': _("Receivable"),
                 'domain': [
                     '|',
                     '&',
@@ -498,7 +498,7 @@ class BankRecWidget(models.Model):
             })
             dynamic_filters.append({
                 'name': 'receivable_matching',
-                'string': _("Payable"),
+                'description': _("Payable"),
                 'domain': [
                     '|',
                     '&',
@@ -638,7 +638,8 @@ class BankRecWidget(models.Model):
             self._action_trigger_matching_rules()
         elif command_name == 'mount_line_in_edit':
             line_index = command_args[0]
-            self._action_mount_line_in_edit(line_index)
+            field_clicked = command_args[1:2] or None
+            self._action_mount_line_in_edit(line_index, field_clicked)
         elif command_name == 'clear_edit_form':
             self._action_clear_manual_operations_form()
         elif command_name == 'remove_line':
@@ -1291,7 +1292,7 @@ class BankRecWidget(models.Model):
             self.matching_rules_allow_auto_reconcile = True
         return matching
 
-    def _action_mount_line_in_edit(self, line_index):
+    def _action_mount_line_in_edit(self, line_index, field_clicked=None):
         self.ensure_one()
 
         line = self.line_ids.filtered(lambda x: x.index == line_index)
@@ -1310,6 +1311,8 @@ class BankRecWidget(models.Model):
         self.form_tax_ids = [Command.set(line.tax_ids.ids)]
         self.form_amount_currency = balance_sign * line.amount_currency
         self.form_balance = balance_sign * line.balance
+        if field_clicked:
+            self.next_action_todo = {'type': 'focus', 'field': field_clicked}
 
     def _action_remove_line(self, line_index):
         self.ensure_one()
@@ -1432,6 +1435,8 @@ class BankRecWidget(models.Model):
     def button_set_as_checked(self):
         self.ensure_one()
         self.st_line_id.move_id.to_check = False
+        if self.st_line_is_reconciled:
+            self.next_action_todo = {'type': 'move_to_next', 'st_line_id': self.st_line_id.id}
         self.invalidate_recordset(fnames=['to_check'])
 
     def button_reset(self):

@@ -2,7 +2,6 @@
 
 import { registerModel } from "@mail/model/model_core";
 import { attr, one } from "@mail/model/model_field";
-import { OnChange } from "@mail/model/model_onchange";
 
 import { sprintf } from "@web/core/utils/strings";
 import { Markup } from "web.utils";
@@ -107,9 +106,9 @@ registerModel({
         __sipJsRegisterer: attr(),
     },
     onChanges: [
-        new OnChange({
+        {
             dependencies: ["state"],
             methodName: "_onChangeState",
-        }),
+        },
     ],
 });

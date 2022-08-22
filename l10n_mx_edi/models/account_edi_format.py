@@ -237,7 +237,7 @@ class AccountEdiFormat(models.Model):
         def get_tax_cfdi_name(tax_detail_vals):
             tags = set()
             for detail in tax_detail_vals['group_tax_details']:
-                for tag in detail['tax_repartition_line_id'].tag_ids:
+                for tag in detail['tax_repartition_line'].tag_ids:
                     tags.add(tag)
             tags = list(tags)
             if len(tags) == 1:
@@ -250,16 +250,16 @@ class AccountEdiFormat(models.Model):
         def filter_void_tax_line(inv_line):
             return inv_line.discount != 100.0
 
-        def filter_tax_transferred(tax_values):
-            return tax_values['tax_id'].amount >= 0.0
+        def filter_tax_transferred(base_line, tax_values):
+            tax = tax_values['tax_repartition_line'].tax_id
+            return tax.amount >= 0.0
 
-        def filter_tax_withholding(tax_values):
-            return tax_values['tax_id'].amount < 0.0
+        def filter_tax_withholding(base_line, tax_values):
+            tax = tax_values['tax_repartition_line'].tax_id
+            return tax.amount < 0.0
 
-        compute_mode = 'tax_details' if invoice.company_id.tax_calculation_rounding_method == 'round_globally' else 'compute_all'
-
-        tax_details_transferred = invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred, compute_mode=compute_mode, filter_invl_to_apply=filter_void_tax_line)
-        for tax_detail_transferred in (list(tax_details_transferred['invoice_line_tax_details'].values())
+        tax_details_transferred = invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_transferred, filter_invl_to_apply=filter_void_tax_line)
+        for tax_detail_transferred in (list(tax_details_transferred['tax_details_per_record'].values())
                                        + [tax_details_transferred]):
             for tax_detail_vals in tax_detail_transferred['tax_details'].values():
                 tax = tax_detail_vals['tax']
@@ -270,8 +270,8 @@ class AccountEdiFormat(models.Model):
                 else:
                     tax_detail_vals['tax_rate_transferred'] = None
 
-        tax_details_withholding = invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_withholding, compute_mode=compute_mode, filter_invl_to_apply=filter_void_tax_line)
-        for tax_detail_withholding in (list(tax_details_withholding['invoice_line_tax_details'].values())
+        tax_details_withholding = invoice._prepare_edi_tax_details(filter_to_apply=filter_tax_withholding, filter_invl_to_apply=filter_void_tax_line)
+        for tax_detail_withholding in (list(tax_details_withholding['tax_details_per_record'].values())
                                        + [tax_details_withholding]):
             for tax_detail_vals in tax_detail_withholding['tax_details'].values():
                 tax = tax_detail_vals['tax']
@@ -322,8 +322,8 @@ class AccountEdiFormat(models.Model):
             # Update taxes.
 
             for tax_key in ('tax_details_transferred', 'tax_details_withholding'):
-                discount_line_tax_details = cfdi_values[tax_key]['invoice_line_tax_details'][discount_line]['tax_details']
-                other_line_tax_details = cfdi_values[tax_key]['invoice_line_tax_details'][other_line]['tax_details']
+                discount_line_tax_details = cfdi_values[tax_key]['tax_details_per_record'][discount_line]['tax_details']
+                other_line_tax_details = cfdi_values[tax_key]['tax_details_per_record'][other_line]['tax_details']
                 for k, tax_values in discount_line_tax_details.items():
                     if discount_line.currency_id.is_zero(tax_values['tax_amount_currency']):
                         continue
@@ -372,7 +372,7 @@ class AccountEdiFormat(models.Model):
 
             if line.currency_id.is_zero(line_vals['price_subtotal_before_discount'] - line_vals['price_discount']):
                 for tax_key in ('tax_details_transferred', 'tax_details_withholding'):
-                    cfdi_values[tax_key]['invoice_line_tax_details'].pop(line, None)
+                    cfdi_values[tax_key]['tax_details_per_record'].pop(line, None)
 
         # Recompute Totals since lines changed.
         cfdi_values.update({
@@ -424,10 +424,10 @@ class AccountEdiFormat(models.Model):
 
     def _l10n_mx_edi_get_payment_cfdi_values(self, move):
 
-        def get_tax_cfdi_name(tax_detail_vals):
+        def get_tax_cfdi_name(env, tax_detail_vals):
             tags = set()
             for detail in tax_detail_vals['group_tax_details']:
-                for tag in detail['tax_repartition_line_id'].tag_ids:
+                for tag in env['account.tax.repartition.line'].browse(detail['tax_repartition_line_id']).tag_ids:
                     tags.add(tag)
             tags = list(tags)
             if len(tags) == 1:
@@ -437,7 +437,7 @@ class AccountEdiFormat(models.Model):
             else:
                 return None
 
-        def divide_tax_details(invoice, tax_details, amount_paid):
+        def divide_tax_details(env, invoice, tax_details, amount_paid):
             percentage_paid = amount_paid / invoice.amount_total
             precision = invoice.currency_id.decimal_places
             sign = -1 if invoice.is_inbound() else 1
@@ -449,7 +449,7 @@ class AccountEdiFormat(models.Model):
                 detail.update({
                     'base_val_prop_amt_curr': base_val_proportion,
                     'tax_val_prop_amt_curr': tax_val_proportion if tax.l10n_mx_tax_type != 'Exento' else False,
-                    'tax_class': get_tax_cfdi_name(detail),
+                    'tax_class': get_tax_cfdi_name(env, detail),
                     'tax_amount': tax_amount,
                 })
             return tax_details
@@ -532,9 +532,9 @@ class AccountEdiFormat(models.Model):
 
             # for CFDI 4.0
             cfdi_values = self._l10n_mx_edi_get_invoice_cfdi_values(invoice)
-            tax_details_transferred = divide_tax_details(invoice, cfdi_values['tax_details_transferred'],
+            tax_details_transferred = divide_tax_details(self.env, invoice, cfdi_values['tax_details_transferred'],
                                                          invoice_vals['amount_currency'])
-            tax_details_withholding = divide_tax_details(invoice, cfdi_values['tax_details_withholding'],
+            tax_details_withholding = divide_tax_details(self.env, invoice, cfdi_values['tax_details_withholding'],
                                                          invoice_vals['amount_currency'])
 
             invoice_vals_list.append({

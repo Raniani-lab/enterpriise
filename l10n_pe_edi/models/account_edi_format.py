@@ -333,8 +333,8 @@ class AccountEdiFormat(models.Model):
             line_vals['price_total_unit'] = float_round(line.price_total / line.quantity, precision_digits=price_precision) if line.quantity else 0.0
 
         # Tax details.
-        def grouping_key_generator(tax_values):
-            tax = tax_values['tax_id']
+        def grouping_key_generator(base_line, tax_values):
+            tax = tax_values['tax_repartition_line'].tax_id
             return {
                 'l10n_pe_edi_code': tax.tax_group_id.l10n_pe_edi_code,
                 'l10n_pe_edi_international_code': tax.l10n_pe_edi_international_code,

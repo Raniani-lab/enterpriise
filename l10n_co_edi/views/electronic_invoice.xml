@@ -24,8 +24,8 @@
             </TIM>
         </template>
         <template id="tii_section">
-            <t t-foreach="tax_details['invoice_line_tax_details'][line]['tax_details']" t-as="group">
-                <t t-set="tax" t-value="tax_details['invoice_line_tax_details'][line]['tax_details'][group]" />
+            <t t-foreach="tax_details['tax_details_per_record'][line]['tax_details']" t-as="group">
+                <t t-set="tax" t-value="tax_details['tax_details_per_record'][line]['tax_details'][group]" />
                 <TII t-foreach="tax['group_tax_details']" t-as="group_tax_details">
                     <t t-set="IIM_2" t-value="abs(group_tax_details['tax_amount_currency'])"/>
                     <t t-set="IIM_4" t-value="abs(group_tax_details['tax_amount_currency'] * 100 / 15) if tax['l10n_co_edi_type'].code == '05' else abs(group_tax_details['base_amount_currency'])"/>

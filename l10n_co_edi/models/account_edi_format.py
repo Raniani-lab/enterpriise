@@ -219,8 +219,9 @@ class AccountEdiFormat(models.Model):
             'out_refund': 'NC',
         }
 
-        def group_tax_retention(tax_values):
-            return {'tax': tax_values['tax_id'], 'l10n_co_edi_type': tax_values['tax_id'].l10n_co_edi_type}
+        def group_tax_retention(base_line, tax_values):
+            tax = tax_values['tax_repartition_line'].tax_id
+            return {'tax': tax, 'l10n_co_edi_type': tax.l10n_co_edi_type}
 
         tax_details = invoice._prepare_edi_tax_details(grouping_key_generator=group_tax_retention)
         retention_taxes = [(group, detail) for group, detail in tax_details['tax_details'].items() if detail['l10n_co_edi_type'].retention]
@@ -244,7 +245,7 @@ class AccountEdiFormat(models.Model):
             regular_lines_listdict[line.tax_line_id.l10n_co_edi_type.code].append(line)
 
         zero_tax_details = defaultdict(float)
-        for line, tax_detail in tax_details['invoice_line_tax_details'].items():
+        for line, tax_detail in tax_details['tax_details_per_record'].items():
             for tax, detail in tax_detail.get('tax_details').items():
                 if not detail.get('tax_amount'):
                     for grouped_tax in detail.get('group_tax_details'):

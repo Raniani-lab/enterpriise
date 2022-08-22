@@ -35,7 +35,7 @@
                 <button id="dropdownAppointmentLink" class="btn btn-primary col-2 dropdown-toggle flex-grow-0" data-bs-toggle="dropdown">
                     <span class="fa fa-2x fa-angle-down"/>
                 </button>
-                <div id="dropdownMenuAppointmentLink" class="dropdown-menu dropdown-menu-end col" data-labelledby="dropdownAppointmentLink">
+                <div id="dropdownMenuAppointmentLink" class="dropdown-menu dropdown-menu-end col w-100" data-labelledby="dropdownAppointmentLink">
                     <button id="select_availabilities" class="btn btn-secondary dropdown-item text-uppercase font-weigth-bold ps-3 o_appointment_select_slots">
                         <span class="align-bottom">Select Dates</span>
                     </button>

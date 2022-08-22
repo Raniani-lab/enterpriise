@@ -261,7 +261,7 @@
     const DEFAULT_FONT = "'Roboto', arial";
     // Borders
     const DEFAULT_BORDER_DESC = ["thin", "#000"];
-    const LINK_COLOR = "#00f";
+    const LINK_COLOR = "#01666b";
     // DateTimeRegex
     const DATETIME_FORMAT = /[ymd:]/;
     // Ranges
@@ -579,12 +579,11 @@
         return val < min ? min : val > max ? max : val;
     }
     /** Get the default height of the cell. The height depends on the font size */
-    function getDefaultCellHeight(cell) {
-        var _a;
-        if (!((_a = cell === null || cell === void 0 ? void 0 : cell.style) === null || _a === void 0 ? void 0 : _a.fontSize)) {
+    function getDefaultCellHeight(style) {
+        if (!(style === null || style === void 0 ? void 0 : style.fontSize)) {
             return DEFAULT_CELL_HEIGHT;
         }
-        return fontSizeInPixels(cell.style) + 2 * PADDING_AUTORESIZE_VERTICAL;
+        return fontSizeInPixels(style) + 2 * PADDING_AUTORESIZE_VERTICAL;
     }
     function fontSizeInPixels(style) {
         const sizeInPt = style.fontSize || DEFAULT_FONT_SIZE;
@@ -912,10 +911,10 @@
         "#001f3f",
     ];
     /*
-     * transform a color number (R * 256^2 + G * 256 + B) into classic RGB
+     * transform a color number (R * 256^2 + G * 256 + B) into classic hex6 value
      * */
     function colorNumberString(color) {
-        return color.toString(16).padStart(6, "0");
+        return toHex(color.toString(16).padStart(6, "0"));
     }
     let colorIndex = 0;
     function getNextColor() {
@@ -3356,7 +3355,7 @@
     font-size: 13px;
     background-color: white;
     box-shadow: 0 1px 4px 3px rgba(60, 64, 67, 0.15);
-    padding: 12px;
+    padding: 6px 12px;
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
@@ -3368,15 +3367,16 @@
     }
 
     a.o-link {
-      color: #007bff;
+      color: #01666b;
+      text-decoration: none;
       flex-grow: 2;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     a.o-link:hover {
-      text-decoration: underline;
-      color: #0056b3;
+      text-decoration: none;
+      color: #001d1f;
       cursor: pointer;
     }
   }
@@ -3387,9 +3387,9 @@
       height: 16px;
     }
   }
-  .o-link-icon.o-unlink .o-icon {
-    padding-top: 1px;
-    height: 14px;
+  .o-link-icon .o-icon {
+    padding-top: 3px;
+    height: 13px;
   }
   .o-link-icon:hover {
     cursor: pointer;
@@ -4493,6 +4493,7 @@
                 dataSets,
                 labelRange,
                 type: "bar",
+                background: BACKGROUND_CHART_COLOR,
                 stackedBar: false,
                 dataSetsHaveTitle,
                 verticalAxisPosition: "left",
@@ -6888,7 +6889,6 @@
                 animation: {
                     duration: 0, // general animation time
                 },
-                devicePixelRatio: 1,
                 hover: {
                     animationDuration: 10, // duration of animations when hovering an item
                 },
@@ -8315,16 +8315,12 @@
         }
         setup() {
             this.state = owl.useState({
-                type: this.getChartDefinition().type,
                 panel: "configuration",
             });
             owl.onWillUpdateProps((nextProps) => {
                 if (!this.env.model.getters.isChartDefined(nextProps.figureId)) {
                     this.props.onCloseSidePanel();
                     return;
-                }
-                if (nextProps.figureId !== this.figureId) {
-                    this.state.type = this.getChartDefinition(nextProps.figureId).type;
                 }
             });
         }
@@ -8350,7 +8346,6 @@
                 id: this.figureId,
                 sheetId: this.env.model.getters.getActiveSheetId(),
             });
-            this.state.type = type;
         }
         get chartPanel() {
             const type = this.env.model.getters.getChartType(this.figureId);
@@ -8835,10 +8830,10 @@
                 const minColor = colorNumberString(rule.minimum.color);
                 const midColor = rule.midpoint ? colorNumberString(rule.midpoint.color) : null;
                 const maxColor = colorNumberString(rule.maximum.color);
-                const baseString = "background-image: linear-gradient(to right, #";
+                const baseString = "background-image: linear-gradient(to right, ";
                 return midColor
-                    ? baseString + minColor + ", #" + midColor + ", #" + maxColor + ")"
-                    : baseString + minColor + ", #" + maxColor + ")";
+                    ? baseString + minColor + ", " + midColor + ", " + maxColor + ")"
+                    : baseString + minColor + ", " + maxColor + ")";
             }
             return "";
         }
@@ -9070,10 +9065,10 @@
             const minColor = colorNumberString(rule.minimum.color);
             const midColor = colorNumberString(((_a = rule.midpoint) === null || _a === void 0 ? void 0 : _a.color) || DEFAULT_COLOR_SCALE_MIDPOINT_COLOR);
             const maxColor = colorNumberString(rule.maximum.color);
-            const baseString = "background-image: linear-gradient(to right, #";
+            const baseString = "background-image: linear-gradient(to right, ";
             return rule.midpoint === undefined
-                ? baseString + minColor + ", #" + maxColor + ")"
-                : baseString + minColor + ", #" + midColor + ", #" + maxColor + ")";
+                ? baseString + minColor + ", " + maxColor + ")"
+                : baseString + minColor + ", " + midColor + ", " + maxColor + ")";
         }
         getThresholdColor(threshold) {
             return threshold
@@ -17643,20 +17638,24 @@
     const MIN_FIG_SIZE = 80;
     css /*SCSS*/ `
   .o-figure-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
   }
 
   div.o-figure {
-    box-sizing: border-box;
+    box-sizing: content-box;
     position: absolute;
-    bottom: 3px;
-    right: 3px;
+    bottom: 0px;
+    right: 0px;
+    border: solid ${FIGURE_BORDER_COLOR};
     z-index: ${ComponentsImportance.Figure};
     &:focus {
       outline: none;
     }
     &.active {
-      border: ${ACTIVE_BORDER_WIDTH}px solid ${SELECTION_BORDER_COLOR};
+      border: solid ${SELECTION_BORDER_COLOR};
       z-index: ${ComponentsImportance.Figure + 1};
     }
 
@@ -17664,52 +17663,42 @@
       opacity: 0.9;
       cursor: grabbing;
     }
+  }
+
+  .o-figure-container {
+    position: absolute;
+    box-sizing: content-box;
 
     .o-anchor {
       z-index: ${ComponentsImportance.ChartAnchor};
       position: absolute;
-      outline: ${BORDER_WIDTH}px solid white;
       width: ${ANCHOR_SIZE}px;
       height: ${ANCHOR_SIZE}px;
       background-color: #1a73e8;
+      outline: ${BORDER_WIDTH}px solid white;
+
       &.o-top {
-        top: -${ANCHOR_SIZE / 2}px;
-        right: calc(50% - 4px);
         cursor: n-resize;
       }
       &.o-topRight {
-        top: -${ANCHOR_SIZE / 2}px;
-        right: -${ANCHOR_SIZE / 2}px;
         cursor: ne-resize;
       }
       &.o-right {
-        right: -${ANCHOR_SIZE / 2}px;
-        top: calc(50% - 4px);
         cursor: e-resize;
       }
       &.o-bottomRight {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        right: -${ANCHOR_SIZE / 2}px;
         cursor: se-resize;
       }
       &.o-bottom {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        right: calc(50% - 4px);
         cursor: s-resize;
       }
       &.o-bottomLeft {
-        bottom: -${ANCHOR_SIZE / 2}px;
-        left: -${ANCHOR_SIZE / 2}px;
         cursor: sw-resize;
       }
       &.o-left {
-        bottom: calc(50% - 4px);
-        left: -${ANCHOR_SIZE / 2}px;
         cursor: w-resize;
       }
       &.o-topLeft {
-        top: -${ANCHOR_SIZE / 2}px;
-        left: -${ANCHOR_SIZE / 2}px;
         cursor: nw-resize;
       }
     }
@@ -17748,31 +17737,86 @@
                 };
             });
         }
-        getFigureStyle(info) {
+        /** Get the current figure size, which is either the stored figure size of the DnD figure size */
+        getFigureSize(info) {
             const { figure, isSelected } = info;
-            const borders = 2 * (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            const { width, height } = isSelected && this.dnd.figureId ? this.dnd : figure;
-            const borderStyle = this.env.isDashboard() || isSelected ? "" : `1px solid ${FIGURE_BORDER_COLOR}`;
-            return `width:${width + borders}px;height:${height + borders}px; border: ${borderStyle};`;
+            const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
+            const { width, height } = target;
+            return { width, height };
         }
-        getWrapperStyle(info) {
+        getFigureSizeWithBorders(info) {
+            const { width, height } = this.getFigureSize(info);
+            const borders = this.getBorderWidth(info) * 2;
+            return { width: width + borders, height: height + borders };
+        }
+        getBorderWidth(info) {
+            return info.isSelected ? ACTIVE_BORDER_WIDTH : this.env.isDashboard() ? 0 : BORDER_WIDTH;
+        }
+        getFigureStyle(info) {
+            const { width, height } = info.figure;
+            return `width:${width}px;height:${height}px;border-width: ${this.getBorderWidth(info)}px;`;
+        }
+        /** Get the overflow of the figure in the headers of the grid  */
+        getOverflow(info) {
             const { figure, isSelected } = info;
             const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
             const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
-            const { width, height } = target;
-            let x = target.x - offsetX - 1;
-            let y = target.y - offsetY - 1;
-            // width and height of wrapper need to be adjusted so we do not overlap
-            // with headers
-            const correctionX = this.env.isDashboard() ? 0 : Math.max(0, -x);
-            x += correctionX;
-            const correctionY = this.env.isDashboard() ? 0 : Math.max(0, -y);
-            y += correctionY;
+            let x = target.x - offsetX;
+            let y = target.y - offsetY;
+            const overflowX = this.env.isDashboard() ? 0 : Math.max(0, -x);
+            const overflowY = this.env.isDashboard() ? 0 : Math.max(0, -y);
+            return { overflowX, overflowY };
+        }
+        getContainerStyle(info) {
+            const { figure, isSelected } = info;
+            const { offsetX, offsetY } = this.env.model.getters.getActiveViewport();
+            const target = figure.id === (isSelected && this.dnd.figureId) ? this.dnd : figure;
+            const x = target.x - offsetX;
+            const y = target.y - offsetY;
+            const { width, height } = this.getFigureSizeWithBorders(info);
+            const { overflowX, overflowY } = this.getOverflow(info);
             if (width < 0 || height < 0) {
-                return `position:absolute;display:none;`;
+                return `display:none;`;
             }
-            const offset = ANCHOR_SIZE + ACTIVE_BORDER_WIDTH + (isSelected ? ACTIVE_BORDER_WIDTH : BORDER_WIDTH);
-            return `position:absolute; top:${y + 1}px; left:${x + 1}px; width:${width - correctionX + offset}px; height:${height - correctionY + offset}px;`;
+            const borderOffset = BORDER_WIDTH - this.getBorderWidth(info);
+            // TODO : remove the +1 once 2951210 is fixed
+            return (`top:${y + borderOffset + overflowY + 1}px;` +
+                `left:${x + borderOffset + overflowX}px;` +
+                `width:${width - overflowX}px;` +
+                `height:${height - overflowY}px;`);
+        }
+        getAnchorPosition(anchor, info) {
+            const { width, height } = this.getFigureSizeWithBorders(info);
+            const { overflowX, overflowY } = this.getOverflow(info);
+            const anchorCenteringOffset = (ANCHOR_SIZE - ACTIVE_BORDER_WIDTH) / 2;
+            let x = 0;
+            let y = 0;
+            if (anchor.includes("top")) {
+                y = -anchorCenteringOffset;
+            }
+            else if (anchor.includes("bottom")) {
+                y = height - ACTIVE_BORDER_WIDTH - anchorCenteringOffset;
+            }
+            else {
+                y = (height - ACTIVE_BORDER_WIDTH) / 2 - anchorCenteringOffset;
+            }
+            if (anchor.includes("left")) {
+                x = -anchorCenteringOffset;
+            }
+            else if (anchor.includes("right")) {
+                x = width - ACTIVE_BORDER_WIDTH - anchorCenteringOffset;
+            }
+            else {
+                x = (width - ACTIVE_BORDER_WIDTH) / 2 - anchorCenteringOffset;
+            }
+            let visibility = "visible";
+            if (overflowX && x < overflowX) {
+                visibility = "hidden";
+            }
+            else if (overflowY && y < overflowY) {
+                visibility = "hidden";
+            }
+            return `visibility : ${visibility};top:${y - overflowY}px; left:${x - overflowX}px;`;
         }
         setup() {
             owl.onMounted(() => {
@@ -18881,6 +18925,8 @@
       position: absolute;
       overflow: auto;
       z-index: ${ComponentsImportance.ScrollBar};
+      background-color: ${BACKGROUND_GRAY_COLOR};
+
       &.vertical {
         right: 0;
         bottom: ${SCROLLBAR_WIDTH$1}px;
@@ -18892,6 +18938,14 @@
         height: ${SCROLLBAR_WIDTH$1}px;
         right: ${SCROLLBAR_WIDTH$1}px;
         overflow-y: hidden;
+      }
+      &.corner {
+        right: 0px;
+        bottom: 0px;
+        height: ${SCROLLBAR_WIDTH$1}px;
+        width: ${SCROLLBAR_WIDTH$1}px;
+        border-top: 1px solid #e2e3e3;
+        border-left: 1px solid #e2e3e3;
       }
     }
 
@@ -19620,7 +19674,6 @@
                 style: {
                     ...properties.style,
                     textColor: ((_a = properties.style) === null || _a === void 0 ? void 0 : _a.textColor) || LINK_COLOR,
-                    underline: true,
                 },
             };
             super(id, { value: link.label, type: CellValueType.text }, properties);
@@ -24141,9 +24194,12 @@
          * starting an async evaluation even if it has been moved or re-allocated
          */
         getCellById(cellId) {
-            for (const sheet of Object.values(this.cells)) {
-                if (sheet[cellId]) {
-                    return sheet[cellId];
+            // this must be as fast as possible
+            for (const sheetId in this.cells) {
+                const sheet = this.cells[sheetId];
+                const cell = sheet[cellId];
+                if (cell) {
+                    return cell;
                 }
             }
             return undefined;
@@ -24989,7 +25045,6 @@
         constructor() {
             super(...arguments);
             this.sizes = {};
-            this.tallestCellInRows = {};
         }
         handle(cmd) {
             var _a, _b, _c;
@@ -24999,93 +25054,92 @@
                     const sizes = {
                         COL: computedSizes.COL.map((size) => ({
                             manualSize: undefined,
-                            computedSize: size,
+                            computedSize: lazy(() => size),
                         })),
                         ROW: computedSizes.ROW.map((size) => ({
                             manualSize: undefined,
-                            computedSize: size,
+                            computedSize: lazy(() => size),
                         })),
                     };
                     this.history.update("sizes", cmd.sheetId, sizes);
-                    this.history.update("tallestCellInRows", cmd.sheetId, []);
                     break;
                 }
                 case "DUPLICATE_SHEET":
                     this.history.update("sizes", cmd.sheetIdTo, deepCopy(this.sizes[cmd.sheetId]));
-                    this.history.update("tallestCellInRows", cmd.sheetIdTo, deepCopy(this.tallestCellInRows[cmd.sheetId]));
                     break;
                 case "DELETE_SHEET":
                     const sizes = { ...this.sizes };
                     delete sizes[cmd.sheetId];
                     this.history.update("sizes", sizes);
-                    const tallestCellInRows = { ...this.tallestCellInRows };
-                    delete tallestCellInRows[cmd.sheetId];
-                    this.history.update("tallestCellInRows", tallestCellInRows);
                     break;
                 case "REMOVE_COLUMNS_ROWS": {
-                    const sizes = [...this.sizes[cmd.sheetId][cmd.dimension]];
-                    const tallestCellInRows = [...this.tallestCellInRows[cmd.sheetId]];
-                    for (let headerIndex of [...cmd.elements].sort().reverse()) {
+                    let sizes = [...this.sizes[cmd.sheetId][cmd.dimension]];
+                    for (let headerIndex of [...cmd.elements].sort((a, b) => b - a)) {
                         sizes.splice(headerIndex, 1);
-                        if (cmd.dimension === "ROW") {
-                            tallestCellInRows.splice(headerIndex, 1);
+                    }
+                    const min = Math.min(...cmd.elements);
+                    sizes = sizes.map((size, row) => {
+                        if (cmd.dimension === "ROW" && row >= min) {
+                            // invalidate sizes
+                            return {
+                                manualSize: size.manualSize,
+                                computedSize: lazy(() => this.getRowTallestCellSize(cmd.sheetId, row)),
+                            };
                         }
-                    }
+                        return size;
+                    });
                     this.history.update("sizes", cmd.sheetId, cmd.dimension, sizes);
-                    if (cmd.dimension === "ROW") {
-                        this.history.update("tallestCellInRows", cmd.sheetId, tallestCellInRows);
-                    }
                     break;
                 }
                 case "ADD_COLUMNS_ROWS": {
-                    const sizes = [...this.sizes[cmd.sheetId][cmd.dimension]];
+                    let sizes = [...this.sizes[cmd.sheetId][cmd.dimension]];
                     const addIndex = getAddHeaderStartIndex(cmd.position, cmd.base);
-                    const tallestCellInRows = [...this.tallestCellInRows[cmd.sheetId]];
                     const baseSize = sizes[cmd.base];
-                    for (let i = 0; i < cmd.quantity; i++) {
-                        sizes.splice(addIndex, 0, baseSize);
-                        if (cmd.dimension === "ROW") {
-                            tallestCellInRows.splice(i, 1, undefined);
+                    sizes.splice(addIndex, 0, ...Array(cmd.quantity).fill(baseSize));
+                    sizes = sizes.map((size, row) => {
+                        if (cmd.dimension === "ROW" && row > cmd.base + cmd.quantity) {
+                            // invalidate sizes
+                            return {
+                                manualSize: size.manualSize,
+                                computedSize: lazy(() => this.getRowTallestCellSize(cmd.sheetId, row)),
+                            };
                         }
-                    }
+                        return size;
+                    });
                     this.history.update("sizes", cmd.sheetId, cmd.dimension, sizes);
-                    if (cmd.dimension === "ROW") {
-                        this.history.update("tallestCellInRows", cmd.sheetId, tallestCellInRows);
-                    }
                     break;
                 }
                 case "RESIZE_COLUMNS_ROWS":
                     for (let el of cmd.elements) {
                         if (cmd.dimension === "ROW") {
-                            const { cell: tallestCell, height } = this.getRowTallestCell(cmd.sheetId, el);
+                            const height = this.getRowTallestCellSize(cmd.sheetId, el);
                             const size = height;
-                            this.history.update("tallestCellInRows", cmd.sheetId, el, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
                             this.history.update("sizes", cmd.sheetId, cmd.dimension, el, {
                                 manualSize: cmd.size || undefined,
-                                computedSize: size,
+                                computedSize: lazy(() => size),
                             });
                         }
                         else {
                             this.history.update("sizes", cmd.sheetId, cmd.dimension, el, {
                                 manualSize: cmd.size || undefined,
-                                computedSize: cmd.size || DEFAULT_CELL_WIDTH,
+                                computedSize: lazy(() => cmd.size || DEFAULT_CELL_WIDTH),
                             });
                         }
                     }
                     break;
                 case "UPDATE_CELL":
                     if (!((_c = (_b = (_a = this.sizes[cmd.sheetId]) === null || _a === void 0 ? void 0 : _a["ROW"]) === null || _b === void 0 ? void 0 : _b[cmd.row]) === null || _c === void 0 ? void 0 : _c.manualSize)) {
-                        this.adjustRowSizeWithCellFont(cmd.sheetId, cmd.col, cmd.row);
+                        const { sheetId, row } = cmd;
+                        this.history.update("sizes", sheetId, "ROW", row, "computedSize", lazy(() => this.getRowTallestCellSize(sheetId, row)));
                     }
                     break;
                 case "ADD_MERGE":
                 case "REMOVE_MERGE":
                     for (let target of cmd.target) {
                         for (let row of range(target.top, target.bottom + 1)) {
-                            const { height: rowHeight, cell: tallestCell } = this.getRowTallestCell(cmd.sheetId, row);
-                            this.history.update("tallestCellInRows", cmd.sheetId, row, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
+                            const rowHeight = this.getRowTallestCellSize(cmd.sheetId, row);
                             if (rowHeight !== this.getRowSize(cmd.sheetId, row)) {
-                                this.history.update("sizes", cmd.sheetId, "ROW", row, "computedSize", rowHeight);
+                                this.history.update("sizes", cmd.sheetId, "ROW", row, "computedSize", lazy(() => rowHeight));
                             }
                         }
                     }
@@ -25099,37 +25153,10 @@
         getRowSize(sheetId, index) {
             return this.getHeaderSize(sheetId, "ROW", index);
         }
-        /**
-         * Change the size of a row to match the cell with the biggest font size.
-         */
-        adjustRowSizeWithCellFont(sheetId, col, row) {
-            var _a;
-            const currentCell = this.getters.getCell(sheetId, col, row);
-            const currentRowSize = this.getRowSize(sheetId, row);
-            const newCellHeight = this.getCellHeight(sheetId, col, row);
-            const tallestCell = (_a = this.tallestCellInRows[sheetId]) === null || _a === void 0 ? void 0 : _a[row];
-            let shouldRowBeUpdated = !tallestCell ||
-                !this.getters.getCellById(tallestCell) || // tallest cell was deleted
-                ((currentCell === null || currentCell === void 0 ? void 0 : currentCell.id) === tallestCell && newCellHeight < currentRowSize); // tallest cell is smaller than before;
-            let newRowHeight = undefined;
-            if (shouldRowBeUpdated) {
-                const { height: maxHeight, cell: tallestCell } = this.getRowTallestCell(sheetId, row);
-                newRowHeight = maxHeight;
-                this.history.update("tallestCellInRows", sheetId, row, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
-            }
-            else if (newCellHeight > currentRowSize) {
-                newRowHeight = newCellHeight;
-                const tallestCell = this.getters.getCell(sheetId, col, row);
-                this.history.update("tallestCellInRows", sheetId, row, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
-            }
-            if (newRowHeight !== undefined && newRowHeight !== currentRowSize) {
-                this.history.update("sizes", sheetId, "ROW", row, "computedSize", newRowHeight);
-            }
-        }
         getHeaderSize(sheetId, dimension, index) {
             var _a, _b, _c, _d;
             return (((_b = (_a = this.sizes[sheetId]) === null || _a === void 0 ? void 0 : _a[dimension][index]) === null || _b === void 0 ? void 0 : _b.manualSize) ||
-                ((_d = (_c = this.sizes[sheetId]) === null || _c === void 0 ? void 0 : _c[dimension][index]) === null || _d === void 0 ? void 0 : _d.computedSize) ||
+                ((_d = (_c = this.sizes[sheetId]) === null || _c === void 0 ? void 0 : _c[dimension][index]) === null || _d === void 0 ? void 0 : _d.computedSize()) ||
                 this.getDefaultHeaderSize(dimension));
         }
         computeSheetSizes(sheetId) {
@@ -25141,9 +25168,8 @@
             for (let row of range(0, this.getters.getNumberRows(sheetId))) {
                 let rowSize = (_b = (_a = this.sizes[sheetId]) === null || _a === void 0 ? void 0 : _a["ROW"]) === null || _b === void 0 ? void 0 : _b[row].manualSize;
                 if (!rowSize) {
-                    const { cell: tallestCell, height } = this.getRowTallestCell(sheetId, row);
+                    const height = this.getRowTallestCellSize(sheetId, row);
                     rowSize = height;
-                    this.history.update("tallestCellInRows", sheetId, row, tallestCell === null || tallestCell === void 0 ? void 0 : tallestCell.id);
                 }
                 sizes.ROW.push(rowSize);
             }
@@ -25162,7 +25188,7 @@
                 return DEFAULT_CELL_HEIGHT;
             }
             const cell = this.getters.getCell(sheetId, col, row);
-            return getDefaultCellHeight(cell);
+            return getDefaultCellHeight(cell === null || cell === void 0 ? void 0 : cell.style);
         }
         /**
          * Get the tallest cell of a row and its size.
@@ -25170,10 +25196,9 @@
          * The tallest cell of the row correspond to the cell with the biggest font size,
          * and that is not part of a multi-line merge.
          */
-        getRowTallestCell(sheetId, row) {
+        getRowTallestCellSize(sheetId, row) {
             const cellIds = this.getters.getRowCells(sheetId, row);
             let maxHeight = 0;
-            let tallestCell = undefined;
             for (let i = 0; i < cellIds.length; i++) {
                 const cell = this.getters.getCellById(cellIds[i]);
                 if (!cell)
@@ -25182,13 +25207,12 @@
                 const cellHeight = this.getCellHeight(sheetId, col, row);
                 if (cellHeight > maxHeight && cellHeight > DEFAULT_CELL_HEIGHT) {
                     maxHeight = cellHeight;
-                    tallestCell = cell;
                 }
             }
             if (maxHeight <= DEFAULT_CELL_HEIGHT) {
-                return { height: DEFAULT_CELL_HEIGHT };
+                return DEFAULT_CELL_HEIGHT;
             }
-            return { cell: tallestCell, height: maxHeight };
+            return maxHeight;
         }
         import(data) {
             for (let sheet of data.sheets) {
@@ -25207,11 +25231,11 @@
                 this.sizes[sheet.id] = {
                     COL: computedSizes.COL.map((size, i) => ({
                         manualSize: manualSizes.COL[i],
-                        computedSize: size,
+                        computedSize: lazy(() => size),
                     })),
                     ROW: computedSizes.ROW.map((size, i) => ({
                         manualSize: manualSizes.ROW[i],
-                        computedSize: size,
+                        computedSize: lazy(() => size),
                     })),
                 };
             }
@@ -25295,7 +25319,7 @@
                     break;
                 case "REMOVE_COLUMNS_ROWS": {
                     const hiddenHeaders = [...this.hiddenHeaders[cmd.sheetId][cmd.dimension]];
-                    for (let el of [...cmd.elements].sort().reverse()) {
+                    for (let el of [...cmd.elements].sort((a, b) => b - a)) {
                         hiddenHeaders.splice(el, 1);
                     }
                     this.history.update("hiddenHeaders", cmd.sheetId, cmd.dimension, hiddenHeaders);
@@ -25304,9 +25328,7 @@
                 case "ADD_COLUMNS_ROWS": {
                     const hiddenHeaders = [...this.hiddenHeaders[cmd.sheetId][cmd.dimension]];
                     const addIndex = getAddHeaderStartIndex(cmd.position, cmd.base);
-                    for (let i = 0; i < cmd.quantity; i++) {
-                        hiddenHeaders.splice(addIndex, 0, false);
-                    }
+                    hiddenHeaders.splice(addIndex, 0, ...Array(cmd.quantity).fill(false));
                     this.history.update("hiddenHeaders", cmd.sheetId, cmd.dimension, hiddenHeaders);
                     break;
                 }
@@ -28651,7 +28673,7 @@
                         if (!computedStyle[col])
                             computedStyle[col] = [];
                         computedStyle[col][row] = ((_a = computedStyle[col]) === null || _a === void 0 ? void 0 : _a[row]) || {};
-                        computedStyle[col][row].fillColor = "#" + colorNumberString(color);
+                        computedStyle[col][row].fillColor = colorNumberString(color);
                     }
                 }
             }
@@ -32678,10 +32700,7 @@
         }
 
         .o-border-dropdown {
-          .o-line-item {
-            padding: 4px;
-            margin: 1px;
-          }
+          padding: 4px;
         }
 
         .o-divider {
@@ -32729,12 +32748,10 @@
 
             .o-dropdown-line {
               display: flex;
-              padding: 3px 6px;
+              margin: 1px;
 
               .o-line-item {
-                width: 16px;
-                height: 16px;
-                margin: 1px 3px;
+                padding: 4px;
 
                 &:hover {
                   background-color: rgba(0, 0, 0, 0.08);
@@ -35094,12 +35111,7 @@
          * be processed.
          */
         processEvent(newAnchorEvent) {
-            const sheetId = this.getters.getActiveSheetId();
-            const previousAnchor = deepCopy({
-                cell: this.anchor.cell,
-                zone: this.getters.expandZone(sheetId, this.anchor.zone),
-            });
-            const event = { ...newAnchorEvent, previousAnchor };
+            const event = { ...newAnchorEvent, previousAnchor: deepCopy(this.anchor) };
             const commandResult = this.checkEventAnchorZone(event);
             if (commandResult !== 0 /* Success */) {
                 return new DispatchResult(commandResult);
@@ -35958,7 +35970,7 @@
                     continue;
                 }
                 cfValueObject.push(thresholdAttributes(threshold, position));
-                colors.push([["rgb", colorNumberString(threshold.color)]]);
+                colors.push([["rgb", toXlsxHexColor(colorNumberString(threshold.color))]]);
             }
             if (!canExport) {
                 console.warn("Conditional formats with formula rules are not supported at the moment. The rule is therefore skipped.");
@@ -36910,7 +36922,7 @@
          * It will call `beforeHandle` and `handle`
          */
         dispatchToHandlers(handlers, command) {
-            command = JSON.parse(JSON.stringify(command));
+            command = deepCopy(command);
             for (const handler of handlers) {
                 handler.beforeHandle(command);
             }
@@ -37105,8 +37117,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-08-11T14:45:19.840Z';
-    exports.__info__.hash = '6f5082c';
+    exports.__info__.date = '2022-08-22T07:04:07.762Z';
+    exports.__info__.hash = '77111fd';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

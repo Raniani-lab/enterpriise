@@ -884,12 +884,14 @@ QUnit.module(
             await selectYear(String(this_year - 127));
             assert.equal(year.value, String(this_year - 127));
             assert.deepEqual(model.getters.getGlobalFilterValue(THIS_YEAR_FILTER.filter.id), {
+                period: undefined,
                 yearOffset: -127,
             });
 
             await selectYear(String(this_year + 32));
             assert.equal(year.value, String(this_year + 32));
             assert.deepEqual(model.getters.getGlobalFilterValue(THIS_YEAR_FILTER.filter.id), {
+                period: undefined,
                 yearOffset: 32,
             });
         });

@@ -76,17 +76,19 @@ export class SpreadsheetSelectorDialog extends Component {
         const notificationMessage = isNewItem
             ? this.actionState.notificationMessage
             : sprintf(_t("New sheet inserted in '%s'"), this.actionState.selectedSpreadsheet.name);
+        // make sure we send a primitive string instead of a LazyTranslatedString
+        const name = this.state.name.toString();
         const actionOptions = {
             ...this.props.actionOptions,
             preProcessingAsyncActionData: {
                 ...this.props.actionOptions.preProcessingAsyncActionData,
                 threshold,
-                name: this.state.name,
+                name,
             },
             preProcessingActionData: {
                 ...this.props.actionOptions.preProcessingActionData,
                 threshold,
-                name: this.state.name,
+                name,
             },
             alwaysCreate: isNewItem,
             spreadsheet_id:

@@ -17,8 +17,10 @@
         <field name="model">account.move.line</field>
         <field name="arch" type="xml">
             <search string="Invoice Line Entries Analysis">
-                <field name="subscription_start_date" filter_domain="[('subscription_start_date','&lt;=', self)]"/>
-                <field name="subscription_end_date" filter_domain="[('subscription_end_date','&gt;=', self)]"/>
+                <!--To obtain all the active subscriptions during a period, their end date should be
+                after the period beginning and their start date should be before the period end-->
+                <field name="subscription_start_date" filter_domain="[('subscription_end_date','&gt;=', self)]"/>
+                <field name="subscription_end_date" filter_domain="[('subscription_start_date','&lt;=', self)]"/>
                 <group expand="0" string="Group By">
                     <separator/>
                     <filter string="OUT invoices" name="OUT" domain="[('move_id.move_type', 'in', ('out_invoice', 'out_refund'))]"/>

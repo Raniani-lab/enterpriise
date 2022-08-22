@@ -1248,9 +1248,8 @@ class SaleOrder(models.Model):
         return {'delta': delta, 'percentage': percentage}
 
     def _nothing_to_invoice_error_message(self):
-        self.ensure_one()
         error_message = super()._nothing_to_invoice_error_message()
-        if self.is_subscription:
+        if any(self.mapped('is_subscription')):
             error_message += _(
                 "\n- You should wait for the current subscription period to pass. New quantities to invoice will be ready "
                 "at the end of the current period."

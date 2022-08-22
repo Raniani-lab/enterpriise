@@ -2,14 +2,14 @@
 
 from odoo import fields
 
-from odoo.addons.payment.tests.common import PaymentCommon
+from odoo.addons.account_payment.tests.common import AccountPaymentCommon
 
 
-class SepaDirectDebitCommon(PaymentCommon):
+class SepaDirectDebitCommon(AccountPaymentCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref=None):
-        super().setUpClass(chart_template_ref=chart_template_ref)
+    def setUpClass(cls):
+        super().setUpClass()
 
         cls.company = cls.env.company
         cls.company.sdd_creditor_identifier = 'BE30ZZZ300D000000042'

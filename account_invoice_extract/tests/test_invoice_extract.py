@@ -25,7 +25,6 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
 
         # Required for `price_total` to be visible in the view
         config = cls.env['res.config.settings'].create({})
-        config.show_line_subtotals_tax_selection = "tax_included"
         config.execute()
 
         cls.journal_with_alias = cls.env['account.journal'].search(
@@ -703,3 +702,61 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             invoice._check_ocr_status()
 
         self.assertEqual(invoice.partner_bank_id, created_bank_account)
+
+    def test_tax_price_included(self):
+        self.env['account.tax'].create({
+            'name': 'Tax 12% included',
+            'amount': 12,
+            'amount_type': 'percent',
+            'type_tax_use': 'purchase',
+            'price_include': True,
+            'company_id': self.company_data['company'].id
+        })
+
+        invoice = self._create_invoice_with_tax()
+
+        self.assertRecordValues(invoice.invoice_line_ids, [{
+                'price_unit': 112,
+                'quantity': 1,
+                'price_subtotal': 100,
+                'price_total': 112,
+        }])
+
+    def test_tax_price_excluded(self):
+        self.env['account.tax'].create({
+            'name': 'Tax 12% excluded',
+            'amount': 12,
+            'amount_type': 'percent',
+            'type_tax_use': 'purchase',
+            'company_id': self.company_data['company'].id
+        })
+
+        invoice = self._create_invoice_with_tax()
+
+        self.assertRecordValues(invoice.invoice_line_ids, [{
+                'price_unit': 100,
+                'quantity': 1,
+                'price_subtotal': 100,
+                'price_total': 112,
+        }])
+
+    def _create_invoice_with_tax(self):
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
+        extract_response = self.get_default_extract_response()
+        extract_response['results'][0]['total']['selected_value']['content'] = 112
+        extract_response['results'][0]['subtotal']['selected_value']['content'] = 100
+        extract_response['results'][0]['invoice_lines'] = [
+            {
+                'description': {'selected_value': {'content': 'Test 1'}},
+                'unit_price': {'selected_value': {'content': 100}},
+                'quantity': {'selected_value': {'content': 1}},
+                'taxes': {'selected_values': [{'content': 12, 'amount_type': 'percent'}]},
+                'subtotal': {'selected_value': {'content': 100}},
+                'total': {'selected_value': {'content': 112}},
+            },
+        ]
+
+        with self._mock_iap_extract(extract_response, {}):
+            invoice._check_ocr_status()
+
+        return invoice

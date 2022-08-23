@@ -172,8 +172,10 @@
                                                 </th>
                                                 <th class="text-end d-none d-md-table-cell">Taxes</th>
                                                 <th class="text-end">
-                                                    <span groups="account.group_show_line_subtotals_tax_excluded">Amount</span>
-                                                    <span groups="account.group_show_line_subtotals_tax_included">Total Price</span>
+                                                    <span>Tax excl.</span>
+                                                </th>
+                                                <th class="text-end" t-if="subscription.order_line.order_id.tax_calculation_rounding_method == 'round_per_line'">
+                                                    <span>Tax incl.</span>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -183,8 +185,9 @@
                                             <t t-foreach="subscription.order_line" t-as="line">
                                                 <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
 
-                                                    <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                                    <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                                    <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                                                    <t t-set="current_total" t-value="current_subtotal + line.price_total" t-if="subscription.order_line.order_id.tax_calculation_rounding_method == 'round_per_line'"/>
+
 
                                                     <t t-if="not line.display_type">
                                                         <td class="line-description"><span t-field="line.name"/></td>
@@ -213,8 +216,10 @@
                                                             <span t-esc="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
                                                         </td>
                                                         <td class="text-end">
-                                                            <span class="oe_order_line_price_subtotal" t-field="line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
-                                                            <span class="oe_order_line_price_total" t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
+                                                            <span class="oe_order_line_price_subtotal" t-field="line.price_subtotal"/>
+                                                        </td>
+                                                        <td class="text-end" t-if="subscription.order_line.order_id.tax_calculation_rounding_method == 'round_per_line' and not line.is_downpayment" >
+                                                            <span class="oe_order_line_price_total" t-field="line.price_total"/>
                                                         </td>
                                                     </t>
                                                     <t t-if="line.display_type == 'line_section'">

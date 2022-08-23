@@ -528,9 +528,7 @@ class AccountMove(models.Model):
                             *self._domain_company(),
                         ])
                         if taxes_records:
-                            # prioritize taxes based on db setting
-                            line_tax_type = self.env['ir.config_parameter'].sudo().get_param('account.show_line_subtotals_tax_selection')
-                            taxes_records_setting_based = taxes_records.filtered(lambda r: not r.price_include if line_tax_type == 'tax_excluded' else r.price_include)
+                            taxes_records_setting_based = taxes_records.filtered(lambda r: not r.price_include)
                             if taxes_records_setting_based:
                                 taxes_record = taxes_records_setting_based[0]
                             else:

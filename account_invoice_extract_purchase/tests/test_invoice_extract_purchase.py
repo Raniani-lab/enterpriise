@@ -17,7 +17,6 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
 
         # Required for `price_total` to be visible in the view
         config = cls.env['res.config.settings'].create({})
-        config.show_line_subtotals_tax_selection = "tax_included"
         config.execute()
 
         cls.vendor = cls.env['res.partner'].create({'name': 'Odoo', 'vat': 'BE0477472701'})

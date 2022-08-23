@@ -21,9 +21,9 @@
                     <thead>
                         <tr>
                             <th>Budgetary Positions</th>
-                            <th class="text-end">Allocated</th>
-                            <th class="text-end">Spent</th>
-                            <th class="text-end">Remaining</th>
+                            <th class="text-end">Forecast</th>
+                            <th class="text-end">Actual</th>
+                            <th class="text-end">Difference</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,7 +38,7 @@
                             </td>
                             <td class="text-end align-middle" t-att-class="budget.allocated === 0 ? 'text-500' : ''" t-esc="formatMonetary(budget.allocated)"/>
                             <td class="text-end align-middle" t-att-class="budget.spent === 0 ? 'text-500' : ''" t-esc="formatMonetary(budget.spent)"/>
-                            <t t-set="budget_remaining" t-value="budget.allocated - budget.spent"/>
+                            <t t-set="budget_remaining" t-value="budget.spent - budget.allocated"/>
                             <td class="text-end align-middle" t-attf-class="text-bold {{budget_remaining &lt; 0 ? 'text-danger' : budget_remaining === 0 ? 'text-500' : 'text-success'}}" t-esc="formatMonetary(budget_remaining)"/>
                         </tr>
                     </tbody>
@@ -48,7 +48,7 @@
                             <t t-set="budget_total" t-value="state.data.budget_items.total"/>
                             <td class="text-end" t-att-class="budget_total.allocated === 0 ? 'text-500' : ''" t-esc="formatMonetary(budget_total.allocated)"/>
                             <td class="text-end" t-att-class="budget_total.spent === 0 ? 'text-500' : ''" t-esc="formatMonetary(budget_total.spent)" />
-                            <t t-set="budget_total_remaining" t-value="budget_total.allocated - budget_total.spent"/>
+                            <t t-set="budget_total_remaining" t-value="budget_total.spent - budget_total.allocated"/>
                             <td class="text-end" t-attf-class="text-bold {{budget_total_remaining &lt; 0 ? 'text-danger' : budget_total_remaining === 0 ? 'text-500' : 'text-success'}}" t-esc="formatMonetary(budget_total_remaining)" />
                         </tr>
                     </tfoot>

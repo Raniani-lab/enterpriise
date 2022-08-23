@@ -62,7 +62,7 @@
                     <field name="extract_error_message"/>
                 </div>
             </xpath>
-            <xpath expr="//field[@name='company_id']" position='after'>
+            <xpath expr="//field[@name='department_id']" position='after'>
                 <field name="extract_remote_id" groups="base.group_no_one"/>
             </xpath>
         </field>

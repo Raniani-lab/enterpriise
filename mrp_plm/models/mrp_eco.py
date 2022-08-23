@@ -2,10 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-import ast
-
-from collections import defaultdict
+from markupsafe import escape
 from random import randint
+
+import ast
 
 from odoo import api, fields, models, tools, Command, SUPERUSER_ID, _
 from odoo.exceptions import UserError
@@ -611,7 +611,13 @@ class MrpEco(models.Model):
                         'user_id': self.env.uid,
                         'approval_date': fields.Datetime.now(),
                     })
-                eco.message_post_with_view('mrp_plm.message_approval', values={'approval': approval})
+
+                message = escape(_("%(approval_name)s %(approver_name)s %(approval_status)s this ECO")) % {
+                    'approval_name': approval.name,
+                    'approver_name': approval.user_id.name,
+                    'approval_status': approval.status,
+                }
+                eco.message_post(body=message, subtype_xmlid='mail.mt_comment')
 
     def approve(self):
         self._create_or_update_approval(status='approved')

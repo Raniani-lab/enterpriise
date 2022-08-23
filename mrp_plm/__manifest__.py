@@ -20,6 +20,7 @@ Product Life Management
     'data': [
         'security/mrp_plm.xml',
         'security/ir.model.access.csv',
+        'data/mail_activity_type_data.xml',
         'data/mail_templates.xml',
         'data/mrp_data.xml',
         'views/mrp_bom_views.xml',

@@ -12,7 +12,7 @@ to the administration.
     """,
     'depends': ['account_reports'],
     'data': [
-        'data/account_reports_tax_reminder.xml',
+        'data/mail_activity_type_data.xml',
     ],
     'auto_install': True,
     'installable': True,

@@ -35,7 +35,7 @@
         'data/hr_payroll_sequence.xml',
         'views/hr_payroll_report.xml',
         'data/hr_payroll_data.xml',
-        'data/mail_data.xml',
+        'data/mail_activity_type_data.xml',
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
         'data/ir_actions_server_data.xml',

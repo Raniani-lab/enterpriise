@@ -6,12 +6,6 @@
             <field name="digits">2</field>
         </record>
 
-        <record id="mail_alias_quality_alert" model="mail.alias">
-            <field name="alias_name">alert</field>
-            <field name="alias_model_id" ref="model_quality_alert"/>
-            <field name="alias_user_id" ref="base.user_admin"/>
-            <field name="alias_parent_model_id" ref="model_quality_alert_team"/>
-        </record>
         <record id="quality_alert_team0" model="quality.alert.team">
             <field name="name">Main Quality Team</field>
             <field name="alias_id" ref="mail_alias_quality_alert"/>

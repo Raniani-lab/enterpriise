@@ -15,6 +15,8 @@ Let your customers follow the signature process easily.
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/mail_activity_type_data.xml',
+        'data/mail_templates.xml',
         'data/sign_data.xml',
         'views/sign_template_views_mobile.xml',
         'wizard/sign_duplicate_template_with_pdf_views.xml',

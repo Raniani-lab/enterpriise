@@ -16,7 +16,7 @@ Accounting Reports
         'data/profit_and_loss.xml',
         'data/account_report_actions.xml',
         'data/menuitems.xml',
-        'data/mail_data.xml',
+        'data/mail_activity_type_data.xml',
         'views/account_report_view.xml',
         'views/report_financial.xml',
         'views/res_company_views.xml',

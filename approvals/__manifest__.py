@@ -23,7 +23,7 @@ creates next activities for the related approvers.
         'security/ir.model.access.csv',
 
         'data/approval_category_data.xml',
-        'data/mail_activity_data.xml',
+        'data/mail_activity_type_data.xml',
 
         'views/approval_category_views.xml',
         'views/approval_category_approver_views.xml',

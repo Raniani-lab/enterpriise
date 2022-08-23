@@ -220,14 +220,6 @@
             </field>
         </record>
 
-        <record id="bank_sync_activity_update_consent" model="mail.activity.type">
-            <field name="name">Bank Synchronization: Update consent</field>
-            <field name="icon">fa-university</field>
-            <field name="decoration_type">warning</field>
-            <field name="res_model">account.online.link</field>
-            <field name="delay_count">0</field>
-        </record>
-
         <record id="view_bank_statement_line_tree_inherit" model="ir.ui.view">
             <field name="name">bank.statement.line.tree.inherit</field>
             <field name="model">account.bank.statement.line</field>

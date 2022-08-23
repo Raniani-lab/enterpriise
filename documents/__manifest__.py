@@ -24,7 +24,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'data/digest_data.xml',
-        'data/mail_data.xml',
+        'data/mail_activity_type_data.xml',
         'data/documents_data.xml',
         'data/workflow_data.xml',
         'data/files_data.xml',

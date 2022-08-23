@@ -26,7 +26,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
-msgid "Allocated"
+msgid "Forecast"
 msgstr ""
 
 #. module: project_account_budget
@@ -92,14 +92,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
-msgid "Remaining"
+msgid "Difference"
 msgstr ""
 
 #. module: project_account_budget
 #. openerp-web
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
-msgid "Spent"
+msgid "Actual"
 msgstr ""
 
 #. module: project_account_budget

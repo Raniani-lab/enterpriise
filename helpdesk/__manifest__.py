@@ -52,7 +52,7 @@ Features:
         'views/helpdesk_team_views.xml',
         'views/digest_views.xml',
         'views/helpdesk_portal_templates.xml',
-        'views/rating_views.xml',
+        'views/rating_rating_views.xml',
         'views/res_partner_views.xml',
         'views/mail_activity_views.xml',
         'views/helpdesk_templates.xml',

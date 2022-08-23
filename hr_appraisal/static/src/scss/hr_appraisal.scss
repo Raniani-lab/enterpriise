@@ -75,6 +75,9 @@
             padding-right: 24px;
         }
     }
+    div.o_field_boolean_toggle_confirm, div.o_field_boolean_toggle {
+        display: inline-flex;
+    }
     div.o_boolean_toggle {
         &.o_readonly_modifier {
             cursor: not-allowed;

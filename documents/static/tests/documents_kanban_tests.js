@@ -2792,6 +2792,41 @@ QUnit.module('documents_kanban_tests.js', {
             "width should be increased after resizing search panel");
     });
 
+    QUnit.test("documents: upload with context", async function (assert) {
+        assert.expect(4);
+
+        const file = await testUtils.file.createFile({
+            name: 'text.txt',
+            content: 'hello, world',
+            contentType: 'text/plain',
+        });
+
+        const mockedXHRs = [];
+        this.patchDocumentXHR(mockedXHRs, (data) => {
+            assert.strictEqual(data.get("res_model"), "project");
+            assert.strictEqual(data.get("res_id"), "1");
+            assert.step('xhrSend')
+        });
+
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `
+            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                <div draggable="true" class="oe_kanban_global_area">
+                    <field name="name"/>
+                </div>
+            </t></templates></kanban>`,
+            context: {
+                default_res_model: 'project',
+                default_res_id: 1,
+            },
+        });
+
+        testUtils.file.dropFile($(target.querySelector('.o_kanban_renderer')), file);
+        assert.verifySteps(['xhrSend']);
+    });
+
     QUnit.test('documents: upload progress bars', async function (assert) {
         assert.expect(5);
 

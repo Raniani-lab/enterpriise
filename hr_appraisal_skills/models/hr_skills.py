@@ -69,6 +69,7 @@ class HrAppraisal(models.Model):
 class HrAppraisalSkill(models.Model):
     _name = 'hr.appraisal.skill'
     _description = "Employee Skills"
+    _order = "skill_type_id, skill_level_id"
 
     appraisal_id = fields.Many2one('hr.appraisal', required=True, ondelete='cascade')
     employee_id = fields.Many2one('hr.employee', related='appraisal_id.employee_id', store=True)
@@ -76,7 +77,7 @@ class HrAppraisalSkill(models.Model):
     skill_id = fields.Many2one('hr.skill', required=True)
     previous_skill_level_id = fields.Many2one('hr.skill.level')
     skill_level_id = fields.Many2one('hr.skill.level', required=True)
-    skill_type_id = fields.Many2one(related='skill_id.skill_type_id')
+    skill_type_id = fields.Many2one(related='skill_id.skill_type_id', store=True)
     level_progress = fields.Integer(related='skill_level_id.level_progress')
     justification = fields.Char()
     employee_skill_id = fields.Many2one('hr.employee.skill')

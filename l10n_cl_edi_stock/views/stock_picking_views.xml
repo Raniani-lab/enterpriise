@@ -50,7 +50,13 @@
         <field name="inherit_id" ref="stock.vpicktree" />
         <field name="arch" type="xml">
             <field name="json_popover" position="after">
-                <field name="l10n_cl_dte_status"/>
+                <field name="country_code" invisible="1"/>
+                <field name="l10n_cl_dte_status" widget="badge" decoration-success="l10n_cl_dte_status == 'accepted'"
+                       decoration-info="l10n_cl_dte_status == 'objected'"
+                       decoration-warning="l10n_cl_dte_status == 'ask_for_status'"
+                       decoration-danger="l10n_cl_dte_status == 'rejected'"
+                       attrs="{'invisible': [('country_code', '!=', 'CL')]}" optional="hide"/>
+                <field name="l10n_latam_document_number" optional="hide"/>
             </field>
         </field>
     </record>

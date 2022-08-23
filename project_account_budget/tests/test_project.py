@@ -33,7 +33,7 @@ class TestProject(TestProjectCommon):
             self.project_goats._get_budget_items(False),
             {
                 'data': [],
-                'total': {'allocated': 0, 'spent': 0},
+                'total': {'allocated': 0, 'progress': 0, 'spent': 0},
                 'can_add_budget': False,
             },
             'No budget has been created for this project.'
@@ -58,8 +58,9 @@ class TestProject(TestProjectCommon):
                 {
                     'allocated': 500,
                     'spent': 0.0,
+                    'progress': -1.0
                 },
             ],
-            'total': {'allocated': 500.0, 'spent': 0.0},
+            'total': {'allocated': 500.0, 'spent': 0.0, 'progress': -1.0},
             'can_add_budget': False,
         })

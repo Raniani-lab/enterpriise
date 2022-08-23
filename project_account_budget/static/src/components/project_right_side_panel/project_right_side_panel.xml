@@ -39,7 +39,8 @@
                             <td class="text-end align-middle" t-att-class="budget.allocated === 0 ? 'text-500' : ''" t-esc="formatMonetary(budget.allocated)"/>
                             <td class="text-end align-middle" t-att-class="budget.spent === 0 ? 'text-500' : ''" t-esc="formatMonetary(budget.spent)"/>
                             <t t-set="budget_remaining" t-value="budget.spent - budget.allocated"/>
-                            <td class="text-end align-middle" t-attf-class="text-bold {{budget_remaining &lt; 0 ? 'text-danger' : budget_remaining === 0 ? 'text-500' : 'text-success'}}" t-esc="formatMonetary(budget_remaining)"/>
+                            <td class="text-end align-middle"  t-esc="formatMonetary(budget_remaining)"
+                                t-attf-class="text-bold text-{{ budget.progress &gt;= 0.25 ? 'success' : budget.progress &gt;= 0 ? 'warning' : 'danger' }}"/>
                         </tr>
                     </tbody>
                     <tfoot>
@@ -49,7 +50,8 @@
                             <td class="text-end" t-att-class="budget_total.allocated === 0 ? 'text-500' : ''" t-esc="formatMonetary(budget_total.allocated)"/>
                             <td class="text-end" t-att-class="budget_total.spent === 0 ? 'text-500' : ''" t-esc="formatMonetary(budget_total.spent)" />
                             <t t-set="budget_total_remaining" t-value="budget_total.spent - budget_total.allocated"/>
-                            <td class="text-end" t-attf-class="text-bold {{budget_total_remaining &lt; 0 ? 'text-danger' : budget_total_remaining === 0 ? 'text-500' : 'text-success'}}" t-esc="formatMonetary(budget_total_remaining)" />
+                            <td class="text-end" t-esc="formatMonetary(budget_total_remaining)"
+                                t-attf-class="text-bold text-{{ budget_total.progress &gt;= 0.25 ? 'success' : budget_total.progress &gt;= 0 ? 'warning' : 'danger' }}"/>
                         </tr>
                     </tfoot>
                 </table>

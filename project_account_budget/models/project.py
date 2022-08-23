@@ -3,13 +3,15 @@
 
 import json
 
-from odoo import fields, models, _
+from odoo import fields, models, _, api
 from odoo.osv import expression
 
 class Project(models.Model):
     _inherit = "project.project"
 
     total_planned_amount = fields.Monetary(compute="_compute_total_planned_amount")
+    total_practical_amount = fields.Monetary(related='analytic_account_id.total_practical_amount')
+    total_budget_progress = fields.Monetary(compute="_compute_total_budget_progress")
 
     def _compute_total_planned_amount(self):
         budget_read_group = self.env['crossovered.budget.lines'].sudo()._read_group(
@@ -26,6 +28,12 @@ class Project(models.Model):
         }
         for project in self:
             project.total_planned_amount = planned_amount_per_account_id.get(project.analytic_account_id.id, 0)
+
+    @api.depends('total_practical_amount', 'total_planned_amount')
+    def _compute_total_budget_progress(self):
+        for project in self:
+            project.total_budget_progress = project.total_planned_amount and\
+                (project.total_practical_amount - project.total_planned_amount) / abs(project.total_planned_amount)
 
     def action_view_budget_lines(self, domain=None):
         self.ensure_one()
@@ -79,14 +87,22 @@ class Project(models.Model):
             spent = res['practical_amount']
             total_allocated += allocated
             total_spent += spent
-            budget_item = {'name': name, 'allocated': allocated, 'spent': spent}
+            budget_item = {
+                'name': name,
+                'allocated': allocated,
+                'spent': spent,
+                'progress': allocated and (spent - allocated) / abs(allocated),
+            }
             if res['ids'] and can_see_budget_items:
                 budget_item['action'] = {'name': 'action_view_budget_lines', 'type': 'object', 'args': [json.dumps([('id', 'in', res['ids'])])]}
             budget_data.append(budget_item)
         can_add_budget = with_action and self.user_has_groups('account.group_account_user')
         budget_items = {
             'data': budget_data,
-            'total': {'allocated': total_allocated, 'spent': total_spent},
+            'total': {
+                'allocated': total_allocated,
+                'spent': total_spent,
+                'progress': total_allocated and (total_spent - total_allocated) / abs(total_allocated)},
             'can_add_budget': can_add_budget,
         }
         if can_add_budget:

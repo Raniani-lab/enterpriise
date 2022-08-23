@@ -8,6 +8,7 @@
     'category': 'Services/Project',
     'depends': ['account_budget', 'project_enterprise'],
     'data': [
+        'views/project_views.xml',
         'views/account_budget_views.xml',
     ],
     'demo': [

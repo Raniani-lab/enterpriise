@@ -42,6 +42,6 @@ class AccountPayment(models.Model):
         return self.statement_line_id._action_open_bank_reconciliation_widget(
                 extra_domain=[('statement_id', 'in', self.reconciled_statement_ids.ids)],
                 default_context={
-                    'default_st_line_id': self.reconciled_statement_ids[0].id,
+                    'default_st_line_id': self.reconciled_statement_line_ids[:1].id,
                 }
             )

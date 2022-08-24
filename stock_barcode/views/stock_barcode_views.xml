@@ -91,7 +91,7 @@
                                 </div>
                             <div class="container o_kanban_card_content o_kanban_button">
                                 <div class="row text-muted">
-                                    <button class="btn btn-primary">
+                                    <button class="btn btn-primary" name="get_action_picking_tree_ready_kanban" type="object">
                                         <t t-esc="record.count_picking_ready.value"/> To Process
                                     </button>
                                 </div>

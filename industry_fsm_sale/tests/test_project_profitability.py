@@ -49,6 +49,7 @@ class TestIndustryFsmSaleProjectProfitability(TestProjectProfitabilityCommon):
             'No data should be found since no SO is linked to the project.'
         )
         self.additional_quotation.action_confirm()
+        self.env.flush_all()
         sequence_per_invoice_type = self.project._get_profitability_sequence_per_invoice_type()
         self.assertDictEqual(
             self.project._get_profitability_items(False),

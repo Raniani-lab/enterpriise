@@ -118,8 +118,7 @@ class TestHelpdeskRating(HelpdeskCommon, HttpCase, MailCommon):
                 'res_id': self.test_team_ticket1.id,
             },
         ])
-        self.env.cr.execute("UPDATE rating_rating SET create_date=%s, write_date=%s WHERE id in %s", (yesterday_str, yesterday_str, tuple(ratings.ids)))
-        ratings.invalidate_recordset(['create_date', 'write_date'])
+        ratings.write({'create_date': yesterday, 'write_date': yesterday})  # Write with the orm to avoid pending recomputation override write_date
 
         HelpdeskTeam = self.env['helpdesk.team']
         self.assertTrue(HelpdeskTeam.with_user(self.helpdesk_manager)._check_rating_feature_enabled(True))

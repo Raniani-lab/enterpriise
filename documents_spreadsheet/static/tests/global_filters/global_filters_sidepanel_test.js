@@ -144,7 +144,7 @@ QUnit.module(
             await testUtils.dom.click(newRelation);
             const selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            const item = target.querySelector(".o_sp_selector_product");
+            const item = target.querySelector(".o_model_selector_product");
             await click(item);
             assert.containsNone(
                 target,
@@ -185,7 +185,7 @@ QUnit.module(
             await click(target, ".o_topbar_filter_icon");
             await click(target, ".o_global_filter_new_relation");
             await click(target, ".o_side_panel_related_model input");
-            await click(target, ".o_sp_selector_vehicle");
+            await click(target, ".o_model_selector_vehicle");
             assert.strictEqual(
                 target.querySelector(".o_field_selector_value").innerText,
                 "Vehicle"
@@ -278,7 +278,7 @@ QUnit.module(
                 await click(newRelation);
                 const selector = `.o_side_panel_related_model input`;
                 await testUtils.dom.click($(target).find(selector)[0]);
-                const item = target.querySelector(".o_sp_selector_product");
+                const item = target.querySelector(".o_model_selector_product");
                 await click(item);
                 const fieldMatching = target.querySelector(".o_pivot_field_matching div");
                 assert.equal(
@@ -325,7 +325,7 @@ QUnit.module(
                 const fieldMatchingSelector = `.o_pivot_field_matching`;
                 assert.containsNone(target, fieldMatchingSelector);
                 await testUtils.dom.click(target.querySelector(relatedModelSelector));
-                const item = target.querySelector(".o_sp_selector_product");
+                const item = target.querySelector(".o_model_selector_product");
                 await click(item);
                 assert.containsOnce(target, fieldMatchingSelector);
             }
@@ -566,7 +566,7 @@ QUnit.module(
             await click(newRelation);
             const selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            const item = target.querySelector(".o_sp_selector_product");
+            const item = target.querySelector(".o_model_selector_product");
             await click(item);
 
             const save = target.querySelector(
@@ -596,7 +596,7 @@ QUnit.module(
             await click(newRelation);
             const selector = `.o_side_panel_related_model input`;
             await testUtils.dom.click($(target).find(selector)[0]);
-            const item = target.querySelector(".o_sp_selector_product");
+            const item = target.querySelector(".o_model_selector_product");
             await click(item);
 
             const save = target.querySelector(
@@ -649,7 +649,7 @@ QUnit.module(
                 await click(newRelation);
                 const selector = `.o_side_panel_related_model input`;
                 await testUtils.dom.click($(target).find(selector)[0]);
-                const item = target.querySelector(".o_sp_selector_product");
+                const item = target.querySelector(".o_model_selector_product");
                 await click(item);
 
                 const save = target.querySelector(

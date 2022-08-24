@@ -20,8 +20,11 @@ class TransferModel(models.Model):
         company = self.env.company
         return company.compute_fiscalyear_dates(date.today())['date_from'] if company else None
 
+    def _get_default_journal(self):
+        return self.env['account.journal'].search([('company_id', '=', self.env.company.id), ('type', '=', 'general')], limit=1)
+
     name = fields.Char(required=True)
-    journal_id = fields.Many2one('account.journal', required=True, string="Destination Journal")
+    journal_id = fields.Many2one('account.journal', required=True, string="Destination Journal", default=_get_default_journal)
     company_id = fields.Many2one('res.company', readonly=True, related='journal_id.company_id')
     date_start = fields.Date(string="Start Date", required=True, default=_get_default_date_start)
     date_stop = fields.Date(string="Stop Date", required=False)
@@ -122,10 +125,10 @@ class TransferModel(models.Model):
                 next_move_date = record._get_next_move_date(start_date)
 
                 # (Re)Generate moves in draft untill today
-                # Journal entries will be recomputed everyday untill posted.
+                # Journal entries will be recomputed everyday until posted.
                 while next_move_date <= max_date:
                     record._create_or_update_move_for_period(start_date, next_move_date)
-                    start_date = next_move_date
+                    start_date = next_move_date + relativedelta(days=1)
                     next_move_date = record._get_next_move_date(start_date)
 
                 # (Re)Generate move for one more period if needed
@@ -147,7 +150,7 @@ class TransferModel(models.Model):
         return [
             ('account_id', 'in', self.account_ids.ids),
             ('date', '>=', start_date),
-            ('date', '<', end_date),
+            ('date', '<=', end_date),
             ('move_id.state', '=', 'posted')
         ]
 
@@ -213,7 +216,7 @@ class TransferModel(models.Model):
             delta = relativedelta(months=3)
         else:
             delta = relativedelta(years=1)
-        return date + delta
+        return date + delta - relativedelta(days=1)
 
     def _get_auto_transfer_move_line_values(self, start_date, end_date):
         """ Get all the transfer move lines values for a given period

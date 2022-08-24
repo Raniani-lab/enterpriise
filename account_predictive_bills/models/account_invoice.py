@@ -142,7 +142,14 @@ class AccountMoveLine(models.Model):
                    AND account.internal_group  = 'expense'
                    AND company_id = %(company_id)s
         """]
-        query = self._build_query([('account_id.deprecated', '=', False)])
+        if self.move_id.is_purchase_document(True):
+            excluded_group = 'income'
+        else:
+            excluded_group = 'expense'
+        query = self._build_query([
+            ('account_id.deprecated', '=', False),
+            ('account_id.internal_group', '!=', excluded_group),
+        ])
         return self._predicted_field(field, query, additional_queries)
 
     @api.onchange('name')

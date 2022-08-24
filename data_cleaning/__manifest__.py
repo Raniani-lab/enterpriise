@@ -25,10 +25,10 @@
     'application': False,
     'assets': {
         'web.assets_backend': [
-            'data_cleaning/static/src/js/**/*',
+            'data_cleaning/static/src/views/*.js',
         ],
         'web.assets_qweb': [
-            'data_cleaning/static/src/xml/**/*',
+            'data_cleaning/static/src/views/*.xml',
         ],
     },
     'license': 'OEEL-1',

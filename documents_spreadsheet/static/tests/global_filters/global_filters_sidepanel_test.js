@@ -1352,5 +1352,38 @@ QUnit.module(
                 assert.equal(listField.querySelector("select").value, "1");
             }
         );
+
+        QUnit.test("Empty field is marked as warning", async function (assert) {
+            const { model } = await createSpreadsheetFromPivotView();
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "text",
+                    label: "Text Filter",
+                    defaultValue: "",
+                    pivotFields: {},
+                },
+            });
+            await click(target, ".o_topbar_filter_icon");
+            await click(target, "i.o_side_panel_filter_icon.fa-cog");
+            assert.hasClass(target.querySelector(".o_pivot_field_matching"), "o_missing_field");
+        });
+
+        QUnit.test("Can save with an empty field", async function (assert) {
+            const { model } = await createSpreadsheetFromPivotView();
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "text",
+                    label: "Text Filter",
+                    defaultValue: "",
+                    pivotFields: {},
+                },
+            });
+            await click(target, ".o_topbar_filter_icon");
+            await click(target, "i.o_side_panel_filter_icon.fa-cog");
+            await click(target, ".o_global_filter_save");
+            assert.equal(model.getters.getGlobalFilters()[0].pivotFields[1], undefined);
+        });
     }
 );

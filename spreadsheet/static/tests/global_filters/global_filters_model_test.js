@@ -118,6 +118,20 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue.yearOffset, 0);
     });
 
+    QUnit.test("A global filter with an empty field can be evaluated", async function (assert) {
+        const { model } = await createSpreadsheetWithPivotAndList();
+        const fields = { 1: {} };
+        const filter = {
+            ...THIS_YEAR_FILTER.filter,
+            pivotFields: fields,
+            fields,
+            listFields: fields,
+        };
+        await addGlobalFilter(model, { filter });
+        const domain = model.getters.getPivotComputedDomain(1);
+        assert.deepEqual(domain, []);
+    });
+
     QUnit.test("Cannot have duplicated names", async function (assert) {
         assert.expect(6);
 

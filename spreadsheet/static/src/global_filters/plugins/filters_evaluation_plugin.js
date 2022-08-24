@@ -437,7 +437,7 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
         let domain = new Domain([]);
         for (const filter of this.getters.getGlobalFilters()) {
             const fieldDesc = getFieldDesc(filter.id);
-            if (!fieldDesc) {
+            if (!fieldDesc || !fieldDesc.field) {
                 continue;
             }
             let domainToAdd = undefined;

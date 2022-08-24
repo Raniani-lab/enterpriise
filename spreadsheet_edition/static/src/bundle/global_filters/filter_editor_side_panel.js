@@ -111,18 +111,6 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         return this.state.saved && !this.state.label;
     }
 
-    get missingPivotField() {
-        return this.state.saved && Object.keys(this.state.pivotFields).length === 0;
-    }
-
-    get missingListField() {
-        return this.state.saved && Object.keys(this.state.listFields).length === 0;
-    }
-
-    get missingGraphField() {
-        return this.state.saved && Object.keys(this.state.graphFields).length === 0;
-    }
-
     get missingModel() {
         return (
             this.state.saved &&
@@ -187,15 +175,21 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     _loadFilterFields(globalFilter) {
         for (const pivotId of this.pivotIds) {
             const field = globalFilter && globalFilter.pivotFields[pivotId];
-            this.state.pivotFields[pivotId] = { ...field };
+            if (field) {
+                this.state.pivotFields[pivotId] = { ...field };
+            }
         }
         for (const listId of this.listIds) {
             const field = globalFilter && globalFilter.listFields[listId];
-            this.state.listFields[listId] = { ...field };
+            if (field) {
+                this.state.listFields[listId] = { ...field };
+            }
         }
         for (const graphId of this.graphIds) {
             const field = globalFilter && globalFilter.graphFields[graphId];
-            this.state.graphFields[graphId] = { ...field };
+            if (field) {
+                this.state.graphFields[graphId] = { ...field };
+            }
         }
     }
 
@@ -294,9 +288,13 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 
     /**
      * @param {string} pivotId
-     * @param {string} fieldName
+     * @param {string|undefined} fieldName
      */
     selectedPivotField(pivotId, fieldName) {
+        if (!fieldName) {
+            delete this.state.pivotFields[pivotId];
+            return;
+        }
         const field = this.getters.getPivotDataSource(pivotId, fieldName).getField(fieldName);
         if (field) {
             this.state.pivotFields[pivotId] = {
@@ -314,6 +312,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * @param {string} fieldName
      */
     selectedListField(listId, fieldName) {
+        if (!fieldName) {
+            delete this.state.listFields[listId];
+            return;
+        }
         const field = this.getters.getListDataSource(listId).getField(fieldName);
         if (field) {
             this.state.listFields[listId] = {
@@ -331,6 +333,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * @param {string} fieldName
      */
     selectedGraphField(graphId, fieldName) {
+        if (!fieldName) {
+            delete this.state.graphFields[graphId];
+            return;
+        }
         const field = this.getters.getGraphDataSource(graphId).getField(fieldName);
         if (field) {
             this.state.graphFields[graphId] = {
@@ -367,11 +373,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 
     onSave() {
         this.state.saved = true;
-        const missingField =
-            (this.listIds.length !== 0 && this.missingListField) ||
-            (this.pivotIds.length !== 0 && this.missingPivotField) ||
-            (this.graphIds.length !== 0 && this.missingGraphField);
-        if (this.missingLabel || missingField || this.missingModel) {
+        if (this.missingLabel || this.missingModel) {
             this.notification.add(this.env._t("Some required fields are not valid"), {
                 type: "danger",
                 sticky: false,

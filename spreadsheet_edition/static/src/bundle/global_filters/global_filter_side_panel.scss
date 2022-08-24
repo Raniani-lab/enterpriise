@@ -15,6 +15,10 @@
         width: 100%;
     }
 
+    .o_missing_field {
+        @include print-variable(o-input-border-color, map-get($theme-colors, 'warning'));
+    }
+
     .o_pivot_field_matching {
         margin: 10px 0px;
         padding-left:5px;

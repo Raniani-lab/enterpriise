@@ -118,7 +118,7 @@
             <div class="text-muted">
                 Match this filter to a field for each data source
             </div>
-            <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="missingPivotField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
+            <div t-foreach="pivotIds" t-as="pivotId" t-key="pivotId" t-att-class="state.pivotFields[pivotId] ? '' : 'o_missing_field'" class="o_pivot_field_matching o_required_field">
                 <t t-set="pivotDataSource" t-value="getters.getPivotDataSource(pivotId)"/>
                 <t t-if="pivotDataSource.isMetaDataLoaded()">
                     <div>
@@ -142,12 +142,12 @@
                         <FilterFieldOffset
                             t-if="state.type === 'date'"
                             onOffsetSelected="(e) => this.onSetPivotFieldOffset(pivotId, e.target.value)"
-                            selectedOffset="state.pivotFields[pivotId].offset || 0"
+                            selectedOffset="state.pivotFields[pivotId] and state.pivotFields[pivotId].offset || 0"
                             />
                     </div>
                 </t>
             </div>
-            <div t-foreach="listIds" t-as="listId" t-key="listId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
+            <div t-foreach="listIds" t-as="listId" t-key="listId" t-att-class="state.listFields[listId] ? '' : 'o_missing_field'" class="o_pivot_field_matching o_required_field">
                 <div>
                     <span class="fw-medium" t-esc="modelDisplayNames.lists[listId]"/>
                     <span class="o_pivot_model_technical_name text-muted"> (List #<t t-esc="listId"/>)</span>
@@ -169,11 +169,11 @@
                     <FilterFieldOffset
                         t-if="state.type === 'date'"
                         onOffsetSelected="(e) => this.onSetListFieldOffset(listId, e.target.value)"
-                        selectedOffset="state.listFields[listId].offset || 0"
+                        selectedOffset="state.listFields[listId] and state.listFields[listId].offset || 0"
                         />
                 </div>
             </div>
-            <div t-foreach="graphIds" t-as="graphId" t-key="graphId" t-att-class="missingListField ? 'o_field_invalid' : ''" class="o_pivot_field_matching o_required_field">
+            <div t-foreach="graphIds" t-as="graphId" t-key="graphId" t-att-class="state.graphFields[graphId] ? '' : 'o_missing_field'" class="o_pivot_field_matching o_required_field">
                 <div>
                     <span class="fw-medium" t-esc="modelDisplayNames.graph[graphId]"/>
                     <span class="o_pivot_model_technical_name text-muted"> (Graph - <t t-esc="getters.getChartDefinition(graphId).title"/>)</span>
@@ -195,7 +195,7 @@
                     <FilterFieldOffset
                         t-if="state.type === 'date'"
                         onOffsetSelected="(e) => this.onSetGraphFieldOffset(graphId, e.target.value)"
-                        selectedOffset="state.graphFields[graphId].offset || 0"
+                        selectedOffset="state.graphFields[graphId] and state.graphFields[graphId].offset || 0"
                         />
                 </div>
 

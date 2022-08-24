@@ -353,6 +353,7 @@ class MrpProductionWorkcenterLine(models.Model):
             'context': {
                 'default_workorder_id': self.id,
                 'default_type': 'component',
+                'default_company_id': self.company_id.id,
             }
         }
 

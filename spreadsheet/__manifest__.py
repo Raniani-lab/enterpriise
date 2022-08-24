@@ -6,7 +6,7 @@
     'category': 'Hidden',
     'summary': 'Spreadsheet',
     'description': 'Spreadsheet',
-    'depends': ['web'],
+    'depends': ['bus', 'web'],
     'data': [],
     'demo': [],
     'installable': True,

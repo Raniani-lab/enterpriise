@@ -358,7 +358,7 @@ class SignItemType(models.Model):
         ('selection', "Selection"),
     ], required=True, string='Type', default='text')
 
-    tip = fields.Char(required=True, default="fill in", translate=True)
+    tip = fields.Char(required=True, default="fill in", help="Hint displayed in the signing hint", translate=True)
     placeholder = fields.Char(translate=True)
 
     default_width = fields.Float(string="Default Width", digits=(4, 3), required=True, default=0.150)

@@ -71,31 +71,31 @@
         </t>
     </t>
     <t t-name="sign.template">
-        <div t-att-class="(widget.has_sign_requests &amp;&amp; widget.isPDF) ? 'd-none' : ''">
-            <div class="o_sign_template_header_wrapper px-4 py-2 align-items-center d-flex">
-                <div class="o_sign_template_header_document_name align-items-center d-flex me-auto">
-                    <span t-if="!widget.has_sign_requests" class="fa fa-pencil me-2" title="Edit template name" role="img" aria-label="Edit template name"/>
-                    <input type="text" class="o_sign_template_name_input o_input" t-att-value="widget.sign_template.display_name"/>
-                </div>
-
-                <div t-if="widget.debug" class="o_sign_template_authorized_ids_and_save align-items-center d-flex">
-                    <label for="o_sign_template_authorized_ids" class="p-0 m-0 me-2">Authorized Users:</label>
-                    <div id="o_sign_template_authorized_ids" class="o_sign_template_authorized_ids"/>
-                    <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
-                </div>
-
-                <div t-if="widget.debug" class="o_sign_template_group_id_and_save align-items-center d-flex">
-                    <label for="o_sign_template_group_id" class="p-0 m-0 me-2">Authorized Groups:</label>
-                    <div id="o_sign_template_groupe_id" class="o_sign_template_group_id"/>
-                    <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
-                </div>
-
-                <div class="o_sign_template_tags_and_save align-items-center d-flex">
-                    <label for="o_sign_template_tags" class="p-0 m-0 me-2">Tags:</label>
-                    <div id="o_sign_template_tags" class="o_sign_template_tags"/>
-                    <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
-                </div>
+        <div class="o_sign_template_header_wrapper px-4 py-2 align-items-center d-flex">
+            <div class="o_sign_template_header_document_name align-items-center d-flex me-auto">
+                <span t-if="!widget.has_sign_requests" class="fa fa-pencil me-2" title="Edit template name" role="img" aria-label="Edit template name"/>
+                <input type="text" class="o_sign_template_name_input o_input" t-att-value="widget.sign_template.display_name"/>
             </div>
+             <div t-if="widget.manage_template_access" class="o_sign_template_authorized_ids_and_save align-items-center d-flex">
+                 <label for="o_sign_template_authorized_ids" class="p-0 m-0 me-2">Authorized Users:</label>
+                 <div id="o_sign_template_authorized_ids" class="o_sign_template_authorized_ids"/>
+                 <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
+             </div>
+
+            <div t-if="widget.manage_template_access" class="o_sign_template_group_id_and_save align-items-center d-flex">
+                <label for="o_sign_template_group_id" class="p-0 m-0 me-2">Authorized Groups:</label>
+                <div id="o_sign_template_groupe_id" class="o_sign_template_group_id"/>
+                <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
+            </div>
+
+            <div class="o_sign_template_tags_and_save align-items-center d-flex">
+                <label for="o_sign_template_tags" class="p-0 m-0 me-2">Tags:</label>
+                <div id="o_sign_template_tags" class="o_sign_template_tags"/>
+                <div class="o_sign_template_saved_info alert alert-success m-0 ms-2" role="status"><span class="fa fa-check"/>Saved</div>
+            </div>
+
+            <button class="btn btn-secondary float-end o_sign_template_edit_form">Template Properties</button>
+
         </div>
         <t t-if="widget.isPDF">
             <iframe class="o_sign_pdf_iframe"/>

@@ -477,6 +477,16 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
       });
     },
 
+    "click .o_sign_template_edit_form": function (e) {
+        return this.do_action({
+            name: "Edit Template Form",
+            type: "ir.actions.act_window",
+            res_model: "sign.template",
+            res_id: this.templateID,
+            views: [[false, "form"]]
+        });
+      },
+
     "click .o_sign_template_next": function (e) {
       const templateName = e.target.getAttribute("template-name");
       const templateId = parseInt(e.target.getAttribute("template-id"));
@@ -538,7 +548,8 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
     if (this.templateID === undefined) {
       return this._super.apply(this, arguments);
     }
-    return Promise.all([this._super(), this.perform_rpc()]);
+    const set_manage_template_access = session.user_has_group('sign.manage_template_access').then(res => {this.manage_template_access = res;});
+    return Promise.all([set_manage_template_access, this._super(), this.perform_rpc()]);
   },
   // TODO: probably this can be removed
   createTemplateTagsField: function () {
@@ -729,14 +740,17 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
       self.handleRecordId = recordId;
       self.record = self.model.get(self.handleRecordId);
 
+      const editMode = self.has_sign_requests ? "readonly" : "edit";
+      const isReadonly = self.has_sign_requests ? false  : true;
+
       self.tag_idsMany2Many = new FormFieldMany2ManyTags(
         self,
         "tag_ids",
         self.record,
         {
-          mode: "edit",
+          mode: editMode,
           create: true,
-          attrs: { options: { color_field: "color" } },
+          attrs: { options: { color_field: "color", readonly: isReadonly } },
         }
       );
       self._registerWidget(
@@ -745,14 +759,14 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
         self.tag_idsMany2Many
       );
       self.tag_idsMany2Many.appendTo(self.$(".o_sign_template_tags"));
-
-      if (config.isDebug()) {
+      if (self.manage_template_access) {
         self.authorized_idsMany2many = new FormFieldMany2ManyTags(self, 'authorized_ids', self.record, {
-          mode: 'edit',
+          mode: editMode,
           create: false,
           attrs: {
             options: {
               color_field: 'color',
+              readonly: isReadonly
             }
           },
         });
@@ -764,9 +778,9 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
           "group_ids",
           self.record,
           {
-            mode: "edit",
+            mode: editMode,
             create: false,
-            attrs: { options: { color_field: "color" } },
+            attrs: { options: { color_field: "color", readonly: isReadonly } },
           }
         );
         self._registerWidget(
@@ -886,7 +900,6 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
     return this._super()
       .then(() => {
         this.initialize_content();
-        this.createTemplateTagsField();
         if (this.$("iframe").length) {
           core.bus.on("DOM_updated", this, init_iframe);
         }
@@ -921,6 +934,7 @@ const TemplateAction = AbstractAction.extend(StandaloneFieldManagerMixin, {
   },
 
   initialize_content: function () {
+    this.createTemplateTagsField();
     this.$(".o_content").empty();
     this.debug = config.isDebug();
     this.$(".o_content").append(

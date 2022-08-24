@@ -38,7 +38,6 @@
                                         <span class="fa fa-ellipsis-v"/>
                                     </a>
                                     <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                        <t t-if="widget.editable" groups="base.group_no_one"><a role="menuitem" type="edit" class="dropdown-item">Properties</a></t>
                                         <a role="menuitem" type="object" name="go_to_custom_template" class="d-none d-md-block dropdown-item" context="{'sign_edit_call': 'sign_template_edit'}">Modify Template</a>
                                         <a role="menuitem" type="object" name="open_requests" class="dropdown-item">Signed Documents</a>
                                         <a role="menuitem" type="object" name="stop_sharing" class="dropdown-item" attrs="{'invisible': [('is_sharing', '=', False)]}">Stop Sharing</a>
@@ -125,7 +124,6 @@
                                 <span class="o_stat_text">Signed Document</span>
                             </div>
                         </button>
-                        <button string="Edit fields" icon="fa-wrench" type="object" name="go_to_custom_template" class="oe_stat_button"/>
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
@@ -147,15 +145,15 @@
                             <field name="redirect_url" widget="url"/>
                             <field name="redirect_url_text"  attrs="{'invisible':[('redirect_url','=','')]}"/>
                             <field name="authorized_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="group_ids" groups="base.group_no_one" widget="many2many_tags" />
-                            <field name="user_id" domain="[('share', '=', False)]" groups="base.group_no_one" options="{'no_open': True}"/>
+                            <field name="group_ids" groups="sign.manage_template_access" widget="many2many_tags" />
+                            <field name="user_id" domain="[('share', '=', False)]" groups="sign.manage_template_access" options="{'no_open': True}"/>
                         </group>
                     </group>
                     <notebook>
                         <page name="document" string="Document">
                             <field name="datas" widget="pdf_viewer"/>
                         </page>
-                        <page string="Fields" name="signatures" groups="base.group_no_one">
+                        <page string="Fields" name="signatures">
                             <field name="sign_item_ids"/>
                         </page>
                     </notebook>
@@ -369,9 +367,7 @@
     <menuitem id="menu_sign_configuration" sequence="100" name="Configuration" parent="menu_document"/>
     <!-- Menus -->
     <menuitem id="sign.sign_item_settings_menu" name="Settings" parent="sign.menu_sign_configuration" action="sign_settings_action" groups="sign.group_sign_manager"/>
-    <menuitem id="sign.sign_item_type_menu" name="Field Types" parent="sign.menu_sign_configuration" action="sign_item_type_action" groups="base.group_no_one"/>
     <menuitem id="sign.sign_item_role_menu" name="Roles" parent="sign.menu_sign_configuration" action="sign_item_role_action" groups="sign.group_sign_manager"/>
-    <menuitem id="sign_request_item_menu" name="Signature Requests Items" parent="menu_sign_configuration" action="sign_request_item_action" groups="base.group_no_one" sequence="30"/>
     <menuitem id="sign_report_green_savings" name="Green Savings" parent="sign_reports" action="sign.sign_report_green_savings_action"/>
     <menuitem id="sign_request_documents" name="All documents" parent="sign_request_menu" action="sign_request_action"/>
     <menuitem id="sign_request_waiting_for_me" name="Waiting for me" parent="sign_request_menu" action="sign_request_waiting_for_me_action"/>

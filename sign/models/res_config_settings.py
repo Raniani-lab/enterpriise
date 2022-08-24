@@ -20,6 +20,7 @@ class ResConfigSettings(models.TransientModel):
         default=False)
 
     group_show_sign_order = fields.Boolean(string="Enable Signing Order", implied_group='sign.show_sign_order')
+    group_manage_template_access = fields.Boolean(string="Manage template access", implied_group='sign.manage_template_access')
 
     @api.depends('sign_terms_type')
     def _compute_sign_terms_preview(self):

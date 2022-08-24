@@ -46,7 +46,6 @@
                                             <t t-if="record.active.raw_value">Archive</t>
                                         </a>
                                         <a role="menuitem" type="delete" states="shared" class="dropdown-item">Stop Sharing</a>
-                                        <a role="menuitem" type="delete" groups="base.group_no_one" class="dropdown-item">Delete</a>
                                         <ul class="oe_kanban_colorpicker" data-field="color"/>
                                     </div>
                                 </div>

@@ -44,6 +44,7 @@ class Certificate(models.Model):
                                    'otherwise, the certificate will be shared with other users of the current company')
     last_token = fields.Char('Last Token')
     token_time = fields.Datetime('Token Time')
+    l10n_cl_is_there_shared_certificate = fields.Boolean(related='company_id.l10n_cl_is_there_shared_certificate')
 
     def _get_data(self):
         """ Return the signature_key_file (b64 encoded) and the certificate decrypted """

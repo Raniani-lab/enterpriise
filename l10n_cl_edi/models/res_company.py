@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models
+from odoo import fields, models, api
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 
@@ -98,6 +98,7 @@ class ResCompany(models.Model):
              '4 - Foreigner')
     l10n_cl_certificate_ids = fields.One2many(
         'l10n_cl.certificate', 'company_id', string='Certificates (CL)')
+    l10n_cl_is_there_shared_certificate = fields.Boolean('Is There Shared Certificate?', compute='_compute_is_there_shared_cert')
 
     def _get_digital_signature(self, user_id=None):
         """
@@ -116,5 +117,11 @@ class ResCompany(models.Model):
             lambda x: x._is_valid_certificate() and not x.user_id and x.company_id.id == self.id)
         if not shared_certificates:
             raise UserError(_('There is not a valid certificate for the company: %s') % self.name)
-
         return shared_certificates[0]
+
+    @api.depends('l10n_cl_dte_service_provider')
+    def _compute_is_there_shared_cert(self):
+        cl_certificate = self.env['l10n_cl.certificate']
+        for company in self:
+            domain = [('user_id', '=', False), ('company_id', '=', company.id)]
+            company.l10n_cl_is_there_shared_certificate = cl_certificate.search(domain, limit=1)

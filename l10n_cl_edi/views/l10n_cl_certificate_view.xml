@@ -8,6 +8,11 @@
             <field name="arch" type="xml">
                 <form string="Certificate Form">
                     <sheet>
+                        <field name="l10n_cl_is_there_shared_certificate" invisible="1"/>
+                        <div class="alert alert-warning text-start" attrs="{'invisible': [('l10n_cl_is_there_shared_certificate', '=', True)]}" role="alert">
+                            <strong>Warning:</strong> there is no shared digital signature for this company. You need to define at least one certificate without a user.
+                            Otherwise, you will need to send electronic invoices to the SII manually, and Odoo won't be able to send automatic receipt acknowledgements for vendor bills.
+                        </div>
                         <group>
                             <field name="signature_key_file" required="True" filename="signature_filename"/>
                             <field name="signature_filename" invisible="True"/>

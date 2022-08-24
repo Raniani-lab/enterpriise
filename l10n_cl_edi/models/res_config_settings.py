@@ -31,3 +31,4 @@ class ResConfigSettings(models.TransientModel):
              '2 - Fees Receipt Issuer (Applies to suppliers who issue fees receipt)\n'
              '3 - End consumer (only receipts)\n'
              '4 - Foreigner')
+    l10n_cl_is_there_shared_certificate = fields.Boolean(related='company_id.l10n_cl_is_there_shared_certificate')

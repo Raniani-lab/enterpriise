@@ -80,7 +80,7 @@ class SaleOrderLine(models.Model):
             return self.order_id.pricelist_id._get_product_price(
                 self.product_id.with_context(**self._get_product_price_context()),
                 self.product_uom_qty or 1.0,
-                self.product_uom,
+                uom=self.product_uom,
                 date=self.order_id.date_order or fields.Date.today(),
                 **self._get_price_computing_kwargs()
             )

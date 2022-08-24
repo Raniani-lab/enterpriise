@@ -141,8 +141,6 @@
                         class="o_put_in_pack btn btn-secondary text-uppercase">
                     <i class="fa fa-cube me-1"/> Put In Pack
                 </button>
-            </div>
-            <div class="o_barcode_control o_navigation_buttons d-flex">
                 <button t-if="numberOfPages > 1" t-on-click="previousPage"
                     class="btn btn-secondary text-uppercase o_previous_page">
                     <i class="fa fa-angle-left me-1"/> Previous

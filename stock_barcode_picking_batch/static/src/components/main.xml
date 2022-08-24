@@ -29,9 +29,6 @@
         <xpath expr="//div[hasclass('o_action_buttons')]" position="attributes">
             <attribute name="t-if">!isConfiguring</attribute>
         </xpath>
-        <xpath expr="//div[hasclass('o_navigation_buttons')]" position="attributes">
-            <attribute name="t-if">!isConfiguring</attribute>
-        </xpath>
         <xpath expr="//div[hasclass('o_barcode_control')]" position="after">
             <div t-if="isConfiguring" class="o_barcode_control d-flex">
                 <button class="o_confirm btn btn-secondary text-uppercase"

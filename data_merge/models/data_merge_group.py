@@ -62,10 +62,10 @@ class DataMergeGroup(models.Model):
             group.similarity = min(1, len(data) / len(read_fields))
 
     # YTI TODO: Move this on the data_merge.record model
-    def discard_records(self, records=[]):
+    def discard_records(self, records=None):
         domain = [('group_id', '=', self.id)]
 
-        if records:
+        if records is not None:
             domain = expression.AND([domain, [('id', 'in', records)]])
         self.env['data_merge.record'].search(domain).write({'is_discarded': True, 'is_master': False})
         self._elect_master_record()
@@ -110,6 +110,7 @@ class DataMergeGroup(models.Model):
     ### Merge
     ###########
     # YTI TODO: Move this on the data_merge.record model
+    @api.model
     def merge_multiple_records(self, group_records):
         group_ids = self.browse([int(group_id) for group_id in group_records.keys()])
 
@@ -129,12 +130,7 @@ class DataMergeGroup(models.Model):
         if records is None:
             records = []
 
-        # We should still be able to merge "discarded" records
-        # The show_discarded key is passed from the "Discarded" filter in JS
-        domain = [
-            ('group_id', '=', self.id),
-            ('is_discarded', '=', self.env.context.get('show_discarded', False)),
-        ]
+        domain = [('group_id', '=', self.id)]
         if records:
             domain += [('id', 'in', records)]
 

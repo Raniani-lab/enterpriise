@@ -5,7 +5,7 @@
             <field name="name">Deduplication Record List</field>
             <field name="model">data_merge.record</field>
             <field name="arch" type="xml">
-                <tree expand="true" js_class="data_merge_list" decoration-danger="is_deleted">
+                <tree expand="true" js_class="data_merge_list" decoration-danger="is_deleted" create="0" export_xlsx="0">
                     <field name="is_deleted" invisible="1" />
                     <field name="res_model_name" invisible="1" />
                     <field name="group_id" invisible="1" />
@@ -23,7 +23,7 @@
                     <groupby name="group_id">
                         <field name="active" invisible="1" />
                         <button type="object" name="merge_records" string="Merge" />
-                        <button type="object" name="discard_records" string="Discard" class="text-danger text-uppercase o_data_merge_discard_btn" invisible="context.get('show_discarded', False)" />
+                        <button type="object" name="discard_records" string="Discard" class="text-danger text-uppercase o_data_merge_discard_btn"/>
                     </groupby>
                 </tree>
             </field>
@@ -36,7 +36,7 @@
                 <search string="Records">
                     <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                     <field name="model_id" string="Model" />
-                    <filter string="Discarded" name="discarded" domain="[('is_discarded', '=', True), ('active', '=', False)]" context="{'show_discarded': True}" />
+                    <filter string="Discarded" name="discarded" domain="[('is_discarded', '=', True), ('active', '=', False)]"/>
                     <searchpanel>
                         <field name="model_id" icon="fa-bars" string="Rule" enable_counters="1"/>
                     </searchpanel>
@@ -52,7 +52,7 @@
             <field name="arch" type="xml">
                 <search string="Records">
                     <field name="model_id" string="Model" />
-                    <filter string="Discarded" name="discarded" domain="[('is_discarded', '=', True), ('active', '=', False)]" context="{'show_discarded': True}" />
+                    <filter string="Discarded" name="discarded" domain="[('is_discarded', '=', True), ('active', '=', False)]"/>
                 </search>
             </field>
         </record>

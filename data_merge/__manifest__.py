@@ -27,10 +27,10 @@
     'uninstall_hook': 'uninstall_hook',
     'assets': {
         'web.assets_backend': [
-            'data_merge/static/src/js/data_merge_list_view.js',
+            'data_merge/static/src/views/*.js',
         ],
         'web.assets_qweb': [
-            'data_merge/static/src/xml/**/*',
+            'data_merge/static/src/views/*.xml',
         ],
     },
     'license': 'OEEL-1',

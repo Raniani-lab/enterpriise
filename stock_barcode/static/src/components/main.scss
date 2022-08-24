@@ -115,7 +115,10 @@
         flex: auto;
         overflow: auto;
         color: $gray-800;
-        margin-bottom: 120px;
+        margin-bottom: 60px;
+        @media (orientation: portrait) {
+            margin-bottom: 30px;
+        }
 
         &.o_js_has_highlight .o_barcode_line.o_highlight {
             &.o_highlight_green {
@@ -207,7 +210,12 @@
         > .btn {
             flex: 1;
             width: 50%;
-            height: 60px;
+            @media (orientation: portrait) {
+                font-size: 0.8em;
+            }
+            @media (orientation: landscape) {
+                height: 60px;
+            }
             border-width: 1px 0 0 0;
             border-style: solid;
             &.btn-secondary {

@@ -17,7 +17,7 @@ tour.register('payroll_dashboard_ui_tour', {
     },
     {
         content: "Open employee profile",
-        trigger: 'tr.o_data_row',
+        trigger: 'tr.o_data_row td[name="name"]',
     },
     {
         content: "Open contract history",

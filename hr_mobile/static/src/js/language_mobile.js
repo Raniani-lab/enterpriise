@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
-    import EmployeeProfileFormView from '@hr/js/language';
-    import { UpdateDeviceAccountControllerMixin } from 'web_mobile.mixins';
+import { patch } from "@web/core/utils/patch";
+import { UpdateDeviceAccountControllerMixin } from 'web_mobile.mixins';
+import { EmployeeProfileFormController } from "@hr/views/profile_form_view";
 
-    EmployeeProfileFormView.prototype.config.Controller.include(UpdateDeviceAccountControllerMixin);
+patch(EmployeeProfileFormController.prototype, 'employee_profile_include', UpdateDeviceAccountControllerMixin);

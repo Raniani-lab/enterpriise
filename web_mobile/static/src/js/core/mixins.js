@@ -49,9 +49,9 @@ const UpdateDeviceAccountControllerMixin = {
     /**
      * @override
      */
-    async saveRecord() {
+    async save() {
         const changedFields = await this._super(...arguments);
-        this.savingDef = this.savingDef.then(() => session.updateAccountOnMobileDevice());
+        await session.updateAccountOnMobileDevice();
         return changedFields;
     },
 };

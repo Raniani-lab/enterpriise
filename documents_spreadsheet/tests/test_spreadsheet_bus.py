@@ -10,7 +10,7 @@ from odoo.addons.mail.tests.common import MailCase
 class TestSpreadsheetBus(SpreadsheetTestCommon, MailCase):
 
     def poll(self, *channels, last=0):
-        # Simulates what's done in the /longpolling/poll controller.
+        # Simulates what's done when subscribing to a bus channel.
         # MockRequest would be usefull, but it's currently only defined
         # with website
         channels = [

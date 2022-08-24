@@ -7,10 +7,10 @@ from odoo import models
 class IrWebsocket(models.AbstractModel):
     _inherit = 'ir.websocket'
 
-    def _build_websocket_channel_list(self, channels):
+    def _build_bus_channel_list(self, channels):
         if self.env.uid:
             channels = self._add_spreadsheet_collaborative_bus_channels(channels)
-        return super()._build_websocket_channel_list(channels)
+        return super()._build_bus_channel_list(channels)
 
     def _add_spreadsheet_collaborative_bus_channels(self, channels):
         """Add collaborative bus channels for active spreadsheets.

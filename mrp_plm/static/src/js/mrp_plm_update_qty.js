@@ -1,32 +1,11 @@
-odoo.define('mrp_plm.update_qty', function (require) {
-    "use strict";
-    
-const BasicFields = require('web.basic_fields');
-const FieldFloat = BasicFields.FieldFloat;
-const fieldRegistry = require('web.field_registry');
+/** @odoo-module **/
 
-const MrpPlmUpdateQty = FieldFloat.extend({
+import { FloatField } from '@web/views/fields/float/float_field';
+import { registry } from '@web/core/registry';
 
-    /**
-     * @override
-     * @private
-     */
-    _renderReadonly: function () {
-        if (this.value > 0){
-            this.$el.text(this._formatValue(this.value));
-            const $sign = $('<span>+</span>');
-            this.setElement(this.$el.wrap($sign).parent());
-        } else {
-            this._super.apply(this);
-        }
-    },
+export class MrpPlmUpdateQty extends FloatField {}
 
-});
+MrpPlmUpdateQty.displayName = "MRP PLM Update Quantity"
+MrpPlmUpdateQty.template = "mrp_plm.UpdateQty"
 
-fieldRegistry.add('plm_upd_qty', MrpPlmUpdateQty);
-
-return {
-    MrpPlmUpdateQty: MrpPlmUpdateQty,
-};
-
-});
+registry.category('fields').add('plm_upd_qty', MrpPlmUpdateQty);

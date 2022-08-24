@@ -66,7 +66,7 @@ class TransferModelTestFunctionalCase(AccountAutoTransferTestCase):
             self.assertEqual(sum(self.env['account.move.line'].search([('account_id', '=', account.id)]).mapped('balance')), 3200)
             for date in self.dates:
                 # 2 move lines have been created in each account for each date
-                self.assertEqual(len(self.env['account.move.line'].search([('account_id', '=', account.id), ('date', '=', fields.Date.to_date(date) + relativedelta(day=1, months=1))])), 2)
+                self.assertEqual(len(self.env['account.move.line'].search([('account_id', '=', account.id), ('date', '=', fields.Date.to_date(date) + relativedelta(day=31))])), 2)
 
     def test_analytics(self):
         # Each line with analytic accounts is set to 100%
@@ -224,12 +224,12 @@ class TransferModelTestCase(AccountAutoTransferTestCase):
         })
         # 2019-06-30 --> None as generated move is generated for 01/07
         move_for_period = self.transfer_model._get_move_for_period(date_to_test)
-        self.assertIsNone(move_for_period, 'The generated move is for the next period')
+        self.assertEqual(move_for_period, already_generated_move, 'Should be equal to the already generated move')
 
         # 2019-07-01 --> The generated move
         date_to_test += relativedelta(days=1)
         move_for_period = self.transfer_model._get_move_for_period(date_to_test)
-        self.assertEqual(move_for_period, already_generated_move, 'Should be equal to the already generated move')
+        self.assertIsNone(move_for_period, 'The generated move is for the next period')
 
         # 2019-07-02 --> None as generated move is generated for 01/07
         date_to_test += relativedelta(days=1)
@@ -261,24 +261,24 @@ class TransferModelTestCase(AccountAutoTransferTestCase):
         experimentations = {
             'month': [
                 # date, expected date
-                (self.transfer_model.date_start, '2019-07-01'),
-                (fields.Date.to_date('2019-01-29'), '2019-02-28'),
-                (fields.Date.to_date('2019-01-30'), '2019-02-28'),
-                (fields.Date.to_date('2019-01-31'), '2019-02-28'),
-                (fields.Date.to_date('2019-02-28'), '2019-03-28'),
-                (fields.Date.to_date('2019-12-31'), '2020-01-31'),
+                (self.transfer_model.date_start, '2019-06-30'),
+                (fields.Date.to_date('2019-01-29'), '2019-02-27'),
+                (fields.Date.to_date('2019-01-30'), '2019-02-27'),
+                (fields.Date.to_date('2019-01-31'), '2019-02-27'),
+                (fields.Date.to_date('2019-02-28'), '2019-03-27'),
+                (fields.Date.to_date('2019-12-31'), '2020-01-30'),
             ],
             'quarter': [
-                (self.transfer_model.date_start, '2019-09-01'),
-                (fields.Date.to_date('2019-01-31'), '2019-04-30'),
-                (fields.Date.to_date('2019-02-28'), '2019-05-28'),
-                (fields.Date.to_date('2019-12-31'), '2020-03-31'),
+                (self.transfer_model.date_start, '2019-08-31'),
+                (fields.Date.to_date('2019-01-31'), '2019-04-29'),
+                (fields.Date.to_date('2019-02-28'), '2019-05-27'),
+                (fields.Date.to_date('2019-12-31'), '2020-03-30'),
             ],
             'year': [
-                (self.transfer_model.date_start, '2020-06-01'),
-                (fields.Date.to_date('2019-01-31'), '2020-01-31'),
-                (fields.Date.to_date('2019-02-28'), '2020-02-28'),
-                (fields.Date.to_date('2019-12-31'), '2020-12-31'),
+                (self.transfer_model.date_start, '2020-05-31'),
+                (fields.Date.to_date('2019-01-31'), '2020-01-30'),
+                (fields.Date.to_date('2019-02-28'), '2020-02-27'),
+                (fields.Date.to_date('2019-12-31'), '2020-12-30'),
             ]
         }
 

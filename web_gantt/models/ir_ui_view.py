@@ -48,22 +48,6 @@ GANTT_VALID_ATTRIBUTES = set([
 class View(models.Model):
     _inherit = 'ir.ui.view'
 
-    def _postprocess_access_rights(self, node, model):
-        """ Compute and set on node access rights based on view type. Specific
-        views can add additional specific rights like creating columns for
-        many2one-based grouping views. """
-        super(View, self)._postprocess_access_rights(node, model)
-
-        # testing ACL as real user
-        is_base_model = self.env.context.get('base_model_name', model._name) == model._name
-
-        if node.tag in ('gantt'):
-            for action, operation in (('create', 'create'), ('delete', 'unlink'), ('edit', 'write')):
-                if (not node.get(action) and
-                        not model.check_access_rights(operation, raise_exception=False) or
-                        not self._context.get(action, True) and is_base_model):
-                    node.set(action, 'false')
-
     def _validate_tag_gantt(self, node, name_manager, node_info):
         if not node_info['validate']:
             return

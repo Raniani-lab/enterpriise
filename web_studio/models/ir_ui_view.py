@@ -39,7 +39,7 @@ class View(models.Model):
         'web.external_layout_standard',
     ]
 
-    def _apply_groups(self, node, name_manager, node_info):
+    def _postprocess_access_rights(self, tree, models):
         # apply_group only returns the view groups ids.
         # As we need also need their name and display in Studio to edit these groups
         # (many2many widget), they have been added to node (only in Studio). Also,
@@ -48,14 +48,15 @@ class View(models.Model):
         # This preprocess cannot be done at validation time because the
         # attributes `studio_groups`, `studio_map_field_ids` and `studio_pivot_measure_fields` are not RNG valid.
         if self._context.get('studio'):
-            if node.get('groups'):
-                self.set_studio_groups(node)
-            if node.tag == 'map':
-                self.set_studio_map_popup_fields(name_manager.model._name, node)
-            if node.tag == 'pivot':
-                self.set_studio_pivot_measure_fields(name_manager.model._name, node)
+            for node in tree.xpath('//*[@groups]'):
+                if node.get('groups'):
+                    self.set_studio_groups(node)
+            if tree.tag == 'map':
+                self.set_studio_map_popup_fields(tree.get('model_access_rights'), tree)
+            if tree.tag == 'pivot':
+                self.set_studio_pivot_measure_fields(tree.get('model_access_rights'), tree)
 
-        return super(View, self)._apply_groups(node, name_manager, node_info)
+        return super(View, self)._postprocess_access_rights(tree, models)
 
     @api.model
     def set_studio_groups(self, node):

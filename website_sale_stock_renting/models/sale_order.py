@@ -82,3 +82,14 @@ class SaleOrder(models.Model):
             message += _("""Your rental product cannot be prepared on time, please rent later.""")
 
         return message
+
+    def _get_cache_key_for_line(self, line):
+        if not line.product_id.rent_ok:
+            return super()._get_cache_key_for_line(line)
+        return line.product_id, line.start_date, line.return_date
+
+    def _get_context_for_line(self, line):
+        result = super()._get_context_for_line(line)
+        if line.product_id.rent_ok:
+            result.update(start_date=line.start_date, end_date=line.return_date)
+        return result

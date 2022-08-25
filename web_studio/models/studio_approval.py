@@ -442,6 +442,10 @@ class StudioApprovalRule(models.Model):
         self.ensure_one()
         if not self.responsible_id or not self.model_id.sudo().is_mail_activity:
             return False
+        request = self.env['studio.approval.request'].sudo().search([('rule_id', '=', self.id), ('res_id', '=', res_id)])
+        if request:
+            # already requested, let's not create a shitload of activities for the same user
+            return False
         record = self.env[self.model_name].browse(res_id)
         activity_type_id = self._get_or_create_activity_type()
         activity = record.activity_schedule(activity_type_id=activity_type_id, user_id=self.responsible_id.id)

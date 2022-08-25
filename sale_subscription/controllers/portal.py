@@ -111,11 +111,6 @@ class CustomerPortal(portal.CustomerPortal):
         if report_type in ('html', 'pdf', 'text'):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
 
-        # Make sure that the partner's company matches the subscription's company.
-        payment_portal.PaymentPortal._ensure_matching_companies(
-            order_sudo.partner_id, order_sudo.company_id
-        )
-
         providers_sudo = request.env['payment.provider'].sudo()._get_compatible_providers(
             order_sudo.company_id.id,
             order_sudo.partner_id.id,
@@ -130,6 +125,14 @@ class CustomerPortal(portal.CustomerPortal):
             ('provider_id', 'in', providers_sudo.ids),
             ('partner_id', 'child_of', order_sudo.partner_id.commercial_partner_id.id),
         ]) if logged_in else request.env['payment.token']
+
+        # Make sure that the partner's company matches the subscription's company.
+        if not payment_portal.PaymentPortal._can_partner_pay_in_company(
+                order_sudo.partner_id, order_sudo.company_id
+        ):
+            providers_sudo = request.env['payment.provider'].sudo()
+            tokens = request.env['payment.token']
+
         fees_by_provider = {
             provider: provider._compute_fees(
                 order_sudo.amount_total,

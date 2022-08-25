@@ -28,7 +28,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     position: "bottom",
 }, {
     trigger: ".breadcrumb-item:not(.active):last",
-    extra_trigger: ".btn-primary",
+    extra_trigger: ".o_form_saved",
     content: Markup(_t("Use the breadcrumbs to navigate to your <b>list of products</b>.")),
     position: "bottom",
 }, {

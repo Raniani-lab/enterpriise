@@ -223,7 +223,7 @@ QUnit.module("Studio", (hooks) => {
         await legacyExtraNextTick();
         assert.containsOnce(target, ".o_form_view");
         assert.strictEqual(
-            $(target).find(".o_form_view span:contains(yop)").length,
+            $(target).find(".o_form_view input:propValue(yop)").length,
             1,
             "should have open the same record"
         );
@@ -424,9 +424,9 @@ QUnit.module("Studio", (hooks) => {
         await leaveStudio(target);
 
         assert.containsOnce(target, ".o_form_view");
-        assert.containsOnce(target, ".o_form_view .o_field_widget[name=name] span");
+        assert.containsOnce(target, ".o_form_view .o_field_widget[name=name] input");
         assert.strictEqual(
-            target.querySelector(".o_form_view .o_field_widget[name=name] span").innerText,
+            target.querySelector(".o_form_view .o_field_widget[name=name] input").value,
             "Twilight Sparkle"
         );
     });

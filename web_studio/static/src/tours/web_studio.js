@@ -187,13 +187,13 @@ tour.register(
             position: "bottom",
         },
         {
-            trigger: ".o_control_panel .o_cp_buttons .o_form_button_save",
+            trigger: ".o_control_panel .o_form_button_save",
             content: _t("Save."),
             position: "right",
         },
         {
             trigger: ".o_web_studio_navbar_item",
-            extra_trigger: ".o_form_view .o_form_readonly",
+            extra_trigger: ".o_form_view .o_form_saved",
             content: _t(
                 "Wow, nice! And I’m sure you can make it even better! Use this icon to open <b>Odoo Studio</b> and customize any screen."
             ),

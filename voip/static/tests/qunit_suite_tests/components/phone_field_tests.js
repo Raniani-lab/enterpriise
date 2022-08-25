@@ -10,7 +10,7 @@ import { voipService } from "@voip/voip_service";
 
 import { start, startServer } from "@mail/../tests/helpers/test_utils";
 
-import { click, editInput, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import { click, clickSave, editInput, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 
 let serverData;
@@ -40,6 +40,27 @@ QUnit.module('voip', (hooks) => {
 
     QUnit.module('PhoneField');
 
+    QUnit.test('PhoneField in readonly form view on normal screens', async function (assert) {
+        await makeView({
+            serverData,
+            type: "form",
+            resModel: "partner",
+            arch: `
+                <form edit="0">
+                    <sheet>
+                        <group>
+                            <field name="foo" widget="phone"/>
+                        </group>
+                    </sheet>
+                </form>`,
+            resId: 1,
+        });
+
+        assert.containsOnce(target, ".o_field_phone .o_phone_link");
+        assert.strictEqual(target.querySelector(".o_field_phone .o_phone_link").textContent, "yop");
+        assert.hasAttrValue(target.querySelector(".o_field_phone .o_phone_link"), "href", "tel:yop");
+    });
+
     QUnit.test('PhoneField in form view on normal screens', async function (assert) {
         await makeView({
             serverData,
@@ -56,12 +77,6 @@ QUnit.module('voip', (hooks) => {
             resId: 1,
         });
 
-        assert.containsOnce(target, ".o_field_phone .o_phone_link");
-        assert.strictEqual(target.querySelector(".o_field_phone .o_phone_link").textContent, "yop");
-        assert.hasAttrValue(target.querySelector(".o_field_phone .o_phone_link"), "href", "tel:yop");
-
-        // switch to edit mode and check the result
-        await click(target.querySelector(".o_form_button_edit"));
         assert.containsOnce(target, 'input[type="tel"]');
         assert.strictEqual(target.querySelector('input[type="tel"]').value, "yop");
 
@@ -69,9 +84,8 @@ QUnit.module('voip', (hooks) => {
         await editInput(target, "input[type='tel']", "new");
 
         // save
-        await click(target.querySelector(".o_form_button_save"));
-        assert.strictEqual(target.querySelector(".o_field_phone .o_phone_link").textContent, "new");
-        assert.hasAttrValue(target.querySelector(".o_field_phone .o_phone_link"), "href", "tel:new");
+        await clickSave(target);
+        assert.strictEqual(target.querySelector("input[type='tel']").value, "new");
     });
 
     QUnit.test('phone field in editable list view on normal screens', async function (assert) {
@@ -141,7 +155,7 @@ QUnit.module('voip', (hooks) => {
 
         const views = {
             'res.partner,false,form': `
-                <form string="Partners">
+                <form string="Partners" edit="0">
                     <sheet>
                         <group>
                             <field name="phone" widget="phone"/>

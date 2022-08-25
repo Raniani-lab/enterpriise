@@ -38,7 +38,7 @@ tour.register('rental_tour', {
     position: 'top',
 }, {
     trigger: 'button[data-menu-xmlid="sale_renting.rental_order_menu"]',
-    extra_trigger: '.o_form_button_edit',
+    extra_trigger: '.o_form_button_create', // wait for the new product to be saved
     content: _t("Let's now create an order."),
     position: 'bottom',
 }, {
@@ -82,7 +82,7 @@ tour.register('rental_tour', {
     position: 'bottom',
 }, {
     trigger: 'button[name=action_confirm]',
-    extra_trigger: '.o_form_button_edit',
+    extra_trigger: '.o_form_button_create', // wait for the new order to be saved
     content: _t("Confirm the order when the customer agrees with the terms."),
     position: 'bottom',
 }, {

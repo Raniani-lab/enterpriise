@@ -113,8 +113,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             'o-aside',
             "Chatter should not have o-aside class as it is below form view and not aside",
         );
-        assert.containsOnce(document.body, '.o_form_sheet_bg + .o_attachment_preview',
-            "Attachment preview should be next sibling to .o_form_sheet_bg");
+        assert.containsOnce(document.body, '.o_form_view_container + .o_attachment_preview',
+            "Attachment preview should be next sibling to .o_form_view_container");
 
         // Don't display arrow if there is no previous/next element
         assert.containsNone(document.body, '.arrow',
@@ -261,7 +261,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
 
         assert.containsNone(document.body, '.o_attachment_preview',
             "the preview should not be displayed");
-        assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
+        assert.containsOnce(document.body, '.o_form_view_container + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
     });
 
@@ -301,7 +301,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             res_model: 'res.partner',
         });
         assert.containsNone(document.body, '.o_attachment_preview', "there should be nothing previewed");
-        assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
+        assert.containsOnce(document.body, '.o_form_sheet_bg > .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
     });
 });

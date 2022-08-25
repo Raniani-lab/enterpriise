@@ -2,7 +2,6 @@
 
 import { patchUiSize, SIZES } from '@mail/../tests/helpers/patch_ui_size';
 import {
-    afterNextRender,
     start,
     startServer,
 } from '@mail/../tests/helpers/test_utils';
@@ -119,14 +118,12 @@ QUnit.module('invoice_extract_form_view_tests.js', {
             message: "should wait until account.move thread displayed its messages",
             predicate: ({ hint, threadViewer }) => {
                 return (
-                    hint.type === 'messages-loaded' &&
+                    hint.type === 'new-messages-loaded' &&
                     threadViewer.thread.model === 'account.move' &&
                     threadViewer.thread.id === accountMoveId1
                 );
             },
         });
-
-        await afterNextRender(() => click(document, '.o_form_button_edit'));
 
         const attachmentPreview = document.querySelector('.o_attachment_preview_img');
 

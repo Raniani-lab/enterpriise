@@ -57,5 +57,5 @@ tour.register('rental_order_with_sale_product_matrix_tour', {
 }, {
     trigger: 'span:contains("Confirm")',
 },
-    ...tour.stepUtils.saveForm('.o_field_cell.o_data_cell.o_list_number:contains("26")'),
+    ...tour.stepUtils.saveForm({ extra_trigger: '.o_field_cell.o_data_cell.o_list_number:contains("26")' }),
 ]);

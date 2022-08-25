@@ -45,7 +45,7 @@ export class DocumentsListRenderer extends DocumentsRendererMixin(ListRenderer) 
     }
 
     get hasSelectors() {
-        return this.props.hasSelectors;
+        return this.props.allowSelectors;
     }
 
     get uploadRecordTemplate() {

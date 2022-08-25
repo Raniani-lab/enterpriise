@@ -1104,39 +1104,6 @@ var ManualModel = BasicModel.extend({
 
     },
     /**
-     * Format the server value then compute the line
-     * overridden in ManualModel
-     *
-     * @see '_computeLine'
-     *
-     * @private
-     * @param {string} handle
-     * @param {Object[]} mv_lines
-     * @returns {Promise}
-     */
-    _formatMoveLine: function (handle, mode, mv_lines) {
-        var self = this;
-        var line = this.getLine(handle);
-        line['mv_lines_'+mode] = _.uniq([].concat(line['mv_lines_'+mode] || [], mv_lines), l => l.id);
-        if (mv_lines[0]){
-            line['remaining_'+mode] = mv_lines[0].recs_count - mv_lines.length;
-        } else if (line['mv_lines_'+mode].length == 0) {
-            line['remaining_'+mode] = 0;
-        }
-
-        this._formatLineProposition(line, mv_lines);
-
-        if (!line.balance.amount || ((line.mode == 'match_other' || line.mode == "match_rp") && line['mv_lines_'+mode] && line['mv_lines_'+mode].length == 0 && line['filter_'+mode].length == 0)) {
-            line.mode = self._getDefaultMode(handle);
-            if (line.mode !== 'match_rp' && line.mode !== 'match_other' && line.mode !== 'inactive') {
-                return this._computeLine(line).then(function () {
-                    return self.createProposition(handle);
-                });
-            }
-        }
-        return this._computeLine(line);
-    },
-    /**
      * Compare two amounts.
      *
      * Some amounts may be represented differently and are therefore compared
@@ -1162,27 +1129,6 @@ var ManualModel = BasicModel.extend({
         } else {
             return 0;
         }
-    },
-    /**
-     * overridden in ManualModel
-     */
-    _getDefaultMode: function(handle) {
-        var line = this.getLine(handle);
-        if (line.balance.amount === 0
-            && (!line.st_line.mv_lines_match_rp || line.st_line.mv_lines_match_rp.length === 0)
-            && (!line.st_line.mv_lines_match_other || line.st_line.mv_lines_match_other.length === 0)) {
-            return 'inactive';
-        }
-        if (line['mv_lines_'+line.mode] && (line['mv_lines_'+line.mode].length || line['filter_'+line.mode].length)) {
-            return line.mode;
-        }
-        if (line.mv_lines_match_rp && line.mv_lines_match_rp.length) {
-            return 'match_rp';
-        }
-        if (line.mv_lines_match_other && line.mv_lines_match_other.length) {
-            return 'match_other';
-        }
-        return 'create';
     },
     _getAvailableModes: function(handle) {
         var line = this.getLine(handle);
@@ -1251,6 +1197,7 @@ var ManualModel = BasicModel.extend({
         if (prop.tax_base_amount) result.tax_base_amount = prop.tax_base_amount;
         if (prop.reconcile_model_id) result.reconcile_model_id = prop.reconcile_model_id
         if (prop.currency_id) result.currency_id = prop.currency_id;
+        result.date = prop.date;
         return result;
     },
     /**
@@ -1308,10 +1255,9 @@ var ManualModel = BasicModel.extend({
                 prop.account_id = self._formatNameGet(prop.account_id || line.account_id);
                 prop.is_partially_reconciled = prop.amount_str !== prop.total_amount_str;
                 prop.to_check = !!prop.to_check;
-                var tmp_value = prop.debit || prop.credit;
-                prop.credit = prop.credit !== 0 ? 0 : tmp_value;
-                prop.debit = prop.debit !== 0 ? 0 : tmp_value;
-                prop.amount = -prop.debit || prop.credit;
+                prop.credit = prop.balance < 0 ? -prop.balance : 0;
+                prop.debit = prop.balance > 0 ? prop.balance : 0;
+                prop.amount = -prop.balance;
                 prop.journal_id = self._formatNameGet(prop.journal_id || line.journal_id);
                 prop.to_check = !!prop.to_check;
             });
@@ -1420,11 +1366,6 @@ var ManualModel = BasicModel.extend({
             .then(this._formatMoveLine.bind(this, handle, ''));
     },
 
-    _formatToProcessReconciliation: function (line, prop) {
-        var result = this._super(line, prop);
-        result['date'] = prop.date;
-        return result;
-    },
     _getDefaultMode: function(handle) {
         var line = this.getLine(handle);
         if (line.balance.amount === 0 && (!line.st_line.mv_lines_match || line.st_line.mv_lines_match.length === 0)) {

@@ -1,28 +1,23 @@
-odoo.define('mrp_plm.ToasterButton', function (require) {
-    'use strict';
+/** @odoo-module **/
 
-    const widgetRegistry = require('web.widget_registry');
-    const Widget = require('web.Widget');
-    const core = require("web.core");
+import { registry } from '@web/core/registry';
+import { useService } from "@web/core/utils/hooks";
 
-    const _t = core._t;
+const { Component } = owl;
 
-    const ToasterButton = Widget.extend({
-        template: 'mrp_plm.ToasterButton',
-        xmlDependencies: ['/mrp_plm/static/src/xml/mrp_plm_toaster_button.xml'],
-        events: Object.assign({}, Widget.prototype.events, {
-            'click .fa-info-circle': '_onClickButton',
-        }),
+export class PlmToasterButton extends Component {
+    setup() {
+        this.notification = useService("notification");
+    }
 
-        //--------------------------------------------------------------------------
-        // Handlers
-        //--------------------------------------------------------------------------
-        _onClickButton: function (ev) {
-            this.displayNotification({ message: _t("Note that a new version of this BOM is available.") });
-        },
-    });
+    async onClick() {
+        const message = "Note that a new version of this BOM is available.";
+        this.notification.add(message);
+    }
+}
 
-    widgetRegistry.add('plm_toaster_button', ToasterButton);
+PlmToasterButton.template = "mrp_plm.ToasterButton"
+PlmToasterButton.displayName = "MRP_PLM Toaster Button"
 
-    return ToasterButton;
-});
+registry.category("view_widgets").add("plm_toaster_button", PlmToasterButton);
+

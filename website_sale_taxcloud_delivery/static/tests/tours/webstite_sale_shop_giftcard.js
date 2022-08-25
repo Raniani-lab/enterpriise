@@ -29,7 +29,7 @@ tour.register('shop_sale_giftcard', {
         },
         {
             content: "click on 'Pay with gift card'",
-            trigger: '.js_show_gift_card',
+            trigger: '.show_coupon',
             extra_trigger: 'button[name="o_payment_submit_button"]',
             run: 'click'
         },

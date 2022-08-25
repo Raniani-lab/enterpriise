@@ -16,7 +16,7 @@ class TestMailChannelExpand(HttpCase):
             'password': 'testuser',
         })
         MailChannelAsUser = self.env['mail.channel'].with_user(testuser)
-        channel_info = MailChannelAsUser.channel_create("test-mail-channel-expand-tour")
+        channel_info = MailChannelAsUser.channel_create(name="test-mail-channel-expand-tour", group_id=self.ref('base.group_user'))
         channel = MailChannelAsUser.browse(channel_info['id'])
         channel.channel_fold('folded')
         channel.message_post(

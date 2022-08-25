@@ -421,6 +421,7 @@
                     <field name="date"/>
                     <field name="move_id"/>
                     <field name="name"/>
+                    <field name="date_maturity" optional="hidden"/>
                     <field name="ref"
                            optional="hidden"/>
                     <field name="analytic_account_id"

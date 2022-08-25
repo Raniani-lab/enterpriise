@@ -71,7 +71,7 @@ Tour.register('hr_contract_salary_tour', {
         {
             content: "Open Application Pipe",
             trigger: "button.oe_stat_button:contains(Applications)",
-            extra_trigger: 'button.o_form_button_edit',
+            extra_trigger: '.o_form_saved',
             run: 'click',
         },
         {
@@ -721,7 +721,7 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
     {
         content: "Open Application Pipe",
         trigger: "button.oe_stat_button:contains(Applications)",
-        extra_trigger: 'button.o_form_button_edit',
+        extra_trigger: '.o_form_saved',
         run: 'click',
     },
     {
@@ -731,7 +731,7 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
     {
         content: "Open Contracts",
         trigger: "button.oe_stat_button:contains(Contracts)",
-        extra_trigger: 'button.o_form_button_edit',
+        extra_trigger: '.o_form_saved',
         run: 'click',
     },
     {
@@ -741,7 +741,7 @@ Tour.register('hr_contract_salary_tour_hr_sign', {
     {
         content: "Open Signature Request",
         trigger: "button.oe_stat_button:contains(Sign)",
-        extra_trigger: 'button.o_form_button_edit',
+        extra_trigger: '.o_form_saved',
         run: 'click',
     },
     {
@@ -799,7 +799,7 @@ Tour.register('hr_contract_salary_tour_2', {
         {
             content: "Open Application Pipe",
             trigger: "button.oe_stat_button:contains(Applications)",
-            extra_trigger: 'button.o_form_button_edit',
+            extra_trigger: '.o_form_saved',
             run: 'click',
         },
         {
@@ -857,14 +857,14 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Save Employee",
-            trigger: '.o_form_buttons_edit .o_form_button_save',
+            trigger: '.o_form_button_save',
             extra_trigger: '.o_form_statusbar .o_statusbar_buttons:contains("Launch Plan")',
             run: 'click',
         },
         {
             content: "Create Contract",
             trigger: '.oe_button_box .oe_stat_button:contains("Contracts")',
-            extra_trigger: '.o_cp_buttons .btn-primary.o_form_button_edit',
+            extra_trigger: '.o_form_saved',
             run: 'click',
         },
         {

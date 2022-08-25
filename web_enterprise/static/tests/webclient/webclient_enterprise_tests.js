@@ -43,7 +43,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             serverData.views["partner,false,form"] = `
                 <form>
                     <field name="display_name"/>
-                    <field name="m2o"/>
+                    <field name="m2o" open_target="current"/>
                 </form>`;
             mockRPC = async (route) => {
                 assert.step(route);
@@ -118,7 +118,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             ]);
             await click(fixture.querySelector(".o_kanban_record"));
             assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
-            await click(fixture.querySelector('.o_field_widget[name="m2o"] .o_form_uri'));
+            await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
                 "/web/dataset/call_kw/partner/get_views",
@@ -145,7 +145,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 ]);
                 await click(fixture.querySelector(".o_kanban_record"));
                 assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
-                await click(fixture.querySelector('.o_field_widget[name="m2o"] .o_form_uri'));
+                await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
                 assert.verifySteps([
                     "/web/dataset/call_kw/partner/get_formview_action",
                     "/web/dataset/call_kw/partner/get_views",
@@ -171,7 +171,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             ]);
             await click(fixture.querySelector(".o_kanban_record"));
             assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
-            await click(fixture.querySelector('.o_field_widget[name="m2o"] .o_form_uri'));
+            await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
                 "/web/dataset/call_kw/partner/get_views",
@@ -222,12 +222,13 @@ QUnit.module("WebClient Enterprise", (hooks) => {
 
             await click(fixture.querySelector(".o_menu_toggle"));
             assert.containsOnce(fixture, ".o_form_view");
-            assert.containsOnce(fixture, ".o_form_view .o_form_readonly");
+            assert.containsOnce(fixture, ".o_form_view .o_form_saved");
             assert.strictEqual(
                 fixture.querySelector(".breadcrumb-item.active").textContent,
                 "red right hand"
             );
         });
+
         QUnit.skip("fast clicking on restore (implementation detail)", async (assert) => {
             assert.expect(6);
 

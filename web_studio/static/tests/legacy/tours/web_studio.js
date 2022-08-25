@@ -925,9 +925,9 @@ tour.register('web_studio_approval_tour', {
 }, {
     // there should be a warning
     trigger: '.o_notification.border-warning'
-},
-    ...tour.stepUtils.discardForm(),
-]);
+}, {
+    trigger: '.breadcrumb .o_back_button'
+}]);
 
 tour.register('web_studio_custom_field_tour', {
     url: "/web",

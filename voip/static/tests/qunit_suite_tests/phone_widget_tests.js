@@ -181,7 +181,7 @@ QUnit.module('voip', {
 
         const views = {
             'res.partner,false,form': `
-                <form string="Partners">
+                <form string="Partners" edit="0">
                     <sheet>
                         <group>
                             <field name="phone" widget="phone"/>

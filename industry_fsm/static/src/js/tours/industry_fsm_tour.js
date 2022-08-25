@@ -63,10 +63,6 @@ tour.register('industry_fsm_tour', {
     },
     position: 'bottom',
 }, {
-    trigger: ".o_form_button_save",
-    content: Markup(_t('Save your <b>worksheet</b> once it is complete.<br/><i>Tip: customize this form to your needs and create as many templates as you want.</i>')),
-    position: 'bottom'
-}, {
     trigger: ".breadcrumb-item.o_back_button:nth-of-type(2)",
     content: Markup(_t("Use the breadcrumbs to return to your <b>task</b>.")),
     position: 'bottom'

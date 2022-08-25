@@ -61,7 +61,7 @@ tour.register('helpdesk_tour', {
     position: "bottom"
 }, {
     trigger: ".o_ChatterTopbar_buttonScheduleActivity",
-    extra_trigger: '.o_form_view .o_form_readonly',
+    extra_trigger: '.o_form_view .o_form_saved',
     content: _t("Use <b>activities</b> to organize your daily work."),
 }, {
     trigger: ".modal-dialog .btn-primary",
@@ -70,7 +70,7 @@ tour.register('helpdesk_tour', {
     run: "click",
 }, {
     trigger: '.o_back_button',
-    extra_trigger: '.o_form_view .o_form_readonly',
+    extra_trigger: '.o_form_view .o_form_saved',
     content: _t("Let's go back to the <b>kanban view</b> to get an overview of your next tickets."),
     position: 'bottom',
 }, {

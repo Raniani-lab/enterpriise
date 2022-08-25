@@ -69,11 +69,6 @@ odoo.define('approvals_tour', function(require) {
             run: 'click',
         },
         {
-            trigger: '.o_form_button_edit',
-            content: 'wait the save',
-            run: function(){},
-        },
-        {
             trigger: 'button[name="action_confirm"]',
             content: 'confirm the request',
             run: 'click',
@@ -83,7 +78,6 @@ odoo.define('approvals_tour', function(require) {
             content: 'approve the request via activity',
             run: 'click',
         },
-        ...tour.stepUtils.discardForm(),
         {
             trigger: 'button[name="action_withdraw"]',
             content: 'withdraw approver',

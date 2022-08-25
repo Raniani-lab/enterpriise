@@ -43,7 +43,6 @@ QUnit.module("Quality", (hooks) => {
             </form>`,
         });
 
-        await click(target.querySelector(".o_form_button_edit"));
         assert.containsOnce(
             target,
             ".o_field_tablet_image",

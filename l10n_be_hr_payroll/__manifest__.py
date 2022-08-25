@@ -140,6 +140,9 @@ Prerequisites:
         'web.assets_backend': [
             'l10n_be_hr_payroll/static/src/js/**/*',
         ],
+        'web.report_assets_common': [
+            'l10n_be_hr_payroll/static/src/scss/*.scss',
+        ]
     },
     'license': 'OEEL-1',
 }

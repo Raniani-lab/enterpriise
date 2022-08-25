@@ -592,6 +592,23 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             self.assertEqual(len(receipt_picking.move_line_ids), 10)
             self.assertEqual(sum(receipt_picking.move_line_ids.mapped('qty_done')), 8)
 
+    def test_receipt_product_not_consecutively(self):
+        """ Check that there is no new line created when scanning the same product several times but not consecutively."""
+        clean_access_rights(self.env)
+
+        receipt_picking = self.env['stock.picking'].create({
+            'location_id': self.supplier_location.id,
+            'location_dest_id': self.stock_location.id,
+            'picking_type_id': self.picking_type_in.id,
+        })
+
+        url = self._get_client_action_url(receipt_picking.id)
+        self.start_tour(url, 'test_receipt_product_not_consecutively', login='admin', timeout=180)
+
+        self.assertEqual(len(receipt_picking.move_line_ids), 2)
+        self.assertEqual(receipt_picking.move_line_ids.product_id.mapped('id'), [self.product1.id, self.product2.id])
+        self.assertEqual(receipt_picking.move_line_ids.mapped('qty_done'), [2, 1])
+
     def test_delivery_lot_with_package(self):
         """ Have a delivery for on product tracked by SN, scan a non-reserved SN
         and check the new created line has the right SN's package & owner.

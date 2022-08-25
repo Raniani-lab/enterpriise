@@ -1463,6 +1463,31 @@ tour.register('test_receipt_reserved_2', {test: true}, [
     ...tour.stepUtils.discardBarcodeForm(),
 ]);
 
+tour.register('test_receipt_product_not_consecutively', {test: true}, [
+    // Scan two products (product1 - product2 - product1)
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    tour.stepUtils.confirmAddingUnreservedProduct(),
+    {
+        trigger: '.o_barcode_line',
+        run: 'scan product2',
+    },
+    tour.stepUtils.confirmAddingUnreservedProduct(),
+    {
+        trigger: '.o_barcode_line:contains("product2")',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_line[data-barcode="product1"] .qty-done:contains("2")',
+        run: 'scan O-BTN.validate',
+    },
+    {
+        trigger: '.o_notification.border-success'
+    },
+]);
+
 tour.register('test_delivery_lot_with_package', {test: true}, [
     // Unfold grouped lines.
     { trigger: '.o_line_button.o_toggle_sublines' },

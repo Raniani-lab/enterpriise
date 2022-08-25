@@ -49,6 +49,7 @@ It assigns manager and user access rights to the Administrator for the accountin
             'account_accountant/static/src/js/tours/account_accountant.js',
             'account_accountant/static/src/js/reconciliation/*.js',
             'account_accountant/static/src/scss/*.scss',
+            'account_accountant/static/src/components/**/*',
         ],
         'web.assets_tests': [
             'account_accountant/static/tests/tours/**/*',

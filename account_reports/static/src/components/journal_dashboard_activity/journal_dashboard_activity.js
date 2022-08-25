@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
-import { JournalDashboardActivity } from "@account/js/vat_activity";
+import { JournalDashboardActivity } from "@account/components/journal_dashboard_activity/journal_dashboard_activity";
 
 export class JournalDashboardActivityTaxReport extends JournalDashboardActivity {
     setup() {

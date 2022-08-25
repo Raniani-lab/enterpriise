@@ -30,8 +30,8 @@ addRecordMethods('MessageView', {
             this.messaging.device.isSmall &&
             this.message &&
             this.message.isNeedaction &&
-            this.messageListViewMessageViewItemOwner &&
-            this.messageListViewMessageViewItemOwner.messageListViewOwner.threadViewOwner.thread === this.messaging.inbox.thread
+            this.messageListViewItemOwner &&
+            this.messageListViewItemOwner.messageListViewOwner.threadViewOwner.thread === this.messaging.inbox.thread
         ) ? {} : clear();
     },
 });

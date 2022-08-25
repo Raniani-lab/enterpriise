@@ -4,6 +4,13 @@ import { bus } from 'web.core';
 const { Component } = owl;
 
 export default class PackageLineComponent extends Component {
+    get componentClasses() {
+        return [
+            this.qtyDone == 1 ? 'o_line_completed' : 'o_line_not_completed',
+            this.isSelected ? 'o_selected o_highlight' : ''
+        ].join(' ');
+    }
+
     get isSelected() {
         return this.line.package_id.id === this.env.model.lastScannedPackage;
     }

@@ -3,7 +3,7 @@
 
     <div t-name="stock_barcode.PackageLineComponent" owl="1"
         class="o_barcode_line list-group-item d-flex flex-row flex-nowrap py-3"
-        t-attf-class="{{isSelected ? 'o_selected o_highlight' : ''}}" t-on-click="select">
+        t-attf-class="{{componentClasses}}" t-on-click="select">
         <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
             <div>
                 <i class="fa fa-fw fa-archive"/>

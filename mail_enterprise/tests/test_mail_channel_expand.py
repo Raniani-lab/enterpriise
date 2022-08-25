@@ -21,6 +21,7 @@ class TestMailChannelExpand(HttpCase):
         channel.channel_fold('folded')
         channel.message_post(
             body="<p>test-message-mail-channel-expand-tour</p>",
+            message_type='comment',
             subtype_xmlid='mail.mt_comment'
         )
         self.start_tour("/web", 'mail_enterprise/static/tests/tours/mail_channel_expand_test_tour.js', login='testuser')

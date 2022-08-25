@@ -21,6 +21,7 @@ Quality Base
     'data': [
         'security/quality.xml',
         'security/ir.model.access.csv',
+        'data/mail_alias_data.xml',
         'data/quality_data.xml',
         'views/quality_views.xml',
     ],

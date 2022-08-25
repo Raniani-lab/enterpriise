@@ -14,7 +14,7 @@
     'depends': ['calendar', 'portal'],
     'data': [
         'data/calendar_data.xml',
-        'data/mail_data.xml',
+        'data/mail_message_subtype_data.xml',
         'data/mail_template_data.xml',
         'views/calendar_alarm_views.xml',
         'views/calendar_event_views.xml',

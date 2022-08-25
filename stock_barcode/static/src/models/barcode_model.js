@@ -1467,7 +1467,7 @@ export default class BarcodeModel extends EventBus {
                     !dataLotName || !lineLotName || dataLotName !== lineLotName
                 ) && (
                     line.qty_done && line.qty_done > line.reserved_uom_qty &&
-                    line.virtual_id != this.selectedLine.virtual_id
+                    line.id && line.virtual_id != this.selectedLine.virtual_id
             )) {
                 continue;
             }

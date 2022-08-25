@@ -484,7 +484,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         """Test the correct computation of asset amounts"""
         revenue_account = self.env['account.account'].create({
             "name": "test_06_account_asset",
-            "code": "test_06_account_asset",
+            "code": "test.06.account.asset",
             "account_type": 'liability_current',
             "create_asset": "no",
             "asset_type": "sale",

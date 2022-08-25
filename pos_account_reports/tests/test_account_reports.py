@@ -82,7 +82,7 @@ class POSTestTaxReport(TestAccountReportsCommon):
 
         pos_tax_account = cls.env['account.account'].create({
             'name': 'POS tax account',
-            'code': 'POS tax test',
+            'code': 'POSTaxTest',
             'account_type': 'asset_current',
             'company_id': cls.company_data['company'].id,
         })

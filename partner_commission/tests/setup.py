@@ -43,7 +43,7 @@ class TestCommissionsSetup(TransactionCase):
             'account_type': 'asset_receivable',
             'company_id': self.company.id,
             'reconcile': True,
-            'code': 'test code',
+            'code': 'testCode',
         })
         self.company.account_journal_payment_debit_account_id = account_journal_payment_debit_account.id
 

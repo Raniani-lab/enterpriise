@@ -18,7 +18,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                 "company_id": cls.company_data["company"].id,
                 "name": "spreadsheet revenue Company 1",
                 "account_type": "income",
-                "code": "@sp1234566",
+                "code": "sp1234566",
             }
         )
 
@@ -27,7 +27,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                 "company_id": cls.company_data["company"].id,
                 "name": "spreadsheet expense Company 1",
                 "account_type": "expense",
-                "code": "@sp1234577",
+                "code": "sp1234577",
             }
         )
 
@@ -36,7 +36,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                 "company_id": cls.company_data_2["company"].id,
                 "name": "spreadsheet revenue Company 2",
                 "account_type": "income",
-                "code": "@sp99887755",
+                "code": "sp99887755",
             }
         )
 
@@ -45,7 +45,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                 "company_id": cls.company_data_2["company"].id,
                 "name": "spreadsheet expense Company 2",
                 "account_type": "expense",
-                "code": "@sp99887766",
+                "code": "sp99887766",
             }
         )
 
@@ -151,7 +151,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
         self.assertEqual(o1_res2, o2_res2)
 
     def test_prefix_code(self):
-        code = "@sp1234"
+        code = "sp1234"
         self.assertEqual(
             self.env["account.account"].spreadsheet_fetch_debit_credit(
                 [
@@ -818,7 +818,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                     "&",
                     "&",
                     "&",
-                    ("account_id.code", "=like", "@sp1234566%"),
+                    ("account_id.code", "=like", "sp1234566%"),
                     ("company_id", "=", self.account_revenue_c1.company_id.id),
                     ("move_id.state", "!=", "cancel"),
                     "&",
@@ -827,7 +827,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                     "&",
                     "&",
                     "&",
-                    ("account_id.code", "=like", "@sp1234566%"),
+                    ("account_id.code", "=like", "sp1234566%"),
                     ("company_id", "=", self.account_revenue_c1.company_id.id),
                     ("move_id.state", "!=", "cancel"),
                     "&",
@@ -836,7 +836,7 @@ class SpreadsheetAccountingFunctionsTest(AccountTestInvoicingCommon):
                     ("date", ">=", date(2022, 1, 1)),
                     ("date", "<=", date(2022, 12, 31)),
                 ],
-                "name": "Journal items for account prefix @sp1234566",
+                "name": "Journal items for account prefix sp1234566",
             },
         )
 

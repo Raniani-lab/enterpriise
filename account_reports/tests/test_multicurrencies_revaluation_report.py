@@ -96,9 +96,9 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('121000 Account Receivable',            700.0,          280.0,         233.33,          -46.67),
                 ('INV/2016/00001 receivable_line_1',     700.0,          280.0,         233.33,          -46.67),
                 ('Total 121000 Account Receivable',      700.0,          280.0,         233.33,          -46.67),
-                ('121000 (1) Account Receivable',        500.0,          200.0,         166.67,          -33.33),
+                ('121000.1 Account Receivable',        500.0,          200.0,         166.67,          -33.33),
                 ('INV/2016/00001 receivable_line_2',     500.0,          200.0,         166.67,          -33.33),
-                ('Total 121000 (1) Account Receivable',  500.0,          200.0,         166.67,          -33.33),
+                ('Total 121000.1 Account Receivable',  500.0,          200.0,         166.67,          -33.33),
                 ('Total Gol',                           1200.0,          480.0,          400.0,           -80.0),
             ],
             currency_map={
@@ -123,9 +123,9 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('121000 Account Receivable',                    700.0,          280.0,          350.0,           70.0),
                 ('INV/2016/00001 receivable_line_1',             700.0,          280.0,          350.0,           70.0),
                 ('Total 121000 Account Receivable',              700.0,          280.0,          350.0,           70.0),
-                ('121000 (1) Account Receivable',                500.0,          200.0,          250.0,           50.0),
+                ('121000.1 Account Receivable',                500.0,          200.0,          250.0,           50.0),
                 ('INV/2016/00001 receivable_line_2',             500.0,          200.0,          250.0,           50.0),
-                ('Total 121000 (1) Account Receivable',          500.0,          200.0,          250.0,           50.0),
+                ('Total 121000.1 Account Receivable',          500.0,          200.0,          250.0,           50.0),
                 ('Total Gol',                                   1200.0,          480.0,          600.0,          120.0),
             ],
             currency_map={
@@ -203,9 +203,9 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             [
                 ('Accounts To Adjust',                            '',         '',         '',         ''),
                 ('Gol (1 USD = 2.0 Gol)',                      500.0,      200.0,      250.0,       50.0),
-                ('121000 (1) Account Receivable',              500.0,      200.0,      250.0,       50.0),
+                ('121000.1 Account Receivable',              500.0,      200.0,      250.0,       50.0),
                 ('INV/2016/00001 receivable_line_2',           500.0,      200.0,      250.0,       50.0),
-                ('Total 121000 (1) Account Receivable',        500.0,      200.0,      250.0,       50.0),
+                ('Total 121000.1 Account Receivable',        500.0,      200.0,      250.0,       50.0),
                 ('Total Gol',                                  500.0,      200.0,      250.0,       50.0),
             ],
             currency_map={
@@ -258,9 +258,9 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             [
                 ('Accounts To Adjust',                              '',             '',             '',             ''),
                 ('Gol (1 USD = 2.0 Gol)',                        500.0,          200.0,          250.0,           50.0),
-                ('121000 (1) Account Receivable',                500.0,          200.0,          250.0,           50.0),
+                ('121000.1 Account Receivable',                500.0,          200.0,          250.0,           50.0),
                 ('INV/2016/00001 receivable_line_2',             500.0,          200.0,          250.0,           50.0),
-                ('Total 121000 (1) Account Receivable',          500.0,          200.0,          250.0,           50.0),
+                ('Total 121000.1 Account Receivable',          500.0,          200.0,          250.0,           50.0),
                 ('Total Gol',                                    500.0,          200.0,          250.0,           50.0),
 
                 ('Excluded Accounts',                               '',             '',             '',             ''),

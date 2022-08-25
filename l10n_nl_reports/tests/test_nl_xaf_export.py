@@ -123,7 +123,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                 <changeDescription>___ignore___</changeDescription>
                             </changeInfo>
                         </ledgerAccount><ledgerAccount>
-                            <accID>400100 (1)</accID>
+                            <accID>400100.1</accID>
                             <accDesc>Bruto lonen</accDesc>
                             <accTp>P</accTp>
                             <changeInfo>
@@ -141,7 +141,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                 <changeDescription>___ignore___</changeDescription>
                             </changeInfo>
                         </ledgerAccount><ledgerAccount>
-                            <accID>800100 (1)</accID>
+                            <accID>800100.1</accID>
                             <accDesc>Omzet NL handelsgoederen 1</accDesc>
                             <accTp>P</accTp>
                             <changeInfo>
@@ -273,7 +273,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     </currency>
                                 </trLine><trLine>
                                     <nr>___ignore___</nr>
-                                    <accID>800100 (1)</accID>
+                                    <accID>800100.1</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
                                     <desc>product_b</desc>
@@ -350,7 +350,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     </currency>
                                 </trLine><trLine>
                                     <nr>___ignore___</nr>
-                                    <accID>800100 (1)</accID>
+                                    <accID>800100.1</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
                                     <desc>product_b</desc>
@@ -427,7 +427,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     </currency>
                                 </trLine><trLine>
                                     <nr>___ignore___</nr>
-                                    <accID>800100 (1)</accID>
+                                    <accID>800100.1</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
                                     <desc>product_b</desc>
@@ -504,7 +504,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     </currency>
                                 </trLine><trLine>
                                     <nr>___ignore___</nr>
-                                    <accID>800100 (1)</accID>
+                                    <accID>800100.1</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
                                     <desc>product_b</desc>
@@ -572,7 +572,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                 <amnt>1161.6</amnt>
                                 <trLine>
                                     <nr>___ignore___</nr>
-                                    <accID>400100 (1)</accID>
+                                    <accID>400100.1</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
                                     <desc>product_a</desc>
@@ -586,7 +586,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     </currency>
                                 </trLine><trLine>
                                     <nr>___ignore___</nr>
-                                    <accID>400100 (1)</accID>
+                                    <accID>400100.1</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
                                     <desc>product_b</desc>

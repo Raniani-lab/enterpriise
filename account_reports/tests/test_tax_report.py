@@ -1769,7 +1769,7 @@ class TestTaxReport(TestAccountReportsCommon):
             # Create a tax for this report
             tax_account = self.env['account.account'].create({
                 'name': 'Tax unit test tax account',
-                'code': 'test_tax_unit',
+                'code': 'test.tax.unit',
                 'account_type': 'asset_current',
                 'company_id': company.id,
             })

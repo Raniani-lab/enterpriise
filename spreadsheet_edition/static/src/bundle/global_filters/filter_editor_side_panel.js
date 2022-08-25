@@ -78,7 +78,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
                 },
             },
         });
-        this.modelDisplayNames = {
+        this.matcherDisplayNames = {
             pivots: {},
             lists: {},
             graph: {},
@@ -197,22 +197,14 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         const proms = [];
         proms.push(this.fetchModelFromName());
         for (const pivotId of this.getters.getPivotIds()) {
+            this.matcherDisplayNames.pivots[pivotId] = this.getters.getPivotName(pivotId);
             const dataSource = this.getters.getPivotDataSource(pivotId);
             proms.push(dataSource.loadMetadata());
-            proms.push(
-                dataSource
-                    .getModelLabel()
-                    .then((name) => (this.modelDisplayNames.pivots[pivotId] = name))
-            );
         }
         for (const listId of this.listIds) {
+            this.matcherDisplayNames.lists[listId] = this.getters.getListName(listId);
             const dataSource = this.getters.getListDataSource(listId);
             proms.push(dataSource.loadMetadata());
-            proms.push(
-                dataSource
-                    .getModelLabel()
-                    .then((name) => (this.modelDisplayNames.lists[listId] = name))
-            );
         }
         for (const graphId of this.graphIds) {
             const dataSource = this.getters.getGraphDataSource(graphId);
@@ -220,7 +212,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             proms.push(
                 dataSource
                     .getModelLabel()
-                    .then((name) => (this.modelDisplayNames.graph[graphId] = name))
+                    .then((name) => (this.matcherDisplayNames.graph[graphId] = name))
             );
         }
         await Promise.all(proms);

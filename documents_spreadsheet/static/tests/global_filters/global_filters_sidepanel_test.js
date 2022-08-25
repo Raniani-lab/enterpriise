@@ -17,6 +17,7 @@ import { insertListInSpreadsheet } from "@spreadsheet/../tests/utils/list";
 import { insertGraphInSpreadsheet } from "@spreadsheet/../tests/utils/chart";
 import { assertDateDomainEqual } from "@spreadsheet/../tests/utils/date_domain";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
+import { createSpreadsheetFromListView } from "../utils/list_helpers";
 
 let target;
 
@@ -93,6 +94,48 @@ QUnit.module(
             await testUtils.dom.click(items[0].querySelector(".o_side_panel_filter_icon.fa-cog"));
             assert.ok($(target).find(".o_spreadsheet_filter_editor_side_panel"));
             assert.equal($(target).find(".o_global_filter_label")[0].value, label);
+        });
+
+        QUnit.test("Pivot display name is displayed in field matching", async function (assert) {
+            const { model } = await createSpreadsheetFromPivotView();
+            const [pivotId] = model.getters.getPivotIds();
+            model.dispatch("RENAME_ODOO_PIVOT", { pivotId, name: "Hello" });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "date",
+                    rangeType: "year",
+                    label: "This year",
+                    pivotFields: {},
+                    defaultValue: {},
+                },
+            });
+
+            await click(target, ".o_topbar_filter_icon");
+            await click(target, ".o_side_panel_filter_icon.fa-cog");
+            const name = target.querySelector(".o_pivot_field_matching .fw-medium").innerText;
+            assert.strictEqual(name, "Hello");
+        });
+
+        QUnit.test("List display name is displayed in field matching", async function (assert) {
+            const { model } = await createSpreadsheetFromListView();
+            const [listId] = model.getters.getListIds();
+            model.dispatch("RENAME_ODOO_LIST", { listId, name: "Hello" });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "date",
+                    rangeType: "year",
+                    label: "This year",
+                    listFields: {},
+                    defaultValue: {},
+                },
+            });
+
+            await click(target, ".o_topbar_filter_icon");
+            await click(target, ".o_side_panel_filter_icon.fa-cog");
+            const name = target.querySelector(".o_pivot_field_matching .fw-medium").innerText;
+            assert.strictEqual(name, "Hello");
         });
 
         QUnit.test("Create a new global filter", async function (assert) {
@@ -283,7 +326,7 @@ QUnit.module(
                 const fieldMatching = target.querySelector(".o_pivot_field_matching div");
                 assert.equal(
                     fieldMatching.innerText,
-                    "Partner (Pivot #1)",
+                    "partner (Pivot #1)",
                     "model display name is loaded"
                 );
                 const save = target.querySelector(

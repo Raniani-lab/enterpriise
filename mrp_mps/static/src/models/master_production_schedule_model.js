@@ -16,6 +16,7 @@ export class MasterProductionScheduleModel extends EventBus {
         this.orm = services.orm;
         this.action = services.action;
         this.dialog = services.dialog;
+        this.selectedRecords = new Set();
         this.mutex = new Mutex();
     }
 
@@ -60,6 +61,7 @@ export class MasterProductionScheduleModel extends EventBus {
     }
 
     notify() {
+        this.unselectAll();
         this.trigger('update');
     }
 
@@ -74,7 +76,7 @@ export class MasterProductionScheduleModel extends EventBus {
      * replenish.
      * @return {Promise}
      */
-     _actionReplenish(productionScheduleIds, basedOnLeadTime = false) {
+    _actionReplenish(productionScheduleIds, basedOnLeadTime = false) {
         const self = this;
         this.mutex.exec(function () {
             return self.orm.call(
@@ -95,6 +97,10 @@ export class MasterProductionScheduleModel extends EventBus {
         this.orm.search("mrp.production.schedule", this.domain).then((ids) => {
             this._actionReplenish(ids, true);
         });
+    }
+
+    replenishSelectedRecords() {
+        this._actionReplenish(Array.from(this.selectedRecords), false);
     }
 
     /**
@@ -166,28 +172,37 @@ export class MasterProductionScheduleModel extends EventBus {
      * confirmation dialog in order to avoid a mistake from the user.
      *
      * @private
-     * @param {Object} [productionScheduleId] mrp.production.schedule Id.
+     * @param {Array} [productionScheduleIds] mrp.production.schedule Ids.
      * @return {Promise}
      */
-    _unlinkProduct(productionScheduleId) {
+    _unlinkProduct(productionScheduleIds) {
         const self = this;
         function doIt() {
             self.mutex.exec(function () {
-                return self.orm.unlink(
+                return Promise.all(productionScheduleIds.map((id) => self.orm.unlink(
                     'mrp.production.schedule',
-                    [productionScheduleId],
-                ).then(function () {
-                    const index = self.data.production_schedule_ids.findIndex(ps => ps.id === productionScheduleId);
-                    self.data.production_schedule_ids.splice(index, 1);
+                    [id]
+                ))).then(function () {
+                    for (const productionScheduleId of productionScheduleIds) {
+                        const index = self.data.production_schedule_ids.findIndex(ps => ps.id === productionScheduleId);
+                        self.data.production_schedule_ids.splice(index, 1);
+                    }
                     self.notify();
                 });
             });
         }
+        const body = productionScheduleIds.length > 1
+            ? _t("Are you sure you want to delete these records?")
+            : _t("Are you sure you want to delete this record?");
         this.dialog.add(ConfirmationDialog, {
-            body: _t("Are you sure you want to delete this record?"),
+            body: body,
             title: _t("Confirmation"),
             confirm: () => doIt(),
         });
+    }
+
+    unlinkSelectedRecord() {
+        return this._unlinkProduct(Array.from(this.selectedRecords));
     }
 
     _actionOpenDetails(procurementId, action, dateStr, dateStart, dateStop) {
@@ -262,6 +277,35 @@ export class MasterProductionScheduleModel extends EventBus {
                 self.load();
             });
         });
+    }
+
+    selectAll() {
+        const self = this;
+        this.data.production_schedule_ids.map(
+            ({ id }) => self.selectedRecords.add(id)
+        );
+    }
+
+    unselectAll() {
+        this.selectedRecords.clear();
+    }
+
+    toggleRecordSelection(productionScheduleId) {
+        if (this.selectedRecords.has(productionScheduleId)) {
+            this.selectedRecords.delete(productionScheduleId);
+        } else {
+            this.selectedRecords.add(productionScheduleId);
+        }
+        this.trigger('update');
+    }
+
+    toggleSelection() {
+        if (this.selectedRecords.size === this.data.production_schedule_ids.length) {
+            this.unselectAll();
+        } else {
+            this.selectAll();
+        }
+        this.trigger('update');
     }
 
 }

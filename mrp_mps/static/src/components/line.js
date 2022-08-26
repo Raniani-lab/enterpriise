@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { CheckBox } from "@web/core/checkbox/checkbox";
 import { useService } from "@web/core/utils/hooks";
 import fieldUtils from 'web.field_utils';
 
@@ -39,6 +40,10 @@ export default class MpsLineComponent extends Component {
 
     get formatFloat() {
         return this.field_utils.format.float;
+    }
+
+    get isSelected() {
+        return this.model.selectedRecords.has(this.productionSchedule.id);
     }
 
     /**
@@ -87,7 +92,7 @@ export default class MpsLineComponent extends Component {
      * @param {Object} [id] mrp.production.schedule Id.
      */
     _onClickUnlink(id) {
-        this.model._unlinkProduct(id);
+        this.model._unlinkProduct([id]);
     }
 
     _onClickOpenDetails(ev) {
@@ -174,6 +179,13 @@ export default class MpsLineComponent extends Component {
         }
     }
 
+    toggleSelection(ev, productionScheduleId) {
+        this.model.toggleRecordSelection(productionScheduleId);
+    }
+
 }
 
 MpsLineComponent.template = 'mrp_mps.MpsLineComponent';
+MpsLineComponent.components = {
+    CheckBox,
+}

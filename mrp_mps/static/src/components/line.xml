@@ -4,6 +4,9 @@
     <t t-name="mrp_mps.MpsLineComponent" owl="1">
         <tbody class="o_mps_content" t-att-data-id="productionSchedule.id" t-att-data-warehouse_id="'warehouse_id' in productionSchedule and productionSchedule.warehouse_id[0]">
             <tr class="bg-light">
+                <th>
+                    <CheckBox value='isSelected' onChange.bind="(ev) => this.toggleSelection(ev, productionSchedule.id)"/>
+                </th>
                 <th scope="col">
                     <a href="#" class="o_mrp_mps_record_url" t-att-data-res-id="productionSchedule.product_id[0]" t-att-data-model="'product.product'" t-on-click.prevent="_onClickRecordLink"><t t-esc="productionSchedule.product_id[1]"/></a>
                     <span t-if="'product_uom_id' in productionSchedule" class="text-muted"> by <t t-esc="productionSchedule.product_uom_id[1]"/></span>
@@ -19,6 +22,7 @@
                 </t>
             </tr>
             <tr name="demand_forecast_year_minus_2" t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_2 and 'o_hidden' or ''}}">
+                <th/>
                 <th scope="row">
                     <span>Actual Demand Y-2</span>
                 </th>
@@ -30,6 +34,7 @@
                 </t>
             </tr>
             <tr name="demand_forecast_year_minus_1" t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or ''}}">
+                <th/>
                 <th scope="row">
                     <span>Actual Demand Y-1</span>
                 </th>
@@ -41,6 +46,7 @@
                 </t>
             </tr>
             <tr t-ref="forecastRow" name="demand_forecast" t-attf-class="{{! (groups.mrp_mps_show_demand_forecast or groups.mrp_mps_show_actual_demand) and 'o_hidden' or ''}}">
+                <th/>
                 <th scope="row">
                     - <span t-attf-class="{{! groups.mrp_mps_show_actual_demand and 'o_hidden' or ''}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="The confirmed demand, based on the confirmed sales orders.">Actual</span>
                     <span t-attf-class="{{! (groups.mrp_mps_show_actual_demand and groups.mrp_mps_show_demand_forecast) and 'o_hidden' or ''}}"> / </span>
@@ -70,6 +76,7 @@
                 </t>
             </tr>
             <tr name="indirect_demand" t-attf-class="{{(! groups.mrp_mps_show_indirect_demand or ! productionSchedule.has_indirect_demand) and 'o_hidden' or ''}}">
+                <th/>
                 <th scope="row" data-bs-toggle="tooltip" data-bs-placement="bottom" title="The forecasted demand to fulfill the needs in components of the Manufacturing Orders.">
                     - Indirect Demand Forecast
                 </th>
@@ -81,6 +88,7 @@
                 </t>
             </tr>
             <tr t-ref="replenishRow" name="to_replenish" t-attf-class="{{! (groups.mrp_mps_show_to_replenish or groups.mrp_mps_show_actual_replenishment) and 'o_hidden' or ''}}">
+                <th/>
                 <th scope="row">
                     + <span t-attf-class="{{! groups.mrp_mps_show_actual_replenishment and 'o_hidden' or ''}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="The quantity being replenished, based on the Requests for Quotation and the Manufacturing Orders.">Actual</span>
                     <span t-attf-class="{{! (groups.mrp_mps_show_actual_replenishment and groups.mrp_mps_show_to_replenish) and 'o_hidden' or ''}}"> / </span>
@@ -150,6 +158,7 @@
                 </t>
             </tr>
             <tr name="safety_stock" t-attf-class="{{! (groups.mrp_mps_show_safety_stock or groups.mrp_mps_show_available_to_promise) and 'o_hidden' or ''}}">
+                <th/>
                 <th scope="row">
                     = <span t-attf-class="{{! groups.mrp_mps_show_available_to_promise and 'o_hidden' or ''}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Quantity predicted to be available for sale at the end of the period (= to replenish - actual demand).">ATP</span>
                     <span t-attf-class="{{! (groups.mrp_mps_show_safety_stock and groups.mrp_mps_show_available_to_promise) and 'o_hidden' or ''}}"> / </span>

@@ -15,6 +15,13 @@
                     class='btn btn-secondary'
                     t-on-click.stop="_onClickCreate">Add a Product</button>
             </div>
+            <ActionMenus t-if="isRecordSelected"
+                activeIds="Array.from(model.selectedRecords)"
+                context="{}"
+                domain="model.domain"
+                items="getActionMenuItems()"
+                isDomainSelected="model.isDomainSelected"
+                resModel="'mrp.production.schedule'"/>
         </xpath>
         <xpath expr="//t[@t-foreach='searchMenus']" position="before">
             <GroupMenu items="groups"/>

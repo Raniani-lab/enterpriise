@@ -11,7 +11,7 @@
         }
     }
 
-    input {
+    input:not(.form-check-input) {
         border-style: groove;
         height: 100%;
         padding-top: 0;
@@ -24,18 +24,18 @@
             border-top: none;
             &:first-child {
                 z-index: 11;
+                height: 1em;
             }
         }
         tbody th {
             @include o-position-sticky($left: 0px);
-            &:first-child {
+            &:first-child,&:nth-child(2) {
                 z-index: 1;
                 background-color: $gray-200;
             }
         }
         th {
             vertical-align: middle;
-            min-width: 110px;
         }
         .o_mps_inline {
             display: inline-flex;

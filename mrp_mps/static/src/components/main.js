@@ -6,9 +6,10 @@ import MpsLineComponent from '@mrp_mps/components/line';
 import { MasterProductionScheduleModel } from '@mrp_mps/models/master_production_schedule_model';
 import { registry } from "@web/core/registry";
 import { useBus, useService } from "@web/core/utils/hooks";
+import { CheckBox } from "@web/core/checkbox/checkbox";
 import { getDefaultConfig } from "@web/views/view";
 import { usePager } from "@web/search/pager_hook";
-import { CallbackRecorder } from "@web/webclient/actions/action_hook";
+import { CallbackRecorder, useSetupAction } from "@web/webclient/actions/action_hook";
 
 const { Component, onWillStart, useSubEnv, useChildSubEnv } = owl;
 
@@ -38,6 +39,12 @@ class MainComponent extends Component {
                 limit: defaultPagerSize,
             },
         })
+
+        useSetupAction({
+            getContext: () => {
+                return this.props.action.context;
+            },
+        });
 
         this.SearchModel = new MrpMpsSearchModel(this.env, {
             user: useService("user"),
@@ -106,12 +113,21 @@ class MainComponent extends Component {
         return this.model.data.groups[0];
     }
 
+    get isSelected() {
+        return this.model.selectedRecords.size === this.lines.length;
+    }
+
+    toggleSelection() {
+        this.model.toggleSelection();
+    }
+
 }
 
 MainComponent.template = 'mrp_mps.mrp_mps';
 MainComponent.components = {
     MrpMpsControlPanel,
     MpsLineComponent,
+    CheckBox,
 };
 
 registry.category("actions").add("mrp_mps_client_action", MainComponent);

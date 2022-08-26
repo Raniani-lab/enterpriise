@@ -20,14 +20,6 @@ export class AppraisalSkillsListRenderer extends SkillsListRenderer {
         return super.calculateColumnWidth(column);
     }
 
-    get RowsTemplate() {
-        return 'hr_appraisal_skills.AppraisalSkillsListRenderer.Rows';
-    }
-
-    get RecordRowTemplate() {
-        return 'web.ListRenderer.RecordRow';
-    }
-
     get showTable() {
         return this.props.showSampleData || super.showTable;
     }
@@ -68,6 +60,7 @@ export class AppraisalSkillsListRenderer extends SkillsListRenderer {
     }
 }
 AppraisalSkillsListRenderer.template = 'hr_appraisal_skills.AppraisalSkillsListRenderer';
+AppraisalSkillsListRenderer.rowsTemplate = "hr_appraisal_skills.AppraisalSkillsListRenderer.Rows";
 AppraisalSkillsListRenderer.props = [
     ...AppraisalSkillsListRenderer.props,
     'showSampleData'

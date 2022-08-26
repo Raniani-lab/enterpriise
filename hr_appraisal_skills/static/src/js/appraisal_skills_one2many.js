@@ -74,17 +74,16 @@ AppraisalSkillsListRenderer.props = [
 ];
 
 export class AppraisalSkillsX2ManyField extends SkillsX2ManyField {
-    setup() {
-        super.setup();
-        this.Renderer = AppraisalSkillsListRenderer;
-    }
-
     get rendererProps() {
         const props = super.rendererProps;
         props.showSampleData = this.props.record.data.state == 'new';
         return props;
     }
 }
+AppraisalSkillsX2ManyField.components = {
+    ...SkillsX2ManyField.components,
+    ListRenderer: AppraisalSkillsListRenderer,
+};
 
 registry.category("fields")
     .add("appraisal_skills_one2many", AppraisalSkillsX2ManyField);

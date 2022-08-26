@@ -290,18 +290,30 @@ class TestReportEngines(TestAccountReportsCommon):
             groupby='account_id',
         )
         test_line_2 = self._prepare_test_report_line(
-            self._prepare_test_expression_domain(domain, 'sum_if_neg'),
+            self._prepare_test_expression_domain(domain, '-sum'),
             groupby='account_id',
         )
         test_line_3 = self._prepare_test_report_line(
-            self._prepare_test_expression_domain(domain, 'sum_if_pos'),
+            self._prepare_test_expression_domain(domain, 'sum_if_neg'),
             groupby='account_id',
         )
         test_line_4 = self._prepare_test_report_line(
+            self._prepare_test_expression_domain(domain, '-sum_if_neg'),
+            groupby='account_id',
+        )
+        test_line_5 = self._prepare_test_report_line(
+            self._prepare_test_expression_domain(domain, 'sum_if_pos'),
+            groupby='account_id',
+        )
+        test_line_6 = self._prepare_test_report_line(
+            self._prepare_test_expression_domain(domain, '-sum_if_pos'),
+            groupby='account_id',
+        )
+        test_line_7 = self._prepare_test_report_line(
             self._prepare_test_expression_domain(domain, 'count_rows'),
             groupby='account_id',
         )
-        report = self._create_report([test_line_1, test_line_2, test_line_3, test_line_4])
+        report = self._create_report([test_line_1, test_line_2, test_line_3, test_line_4, test_line_5, test_line_6, test_line_7])
 
         # Create the journal entries.
         move = self._create_test_account_moves([
@@ -323,12 +335,21 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('101002 101002',      -300.0),
                 ('101003 101003',      -600.0),
                 ('101004 101004',      -900.0),
-                ('test_line_2',       -1800.0),
+                ('test_line_2',        1800.0),
+                ('101002 101002',       300.0),
+                ('101003 101003',       600.0),
+                ('101004 101004',       900.0),
+                ('test_line_3',       -1800.0),
                 ('101002 101002',      -300.0),
                 ('101003 101003',      -600.0),
                 ('101004 101004',      -900.0),
-                ('test_line_3',            ''),
-                ('test_line_4',             3),
+                ('test_line_4',        1800.0),
+                ('101002 101002',       300.0),
+                ('101003 101003',       600.0),
+                ('101004 101004',       900.0),
+                ('test_line_5',            ''),
+                ('test_line_6',            ''),
+                ('test_line_7',             3),
                 ('101002 101002',           1),
                 ('101003 101003',           1),
                 ('101004 101004',           1),

@@ -2490,11 +2490,12 @@ class AccountReport(models.Model):
                 }
                 formula_rslt.append((query_res.get('grouping_key', None), totals))
 
-            # Handle sum_if_pos and sum_if_neg
+            # Handle sum_if_pos, -sum_if_pos, sum_if_neg and -sum_if_neg
             expressions_by_sign_policy = defaultdict(lambda: self.env['account.report.expression'])
             for expression in expressions:
-                if expression.subformula in ('sum_if_pos', 'sum_if_neg'):
-                    expressions_by_sign_policy[expression.subformula] += expression
+                subformula_without_sign = expression.subformula.replace('-', '').strip()
+                if subformula_without_sign in ('sum_if_pos', 'sum_if_neg'):
+                    expressions_by_sign_policy[subformula_without_sign] += expression
                 else:
                     expressions_by_sign_policy['no_sign_check'] += expression
 

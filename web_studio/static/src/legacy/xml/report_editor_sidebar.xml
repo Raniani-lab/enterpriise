@@ -33,14 +33,14 @@
                 <div class="o_web_studio_paperformat_id"/>
             </div>
             <div class="o_web_studio_sidebar_checkbox">
-                <div class="custom-control form-check">
+                <div class="form-check">
                     <input id="display_in_print" name="display_in_print" type="checkbox" class="form-check-input" t-att-checked="widget.report.binding_model_id ? 'checked' : undefined"/>
                     <span/>
                     <label for="display_in_print" class="form-check-label">Add in the print menu</label>
                 </div>
             </div>
             <div class="o_web_studio_sidebar_checkbox" t-if="widget.debug">
-                <div class="custom-control form-check">
+                <div class="form-check">
                     <input id="attachment_use" name="attachment_use" type="checkbox" class="form-check-input" t-att-checked="widget.report.attachment_use ? 'checked' : undefined"/>
                     <span/>
                     <label for="attachment_use" class="form-check-label">Reload from attachment</label>

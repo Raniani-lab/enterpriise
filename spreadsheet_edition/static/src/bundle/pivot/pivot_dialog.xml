@@ -3,7 +3,7 @@
     <t t-name="spreadsheet_edition.PivotDialog" owl="1">
         <Dialog footer="false" title="props.title">
             <div class="o_missing_values_dialog">
-                <div class="custom-control form-check">
+                <div class="form-check">
                     <input id="missing_values" type="checkbox" t-model="state.showMissingValuesOnly" class="form-check-input " />
                     <label for="missing_values" class="form-check-label">Display missing cells only</label>
                 </div>

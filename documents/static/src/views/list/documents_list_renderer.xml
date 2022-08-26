@@ -40,7 +40,7 @@
     </t>
 
     <t t-name="documents.DocumentsListRendererCheckBox" owl="1">
-        <div class="custom-control form-check" t-att-class="props.className" t-ref="root">
+        <div class="form-check" t-att-class="props.className" t-ref="root">
             <input
                 t-att-id="props.id or id"
                 type="checkbox"

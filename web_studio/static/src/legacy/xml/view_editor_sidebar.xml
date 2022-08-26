@@ -19,21 +19,21 @@
     <div class="o_web_studio_sidebar_content o_display_view" t-if="!(widget.mode === 'properties')">
         <t t-if="widget.state.mode === 'view'">
             <div t-if="_.contains(['list', 'form', 'kanban', 'gantt'], widget.view_type)" class="o_web_studio_sidebar_checkbox">
-                <div class="custom-control form-check">
+                <div class="form-check">
                     <input type="checkbox" id="create" name="create" class="form-check-input"
                         t-att-checked="widget.isTrue(widget.state.attrs.create) ? 'checked' : undefined"/>
                     <label for="create" class="form-check-label">Can Create</label>
                 </div>
             </div>
             <div t-if="_.contains(['list', 'form', 'gantt'], widget.view_type)" class="o_web_studio_sidebar_checkbox">
-                <div class="custom-control form-check">
+                <div class="form-check">
                     <input type="checkbox" id="edit" name="edit" class="form-check-input"
                         t-att-checked="widget.isTrue(widget.state.attrs.edit) ? 'checked' : undefined"/>
                     <label for="edit" class="form-check-label">Can Edit</label>
                 </div>
             </div>
             <div t-if="_.contains(['list', 'form'], widget.view_type)" class="o_web_studio_sidebar_checkbox">
-                <div class="custom-control form-check">
+                <div class="form-check">
                     <input type="checkbox" id="delete" name="delete" class="form-check-input"
                         t-att-checked="widget.isTrue(widget.state.attrs.delete) ? 'checked' : undefined"/>
                     <label for="delete" class="form-check-label">Can Delete</label>
@@ -82,7 +82,7 @@
             <!-- Kanban view settings -->
             <t t-if="widget.view_type === 'kanban'">
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="quick_create" name="quick_create" class="form-check-input" data-leave-empty='checked'
                             t-att-checked="widget.state.attrs.quick_create ? undefined : 'checked'"/>
                         <label for="quick_create" class="form-check-label">Quick Create</label>
@@ -114,14 +114,14 @@
                     </select>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="hide_name" name="hide_name" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.hide_name ? 'checked' : undefined"/>
                         <label for="hide_name" class="form-check-label">Hide Name</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="hide_address" name="hide_address" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.hide_address ? 'checked' : undefined"/>
                         <label for="hide_address" class="form-check-label">Hide Address</label>
@@ -132,7 +132,7 @@
                     <div class="o_map_popup_fields"/>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="routing" name="routing" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.routing ? 'checked' : undefined"/>
                         <label for="routing" class="form-check-label">Enable Routing</label>
@@ -151,7 +151,7 @@
             <!-- Calendar view settings -->
             <t t-if="widget.view_type === 'calendar'">
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="quick_add" name="quick_add" class="form-check-input" data-leave-empty='checked'
                             t-att-checked="widget.isTrue(widget.state.attrs.quick_add) ? 'checked' : undefined"/>
                         <label for="quick_add" class="form-check-label">Quick Create</label>
@@ -229,21 +229,21 @@
             <!-- Gantt view settings -->
             <t t-if="widget.view_type === 'gantt'">
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="display_unavailability" name="display_unavailability" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.display_unavailability ? 'checked' : undefined"/>
                         <label for="display_unavailability" class="form-check-label">Display Unavailability</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="total_row" name="total_row" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.total_row ? 'checked' : undefined"/>
                         <label for="total_row" class="form-check-label">Display Total row</label>
                     </div>
                 </div>
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="collapse_first_level" name="collapse_first_level" class="form-check-input" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.collapse_first_level ? 'checked' : undefined"/>
                         <label for="collapse_first_level" class="form-check-label">Collapse First Level</label>
@@ -397,14 +397,14 @@
                     </select>
                 </div>
                 <div t-if="widget.state.attrs.type != 'line'" class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <!-- Disable linking is presented as a positive sentence for easier understanding (hence inverse) -->
                         <input type="checkbox" id="disable_linking" name="disable_linking" class="form-check-input" data-inverse="1" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.disable_linking ? undefined : 'checked'"/>
                         <label for="disable_linking" class="form-check-label">Access records from graph</label>
                     </div>
                 </div>
                 <div t-if="!['pie','line'].includes(widget.state.attrs.type)" class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="stacked" name="stacked" class="form-check-input" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.stacked != 'False' ? 'checked' : undefined"/>
                         <label for="stacked" class="form-check-label">Stacked graph</label>
                     </div>
@@ -445,7 +445,7 @@
             <t t-if="widget.view_type === 'pivot'">
 
                 <div class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <!-- Disable linking is presented as a positive sentence for easier understanding (hence inverse) -->
                         <input type="checkbox" id="disable_linking" name="disable_linking" class="form-check-input" data-inverse="1" data-leave-empty='unchecked'
                             t-att-checked="widget.state.attrs.disable_linking ? undefined : 'checked'"/>
@@ -487,7 +487,7 @@
                     <div class="o_pivot_measures_fields"/>
                 </div>
                 <div t-if="widget.state.attrs.studio_pivot_measure_field_ids" class="o_web_studio_sidebar_checkbox">
-                    <div class="custom-control form-check">
+                    <div class="form-check">
                         <input type="checkbox" id="display_quantity" name="display_quantity" class="form-check-input" data-leave-empty='unchecked' t-att-checked="widget.state.attrs.display_quantity ? 'checked' : undefined"/>
                         <label for="display_quantity" class="form-check-label">Display count</label>
                     </div>
@@ -566,7 +566,7 @@
 <t t-name="web_studio.ViewEditorSidebar.InvisibleCheckbox">
     <div class="clearfix o_web_studio_sidebar_checkbox">
         <t t-set="attrs_invisible" t-value="widget.state.attrs.modifiers.invisible and widget.state.attrs.modifiers.invisible !== true"/>
-        <div t-attf-class="custom-control form-check{{attrs_invisible ? ' o_web_studio_checkbox_inactive' : ''}}">
+        <div t-attf-class="form-check{{attrs_invisible ? ' o_web_studio_checkbox_inactive' : ''}}">
             <input type="checkbox" id="invisible" name="invisible" class="form-check-input" data-type="attributes"
                 t-att-checked="widget.state.attrs.invisible ? 'checked' : undefined"/>
             <label for="invisible" class="form-check-label">Invisible</label>
@@ -582,7 +582,7 @@
         <t t-if="_.contains(['list', 'form'], widget.view_type)">
             <div class="clearfix o_web_studio_sidebar_checkbox">
                 <t t-set="attrs_required" t-value="widget.state.modifiers.required and widget.state.modifiers.required !== true"/>
-                <div t-attf-class="custom-control form-check#{attrs_required ? ' o_web_studio_checkbox_inactive' : ''}">
+                <div t-attf-class="form-check#{attrs_required ? ' o_web_studio_checkbox_inactive' : ''}">
                     <input type="checkbox" id="required" name="required" class="form-check-input" data-type="attributes"
                         t-att-checked="widget.state.attrs.required ? 'checked' : undefined"
                         t-att-disabled="widget.state.field.required ? 'disabled' : undefined"/>
@@ -592,7 +592,7 @@
             </div>
             <div class="clearfix o_web_studio_sidebar_checkbox">
                 <t t-set="attrs_readonly" t-value="widget.state.modifiers.readonly and widget.state.modifiers.readonly !== true"/>
-                <div t-attf-class="custom-control form-check#{attrs_readonly ? ' o_web_studio_checkbox_inactive' : ''}">
+                <div t-attf-class="form-check#{attrs_readonly ? ' o_web_studio_checkbox_inactive' : ''}">
                     <input type="checkbox" id="readonly" name="readonly" class="form-check-input" data-type="attributes"
                         t-att-checked="widget.state.attrs.readonly ? 'checked' : undefined"/>
                     <label for="readonly" class="form-check-label">Read only</label>
@@ -609,7 +609,7 @@
             </div>
         </t>
         <div t-if="widget.view_type === 'kanban'" class="o_web_studio_sidebar_checkbox">
-            <div class="custom-control form-check">
+            <div class="form-check">
                 <input type="checkbox" id="bold" name="bold" class="form-check-input" data-type="attributes"
                     data-leave-empty="unchecked" t-att-checked="widget.state.attrs.bold ? 'checked' : undefined"/>
                 <label for="bold" class="form-check-label">Bold</label>
@@ -677,7 +677,7 @@
             <t t-if="widget.OPTIONS_BY_WIDGET[widget.widgetKey]">
                 <t t-foreach="widget.OPTIONS_BY_WIDGET[widget.widgetKey]" t-as="option" t-key="option_index">
                     <div t-if="option.type === 'boolean'" class="o_web_studio_sidebar_checkbox">
-                        <div class="custom-control form-check">
+                        <div class="form-check">
                             <input type="checkbox" data-type="options" t-attf-id="option_#{option.name}" t-att-name="option.name" class="form-check-input"
                                 t-att-data-leave-empty='option.leaveEmpty' t-att-checked="widget.state.attrs.options[option.name] ? 'checked' : undefined"/>
                             <label t-attf-for="option_#{option.name}" class="form-check-label" t-esc="option.string"/>
@@ -843,7 +843,7 @@
     <h3>Approvals</h3>
     <t t-set="studio_approval" t-value="widget.state.attrs.studio_approval &amp;&amp; widget.isTrue(widget.state.attrs.studio_approval)"/>
     <div class="o_web_studio_sidebar_checkbox">
-        <div class="custom-control form-check">
+        <div class="form-check">
             <input type="checkbox"
                    id="studio_approval"
                    name="studio_approval"
@@ -881,7 +881,7 @@
         <h3>Rainbow Man</h3>
         <t t-set="rainbow" t-value="widget.state.attrs.effect"/>
         <div class="o_web_studio_sidebar_checkbox">
-            <div class="custom-control form-check">
+            <div class="form-check">
                 <input type="checkbox" id="rainbow" name="rainbow" class="form-check-input" t-att-checked="rainbow ? 'checked' : undefined"/>
                 <label for="rainbow" class="form-check-label">Rainbow Effect</label>
             </div>
@@ -941,7 +941,7 @@
 <!-- DivEditor -->
 <t t-name="web_studio.ViewEditorSidebar.div">
     <div t-if="widget.view_type === 'kanban' and widget.state.$node and widget.state.$node.hasClass('o_dropdown_kanban')" class="o_web_studio_sidebar_checkbox">
-        <div class="custom-control form-check">
+        <div class="form-check">
             <input type="checkbox" id="set_cover" name="set_cover" class="form-check-input" t-att-checked="widget.state.$node.find('a[data-type=set_cover]').length ? 'checked' : undefined"/>
             <label for="set_cover" class="form-check-label">Set Cover Image</label>
         </div>
@@ -974,7 +974,7 @@
 <t t-name="web_studio.ShowInvisibleElements">
     <div class="o_web_studio_sidebar_separator"/>
     <div class="o_web_studio_sidebar_checkbox">
-        <div class="custom-control form-check">
+        <div class="form-check">
             <input type="checkbox" id="show_invisible" class="form-check-input"
                 t-att-checked="widget.state.show_invisible ? 'checked' : undefined"/>
             <label for="show_invisible" class="form-check-label">Show Invisible Elements</label>
@@ -1012,7 +1012,7 @@
             t-att-value="rule.message || null" placeholder="Add a description..."/>
     </div>
     <div class="o_web_studio_sidebar_checkbox mt4">
-        <div class="custom-control form-check">
+        <div class="form-check">
             <input
                 type="checkbox"
                 t-attf-id="exclusive_user_{{rule.id}}"

@@ -2219,7 +2219,7 @@
             <div class="o-section-title">Format rules</div>
             <div class="o_field_radio o_horizontal o_field_widget o-cf-type-selector">
               <div
-                class="custom-control form-check o_cf_radio_item"
+                class="form-check o_cf_radio_item"
                 t-on-click="() => this.changeRuleType('CellIsRule')">
                 <input
                   class="form-check-input o_radio_input"
@@ -2232,7 +2232,7 @@
                 <label for="cellIsRule" class="form-check-label o_form_label">Single color</label>
               </div>
               <div
-                class="custom-control form-check o_cf_radio_item"
+                class="form-check o_cf_radio_item"
                 t-on-click="() => this.changeRuleType('ColorScaleRule')">
                 <input
                   class="form-check-input o_radio_input"
@@ -2248,7 +2248,7 @@
               </div>
 
               <div
-                class="custom-control form-check o_cf_radio_item"
+                class="form-check o_cf_radio_item"
                 t-on-click="() => this.changeRuleType('IconSetRule')">
                 <input
                   class="form-check-input o_radio_input"

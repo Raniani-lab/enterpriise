@@ -8,7 +8,6 @@ import {
     setupDataSourceEvaluation,
 } from "@spreadsheet/../tests/utils/model";
 import { createSpreadsheetWithPivotAndList } from "@spreadsheet/../tests/utils/pivot_list";
-import FiltersPlugin from "@spreadsheet/global_filters/plugins/filters_plugin";
 
 import { getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import {
@@ -31,6 +30,7 @@ import {
     assertDateDomainEqual,
     getDateDomainDurationInDays,
 } from "@spreadsheet/../tests/utils/date_domain";
+import FiltersEvaluationPlugin from "@spreadsheet/global_filters/plugins/filters_evaluation_plugin";
 
 const { Model, DispatchResult } = spreadsheet;
 
@@ -1171,7 +1171,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         const { model } = await createSpreadsheetWithPivotAndList();
         await addGlobalFilter(model, THIS_YEAR_FILTER);
         const [filter] = model.getters.getGlobalFilters();
-        const filterPlugin = model["handlers"].find((handler) => handler instanceof FiltersPlugin);
+        const filterPlugin = model["handlers"].find((handler) => handler instanceof FiltersEvaluationPlugin);
         const exportData = { styles: [], sheets: [] };
         filterPlugin.exportForExcel(exportData);
         const filterSheet = exportData.sheets[0];

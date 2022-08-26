@@ -18,14 +18,14 @@
  * @property {PivotDefinition} definition
  */
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { getFirstPivotFunction, makePivotFormula } from "../pivot_helpers";
+import { makePivotFormula } from "../pivot_helpers";
 import { getMaxObjectId } from "@spreadsheet/helpers/helpers";
 import { HEADER_STYLE, TOP_LEVEL_STYLE, MEASURE_STYLE } from "@spreadsheet/helpers/constants";
 import PivotDataSource from "../pivot_data_source";
 import { SpreadsheetPivotTable } from "../pivot_table";
 import CommandResult from "../../o_spreadsheet/cancelled_reason";
 
-const { astToFormula, CorePlugin } = spreadsheet;
+const { CorePlugin } = spreadsheet;
 
 export default class PivotPlugin extends CorePlugin {
     constructor(getters, history, range, dispatch, config, uuidGenerator) {
@@ -186,28 +186,6 @@ export default class PivotPlugin extends CorePlugin {
             name: def.name,
             sortedColumn: def.metaData.sortedColumn ? { ...def.metaData.sortedColumn } : null,
         };
-    }
-
-    /**
-     * Get the id of the pivot at the given position. Returns undefined if there
-     * is no pivot at this position
-     *
-     * @param {string} sheetId Id of the sheet
-     * @param {number} col Index of the col
-     * @param {number} row Index of the row
-     *
-     * @returns {string|undefined}
-     */
-    getPivotIdFromPosition(sheetId, col, row) {
-        const cell = this.getters.getCell(sheetId, col, row);
-        if (cell && cell.isFormula()) {
-            const pivotFunction = getFirstPivotFunction(cell.content);
-            if (pivotFunction) {
-                const content = astToFormula(pivotFunction.args[0]);
-                return this.getters.evaluateFormula(content).toString();
-            }
-        }
-        return undefined;
     }
 
     /**
@@ -495,7 +473,6 @@ PivotPlugin.getters = [
     "getNextPivotId",
     "getPivotDefinition",
     "getPivotDisplayName",
-    "getPivotIdFromPosition",
     "getPivotIds",
     "getPivotName",
     "getAsyncPivotDataSource",

@@ -262,6 +262,88 @@
     // Borders
     const DEFAULT_BORDER_DESC = ["thin", "#000"];
     const LINK_COLOR = "#01666b";
+    const COLORS = [
+        "#000000",
+        "#434343",
+        "#666666",
+        "#999999",
+        "#b7b7b7",
+        "#cccccc",
+        "#d9d9d9",
+        "#efefef",
+        "#f3f3f3",
+        "#ffffff",
+        "#980000",
+        "#ff0000",
+        "#ff9900",
+        "#ffff00",
+        "#00ff00",
+        "#00ffff",
+        "#4a86e8",
+        "#0000ff",
+        "#9900ff",
+        "#ff00ff",
+        "#e6b8af",
+        "#f4cccc",
+        "#fce5cd",
+        "#fff2cc",
+        "#d9ead3",
+        "#d0e0e3",
+        "#c9daf8",
+        "#cfe2f3",
+        "#d9d2e9",
+        "#ead1dc",
+        "#dd7e6b",
+        "#ea9999",
+        "#f9cb9c",
+        "#ffe599",
+        "#b6d7a8",
+        "#a2c4c9",
+        "#a4c2f4",
+        "#9fc5e8",
+        "#b4a7d6",
+        "#d5a6bd",
+        "#cc4125",
+        "#e06666",
+        "#f6b26b",
+        "#ffd966",
+        "#93c47d",
+        "#76a5af",
+        "#6d9eeb",
+        "#6fa8dc",
+        "#8e7cc3",
+        "#c27ba0",
+        "#a61c00",
+        "#cc0000",
+        "#e69138",
+        "#f1c232",
+        "#6aa84f",
+        "#45818e",
+        "#3c78d8",
+        "#3d85c6",
+        "#674ea7",
+        "#a64d79",
+        "#85200c",
+        "#990000",
+        "#b45f06",
+        "#bf9000",
+        "#38761d",
+        "#134f5c",
+        "#1155cc",
+        "#0b5394",
+        "#351c75",
+        "#741b47",
+        "#5b0f00",
+        "#660000",
+        "#783f04",
+        "#7f6000",
+        "#274e13",
+        "#0c343d",
+        "#1c4587",
+        "#073763",
+        "#20124d",
+        "#4c1130",
+    ];
     // DateTimeRegex
     const DATETIME_FORMAT = /[ymd:]/;
     // Ranges
@@ -946,7 +1028,27 @@
         if (color.length === 3 || color.length === 4) {
             color = color.split("").reduce((acc, h) => acc + h + h, "");
         }
+        if (color.replace(/[a-f0-9]/gi, "") !== "") {
+            throw new Error("invalid color");
+        }
         return "#" + color;
+    }
+    function isColorValid(color) {
+        try {
+            const { r, g, b, a } = colorToRGBA(color);
+            return (isColorValueValid(r) && isColorValueValid(g) && isColorValueValid(b) && isColorValueValid(a));
+        }
+        catch (error) {
+            return false;
+        }
+    }
+    const isColorValueValid = (v) => v >= 0 && v <= 255;
+    function rgba(r, g, b, a = 1) {
+        const isInvalid = !isColorValueValid(r) || !isColorValueValid(g) || !isColorValueValid(b) || a < 0 || a > 1;
+        if (isInvalid) {
+            throw new Error(`Invalid RGBA values ${[r, g, b, a]}`);
+        }
+        return { a, b, g, r };
     }
     /**
      * The relative brightness of a point in the colorspace, normalized to 0 for
@@ -1014,11 +1116,14 @@
             b = parseInt(color[5] + color[6], 16);
             a = 255;
         }
-        else {
+        else if (color.length === 9) {
             r = parseInt(color[1] + color[2], 16);
             g = parseInt(color[3] + color[4], 16);
             b = parseInt(color[5] + color[6], 16);
             a = parseInt(color[7] + color[8], 16);
+        }
+        else {
+            throw new Error("Invalid color");
         }
         a = +(a / 255).toFixed(3);
         return { a, r, g, b };
@@ -5588,369 +5693,6 @@
     }
     BarConfigPanel.template = "o-spreadsheet-BarConfigPanel";
 
-    const COLORS = [
-        [
-            "#000000",
-            "#434343",
-            "#666666",
-            "#999999",
-            "#b7b7b7",
-            "#cccccc",
-            "#d9d9d9",
-            "#efefef",
-            "#f3f3f3",
-            "#ffffff",
-        ],
-        [
-            "#980000",
-            "#ff0000",
-            "#ff9900",
-            "#ffff00",
-            "#00ff00",
-            "#00ffff",
-            "#4a86e8",
-            "#0000ff",
-            "#9900ff",
-            "#ff00ff",
-        ],
-        [
-            "#e6b8af",
-            "#f4cccc",
-            "#fce5cd",
-            "#fff2cc",
-            "#d9ead3",
-            "#d0e0e3",
-            "#c9daf8",
-            "#cfe2f3",
-            "#d9d2e9",
-            "#ead1dc",
-        ],
-        [
-            "#dd7e6b",
-            "#ea9999",
-            "#f9cb9c",
-            "#ffe599",
-            "#b6d7a8",
-            "#a2c4c9",
-            "#a4c2f4",
-            "#9fc5e8",
-            "#b4a7d6",
-            "#d5a6bd",
-        ],
-        [
-            "#cc4125",
-            "#e06666",
-            "#f6b26b",
-            "#ffd966",
-            "#93c47d",
-            "#76a5af",
-            "#6d9eeb",
-            "#6fa8dc",
-            "#8e7cc3",
-            "#c27ba0",
-        ],
-        [
-            "#a61c00",
-            "#cc0000",
-            "#e69138",
-            "#f1c232",
-            "#6aa84f",
-            "#45818e",
-            "#3c78d8",
-            "#3d85c6",
-            "#674ea7",
-            "#a64d79",
-        ],
-        [
-            "#85200c",
-            "#990000",
-            "#b45f06",
-            "#bf9000",
-            "#38761d",
-            "#134f5c",
-            "#1155cc",
-            "#0b5394",
-            "#351c75",
-            "#741b47",
-        ],
-        [
-            "#5b0f00",
-            "#660000",
-            "#783f04",
-            "#7f6000",
-            "#274e13",
-            "#0c343d",
-            "#1c4587",
-            "#073763",
-            "#20124d",
-            "#4c1130",
-        ],
-    ];
-    const PICKER_VERTICAL_PADDING = 6;
-    const LINE_VERTICAL_PADDING = 3;
-    const LINE_HORIZONTAL_PADDING = 6;
-    const ITEM_HORIZONTAL_MARGIN = 2;
-    const ITEM_EDGE_LENGTH = 18;
-    const ITEM_BORDER_WIDTH = 1;
-    const ITEMS_PER_LINE = Math.max(...COLORS.map((line) => line.length));
-    const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
-        2 * LINE_HORIZONTAL_PADDING;
-    css /* scss */ `
-  .o-color-picker {
-    position: absolute;
-    top: calc(100% + 5px);
-    z-index: ${ComponentsImportance.ColorPicker};
-    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
-    background-color: white;
-    padding: ${PICKER_VERTICAL_PADDING}px 0px;
-
-    .o-color-picker-line {
-      display: flex;
-      padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
-      .o-color-picker-line-item {
-        width: ${ITEM_EDGE_LENGTH}px;
-        height: ${ITEM_EDGE_LENGTH}px;
-        margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
-        border-radius: 50px;
-        border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
-        &:hover {
-          cursor: pointer;
-          background-color: rgba(0, 0, 0, 0.08);
-          outline: 1px solid gray;
-        }
-      }
-    }
-
-    &.right {
-      left: 0;
-    }
-
-    &.left {
-      right: 0;
-    }
-    &.center {
-      left: calc(50% - ${PICKER_WIDTH / 2}px);
-    }
-  }
-`;
-    class ColorPicker extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.COLORS = COLORS;
-        }
-        onColorClick(ev) {
-            const color = ev.target.dataset.color;
-            if (color) {
-                this.props.onColorPicked(color);
-            }
-        }
-    }
-    ColorPicker.template = "o-spreadsheet-ColorPicker";
-
-    class LineBarPieDesignPanel extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState({
-                fillColorTool: false,
-            });
-        }
-        toggleColorPicker() {
-            this.state.fillColorTool = !this.state.fillColorTool;
-        }
-        updateBackgroundColor(color) {
-            this.state.fillColorTool = false;
-            this.props.updateChart({
-                background: color,
-            });
-        }
-        updateTitle(ev) {
-            this.props.updateChart({
-                title: ev.target.value,
-            });
-        }
-        updateSelect(attr, ev) {
-            this.props.updateChart({
-                [attr]: ev.target.value,
-            });
-        }
-    }
-    LineBarPieDesignPanel.template = "o-spreadsheet-LineBarPieDesignPanel";
-    LineBarPieDesignPanel.components = { ColorPicker };
-
-    class BarChartDesignPanel extends LineBarPieDesignPanel {
-    }
-    BarChartDesignPanel.template = "o-spreadsheet-BarChartDesignPanel";
-
-    class GaugeChartConfigPanel extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState({
-                dataRangeDispatchResult: undefined,
-            });
-            this.dataRange = this.props.definition.dataRange;
-        }
-        get configurationErrorMessages() {
-            var _a;
-            const cancelledReasons = [...(((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || [])];
-            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
-        }
-        get isDataRangeInvalid() {
-            var _a;
-            return !!((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(32 /* InvalidGaugeDataRange */));
-        }
-        onDataRangeChanged(ranges) {
-            this.dataRange = ranges[0];
-        }
-        updateDataRange() {
-            this.state.dataRangeDispatchResult = this.props.updateChart({
-                dataRange: this.dataRange,
-            });
-        }
-    }
-    GaugeChartConfigPanel.template = "o-spreadsheet-GaugeChartConfigPanel";
-    GaugeChartConfigPanel.components = { SelectionInput };
-
-    css /* scss */ `
-  .o-gauge-color-set {
-    .o-gauge-color-set-color-button {
-      display: inline-block;
-      border: 1px solid #dadce0;
-      border-radius: 4px;
-      cursor: pointer;
-      padding: 1px 2px;
-    }
-    .o-gauge-color-set-color-button:hover {
-      background-color: rgba(0, 0, 0, 0.08);
-    }
-    table {
-      table-layout: fixed;
-      margin-top: 2%;
-      display: table;
-      text-align: left;
-      font-size: 12px;
-      line-height: 18px;
-      width: 100%;
-    }
-    th.o-gauge-color-set-colorPicker {
-      width: 8%;
-    }
-    th.o-gauge-color-set-text {
-      width: 40%;
-    }
-    th.o-gauge-color-set-value {
-      width: 22%;
-    }
-    th.o-gauge-color-set-type {
-      width: 30%;
-    }
-    input,
-    select {
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
-    }
-  }
-`;
-    class GaugeChartDesignPanel extends owl.Component {
-        constructor() {
-            super(...arguments);
-            this.state = owl.useState({
-                openedMenu: undefined,
-                sectionRuleDispatchResult: undefined,
-            });
-        }
-        get designErrorMessages() {
-            var _a;
-            const cancelledReasons = [...(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || [])];
-            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
-        }
-        updateBackgroundColor(color) {
-            this.state.openedMenu = undefined;
-            this.props.updateChart({
-                background: color,
-            });
-        }
-        updateTitle(ev) {
-            this.props.updateChart({
-                title: ev.target.value,
-            });
-        }
-        isRangeMinInvalid() {
-            var _a, _b, _c;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(33 /* EmptyGaugeRangeMin */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(34 /* GaugeRangeMinNaN */)) ||
-                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(37 /* GaugeRangeMinBiggerThanRangeMax */)));
-        }
-        isRangeMaxInvalid() {
-            var _a, _b, _c;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(35 /* EmptyGaugeRangeMax */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(36 /* GaugeRangeMaxNaN */)) ||
-                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(37 /* GaugeRangeMinBiggerThanRangeMax */)));
-        }
-        // ---------------------------------------------------------------------------
-        // COLOR_SECTION_TEMPLATE
-        // ---------------------------------------------------------------------------
-        get isLowerInflectionPointInvalid() {
-            var _a, _b;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(38 /* GaugeLowerInflectionPointNaN */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(40 /* GaugeLowerBiggerThanUpper */)));
-        }
-        get isUpperInflectionPointInvalid() {
-            var _a, _b;
-            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(39 /* GaugeUpperInflectionPointNaN */)) ||
-                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(40 /* GaugeLowerBiggerThanUpper */)));
-        }
-        updateInflectionPointValue(attr, ev) {
-            const sectionRule = deepCopy(this.props.definition.sectionRule);
-            sectionRule[attr].value = ev.target.value;
-            this.updateSectionRule(sectionRule);
-        }
-        updateInflectionPointType(attr, ev) {
-            const sectionRule = deepCopy(this.props.definition.sectionRule);
-            sectionRule[attr].type = ev.target.value;
-            this.updateSectionRule(sectionRule);
-        }
-        updateSectionColor(target, color) {
-            const sectionRule = deepCopy(this.props.definition.sectionRule);
-            sectionRule.colors[target] = color;
-            this.updateSectionRule(sectionRule);
-            this.closeMenus();
-        }
-        updateRangeMin(ev) {
-            let sectionRule = deepCopy(this.props.definition.sectionRule);
-            sectionRule = {
-                ...sectionRule,
-                rangeMin: ev.target.value,
-            };
-            this.updateSectionRule(sectionRule);
-        }
-        updateRangeMax(ev) {
-            let sectionRule = deepCopy(this.props.definition.sectionRule);
-            sectionRule = {
-                ...sectionRule,
-                rangeMax: ev.target.value,
-            };
-            this.updateSectionRule(sectionRule);
-        }
-        toggleMenu(menu) {
-            const isSelected = this.state.openedMenu === menu;
-            this.closeMenus();
-            if (!isSelected) {
-                this.state.openedMenu = menu;
-            }
-        }
-        updateSectionRule(sectionRule) {
-            this.state.sectionRuleDispatchResult = this.props.updateChart({
-                sectionRule,
-            });
-        }
-        closeMenus() {
-            this.state.openedMenu = undefined;
-        }
-    }
-    GaugeChartDesignPanel.template = "o-spreadsheet-GaugeChartDesignPanel";
-    GaugeChartDesignPanel.components = { ColorPicker };
-
     /**
      * AbstractChart is the class from which every Chart should inherit.
      * The role of this class is to maintain the state of each chart.
@@ -8150,6 +7892,431 @@
         };
     }
 
+    const PICKER_PADDING = 6;
+    const LINE_VERTICAL_PADDING = 1;
+    const LINE_HORIZONTAL_PADDING = 6;
+    const ITEM_HORIZONTAL_MARGIN = 1;
+    const ITEM_EDGE_LENGTH = 18;
+    const ITEM_BORDER_WIDTH = 1;
+    const ITEMS_PER_LINE = 10;
+    const PICKER_WIDTH = ITEMS_PER_LINE * (ITEM_EDGE_LENGTH + ITEM_HORIZONTAL_MARGIN * 2 + 2 * ITEM_BORDER_WIDTH) +
+        2 * LINE_HORIZONTAL_PADDING;
+    const GRADIENT_WIDTH = PICKER_WIDTH - 2 * LINE_HORIZONTAL_PADDING - 2 * ITEM_BORDER_WIDTH;
+    const GRADIENT_HEIGHT = PICKER_WIDTH - 50;
+    css /* scss */ `
+  .o-color-picker {
+    position: absolute;
+    top: calc(100% + 5px);
+    z-index: ${ComponentsImportance.ColorPicker};
+    box-shadow: 1px 2px 5px 2px rgba(51, 51, 51, 0.15);
+    background-color: white;
+    padding: ${PICKER_PADDING}px 0px;
+    line-height: 1.2;
+    width: ${GRADIENT_WIDTH + 2 * PICKER_PADDING}px;
+
+    .o-color-picker-section-name {
+      margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
+      padding: 4px ${LINE_HORIZONTAL_PADDING}px;
+    }
+    .colors-grid {
+      display: grid;
+      padding: ${LINE_VERTICAL_PADDING}px ${LINE_HORIZONTAL_PADDING}px;
+      grid-template-columns: repeat(${ITEMS_PER_LINE}, 1fr);
+      grid-gap: ${ITEM_HORIZONTAL_MARGIN * 2}px;
+    }
+    .o-color-picker-line-item {
+      width: ${ITEM_EDGE_LENGTH}px;
+      height: ${ITEM_EDGE_LENGTH}px;
+      margin: 0px;
+      border-radius: 50px;
+      border: ${ITEM_BORDER_WIDTH}px solid #666666;
+      padding: 0px;
+      font-size: 16px;
+      background: white;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+        outline: 1px solid gray;
+        cursor: pointer;
+      }
+    }
+    .o-buttons {
+      padding: 6px;
+      display: flex;
+      .o-cancel {
+        margin: 0px ${ITEM_HORIZONTAL_MARGIN}px;
+        border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
+        width: 100%;
+        padding: 5px;
+        font-size: 14px;
+        background: white;
+        border-radius: 4px;
+        &:hover:enabled {
+          background-color: rgba(0, 0, 0, 0.08);
+        }
+      }
+    }
+    .o-add-button {
+      border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
+      padding: 4px;
+      background: white;
+      border-radius: 4px;
+      &:hover:enabled {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+    .o-separator {
+      border-bottom: ${MENU_SEPARATOR_BORDER_WIDTH}px solid #e0e2e4;
+      margin-top: ${MENU_SEPARATOR_PADDING}px;
+      margin-bottom: ${MENU_SEPARATOR_PADDING}px;
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      border-radius: 4px;
+      padding: 4px 23px 4px 10px;
+      height: 24px;
+      border: 1px solid #c0c0c0;
+      margin: 0 2px 0 0;
+    }
+    input.o-wrong-color {
+      border-color: red;
+    }
+    .o-custom-selector {
+      padding: ${LINE_HORIZONTAL_PADDING}px;
+      position: relative;
+      .o-gradient {
+        background: linear-gradient(to bottom, hsl(0 100% 0%), transparent, hsl(0 0% 100%)),
+          linear-gradient(
+            to right,
+            hsl(0 100% 50%) 0%,
+            hsl(0.2turn 100% 50%) 20%,
+            hsl(0.3turn 100% 50%) 30%,
+            hsl(0.4turn 100% 50%) 40%,
+            hsl(0.5turn 100% 50%) 50%,
+            hsl(0.6turn 100% 50%) 60%,
+            hsl(0.7turn 100% 50%) 70%,
+            hsl(0.8turn 100% 50%) 80%,
+            hsl(0.9turn 100% 50%) 90%,
+            hsl(1turn 100% 50%) 100%
+          );
+        border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
+        width: ${GRADIENT_WIDTH}px;
+        height: ${GRADIENT_HEIGHT}px;
+        &:hover {
+          cursor: crosshair;
+        }
+      }
+      .o-custom-input-preview {
+        padding: 2px ${LINE_VERTICAL_PADDING}px;
+        display: flex;
+      }
+      .o-custom-input-buttons {
+        padding: 2px ${LINE_VERTICAL_PADDING}px;
+        text-align: right;
+      }
+      .o-color-preview {
+        border: 1px solid #c0c0c0;
+        border-radius: 4px;
+        width: 100%;
+      }
+    }
+    &.right {
+      left: 0;
+    }
+    &.left {
+      right: 0;
+    }
+    &.center {
+      left: calc(50% - ${PICKER_WIDTH / 2}px);
+    }
+  }
+  .o-magnifier-glass {
+    position: absolute;
+    border: ${ITEM_BORDER_WIDTH}px solid #c0c0c0;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+  }
+`;
+    function computeCustomColor(ev) {
+        return rgbaToHex(hslaToRGBA({
+            h: (360 * ev.offsetX) / GRADIENT_WIDTH,
+            s: 100,
+            l: (100 * ev.offsetY) / GRADIENT_HEIGHT,
+            a: 1,
+        }));
+    }
+    class ColorPicker extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.COLORS = COLORS;
+            this.state = owl.useState({
+                showGradient: false,
+                currentColor: isColorValid(this.props.currentColor) ? this.props.currentColor : "",
+                isCurrentColorInvalid: false,
+                style: {
+                    display: "none",
+                    background: "#ffffff",
+                    left: "0",
+                    top: "0",
+                },
+            });
+        }
+        onColorClick(color) {
+            if (color) {
+                this.props.onColorPicked(color);
+            }
+        }
+        getCheckMarkColor() {
+            return chartFontColor(this.props.currentColor);
+        }
+        resetColor() {
+            this.props.onColorPicked("");
+        }
+        setCustomColor(ev) {
+            if (!isColorValid(this.state.currentColor)) {
+                ev.stopPropagation();
+                this.state.isCurrentColorInvalid = true;
+                return;
+            }
+            this.state.isCurrentColorInvalid = false;
+            this.props.onColorPicked(this.state.currentColor);
+        }
+        toggleColorPicker() {
+            this.state.showGradient = !this.state.showGradient;
+        }
+        computeCustomColor(ev) {
+            this.state.isCurrentColorInvalid = false;
+            this.state.currentColor = computeCustomColor(ev);
+        }
+        hideMagnifier(_ev) {
+            this.state.style.display = "none";
+        }
+        showMagnifier(_ev) {
+            this.state.style.display = "block";
+        }
+        moveMagnifier(ev) {
+            this.state.style.background = computeCustomColor(ev);
+            const shiftFromCursor = 10;
+            this.state.style.left = `${ev.offsetX + shiftFromCursor}px`;
+            this.state.style.top = `${ev.offsetY + shiftFromCursor}px`;
+        }
+        get magnifyingGlassStyle() {
+            const { display, background, left, top } = this.state.style;
+            return `display:${display};${display === "block" ? `background-color:${background};left:${left};top:${top};` : ""}`;
+        }
+    }
+    ColorPicker.template = "o-spreadsheet-ColorPicker";
+
+    class LineBarPieDesignPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                fillColorTool: false,
+            });
+        }
+        onClick(ev) {
+            this.state.fillColorTool = false;
+        }
+        setup() {
+            owl.useExternalListener(window, "click", this.onClick);
+        }
+        toggleColorPicker() {
+            this.state.fillColorTool = !this.state.fillColorTool;
+        }
+        updateBackgroundColor(color) {
+            this.props.updateChart({
+                background: color,
+            });
+        }
+        updateTitle(ev) {
+            this.props.updateChart({
+                title: ev.target.value,
+            });
+        }
+        updateSelect(attr, ev) {
+            this.props.updateChart({
+                [attr]: ev.target.value,
+            });
+        }
+    }
+    LineBarPieDesignPanel.template = "o-spreadsheet-LineBarPieDesignPanel";
+    LineBarPieDesignPanel.components = { ColorPicker };
+
+    class BarChartDesignPanel extends LineBarPieDesignPanel {
+    }
+    BarChartDesignPanel.template = "o-spreadsheet-BarChartDesignPanel";
+
+    class GaugeChartConfigPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                dataRangeDispatchResult: undefined,
+            });
+            this.dataRange = this.props.definition.dataRange;
+        }
+        get configurationErrorMessages() {
+            var _a;
+            const cancelledReasons = [...(((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || [])];
+            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
+        }
+        get isDataRangeInvalid() {
+            var _a;
+            return !!((_a = this.state.dataRangeDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(32 /* InvalidGaugeDataRange */));
+        }
+        onDataRangeChanged(ranges) {
+            this.dataRange = ranges[0];
+        }
+        updateDataRange() {
+            this.state.dataRangeDispatchResult = this.props.updateChart({
+                dataRange: this.dataRange,
+            });
+        }
+    }
+    GaugeChartConfigPanel.template = "o-spreadsheet-GaugeChartConfigPanel";
+    GaugeChartConfigPanel.components = { SelectionInput };
+
+    css /* scss */ `
+  .o-gauge-color-set {
+    .o-gauge-color-set-color-button {
+      display: inline-block;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 1px 2px;
+    }
+    .o-gauge-color-set-color-button:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+    table {
+      table-layout: fixed;
+      margin-top: 2%;
+      display: table;
+      text-align: left;
+      font-size: 12px;
+      line-height: 18px;
+      width: 100%;
+    }
+    th.o-gauge-color-set-colorPicker {
+      width: 8%;
+    }
+    th.o-gauge-color-set-text {
+      width: 40%;
+    }
+    th.o-gauge-color-set-value {
+      width: 22%;
+    }
+    th.o-gauge-color-set-type {
+      width: 30%;
+    }
+    input,
+    select {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+  }
+`;
+    class GaugeChartDesignPanel extends owl.Component {
+        constructor() {
+            super(...arguments);
+            this.state = owl.useState({
+                openedMenu: undefined,
+                sectionRuleDispatchResult: undefined,
+            });
+        }
+        get designErrorMessages() {
+            var _a;
+            const cancelledReasons = [...(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.reasons) || [])];
+            return cancelledReasons.map((error) => ChartTerms.Errors[error] || ChartTerms.Errors.Unexpected);
+        }
+        updateBackgroundColor(color) {
+            this.state.openedMenu = undefined;
+            this.props.updateChart({
+                background: color,
+            });
+        }
+        updateTitle(ev) {
+            this.props.updateChart({
+                title: ev.target.value,
+            });
+        }
+        isRangeMinInvalid() {
+            var _a, _b, _c;
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(33 /* EmptyGaugeRangeMin */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(34 /* GaugeRangeMinNaN */)) ||
+                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(37 /* GaugeRangeMinBiggerThanRangeMax */)));
+        }
+        isRangeMaxInvalid() {
+            var _a, _b, _c;
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(35 /* EmptyGaugeRangeMax */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(36 /* GaugeRangeMaxNaN */)) ||
+                ((_c = this.state.sectionRuleDispatchResult) === null || _c === void 0 ? void 0 : _c.isCancelledBecause(37 /* GaugeRangeMinBiggerThanRangeMax */)));
+        }
+        // ---------------------------------------------------------------------------
+        // COLOR_SECTION_TEMPLATE
+        // ---------------------------------------------------------------------------
+        get isLowerInflectionPointInvalid() {
+            var _a, _b;
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(38 /* GaugeLowerInflectionPointNaN */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(40 /* GaugeLowerBiggerThanUpper */)));
+        }
+        get isUpperInflectionPointInvalid() {
+            var _a, _b;
+            return !!(((_a = this.state.sectionRuleDispatchResult) === null || _a === void 0 ? void 0 : _a.isCancelledBecause(39 /* GaugeUpperInflectionPointNaN */)) ||
+                ((_b = this.state.sectionRuleDispatchResult) === null || _b === void 0 ? void 0 : _b.isCancelledBecause(40 /* GaugeLowerBiggerThanUpper */)));
+        }
+        updateInflectionPointValue(attr, ev) {
+            const sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule[attr].value = ev.target.value;
+            this.updateSectionRule(sectionRule);
+        }
+        updateInflectionPointType(attr, ev) {
+            const sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule[attr].type = ev.target.value;
+            this.updateSectionRule(sectionRule);
+        }
+        updateSectionColor(target, color) {
+            const sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule.colors[target] = color;
+            this.updateSectionRule(sectionRule);
+            this.closeMenus();
+        }
+        updateRangeMin(ev) {
+            let sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule = {
+                ...sectionRule,
+                rangeMin: ev.target.value,
+            };
+            this.updateSectionRule(sectionRule);
+        }
+        updateRangeMax(ev) {
+            let sectionRule = deepCopy(this.props.definition.sectionRule);
+            sectionRule = {
+                ...sectionRule,
+                rangeMax: ev.target.value,
+            };
+            this.updateSectionRule(sectionRule);
+        }
+        toggleMenu(menu) {
+            const isSelected = this.state.openedMenu === menu;
+            this.closeMenus();
+            if (!isSelected) {
+                this.state.openedMenu = menu;
+            }
+        }
+        updateSectionRule(sectionRule) {
+            this.state.sectionRuleDispatchResult = this.props.updateChart({
+                sectionRule,
+            });
+        }
+        closeMenus() {
+            this.state.openedMenu = undefined;
+        }
+    }
+    GaugeChartDesignPanel.template = "o-spreadsheet-GaugeChartDesignPanel";
+    GaugeChartDesignPanel.components = { ColorPicker };
+
     class LineConfigPanel extends LineBarPieConfigPanel {
         get canTreatLabelsAsText() {
             const chart = this.env.model.getters.getChart(this.props.figureId);
@@ -9518,7 +9685,7 @@
         }
         get backgroundColor() {
             var _a;
-            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.background) || "white";
+            return ((_a = this.runtime) === null || _a === void 0 ? void 0 : _a.background) || "#ffffff";
         }
         get primaryFontColor() {
             var _a;
@@ -9858,7 +10025,7 @@
 
     .o-autofill-nextvalue {
       position: absolute;
-      background-color: white;
+      background-color: #ffffff;
       border: 1px solid black;
       padding: 5px;
       font-size: 12px;
@@ -10167,7 +10334,7 @@
                 }
             }
             if (value < 1e5) {
-                return format || "#,##0";
+                return createLargeNumberFormat(format, 0, "");
             }
             else if (value < 1e8) {
                 return createLargeNumberFormat(format, 1e3, "k");
@@ -16088,6 +16255,12 @@
             });
             this.dispatch = dispatch;
         }
+        /**
+         * Export for excel should be available for all plugins, even for the UI.
+         * In some case, we need to export evaluated value, which is available from
+         * UI plugin only.
+         */
+        exportForExcel(data) { }
         // ---------------------------------------------------------------------------
         // Command handling
         // ---------------------------------------------------------------------------
@@ -23501,7 +23674,6 @@
         // ---------------------------------------------------------------------------
         import(data) { }
         export(data) { }
-        exportForExcel(data) { }
         /**
          * This method can be implemented in any plugin, to loop over the plugin's data structure and adapt the plugin's ranges.
          * To adapt them, the implementation of the function must have a perfect knowledge of the data structure, thus
@@ -24685,7 +24857,8 @@
          * Returns all the conditional format rules defined for the current sheet to display the user
          */
         getConditionalFormats(sheetId) {
-            return this.cfRules[sheetId].map((cf) => this.mapToConditionalFormat(sheetId, cf)) || [];
+            var _a;
+            return ((_a = this.cfRules[sheetId]) === null || _a === void 0 ? void 0 : _a.map((cf) => this.mapToConditionalFormat(sheetId, cf))) || [];
         }
         getRulesSelection(sheetId, selection) {
             const ruleIds = new Set();
@@ -28056,6 +28229,156 @@
     ClipboardPlugin.layers = [2 /* Clipboard */];
     ClipboardPlugin.getters = ["getClipboardContent", "isCutOperation", "isPaintingFormat"];
 
+    /**
+     * https://tomekdev.com/posts/sorting-colors-in-js
+     */
+    function sortWithClusters(colorsToSort) {
+        const clusters = [
+            { leadColor: rgba(255, 0, 0), colors: [] },
+            { leadColor: rgba(255, 128, 0), colors: [] },
+            { leadColor: rgba(128, 128, 0), colors: [] },
+            { leadColor: rgba(128, 255, 0), colors: [] },
+            { leadColor: rgba(0, 255, 0), colors: [] },
+            { leadColor: rgba(0, 255, 128), colors: [] },
+            { leadColor: rgba(0, 255, 255), colors: [] },
+            { leadColor: rgba(0, 127, 255), colors: [] },
+            { leadColor: rgba(0, 0, 255), colors: [] },
+            { leadColor: rgba(127, 0, 255), colors: [] },
+            { leadColor: rgba(128, 0, 128), colors: [] },
+            { leadColor: rgba(255, 0, 128), colors: [] }, // rose
+        ];
+        for (const color of colorsToSort.map(colorToRGBA)) {
+            let currentDistance = 500; //max distance is 441;
+            let currentIndex = 0;
+            clusters.forEach((cluster, clusterIndex) => {
+                const distance = colorDistance(color, cluster.leadColor);
+                if (currentDistance > distance) {
+                    currentDistance = distance;
+                    currentIndex = clusterIndex;
+                }
+            });
+            clusters[currentIndex].colors.push(color);
+        }
+        return clusters
+            .map((cluster) => cluster.colors.sort((a, b) => rgbaToHSLA(a).s - rgbaToHSLA(b).s))
+            .flat()
+            .map(rgbaToHex);
+    }
+    function colorDistance(color1, color2) {
+        return Math.sqrt(Math.pow(color1.r - color2.r, 2) +
+            Math.pow(color1.g - color2.g, 2) +
+            Math.pow(color1.b - color2.b, 2));
+    }
+    /**
+     * CustomColors plugin
+     * This plugins aims to compute and keep to custom colors used in the
+     * current spreadsheet
+     */
+    class CustomColorsPlugin extends UIPlugin {
+        constructor() {
+            super(...arguments);
+            this.customColors = new Set();
+            this.shouldUpdateColors = false;
+        }
+        handle(cmd) {
+            switch (cmd.type) {
+                case "UPDATE_CELL":
+                case "UPDATE_CHART":
+                case "CREATE_CHART":
+                case "ADD_CONDITIONAL_FORMAT":
+                    this.shouldUpdateColors = true;
+            }
+        }
+        finalize() {
+            if (this.shouldUpdateColors) {
+                this.shouldUpdateColors = false;
+                for (const color of this.getCustomColors()) {
+                    this.tryToAddColor(color);
+                }
+            }
+        }
+        getCustomColors() {
+            let usedColors = [];
+            for (const sheetId of this.getters.getSheetIds()) {
+                const cells = Object.values(this.getters.getCells(sheetId));
+                usedColors = usedColors.concat(this.getColorsFromCells(cells), this.getFormattingColors(sheetId), this.getChartColors(sheetId));
+            }
+            return sortWithClusters([
+                ...new Set(
+                // remove duplicates first to check validity on a reduced
+                // set of colors, then normalize to HEX and remove duplicates
+                // again
+                [...new Set([...usedColors, ...this.customColors])]
+                    .filter(isColorValid)
+                    .map((c) => toHex(c).toLowerCase())),
+            ]).filter((color) => !COLORS.includes(color));
+        }
+        getColorsFromCells(cells) {
+            var _a, _b;
+            const colors = new Set();
+            for (const cell of cells) {
+                if ((_a = cell.style) === null || _a === void 0 ? void 0 : _a.textColor) {
+                    colors.add(cell.style.textColor);
+                }
+                if ((_b = cell.style) === null || _b === void 0 ? void 0 : _b.fillColor) {
+                    colors.add(cell.style.fillColor);
+                }
+            }
+            return [...colors];
+        }
+        getFormattingColors(sheetId) {
+            const formats = this.getters.getConditionalFormats(sheetId);
+            const formatColors = [];
+            for (const format of formats) {
+                const rule = format.rule;
+                if (rule.type === "CellIsRule") {
+                    formatColors.push(rule.style.textColor);
+                    formatColors.push(rule.style.fillColor);
+                }
+                else if (rule.type === "ColorScaleRule") {
+                    formatColors.push(colorNumberString(rule.minimum.color));
+                    formatColors.push(rule.midpoint ? colorNumberString(rule.midpoint.color) : undefined);
+                    formatColors.push(colorNumberString(rule.maximum.color));
+                }
+            }
+            return formatColors.filter(isDefined$1);
+        }
+        getChartColors(sheetId) {
+            const charts = this.getters.getChartIds(sheetId).map((cid) => this.getters.getChart(cid));
+            let chartsColors = new Set();
+            for (let chart of charts) {
+                if (chart === undefined) {
+                    continue;
+                }
+                const background = chart.getDefinition().background;
+                if (background !== undefined) {
+                    chartsColors.add(background);
+                }
+                switch (chart.type) {
+                    case "gauge":
+                        const colors = chart.sectionRule.colors;
+                        chartsColors.add(colors.lowerColor);
+                        chartsColors.add(colors.middleColor);
+                        chartsColors.add(colors.upperColor);
+                        break;
+                    case "scorecard":
+                        const scoreChart = chart;
+                        chartsColors.add(scoreChart.baselineColorDown);
+                        chartsColors.add(scoreChart.baselineColorUp);
+                        break;
+                }
+            }
+            return [...chartsColors];
+        }
+        tryToAddColor(color) {
+            const formattedColor = toHex(color).toLowerCase();
+            if (color && !COLORS.includes(formattedColor)) {
+                this.customColors.add(formattedColor);
+            }
+        }
+    }
+    CustomColorsPlugin.getters = ["getCustomColors"];
+
     const functionMap = functionRegistry.mapping;
     class EvaluationPlugin extends UIPlugin {
         constructor(getters, state, dispatch, config, selection) {
@@ -29337,7 +29660,7 @@
             const { width, height } = this.getters.getViewportDimensionWithHeaders();
             const sheetId = this.getters.getActiveSheetId();
             // white background
-            ctx.fillStyle = "white";
+            ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, width, height);
             // background grid
             const { right, left, top, bottom } = viewport;
@@ -32099,7 +32422,8 @@
         .add("automatic_sum", AutomaticSumPlugin)
         .add("format", FormatPlugin)
         .add("cell_popovers", CellPopoverPlugin)
-        .add("selection_multiuser", SelectionMultiUserPlugin);
+        .add("selection_multiuser", SelectionMultiUserPlugin)
+        .add("custom_colors", CustomColorsPlugin);
 
     // -----------------------------------------------------------------------------
     // SpreadSheet
@@ -32156,7 +32480,7 @@
 
       &.active {
         color: #484;
-        background-color: white;
+        background-color: #ffffff;
         box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15);
       }
 
@@ -32170,7 +32494,7 @@
     }
 
     .o-selection-statistic {
-      background-color: white;
+      background-color: #ffffff;
       margin-left: auto;
       font-size: 14px;
       margin-right: 20px;
@@ -32812,8 +33136,8 @@
             this.undoTool = false;
             this.redoTool = false;
             this.paintFormatTool = false;
-            this.fillColor = "white";
-            this.textColor = "black";
+            this.fillColor = "#ffffff";
+            this.textColor = "#000000";
             this.menus = [];
             this.composerStyle = `
     line-height: 34px;
@@ -32905,8 +33229,8 @@
             }
             this.style = { ...this.env.model.getters.getCurrentStyle() };
             this.style.align = this.style.align || (cell === null || cell === void 0 ? void 0 : cell.defaultAlign);
-            this.fillColor = this.style.fillColor || "white";
-            this.textColor = this.style.textColor || "black";
+            this.fillColor = this.style.fillColor || "#ffffff";
+            this.textColor = this.style.textColor || "#000000";
             this.menus = topbarMenuRegistry
                 .getAll()
                 .filter((item) => !item.isVisible || item.isVisible(this.env));
@@ -36775,6 +37099,15 @@
             this.session = this.setupSession(workbookData.revisionId);
             this.config.moveClient = this.session.move.bind(this.session);
             this.history = new LocalHistory(this.dispatchFromCorePlugin, this.session);
+            this.coreGetters = {};
+            this.range = new RangeAdapter(this.coreGetters);
+            this.coreGetters.getRangeString = this.range.getRangeString.bind(this.range);
+            this.coreGetters.getRangeFromSheetXC = this.range.getRangeFromSheetXC.bind(this.range);
+            this.coreGetters.createAdaptedRanges = this.range.createAdaptedRanges.bind(this.range);
+            this.coreGetters.getRangeDataFromXc = this.range.getRangeDataFromXc.bind(this.range);
+            this.coreGetters.getRangeDataFromZone = this.range.getRangeDataFromZone.bind(this.range);
+            this.coreGetters.getRangeFromRangeData = this.range.getRangeFromRangeData.bind(this.range);
+            this.coreGetters.getSelectionRangeString = this.range.getSelectionRangeString.bind(this.range);
             this.getters = {
                 isReadonly: () => this.config.mode === "readonly" || this.config.mode === "dashboard",
                 isDashboard: () => this.config.mode === "dashboard",
@@ -36784,14 +37117,6 @@
                 getConnectedClients: this.session.getConnectedClients.bind(this.session),
                 isFullySynchronized: this.session.isFullySynchronized.bind(this.session),
             };
-            this.range = new RangeAdapter(this.getters);
-            this.getters.getRangeString = this.range.getRangeString.bind(this.range);
-            this.getters.getRangeFromSheetXC = this.range.getRangeFromSheetXC.bind(this.range);
-            this.getters.createAdaptedRanges = this.range.createAdaptedRanges.bind(this.range);
-            this.getters.getRangeDataFromXc = this.range.getRangeDataFromXc.bind(this.range);
-            this.getters.getRangeDataFromZone = this.range.getRangeDataFromZone.bind(this.range);
-            this.getters.getRangeFromRangeData = this.range.getRangeFromRangeData.bind(this.range);
-            this.getters.getSelectionRangeString = this.range.getSelectionRangeString.bind(this.range);
             this.uuidGenerator.setIsFastStrategy(true);
             // Initiate stream processor
             this.selection = new SelectionStreamProcessor(this.getters);
@@ -36799,6 +37124,7 @@
             for (let Plugin of corePluginRegistry.getAll()) {
                 this.setupCorePlugin(Plugin, workbookData);
             }
+            Object.assign(this.getters, this.coreGetters);
             for (let Plugin of uiPluginRegistry.getAll()) {
                 this.setupUiPlugin(Plugin);
             }
@@ -36852,12 +37178,12 @@
          * reason why the model could not add dynamically a plugin while it is running.
          */
         setupCorePlugin(Plugin, data) {
-            const plugin = new Plugin(this.getters, this.state, this.range, this.dispatchFromCorePlugin, this.config, this.uuidGenerator);
+            const plugin = new Plugin(this.coreGetters, this.state, this.range, this.dispatchFromCorePlugin, this.config, this.uuidGenerator);
             for (let name of Plugin.getters) {
                 if (!(name in plugin)) {
                     throw new Error(`Invalid getter name: ${name} for plugin ${plugin.constructor}`);
                 }
-                this.getters[name] = plugin[name].bind(plugin);
+                this.coreGetters[name] = plugin[name].bind(plugin);
             }
             plugin.import(data);
             this.corePlugins.push(plugin);
@@ -36990,7 +37316,7 @@
             this.dispatch("EVALUATE_ALL_SHEETS");
             let data = createEmptyExcelWorkbookData();
             for (let handler of this.handlers) {
-                if (handler instanceof CorePlugin) {
+                if (handler instanceof BasePlugin) {
                     handler.exportForExcel(data);
                 }
             }
@@ -37117,8 +37443,8 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
     exports.__info__.version = '2.0.0';
-    exports.__info__.date = '2022-08-22T07:04:07.762Z';
-    exports.__info__.hash = '77111fd';
+    exports.__info__.date = '2022-08-26T07:28:29.094Z';
+    exports.__info__.hash = 'aeb309a';
 
 })(this.o_spreadsheet = this.o_spreadsheet || {}, owl);
 //# sourceMappingURL=o_spreadsheet.js.map

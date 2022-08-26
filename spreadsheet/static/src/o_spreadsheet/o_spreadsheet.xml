@@ -75,18 +75,76 @@
   </t>
 
   <t t-name="o-spreadsheet-ColorPicker" owl="1">
-    <div
-      class="o-color-picker"
-      t-att-class="props.dropdownDirection || 'right'"
-      t-on-click="onColorClick">
-      <div class="o-color-picker-line" t-foreach="COLORS" t-as="colors" t-key="colors">
-        <t t-foreach="colors" t-as="color" t-key="color">
+    <div class="o-color-picker" t-att-class="props.dropdownDirection || 'right'">
+      <div class="o-color-picker-section-name">Standard</div>
+      <div class="colors-grid">
+        <div
+          t-foreach="COLORS"
+          t-as="color"
+          t-key="color"
+          class="o-color-picker-line-item"
+          t-att-data-color="color"
+          t-on-click="() => this.onColorClick(color)"
+          t-attf-style="background-color:{{color}};">
           <div
-            class="o-color-picker-line-item"
-            t-att-data-color="color"
-            t-attf-style="background-color:{{color}};"
+            t-if="props.currentColor === color"
+            align="center"
+            t-attf-style="color:{{getCheckMarkColor()}}">
+            &#10004;
+          </div>
+        </div>
+      </div>
+      <div class="o-separator"/>
+      <div class="o-color-picker-section-name">
+        <span>Custom</span>
+      </div>
+      <div class="colors-grid">
+        <div
+          class="o-color-picker-toggler o-color-picker-line-item"
+          t-on-click.stop="toggleColorPicker">
+          <div align="center">+</div>
+        </div>
+        <div
+          t-foreach="env.model.getters.getCustomColors()"
+          t-as="color"
+          t-key="color"
+          class="o-color-picker-line-item"
+          t-att-data-color="color"
+          t-attf-style="background-color:{{color}};"
+          t-on-click="() => this.onColorClick(color)">
+          <div
+            t-if="props.currentColor === color"
+            align="center"
+            t-attf-style="color:{{getCheckMarkColor()}}">
+            &#10004;
+          </div>
+        </div>
+      </div>
+      <div t-if="state.showGradient" class="o-custom-selector">
+        <div class="o-magnifier-glass" t-att-style="magnifyingGlassStyle"/>
+        <div
+          class="o-gradient"
+          t-on-click.stop="computeCustomColor"
+          t-on-mouseout="hideMagnifier"
+          t-on-mousemove="moveMagnifier"
+          t-on-mouseover="showMagnifier"
+        />
+        <div class="o-custom-input-preview">
+          <input
+            type="text"
+            t-att-class="{'o-wrong-color': state.isCurrentColorInvalid }"
+            t-on-click.stop=""
+            t-model="state.currentColor"
           />
-        </t>
+          <div class="o-color-preview" t-attf-style="background-color:{{state.currentColor}}"/>
+        </div>
+        <div class="o-custom-input-buttons">
+          <button class="o-add-button" t-on-click="setCustomColor">Add</button>
+        </div>
+      </div>
+      <div class="o-separator"/>
+      <div class="o-buttons">
+        <button t-on-click="resetColor" class="o-cancel">Reset</button>
       </div>
     </div>
   </t>
@@ -1343,6 +1401,7 @@
           <ColorPicker
             t-if="state.fillColorTool"
             onColorPicked="(color) => this.updateBackgroundColor(color)"
+            currentColor="props.definition.background"
             t-key="backgroundColor"
           />
         </div>
@@ -1419,6 +1478,7 @@
           <ColorPicker
             t-if="state.openedMenu === 'backgroundColor'"
             onColorPicked="(color) => this.updateBackgroundColor(color)"
+            currentColor="props.definition.background"
             t-key="backgroundColor"
           />
         </div>
@@ -1511,6 +1571,7 @@
                 <ColorPicker
                   t-if="state.openedMenu === 'sectionColor-upperColor'"
                   onColorPicked="(color) => this.updateSectionColor('upperColor', color)"
+                  currentColor="sectionRule.colors.upperColor"
                   dropdownDirection="'right'"
                 />
               </div>
@@ -1539,6 +1600,7 @@
             <ColorPicker
               t-if="state.openedMenu === 'sectionColor-'+sectionType"
               onColorPicked="(color) => this.updateSectionColor(sectionType, color)"
+              currentColor="sectionColor"
               dropdownDirection="'right'"
             />
           </div>
@@ -1618,6 +1680,7 @@
           <ColorPicker
             t-if="state.fillColorTool"
             onColorPicked="(color) => this.updateBackgroundColor(color)"
+            currentColor="props.definition.background"
             t-key="backgroundColor"
           />
         </div>
@@ -1707,6 +1770,7 @@
           <ColorPicker
             t-if="state.fillColorTool"
             onColorPicked="(color) => this.updateBackgroundColor(color)"
+            currentColor="props.definition.background"
             t-key="backgroundColor"
           />
         </div>
@@ -1860,6 +1924,7 @@
           <ColorPicker
             t-if="state.openedColorPicker === 'backgroundColor'"
             onColorPicked="(color) => this.setColor(color, 'backgroundColor')"
+            currentColor="props.definition.brackground"
             t-key="backgroundColor"
           />
         </div>
@@ -1898,6 +1963,7 @@
         <ColorPicker
           t-if="state.openedColorPicker === 'baselineColorUp'"
           onColorPicked="(color) => this.setColor(color, 'baselineColorUp')"
+          currentColor="props.definition.baselineColorUp"
           t-key="baselineColorUp"
         />
       </div>
@@ -1913,6 +1979,7 @@
         <ColorPicker
           t-if="state.openedColorPicker === 'baselineColorDown'"
           onColorPicked="(color) => this.setColor(color, 'baselineColorDown')"
+          currentColor="props.definition.baselineColorDown"
           t-key="baselineColorDown"
         />
       </div>
@@ -2004,6 +2071,7 @@
             t-if="state.openedMenu === 'cellIsRule-textColor'"
             dropdownDirection="'center'"
             onColorPicked="(color) => this.setColor('textColor', color)"
+            currentColor="rule.style.textColor"
             t-key="textColor"
           />
         </div>
@@ -2019,6 +2087,7 @@
             t-if="state.openedMenu === 'cellIsRule-fillColor'"
             dropdownDirection="'center'"
             onColorPicked="(color) => this.setColor('fillColor', color)"
+            currentColor="rule.style.fillColor"
             t-key="fillColor"
           />
         </div>
@@ -2075,6 +2144,7 @@
             t-if="state.openedMenu === 'colorScale-'+thresholdType+'Color'"
             dropdownDirection="'left'"
             onColorPicked="(color) => this.setColorScaleColor(thresholdType, color)"
+            currentColor="getThresholdColor(threshold)"
           />
         </div>
       </div>
@@ -2767,6 +2837,7 @@
             <ColorPicker
               t-if="state.activeTool === 'textColorTool'"
               onColorPicked="(color) => this.setColor('textColor', color)"
+              currentColor="textColor"
               t-key="textColor"
             />
           </div>
@@ -2781,6 +2852,7 @@
             <ColorPicker
               t-if="state.activeTool === 'fillColorTool'"
               onColorPicked="(color) => this.setColor('fillColor', color)"
+              currentColor="fillColor"
               t-key="fillColor"
             />
           </div>

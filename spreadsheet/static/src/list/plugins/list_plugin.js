@@ -2,13 +2,9 @@
 
 import spreadsheet from "../../o_spreadsheet/o_spreadsheet_extended";
 import CommandResult from "../../o_spreadsheet/cancelled_reason";
-import { getFirstListFunction } from "../list_helpers";
 import { getMaxObjectId } from "../../helpers/helpers";
 import ListDataSource from "../list_data_source";
-
 import { TOP_LEVEL_STYLE } from "../../helpers/constants";
-
-const { astToFormula } = spreadsheet;
 
 /**
  * @typedef {Object} ListDefinition
@@ -157,28 +153,6 @@ export default class ListPlugin extends spreadsheet.CorePlugin {
         const dataSourceId = this.lists[id].dataSourceId;
         await this.dataSources.load(dataSourceId);
         return this.getListDataSource(id);
-    }
-
-    /**
-     * Get the id of the list at the given position. Returns undefined if there
-     * is no list at this position
-     *
-     * @param {string} sheetId Id of the sheet
-     * @param {number} col Index of the col
-     * @param {number} row Index of the row
-     *
-     * @returns {string|undefined}
-     */
-    getListIdFromPosition(sheetId, col, row) {
-        const cell = this.getters.getCell(sheetId, col, row);
-        if (cell && cell.isFormula()) {
-            const listFunction = getFirstListFunction(cell.content);
-            if (listFunction) {
-                const content = astToFormula(listFunction.args[0]);
-                return this.getters.evaluateFormula(content).toString();
-            }
-        }
-        return undefined;
     }
 
     /**
@@ -388,7 +362,6 @@ ListPlugin.getters = [
     "getListDisplayName",
     "getAsyncListDataSource",
     "getListDefinition",
-    "getListIdFromPosition",
     "getListIds",
     "getListName",
     "getNextListId",

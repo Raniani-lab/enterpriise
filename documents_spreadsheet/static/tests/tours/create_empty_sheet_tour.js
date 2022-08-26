@@ -32,7 +32,7 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
                 run: "click",
             },
             {
-                trigger: '.o-color-picker .o-color-picker-line div[data-color="#990000"]',
+                trigger: '.o-color-picker-line-item[data-color="#990000"]',
                 content: "Choose a color",
                 run: "click",
             },

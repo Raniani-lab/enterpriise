@@ -103,6 +103,28 @@ export default class PivotStructurePlugin extends spreadsheet.UIPlugin {
     }
 
     /**
+     * Get the id of the pivot at the given position. Returns undefined if there
+     * is no pivot at this position
+     *
+     * @param {string} sheetId Id of the sheet
+     * @param {number} col Index of the col
+     * @param {number} row Index of the row
+     *
+     * @returns {string|undefined}
+     */
+    getPivotIdFromPosition(sheetId, col, row) {
+        const cell = this.getters.getCell(sheetId, col, row);
+        if (cell && cell.isFormula()) {
+            const pivotFunction = getFirstPivotFunction(cell.content);
+            if (pivotFunction) {
+                const content = astToFormula(pivotFunction.args[0]);
+                return this.getters.evaluateFormula(content).toString();
+            }
+        }
+        return undefined;
+    }
+
+    /**
      * Get the computed domain of a pivot
      * CLEAN ME not used outside of tests
      * @param {string} pivotId Id of the pivot
@@ -257,6 +279,7 @@ PivotStructurePlugin.getters = [
     "getSelectedPivotId",
     "getPivotComputedDomain",
     "getDisplayedPivotHeaderValue",
+    "getPivotIdFromPosition",
     "getPivotCellValue",
     "getPivotGroupByValues",
     "getFiltersMatchingPivot",

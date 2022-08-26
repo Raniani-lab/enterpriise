@@ -38,6 +38,9 @@ const MONTHS = {
     december: { value: 12, granularity: "month" },
 };
 
+const { UuidGenerator } = spreadsheet.helpers;
+const uuidGenerator = new UuidGenerator();
+
 export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
     constructor(getters, history, dispatch, config) {
         super(getters, history, dispatch, config);
@@ -457,6 +460,49 @@ export default class FiltersEvaluationPlugin extends spreadsheet.UIPlugin {
             }
         }
         return domain.toString();
+    }
+
+    /**
+     * Adds all active filters (and their values) at the time of export in a dedicated sheet
+     *
+     * @param {Object} data
+     */
+    exportForExcel(data) {
+        if (this.getters.getGlobalFilters().length === 0) {
+            return;
+        }
+        const styles = Object.entries(data.styles);
+        let titleStyleId =
+            styles.findIndex((el) => JSON.stringify(el[1]) === JSON.stringify({ bold: true })) + 1;
+
+        if (titleStyleId <= 0) {
+            titleStyleId = styles.length + 1;
+            data.styles[styles.length + 1] = { bold: true };
+        }
+
+        const cells = {};
+        cells["A1"] = { content: "Filter", style: titleStyleId };
+        cells["B1"] = { content: "Value", style: titleStyleId };
+        let row = 2;
+        for (const filter of this.getters.getGlobalFilters()) {
+            const content = this.getFilterDisplayValue(filter.label);
+            cells[`A${row}`] = { content: filter.label };
+            cells[`B${row}`] = { content };
+            row++;
+        }
+        data.sheets.push({
+            id: uuidGenerator.uuidv4(),
+            name: "Active Filters",
+            cells,
+            colNumber: 2,
+            rowNumber: this.getters.getGlobalFilters().length + 1,
+            cols: {},
+            rows: {},
+            merges: [],
+            figures: [],
+            conditionalFormats: [],
+            charts: [],
+        });
     }
 }
 

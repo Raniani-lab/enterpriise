@@ -26,8 +26,6 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { checkFiltersTypeValueCombination } from "@spreadsheet/global_filters/helpers";
 
-const { UuidGenerator } = spreadsheet.helpers;
-const uuidGenerator = new UuidGenerator();
 
 export default class FiltersPlugin extends spreadsheet.CorePlugin {
     constructor() {
@@ -256,49 +254,6 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
             ...filter,
             fields: filter.pivotFields,
         }));
-    }
-
-    /**
-     * Adds all active filters (and their values) at the time of export in a dedicated sheet
-     *
-     * @param {Object} data
-     */
-    exportForExcel(data) {
-        if (this.getGlobalFilters().length === 0) {
-            return;
-        }
-        const styles = Object.entries(data.styles);
-        let titleStyleId =
-            styles.findIndex((el) => JSON.stringify(el[1]) === JSON.stringify({ bold: true })) + 1;
-
-        if (titleStyleId <= 0) {
-            titleStyleId = styles.length + 1;
-            data.styles[styles.length + 1] = { bold: true };
-        }
-
-        const cells = {};
-        cells["A1"] = { content: "Filter", style: titleStyleId };
-        cells["B1"] = { content: "Value", style: titleStyleId };
-        let row = 2;
-        for (const filter of this.getGlobalFilters()) {
-            const content = this.getters.getFilterDisplayValue(filter.label);
-            cells[`A${row}`] = { content: filter.label };
-            cells[`B${row}`] = { content };
-            row++;
-        }
-        data.sheets.push({
-            id: uuidGenerator.uuidv4(),
-            name: "Active Filters",
-            cells,
-            colNumber: 2,
-            rowNumber: this.getGlobalFilters().length + 1,
-            cols: {},
-            rows: {},
-            merges: [],
-            figures: [],
-            conditionalFormats: [],
-            charts: [],
-        });
     }
 
     // ---------------------------------------------------------------------

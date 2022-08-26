@@ -133,6 +133,28 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
     }
 
     /**
+     * Get the id of the list at the given position. Returns undefined if there
+     * is no list at this position
+     *
+     * @param {string} sheetId Id of the sheet
+     * @param {number} col Index of the col
+     * @param {number} row Index of the row
+     *
+     * @returns {string|undefined}
+     */
+    getListIdFromPosition(sheetId, col, row) {
+        const cell = this.getters.getCell(sheetId, col, row);
+        if (cell && cell.isFormula()) {
+            const listFunction = getFirstListFunction(cell.content);
+            if (listFunction) {
+                const content = astToFormula(listFunction.args[0]);
+                return this.getters.evaluateFormula(content).toString();
+            }
+        }
+        return undefined;
+    }
+
+    /**
      * Get the value of a list header
      *
      * @param {string} listId Id of a list
@@ -166,6 +188,7 @@ export default class ListStructurePlugin extends spreadsheet.UIPlugin {
 ListStructurePlugin.getters = [
     "getListComputedDomain",
     "getListHeaderValue",
+    "getListIdFromPosition",
     "getListCellValue",
     "getSelectedListId",
 ];

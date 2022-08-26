@@ -874,11 +874,17 @@
                                                 <field name="name">Report à nouveau</field>
                                                 <field name="code">REPORT_NOUVEAU</field>
                                                 <field name="expression_ids">
+                                                    <record id="account_financial_report_line_03_1_6_fr_bilan_passif_balance_account_codes" model="account.report.expression">
+                                                        <field name="label">balance_account_codes</field>
+                                                        <field name="engine">account_codes</field>
+                                                        <field name="formula">-11 - 12 - 7 - 6</field>
+                                                        <field name="date_scope">from_beginning</field>
+                                                    </record>
                                                     <record id="account_financial_report_line_03_1_6_fr_bilan_passif_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
-                                                        <field name="engine">account_codes</field>
-                                                        <field name="formula">-11 - 7 - 6</field>
-                                                        <field name="date_scope">to_beginning_of_period</field>
+                                                        <field name="engine">aggregation</field>
+                                                        <field name="formula">REPORT_NOUVEAU.balance_account_codes - RESULT_LEXERCICE.balance</field>
+                                                        <field name="date_scope">from_beginning</field>
                                                     </record>
                                                 </field>
                                             </record>
@@ -890,7 +896,7 @@
                                                     <record id="account_financial_report_line_03_1_7_fr_bilan_passif_balance" model="account.report.expression">
                                                         <field name="label">balance</field>
                                                         <field name="engine">account_codes</field>
-                                                        <field name="formula">-7 - 6 - 12</field>
+                                                        <field name="formula">-7 - 6</field>
                                                         <field name="date_scope">from_fiscalyear</field>
                                                     </record>
                                                 </field>

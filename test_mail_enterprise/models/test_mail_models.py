@@ -27,6 +27,9 @@ class MailTestActivitySMSVoip(models.Model):
     opt_out = fields.Boolean()
     phone_nbr = fields.Char()
 
+    def _mail_get_partner_fields(self):
+        return ['customer_id']
+
     def _mailing_get_opt_out_list(self, mailing):
         res_ids = mailing._get_recipients()
         opt_out_contacts = set(self.search([

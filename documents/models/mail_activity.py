@@ -26,38 +26,49 @@ class MailActivity(models.Model):
         return vals
 
     def _action_done(self, feedback=False, attachment_ids=None):
-        if attachment_ids:
-            for record in self:
-                document = self.env['documents.document'].search([('request_activity_id', '=', record.id)], limit=1)
-                if document and not document.attachment_id:
-                    self.env['documents.document'].search([('attachment_id', '=', attachment_ids[0])]).unlink()
-                    if not feedback:
-                        feedback = _("Document Request: %s Uploaded by: %s") % (document.name, self.env.user.name)
-                    document.write({'attachment_id': attachment_ids[0], 'request_activity_id': False})
+        if self and attachment_ids:
+            documents = self.env['documents.document'].search([
+                ('request_activity_id', 'in', self.ids),
+                ('attachment_id', '=', False)
+            ])
+            if documents:
+                to_remove = self.env['documents.document'].search([('attachment_id', '=', attachment_ids[0])])
+                if to_remove:
+                    to_remove.unlink()
+                if not feedback:
+                    feedback = _("Document Request: %s Uploaded by: %s") % (documents[0].name, self.env.user.name)
+                documents.write({
+                    'attachment_id': attachment_ids[0],
+                    'request_activity_id': False
+                })
 
         return super(MailActivity, self)._action_done(feedback=feedback, attachment_ids=attachment_ids)
 
     @api.model_create_multi
     def create(self, vals_list):
         activities = super().create(vals_list)
-        doc_vals = []
-        for activity in activities:
-            activity_type = activity.activity_type_id
-            if activity_type.category == 'upload_file' and activity.res_model != 'documents.document' and activity_type.folder_id:
-                doc_vals.append({
-                    'res_model': activity.res_model,
-                    'res_id': activity.res_id,
-                    'owner_id': activity_type.default_user_id.id,
-                    'folder_id': activity_type.folder_id.id,
-                    'tag_ids': [(6, 0, activity_type.tag_ids.ids)],
-                    'name': activity.summary or activity.res_name or 'upload file request',
-                    'request_activity_id': activity.id,
-                })
-            elif activity_type.category == 'upload_file' and activity.res_model == 'documents.document':
-                existing_doc_req = self.env['documents.document'].browse(activity.res_id)
-                if not existing_doc_req.request_activity_id:
-                    existing_doc_req.write({'request_activity_id': activity.id})
+        upload_activities = activities.filtered(lambda act: act.activity_category == 'upload_file')
 
+        # link back documents and activities
+        upload_documents_activities = upload_activities.filtered(lambda act: act.res_model == 'documents.document')
+        if upload_documents_activities:
+            documents = self.env['documents.document'].browse(upload_documents_activities.mapped('res_id'))
+            for document, activity in zip(documents, upload_documents_activities):
+                if not document.request_activity_id:
+                    document.request_activity_id = activity.id
+
+        # create underlying documents if related record is not a document
+        doc_vals = [{
+            'res_model': activity.res_model,
+            'res_id': activity.res_id,
+            'owner_id': activity.activity_type_id.default_user_id.id,
+            'folder_id': activity.activity_type_id.folder_id.id,
+            'tag_ids': [(6, 0, activity.activity_type_id.tag_ids.ids)],
+            'name': activity.summary or activity.res_name or 'upload file request',
+            'request_activity_id': activity.id,
+        } for activity in upload_activities.filtered(
+            lambda act: act.res_model != 'documents.document' and act.activity_type_id.folder_id
+        )]
         if doc_vals:
             self.env['documents.document'].sudo().create(doc_vals)
         return activities

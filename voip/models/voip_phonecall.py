@@ -5,7 +5,6 @@ import time
 from markupsafe import Markup
 
 from odoo import api, fields, models, _
-from odoo.tools.misc import clean_context
 
 
 class VoipPhonecall(models.Model):
@@ -257,29 +256,6 @@ class VoipPhonecall(models.Model):
             'partner_id': partner_id,
         }
         return self._create_and_init(vals)
-
-    @api.model
-    def create_from_activity(self, activity):
-        record = self.env[activity.res_model].browse(activity.res_id)
-        partner_id = False
-        if record._name == 'res.partner':
-            partner_id = record.id
-        elif 'partner_id' in record:
-            partner_id = record.partner_id.id
-        #clean context to remove default_type
-        #maybe move this in create_call_in_queue
-        ctx = clean_context(self.env.context)
-        return self.with_context(ctx).create({
-            'name': activity.res_name,
-            'user_id': activity.user_id.id,
-            'partner_id': partner_id,
-            'activity_id': activity.id,
-            'date_deadline': activity.date_deadline,
-            'state': 'open',
-            'phone': activity.phone,
-            'mobile': activity.mobile,
-            'note': activity.note,
-        })
 
     @api.model
     def create_from_phone_widget(self, model, res_id, number):

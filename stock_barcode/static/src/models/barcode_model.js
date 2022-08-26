@@ -340,32 +340,7 @@ export default class BarcodeModel extends EventBus {
     }
 
     get packageLines() {
-        if (!this.record.picking_type_entire_packs) {
-            return [];
-        }
-        const lines = this.page.lines;
-        const linesWithPackage = lines.filter(line => line.package_id && line.result_package_id);
-        // Groups lines by package.
-        const groupedLines = {};
-        for (const line of linesWithPackage) {
-            const packageId = line.package_id.id;
-            if (!groupedLines[packageId]) {
-                groupedLines[packageId] = [];
-            }
-            groupedLines[packageId].push(line);
-        }
-        const packageLines = [];
-        for (const key in groupedLines) {
-            // Check if the package is reserved.
-            const reservedPackage = groupedLines[key].every(line => line.reserved_uom_qty);
-            groupedLines[key][0].reservedPackage = reservedPackage;
-            const packageLine = Object.assign({}, groupedLines[key][0], {
-                lines: groupedLines[key],
-                isPackageLine: true,
-            });
-            packageLines.push(packageLine);
-        }
-        return this._sortLine(packageLines);
+        return [];
     }
 
     get previousScannedLines() {

@@ -37,7 +37,7 @@
     <li id="checkId-980463482772">
         <span style="font-size: 14px;">
             Select text to
-            <font class="bg-o-color-1">Highlight</font>,
+            <font class="bg-o-color-2">Highlight</font>,
             <span style="text-decoration-line: line-through;">strikethrough</span>
             or
             <span style="font-weight: bolder;">style</span>
@@ -163,7 +163,7 @@
         </span>
         by opening the
         <span style="font-weight: bolder;">
-            <font class="text-o-color-1">Command Palette</font>
+            <font class="text-o-color-2">Command Palette</font>
         </span>
         (Ctrl + k/⌘ + k) then search through articles by starting your query with
         "<span style="font-weight: bolder;">?</span>".
@@ -195,7 +195,7 @@
         <span style="font-size: 14px;">
             Content — Just click and
             <span style="font-weight: bolder;">
-                <font class="text-o-color-1">start typing</font>
+                <font class="text-o-color-2">start typing</font>
             </span>
             (<span style="font-style: italic;">documentation, tips, reports, ...</span>)
         </span>
@@ -206,7 +206,7 @@
         </span>
         <span style="font-size: 14px;">
             <span style="font-weight: bolder;">
-                <font class="text-o-color-1">Nest other Articles</font>
+                <font class="text-o-color-2">Nest other Articles</font>
             </span>
             under it to regroup them
             (<span style="font-style: italic;">per team, topic, project, ...</span>)
@@ -221,7 +221,7 @@
         </span>
         are organized, you can simply
         <span style="font-weight: bolder;">
-            <font class="text-o-color-1">Drag &amp; Drop</font>
+            <font class="text-o-color-2">Drag &amp; Drop</font>
         </span>
         them
     </span>
@@ -246,7 +246,7 @@
             </span>
             — Those are
             <span style="font-weight: bolder;">
-                <font class="text-o-color-1">shortcuts</font>
+                <font class="text-o-color-2">shortcuts</font>
             </span>
             you create for yourself.
             Unstar ⭐ this page at the top to remove it from your favorites.
@@ -261,7 +261,7 @@
         <span style="font-size: 14px;">
             — Articles there can be accessed by
         <span style="font-weight: bolder;">
-            <font class="text-o-color-1">your team</font>
+            <font class="text-o-color-2">your team</font>
         </span>
     </span>
     </li>
@@ -274,7 +274,7 @@
         <span style="font-size: 14px;">
             — Those are the ones you
             <span style="font-weight: bolder;">
-                <font class="text-o-color-1">have invited someone or been invited to</font>
+                <font class="text-o-color-2">have invited someone or been invited to</font>
             </span>
         </span>
     </li>
@@ -286,7 +286,7 @@
         </span>
         <span style="font-size: 14px;">
             — This is
-            <span style="font-weight: bolder;"><font class="text-o-color-1">your stuff</font></span>,
+            <span style="font-weight: bolder;"><font class="text-o-color-2">your stuff</font></span>,
             the things you keep for yourself
             (<span style="font-style: italic;">Drafts, Todo lists, ...</span>)
         </span>
@@ -304,7 +304,7 @@
         </span>
         to another, just
         <span style="font-weight: bolder;">
-            <font class="text-o-color-1">Drag &amp; Drop</font>
+            <font class="text-o-color-2">Drag &amp; Drop</font>
         </span>
         it.
     </span>

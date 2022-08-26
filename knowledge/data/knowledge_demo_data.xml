@@ -7,7 +7,7 @@
             <field name="body" type="html">
                 <h1>
                     <span style="font-weight: bolder;">
-                        <font class="text-o-color-1">Some HR Sub-Subject</font>
+                        <font class="text-o-color-2">Some HR Sub-Subject</font>
                     </span>
                 </h1>
                 <p>Blablabla, I'm an article item that is hidden in the side panel and only reachable via my parent via the /kanban /list command.</p>

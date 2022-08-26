@@ -7,7 +7,7 @@
             <field name="body" type="html">
                 <h1>
                     <span style="font-weight: bolder;">
-                        <font class="text-o-color-1">HR FAQ</font>
+                        <font class="text-o-color-2">HR FAQ</font>
                     </span>
                 </h1>
                 <hr />
@@ -27,7 +27,7 @@
                 <p><br /></p>
                 <h2>
                     <span style="font-weight: bolder; text-decoration-line: underline; font-size: 24px;">
-                        <font class="text-o-color-1">Expense Policy</font>
+                        <font class="text-o-color-2">Expense Policy</font>
                     </span>
                 </h2>
                 <h3>
@@ -52,7 +52,7 @@
                 <p><br /></p>
                 <h2>
                     <span style="font-weight: bolder; text-decoration-line: underline; font-size: 24px;">
-                        <font class="text-o-color-1">Car Policy</font>
+                        <font class="text-o-color-2">Car Policy</font>
                     </span>
                 </h2>
                 <h3>
@@ -91,7 +91,7 @@
                 <p><br /></p>
                 <h2>
                     <span style="font-size: 24px; font-weight: bolder; text-decoration-line: underline;">
-                        <font class="text-o-color-1">Leaves &amp; Time Off</font>
+                        <font class="text-o-color-2">Leaves &amp; Time Off</font>
                     </span>
                 </h2>
                 <h3>
@@ -140,7 +140,7 @@
             <field name="body" type="html">
                 <h1>
                     <span style="font-weight: bolder;">
-                        <font class="text-o-color-1">Sales &amp; Marketing</font>
+                        <font class="text-o-color-2">Sales &amp; Marketing</font>
                     </span>
                 </h1>
                 <hr />
@@ -151,12 +151,12 @@
                         <tr>
                             <td>
                                 <span style="font-size: 24px; font-weight: bolder;">
-                                    <font class="text-o-color-1">SALES</font>
+                                    <font class="text-o-color-2">SALES</font>
                                 </span>
                             </td>
                             <td>
                                 <span style="font-size: 24px; font-weight: bolder;">
-                                    <font class="text-o-color-1">MARKETING</font>
+                                    <font class="text-o-color-2">MARKETING</font>
                                 </span>
                             </td>
                         </tr>
@@ -187,7 +187,7 @@
                 <p>
                     <span style="font-size: 14px;">
                         <span style="font-weight: bolder;">
-                            <font class="text-o-color-1">PRO TIP</font>
+                            <font class="text-o-color-2">PRO TIP</font>
                         </span>
                         : From a lead, use the 📗 button in the chatter to find this article and autocomplete your email with this template.
                     </span>
@@ -217,7 +217,7 @@
                 <p><br /></p>
                 <p>
                     <span style="font-size: 14px;">
-                        <span style="font-weight: bolder;"><font class="text-o-color-1">PRO TIP</font></span>: From a lead, use the
+                        <span style="font-weight: bolder;"><font class="text-o-color-2">PRO TIP</font></span>: From a lead, use the
                     </span>
                     <span style="font-size: 14px;">📗 button in the chatter to find this article and autocomplete your description with this qualification template.</span>
                 </p>

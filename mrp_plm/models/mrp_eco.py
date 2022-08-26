@@ -541,6 +541,14 @@ class MrpEco(models.Model):
                 if eco.stage_id != newstage:
                     eco.approval_ids.filtered(lambda x: x.status != 'none').write({'is_closed': True})
                     eco.approval_ids.filtered(lambda x: x.status == 'none').unlink()
+        if 'displayed_image_attachment_id' in vals:
+            doc = False
+            if vals['displayed_image_attachment_id']:
+                doc = self.env['mrp.document'].search([('ir_attachment_id', '=', vals['displayed_image_attachment_id'])])
+                if not doc:
+                    doc = self.env['mrp.document'].create([{'ir_attachment_id': vals['displayed_image_attachment_id']}])
+            vals.pop('displayed_image_attachment_id')
+            vals['displayed_image_id'] = doc
         res = super(MrpEco, self).write(vals)
         if vals.get('stage_id'):
             self._create_approvals()

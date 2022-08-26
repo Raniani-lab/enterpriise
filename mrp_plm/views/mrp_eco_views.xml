@@ -311,7 +311,7 @@
         <field name="name">mrp.eco.kanban</field>
         <field name="model">mrp.eco</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" class="o_kanban_small_column" quick_create="false" sample="1" js_class="mrp_eco_kanban">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column" quick_create="false" sample="1">
                 <field name="name"/>
                 <field name="bom_id"/>
                 <field name="effectivity_date"/>
@@ -340,7 +340,7 @@
                                     <span class="fa fa-ellipsis-v"/>
                                 </a>
                                 <div class="dropdown-menu" role="menu">
-                                    <t t-if="widget.editable"><a type="set_cover" class="dropdown-item" role="menuitem">Set Cover Image</a></t>
+                                    <t t-if="widget.editable"><a type="set_cover" class="dropdown-item" role="menuitem" data-field="displayed_image_attachment_id">Set Cover Image</a></t>
                                     <t t-if="widget.editable"><a type="edit" class="dropdown-item" role="menuitem">Edit Task</a></t>
                                     <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
                                     <ul class="oe_kanban_colorpicker" data-field="color"/>

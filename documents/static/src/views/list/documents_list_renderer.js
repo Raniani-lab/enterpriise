@@ -73,6 +73,8 @@ export class DocumentsListRendererCheckBox extends CheckBox {
 }
 
 DocumentsListRenderer.template = "documents.DocumentsListRenderer";
+DocumentsListRenderer.recordRowTemplate = "documents.DocumentsListRenderer.RecordRow";
+
 DocumentsListRenderer.components = Object.assign({}, ListRenderer.components, {
     DocumentsInspector,
     DocumentsListRendererCheckBox,

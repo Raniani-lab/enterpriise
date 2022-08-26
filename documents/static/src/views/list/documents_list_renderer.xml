@@ -8,9 +8,6 @@
         <xpath expr="//div[hasclass('o_list_renderer')]" position="after">
             <DocumentsInspector t-props="getDocumentsInspectorProps()"/>
         </xpath>
-        <xpath expr="//t[@t-call='web.ListRenderer.Rows']" position="attributes">
-            <attribute name="t-call">documents.DocumentsListRenderer.Rows</attribute>
-        </xpath>
         <table position="before">
             <DocumentsDropZone setDropZone.bind="setDropZone"/>
             <DocumentsFileUploadViewContainer recordTemplate="'documents.DocumentsFileUploadProgressLine'"/>
@@ -20,15 +17,6 @@
                 <DocumentsActionHelper noContentHelp="props.noContentHelp"/>
             </t>
         </t>
-    </t>
-    
-    <t t-name="documents.DocumentsListRenderer.Rows" t-inherit="web.ListRenderer.Rows" t-inherit-mode="primary" owl="1">
-        <xpath expr="//t[@t-call='web.ListRenderer.RecordRow']" position="attributes">
-            <attribute name="t-call">documents.DocumentsListRenderer.RecordRow</attribute>
-        </xpath>
-        <xpath expr="//t[@t-call='web.ListRenderer.Rows']" position="attributes">
-            <attribute name="t-call">documents.DocumentsListRenderer.Rows</attribute>
-        </xpath>
     </t>
 
     <t t-name="documents.DocumentsListRenderer.RecordRow" t-inherit="web.ListRenderer.RecordRow" t-inherit-mode="primary" owl="1">

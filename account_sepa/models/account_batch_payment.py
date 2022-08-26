@@ -63,12 +63,9 @@ class AccountBatchPayment(models.Model):
         invalid_ref_payments = self.env['account.payment']
 
         for payment in self.mapped('payment_ids'):
-            if payment.company_id.account_fiscal_country_id.code in ['CH', 'SE']:
-                #we need swiss/sweden payments as generic, but we should not give warnings (4eabbf1042d38f6c93c99c6a490f37af55303399)
-                continue
             if payment.partner_bank_id.acc_type != 'iban':
                 no_iban_payments += payment
-            if payment.currency_id.name != 'EUR' and (self.journal_id.currency_id or self.journal_id.company_id.currency_id).name == 'EUR':
+            if payment.currency_id.name != 'EUR':
                 no_eur_payments += payment
             if not _check_sepa_str_validity(payment.name, payment.ref):
                 invalid_ref_payments += payment
@@ -123,7 +120,10 @@ class AccountBatchPayment(models.Model):
         rslt = super(AccountBatchPayment, self).check_payments_for_warnings()
 
         if self.payment_method_code == 'sepa_ct':
-            rslt += self._get_sct_genericity_warnings()
+            sct_warnings = self._get_sct_genericity_warnings()
+            if (self.journal_id.currency_id or self.journal_id.company_id.currency_id).name != 'EUR':
+                sct_warnings = [warning for warning in sct_warnings if warning.get('code') != 'no_eur']
+            rslt += sct_warnings
 
         return rslt
 

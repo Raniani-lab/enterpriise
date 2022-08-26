@@ -146,7 +146,7 @@
         <field name="name">appointment.type.tree</field>
         <field name="model">appointment.type</field>
         <field name="arch" type="xml">
-            <tree string="Appointment Type" class="o_appointment_type_view_list" multi_edit="1" js_class="appointment_type_tree_view">
+            <tree string="Appointment Type" class="o_appointment_type_view_list" multi_edit="1">
                 <header>
                     <button name="action_share_invite" type="object" string="Share"/>
                 </header>

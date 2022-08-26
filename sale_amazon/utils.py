@@ -224,13 +224,14 @@ def refresh_restricted_data_token(account):
     """
     if datetime.utcnow() > account.restricted_data_token_expiry - timedelta(minutes=5):
         all_restricted_operations = [
-            k for k, mapping in const.API_OPERATIONS_MAPPING if mapping['restricted_resource_path']
+            k for k, map in const.API_OPERATIONS_MAPPING.items() if map['restricted_resource_path']
         ]
+        OPERATIONS_MAPPING = const.API_OPERATIONS_MAPPING
         payload = {
             'restrictedResources': [{
                 'method': 'GET',
-                'path': operation['restricted_resource_path'],
-                'dataElements': operation['restricted_resource_data_elements'],
+                'path': OPERATIONS_MAPPING[operation]['restricted_resource_path'],
+                'dataElements': OPERATIONS_MAPPING[operation]['restricted_resource_data_elements'],
             } for operation in all_restricted_operations]
         }
         response_content = make_sp_api_request(

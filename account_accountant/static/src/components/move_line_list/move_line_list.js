@@ -76,9 +76,11 @@ class AccountMoveListRenderer extends ListRenderer {
 
     findFocusFutureCell(cell, cellIsInGroupRow, direction) {
         const futureCell = super.findFocusFutureCell(cell, cellIsInGroupRow, direction);
-        const dataPointId = futureCell.closest('tr').dataset.id;
-        const record = this.props.list.records.filter(x=>x.id === dataPointId)[0];
-        this.props.setSelectedRecord(record);
+        if (futureCell) {
+            const dataPointId = futureCell.closest('tr').dataset.id;
+            const record = this.props.list.records.filter(x=>x.id === dataPointId)[0];
+            this.props.setSelectedRecord(record);
+        }
         return futureCell;
     }
 }

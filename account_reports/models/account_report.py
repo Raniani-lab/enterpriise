@@ -3347,14 +3347,6 @@ class AccountReport(models.Model):
                 return self.env['account.report'].browse(options['report_id']).get_report_informations({**previous_options, 'report_id': options['report_id']})
 
         searchview_dict = {'options': options, 'context': self.env.context, 'report': self}
-        # Check if report needs analytic
-        if options.get('analytic_accounts') is not None:
-            options['selected_analytic_account_names'] = [self.env['account.analytic.account'].browse(int(account)).name for account in options['analytic_accounts']]
-        if options.get('analytic_tags') is not None:
-            options['selected_analytic_tag_names'] = [self.env['account.analytic.tag'].browse(int(tag)).name for tag in options['analytic_tags']]
-        if options.get('partner'):
-            options['selected_partner_ids'] = [self.env['res.partner'].browse(int(partner)).name for partner in options['partner_ids']]
-            options['selected_partner_categories'] = [self.env['res.partner.category'].browse(int(category)).name for category in (options.get('partner_categories') or [])]
 
         # Check whether there are unposted entries for the selected period or not (if the report allows it)
         if options.get('date') and options.get('all_entries') is not None:

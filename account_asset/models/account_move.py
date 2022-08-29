@@ -231,7 +231,8 @@ class AccountMove(models.Model):
         asset = self.asset_id
         if asset:
             account = asset.account_depreciation_expense_id if asset.asset_type == 'sale' else asset.account_depreciation_id
-            field = 'debit' if asset.asset_type == 'sale' or asset.original_move_line_ids.move_id.move_type == 'in_refund' else 'credit'
+            field = 'debit' if asset.asset_type == 'sale' or\
+                any(move.move_type == 'in_refund' for move in asset.original_move_line_ids.move_id) else 'credit'
             asset_depreciation = sum(
                 self.line_ids.filtered(lambda l: l.account_id == account).mapped(field)
             )

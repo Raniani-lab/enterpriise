@@ -11,7 +11,6 @@ from contextlib import contextmanager
 from pytz import timezone
 
 
-@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestCoEdiCommon(AccountEdiTestCommon):
 
     @contextmanager

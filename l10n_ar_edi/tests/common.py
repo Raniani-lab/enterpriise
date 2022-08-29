@@ -179,7 +179,6 @@ class TestEdi(TestAr):
         self.assertTrue(invoice.l10n_ar_afip_xml_response, error_msg)
 
 
-@tagged('external_l10n', '-at_install', 'post_install', '-standard', 'external')
 class TestFexCommon(TestEdi):
 
     @classmethod

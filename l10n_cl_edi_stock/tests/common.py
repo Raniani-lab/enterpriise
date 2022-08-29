@@ -8,7 +8,6 @@ from odoo.tests import tagged
 from odoo.tools import misc, relativedelta
 
 
-@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestL10nClEdiStockCommon(TestStockCommon):
     @classmethod
     def setUpClass(cls):

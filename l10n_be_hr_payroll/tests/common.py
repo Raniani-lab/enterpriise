@@ -6,7 +6,6 @@ from datetime import date
 from odoo.tests.common import TransactionCase
 from odoo.tests import tagged
 
-@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestPayrollCommon(TransactionCase):
 
     @classmethod

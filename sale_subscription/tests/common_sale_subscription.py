@@ -4,7 +4,6 @@ from odoo.tests import tagged
 from odoo import Command
 
 
-@tagged('-at_install', 'post_install')
 class TestSubscriptionCommon(TestSaleCommon):
 
     @classmethod

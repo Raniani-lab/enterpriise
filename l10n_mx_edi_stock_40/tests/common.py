@@ -4,9 +4,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo.addons.l10n_mx_edi_40.tests.common import TestMxEdiCommon
-from odoo.tests import tagged
 
-@tagged('post_install_l10n', '-at_install', 'post_install')
 class TestMXDeliveryGuideCommon(TestMxEdiCommon):
     @classmethod
     def setUpClass(cls):

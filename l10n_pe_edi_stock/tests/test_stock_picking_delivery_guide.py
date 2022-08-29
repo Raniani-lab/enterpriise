@@ -5,7 +5,6 @@ from dateutil.relativedelta import relativedelta
 from odoo.addons.l10n_pe_edi.tests.common import TestPeEdiCommon
 from odoo.tests import tagged
 
-@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestPEDeliveryGuideCommon(TestPeEdiCommon):
 
     @classmethod

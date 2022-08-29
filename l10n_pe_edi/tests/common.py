@@ -24,7 +24,6 @@ def mocked_l10n_pe_edi_post_invoice_web_service(edi_format, invoice, edi_filenam
     }
 
 
-@tagged('post_install_l10n', '-at_install', 'post_install')
 class TestPeEdiCommon(AccountEdiTestCommon):
 
     @classmethod

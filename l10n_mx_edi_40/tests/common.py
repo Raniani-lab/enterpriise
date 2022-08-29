@@ -15,7 +15,6 @@ def mocked_l10n_mx_edi_pac(edi_format, invoice, exported):
     return exported
 
 
-@tagged('post_install_l10n', '-at_install', 'post_install')
 class TestMxEdiCommon(AccountEdiTestCommon):
 
     @classmethod

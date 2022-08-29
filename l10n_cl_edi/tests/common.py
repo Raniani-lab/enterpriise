@@ -15,7 +15,6 @@ def _check_with_xsd_patch(xml_to_validate, xsd_fname, env):
     return True
 
 
-@tagged('post_install_l10n', 'post_install', '-at_install')
 class TestL10nClEdiCommon(AccountEdiTestCommon):
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_cl.cl_chart_template'):

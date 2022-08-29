@@ -36,7 +36,6 @@ class WizardForm(Form):
         return self.bankRecWidget.new(self._values)
 
 
-@tagged('post_install', '-at_install')
 class TestBankRecWidgetCommon(AccountTestInvoicingCommon):
 
     @classmethod

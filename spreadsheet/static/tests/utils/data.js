@@ -68,6 +68,7 @@ export function getBasicServerData() {
             "partner,false,list": getBasicListArch(),
             "partner,false,pivot": getBasicPivotArch(),
             "partner,false,graph": getBasicGraphArch(),
+            "partner,false,form": /* xml */ `<Form/>`,
             "partner,false,search": /* xml */ `<search/>`,
         },
     };

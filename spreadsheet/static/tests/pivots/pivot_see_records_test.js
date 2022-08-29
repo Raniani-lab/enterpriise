@@ -16,7 +16,10 @@ const basicListAction = {
     name: "Partner",
     res_model: "partner",
     view_mode: "list",
-    views: [[false, "list"]],
+    views: [
+        [false, "list"],
+        [false, "form"],
+    ],
     target: "current",
     domain: [],
 };

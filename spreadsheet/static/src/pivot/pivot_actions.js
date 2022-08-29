@@ -27,7 +27,10 @@ export const SEE_RECORDS_PIVOT = async (env) => {
         name,
         res_model: model,
         view_mode: "list",
-        views: [[false, "list"]],
+        views: [
+            [false, "list"],
+            [false, "form"],
+        ],
         target: "current",
         domain,
     });

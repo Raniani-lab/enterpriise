@@ -29,6 +29,11 @@ class TestSignController(SignRequestCommon):
     def test_sign_controller_monetary(self):
         sign_request = self.create_sign_request_no_item(signer=self.partner_1, cc_partners=self.partner_4)
         text_type = self.env['sign.item.type'].search([('name', '=', 'Text')])
+        # no monetary field is set on res.partner with only the sign module
+        # credit is added in the account module and the test should not be
+        # run if this module is not installed
+        if 'credit' not in self.partner_1:
+            return
         # we set the text type defaut value with the partner.credit
         text_type.auto_field = 'credit'
         monetary_field = self.partner_1._fields['credit']

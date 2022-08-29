@@ -37,7 +37,7 @@ odoo.define('shared_sign_request_tour', function (require) {
             content: "Go on signing page",
             trigger: '.o_field_CopyClipboardChar',
             run: function () {
-                const share_link = this.$anchor.contents()[0].textContent;
+                const share_link = this.$anchor.contents()[0].firstChild.textContent;
                 // Retrieve the link without the origin to avoid
                 // mismatch between localhost:8069 and 127.0.0.1:8069
                 // when running the tour with chrome headless

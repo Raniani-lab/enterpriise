@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import OptionalProductsModal from 'sale_product_configurator.OptionalProductsModal';
+import { OptionalProductsModal } from "@sale_product_configurator/js/product_configurator_modal";
 
 OptionalProductsModal.include({
 

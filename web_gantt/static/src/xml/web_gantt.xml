@@ -59,7 +59,7 @@
     <div t-name="GanttView" class="o_gantt_view">
         <div class="o_gantt_view_container container-fluid p-0">
             <div class="row g-0 o_gantt_header_container position-sticky bg-white">
-                <div class="col-2 position-relative o_gantt_row_sidebar text-center" t-if="widget.state.groupedBy.length">
+                <div class="col-md-2 col-3 position-relative o_gantt_row_sidebar text-center" t-if="widget.state.groupedBy.length">
                     <span class="fw-bold" t-esc="widget.string"/>
                 </div>
                 <div class="col position-relative o_gantt_header_slots">
@@ -115,15 +115,15 @@
     </t>
 
     <div t-name="GanttView.Row" t-attf-class="row g-0 o_gantt_row #{widget.isTotal ? 'o_gantt_row_total' : widget.isGroup ? 'o_gantt_row_group' : 'o_gantt_row_nogroup'} #{widget.isOpen ? 'open' : ''}" t-att-data-from-server="widget.fromServer" t-att-data-row-id="widget.rowId">
-        <div t-if="!widget.options.hideSidebar" t-attf-class="col-2 o_gantt_row_sidebar position-relative #{!widget.name ? 'o_gantt_row_sidebar_empty' : '' }" t-attf-style="padding-left: #{widget.leftPadding}px;">
+        <div t-if="!widget.options.hideSidebar" t-attf-class="col-md-2 col-3 o_gantt_row_sidebar position-relative #{!widget.name ? 'o_gantt_row_sidebar_empty' : '' }" t-attf-style="padding-left: #{widget.leftPadding}px;">
             <t t-if="widget.progressBar">
                 <t t-if="widget.progressBar.max_value > 0">
                     <span t-attf-class="position-absolute o_gantt_progressbar {{ widget.progressBar.ratio > 100 ? 'o_gantt_group_danger' : 'o_gantt_group_success' }}"
                         t-att-style="'width: ' + Math.min(widget.progressBar.ratio, 100) + '%;'">
                         &amp;nbsp;
                     </span>
-                    <span t-attf-class="position-absolute o_gantt_text_hoverable {{widget.progressBar.ratio > 0 ? (widget.progressBar.ratio > 100 ? 'o_gantt_group_danger' : 'o_gantt_group_success') : 'o_gantt_group_none' }}">
-                        <span class="o_gantt_group_hours px-1" t-att-style="widget.cellHeight ? 'line-height: ' + widget.cellHeight + 'px;' : ''">
+                    <span t-attf-class="position-absolute {{widget.progressBar.ratio > 0 ? (widget.progressBar.ratio > 100 ? 'o_gantt_group_danger' : 'o_gantt_group_success') : 'o_gantt_group_none' }} {{ widget.isMobile ? 'o_gantt_text_mobile': 'o_gantt_text_hoverable'}}">
+                        <span class="o_gantt_group_hours px-1" t-att-style="widget.cellHeight ? 'line-height: ' + (widget.isMobile ? widget.cellHeight / 2 : widget.cellHeight) + 'px;' : ''">
                             <t t-esc="widget.progressBar.value_formatted"/> / <t t-esc="widget.progressBar.max_value_formatted"/>
                         </span>
                     </span>
@@ -132,7 +132,7 @@
                     <span name="progress_bar_no_max_value" class="position-absolute o_gantt_text_hoverable o_gantt_group_none">
                         <span name="progress_bar_no_max_value_group" class="o_gantt_group_hours px-1"
                               t-attf-title="#{widget.progressBar.warning} #{widget.progressBar.value_formatted}."
-                              t-att-style="widget.cellHeight ? 'line-height: ' + widget.cellHeight + 'px;' : ''">
+                              t-att-style="widget.cellHeight ? 'line-height: ' + (widget.isMobile ? widget.cellHeight / 2 : widget.cellHeight) + 'px;' : ''">
                             <i class="fa fa-exclamation-triangle"></i>
                         </span>
                     </span>

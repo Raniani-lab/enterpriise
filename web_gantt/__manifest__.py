@@ -18,6 +18,10 @@ Odoo Web Gantt chart view.
         ],
         'web.qunit_suite_tests': [
             'web_gantt/static/tests/**/*',
+            ('remove', 'web_gantt/static/tests/gantt_mobile_tests.js'),
+        ],
+        'web.qunit_mobile_suite_tests': [
+            'web_gantt/static/tests/gantt_mobile_tests.js',
         ],
     },
     'auto_install': True,

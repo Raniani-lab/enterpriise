@@ -65,6 +65,7 @@ var GanttRow = Widget.extend({
         this.rowId = options.rowId;
         this.fromServer = options.fromServer;
         this.pillLabel = options.pillLabel;
+        this.isMobile = config.device.isMobile;
         this.unavailabilities = (options.unavailabilities || []).map(u => {
             return {
                 startDate: self._convertToUserTime(u.start),
@@ -104,7 +105,8 @@ var GanttRow = Widget.extend({
         }
         // Add the 16px odoo window default padding.
         this.leftPadding = (this.groupLevel + 1) * this.LEVEL_LEFT_OFFSET;
-        this.cellHeight = this.level * (this.LEVEL_TOP_OFFSET + 3) + (this.level > 0 ? this.level : 0);
+        const standardHeight = (this.isMobile ? (this.level > 0 ? this.level : 1) : this.level) * (this.LEVEL_TOP_OFFSET + 3) + (this.level > 0 ? this.level : 0);
+        this.cellHeight = this.isMobile && this.level <= 1 ? standardHeight * 2 : standardHeight;
 
         this.MIN_WIDTHS = { full: 100, half: 50, quarter: 25 };
         this.PARTS = { full: 1, half: 2, quarter: 4 };

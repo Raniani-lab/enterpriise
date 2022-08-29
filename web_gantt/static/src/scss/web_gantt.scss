@@ -178,6 +178,12 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
             right: 0;
             height: 100%
         }
+        @include media-breakpoint-down(sm) {
+            .o_gantt_progressbar, .o_gantt_text_mobile {
+                top: 50%;
+                height: 50%;
+            }
+        }
         .o_gantt_progressbar {
             &.o_gantt_group_success {
                 background-color: rgba($green, 0.3);
@@ -200,6 +206,9 @@ $o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bu
         }
         .o_gantt_group_hours {
             display: none;
+            @include media-breakpoint-down(sm) {
+                display: block;
+            }
         }
     }
 

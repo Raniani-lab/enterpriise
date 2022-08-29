@@ -143,10 +143,8 @@
             <tbody id="table_contact">
             </tbody>
         </table>
-        <form>
-            <div class="form-group">
-                <input class="form-control" id="input_transfer" t-att-value="external_device_number" placeholder="Enter number or name" autocomplete="off"/>
-            </div>
+        <form class="d-flex flex-nowrap">
+            <input class="form-control" id="input_transfer" t-att-value="external_device_number" placeholder="Enter number or name" autocomplete="off"/>
             <button id="transfer_call" class="btn btn-primary">Transfer</button>
         </form>
     </t>

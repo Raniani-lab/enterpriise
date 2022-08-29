@@ -95,7 +95,7 @@ const PhoneCallDetails = Widget.extend({
         $('.o_dial_transfer_button').popover({
             placement: 'top',
             delay: {show: 0, hide: 100},
-            title: 'Transfer to' + '<button class="btn-close"></button>',
+            title: 'Transfer to' + '<button class="btn-close float-end"></button>',
             container: 'body',
             html: true,
             content: function(){

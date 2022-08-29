@@ -2,19 +2,10 @@
 
 import { registry } from "@web/core/registry";
 
-registry
-    .category("mock_server")
-    .add("documents.document/get_spreadsheets_to_display", function () {
-        return this.models["documents.document"].records
-            .filter((document) => document.handler === "spreadsheet")
-            .map((spreadsheet) => ({
-                name: spreadsheet.name,
-                id: spreadsheet.id,
-            }));
-    })
-    .add("documents.document/join_spreadsheet_session", function (route, args) {
+export function mockJoinSpreadsheetSession(resModel) {
+    return function (route, args) {
         const [id] = args.args;
-        const record = this.models["documents.document"].records.find((record) => record.id === id);
+        const record = this.models[resModel].records.find((record) => record.id === id);
         if (!record) {
             throw new Error(`Spreadsheet ${id} does not exist`);
         }
@@ -25,7 +16,23 @@ registry
             revisions: [],
             isReadonly: false,
         };
+    };
+}
+
+registry
+    .category("mock_server")
+    .add("documents.document/get_spreadsheets_to_display", function () {
+        return this.models["documents.document"].records
+            .filter((document) => document.handler === "spreadsheet")
+            .map((spreadsheet) => ({
+                name: spreadsheet.name,
+                id: spreadsheet.id,
+            }));
     })
+    .add(
+        "documents.document/join_spreadsheet_session",
+        mockJoinSpreadsheetSession("documents.document")
+    )
     .add("documents.document/dispatch_spreadsheet_message", () => false)
     .add("spreadsheet.template/fetch_template_data", function (route, args) {
         const [id] = args.args;

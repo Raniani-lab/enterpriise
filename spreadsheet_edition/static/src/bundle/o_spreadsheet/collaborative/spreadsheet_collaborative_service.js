@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import SpreadsheetCollaborativeChannel from "./spreadsheet_collaborative_channel";
 
-class SpreadsheetCollaborativeService {
+export class SpreadsheetCollaborativeService {
     /**
      * Get a new collaborative channel for the given spreadsheet id
      * @param {Env} env Env of owl (Component.env)

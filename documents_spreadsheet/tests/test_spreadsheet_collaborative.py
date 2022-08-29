@@ -306,6 +306,23 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
                 self.new_revision_data(self.spreadsheet)
             )
 
+    def test_join_new_spreadsheet_user(self):
+        # only read access
+        self.user.groups_id |= self.group
+        self.folder.group_ids = False
+        self.folder.read_group_ids = self.group
+        spreadsheet = self.env["documents.document"].create(
+            {
+                "raw": b"{}",
+                "folder_id": self.folder.id,
+                "handler": "spreadsheet",
+                "mimetype": "application/o-spreadsheet",
+            }
+        )
+        # no one ever joined this spreadsheet
+        result = spreadsheet.with_user(self.user).join_spreadsheet_session()
+        self.assertEqual(result["raw"], b"{}")
+
     def test_join_snapshot_request(self):
         with freeze_time("2020-02-02 18:00"):
             self.spreadsheet.dispatch_spreadsheet_message(

@@ -15,16 +15,19 @@ topbarMenuRegistry.add("file", { name: _t("File"), sequence: 10 });
 topbarMenuRegistry.addChild("new_sheet", ["file"], {
     name: _lt("New"),
     sequence: 10,
+    isVisible: (env) => !env.isDashboardSpreadsheet,
     action: (env) => env.newSpreadsheet(),
 });
 topbarMenuRegistry.addChild("make_copy", ["file"], {
     name: _lt("Make a copy"),
     sequence: 20,
+    isVisible: (env) => !env.isDashboardSpreadsheet,
     action: (env) => env.makeCopy(),
 });
 topbarMenuRegistry.addChild("save_as_template", ["file"], {
     name: _lt("Save as template"),
     sequence: 40,
+    isVisible: (env) => !env.isDashboardSpreadsheet,
     action: (env) => env.saveAsTemplate(),
 });
 topbarMenuRegistry.addChild("download", ["file"], {

@@ -1,12 +1,22 @@
 /** @odoo-module **/
 import { useService } from "@web/core/utils/hooks";
-import { loadJS } from "@web/core/assets";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 import { LegacyComponent } from "@web/legacy/legacy_component";
+import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
+
+/**
+ * @typedef SpreadsheetRecord
+ * @property {number} id
+ * @property {string} name
+ * @property {string} raw
+ * @property {Object[]} revisions
+ * @property {boolean} snapshot_requested
+ * @property {Boolean} isReadonly
+ */
 
 const { onMounted, onWillStart, useState } = owl;
 export class AbstractSpreadsheetAction extends LegacyComponent {
@@ -42,21 +52,16 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         onMounted(() => this.onMounted());
     }
 
-    async loadChartLibs() {
-        await loadJS("/web/static/lib/Chart/Chart.js");
-        await loadJS("/spreadsheet/static/lib/chartjs-gauge/chartjs-gauge.js");
-    }
-
     async onWillStart() {
         // if we are returning to the spreadsheet via the breadcrumb, we don't want
         // to do all the "creation" options of the actions
         if (!this.props.state) {
             [this.resId] = await Promise.all([
                 this._createAddSpreadsheetData(),
-                this.loadChartLibs(),
+                loadSpreadsheetDependencies(),
             ]);
         }
-        const [record] = await Promise.all([this._fetchData(), this.loadChartLibs()]);
+        const [record] = await Promise.all([this._fetchData(), loadSpreadsheetDependencies()]);
         this._initializeWith(record);
     }
 
@@ -89,6 +94,15 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
 
     /**
      * @protected
+     * @abstract
+     * @param {SpreadsheetRecord} record
+     */
+    _initializeWith(record) {
+        throw new Error("not implemented by children");
+    }
+
+    /**
+     * @protected
      * @returns {Promise<number>}
      */
     async _createSpreadsheetRecord() {
@@ -107,6 +121,10 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
     async _onSpreadSheetNameChanged() {
         throw new Error("not implemented by children");
     }
+
+    /**
+     * @returns {Promise<SpreadsheetRecord>}
+     */
     async _fetchData() {
         throw new Error("not implemented by children");
     }

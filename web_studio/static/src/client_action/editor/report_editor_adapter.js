@@ -76,12 +76,9 @@ class ReportEditorAdapter extends ComponentAdapter {
             domain = [["move_type", "!=", "entry"]];
         }
 
-        const result = await this.orm.search(
-            this.report.model,
-            domain,
-            undefined,
-            this.user.context
-        );
+        const result = await this.orm.search(this.report.model, domain, {
+            context: this.user.context,
+        });
         this.reportEnv.ids = result;
         this.reportEnv.currentId = this.reportEnv.ids && this.reportEnv.ids[0];
     }
@@ -100,8 +97,7 @@ class ReportEditorAdapter extends ComponentAdapter {
                 ["abstract", "=", false],
             ],
             ["name", "model"],
-            undefined,
-            this.user.context
+            { context: this.user.context }
         );
         this.models = {};
         models.forEach((model) => {
@@ -113,12 +109,9 @@ class ReportEditorAdapter extends ComponentAdapter {
      * @returns {Promise}
      */
     async _readReport() {
-        const result = await this.orm.read(
-            "ir.actions.report",
-            [this.handle.res_id],
-            undefined,
-            this.user.context
-        );
+        const result = await this.orm.read("ir.actions.report", [this.handle.res_id], undefined, {
+            context: this.user.context,
+        });
         this.report = result[0];
     }
     /**

@@ -54,8 +54,8 @@ export default class ListDataSource extends OdooViewsDataSource {
             {
                 order: orderByToString(orderBy),
                 limit: this.limit,
-            },
-            context
+                context,
+            }
         );
     }
 

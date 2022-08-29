@@ -284,7 +284,7 @@ export class DashboardModel extends Model {
                             aggregates.map((agg) => agg.measureSpec),
                             [],
                             { lazy: true },
-                            meta.context
+                            { context: meta.context }
                         )
                         .then((groups) => {
                             const group = groups[0];

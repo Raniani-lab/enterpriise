@@ -48,7 +48,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 isDisplayed: false,
                 title: undefined,
                 isEditText: false,
-                errorText : undefined,
+                errorText: undefined,
                 inputContent: undefined,
                 isEditInteger: false,
                 inputIntegerContent: undefined,
@@ -203,11 +203,12 @@ export default class SpreadsheetComponent extends LegacyComponent {
             "res.currency", // model
             [], // domain
             ["symbol", "full_name", "position", "name", "decimal_places"], // fields
-            { // opts
-                order: "active DESC, full_name ASC"
-            },
-            { active_test: false } // ctx
-        )
+            {
+                // opts
+                order: "active DESC, full_name ASC",
+                context: { active_test: false },
+            }
+        );
         return odooCurrencies.map((currency) => {
             return {
                 code: currency.name,
@@ -215,7 +216,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 position: currency.position || "after",
                 name: currency.full_name || _t("Currency"),
                 decimalPlaces: currency.decimal_places || 2,
-            }
+            };
         });
     }
 

@@ -129,7 +129,8 @@ export const DocumentsDataPointMixin = (component) => class extends component {
         }
         const resIds = this.selection.map((rec) => rec.resId);
         try {
-            await this.model.orm.write(this.resModel, resIds, changes, this.context);
+            const context = this.context;
+            await this.model.orm.write(this.resModel, resIds, changes, { context });
             await Promise.all(this.selection.map((rec) => rec.load()));
             this.model.notify();
         } catch (_) {

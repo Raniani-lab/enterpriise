@@ -205,17 +205,12 @@ export class MapModel extends Model {
                 orderBy.push("ASC");
             }
         }
-        return this.orm.webSearchRead(
-            metaData.resModel,
-            metaData.domain,
-            fields,
-            {
-                limit: metaData.limit,
-                offset: metaData.offset,
-                order: orderBy.join(" "),
-            },
-            metaData.context
-        );
+        return this.orm.webSearchRead(metaData.resModel, metaData.domain, fields, {
+            limit: metaData.limit,
+            offset: metaData.offset,
+            order: orderBy.join(" "),
+            context: metaData.context,
+        });
     }
 
     /**

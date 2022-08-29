@@ -313,8 +313,10 @@ export class SpreadsheetPivotModel extends PivotModel {
             field.relation ? field.relation : model,
             domain,
             [requestField],
-            { order: field.relation ? undefined : [{ name: field.name, asc: true }] },
-            { ...context, active_test: false }
+            {
+                order: field.relation ? undefined : [{ name: field.name, asc: true }],
+                context: { ...context, active_test: false },
+            }
         );
         return [...new Set(records.map((record) => record[requestField].toString()))];
     }

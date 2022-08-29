@@ -26,7 +26,11 @@ const ItsmeDialog = SignInfoDialog.extend({
         const [route, params] = this._getRouteAndParams();
         return session.rpc(route, params).then(({success, authorization_url, message}) => {
             if (success) {
-                window.location.replace(authorization_url);
+                if (authorization_url) {
+                    window.location.replace(authorization_url);
+                } else {
+                    this.openThankYouDialog();
+                }
             } else {
                 this.openErrorDialog (
                     message,
@@ -76,18 +80,22 @@ SignableDocument.include({
         }
         return res;
     },
-    getAuthDialog: function () {
+    getAuthDialog: async function () {
         if (this.authMethod === 'itsme') {
-            return new ItsmeDialog (
-                this,
-                this.requestID,
-                this.accessToken,
-                this.signInfo.signatureValues,
-                this.signInfo.newSignItems,
-                {
-                    nextSign: this.name_list.length
-                }
-            );
+            const credits = await session.rpc('/itsme/has_itsme_credits');
+            if (credits) {
+                return new ItsmeDialog (
+                    this,
+                    this.requestID,
+                    this.accessToken,
+                    this.signInfo.signatureValues,
+                    this.signInfo.newSignItems,
+                    {
+                        nextSign: this.name_list.length
+                    }
+                );
+            }
+            return false;
         }
 
         return this._super(this, arguments);

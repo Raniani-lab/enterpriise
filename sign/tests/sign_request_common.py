@@ -177,6 +177,11 @@ class SignRequestCommon(TransactionCase):
         sign_request.message_subscribe(partner_ids=cc_partners.ids)
         return sign_request
 
+    def create_sign_request_1_role_sms_auth(self, customer, cc_partners):
+        role = self.env.ref('sign.sign_item_role_customer')
+        role.auth_method = 'sms'
+        return self.create_sign_request_1_role(customer, cc_partners)
+
     def create_sign_request_3_roles(self, customer, employee, company, cc_partners):
         sign_request = self.env['sign.request'].create({
             'template_id': self.template_3_roles.id,

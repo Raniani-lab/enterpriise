@@ -35,7 +35,12 @@ class SignItsme(SignController):
                 }
             parsed_referrer = urlsplit(referrer)
             endpoint = request.env['ir.config_parameter'].sudo().get_param('sign_itsme.iap_endpoint', IAP_DEFAULT_DOMAIN)
-            request.env['iap.account'].sudo().get_credits(IAP_SERVICE_NAME)
+            itsme_credits = request.env['iap.account'].sudo().get_credits(IAP_SERVICE_NAME)
+            if itsme_credits < 1:
+                request_item_sudo.signed_without_extra_auth = True
+                return {
+                    'success': True
+                }
             response = jsonrpc(url_join(endpoint, '/itsme/v1/sign_identity_request'), params={
                 'account_token': account_token.account_token,
                 'itsme_state': '%s.%s' % (request_item_sudo.sign_request_id.id, request_item_sudo.access_token),
@@ -83,3 +88,18 @@ class SignItsme(SignController):
         return {
             'success': True
         }
+
+    @http.route(['/itsme/has_itsme_credits'], type="json", auth="public")
+    def has_itsme_credits(self):
+        return request.env['iap.account'].sudo().get_credits(IAP_SERVICE_NAME) >= 1
+
+    def get_iap_credit_warnings(self):
+        warnings = super().get_iap_credit_warnings()
+        roles_with_itsme = request.env['sign.item.role'].sudo().search([('auth_method', '=', 'itsme')])
+        if roles_with_itsme:
+            if self.has_warning_for_service(roles_with_itsme, IAP_SERVICE_NAME):
+                warnings.append({
+                    'auth_method': 'itsme®',
+                    'iap_url': request.env['iap.account'].sudo().get_credits_url(service_name=IAP_SERVICE_NAME),
+                })
+        return warnings

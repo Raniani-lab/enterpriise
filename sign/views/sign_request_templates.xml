@@ -219,4 +219,27 @@
             </div>
         </t>
     </template>
+
+    <template id="sign_iap_credits_banner" name="sign.sign_iap_credits_banner">
+        <div class="row alert alert-warning text-center m-0">
+            <t t-foreach="warnings" t-as="warning">
+                <p class="my-0">
+                    You have less than 20 credits remaining for <t t-out="warning['auth_method']"/> authentication. The <t t-out="warning['auth_method']"/> authentication step will be skipped if you are out of credits.
+                    <button data-bs-toggle="collapse" t-attf-data-bs-target="#sign_warning" type="button"
+                        aria-expanded="false" t-attf-aria-controls="sign_warning"
+                        class="btn btn-link" title="Why am I seeing this?">
+                        <i class="fa fa-question-circle"></i>
+                    </button>
+                    <a class="btn btn-link buy_credits px-0 text-end" t-att-href="warning['iap_url']">
+                        <i class="fa fa-arrow-right"></i> Buy credits
+                    </a>
+                </p>
+            </t>
+            <small class="collapse" t-attf-id="sign_warning">
+                You have templates or requests using a role with an extra-authentication step with few credits remaining.<br/>
+                To remove this warning, disable the extra-authentication step in the <code>Configuration > Roles</code> menu, or buy credits.
+            </small>
+        </div>
+    </template>
+
 </odoo>

@@ -1622,8 +1622,8 @@ export const SignableDocument = Document.extend({
     }
   },
 
-  openAuthDialog: function () {
-    const authDialog = this.getAuthDialog();
+  openAuthDialog: async function () {
+    const authDialog = await this.getAuthDialog();
     if (authDialog) {
       authDialog.open();
     } else {
@@ -1631,24 +1631,32 @@ export const SignableDocument = Document.extend({
     }
   },
 
-  getAuthDialog: function () {
+  getAuthDialog: async function () {
     if (this.authMethod === 'sms' && !this.signInfo.smsToken) {
-      return new SMSSignerDialog(
-        this,
-        this.requestID,
-        this.accessToken,
-        this.signInfo.signatureValues,
-        this.signInfo.newSignItems,
-        this.signerPhone,
-        this.RedirectURL,
-        {nextSign: this.name_list.length}
-      );
+      // check for sms credits
+      const credits = await session.rpc('/sign/has_sms_credits');
+      if (credits) {
+        return new SMSSignerDialog(
+          this,
+          this.requestID,
+          this.accessToken,
+          this.signInfo.signatureValues,
+          this.signInfo.newSignItems,
+          this.signerPhone,
+          this.RedirectURL,
+          {nextSign: this.name_list.length}
+        );
+      }
+      return false;
     }
     return false;
   },
 
   _getRouteAndParams: function () {
-    const route = "/sign/sign/" + this.requestID + "/" + this.accessToken + "/" + this.signInfo.smsToken || '';
+    const route = this.signInfo.smsToken ?
+      `/sign/sign/${this.requestID}/${this.accessToken}/${this.signInfo.smsToken || ''}` :
+      `/sign/sign/${this.requestID}/${this.accessToken}`;
+
     const params = {
       signature: this.signInfo.signatureValues,
       frame: this.signInfo.frameValues,

@@ -5,7 +5,7 @@
         <field name="name">sign.template.kanban</field>
         <field name="model">sign.template</field>
         <field name="arch" type="xml">
-            <kanban quick_create="false" class="o_sign_template_kanban" default_order="create_date desc" sample="1" js_class="sign_kanban">
+            <kanban quick_create="false" class="o_sign_template_kanban" banner_route="/sign/check_iap_credits" default_order="create_date desc" sample="1" js_class="sign_kanban">
                 <field name="active"/>
                 <field name="attachment_id"/>
                 <field name="color"/>

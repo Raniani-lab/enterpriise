@@ -22,11 +22,11 @@ class SignRequestItem(models.Model):
 
     def _post_fill_request_item(self):
         for sri in self:
-            if sri.role_id.auth_method == 'itsme' and not sri.itsme_validation_hash:
+            if sri.role_id.auth_method == 'itsme' and not sri.itsme_validation_hash and not self.signed_without_extra_auth:
                 raise ValidationError(_("Sign request item is not validated yet."))
         return super()._post_fill_request_item()
 
     def _edit_and_sign(self, signature, **kwargs):
         if self.role_id.auth_method == 'itsme':
-            return self._sign(signature, validation_required=True, **kwargs)
+            return self._sign(signature, validation_required=not self.signed_without_extra_auth, **kwargs)
         return super()._edit_and_sign(signature, **kwargs)

@@ -280,6 +280,11 @@ class Sign(http.Controller):
 
     def _validate_auth_method(self, request_item_sudo, sms_token=None):
         if request_item_sudo.role_id.auth_method == 'sms':
+            has_sms_credits = request.env['iap.account'].sudo().get_credits('sms') > 0  # credits > 0 because the credit was already spent
+            # if there are no sms credits, we still allow the user to sign it
+            if not sms_token and not has_sms_credits:
+                request_item_sudo.signed_without_extra_auth = True
+                return {'success': True}
             if not sms_token or sms_token != request_item_sudo.sms_token:
                 return {
                     'success': False,
@@ -381,3 +386,43 @@ class Sign(http.Controller):
     def render_assets_pdf_iframe(self, **kw):
         context = {'debug': kw.get('debug')} if 'debug' in kw else {}
         return request.env['ir.ui.view'].sudo()._render_template('sign.compiled_assets_pdf_iframe', context)
+
+    @http.route(['/sign/has_sms_credits'], type='json', auth='public')
+    def has_sms_credits(self):
+        return request.env['iap.account'].sudo().get_credits('sms') >= 1
+
+    def has_warning_for_service(self, roles, service_name):
+        templates_using_service_roles = request.env['sign.template'].sudo().search([
+            ('sign_item_ids.responsible_id', 'in', roles.ids)
+        ])
+        if templates_using_service_roles:
+            requests_in_progress = request.env['sign.request'].sudo().search([
+                ('template_id', 'in', templates_using_service_roles.ids),
+                ('state', 'in', ['shared', 'sent'])
+            ])
+
+            if requests_in_progress and request.env['iap.account'].sudo().get_credits(service_name) < 20:
+                return True
+        return False
+
+    def get_iap_credit_warnings(self):
+        warnings = []
+        roles_with_sms = request.env['sign.item.role'].sudo().search([('auth_method', '=', 'sms')])
+        if roles_with_sms:
+            if self.has_warning_for_service(roles_with_sms, 'sms'):
+                warnings.append({
+                    'iap_url': request.env['iap.account'].sudo().get_credits_url('sms'),
+                    'auth_method': 'SMS'
+                })
+        return warnings
+
+    @http.route("/sign/check_iap_credits", type="json", auth="user")
+    def check_iap_credits(self):
+        warnings = self.get_iap_credit_warnings()
+        if warnings:
+            return {
+                'html': request.env['ir.qweb']._render('sign.sign_iap_credits_banner', {
+                    'warnings': warnings
+                })
+            }
+        return {}

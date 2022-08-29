@@ -681,6 +681,7 @@ class SignRequestItem(models.Model):
     role_id = fields.Many2one('sign.item.role', string="Role", required=True, readonly=True)
     sms_number = fields.Char(related='partner_id.mobile', readonly=False, depends=(['partner_id']), store=True, copy=False)
     sms_token = fields.Char('SMS Token', readonly=True, copy=False)
+    signed_without_extra_auth = fields.Boolean('Signed Without Extra Authentication', default=False, readonly=True, copy=False)
 
     signature = fields.Binary(attachment=True, copy=False)
     frame_hash = fields.Char(size=256, compute='_compute_frame_hash')
@@ -899,9 +900,36 @@ class SignRequestItem(models.Model):
         if not kwargs.get('validation_required', False):
             self._post_fill_request_item()
 
+    def _send_no_credits_email(self):
+        partner_lang = get_lang(self.env, lang_code=self.create_uid.partner_id.lang).code
+        body = self.env['ir.qweb']._render('sign.sign_template_mail_not_enough_credits', {
+            'record': self,
+            'recipient_name': self.create_uid.name,
+            'subject': '%s signed' % self.reference,
+            'signer': self.partner_id,
+            'auth_method': dict(self.role_id._fields['auth_method']._description_selection(self.env))[self.role_id.auth_method]
+        }, lang=partner_lang, minimal_qcontext=True)
+
+        self.env['sign.request']._message_send_mail(
+            body, 'mail.mail_notification_light',
+            {'record_name': self.reference},
+            {'model_description': 'signature', 'company': self.communication_company_id or self.create_uid.company_id},
+            {
+                'email_from': self.create_uid.email_formatted,
+                'author_id': self.create_uid.partner_id.id,
+                'email_to': self.create_uid.email_formatted,
+                'subject': _('%s: missing credits for extra-authentication', self.reference)
+            },
+            force_send=True,
+            lang=partner_lang,
+        )
+
     def _post_fill_request_item(self):
         self.env['sign.log'].create({'sign_request_item_id': self.id, 'action': 'sign'})
         self.write({'signing_date': fields.Date.context_today(self), 'state': 'completed'})
+        if self.signed_without_extra_auth:
+            self._send_no_credits_email()
+
         # mark signature as done in next activity
         if not self.sign_request_id.request_item_ids.filtered(lambda sri: sri.partner_id == self.partner_id and sri.state == 'sent'):
             sign_user = self.partner_id.user_ids[:1]

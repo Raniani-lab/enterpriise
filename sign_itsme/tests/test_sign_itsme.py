@@ -8,13 +8,12 @@ from hashlib import sha256
 
 from odoo import Command
 from odoo.tests import tagged
-from odoo.tests.common import HttpCase
 from odoo.exceptions import ValidationError
 
-from odoo.addons.sign.tests.sign_request_common import SignRequestCommon
+from odoo.addons.sign.tests.test_sign_controllers import TestSignController
 
 @tagged('post_install', '-at_install')
-class SignItsmeCommon(SignRequestCommon, HttpCase):
+class SignItsmeCommon(TestSignController):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -50,18 +49,10 @@ class SignItsmeCommon(SignRequestCommon, HttpCase):
             })],
         })
 
-    def _json_url_open(self, url, data, **kwargs):
-        data = {
-            "id": 0,
-            "jsonrpc": "2.0",
-            "method": "call",
-            "params": data,
-        }
-        headers = {
-            "Content-Type": "application/json",
-            **kwargs.get('headers', {})
-        }
-        return self.url_open(url, data=json.dumps(data).encode(), headers=headers)
+    def create_sign_request_1_role_itsme_auth(self, customer, cc_partners):
+        role = self.env.ref('sign.sign_item_role_customer')
+        role.auth_method = 'itsme'
+        return self.create_sign_request_1_role(customer, cc_partners)
 
     def test_sign_itsme_with_token_is_successful(self):
         sign_request_item = self.sign_request_itsme.request_item_ids[0]
@@ -91,16 +82,17 @@ class SignItsmeCommon(SignRequestCommon, HttpCase):
     def test_sign_itsme_API(self):
         sign_request_item = self.sign_request_itsme.request_item_ids[0]
         sign_vals = self.create_sign_values(self.sign_request_itsme.template_id.sign_item_ids, sign_request_item.role_id.id)
-        with patch('odoo.addons.sign_itsme.controllers.main.jsonrpc', lambda url, params: {'success': True, 'url': url}):
-            response = self._json_url_open(
-                '/sign/sign/%d/%s' % (self.sign_request_itsme.id, sign_request_item.access_token),
-                data={'signature': sign_vals},
-                headers={"Referer": 'abc'}
-            ).json()['result']
+        with patch('odoo.addons.iap.models.iap_account.IapAccount.get_credits', lambda self, x: 10):
+            with patch('odoo.addons.sign_itsme.controllers.main.jsonrpc', lambda url, params: {'success': True, 'url': url}):
+                response = self._json_url_open(
+                    '/sign/sign/%d/%s' % (self.sign_request_itsme.id, sign_request_item.access_token),
+                    data={'signature': sign_vals},
+                    headers={"Referer": 'abc'}
+                ).json()['result']
 
-            self.assertTrue(response.get('success'))
-            self.assertTrue(len(sign_request_item.sign_item_value_ids), 1)
-            self.assertTrue(sign_request_item.state, 'sent')
+                self.assertTrue(response.get('success'))
+                self.assertTrue(len(sign_request_item.sign_item_value_ids), 1)
+                self.assertTrue(sign_request_item.state, 'sent')
 
         vals = {
             "name": "John Doe",
@@ -157,3 +149,43 @@ class SignItsmeCommon(SignRequestCommon, HttpCase):
         self.assertFalse(sign_request_item.itsme_validation_hash)
         self.assertFalse(sign_request_item.itsme_signer_name)
         self.assertFalse(sign_request_item.itsme_signer_birthdate)
+
+    def test_sign_itsme_request_requires_auth_when_credits_are_available(self):
+        sign_request = self.create_sign_request_1_role_itsme_auth(self.partner_1, self.env['res.partner'])
+        sign_request_item = sign_request.request_item_ids[0]
+
+        self.assertFalse(sign_request_item.signed_without_extra_auth)
+        self.assertEqual(sign_request_item.role_id.auth_method, 'itsme')
+
+        sign_vals = self.create_sign_values(sign_request.template_id.sign_item_ids, sign_request_item.role_id.id)
+        with patch('odoo.addons.sign_itsme.controllers.main.jsonrpc', lambda url, params: {'success': True, 'url': url}):
+            with patch('odoo.addons.iap.models.iap_account.IapAccount.get_credits', lambda self, x: 10):
+                response = self._json_url_open(
+                    '/sign/sign/%d/%s' % (sign_request_item.id, sign_request_item.access_token),
+                    data={'signature': sign_vals},
+                    headers={"Referer": 'abc'}
+                ).json()['result']
+
+                self.assertTrue(response.get('success'))
+                self.assertTrue(sign_request_item.state, 'sent')
+                self.assertFalse(sign_request_item.signed_without_extra_auth)
+
+    def test_sign_itsme_request_allows_no_auth_when_credits_are_not_available(self):
+        sign_request = self.create_sign_request_1_role_itsme_auth(self.partner_1, self.env['res.partner'])
+        sign_request_item = sign_request.request_item_ids[0]
+
+        self.assertFalse(sign_request_item.signed_without_extra_auth)
+        self.assertEqual(sign_request_item.role_id.auth_method, 'itsme')
+
+        sign_vals = self.create_sign_values(sign_request.template_id.sign_item_ids, sign_request_item.role_id.id)
+        with patch('odoo.addons.iap.models.iap_account.IapAccount.get_credits', lambda self, service: 0):
+            response = self._json_url_open(
+                '/sign/sign/%d/%s' % (sign_request_item.id, sign_request_item.access_token),
+                data={'signature': sign_vals},
+                headers={"Referer": 'abc'}
+            ).json()['result']
+
+            self.assertTrue(response.get('success'))
+            self.assertTrue(sign_request_item.state, 'completed')
+            self.assertTrue(sign_request.state, 'done')
+            self.assertTrue(sign_request_item.signed_without_extra_auth)

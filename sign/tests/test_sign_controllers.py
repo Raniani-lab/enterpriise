@@ -1,16 +1,33 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import json
+from unittest.mock import patch
+
 from .sign_request_common import SignRequestCommon
+from odoo.tests.common import HttpCase
 from odoo.addons.sign.controllers.main import Sign
 from odoo.exceptions import ValidationError
 from odoo.addons.website.tools import MockRequest
 from odoo.tests import tagged
 
 @tagged('post_install', '-at_install')
-class TestSignController(SignRequestCommon):
+class TestSignController(SignRequestCommon, HttpCase):
     def setUp(self):
         super().setUp()
         self.SignController = Sign()
+
+    def _json_url_open(self, url, data, **kwargs):
+        data = {
+            "id": 0,
+            "jsonrpc": "2.0",
+            "method": "call",
+            "params": data,
+        }
+        headers = {
+            "Content-Type": "application/json",
+            **kwargs.get('headers', {})
+        }
+        return self.url_open(url, data=json.dumps(data).encode(), headers=headers)
 
     # test float auto_field display
     def test_sign_controller_float(self):
@@ -45,3 +62,40 @@ class TestSignController(SignRequestCommon):
             sign_type = list(filter(lambda sign_type: sign_type["name"] == "Text", values["sign_item_types"]))[0]
             country = sign_type["auto_value"]
             self.assertEqual(country, "Belgium")
+
+    def test_sign_request_requires_auth_when_credits_are_available(self):
+        sign_request = self.create_sign_request_1_role_sms_auth(self.partner_1, self.env['res.partner'])
+        sign_request_item = sign_request.request_item_ids[0]
+
+        self.assertFalse(sign_request_item.signed_without_extra_auth)
+        self.assertEqual(sign_request_item.role_id.auth_method, 'sms')
+
+        sign_vals = self.create_sign_values(sign_request.template_id.sign_item_ids, sign_request_item.role_id.id)
+        with patch('odoo.addons.iap.models.iap_account.IapAccount.get_credits', lambda self, x: 10):
+            response = self._json_url_open(
+                '/sign/sign/%d/%s' % (sign_request_item.id, sign_request_item.access_token),
+                data={'signature': sign_vals}
+            ).json()['result']
+
+            self.assertFalse(response.get('success'))
+            self.assertTrue(sign_request_item.state, 'sent')
+            self.assertFalse(sign_request_item.signed_without_extra_auth)
+
+    def test_sign_request_allows_no_auth_when_credits_are_not_available(self):
+        sign_request = self.create_sign_request_1_role_sms_auth(self.partner_1, self.env['res.partner'])
+        sign_request_item = sign_request.request_item_ids[0]
+
+        self.assertFalse(sign_request_item.signed_without_extra_auth)
+        self.assertEqual(sign_request_item.role_id.auth_method, 'sms')
+
+        sign_vals = self.create_sign_values(sign_request.template_id.sign_item_ids, sign_request_item.role_id.id)
+        with patch('odoo.addons.sms.models.sms_api.SmsApi', lambda x: 0):
+            response = self._json_url_open(
+                '/sign/sign/%d/%s' % (sign_request_item.id, sign_request_item.access_token),
+                data={'signature': sign_vals}
+            ).json()['result']
+
+            self.assertTrue(response.get('success'))
+            self.assertTrue(sign_request_item.state, 'completed')
+            self.assertTrue(sign_request.state, 'done')
+            self.assertTrue(sign_request_item.signed_without_extra_auth)

@@ -36,6 +36,7 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
+            'planning/static/src/components/**/*',
             'planning/static/src/views/**/*',
             'planning/static/src/scss/planning_gantt.scss',
             'planning/static/src/js/tours/planning.js',

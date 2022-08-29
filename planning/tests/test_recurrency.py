@@ -354,7 +354,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
                 'repeat': True,
                 'repeat_interval': 1,
                 'repeat_type': 'x_times',
-                'repeat_number': 5,
+                'repeat_number': 6,
             })
 
             # we should have generated 5 slots
@@ -496,37 +496,6 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             self.assertEqual(slot2.company_id, slot2.recurrency_id.company_id, "Recurrence and slots (2) must have the same company")
             self.assertEqual(slot2.recurrency_id.company_id, slot2.recurrency_id.slot_ids.mapped('company_id'), "All slots in the same recurrence (1) must have the same company")
 
-    def test_slot_detach_if_some_fields_change(self):
-        """ To guarantee that no data is inadvertently lost, when a slot is modified it should be
-            removed from it's recurrency so that it is not impacted by action group action such
-            as changing the recurency interval on a repeated slot, which removes all subsequent
-            slots and regenerates them with the new interval.
-        """
-        with self._patch_now('2019-06-27 08:00:00'):
-            self.configure_recurrency_span(1)
-
-            self.assertFalse(self.get_by_employee(self.employee_joseph))
-
-            slot = self.env['planning.slot'].create({
-                'start_datetime': datetime(2019, 6, 27, 8, 0, 0),
-                'end_datetime': datetime(2019, 6, 27, 17, 0, 0),
-                'resource_id': self.resource_joseph.id,
-                'repeat': True,
-                'repeat_type': 'until',
-                'repeat_until': datetime(2019, 9, 27, 17, 0, 0),  # 3 months
-                'repeat_interval': 1,
-            })
-            recurrence = slot.recurrency_id
-
-            joseph_slots = self.get_by_employee(self.employee_joseph)
-            self.assertEqual(len(joseph_slots), 5, 'the recurrency should generate 5 slots')
-            self.assertEqual(len(joseph_slots), len(recurrence.slot_ids), 'all the slots generated should belong to the original employee')
-
-            # modify one of Joseph's slots
-            joseph_slots[0].write({'resource_id': self.resource_bert.id})
-            # assert that the modified slot has been removed from the recurrency
-            self.assertEqual(len(recurrence.slot_ids), 4, 'writing on the slot should detach it from the recurrency')
-
     def test_empty_recurrency(self):
         """ Check empty recurrency is removed by cron """
         with self._patch_now('2020-06-27 08:00:00'):
@@ -652,3 +621,39 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             slots = self.get_by_employee(self.employee_bert).sorted('start_datetime')
             self.assertEqual('2020-10-25 00:30:00', str(slots[0].start_datetime))
             self.assertEqual('2020-11-01 01:30:00', str(slots[1].start_datetime))
+
+    def test_recurrence_update(self):
+        with self._patch_now('2020-10-17 08:00:00'):
+            self.configure_recurrency_span(1)
+            slot = self.env['planning.slot'].create({
+                'name': 'coucou',
+                'start_datetime': datetime(2020, 10, 25, 0, 30, 0),
+                'end_datetime': datetime(2020, 10, 25, 9, 0, 0),
+                'resource_id': self.resource_bert.id,
+                'repeat': True,
+                'repeat_type': 'until',
+                'repeat_until': datetime(2020, 12, 25, 0, 0, 0),
+                'repeat_interval': 1,
+            })
+
+        all_slots = slot.recurrency_id.slot_ids
+        other_slots = all_slots - slot
+
+        slot.write({
+            'name': 'cuicui',
+        })
+        self.assertEqual(slot.name, 'cuicui', 'This slot should be modified')
+        self.assertTrue(all(slot.name == 'coucou' for slot in other_slots), 'Other slots should not be modified')
+
+        slot.write({
+            'name': 'cuicui',
+            'recurrence_update': 'all',
+        })
+        self.assertTrue(all(slot.name == 'cuicui' for slot in all_slots), 'All slots should be modified')
+
+        other_slots[0].write({
+            'name': 'coucou',
+            'recurrence_update': 'subsequent',
+        })
+        self.assertEqual(slot.name, 'cuicui', 'This slot should not be modified')
+        self.assertTrue(all(slot.name == 'coucou' for slot in other_slots), 'Other slots should be modified')

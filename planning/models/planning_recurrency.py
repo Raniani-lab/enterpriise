@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from datetime import timedelta
 
 from odoo import api, fields, models, _
 from odoo.tools import get_timedelta
@@ -123,4 +122,4 @@ class PlanningRecurrency(models.Model):
     def _get_recurrence_last_datetime(self):
         self.ensure_one()
         end_datetime = self.env['planning.slot'].search_read([('recurrency_id', '=', self.id)], ['end_datetime'], order='end_datetime', limit=1)
-        return end_datetime[0]['end_datetime'] + get_timedelta(self.repeat_number * self.repeat_interval, self.repeat_unit)
+        return end_datetime[0]['end_datetime'] + get_timedelta((self.repeat_number - 1) * self.repeat_interval, self.repeat_unit)

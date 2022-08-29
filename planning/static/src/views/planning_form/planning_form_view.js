@@ -1,13 +1,14 @@
 /** @odoo-module **/
 
 import { markup, onMounted } from "@odoo/owl";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { escape } from "@web/core/utils/strings";
 import { FormController } from "@web/views/form/form_controller";
 import { formView } from "@web/views/form/form_view";
 import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { AddressRecurrencyConfirmationDialog } from "@planning/components/address_recurrency_confirmation_dialog/address_recurrency_confirmation_dialog";
 
 export class PlanningFormController extends FormController {
     setup() {
@@ -15,6 +16,7 @@ export class PlanningFormController extends FormController {
         this.action = useService("action");
         this.notification = useService("notification");
         this.orm = useService("orm");
+        this.state.recurrenceUpdate = "this";
         onMounted(() => {
             this.initialTemplateCreation = this.model.root.data.template_creation;
         });
@@ -45,23 +47,35 @@ export class PlanningFormController extends FormController {
     }
 
     async beforeExecuteActionButton(clickParams) {
-        const resId = this.model.root.resId;
+        const shift = this.model.root;
         if (clickParams.name === "unlink") {
             const canProceed = await new Promise((resolve) => {
-                this.dialogService.add(ConfirmationDialog, {
-                    body: this.env._t("Are you sure you want to delete this shift?"),
-                    cancel: () => resolve(false),
-                    close: () => resolve(false),
-                    confirm: () => resolve(true),
-                });
+                if (shift.data.recurrency_id) {
+                    this.dialogService.add(AddressRecurrencyConfirmationDialog, {
+                        cancel: () => resolve(false),
+                        close: () => resolve(false),
+                        confirm: async () => {
+                            await this._actionAddressRecurrency(shift);
+                            return resolve(true);
+                        },
+                        onChangeRecurrenceUpdate: this._setRecurrenceUpdate.bind(this),
+                    });
+                } else {
+                    this.dialogService.add(ConfirmationDialog, {
+                        body: this.env._t("Are you sure you want to delete this shift?"),
+                        cancel: () => resolve(false),
+                        close: () => resolve(false),
+                        confirm: () => resolve(true),
+                    });
+                }
             });
             if (!canProceed) {
                 return false;
             }
-        } else if (clickParams.name === 'action_send' && resId) {
+        } else if (clickParams.name === 'action_send' && shift.resId) {
             // We want to check if all employees impacted to this action have a email.
             // For those who do not have any email in work_email field, then a FormViewDialog is displayed for each employee who is not email.
-            const result = await this.orm.call(this.props.resModel, "get_employees_without_work_email", [resId]);
+            const result = await this.orm.call(this.props.resModel, "get_employees_without_work_email", [shift.resId]);
             if (result) {
                 const { res_ids: resIds, relation: resModel, context } = result;
                 const canProceed = await this.displayDialogWhenEmployeeNoEmail(resIds, resModel, context);
@@ -70,8 +84,7 @@ export class PlanningFormController extends FormController {
                 }
             }
         }
-        const templateCreation = this.model.root.data.template_creation;
-        if (!this.initialTemplateCreation && templateCreation) {
+        if (!this.initialTemplateCreation && shift.data.template_creation) {
             // then the shift should be saved as a template too.
             const message = this.env._t("This shift was successfully saved as a template.");
             this.notification.add(
@@ -105,6 +118,44 @@ export class PlanningFormController extends FormController {
             });
         }));
         return results.every((r) => r);
+    }
+
+    async deleteRecord() {
+        const shift = this.model.root;
+        if (shift.data.recurrency_id) {
+            this.dialogService.add(AddressRecurrencyConfirmationDialog, {
+                confirm: async () => {
+                    await this._actionAddressRecurrency(shift);
+                    await shift.delete().then(
+                        () => {
+                            if (!shift.resId) {
+                                this.env.config.historyBack();
+                            }
+                        },
+                        () => {
+                            this.env.config.historyBack();
+                        }
+                    );
+                },
+                onChangeRecurrenceUpdate: this._setRecurrenceUpdate.bind(this),
+            });
+        } else {
+            await super.deleteRecord(...arguments);
+        }
+    }
+
+    async _actionAddressRecurrency(shift) {
+        if (['subsequent', 'all'].includes(this.state.recurrenceUpdate)) {
+            await this.orm.call(
+                shift.resModel,
+                'action_address_recurrency',
+                [shift.resId, this.state.recurrenceUpdate],
+            );
+        }
+    }
+
+    _setRecurrenceUpdate(recurrenceUpdate) {
+        this.state.recurrenceUpdate = recurrenceUpdate;
     }
 }
 

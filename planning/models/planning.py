@@ -114,8 +114,7 @@ class Planning(models.Model):
     # Recurring (`repeat_` fields are none stored, only used for UI purpose)
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
     repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat', copy=True,
-        help="Modifications made to a shift only impact the current shift and not the other ones that are part of the recurrence. The same goes when deleting a recurrent shift. Disable this option to stop the recurrence.\n"
-        "To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode.")
+        help="To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode.")
     repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat_interval', inverse='_inverse_repeat', copy=True)
     repeat_unit = fields.Selection([
         ('day', 'Days'),
@@ -123,10 +122,15 @@ class Planning(models.Model):
         ('month', 'Months'),
         ('year', 'Years'),
     ], default='week', compute='_compute_repeat_unit', inverse='_inverse_repeat', required=True)
-    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until'), ('x_times', 'Number of Repetitions')],
+    repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until'), ('x_times', 'Number of Occurrences')],
         string='Repeat Type', default='forever', compute='_compute_repeat_type', inverse='_inverse_repeat', copy=True)
     repeat_until = fields.Date("Repeat Until", compute='_compute_repeat_until', inverse='_inverse_repeat', copy=True)
     repeat_number = fields.Integer("Repetitions", default=1, compute='_compute_repeat_number', inverse='_inverse_repeat', copy=True)
+    recurrence_update = fields.Selection([
+        ('this', 'This shift'),
+        ('subsequent', 'This and following shifts'),
+        ('all', 'All shifts'),
+    ], default='this', store=False)
     confirm_delete = fields.Boolean('Confirm Slots Deletion', compute='_compute_confirm_delete')
 
     is_hatched = fields.Boolean(compute='_compute_is_hatched')
@@ -803,41 +807,77 @@ class Planning(models.Model):
                 or ('end_datetime' in values and slot.end_datetime != datetime.strptime(values['end_datetime'], '%Y-%m-%d %H:%M:%S'))
             ):
                 values['request_to_switch'] = False
-        # detach planning entry from recurrency
-        if any(fname in values.keys() for fname in self._get_fields_breaking_recurrency()) and not values.get('recurrency_id'):
-            values.update({'recurrency_id': False})
-        result = super(Planning, self).write(values)
+        # update other slots in recurrency
+        slots = self
+        recurrence_update = values.pop('recurrence_update', 'this')
+        if recurrence_update != 'this':
+            recurrence_domain = []
+            if recurrence_update == 'subsequent':
+                for slot in self:
+                    recurrence_domain = expression.OR([recurrence_domain,
+                        ['&', ('recurrency_id', '=', slot.recurrency_id.id), ('start_datetime', '>=', slot.start_datetime)]
+                    ])
+            else:
+                recurrence_domain = [('recurrency_id', 'in', self.recurrency_id.ids)]
+            slots |= self.search(recurrence_domain)
+
+        result = super(Planning, slots).write(values)
         # recurrence
         if any(key in ('repeat', 'repeat_unit', 'repeat_type', 'repeat_until', 'repeat_interval', 'repeat_number') for key in values):
             # User is trying to change this record's recurrence so we delete future slots belonging to recurrence A
             # and we create recurrence B from now on w/ the new parameters
             for slot in self:
-                if slot.recurrency_id and values.get('repeat') is None:
-                    repeat_type = values.get('repeat_type') or slot.recurrency_id.repeat_type
-                    repeat_until = values.get('repeat_until') or slot.recurrency_id.repeat_until
+                recurrence = slot.recurrency_id
+                if recurrence and values.get('repeat') is None:
+                    repeat_type = values.get('repeat_type') or recurrence.repeat_type
+                    repeat_until = values.get('repeat_until') or recurrence.repeat_until
                     repeat_number = values.get('repeat_number', 0) or slot.repeat_number
                     if repeat_type == 'until':
                         repeat_until = datetime.combine(fields.Date.to_date(repeat_until), datetime.max.time())
                         repeat_until = repeat_until.replace(tzinfo=pytz.timezone(slot.company_id.resource_calendar_id.tz or 'UTC')).astimezone(pytz.utc).replace(tzinfo=None)
                     recurrency_values = {
-                        'repeat_interval': values.get('repeat_interval') or slot.recurrency_id.repeat_interval,
-                        'repeat_unit': values.get('repeat_unit') or slot.recurrency_id.repeat_unit,
+                        'repeat_interval': values.get('repeat_interval') or recurrence.repeat_interval,
+                        'repeat_unit': values.get('repeat_unit') or recurrence.repeat_unit,
                         'repeat_until': repeat_until if repeat_type == 'until' else False,
                         'repeat_number': repeat_number,
                         'repeat_type': repeat_type,
                         'company_id': slot.company_id.id,
                     }
-                    slot.recurrency_id.write(recurrency_values)
+                    recurrence.write(recurrency_values)
                     if slot.repeat_type == 'x_times':
-                        recurrency_values['repeat_until'] = slot.recurrency_id._get_recurrence_last_datetime()
+                        recurrency_values['repeat_until'] = recurrence._get_recurrence_last_datetime()
                     end_datetime = slot.end_datetime if values.get('repeat_unit') else recurrency_values.get('repeat_until')
-                    slot.recurrency_id._delete_slot(end_datetime)
-                    slot.recurrency_id._repeat_slot()
+                    recurrence._delete_slot(end_datetime)
+                    recurrence._repeat_slot()
         return result
 
     # ----------------------------------------------------
     # Actions
     # ----------------------------------------------------
+
+    def action_address_recurrency(self, recurrence_update):
+        """ :param recurrence_update: the occurences to be targetted (this, subsequent, all)
+        """
+        if recurrence_update == 'this':
+            return
+        domain = [('id', 'not in', self.ids)]
+        if recurrence_update == 'all':
+            domain = expression.AND([domain, [('recurrency_id', 'in', self.recurrency_id.ids)]])
+        elif recurrence_update == 'subsequent':
+            start_date_per_recurrency_id = {}
+            sub_domain = []
+            for shift in self:
+                if shift.recurrency_id.id not in start_date_per_recurrency_id\
+                    or shift.start_datetime < start_date_per_recurrency_id[shift.recurrency_id.id]:
+                    start_date_per_recurrency_id[shift.recurrency_id.id] = shift.start_datetime
+            for recurrency_id, start_datetime in start_date_per_recurrency_id.items():
+                sub_domain = expression.OR([sub_domain,
+                    ['&', ('recurrency_id', '=', recurrency_id), ('start_datetime', '>', start_datetime)]
+                ])
+            domain = expression.AND([domain, sub_domain])
+        sibling_slots = self.env['planning.slot'].search(domain)
+        self.recurrency_id.unlink()
+        sibling_slots.unlink()
 
     def action_unlink(self):
         self.unlink()
@@ -1423,15 +1463,6 @@ class Planning(models.Model):
             'resource_type',
             'start_datetime',
             'end_datetime',
-            'role_id',
-        ]
-
-    def _get_fields_breaking_recurrency(self):
-        """Returns the list of field which when changed should break the relation of the forecast
-            with it's recurrency
-        """
-        return [
-            'resource_id',
             'role_id',
         ]
 

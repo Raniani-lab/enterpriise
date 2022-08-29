@@ -16,7 +16,7 @@
                     </span>
                     <field name="planning_role_id"
                            attrs="{'invisible': [('planning_enabled', '=', False)], 'required': [('planning_enabled', '=', True)]}"
-                           class="oe_inline" nolabel="1"/>
+                           class="oe_inline" nolabel="1" placeholder=" e.g. Consultant"/>
                 </div>
             </xpath>
         </field>

@@ -41,14 +41,9 @@ class ResourceResource(models.Model):
         return resources
 
     def name_get(self):
-        result = []
-        if self.env.context.get('show_job_title'):
-            for resource in self:
-                employee = resource.employee_id
-                if employee.job_title:
-                    result.append((resource.id, "%s (%s)" % (employee.name, employee.job_title)))
-                else:
-                    result.append((resource.id, resource.name))
-        else:
-            result = super().name_get()
-        return result
+        if not self.env.context.get('show_job_title'):
+            return super().name_get()
+        return [(
+            resource.id,
+            resource.employee_id._get_employee_name_with_job_title() if resource.employee_id else resource.name,
+        ) for resource in self]

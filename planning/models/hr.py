@@ -27,6 +27,16 @@ class Employee(models.Model):
         ('employee_token_unique', 'unique(employee_token)', 'Error: each employee token must be unique')
     ]
 
+    def name_get(self):
+        if not self.env.context.get('show_job_title'):
+            return super().name_get()
+        return [(employee.id, employee._get_employee_name_with_job_title()) for employee in self]
+
+    def _get_employee_name_with_job_title(self):
+        if self.job_title:
+            return "%s (%s)" % (self.name, self.job_title)
+        return self.name
+
     def _get_view(self, view_id=None, view_type='form', **options):
         if not view_id and view_type == 'form' and self._context.get('force_email'):
             view_id = self.env.ref('planning.hr_employee_view_form_simplified').id

@@ -12,6 +12,7 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_timer_start'][hasclass('btn-primary')]" position='after'>
                 <field name="allow_worksheets" invisible="1"/>
+                <field name="allow_timesheets" invisible="1"/>
                 <field name="is_fsm" invisible="1"/>
                 <field name="fsm_is_sent" invisible="1"/>
                 <field name="worksheet_signature" invisible="1"/>

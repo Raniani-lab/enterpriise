@@ -23,7 +23,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
             ('before', 'web/static/src/legacy/scss/primary_variables.scss', 'web_enterprise/static/src/legacy/scss/primary_variables.scss'),
         ],
         'web._assets_secondary_variables': [
-            'web_enterprise/static/src/legacy/scss/secondary_variables.scss',
+            ('before', 'web/static/src/legacy/scss/secondary_variables.scss', 'web_enterprise/static/src/legacy/scss/secondary_variables.scss'),
         ],
         'web._assets_backend_helpers': [
             ('before', 'web/static/src/legacy/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/legacy/scss/bootstrap_overridden.scss'),

@@ -54,13 +54,15 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         const data = this.params.createFromTemplateId
             ? await getDataFromTemplate(this.env, this.orm, this.params.createFromTemplateId)
             : createEmptyWorkbookData(`${this.env._t("Sheet")}1`);
-        return this.orm.create("documents.document", {
-            name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
-            mimetype: "application/o-spreadsheet",
-            handler: "spreadsheet",
-            raw: JSON.stringify(data),
-            folder_id: this.params.createInFolderId,
-        });
+        return this.orm.create("documents.document", [
+            {
+                name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
+                mimetype: "application/o-spreadsheet",
+                handler: "spreadsheet",
+                raw: JSON.stringify(data),
+                folder_id: this.params.createInFolderId,
+            },
+        ]);
     }
 
     async _fetchData() {
@@ -148,7 +150,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
             raw: JSON.stringify(createEmptyWorkbookData(`${_t("Sheet")}1`)),
             handler: "spreadsheet",
         };
-        const id = await this.orm.create("documents.document", data);
+        const id = await this.orm.create("documents.document", [data]);
         this._openSpreadsheet(id);
     }
 

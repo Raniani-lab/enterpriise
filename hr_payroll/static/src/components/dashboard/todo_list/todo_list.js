@@ -130,11 +130,11 @@ export class PayrollDashboardTodo extends Component {
      *
      */
     async createNoteForm() {
-        const createdNote = await this.orm.create('note.note', {
+        const createdNote = await this.orm.create('note.note', [{
             'name': 'Untitled',
             'tag_ids': [[4, this.payrollTagId]],
             'company_id': owl.Component.env.session.user_context.allowed_company_ids[0],
-        });
+        }]);
         this.recentlyCreatedNote = createdNote;
         await this.props.reloadNotes();
     }

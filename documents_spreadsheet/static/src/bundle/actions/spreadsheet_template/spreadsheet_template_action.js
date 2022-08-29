@@ -42,7 +42,7 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
             name: _t("Untitled spreadsheet template"),
             data: btoa("{}"),
         };
-        return this.orm.create("spreadsheet.template", data);
+        return this.orm.create("spreadsheet.template", [data]);
     }
 
     /**

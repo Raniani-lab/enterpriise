@@ -275,13 +275,13 @@
                 <IEN_2 t-out="str(invoice.partner_shipping_id.state_id.l10n_co_edi_code or '').zfill(2)"/>
                 <IEN_3/>
                 <IEN_4 t-out="shipping_partner.city if shipping_partner else ''"/>
-                <IEN_5 t-out="invoice.partner_id.zip"/>
+                <IEN_5 t-out="shipping_partner.zip"/>
                 <IEN_6 t-out="shipping_partner.country_id.code if shipping_partner else ''"/>
                 <IEN_7 t-out="invoice_partner.name"/>
                 <IEN_8 t-out="delivery_date"/>
                 <IEN_12 t-out="str(invoice.partner_shipping_id.city_id.l10n_co_edi_code or '').zfill(5)"/>
-                <IEN_22 t-out="invoice.partner_id.state_id.name"/>
-                <IEN_23 t-out="invoice.partner_id.country_id.name"/>
+                <IEN_22 t-out="shipping_partner.state_id.name"/>
+                <IEN_23 t-out="shipping_partner.country_id.name"/>
                 <IEN_24 t-out="company_partner.lang.split('_')[0] if company_partner.lang and '_' in company_partner.lang else ''"/>
             </IEN>
 

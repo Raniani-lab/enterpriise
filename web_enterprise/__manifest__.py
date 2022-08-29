@@ -63,6 +63,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/web_calendar_mobile.scss',
             'web_enterprise/static/src/search/**/*.scss',
             'web_enterprise/static/src/webclient/**/*.scss',
+            ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
             'web_enterprise/static/src/views/**/*.scss',
 
             # Allows events to be added to the ListRenderer before it is extended.

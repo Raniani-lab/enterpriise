@@ -428,9 +428,9 @@ class Task(models.Model):
         return self.allow_worksheets and not self.worksheet_signature
 
     @api.model
-    def get_view(self, view_id=None, view_type='form', **options):
+    def get_views(self, views, options=None):
         options['toolbar'] = not self._context.get('task_worksheet_comment') and options.get('toolbar')
-        res = super().get_view(view_id, view_type, **options)
+        res = super().get_views(views, options)
         return res
 
     # ---------------------------------------------------------

@@ -23,6 +23,9 @@ class PayrollDashboardTodoAdapter extends ComponentAdapter {
     renderWidget() {
         // Explicitely remove everything before render as it is not always done.
         this.widget.$el.empty();
+        if (this.widget._qwebPlugin) {
+            this.widget._qwebPlugin.destroy();
+        }
         this.widget._render();
     }
 

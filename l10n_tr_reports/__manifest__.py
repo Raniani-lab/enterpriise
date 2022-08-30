@@ -13,7 +13,6 @@
         'l10n_tr', 'account_reports'
     ],
     'data': [
-        'views/l10n_tr_reports_menus.xml',
         'data/account_financial_html_report_bilanco_data.xml',
         'data/account_financial_html_report_ozet_bilanco_data.xml',
     ],

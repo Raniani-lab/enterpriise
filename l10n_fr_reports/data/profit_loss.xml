@@ -777,6 +777,7 @@
             </record>
             <record id="account_financial_report_line_01_fr_cdr_tot" model="account.report.line">
                 <field name="name">Bénéfice ou perte</field>
+                <field name="code">total_all</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_tot_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -790,7 +791,11 @@
     </record>
     <record id="account_financial_report_l10n_fr_cdr_action" model="ir.actions.client">
         <field name="name">Compte de résultats</field>
-        <field name="context" eval="{'report_id': ref('account_financial_report_l10n_fr_cdr')}"/>
         <field name="tag">account_report</field>
+        <field name="context" eval="{'report_id': ref('account_financial_report_l10n_fr_cdr')}"/>
+    </record>
+
+    <record id="account_financial_report_line_02_0_7_fr_bilan_passif" model="account.report.line">
+        <field name="action_id" ref="account_financial_report_l10n_fr_cdr_action"/>
     </record>
 </odoo>

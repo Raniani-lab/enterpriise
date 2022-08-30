@@ -59,11 +59,11 @@ class TestBilanComptable(TestAccountReportsCommon):
         move_2019_1.line_ids.flush_recordset()
 
         # Check that it appears in the "Actif" section of the report.
-        line_id = self._build_generic_id_from_financial_line('l10n_fr_reports.account_financial_report_line_03_5_4_fr_bilan_actif')
+        line_id = self._build_generic_id_from_financial_line('l10n_fr_reports.account_financial_report_line_03_01_3_2_fr_bilan_actif')
         self.assertLinesValues(
             self._get_line(report._get_lines(options), line_id),
             #   Name                        Balance
-            [   0,                          1],
+            [   0,                          3],
             [
                 ('Disponibilités',          100.0),
             ],
@@ -83,11 +83,11 @@ class TestBilanComptable(TestAccountReportsCommon):
         move_2019_2.line_ids.flush_recordset()
 
         # Check to make sure that it now appears in the "Passif" section of the report.
-        line_id = self._build_generic_id_from_financial_line('l10n_fr_reports.account_financial_report_line_03_3_3_fr_bilan_passif')
+        line_id = self._build_generic_id_from_financial_line('l10n_fr_reports.account_financial_report_line_05_0_3_fr_bilan_passif')
         self.assertLinesValues(
             self._get_line(report._get_lines(options), line_id),
             #   Name                                                            Balance
-            [   0,                                                              1],
+            [   0,                                                              3],
             [
                 ('Emprunts et dettes auprès des établissements de crédit',      200.0),
             ],

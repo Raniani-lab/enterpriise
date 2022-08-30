@@ -40,14 +40,6 @@ ERROR_UNSUPPORTED_IMAGE_SIZE = 14
 ERROR_NO_PAGE_COUNT = 15
 ERROR_CONVERSION_PDF2IMAGE = 16
 
-# codes above 100 are reserved for warnings
-# as warnings aren't mutually exclusive, the warning codes are summed, the result represent the combination of warnings
-# for example, WARNING_BASE_VALUE + WARNING_DUPLICATE_VENDOR_REFERENCE + WARNING_DATE_PRIOR_OF_LOCK_DATE means that both of these warnings should be displayed
-# these constants needs to be a power of 2
-WARNING_BASE_VALUE = 99
-WARNING_DUPLICATE_VENDOR_REFERENCE = 1
-WARNING_DATE_PRIOR_OF_LOCK_DATE = 2
-
 ERROR_MESSAGES = {
     ERROR_INTERNAL: _lt("An error occurred"),
     ERROR_DOCUMENT_NOT_FOUND: _lt("The document could not be found"),
@@ -62,10 +54,6 @@ ERROR_MESSAGES = {
     ERROR_UNSUPPORTED_IMAGE_SIZE: _lt("The document has been rejected because it is too small"),
     ERROR_NO_PAGE_COUNT: _lt("Invalid PDF (Unable to get page count)"),
     ERROR_CONVERSION_PDF2IMAGE: _lt("Invalid PDF (Conversion error)"),
-}
-WARNING_MESSAGES = {
-    WARNING_DUPLICATE_VENDOR_REFERENCE: _lt("Warning: there is already a vendor bill with this reference (%s)"),
-    WARNING_DATE_PRIOR_OF_LOCK_DATE: _lt("Warning: as the bill date is prior to the lock date, the accounting date was set for the first following day"),
 }
 
 
@@ -89,22 +77,12 @@ class AccountInvoiceExtractionWords(models.Model):
 
 class AccountMove(models.Model):
     _inherit = ['account.move']
-    duplicated_vendor_ref = fields.Char(string='Duplicated vendor reference')
 
     @api.depends('extract_status_code')
     def _compute_error_message(self):
         for record in self:
             if record.extract_status_code not in (SUCCESS, NOT_READY):
-                warnings = record.get_warnings()
-                if warnings:
-                    warnings_messages = []
-                    if WARNING_DUPLICATE_VENDOR_REFERENCE in warnings:
-                        warnings_messages.append(str(WARNING_MESSAGES[WARNING_DUPLICATE_VENDOR_REFERENCE]) % record.duplicated_vendor_ref)
-                    if WARNING_DATE_PRIOR_OF_LOCK_DATE in warnings:
-                        warnings_messages.append(str(WARNING_MESSAGES[WARNING_DATE_PRIOR_OF_LOCK_DATE]))
-                    record.extract_error_message = '\n'.join(warnings_messages)
-                else:
-                    record.extract_error_message = str(ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL]))
+                record.extract_error_message = str(ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL]))
             else:
                 record.extract_error_message = ''
 
@@ -782,16 +760,7 @@ class AccountMove(models.Model):
                     self.message_main_attachment_id.index_content = ocr_results['full_text_annotation']
                 self.extract_word_ids.unlink()
 
-                # We still want to save all other fields when there is a duplicate vendor reference
-                try:
-                    # Savepoint so the transactions don't go through if the save raises an exception
-                    with self.env.cr.savepoint():
-                        self._save_form(ocr_results)
-                # Retry saving without the ref, then set the error status to show the user a warning
-                except ValidationError as e:
-                    self._save_form(ocr_results, no_ref=True)
-                    self.add_warning(WARNING_DUPLICATE_VENDOR_REFERENCE)
-                    self.duplicated_vendor_ref = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
+                self._save_form(ocr_results)
 
                 fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
                 for field in fields_with_boxes:
@@ -816,7 +785,7 @@ class AccountMove(models.Model):
             else:
                 self.extract_state = 'error_status'
 
-    def _save_form(self, ocr_results, no_ref=False):
+    def _save_form(self, ocr_results):
         supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
         client_ocr = ocr_results['client']['selected_value']['content'] if 'client' in ocr_results else ""
         date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
@@ -913,16 +882,13 @@ class AccountMove(models.Model):
             context_create_date = fields.Date.context_today(self, self.create_date)
             if date_ocr and (not move_form.invoice_date or move_form.invoice_date == context_create_date):
                 move_form.invoice_date = date_ocr
-                if self.company_id.tax_lock_date and move_form.date and move_form.date <= self.company_id.tax_lock_date:
-                    move_form.date = self.company_id.tax_lock_date + timedelta(days=1)
-                    self.add_warning(WARNING_DATE_PRIOR_OF_LOCK_DATE)
             if due_date_ocr and (due_date_move_form == context_create_date):
                 if date_ocr == due_date_ocr and move_form.partner_id and move_form.partner_id.property_supplier_payment_term_id:
                     # if the invoice date and the due date found by the OCR are the same, we use the payment terms of the detected supplier instead, if there is one
                     move_form.invoice_payment_term_id = move_form.partner_id.property_supplier_payment_term_id
                 else:
                     move_form.invoice_date_due = due_date_ocr
-            if self.is_purchase_document() and not move_form.ref and not no_ref:
+            if self.is_purchase_document() and not move_form.ref:
                 move_form.ref = invoice_id_ocr
 
             if self.move_type in {'out_invoice', 'out_refund'}:
@@ -959,22 +925,3 @@ class AccountMove(models.Model):
             'type': 'ir.actions.act_url',
             'url': url,
         }
-
-    def add_warning(self, warning_code):
-        if self.extract_status_code <= WARNING_BASE_VALUE:
-            self.extract_status_code = WARNING_BASE_VALUE
-        self.extract_status_code += warning_code
-
-    def get_warnings(self):
-        """Returns the active warnings as a set"""
-        warnings = set()
-        if self.extract_status_code > WARNING_BASE_VALUE:
-            # convert the status code to a 8 characters 0-padded string representation of the binary number
-            codes = format(self.extract_status_code - WARNING_BASE_VALUE, '08b')
-
-            # revert the string so that the first character will correspond to the first bit
-            codes = codes[::-1]
-            for warning_code in WARNING_MESSAGES:
-                if codes[int(math.log2(warning_code))] == '1':
-                    warnings.add(warning_code)
-        return warnings

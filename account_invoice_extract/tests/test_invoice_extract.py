@@ -6,7 +6,7 @@ import json
 
 from odoo import fields
 
-from odoo.addons.account_invoice_extract.models.account_invoice import SUCCESS, NOT_READY, ERROR_INTERNAL, WARNING_DUPLICATE_VENDOR_REFERENCE
+from odoo.addons.account_invoice_extract.models.account_invoice import SUCCESS, NOT_READY, ERROR_INTERNAL
 from odoo.addons.account_invoice_extract.tests import common as account_invoice_extract_common
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged

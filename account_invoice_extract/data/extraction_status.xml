@@ -52,23 +52,14 @@
                     <div class="clearfix"/>
                 </div>
                 <div role="status" class="alert alert-danger mb8"
-                     attrs="{'invisible':['|', '|', '|',
+                     attrs="{'invisible':['|', '|',
                             ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
                             ('state', 'not in', ['draft']),
-                            ('extract_state', 'not in', ['error_status']),
-                            ('extract_status_code', '&gt;', 99)]}">
+                            ('extract_state', 'not in', ['error_status'])]}">
                     <button name="action_manual_send_for_digitization" class="btn btn-sm btn-primary float-end mb0 me-1"
                             string="Resend For Digitization" type="object" data-hotkey="v"/>
                     <field name="extract_error_message" class="oe_inline"/>
                     <div class="clearfix"/>
-                </div>
-                <div role="status" class="alert alert-warning mb8"
-                     attrs="{'invisible':['|', '|', '|',
-                            ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
-                            ('state', 'not in', ['draft']),
-                            ('extract_state', 'not in', ['error_status', 'waiting_validation']),
-                            ('extract_status_code', '&lt;', 100)]}">
-                    <field name="extract_error_message"/>
                 </div>
             </xpath>
             <xpath expr="//field[@name='message_ids']" position='replace'>

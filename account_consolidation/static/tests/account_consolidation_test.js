@@ -1,47 +1,55 @@
-odoo.define('account_consolidation.FieldJsonTests', function (require) {
-    "use strict";
+/** @odoo-module **/
+import { getFixture } from "@web/../tests/helpers/utils";
+import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 
-    const testUtils = require('web.test_utils');
-    const ListView = require('web.ListView');
-    const createView = testUtils.createView;
+QUnit.module('Consolidation Tests', {}, function() {
 
-    QUnit.module('fields', {
-        beforeEach: function () {
-            this.data = {
-                foo: {
-                    fields: {
-                        json: {string: 'Json', type: 'text'},
-                    },
-                    records: [
-                        {
-                            id: 1
+    QUnit.module("Fields");
+
+    QUnit.test('render json field', async function (assert) {
+        assert.expect(1);
+        let target = getFixture();
+        setupViewRegistries();
+
+        await makeView({
+            type: "kanban",
+            resModel: "consolidation",
+            serverData: {
+                models: {
+                    'consolidation': {
+                        fields: {
+                            json: { string: "Json", type: "text" },
                         },
-                        {
-                            id: 2,
-                            json: '[["Section 1","126.00 €"],["Section 2","294.00 €"]]'
-                        }
-                    ]
-                }
-            }
-        }
-    }, function() {
-        QUnit.test('render empty json field', async function (assert) {
-            assert.expect(1);
-
-            const view = await createView({
-                debug: 1,
-                View: ListView,
-                model: 'foo',
-                data: this.data,
-                arch: `
-                    <tree editable="top" multi_edit="1">
-                        <field name="json" widget="json"/>
-                    </tree>`
-            });
-
-            assert.equal(view.$('.o_field_json').length, 2, "Both records are rendered");
-
-            view.destroy();
+                        records: [
+                            {
+                                id: 1,
+                                json: '[]'
+                            },
+                            {
+                                id: 2,
+                                json: '[{"name": "Section 1", "value": "125.00 €"},{"name": "Section 2","value": "294.00 €"}]',
+                            }
+                        ],
+                    },
+                },
+                views: { },
+            },
+            arch: `
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <field name="json" widget="consolidation_dashboard_field"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`,
         });
+        assert.containsN(
+            target,
+            ".o_field_consolidation_dashboard_field",
+            2,
+            "Both records are rendered"
+        );
     });
 });

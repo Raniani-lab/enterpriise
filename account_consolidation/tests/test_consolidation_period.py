@@ -233,8 +233,8 @@ class TestConsolidationPeriod(AccountConsolidationTestCase):
             ap._format_value(3 * step + 4 * step)  # i=3 & i=4 loop step
         ]
         dashboard_sections = json.loads(ap.dashboard_sections)
-        self.assertListEqual([val[1] for val in dashboard_sections], expected_amounts)
-        self.assertEqual(list(map(lambda x: x.name, sections[:2])), [val[0] for val in dashboard_sections])
+        self.assertListEqual([val.get('value') for val in dashboard_sections], expected_amounts)
+        self.assertEqual(list(map(lambda x: x.name, sections[:2])), [val.get('name') for val in dashboard_sections])
 
     def test__journal_ids_count(self):
         Journal = self.env['consolidation.journal']

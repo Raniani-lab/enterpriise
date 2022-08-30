@@ -22,8 +22,8 @@ def _get_init_messaging_result(self):
         'webSocketUrl': "ws://localhost",
     }
     res['hasDocumentsUserGroup'] = False
+    res['helpdesk_livechat_active'] = 0
     return res
-
 
 def _get_query_count(self):
     return 86

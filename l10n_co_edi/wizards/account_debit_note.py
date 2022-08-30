@@ -33,7 +33,7 @@ class AccountDebitNote(models.TransientModel):
 
     def _prepare_default_values(self, move):
         default_values = super()._prepare_default_values(move)
-        if move.company_id.country_id.code != "CO":
+        if move.company_id.country_id.code != "CO" or not self.copy_lines:
             return default_values
 
         default_values['line_ids'] = [[5, 0]]

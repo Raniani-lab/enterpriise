@@ -190,11 +190,11 @@
                             </div>
                             <div class="col-7 o_kanban_primary_right">
                                 <div class="mb-2">
-                                    <field name="dashboard_sections" widget="json" class="row d-flex"/>
+                                    <field name="dashboard_sections" widget="consolidation_dashboard_field" class="row d-flex"/>
                                 </div>
                                 <div>
-                                    <field name="company_unmapped_accounts_counts" widget="json"
-                                           class="row d-flex" options="{'template': 'DashboardUnmappedAccount'}"/>
+                                    <field name="company_unmapped_accounts_counts" widget="consolidation_dashboard_field"
+                                           class="row d-flex"/>
                                 </div>
                             </div>
                         </t>

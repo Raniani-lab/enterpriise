@@ -12,7 +12,7 @@ import { ListController } from "@web/views/list/list_controller";
 import { insert } from '@mail/model/model_field_command';
 import { SIZES } from '@web/core/ui/ui_service';
 
-class AccountMoveListController extends ListController {
+export class AccountMoveLineListController extends ListController {
     setup() {
         super.setup();
         this.messaging = useService("messaging");
@@ -62,13 +62,13 @@ class AccountMoveListController extends ListController {
         this.attachmentPreviewState.thread = thread;
     }
 }
-AccountMoveListController.template = 'account_accountant.MoveLineListView';
-AccountMoveListController.components = {
-    ...AccountMoveListController.components,
+AccountMoveLineListController.template = 'account_accountant.MoveLineListView';
+AccountMoveLineListController.components = {
+    ...ListController.components,
     WebClientViewAttachmentViewContainer,
 };
 
-class AccountMoveListRenderer extends ListRenderer {
+class AccountMoveLineListRenderer extends ListRenderer {
     onCellClicked(record, column, ev) {
         this.props.setSelectedRecord(record);
         super.onCellClicked(record, column, ev);
@@ -84,11 +84,11 @@ class AccountMoveListRenderer extends ListRenderer {
         return futureCell;
     }
 }
-AccountMoveListRenderer.props = [...AccountMoveListRenderer.props, "setSelectedRecord?"];
-const AccountMoveListView = {
+AccountMoveLineListRenderer.props = [...ListRenderer.props, "setSelectedRecord?"];
+export const AccountMoveLineListView = {
     ...listView,
-    Renderer: AccountMoveListRenderer,
-    Controller: AccountMoveListController,
+    Renderer: AccountMoveLineListRenderer,
+    Controller: AccountMoveLineListController,
 };
 
-registry.category("views").add('account_move_line_list', AccountMoveListView);
+registry.category("views").add('account_move_line_list', AccountMoveLineListView);

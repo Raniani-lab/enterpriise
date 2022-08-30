@@ -31,13 +31,10 @@
             'account_consolidation/static/src/js/trial_balance_grid/controller.js',
             'account_consolidation/static/src/js/trial_balance_grid/renderer.js',
             'account_consolidation/static/src/js/trial_balance_grid/view.js',
-            'account_consolidation/static/src/js/move_line_list/renderer.js',
-            'account_consolidation/static/src/js/move_line_list/view.js',
-            'account_consolidation/static/src/js/json_field.js',
-            'account_consolidation/static/src/xml/**/*',
+            'account_consolidation/static/src/components/**/*',
         ],
         'web.qunit_suite_tests': [
-            'account_consolidation/static/tests/**/*'
+            'account_consolidation/static/tests/**/*',
         ]
     },
     'license': 'OEEL-1',

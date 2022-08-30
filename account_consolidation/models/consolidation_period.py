@@ -53,8 +53,9 @@ class ConsolidationPeriod(models.Model):
             rfields = ['group_id.id', 'total:sum(amount)']
             group_by = ['group_id']
             grouped_res = self.env['consolidation.journal.line']._read_group(domain, rfields, group_by)
+
             results = [
-                '["%s","%s"]' % (Section.browse(value['group_id'][0]).name, record._format_value(value['total']))
+                '{"name": "%s", "value": "%s"}' % (Section.browse(value['group_id'][0]).name, record._format_value(value['total']))
                 for value in grouped_res
             ]
             record.dashboard_sections = '[%s]' % ','.join(results)
@@ -105,7 +106,7 @@ class ConsolidationPeriod(models.Model):
                                                               ['company_id'])
 
             results = [
-                '["%s","%s","%s"]' % (val['company_id'][0], Company.browse(val['company_id'][0]).name, val['amount'])
+                '{"company_id": %s,"name": "%s", "value": "%s"}' % (val['company_id'][0], Company.browse(val['company_id'][0]).name, val['amount'])
                 for val in values]
 
             record.company_unmapped_accounts_counts = '[%s]' % ','.join(results)

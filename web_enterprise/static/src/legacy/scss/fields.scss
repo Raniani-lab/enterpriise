@@ -48,14 +48,14 @@
     }
 
     // HTML fields
-    &.oe_form_field_html.oe_form_field_html { // Make rules more important
+    &.o_field_html.o_field_html { // Make rules more important
         .note-editor {
             border-color: map-get($grays, '400');
         }
-        >.note-editable {
+        .note-editable {
             border-radius: 0;
         }
-        &:not(.oe-bordered-editor)>.note-editable {
+        :not(.oe-bordered-editor).note-editable {
             border: 0;
             padding: 3px 0 5px;
         }

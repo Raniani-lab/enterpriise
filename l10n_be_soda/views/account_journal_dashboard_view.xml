@@ -8,9 +8,11 @@
             <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view" />
             <field name="arch" type="xml">
                 <xpath expr="//button[@id='new_misc_entry_button']" position="after">
-                    <button class="btn btn-primary o_button_upload_document oe_kanban_action_button" journal_type="general" groups="account.group_account_invoice">
-                        <span>Upload</span>
-                    </button>
+                    <t t-call="AccountKanbanUploaderButton">
+                        <a href="#" groups="account.group_account_invoice">
+                            <span>Upload</span>
+                        </a>
+                    </t>
                 </xpath>
             </field>
         </record>

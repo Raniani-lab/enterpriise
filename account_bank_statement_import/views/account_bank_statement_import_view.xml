@@ -7,11 +7,18 @@
         <field name="inherit_id" ref="account.account_journal_dashboard_kanban_view"/>
         <field name="arch" type="xml">
             <xpath expr='//span[@name="button_import_placeholder"]' position='inside'>
-                <span>or <a class="o_button_upload_document" href="#">Import</a></span>
+                <span class="mx-1">or</span>
+                <t t-call="AccountKanbanUploaderButton">
+                    <a href="#">Import</a>
+                </t>
             </xpath>
             <xpath expr='//div[@name="bank_cash_commands"]' position="before">
                 <div t-if="journal_type == 'bank'">
-                    <a class="o_button_upload_document" href="#">Import Statement</a>
+                    <t t-call="AccountKanbanUploaderButton">
+                        <div class="file_upload_kanban_action_a mb-0">
+                            <a href="#">Import Statement</a>
+                        </div>
+                    </t>
                 </div>
             </xpath>
         </field>

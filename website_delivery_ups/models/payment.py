@@ -21,6 +21,7 @@ class PaymentAcquirer(models.Model):
         compatible_acquirers = super()._get_compatible_acquirers(
             *args, sale_order_id=sale_order_id, **kwargs
         )
+        # FIXME what about multi company ????????
         cod_acquirer = self.env.ref('website_delivery_ups.payment_acquirer_ups_cod')
         sale_order = self.env['sale.order'].browse(sale_order_id).exists()
         if sale_order.carrier_id.delivery_type == 'ups' and sale_order.carrier_id.ups_cod:

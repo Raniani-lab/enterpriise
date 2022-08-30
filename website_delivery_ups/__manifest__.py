@@ -7,7 +7,7 @@
     'description': """
 This module allows ecommerce users to enter their UPS account number and delivery fees will be charged on that account number.
     """,
-    'depends': ['delivery_ups', 'website_sale_delivery'],
+    'depends': ['delivery_ups', 'website_sale_delivery', 'payment_custom'],
     'data': [
         'data/payment_acquirer_data.xml',
         'views/delivery_ups_templates.xml',

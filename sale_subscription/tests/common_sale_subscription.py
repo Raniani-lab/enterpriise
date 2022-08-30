@@ -222,7 +222,6 @@ class TestSubscriptionCommon(TestSaleCommon):
              'company_id': cls.company.id})
         cls.acquirer = cls.env['payment.acquirer'].create(
             {'name': 'The Wire',
-             'provider': 'transfer',
              'company_id': cls.company.id,
              'state': 'test',
              'redirect_form_view_id': cls.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})

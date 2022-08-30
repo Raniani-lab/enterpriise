@@ -22,4 +22,12 @@ class TestUi(HttpCase, TestWebsiteSaleRentingCommon):
         quants.action_apply_inventory()
 
     def test_website_sale_stock_renting_ui(self):
+        if self.env['ir.module.module']._get('payment_custom').state != 'installed':
+            self.skipTest("Transfer acquirer is not installed")
+
+        self.env.ref('payment.payment_acquirer_transfer').write({
+            'state': 'enabled',
+            'is_published': True,
+        })
+
         self.start_tour("/web", 'shop_buy_rental_stock_product', login='admin')

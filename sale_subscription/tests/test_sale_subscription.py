@@ -71,7 +71,6 @@ class TestSubscription(TestSubscriptionCommon):
 
         self.acquirer = self.env['payment.acquirer'].create(
             {'name': 'The Wire',
-             'provider': 'transfer',
              'company_id': self.company.id,
              'state': 'test',
              'redirect_form_view_id': self.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})

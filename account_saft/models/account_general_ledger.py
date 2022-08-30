@@ -166,6 +166,7 @@ class AccountGeneralLedger(models.AbstractModel):
             line_vals['tax_detail_vals_list'].append({
                 **tax_vals,
                 'rate': line_vals['rate'],
+                'currency_code': line_vals['currency_code'],
             })
             tax_vals_map.setdefault(tax_vals['tax_id'], {
                 'id': tax_vals['tax_id'],

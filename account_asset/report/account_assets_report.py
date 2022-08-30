@@ -245,7 +245,7 @@ class AssetsReport(models.Model):
                     asset_closing = 0.0
 
                 asset = self.env['account.asset'].browse(al['asset_id'])
-                is_negative_asset = asset.original_move_line_ids.move_id.move_type == 'in_refund'
+                is_negative_asset = any(move.move_type == 'in_refund' for move in asset.original_move_line_ids.move_id)
 
                 if is_negative_asset:
                     asset_add, asset_minus = asset_minus, asset_add

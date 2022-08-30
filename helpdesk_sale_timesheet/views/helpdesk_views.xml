@@ -107,6 +107,9 @@
             <field name="sale_order_id" position="after">
                 <field name="sale_line_id" string="Sales Order Item" groups="helpdesk_sale.group_use_helpdesk_sale_timesheet"/>
             </field>
+            <filter name='message_needaction' position="after">
+                <filter string="Tickets in Overtime" domain="[('remaining_hours_so','&lt;',0)]" name="negative_remaining_hours" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+            </filter>
         </field>
     </record>
 

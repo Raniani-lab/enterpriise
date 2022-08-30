@@ -57,8 +57,8 @@ class HelpdeskTeam(models.Model):
         help="Stages the team will use. This team's tickets will only be able to be in these stages.")
     auto_assignment = fields.Boolean("Automatic Assignment")
     assign_method = fields.Selection([
-        ('randomly', 'Each user is assigned an equal number of tickets'),
-        ('balanced', 'Each user has an equal number of open tickets')],
+        ('randomly', 'New tickets are evenly distributed among users (Round-robin)'),
+        ('balanced', 'New tickets are assigned to the users with the least number of open tickets (Balanced)')],
         string='Assignment Method', default='randomly',
         required=True)
     member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids(), default=lambda self: self.env.user, required=True)

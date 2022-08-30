@@ -35,7 +35,7 @@ class HelpdeskTicket(models.Model):
         domain="[('company_id', '=', company_id), ('is_service', '=', True), ('order_partner_id', 'child_of', commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]")
     project_sale_order_id = fields.Many2one('sale.order', string="Project's sale order", related='project_id.sale_order_id')
     remaining_hours_available = fields.Boolean(related="sale_line_id.remaining_hours_available")
-    remaining_hours_so = fields.Float('Remaining Hours on SO', compute='_compute_remaining_hours_so')
+    remaining_hours_so = fields.Float('Remaining Hours on SO', compute='_compute_remaining_hours_so', search='_search_remaining_hours_so')
 
     @api.depends('sale_line_id', 'timesheet_ids', 'timesheet_ids.unit_amount')
     def _compute_remaining_hours_so(self):
@@ -56,6 +56,10 @@ class HelpdeskTicket(models.Model):
 
         for ticket in self:
             ticket.remaining_hours_so = mapped_remaining_hours[ticket._origin.id]
+
+    @api.model
+    def _search_remaining_hours_so(self, operator, value):
+        return [('sale_line_id.remaining_hours', operator, value)]
 
     @api.depends('commercial_partner_id', 'use_helpdesk_sale_timesheet', 'project_id.pricing_type', 'project_id.sale_line_id')
     def _compute_sale_line_id(self):

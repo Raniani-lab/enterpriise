@@ -223,7 +223,20 @@
             <record id="account_report_gstr1_nil" model="account.report.line">
                 <field name="name">Nil Rated Supplies(8A, 8B, 8C, 8D)</field>
                 <field name="code">NIL</field>
-                <field name="domain_formula">-sum([('move_id.move_type', 'in', ['out_invoice', 'out_refund']), ('move_id.l10n_in_gst_treatment', '!=', 'overseas'), ('account_type', 'not in', ['asset_receivable', 'liability_payable']), ('tax_tag_ids', 'in', [ref('l10n_in.tax_tag_exempt'), ref('l10n_in.tax_tag_nil_rated'), ref('l10n_in.tax_tag_non_gst_supplies'), ])])</field>
+                <field name="expression_ids">
+                    <record id="account_report_gstr1_nil_taxable_amount_balance" model="account.report.expression">
+                        <field name="label">tax_base</field>
+                        <field name="engine">domain</field>
+                        <field name="formula" eval="
+                            [('move_id.move_type', 'in', ['out_invoice', 'out_refund']),
+                            ('move_id.l10n_in_gst_treatment', '!=', 'overseas'),
+                            ('account_type', 'not in', ['asset_receivable', 'liability_payable']),
+                            ('tax_tag_ids', 'in', [ref('l10n_in.tax_tag_exempt'),
+                                ref('l10n_in.tax_tag_nil_rated'),
+                                ref('l10n_in.tax_tag_non_gst_supplies')])]"/>
+                        <field name="subformula">-sum</field>
+                    </record>
+                </field>
             </record>
             <record id="account_report_gstr1_hsn" model="account.report.line">
                 <field name="name">HSN summary of outward supplies(12)</field>

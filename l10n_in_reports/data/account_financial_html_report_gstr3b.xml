@@ -122,7 +122,14 @@
                     <record id="account_report_gstr3b_3_1_c" model="account.report.line">
                         <field name="name">(c) Other Outward Taxable supplies (Nil rated, exempted)</field>
                         <field name="code">3_1_C</field>
-                        <field name="domain_formula">-sum([('move_id.move_type','=','out_invoice'), ('tax_tag_ids','in',[ref('l10n_in.tax_tag_exempt'), ref('l10n_in.tax_tag_nil_rated')])])</field>
+                        <field name="expression_ids">
+                            <record id="account_report_gstr3b_3_1_c_tax_base" model="account.report.expression">
+                                <field name="label">tax_base</field>
+                                <field name="engine">domain</field>
+                                <field name="formula" eval="[('move_id.move_type','=','out_invoice'), ('tax_tag_ids','in',[ref('l10n_in.tax_tag_exempt'), ref('l10n_in.tax_tag_nil_rated')])]"/>
+                                <field name="subformula">-sum</field>
+                            </record>
+                        </field>
                     </record>
                     <record id="account_report_gstr3b_3_1_d" model="account.report.line">
                         <field name="name">(d) Inward supplies (liable to reverse charge)</field>
@@ -163,7 +170,14 @@
                     <record id="account_report_gstr3b_3_1_e" model="account.report.line">
                         <field name="name">(e) Non-GST Outward supplies</field>
                         <field name="code">3_1_E</field>
-                        <field name="domain_formula">-sum([('move_id.move_type','=','out_invoice'), ('tax_tag_ids','=', ref('l10n_in.tax_tag_non_gst_supplies'))])</field>
+                        <field name="expression_ids">
+                            <record id="account_report_gstr3b_3_1_e_tax_base" model="account.report.expression">
+                                <field name="label">tax_base</field>
+                                <field name="engine">domain</field>
+                                <field name="formula" eval="[('move_id.move_type','=','out_invoice'), ('tax_tag_ids','=', ref('l10n_in.tax_tag_non_gst_supplies'))]"/>
+                                <field name="subformula">-sum</field>
+                            </record>
+                        </field>
                     </record>
                 </field>
             </record>

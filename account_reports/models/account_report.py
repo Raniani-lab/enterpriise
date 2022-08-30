@@ -875,7 +875,7 @@ class AccountReport(models.Model):
                 'columns': [{
                     'name': self.format_value(c, figure_type='monetary') if isinstance(c, (int, float)) else c,
                     'no_format': c,
-                    'class': 'number' if isinstance(c, (int, float)) else None,
+                    'class': 'number' if isinstance(c, (int, float)) else '',
                 } for c in val_dict['totals']],
             })
             if not self._context.get('print_mode') or unfolded:

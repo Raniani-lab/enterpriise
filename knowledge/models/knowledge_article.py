@@ -21,6 +21,7 @@ class Article(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = "favorite_count desc, write_date desc, id desc"
     _mail_post_access = 'read'
+    _parent_store = True
 
     active = fields.Boolean(default=True)
     name = fields.Char(string="Title", default=lambda self: _('New Article'), required=True, tracking=20)
@@ -38,6 +39,9 @@ class Article(models.Model):
     article_url = fields.Char('Article URL', compute='_compute_article_url', readonly=True)
     # Hierarchy and sequence
     parent_id = fields.Many2one("knowledge.article", string="Parent Article", tracking=30)
+    # used to speed-up hierarchy operators such as child_of/parent_of
+    # see '_parent_store' implementation in the ORM for details
+    parent_path = fields.Char(index=True, unaccent=False)
     child_ids = fields.One2many("knowledge.article", "parent_id", string="Child Articles and Items")
     has_item_children = fields.Boolean('Has article item children?', compute="_compute_has_article_children")
     has_article_children = fields.Boolean('Has normal article children?', compute="_compute_has_article_children")
@@ -1696,7 +1700,7 @@ class Article(models.Model):
         article = self.env['knowledge.article']
         if not self.env.user._is_public():
             article = self.env['knowledge.article.favorite'].search([
-                ('user_id', '=', self.env.uid), ('article_id.active', '=', True)
+                ('user_id', '=', self.env.uid), ('is_article_active', '=', True)
             ], limit=1).article_id
         if not article:
             # retrieve workspace articles first, then private/shared ones.
@@ -1723,14 +1727,3 @@ class Article(models.Model):
     def _get_descendants(self):
         """ Returns the descendants recordset of the current article. """
         return self.env['knowledge.article'].search([('id', 'not in', self.ids), ('parent_id', 'child_of', self.ids)])
-
-    def _get_readable_ancetors(self):
-        """ Returns the parents recordset of the current article. Do the computation
-        as sudo """
-        self.ensure_one()
-        ancestors = self.env['knowledge.article'].sudo()
-        current = self.sudo().parent_id
-        while current:
-            ancestors += current
-            current = current.parent_id
-        return ancestors._filter_access_rules_python('read').with_env(self.env)

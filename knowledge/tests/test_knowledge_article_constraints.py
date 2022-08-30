@@ -94,8 +94,8 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         }])
 
     @users('employee')
-    def test_article_acyclic_graph(self):
-        """ Check that the article hierarchy does not contain cycles. """
+    def test_article_acyclic_graph_move_to(self):
+        """ Check that the article hierarchy does not contain cycles using the move_to method. """
         article = self.article_workspace.with_env(self.env)
         article_childs = self.env['knowledge.article'].create([
             {'name': 'ChildNew1',
@@ -109,9 +109,26 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         ])
 
         # move the parent article under one of its children should raise an exception
-        with self.assertRaises(exceptions.ValidationError, msg='The article hierarchy contains a cycle'):
+        with self.assertRaises(exceptions.UserError, msg='The article hierarchy contains a cycle'):
             article.move_to(parent_id=article_childs[1].id)
-        with self.assertRaises(exceptions.ValidationError, msg='The article hierarchy contains a cycle'):
+
+    @users('employee')
+    def test_article_acyclic_graph_write_parent(self):
+        """ Check that the article hierarchy does not contain cycles when writing on parent_id. """
+        article = self.article_workspace.with_env(self.env)
+        article_childs = self.env['knowledge.article'].create([
+            {'name': 'ChildNew1',
+             'parent_id': article.id,
+             'sequence': 3,
+            },
+            {'name': 'ChildNew2',
+             'parent_id': article.id,
+             'sequence': 4,
+            }
+        ])
+
+        # move the parent article under one of its children should raise an exception
+        with self.assertRaises(exceptions.UserError, msg='The article hierarchy contains a cycle'):
             article.write({
                 'parent_id': article_childs[1].id
             })

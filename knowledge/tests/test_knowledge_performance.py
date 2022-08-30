@@ -25,7 +25,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @warmup
     def test_article_creation_single_shared_grandchild(self):
         """ Test with 2 levels of hierarchy in a private/shared environment """
-        with self.assertQueryCount(employee=24):
+        with self.assertQueryCount(employee=25):
             _article = self.env['knowledge.article'].create({
                 'body': '<p>Hello</p>',
                 'name': 'Article in shared',
@@ -37,7 +37,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_creation_single_workspace(self):
-        with self.assertQueryCount(employee=21):
+        with self.assertQueryCount(employee=22):
             _article = self.env['knowledge.article'].create({
                 'body': '<p>Hello</p>',
                 'name': 'Article in workspace',
@@ -49,7 +49,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_creation_multi_roots(self):
-        with self.assertQueryCount(employee=22):
+        with self.assertQueryCount(employee=23):
             _article = self.env['knowledge.article'].create([
                 {'body': '<p>Hello</p>',
                  'internal_permission': 'write',
@@ -61,7 +61,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_creation_multi_shared_grandchild(self):
-        with self.assertQueryCount(employee=51):
+        with self.assertQueryCount(employee=52):
             _article = self.env['knowledge.article'].create([
                 {'body': '<p>Hello</p>',
                  'name': f'Article {index} in workspace',
@@ -73,14 +73,14 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_favorite(self):
-        with self.assertQueryCount(employee=8):  # knowledge only: 8
+        with self.assertQueryCount(employee=11):  # knowledge only: 11
             shared_article = self.shared_children[0].with_env(self.env)
             shared_article.action_toggle_favorite()
 
     @users('employee')
     @warmup
     def test_article_home_page(self):
-        with self.assertQueryCount(employee=22):
+        with self.assertQueryCount(employee=20):
             self.env['knowledge.article'].action_home_page()
 
     @mute_logger('odoo.addons.base.models.ir_rule', 'odoo.addons.mail.models.mail_mail', 'odoo.models.unlink', 'odoo.tests')

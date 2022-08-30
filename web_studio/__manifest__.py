@@ -38,6 +38,7 @@ Note: Only the admin user is allowed to make those customizations.
         'views/ir_model_data.xml',
         'views/studio_approval_views.xml',
         'data/mail_templates.xml',
+        'data/mail_activity_type_data.xml',
         'wizard/base_module_uninstall_view.xml',
         'security/ir.model.access.csv',
         'security/studio_security.xml',

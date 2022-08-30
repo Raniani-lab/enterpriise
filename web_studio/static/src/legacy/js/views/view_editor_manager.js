@@ -65,6 +65,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
         approval_change: '_onApprovalChange',
         approval_condition: '_onApprovalCondition',
         approval_group_change: '_onApprovalGroupChange',
+        approval_responsible_change: '_onApprovalResponsibleChange',
         approval_new_rule: '_onApprovalNewRule',
         default_value_change: '_onDefaultValueChange',
         email_alias_change: '_onEmailAliasChange',
@@ -1548,6 +1549,23 @@ var ViewEditorManager = AbstractEditorManager.extend({
         });
         bus.trigger("toggle_snack_bar", "saved");
         this.updateEditor();
+    },
+    /**
+    * Handler for changes on the 'responsible_id' field of an approval rule.
+    * @private
+    * @param {OdooEvent} ev
+    */
+     _onApprovalResponsibleChange: async function (ev) {
+        bus.trigger("toggle_snack_bar", "saving");
+        await this._rpc({
+            model: "studio.approval.rule",
+            method: "write",
+            args: [[ev.data.ruleId], { responsible_id: ev.data.responsibleId }],
+        });
+        bus.trigger("toggle_snack_bar", "saved");
+        this._updateSidebar(this.sidebar.state.mode, {
+            node: this.sidebar.state.node,
+        });
     },
     /**
      * @override

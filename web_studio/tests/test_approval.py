@@ -370,3 +370,97 @@ class TestStudioApproval(TransactionCase):
         # check that the rule on 'unlink' is not prevented by another entry
         # for a rule that is not related to the same action/method
         self.assertTrue(approval_result.get('approved'), "User should be able to unlink")
+
+    def test_11_approval_activity(self):
+        """Test the integration between approvals and next activities"""
+        self.rule.active = True
+        self.rule.responsible_id = self.manager
+        # generate a next activity for the rule's responsible by asking for approval
+        self.env['studio.approval.rule'].with_user(self.user).check_approval(
+            model=self.MODEL,
+            res_id=self.record.id,
+            method=self.METHOD,
+            action_id=False)
+        approval_request = self.env['studio.approval.request'].search(
+            [('rule_id', '=', self.rule.id), ('res_id', '=', self.record.id)])
+        self.assertEqual(len(approval_request), 1, "There should be exactly one approval request")
+        activity = approval_request.mail_activity_id
+        # mark the activity as done, the approval should go through and the request should be deleted
+        activity.with_user(self.manager).action_done()
+        approval_result = self.env['studio.approval.rule'].with_user(self.user).check_approval(
+            model=self.MODEL,
+            res_id=self.record.id,
+            method=self.METHOD,
+            action_id=False)
+        self.assertTrue(approval_result.get('approved'),
+                        "The approval should have been granted upon validation of the activity")
+        self.assertFalse(approval_request.exists(),
+                         "The approval request should have been deleted upon the activity's confirmation")
+
+    def test_12_approval_activity_spoof(self):
+        """Test that validating an approval activity as another user will not leak approval rights"""
+        self.rule.active = True
+        self.rule.responsible_id = self.manager
+        # generate a next activity for the rule's responsible by asking for approval
+        self.env['studio.approval.rule'].with_user(self.user).check_approval(
+            model=self.MODEL,
+            res_id=self.record.id,
+            method=self.METHOD,
+            action_id=False)
+        approval_request = self.env['studio.approval.request'].search(
+            [('rule_id', '=', self.rule.id), ('res_id', '=', self.record.id)])
+        activity = approval_request.mail_activity_id
+        # mark the manager's activity as done with the non-manager user
+        # the approval should *not* go through and the request should be deleted (and no errors should be raised)
+        activity.with_user(self.user).action_done()
+        approval_result = self.env['studio.approval.rule'].with_user(self.user).check_approval(
+            model=self.MODEL,
+            res_id=self.record.id,
+            method=self.METHOD,
+            action_id=False)
+        self.assertFalse(approval_result.get('approved'),
+                         "The approval should not have been granted upon validation of the activity by anohter user")
+        self.assertFalse(approval_request.exists(),
+                         "The approval request should have been deleted upon the activity's confirmation")
+
+    def test_13_approval_activity_dismissal(self):
+        """Test that granting approval unlinks the activity that was created for that purpose"""
+        self.rule.active = True
+        self.rule.responsible_id = self.manager
+        # generate a next activity for the rule's responsible by asking for approval
+        self.env['studio.approval.rule'].with_user(self.user).check_approval(
+            model=self.MODEL,
+            res_id=self.record.id,
+            method=self.METHOD,
+            action_id=False)
+        approval_request = self.env['studio.approval.request'].search(
+            [('rule_id', '=', self.rule.id), ('res_id', '=', self.record.id)])
+        activity = approval_request.mail_activity_id
+        # grant approval as the manager
+        # both the mail activity and the approval requested should be deleted
+        self.rule.with_user(self.manager).set_approval(res_id=self.record.id, approved=True)
+        self.assertFalse(activity.exists(),
+                         "The activity should have been deleted if approval was granted through another channel")
+        self.assertFalse(approval_request.exists(),
+                         "The approval request should have been deleted when the approval was granted")
+
+    def test_14_approval_activity_dismissal_refused(self):
+        """Test that granting approval unlinks the activity that was created for that purpose"""
+        self.rule.active = True
+        self.rule.responsible_id = self.manager
+        # generate a next activity for the rule's responsible by asking for approval
+        self.env['studio.approval.rule'].with_user(self.user).check_approval(
+            model=self.MODEL,
+            res_id=self.record.id,
+            method=self.METHOD,
+            action_id=False)
+        approval_request = self.env['studio.approval.request'].search(
+            [('rule_id', '=', self.rule.id), ('res_id', '=', self.record.id)])
+        activity = approval_request.mail_activity_id
+        # refuse the approval as the manager
+        # both the mail activity and the approval requested should be deleted
+        self.rule.with_user(self.manager).set_approval(res_id=self.record.id, approved=False)
+        self.assertFalse(activity.exists(),
+                         "The activity should have been deleted if approval was refused through another channel")
+        self.assertFalse(approval_request.exists(),
+                         "The approval request should have been deleted when the approval was refused")

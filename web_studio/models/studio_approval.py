@@ -24,6 +24,7 @@ class StudioApprovalRule(models.Model):
     action_id = fields.Many2one("ir.actions.actions", string="Action", ondelete="cascade")
     name = fields.Char(compute="_compute_name", store=True)
     message = fields.Char(translate=True)
+    responsible_id = fields.Many2one("res.users", string="Responsible")
     exclusive_user = fields.Boolean(string="Limit approver to this rule",
                                            help="If set, the user who approves this rule will not "
                                                 "be able to approve other rules for the same "
@@ -77,6 +78,11 @@ class StudioApprovalRule(models.Model):
                 "Rules with existing entries cannot be modified since it would break existing "
                 "approval entries. You should archive the rule and create a new one instead."))
         return super().write(vals)
+
+    @api.constrains('responsible_id', 'group_id')
+    def _constraint_user_has_group(self):
+        if self.responsible_id and not self.group_id in self.responsible_id.groups_id:
+            raise ValidationError('User is not a member of the selected group.')
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_existing_entries(self):
@@ -250,6 +256,8 @@ class StudioApprovalRule(models.Model):
             'res_id': res_id,
             'approved': approved,
         })
+        if not self.env.context.get('prevent_approval_request_unlink'):
+            ruleSudo._unlink_request(res_id)
         return result
 
     def _get_rule_domain(self, model, method, action_id):
@@ -325,7 +333,7 @@ class StudioApprovalRule(models.Model):
         domain = self._get_rule_domain(model, method, action_id)
         rules_data = self.sudo().search_read(domain=domain,
                                              fields=['group_id', 'message', 'exclusive_user',
-                                                     'domain', 'can_validate'])
+                                                     'domain', 'can_validate', 'responsible_id'])
         applicable_rule_ids = list()
         for rule in rules_data:
             # in JS, an empty array will be truthy and I don't want to start using JSON parsing
@@ -419,7 +427,8 @@ class StudioApprovalRule(models.Model):
                 except UserError:
                     # either the user doesn't have the required group, or they already
                     # validated another rule for a 'exclusive_user' approval
-                    # nothing to do here
+                    # if the rule has a responsible, create a request for them
+                    self.browse(rule_id)._create_request(res_id)
                     pass
             else:
                 entries_by_rule[rule_id] = candidate_entry['approved']
@@ -429,6 +438,45 @@ class StudioApprovalRule(models.Model):
             'entries': entries_data,
         }
 
+    def _create_request(self, res_id):
+        self.ensure_one()
+        if not self.responsible_id or not self.model_id.sudo().is_mail_activity:
+            return False
+        request = self.env['studio.approval.request'].sudo().search([('rule_id', '=', self.id), ('res_id', '=', res_id)])
+        if request:
+            # already requested, let's not create a shitload of activities for the same user
+            return False
+        record = self.env[self.model_name].browse(res_id)
+        activity_type_id = self._get_or_create_activity_type()
+        activity = record.activity_schedule(activity_type_id=activity_type_id, user_id=self.responsible_id.id)
+        self.env['studio.approval.request'].sudo().create({
+            'rule_id': self.id,
+            'mail_activity_id': activity.id,
+            'res_id': res_id,
+        })
+        return True
+
+    @api.model
+    def _get_or_create_activity_type(self):
+        approval_activity = self.env.ref('web_studio.mail_activity_data_approve', raise_if_not_found=False)
+        if not approval_activity:
+            # built-in activity type has been deleted, try to fallback
+            approval_activity = self.env['mail.activity.type'].search([('category', '=', 'grant_approval'), ('res_model', '=', False)], limit=1)
+            if not approval_activity:
+                # not 'approval' activity type at all, create it on the fly
+                approval_activity = self.env['mail.activity.type'].sudo().create({
+                    'name': _('Grant Approval'),
+                    'icon': 'fa-check',
+                    'category': 'grant_approval',
+                    'sequence': 999,
+                })
+        return approval_activity.id
+
+    def _unlink_request(self, res_id):
+        self.ensure_one()
+        request = self.env['studio.approval.request'].search([('rule_id', '=', self.id), ('res_id', '=', res_id)])
+        request.mail_activity_id.unlink()
+        return True
 
 class StudioApprovalEntry(models.Model):
     _name = 'studio.approval.entry'
@@ -501,3 +549,14 @@ class StudioApprovalEntry(models.Model):
                 subtype_id=self.env.ref("mail.mt_note").id,
                 author_id=self.env.user.partner_id.id
             )
+
+
+class StudioApprovalRequest(models.Model):
+    _name = 'studio.approval.request'
+    _description = 'Studio Approval Request'
+
+    mail_activity_id = fields.Many2one('mail.activity', string='Linked Activity', ondelete='cascade',
+                                        required=True)
+    rule_id = fields.Many2one('studio.approval.rule', string='Approval Rule', ondelete='cascade',
+                              required=True, index=True)
+    res_id = fields.Many2oneReference(string='Record ID', model_field='model', required=True)

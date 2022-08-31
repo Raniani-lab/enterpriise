@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_round, float_repr, DEFAULT_SERVER_DATE_FORMAT
 from odoo.tools.misc import mod10r, remove_accents
 from odoo.tools.xml_utils import create_xml_node, create_xml_node_chain
+from odoo.addons.account_batch_payment.models.sepa_mapping import _replace_characters_SEPA
 
 from collections import defaultdict
 
@@ -30,7 +31,7 @@ def sanitize_communication(communication):
         communication = communication[1:]
     if communication.endswith('/'):
         communication = communication[:-1]
-    communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', remove_accents(communication))
+    communication = re.sub('[^-A-Za-z0-9/?:().,\'&<>+ ]', '', _replace_characters_SEPA(communication))
     return communication
 
 class AccountJournal(models.Model):

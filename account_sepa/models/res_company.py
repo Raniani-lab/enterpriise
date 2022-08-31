@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from .account_batch_payment import check_valid_SEPA_str
 from .account_journal import sanitize_communication
 
 class ResCompany(models.Model):
@@ -40,13 +39,3 @@ class ResCompany(models.Model):
             else:
                 company.sepa_orgid_issr = ''
                 company.sepa_orgid_id = ''
-
-    @api.constrains('sepa_orgid_id', 'sepa_orgid_issr', 'sepa_initiating_party_name')
-    def _check_sepa_fields(self):
-        for rec in self:
-            if rec.sepa_orgid_id:
-                check_valid_SEPA_str(rec.sepa_orgid_id)
-            if rec.sepa_orgid_issr:
-                check_valid_SEPA_str(rec.sepa_orgid_issr)
-            if rec.sepa_initiating_party_name:
-                check_valid_SEPA_str(rec.sepa_initiating_party_name)

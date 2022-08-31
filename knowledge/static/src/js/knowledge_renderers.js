@@ -68,6 +68,18 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     }
 
     /**
+     * Copy the current article in private section and open it.
+     */
+    async copyArticleAsPrivate() {
+        const articleId = await this.orm.call(
+            "knowledge.article",
+            "action_make_private_copy",
+            [this.resId]
+        );
+        this.openArticle(articleId);
+    }
+
+    /**
      * Create a new article and open it.
      * @param {String} category - Category of the new article
      * @param {integer} targetParentId - Id of the parent of the new article (optional)
@@ -81,18 +93,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 is_private: category === 'private',
                 parent_id: targetParentId ? targetParentId : false
             }
-        );
-        this.openArticle(articleId);
-    }
-
-    /**
-     * Duplicate the current article and open it.
-     */
-    async duplicateArticle() {
-        const articleId = await this.orm.call(
-            "knowledge.article",
-            "copy",
-            [this.resId]
         );
         this.openArticle(articleId);
     }

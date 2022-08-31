@@ -700,6 +700,32 @@ class Article(models.Model):
     # ACTIONS
     # ------------------------------------------------------------
 
+    @api.returns('self', lambda value: value.id)
+    def action_make_private_copy(self, **upd_values):
+        """ Creates a copy of an article. != duplicate article (see `copy`).
+        Creates a new private article with the same body, icon and cover,
+        but drops other fields such as members, childs, permissions etc.
+        """
+        self.ensure_one()
+        article_vals = {
+            "article_member_ids": [(0, 0, {
+                "partner_id": self.env.user.partner_id.id,
+                "permission": 'write'
+            })],
+            "body": self.body,
+            "cover": self.cover,
+            "full_width": False,
+            "name": _("%s (copy)", self.name),
+            "icon": self.icon,
+            "internal_permission": "none",
+            "is_desynchronized": False,
+            "is_locked": False,
+            "parent_id": False,
+        }
+        if upd_values:
+            article_vals.update(upd_values)
+        return self.create(article_vals)
+
     def action_home_page(self):
         """ Redirect to the home page of knowledge, which displays an article.
         Chosen articles comes from

@@ -790,6 +790,26 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
     @users('employee')
+    def test_article_make_private_copy(self):
+        article_hidden = self.article_private_manager.with_env(self.env)
+        with self.assertRaises(exceptions.AccessError,
+                               msg="ACLs: copy should not allow to access hidden articles"):
+            _new_article = article_hidden.action_make_private_copy()
+
+        # Copying an article should create a private article without parent nor children
+        article_readonly = self.article_shared.with_env(self.env)
+        new_article = article_readonly.action_make_private_copy()
+        self.assertEqual(new_article.name, f'{article_readonly.name} (copy)')
+        self.assertMembers(
+            new_article,
+            'none',
+            {self.partner_employee: 'write'}
+        )
+        self.assertFalse(new_article.child_ids)
+        self.assertFalse(new_article.parent_id)
+
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @users('employee')
     def test_copy(self):
         article_hidden = self.article_private_manager.with_env(self.env)
         with self.assertRaises(exceptions.AccessError,

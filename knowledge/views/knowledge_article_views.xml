@@ -128,9 +128,9 @@
                                             <i class="fa fa-ellipsis-v" title="Open kebab menu"/>
                                         </a>
                                         <div class="o_knowledge_more_options_panel dropdown-menu" role="menu">
-                                            <a role="button" class="dropdown-item btn-duplicate" t-on-click="duplicateArticle"
+                                            <a role="button" class="dropdown-item" t-on-click="copyArticleAsPrivate"
                                                attrs="{'invisible': [('active', '=', False)]}">
-                                                <i class="fa fa-fw fa-copy"/> Duplicate
+                                                <i class="fa fa-fw fa-copy"/> Create a Copy
                                             </a>
                                             <div attrs="{'invisible': [('user_has_write_access', '=', False)]}">
                                                 <a role="button" class="dropdown-item btn-move" t-on-click="onMoveArticleClick"

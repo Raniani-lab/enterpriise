@@ -3,9 +3,7 @@ odoo.define('timesheet_grid.timesheet_kanban_view', function (require) {
 
 const KanbanController = require('web.KanbanController');
 const KanbanView = require('web.KanbanView');
-const KanbanRenderer = require('web.KanbanRenderer');
 const viewRegistry = require('web.view_registry');
-const QRCodeMixin = require('hr_timesheet.res.config.form');
 
 /**
  * @override the KanbanController to add a trigger when a timer is launched or stopped
@@ -24,17 +22,14 @@ const TimesheetKanbanController = KanbanController.extend({
     }
 });
 
-const TimesheetKanbanRenderer = KanbanRenderer.extend(QRCodeMixin.TimesheetConfigQRCodeMixin);
-
 const TimesheetKanbanView = KanbanView.extend({
     config: _.extend({}, KanbanView.prototype.config, {
         Controller: TimesheetKanbanController,
-        Renderer: TimesheetKanbanRenderer,
     })
 });
 
 viewRegistry.add('timesheet_kanban_view', TimesheetKanbanView);
 
-return { TimesheetKanbanController, TimesheetKanbanView, TimesheetKanbanRenderer };
+return { TimesheetKanbanController, TimesheetKanbanView };
 
 });

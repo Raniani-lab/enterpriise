@@ -6,26 +6,12 @@ odoo.define('timesheet_grid.TimerGridView', function (require) {
     const TimerGridController = require('timesheet_grid.TimerGridController');
     const TimerGridModel = require('timesheet_grid.TimerGridModel');
     const GridRenderer = require('timesheet_grid.TimerGridRenderer');
-    const TimesheetConfigQRCodeMixin = require('timesheet_grid.TimesheetConfigQRCodeMixin');
-
-    const { onMounted, onPatched } = owl;
-
-    class TimerGridRenderer extends GridRenderer {
-        setup() {
-            super.setup();
-            onMounted(() => this._bindPlayStoreIcon());
-            onPatched(() => this._bindPlayStoreIcon());
-        }
-    }
-
-    // QRCode mixin to bind event on play store icon
-    Object.assign(TimerGridRenderer.prototype, TimesheetConfigQRCodeMixin);
 
     const TimerGridView = WebGridView.extend({
         config: Object.assign({}, WebGridView.prototype.config, {
             Model: TimerGridModel,
             Controller: TimerGridController,
-            Renderer: TimerGridRenderer
+            Renderer: GridRenderer,
         })
     });
 

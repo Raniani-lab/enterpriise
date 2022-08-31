@@ -3,8 +3,6 @@ odoo.define('timesheet_grid.timesheet_list_view', function (require) {
 
 const ListController = require('web.ListController');
 const ListView = require('web.ListView');
-const ListRenderer = require('web.ListRenderer');
-const QRCodeMixin = require('hr_timesheet.res.config.form');
 const viewRegistry = require('web.view_registry');
 
 /**
@@ -24,17 +22,14 @@ const TimesheetListController = ListController.extend({
     }
 });
 
-const TimesheetListRenderer = ListRenderer.extend(QRCodeMixin.TimesheetConfigQRCodeMixin);
-
 const TimesheetListView = ListView.extend({
     config: _.extend({}, ListView.prototype.config, {
         Controller: TimesheetListController,
-        Renderer: TimesheetListRenderer
     })
 });
 
 viewRegistry.add('timesheet_tree', TimesheetListView);
 
-return { TimesheetListController, TimesheetListView, TimesheetListRenderer };
+return { TimesheetListController, TimesheetListView };
 
 });

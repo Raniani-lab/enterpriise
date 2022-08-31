@@ -46,6 +46,8 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
         tables, where_clause, where_params = report._query_get(options, 'strict_range', domain=[
             ('parent_state', '=', 'posted'),
             ('journal_id', 'in', cash_basis_journal_ids.ids),
+            ('move_id.reversal_move_id', '=', False),
+            ('move_id.reversed_entry_id', '=', False),
         ])
 
         tag_16 = self.env.ref('l10n_mx.tag_diot_16')

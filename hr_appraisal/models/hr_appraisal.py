@@ -290,24 +290,24 @@ class HrAppraisal(models.Model):
         if vals.get('employee_feedback_published'):
             user_employees = self.env.user.employee_ids
             force_published = self.filtered(lambda a: (a.is_implicit_manager or a.is_appraisal_manager) and not (a.employee_feedback_published or a.employee_id in user_employees))
+        current_date = datetime.date.today()
+        if 'state' in vals and vals['state'] in ['pending', 'done']:
+            for appraisal in self:
+                appraisal.employee_id.sudo().write({
+                    'last_appraisal_id': appraisal.id,
+                    'last_appraisal_date': current_date})
         if 'state' in vals and vals['state'] == 'pending':
             self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
             self.send_appraisal()
         if 'state' in vals and vals['state'] == 'done':
             vals['employee_feedback_published'] = True
             vals['manager_feedback_published'] = True
-            current_date = datetime.date.today()
             self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
-            for appraisal in self:
-                appraisal.employee_id.sudo().write({
-                    'last_appraisal_id': appraisal.id,
-                    'last_appraisal_date': current_date})
             vals['date_close'] = current_date
             self._appraisal_plan_post()
         if 'state' in vals and vals['state'] == 'cancel':
             self.meeting_ids.unlink()
             self.activity_unlink(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
-            current_date = datetime.date.today()
             vals['date_close'] = current_date
         previous_managers = {}
         if 'manager_ids' in vals:

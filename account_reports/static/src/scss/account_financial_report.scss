@@ -59,11 +59,11 @@
         box-shadow: 0 5px 20px -15px rgba(0,0,0,.4);
         margin: 24px 12px 48px;
         padding: 24px;
-        min-width: calc(100% - 12px);
         max-width: calc(100% - 12px); // Prevents the sheet to take horizontal space that is not available
 
         .table-responsive {
             min-height: 470px;
+            width: auto;
         }
 
         .o_account_reports_table {
@@ -171,32 +171,28 @@
         position: relative;
     }
     // truncate span content and add '...' if content width > span width
-    .o_account_report_line_ellipsis, .o_account_report_name_ellipsis{
-        position: relative;
+    .o_account_report_line_ellipsis, .o_account_report_name_ellipsis {
+        min-width: 320px;
         max-width: 320px;
 
-        span {
+        .dropdown-toggle, .account_report_line_name {
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .trust-partner {
             float: left;
         }
-        > span, span[class^="o_account_reports_domain_line_"] {
+
+        > span[class="account_report_line_name"],
+        > span[class="o_account_report_column_value"],
+        span[class^="o_account_reports_domain_line_"] {
+            display: block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             padding: 0 8px;
         }
-        > span[class="o_account_report_column_value"] {
-            max-width: 320px;
-        }
-    }
-    .o_account_report_name_ellipsis {
-        min-width: 200px;
-    }
-    .ellipsis_width {
-        height: 0 !important;
-        position: relative !important;
-        white-space: initial !important;
-        display: inline-block !important;
-        visibility: hidden;
     }
 
     tr:focus {
@@ -241,20 +237,6 @@
         display: none;
     }
     .o_account_reports_table {
-        &#table_header_clone {
-            position: fixed;
-            pointer-events: none;
-            tbody {
-                visibility: collapse;
-                tr {
-                    border: none;
-                }
-            }
-            thead {
-                pointer-events: auto;
-            }
-        }
-
         width: 100%;
 
         .number {
@@ -516,7 +498,6 @@
     }
     .table-hover tbody {
         tr:not(.o_account_reports_level0):hover > td {
-            background-color: #F0F0F0 !important;
             background-clip: padding-box;
         }
 

@@ -11,10 +11,10 @@
     <template id="cell_template_journal_audit_report" inherit_id="account_reports.cell_template" primary="True">
         <xpath expr="//span[@t-out=&quot;cell.get('name')&quot;]" position="replace">
             <t t-if="cell.get('name_right')">
-                <span><t t-esc="cell.get('name')"/> <strong t-esc="cell.get('name_right')"/></span>
+                <span class="o_account_report_column_value"><t t-esc="cell.get('name')"/> <strong t-esc="cell.get('name_right')"/></span>
             </t>
             <t t-else="">
-                <span t-esc="cell.get('name')"/>
+                <span class="o_account_report_column_value" t-esc="cell.get('name')"/>
             </t>
         </xpath>
     </template>
@@ -42,9 +42,6 @@
                     </t>
                 </t>
                 <!-- Update the ellipsis so that id match the complete line name -->
-                <span t-if="not context.get('print_mode')" class="ellipsis_width">
-                    <t t-esc="line_name"/>
-                </span>
                 <span class="account_report_line_name" t-att-title="line.get('title_hover')">
                     <t t-esc="line_name"/>
                     <span class="js_account_report_line_footnote" t-att-data-id="line['id']">

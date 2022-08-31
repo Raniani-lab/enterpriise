@@ -49,6 +49,9 @@ a {
 }
 
 .o_account_reports_page {
+    .o_account_report_line {
+        font-size: 14px !important;
+    }
     .o_account_report_line_ellipsis, .o_account_report_name_ellipsis{
         position: relative;
         span {
@@ -58,14 +61,16 @@ a {
             /* fix footnote alignment in rtl direction */
             position: relative;
         }
-        > span, span[class^="o_account_reports_domain_line_"] {
+        > span[class="account_report_line_name"],
+        > span[class="o_account_report_column_value"],
+        span[class^="o_account_reports_domain_line_"] {
             white-space: normal;
             overflow: visible;
             text-overflow: initial;
             position: relative;
         }
     }
-    span.number {
+    .number {
         font-family: 'Courier New', monospace;
         font-feature-settings: 'tnum';
         font-weight: bold;

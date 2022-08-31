@@ -631,6 +631,9 @@ class AccountGeneralLedgerReport(models.Model):
                 elif col_expr_label == 'balance':
                     col_value += init_bal_by_col_group[column['column_group_key']]
                     formatted_value = self.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=False)
+                elif col_expr_label == 'communication' or col_expr_label == 'partner_name':
+                    col_class = 'o_account_report_line_ellipsis'
+                    formatted_value = self.format_value(col_value, figure_type=column['figure_type'])
                 else:
                     formatted_value = self.format_value(col_value, figure_type=column['figure_type'])
                     if col_expr_label not in ('debit', 'credit'):

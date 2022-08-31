@@ -6,6 +6,7 @@ import datetime
 import io
 import json
 import logging
+import math
 import re
 from ast import literal_eval
 from collections import defaultdict
@@ -3482,6 +3483,53 @@ class AccountReport(models.Model):
         """
         return lines
 
+    def _format_lines_for_ellipsis(self, lines, options):
+        '''
+        This method allows to adjust the size of the line leading column (usually name) by adjusting its colspan
+        value. The main idea is that we look for the next column with a value and we make the name take all the space
+        available until there.
+
+        +------------------+-------+-------+-------+              +------------------+-------+-------+-------+
+        | Name (colspan=1) |       |       | Value |      =>      | Name (colspan=3)                 | Value |
+        +------------------+-------+-------+-------+              +------------------+-------+-------+-------+
+
+        We take into account the level of the line and if the line has children or is a children. That helps
+        keep the report coherent and easy to read.
+
+        Note 1: The goal of the key is to adjust the values of the colspan by level and by hierarchy
+        (i.e. if the line is a root line or a children line). That helps keeping the report coherent and easy to read.
+        '''
+        if len(options['columns']) > 1:
+            max_colspan_by_level = {}
+
+            for line in lines:
+                # See Note 1
+                key = f"{line.get('level')}_{'child' if 'parent_id' in line else 'root'}"
+
+                # We look for the first column with a name value
+                for index, column in enumerate(line.get('columns'), start=1):
+                    if column.get('name') and (index) < max_colspan_by_level.get(key, math.inf):
+                        max_colspan_by_level[key] = index
+
+                        # No need to keep checking columns after this
+                        break
+
+            # Apply colspans
+            for line in lines:
+                new_columns = []
+                # See Note 1
+                key = f"{line.get('level')}_{'child' if 'parent_id' in line else 'root'}"
+
+                # We remove empty leading columns
+                for index, column in enumerate(line.get('columns'), start=1):
+                    if max_colspan_by_level.get(key) and index >= max_colspan_by_level[key]:
+                        new_columns.append(column)
+
+                line['colspan'] = max_colspan_by_level.get(key) or line.get('colspan', 1)
+                line['columns'] = new_columns
+
+        return lines
+
     def get_html(self, options, lines, additional_context=None, template=None):
         template = self.main_template if template is None else template
         report_manager = self._get_report_manager(options)
@@ -3494,6 +3542,7 @@ class AccountReport(models.Model):
             lines = self._sort_lines(lines, options)
 
         lines = self._format_lines_for_display(lines, options)
+        lines = self._format_lines_for_ellipsis(lines, options)
 
         # Catch negative numbers when present
         for line in lines:

@@ -200,5 +200,6 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
             _new_article = article_hidden.copy()
 
         article_root_readonly = self.article_roots[0].with_env(self.env)
-        new_article = article_root_readonly.copy()
-        self.assertEqual(new_article.name, f'{article_root_readonly.name} (copy)')
+        with self.assertRaises(exceptions.AccessError,
+                               msg="ACLs: copy should not allow to duplicate other people members"):
+            _new_article = article_root_readonly.copy()

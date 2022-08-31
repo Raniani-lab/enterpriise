@@ -281,7 +281,8 @@
         <field name="name">knowledge.article.view.tree</field>
         <field name="model">knowledge.article</field>
         <field name="arch" type="xml">
-            <tree create="0" default_order="is_user_favorite desc, favorite_count desc">
+            <tree create="0" default_order="is_user_favorite desc, favorite_count desc"
+                  js_class="knowledge_article_view_tree">
                 <field name="display_name"/>
                 <field name="is_user_favorite" widget="boolean_favorite" nolabel="1"
                        force_save="1" options="{'allow_order': '1'}"/>

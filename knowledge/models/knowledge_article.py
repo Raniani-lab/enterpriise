@@ -37,28 +37,6 @@ class Article(models.Model):
         help="When set, the article body will take the full width available on the article page. "
              "Otherwise, the body will have large horizontal margins.")
     article_url = fields.Char('Article URL', compute='_compute_article_url', readonly=True)
-    # Hierarchy and sequence
-    parent_id = fields.Many2one(
-        "knowledge.article", string="Parent Article", tracking=30,
-        ondelete="cascade")
-    # used to speed-up hierarchy operators such as child_of/parent_of
-    # see '_parent_store' implementation in the ORM for details
-    parent_path = fields.Char(index=True, unaccent=False)
-    child_ids = fields.One2many("knowledge.article", "parent_id", string="Child Articles and Items")
-    has_item_children = fields.Boolean('Has article item children?', compute="_compute_has_article_children")
-    has_article_children = fields.Boolean('Has normal article children?', compute="_compute_has_article_children")
-    is_article_item = fields.Boolean('Is Item?', index=True)
-    is_desynchronized = fields.Boolean(
-        string="Desyncronized with parents",
-        help="If set, this article won't inherit access rules from its parents anymore.")
-    sequence = fields.Integer(
-        string="Sequence",
-        default=0,  # Set default=0 to avoid false values and messed up sequence order inside same parent
-        help="The sequence is computed only among the articles that have the same parent.")
-    root_article_id = fields.Many2one(
-        'knowledge.article', string="Subject", recursive=True,
-        compute="_compute_root_article_id", store=True, compute_sudo=True, tracking=10,
-        help="The subject is the title of the highest parent in the article hierarchy.")
     # Access rules and members + implied category
     internal_permission = fields.Selection(
         [('write', 'Can write'), ('read', 'Can read'), ('none', 'No access')],
@@ -87,6 +65,30 @@ class Article(models.Model):
         [('write', 'write'), ('read', 'read'), ('none', 'none')],
         string='User permission',
         compute='_compute_user_permission')
+    # Hierarchy and sequence
+    parent_id = fields.Many2one(
+        "knowledge.article", string="Parent Article", tracking=30,
+        ondelete="cascade")
+    # used to speed-up hierarchy operators such as child_of/parent_of
+    # see '_parent_store' implementation in the ORM for details
+    parent_path = fields.Char(index=True, unaccent=False)
+    child_ids = fields.One2many(
+        "knowledge.article", "parent_id", string="Child Articles and Items",
+        copy=True)
+    has_item_children = fields.Boolean('Has article item children?', compute="_compute_has_article_children")
+    has_article_children = fields.Boolean('Has normal article children?', compute="_compute_has_article_children")
+    is_article_item = fields.Boolean('Is Item?', index=True)
+    is_desynchronized = fields.Boolean(
+        string="Desyncronized with parents",
+        help="If set, this article won't inherit access rules from its parents anymore.")
+    sequence = fields.Integer(
+        string="Sequence",
+        default=0,  # Set default=0 to avoid false values and messed up sequence order inside same parent
+        help="The sequence is computed only among the articles that have the same parent.")
+    root_article_id = fields.Many2one(
+        'knowledge.article', string="Subject", recursive=True,
+        compute="_compute_root_article_id", store=True, compute_sudo=True, tracking=10,
+        help="The subject is the title of the highest parent in the article hierarchy.")
     # categories and ownership
     category = fields.Selection(
         [('workspace', 'Workspace'), ('private', 'Private'), ('shared', 'Shared')],
@@ -673,16 +675,31 @@ class Article(models.Model):
             {"name": _("%s (copy)", self.name)},
             **(default or {})
         )
-        if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
-            defaults.pop('article_member_ids', None)
-            defaults.pop('favorite_ids', None)
-            defaults.pop('child_ids', None)
-            if self.user_has_access:
-                defaults['article_member_ids'] = [
-                    (0, 0, {'partner_id': self.env.user.partner_id.id,
-                            'permission': 'write'})
-                ]
         return super().copy(default=defaults)
+
+    @api.returns(None, lambda value: value[0])
+    def copy_data(self, default=None):
+        """ Propagate the (copy) suffix addition to records created for children
+        of copied articles, as those do not go through ``copy`` but the lower
+        level ``copy_data`` instead. """
+        if not default or 'name' not in default:
+            if default is None:
+                default = {}
+            default['name'] = _("%s (copy)", self.name)
+        return super().copy_data(default=default)
+
+    def copy_batch(self, default=None):
+        """ Duplicates a recordset of articles. Filters out articles that are
+        going to be duplicated during the duplication of their parent in order
+        to prevent duplicating several times the same article. """
+        to_copy = self
+        for article in self:
+            to_copy -= article._get_descendants()
+
+        duplicates = self.env['knowledge.article']
+        for article in to_copy:
+            duplicates += article.copy(default)
+        return duplicates
 
     def action_archive(self):
         """ When archiving

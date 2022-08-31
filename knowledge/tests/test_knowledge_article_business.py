@@ -790,6 +790,47 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
     @users('employee')
+    def test_article_duplicate(self):
+        """ Test articles duplication (=copy/copy_batch methods). Verifies that
+        the children of a duplicated article are also duplicated, that
+        duplicating an article and one of its children does not duplicate the
+        children 2 times, and that employee cannot bypass access rules.
+        """
+        article_workspace = self.article_workspace.with_env(self.env)
+
+        # Selecting several articles in the same hierarchy should only duplicate the highest one
+        workspace_articles = article_workspace | article_workspace._get_descendants()
+        duplicate = workspace_articles.copy_batch()
+        self.assertEqual(
+            len(duplicate), 1,
+            'Copy batch should not return a copy of workspace descendants as they are already in article children'
+        )
+        self.assertEqual(duplicate.name, f'{article_workspace.name} (copy)')
+        self.assertEqual(len(duplicate.child_ids), 2, 'Copy batch should copy children')
+
+        # Selecting 2 articles in different hierarchies should duplicate both
+        workspace_children = self.workspace_children.with_env(self.env)
+        duplicates = workspace_children.copy_batch()
+        self.assertEqual(
+            sorted(duplicates.mapped('name')),
+            sorted([f'{name} (copy)' for name in workspace_children.mapped('name')])
+        )
+
+        # Duplicating readonly article should raise an error
+        article_readonly = self.article_shared.with_env(self.env)
+        with self.assertRaises(exceptions.AccessError):
+            article_readonly.copy()
+        # Duplicating hidden article should raise an error
+        article_hidden = self.article_private_manager.with_env(self.env)
+        with self.assertRaises(exceptions.AccessError):
+            article_hidden.copy()
+        # Duplicating readonly article's child with write permission should raise an error
+        article_write_member = self.shared_children[0].with_env(self.env)
+        with self.assertRaises(exceptions.AccessError):
+            article_write_member.copy()
+
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @users('employee')
     def test_article_make_private_copy(self):
         article_hidden = self.article_private_manager.with_env(self.env)
         with self.assertRaises(exceptions.AccessError,
@@ -818,14 +859,25 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
 
         # Copying an article should create a private article without parent nor children
         article_readonly = self.article_shared.with_env(self.env)
-        new_article = article_readonly.copy()
-        self.assertEqual(new_article.name, f'{article_readonly.name} (copy)')
+        with self.assertRaises(exceptions.AccessError,
+                               msg="ACLs: copy should not allow to access readonly articles members"):
+            _new_article = article_readonly.copy()
+
+        # Copy an accessible article
+        article_workspace = self.article_workspace.with_env(self.env)
+        new_article = article_workspace.copy()
+        self.assertEqual(new_article.name, f'{article_workspace.name} (copy)')
         self.assertMembers(
             new_article,
-            'none',
-            {self.partner_employee: 'write'}
+            'write',
+            {}
         )
-        self.assertFalse(new_article.child_ids)
+        self.assertEqual(len(new_article.child_ids), 2, 'Copy: should copy children')
+        self.assertTrue(new_article.child_ids != article_workspace.child_ids)
+        self.assertEqual(
+            sorted(new_article.child_ids.mapped('name')),
+            sorted([f"{name} (copy)" for name in article_workspace.child_ids.mapped('name')])
+        )
         self.assertFalse(new_article.parent_id)
 
 

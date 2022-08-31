@@ -64,6 +64,7 @@
             'knowledge/static/src/js/knowledge_plugin.js',
             'knowledge/static/src/js/field_html.js',
             'knowledge/static/src/js/knowledge_service.js',
+            'knowledge/static/src/views/*.js'
         ],
         'web.assets_frontend': [
             'knowledge/static/src/scss/knowledge_common.scss',

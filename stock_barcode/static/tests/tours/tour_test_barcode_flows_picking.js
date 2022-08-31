@@ -431,9 +431,23 @@ tour.register('test_receipt_reserved_1', {test: true}, [
         }
     },
 
+    // Open manual scanner.
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
+        trigger: '.o_barcode_client_action .o_stock_mobile_barcode',
+    },
+
+    // Manually add 'product1'.
+    {
+        trigger: '.modal-content .modal-body #manual_barcode',
+        run: function(actions) {
+            var barcode = 'product1';
+            actions.text(barcode);
+        }
+    },
+
+    // Apply the manual entry of barcode.
+    {
+        trigger: '.modal-content .modal-footer .btn-primary',
     },
 
     {

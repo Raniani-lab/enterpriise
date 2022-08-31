@@ -15,7 +15,7 @@
                         <button t-if="env.model.formViewId" t-on-click="toggleInformation" class="o_show_information btn nav-link">
                             <i class="fa fa-info-circle"/>
                         </button>
-                        <button t-if="mobileScanner" class="o_stock_mobile_barcode btn nav-link" t-on-click="openMobileScanner">
+                        <button t-if="mobileScanner" class="o_stock_mobile_barcode btn nav-link" t-on-click="openManualScanner">
                             <i class="fa fa-barcode"/>
                         </button>
                         <button t-on-click="toggleBarcodeActions" class="o_barcode_actions btn nav-link">

@@ -787,10 +787,24 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
     //      - (01)00000076543210    > product barcode (76543210)
     //      - (10)b1-b001           > lot (b1-b001)
     //      - (30)00000008          > quantity (8)
+
+    // Open manual scanner.
     {
-        trigger: '.o_barcode_client_action',
-        run: 'scan 010000007654321010b1-b001\x1D3000000008',
+        trigger: '.o_barcode_client_action .o_stock_mobile_barcode',
     },
+    // Manually add '(01)00000076543210(10)b1-b001(30)00000008' barcode for GS1 test.
+    {
+        trigger: '.modal-content .modal-body #manual_barcode',
+        run: function(actions) {
+            var barcode = '(01)00000076543210(10)b1-b001(30)00000008';
+            actions.text(barcode);
+        }
+    },
+    // Apply the manual entry of barcode.
+    {
+        trigger: '.modal-content .modal-footer .btn-primary',
+    },
+
     {
         trigger: '.o_barcode_line:contains("b1-b001")',
         run: function () {

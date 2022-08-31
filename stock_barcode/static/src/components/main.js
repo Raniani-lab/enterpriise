@@ -14,6 +14,7 @@ import { useService } from "@web/core/utils/hooks";
 import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { View } from "@web/views/view";
+import { ManualBarcodeScanner } from './manual_barcode';
 
 const { Component, onMounted, onPatched, onWillStart, onWillUnmount, useSubEnv } = owl;
 
@@ -32,6 +33,7 @@ class MainComponent extends Component {
         this.rpc = useService('rpc');
         this.orm = useService('orm');
         this.notification = useService('notification');
+        this.dialog = useService('dialog');
         this.props.model = this.props.action.res_model;
         this.props.id = this.props.action.context.active_id;
         const model = this._getModel(this.props);
@@ -187,19 +189,34 @@ class MainComponent extends Component {
         });
     }
 
-    async openMobileScanner() {
-        const barcode = await BarcodeScanner.scanBarcode();
+    onBarcodeScanned(barcode) {
         if (barcode) {
             this.env.model.processBarcode(barcode);
             if ('vibrate' in window.navigator) {
                 window.navigator.vibrate(100);
             }
         } else {
-            this.env.services.notification.notify({
-                type: 'warning',
-                message: this.env._t("Please, Scan again !"),
-            });
+            const message = this.env._t("Please, Scan again !");
+            this.env.services.notification.add(message, { type: 'warning' });
         }
+    }
+
+    async openMobileScanner() {
+        const barcode = await BarcodeScanner.scanBarcode();
+        this.onBarcodeScanned(barcode);
+    }
+
+    openManualScanner() {
+        this.dialog.add(ManualBarcodeScanner, {
+            openMobileScanner: async () => {
+                await this.openMobileScanner();
+            },
+            onApply: (barcode) => {
+                barcode = this.env.model.cleanBarcode(barcode);
+                this.onBarcodeScanned(barcode);
+                return barcode;
+            }
+        });
     }
 
     async exit(ev) {

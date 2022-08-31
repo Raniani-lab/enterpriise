@@ -7,6 +7,7 @@ import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
+import { FNC1_CHAR } from "barcodes_gs1_nomenclature/static/src/js/barcode_parser.js";
 
 const { EventBus } = owl;
 
@@ -1209,6 +1210,24 @@ export default class BarcodeModel extends EventBus {
 
     async _processPackage(barcodeData) {
         throw new Error('Not Implemented');
+    }
+
+    /**
+     * This method cleans the barcode in case the parser use the GS1 nomenclature, removing the
+     * parentheses and the extra spaces (helping for human readability but not valid).
+     * E.g.: (01) 00001234567895 (10) lot-abc -> 0100001234567895\x1D10lot-abc
+     *
+     * @param {string} barcode
+     * @returns {string} barcode
+     */
+    cleanBarcode (barcode) {
+        if (this.parser.nomenclature.is_gs1_nomenclature) {
+            barcode = barcode.replace(/[( ]([0-9]+)[)]/g, `${FNC1_CHAR}$1`);
+            if (barcode[0] === FNC1_CHAR) {
+                barcode = barcode.slice(1, barcode.length);
+            }
+        }
+        return barcode;
     }
 
     lineCanBeSelected() {

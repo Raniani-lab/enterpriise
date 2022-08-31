@@ -13,7 +13,7 @@
             </t>
             <t t-else="">$0</t>
         </xpath>
-        <xpath expr="//ThreadPreview" position="replace">
+        <xpath expr="//ChannelPreviewView" position="replace">
             <t t-if="notificationView and notificationView.swiperView">
                 <SwiperView record="notificationView.swiperView"/>
             </t>

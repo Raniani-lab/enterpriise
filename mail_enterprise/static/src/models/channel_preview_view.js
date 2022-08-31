@@ -5,29 +5,29 @@ import { clear } from '@mail/model/model_field_command';
 import { addFields, addRecordMethods } from '@mail/model/model_core';
 import '@mail/models/channel_preview_view'; // ensure the model definition is loaded before the patch
 
-addFields('ThreadPreviewView', {
+addFields('ChannelPreviewView', {
     /**
      * Determines whether this thread preview view should have the swiper
      * feature, and if so contains the component managing this feature.
      */
     swiperView: one('SwiperView', {
         compute: '_computeSwiperView',
-        inverse: 'threadPreviewViewOwner',
+        inverse: 'channelPreviewViewOwner',
         isCausal: true,
     }),
 });
 
-addRecordMethods('ThreadPreviewView', {
+addRecordMethods('ChannelPreviewView', {
     /**
      * @private
-     * @returns {FieldCommand}
+     * @returns {Object|FieldCommand}
      */
     _computeSwiperView() {
         return (
             this.messaging.device.isSmall &&
             (
                 (this.thread.isChatChannel && this.thread.isPinned) ||
-                (this.thread.channel.localMessageUnreadCounter > 0)
+                (this.channel.localMessageUnreadCounter > 0)
             )
         ) ? {} : clear();
     },

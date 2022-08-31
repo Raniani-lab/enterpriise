@@ -12,14 +12,19 @@ registerModel({
          * Handles left swipe on this swiper view.
          */
         onLeftSwipe() {
-            if (this.threadPreviewViewOwner) {
-                this.threadPreviewViewOwner.thread.unpin();
+            if (this.channelPreviewViewOwner) {
+                this.channelPreviewViewOwner.thread.unpin();
             }
         },
         /**
          * Handles right swipe on this swiper view.
          */
         onRightSwipe() {
+            if (this.channelPreviewViewOwner) {
+                if (this.channelPreviewViewOwner.thread.lastNonTransientMessage) {
+                    this.channelPreviewViewOwner.thread.markAsSeen(this.channelPreviewViewOwner.thread.lastNonTransientMessage);
+                }
+            }
             if (this.messageViewOwner) {
                 this.messageViewOwner.message.markAsRead();
             }
@@ -34,17 +39,15 @@ registerModel({
                     ['res_id', '=', this.threadNeedactionPreviewViewOwner.thread.id],
                 ]);
             }
-            if (this.threadPreviewViewOwner) {
-                if (this.threadPreviewViewOwner.thread.lastNonTransientMessage) {
-                    this.threadPreviewViewOwner.thread.markAsSeen(this.threadPreviewViewOwner.thread.lastNonTransientMessage);
-                }
-            }
         },
         /**
          * @private
          * @returns {string|FieldCommand}
          */
         _computeComponentName() {
+            if (this.channelPreviewViewOwner) {
+                return 'ChannelPreviewView';
+            }
             if (this.messageViewOwner) {
                 return 'Message';
             }
@@ -54,9 +57,6 @@ registerModel({
             if (this.threadNeedactionPreviewViewOwner) {
                 return 'ThreadNeedactionPreview';
             }
-            if (this.threadPreviewViewOwner) {
-                return 'ThreadPreview';
-            }
             return clear();
         },
         /**
@@ -64,10 +64,10 @@ registerModel({
          * @returns {boolean}
          */
         _computeHasLeftSwipe() {
-            if (this.threadPreviewViewOwner) {
-                return Boolean(
-                    this.threadPreviewViewOwner.thread.isChatChannel &&
-                    this.threadPreviewViewOwner.thread.isPinned
+            if (this.channelPreviewViewOwner) {
+                return (
+                    this.channelPreviewViewOwner.thread.isChatChannel &&
+                    this.channelPreviewViewOwner.thread.isPinned
                 );
             }
             return false;
@@ -77,6 +77,9 @@ registerModel({
          * @returns {boolean}
          */
         _computeHasRightSwipe() {
+            if (this.channelPreviewViewOwner) {
+                return this.channelPreviewViewOwner.channel.localMessageUnreadCounter > 0;
+            }
             if (this.messageViewOwner) {
                 return true;
             }
@@ -86,9 +89,6 @@ registerModel({
             if (this.threadNeedactionPreviewViewOwner) {
                 return true;
             }
-            if (this.threadPreviewViewOwner) {
-                return this.threadPreviewViewOwner.thread.channel.localMessageUnreadCounter > 0;
-            }
             return false;
         },
         /**
@@ -96,7 +96,7 @@ registerModel({
          * @returns {string|FieldCommand}
          */
         _computeLeftSwipeBackgroundColor() {
-            if (this.threadPreviewViewOwner) {
+            if (this.channelPreviewViewOwner) {
                 return 'bg-danger';
             }
             return clear();
@@ -106,7 +106,7 @@ registerModel({
          * @returns {string|FieldCommand}
          */
         _computeLeftSwipeIcon() {
-            if (this.threadPreviewViewOwner) {
+            if (this.channelPreviewViewOwner) {
                 return 'fa-times-circle';
             }
             return clear();
@@ -116,6 +116,9 @@ registerModel({
          * @returns {FieldCommand}
          */
         _computeRecord() {
+            if (this.channelPreviewViewOwner) {
+                return this.channelPreviewViewOwner;
+            }
             if (this.messageViewOwner) {
                 return this.messageViewOwner;
             }
@@ -125,9 +128,6 @@ registerModel({
             if (this.threadNeedactionPreviewViewOwner) {
                 return this.threadNeedactionPreviewViewOwner;
             }
-            if (this.threadPreviewViewOwner) {
-                return this.threadPreviewViewOwner;
-            }
             return clear();
         },
         /**
@@ -135,6 +135,9 @@ registerModel({
          * @returns {string|FieldCommand}
          */
         _computeRightSwipeBackgroundColor() {
+            if (this.channelPreviewViewOwner) {
+                return 'bg-success';
+            }
             if (this.messageViewOwner) {
                 return 'bg-success';
             }
@@ -144,9 +147,6 @@ registerModel({
             if (this.threadNeedactionPreviewViewOwner) {
                 return 'bg-success';
             }
-            if (this.threadPreviewViewOwner) {
-                return 'bg-success';
-            }
             return clear();
         },
         /**
@@ -154,6 +154,9 @@ registerModel({
          * @returns {string|FieldCommand}
          */
         _computeRightSwipeIcon() {
+            if (this.channelPreviewViewOwner) {
+                return 'fa-check-circle';
+            }
             if (this.messageViewOwner) {
                 return 'fa-check-circle';
             }
@@ -163,13 +166,14 @@ registerModel({
             if (this.threadNeedactionPreviewViewOwner) {
                 return 'fa-check-circle';
             }
-            if (this.threadPreviewViewOwner) {
-                return 'fa-check-circle';
-            }
             return clear();
         },
     },
     fields: {
+        channelPreviewViewOwner: one('ChannelPreviewView', {
+            identifying: true,
+            inverse: 'swiperView',
+        }),
         componentName: attr({
             compute: '_computeComponentName',
             required: true,
@@ -207,10 +211,6 @@ registerModel({
             compute: '_computeRightSwipeIcon',
         }),
         threadNeedactionPreviewViewOwner: one('ThreadNeedactionPreviewView', {
-            identifying: true,
-            inverse: 'swiperView',
-        }),
-        threadPreviewViewOwner: one('ThreadPreviewView', {
             identifying: true,
             inverse: 'swiperView',
         }),

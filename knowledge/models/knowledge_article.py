@@ -38,7 +38,9 @@ class Article(models.Model):
              "Otherwise, the body will have large horizontal margins.")
     article_url = fields.Char('Article URL', compute='_compute_article_url', readonly=True)
     # Hierarchy and sequence
-    parent_id = fields.Many2one("knowledge.article", string="Parent Article", tracking=30)
+    parent_id = fields.Many2one(
+        "knowledge.article", string="Parent Article", tracking=30,
+        ondelete="cascade")
     # used to speed-up hierarchy operators such as child_of/parent_of
     # see '_parent_store' implementation in the ORM for details
     parent_path = fields.Char(index=True, unaccent=False)
@@ -681,15 +683,6 @@ class Article(models.Model):
                             'permission': 'write'})
                 ]
         return super().copy(default=defaults)
-
-    def unlink(self):
-        for article in self:
-            # Make all the article's children be adopted by the parent's parent.
-            # Otherwise, we will have to manage an orphan house.
-            parent = article.parent_id
-            if parent:
-                article.child_ids.write({"parent_id": parent.id})
-        return super(Article, self).unlink()
 
     def action_archive(self):
         """ When archiving

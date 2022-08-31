@@ -927,7 +927,7 @@ class TestKnowledgeArticleRemoval(KnowledgeCommonBusinessCase):
             }
         )
 
-    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule', 'odoo.models.unlink')
     @users('admin')
     def test_unlink_admin(self):
         """ Admin (system) has access to unlink, test propagation and effect
@@ -939,7 +939,7 @@ class TestKnowledgeArticleRemoval(KnowledgeCommonBusinessCase):
             'Unlink: should also unlink children'
         )
 
-    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule', 'odoo.models.unlink')
     @users('employee')
     def test_unlink_employee(self):
         """ Employee cannot unlink anyway """

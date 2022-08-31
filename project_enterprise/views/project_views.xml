@@ -14,7 +14,8 @@
                 display_unavailability="1"
                 precision="{'week': 'day:full', 'month': 'day:full'}"
                 default_group_by="user_id"
-                thumbnails="{'user_id': 'avatar_128'}">
+                thumbnails="{'user_id': 'avatar_128'}"
+                total_row="True">
                 <templates>
                     <div t-name="gantt-popover">
                         <div t-if="user_id"><strong>Project Manager — </strong> <t t-esc="user_id[1]"/></div>

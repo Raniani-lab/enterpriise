@@ -4,7 +4,7 @@
     <record id="project_task_view_gantt_fsm_worksheet" model="ir.ui.view">
         <field name="name">project.task.view.gantt.fsm.worksheet</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="industry_fsm.project_task_view_gantt_fsm" />
+        <field name="inherit_id" ref="project_enterprise.project_task_view_gantt" />
         <field name="arch" type="xml">
             <xpath expr="//gantt" position="attributes">
                 <attribute name="color">worksheet_color</attribute>

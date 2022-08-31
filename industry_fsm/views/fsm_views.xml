@@ -118,17 +118,6 @@
         </field>
     </record>
 
-    <record id="project_task_view_gantt_fsm" model="ir.ui.view">
-        <field name="name">project.task.view.gantt</field>
-        <field name="model">project.task</field>
-        <field name="inherit_id" ref="project_enterprise.project_task_view_gantt"/>
-        <field name="arch" type="xml">
-            <xpath expr="//gantt" position="attributes">
-                <attribute name="total_row">True</attribute>
-            </xpath>
-        </field>
-    </record>
-
     <!-- Non primary kanban inherit (fsm tasks must display start date instead of deadline in all application) -->
     <record id="project_task_view_kanban" model="ir.ui.view">
         <field name="name">project.task.kanban.fsm.nonprimary</field>
@@ -420,7 +409,7 @@
     <record id="project_task_action_fsm_map_view_gantt" model="ir.actions.act_window.view">
         <field name="sequence" eval="15"/>
         <field name="view_mode">gantt</field>
-        <field name="view_id" ref="project_task_view_gantt_fsm"/>
+        <field name="view_id" ref="project_enterprise.project_task_view_gantt"/>
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 

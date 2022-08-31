@@ -3,7 +3,7 @@
 import { one } from '@mail/model/model_field';
 import { clear } from '@mail/model/model_field_command';
 import { addFields, addRecordMethods } from '@mail/model/model_core';
-import '@mail/models/thread_preview_view'; // ensure the model definition is loaded before the patch
+import '@mail/models/channel_preview_view'; // ensure the model definition is loaded before the patch
 
 addFields('ThreadPreviewView', {
     /**

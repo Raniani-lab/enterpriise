@@ -266,11 +266,17 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         move_names = ('ACH000001', 'ACH000002', 'ACH000003')
         domain = [('company_id', '=', self.company.id), ('move_name', 'in', move_names)]
         move_lines = self.env['account.move.line'].search(domain, order='move_name, id')
+        self.assertEqual(9, len(move_lines))
 
         # Verify Reconciliation
+        domain = [('company_id', '=', self.company.id), ('reconciled', '=', True)]
+        move_lines = self.env['account.move.line'].search(domain)
+        self.assertEqual(100, len(move_lines))
+
+        # Verify Full Reconciliation
         domain = [('company_id', '=', self.company.id), ('full_reconcile_id', '!=', False)]
         move_lines = self.env['account.move.line'].search(domain)
-        self.assertEqual(256, len(move_lines))
+        self.assertEqual(100, len(move_lines))
 
         # Verify Journal types
         domain = [('company_id', '=', self.company.id), ('name', '=', 'FEC-BQ 552')]

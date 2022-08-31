@@ -75,19 +75,12 @@ class TestPushNotification(TestSMSCommon):
                 (4, cls.user_email.partner_id.id),
                 (4, cls.user_inbox.partner_id.id),
             ],
-            'public': 'private',
             'channel_type': 'chat',
             'name': "Direct Message",
         })
 
-        cls.group_channel = channel.create({
-            'channel_partner_ids': [
-                (4, cls.user_email.partner_id.id),
-                (4, cls.user_inbox.partner_id.id),
-            ],
-            'public': 'public',
-            'name': 'Channel',
-        })
+        cls.group_channel = cls.env['mail.channel'].browse(cls.env['mail.channel'].channel_create(name='Channel', group_id=None)['id'])
+        cls.group_channel.add_members((cls.user_email + cls.user_inbox).partner_id.ids)
 
     @patch('odoo.addons.mail_mobile.models.mail_thread.iap_tools.iap_jsonrpc')
     def test_push_notifications(self, jsonrpc):

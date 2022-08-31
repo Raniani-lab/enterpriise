@@ -18,6 +18,7 @@ import { insertGraphInSpreadsheet } from "@spreadsheet/../tests/utils/chart";
 import { assertDateDomainEqual } from "@spreadsheet/../tests/utils/date_domain";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { createSpreadsheetFromListView } from "../utils/list_helpers";
+import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 
 let target;
 
@@ -870,7 +871,7 @@ QUnit.module(
             const values = relativeSelection.querySelectorAll("option");
             assert.deepEqual(
                 [...values].map((val) => val.value),
-                ["", "last_week", "last_month", "last_year", "last_three_years"]
+                ["", ...RELATIVE_DATE_RANGE_TYPES.map((item) => item.type)]
             );
             await testUtils.fields.editAndTrigger(relativeSelection, "last_month", ["change"]);
 
@@ -925,7 +926,7 @@ QUnit.module(
             const select = target.querySelector(".o-sidePanel select");
             assert.deepEqual(
                 [...select.querySelectorAll("option")].map((val) => val.value),
-                ["", "last_week", "last_month", "last_year", "last_three_years"]
+                ["", ...RELATIVE_DATE_RANGE_TYPES.map((item) => item.type)]
             );
             await testUtils.fields.editAndTrigger(select, "last_year", ["change"]);
             await nextTick();

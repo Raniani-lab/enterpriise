@@ -933,7 +933,7 @@ class Task(models.Model):
 
     def _get_recurrence_start_date(self):
         self.ensure_one()
-        return self.planned_date_begin or fields.Date.today()
+        return self.planned_date_begin.date() or fields.Date.today()
 
     @api.depends('planned_date_begin')
     def _compute_recurrence_message(self):

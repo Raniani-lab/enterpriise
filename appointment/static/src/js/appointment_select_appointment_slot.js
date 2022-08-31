@@ -25,8 +25,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     start: function () {
         return this._super(...arguments).then(async () => {
             this.initSlots();
-            this.$('.o_appointment_slots_loading').remove();
-            this.$('#slots_availabilities').removeClass('d-none');
+            this._removeLoadingSpinner();
             this.$first.click();
         });
     },
@@ -186,9 +185,18 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
                     if (!!self.$first.length && !$displayedMonth.find('.o_day').length) {
                         self._renderNoAvailabilityForMonth($displayedMonth);
                     }
+                    self._removeLoadingSpinner();
                 }
             });
         }
+    },
+
+    /**
+     * Remove the loading spinner when no longer useful
+     */
+    _removeLoadingSpinner: function () {
+        this.$('.o_appointment_slots_loading').remove();
+        this.$('#slots_availabilities').removeClass('d-none');
     },
 });
 });

@@ -107,7 +107,7 @@
                                 </div>
 
                                 <div class="modal" tabindex="-1" role="dialog" id="helpdesk_ticket_close_modal">
-                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-dialog mt-5" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Close ticket</h5>

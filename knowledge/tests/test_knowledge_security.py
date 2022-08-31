@@ -3,6 +3,7 @@
 
 from odoo import exceptions
 from odoo.addons.knowledge.tests.common import KnowledgeArticlePermissionsCase
+from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.tests.common import tagged, users
 from odoo.tools import mute_logger
 
@@ -12,6 +13,22 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
     """ Tests ACLs and low level access on models. Do not test the internals
     of permission comuptation as those are done in another test suite. Here
     we rely on them to check the create/read/write/unlink access checks. """
+
+    @classmethod
+    def setUpClass(cls):
+        """ Add some test users for security / groups check """
+        super().setUpClass()
+
+        cls.user_erp_manager = mail_new_test_user(
+            cls.env,
+            company_id=cls.company_admin.id,
+            country_id=cls.env.ref('base.be').id,
+            groups='base.group_erp_manager',
+            login='user_erp_manager',
+            name='Emmanuel Erp Manager',
+            notification_type='inbox',
+            signature='--\nEmmanuel'
+        )
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
     @users('user_public')
@@ -68,6 +85,32 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
             sudo_members.mapped('partner_id')  # access body should trigger acls
 
     @mute_logger('odoo.models.unlink')
+    @users('user_erp_manager')
+    def test_models_as_erp_manager(self):
+        self.assertTrue(self.env.user.has_group('base.group_erp_manager'))
+        self.assertFalse(self.env.user.has_group('base.group_system'))
+
+        article_writable = self.article_roots[0].with_env(self.env)
+        article_writable.body  # access body should trigger acls
+        article_readable = self.article_roots[1].with_env(self.env)
+        article_readable.body  # access body should trigger acls
+        self.assertTrue(article_readable.user_has_access)
+        self.assertTrue(article_readable.user_can_read)
+        self.assertFalse(article_readable.user_has_write_access)
+        self.assertFalse(article_readable.user_can_write)
+
+        # ARTICLE: CREATE: cannot create a private article for another user
+        with self.assertRaises(exceptions.AccessError, msg='Erp Managers behave like internal users'):
+            _other_private = self.env['knowledge.article'].create({
+                'article_member_ids': [(0, 0, {
+                    'partner_id': self.partner_employee.id,
+                    'permission': 'write',
+                })],
+                'internal_permission': 'none',
+                'name': 'Private for Employee',
+            })
+
+    @mute_logger('odoo.models.unlink')
     @users('admin')
     def test_models_as_system(self):
         self.assertTrue(self.env.user.has_group('base.group_system'))
@@ -76,6 +119,12 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
         article_roots.mapped('body')  # access body should trigger acls
         article_hidden = self.article_read_contents[3].with_env(self.env)
         article_hidden.body  # access body should trigger acls
+        article_readable = self.article_roots[1].with_env(self.env)
+        article_readable.body  # access body should trigger acls
+        self.assertTrue(article_readable.user_has_access)
+        self.assertTrue(article_readable.user_can_read)
+        self.assertFalse(article_readable.user_has_write_access)
+        self.assertTrue(article_readable.user_can_write)
 
         # ARTICLE: CREATE/READ
         # create a private article for another user
@@ -89,6 +138,7 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
         })
         self.assertMembers(other_private, 'none', {self.partner_employee: 'write'})
         self.assertEqual(other_private.category, 'private')
+        self.assertTrue(other_private.user_can_write, 'Can write ACL-like is True, system can do everything')
         self.assertFalse(other_private.user_has_write_access, 'Can write based on permission is False but can perform write due to ACLs')
         other_private.write({'name': 'Admin can do everything'})
 
@@ -100,6 +150,7 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
         self.assertMembers(other_private_child, False, {})
         self.assertEqual(other_private_child.article_member_ids.partner_id, self.env['res.partner'])
         self.assertEqual(other_private_child.category, 'private')
+        self.assertTrue(other_private_child.user_can_write, 'Can write ACL-like is True, system can do everything')
         self.assertFalse(other_private_child.user_has_write_access, 'Can write based on permission is False but can perform write due to ACLs')
 
         # ARTICLE: WRITE
@@ -129,7 +180,7 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
         self.assertEqual(members, new_member)
         self.assertEqual(members.partner_id, self.partner_employee2)
 
-    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule', 'odoo.models.unlink')
     @users('employee')
     def test_models_as_user(self):
         article_roots = self.article_roots.with_env(self.env)

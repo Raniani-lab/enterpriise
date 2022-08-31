@@ -59,8 +59,10 @@ class Article(models.Model):
         string='Has Access',
         compute="_compute_user_has_access", search="_search_user_has_access")
     user_has_write_access = fields.Boolean(
-        string='Can Write',
+        string='Has Write Access',
         compute="_compute_user_has_write_access", search="_search_user_has_write_access")
+    user_can_read = fields.Boolean(string='Can Read', compute='_compute_user_can_read')  # ACL-like
+    user_can_write = fields.Boolean(string='Can Write', compute='_compute_user_can_write')  # ACL-like
     user_permission = fields.Selection(
         [('write', 'write'), ('read', 'read'), ('none', 'none')],
         string='User permission',
@@ -358,7 +360,7 @@ class Article(models.Model):
     @api.depends_context('uid')
     @api.depends('user_permission')
     def _compute_user_has_write_access(self):
-        """ Compute if the current user has read access to the article based on
+        """ Compute if the current user has write access to the article based on
         permissions and memberships.
 
         Note that share user can never write and we therefore shorten the computation.
@@ -372,7 +374,7 @@ class Article(models.Model):
             article.user_has_write_access = article.user_permission == 'write'
 
     def _search_user_has_write_access(self, operator, value):
-        Article = self.env["knowledge.article"]
+        KnowledgeArticle = self.env["knowledge.article"]
         if operator not in ('=', '!=') or not isinstance(value, bool):
             raise NotImplementedError("Unsupported search operator")
 
@@ -382,8 +384,8 @@ class Article(models.Model):
                 return expression.FALSE_DOMAIN
             return expression.TRUE_DOMAIN
 
-        articles_with_access = Article._get_internal_permission(filter_domain=[('internal_permission', '=', 'write')])
-        member_permissions = Article._get_partner_member_permissions(self.env.user.partner_id)
+        articles_with_access = KnowledgeArticle._get_internal_permission(filter_domain=[('internal_permission', '=', 'write')])
+        member_permissions = KnowledgeArticle._get_partner_member_permissions(self.env.user.partner_id)
         articles_with_member_access = [article_id for article_id, perm in member_permissions.items() if perm == 'write']
         articles_with_no_member_access = list(set(member_permissions.keys() - set(articles_with_member_access)))
 
@@ -398,6 +400,32 @@ class Article(models.Model):
                     '&', ('id', 'not in', list(articles_with_access.keys())), ('id', 'not in', articles_with_member_access),
                     ('id', 'in', articles_with_no_member_access)
         ]
+
+    @api.depends_context('uid')
+    @api.depends('user_has_access')
+    def _compute_user_can_read(self):
+        """ Compute read access, based on standard ACLs, which is either system
+        group (which has access to everything), either based on members and
+        permissions (see ``user_has_access``). Used mainly for views
+        attributes or as a shortener for conditions. """
+        if self.env.is_system():
+            self.user_can_read = True
+        else:
+            for article in self:
+                article.user_can_read = article.user_has_access
+
+    @api.depends_context('uid')
+    @api.depends('user_has_write_access')
+    def _compute_user_can_write(self):
+        """ Compute write access, based on standard ACLs, which is either system
+        group (which has access to everything), either based on members and
+        permissions (see ``user_has_write_access``). Used mainly for views
+        attributes or as a shortener for conditions. """
+        if self.env.is_system():
+            self.user_can_write = True
+        else:
+            for article in self:
+                article.user_can_write = article.user_has_write_access
 
     @api.depends('root_article_id.internal_permission', 'root_article_id.article_member_ids.permission')
     def _compute_category(self):
@@ -1016,7 +1044,7 @@ class Article(models.Model):
         self.ensure_one()
         if not self.parent_id:
             return False
-        if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
+        if not self.env.su and not self.user_can_write:
             raise AccessError(
                 _('You have to be editor on %(article_name)s to restore it.',
                   article_name=self.display_name))
@@ -1086,7 +1114,7 @@ class Article(models.Model):
                     ARTICLE_PERMISSION_LEVEL[self.parent_id.inherited_permission] > ARTICLE_PERMISSION_LEVEL[permission]
         if downgrade:
             # desync is done as sudo, explicitly check access
-            if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
+            if not self.env.su and not self.user_can_write:
                 raise AccessError(
                     _('You have to be editor on %(article_name)s to change its internal permission.',
                       article_name=self.display_name))
@@ -1119,7 +1147,7 @@ class Article(models.Model):
         :param bool is_based_on: whether rights are inherited or through membership;
         """
         self.ensure_one()
-        if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
+        if not self.env.su and not self.user_can_write:
             raise AccessError(
                 _('You have to be editor on %(article_name)s to modify members permissions.',
                   article_name=self.display_name))
@@ -1167,7 +1195,7 @@ class Article(models.Model):
         # we should allow to do it.
         self_escalation = not (remove_self and \
                              ARTICLE_PERMISSION_LEVEL[member.permission] > ARTICLE_PERMISSION_LEVEL[self.inherited_permission])
-        if not self.env.su and not self.env.user._is_system() and self_escalation and not self.user_has_write_access:
+        if not self.env.su and self_escalation and not self.user_can_write:
             raise AccessError(
                 _("You have to be editor on %(article_name)s to remove or exclude member %(member_name)s.",
                   article_name=self.display_name,
@@ -1196,7 +1224,7 @@ class Article(models.Model):
           this can be used to create default members and left existing one untouched;
         """
         self.ensure_one()
-        if not self.env.su and not self.env.user._is_system() and not self.user_has_write_access:
+        if not self.env.su and not self.user_can_write:
             raise AccessError(
                 _("You have to be editor on %(article_name)s to add members.",
                   article_name=self.display_name))

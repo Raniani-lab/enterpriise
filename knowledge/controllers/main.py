@@ -148,7 +148,7 @@ class KnowledgeController(http.Controller):
         root_articles = all_visible_articles.filtered(lambda article: not article.parent_id)
 
         user_write_access_by_article = {
-            article.id: article.user_has_write_access
+            article.id: article.user_can_write
             for article in all_visible_articles
         }
 
@@ -195,7 +195,7 @@ class KnowledgeController(http.Controller):
             'articles': articles,
             'portal_readonly_mode': not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
             "user_write_access_by_article": {
-                article.id: article.user_has_write_access
+                article.id: article.user_can_write
                 for article in articles
             },
         })
@@ -215,7 +215,7 @@ class KnowledgeController(http.Controller):
             "active_article_id": active_article_id,
             "all_visible_articles": all_visible_articles,
             "user_write_access_by_article": {
-                article.id: article.user_has_write_access
+                article.id: article.user_can_write
                 for article in all_visible_articles
             },
         })

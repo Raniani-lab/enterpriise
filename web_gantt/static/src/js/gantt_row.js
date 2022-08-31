@@ -155,6 +155,7 @@ var GanttRow = Widget.extend({
         var self = this;
         const resizeSnappingWidth = this._getResizeSnappingWidth(firstCell);
         this.$el.droppable({
+            accept: ".o_gantt_pill",
             drop: function (event, ui) {
                 var diff = self._getDiff(resizeSnappingWidth, ui.position.left);
                 var $pill = ui.draggable;

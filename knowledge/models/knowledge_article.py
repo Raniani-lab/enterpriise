@@ -708,8 +708,20 @@ class Article(models.Model):
     # ------------------------------------------------------------
 
     def action_home_page(self):
-        res_id = self.env.context.get('res_id', False)
-        article = self.browse(res_id) if res_id else self._get_first_accessible_article()
+        """ Redirect to the home page of knowledge, which displays an article.
+        Chosen articles comes from
+
+          * either self if it is not void (taking the first article);
+          * ``res_id`` key from context;
+          * find the first accessible article, based on favorites and sequence
+            (see ``_get_first_accessible_article``);
+        """
+        article = self[0] if self else False
+        if not article and self.env.context.get('res_id', False):
+            article = self.browse([self.env.context["res_id"]])
+        if not article:
+            article = self._get_first_accessible_article()
+
         mode = 'edit' if article.user_has_write_access else 'readonly'
         action = self.env['ir.actions.act_window']._for_xml_id('knowledge.knowledge_article_action_form')
         action['res_id'] = article.id
@@ -741,12 +753,12 @@ class Article(models.Model):
         """ Article specific archive: after archive, redirect to the home page
         displaying accessible articles, instead of doing nothing. """
         self.action_archive()
-        return self.with_context(res_id=False).action_home_page()
+        return self.env["knowledge.article"].action_home_page()
 
     def action_unarchive(self):
         res = super(Article, self).action_unarchive()
         if len(self) == 1:
-            return self.with_context(res_id=self.id).action_home_page()
+            return self.action_home_page()
         return res
 
     # ------------------------------------------------------------

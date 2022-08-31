@@ -748,8 +748,14 @@ export default class BarcodeModel extends EventBus {
         return {
             'O-CMD.PREV': this.previousPage.bind(this),
             'O-CMD.NEXT': this.nextPage.bind(this),
-            'O-CMD.PAGER-FIRST': this._changePage.bind(this, 0),
-            'O-CMD.PAGER-LAST': this._changePage.bind(this, () => this.pages.length - 1),
+            'O-CMD.PAGER-FIRST': () => {
+                this._changePage(0);
+                this.trigger('update');
+            },
+            'O-CMD.PAGER-LAST': () => {
+                this._changePage(this.pages.length - 1);
+                this.trigger('update');
+            },
             'O-CMD.MAIN-MENU': this._goToMainMenu.bind(this),
             'O-BTN.validate': this.validate.bind(this),
         };

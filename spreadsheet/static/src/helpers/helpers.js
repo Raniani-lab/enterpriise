@@ -2,12 +2,11 @@
 
 import spreadsheet from "../o_spreadsheet/o_spreadsheet_extended";
 import { DataSources } from "../data_sources/data_sources";
-import { formatDate } from "@web/core/l10n/dates";
+import { serializeDate } from "@web/core/l10n/dates";
 import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 
 const { DateTime } = luxon;
 
-const SERVER_DATE_FORMAT = "yyyy-MM-dd";
 const Model = spreadsheet.Model;
 
 /**
@@ -127,14 +126,8 @@ export function orderByToString(orderBy) {
  * @returns {string}
  */
 export function toServerDateString(value) {
-    // When this number is transformed into a Date object,
-    // it takes the timezone of the browser. With timezone: true, we ensure that it
-    // convert the date to the day we want, regardless of the timezone.
     const date = DateTime.fromJSDate(value);
-    return formatDate(date, {
-        timezone: true,
-        format: SERVER_DATE_FORMAT,
-    });
+    return serializeDate(date);
 }
 
 /**

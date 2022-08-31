@@ -345,14 +345,14 @@
                                 <main class="modal-body">
                                     <p>If you confirm, your subscription will be closed right away. Your current invoicing period is valid until <span t-field="subscription.next_invoice_date"/>.</p>
                                     <p>We always listen to our customer. Could you specify the reason for cancelling your subscription?</p>
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <select class="form-select" name="close_reason_id">
                                             <t t-foreach="close_reasons" t-as="close_reason">
                                                 <option  t-att-value="close_reason.id" t-esc="close_reason.name"/>
                                             </t>
                                         </select>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="mb-3">
                                         <textarea class="form-control" name="closing_text" style="width: 100%;" rows="4"></textarea>
                                     </div>
                                 </main>

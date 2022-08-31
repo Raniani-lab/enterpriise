@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <div t-name="hr_contract_salary_payroll.salary_package_brut_to_net_modal">
+    <div t-name="hr_contract_salary_payroll.salary_package_brut_to_net_modal" class="px-3">
         <t t-if="_.isEmpty(datas)">
             <h5>There is no defined payroll structure for your contract. Please contact a responsible for more information.</h5>
         </t>
         <t t-foreach="datas" t-as="data">
-            <div class="form-group">
+            <div class="border-top">
                 <div class="row">
                     <label class="col-md-9 col-form-label" t-att-for="data[2]">
                         <t t-if="data[3] !== 'no_sign' &amp;&amp; data[3] &gt; 0">
-                            <i class="fa fa-1x fa-plus fa-fw"/>
+                            <i class="fa fa-1x fa-plus fa-fw text-success"/>
                         </t>
                         <t t-if="data[3] !== 'no_sign' &amp;&amp; data[3] &lt; 0">
-                            <i class="fa fa-1x fa-minus fa-fw"/>
+                            <i class="fa fa-1x fa-minus fa-fw text-danger"/>
                         </t>
                         <t t-esc="data[3] === 'no_sign' ? data[0].toUpperCase() : data[0]"/>
                     </label>

@@ -248,18 +248,18 @@
             <div class="pt_settings_screen pt_content">
                 <div class="pt_settings_alert alert alert-danger" role="alert">Please enter a valid duration</div>
                 <form class="pt_form container">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="pt_default_project">Default project</label>
                         <input type="hidden" name="pt_default_project" class="pt_default_project_select2"/>
                     </div>
-                    <div class="form-group pt_duration_fg">
+                    <div class="mb-3 pt_duration_fg">
                         <label for="pt_minimal_duration">Minimal duration</label>
                         <div class="input-group">
                             <input type="text" name="pt_minimal_duration" class="pt_minimal_duration form-control" aria-describedby="minutes" t-att-value="widget.getParent().data.settings.minimal_duration * 60"></input>
                             <span class="input-group-text" id="minutes">minutes</span>
                         </div>
                     </div>
-                    <div class="form-group pt_time_unit_fg">
+                    <div class="mb-3 pt_time_unit_fg">
                         <label for="pt_time_unit">Time unit</label>
                         <div class="input-group">
                             <input type="text" class="pt_time_unit form-control" aria-describedby="minutes" t-att-value="widget.getParent().data.settings.time_unit * 60"></input>
@@ -340,12 +340,12 @@
                     <t t-esc="moment(widget.activity.date).format('dddd, MMMM D')"/>
                 </div>
                 <form class="container-fluid pt_form">
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="pt_activity_project">Project</label>
                         <!--select2 project selection-->
                         <input type="hidden" name="pt_activity_project" class="pt_activity_project"/>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="pt_activity_task">Task</label>
                         <t t-if="widget.activity.project_id">
                             <input type="hidden" name="pt_activity_task" class="pt_activity_task"/>
@@ -354,7 +354,7 @@
                             <p><small>Please select a project first</small></p>
                         </t>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <t t-if="(widget.isMobile)">
                             <span class="o_form_label">Time spent (hhmm)</span>
                             <div class="row">
@@ -390,7 +390,7 @@
                             <p class="pt_duration_input_msg"></p>
                         </t>
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <label for="pt_description">Work Summary</label>
                         <t t-if="widget.activity.desc">
                             <textarea class="pt_description form-control" name="pt_description"><t t-esc="widget.activity.desc"/></textarea>
@@ -501,11 +501,11 @@
     <t t-name="odoo_saas_login">
         <form>
             <p>Login with Odoo</p>
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="pt_odoo_login">Login</label>
                 <input class="pt_odoo_login form-control" name="pt_odoo_login" autocapitalize="off"></input>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="pt_odoo_password">Password</label>
                 <input type="password" class="pt_odoo_password form-control" name="pt_odoo_password"></input>
             </div>
@@ -515,7 +515,7 @@
     <t t-name="premise_login_url_screen">
         <form>
             <p>Login to an on premise Odoo instance</p>
-            <div class="form-group">
+            <div class="mb-3">
                 <strong><br/>Your Odoo Server Address <br/></strong>
                 <select class="pt_premise_protocol form-select">
                     <option value="http://">http://</option>
@@ -525,7 +525,7 @@
                 <input type="text" class="pt_premise_url form-control" autocapitalize="off" t-att-value="widget.url || ''"></input>
             </div>
             <t t-if="!!widget.show_db_field">
-                <div class="form-group">
+                <div class="mb-3">
                     <strong><br/>Please enter a database name:<br/></strong>
                     <input type="text" class="pt_premise_db form-control" value="" autocapitalize="off"></input>
                 </div>
@@ -536,7 +536,7 @@
     <t t-name="premise_login_form_screen">
         <form>
             <p>Login to an on premise Odoo instance</p>
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="pt_premise_db">Database</label>
                 <select class="pt_premise_db form-select" value="hr-ts" name="pt_premise_db">
                     <t t-foreach="widget.getParent().db_list" t-as="db">
@@ -545,11 +545,11 @@
                 </select>
             </div>
             <!---->
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="pt_premise_login">Login</label>
                 <input class="pt_premise_login form-control" placeholder="ex: admin@example.com" name="pt_premise_login" autocapitalize="off"></input>
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="pt_premise_password">Password</label>
                 <input type="password" class="pt_premise_password form-control" placeholder="******" name="pt_premise_password"></input>
                 <a href="#" class="show_password fa fa-eye float-end" aria-label="Show password" title="Show password"/>

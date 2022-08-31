@@ -626,11 +626,11 @@ const PublicSignerDialog = SignInfoDialog.extend({
     const isEmailInvalid = !mail || mail.indexOf("@") < 0;
     if (!name || isEmailInvalid) {
       this.inputs[0]
-        .closest(".form-group")
+        .closest(".row")
         .querySelector(".form-control, .form-select")
         .classList.toggle("is-invalid", !name);
       this.inputs[1]
-        .closest(".form-group")
+        .closest(".row")
         .querySelector(".form-control, .form-select")
         .classList.toggle("is-invalid", isEmailInvalid);
       return false;
@@ -707,7 +707,7 @@ const SMSSignerDialog = SignInfoDialog.extend({
     );
     if (!validationCodeInput.value) {
       validationCodeInput
-        .closest(".form-group")
+        .closest(".row")
         .querySelector(".form-control, .form-select")
         .classList.toggle("is-invalid");
       return false;
@@ -762,11 +762,7 @@ const EncryptedDialog = SignInfoDialog.extend({
   _onValidatePassword: function () {
     const input = this.$("#o_sign_public_signer_password_input");
     if (!input.val()) {
-      input
-        .closest(".form-group")
-        .toggleClass("o_has_error")
-        .find(".form-control, .form-select")
-        .toggleClass("is-invalid");
+      input.toggleClass("is-invalid");
       return false;
     }
     const route = "/sign/password/" + this.requestID;
@@ -1722,11 +1718,11 @@ export const SignableDocument = Document.extend({
             value =
               $elem.val() && $elem.val().trim()
                 ? $elem.val()
-                : $elem.find("input").val() || false;            
+                : $elem.find("input").val() || false;
         } else {
         /*Already prefilled*/
             value =
-              $elem.text() && $elem.text().trim() ? $elem.text() : false;            
+              $elem.text() && $elem.text().trim() ? $elem.text() : false;
         }
 
         let frameValue = false;

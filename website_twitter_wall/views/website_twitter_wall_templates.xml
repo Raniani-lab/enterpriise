@@ -133,7 +133,7 @@
 
     <!-- Share storify view on social networks -->
     <template id='twitter_wall_share' name="Share Wall">
-        <h4 class="form-group">
+        <h4 class="mb-3">
             <a target="_Blank" t-attf-title="Share #{wall.name} on facebook" t-attf-href="https://www.facebook.com/sharer/sharer.php?u=#{wall.website_url}">
                 <i class="fa fa-facebook-square fa-2x" />
             </a>

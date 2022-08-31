@@ -67,7 +67,7 @@
 
     <template id="property_ups_carrier_account_inherit_portal_details" inherit_id="portal.portal_my_details">
         <xpath expr="//div[hasclass('o_portal_details')]//div[hasclass('row')]" position="inside">
-            <div t-attf-class="form-group mb-1 #{error.get('property_ups_carrier_account') and 'o_has_error' or ''} col-xl-6">
+            <div t-attf-class="mb-1 #{error.get('property_ups_carrier_account') and 'o_has_error' or ''} col-xl-6">
                 <label class="col-form-label label-optional" for="property_ups_carrier_account">UPS Number Account</label>
                 <input type="text" name="property_ups_carrier_account" t-attf-class="form-control" t-att-value="property_ups_carrier_account or partner.property_ups_carrier_account"/>
             </div>

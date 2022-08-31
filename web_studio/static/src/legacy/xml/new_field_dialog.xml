@@ -45,13 +45,13 @@
 </t>
 
 <t t-name="web_studio.SelectionValues.edit">
-    <div class="form-group">
+    <div class="mb-3">
         <label class="col-form-label col-md-3" for="o_selection_label">Label</label>
         <div class="col-md-9">
             <input class="form-control" id="o_selection_label" required="required" t-att-value="element[1]"/>
         </div>
     </div>
-    <div class="form-group">
+    <div class="mb-3">
         <label class="col-form-label col-md-3" for="o_selection_value">Value</label>
         <div class="col-md-9">
             <input class="form-control" id="o_selection_value" required="required" t-att-value="element[0]"/>

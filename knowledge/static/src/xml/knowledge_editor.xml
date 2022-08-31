@@ -27,7 +27,7 @@
     </t>
     <t t-name="knowledge.wysiwyg_article_link_modal">
         <form class="container">
-            <div class="form-group m-0">
+            <div class="m-0">
                 <input class="form-control" type="hidden" placeholder="Choose an Article"/>
             </div>
         </form>

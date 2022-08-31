@@ -11,8 +11,9 @@ class SaleOrderLog(models.Model):
 
     order_id = fields.Many2one(
         'sale.order', string='Sale Order',
-        required=True, ondelete='cascade', readonly=True
-        )
+        required=True, ondelete='cascade', readonly=True,
+        auto_join=True
+    )
     create_date = fields.Datetime(string='Date', readonly=True)
     event_type = fields.Selection(
         string='Type of event',

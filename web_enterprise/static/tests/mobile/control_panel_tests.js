@@ -135,7 +135,7 @@ QUnit.module("Search", (hooks) => {
         target.appendChild(sampleContent);
         const { maxHeight, overflow } = target.style;
         target.style.maxHeight = `${contentHeight}px`;
-        target.style.overflow = 'auto';
+        target.style.overflow = "auto";
         target.scrollTo({ top: 50 });
         await nextTick();
 

@@ -149,25 +149,27 @@ QUnit.module("Mobile SettingsFormView", (hooks) => {
         );
     });
 
-    QUnit.test("swipe settings on larger screen sizes has no effect [REQUIRE TOUCHEVENT]", async function (assert) {
-        const { execRegisteredTimeouts } = mockTimeout();
-        serviceRegistry.add("ui", {
-            start(env) {
-                Object.defineProperty(env, "isSmall", {
-                    value: false,
-                });
-                return {
-                    bus: new EventBus(),
-                    size: 9,
-                    isSmall: false,
-                };
-            },
-        });
-        await makeView({
-            type: "form",
-            resModel: "project",
-            serverData,
-            arch: `
+    QUnit.test(
+        "swipe settings on larger screen sizes has no effect [REQUIRE TOUCHEVENT]",
+        async function (assert) {
+            const { execRegisteredTimeouts } = mockTimeout();
+            serviceRegistry.add("ui", {
+                start(env) {
+                    Object.defineProperty(env, "isSmall", {
+                        value: false,
+                    });
+                    return {
+                        bus: new EventBus(),
+                        size: 9,
+                        isSmall: false,
+                    };
+                },
+            });
+            await makeView({
+                type: "form",
+                resModel: "project",
+                serverData,
+                arch: `
                 <form string="Settings" class="oe_form_configuration o_base_settings" js_class="base_settings">
                     <div class="o_setting_container">
                         <div class="settings">
@@ -200,40 +202,41 @@ QUnit.module("Mobile SettingsFormView", (hooks) => {
                         </div>
                     </div>
                 </form>`,
-        });
+            });
 
-        const touchTarget = target.querySelector(".settings");
-        // The scrollable element is set at its right limit
-        touchTarget.scrollLeft = touchTarget.scrollWidth - touchTarget.offsetWidth;
-        //swipeLeft
-        await triggerEvent(target, ".settings", "touchstart", {
-            touches: [
-                {
-                    identifier: 0,
-                    clientX: 0,
-                    clientY: 0,
-                    target: touchTarget,
-                },
-            ],
-        });
-        await triggerEvent(target, ".settings", "touchmove", {
-            touches: [
-                {
-                    identifier: 0,
-                    clientX: -touchTarget.clientWidth,
-                    clientY: 0,
-                    target: touchTarget,
-                },
-            ],
-        });
-        await triggerEvent(target, ".settings", "touchend", {});
-        execRegisteredTimeouts();
-        await nextTick();
-        assert.hasAttrValue(
-            target.querySelector(".selected"),
-            "data-key",
-            "crm",
-            "current setting should still be crm"
-        );
-    });
+            const touchTarget = target.querySelector(".settings");
+            // The scrollable element is set at its right limit
+            touchTarget.scrollLeft = touchTarget.scrollWidth - touchTarget.offsetWidth;
+            //swipeLeft
+            await triggerEvent(target, ".settings", "touchstart", {
+                touches: [
+                    {
+                        identifier: 0,
+                        clientX: 0,
+                        clientY: 0,
+                        target: touchTarget,
+                    },
+                ],
+            });
+            await triggerEvent(target, ".settings", "touchmove", {
+                touches: [
+                    {
+                        identifier: 0,
+                        clientX: -touchTarget.clientWidth,
+                        clientY: 0,
+                        target: touchTarget,
+                    },
+                ],
+            });
+            await triggerEvent(target, ".settings", "touchend", {});
+            execRegisteredTimeouts();
+            await nextTick();
+            assert.hasAttrValue(
+                target.querySelector(".selected"),
+                "data-key",
+                "crm",
+                "current setting should still be crm"
+            );
+        }
+    );
 });

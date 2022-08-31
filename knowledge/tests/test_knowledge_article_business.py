@@ -8,8 +8,7 @@ from odoo.tools import mute_logger
 
 
 @tagged('knowledge_internals', 'knowledge_management')
-class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
-    """ Test business API and main tools or helpers methods. """
+class KnowledgeCommonBusinessCase(KnowledgeCommonWData):
 
     @classmethod
     def setUpClass(cls):
@@ -68,106 +67,10 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
         ])
         cls.env.flush_all()
 
-    @mute_logger('odoo.addons.base.models.ir_rule')
-    @users('employee')
-    def test_article_archive(self):
-        """ Testing archive that should also archive children. """
-        article_shared = self.article_shared.with_env(self.env)
-        article_workspace = self.article_workspace.with_env(self.env)
-        wkspace_children = self.workspace_children.with_env(self.env)
-        # to test descendants computation, add some sub children
-        wkspace_grandchildren = self.wkspace_grandchildren.with_env(self.env)
-        wkspace_grandgrandchildren = self.wkspace_grandgrandchildren.with_env(self.env)
 
-        # no write access -> cracboum
-        with self.assertRaises(exceptions.AccessError,
-                               msg='Employee can read thus not archive'):
-            article_shared.action_archive()
-
-        # set the root + children inactive
-        article_workspace.action_archive()
-        self.assertFalse(article_workspace.active)
-        for article in wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren:
-            self.assertFalse(article.active, 'Archive: should propagate to children')
-            self.assertEqual(article.root_article_id, article_workspace,
-                             'Archive: does not change hierarchy when archiving without breaking hierarchy')
-
-        # reset as active
-        (article_workspace + wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren).toggle_active()
-        for article in article_workspace + wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren:
-            self.assertTrue(article.active)
-
-        # set only part of tree inactive
-        wkspace_children.action_archive()
-        self.assertTrue(article_workspace.active)
-        for article in wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren:
-            self.assertFalse(article.active, 'Archive: should propagate to children')
-
-    @mute_logger('odoo.addons.base.models.ir_rule')
-    @users('employee')
-    def test_article_archive_mixed_rights(self):
-        """ Test archive in case of mixed rights """
-        # give write access to shared section, but have children in read or none
-        # and add a customer on top of shared articles to check propagation
-        self.article_shared.write({
-            'article_member_ids': [(0, 0, {
-                'partner_id': self.customer.id,
-                'permission': 'read',
-            })]
-        })
-        self.article_shared.article_member_ids.sudo().filtered(
-            lambda article: article.partner_id == self.partner_employee
-        ).write({'permission': 'write'})
-        self.shared_children[1].write({
-            'article_member_ids': [(0, 0, {'partner_id': self.partner_employee.id,
-                                           'permission': 'read'})]
-        })
-
-        # prepare comparison data as sudo
-        writable_child_su = self.article_shared.child_ids.filtered(lambda article: article.name in ['Shared Child1'])
-        readonly_child_su = self.article_shared.child_ids.filtered(lambda article: article.name in ['Shared Child2'])
-        hidden_child_su = self.article_shared.child_ids.filtered(lambda article: article.name in ['Shared Child3'])
-
-        # perform archive as user
-        article_shared = self.article_shared.with_env(self.env)
-        article_shared.invalidate_model(['child_ids'])  # context dependent
-        shared_children = article_shared.child_ids
-        writable_child, readonly_child = writable_child_su.with_env(self.env), readonly_child_su.with_env(self.env)
-        self.assertEqual(len(shared_children), 2)
-        self.assertFalse(readonly_child.user_has_write_access)
-        self.assertTrue(writable_child.user_has_write_access)
-        self.assertEqual(shared_children, writable_child + readonly_child, 'Should see only two first children')
-
-        article_shared.action_archive()
-        # check writable articles have been archived, readonly or hidden not
-        self.assertFalse(article_shared.active)
-        self.assertFalse(writable_child.active)
-        self.assertTrue(readonly_child.active)
-        self.assertTrue(hidden_child_su.active)
-        # check hierarchy
-        self.assertEqual(writable_child.parent_id, article_shared,
-                         'Archive: archived articles hierarchy does not change')
-        self.assertFalse(readonly_child.parent_id, 'Archive: article should be extracted in archive process as non writable')
-        self.assertEqual(readonly_child.root_article_id, readonly_child)
-        self.assertFalse(hidden_child_su.parent_id, 'Archive: article should be extracted in archive process as non writable')
-        self.assertEqual(hidden_child_su.root_article_id, hidden_child_su)
-
-        # verify that the child that was not accessible was moved as a root article...
-        self.assertTrue(hidden_child_su.active)
-        self.assertEqual(hidden_child_su.category, 'shared')
-        self.assertEqual(hidden_child_su.internal_permission, 'none')
-        self.assertFalse(hidden_child_su.parent_id)
-        # ... and kept his access rights: still member for employee / admin and
-        # copied customer access from the archived parent
-        self.assertMembers(
-            hidden_child_su,
-            'none',
-            {self.user_admin.partner_id: 'write',
-             self.partner_employee_manager: 'read',
-             self.partner_employee: 'none',
-             self.customer: 'read',
-            }
-        )
+@tagged('knowledge_internals', 'knowledge_management')
+class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
+    """ Test business API and main tools or helpers methods. """
 
     @mute_logger('odoo.addons.base.models.ir_rule')
     @users('employee')
@@ -879,6 +782,176 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonWData):
         # test corner case: search with less than favorite, sequence might not be taken into account
         result = self.env['knowledge.article'].get_user_sorted_articles('laygroun', limit=1)
         self.assertEqual([a['id'] for a in result], self.article_workspace.ids)
+
+
+@tagged('knowledge_internals', 'knowledge_management')
+class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
+    """ Test copy and duplication of articles """
+
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @users('employee')
+    def test_copy(self):
+        article_hidden = self.article_private_manager.with_env(self.env)
+        with self.assertRaises(exceptions.AccessError,
+                               msg="ACLs: copy should not allow to access hidden articles"):
+            _new_article = article_hidden.copy()
+
+        # Copying an article should create a private article without parent nor children
+        article_readonly = self.article_shared.with_env(self.env)
+        new_article = article_readonly.copy()
+        self.assertEqual(new_article.name, f'{article_readonly.name} (copy)')
+        self.assertMembers(
+            new_article,
+            'none',
+            {self.partner_employee: 'write'}
+        )
+        self.assertFalse(new_article.child_ids)
+        self.assertFalse(new_article.parent_id)
+
+
+@tagged('knowledge_internals', 'knowledge_management')
+class TestKnowledgeArticleRemoval(KnowledgeCommonBusinessCase):
+    """ Test unlink / archive management of articles """
+
+
+    @mute_logger('odoo.addons.base.models.ir_rule')
+    @users('employee')
+    def test_archive(self):
+        """ Testing archive that should also archive children. """
+        self._test_archive()
+
+    def _test_archive(self):
+        article_shared = self.article_shared.with_env(self.env)
+        article_workspace = self.article_workspace.with_env(self.env)
+        wkspace_children = self.workspace_children.with_env(self.env)
+        # to test descendants computation, add some sub children
+        wkspace_grandchildren = self.wkspace_grandchildren.with_env(self.env)
+        wkspace_grandgrandchildren = self.wkspace_grandgrandchildren.with_env(self.env)
+
+        # no write access -> cracboum
+        with self.assertRaises(exceptions.AccessError,
+                               msg='Employee can read thus not archive'):
+            article_shared.action_archive()
+
+        # set the root + children inactive
+        article_workspace.action_archive()
+        self.assertFalse(article_workspace.active)
+        for article in wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren:
+            self.assertFalse(article.active, 'Archive: should propagate to children')
+            self.assertEqual(article.root_article_id, article_workspace,
+                             'Archive: does not change hierarchy when archiving without breaking hierarchy')
+
+        # reset as active
+        articles_to_restore = article_workspace + wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren
+        articles_to_restore.toggle_active()
+        for article in articles_to_restore:
+            self.assertTrue(article.active)
+
+        # set only part of tree inactive
+        wkspace_children.action_archive()
+        self.assertTrue(article_workspace.active)
+        for article in wkspace_children + wkspace_grandchildren + wkspace_grandgrandchildren:
+            self.assertFalse(article.active, 'Archive: should propagate to children')
+
+    @mute_logger('odoo.addons.base.models.ir_rule')
+    @users('employee')
+    def test_archive_mixed_rights(self):
+        self._test_archive_mixed_rights()
+
+    def _test_archive_mixed_rights(self):
+        """ Test archive in case of mixed rights """
+        # give write access to shared section, but have children in read or none
+        # and add a customer on top of shared articles to check propagation
+        self.article_shared.write({
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.customer.id,
+                'permission': 'read',
+            })]
+        })
+        self.article_shared.article_member_ids.sudo().filtered(
+            lambda article: article.partner_id == self.partner_employee
+        ).write({'permission': 'write'})
+        self.shared_children[1].write({
+            'article_member_ids': [(0, 0, {'partner_id': self.partner_employee.id,
+                                           'permission': 'read'})]
+        })
+
+        # prepare comparison data as sudo
+        writable_child_su = self.article_shared.child_ids.filtered(
+            lambda article: article.name in ['Shared Child1'])
+        readonly_child_su = self.article_shared.child_ids.filtered(
+            lambda article: article.name in ['Shared Child2'])
+        hidden_child_su = self.article_shared.child_ids.filtered(
+            lambda article: article.name in ['Shared Child3'])
+
+        # perform archive as user
+        article_shared = self.article_shared.with_env(self.env)
+        article_shared.invalidate_model(['child_ids'])  # context dependent
+        shared_children = article_shared.child_ids
+        writable_child, readonly_child = writable_child_su.with_env(self.env), readonly_child_su.with_env(self.env)
+        self.assertEqual(len(shared_children), 2)
+        self.assertFalse(readonly_child.user_has_write_access)
+        self.assertTrue(writable_child.user_has_write_access)
+        self.assertEqual(shared_children, writable_child + readonly_child,
+                         'Should see only two first children')
+
+        article_shared.action_archive()
+        # check writable articles have been archived, readonly or hidden not
+        self.assertFalse(article_shared.active)
+        self.assertFalse(writable_child.active)
+        self.assertTrue(readonly_child.active)
+        self.assertTrue(hidden_child_su.active)
+
+        # check hierarchy
+        self.assertEqual(writable_child.parent_id, article_shared,
+                         'Archive: archived articles hierarchy does not change')
+        self.assertFalse(readonly_child.parent_id, 'Archive: article should be extracted in archive process as non writable')
+        self.assertEqual(readonly_child.root_article_id, readonly_child)
+        self.assertFalse(hidden_child_su.parent_id, 'Archive: article should be extracted in archive process as non writable')
+        self.assertEqual(hidden_child_su.root_article_id, hidden_child_su)
+
+        # verify that the child that was not accessible was moved as a root article...
+        self.assertTrue(hidden_child_su.active)
+        self.assertEqual(hidden_child_su.category, 'shared')
+        self.assertEqual(hidden_child_su.internal_permission, 'none')
+        self.assertFalse(hidden_child_su.parent_id)
+        # ... and kept his access rights: still member for employee / admin and
+        # copied customer access from the archived parent
+        self.assertMembers(
+            hidden_child_su,
+            'none',
+            {self.user_admin.partner_id: 'write',
+             self.partner_employee_manager: 'read',
+             self.partner_employee: 'none',
+             self.customer: 'read',
+            }
+        )
+
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @users('admin')
+    def test_unlink_admin(self):
+        """ Admin (system) has access to unlink, test propagation and effect
+        on children. """
+        article_shared = self.article_shared.with_env(self.env)
+        article_shared.unlink()
+        self.assertFalse(
+            (self.article_shared + self.shared_children).exists(),
+            'Unlink: should also unlink children'
+        )
+
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @users('employee')
+    def test_unlink_employee(self):
+        """ Employee cannot unlink anyway """
+        article_hidden = self.article_private_manager.with_env(self.env)
+        with self.assertRaises(exceptions.AccessError,
+                               msg="ACLs: uhnlink is not accessible to employees"):
+            article_hidden.unlink()
+
+        article_workspace = self.article_workspace.with_env(self.env)
+        with self.assertRaises(exceptions.AccessError,
+                               msg="ACLs: unlink is not accessible to employees"):
+            article_workspace.unlink()
 
 
 @tagged('post_install', '-at_install', 'knowledge_internals', 'knowledge_management')

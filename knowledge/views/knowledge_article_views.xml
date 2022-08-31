@@ -195,6 +195,13 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Archived Article Warning Banner-->
+                            <div class="alert alert-warning text-center mb-0" role="alert"
+                                 attrs="{'invisible': ['|', ('active', '=', True), ('to_delete', '=', True)]}">
+                                This article is archived.
+                                <button class="oe_link alert-link" type="object" name="action_unarchive"
+                                attrs="{'invisible': [('user_can_write', '=', False)]}" >Unarchive</button>
+                            </div>
                             <!-- Trashed Article Warning Banner-->
                             <div class="alert alert-warning text-center mb-0" role="alert" attrs="{'invisible': [('to_delete', '=', False)]}">
                                 This article has been sent to trash. It will be definitively deleted on <field name="deletion_date"/>.

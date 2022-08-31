@@ -359,13 +359,14 @@ class KnowledgeController(http.Controller):
             return {'error': _("The selected member does not exists or has been already deleted.")}
 
         previous_category = article.category
+        partner = member.partner_id
 
         try:
             article._remove_member(member)
         except (AccessError, ValidationError) as e:
             return {'error': e}
 
-        if member.partner_id == request.env.user.partner_id and article.category == 'private':
+        if partner == request.env.user.partner_id and article.category == 'private':
             # When leaving private article, the article will be archived instead
             # As a result, user won't see the article anymore and the home page
             # should be fully reloaded to open the first 'available' article.

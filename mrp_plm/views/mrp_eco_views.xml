@@ -361,6 +361,7 @@
                                 </div>
                                 <div class="text-muted">
                                     <t t-if="record.effectivity_date.raw_value and record.effectivity_date.raw_value lt (new Date())" t-set="red">oe_kanban_text_red</t>
+                                    <!-- REPLACE BY THIS WHEN CONVERTED TO WOWL KANBAN <t t-if="record.effectivity_date.raw_value and luxon.DateTime.fromISO(record.effectivity_date.raw_value) &lt; luxon.DateTime.local()" t-set="red">oe_kanban_text_red</t> -->
                                     <span t-attf-class="#{red || ''}"><i><field name="effectivity_date"/></i></span>
                                 </div>
                             </div>

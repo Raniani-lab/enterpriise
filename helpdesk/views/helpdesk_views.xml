@@ -632,6 +632,7 @@
                                 <field name="use_sla" invisible="1"/>
                                 <div t-if="record.sla_deadline.raw_value &amp;&amp; record.use_sla.raw_value">
                                     <t t-if="new Date(record.sla_deadline.raw_value) &lt; (new Date())" t-set="red" t-value="'oe_kanban_text_red'"/>
+                                    <!-- REPLACE BY THIS WHEN CONVERTED TO WOWL KANBAN <t t-if="luxon.DateTime.fromISO(record.sla_deadline.raw_value) &lt; luxon.DateTime.local()" t-set="red" t-value="'oe_kanban_text_red'"/> -->
                                     <span t-attf-class="{{red}}">
                                         <field name="sla_deadline" widget="remaining_days"/>
                                     </span>

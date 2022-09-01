@@ -182,8 +182,10 @@ export class DocumentsSearchPanel extends SearchPanel {
                 createValues.name = defaultName + ` (${index++})`;
             }
         }
-        await this.orm.create(resModel, createValues, {
-            create_from_search_panel: true,
+        await this.orm.create(resModel, [createValues], {
+            context: {
+                create_from_search_panel: true,
+            },
         });
         await this._reloadSearchModel(resModel === "documents.folder" && !section.enableCounters);
         if (resModel === "documents.folder") {

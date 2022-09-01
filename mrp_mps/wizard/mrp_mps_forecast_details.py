@@ -34,6 +34,9 @@ class MrpMpsForecastDetails(models.TransientModel):
             'target': 'current',
             'name': self.env.context.get('action_name'),
             'domain': [('id', 'in', self.purchase_order_line_ids.mapped('order_id').ids)],
+            'context': {
+                'quotation_only': True,
+            }
         }
 
     def action_open_mo_details(self):

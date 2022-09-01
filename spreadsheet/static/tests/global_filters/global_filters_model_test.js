@@ -43,8 +43,6 @@ const LAST_YEAR_FILTER = {
         rangeType: "year",
         defaultValue: { yearOffset: -1 },
         pivotFields: { 1: { field: "date", type: "date" } },
-        // duplicate key to support its introduction as data, not just dispatch
-        fields: { 1: { field: "date", type: "date" } },
         listFields: { 1: { field: "date", type: "date" } },
     },
 };
@@ -56,8 +54,6 @@ const LAST_YEAR_LEGACY_FILTER = {
         label: "Legacy Last Year",
         defaultValue: { year: "last_year" },
         pivotFields: { 1: { field: "date", type: "date" } },
-        // duplicate key to support its introduction as data, not just dispatch
-        fields: { 1: { field: "date", type: "date" } },
         listFields: { 1: { field: "date", type: "date" } },
     },
 };
@@ -69,8 +65,6 @@ const THIS_YEAR_FILTER = {
         rangeType: "year",
         defaultValue: { yearOffset: 0 },
         pivotFields: { 1: { field: "date", type: "date" } },
-        // duplicate key to support its introduction as data, not just dispatch
-        fields: { 1: { field: "date", type: "date" } },
         listFields: { 1: { field: "date", type: "date" } },
     },
 };
@@ -125,7 +119,6 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
         const filter = {
             ...THIS_YEAR_FILTER.filter,
             pivotFields: fields,
-            fields,
             listFields: fields,
         };
         await addGlobalFilter(model, { filter });

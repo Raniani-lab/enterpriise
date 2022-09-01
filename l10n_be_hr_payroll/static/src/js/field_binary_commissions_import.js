@@ -1,16 +1,26 @@
-odoo.define('l10n_be_hr_payroll.import_file', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const basicFields = require('web.basic_fields');
-var fieldRegistry = require('web.field_registry');
+import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
+import { BinaryField } from "@web/views/fields/binary/binary_field";
 
-var FieldBinaryFileCommissionImport = basicFields.FieldBinaryFile.extend({
-    on_file_uploaded_and_valid: function (size, name, content_type, file_base64) {
-        this._super.apply(this, arguments);
-        this.trigger_up('commission_file_uploaded');
-    },
-});
+export class BinaryFieldComission extends BinaryField {
+    setup() {
+        super.setup();
+        this.orm = useService("orm");
+        this.actionService = useService("action");
+    }
 
-fieldRegistry.add('binary_commission', FieldBinaryFileCommissionImport);
+    async update(changes) {
+        const res = super.update(changes);
+        if (changes.data) {
+            await this.props.record.save({ stayInEdition: true });
+            const recordID = this.props.record.data.id;
+            const action = await this.orm.call('hr.payroll.generate.warrant.payslips', 'import_employee_file', [[recordID]]);
+            await this.actionService.doAction(action);
+        }
+        return res;
+    }
+}
 
-});
+registry.category("fields").add('binary_commission', BinaryFieldComission);

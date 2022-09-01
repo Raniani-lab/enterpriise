@@ -16,7 +16,7 @@
                         <field name="company_id" invisible="1"/>
                         <field name="currency_id" invisible="1"/>
                         <field name="state" invisible="1"/>
-                        <field name="import_file" filename="filename" widget="binary_commission"/>
+                        <field name="import_file" widget="binary_commission" filename="filename" options="{'accepted_file_extensions': 'text/csv'}"/>
                     </group>
                 </group>
                 <group>
@@ -39,6 +39,7 @@
                 </div>
                 <footer>
                     <button name="generate_warrant_payslips" string="Generate Payslips" type="object" class="oe_highlight o_generate" data-hotkey="q"/>
+                    <button name="export_warrant_payslips" string="Export" class="btn-secondary"/>
                     <button special="cancel" data-hotkey="z" string="Cancel" type="object" class="btn-secondary"/>
                 </footer>
             </form>

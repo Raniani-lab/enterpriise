@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import contextlib
-import io
 import base64
 
-from datetime import date, datetime
+from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.tools import pycompat
 
 
 class HrPayrollGenerateCommissionPayslips(models.TransientModel):
@@ -56,19 +53,6 @@ class HrPayrollGenerateCommissionPayslips(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
-
-    def export_employee_file(self):
-        with contextlib.closing(io.BytesIO()) as buf:
-            writer = pycompat.csv_writer(buf, quoting=1)
-            writer.writerow(("Employee Name", "ID", "Commission on Target"))
-
-            for line in self.line_ids:
-                writer.writerow((line.employee_id.name, str(line.employee_id.id), str(line.commission_amount)))
-            content = buf.getvalue()
-
-        name = "exported_employees.csv"
-        self.write({'state': 'export', 'name': name})
-        return content
 
     def import_employee_file(self):
         if not self.import_file:

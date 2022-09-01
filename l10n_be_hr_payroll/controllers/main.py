@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import contextlib
 import io
 import logging
 import re
 
 from odoo import http, fields
-from odoo.http import request
+from odoo.http import request, content_disposition
+from odoo.tools import pycompat
 from odoo.tools.misc import xlsxwriter
 
 _logger = logging.getLogger(__name__)
@@ -165,3 +167,25 @@ class L10nBeHrPayrollGroupInsuranceController(http.Controller):
                 ('Content-Disposition', 'attachment; filename=group_insurance.xlsx')],
         )
         return response
+
+class L10nBeHrPayrollWarrantPayslipsController(http.Controller):
+    @http.route("/export/warrant_payslips/<int:wizard_id>", type='http', auth='user')
+    def export_employee_file(self, wizard_id):
+        wizard = request.env['hr.payroll.generate.warrant.payslips'].browse(wizard_id)
+        with contextlib.closing(io.BytesIO()) as buf:
+            writer = pycompat.csv_writer(buf, quoting=1)
+            writer.writerow(("Employee Name", "ID", "Commission on Target"))
+
+            for line in wizard.line_ids:
+                writer.writerow((line.employee_id.name, str(line.employee_id.id), str(line.commission_amount)))
+            content = buf.getvalue()
+
+        name = "exported_employees.csv"
+        wizard.write({'state': 'export', 'name': name})
+
+        headers = [
+            ('Content-Type', 'text/csv'),
+            ('Content-Length', len(content)),
+            ('Content-Disposition', content_disposition('exported_employees.csv'))
+        ]
+        return request.make_response(content, headers=headers)

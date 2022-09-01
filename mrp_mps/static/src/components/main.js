@@ -1,12 +1,12 @@
 /** @odoo-module **/
 
 import { MrpMpsControlPanel } from '../search/mrp_mps_control_panel';
+import { MrpMpsSearchModel } from '../search/mrp_mps_search_model';
 import MpsLineComponent from '@mrp_mps/components/line';
 import { MasterProductionScheduleModel } from '@mrp_mps/models/master_production_schedule_model';
 import { registry } from "@web/core/registry";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { getDefaultConfig } from "@web/views/view";
-import { SearchModel } from "@web/search/search_model";
 import { usePager } from "@web/search/pager_hook";
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 
@@ -39,7 +39,7 @@ class MainComponent extends Component {
             },
         })
 
-        this.SearchModel = new SearchModel(this.env, {
+        this.SearchModel = new MrpMpsSearchModel(this.env, {
             user: useService("user"),
             orm: this.orm,
             view: useService("view"),

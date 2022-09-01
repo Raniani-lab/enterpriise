@@ -100,8 +100,8 @@
                     <t t-set="entries">
                         <ul class="list-group list-group-flush flex-wrap flex-row flex-lg-column">
                             <li t-if="ticket.team_id.allow_portal_ticket_closing and not ticket.stage_id.fold and not ticket.closed_by_partner" class="list-group-item flex-grow-1">
-                                <div class="btn-toolbar flex-sm-nowrap">
-                                    <button class="btn btn-secondary pt-1 btn-block" data-bs-target="#helpdesk_ticket_close_modal" data-bs-toggle="modal">
+                                <div class="d-grid flex-sm-nowrap">
+                                    <button class="btn btn-secondary pt-1" data-bs-target="#helpdesk_ticket_close_modal" data-bs-toggle="modal">
                                         Close Ticket
                                     </button>
                                 </div>
@@ -138,7 +138,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li id="ticket-links" t-if="ticket_link_section" class="list-group-item ps-0 flex-grow-1" t-ignore="true" role="complementary" invisible="1">
+                            <li id="ticket-links" t-if="ticket_link_section" class="list-group-item flex-grow-1" t-ignore="true" role="complementary" invisible="1">
                                 <ul class="nav flex-column">
                                     <t t-foreach="sorted(ticket_link_section, key=lambda r: r['sequence'])" t-as="ticket_link">
                                         <li class="nav-item">
@@ -150,10 +150,10 @@
                                 </ul>
                             </li>
 
-                            <li t-if="ticket.user_id or ticket.partner_id" class="list-group-item flex-grow-1 ps-0">
+                            <li t-if="ticket.user_id or ticket.partner_id" class="list-group-item flex-grow-1">
                                 <div class="col-12 col-md-12 pb-2" t-if="ticket.user_id">
                                     <strong>Assigned to</strong>
-                                    <div class="row ps-3 flex-nowrap">
+                                    <div class="row flex-nowrap g-0">
                                         <img class="rounded-circle mt-1 o_portal_contact_img" t-att-src="image_data_uri(ticket.user_id.avatar_1024)" alt="Contact"/>
                                         <div class="ms-2">
                                             <div t-out="ticket.user_id" t-options='{"widget": "contact", "fields": ["name"]}' class="mt-2"/>
@@ -162,7 +162,7 @@
                                 </div>
                                 <div class="col-12 col-md-12 pb-2" t-if="ticket.partner_id">
                                     <strong>Customer</strong>
-                                    <div class="row ps-3 flex-nowrap">
+                                    <div class="row flex-nowrap g-0">
                                         <img class="rounded-circle mt-1 o_portal_contact_img" t-att-src="image_data_uri(ticket.partner_id.avatar_1024)" alt="Contact"/>
                                         <div class="ms-2">
                                             <div t-field="ticket.partner_id" t-options='{"widget": "contact", "fields": ["name"]}'/>
@@ -178,9 +178,9 @@
                 <div id="ticket_content" class="col-12 col-lg justify-content-end">
                     <div id="card" class="card">
                         <div id="card_header" class="card-header container" data-anchor="true">
-                            <div class="row g-0 ms-1">
+                            <div class="row g-0">
                                 <div class="col-md">
-                                    <h5 class="d-flex mb-1 mb-md-0">
+                                    <h5 class="row mx-1 mb-1 mb-md-0">
                                         <div class="col-9 text-truncate">
                                             <span t-field="ticket.name"/>
                                             <small class="text-muted "> (#<span t-field="ticket.id"/>)</small>

@@ -190,7 +190,7 @@ class KnowledgeController(http.Controller):
         if not parent:
             return werkzeug.exceptions.NotFound()
 
-        articles = parent.child_ids.sorted("sequence") if parent.has_article_children else self.env['knowledge.article']
+        articles = parent.child_ids.sorted("sequence") if parent.has_article_children else request.env['knowledge.article']
         return request.env['ir.qweb']._render('knowledge.articles_template', {
             'articles': articles,
             'portal_readonly_mode': not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)

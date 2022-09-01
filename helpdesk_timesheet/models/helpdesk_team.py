@@ -10,7 +10,7 @@ class HelpdeskTeam(models.Model):
     project_id = fields.Many2one("project.project", string="Project", ondelete="restrict", domain="[('allow_timesheets', '=', True), ('company_id', '=', company_id)]",
         help="Project to which the timesheets of this helpdesk team's tickets will be linked.")
     timesheet_encode_uom_id = fields.Many2one('uom.uom', related='company_id.timesheet_encode_uom_id')
-    total_timesheet_time = fields.Integer(compute="_compute_total_timesheet_time")
+    total_timesheet_time = fields.Integer(compute="_compute_total_timesheet_time", compute_sudo=True, groups="hr_timesheet.group_hr_timesheet_user")
 
     @api.depends('ticket_ids')
     def _compute_total_timesheet_time(self):

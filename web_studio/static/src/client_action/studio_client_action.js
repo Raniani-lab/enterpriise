@@ -83,5 +83,6 @@ StudioClientAction.components = {
 };
 StudioClientAction.target = "fullscreen";
 
-// force: true to override action defined by studio_action_loader
+registry.category("lazy_components").add("StudioClientAction", StudioClientAction);
+// force: true to bypass the studio lazy loading action next time and just use this one directly
 registry.category("actions").add("studio", StudioClientAction, { force: true });

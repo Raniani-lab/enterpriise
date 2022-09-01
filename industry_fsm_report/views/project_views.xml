@@ -116,7 +116,7 @@
                     <field name="allow_worksheets"/>
                     <div class="mt-3 d-flex flex-wrap" invisible="not allow_worksheets">
                         <label for="worksheet_template_id" class="fw-bold" string="Worksheet Template"/>
-                        <field name="worksheet_template_id" class="oe_inline ps-2" context="{'default_res_model': 'project.task'}"/>
+                        <field name="worksheet_template_id" class="oe_inline ps-2" context="{'default_res_model': 'project.task'}" options="{'no_create': True}"/>
                     </div>
                 </setting>
             </xpath>

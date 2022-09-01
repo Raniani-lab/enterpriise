@@ -523,17 +523,14 @@ class AnalyticLine(models.Model):
                     modified = _('modified')
                     raise AccessError(_('Timesheets before the %s (included) have been validated, and can no longer be %s.', last_validated_timesheet_date_str, deleted if delete else modified))
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        analytic_lines = super(AnalyticLine, self).create(vals_list)
+    def _check_can_create(self):
 
         # Check if the user has the correct access to create timesheets
-        if not (self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') or self.env.su) and any(line.is_timesheet and line.user_id.id != self.env.user.id for line in analytic_lines):
+        if not (self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') or self.env.su) and any(line.is_timesheet and line.user_id.id != self.env.user.id for line in self):
             raise AccessError(_("You cannot access timesheets that are not yours."))
-        analytic_lines.check_if_allowed()
-        return analytic_lines
+        self.check_if_allowed()
 
-    def write(self, vals):
+    def _check_can_write(self, vals):
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
             if 'validated' in vals:
                 raise AccessError(_('You can only validate the timesheets of employees of whom you are the manager or the timesheet approver.'))
@@ -542,7 +539,7 @@ class AnalyticLine(models.Model):
 
         self.check_if_allowed(vals)
 
-        return super(AnalyticLine, self).write(vals)
+        return super()._check_can_write(vals)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_manager(self):

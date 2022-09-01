@@ -11,9 +11,12 @@
                 <div class="o_knowledge_share_panel_icon d-flex justify-content-center align-items-center flex-shrink-0">
                     <i class="fa fa-shield fa-2x"/>
                 </div>
-                <div class="px-3">Access Restricted. May not be shared with everyone from <a href="#" t-on-click="event => this._onOpen(event, state.parent_id)" t-out="state.parent_name"/></div>
+                <div class="px-3">Access Restricted. May not be shared with everyone from
+                    <a href="#" t-if="state.parent_id" t-on-click="event => this._onOpen(event, state.parent_id)" t-out="state.parent_name"/>
+                    <span t-else="" t-out="state.parent_name"/>
+                </div>
                 <button t-if="props.user_permission === 'write' || state.user_is_admin"
-                        class="btn btn-link" t-on-click="event => this._onRestore(event)" type="button">Restore</button>
+                    class="btn btn-link" t-on-click="event => this._onRestore(event)" type="button">Restore</button>
             </div>
             <div class="d-flex align-items-center px-3 py-1">
                 <div class="flex-shrink-0">
@@ -23,7 +26,11 @@
                 </div>
                 <div class="flex-grow-1 px-3">
                     Internal Members
-                    <div t-if="state.based_on" class="text-muted">Based on <a href="#" t-on-click="event => this._onOpen(event, state.based_on_id)" t-out="state.based_on"/></div>
+                    <div t-if="state.based_on" class="text-muted">
+                        Based on
+                        <a href="#" t-if="state.based_on_id" t-on-click="event => this._onOpen(event, state.based_on_id)" t-out="state.based_on"/>
+                        <span t-else="" t-out="state.based_on"/>
+                    </div>
                 </div>
                 <div class="flex-shrink-0 bg-white">
                     <select class="o_permission form-select rounded"
@@ -52,7 +59,11 @@
                             <span t-if="(member.partner_share || (state.user_is_admin &amp;&amp; this.isLoggedUser(member))) &amp;&amp; member.partner_email" class="px-1">•</span>
                             <div class="o_member_email" t-if="member.partner_email" t-out="member.partner_email"/>
                         </div>
-                        <div t-if="member.based_on" class="text-muted">Based on <a href="#" t-on-click="event => this._onOpen(event, member.based_on_id)" t-out="member.based_on"/></div>
+                        <div t-if="member.based_on" class="text-muted">
+                            Based on
+                            <a href="#" t-if="member.based_on_id" t-on-click="event => this._onOpen(event, member.based_on_id)" t-out="member.based_on"/>
+                            <span t-else="" t-out="member.based_on"/>
+                        </div>
                     </div>
                     <div class="flex-shrink-0">
                         <div class="input-group">

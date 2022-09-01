@@ -247,6 +247,11 @@ class KnowledgeController(http.Controller):
                 ('name', 'based_on_name'),
             ],
         })[article.id]
+
+        based_on_articles = request.env['knowledge.article'].search([
+            ('id', 'in', list(set([member['based_on'] for member in members_permission.values() if member['based_on']])))
+        ])
+
         for partner_id, member in members_permission.items():
             # empty member added by '_get_article_member_permissions', don't show it in the panel
             if not member['member_id']:
@@ -267,7 +272,7 @@ class KnowledgeController(http.Controller):
                 'partner_email': member['partner_email'],
                 'permission': member['permission'],
                 'based_on': f'{member["based_on_icon"] or "📄"} {member["based_on_name"]}' if member['based_on_name'] else False,
-                'based_on_id': member['based_on'],
+                'based_on_id': member['based_on'] if member['based_on'] in based_on_articles.ids else False,
                 'partner_share': member['partner_share'],
                 'is_unique_writer': member['permission'] == "write" and article.inherited_permission != "write" and not any(
                     other_member['permission'] == 'write'
@@ -289,11 +294,11 @@ class KnowledgeController(http.Controller):
             'category': article.category,
             'parent_permission': parent_article_sudo.inherited_permission,
             'based_on': inherited_permission_parent_sudo.display_name,
-            'based_on_id': inherited_permission_parent_sudo.id,
+            'based_on_id': inherited_permission_parent_sudo.id if inherited_permission_parent_sudo.user_has_access else False,
             'members_options': permission_field.get_description(request.env).get('selection', []),
             'members': members_values,
             'is_sync': is_sync,
-            'parent_id': parent_article_sudo.id,
+            'parent_id': parent_article_sudo.id if parent_article_sudo.user_has_access else False,
             'parent_name': parent_article_sudo.display_name,
             'user_is_admin': user_is_admin,
             'show_admin_tip': user_is_admin and article.user_permission != 'write',

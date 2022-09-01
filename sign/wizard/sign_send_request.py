@@ -94,7 +94,7 @@ class SignSendRequest(models.TransientModel):
         if self.signers_count:
             signers = [{'partner_id': signer.partner_id.id, 'role_id': signer.role_id.id, 'mail_sent_order': signer.mail_sent_order} for signer in self.signer_ids]
         else:
-            signers = [{'partner_id': self.signer_id.id, 'role_id': self.env.ref('sign.sign_item_role_default').id, 'mail_sent_order': self.signer_id.mail_sent_order}]
+            signers = [{'partner_id': self.signer_id.id, 'role_id': self.env.ref('sign.sign_item_role_default').id, 'mail_sent_order': self.signer_ids.mail_sent_order}]
         cc_partner_ids = self.cc_partner_ids.ids
         reference = self.filename
         subject = self.subject

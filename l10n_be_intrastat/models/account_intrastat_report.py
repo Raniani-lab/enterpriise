@@ -22,13 +22,13 @@ class IntrastatReport(models.Model):
             'name': _('XML'),
             'sequence': 30,
             'action': 'export_file',
-            'action_param': '_be_intrastat_export_to_xml',
+            'action_param': 'be_intrastat_export_to_xml',
             'file_export_type': _('XML'),
         }
         options['buttons'].append(xml_button)
 
     @api.model
-    def _be_intrastat_export_to_xml(self, options):
+    def be_intrastat_export_to_xml(self, options):
         # Generate XML content
         date_1 = datetime.strptime(options['date']['date_from'], DEFAULT_SERVER_DATE_FORMAT)
         date_2 = datetime.strptime(options['date']['date_to'], DEFAULT_SERVER_DATE_FORMAT)

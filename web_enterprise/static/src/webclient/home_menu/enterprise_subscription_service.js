@@ -43,7 +43,7 @@ export class SubscriptionManager {
     }
 
     get formattedExpirationDate() {
-        return formatDate(this.expirationDate, { format: "DDD", timezone: true });
+        return formatDate(this.expirationDate, { format: "DDD" });
     }
 
     get daysLeft() {

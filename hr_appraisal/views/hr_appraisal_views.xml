@@ -262,7 +262,7 @@
                                     </div>
                                     <div class="o_kanban_inline_block">
                                         <div attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}">
-                                        <t t-if="record.date_close.raw_value and record.date_close.raw_value &lt; (new Date())" t-set="red">oe_kanban_text_red</t>
+                                        <t t-if="record.date_close.raw_value and luxon.DateTime.fromISO(record.date_close.raw_value) &lt; luxon.DateTime.local()" t-set="red">oe_kanban_text_red</t>
                                             <span t-attf-class="#{red}"><field name="date_close"/></span>
                                         </div>
                                     </div>
@@ -307,7 +307,7 @@
                             <field name="employee_id"/>
                         </div>
                         <div class="text-muted">
-                            <t t-if="record.date_close.raw_value and record.date_close.raw_value &lt; (new Date())" t-set="red">text-danger</t>
+                            <t t-if="record.date_close.raw_value and luxon.DateTime.fromISO(record.date_close.raw_value) &lt; luxon.DateTime.local()" t-set="red">text-danger</t>
                             Deadline: <span t-attf-class="#{red}"><i><field name="date_close"/></i></span>
                         </div>
                     </div>

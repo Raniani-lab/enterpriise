@@ -1,15 +1,13 @@
 /** @odoo-module */
 
-import {
-    DatePicker,
-} from "@web/core/datepicker/datepicker";
+import { DatePicker } from "@web/core/datepicker/datepicker";
 const { DateTime } = luxon;
 
 /**
  * @param {string} format
  * @returns {boolean}
  */
- const isValidStaticFormat = (format) => {
+const isValidStaticFormat = (format) => {
     try {
         return /^[\d\s/:-]+$/.test(DateTime.local().toFormat(format));
     } catch (_err) {
@@ -32,12 +30,11 @@ export class YearPicker extends DatePicker {
     /**
      * @override
      */
-     getOptions(useStatic = false) {
+    getOptions(useStatic = false) {
         return {
             format:
                 !useStatic || isValidStaticFormat(this.format) ? this.format : this.staticFormat,
             locale: DEFAULT_DATE.locale,
-            timezone: this.isLocal,
         };
     }
 
@@ -62,9 +59,7 @@ export class YearPicker extends DatePicker {
             const prev = this.props[prop];
             const next = nextProps[prop];
             if (
-                (prev instanceof DateTime &&
-                    next instanceof DateTime &&
-                    !prev.equals(next)) ||
+                (prev instanceof DateTime && next instanceof DateTime && !prev.equals(next)) ||
                 prev !== next
             ) {
                 pickerParams[prop] = nextProps[prop];
@@ -92,10 +87,7 @@ export class YearPicker extends DatePicker {
      */
     onDateChange({ useStatic } = {}) {
         const [date] = this.parseValue(this.inputRef.el.value, this.getOptions(useStatic));
-        if (
-            !date ||
-            (this.date instanceof DateTime && date.equals(this.date))
-        ) {
+        if (!date || (this.date instanceof DateTime && date.equals(this.date))) {
             this.updateInput();
         } else {
             this.state.warning = date > DateTime.local();

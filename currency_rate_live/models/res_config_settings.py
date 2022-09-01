@@ -15,7 +15,7 @@ from odoo.tools.translate import _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 BANXICO_DATE_FORMAT = '%d/%m/%Y'
-CBUAE_URL = "https://www.centralbank.ae/en/fx-rates"
+CBUAE_URL = "https://centralbank.ae/umbraco/Surface/Exchange/GetExchangeRateAllCurrency"
 CBEGY_URL = "https://www.cbe.org.eg/en/EconomicResearch/Statistics/Pages/OfficialRatesListing.aspx"
 MAP_CURRENCIES = {
     'US Dollar': 'USD',
@@ -86,6 +86,68 @@ MAP_CURRENCIES = {
     'Vietnam Dong': 'VND',
     'South Africa Rand': 'ZAR',
     'Zambian Kwacha': 'ZMW',
+    'دولار امريكي': 'USD',
+    'بيسو ارجنتيني': 'ARS',
+    'دولار استرالي': 'AUD',
+    'تاكا بنغلاديشية': 'BDT',
+    'دينار بحريني': 'BHD',
+    'دولار بروناي': 'BND',
+    'ريال برازيلي': 'BRL',
+    'بولا بوتسواني': 'BWP',
+    'روبل بلاروسي': 'BYN',
+    'دولار كندي': 'CAD',
+    'فرنك سويسري': 'CHF',
+    'بيزو تشيلي': 'CLP',
+    'يوان صيني - الخارج': 'CNY',
+    'يوان صيني': 'CNY',
+    'بيزو كولومبي': 'COP',
+    'كرونة تشيكية': 'CZK',
+    'كرون دانماركي': 'DKK',
+    'دينار جزائري': 'DZD',
+    'جينيه مصري': 'EGP',
+    'يورو': 'EUR',
+    'جنيه استرليني': 'GBP',
+    'دولار هونج كونج': 'HKD',
+    'فورنت هنغاري': 'HUF',
+    'روبية اندونيسية': 'IDR',
+    'روبية هندية': 'INR',
+    'كرونة آيسلندية': 'ISK',
+    'دينار أردني': 'JOD',
+    'ين ياباني': 'JPY',
+    'شلن كيني': 'KES',
+    'ون كوري': 'KRW',
+    'دينار كويتي': 'KWD',
+    'تينغ كازاخستاني': 'KZT',
+    'ليرة لبنانية': 'LBP',
+    'روبية سريلانكي': 'LKR',
+    'درهم مغربي': 'MAD',
+    'دينار مقدوني': 'MKD',
+    'بيسو مكسيكي': 'MXN',
+    'رينغيت ماليزي': 'MYR',
+    'نيرا نيجيري': 'NGN',
+    'كرون نرويجي': 'NOK',
+    'دولار نيوزيلندي': 'NZD',
+    'ريال عماني': 'OMR',
+    'سول بيروفي': 'PEN',
+    'بيسو فلبيني': 'PHP',
+    'روبية باكستانية': 'PKR',
+    'زلوتي بولندي': 'PLN',
+    'ريال قطري': 'QAR',
+    'دينار صربي': 'RSD',
+    'روبل روسي': 'RUB',
+    'ريال سعودي': 'SAR',
+    'كرونة سويدية': 'SWK',
+    'دولار سنغافوري': 'SGD',
+    'بات تايلندي': 'THB',
+    'دينار تونسي': 'TND',
+    'ليرة تركية': 'TRY',
+    'دولار تريندادي': 'TTD',
+    'دولار تايواني': 'TWD',
+    'شلن تنزاني': 'TZS',
+    'شلن اوغندي': 'UGX',
+    'دونغ فيتنامي': 'VND',
+    'راند جنوب أفريقي': 'ZAR',
+    'كواشا زامبي': 'ZMW',
 }
 
 _logger = logging.getLogger(__name__)
@@ -302,14 +364,14 @@ class ResCompany(models.Model):
         response = requests.get(CBUAE_URL, timeout=30)
         response.raise_for_status()
 
-        htmlelem = etree.fromstring(response.content, etree.HTMLParser())
-        rates_entries = htmlelem.xpath("//table[@id='ratesDateTable']/tbody/tr")
+        htmlelem = etree.fromstring(response.content, etree.HTMLParser(encoding='utf-8'))
+        rates_entries = htmlelem.xpath("//table/tbody//tr")
         available_currency_names = set(available_currencies.mapped('name'))
         rslt = {}
         for rate_entry in rates_entries:
             # line structure is <td>Currency Description</td><td>rate</td>
-            currency_code = MAP_CURRENCIES.get(rate_entry[0].text)
-            rate = float(rate_entry[1].text)
+            currency_code = MAP_CURRENCIES.get(rate_entry[1].text)
+            rate = float(rate_entry[2].text)
             if currency_code in available_currency_names:
                 rslt[currency_code] = (1.0/rate, fields.Date.today())
 

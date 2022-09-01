@@ -51,11 +51,117 @@ QUnit.test("Pivot 'day' arguments are migrated", (assert) => {
     };
     const migratedData = migrate(data);
     assert.strictEqual(migratedData.sheets[0].cells.A1.content, `=ODOO.PIVOT("1","07/21/2022")`);
-    assert.strictEqual(migratedData.sheets[0].cells.A2.content, `=ODOO.PIVOT.HEADER("1","12/11/2022")`);
+    assert.strictEqual(
+        migratedData.sheets[0].cells.A2.content,
+        `=ODOO.PIVOT.HEADER("1","12/11/2022")`
+    );
     assert.strictEqual(migratedData.sheets[0].cells.A3.content, `=odoo.pivot("1","07/21/2021")`);
     assert.strictEqual(migratedData.sheets[0].cells.A4.content, `=ODOO.PIVOT("1","test")`);
-    assert.strictEqual(migratedData.sheets[0].cells.A5.content, `=odoo.pivot("1","07/21/2021")+"21/07/2021"`);
+    assert.strictEqual(
+        migratedData.sheets[0].cells.A5.content,
+        `=odoo.pivot("1","07/21/2021")+"21/07/2021"`
+    );
     assert.strictEqual(migratedData.sheets[0].cells.A6.content, `=BAD_FORMULA(`);
+});
+
+QUnit.test("Global filters: pivot fields is correctly added", (assert) => {
+    const data = {
+        globalFilters: [
+            {
+                id: "1",
+                type: "relation",
+                label: "Relation Filter",
+                fields: {
+                    1: {
+                        field: "foo",
+                        type: "char",
+                    },
+                },
+            },
+        ],
+    };
+    const migratedData = migrate(data);
+    const filter = migratedData.globalFilters[0];
+    assert.deepEqual(filter.pivotFields, {
+        1: {
+            field: "foo",
+            type: "char",
+        },
+    });
+    assert.strictEqual(filter.fields, undefined);
+});
+
+QUnit.test("Global filters: date is correctly migrated", (assert) => {
+    const data = {
+        globalFilters: [
+            {
+                id: "1",
+                type: "date",
+                rangeType: "year",
+                defaultValue: { year: "last_year" },
+            },
+            {
+                id: "2",
+                type: "date",
+                rangeType: "year",
+                defaultValue: { year: "antepenultimate_year" },
+            },
+            {
+                id: "3",
+                type: "date",
+                rangeType: "year",
+                defaultValue: { year: "this_year" },
+            },
+        ],
+    };
+    const migratedData = migrate(data);
+    const [f1, f2, f3] = migratedData.globalFilters;
+    assert.deepEqual(f1.defaultValue, { yearOffset: -1 });
+    assert.deepEqual(f2.defaultValue, { yearOffset: -2 });
+    assert.deepEqual(f3.defaultValue, { yearOffset: 0 });
+});
+
+QUnit.test("Global filters: list and graph fields are added", (assert) => {
+    const data = {
+        globalFilters: [
+            {
+                id: "1",
+                type: "relation",
+            },
+            {
+                id: "1",
+                type: "relation",
+                listFields: {
+                    1: {
+                        field: "foo",
+                        type: "char",
+                    },
+                },
+                graphFields: {
+                    1: {
+                        field: "foo",
+                        type: "char",
+                    },
+                },
+            },
+        ],
+    };
+    const migratedData = migrate(data);
+    const [f1, f2] = migratedData.globalFilters;
+    assert.deepEqual(f1.listFields, {});
+    assert.deepEqual(f1.graphFields, {});
+    assert.deepEqual(f2.listFields, {
+        1: {
+            field: "foo",
+            type: "char",
+        },
+    });
+    assert.deepEqual(f2.graphFields, {
+        1: {
+            field: "foo",
+            type: "char",
+        },
+    });
 });
 
 QUnit.test("Odoo version is exported", (assert) => {

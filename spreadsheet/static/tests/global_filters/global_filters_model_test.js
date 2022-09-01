@@ -31,6 +31,7 @@ import {
     getDateDomainDurationInDays,
 } from "@spreadsheet/../tests/utils/date_domain";
 import FiltersEvaluationPlugin from "@spreadsheet/global_filters/plugins/filters_evaluation_plugin";
+import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 
 const { Model, DispatchResult } = spreadsheet;
 
@@ -297,7 +298,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
     });
 
     QUnit.test("Can import/export filters", async function (assert) {
-        const spreadsheetData = {
+        const spreadsheetData = migrate({
             sheets: [
                 {
                     id: "sheet1",
@@ -328,7 +329,7 @@ QUnit.module("spreadsheet > Global filters model", {}, () => {
                 },
             },
             globalFilters: [LAST_YEAR_LEGACY_FILTER.filter, LAST_YEAR_FILTER.filter],
-        };
+        });
         const model = await createModelWithDataSource({ spreadsheetData });
 
         assert.equal(model.getters.getGlobalFilters().length, 2);

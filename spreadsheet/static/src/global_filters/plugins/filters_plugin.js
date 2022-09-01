@@ -211,37 +211,8 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
      * @param {Object} data
      */
     import(data) {
-        if (data.globalFilters) {
-            for (const globalFilter of data.globalFilters) {
-                // TODO: this naming trick should be handled by proper python data migrations
-                globalFilter.pivotFields = globalFilter.fields;
-                if (
-                    globalFilter.type === "date" &&
-                    typeof globalFilter.defaultValue === "object" &&
-                    "year" in globalFilter.defaultValue
-                ) {
-                    switch (globalFilter.defaultValue.year) {
-                        case "last_year":
-                            globalFilter.defaultValue.yearOffset = -1;
-                            break;
-                        case "antepenultimate_year":
-                            globalFilter.defaultValue.yearOffset = -2;
-                            break;
-                        case "this_year":
-                        case undefined:
-                            globalFilter.defaultValue.yearOffset = 0;
-                            break;
-                    }
-                    delete globalFilter.defaultValue.year;
-                }
-                this.globalFilters[globalFilter.id] = globalFilter;
-                if (!this.globalFilters[globalFilter.id].listFields) {
-                    this.globalFilters[globalFilter.id].listFields = {};
-                }
-                if (!this.globalFilters[globalFilter.id].graphFields) {
-                    this.globalFilters[globalFilter.id].graphFields = {};
-                }
-            }
+        for (const globalFilter of data.globalFilters || []) {
+            this.globalFilters[globalFilter.id] = globalFilter;
         }
     }
     /**
@@ -252,7 +223,6 @@ export default class FiltersPlugin extends spreadsheet.CorePlugin {
     export(data) {
         data.globalFilters = this.getGlobalFilters().map((filter) => ({
             ...filter,
-            fields: filter.pivotFields,
         }));
     }
 

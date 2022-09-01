@@ -4,7 +4,7 @@ import spreadsheet from "./o_spreadsheet_extended";
 const { load, CorePlugin, tokenize, parse, convertAstNodes, astToFormula } = spreadsheet;
 const { corePluginRegistry } = spreadsheet.registries;
 
-export const ODOO_VERSION = 2;
+export const ODOO_VERSION = 3;
 
 const MAP = {
     PIVOT: "ODOO.PIVOT",
@@ -26,6 +26,9 @@ export function migrate(data) {
     if (version < 2) {
         _data = migrate1to2(_data);
     }
+    if (version < 3) {
+        _data = migrate2to3(_data);
+    }
     return _data;
 }
 
@@ -40,10 +43,7 @@ function migrate0to1(data) {
             if (cell.content && cell.content.startsWith("=")) {
                 const tokens = tokenize(cell.content);
                 for (const token of tokens) {
-                    if (
-                        token.type === "SYMBOL" &&
-                        token.value.toUpperCase() in MAP
-                    ) {
+                    if (token.type === "SYMBOL" && token.value.toUpperCase() in MAP) {
                         token.value = MAP[token.value.toUpperCase()];
                     }
                 }
@@ -64,6 +64,46 @@ function migrate1to2(data) {
                 } catch (_) {
                     continue;
                 }
+            }
+        }
+    }
+    return data;
+}
+
+/**
+ * Migration of global filters
+ */
+function migrate2to3(data) {
+    if (data.globalFilters) {
+        for (const gf of data.globalFilters) {
+            if (gf.fields) {
+                gf.pivotFields = gf.fields;
+                delete gf.fields;
+            }
+            if (
+                gf.type === "date" &&
+                typeof gf.defaultValue === "object" &&
+                "year" in gf.defaultValue
+            ) {
+                switch (gf.defaultValue.year) {
+                    case "last_year":
+                        gf.defaultValue.yearOffset = -1;
+                        break;
+                    case "antepenultimate_year":
+                        gf.defaultValue.yearOffset = -2;
+                        break;
+                    case "this_year":
+                    case undefined:
+                        gf.defaultValue.yearOffset = 0;
+                        break;
+                }
+                delete gf.defaultValue.year;
+            }
+            if (!gf.listFields) {
+                gf.listFields = {};
+            }
+            if (!gf.graphFields) {
+                gf.graphFields = {};
             }
         }
     }

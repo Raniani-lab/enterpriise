@@ -73,10 +73,7 @@ Features:
             'helpdesk/static/src/js/helpdesk_kanban_renderer.js',
             'helpdesk/static/src/js/helpdesk_kanban_view.js',
             'helpdesk/static/src/js/helpdesk_widget.js',
-            'helpdesk/static/src/js/ticket_kanban_column.js',
-            'helpdesk/static/src/js/ticket_kanban_controller.js',
-            'helpdesk/static/src/js/ticket_kanban_renderer.js',
-            'helpdesk/static/src/js/ticket_kanban_view.js',
+            'helpdesk/static/src/views/**/*',
             'helpdesk/static/src/js/tours/helpdesk.js',
         ],
         'web.qunit_suite_tests': [

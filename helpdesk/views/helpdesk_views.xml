@@ -583,7 +583,7 @@
         <field name="model">helpdesk.ticket</field>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_helpdesk_ticket" quick_create_view="helpdesk.quick_create_ticket_form" sample="1" js_class="ticket_kanban">
+            <kanban default_group_by="stage_id" class="o_kanban_small_column o_kanban_helpdesk_ticket" quick_create_view="helpdesk.quick_create_ticket_form" sample="1" js_class="helpdesk_ticket_kanban">
                 <field name="stage_id" options='{"group_by_tooltip": {"description": "Stage Description"}}'/>
                 <field name="user_id"/>
                 <field name="color"/>
@@ -631,8 +631,7 @@
                                 </div>
                                 <field name="use_sla" invisible="1"/>
                                 <div t-if="record.sla_deadline.raw_value &amp;&amp; record.use_sla.raw_value">
-                                    <t t-if="new Date(record.sla_deadline.raw_value) &lt; (new Date())" t-set="red" t-value="'oe_kanban_text_red'"/>
-                                    <!-- REPLACE BY THIS WHEN CONVERTED TO WOWL KANBAN <t t-if="luxon.DateTime.fromISO(record.sla_deadline.raw_value) &lt; luxon.DateTime.local()" t-set="red" t-value="'oe_kanban_text_red'"/> -->
+                                    <t t-if="luxon.DateTime.fromISO(record.sla_deadline.raw_value) &lt; luxon.DateTime.local()" t-set="red" t-value="'oe_kanban_text_red'"/>
                                     <span t-attf-class="{{red}}">
                                         <field name="sla_deadline" widget="remaining_days"/>
                                     </span>
@@ -951,7 +950,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
-                No data yet ! 
+                No data yet!
             </p><p>
                 Create tickets to get statistics.
             </p>
@@ -990,7 +989,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
-                No data yet ! 
+                No data yet!
             </p><p>
                 Create tickets to get statistics.
             </p>
@@ -1123,7 +1122,7 @@
         <field name="context">{'search_default_team_id': active_ids, 'pivot_measures': ['close_hours', '__count__']}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
-                No data yet ! 
+                No data yet!
             </p><p>
                 Create tickets to get statistics.
             </p>
@@ -1144,7 +1143,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_empty_folder">
-                No data yet ! 
+                No data yet!
             </p><p>
                 Create tickets to get statistics.
             </p>

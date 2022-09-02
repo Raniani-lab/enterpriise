@@ -11,8 +11,7 @@ class AppointmentType(models.Model):
     _name = "appointment.type"
     _inherit = "appointment.type"
 
-    work_hours_activated = fields.Boolean('Limit to Work Hours',
-        help="When this option is activated the slots computation takes into account the working hours of the users.")
+    work_hours_activated = fields.Boolean('Limit to Work Hours')
 
     def _get_default_range_slots(self, category):
         '''

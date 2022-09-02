@@ -97,12 +97,15 @@ class AppointmentType(models.Model):
     appointment_count_report = fields.Integer(
         '# Appointments in the last 30 days', compute='_compute_appointment_count_report')
     appointment_invite_ids = fields.Many2many('appointment.invite', string='Invitation Links')
-
     avatars_display = fields.Selection(
         [('hide', 'No Picture'), ('show', 'Show Users\' Pictures')],
         string='Front-End Display', compute='_compute_avatars_display', readonly=False, store=True,
         help="""This option toggles the display of avatars of the staff members during the frontend appointment process.
         When choosing amongst several users, a selection screen will also be used, if website is installed.""")
+    # override mail.thread for better string/help
+    message_partner_ids = fields.Many2many(string='CC to',
+                                           help="Contacts that need to be notified whenever a new appointment is booked or canceled, \
+                                                 regardless of whether they attend or not")
 
     @api.depends('meeting_ids')
     def _compute_appointment_count(self):

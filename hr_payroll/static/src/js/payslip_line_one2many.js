@@ -1,121 +1,117 @@
-odoo.define('hr_payslip.payslip_line_one2many', function (require) {
-"use strict";
+/** @odoo-module **/
 
-const fieldRegistry = require('web.field_registry');
-var view_registry = require('web.view_registry');
-const FieldOne2Many = require('web.relational_fields').FieldOne2Many;
-var FormView = require('web.FormView');
-var FormController = require('web.FormController');
-const FormRenderer = require('web.FormRenderer');
+import { registry } from "@web/core/registry";
+import { formView } from "@web/views/form/form_view";
+import { FormController } from "@web/views/form/form_controller";
+import { X2ManyField } from "@web/views/fields/x2many/x2many_field";
+import { ListRenderer } from "@web/views/list/list_renderer";
+import { Field } from "@web/views/fields/field";
 
+export class PayslipEditLinesFormController extends FormController {}
 
-const PayslipLineOne2Many = FieldOne2Many.extend({
-    _onFieldChanged: function (ev) {
-        this._super.apply(this, arguments);
-        var line_handle;
-        if (ev.data.changes && ev.data.changes.line_ids && ev.data.changes.line_ids.operation === "CREATE") {
-            return;
+export class WorkedDaysField extends Field {
+    get fieldComponentProps() {
+        const props = super.fieldComponentProps;
+        const record = this.props.record;
+        const oldUpdate = props.update;
+        props.update = async (value) => {
+            if (this.props.name === 'amount' && record.data.amount !== value) {
+                await record.update({ [this.props.name]: value });
+                await record.save( { stayInEdition: true, noReload: true });
+                // getting the wizard id. when js team gets rid of the basic relational model, we'll clean this
+                const wizardId = record.model.__bm_load_params__.res_id;
+                if (wizardId) {
+                    const action = await this.env.services.orm.call(
+                        "hr.payroll.edit.payslip.lines.wizard",
+                        "recompute_worked_days_lines",
+                        [wizardId]
+                    );
+                    await this.env.services.action.doAction(action);
+                }
+            } else {
+                await oldUpdate(value);
+            }
         }
-        if (ev.data.changes && (ev.data.changes.hasOwnProperty('amount') || ev.data.changes.hasOwnProperty('quantity'))) {
-            line_handle = ev.data.dataPointID;
-        }
-        // Sequence changes are a PITA, as one call is made for each line. Don't manage this use case
-        if (line_handle) {
-            this.trigger_up('payslip_line_updated', {
-                res_id: this.res_id,
-                line_handle: line_handle,
-            });
-        }
-    },
-});
-
-fieldRegistry.add('payslip_line_one2many', PayslipLineOne2Many);
-
-const WorkedDaysLineOne2Many = FieldOne2Many.extend({
-    _onFieldChanged: function (ev) {
-        this._super.apply(this, arguments);
-        var line_handle;
-        if (ev.data.changes && ev.data.changes.line_ids && ev.data.changes.line_ids.operation === "CREATE") {
-            return;
-        }
-        if (ev.data.changes && ev.data.changes.hasOwnProperty('amount')) {
-            line_handle = ev.data.dataPointID;
-        }
-        if (line_handle) {
-            this.trigger_up('worked_days_line_updated', {
-                res_id: this.res_id,
-                line_handle: line_handle,
-            });
-        }
-    },
-});
-
-fieldRegistry.add('worked_days_line_one2many', WorkedDaysLineOne2Many);
-
-var PayslipEditLinesFormController = FormController.extend({
-    custom_events: _.extend({}, FormController.prototype.custom_events, {
-        payslip_line_updated: '_onPayslipLineUpdated',
-        worked_days_line_updated: '_onWorkedDaysLineUpdated',
-    }),
-
-    _onPayslipLineUpdated: function(infos) {
-        var self = this;
-        self.infos = infos;
-        this.saveRecord(this.handle, {
-            stayInEdit: true,
-        }).then(function() {
-            var line_handle = self.infos.data.line_handle;
-            var line_id = self.model.localData[line_handle].data.id;
-            var recordID = self.model.localData[self.handle].data.id;
-            self._rpc({
-                model: 'hr.payroll.edit.payslip.lines.wizard',
-                method: 'recompute_following_lines',
-                args: [recordID, line_id],
-            }).then(function(action) {
-                self.do_action(action);
-            });
-        });
-    },
-
-    _onWorkedDaysLineUpdated: function(infos) {
-        var self = this;
-        self.infos = infos;
-        this.saveRecord(this.handle, {
-            stayInEdit: true,
-        }).then(function() {
-            var recordID = self.model.localData[self.handle].data.id;
-            self._rpc({
-                model: 'hr.payroll.edit.payslip.lines.wizard',
-                method: 'recompute_worked_days_lines',
-                args: [recordID],
-            }).then(function(action) {
-                self.do_action(action);
-            });
-        });
-    },
-});
-
-const PayslipEditLinesFormRenderer = FormRenderer.extend({
-
-    /**
-     * o_xxl_form_view causes issues if the tree views are too large to be shown at one time and require a
-     * scrollbar, since this can happen frequently in this view we completely remove that class
-     *
-     * We want both scrollbar to be on the same element to make sure that both are visible at all time.
-     */
-    _applyFormSizeClass() {
-        this._super.apply(this, arguments);
-        this.$el[0].classList.remove('o_xxl_form_view');
+        return props;
     }
-});
+}
 
-var PayslipEditLinesFormView = FormView.extend({
-    config: _.extend({}, FormView.prototype.config, {
-        Controller: PayslipEditLinesFormController,
-        Renderer: PayslipEditLinesFormRenderer,
-    }),
-});
+export class WorkedDaysRenderer extends ListRenderer {}
+WorkedDaysRenderer.components = {
+    ...ListRenderer.components,
+    Field: WorkedDaysField,
+}
 
-view_registry.add('payslip_edit_lines_form', PayslipEditLinesFormView);
+export class WorkedDaysLineOne2Many extends X2ManyField {
+    async onAdd ({ context, editable }) {
+        const wizardId = this.props.record.resId;
+        return super.onAdd({
+            context: {
+                ...context,
+                default_edit_payslip_lines_wizard_id: wizardId,
+            },
+            editable
+        });
+    }
+}
+WorkedDaysLineOne2Many.components = {
+    ...X2ManyField.components,
+    ListRenderer: WorkedDaysRenderer
+};
 
-});
+export class PayslipLineField extends Field {
+    get fieldComponentProps() {
+        const props = super.fieldComponentProps;
+        const record = this.props.record;
+        const oldUpdate = props.update;
+        props.update = async (value) => {
+            if (this.props.name === 'amount' || this.props.name === 'quantity') {
+                await record.update({ [this.props.name]: value });
+                await record.save( { stayInEdition: true, noReload: true });
+                const wizardId = record.model.__bm_load_params__.res_id;
+                if (wizardId) {
+                    const line_id = record.data.id;
+                    const action = await this.env.services.orm.call(
+                        "hr.payroll.edit.payslip.lines.wizard",
+                        "recompute_following_lines",
+                        [wizardId, line_id]
+                    );
+                    await this.env.services.action.doAction(action);
+                }
+            } else {
+                await oldUpdate(value);
+            }
+        }
+        return props;
+    }
+}
+export class PayslipLineRenderer extends ListRenderer {}
+PayslipLineRenderer.components = {
+    ...ListRenderer.components,
+    Field: PayslipLineField
+}
+
+export class PayslipLineOne2Many extends X2ManyField {
+    async onAdd ({ context, editable }) {
+        const wizardId = this.props.record.resId;
+        return super.onAdd({
+            context: {
+                ...context,
+                default_edit_payslip_lines_wizard_id: wizardId,
+            },
+            editable
+        });
+    }
+}
+
+PayslipLineOne2Many.components = {
+    ...X2ManyField.components,
+    ListRenderer: PayslipLineRenderer
+};
+
+registry.category('fields').add('payslip_line_one2many', PayslipLineOne2Many);
+registry.category('fields').add('worked_days_line_one2many', WorkedDaysLineOne2Many);
+registry.category('views').add('payslip_edit_lines_form', {
+    ...formView,
+    Controller: PayslipEditLinesFormController
+})

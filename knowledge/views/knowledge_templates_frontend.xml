@@ -28,6 +28,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Portal virality -->
+                            <div class="text-center pt-3 pb-2 border-top" groups="base.group_portal">
+                                You are currently visiting as a Guest User.<br/>
+                                <a href="https://www.odoo.com/trial?selected_app=knowledge&amp;utm_source=db&amp;utm_medium=knowledge"
+                                    class="nav-link fw-bold fs-5">
+                                    Create my own Workspace
+                                </a>
+                            </div>
                         </div>
                     </div>
                     <div t-att-class="('col-sm-10' if show_sidebar else 'col-sm-12') + ' p-0 overflow-auto'">
@@ -44,15 +52,25 @@
                                     </a>
                                 </div>
                                 <!-- Log In -->
-                                <t t-call="portal.placeholder_user_sign_in">
-                                    <t t-set="_item_class" t-valuef="d-flex align-items-center p-2"/>
-                                    <t t-set="_link_class" t-valuef="nav-link fw-bold"/>
-                                </t>
-                                <t t-call="portal.user_dropdown">
-                                    <t t-set="_user_name" t-value="True"/>
-                                    <t t-set="_item_class" t-valuef="d-flex align-items-center p-2"/>
-                                    <t t-set="_link_class" t-valuef="nav-link fw-bold"/>
-                                </t>
+                                <div class="d-sm-flex flex-row justify-content-between">
+                                    <t t-call="portal.placeholder_user_sign_in">
+                                        <t t-set="_item_class" t-valuef="d-flex align-items-center p-2"/>
+                                        <t t-set="_link_class" t-valuef="nav-link fw-bold"/>
+                                    </t>
+                                    <t t-call="portal.user_dropdown">
+                                        <t t-set="_user_name" t-value="True"/>
+                                        <t t-set="_item_class" t-valuef="d-flex align-items-center p-2"/>
+                                        <t t-set="_link_class" t-valuef="nav-link fw-bold"/>
+                                    </t>
+                                    <div class="d-flex" groups="base.group_public">
+                                        <span class="border my-3"/>
+                                        <a href="https://www.odoo.com/trial?selected_app=knowledge&amp;utm_source=db&amp;utm_medium=knowledge"
+                                            class="text-decoration-none text-black d-flex align-items-center gap-2 px-3" role="button">
+                                            <img width="24" src="/mail/static/src/img/odoo_o.png"/>
+                                            Try Odoo
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                             <div class="p-3 text-center" t-if="not article">
                                 <p class="o_view_nocontent_empty_folder">

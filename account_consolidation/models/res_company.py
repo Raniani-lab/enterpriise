@@ -78,7 +78,7 @@ class Company(models.Model):
         are displayed only one time.
         :return: the state of the onboarding.
         """
-        return self.get_and_update_onbarding_state('consolidation_dashboard_onboarding_state', [
+        return self._get_and_update_onboarding_state('consolidation_dashboard_onboarding_state', [
             'consolidation_setup_consolidation_state',
             'consolidation_setup_ccoa_state',
             'consolidation_create_period_state',

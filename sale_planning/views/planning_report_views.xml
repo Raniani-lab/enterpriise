@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="planning.planning_analysis_report_view_search"/>
         <field name="priority">10</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='tag_ids']" position="before">
+            <xpath expr="//field[@name='company_id']" position="before">
                 <field name="sale_order_id" string="Sales Order"/>
                 <field name="role_product_ids" string="Service"/>
             </xpath>

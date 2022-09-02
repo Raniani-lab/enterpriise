@@ -26,14 +26,13 @@
         </field>
     </record>
 
-     <record id="planning_analysis_report_view_search" model="ir.ui.view">
+    <record id="planning_analysis_report_view_search" model="ir.ui.view">
         <field name="name">planning.slot.report.search</field>
         <field name="model">planning.analysis.report</field>
         <field name="arch" type="xml">
             <search>
                 <field name="resource_id" groups="planning.group_planning_user"/>
                 <field name="role_id" groups="planning.group_planning_user"/>
-                <field name="tag_ids" groups="planning.group_planning_user"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="department_id" groups="planning.group_planning_user"/>
                 <field name="manager_id" groups="planning.group_planning_user"/>
@@ -44,7 +43,7 @@
                 <filter name="my_team_shifts" string="My Team" domain="[('manager_id.user_id', '=', uid)]" help="Shifts of Your Team Member" groups="planning.group_planning_user"/>
                 <filter name="my_department_shifts" string="My Department" domain="[('employee_id.member_of_department', '=', True)]" help="Shifts of Your Department Member" groups="planning.group_planning_user"/>
                 <separator/>
-                <filter string="My Roles" name="my_role" domain="[('role_id.employee_ids.user_id','=', uid)]" groups="planning.group_planning_user"/>
+                <filter string="My Roles" name="my_role" domain="[('role_id.resource_ids.user_id','=', uid)]" groups="planning.group_planning_user"/>
                 <separator/>
                 <filter string="Human" name="human" domain="[('resource_type','=', 'user')]"/>
                 <filter string="Material" name="material" domain="[('resource_type','=', 'material')]"/>

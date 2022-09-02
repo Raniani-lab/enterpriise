@@ -13,6 +13,8 @@ class ResourceResource(models.Model):
     color = fields.Integer(default=_default_color)
     avatar_128 = fields.Image(compute='_compute_avatar_128')
     flexible_hours = fields.Boolean('Flexible Hours')
+    role_ids = fields.Many2many('planning.role', 'resource_resource_planning_role_rel',
+                                'resource_resource_id', 'planning_role_id', 'Roles')
 
     @api.depends('employee_id')
     def _compute_avatar_128(self):

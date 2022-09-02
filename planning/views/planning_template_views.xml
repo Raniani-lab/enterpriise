@@ -89,7 +89,7 @@
                 <search>
                     <field name="role_id"/>
                     <separator/>
-                    <filter name="my_role" string="My Roles" domain="[('role_id.employee_ids.user_id', '=', uid)]"/>
+                    <filter name="my_role" string="My Roles" domain="[('role_id.resource_ids.user_id', '=', uid)]"/>
                     <separator/>
                     <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                     <group expand="1" string="Group By">

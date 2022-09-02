@@ -17,15 +17,15 @@ tour.register('planning_tour', {
         position: 'bottom',
     }, {
         trigger: ".o_gantt_button_add",
-        content: _t("Let's create your first <b>shift</b> by clicking on Add. <i>Tip: use the (+) shortcut available on each cell of the Gantt view to save time.</i>"),
+        content: _t("Let's create your first <b>shift</b>. <i>Tip: use the (+) shortcut available on each cell of the Gantt view to save time.</i>"),
         position: "bottom",
     }, {
         trigger: ".o_field_widget[name='resource_id']",
-        content: _t("Assign this shift to your <b>resource</b>, or leave it open for the moment."),
+        content: _t("Assign a <b>resource</b>, or leave it open for the moment. <i>Tip: Create open shifts for the roles you will be needing to complete a mission. Then, assign those open shifts to the resources that are available.</i>"),
         position: "right",
     }, {
         trigger: ".o_field_widget[name='role_id']",
-        content: _t("Select the <b>role</b> your employee will have (<i>e.g. Chef, Bartender, Waiter, etc.</i>)."),
+        content: _t("Write the <b>role</b> your employee will perform (<i>e.g. Chef, Bartender, Waiter, etc.</i>). <i>Tip: Create open shifts for the roles you will be needing to complete a mission. Then, assign those open shifts to the resources that are available.</i>"),
         position: "right",
     }, {
         trigger: "button[special='save']",

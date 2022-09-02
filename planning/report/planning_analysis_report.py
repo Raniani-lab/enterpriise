@@ -35,7 +35,6 @@ class PlanningAnalysisReport(models.Model):
         ("draft", "Draft"),
         ("published", "Published"),
     ], string="Status", readonly=True)
-    tag_ids = fields.Many2many("planning.tag", string="Tags", relation="planning_slot_planning_tag_rel", column1="planning_slot_id", column2="planning_tag_id")
     user_id = fields.Many2one("res.users", string="User", readonly=True)
     working_days_count = fields.Float("Working Days", readonly=True)
 

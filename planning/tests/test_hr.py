@@ -44,11 +44,85 @@ class TestPlanningHr(TestCommonPlanning):
         self.assertTrue(role_a in self.employee_joseph.planning_role_ids, "role a should be added to his planning roles")
 
         self.employee_joseph.write({'planning_role_ids': [(5, 0, 0)]})
-        self.assertTrue(role_a in self.employee_joseph.planning_role_ids, "role a should be automatically added to his planning roles")
+        self.assertFalse(self.employee_joseph.planning_role_ids, "role a should be automatically removed from his planning roles")
 
+        self.employee_joseph.write({'planning_role_ids': role_a})
         self.employee_joseph.default_planning_role_id = role_b
         self.assertTrue(role_a in self.employee_joseph.planning_role_ids, "role a should still be in planning roles")
         self.assertTrue(role_b in self.employee_joseph.planning_role_ids, "role b should be added to planning roles")
+
+    def test_relation_employee_role_ids_resource_id_role_ids(self):
+
+        """
+            This test checks that the fields employee.planning_role_ids, employee.default_planning_role_id and employee.resource_id.role_ids
+            are all consistent and properly update on the change of the fields. Here's the expected behavior :
+            Invariant :
+                resource_id.role_ids = planning_role_ids
+                default_planning_role_id in planning_role_ids
+            on planning_role_ids update :
+                resource_id.role_ids is set accordingly.
+                if planning_role_ids is set to False, set default_role_id to False
+                if default_role_id is not in planning_role_ids anymore, set default_role_id to planning_role_ids[0]
+            on resource_id.role_ids update :
+                planning_role_ids is set accordingly.
+                if planning_role_ids is set to False, set default_role_id to False
+                if default_role_id is not in planning_role_ids anymore, set default_role_id to planning_role_ids[0]
+            on default_planning_role_id update:
+                if default_planning_role_id not in planning_role_ids, add default_planning_role_id to planning_role_ids and resource_id.role_ids
+                default_planning_role_id is not removed from planning_role_ids
+                if planning_role_ids is set to False in the same write as the change of default_planning_role_id, both the fields are set to False
+        """
+        self.assertFalse(self.employee_joseph.default_planning_role_id, "Joseph should have no default planning role")
+        self.assertFalse(self.employee_joseph.planning_role_ids, "Joseph should have no planning roles")
+
+        role_a, role_b, role_c = self.env['planning.role'].create([
+            {'name': 'role a'},
+            {'name': 'role b'},
+            {'name': 'role c'},
+        ])
+
+        roles = self.env['planning.role']
+        roles |= role_a
+        roles |= role_b
+        roles |= role_c
+        # change on employee.planning_role_ids
+        self.employee_joseph.planning_role_ids = roles
+        self.assertEqual(self.employee_joseph.default_planning_role_id, role_a, "Joseph should have role a as default role")
+        self.assertEqual(self.employee_joseph.resource_id.role_ids, roles, "Joseph should have role a, b and c as roles")
+        self.assertEqual(self.employee_joseph.planning_role_ids, roles, "Joseph should have role a, b and c as resource_id.role_ids")
+
+        self.employee_joseph.planning_role_ids = False
+        self.assertFalse(self.employee_joseph.default_planning_role_id, "Joseph should have role a as default role")
+        self.assertFalse(self.employee_joseph.resource_id.role_ids, "Joseph should have role a, b and c as roles")
+        self.assertFalse(self.employee_joseph.planning_role_ids, "Joseph should have role a, b and c as resource_id.role_ids")
+
+        #change on employee.resource_id.role_ids
+        self.employee_joseph.resource_id.role_ids = roles
+        dummy = self.employee_joseph.planning_role_ids # use to trigger the compute of planning_role_ids
+        self.assertEqual(self.employee_joseph.resource_id.role_ids, roles, "Joseph should have role a, b and c as roles")
+        self.assertEqual(self.employee_joseph.default_planning_role_id, role_a, "Joseph should have role a as default role")
+        self.assertEqual(self.employee_joseph.planning_role_ids, roles, "Joseph should have role a, b and c as resource_id.role_ids")
+
+        self.employee_joseph.resource_id.role_ids = False
+        dummy = self.employee_joseph.planning_role_ids  # use to trigger the compute of planning_role_ids
+        self.assertFalse(self.employee_joseph.resource_id.role_ids, "Joseph should have role a, b and c as roles")
+        self.assertFalse(self.employee_joseph.default_planning_role_id, "Joseph should have role a as default role")
+        self.assertFalse(self.employee_joseph.planning_role_ids, "Joseph should have role a, b and c as resource_id.role_ids")
+
+        #change mixin
+        role_d, role_e = self.env['planning.role'].create([
+            {'name': 'role d'},
+            {'name': 'role e'},
+        ])
+        roles |= role_d
+        roles = roles - role_a
+
+        self.employee_joseph.write({'planning_role_ids': roles, 'default_planning_role_id': role_e})
+        roles |= role_e
+
+        self.assertEqual(self.employee_joseph.resource_id.role_ids, roles, "Joseph should have role b, c, d and e as roles")
+        self.assertEqual(self.employee_joseph.default_planning_role_id, role_e, "Joseph should have role e as default role")
+        self.assertEqual(self.employee_joseph.planning_role_ids, roles, "Joseph should have role b, c, d and e as resource_id.role_ids")
 
     def test_hr_employee_view_planning(self):
         self.env['planning.slot'].create({

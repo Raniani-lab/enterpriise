@@ -4,7 +4,7 @@ import logging
 import uuid
 
 from datetime import datetime, time
-from odoo import fields, models, _, api
+from odoo import fields, models, _, api, Command
 
 _logger = logging.getLogger(__name__)
 
@@ -15,9 +15,12 @@ class Employee(models.Model):
     def _default_employee_token(self):
         return str(uuid.uuid4())
 
-    default_planning_role_id = fields.Many2one('planning.role', string="Default Planning Role", groups='hr.group_hr_user')
-    planning_role_ids = fields.Many2many('planning.role', string="Planning Roles", groups='hr.group_hr_user', compute='_compute_planning_role_ids', store=True, readonly=False)
-    employee_token = fields.Char('Security Token', default=_default_employee_token, copy=False, groups='hr.group_hr_user', readonly=True)
+    default_planning_role_id = fields.Many2one('planning.role', string="Default Planning Role",
+                                               compute='_compute_default_planning_role_id',
+                                               groups='hr.group_hr_user', store=True, readonly=False)
+    planning_role_ids = fields.Many2many(related='resource_id.role_ids', readonly=False, groups='hr.group_hr_user')
+    employee_token = fields.Char('Security Token', default=_default_employee_token, groups='hr.group_hr_user',
+                                 copy=False, readonly=True)
     flexible_hours = fields.Boolean(related='resource_id.flexible_hours', readonly=False)
 
     _sql_constraints = [
@@ -60,24 +63,43 @@ class Employee(models.Model):
         link = "/web?date_start=%s&date_end=%s#action=%s&model=planning.slot&menu_id=%s&db=%s" % (start_date, end_date, action_id, menu_id, dbname[0])
         return {employee.id: link for employee in self}
 
-    @api.depends('default_planning_role_id')
-    def _compute_planning_role_ids(self):
-        # Set the planning_role_ids to False where there's no value set yet, to avoid CacheMiss
-        for employee in self.filtered(lambda s: s.planning_role_ids is None):
-            employee.planning_role_ids = False
+    @api.onchange('default_planning_role_id')
+    def _onchange_default_planning_role_id(self):
+        # Although not recommended the onchange is necessary here as the field is a related and the bellow logic
+        # is only needed when editing in order to improve UX.
+        for employee in self:
+            employee.planning_role_ids |= employee.default_planning_role_id
 
-        for employee in self.filtered(lambda s: s.default_planning_role_id):
-            if employee.default_planning_role_id and employee.default_planning_role_id not in employee.planning_role_ids:
-                employee.planning_role_ids |= employee.default_planning_role_id
+    @api.depends('planning_role_ids')
+    def _compute_default_planning_role_id(self):
+        for employee in self:
+            if employee.planning_role_ids and employee.default_planning_role_id.id not in employee.planning_role_ids.ids:
+                # _origin is required to have it work during onchange calls.
+                employee.default_planning_role_id = employee.planning_role_ids._origin[0]
+            elif not employee.planning_role_ids:
+                employee.default_planning_role_id = False
 
     def write(self, vals):
-        res = super(Employee, self).write(vals)
-
-        if 'default_planning_role_id' in vals or 'planning_role_ids' in vals:
-            # Ensures the default_planning_role_id is added to the planning_role_ids
-            self.env.add_to_compute(self._fields['planning_role_ids'], self)
-
-        return res
+        # The following lines had to be written as `planning_role_ids` is a related field that has to depend on
+        # `default_planning_role_id`. In order to do so an onchange has been added in order to improve the user
+        # experience, but unfortunately does not trigger computation on write. That's why we need to handle it
+        # here too.
+        default_planning_role_id = vals.get('default_planning_role_id', False)
+        default_planning_role = self.env['planning.role'].browse(default_planning_role_id)\
+            if isinstance(default_planning_role_id, int) else default_planning_role_id
+        if default_planning_role:
+            if 'planning_role_ids' in vals and vals['planning_role_ids']:
+                # `planning_role_ids` is either a list of commands, a list of ids, or a recordset
+                if isinstance(vals['planning_role_ids'], list):
+                    if len(vals['planning_role_ids'][0]) == 3:
+                        vals['planning_role_ids'].append(Command.link(default_planning_role.id))
+                    else:
+                        vals['planning_role_ids'].append(default_planning_role.id)
+                else:
+                    vals['planning_role_ids'] |= default_planning_role
+            else:
+                vals['planning_role_ids'] = [Command.link(default_planning_role.id)]
+        return super().write(vals)
 
     def action_archive(self):
         res = super().action_archive()
@@ -99,7 +121,6 @@ class Employee(models.Model):
                     'end_datetime': slot.end_datetime,
                     'role_id': slot.role_id.id,
                     'company_id': slot.company_id.id,
-                    'tag_ids': slot.tag_ids.ids,
                 })
                 slot.write({'end_datetime': departure_date})
             elif slot.start_datetime >= departure_date:

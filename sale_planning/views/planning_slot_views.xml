@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="planning.planning_view_search"/>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='tag_ids']" position="before">
+            <xpath expr="//field[@name='company_id']" position="before">
                 <field name="sale_order_id" string="Sales Order"/>
                 <field name="role_product_ids" string="Service"/>
             </xpath>
@@ -108,7 +108,7 @@
         <field name="model">planning.slot</field>
         <field name="inherit_id" ref="planning.planning_view_tree"/>
         <field name="arch" type="xml">
-            <field name="tag_ids" position="before">
+            <field name="company_id" position="before">
                 <field name="sale_line_id" optional="show" options="{'no_create': True}"/>
                 <field name="sale_line_plannable" invisible="1"/>
             </field>
@@ -136,7 +136,7 @@
         <field name="inherit_id" ref="planning.planning_view_kanban"/>
         <field name="priority">20</field>
         <field name="arch" type="xml">
-            <xpath expr="//span[@name='tags']" position="before">
+            <xpath expr="//span[@name='role']" position="after">
                 <div><field name="sale_line_id"/></div>
             </xpath>
             <xpath expr="//div[hasclass('o_kanban_record_top')]" position="attributes">

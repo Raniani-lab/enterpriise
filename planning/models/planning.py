@@ -56,7 +56,6 @@ class Planning(models.Model):
     job_title = fields.Char(related='employee_id.job_title')
     company_id = fields.Many2one('res.company', string="Company", required=True, compute="_compute_planning_slot_company_id", store=True, readonly=False)
     role_id = fields.Many2one('planning.role', string="Role", compute="_compute_role_id", store=True, readonly=False, copy=True, group_expand='_read_group_role_id')
-    tag_ids = fields.Many2many('planning.tag', string='Tags')
     color = fields.Integer("Color", compute='_compute_color')
     was_copied = fields.Boolean("This Shift Was Copied From Previous Week", default=False, readonly=True)
     access_token = fields.Char("Security Token", default=lambda self: str(uuid.uuid4()), required=True, copy=False, readonly=True)
@@ -550,6 +549,7 @@ class Planning(models.Model):
             return dt and pytz.utc.localize(dt).astimezone(tz)
 
         resource = resource_id or self.env.user.employee_id.resource_id
+        company = self.company_id or self.env.company
         employee = resource_id.employee_id if resource_id.resource_type == 'user' else False
         user_tz = pytz.timezone(self.env.user.tz
                                 or employee and employee.tz
@@ -557,6 +557,20 @@ class Planning(models.Model):
                                 or self._context.get('tz')
                                 or self.env.user.company_id.resource_calendar_id.tz
                                 or 'UTC')
+
+        if start_datetime and end_datetime and not template_id:
+            # Transform the current column's start/end_datetime to the user's timezone from UTC
+            current_start = convert_datetime_timezone(start_datetime, user_tz)
+            current_end = convert_datetime_timezone(end_datetime, user_tz)
+            # Look at the work intervals to examine whether the current start/end_datetimes are inside working hours
+            calendar_id = resource.calendar_id if resource else company.resource_calendar_id
+            work_interval = calendar_id._work_intervals_batch(current_start, current_end)[False]
+            intervals = [(date_start, date_stop) for date_start, date_stop, attendance in work_interval]
+            if not intervals:
+                # If we are outside working hours, we do not edit the start/end_datetime
+                # Return the start/end times back at UTC and remove the tzinfo from the object
+                return (current_start.astimezone(pytz.utc).replace(tzinfo=None),
+                        current_end.astimezone(pytz.utc).replace(tzinfo=None))
 
         # start_datetime and end_datetime are from 00:00 to 23:59 in user timezone
         # Converted in UTC, it gives an offset for any other timezone, _convert_datetime_timezone removes the offset
@@ -1690,7 +1704,8 @@ class PlanningRole(models.Model):
     active = fields.Boolean('Active', default=True)
     name = fields.Char('Name', required=True, translate=True)
     color = fields.Integer("Color", default=_get_default_color)
-    employee_ids = fields.Many2many('hr.employee', string='Human Resources')
+    resource_ids = fields.Many2many('resource.resource', 'resource_resource_planning_role_rel',
+                                    'planning_role_id', 'resource_resource_id', 'Resources')
     sequence = fields.Integer()
 
     @api.returns('self', lambda value: value.id)

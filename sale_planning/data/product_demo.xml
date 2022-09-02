@@ -5,39 +5,24 @@
         <!-- Roles -->
         <record id="planning_role_technician" model="planning.role">
             <field name="name">IT Technician</field>
+            <field name="resource_ids" model="resource.resource" eval="[obj().env.ref('hr.employee_jog').resource_id.id, obj().env.ref('hr.employee_chs').resource_id.id]"/>
             <field name="color">9</field>
         </record>
 
         <record id="planning_role_planner" model="planning.role">
             <field name="name">Work Planner</field>
+            <field name="resource_ids" model="resource.resource" eval="[obj().env.ref('hr.employee_jgo').resource_id.id, obj().env.ref('hr.employee_lur').resource_id.id]"/>
             <field name="color">8</field>
         </record>
 
         <record id="planning_role_tester" model="planning.role">
             <field name="name">Functional Tester</field>
+            <field name="resource_ids" model="resource.resource" eval="[obj().env.ref('hr.employee_hne').resource_id.id, obj().env.ref('hr.employee_jve').resource_id.id]"/>
             <field name="color">6</field>
         </record>
 
-        <record id="hr.employee_jog" model="hr.employee">
-            <field name="planning_role_ids" eval="[(4, ref('planning_role_technician'))]"/>
-        </record>
         <record id="hr.employee_chs" model="hr.employee">
             <field name="default_planning_role_id" ref="planning_role_technician"/>
-            <field name="planning_role_ids" eval="[(4, ref('planning_role_technician'))]"/>
-        </record>
-
-        <record id="hr.employee_jgo" model="hr.employee">
-            <field name="planning_role_ids" eval="[Command.set([ref('planning_role_planner')])]"/>
-        </record>
-        <record id="hr.employee_lur" model="hr.employee">
-            <field name="planning_role_ids" eval="[Command.set([ref('planning_role_planner')])]"/>
-        </record>
-
-        <record id="hr.employee_hne" model="hr.employee">
-            <field name="planning_role_ids" eval="[Command.set([ref('planning_role_tester')])]"/>
-        </record>
-        <record id="hr.employee_jve" model="hr.employee">
-            <field name="planning_role_ids" eval="[Command.set([ref('planning_role_tester')])]"/>
         </record>
 
         <record id="technical_maintainance_product" model="product.product">

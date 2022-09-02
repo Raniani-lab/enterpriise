@@ -11,7 +11,6 @@
                     attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'show_job_title': True}"/>
                 <field name="resource_type" invisible="1"/>
                 <field name="role_id" optional="show" attrs="{'invisible': [('resource_type', '=', 'material')]}" placeholder="e.g. Bartender"/>
-                <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
                 <field name="start_datetime" widget="daterange" options="{'related_end_date': 'end_datetime'}"/>
                 <field name="end_datetime" widget="daterange" options="{'related_start_date': 'start_datetime'}"/>
@@ -80,9 +79,8 @@
                         <group>
                             <field name="resource_id" context="{'from_planning': True, 'show_job_title': True}" options="{'no_create_edit': True}"
                                 attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" widget="many2one_avatar_resource"/>
-                            <field name="role_id" attrs="{'invisible': [('resource_type', '=', 'material')]}" placeholder="e.g. Bartender"/>
+                            <field name="role_id" placeholder="e.g. Bartender"/>
                             <field name="company_id" groups="base.group_multi_company"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
                         </group>
                         <!-- slot_info_right group is used in another module -->
                         <group name="slot_info_right">
@@ -146,7 +144,6 @@
                 <field name="resource_id"/>
                 <field name="resource_type"/>
                 <field name="role_id"/>
-                <field name="tag_ids"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="start_datetime"/>
                 <field name="end_datetime"/>
@@ -189,7 +186,6 @@
                                 <t t-elif="record.resource_type.raw_value == 'material'">
                                     <span name="resource"><field name="resource_id"/></span>
                                 </t>
-                                <span name="tags"><field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/></span>
                             </div>
                             <div class="o_kanban_record_bottom">
                                 <div class="oe_kanban_bottom_left"/>
@@ -271,7 +267,6 @@
             <search>
                 <field name="resource_id" groups="planning.group_planning_user"/>
                 <field name="role_id" groups="planning.group_planning_user"/>
-                <field name="tag_ids" groups="planning.group_planning_user"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="department_id" groups="planning.group_planning_user"/>
                 <field name="manager_id" groups="planning.group_planning_user"/>
@@ -282,7 +277,7 @@
                 <filter name="my_team_shifts" string="My Team" domain="[('manager_id.user_id', '=', uid)]" help="Shifts of Your Team Member" groups="planning.group_planning_user"/>
                 <filter name="my_department_shifts" string="My Department" domain="[('employee_id.member_of_department', '=', True)]" help="Shifts of Your Department Member" groups="planning.group_planning_user"/>
                 <separator/>
-                <filter string="My Roles" name="my_role" domain="[('role_id.employee_ids.user_id','=', uid)]" groups="planning.group_planning_user"/>
+                <filter string="My Roles" name="my_role" domain="[('role_id.resource_ids.user_id','=', uid)]" groups="planning.group_planning_user"/>
                 <separator/>
                 <filter name="conflict_shifts" string="Shifts in Conflict" domain="[('overlap_slot_count', '>', 0)]" groups="planning.group_planning_user"/>
                 <separator/>
@@ -438,7 +433,7 @@
             <tree string="Planning Role List" editable="bottom" multi_edit="1" js_class="legacy_list">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-                <field name="employee_ids" widget="many2many_avatar_employee" optional="show"/>
+                <field name="resource_ids" widget="many2many_tags" optional="show" context="{'form_view_ref': 'planning.resource_resource_form_tags_view_inherit'}"/>
                 <field name="color" widget="color_picker" optional="show"/>
             </tree>
         </field>
@@ -454,7 +449,7 @@
                     <group>
                         <field name="active" invisible="1" />
                         <field name="name"/>
-                        <field name="employee_ids" widget="many2many_avatar_employee"/>
+                        <field name="resource_ids" widget="many2many_tags"/>
                         <field name="color" widget="color_picker"/>
                         <field name="sequence" groups="base.group_no_one"/>
                     </group>
@@ -497,7 +492,7 @@
                                     <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
                                 </div>
                             </div>
-                            <field name="employee_ids" widget="many2many_tags" />
+                            <field name="resource_ids" widget="many2many_tags" />
                         </div>
                     </t>
                 </templates>
@@ -511,14 +506,14 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" />
-                <field name="employee_ids"/>
-                <filter name="my_roles" string="My Roles" domain="[('employee_ids.user_id', '=', uid)]"/>
-                <filter name="my_team" string="My Team" domain="[('employee_ids.parent_id.user_id', '=', uid)]"/>
-                <filter name="my_department" string="My Department" domain="[('employee_ids.member_of_department', '=', True)]"/>
+                <field name="resource_ids"/>
+                <filter name="my_roles" string="My Roles" domain="[('resource_ids.user_id', '=', uid)]"/>
+                <filter name="my_team" string="My Team" domain="[('resource_ids.employee_id.parent_id.user_id', '=', uid)]"/>
+                <filter name="my_department" string="My Department" domain="[('resource_ids.employee_id.member_of_department', '=', True)]"/>
                 <separator/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group string="Group By">
-                    <filter name="group_by_resource" string="Human Resources" context="{'group_by': 'employee_ids'}"/>
+                    <filter name="group_by_resource" string="Resources" context="{'group_by': 'resource_ids'}"/>
                 </group>
             </search>
         </field>
@@ -851,8 +846,16 @@
             groups="base.group_system"/>
 
         <menuitem
+            id="planning_menu_settings_employee"
+            name="Employees"
+            parent="planning_menu_settings"
+            sequence="12"
+            action="hr.open_view_employee_list_my"
+            groups="planning.group_planning_manager"/>
+
+        <menuitem
             id="planning_menu_settings_resource"
-            name="Material Resources"
+            name="Materials"
             parent="planning_menu_settings"
             sequence="15"
             action="planning_action_resources"

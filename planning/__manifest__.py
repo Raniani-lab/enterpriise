@@ -21,7 +21,6 @@
         'views/planning_template_views.xml',
         'views/resource_views.xml',
         'views/planning_views.xml',
-        'views/planning_tag_views.xml',
         'views/planning_report_views.xml',
         'views/res_config_settings_views.xml',
         'views/planning_templates.xml',

@@ -56,6 +56,23 @@ const PlanningGanttController = GanttController.extend(PlanningControllerMixin, 
     },
 
     /**
+     * @override
+     * @private
+     * @param {OdooEvent} event
+     */
+     _getDialogContext(date, rowId) {
+         const context = this._super(...arguments);
+         const state = this.model.get();
+         if (state.scale == "week" || state.scale == "month") {
+             const dateStart = date.clone().set({"hour": 8, "minute": 0});
+             const dateStop = date.clone().set({"hour": 17, "minute": 0, "second": 0});
+             context[state.dateStartField] = this.model.convertToServerTime(dateStart);
+             context[state.dateStopField] = this.model.convertToServerTime(dateStop);
+         }
+        return context;
+    },
+
+    /**
      * Display a dialog form view of employee model for each employee who has no work email
      *
      * This function is only useable in Controller class

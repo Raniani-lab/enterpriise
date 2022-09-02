@@ -11,33 +11,32 @@
         <!-- Roles -->
         <record id="planning_role_developer" model="planning.role">
             <field name="name">Developer</field>
+            <field name="resource_ids" model="resource.resource" eval="[obj().env.ref('hr.employee_admin').resource_id.id, obj().env.ref('hr.employee_qdp').resource_id.id]"/>
             <field name="color">2</field>
         </record>
         <record id="planning_role_cm" model="planning.role">
             <field name="name">Community Manager</field>
+            <field name="resource_ids" model="resource.resource" eval="[obj().env.ref('hr.employee_qdp').resource_id.id, obj().env.ref('hr.employee_ngh').resource_id.id]"/>
             <field name="color">3</field>
         </record>
         <record id="planning_role_management" model="planning.role">
             <field name="name">Management</field>
+            <field name="resource_ids" model="resource.resource" eval="[obj().env.ref('hr.employee_admin').resource_id.id, obj().env.ref('hr.employee_vad').resource_id.id, obj().env.ref('hr.employee_ngh').resource_id.id]"/>
             <field name="color">4</field>
         </record>
 
         <!-- Default Planning Role -->
         <record id="hr.employee_admin" model="hr.employee">
             <field name="default_planning_role_id" ref="planning.planning_role_management"/>
-            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_management')), (4, ref('planning.planning_role_developer'))]"/>
         </record>
         <record id="hr.employee_vad" model="hr.employee">
             <field name="default_planning_role_id" ref="planning.planning_role_management"/>
-            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_management'))]"/>
         </record>
         <record id="hr.employee_qdp" model="hr.employee">
             <field name="default_planning_role_id" ref="planning.planning_role_developer"/>
-            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_developer')), (4, ref('planning.planning_role_cm'))]"/>
         </record>
         <record id="hr.employee_ngh" model="hr.employee">
             <field name="default_planning_role_id" ref="planning.planning_role_cm"/>
-            <field name="planning_role_ids" eval="[(4, ref('planning.planning_role_cm')), (4, ref('planning.planning_role_management'))]"/>
         </record>
 
         <!-- Shift templates (morning shifts) -->

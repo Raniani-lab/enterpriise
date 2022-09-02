@@ -5,9 +5,6 @@ access_planning_slot_manager,planning.slot.manager,planning.model_planning_slot,
 access_planning_role_employee,planning.role.employee,planning.model_planning_role,base.group_user,1,0,0,0
 access_planning_role_user,planning.role.user,planning.model_planning_role,planning.group_planning_user,1,0,0,0
 access_planning_role_manager,planning.role.manager,planning.model_planning_role,planning.group_planning_manager,1,1,1,1
-access_planning_tag_employee,planning.tag.employee,planning.model_planning_tag,base.group_user,1,0,0,0
-access_planning_tag_user,planning.tag.user,planning.model_planning_tag,planning.group_planning_user,1,0,0,0
-access_planning_tag_manager,planning.tag.manager,planning.model_planning_tag,planning.group_planning_manager,1,1,1,1
 access_planning_recurrency_employee,planning.recurrency.employee,planning.model_planning_recurrency,base.group_user,1,0,0,0
 access_planning_recurrency_user,planning.recurrency.user,planning.model_planning_recurrency,planning.group_planning_user,1,0,0,0
 access_planning_recurrency_manager,planning.recurrency.manager,planning.model_planning_recurrency,planning.group_planning_manager,1,1,1,1

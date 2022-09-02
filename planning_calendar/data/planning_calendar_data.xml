@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<odoo>
-    <record id="planning_role_meeting" model="planning.role">
-        <field name="name">Meeting</field>
-        <field name="color">6</field>
-    </record>
-</odoo>

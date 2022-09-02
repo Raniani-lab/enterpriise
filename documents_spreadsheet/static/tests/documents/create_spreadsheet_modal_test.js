@@ -10,8 +10,6 @@ import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from '@web/core/registry';
 import { documentsFileUploadService } from '@documents/views/helper/documents_file_upload_service';
-import { DocumentsSearchPanel } from "@documents/views/search/documents_search_panel";
-import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
 
 const serviceRegistry = registry.category("services");
@@ -64,20 +62,6 @@ QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
                 const result = this._super(...arguments);
                 result.withFilePreview = true;
                 return result;
-            },
-        });
-        // Due to the search panel allowing double clicking on elements, the base
-        // methods have a debounce time in order to not do anything on dblclick.
-        // This patch removes those features
-        patchWithCleanup(DocumentsSearchPanel.prototype, {
-            toggleCategory() {
-                return SearchPanel.prototype.toggleCategory.call(this, ...arguments);
-            },
-            toggleFilterGroup() {
-                return SearchPanel.prototype.toggleFilterGroup.call(this, ...arguments);
-            },
-            toggleFilterValue() {
-                return SearchPanel.prototype.toggleFilterValue.call(this, ...arguments);
             },
         });
     }

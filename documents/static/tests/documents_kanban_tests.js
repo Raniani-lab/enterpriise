@@ -5,8 +5,6 @@ import { createDocumentsView as originalCreateDocumentsView, createDocumentsView
 import { registry } from '@web/core/registry';
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
-import { DocumentsSearchPanel } from "@documents/views/search/documents_search_panel";
-import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
 import { DocumentsInspector } from "@documents/views/inspector/documents_inspector";
 
@@ -73,20 +71,6 @@ QUnit.module('documents_kanban_tests.js', {
                 const result = this._super(...arguments);
                 result.withFilePreview = true;
                 return result;
-            },
-        });
-        // Due to the search panel allowing double clicking on elements, the base
-        // methods have a debounce time in order to not do anything on dblclick.
-        // This patch removes those features
-        patchWithCleanup(DocumentsSearchPanel.prototype, {
-            toggleCategory() {
-                return SearchPanel.prototype.toggleCategory.call(this, ...arguments);
-            },
-            toggleFilterGroup() {
-                return SearchPanel.prototype.toggleFilterGroup.call(this, ...arguments);
-            },
-            toggleFilterValue() {
-                return SearchPanel.prototype.toggleFilterValue.call(this, ...arguments);
             },
         });
         this.ORIGINAL_CREATE_XHR = documentsFileUploadService._createXHR;
@@ -2876,7 +2860,7 @@ QUnit.module('documents_kanban_tests.js', {
     });
 
     QUnit.test("SearchPanel: regular user can not edit", async function (assert) {
-        assert.expect(2);
+        assert.expect(1);
 
         await createDocumentsView({
             type: "kanban",
@@ -2888,29 +2872,13 @@ QUnit.module('documents_kanban_tests.js', {
                         <field name="name"/>
                     </div>
                 </t></templates></kanban>`,
-            mockRPC: async (route, args, performRpc) => {
-                if (args.method === "write") {
-                    // When writing on name, the mock_server does not update display_name so we write to both fields.
-                    args.args[1] = {
-                        name: args.args[1].name,
-                        display_name: args.args[1].name,
-                    }
-                    return performRpc('', args);
-                }
-            }
         });
 
-        // Edition should not work on "All" Folder
-        triggerEvent(target, '.o_search_panel_category_value:nth-of-type(1) header', 'dblclick');
-        assert.containsNone(target, "input.o_search_panel_label_title");
-
-        // Edition on second folder should not work
-        triggerEvent(target, '.o_search_panel_category_value:nth-of-type(2) header', 'dblclick');
-        assert.containsNone(target, "input.o_search_panel_label_title");
+        assert.containsNone(target, ".o_documents_search_panel_section_edit");
     });
 
     QUnit.test("SearchPanel: can edit folders", async function (assert) {
-        assert.expect(10);
+        assert.expect(8);
 
         serviceRegistry.add(
             "user",
@@ -2929,14 +2897,7 @@ QUnit.module('documents_kanban_tests.js', {
                     </div>
                 </t></templates></kanban>`,
             mockRPC: async (route, args, performRpc) => {
-                if (args.method === "write") {
-                    // When writing on name, the mock_server does not update display_name so we write to both fields.
-                    args.args[1] = {
-                        name: args.args[1].name,
-                        display_name: args.args[1].name,
-                    }
-                    return performRpc('', args);
-                } else if (args.method === "set_parent_folder") {
+                if (args.method === "set_parent_folder") {
                     assert.deepEqual(args.args[0], [2]);
                     assert.strictEqual(args.args[1], 1);
                     return performRpc('', {
@@ -2948,19 +2909,8 @@ QUnit.module('documents_kanban_tests.js', {
             }
         });
 
-        // Edition should not work on "All" Folder
-        triggerEvent(target, '.o_search_panel_category_value:nth-of-type(1) header', 'dblclick');
-        assert.containsNone(target, "input.o_search_panel_label_title");
-
-        // Edition on second folder should work
-        triggerEvent(target, '.o_search_panel_category_value:nth-of-type(2) header', 'dblclick');
-        await nextTick();
-        assert.containsOnce(target, "input.o_search_panel_label_title");
-        editInput(target, 'input.o_search_panel_label_title', 'New Name');
-        await nextTick();
-        triggerEvent(target, 'input.o_search_panel_label_title', 'blur');
-        await nextTick();
-        assert.ok(find(target, ".o_search_panel_category_value .o_search_panel_label_title", "New Name"));
+        // Edition should not be enabled for "All" workspace
+        assert.containsNone(target, ".o_search_panel_category_value:nth-of-type(1) .o_documents_search_panel_section_edit");
 
         // Test deletion on folder
         patchWithCleanup(kanban.env.services.action, {
@@ -2968,10 +2918,10 @@ QUnit.module('documents_kanban_tests.js', {
                 assert.strictEqual(action, "documents.documents_folder_deletion_wizard_action");
             },
         });
-        triggerEvent(target, '.o_search_panel_category_value:nth-of-type(2) header', 'dblclick');
+        triggerEvent(target, '.o_search_panel_category_value:nth-of-type(2) .o_documents_search_panel_section_edit', 'click', {}, {skipVisibilityCheck: true});
         await nextTick();
-        assert.containsOnce(target, ".o_documents_delete_section_value");
-        triggerEvent(target, ".o_documents_delete_section_value", 'mousedown');
+        assert.containsOnce(target, ".o_search_panel_item_settings_popover");
+        triggerEvent(target, ".o_search_panel_value_edit_delete", "click");
 
         // Test edition of folder settings
         patchWithCleanup(kanban.env.services.action, {
@@ -2983,15 +2933,16 @@ QUnit.module('documents_kanban_tests.js', {
                     type: "ir.actions.act_window",
                     target: "new",
                     views: [[false, "form"]],
+                    context: {
+                        create: false,
+                    },
                 });
             },
         });
-        triggerEvent(target, '.o_search_panel_category_value:nth-of-type(2) header', 'dblclick');
+        triggerEvent(target, '.o_search_panel_category_value:nth-of-type(2) .o_documents_search_panel_section_edit', 'click', {}, {skipVisibilityCheck: true});
         await nextTick();
-        assert.containsOnce(target, ".o_documents_edit_section_value");
-        triggerEvent(target, ".o_documents_edit_section_value", 'mousedown');
-        triggerEvent(target, 'input.o_search_panel_label_title', 'blur');
-        await nextTick();
+        assert.containsOnce(target, ".o_search_panel_item_settings_popover");
+        triggerEvent(target, ".o_search_panel_value_edit_edit", "click");
 
         // Test dragging a folder into another one
         const sourceFolder = find(target, ".o_search_panel_category_value:nth-of-type(3)");
@@ -3030,30 +2981,15 @@ QUnit.module('documents_kanban_tests.js', {
                         <field name="name"/>
                     </div>
                 </t></templates></kanban>`,
-            mockRPC: async (route, args, performRpc) => {
-                if (args.method === "write") {
-                    // When writing on name, the mock_server does not update display_name so we write to both fields.
-                    args.args[1] = {
-                        name: args.args[1].name,
-                        display_name: args.args[1].name,
-                    }
-                    return performRpc('', args);
-                }
-            }
         });
 
         // Edition should work on tags
         const tag = find(target, '.o_search_panel_filter:nth-of-type(2) .o_search_panel_group_header:nth-of-type(1)', "●Priority");
-        triggerEvent(tag, "label", 'dblclick');
-        await nextTick();
-        assert.containsOnce(target, "input.o_search_panel_label");
-        triggerEvent(tag, "input.o_search_panel_label", 'blur');
+        assert.containsOnce(tag, ".o_documents_search_panel_section_edit");
 
         // Edition should not work on res_model
         const resModel = find(target, '.o_search_panel_filter:nth-of-type(3) .o_search_panel_label_title:nth-of-type(1)', "Attachment");
-        triggerEvent(resModel, null, 'dblclick');
-        await nextTick();
-        assert.containsNone(target, "input.o_search_panel_label");
+        assert.containsNone(resModel, ".o_documents_search_panel_section_edit");
     });
 
     QUnit.module("Upload");

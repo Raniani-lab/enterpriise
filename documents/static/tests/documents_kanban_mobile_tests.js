@@ -1,8 +1,6 @@
 /** @odoo-module **/
 
 import { createDocumentsView, createDocumentsViewWithMessaging } from './documents_test_utils';
-import { DocumentsSearchPanel } from "@documents/views/search/documents_search_panel";
-import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
 
 import { startServer } from '@mail/../tests/helpers/test_utils';
@@ -50,20 +48,6 @@ QUnit.module('documents_kanban_mobile_tests.js', {
                 const result = this._super(...arguments);
                 result.withFilePreview = true;
                 return result;
-            },
-        });
-        // Due to the search panel allowing double clicking on elements, the base
-        // methods have a debounce time in order to not do anything on dblclick.
-        // This patch removes those features
-        patchWithCleanup(DocumentsSearchPanel.prototype, {
-            toggleCategory() {
-                return SearchPanel.prototype.toggleCategory.call(this, ...arguments);
-            },
-            toggleFilterGroup() {
-                return SearchPanel.prototype.toggleFilterGroup.call(this, ...arguments);
-            },
-            toggleFilterValue() {
-                return SearchPanel.prototype.toggleFilterValue.call(this, ...arguments);
             },
         });
     },

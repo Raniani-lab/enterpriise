@@ -1,20 +1,26 @@
 /** @odoo-module **/
 
+import { browser } from "@web/core/browser/browser";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 
 import { useAutofocus, useService } from "@web/core/utils/hooks";
 import { device } from "web.config";
 import { sprintf } from "web.utils";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 const VALUE_SELECTOR = [".o_search_panel_category_value", ".o_search_panel_filter_value"].join();
 const FOLDER_VALUE_SELECTOR = ".o_search_panel_category_value";
+const LONG_TOUCH_THRESHOLD = 400;
 
-const { onWillStart, useState } = owl;
+const { Component, onWillStart, useState } = owl;
 
 /**
  * This file defines the DocumentsSearchPanel component, an extension of the
  * SearchPanel to be used in the documents kanban/list views.
  */
+
+export class DocumentsSearchPanelItemSettingsPopover extends Component {}
+DocumentsSearchPanelItemSettingsPopover.template = "documents.DocumentsSearchPanelItemSettingsPopover";
 
 export class DocumentsSearchPanel extends SearchPanel {
     setup() {
@@ -24,10 +30,8 @@ export class DocumentsSearchPanel extends SearchPanel {
         this.orm = useService("orm");
         this.user = useService("user");
         this.action = useService("action");
-        this.editionState = useState({
-            section: false,
-            value: false,
-        });
+        this.popover = useService("popover");
+        this.dialog = useService("dialog");
 
         onWillStart(async () => {
             this.isDocumentManager = await this.user.hasGroup("documents.group_documents_manager");
@@ -45,6 +49,13 @@ export class DocumentsSearchPanel extends SearchPanel {
         return ["folder_id", "tag_ids"];
     }
 
+    get supportedNewChildModels() {
+        if (!this.isDocumentManager) {
+            return [];
+        }
+        return ["documents.folder", "documents.facet"];
+    }
+
     get supportedDocumentsDropFields() {
         return ["folder_id", "tag_ids"];
     }
@@ -53,82 +64,14 @@ export class DocumentsSearchPanel extends SearchPanel {
     // Edition
     //---------------------------------------------------------------------
 
-    /**
-     * Prevent calling toggleCategory if it was double clicked.
-     *
-     * @override
-     */
-    toggleCategory() {
-        setTimeout(() => {
-            if (!this.editionState.section) {
-                super.toggleCategory(...arguments);
-            }
-        }, 200);
-    }
-
-    /**
-     * Prevent calling toggleFilterGroup if it was double clicked.
-     *
-     * @override
-     */
-    toggleFilterGroup() {
-        setTimeout(() => {
-            if (!this.editionState.section) {
-                super.toggleFilterGroup(...arguments);
-            }
-        }, 200);
-    }
-
-    toggleFilterValue(filterId, valueId, { currentTarget }) {
-        setTimeout(() => {
-            if (!this.editionState.section) {
-                super.toggleFilterValue(filterId, valueId, { currentTarget });
-            }
-        }, 200);
-    }
-
-    startEdition(sectionId, initialValue, value, group) {
-        const section = this.env.searchModel.getSections((s) => s.id === sectionId)[0];
-        if (!this.supportedEditionFields.includes(section.fieldName) || (!value && !group)) {
-            return;
-        }
-        this.editionState.section = sectionId;
-        this.editionState.initialValue = initialValue;
-        this.editionState.value = value;
-        this.editionState.group = group;
-    }
-
-    isEditing(section, value, group) {
-        return (
-            this.editionState.section === section &&
-            this.editionState.value === value &&
-            this.editionState.group === group
-        );
-    }
-
-    stopEdition() {
-        this.editionState.section = false;
-        this.editionState.initialValue = false;
-        this.editionState.value = false;
-        this.editionState.group = false;
-    }
-
-    async onInputKeydown(ev) {
-        if (ev.key !== "Enter") {
-            return;
-        }
-        await this.confirmEdition(ev);
-    }
-
-    _getResModelResIdFromEditionState() {
-        const section = this.env.searchModel.getSections((s) => s.id === this.editionState.section)[0];
-        if (this.editionState.value) {
+    getResModelResIdFromValueGroup(section, value, group) {
+        if (value) {
             return [
                 this.documentState.model.root.activeFields[section.fieldName].relation,
-                section.values.get(this.editionState.value).id,
+                section.values.get(value).id,
             ];
-        } else if (this.editionState.group) {
-            const resId = section.groups.get(this.editionState.group).id;
+        } else if (group) {
+            const resId = section.groups.get(group).id;
             if (section.groupBy === "facet_id") {
                 return ["documents.facet", resId];
             }
@@ -147,21 +90,75 @@ export class DocumentsSearchPanel extends SearchPanel {
         await searchModel._notify();
     }
 
-    async confirmEdition(ev) {
-        if (!this.editionState.section || (!this.editionState.value && !this.editionState.group)) {
+    // Support for edition on mobile
+    resetLongTouchTimer() {
+        if (this.longTouchTimer) {
+            browser.clearTimeout(this.longTouchTimer);
+            this.longTouchTimer = null;
+        }
+    }
+
+    onSectionValueTouchStart(ev, section, value, group) {
+        if (!device.isMobile || !this.supportedEditionFields.includes(section.fieldName)) {
             return;
         }
-        const newValue = ev.currentTarget.value.trim();
-        if (this.editionState.initialValue === newValue) {
-            this.stopEdition();
-            return;
+        this.touchStartMs = Date.now();
+        if (!this.longTouchTimer) {
+            this.longTouchTimer = browser.setTimeout(() => {
+                this.openEditPopover(ev, section, value, group);
+                this.resetLongTouchTimer();
+            }, LONG_TOUCH_THRESHOLD);
         }
-        const [resModel, resId] = this._getResModelResIdFromEditionState();
-        await this.orm.write(resModel, [resId], {
-            name: newValue,
+    }
+
+    onSectionValueTouchEnd() {
+        const elapsedTime = Date.now() - this.touchStartMs;
+        if (elapsedTime < LONG_TOUCH_THRESHOLD) {
+            this.resetLongTouchTimer();
+        }
+    }
+
+    onSectionValueTouchMove() {
+        this.resetLongTouchTimer();
+    }
+
+    async openEditPopover(ev, section, value, group) {
+        const [resModel, resId] = this.getResModelResIdFromValueGroup(section, value, group);
+        const target = ev.currentTarget || ev.target;
+        const label = target.closest(".o_search_panel_label");
+        const counter = label && label.querySelector(".o_search_panel_counter");
+        if (this.popoverClose) {
+            this.popoverClose();
+        }
+        this.popoverClose = this.popover.add(ev.target, DocumentsSearchPanelItemSettingsPopover, {
+            onEdit: () => {
+                this.popoverClose();
+                this.state.showMobileSearch = false;
+                this.editSectionValue(resModel, resId);
+            },
+            onCreateChild: () => {
+                this.popoverClose();
+                this.addNewSectionValue(section, value || group);
+            },
+            onDelete: () => {
+                this.popoverClose();
+                this.state.showMobileSearch = false;
+                this.removeSectionValue(section, resModel, resId);
+            },
+            createChildEnabled: this.supportedNewChildModels.includes(resModel),
+        }, {
+            onClose: () => {
+                target.classList.remove("d-block");
+                if (counter) {
+                    counter.classList.remove("d-none");
+                }
+            },
+            popoverClass: "o_search_panel_item_settings_popover",
         });
-        await this._reloadSearchModel(resModel === "documents.folder" && !this.editionState.section.enableCounters);
-        this.stopEdition();
+        target.classList.add("d-block");
+        if (counter) {
+            counter.classList.add("d-none");
+        }
     }
 
     async addNewSectionValue(section, parentValue) {
@@ -194,8 +191,7 @@ export class DocumentsSearchPanel extends SearchPanel {
         this.render(true);
     }
 
-    async editSectionValue(section) {
-        const [resModel, resId] = this._getResModelResIdFromEditionState();
+    async editSectionValue(resModel, resId) {
         this.action.doAction({
             res_model: resModel,
             res_id: resId,
@@ -203,16 +199,23 @@ export class DocumentsSearchPanel extends SearchPanel {
             type: "ir.actions.act_window",
             target: "new",
             views: [[false, "form"]],
+            context: {
+                create: false,
+            },
         }, {
             onClose: this._reloadSearchModel.bind(this, true),
         });
     }
 
-    async removeSectionValue(section) {
-        const [resModel, resId] = this._getResModelResIdFromEditionState();
+    async removeSectionValue(section, resModel, resId) {
         if (resModel !== "documents.folder") {
-            await this.orm.unlink(resModel, [resId]);
-            await this._reloadSearchModel(resModel === "documents.folder" && !section.enableCounters);
+            this.dialog.add(ConfirmationDialog, {
+                body: this.env._t("Are you sure you want to delete this record?"),
+                confirm: async () => {
+                    await this.orm.unlink(resModel, [resId]);
+                    await this._reloadSearchModel(resModel === "documents.folder" && !section.enableCounters);
+                }
+            });
         } else {
             this.action.doAction("documents.documents_folder_deletion_wizard_action", {
                 additionalContext: {
@@ -223,7 +226,6 @@ export class DocumentsSearchPanel extends SearchPanel {
                 },
             });
         }
-        this.stopEdition();
     }
 
     //---------------------------------------------------------------------
@@ -432,5 +434,11 @@ if (!device.isMobile) {
     DocumentsSearchPanel.subTemplates = {
         category: "documents.SearchPanel.Category",
         filtersGroup: "documents.SearchPanel.FiltersGroup",
+    };
+} else {
+    DocumentsSearchPanel.template = "documents.SearchPanelEnterprise.Mobile";
+    DocumentsSearchPanel.subTemplates = {
+        category: "documents.SearchPanel.Category.Mobile",
+        filtersGroup: "documents.SearchPanel.FiltersGroup.Mobile",
     };
 }

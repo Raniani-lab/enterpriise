@@ -196,7 +196,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      */
     async _onNameClick(event) {
         const name = event.target.value;
-        if (name === this.env._t('New Article')) {
+        if (name === this.env._t('Untitled')) {
             this._rename(this.resId, '');
         }
     }
@@ -305,7 +305,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             if (articleTitle) {
                 name = articleTitle.textContent.trim();
             }
-            name = name || this.env._t('New Article');
+            name = name || this.env._t('Untitled');
             this.props.record.update({'name': name});
         }
         // ADSC: Remove when tree component

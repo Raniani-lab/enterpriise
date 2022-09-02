@@ -12,7 +12,7 @@ tour.register('knowledge_pick_emoji_tour', {
     // click on the main "Create" action
     trigger: '.o_knowledge_header .btn:contains("Create")',
 }, {
-    trigger: 'section[data-section="private"] .o_article .o_article_name:contains("New Article")',
+    trigger: 'section[data-section="private"] .o_article .o_article_name:contains("Untitled")',
     run: () => {}, // check that the article is correctly created (private section)
 }, {
     trigger: '.o_knowledge_icon_cover_buttons',

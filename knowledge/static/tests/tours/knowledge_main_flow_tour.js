@@ -66,7 +66,7 @@ tour.register('knowledge_main_flow_tour', {
     // click on the main "Create" action
     trigger: '.o_knowledge_header .btn:contains("Create")',
 }, {
-    trigger: 'section[data-section="private"] .o_article .o_article_name:contains("New Article")',
+    trigger: 'section[data-section="private"] .o_article .o_article_name:contains("Untitled")',
     run: () => {},  // check that the article is correctly created (private section)
 }, {
     trigger: '.o_breadcrumb_article_name > input',
@@ -84,7 +84,7 @@ tour.register('knowledge_main_flow_tour', {
     // create an article in the "Workspace" section
     trigger: 'section[data-section="workspace"] .o_section_create',
 }, {
-    trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("New Article")',
+    trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("Untitled")',
     run: () => {},  // check that the article is correctly created (workspace section)
 }, {
     trigger: '.o_breadcrumb_article_name > input',
@@ -102,7 +102,7 @@ tour.register('knowledge_main_flow_tour', {
     // create child article
     trigger: '.o_article:contains("My Workspace Article") button.o_article_create',
 }, {
-    trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("New Article")',
+    trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("Untitled")',
     run: () => {},  // check that the article is correctly created (workspace section)
 }, {
     trigger: '.o_breadcrumb_article_name > input',
@@ -117,7 +117,7 @@ tour.register('knowledge_main_flow_tour', {
     // create child article (2)
     trigger: '.o_article:contains("My Workspace Article") button.o_article_create',
 }, {
-    trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("New Article")',
+    trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("Untitled")',
     run: () => {},  // check that the article is correctly created (workspace section)
 }, {
     trigger: '.o_breadcrumb_article_name > input',

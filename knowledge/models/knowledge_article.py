@@ -25,7 +25,7 @@ class Article(models.Model):
     _parent_store = True
 
     active = fields.Boolean(default=True)
-    name = fields.Char(string="Title", default=lambda self: _('New Article'), required=True, tracking=20)
+    name = fields.Char(string="Title", default=lambda self: _('Untitled'), required=True, tracking=20)
     body = fields.Html(string="Body")
     icon = fields.Char(string='Emoji')
     cover = fields.Binary(string='Cover Image')

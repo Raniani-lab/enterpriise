@@ -4,6 +4,8 @@ from datetime import datetime, time
 from freezegun import freeze_time
 import pytz
 
+from odoo import fields
+
 from odoo.addons.resource.models.resource import Intervals
 from .common import TestCommonPlanning
 
@@ -11,7 +13,9 @@ class TestPlanningHr(TestCommonPlanning):
     @classmethod
     def setUpClass(cls):
         super(TestPlanningHr, cls).setUpClass()
-        cls.setUpEmployees()
+        cls.classPatch(cls.env.cr, 'now', fields.Datetime.now)
+        with freeze_time('2015-1-1'):
+            cls.setUpEmployees()
         calendar_joseph = cls.env['resource.calendar'].create({
             'name': 'Calendar 1',
             'tz': 'UTC',
@@ -95,17 +99,17 @@ class TestPlanningHr(TestCommonPlanning):
             'resource_id': joseph_resource_id.id,
             'start_datetime': datetime(2015, 11, 16, 8, 0),
             'end_datetime': datetime(2015, 11, 16, 17, 0),
-            # allocated_hours will be : 9h
+            # allocated_hours will be : 0h (see calendar)
         }, {
             'resource_id': joseph_resource_id.id,
             'start_datetime': datetime(2015, 11, 17, 8, 0),
             'end_datetime': datetime(2015, 11, 17, 17, 0),
-            # allocated_hours will be : 9h
+            # allocated_hours will be : 0h (see calendar)
         }, {
             'resource_id': joseph_resource_id.id,
             'start_datetime': datetime(2015, 11, 18, 8, 0),
             'end_datetime': datetime(2015, 11, 18, 17, 0),
-            # allocated_hours will be : 9h
+            # allocated_hours will be : 0h (see calendar)
         }, {
             'resource_id': joseph_resource_id.id,
             'start_datetime': datetime(2015, 11, 23, 8, 0),
@@ -118,7 +122,7 @@ class TestPlanningHr(TestCommonPlanning):
             ['resource_id'], {'resource_id': joseph_resource_id.ids}, '2015-11-08 00:00:00', '2015-11-28 23:59:59'
         )['resource_id']
         self.assertEqual(24, planning_hours_info[joseph_resource_id.id]['max_value'], "Work hours for the employee Jules should be 8h+8h+8h = 24h")
-        self.assertEqual(39, planning_hours_info[joseph_resource_id.id]['value'], "Planned hours for the employee Jules should be 3*9h+8h+4h = 39h")
+        self.assertEqual(12, planning_hours_info[joseph_resource_id.id]['value'], "Planned hours for the employee Jules should be 8h+4h = 12h")
 
         planning_hours_info = self.env['planning.slot'].gantt_progress_bar(
             ['resource_id'], {'resource_id': joseph_resource_id.ids}, '2015-11-12 00:00:00', '2015-11-12 23:59:59'

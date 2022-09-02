@@ -18,6 +18,7 @@ class Employee(models.Model):
     default_planning_role_id = fields.Many2one('planning.role', string="Default Planning Role", groups='hr.group_hr_user')
     planning_role_ids = fields.Many2many('planning.role', string="Planning Roles", groups='hr.group_hr_user', compute='_compute_planning_role_ids', store=True, readonly=False)
     employee_token = fields.Char('Security Token', default=_default_employee_token, copy=False, groups='hr.group_hr_user', readonly=True)
+    flexible_hours = fields.Boolean(related='resource_id.flexible_hours', readonly=False)
 
     _sql_constraints = [
         ('employee_token_unique', 'unique(employee_token)', 'Error: each employee token must be unique')

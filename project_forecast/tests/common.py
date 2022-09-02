@@ -15,12 +15,14 @@ class TestCommonForecast(TransactionCase):
         cls.employee_joseph = cls.env['hr.employee'].create({
             'name': 'joseph',
             'work_email': 'joseph@a.be',
+            'employee_type': 'freelance',  # to avoid using contract if hr_contract is installed before
             'tz': 'UTC'
         })
         cls.resource_joseph = cls.employee_joseph.resource_id
         cls.employee_bert = cls.env['hr.employee'].create({
             'name': 'bert',
             'work_email': 'bert@a.be',
+            'employee_type': 'freelance',  # to avoid using contract if hr_contract is installed before
             'tz': 'UTC'
         })
         cls.resource_bert = cls.employee_bert.resource_id

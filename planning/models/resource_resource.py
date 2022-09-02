@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from collections import defaultdict
 from random import randint
-import pytz
 
 from odoo import api, fields, models
 
@@ -14,6 +12,7 @@ class ResourceResource(models.Model):
 
     color = fields.Integer(default=_default_color)
     avatar_128 = fields.Image(compute='_compute_avatar_128')
+    flexible_hours = fields.Boolean('Flexible Hours')
 
     @api.depends('employee_id')
     def _compute_avatar_128(self):

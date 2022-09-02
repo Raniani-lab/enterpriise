@@ -16,9 +16,9 @@ tour.register('planning_test_tour', {
 }, {
     trigger: ".o_field_widget[name='resource_id'] input",
     content: "Assign this shift to your <b>resource</b>, or leave it open for the moment.",
-    run: 'text Marc Demo',
+    run: 'text Thibault',
 }, {
-    trigger: "ul.ui-menu.ui-widget a:contains(Marc Demo)",
+    trigger: "ul.ui-menu.ui-widget a:contains(Thibault)",
     auto: true,
     in_modal: false,
 }, {

@@ -2,16 +2,21 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from freezegun import freeze_time
+
+from odoo import fields
+from odoo.tests.common import Form
 
 from .common import TestCommonPlanning
-from odoo.tests.common import Form
 
 class TestPlanning(TestCommonPlanning):
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.setUpEmployees()
+        cls.classPatch(cls.env.cr, 'now', fields.datetime.now)
+        with freeze_time('2019-5-1'):
+            cls.setUpEmployees()
         calendar_joseph = cls.env['resource.calendar'].create({
             'name': 'Calendar 1',
             'tz': 'UTC',
@@ -59,19 +64,19 @@ class TestPlanning(TestCommonPlanning):
         })
 
     def test_allocated_hours_defaults(self):
-        self.assertEqual(self.slot.allocated_hours, 10, "It should have the default value")
+        self.assertEqual(self.slot.allocated_hours, 8, "It should follow the calendar of the resource to compute the allocated hours.")
         self.assertEqual(self.slot.allocated_percentage, 100, "It should have the default value")
 
     def test_change_percentage(self):
         self.slot.allocated_percentage = 60
-        self.assertEqual(self.slot.allocated_hours, 6, "It should 60%% of original hours")
+        self.assertEqual(self.slot.allocated_hours, 8 * 0.60, "It should 60%% of working hours")
 
     def test_change_hours_more(self):
-        self.slot.allocated_hours = 15
+        self.slot.allocated_hours = 12
         self.assertEqual(self.slot.allocated_percentage, 150)
 
     def test_change_hours_less(self):
-        self.slot.allocated_hours = 5
+        self.slot.allocated_hours = 4
         self.assertEqual(self.slot.allocated_percentage, 50)
 
     def test_change_start(self):
@@ -212,6 +217,7 @@ class TestPlanning(TestCommonPlanning):
             3) Check if the start and end dates are on two days and not one.
             4) Check if the allocating hours is equal to the duration in the template.
         """
+        self.resource_bert.flexible_hours = True
         template_slot = self.env['planning.slot.template'].create({
             'start_time': 23,
             'duration': 3,

@@ -47,7 +47,7 @@ class TestPeriodDuplication(TestCommonPlanning):
         employee = self.employee_bert
 
         self.assertEqual(len(self.get_by_employee(employee)), 3)
-        self.assertEqual(sum(self.get_by_employee(employee).mapped('allocated_hours')), 16.0 + 9.0 + 9.0, 'duplicate has only duplicated slots that fit entirely in the period')
+        self.assertEqual(sum(self.get_by_employee(employee).mapped('allocated_hours')), 16.0 + 8.0 + 8.0, 'duplicate has only duplicated slots that fit entirely in the period')
 
         self.env['planning.slot'].action_copy_previous_week('2019-06-09 00:00:00', [['start_datetime', '<=', '2020-04-04 21:59:59'], ['end_datetime', '>=', '2020-03-28 23:00:00']])
 
@@ -60,7 +60,7 @@ class TestPeriodDuplication(TestCommonPlanning):
         ])
         self.assertEqual(len(duplicated_slots), 2, 'duplicate has only duplicated slots that fit entirely in the period')
 
-        self.assertEqual(sum(self.get_by_employee(employee).mapped('allocated_hours')), 16.0 + 9.0 + 9.0 + 16.0 + 9.0, 'duplicate has only duplicated slots that fit entirely in the period')
+        self.assertEqual(sum(self.get_by_employee(employee).mapped('allocated_hours')), 16.0 + 8.0 + 8.0 + 16.0 + 8.0, 'duplicate has only duplicated slots that fit entirely in the period')
 
     def test_duplication_should_preserve_local_time(self):
         """Original week: 10/19/2020 -> 10/23/2020

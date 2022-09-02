@@ -3,8 +3,6 @@
 import { registry } from "@web/core/registry";
 
 const servicesToRemove = [
-    'studio',
-    'studio_legacy',
     'enterprise_legacy_service_provider',
 ];
 

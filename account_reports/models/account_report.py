@@ -2568,22 +2568,20 @@ class AccountReport(models.Model):
                     multiplicator = -1 if parsed_token['sign'] == '-' else 1
                     excluded_prefixes_match = token_match['excluded_prefixes']
                     excluded_prefixes = excluded_prefixes_match.split(',') if excluded_prefixes_match else []
-                    prefix_group = token_match['prefix']
+                    prefix = token_match['prefix']
 
                     # We group using both prefix and excluded_prefixes as keys, for the case where two expressions would
                     # include the same prefix, but exlcude different prefixes (example 104\(1041) and 104\(1042))
-                    prefix_key = tuple(prefix_group.split(',') + excluded_prefixes)
+                    prefix_key = (prefix, *excluded_prefixes)
                     prefix_details_by_formula[formula].append((multiplicator, prefix_key, token_match['balance_character']))
-                    prefixes_to_compute.add((prefix_group, tuple(excluded_prefixes)))
+                    prefixes_to_compute.add((prefix, tuple(excluded_prefixes)))
 
         # Create the subquery for the WITH linking our prefixes with account.account entries
         all_prefixes_queries = []
         prefix_params = []
         company_ids = [comp_opt['id'] for comp_opt in options.get('multi_company', self.env.company)]
-        for prefix_group, excluded_prefixes in prefixes_to_compute:
-            prefixes = prefix_group.split(',')
-            for prefix in prefixes:
-                account_domain = [('company_id', 'in', company_ids), ('code', '=like', f'{prefix}%')]
+        for prefix, excluded_prefixes in prefixes_to_compute:
+            account_domain = [('company_id', 'in', company_ids), ('code', '=like', f'{prefix}%')]
             excluded_prefixes_domains = []
 
             for excluded_prefix in excluded_prefixes:
@@ -2595,11 +2593,11 @@ class AccountReport(models.Model):
 
             prefix_tables, prefix_where_clause, prefix_where_params = self.env['account.account']._where_calc(account_domain).get_sql()
 
-            prefix_params += prefixes
+            prefix_params.append(prefix)
             for excluded_prefix in excluded_prefixes:
                 prefix_params.append(excluded_prefix)
 
-            prefix_select_query = ', '.join(['%s'] * (len(prefixes) + len(excluded_prefixes)))
+            prefix_select_query = ', '.join(['%s'] * (len(excluded_prefixes) + 1)) # +1 for prefix
             prefix_select_query = f'ARRAY[{prefix_select_query}]'
 
             all_prefixes_queries.append(f"""

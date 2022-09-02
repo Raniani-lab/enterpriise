@@ -45,7 +45,7 @@
 }
 
 // Common style for list views (also inside form views)
-.o_list_view .o_list_table {
+.o_list_renderer .o_list_table {
     // We need this to be collapse because we want to add a border on the rows
     // for sale order/invoice lines of type section.
     border-collapse: collapse;

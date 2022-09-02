@@ -27,6 +27,7 @@ class MrpProductionSchedule(models.Model):
         default=lambda self: self.env.company)
     product_id = fields.Many2one('product.product', string='Product', required=True, index=True)
     product_tmpl_id = fields.Many2one('product.template', related="product_id.product_tmpl_id", readonly=True)
+    product_category_id = fields.Many2one('product.category', related="product_id.product_tmpl_id.categ_id", readonly=True)
     product_uom_id = fields.Many2one('uom.uom', string='Product UoM',
         related='product_id.uom_id')
     sequence = fields.Integer(related='product_id.sequence', store=True)

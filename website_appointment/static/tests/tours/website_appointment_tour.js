@@ -65,11 +65,7 @@ tour.register('website_appointment_tour', {
         content: 'cancel appointment',
         run: 'click',
     }, {
-        trigger: '.o_menu_systray_item.o_website_edit_in_backend .dropdown-toggle',
-        content: 'open edit dropdown',
-        run: 'click',
-    }, {
-        trigger: '.o_menu_systray_item.o_website_edit_in_backend .dropdown-menu .dropdown-item',
+        trigger: '.o_website_edit_in_backend > a',
         content: 'return in backend',
         run: 'click',
     }, {

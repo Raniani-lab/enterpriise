@@ -669,26 +669,10 @@ class AnalyticLine(models.Model):
             else:
                 context['grid_anchor'] = fields.Date.today()
                 context.pop('search_default_my_team_timesheet', None)
-
-        # We want the pivot view to group by week and not by month in weekly mode
-        views = action['views']
-        if type_view == 'week':
-            views = [
-                (view_id if view_type != 'pivot' else self.env.ref('timesheet_grid.timesheet_grid_pivot_view_weekly_validate').id, view_type)
-                for view_id, view_type in views
-            ]
-        elif not type_view:
-            views = [
-                (view_id if view_type != 'pivot' else self.env.ref('timesheet_grid.timesheet_grid_pivot_view_all_validate').id, view_type)
-                for view_id, view_type in views
-            ]
-            views.sort(key=lambda v: 1 if v[1] == 'pivot' else 1000)
-        action.update({
-            "views": views,
-            "domain": [('is_timesheet', '=', True)],
-            "search_view_id": [self.env.ref('timesheet_grid.timesheet_view_search').id, 'search'],
-            "context": context,
-        })
+                action['view_mode'] = 'pivot,grid,tree,kanban,form'
+                pivot_view = self.env.ref('timesheet_grid.timesheet_grid_pivot_view_all_validate')
+                action['views'].insert(0, (pivot_view.id, 'pivot'))
+        action['context'] = context
         return action
 
     def _get_domain_for_validation_timesheets(self, validated=False):

@@ -43,8 +43,5 @@
         'web.qunit_suite_tests': [
             'mrp_workorder/static/tests/**/*',
         ],
-        'web.assets_qweb': [
-            'mrp_workorder/static/src/xml/**/*',
-        ],
     }
 }

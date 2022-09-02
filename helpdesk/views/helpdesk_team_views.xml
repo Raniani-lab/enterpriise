@@ -109,20 +109,34 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="auto_assignment"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="auto_assignment"/>
-                                <div class="text-muted">
-                                    Automate the assignment of new tickets to the right people, and make sure all tickets are being handled
+                        <div class="col-lg-6">
+                            <div class="o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <label for="message_partner_ids"/>
+                                    <div class="text-muted">
+                                        Receive notifications whenever tickets are created, rated or discussed on in this team
+                                    </div>
+                                    <div class="mt16">
+                                        <span><b>Followers </b></span>
+                                        <field name="message_partner_ids" string="Follow All Team's Tickets" widget="many2many_tags_email" domain="[('type', '!=', 'private')]"/>
+                                    </div>
                                 </div>
-                                <div attrs="{'invisible': [('auto_assignment', '=', False)]}" class="mt16">
-                                    <field name="assign_method" class="o_light_label" widget="radio"/>
-                                    <div>
-                                        <field name="member_ids" widget="many2many_avatar_user"
-                                        class="mt16" placeholder="Add team members..." options="{'no_quick_create': True}"/>
+                            </div>
+                            <div class="o_setting_box">
+                                <div class="o_setting_left_pane">
+                                    <field name="auto_assignment"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <label for="auto_assignment"/>
+                                    <div class="text-muted">
+                                        Automate the assignment of new tickets to the right people, and make sure all tickets are being handled
+                                    </div>
+                                    <div attrs="{'invisible': [('auto_assignment', '=', False)]}" class="mt16">
+                                        <field name="assign_method" class="o_light_label" widget="radio"/>
+                                        <div>
+                                            <field name="member_ids" widget="many2many_avatar_user"
+                                            class="mt16" placeholder="Add team members..." options="{'no_quick_create': True}"/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -432,9 +446,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="oe_chatter" groups="base.group_user">
-                        <field name="message_follower_ids" help="Follow this team to automatically track the events associated to tickets of this team."/>
                     </div>
                 </sheet>
             </form>

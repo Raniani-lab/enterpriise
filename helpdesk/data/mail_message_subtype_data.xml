@@ -79,7 +79,7 @@
         <field name="name">Ticket Created</field>
         <field name="sequence">0</field>
         <field name="res_model">helpdesk.team</field>
-        <field name="default" eval="False"/>
+        <field name="default" eval="True"/>
         <field name="parent_id" ref="mt_ticket_new"/>
         <field name="relation_field">team_id</field>
     </record>

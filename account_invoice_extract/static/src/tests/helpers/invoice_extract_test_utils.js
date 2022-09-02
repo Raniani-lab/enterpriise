@@ -1,19 +1,16 @@
 /** @odoo-module **/
 
-import InvoiceExtractBoxLayer from '@account_invoice_extract/js/invoice_extract_box_layer';
-
-import testUtils from 'web.test_utils';
-
 /**
  * @param {Object} params
  * @param {string} params.fieldName
  * @param {integer} params.id
- * @param {intger} [params.page=0]
- * @param {integer} params.selected_status
+ * @param {integer} [params.page=0]
+ * @param {boolean} params.ocr_selected
  * @param {boolean} params.user_selected
  */
 function createBoxData(params) {
     return {
+        text: params.text || '',
         box_angle: 0, // no angle
         box_height: 0.2, // 20% of the box layer for the height
         box_midX: 0.5, // box in the middle of box layer (horizontally)
@@ -22,7 +19,7 @@ function createBoxData(params) {
         feature: params.fieldName,
         id: params.id,
         page: params.page || 0, // which box layer this box is linked to
-        selected_status: params.selected_status, // if value != 0, OCR chosen
+        ocr_selected: params.ocr_selected,
         user_selected: params.user_selected,
     };
 }
@@ -34,95 +31,128 @@ function createBoxData(params) {
  * @returns {Object[]}
  */
 function createBoxesData() {
-    // 'VAT_Number' boxes: not selected, ocr chosen, user selected
     var vatBoxes = [
         createBoxData({
             fieldName: 'VAT_Number',
             id: 1,
-            selected_status: 0,
+            ocr_selected: false,
             user_selected: false,
         }),
         createBoxData({
             fieldName: 'VAT_Number',
             id: 2,
-            selected_status: 1,
+            ocr_selected: true,
             user_selected: false,
+            text: 'BE0477472701'
         }),
         createBoxData({
             fieldName: 'VAT_Number',
             id: 3,
-            selected_status: 0,
+            ocr_selected: false,
             user_selected: true,
         })
     ];
-    // 'invoice_id' boxes: not selected, ocr chosen
-    var InvoiceIdBoxes = [
+    var invoiceIdBoxes = [
         createBoxData({
             fieldName: 'invoice_id',
             id: 4,
-            selected_status: 0,
+            ocr_selected: false,
             user_selected: false,
         }),
         createBoxData({
             fieldName: 'invoice_id',
             id: 5,
-            selected_status: 1,
+            ocr_selected: true,
+            user_selected: true,
+        }),
+    ];
+    var supplierBoxes = [
+        createBoxData({
+            fieldName: 'supplier',
+            id: 6,
+            ocr_selected: false,
+            user_selected: true,
+        }),
+        createBoxData({
+            fieldName: 'supplier',
+            id: 7,
+            ocr_selected: true,
+            user_selected: false,
+            text: 'Some partner',
+        }),
+        createBoxData({
+            fieldName: 'supplier',
+            id: 8,
+            ocr_selected: false,
+            user_selected: false,
+        })
+    ];
+    var totalBoxes = [
+        createBoxData({
+            fieldName: 'total',
+            id: 9,
+            ocr_selected: true,
+            user_selected: true,
+        }),
+        createBoxData({
+            fieldName: 'total',
+            id: 10,
+            ocr_selected: false,
             user_selected: false,
         }),
     ];
-    var boxes = vatBoxes.concat(InvoiceIdBoxes);
-    return boxes;
-}
-
-/**
- * @param {Object} [params={}]
- * @param {Object[]} [params.boxesData] @see createBoxesData if not set
- * @param {web.Widget} [params.parent]
- * @param {integer} [params.pageNum=0]
- * @returns {Object}
- */
-async function createBoxLayer(params) {
-    params = params || {};
-    var $page = $('<div>', { class: 'page' });
-    $page.css('height', 100);
-    $page.css('width', 200);
-
-    if (!params.parent) {
-        var parentParams = {};
-        if ('debug' in params) {
-            parentParams.debug = params.debug;
-        }
-        if ('intercepts' in params) {
-            parentParams.intercepts = params.intercepts;
-        }
-        _.extend(parentParams.session, {}, {
-            user_has_group: function () {
-                return Promise.resolve();
-            }
-        });
-        params.parent = await testUtils.createParent(parentParams);
-    }
-
-    var boxLayer = new InvoiceExtractBoxLayer(params.parent, {
-        boxesData: params.boxesData || createBoxesData(),
-        mode: 'img',
-        pageNum: params.pageNum || 0,
-        $page: $page,
-    });
-
-    var $target = params.debug ? $('body') : $('#qunit-fixture');
-    $page.appendTo($target);
-    return boxLayer.appendTo($target).then(function () {
-        return {
-            boxLayer: boxLayer,
-            parent: params.parent,
-        };
-    });
-
+    var dateBoxes = [
+        createBoxData({
+            fieldName: 'date',
+            id: 11,
+            ocr_selected: true,
+            user_selected: true,
+        }),
+        createBoxData({
+            fieldName: 'date',
+            id: 12,
+            ocr_selected: false,
+            user_selected: false,
+        }),
+        createBoxData({
+            fieldName: 'date',
+            id: 13,
+            ocr_selected: false,
+            user_selected: false,
+        }),
+    ];
+    var dueDateBoxes = [
+        createBoxData({
+            fieldName: 'due_date',
+            id: 14,
+            ocr_selected: true,
+            user_selected: false,
+        }),
+        createBoxData({
+            fieldName: 'due_date',
+            id: 15,
+            ocr_selected: false,
+            user_selected: true,
+        }),
+    ];
+    var currencyBoxes = [
+        createBoxData({
+            fieldName: 'currency',
+            id: 16,
+            ocr_selected: true,
+            user_selected: false,
+        }),
+        createBoxData({
+            fieldName: 'currency',
+            id: 17,
+            ocr_selected: false,
+            user_selected: true,
+        }),
+    ];
+    return [].concat(vatBoxes, invoiceIdBoxes, supplierBoxes, totalBoxes, dateBoxes, dueDateBoxes, currencyBoxes);
 }
 
 export default {
     createBoxData: createBoxData,
     createBoxesData: createBoxesData,
-    createBoxLayer: createBoxLayer,
 };

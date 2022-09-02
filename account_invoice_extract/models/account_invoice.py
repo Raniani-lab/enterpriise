@@ -1,20 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from contextlib import contextmanager
-from unittest.mock import patch
-
-from odoo import api, fields, models, _lt, Command
+from odoo import api, fields, models, _, _lt, Command
 from odoo.addons.iap.tools import iap_tools
-from odoo.exceptions import AccessError, ValidationError
+from odoo.exceptions import AccessError
 from odoo.tools import mute_logger
 from odoo.tools.misc import clean_context
 import logging
-import math
 import re
 import json
-import string
-
-from datetime import datetime, timedelta
 
 _logger = logging.getLogger(__name__)
 
@@ -63,8 +56,8 @@ class AccountInvoiceExtractionWords(models.Model):
 
     invoice_id = fields.Many2one("account.move", required=True, ondelete='cascade', index=True, string="Invoice")
     field = fields.Char()
-    selected_status = fields.Integer("Invoice extract selected status.",
-                                     help="0 for 'not selected', 1 for 'ocr selected with no user selection' and 2 for 'ocr selected with user selection (user may have selected the same box)")
+
+    ocr_selected = fields.Boolean()
     user_selected = fields.Boolean()
     word_text = fields.Char()
     word_page = fields.Integer()
@@ -122,9 +115,18 @@ class AccountMove(models.Model):
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
     extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", copy=False, readonly=True)
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
+    extract_populated_fields = fields.Char(readonly=True, copy=False)
+    extract_attachment_id = fields.Many2one('ir.attachment', readonly=True, ondelete='set null', copy=False)
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
+
+    def action_reload_ai_data(self):
+        try:
+            self._check_status(force_write=True)
+        except Exception as e:
+            _logger.error("Error while reloading AI data on account.move %d: %s", self.id, e)
+            raise AccessError(_lt("Couldn't reload AI data."))
 
     def _domain_company(self):
         return ['|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)]
@@ -251,6 +253,7 @@ class AccountMove(models.Model):
                         self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", False)
                     self.extract_state = 'waiting_extraction'
                     self.extract_remote_id = result['document_id']
+                    self.extract_attachment_id = attachments
                 elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
                     self.send_no_credit_notification()
                     self.extract_state = 'not_enough_credit'
@@ -296,7 +299,7 @@ class AccountMove(models.Model):
         """
         selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("user_selected", "=", True)])
         if not selected:
-            selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("selected_status", "=", 1)], limit=1)
+            selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("ocr_selected", "=", True)], limit=1)
         return_box = {}
         if selected:
             return_box["box"] = [selected.word_text, selected.word_page, selected.word_box_midX,
@@ -405,7 +408,7 @@ class AccountMove(models.Model):
             "id": data.id,
             "feature": data.field,
             "text": data.word_text,
-            "selected_status": data.selected_status,
+            "ocr_selected": data.ocr_selected,
             "user_selected": data.user_selected,
             "page": data.word_page,
             "box_midX": data.word_box_midX,
@@ -419,20 +422,26 @@ class AccountMove(models.Model):
         The method returns the text that can be set in the view (possibly different of the text in the file)"""
         self.ensure_one()
         word = self.env["account.invoice_extract.words"].browse(int(id))
-        to_unselect = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", word.field), '|', ("user_selected", "=", True), ("selected_status", "!=", 0)])
+        to_unselect = self.env["account.invoice_extract.words"].search([
+            ("invoice_id", "=", self.id),
+            ("field", "=", word.field),
+            '|',
+                ("user_selected", "=", True),
+                ("ocr_selected", "=", False),
+        ])
         user_selected_found = False
         for box in to_unselect:
             if box.user_selected:
                 user_selected_found = True
                 box.user_selected = False
-        ocr_new_value = 0
+        ocr_new_value = False
         new_word = None
         if user_selected_found:
-            ocr_new_value = 1
+            ocr_new_value = True
         for box in to_unselect:
-            if box.selected_status != 0:
-                box.selected_status = ocr_new_value
-                if ocr_new_value != 0:
+            if box.ocr_selected:
+                box.ocr_selected = ocr_new_value
+                if ocr_new_value:
                     new_word = box
         word.user_selected = False
         if new_word is None:
@@ -469,10 +478,10 @@ class AccountMove(models.Model):
         to_unselect = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", word.field), ("user_selected", "=", True)])
         for box in to_unselect:
             box.user_selected = False
-        ocr_boxes = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", word.field), ("selected_status", "=", 1)])
+        ocr_boxes = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", word.field), ("ocr_selected", "=", True)])
         for box in ocr_boxes:
-            if box.selected_status != 0:
-                box.selected_status = 2
+            if not box.ocr_selected:
+                box.ocr_selected = True
         word.user_selected = True
         if word.field == "currency":
             text = word.word_text
@@ -591,6 +600,36 @@ class AccountMove(models.Model):
                 if partners_dict[partner] != self.company_id.partner_id.id:
                     return partners_dict[partner]
         return 0
+
+    def _get_partner(self, ocr_results):
+        supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
+        client_ocr = ocr_results['client']['selected_value']['content'] if 'client' in ocr_results else ""
+        vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
+        iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
+
+        # Try to find the partner with the VAT number
+        if vat_number_ocr:
+            partner_vat = self.find_partner_id_with_vat(vat_number_ocr)
+            if partner_vat:
+                return partner_vat, False
+
+        # Try to find the partner with its IBAN
+        if self.is_purchase_document() and iban_ocr:
+            bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
+            if len(bank_account) == 1:
+                return bank_account.partner_id, False
+
+        # Try to find the partner by its name
+        partner_id = self.find_partner_id_with_name(client_ocr if self.is_sale_document() else supplier_ocr)
+        if partner_id != 0:
+            return self.env["res.partner"].browse(partner_id), False
+
+        # Create a partner from the VAT number
+        if vat_number_ocr:
+            created_supplier = self._create_supplier_from_vat(vat_number_ocr)
+            if created_supplier:
+                return created_supplier, True
+        return False, False
 
     def _get_taxes_record(self, taxes_ocr, taxes_type_ocr):
         """
@@ -745,7 +784,7 @@ class AccountMove(models.Model):
                 except Exception as e:
                     _logger.error("Couldn't check status of account.move with id %d: %s", record.id, str(e))
 
-    def _check_status(self):
+    def _check_status(self, force_write=False):
         self.ensure_one()
         if self.state == 'draft':
             params = {
@@ -760,17 +799,19 @@ class AccountMove(models.Model):
                     self.message_main_attachment_id.index_content = ocr_results['full_text_annotation']
                 self.extract_word_ids.unlink()
 
-                self._save_form(ocr_results)
+                self._save_form(ocr_results, force_write=force_write)
 
-                fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number']
+                fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number', 'total']
                 for field in fields_with_boxes:
                     if field in ocr_results:
                         value = ocr_results[field]
                         data = []
                         for word in value["words"]:
+                            ocr_chosen = value["selected_value"] == word
                             data.append((0, 0, {
                                 "field": field,
-                                "selected_status": 1 if value["selected_value"] == word else 0,
+                                "ocr_selected": ocr_chosen,
+                                "user_selected": ocr_chosen,
                                 "word_text": word['content'],
                                 "word_page": word['page'],
                                 "word_box_midX": word['coords'][0],
@@ -785,57 +826,49 @@ class AccountMove(models.Model):
             else:
                 self.extract_state = 'error_status'
 
-    def _save_form(self, ocr_results):
-        supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
-        client_ocr = ocr_results['client']['selected_value']['content'] if 'client' in ocr_results else ""
+    def _save_form(self, ocr_results, force_write=False):
         date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
         due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
         total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
         invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
         currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
-        vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
         payment_ref_ocr = ocr_results['payment_ref']['selected_value']['content'] if 'payment_ref' in ocr_results else ""
         iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
         qr_bill_ocr = ocr_results['qr-bill']['selected_value']['content'] if 'qr-bill' in ocr_results else None
 
+        fields_populated = []
         with self._get_edi_creation() as move_form:
-            if not move_form.partner_id:
-                if vat_number_ocr:
-                    partner_vat = self.find_partner_id_with_vat(vat_number_ocr)
-                    if partner_vat:
-                        move_form.partner_id = partner_vat
-                if self.move_type in {'in_invoice', 'in_refund'} and not move_form.partner_id and iban_ocr:
-                    bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
-                    if len(bank_account) == 1:
-                        move_form.partner_id = bank_account.partner_id
-                if not move_form.partner_id:
-                    partner_id = self.find_partner_id_with_name(client_ocr if self.is_sale_document() else supplier_ocr)
-                    if partner_id != 0:
-                        move_form.partner_id = self.env["res.partner"].browse(partner_id)
-                if not move_form.partner_id and vat_number_ocr:
-                    created_supplier = self._create_supplier_from_vat(vat_number_ocr)
-                    if created_supplier:
-                        move_form.partner_id = created_supplier
-                        if iban_ocr and not move_form.partner_bank_id and self.is_purchase_document():
-                            bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
-                            if bank_account:
-                                if bank_account.partner_id == move_form.partner_id.id:
-                                    move_form.partner_bank_id = bank_account
-                            else:
-                                vals = {
-                                        'partner_id': move_form.partner_id.id,
-                                        'acc_number': iban_ocr
-                                       }
-                                if SWIFT_code_ocr:
-                                    bank_id = self.env['res.bank'].search([('bic', '=', SWIFT_code_ocr['bic'])], limit=1)
-                                    if bank_id:
-                                        vals['bank_id'] = bank_id.id
-                                    if not bank_id and SWIFT_code_ocr['verified_bic']:
-                                        country_id = self.env['res.country'].search([('code', '=', SWIFT_code_ocr['country_code'])], limit=1)
-                                        if country_id:
-                                            vals['bank_id'] = self.env['res.bank'].create({'name': SWIFT_code_ocr['name'], 'country': country_id.id, 'city': SWIFT_code_ocr['city'], 'bic': SWIFT_code_ocr['bic']}).id
-                                move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create(vals)
+            if not move_form.partner_id or force_write:
+                partner_id, created = self._get_partner(ocr_results)
+                if partner_id:
+                    move_form.partner_id = partner_id
+
+                    if self.is_purchase_document():
+                        fields_populated.append(_("Vendor"))
+                    else:
+                        fields_populated.append(_("Customer"))
+
+                    if created and iban_ocr and not move_form.partner_bank_id and self.is_purchase_document():
+                        bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
+                        if bank_account:
+                            if bank_account.partner_id == move_form.partner_id.id:
+                                move_form.partner_bank_id = bank_account
+                                fields_populated.append(self._fields['partner_bank_id'].string)
+                        else:
+                            vals = {
+                                'partner_id': move_form.partner_id.id,
+                                'acc_number': iban_ocr
+                            }
+                            if SWIFT_code_ocr:
+                                bank_id = self.env['res.bank'].search([('bic', '=', SWIFT_code_ocr['bic'])], limit=1)
+                                if bank_id:
+                                    vals['bank_id'] = bank_id.id
+                                if not bank_id and SWIFT_code_ocr['verified_bic']:
+                                    country_id = self.env['res.country'].search([('code', '=', SWIFT_code_ocr['country_code'])], limit=1)
+                                    if country_id:
+                                        vals['bank_id'] = self.env['res.bank'].create({'name': SWIFT_code_ocr['name'], 'country': country_id.id, 'city': SWIFT_code_ocr['city'], 'bic': SWIFT_code_ocr['bic']}).id
+                            move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create(vals)
 
             if qr_bill_ocr:
                 qr_content_list = qr_bill_ocr.splitlines()
@@ -877,47 +910,62 @@ class AccountMove(models.Model):
                         'currency_id': move_form.currency_id.id,
                         'partner_id': partner.id,
                     })
+                    fields_populated.append(self._fields['partner_bank_id'].string)
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
             context_create_date = fields.Date.context_today(self, self.create_date)
-            if date_ocr and (not move_form.invoice_date or move_form.invoice_date == context_create_date):
+            if date_ocr and (not move_form.invoice_date or move_form.invoice_date == context_create_date or force_write):
                 move_form.invoice_date = date_ocr
-            if due_date_ocr and (due_date_move_form == context_create_date):
+                if self.is_purchase_document():
+                    fields_populated.append(_("Bill Date"))
+                else:
+                    fields_populated.append(_("Invoice Date"))
+            if due_date_ocr and (due_date_move_form == context_create_date or force_write):
                 if date_ocr == due_date_ocr and move_form.partner_id and move_form.partner_id.property_supplier_payment_term_id:
                     # if the invoice date and the due date found by the OCR are the same, we use the payment terms of the detected supplier instead, if there is one
                     move_form.invoice_payment_term_id = move_form.partner_id.property_supplier_payment_term_id
+                    fields_populated.append(self._fields['invoice_payment_term_id'].string)
                 else:
                     move_form.invoice_date_due = due_date_ocr
-            if self.is_purchase_document() and not move_form.ref:
-                move_form.ref = invoice_id_ocr
+                    fields_populated.append(self._fields['invoice_date_due'].string)
 
-            if self.move_type in {'out_invoice', 'out_refund'}:
+            if self.is_purchase_document() and (not move_form.ref or force_write):
+                move_form.ref = invoice_id_ocr
+                fields_populated.append(_("Bill Reference"))
+
+            if self.is_sale_document():
                 with mute_logger('odoo.tests.common.onchange'):
                     move_form.name = invoice_id_ocr
+                    fields_populated.append(self._fields['name'].string)
 
-            if currency_ocr and move_form.currency_id == move_form.company_currency_id:
+            if currency_ocr and (move_form.currency_id == move_form.company_currency_id or force_write):
                 currency = self.env["res.currency"].search([
                         '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
                 if currency:
                     move_form.currency_id = currency
+                    fields_populated.append(self._fields['currency_id'].string)
 
-            if payment_ref_ocr and not move_form.payment_reference:
+            if payment_ref_ocr and (not move_form.payment_reference or force_write):
                 move_form.payment_reference = payment_ref_ocr
+                fields_populated.append(self._fields['payment_reference'].string)
 
-            add_lines = not move_form.invoice_line_ids
+            add_lines = not move_form.invoice_line_ids or force_write
             if add_lines:
-                # we save here as _get_invoice_lines() uses the record values in self to determine the tax records to use
-
+                if force_write:
+                    move_form.invoice_line_ids = [Command.clear()]
                 vals_invoice_lines = self._get_invoice_lines(ocr_results)
                 move_form.invoice_line_ids = [
                     Command.create(line_vals)
                     for line_vals in vals_invoice_lines
                 ]
+                fields_populated.append(self._fields['invoice_line_ids'].string)
 
         # check the tax roundings after the tax lines have been synced
         if add_lines:
-            move_form._check_total_amount(total_ocr)
+            self._check_total_amount(total_ocr)
+
+        self.extract_populated_fields = ' - '.join(sorted(fields_populated))
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')

@@ -72,7 +72,7 @@ class AccountMove(models.Model):
                     move_form.purchase_id = purchase_order
                     move_form._onchange_purchase_auto_complete()
 
-    def _save_form(self, ocr_results):
+    def _save_form(self, ocr_results, force_write=False):
         if self.move_type == 'in_invoice':
             common_domain = [('company_id', '=', self.company_id.id), ('state', '=', 'purchase'), ('invoice_status', 'in', ('to invoice', 'no'))]
             purchase_orders_ocr = ocr_results['purchase_order']['selected_values'] if 'purchase_order' in ocr_results else []
@@ -120,4 +120,4 @@ class AccountMove(models.Model):
                                     line.quantity = 0
                     else:
                         self._set_purchase_orders(matching_pos)
-        return super(AccountMove, self)._save_form(ocr_results)
+        return super(AccountMove, self)._save_form(ocr_results, force_write=force_write)

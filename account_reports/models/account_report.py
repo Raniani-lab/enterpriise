@@ -1937,6 +1937,7 @@ class AccountReport(models.Model):
                 'expression_label': column_expr_label,
                 'has_sublines': column_has_sublines,
                 'report_line_id': line.id,
+                'class': 'number' if isinstance(column_value, (int, float)) else '',
                 'is_zero': column_value is None or (figure_type in ('float', 'integer', 'monetary') and self.is_zero(column_value, **formatter_params)),
             }
 

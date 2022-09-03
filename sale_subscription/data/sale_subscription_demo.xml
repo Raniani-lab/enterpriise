@@ -131,7 +131,7 @@
             <field name="product_uom" ref="uom.product_uom_unit"/>
         </record>
 
-        <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_1')]]"/>
+        <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_1')]]" context="{'action_no_send_mail': True}"/>
 
         <record id="subscription_portal_2" model="sale.order">
             <field name="partner_id" ref="base.partner_demo_portal"/>
@@ -167,8 +167,8 @@
         </record>
 
         <!-- Confirm some Sales Orders-->
-        <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_2')]]"/>
-        <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_3')]]"/>
+        <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_2')]]" context="{'action_no_send_mail': True}"/>
+        <function model="sale.order" name="action_confirm" eval="[[ref('subscription_portal_3')]]" context="{'action_no_send_mail': True}"/>
         <function model="sale.order" name="set_close" eval="[[ref('subscription_portal_3')]]"/>
 
         <!-- Demo Alerts-->

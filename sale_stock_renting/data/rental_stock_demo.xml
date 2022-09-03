@@ -37,6 +37,10 @@
       <field name="price" eval="100.0"/>
   </record>
 
+  <record id="rental_stock_product_1" model="product.product"> <!-- Needed to avoid triggering the constraint -->
+    <field name="product_pricing_ids" eval="[(5,0,0)]"/>
+  </record>
+
   <record id="rental_stock_product_1" model="product.product"> <!-- House -->
     <field name="product_pricing_ids" eval="[(6,0,[ref('rental_stock_pricing_1'), ref('rental_stock_pricing_2'), ref('rental_stock_pricing_3')])]"/>
   </record>
@@ -129,6 +133,6 @@
   </record>
 
   <!-- CONFIRM Rental Sale Order -->
-  <function model="sale.order" name="action_confirm" eval="[[ref('rental_stock_order_1')]]"/>
+  <function model="sale.order" name="action_confirm" eval="[[ref('rental_stock_order_1')]]" context="{'action_no_send_mail': True}"/>
 
 </odoo>

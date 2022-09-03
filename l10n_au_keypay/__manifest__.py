@@ -8,7 +8,7 @@
         This Module will synchronise all payrun journals from KeyPay to Odoo.
     """,
     'category': 'Accounting',
-    'author': ['Odoo S.A.', 'Inspired Software Pty Limited'],
+    'author': 'Odoo S.A.,Inspired Software Pty Limited',
     'contributors': [
         'Michael Villamar',
         'Jacob Oldfield',

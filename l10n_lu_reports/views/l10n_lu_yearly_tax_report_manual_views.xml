@@ -534,9 +534,9 @@
                                         <field name="report_section_300" nolabel="1"/>
                                     </div>
 
-                                    <div colspan="4" style="display: flex;align-items: center">
-                                        <label for="report_section_301" string="Telecommunications" style="font-weight: bold;margin-right:10px;"/>
-                                        <label for="report_section_301" string="301" class="oe_right" style="font-weight: bold;margin-right:5px"/>
+                                    <label for="report_section_301" string="Telecommunications" colspan="4"/>
+                                    <div colspan="2" style="display: flex;align-items: center">
+                                        <label for="report_section_301" string="301" class="oe_right" style="font-weight: bold;margin-right:15px"/>
                                         <field name="report_section_301" nolabel="1"/>
                                     </div>
                                     <div colspan="2" style="display: flex;align-items: center">
@@ -547,7 +547,7 @@
                                         <label for="report_section_303" string="303" class="oe_right" style="font-weight: bold;margin-right:15px"/>
                                         <field name="report_section_303" nolabel="1"/>
                                     </div>
-                                    <div colspan="4" style="display: flex;align-items: center">
+                                    <div colspan="2" style="display: flex;align-items: center">
                                         <label for="report_section_304" string="304" class="oe_right" style="font-weight: bold;margin-right:15px"/>
                                         <field name="report_section_304" nolabel="1"/>
                                     </div>
@@ -602,27 +602,25 @@
                                         <field name="report_section_313" nolabel="1"/>
                                     </div>
 
-                                    <label for="report_section_314" string="Fire insurance" colspan="4"/>
+                                    <label for="report_section_314" string="Fire insurance" colspan="6"/>
                                     <div colspan="2" style="display: flex;align-items: center">
                                         <label for="report_section_314" string="314" class="oe_right" style="font-weight: bold;margin-right:15px"/>
                                         <field name="report_section_314" nolabel="1"/>
                                     </div>
-                                    <div colspan="2" style="display: flex;align-items: center">
+                                    <div colspan="4" style="display: flex;align-items: center">
                                         <label for="report_section_315" string="315" class="oe_right" style="font-weight: bold;margin-right:15px"/>
                                         <field name="report_section_315" nolabel="1"/>
                                     </div>
-                                    <div colspan="4"/>
 
-                                    <label for="report_section_316" string="Property tax" colspan="4"/>
+                                    <label for="report_section_316" string="Property tax" colspan="6"/>
                                     <div colspan="2" style="display: flex;align-items: center">
                                         <label for="report_section_316" string="316" class="oe_right" style="font-weight: bold;margin-right:15px"/>
                                         <field name="report_section_316" nolabel="1"/>
                                     </div>
-                                    <div colspan="2" style="display: flex;align-items: center">
+                                    <div colspan="4" style="display: flex;align-items: center">
                                         <label for="report_section_317" string="317" class="oe_right" style="font-weight: bold;margin-right:15px"/>
                                         <field name="report_section_317" nolabel="1"/>
                                     </div>
-                                    <div colspan="4"/>
 
                                     <div colspan="4" style="display: flex;align-items: center">
                                         <label for="report_section_318" string="318" class="oe_right" style="font-weight: bold;margin-right:15px"/>

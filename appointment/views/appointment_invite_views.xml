@@ -48,7 +48,7 @@
                 </div>
                 <sheet>
                     <group class="mb-0">
-                        <field name="appointment_type_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        <field name="appointment_type_ids" widget="many2many_tags" options="{'no_create': True, 'no_edit_color': True}"/>
                         <field name="suggested_staff_user_ids" invisible="1"/>
                         <field name="suggested_staff_user_count" invisible="1"/>
                         <field name="appointment_type_count" invisible="1"/>
@@ -63,11 +63,11 @@
                         <field name="base_book_url" class="ms-5 me-1" readonly="1"/>
                         <field name="short_code" class="w-25" nolabel="1" required="1" options="{'onchange_on_keydown': True, 'keydown_debounce_delay': 500}"/>
                     </div>
-                    <div class="o_appointment_invite_disable_saving alert alert-warning" role="alert"
+                    <div class="alert alert-warning" role="alert"
                          attrs="{'invisible': &quot;['|', ('staff_users_choice', '!=', 'current_user'), ('suggested_staff_user_ids', 'in', uid)]&quot;}">
                         <i class="fa fa-warning"/> You need to be part of an appointment type to be able to share a personal link.
                     </div>
-                    <div class="o_appointment_invite_disable_saving alert alert-warning" role="alert"
+                    <div class="alert alert-warning" role="alert"
                          attrs="{'invisible': ['|', ('suggested_staff_user_ids', '!=', []), ('appointment_type_count', '!=', 1)]}">
                         <i class="fa fa-warning"/> Impossible to share a link for an appointment type that has no user assigned.
                     </div>
@@ -78,7 +78,7 @@
                     <field name="book_url" class="d-none o_appointment_book_url" readonly="1" nolabel="1"/>
                 </sheet>
                 <footer>
-                    <button string="Copy Link" class="o_appointment_invite_copy_save btn btn-primary"/>
+                    <a role="button" class="o_appointment_invite_copy_save btn btn-primary" t-on-click="onSaveAndCopy">Copy Link &amp; Close</a>
                     <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>

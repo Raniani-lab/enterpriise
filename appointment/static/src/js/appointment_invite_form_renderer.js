@@ -1,37 +1,43 @@
 /** @odoo-module **/
 
-import FormRenderer from 'web.FormRenderer';
+import { browser } from "@web/core/browser/browser";
+import { FormRenderer } from "@web/views/form/form_renderer";
+import { useService } from "@web/core/utils/hooks";
 
-const AppointmentInviteFormRenderer = FormRenderer.extend({
+const { useEffect } = owl;
+
+export class AppointmentInviteFormRenderer extends FormRenderer {
     /**
-     * @override
+     * We want to disable the "Save & Copy" button if there is a warning that could
+     * result to have an incorrect/empty link.
      */
-    confirmChange: function () {
-        const result = this._super(...arguments);
-        this._checkAlertStatus();
-        return result;
-    },
-     /**
-     * @override
-     */
-    _renderView: function () {
-        return this._super(...arguments).then(() => {
-            const alertMessage = this.$el.find('.o_appointment_invite_disable_saving').not('.d-none, .o_invisible_modifier');
-            if (alertMessage.length) {
-                this.$el.find('.o_appointment_invite_copy_save').prop('disabled', true);
+    setup() {
+        super.setup();
+        this.notification = useService("notification");
+        useEffect((warning) => {
+            const saveButton = document.querySelector('.o_appointment_invite_copy_save');
+            if (!!warning) {
+                saveButton.classList.add('disabled');
+            } else {
+                saveButton.classList.remove('disabled');
             }
-        });
-    },
-    _checkAlertStatus: function () {
-        const alertMessage = this.$el.find('.o_appointment_invite_disable_saving').not('.d-none, .o_invisible_modifier');
-        if (alertMessage.length) {
-            this.trigger_up('disable_save_copy_button');
-        } else {
-            this.trigger_up('enable_save_copy_button');
+        }, () => [document.querySelector('.alert.alert-warning')]);
+    }
+    /**
+     * Save the invitation and copy the url in the clipboard
+     * @param ev
+     */
+     async onSaveAndCopy (ev) {
+        ev.preventDefault();
+        ev.stopImmediatePropagation();
+        if (await this.props.record.save()) {
+            const bookUrl = this.props.record.data.book_url;
+            browser.navigator.clipboard.writeText(bookUrl);
+            this.notification.add(
+                this.env._t("Link copied to clipboard!"),
+                {type: "success"}
+            );
+            this.env.dialogData.close();
         }
-    },
-});
-
-export {
-    AppointmentInviteFormRenderer,
+    }
 }

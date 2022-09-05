@@ -251,6 +251,25 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
             {self.product1: 7, self.product2: 21}
         )
 
+    def test_inventory_packaging(self):
+        """ Scans a product's packaging and ensures its quantity is correctly
+        counted regardless if there is already products in stock or not.
+        """
+        self.clean_access_rights()
+        grp_pack = self.env.ref('product.group_stock_packaging')
+        self.env.user.write({'groups_id': [(4, grp_pack.id, 0)]})
+
+        self.env['product.packaging'].create({
+            'name': 'product1 x15',
+            'qty': 15,
+            'barcode': 'pack007',
+            'product_id': self.product1.id
+        })
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+        self.start_tour(url, 'test_inventory_packaging', login='admin', timeout=180)
+
     def test_inventory_owner_scan_package(self):
         group_owner = self.env.ref('stock.group_tracking_owner')
         group_pack = self.env.ref('stock.group_tracking_lot')

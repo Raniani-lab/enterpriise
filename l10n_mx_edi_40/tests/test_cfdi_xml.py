@@ -910,7 +910,7 @@ class TestEdiResults(TestMxEdiCommon):
                 self.get_xml_tree_from_string(self.expected_payment_cfdi_values),
                 '''
                     <xpath expr="//Comprobante" position="attributes">
-                        <attribute name="Folio">2</attribute>
+                        <attribute name="Serie">BNK1/2017/01/</attribute>
                     </xpath>
                 ''',
             )

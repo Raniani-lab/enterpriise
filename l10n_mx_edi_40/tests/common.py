@@ -277,7 +277,7 @@ class TestMxEdiCommon(AccountEdiTestCommon):
                 LugarExpedicion="85134"
                 Moneda="XXX"
                 NoCertificado="''' + cls.certificate.serial_number + '''"
-                Serie="BNK1/2017/01/"
+                Serie="PBNK1/2017/01/"
                 Sello="___ignore___"
                 SubTotal="0"
                 Total="0"

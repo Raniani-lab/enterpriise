@@ -158,11 +158,11 @@ class TestReconciliationReport(TestAccountReportsCommon):
                     ('Outstanding Payments/Receipts',                               '',             100.0),
 
                     ('(+) Outstanding Receipts',                                    '',             450.0),
-                    ('BNKKK/2015/01/0008',                                          '01/04/2015',   450.0),
+                    ('PBNKKK/2015/01/0004',                                         '01/04/2015',   450.0),
                     ('Total (+) Outstanding Receipts',                              '',             450.0),
 
                     ('(-) Outstanding Payments',                                    '',             -350.0),
-                    ('BNKKK/2015/01/0007',                                          '01/03/2015',   -350.0),
+                    ('PBNKKK/2015/01/0003',                                         '01/03/2015',   -350.0),
                     ('Total (-) Outstanding Payments',                              '',             -350.0),
 
                     ('Total Outstanding Payments/Receipts',                         '',             100.0),
@@ -289,9 +289,9 @@ class TestReconciliationReport(TestAccountReportsCommon):
                     ('Outstanding Payments/Receipts',                               '',             '',     '',                     5900.0),
 
                     ('(+) Outstanding Receipts',                                    '',             '',     '',                     5900.0),
-                    ('BNKKK/2016/01/0005',                                          '01/01/2016',   3000.0, choco_currency.name,    900.0),
-                    ('BNKKK/2016/01/0004',                                          '01/01/2016',   '',     '',                     2000.0),
-                    ('BNKKK/2016/01/0003',                                          '01/01/2016',   1000.0, company_currency.name,  3000.0),
+                    ('PBNKKK/2016/01/0003',                                         '01/01/2016',   3000.0, choco_currency.name,    900.0),
+                    ('PBNKKK/2016/01/0002',                                         '01/01/2016',   '',     '',                     2000.0),
+                    ('PBNKKK/2016/01/0001',                                         '01/01/2016',   1000.0, company_currency.name,  3000.0),
                     ('Total (+) Outstanding Receipts',                              '',             '',     '',                     5900.0),
 
                     ('Total Outstanding Payments/Receipts',                         '',             '',     '',                     5900.0),
@@ -389,7 +389,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
 
                 ('Outstanding Payments/Receipts',                               '',             1000.0),
                 ('(+) Outstanding Receipts',                                    '',             1000.0),
-                ('BNK1/2019/01/0007',                                           '01/03/2019',   1000.0),
+                ('PBNK1/2019/01/0001',                                          '01/03/2019',   1000.0),
                 ('Total (+) Outstanding Receipts',                              '',             1000.0),
                 ('Total Outstanding Payments/Receipts',                         '',             1000.0),
 

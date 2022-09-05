@@ -76,6 +76,7 @@
                                                 <div class="o_knowledge_icon pe-1" attrs="{'invisible': [('icon', '=', False)]}">
                                                     <div class="o_article_emoji_dropdown">
                                                         <a class="o_article_emoji o-no-caret"
+                                                            t-on-click="_showEmojiPicker"
                                                             href="#"
                                                             attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
                                                             <field name="icon" attrs="{'readonly': True }" class="mb-0"/>
@@ -285,6 +286,7 @@
                                                         <div class="o_article_emoji_dropdown">
                                                             <a class="o_article_emoji o-no-caret"
                                                                role="button"
+                                                               t-on-click="_showEmojiPicker"
                                                                attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
                                                                <field name="icon" attrs="{'readonly': True }" class="d-inline"/>
                                                            </a>

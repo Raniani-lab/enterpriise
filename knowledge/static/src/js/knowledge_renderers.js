@@ -13,7 +13,7 @@ import { useService } from "@web/core/utils/hooks";
 
 const disallowedEmojis = ['💩', '👎', '💔', '😭', '😢', '😐', '😕', '😞', '😢', '💀'];
 const emojisRandomPickerSource = emojis.filter(emoji => !disallowedEmojis.includes(emoji.unicode));
-const { onMounted, onWillUnmount, useRef } = owl;
+const { onMounted, useEffect, useRef} = owl;
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -38,12 +38,49 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         
         this.sidebarSize = localStorage.getItem('knowledgeArticleSidebarSize');
 
-        // ADSC: Remove when tree component
-        onMounted(() => {
+        useEffect(() => {
+            // ADSC: Make tree component with "t-on-" instead of adding these eventListeners
+            const listener = (ev) => {
+                const target = ev.target;
+                if (target.classList.contains('o_article_name')) {
+                    this.openArticle(parseInt(target.closest('.o_article').dataset.articleId));
+                } else if (target.classList.contains('o_article_emoji')) {
+                    this._showEmojiPicker(ev);
+                } else {
+                    const button = target.closest('button');
+                    if (!button) {
+                        return;
+                    }
+                    const section = button.closest('section');
+                    const isFavoriteSection = section.classList.contains('o_favorite_container');
+                    if (button.classList.contains('o_section_create')) {
+                        this.createArticle(section.dataset.section);
+                    } else if (button.classList.contains('o_article_create')) {
+                        const parentId = parseInt(button.closest('.o_article').dataset.articleId);
+                        this.createArticle(undefined, parentId);
+                        this._addUnfolded(parentId.toString(), false);
+                        // If create from favorite tree, force unfold the parent
+                        if (isFavoriteSection) {
+                            this._addUnfolded(parentId.toString(), true);
+                        }
+                    } else if (button.classList.contains('o_article_caret')) {
+                        this._fold($(button), isFavoriteSection);
+                    }
+                }
+            };
+            this.tree.el.addEventListener('click', listener);
             this.messaging.messagingBus.addEventListener('knowledge_add_emoji', this._onAddEmoji);
             this.messaging.messagingBus.addEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
+            
+            return () => {
+                this.tree.el.removeEventListener('click', listener);
+                this.messaging.messagingBus.removeEventListener('knowledge_add_emoji', this._onAddEmoji);
+                this.messaging.messagingBus.removeEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
+            };
+        }, () => []);
+
+        onMounted(() => {
             this._renderTree(this.resId, '/knowledge/tree_panel');
-            this._setEmojiPickerListener();
 
             // Focus inside the body (default_focus does not work yet, to check
             // when field_html will be converted)
@@ -56,10 +93,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             if (!this.props.record.data.article_properties_is_empty) {
                 this.toggleProperties();
             }
-        });
-        onWillUnmount(() => {
-            this.messaging.messagingBus.removeEventListener('knowledge_add_emoji', this._onAddEmoji);
-            this.messaging.messagingBus.removeEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
         });
     }
 
@@ -470,34 +503,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             this.tree.el.innerHTML = htmlTree;
             this._setTreeListener();
             this._setTreeFavoriteListener();
-
-            // ADSC: Make tree component with "t-on-"" instead of adding these eventListeners
-            this.tree.el.addEventListener('click', (ev) => {
-                const target = ev.target;
-                if (target.classList.contains('o_article_name')) {
-                    this.openArticle(parseInt(target.closest('.o_article').dataset.articleId));
-                } else {
-                    const button = target.closest('button');
-                    if (!button) {
-                        return;
-                    }
-                    const section = button.closest('section');
-                    const isFavoriteSection = section.classList.contains('o_favorite_container');
-                    if (button.classList.contains('o_section_create')) {
-                        this.createArticle(section.dataset.section);
-                    } else if (button.classList.contains('o_article_create')) {
-                        const parentId = parseInt(button.closest('.o_article').dataset.articleId);
-                        this.createArticle(undefined, parentId);
-                        this._addUnfolded(parentId.toString(), false);
-                        // If create from favorite tree, force unfold the parent
-                        if (isFavoriteSection) {
-                            this._addUnfolded(parentId.toString(), true);
-                        }
-                    } else if (button.classList.contains('o_article_caret')) {
-                        this._fold($(button), isFavoriteSection);
-                    }
-                }
-            });
         } catch {
             this.tree.el.innerHTML = "";
         }
@@ -524,17 +529,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      */
     _resizeNameInput(name) {
         this.root.el.querySelector('.o_breadcrumb_article_name_container > span').innerText = name;
-    }
-
-    /**
-     * Setup the emoji picker listener(s) to open it when clicking on an emoji
-     */
-    _setEmojiPickerListener() {
-        this.root.el.addEventListener('click', (ev) => {
-            if (ev.target.closest('.o_article_emoji')) {
-                this._showEmojiPicker(ev);
-            }
-        });
     }
 
     /**

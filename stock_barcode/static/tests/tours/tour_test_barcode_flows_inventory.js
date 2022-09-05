@@ -509,6 +509,33 @@ tour.register('test_inventory_package', {test: true}, [
     },
 ]);
 
+tour.register('test_inventory_packaging', {test: true}, [
+    { trigger: '.button_inventory' },
+    // Scans a packaging when there is no existing quant for its product.
+    { trigger: '.o_barcode_client_action', run: 'scan pack007' },
+    {
+        trigger: '.o_barcode_line',
+        run: function() {
+            const $line = helper.getLine({ barcode: "product1"});
+            helper.assertLineQty($line, "15");
+        }
+    },
+    { trigger: '.o_apply_page' },
+    { trigger: '.o_notification.border-success' },
+    { trigger: '.button_inventory' },
+    // Scans a packaging when a quant for its product exists.
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan pack007',
+    },
+    // Verifies it takes the packaging's quantity.
+    {
+        extra_trigger: '.o_barcode_line .qty-done:contains(15)',
+        trigger: '.o_apply_page',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
 tour.register('test_inventory_owner_scan_package', {test: true}, [
     {
         trigger: '.button_inventory',

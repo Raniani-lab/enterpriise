@@ -299,7 +299,8 @@ export default class BarcodeQuantModel extends BarcodeModel {
             { limit: 1 }
         );
         if (quant.length) {
-            Object.assign(params.fieldsParams, quant[0], { inventory_quantity: 1 });
+            const inventory_quantity = params.fieldsParams.inventory_quantity || 1;
+            Object.assign(params.fieldsParams, quant[0], { inventory_quantity });
         }
         const newLine = await super._createNewLine(params);
         if (quant.length) {

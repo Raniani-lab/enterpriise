@@ -14,10 +14,10 @@ export class EnterpriseSettingsPage extends SettingsPage {
     }
 
     hasRightSwipe() {
-        return this.getCurrentIndex() !== 0;
+        return this.env.isSmall && this.getCurrentIndex() !== 0;
     }
     hasLeftSwipe() {
-        return this.getCurrentIndex() !== this.props.modules.length - 1;
+        return this.env.isSmall && this.getCurrentIndex() !== this.props.modules.length - 1;
     }
     onRightSwipe() {
         this.state.selectedTab = this.props.modules[this.getCurrentIndex() - 1].key;

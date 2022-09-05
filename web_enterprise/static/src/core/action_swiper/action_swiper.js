@@ -131,9 +131,6 @@ export class ActionSwiper extends Component {
      * @param {TouchEvent} ev
      */
     _onTouchStartSwipe(ev) {
-        if (!this.props.isActive) {
-            return;
-        }
         this.scrollables = ev
             .composedPath()
             .filter(
@@ -187,11 +184,6 @@ export class ActionSwiper extends Component {
 }
 
 ActionSwiper.props = {
-    // The following props 'isActive' has been added as a temporary
-    // workaround to disable the gestures without having to rerender
-    // the component, as a crash can happen during that phase.
-    // See: https://github.com/odoo/owl/issues/1246
-    isActive: { type: Boolean, optional: true },
     onLeftSwipe: {
         type: Object,
         args: {
@@ -217,7 +209,6 @@ ActionSwiper.props = {
 };
 
 ActionSwiper.defaultProps = {
-    isActive: true, // can be removed as soon as the issue has been fixed
     onLeftSwipe: undefined,
     onRightSwipe: undefined,
     animationOnMove: true,

@@ -23,32 +23,14 @@ class product_template(models.Model):
         super()._compute_is_temporal()
         self.filtered('recurring_invoice').is_temporal = True
 
-    @api.onchange('type')
-    def _onchange_product_type(self):
-        """
-        Raise a warning if the user has selected 'Storable Product'
-        while the product has already been set as a 'Subscription Product'.
-        """
-        if self.type == 'product' and self.recurring_invoice:
-            return {'warning': {
-                'title': _("Warning"),
-                'message': _("A 'Subscription Product' cannot be a 'Storable Product'!")
-            }}
-
     @api.onchange('recurring_invoice')
     def _onchange_recurring_invoice(self):
         """
         Raise a warning if the user has checked 'Subscription Product'
-        while the product has already been set as a 'Storable Product'.
+        while the product has already been sold.
         In this case, the 'Subscription Product' field is automatically
         unchecked.
         """
-        if self.type == 'product' and self.recurring_invoice:
-            self.recurring_invoice = False
-            return {'warning': {
-                'title': _("Warning"),
-                'message': _("A 'Storable Product' cannot be a 'Subscription Product'!")
-            }}
         confirmed_lines = self.env['sale.order.line'].search([('product_template_id', 'in', self.ids), ('order_id.state', 'in', ('sale', 'done'))])
         if not self.recurring_invoice and confirmed_lines:
             self.recurring_invoice = True

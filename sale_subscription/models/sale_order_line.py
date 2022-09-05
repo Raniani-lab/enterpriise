@@ -296,9 +296,15 @@ class SaleOrderLine(models.Model):
     # Business Methods #
     ####################
 
+    def _need_renew_discount_info(self):
+        return bool(self.filtered_domain(self._need_renew_discount_domain()))
+
+    def _need_renew_discount_domain(self):
+        return [('temporal_type', '=', 'subscription')]
+
     def _get_renew_upsell_values(self, subscription_state, period_end=None):
         order_lines = []
-        description_needed = False
+        description_needed = self._need_renew_discount_info()
         for line in self:
             if line.temporal_type != 'subscription':
                 continue
@@ -314,7 +320,6 @@ class SaleOrderLine(models.Model):
                 'product_uom_qty': 0 if subscription_state == '7_upsell' else line.product_uom_qty,
                 'price_unit': line.price_unit,
             }))
-            description_needed = True
         if subscription_state == '7_upsell' and description_needed and period_end:
             format_start = format_date(self.env, fields.Date.today())
             end_period = period_end - relativedelta(days=1)  # the period ends the day before the next invoice

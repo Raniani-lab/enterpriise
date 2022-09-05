@@ -108,9 +108,9 @@
                                 <p t-esc="message"/>
                             </div>
 
-                            <div class="row mt-4">
+                            <div id="information" class="row mt-4">
                                 <!-- ======  Plan Overview ====== -->
-                                <div class="col-12 col-lg-5  mb-3 mb-lg-0">
+                                <div id="sub_info" class="col-12 col-lg-5  mb-3 mb-lg-0">
                                     <h5 class="mb-1">Your Plan</h5>
                                     <hr class="my-0"/>
                                     <table class="table table-borderless table-sm">
@@ -143,8 +143,8 @@
                                     </table>
                                 </div>
 
-                                <!-- ======  Costumer Informations  ====== -->
-                                <div class="col-12 col-lg-5 offset-lg-1">
+                                <!-- ======  Customer Informations  ====== -->
+                                <div id="customer_info" class="col-12 col-lg-5 offset-lg-1">
                                     <h5 class="mb-1">Your Details</h5>
                                     <hr class="my-0"/>
                                     <div t-field="subscription.partner_id" t-options='{ "widget": "contact", "fields": [ "name", "address", "phone", "email"]}'/>

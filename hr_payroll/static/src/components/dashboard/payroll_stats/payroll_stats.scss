@@ -1,25 +1,7 @@
-.o_hr_payroll_dashboard_sheet .col .o_hr_payroll_dashboard_block_stats {
-    height: 100%;
-
-    .stats-header {
-        height: 60px;
-
-        .o_boolean_toggle {
-            cursor: pointer;
-            .form-check-input {
-                background-color: $o-brand-primary;
-                border-color: $o-brand-primary;
-                background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='white'/></svg>");
-            }
-        }
-    }
-
-    .canvas-container {
-        &.payroll_line {
-            height: 90px;
-        }
-        &.payroll_bar {
-            height: 200px;
-        }
-    }
-}
+.o_hr_payroll_dashboard_sheet {	
+    .o_boolean_toggle {	
+        .form-check-input {	
+            background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='white'/></svg>");	
+        }	
+    }	
+}	

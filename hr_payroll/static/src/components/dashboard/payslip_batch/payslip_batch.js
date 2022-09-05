@@ -18,12 +18,12 @@ export class PayrollDashboardPayslipBatch extends Component {
 
     getColorFromState(state) {
         const colorMap = {
-            'New': 'bg-info bg-opacity-50',
-            'Confirmed': 'bg-success bg-opacity-50',
-            'Done': 'bg-primary bg-opacity-50',
-            'Paid': 'bg-warning bg-opacity-50',
+            'New': 'text-bg-info',
+            'Confirmed': 'text-bg-success',
+            'Done': 'text-bg-primary',
+            'Paid': 'text-bg-warning',
         };
-        return colorMap[state] || 'bg-primary'
+        return colorMap[state] || 'text-bg-primary'
     }
 
     /**

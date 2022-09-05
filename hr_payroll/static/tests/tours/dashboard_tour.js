@@ -61,7 +61,7 @@ tour.register('payroll_dashboard_ui_tour', {
     },
     {
         content: "Check that the no contract error is gone",
-        trigger: 'h2.btn:contains("Warning")',
+        trigger: 'h2:contains("Warning")',
         run: function(actions) {
             const errors = $('.o_hr_payroll_dashboard_block div.row div.col a:contains("Employees Without Running Contracts")').length;
             if (errors) {
@@ -71,18 +71,18 @@ tour.register('payroll_dashboard_ui_tour', {
     },
     {
         content: "Create a new note",
-        trigger: 'div.o_hr_payroll_todo_create',
+        trigger: 'button.o_hr_payroll_todo_create',
     },
     {
         content: "Set a name",
-        trigger: 'div.o_hr_payroll_todo_tab input',
+        trigger: 'li.o_hr_payroll_todo_tab input',
         run: "text_blur Dashboard Todo List"
     },
     {
         content: "Edit the note in dashboard view",
         trigger: 'div.o_hr_payroll_todo_value',
         run: 'click',
-        extra_trigger: 'div.o_hr_payroll_todo_tab.active h3:contains("Dashboard Todo List")'
+        extra_trigger: 'li.o_hr_payroll_todo_tab a.active:contains("Dashboard Todo List")'
     },
     {
         content: "Write in the note",

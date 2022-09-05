@@ -10,11 +10,8 @@
                         <field name="name"/>
                         <field name="code"/>
                     </group>
-                    <div class="o_salary_rule_container" attrs="{'invisible': [('id', '!=', False)]}">
-                        <span class="o_salary_rule_overlay">
-                            Save your Salary Rule in order to add Parameter Values.
-                        </span>
-                        <group class="o_salary_rule_blur">
+                    <div class="o_salary_rule_container position-relative" attrs="{'invisible': [('id', '!=', False)]}">
+                        <group class="pe-none user-select-none mt-4 opacity-25 lh-1">
                             <div>
                                 <span>Versions</span>
                                 <field name="parameter_version_ids"
@@ -26,6 +23,9 @@
                                 </field>
                             </div>
                         </group>
+                        <span class="bg-white opacity-75 w-100 h-100 o_salary_rule_overlay position-absolute top-0 end-0 w-100 h-100 text-center d-flex justify-content-center flex-column fs-3">
+                            Save your Salary Rule in order to add Parameter Values.
+                        </span>
                     </div>
                     <group string="Versions" attrs="{'invisible': [('id', '=', False)]}">
                         <div class="o_salary_rule_container">

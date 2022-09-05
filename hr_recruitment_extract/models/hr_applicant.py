@@ -64,6 +64,10 @@ class HrApplicant(models.Model):
     def _compute_is_first_stage(self):
         default_stage_by_job = {}
         for applicant in self:
+            if not applicant.job_id:
+                applicant.is_first_stage = True
+                continue
+
             if applicant.job_id.id not in default_stage_by_job:
                 default_stage = self.env['hr.recruitment.stage'].search([
                     '|',

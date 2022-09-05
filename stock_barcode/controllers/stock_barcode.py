@@ -77,9 +77,9 @@ class StockBarcodeController(http.Controller):
         }
         """
         if not res_id:
-            target_record = request.env[model].with_company(self._get_allowed_company_ids()[0])
+            target_record = request.env[model].with_context(allowed_company_ids=self._get_allowed_company_ids())
         else:
-            target_record = request.env[model].browse(res_id).with_company(self._get_allowed_company_ids()[0])
+            target_record = request.env[model].browse(res_id).with_context(allowed_company_ids=self._get_allowed_company_ids())
         data = target_record._get_stock_barcode_data()
         data['records'].update(self._get_barcode_nomenclature())
         return {

@@ -93,7 +93,9 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
         });
         projectMany2one.field['required'] = true;
         this._registerWidget(this.project, 'project_id', projectMany2one);
-        await projectMany2one.appendTo(this.$('.timer_project_id'));
+        projectMany2one.renderElement();
+        const timerProjectId = this.el.querySelector('.timer_project_id');
+        await projectMany2one.appendTo(timerProjectId);
         this.projectMany2one = projectMany2one;
         projectMany2one.el.classList.add('w-100');
 
@@ -108,9 +110,11 @@ const TimerHeaderM2O = Widget.extend(StandaloneFieldManagerMixin, {
         });
         taskMany2one.field['context'] = this.projectId ? { 'default_project_id': this.projectId } : {};
         this._registerWidget(this.task, 'task_id', taskMany2one);
-        await taskMany2one.appendTo(this.$('.timer_task_id'));
+        taskMany2one.renderElement();
+        const timerTaskId = this.el.querySelector('.timer_task_id');
+        await taskMany2one.appendTo(timerTaskId);
         this.taskMany2one = taskMany2one;
-        this.$('.timer_project_id').addClass('o_required_modifier');
+        timerTaskId.classList.add('o_required_modifier');
         taskMany2one.el.classList.add('w-100');
 
         _super.apply(...arguments);

@@ -874,13 +874,9 @@ class MrpProductionSchedule(models.Model):
         moves = self.env['stock.move'].search(moves_domain, order=order)
         res_moves = []
         for move in moves:
-            if not move.move_dest_ids:
-                res_moves.append((move, fields.Date.to_date(move.date)))
-                continue
-            elif move.move_dest_ids:
-                delay = max(map(self._get_dest_moves_delay, move.move_dest_ids))
-                date = fields.Date.to_date(move.date) + relativedelta(days=delay)
-                res_moves.append((move, date))
+            delay = self._get_dest_moves_delay(move)
+            date = fields.Date.to_date(move.date) + relativedelta(days=delay)
+            res_moves.append((move, date))
         return res_moves
 
     def _get_outgoing_qty(self, date_range):

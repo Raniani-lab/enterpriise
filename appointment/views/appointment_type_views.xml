@@ -24,7 +24,7 @@
         <field name="name">appointment.type.kanban</field>
         <field name="model">appointment.type</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_dashboard o_appointment_kanban">
+            <kanban class="o_kanban_dashboard o_appointment_kanban" banner_route="/onboarding/appointment">
                 <field name="appointment_tz"/>
                 <templates>
                     <div t-name="kanban-box" class="oe_kanban_global_click oe_kanban_card o_appointment_kanban_card">
@@ -146,7 +146,7 @@
         <field name="name">appointment.type.tree</field>
         <field name="model">appointment.type</field>
         <field name="arch" type="xml">
-            <tree string="Appointment Type" class="o_appointment_type_view_list" multi_edit="1">
+            <tree string="Appointment Type" class="o_appointment_type_view_list" multi_edit="1" banner_route="/onboarding/appointment">
                 <header>
                     <button name="action_share_invite" type="object" string="Share"/>
                 </header>
@@ -328,6 +328,18 @@
             <xpath expr="//header" position="replace"/>
             <xpath expr="//div[hasclass('oe_button_box')]" position="replace"/>
             <xpath expr="//div[hasclass('oe_chatter')]" position="replace"/>
+        </field>
+    </record>
+
+    <record id="appointment_type_view_form_appointment_onboarding" model="ir.ui.view">
+        <field name="name">appointment.type.form.appointment.onboarding</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment_type_view_form_add_simplified"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="js_class">appointment_onboarding_create_appointment_type_form</attribute>
+            </xpath>
         </field>
     </record>
 

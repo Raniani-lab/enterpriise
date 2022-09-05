@@ -11,11 +11,13 @@
     'description': """
         Allow clients to Schedule Appointments through the Portal
     """,
-    'depends': ['calendar', 'portal'],
+    'depends': ['calendar', 'onboarding', 'portal'],
     'data': [
+        'data/onboarding_data.xml',
         'data/calendar_data.xml',
         'data/mail_message_subtype_data.xml',
         'data/mail_template_data.xml',
+        'views/calendar_views.xml',
         'views/calendar_alarm_views.xml',
         'views/calendar_event_views.xml',
         'views/appointment_answer_input_views.xml',
@@ -28,6 +30,7 @@
         'views/appointment_templates_registration.xml',
         'views/appointment_templates_validation.xml',
         'views/portal_templates.xml',
+        'wizard/appointment_onboarding_link.xml',
         'security/calendar_security.xml',
         'security/ir.model.access.csv',
     ],
@@ -57,6 +60,7 @@
             'appointment/static/src/js/calendar_controller.js',
             'appointment/static/src/js/calendar_model.js',
             'appointment/static/src/js/calendar_renderer.js',
+            'appointment/static/src/views/*',
         ],
         'web_studio.studio_assets': [
             'appointment/static/src/scss/legacy_appointment_type_views.scss',

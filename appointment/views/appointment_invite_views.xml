@@ -78,8 +78,8 @@
                     <field name="book_url" class="d-none o_appointment_book_url" readonly="1" nolabel="1"/>
                 </sheet>
                 <footer>
-                    <button string="Save &amp; Copy" class="o_appointment_invite_copy_save btn btn-primary"/>
-                    <button string="Close" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Copy Link" class="o_appointment_invite_copy_save btn btn-primary"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
                 </footer>
             </form>
         </field>

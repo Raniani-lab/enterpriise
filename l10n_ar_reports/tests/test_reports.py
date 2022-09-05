@@ -279,12 +279,6 @@ class TestReports(TestAr, TestAccountReportsCommon):
         ])
         invoices.action_post()
 
-
-    def _update_options_selected_tax(self, options, new_tax_type):
-        self.assertTrue(new_tax_type in ('sale', 'purchase'), "Journal type should either be sale or purchase")
-        for tax_type in options['ar_vat_book_tax_types']:
-            tax_type['selected'] = tax_type.get('id') == new_tax_type
-
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_ar.l10nar_ri_chart_template'):
         super().setUpClass(chart_template_ref=chart_template_ref)
@@ -318,32 +312,32 @@ class TestReports(TestAr, TestAccountReportsCommon):
         self.assertEqual(out_txt, res_file)
 
     def test_01_sale_vat_book_vouchers(self):
-        self._update_options_selected_tax(self.options, 'sale')
+        self.options['ar_vat_book_tax_type_selected'] = 'sale'
         self.options['txt_type'] = 'sale'
         self._test_txt_file('Ventas.txt', 'sale')
 
     def test_02_sale_vat_book_aliquots(self):
-        self._update_options_selected_tax(self.options, 'sale')
+        self.options['ar_vat_book_tax_type_selected'] = 'sale'
         self.options['txt_type'] = 'sale'
         self._test_txt_file('IVA_Ventas.txt', 'sale')
 
     def test_03_purchase_vat_book_purchases_voucher(self):
-        self._update_options_selected_tax(self.options, 'purchase')
+        self.options['ar_vat_book_tax_type_selected'] = 'purchase'
         self.options['txt_type'] = 'purchases'
         self._test_txt_file('Compras.txt', 'purchase')
 
     def test_04_purchase_vat_book_purchases_aliquots(self):
-        self._update_options_selected_tax(self.options, 'purchase')
+        self.options['ar_vat_book_tax_type_selected'] = 'purchase'
         self.options['txt_type'] = 'purchases'
         self._test_txt_file('IVA_Compras.txt', 'purchase')
 
     def test_05_purchase_vat_book_goods_import_voucher(self):
-        self._update_options_selected_tax(self.options, 'purchase')
+        self.options['ar_vat_book_tax_type_selected'] = 'purchase'
         self.options['txt_type'] = 'goods_import'
         self._test_txt_file('Importaciones_de_Bienes.txt', 'purchase')
 
     def test_06_purchase_vat_book_goods_import_aliquots(self):
-        self._update_options_selected_tax(self.options, 'purchase')
+        self.options['ar_vat_book_tax_type_selected'] = 'purchase'
         self.options['txt_type'] = 'goods_import'
         self._test_txt_file('IVA_Importaciones_de_Bienes.txt', 'purchase')
 

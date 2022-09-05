@@ -30,16 +30,12 @@ class L10nARVatBook(models.Model):
         }
         options['buttons'].append(zip_export_button)
 
-        default_tax_types = [{
-            'id': 'sale',
-            'name': _('Sales'),
-            'selected': False,
-        }, {
-            'id': 'purchase',
-            'name': _('Purchases'),
-            'selected': False,
-        }]
-        options['ar_vat_book_tax_types'] = previous_options.get('ar_vat_book_tax_types', default_tax_types)
+        options['ar_vat_book_tax_types_available'] = {
+            'sale': _('Sales'),
+            'purchase': _('Purchases'),
+            'all': _('All'),
+        }
+        options['ar_vat_book_tax_type_selected'] = previous_options.get('ar_vat_book_tax_type_selected', 'all')
 
         tax_types = self._ar_vat_book_get_selected_tax_types(options)
 
@@ -230,7 +226,8 @@ class L10nARVatBook(models.Model):
 
     def _ar_vat_book_get_selected_tax_types(self, options):
         # If no particular one is selected, then select them all
-        return [tax_type['id'] for tax_type in options['ar_vat_book_tax_types'] if tax_type['selected']] or ['sale', 'purchase']
+        selected = options['ar_vat_book_tax_type_selected']
+        return ['sale', 'purchase'] if selected == 'all' else [selected]
 
     @api.model
     def _ar_vat_book_get_lines_domain(self, options):

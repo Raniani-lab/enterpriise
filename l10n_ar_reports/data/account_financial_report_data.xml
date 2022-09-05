@@ -2,25 +2,19 @@
 <odoo>
     <template id="search_template_ar_vat_book" inherit_id="account_reports.search_template" primary="True">
         <xpath expr="." position="inside">
-            <div class="btn-group dropdown o_account_reports_filter_ar_vat_book_tax_types"
-                 t-if="options.get('ar_vat_book_tax_types') != None">
-                <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <div class="btn-group dropdown o_account_reports_filter_ar_vat_book_tax_types">
+                <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                     <span class="fa fa-filter"/>
-                    Taxes Type:
-                        <t t-set="type_value">All</t>
-                        <t t-set="selected_types" t-value="[c['name'] for c in options['ar_vat_book_tax_types'] if c['selected']]"/>
-                        <t t-if="len(selected_types) > 0">
-                            <t t-set="type_value" t-value="', '.join(selected_types)"/>
-                        </t>
-                        <t t-esc="type_value"/>
+                    Tax Type:
+                        <t t-esc="options['ar_vat_book_tax_types_available'][options['ar_vat_book_tax_type_selected']]"/>
                 </button>
                 <div class="dropdown-menu o_filter_menu" role="menu">
-                    <t t-foreach="options['ar_vat_book_tax_types']" t-as="tax_type">
-                        <a class="dropdown-item js_account_report_choice_filter"
-                           data-filter="ar_vat_book_tax_types"
-                           t-att-title="tax_type.get('name')"
-                           t-att-data-id="tax_type.get('id')">
-                            <t t-esc="tax_type.get('name')"/>
+                    <t t-foreach="options['ar_vat_book_tax_types_available'].items()" t-as="tax_type">
+                        <a class="dropdown-item js_account_reports_one_choice_filter"
+                           data-filter="ar_vat_book_tax_type_selected"
+                           t-att-title="tax_type[1]"
+                           t-att-data-id="tax_type[0]">
+                            <t t-esc="tax_type[1]"/>
                         </a>
                     </t>
                 </div>

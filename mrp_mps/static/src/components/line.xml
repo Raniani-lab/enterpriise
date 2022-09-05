@@ -12,7 +12,7 @@
                     <span t-if="'product_uom_id' in productionSchedule" class="text-muted"> by <t t-esc="productionSchedule.product_uom_id[1]"/></span>
                     <span t-if="'warehouse_id' in productionSchedule"> - <t t-esc="productionSchedule.warehouse_id[1]"/></span>
                     <span> </span>
-                    <a href="#" class="fa fa-trash-o text-black o_mrp_mps_unlink" role="img" aria-label="Delete" title="Delete" t-on-click.prevent="() => this._onClickUnlink(productionSchedule.id)"/>
+                    <a href="#" role="button" title="Forecast Report" t-attf-class="fa fa-fw fa-area-chart" t-on-click.prevent="_onClickForecastReport"/>
                 </th>
                 <th/>
                 <t t-foreach="productionSchedule.forecast_ids" t-as="forecast" t-key="forecast_index">

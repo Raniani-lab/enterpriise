@@ -156,6 +156,20 @@ export default class MpsLineComponent extends Component {
         }
     }
 
+    async _onClickForecastReport() {
+        const action = await this.orm.call(
+            "product.product",
+            "action_product_forecast_report",
+            [[this.productionSchedule.id]],
+        );
+        action.context = {
+            active_model: "product.product",
+            active_id: this.productionSchedule.product_id[0],
+            warehouse_id: this.productionSchedule.warehouse_id && this.productionSchedule.warehouse_id[0],
+        };
+        return this.actionService.doAction(action);
+    }
+
     _onClickAutomaticMode(ev, productionScheduleId) {
         const dateIndex = parseInt(ev.target.dataset.date_index);
         this.model._removeQtyToReplenish(productionScheduleId, dateIndex);

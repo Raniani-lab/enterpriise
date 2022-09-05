@@ -25,3 +25,4 @@ from . import account_sales_report
 from . import account_move
 from . import account_tax
 from . import executive_summary_report
+from . import bank_rec_widget

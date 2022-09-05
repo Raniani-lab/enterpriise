@@ -8,8 +8,15 @@ var testUtils = require('web.test_utils');
 const cpHelpers = require('@web/../tests/search/helpers');
 var createView = testUtils.createView;
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
-const { getFixture, patchWithCleanup } = require("@web/../tests/helpers/utils");
+const {
+    clickDropdown,
+    clickOpenedDropdownItem,
+    editInput,
+    getFixture,
+    patchWithCleanup,
+} = require("@web/../tests/helpers/utils");
 const { browser } = require("@web/core/browser/browser");
+const { prepareWowlFormViewDialogs } = require("@web/../tests/views/helpers");
 
 QUnit.module('LegacyViews', {
     beforeEach: function () {
@@ -503,15 +510,15 @@ QUnit.module('LegacyViews', {
                     views: [{viewID: 23, type: 'form'}],
                 },
             },
-            archs: this.archs,
-            mockRPC: function (route, args) {
-                if (args.method === 'create') {
-                    assert.strictEqual(args.args[0].date, "2017-02-25",
-                        "default date should be current day");
-                }
-                return this._super(route, args);
-            },
         });
+
+        const mockRPC = (route, args) => {
+            if (args.method === 'create') {
+                assert.strictEqual(args.args[0].date, "2017-02-25",
+                    "default date should be current day");
+            }
+        };
+        await prepareWowlFormViewDialogs({ models: this.data, views: this.archs }, mockRPC);
 
         assert.containsNone(grid, '.o_grid_nocontent_container',
             "should not have rendered a no content helper");
@@ -523,13 +530,14 @@ QUnit.module('LegacyViews', {
         assert.ok($('.modal').length, "should have opened a modal");
 
         // input a project and a task
-        await testUtils.fields.many2one.clickOpenDropdown('project_id');
-        await testUtils.fields.many2one.clickHighlightedItem('project_id');
-        await testUtils.fields.many2one.clickOpenDropdown('task_id');
-        await testUtils.fields.many2one.clickHighlightedItem('task_id');
+        const target = getFixture();
+        await clickDropdown(target, "project_id");
+        await clickOpenedDropdownItem(target, "project_id", "P1");
+        await clickDropdown(target, "task_id");
+        await clickOpenedDropdownItem(target, "task_id", "BS task");
 
         // input unit_amount
-        await testUtils.fields.editInput($('.modal input').eq(3), "4");
+        await editInput(target, '.modal .o_field_widget[name=unit_amount] input', "4");
 
         // save
         await testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
@@ -567,29 +575,33 @@ QUnit.module('LegacyViews', {
                 },
             },
             domain: [['date', '>', '2014-09-09']],
-            archs: this.archs,
             mockRPC: function (route, args) {
                 if (args.method === 'read_grid_grouped') {
                     assert.deepEqual(args.kwargs.domain, [['date', '>', '2014-09-09']],
                         "the action domain should always be given");
                 }
-                if (args.method === 'create') {
-                    assert.strictEqual(args.args[0].date, "2017-02-25",
-                        "default date should be current day");
-                }
                 return this._super(route, args);
             },
         });
 
+        const mockRPC = (route, args) => {
+            if (args.method === 'create') {
+                assert.strictEqual(args.args[0].date, "2017-02-25",
+                    "default date should be current day");
+            }
+        };
+        await prepareWowlFormViewDialogs({ models: this.data, views: this.archs }, mockRPC);
+
         await testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
         assert.ok($('.modal').length, "should have opened a modal");
         // input a project and a task
-        await testUtils.fields.many2one.clickOpenDropdown('project_id');
-        await testUtils.fields.many2one.clickHighlightedItem('project_id');
-        await testUtils.fields.many2one.clickOpenDropdown('task_id');
-        await testUtils.fields.many2one.clickHighlightedItem('task_id');
+        const target = getFixture();
+        await clickDropdown(target, "project_id");
+        await clickOpenedDropdownItem(target, "project_id", "P1");
+        await clickDropdown(target, "task_id");
+        await clickOpenedDropdownItem(target, "task_id", "BS task");
         // input unit_amount
-        await testUtils.fields.editInput($('.modal input').eq(3), "4");
+        await editInput(target, '.modal .o_field_widget[name=unit_amount] input', "4");
         // save
         await testUtils.dom.click($('.modal .modal-footer button.btn-primary'));
 
@@ -1249,8 +1261,8 @@ QUnit.module('LegacyViews', {
                     views: [{viewID: 23, type: 'form'}],
                 },
             },
-            archs: this.archs,
         });
+        await prepareWowlFormViewDialogs({ models: this.data, views: this.archs });
         assert.ok(grid.$buttons.find('.o_grid_button_add').is(':hidden'), "'Add a line' control panel button should not be visible");
         const $addLineRow = grid.$('tr.o_grid_add_line_row th div div a[role="button"]:contains("Add a line")');
         assert.strictEqual($addLineRow.length, 1, "'Add a line' row should be visible");
@@ -1284,8 +1296,8 @@ QUnit.module('LegacyViews', {
                     views: [{viewID: 23, type: 'form'}],
                 },
             },
-            archs: this.archs,
         });
+        await prepareWowlFormViewDialogs({ models: this.data, views: this.archs });
         const $addLineButton = grid.$buttons.find('.o_grid_button_add');
         assert.ok($addLineButton.is(':visible'), "'Add a line' control panel button should be visible");
         await testUtils.dom.click($addLineButton);
@@ -1343,8 +1355,8 @@ QUnit.module('LegacyViews', {
                     views: [{viewID: 23, type: 'form'}],
                 },
             },
-            archs: this.archs,
         });
+        await prepareWowlFormViewDialogs({ models: this.data, views: this.archs });
         assert.ok(grid.$buttons.find('.o_grid_button_add').is(':hidden'), "'Add a line' control panel button should not be visible");
         const $addLineRow = grid.$('tr.o_grid_add_line_row th div div a[role="button"]:contains("Add a line")');
         assert.strictEqual($addLineRow.length, 1, "'Add a line' row should be visible");

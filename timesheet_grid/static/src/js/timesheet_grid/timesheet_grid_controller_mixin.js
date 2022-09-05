@@ -2,6 +2,8 @@ odoo.define('timesheet_grid.TimesheetGridControllerMixin', function (require) {
 'use strict';
 
 const core = require('web.core');
+const { parse } = require("web.field_utils");
+const { serializeDate } = require("@web/core/l10n/dates");
 
 const qWeb = core.qweb;
 
@@ -18,7 +20,8 @@ const TimesheetGridControllerMixin = {
      * @param {Object} grid_data
      */
     _onDialogSaved(grid_data) {
-        const analyticLineDate = grid_data.data.date;
+        // convert analyticLineDate from luxon to moment
+        const analyticLineDate = parse.date(serializeDate(grid_data.data.date), null, { isUTC: true });
         const state = this.model.get();
         const startDate = moment(state.timeBoundariesContext.start);
         const endDate = moment(state.timeBoundariesContext.end);
@@ -38,7 +41,7 @@ const TimesheetGridControllerMixin = {
      */
     _getFormDialogOptions() {
         let result = this._super(...arguments);
-        result['on_saved'] = this._onDialogSaved.bind(this);
+        result.onRecordSaved = this._onDialogSaved.bind(this);
         return result;
     },
 

@@ -4,14 +4,15 @@ odoo.define('web_grid.GridController', function (require) {
 var AbstractController = require('web.AbstractController');
 var config = require('web.config');
 var core = require('web.core');
-var dialogs = require('web.view_dialogs');
 var utils = require('web.utils');
 var concurrency = require('web.concurrency');
+
+const { FormViewDialog } = require("@web/views/view_dialogs/form_view_dialog");
 
 var qweb = core.qweb;
 var _t = core._t;
 
-const { markup } = owl;
+const { Component, markup } = owl;
 
 var GridController = AbstractController.extend({
     custom_events: Object.assign({}, AbstractController.prototype.custom_events, {
@@ -122,13 +123,12 @@ var GridController = AbstractController.extend({
         // TODO: document quick_create_view (?) context key
         var formViewID = formContext.quick_create_view || this.formViewID || false;
         return {
-            res_model: this.modelName,
-            res_id: false,
+            resModel: this.modelName,
+            resId: false,
             context: formContext,
-            view_id: formViewID,
+            viewId: formViewID,
             title: _t("Add a Line"),
-            disable_multiple_selection: true,
-            on_saved: this.reload.bind(this, {}),
+            onRecordSaved: this.reload.bind(this, {}),
         };
     },
 
@@ -138,7 +138,7 @@ var GridController = AbstractController.extend({
      */
     _addLine() {
         const options = this._getFormDialogOptions()
-        new dialogs.FormViewDialog(this, options).open();
+        Component.env.services.dialog.add(FormViewDialog, options);
     },
     /**
      * @private

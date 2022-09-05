@@ -3,6 +3,7 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
 
     const TimesheetGridView = require('timesheet_grid.GridView');
     const testUtils = require('web.test_utils');
+    const { prepareWowlFormViewDialogs } = require("@web/../tests/views/helpers");
     const createView = testUtils.createView;
 
     const get_planned_and_worked_hours = function (args) {
@@ -431,8 +432,8 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 arch: this.arch,
                 currentDate: "2017-01-25",
                 context: this.context,
-                archs: this.archs,
             });
+            await prepareWowlFormViewDialogs({ models: this.data, views: this.archs });
 
             // click on previous button
             await testUtils.dom.click(grid.$buttons.find('.grid_arrow_next'));
@@ -440,7 +441,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
             // click on 'Add a Line' button
             await testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
             assert.ok($('.modal').length, "should have opened a modal");
-            assert.strictEqual($('.modal-body.o_act_window input[name="date"]').val(), "01/30/2017", "date should be first working day");
+            assert.strictEqual(
+                $('.modal .o_field_widget[name="date"] input').val(),
+                "01/30/2017",
+                "date should be first working day"
+            );
             // close the modal
             await testUtils.dom.click($('.modal .modal-footer button.o_form_button_cancel'));
 
@@ -458,8 +463,8 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
                 arch: this.arch,
                 currentDate: "2017-01-25",
                 context: this.context,
-                archs: this.archs,
             });
+            await prepareWowlFormViewDialogs({ models: this.data, views: this.archs });
 
             // click on previous button
             await testUtils.dom.click(grid.$buttons.find('.grid_arrow_previous'));
@@ -467,7 +472,11 @@ odoo.define('timesheet_grid.timesheet_tests', function (require) {
             // click on 'Add a Line' button
             await testUtils.dom.click(grid.$buttons.find('.o_grid_button_add'));
             assert.ok($('.modal').length, "should have opened a modal");
-            assert.strictEqual($('.modal-body.o_act_window input[name="date"]').val(), "01/16/2017", "date should be first working day");
+            assert.strictEqual(
+                $('.modal .o_field_widget[name="date"] input').val(),
+                "01/16/2017",
+                "date should be first working day"
+            );
             // close the modal
             await testUtils.dom.click($('.modal .modal-footer button.o_form_button_cancel'));
 

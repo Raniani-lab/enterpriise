@@ -80,7 +80,7 @@
             </field>
             <field name="line_ids">
                 <record id="diot_report_line" model="account.report.line">
-                    <field name="name">Diot</field>
+                    <field name="name">DIOT</field>
                     <field name="groupby">partner_id, id</field>
                     <field name="expression_ids">
                         <record id="diot_report_line_counter" model="account.report.expression">

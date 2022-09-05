@@ -32,7 +32,7 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
     def _custom_engine_diot_report(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         def build_dict(report, current_groupby, query_res):
             if not current_groupby:
-                return query_res[0] if query_res else {k: None for k in report.column_ids.mapped('expression_label')}
+                return query_res[0] if query_res else {k: None for k in report.mapped('line_ids.expression_ids.label')}
             return [(group_res["grouping_key"], group_res) for group_res in query_res]
 
         report = self.env['account.report'].browse(options['report_id'])

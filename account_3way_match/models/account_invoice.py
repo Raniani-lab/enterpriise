@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models
 from odoo.tools.float_utils import float_compare
+from odoo.tools.sql import column_exists, create_column
 
 # Available values for the release_to_pay field.
 _release_to_pay_status_list = [('yes', 'Yes'), ('no', 'No'), ('exception', 'Exception')]
@@ -74,6 +75,18 @@ class AccountMove(models.Model):
 
 class AccountMoveLine(models.Model):
     _inherit = 'account.move.line'
+
+    def _auto_init(self):
+        if not column_exists(self.env.cr, "account_move_line", "can_be_paid"):
+            # set status Exception to avoid heavy computation on module installation
+            create_column(self.env.cr, "account_move_line", "can_be_paid", "VARCHAR")
+            self.env.cr.execute("""
+                UPDATE account_move_line
+                SET can_be_paid = 'exception'
+            """)
+
+        return super()._auto_init()
+
 
     @api.depends('purchase_line_id.qty_received', 'purchase_line_id.qty_invoiced', 'purchase_line_id.product_qty')
     def _can_be_paid(self):

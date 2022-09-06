@@ -158,10 +158,8 @@ Wysiwyg.include({
      * Insert a /toc block (table of content)
      */
     _insertTableOfContent: function () {
-        const tableOfContentFragment = new DocumentFragment();
         const tableOfContentBlock = $(QWeb.render('knowledge.knowledge_table_of_content_wrapper', {}))[0];
-        tableOfContentFragment.append(tableOfContentBlock);
-        const [container] = this.odooEditor.execCommand('insertFragment', tableOfContentFragment);
+        const [container] = this.odooEditor.execCommand('insert', tableOfContentBlock);
         this._notifyNewBehaviors(container);
     },
     /**
@@ -169,12 +167,10 @@ Wysiwyg.include({
      * It will list all the articles that are direct children of this one.
      */
      _insertArticlesStructure: function (childrenOnly) {
-        const articlesStructureFragment = new DocumentFragment();
         const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper', {
             childrenOnly: childrenOnly
         }))[0];
-        articlesStructureFragment.append(articlesStructureBlock);
-        const [container] = this.odooEditor.execCommand('insertFragment', articlesStructureFragment);
+        const [container] = this.odooEditor.execCommand('insert', articlesStructureBlock);
         this._notifyNewToolbars(container);
         this._notifyNewBehaviors(container);
     },
@@ -182,10 +178,8 @@ Wysiwyg.include({
      * Insert a /template block
      */
     _insertTemplate() {
-        const templateFragment = new DocumentFragment();
         const templateBlock = $(QWeb.render('knowledge.template_block', {}))[0];
-        templateFragment.append(templateBlock);
-        const [container] = this.odooEditor.execCommand('insertFragment', templateFragment);
+        const [container] = this.odooEditor.execCommand('insert', templateBlock);
         setCursorStart(container.querySelector('.o_knowledge_content > p'));
         this._notifyNewToolbars(container);
         this._notifyNewBehaviors(container);
@@ -198,16 +192,14 @@ Wysiwyg.include({
         const dialog = new KnowledgeArticleLinkModal(this, {});
         dialog.on('save', this, article => {
             if (article) {
-                const articleLinkFragment = new DocumentFragment();
                 const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
                     display_name: article.display_name,
                     href: '/knowledge/article/' + article.id,
                     article_id: article.id,
                 }))[0];
-                articleLinkFragment.append(articleLinkBlock);
                 dialog.close();
                 restoreSelection();
-                const [anchor] = this.odooEditor.execCommand('insertFragment', articleLinkFragment);
+                const [anchor] = this.odooEditor.execCommand('insert', articleLinkBlock);
                 this._notifyNewBehaviors(anchor);
             }
         });

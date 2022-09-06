@@ -2,6 +2,7 @@
 
 import Wysiwyg from 'web_editor.wysiwyg'
 import dialogs from 'web.view_dialogs'
+import { parseHTML } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 
 Wysiwyg.include({
     _getPowerboxOptions: function () {
@@ -40,7 +41,7 @@ Wysiwyg.include({
                             dialog.destroy();
                             const link = `<a href="${url}">Schedule an Appointment</a>`;
                             this.focus();
-                            this.odooEditor.execCommand('insertHTML', link);
+                            this.odooEditor.execCommand('insert', parseHTML(link));
                         });
                         $dialog.find('.o_book_url_discard').on('click', () => {
                             dialog.destroy();
@@ -56,7 +57,7 @@ Wysiwyg.include({
                 fontawesome: 'fa-calendar',
                 callback: () => {
                     const link = `<a href="${window.location.origin}/appointment">Our Appointment Types</a>`;
-                    this.odooEditor.execCommand('insertHTML', link);
+                    this.odooEditor.execCommand('insert', parseHTML(link));
                 },
             },
         ]);

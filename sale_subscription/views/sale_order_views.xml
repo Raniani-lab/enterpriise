@@ -89,7 +89,7 @@
                 <field name="renew_state"  invisible="1"/>
                 <field name="subscription_management" invisible="1"/>
 
-                <div name="subscription_pill" class="badge rounded-pill bg-info float-end"
+                <div name="subscription_pill" class="badge rounded-pill bg-info text-white float-end fs-6"
                      attrs="{'invisible': [
                          '|', '|',  '|', '|',
                          ('is_subscription', '=', False),
@@ -100,19 +100,19 @@
                      ]}"
                 >Recurring
                 </div>
-                <div name="upsell_pill" class="badge rounded-pill bg-primary float-end"
+                <div name="upsell_pill" class="badge rounded-pill bg-primary float-end fs-6"
                      attrs="{'invisible': [('is_upselling', '=', False)]}">Upselling
                 </div>
-                <div name="renewed_pill" class="badge rounded-pill bg-success float-end"
-                     attrs="{'invisible': [('renew_state', '=', 'renewing')]}"><field name="renew_state" class="d-inline"/>
+                <div name="renewed_pill" class="badge rounded-pill bg-success float-end fs-6"
+                     attrs="{'invisible': ['|', ('renew_state', '=', 'renewing'), ('renew_state', '=', False)]}"><field name="renew_state" class="d-inline"/>
                 </div>
-                <div name="renewing_pill" class="badge rounded-pill bg-warning float-end"
-                     attrs="{'invisible': [('renew_state', '=', 'renewed')]}"><field name="renew_state" class="d-inline"/>
+                <div name="renewing_pill" class="badge rounded-pill bg-warning float-end fs-6"
+                     attrs="{'invisible': ['|', ('renew_state', '=', 'renewed'), ('renew_state', '=', False)]}"><field name="renew_state" class="d-inline"/>
                 </div>
-                <div name="renew_pill" class="badge rounded-pill float-end border border-primary"
+                <div name="renew_pill" class="badge rounded-pill float-end border border-primary fs-6"
                      attrs="{'invisible': [('subscription_management', '!=', 'renew')]}">Renewal
                 </div>
-                <div name="renew_pill" class="badge rounded-pill float-end border border-primary"
+                <div name="renew_pill" class="badge rounded-pill float-end border border-primary fs-6"
                      attrs="{'invisible': [('subscription_management', '!=', 'upsell')]}">Upsell
                 </div>
             </xpath>

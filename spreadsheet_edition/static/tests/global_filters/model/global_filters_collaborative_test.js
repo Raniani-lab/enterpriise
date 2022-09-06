@@ -8,6 +8,7 @@ import {
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { nextTick } from "@web/../tests/helpers/utils";
+import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 import { insertPivot } from "../../pivot/model/pivot_collaborative_test";
 import { setupCollaborativeEnv } from "../../utils/collaborative_helpers";
 
@@ -34,14 +35,18 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             modelName: undefined,
             rangeType: undefined,
         };
-        await nextTick();
+        await waitForDataSourcesLoaded(alice);
+        await waitForDataSourcesLoaded(bob);
+        await waitForDataSourcesLoaded(charlie);
         assert.spreadsheetIsSynchronized(
             [alice, bob, charlie],
             (user) => getCellValue(user, "D4"),
             10
         );
         await addGlobalFilter(alice, { filter });
-        await nextTick();
+        await waitForDataSourcesLoaded(alice);
+        await waitForDataSourcesLoaded(bob);
+        await waitForDataSourcesLoaded(charlie);
         assert.spreadsheetIsSynchronized(
             [alice, bob, charlie],
             (user) => user.getters.getGlobalFilterValue(filter.id),
@@ -68,14 +73,17 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             modelName: undefined,
             rangeType: undefined,
         };
-        await nextTick();
+        await waitForDataSourcesLoaded(bob);
+        await waitForDataSourcesLoaded(charlie);
         assert.spreadsheetIsSynchronized(
             [alice, bob, charlie],
             (user) => getCellValue(user, "B4"),
             11
         );
         await addGlobalFilter(alice, { filter });
-        await nextTick();
+        await waitForDataSourcesLoaded(alice);
+        await waitForDataSourcesLoaded(bob);
+        await waitForDataSourcesLoaded(charlie);
         assert.spreadsheetIsSynchronized(
             [alice, bob, charlie],
             (user) => getCellValue(user, "B4"),
@@ -85,7 +93,9 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             id: "41",
             filter: { ...filter, defaultValue: [37] },
         });
-        await nextTick();
+        await waitForDataSourcesLoaded(alice);
+        await waitForDataSourcesLoaded(bob);
+        await waitForDataSourcesLoaded(charlie);
         assert.spreadsheetIsSynchronized(
             [alice, bob, charlie],
             (user) => getCellValue(user, "B4"),

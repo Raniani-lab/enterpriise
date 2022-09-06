@@ -3,14 +3,11 @@
 import { nextTick } from "@web/../tests/helpers/utils";
 
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
-import {
-    getCellContent,
-    getCellFormula,
-    getCellValue,
-} from "@spreadsheet/../tests/utils/getters";
+import { getCellContent, getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { setupCollaborativeEnv } from "../../utils/collaborative_helpers";
 import ListDataSource from "@spreadsheet/list/list_data_source";
+import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
@@ -79,6 +76,9 @@ QUnit.test("Add two lists concurrently", async (assert) => {
         insertList(alice, "1");
         insertList(bob, "1", [0, 25]);
     });
+    await waitForDataSourcesLoaded(alice);
+    await waitForDataSourcesLoaded(bob);
+    await waitForDataSourcesLoaded(charlie);
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => user.getters.getListIds(), [
         "1",
         "2",

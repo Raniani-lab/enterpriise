@@ -6,6 +6,7 @@ import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { getCellContent, getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { setupCollaborativeEnv } from "../../utils/collaborative_helpers";
 import PivotDataSource from "@spreadsheet/pivot/pivot_data_source";
+import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
@@ -80,6 +81,7 @@ export async function insertPivot(model) {
         definition,
         dataSource,
     });
+    await waitForDataSourcesLoaded(model);
 }
 
 let alice, bob, charlie, network;
@@ -161,7 +163,9 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
         (user) => getCellFormula(user, "B26"),
         `=ODOO.PIVOT.HEADER(2,"foo",1)`
     );
-    await nextTick();
+    await waitForDataSourcesLoaded(alice);
+    await waitForDataSourcesLoaded(bob);
+    await waitForDataSourcesLoaded(charlie);
 
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     assert.spreadsheetIsSynchronized(

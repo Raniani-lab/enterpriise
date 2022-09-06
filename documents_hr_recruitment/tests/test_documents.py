@@ -8,12 +8,13 @@ GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
 @tagged('post_install', '-at_install')
 class TestCaseDocumentsBridgeRecruitment(TransactionCase):
 
-    def setUp(self):
-        super(TestCaseDocumentsBridgeRecruitment, self).setUp()
-        self.folder = self.env['documents.folder'].create({'name': 'folder_test'})
-        self.company = self.env['res.company'].create({
+    @classmethod
+    def setUpClass(cls):
+        super(TestCaseDocumentsBridgeRecruitment, cls).setUpClass()
+        cls.folder = cls.env['documents.folder'].create({'name': 'folder_test'})
+        cls.company = cls.env['res.company'].create({
             'name': 'test bridge recruitment',
-            'recruitment_folder_id': self.folder.id,
+            'recruitment_folder_id': cls.folder.id,
             'documents_recruitment_settings': True,
         })
 

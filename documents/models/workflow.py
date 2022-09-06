@@ -76,6 +76,7 @@ class WorkflowActionRule(models.Model):
         :param documents: the list of the documents of the selection
         :return: the action dictionary that will be called after the workflow action is done or True.
         """
+        self.ensure_one()
         if self.create_model == 'link.to.record':
             return self.link_to_record(documents)
 

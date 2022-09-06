@@ -148,6 +148,7 @@ const GanttView = AbstractView.extend({
         this.loadParams.progressField = arch.attrs.progress;
         this.loadParams.decorationFields = decorationFields;
         this.loadParams.defaultGroupBy = this.arch.attrs.default_group_by;
+        this.loadParams.permanentGroupBy = this.arch.attrs.permanent_group_by;
         this.loadParams.dynamicRange = this.arch.attrs.dynamic_range;
         this.loadParams.displayUnavailability = displayUnavailability;
         this.loadParams.fields = this.fields;

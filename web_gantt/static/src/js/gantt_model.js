@@ -136,6 +136,7 @@ export default AbstractModel.extend({
      * @param {string} params.dateStopField
      * @param {string[]} params.decorationFields
      * @param {string} params.defaultGroupBy
+     * @param {string} params.permanentGroupBy
      * @param {boolean} params.displayUnavailability
      * @param {Array[]} params.domain
      * @param {Object} params.fields
@@ -162,9 +163,13 @@ export default AbstractModel.extend({
         this.progressBarFields = params.progressBarFields ? params.progressBarFields.split(",") : false;
 
         this.defaultGroupBy = params.defaultGroupBy ? params.defaultGroupBy.split(',') : [];
+        this.permanentGroupBy  = params.permanentGroupBy
         let groupedBy = params.groupedBy;
         if (!groupedBy || !groupedBy.length) {
             groupedBy = this.defaultGroupBy;
+        }
+        if (this.permanentGroupBy && !groupedBy.includes(this.permanentGroupBy)) {
+            groupedBy.push(this.permanentGroupBy)
         }
         groupedBy = this._filterDateInGroupedBy(groupedBy);
 
@@ -208,6 +213,9 @@ export default AbstractModel.extend({
                 this.ganttData.groupedBy = this._filterDateInGroupedBy(params.groupBy);
                 if(this.ganttData.groupedBy.length !== params.groupBy.length){
                     this.displayNotification({ message: _t('Grouping by date is not supported'), type: 'danger' });
+                }
+                if (this.permanentGroupBy && !this.ganttData.groupedBy.includes(this.permanentGroupBy)) {
+                    this.ganttData.groupedBy.push(this.permanentGroupBy)
                 }
             } else {
                 this.ganttData.groupedBy = this.defaultGroupBy;

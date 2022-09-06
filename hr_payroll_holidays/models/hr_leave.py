@@ -60,12 +60,12 @@ class HrLeave(models.Model):
                 and payslip.date_to >= leave.date_from.date()) for payslip in waiting_payslips):
                 leave.payslip_state = 'blocked'
         res = super().action_validate()
-        self._recompute_payslips()
+        self.sudo()._recompute_payslips()
         return res
 
     def action_refuse(self):
         res = super().action_refuse()
-        self._recompute_payslips()
+        self.sudo()._recompute_payslips()
         return res
 
     def _action_user_cancel(self, reason):

@@ -24,16 +24,6 @@ patchRecordMethods("AttachmentViewerViewable", {
      * @private
      * @override
      */
-    _computeAccessToken() {
-        if (this.documentOwner) {
-            return this.documentOwner.accessToken;
-        }
-        return this._super();
-    },
-    /**
-     * @private
-     * @override
-     */
     _computeDefaultSource() {
         if (this.documentOwner) {
             return this.documentOwner.defaultSource;

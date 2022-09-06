@@ -5,6 +5,12 @@ const KioskMode = require('hr_attendance.kiosk_mode');
 const barcodeMobileMixin = require('web_mobile.barcode_mobile_mixin');
 
 KioskMode.include(Object.assign({}, barcodeMobileMixin, {
-    events: Object.assign({}, barcodeMobileMixin.events, KioskMode.prototype.events)
+    events: Object.assign({}, barcodeMobileMixin.events, KioskMode.prototype.events),
+    getFacingMode() {
+        if (this.barcode_source == 'front') {
+            return 'user';
+        }
+        return barcodeMobileMixin.getFacingMode();
+    }
 }));
 });

@@ -155,7 +155,7 @@ class BarcodeDialog extends Component {
 
         onMounted(async () => {
             const constraints = {
-                video: { facingMode: "environment" },
+                video: { facingMode: this.props.facingMode },
                 audio: false,
             };
 
@@ -257,7 +257,7 @@ export function isBarcodeScannerSupported() {
  *
  * @returns {Promise<string>} resolves when a {qr,bar}code has been detected
  */
-export async function scanBarcode() {
+export async function scanBarcode(facingMode = 'environment') {
     const promise = new Promise((resolve, reject) => {
         bus.on(busOk, null, resolve);
         bus.on(busError, null, reject);
@@ -270,6 +270,7 @@ export async function scanBarcode() {
         translateFn: _t,
         props: {
             onClose: () => appForBarcodeDialog.destroy(),
+            facingMode: facingMode,
         },
     });
     await appForBarcodeDialog.mount(document.body);

@@ -16,11 +16,14 @@ return {
         }
         return res;
     },
+    getFacingMode() {
+        return 'environment';
+    },
     async open_mobile_scanner() {
         let error = null;
         let barcode = null;
         try {
-            barcode = await BarcodeScanner.scanBarcode();
+            barcode = await BarcodeScanner.scanBarcode(this.getFacingMode());
         } catch (err) {
             error = err.error.message;
         }

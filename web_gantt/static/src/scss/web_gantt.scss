@@ -1,17 +1,3 @@
-$gantt-border-color: $gray-400;
-$gantt-pill-height: 31px;
-$gantt-highlight-today-border: #dca665;
-$gantt-highlight-today-bg: #fffaeb;
-$gantt-highlight-hover-row: rgba($primary, .1);
-$gantt-row-open-bg: $gray-100;
-$gantt-pill-consolidated-height: 24px;
-$gantt-unavailability-bg: $gray-200;
-$o-connector-creator-bullet-radius: 3px;
-$o-connector-creator-size: 8px;
-$o-connector-creator-bullet-diameter: 2 * $o-connector-creator-bullet-radius;
-$o-connector-wrapper-height: $o-connector-creator-size + $o-connector-creator-bullet-radius;
-
-
 // Define the necessary conditions to provide visual feedback on hover,
 // focus, drag, clone and resize.
 @mixin o-gantt-hover() {

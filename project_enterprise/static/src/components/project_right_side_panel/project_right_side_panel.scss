@@ -1,4 +1,4 @@
-@include media-breakpoint-down(md) {
+@include media-breakpoint-down(lg) {
     .o_controller_with_rightpanel .o_content {
         display: flex;
         flex-direction: column-reverse;

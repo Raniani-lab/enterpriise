@@ -36,6 +36,24 @@ MockServer.include({
                 appointment_type_id: customAppointmentTypeID,
                 invite_url: `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`,
             };
+        } else if (route === "/appointment/appointment_type/search_create_anytime") {
+            let anytimeAppointmentID = this._mockSearch(
+                'appointment.type',
+                [[['category', '=', 'anytime'], ['staff_user_ids', 'in', [session.uid]]]],
+                {},
+            )[0];
+            if (!anytimeAppointmentID) {
+                anytimeAppointmentID = this._mockCreate('appointment.type', {
+                    name: "Anytime with Actual User",
+                    staff_user_ids: [session.uid],
+                    category: 'anytime',
+                    website_published: true,
+                });
+            }
+            return {
+                appointment_type_id: anytimeAppointmentID,
+                invite_url: `http://amazing.odoo.com/appointment/3?filter_staff_user_ids=%5B${session.uid}%5D`,
+            };
         } else if (route === "/appointment/appointment_type/get_staff_user_appointment_types") {
             if (session.uid) {
                 const domain = [

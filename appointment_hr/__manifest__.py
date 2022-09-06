@@ -18,9 +18,4 @@ Take into account the working schedule (sick leaves, part time, ...) of employee
     ],
     'auto_install': True,
     'license': 'OEEL-1',
-    'assets': {
-        'web.qunit_suite_tests': [
-            'appointment_hr/static/tests/*',
-        ],
-    }
 }

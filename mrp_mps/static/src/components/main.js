@@ -48,7 +48,11 @@ class MainComponent extends Component {
             searchModel: this.SearchModel,
         });
 
-        useBus(this.SearchModel, "update", () => this.model.load(this.SearchModel.domain, this.env.config.offset, this.env.config.limit));
+        useBus(this.SearchModel, "update", () => {
+            this.env.config.offset = 0;
+            this.env.config.limit = defaultPagerSize;
+            this.model.load(this.SearchModel.domain, this.env.config.offset, this.env.config.limit);
+        });
 
         onWillStart(async () => {
             this.env.config.setDisplayName(this.env._t("Master Production Schedule"));

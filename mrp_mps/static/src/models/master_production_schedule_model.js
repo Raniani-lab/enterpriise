@@ -10,6 +10,8 @@ export class MasterProductionScheduleModel extends EventBus {
     constructor(params, services) {
         super();
         this.domain = [];
+        this.offset = 0;
+        this.limit = false;
         this.params = params;
         this.orm = services.orm;
         this.action = services.action;
@@ -17,11 +19,17 @@ export class MasterProductionScheduleModel extends EventBus {
         this.mutex = new Mutex();
     }
 
-    async load(domain, offset = 0, limit = false) {
-        if (domain) {
+    async load(domain, offset, limit) {
+        if (domain !== undefined) {
             this.domain = domain;
         }
-        this.data = await this.orm.call( 'mrp.production.schedule', 'get_mps_view_state', [this.domain, offset, limit]);
+        if (offset !== undefined) {
+            this.offset = offset;
+        }
+        if (limit !== undefined) {
+            this.limit = limit;
+        }
+        this.data = await this.orm.call( 'mrp.production.schedule', 'get_mps_view_state', [this.domain, this.offset, this.limit]);
         this.notify();
     }
 
@@ -77,7 +85,7 @@ export class MasterProductionScheduleModel extends EventBus {
                 if (productionScheduleIds.length === 1) {
                     self.reload(productionScheduleIds[0]);
                 } else {
-                    self.load(self.domain);
+                    self.load();
                 }
             });
         });
@@ -125,7 +133,7 @@ export class MasterProductionScheduleModel extends EventBus {
         const self = this;
         this.mutex.exec(function () {
             self.action.doAction('mrp_mps.action_mrp_mps_form_view',{
-                onClose: () => self.load(self.domain),
+                onClose: () => self.load(),
             });
         });
     }
@@ -251,7 +259,7 @@ export class MasterProductionScheduleModel extends EventBus {
                 [self.data.company_id],
                 values,
             ).then(function () {
-                self.load(self.domain);
+                self.load();
             });
         });
     }

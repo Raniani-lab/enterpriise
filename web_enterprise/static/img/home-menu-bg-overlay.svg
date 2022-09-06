@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1540" height="1025" viewBox="0 0 1540 1025">
     <defs>
-        <filter id='noiseFilter'>
-            <feTurbulence type='fractalNoise' baseFrequency='1.52' numOctaves='3' stitchTiles='stitch'/>
-        </filter>
         <linearGradient id="a" x1="36.456%" x2="27.554%" y1="61.828%" y2="30.068%">
             <stop offset="0%" stop-color="#D5D5D5" stop-opacity="0" />
             <stop offset="100%" stop-color="#F7F7F7" stop-opacity=".192" />
@@ -29,7 +26,6 @@
             <stop offset="72%" stop-color="#FFF" stop-opacity=".1" />
         </linearGradient>
     </defs>
-    <rect width='100%' height='100%' filter='url(#noiseFilter)' opacity=".15"/>
     <g fill="none" fill-rule="evenodd" transform="translate(-145 -1542)">
         <ellipse cx="1213" cy="2184" fill="url(#a)" rx="1212" ry="1573" />
         <ellipse cx="1440" cy="2297" fill="url(#b)" stroke="url(#strokeLarge)" rx="1313" ry="1473" />

@@ -477,7 +477,8 @@
         childWidth="cellPopover.Component.size.width"
         childHeight="cellPopover.Component.size.height"
         flipHorizontalOffset="cellPopover.cellWidth"
-        flipVerticalOffset="cellPopover.cellHeight">
+        flipVerticalOffset="cellPopover.cellHeight"
+        onMouseWheel="onMouseWheel.bind(this)">
         <t
           t-component="cellPopover.Component"
           t-props="{...cellPopover.props, onClosed : () => onClosePopover()}"
@@ -1262,7 +1263,7 @@
             t-on-click="() => this.onClickMenu(menuItem, menuItem_index)"
             t-on-mouseover="() => this.onMouseOver(menuItem, menuItem_index)"
             class="o-menu-item"
-            t-att-class="{ 'o-menu-root': isMenuRoot, 'disabled': !isMenuEnabled, 'o-menu-item-active': subMenu.parentMenu === menuItem}"
+            t-att-class="{ 'o-menu-root': isMenuRoot, 'disabled': !isMenuEnabled, 'o-menu-item-active': isParentMenu(subMenu, menuItem)}"
             t-att-style="getColor(menuItem)">
             <span class="o-menu-item-name" t-esc="getName(menuItem)"/>
             <span
@@ -1293,7 +1294,7 @@
 
   <t t-name="o-spreadsheet-Popover" owl="1">
     <t t-portal="'.o-spreadsheet'">
-      <div t-att-style="style" class="o-popover">
+      <div t-att-style="style" class="o-popover" t-on-wheel="props.onMouseWheel">
         <t t-slot="default"/>
       </div>
     </t>
@@ -2219,7 +2220,7 @@
             <div class="o-section-title">Format rules</div>
             <div class="o_field_radio o_horizontal o_field_widget o-cf-type-selector">
               <div
-                class="form-check o_cf_radio_item"
+                class="custom-control form-check o_cf_radio_item"
                 t-on-click="() => this.changeRuleType('CellIsRule')">
                 <input
                   class="form-check-input o_radio_input"
@@ -2232,7 +2233,7 @@
                 <label for="cellIsRule" class="form-check-label o_form_label">Single color</label>
               </div>
               <div
-                class="form-check o_cf_radio_item"
+                class="custom-control form-check o_cf_radio_item"
                 t-on-click="() => this.changeRuleType('ColorScaleRule')">
                 <input
                   class="form-check-input o_radio_input"
@@ -2248,7 +2249,7 @@
               </div>
 
               <div
-                class="form-check o_cf_radio_item"
+                class="custom-control form-check o_cf_radio_item"
                 t-on-click="() => this.changeRuleType('IconSetRule')">
                 <input
                   class="form-check-input o_radio_input"
@@ -2698,7 +2699,7 @@
             t-if="state.menuState.isOpen"
             position="state.menuState.position"
             menuItems="state.menuState.menuItems"
-            onClose="() => this.state.menuState.isOpen=false"
+            onClose="() => this.closeMenus()"
           />
         </div>
         <div class="o-topbar-topright">

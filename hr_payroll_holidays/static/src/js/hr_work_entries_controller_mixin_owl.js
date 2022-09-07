@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { useService } from "@web/core/utils/hooks";
-const { useComponent, Component, useState, useEffect, useEnv, onWillStart, mount, xml, useRef } = owl;
+const { Component, useState, useEffect, useEnv, onWillStart, mount, xml, useRef } = owl;
 
 export class TimeOffToDeferWarning extends Component {
     setup() {
@@ -21,8 +21,7 @@ TimeOffToDeferWarning.template = xml`
     </div>
 `;
 
-export function useTimeOffToDefer(selector, props = {}) {
-    const component = useComponent();
+export function useTimeOffToDefer(selector, position) {
     const orm = useService("orm");
     const rootRef = useRef("root");
     const env = useEnv();
@@ -30,16 +29,7 @@ export function useTimeOffToDefer(selector, props = {}) {
         hasTimeOffToDefer: false
     });
     onWillStart(async () => {
-        const domain = [["payslip_state", "=", "blocked"]];
-        if (props.filterOnEmployee) {
-            const [employee] = await orm.read(
-                component.props.resModel,
-                [component.props.resId],
-                ['employee_id']
-            );
-            domain.push(["employee_id", '=', employee && employee.employee_id[0]]);
-        }
-        const result = await orm.search('hr.leave', domain);
+        const result = await orm.search('hr.leave', [["payslip_state", "=", "blocked"]]);
         state.hasTimeOffToDefer = result.length !== 0;
     });
     useEffect((el) => {
@@ -48,9 +38,8 @@ export function useTimeOffToDefer(selector, props = {}) {
         }
         const attachElement = el.querySelector(selector);
         mount(TimeOffToDeferWarning, attachElement, {
-            position: props.position,
-            env,
-            props
+            position,
+            env
         });
       },
       () => [state.hasTimeOffToDefer && rootRef.el]

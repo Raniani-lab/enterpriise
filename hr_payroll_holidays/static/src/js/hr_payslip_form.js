@@ -8,7 +8,7 @@ import { useTimeOffToDefer } from '@hr_payroll_holidays/js/hr_work_entries_contr
 export class PayslipFormController extends FormController {
     setup() {
         super.setup();
-        useTimeOffToDefer('.o_form_sheet_bg', {filterOnEmployee: true, position: "first-child" });
+        useTimeOffToDefer('.o_form_sheet_bg', "first-child");
     }
 }
 

@@ -8,7 +8,7 @@ import { useTimeOffToDefer } from '@hr_payroll_holidays/js/hr_work_entries_contr
 export class PayslipRunController extends ListController {
     setup() {
         super.setup();
-        useTimeOffToDefer('.o_list_renderer', { position: "first-child" });
+        useTimeOffToDefer('.o_list_renderer', "first-child");
     }
 }
 

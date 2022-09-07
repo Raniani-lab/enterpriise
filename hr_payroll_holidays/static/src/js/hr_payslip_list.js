@@ -7,6 +7,6 @@ import { useTimeOffToDefer } from '@hr_payroll_holidays/js/hr_work_entries_contr
 patch(PayslipListController.prototype, 'hr_payroll_holidays_payslip_holidays_list_controller', {
     setup() {
         this._super.apply(this, arguments);
-        useTimeOffToDefer('.o_list_renderer', { position: "first-child" });
+        useTimeOffToDefer('.o_list_renderer', "first-child");
     }
 });

@@ -324,7 +324,7 @@
                 <search>
                     <field name="name"
                            string="Journal Item"
-                           filter_domain="['|', '|', '|', '|', ('name', 'ilike', self), ('ref', 'ilike', self), ('partner_id', 'ilike', self), ('amount_residual', 'ilike', self), ('amount_residual_currency', 'ilike', self)]"/>
+                           filter_domain="['|', '|', '|', '|', '|', ('name', 'ilike', self), ('ref', 'ilike', self), ('partner_id', 'ilike', self), ('amount_residual', 'ilike', self), ('amount_residual_currency', 'ilike', self), ('discount_amount_currency', 'ilike', self)]"/>
                     <field name="date"/>
                     <field name="account_id"/>
                     <field name="partner_id"/>

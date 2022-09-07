@@ -66,23 +66,35 @@ class TestBankRecWidgetCommon(AccountTestInvoicingCommon):
         view.arch = etree.tostring(tree)
 
     @classmethod
-    def _create_invoice_line(cls, amount, partner, move_type, currency=None, pay_reference=None, ref=None, name=None, inv_date='2017-01-01'):
+    def _create_invoice_line(cls, move_type, **kwargs):
         ''' Create an invoice on the fly.'''
-        invoice_form = Form(cls.env['account.move'].with_context(default_move_type=move_type, default_invoice_date=inv_date, default_date=inv_date))
-        invoice_form.partner_id = partner
-        if currency:
-            invoice_form.currency_id = currency
-        if pay_reference:
-            invoice_form.payment_reference = pay_reference
-        if ref:
-            invoice_form.ref = ref
-        if name:
-            invoice_form.name = name
-        with invoice_form.invoice_line_ids.new() as invoice_line_form:
-            invoice_line_form.name = 'xxxx'
-            invoice_line_form.quantity = 1
-            invoice_line_form.price_unit = amount
-            invoice_line_form.tax_ids.clear()
+
+        def setvalue(proxy, field, value):
+            descr = proxy._view['fields'].get(field)
+            if descr['type'] == 'one2many':
+                for one2many_values in value:
+                    with proxy.__getattr__(field).new() as one2many_proxy:
+                        for one2many_field, one2many_field_value in one2many_values.items():
+                            setvalue(one2many_proxy, one2many_field, one2many_field_value)
+            elif descr['type'] == 'many2many':
+                many2many_proxy = proxy.__getattr__(field)
+                many2many_proxy.clear()
+                for many2many_value in value:
+                    many2many_proxy.add(many2many_value)
+            else:
+                proxy.__setattr__(field, value)
+
+        kwargs.setdefault('partner_id', cls.partner_a)
+        kwargs.setdefault('invoice_date', '2017-01-01')
+        kwargs.setdefault('invoice_line_ids', [])
+        for one2many_values in kwargs['invoice_line_ids']:
+            one2many_values.setdefault('name', 'xxxx')
+            one2many_values.setdefault('quantity', 1)
+            one2many_values.setdefault('tax_ids', cls.env['account.tax'])
+
+        invoice_form = Form(cls.env['account.move'].with_context(default_move_type=move_type))
+        for field, field_value in kwargs.items():
+            setvalue(invoice_form, field, field_value)
         invoice = invoice_form.save()
         invoice.action_post()
         lines = invoice.line_ids

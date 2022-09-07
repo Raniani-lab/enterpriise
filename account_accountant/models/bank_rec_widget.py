@@ -700,7 +700,7 @@ class BankRecWidget(models.Model):
             line.account_id = self.form_account_id
 
         # Recompute taxes.
-        if line.flag != 'tax_line' and line.tax_ids:
+        if line.flag not in ('tax_line', 'early_payment') and line.tax_ids:
             self._lines_widget_recompute_taxes()
             self._lines_widget_add_auto_balance_line()
             self._action_mount_line_in_edit(line.index)
@@ -732,7 +732,7 @@ class BankRecWidget(models.Model):
             # Set the new receivable/payable account if any.
             self.form_account_id = new_account
             self._onchange_form_account_id()
-        elif line.flag != 'tax_line' and line.tax_ids:
+        elif line.flag not in ('tax_line', 'early_payment') and line.tax_ids:
             # Recompute taxes.
             self._lines_widget_recompute_taxes()
             self._lines_widget_add_auto_balance_line()
@@ -760,7 +760,7 @@ class BankRecWidget(models.Model):
         line.analytic_account_id = self.form_analytic_account_id
 
         # Recompute taxes.
-        if line.flag != 'tax_line' and any(x.analytic for x in line.tax_ids):
+        if line.flag not in ('tax_line', 'early_payment') and any(x.analytic for x in line.tax_ids):
             self._lines_widget_recompute_taxes()
             self._lines_widget_add_auto_balance_line()
             self._action_mount_line_in_edit(line.index)
@@ -775,7 +775,7 @@ class BankRecWidget(models.Model):
         line.analytic_tag_ids = [Command.set(self.form_analytic_tag_ids.ids)]
 
         # Recompute taxes.
-        if line.flag != 'tax_line' and any(x.analytic for x in line.tax_ids):
+        if line.flag not in ('tax_line', 'early_payment') and any(x.analytic for x in line.tax_ids):
             self._lines_widget_recompute_taxes()
             self._lines_widget_add_auto_balance_line()
             self._action_mount_line_in_edit(line.index)
@@ -836,7 +836,7 @@ class BankRecWidget(models.Model):
                 # Apply the rate.
                 rate = abs(line.source_amount_currency) / abs(line.source_balance)
                 self.form_balance = line.company_currency_id.round(self.form_amount_currency / rate)
-        elif line.flag in ('manual', 'tax_line'):
+        elif line.flag in ('manual', 'early_payment', 'tax_line'):
             if line.currency_id in (self.transaction_currency_id, self.journal_currency_id):
                 self.form_balance = self.st_line_id\
                     ._prepare_counterpart_amounts_using_st_line_rate(self.form_currency_id, None, self.form_amount_currency)['balance']
@@ -848,7 +848,7 @@ class BankRecWidget(models.Model):
         line.amount_currency = sign * self.form_amount_currency
         line.balance = sign * self.form_balance
 
-        if line.flag != 'tax_line' and line.tax_ids:
+        if line.flag not in ('tax_line', 'early_payment') and line.tax_ids:
             # Manual edition of amounts. Disable the price_included mode.
             line.force_price_included_taxes = False
 
@@ -944,9 +944,25 @@ class BankRecWidget(models.Model):
         st_line = self.st_line_id
 
         # Compute the current open balance.
-        open_balance = -sum(self.line_ids.filtered(lambda x: x.flag != 'auto_balance').mapped('balance'))
-        open_amount_currency = -sum(self.line_ids.filtered(lambda x: x.flag != 'auto_balance').mapped('amount_currency'))
-        same_currency = self.line_ids.currency_id == self.transaction_currency_id
+        lines = self.line_ids.filtered(lambda x: x.flag not in ('auto_balance', 'liquidity'))
+        open_balance = -sum(lines.mapped('balance'))
+        open_amount_currency = -sum(lines.mapped('amount_currency'))
+        currencies = set(lines.currency_id)
+
+        # Special handle for the liquidity line to avoid rounding issues with conversion rates.
+        default_st_line_vals_list = st_line._prepare_move_line_default_vals()
+        open_balance -= default_st_line_vals_list[0]['debit'] - default_st_line_vals_list[0]['credit']
+        if currencies == {self.company_currency_id}:
+            open_amount_currency -= default_st_line_vals_list[0]['amount_currency']
+            currencies.add(self.company_currency_id)
+        elif currencies == {self.journal_currency_id}:
+            open_amount_currency -= default_st_line_vals_list[0]['amount_currency']
+            currencies.add(self.journal_currency_id)
+        else:
+            open_amount_currency += default_st_line_vals_list[1]['amount_currency']
+            currencies.add(self.transaction_currency_id)
+
+        same_currency = currencies == {self.transaction_currency_id}
 
         if not same_currency:
             open_amount_currency = self.st_line_id\
@@ -1067,7 +1083,113 @@ class BankRecWidget(models.Model):
             }
         return None
 
-    def _lines_widget_load_new_amls(self, amls, allow_partial=False, reco_model=None):
+    def _lines_widget_check_apply_early_payment_discount(self):
+        """ Try to apply the early payment discount on the currently mounted journal items.
+
+        :return: True if applied, False otherwise.
+        """
+        self._ensure_loaded_lines()
+
+        all_aml_lines = self.line_ids.filtered(lambda x: x.flag == 'new_aml')
+
+        # Get the balance without the 'new_aml' lines.
+        auto_balance_line_vals = self._lines_widget_prepare_auto_balance_line()
+        open_balance_wo_amls = auto_balance_line_vals['balance'] + sum(all_aml_lines.mapped('balance'))
+        open_amount_currency_wo_amls = auto_balance_line_vals['amount_currency'] + sum(all_aml_lines.mapped('amount_currency'))
+
+        # Get the balance after adding the 'new_aml' lines but without considering the partial amounts.
+        open_balance = open_balance_wo_amls - sum(all_aml_lines.mapped('source_balance'))
+        open_amount_currency = open_amount_currency_wo_amls - sum(all_aml_lines.mapped('source_amount_currency'))
+
+        is_same_currency = all_aml_lines.currency_id == self.transaction_currency_id
+        at_least_one_aml_for_early_payment = False
+
+        early_pay_aml_values_list = []
+        total_early_payment_discount = 0.0
+
+        for aml_line in all_aml_lines:
+            aml = aml_line.source_aml_id
+
+            if aml._is_eligible_for_early_payment_discount(self.transaction_currency_id, self.st_line_id.date):
+                at_least_one_aml_for_early_payment = True
+                total_early_payment_discount += aml.amount_currency - aml.discount_amount_currency
+
+                early_pay_aml_values_list.append({
+                    'aml': aml,
+                    'amount_currency': aml_line.amount_currency,
+                    'balance': aml_line.balance,
+                })
+
+        line_ids_create_command_list = []
+        is_early_payment_applied = False
+
+        # Cleanup the existing early payment discount lines.
+        for line in self.line_ids.filtered(lambda x: x.flag == 'early_payment'):
+            line_ids_create_command_list.append(Command.unlink(line.id))
+
+        if is_same_currency \
+            and at_least_one_aml_for_early_payment \
+            and self.transaction_currency_id.compare_amounts(open_amount_currency, total_early_payment_discount) == 0:
+            # == Compute the early payment discount lines ==
+            # Remove the partials on existing lines.
+            for aml_line in all_aml_lines:
+                aml_line.amount_currency = aml_line.source_amount_currency
+                aml_line.balance = aml_line.source_balance
+
+            # Add the early payment lines.
+            early_payment_values = self.env['account.move']._get_invoice_counterpart_amls_for_early_payment_discount(
+                early_pay_aml_values_list,
+                open_balance,
+            )
+
+            for vals_list in early_payment_values.values():
+                for vals in vals_list:
+                    line_ids_create_command_list.append(Command.create({
+                        'flag': 'early_payment',
+                        'account_id': vals['account_id'],
+                        'date': self.st_line_id.date,
+                        'name': vals['name'],
+                        'partner_id': vals['partner_id'],
+                        'currency_id': vals['currency_id'],
+                        'amount_currency': vals['amount_currency'],
+                        'balance': vals['balance'],
+
+                        'analytic_account_id': vals.get('analytic_account_id'),
+                        'analytic_tag_ids': vals.get('analytic_tag_ids', []),
+                        'tax_ids': vals.get('tax_ids', []),
+                        'tax_tag_ids': vals.get('tax_tag_ids', []),
+                        'tax_repartition_line_id': vals.get('tax_repartition_line_id'),
+                        'group_tax_id': vals.get('group_tax_id'),
+                    }))
+                    is_early_payment_applied = True
+
+        if line_ids_create_command_list:
+            self.line_ids = line_ids_create_command_list
+
+        return is_early_payment_applied
+
+    def _lines_widget_check_apply_partial_matching(self):
+        """ Try to apply a partial matching on the currently mounted journal items.
+
+        :return: True if applied, False otherwise.
+        """
+        self._ensure_loaded_lines()
+
+        all_aml_lines = self.line_ids.filtered(lambda x: x.flag == 'new_aml')
+        if all_aml_lines:
+            # == Check for a partial reconciliation ==
+            last_line = all_aml_lines[-1]
+            partial_amounts = self._lines_widget_check_partial_amount(last_line)
+
+            if partial_amounts:
+                # Make a partial: an auto-balance line is no longer necessary.
+                last_line.amount_currency = partial_amounts['amount_currency']
+                last_line.balance = partial_amounts['balance']
+                return True
+
+        return False
+
+    def _lines_widget_load_new_amls(self, amls, reco_model=None):
         """ Create counterpart lines for the journal items passed as parameter."""
         self._ensure_loaded_lines()
 
@@ -1082,18 +1204,6 @@ class BankRecWidget(models.Model):
             return
 
         self.line_ids = line_ids_commands
-
-        # Auto-suggest a partial amount.
-        if not allow_partial:
-            return
-
-        last_line = self.line_ids[-1]
-        partial_amounts = self._lines_widget_check_partial_amount(last_line)
-
-        if partial_amounts:
-            # Make a partial: an auto-balance line is no longer necessary.
-            last_line.amount_currency = partial_amounts['amount_currency']
-            last_line.balance = partial_amounts['balance']
 
     def _convert_to_tax_base_line_dict(self, line):
         """ Convert the current dictionary in order to use the generic taxes computation method defined on account.tax.
@@ -1183,8 +1293,8 @@ class BankRecWidget(models.Model):
         self.ensure_one()
         self._ensure_loaded_lines()
 
-        base_lines = self.line_ids.filtered(lambda x: not x.tax_repartition_line_id)
-        tax_lines = self.line_ids.filtered('tax_repartition_line_id')
+        base_lines = self.line_ids.filtered(lambda x: x.flag == 'manual' and not x.tax_repartition_line_id)
+        tax_lines = self.line_ids.filtered(lambda x: x.flag == 'tax_line')
 
         tax_results = self.env['account.tax']._compute_taxes(
             [self._convert_to_tax_base_line_dict(x) for x in base_lines],
@@ -1325,13 +1435,17 @@ class BankRecWidget(models.Model):
         # Recompute taxes and auto balance the lines.
         if is_taxes_recomputation_needed:
             self._lines_widget_recompute_taxes()
+        if line.flag == 'new_aml':
+            if not self._lines_widget_check_apply_early_payment_discount():
+                self._lines_widget_check_apply_partial_matching()
         self._lines_widget_add_auto_balance_line()
-
         self._action_clear_manual_operations_form()
 
-    def _action_add_new_amls(self, amls, allow_partial=True, reco_model=None):
+    def _action_add_new_amls(self, amls, reco_model=None, allow_partial=True):
         self.ensure_one()
-        self._lines_widget_load_new_amls(amls, allow_partial=allow_partial, reco_model=reco_model)
+        self._lines_widget_load_new_amls(amls, reco_model=reco_model)
+        if not self._lines_widget_check_apply_early_payment_discount() and allow_partial:
+            self._lines_widget_check_apply_partial_matching()
         self._lines_widget_add_auto_balance_line()
         self._action_clear_manual_operations_form()
 

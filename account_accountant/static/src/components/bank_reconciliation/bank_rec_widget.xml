@@ -112,7 +112,7 @@
                                         </t>
                                     </t>
                                     <t t-if="column[0] === 'date'">
-                                        <t t-if="['manual', 'auto_balance', 'tax_line'].includes(line.flag.value)">
+                                        <t t-if="['manual', 'early_payment', 'auto_balance', 'tax_line'].includes(line.flag.value)">
                                             <td class="o_data_cell o_field_cell" field="date">
                                                 <span field="date" class="badge text-bg-secondary">New</span>
                                             </td>

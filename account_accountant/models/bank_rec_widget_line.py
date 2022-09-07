@@ -23,6 +23,7 @@ class BankRecWidgetLine(models.Model):
             ('aml', 'aml'),
             ('tax_line', 'tax_line'),
             ('manual', 'manual'),
+            ('early_payment', 'early_payment'),
             ('auto_balance', 'auto_balance'),
         ],
     )
@@ -166,7 +167,7 @@ class BankRecWidgetLine(models.Model):
         for line in self:
             if line.flag in ('aml', 'new_aml'):
                 line.date = line.source_aml_id.date
-            elif line.flag in ('liquidity', 'auto_balance', 'manual', 'tax_line'):
+            elif line.flag in ('liquidity', 'auto_balance', 'manual', 'early_payment', 'tax_line'):
                 line.date = line.wizard_id.st_line_id.date
 
     @api.depends('source_aml_id')
@@ -180,7 +181,7 @@ class BankRecWidgetLine(models.Model):
         for line in self:
             if line.flag in ('aml', 'new_aml'):
                 line.partner_id = line.source_aml_id.partner_id
-            elif line.flag in ('liquidity', 'auto_balance', 'manual', 'tax_line'):
+            elif line.flag in ('liquidity', 'auto_balance', 'manual', 'early_payment', 'tax_line'):
                 line.partner_id = line.wizard_id.partner_id
 
     @api.depends('source_aml_id')
@@ -188,7 +189,7 @@ class BankRecWidgetLine(models.Model):
         for line in self:
             if line.flag in ('aml', 'new_aml', 'liquidity'):
                 line.currency_id = line.source_aml_id.currency_id
-            elif line.flag in ('auto_balance', 'manual'):
+            elif line.flag in ('auto_balance', 'manual', 'early_payment'):
                 line.currency_id = line.wizard_id.transaction_currency_id
 
     @api.depends('source_aml_id')

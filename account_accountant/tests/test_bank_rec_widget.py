@@ -12,6 +12,43 @@ import re
 @tagged('post_install', '-at_install')
 class TestBankRecWidget(TestBankRecWidgetCommon):
 
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+
+        cls.early_payment_term = cls.env['account.payment.term'].create({
+            'name': "early_payment_term",
+            'company_id': cls.company_data['company'].id,
+            'line_ids': [
+                Command.create({
+                    'value': 'percent',
+                    'value_amount': 10,
+                    'days': 5,
+                }),
+                Command.create({
+                    'value': 'percent',
+                    'value_amount': 20,
+                    'days': 20,
+                    'discount_percentage': 5,
+                    'discount_days': 10,
+                }),
+                Command.create({
+                    'value': 'percent',
+                    'value_amount': 40,
+                    'days': 40,
+                    'discount_percentage': 10,
+                    'discount_days': 35,
+                }),
+                Command.create({
+                    'value': 'balance',
+                    'days': 50,
+                }),
+            ],
+        })
+
+        cls.account_revenue1 = cls.company_data['default_account_revenue']
+        cls.account_revenue2 = cls.copy_account(cls.account_revenue1)
+
     def assert_form_extra_text_value(self, value, regex):
         if regex:
             cleaned_value = html2plaintext(value).replace('\n', '')
@@ -51,9 +88,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         )
         # 6000.0 curr2 == 1000.0 comp_curr (rate 6:1)
         inv_line = self._create_invoice_line(
-            6000.0, self.partner_a, 'out_invoice',
-            currency=self.currency_data_2['currency'],
-            inv_date='2016-01-01',
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 6000.0}],
         )
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
@@ -88,9 +126,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # Create the same invoice with a higher amount to check the partial flow.
         # 9000.0 curr2 == 1500.0 comp_curr (rate 6:1)
         inv_line = self._create_invoice_line(
-            9000.0, self.partner_a, 'out_invoice',
-            currency=self.currency_data_2['currency'],
-            inv_date='2016-01-01',
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 9000.0}],
         )
         wizard._action_add_new_amls(inv_line)
         self.assertRecordValues(wizard.line_ids, [
@@ -167,8 +206,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         )
         # 800.0 comp_curr is equals to 4800.0 curr2 in 2016 (rate 6:1)
         inv_line = self._create_invoice_line(
-            800.0, self.partner_a, 'out_invoice',
-            inv_date='2016-01-01',
+            'out_invoice',
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 800.0}],
         )
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
@@ -203,8 +243,9 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # Create the same invoice with a higher amount to check the partial flow.
         # 1200.0 comp_curr is equals to 7200.0 curr2 in 2016 (rate 6:1)
         inv_line = self._create_invoice_line(
-            1200.0, self.partner_a, 'out_invoice',
-            inv_date='2016-01-01',
+            'out_invoice',
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 1200.0}],
         )
         wizard._action_add_new_amls(inv_line)
         self.assertRecordValues(wizard.line_ids, [
@@ -279,9 +320,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         )
         # 4800.0 curr2 == 800.0 comp_curr (rate 6:1)
         inv_line = self._create_invoice_line(
-            4800.0, self.partner_a, 'out_invoice',
-            currency=self.currency_data_2['currency'],
-            inv_date='2016-01-01',
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 4800.0}],
         )
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
@@ -316,9 +358,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # Create the same invoice with a higher amount to check the partial flow.
         # 7200.0 curr2 == 1200.0 comp_curr (rate 6:1)
         inv_line = self._create_invoice_line(
-            7200.0, self.partner_a, 'out_invoice',
-            currency=self.currency_data_2['currency'],
-            inv_date='2016-01-01',
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 7200.0}],
         )
         wizard._action_add_new_amls(inv_line)
         self.assertRecordValues(wizard.line_ids, [
@@ -395,9 +438,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         )
         # 21600.0 curr3 == 1800.0 comp_curr (rate 12:1)
         inv_line = self._create_invoice_line(
-            21600.0, self.partner_a, 'out_invoice',
-            currency=self.currency_data_3['currency'],
-            inv_date='2016-01-01',
+            'out_invoice',
+            currency_id=self.currency_data_3['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 21600.0}],
         )
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
@@ -432,9 +476,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # Create the same invoice with a higher amount to check the partial flow.
         # 32400.0 curr3 == 2700.0 comp_curr (rate 12:1)
         inv_line = self._create_invoice_line(
-            32400.0, self.partner_a, 'out_invoice',
-            currency=self.currency_data_3['currency'],
-            inv_date='2016-01-01',
+            'out_invoice',
+            currency_id=self.currency_data_3['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 32400.0}],
         )
         wizard._action_add_new_amls(inv_line)
         self.assertRecordValues(wizard.line_ids, [
@@ -523,7 +568,11 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Match an invoice with a different partner.
         wizard.button_reset()
-        inv_line = self._create_invoice_line(1000.0, partner, 'out_invoice')
+        inv_line = self._create_invoice_line(
+            'out_invoice',
+            partner_id=partner,
+            invoice_line_ids=[{'price_unit': 1000.0}],
+        )
         wizard._action_add_new_amls(inv_line)
         wizard.button_validate(async_action=False)
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
@@ -538,9 +587,17 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # Reset the wizard and match invoices with different partners.
         wizard.button_reset()
         partner1 = self.partner_a.copy()
-        inv_line1 = self._create_invoice_line(300.0, partner1, 'out_invoice')
+        inv_line1 = self._create_invoice_line(
+            'out_invoice',
+            partner_id=partner1,
+            invoice_line_ids=[{'price_unit': 300.0}],
+        )
         partner2 = self.partner_a.copy()
-        inv_line2 = self._create_invoice_line(300.0, partner2, 'out_invoice')
+        inv_line2 = self._create_invoice_line(
+            'out_invoice',
+            partner_id=partner2,
+            invoice_line_ids=[{'price_unit': 300.0}],
+        )
         wizard._action_add_new_amls(inv_line1 + inv_line2)
         wizard.button_validate(async_action=False)
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
@@ -776,7 +833,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         line = wizard.line_ids.filtered(lambda x: x.flag == 'manual')
         form = WizardForm(wizard)
         form.todo_command = f'mount_line_in_edit,{line.index}'
-        form.form_account_id = self.company_data['default_account_revenue']
+        form.form_account_id = self.account_revenue1
         wizard = form.save()
 
         self.assertRecordValues(wizard.line_ids, [
@@ -813,7 +870,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             'name': "test_apply_taxes_with_reco_model",
             'rule_type': 'writeoff_button',
             'line_ids': [Command.create({
-                'account_id': self.company_data['default_account_revenue'].id,
+                'account_id': self.account_revenue1.id,
                 'tax_ids': [Command.set(tax_21.ids)],
             })],
         })
@@ -854,7 +911,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 1800.0,  'currency_id': self.company_data['currency'].id,    'balance': 1800.0},
             {'flag': 'manual',          'amount_currency': -6300.0, 'currency_id': self.currency_data_2['currency'].id, 'balance': -1500.0},
-            {'flag': 'auto_balance',    'amount_currency': -1050.0, 'currency_id': self.currency_data_2['currency'].id, 'balance': -300.0},
+            {'flag': 'auto_balance',    'amount_currency': 0.0,     'currency_id': self.currency_data_2['currency'].id, 'balance': -300.0},
         ])
 
         # Custom amount_currency.
@@ -899,13 +956,17 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
 
         st_line = self._create_st_line(1234.0, partner_id=self.partner_a.id, date='2017-01-01')
-        self._create_invoice_line(1234.0, self.partner_a, 'out_invoice', inv_date='2017-01-01')
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 1234.0}],
+        )
 
         rule = self.env['account.reconcile.model'].create({
             'name': "test_auto_reconcile_cron",
             'rule_type': 'writeoff_suggestion',
             'auto_reconcile': False,
-            'line_ids': [Command.create({'account_id': self.company_data['default_account_revenue'].id})],
+            'line_ids': [Command.create({'account_id': self.account_revenue1.id})],
         })
 
         # The CRON is not doing anything since the model is not auto reconcile.
@@ -926,9 +987,17 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(st_line, [{'is_reconciled': True, 'cron_last_check': fields.Datetime.from_string('2017-01-02 00:00:00')}])
 
         st_line1 = self._create_st_line(1234.0, partner_id=self.partner_a.id, date='2018-01-01')
-        self._create_invoice_line(1234.0, self.partner_a, 'out_invoice', inv_date='2018-01-01')
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2018-01-01',
+            invoice_line_ids=[{'price_unit': 1234.0}],
+        )
         st_line2 = self._create_st_line(1234.0, partner_id=self.partner_a.id, date='2018-01-01')
-        self._create_invoice_line(1234.0, self.partner_a, 'out_invoice', inv_date='2018-01-01')
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2018-01-01',
+            invoice_line_ids=[{'price_unit': 1234.0}],
+        )
 
         # Simulate the cron already tried to process 'st_line1' before.
         with freeze_time('2017-12-31'):
@@ -950,7 +1019,10 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
     def test_duplicate_amls_constraint(self):
         st_line = self._create_st_line(1000.0)
-        inv_line = self._create_invoice_line(1000.0, self.partner_a, 'out_invoice')
+        inv_line = self._create_invoice_line(
+            'out_invoice',
+            invoice_line_ids=[{'price_unit': 1000.0}],
+        )
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
         wizard._action_add_new_amls(inv_line)
@@ -964,7 +1036,11 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
     def test_reconcile_model_with_payment_tolerance(self):
         self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
 
-        invoice_line = self._create_invoice_line(1000.0, self.partner_a, 'out_invoice', inv_date='2017-01-01')
+        invoice_line = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 1000.0}],
+        )
         st_line = self._create_st_line(998.0, partner_id=self.partner_a.id, date='2017-01-01', payment_ref=invoice_line.move_id.name)
 
         rule = self.env['account.reconcile.model'].create({
@@ -973,7 +1049,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             'allow_payment_tolerance': True,
             'payment_tolerance_type': 'percentage',
             'payment_tolerance_param': 2.0,
-            'line_ids': [Command.create({'account_id': self.company_data['default_account_revenue'].id})],
+            'line_ids': [Command.create({'account_id': self.account_revenue1.id})],
         })
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
@@ -985,4 +1061,459 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'liquidity',       'balance': 998.0,   'reconcile_model_id': False},
             {'flag': 'new_aml',         'balance': -1000.0, 'reconcile_model_id': rule.id},
             {'flag': 'manual',          'balance': 2.0,     'reconcile_model_id': rule.id},
+        ])
+
+    def test_early_payment_included_multi_currency(self):
+        self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
+        self.env.company.early_pay_discount_computation = 'included'
+
+        inv_line1_with_epd = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            partner_id=self.partner_a,
+            invoice_payment_term_id=self.early_payment_term,
+            invoice_date='2016-12-01',
+            invoice_line_ids=[
+                {
+                    'price_unit': 4800.0,
+                    'account_id': self.account_revenue1,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+                {
+                    'price_unit': 9600.0,
+                    'account_id': self.account_revenue2,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+            ],
+        )
+        inv_line1_with_epd_rec_lines = inv_line1_with_epd.move_id.line_ids\
+            .filtered(lambda x: x.account_type == 'asset_receivable')\
+            .sorted(lambda x: x.discount_date or x.date_maturity)
+        self.assertRecordValues(
+            inv_line1_with_epd_rec_lines,
+            [
+                {
+                    'amount_currency': 1656.0,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2016-12-06'),
+                },
+                {
+                    'amount_currency': 3312.0,
+                    'discount_amount_currency': 3146.4,
+                    'discount_balance': 524.4,
+                    'discount_date': fields.Date.from_string('2016-12-11'),
+                    'date_maturity': fields.Date.from_string('2016-12-21'),
+                },
+                {
+                    'amount_currency': 6624.0,
+                    'discount_amount_currency': 5961.6,
+                    'discount_balance': 993.6,
+                    'discount_date': fields.Date.from_string('2017-01-05'),
+                    'date_maturity': fields.Date.from_string('2017-01-10'),
+                },
+                {
+                    'amount_currency': 4968.0,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-01-20'),
+                },
+            ],
+        )
+
+        inv_line2_with_epd = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            partner_id=self.partner_a,
+            invoice_payment_term_id=self.early_payment_term,
+            invoice_date='2017-01-20',
+            invoice_line_ids=[
+                {
+                    'price_unit': 480.0,
+                    'account_id': self.account_revenue1,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+                {
+                    'price_unit': 960.0,
+                    'account_id': self.account_revenue2,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+            ],
+        )
+        inv_line2_with_epd_rec_lines = inv_line2_with_epd.move_id.line_ids\
+            .filtered(lambda x: x.account_type == 'asset_receivable')\
+            .sorted(lambda x: x.discount_date or x.date_maturity)
+        self.assertRecordValues(
+            inv_line2_with_epd_rec_lines,
+            [
+                {
+                    'amount_currency': 165.6,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-01-25'),
+                },
+                {
+                    'amount_currency': 331.2,
+                    'discount_amount_currency': 314.64,
+                    'discount_balance': 78.66,
+                    'discount_date': fields.Date.from_string('2017-01-30'),
+                    'date_maturity': fields.Date.from_string('2017-02-09'),
+                },
+                {
+                    'amount_currency': 662.4,
+                    'discount_amount_currency': 596.16,
+                    'discount_balance': 149.04,
+                    'discount_date': fields.Date.from_string('2017-02-24'),
+                    'date_maturity': fields.Date.from_string('2017-03-01'),
+                },
+                {
+                    'amount_currency': 496.8,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-03-11'),
+                },
+            ],
+        )
+
+        # inv1: 1656.0 + 3312.0 + 5961.6 (epd) + 4968.0
+        # inv2: 165.6 + 314.64 (epd)
+        st_line = self._create_st_line(
+            4095.0, # instead of 4094.46 (rate 1:4)
+            date='2017-01-04',
+            foreign_currency_id=self.currency_data_2['currency'].id,
+            amount_currency=16377.84,
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+
+        # Add all lines from the first invoice plus the first one from the second one.
+        wizard._action_add_new_amls(inv_line1_with_epd_rec_lines + inv_line2_with_epd_rec_lines[0])
+        liquidity_acc = st_line.journal_id.default_account_id
+        receivable_acc = self.company_data['default_account_receivable']
+        suspense_acc = self.env.company.account_journal_suspense_account_id
+        early_pay_acc = self.env.company.account_journal_early_pay_discount_loss_account_id
+        tax_acc = self.company_data['default_tax_sale'].invoice_repartition_line_ids.account_id
+        foreign_exch_acc = self.env.company.expense_currency_exchange_account_id
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 4095.0,      'balance': 4095.0,      'account_id': liquidity_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -1656.0,     'balance': -414.05,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -828.11,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1656.22,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -1242.16,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.41,      'account_id': receivable_acc.id},
+            {'flag': 'auto_balance',    'amount_currency': 347.76,      'balance': 86.95,       'account_id': suspense_acc.id},
+        ])
+
+        # Add the last missing line to reach the early payment matching.
+        wizard._action_add_new_amls(inv_line2_with_epd_rec_lines[1])
+        expected_values_list = [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 4095.0,      'balance': 4095.0,      'account_id': liquidity_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -1656.0,     'balance': -414.05,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -828.11,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1656.22,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -1242.16,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.41,      'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -331.2,      'balance': -82.81,      'account_id': receivable_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 590.4,       'balance': 99.6,        'account_id': early_pay_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 88.56,       'balance': 14.94,       'account_id': tax_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 0.0,         'balance': 55.22,       'account_id': foreign_exch_acc.id},
+        ]
+        self.assertRecordValues(wizard.line_ids, expected_values_list)
+
+    def test_early_payment_excluded_multi_currency(self):
+        self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
+        self.env.company.early_pay_discount_computation = 'excluded'
+
+        inv_line1_with_epd = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            partner_id=self.partner_a,
+            invoice_payment_term_id=self.early_payment_term,
+            invoice_date='2016-12-01',
+            invoice_line_ids=[
+                {
+                    'price_unit': 4800.0,
+                    'account_id': self.account_revenue1,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+                {
+                    'price_unit': 9600.0,
+                    'account_id': self.account_revenue2,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+            ],
+        )
+        inv_line1_with_epd_rec_lines = inv_line1_with_epd.move_id.line_ids\
+            .filtered(lambda x: x.account_type == 'asset_receivable')\
+            .sorted(lambda x: x.discount_date or x.date_maturity)
+        self.assertRecordValues(
+            inv_line1_with_epd_rec_lines,
+            [
+                {
+                    'amount_currency': 1656.0,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2016-12-06'),
+                },
+                {
+                    'amount_currency': 3312.0,
+                    'discount_amount_currency': 3168.0,
+                    'discount_balance': 528.0,
+                    'discount_date': fields.Date.from_string('2016-12-11'),
+                    'date_maturity': fields.Date.from_string('2016-12-21'),
+                },
+                {
+                    'amount_currency': 6624.0,
+                    'discount_amount_currency': 6048.0,
+                    'discount_balance': 1008.0,
+                    'discount_date': fields.Date.from_string('2017-01-05'),
+                    'date_maturity': fields.Date.from_string('2017-01-10'),
+                },
+                {
+                    'amount_currency': 4968.0,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-01-20'),
+                },
+            ],
+        )
+
+        inv_line2_with_epd = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            partner_id=self.partner_a,
+            invoice_payment_term_id=self.early_payment_term,
+            invoice_date='2017-01-20',
+            invoice_line_ids=[
+                {
+                    'price_unit': 480.0,
+                    'account_id': self.account_revenue1,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+                {
+                    'price_unit': 960.0,
+                    'account_id': self.account_revenue2,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+            ],
+        )
+        inv_line2_with_epd_rec_lines = inv_line2_with_epd.move_id.line_ids\
+            .filtered(lambda x: x.account_type == 'asset_receivable')\
+            .sorted(lambda x: x.discount_date or x.date_maturity)
+        self.assertRecordValues(
+            inv_line2_with_epd_rec_lines,
+            [
+                {
+                    'amount_currency': 165.6,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-01-25'),
+                },
+                {
+                    'amount_currency': 331.2,
+                    'discount_amount_currency': 316.8,
+                    'discount_balance': 79.2,
+                    'discount_date': fields.Date.from_string('2017-01-30'),
+                    'date_maturity': fields.Date.from_string('2017-02-09'),
+                },
+                {
+                    'amount_currency': 662.4,
+                    'discount_amount_currency': 604.8,
+                    'discount_balance': 151.2,
+                    'discount_date': fields.Date.from_string('2017-02-24'),
+                    'date_maturity': fields.Date.from_string('2017-03-01'),
+                },
+                {
+                    'amount_currency': 496.8,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-03-11'),
+                },
+            ],
+        )
+
+        # inv1: 1656.0 + 3312.0 + 6048.0 (epd) + 4968.0
+        # inv2: 165.6 + 316.8 (epd)
+        st_line = self._create_st_line(
+            4110.0, # instead of 4116.6 (rate 1:4)
+            date='2017-01-04',
+            foreign_currency_id=self.currency_data_2['currency'].id,
+            amount_currency=16466.4,
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+
+        # Add all lines from the first invoice plus the first one from the second one.
+        wizard._action_add_new_amls(inv_line1_with_epd_rec_lines + inv_line2_with_epd_rec_lines[:2])
+        liquidity_acc = st_line.journal_id.default_account_id
+        receivable_acc = self.company_data['default_account_receivable']
+        early_pay_acc = self.env.company.account_journal_early_pay_discount_loss_account_id
+        foreign_exch_acc = self.env.company.expense_currency_exchange_account_id
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 4110.0,      'balance': 4110.0,      'account_id': liquidity_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -1656.0,     'balance': -413.34,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -826.67,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1653.34,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -1240.01,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.33,      'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -331.2,      'balance': -82.67,      'account_id': receivable_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 590.4,       'balance': 99.6,        'account_id': early_pay_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 0.0,         'balance': 47.76,       'account_id': foreign_exch_acc.id},
+        ])
+
+    def test_early_payment_mixed_multi_currency(self):
+        self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
+        self.env.company.early_pay_discount_computation = 'mixed'
+
+        inv_line1_with_epd = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            partner_id=self.partner_a,
+            invoice_payment_term_id=self.early_payment_term,
+            invoice_date='2016-12-01',
+            invoice_line_ids=[
+                {
+                    'price_unit': 4800.0,
+                    'account_id': self.account_revenue1,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+                {
+                    'price_unit': 9600.0,
+                    'account_id': self.account_revenue2,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+            ],
+        )
+        inv_line1_with_epd_rec_lines = inv_line1_with_epd.move_id.line_ids\
+            .filtered(lambda x: x.account_type == 'asset_receivable')\
+            .sorted(lambda x: x.discount_date or x.date_maturity)
+        self.assertRecordValues(
+            inv_line1_with_epd_rec_lines,
+            [
+                {
+                    'amount_currency': 1623.6,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2016-12-06'),
+                },
+                {
+                    'amount_currency': 3247.2,
+                    'discount_amount_currency': 3103.2,
+                    'discount_balance': 517.2,
+                    'discount_date': fields.Date.from_string('2016-12-11'),
+                    'date_maturity': fields.Date.from_string('2016-12-21'),
+                },
+                {
+                    'amount_currency': 6494.4,
+                    'discount_amount_currency': 5918.4,
+                    'discount_balance': 986.4,
+                    'discount_date': fields.Date.from_string('2017-01-05'),
+                    'date_maturity': fields.Date.from_string('2017-01-10'),
+                },
+                {
+                    'amount_currency': 4870.8,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-01-20'),
+                },
+            ],
+        )
+
+        inv_line2_with_epd = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            partner_id=self.partner_a,
+            invoice_payment_term_id=self.early_payment_term,
+            invoice_date='2017-01-20',
+            invoice_line_ids=[
+                {
+                    'price_unit': 480.0,
+                    'account_id': self.account_revenue1,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+                {
+                    'price_unit': 960.0,
+                    'account_id': self.account_revenue2,
+                    'tax_ids': self.company_data['default_tax_sale'],
+                },
+            ],
+        )
+        inv_line2_with_epd_rec_lines = inv_line2_with_epd.move_id.line_ids\
+            .filtered(lambda x: x.account_type == 'asset_receivable')\
+            .sorted(lambda x: x.discount_date or x.date_maturity)
+        self.assertRecordValues(
+            inv_line2_with_epd_rec_lines,
+            [
+                {
+                    'amount_currency': 162.36,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-01-25'),
+                },
+                {
+                    'amount_currency': 324.72,
+                    'discount_amount_currency': 310.32,
+                    'discount_balance': 77.58,
+                    'discount_date': fields.Date.from_string('2017-01-30'),
+                    'date_maturity': fields.Date.from_string('2017-02-09'),
+                },
+                {
+                    'amount_currency': 649.44,
+                    'discount_amount_currency': 591.84,
+                    'discount_balance': 147.96,
+                    'discount_date': fields.Date.from_string('2017-02-24'),
+                    'date_maturity': fields.Date.from_string('2017-03-01'),
+                },
+                {
+                    'amount_currency': 487.08,
+                    'discount_amount_currency': 0.0,
+                    'discount_balance': 0.0,
+                    'discount_date': False,
+                    'date_maturity': fields.Date.from_string('2017-03-11'),
+                },
+            ],
+        )
+
+        # inv1: 1623.6 + 3247.2 + 5918.4 (epd) + 4870.8
+        # inv2: 162.36 + 310.32 (epd)
+        st_line = self._create_st_line(
+            4030.0, # instead of 4033.17 (rate 1:4)
+            date='2017-01-04',
+            foreign_currency_id=self.currency_data_2['currency'].id,
+            amount_currency=16132.68,
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+
+        # Add all lines from the first invoice plus the first one from the second one.
+        wizard._action_add_new_amls(inv_line1_with_epd_rec_lines + inv_line2_with_epd_rec_lines[:2])
+        liquidity_acc = st_line.journal_id.default_account_id
+        receivable_acc = self.company_data['default_account_receivable']
+        early_pay_acc = self.env.company.account_journal_early_pay_discount_loss_account_id
+        foreign_exch_acc = self.env.company.expense_currency_exchange_account_id
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 4030.0,      'balance': 4030.0,      'account_id': liquidity_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -1623.6,     'balance': -405.58,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -3247.2,     'balance': -811.16,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -6494.4,     'balance': -1622.32,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -4870.8,     'balance': -1216.74,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -162.36,     'balance': -40.56,      'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -324.72,     'balance': -81.12,      'account_id': receivable_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 590.40,      'balance': 99.6,        'account_id': early_pay_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 0.0,         'balance': 47.88,       'account_id': foreign_exch_acc.id},
         ])

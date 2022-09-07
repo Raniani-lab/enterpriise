@@ -903,35 +903,32 @@ class HrContractSalary(http.Controller):
             ('template_id', '=', sign_template.id),
             ('name', '!=', '')
         ])
-        responsible2signature = {}
-        for responsible, items in groupby(sign_items, lambda it: it.responsible_id):
-            signature = {}
-            for item in items:
-                try:
-                    new_value = None
-                    if item.name == 'car' and new_contract.transport_mode_car:
-                        if not new_contract.new_car and new_contract.car_id:
-                            new_value = new_contract.car_id.model_id.name
-                        elif new_contract.new_car and new_contract.new_car_model_id:
-                            new_value = new_contract.new_car_model_id.name
-                    # YTI FIXME: Clean that brol
-                    elif item.name == 'l10n_be_group_insurance_rate':
-                        new_value = 1 if item.name in new_contract and new_contract[item.name] else 0
-                    else:
-                        new_values = new_contract.mapped(item.name)
-                        if not new_values or isinstance(new_values, models.BaseModel):
-                            raise Exception
-                        new_value = new_values[0]
-                        if isinstance(new_value, float):
-                            new_value = round(new_value, 2)
-                    if new_value is not None:
-                        signature[str(item.id)] = new_value
-                except Exception:
-                    pass
-            responsible2signature[responsible] = signature
+        sign_values_by_role = defaultdict(lambda: defaultdict(lambda: request.env['sign.item']))
+        for item in sign_items:
+            try:
+                new_value = None
+                if item.name == 'car' and new_contract.transport_mode_car:
+                    if not new_contract.new_car and new_contract.car_id:
+                        new_value = new_contract.car_id.model_id.name
+                    elif new_contract.new_car and new_contract.new_car_model_id:
+                        new_value = new_contract.new_car_model_id.name
+                # YTI FIXME: Clean that brol
+                elif item.name == 'l10n_be_group_insurance_rate':
+                    new_value = 1 if item.name in new_contract and new_contract[item.name] else 0
+                else:
+                    new_values = new_contract.mapped(item.name)
+                    if not new_values or isinstance(new_values, models.BaseModel):
+                        raise Exception
+                    new_value = new_values[0]
+                    if isinstance(new_value, float):
+                        new_value = round(new_value, 2)
+                if new_value is not None:
+                    sign_values_by_role[item.responsible_id][str(item.id)] = new_value
+            except Exception:
+                pass
         for sign_request_item in sign_request_sudo.request_item_ids:
-            if sign_request_item.role_id in responsible2signature:
-                sign_request_item._fill(responsible2signature[sign_request_item.role_id])
+            if sign_request_item.role_id in sign_values_by_role:
+                sign_request_item._fill(sign_values_by_role[sign_request_item.role_id])
 
         access_token = request.env['sign.request.item'].sudo().search([
             ('sign_request_id', '=', sign_request_sudo.id),

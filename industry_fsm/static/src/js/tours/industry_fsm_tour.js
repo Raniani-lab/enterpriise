@@ -48,11 +48,20 @@ tour.register('industry_fsm_tour', {
     content: _t('Open your <b>worksheet</b> in order to fill it in with the details of your intervention.'),
     position: 'bottom',
 }, {
-    trigger: '.oe_form_field[name="comment"] .note-editable.odoo-editor-editable p',
+    trigger: '.o_form_sheet div[name]',
+    extra_trigger: '.o_content:not(:has(button[name="action_fsm_worksheet"]))',
     content: _t('Fill in your <b>worksheet</b> with the details of your intervention.'),
-    run: 'text My intervention details',
+    run: function (actions) {
+        //Manage the text on both htmlElement and others fields as this step is dependent on
+        // the worksheet template that is set.
+        const htmlFieldSelector = '.note-editable.odoo-editor-editable p';
+        const inputFieldSelector = 'input';
+        const textTriggerElement = this.$anchor.find(htmlFieldSelector).get(0)
+                                    || this.$anchor.find(inputFieldSelector).get(0)
+                                    || this.$anchor.get(0);
+        actions.text('My intervention details', textTriggerElement);
+    },
     position: 'bottom',
-    id: 'fill_work_template',
 }, {
     trigger: ".o_form_button_save",
     content: Markup(_t('Save your <b>worksheet</b> once it is complete.<br/><i>Tip: customize this form to your needs and create as many templates as you want.</i>')),

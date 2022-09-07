@@ -1094,6 +1094,8 @@ class Article(models.Model):
         if parent:
             if not is_private and parent.category == "private":
                 is_private = True
+            if parent.has_item_children:
+                values['is_article_item'] = True
         else:
             # child do not have to setup an internal permission as it is inherited
             values['internal_permission'] = 'none' if is_private else 'write'

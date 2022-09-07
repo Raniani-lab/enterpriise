@@ -16,7 +16,7 @@
 Accounting reports for Colombia
 ================================
     """,
-    'author': ['David Arnold (XOE Solutions)'],
+    'author': 'David Arnold (XOE Solutions)',
     'category': 'Accounting/Localizations/Reporting',
     'depends': ['l10n_co', 'account_reports'],
     'data': [

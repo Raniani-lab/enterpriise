@@ -7,14 +7,14 @@ import {
     FieldSelectorWidget,
     FieldSelectorAdapter,
 } from "spreadsheet_edition.field_selector_widget";
-import { X2ManyTagSelector } from "@spreadsheet_edition/assets/widgets/tag_selector_widget";
+import { X2ManyTagSelector } from "@spreadsheet/global_filters/components/tag_selector_widget";
 import { useService } from "@web/core/utils/hooks";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ModelSelector } from "@web/core/model_selector/model_selector";
 import { sprintf } from "@web/core/utils/strings";
 import { FilterFieldOffset } from "./components/filter_field_offset";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
-import { DateFilterValue } from "./components/filter_date_value";
+import { DateFilterValue } from "@spreadsheet/global_filters/components/filter_date_value/filter_date_value";
 
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();

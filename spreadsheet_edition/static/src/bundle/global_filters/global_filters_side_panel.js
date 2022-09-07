@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { FilterValue } from "./components/filter_value";
+import { FilterValue } from "@spreadsheet/global_filters/components/filter_value/filter_value";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
 /**

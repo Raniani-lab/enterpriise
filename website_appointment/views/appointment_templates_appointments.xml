@@ -182,7 +182,7 @@
                             <t t-set="search_type" t-valuef="appointments"/>
                             <t t-set="action" t-valuef="/appointment"/>
                             <t t-set="display_description" t-valuef="true"/>
-                            <t t-set="display_detail" t-valuef="true"/>
+                            <t t-set="display_detail" t-valuef="false"/>
                             <t t-set="display_image" t-valuef="false"/>
                             <t t-set="placeholder">Search an appointment...</t>
                             <t t-set="search" t-value="current_search"/>

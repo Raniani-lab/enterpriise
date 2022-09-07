@@ -86,8 +86,7 @@ class AppointmentType(models.Model):
             'website_url': {'name': 'website_url', 'type': 'url', 'truncate': False, 'html': False},
         }
 
-        if options['displayDetail']:
-            mapping['detail'] = {'name': 'appointment_duration_formatted', 'type': 'text', 'html': True}
+        mapping['detail'] = {'name': 'appointment_duration_formatted', 'type': 'text', 'html': True}
         if options['displayDescription']:
             mapping['description'] = {'name': 'message_intro', 'type': 'text', 'html': True, 'truncate': True}
 

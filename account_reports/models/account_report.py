@@ -8,6 +8,7 @@ import json
 import logging
 import math
 import re
+import base64
 from ast import literal_eval
 from collections import defaultdict
 from functools import cmp_to_key
@@ -4107,6 +4108,265 @@ class AccountReport(models.Model):
                 raise UserError(_("Field %s does not exist on account.move.line.", field_name))
             if not groupby_field.store:
                 raise UserError(_("Field %s of account.move.line is not stored, and hence cannot be used in a groupby expression", field_name))
+
+    # ============ Accounts Coverage Debugging Tool - START ================
+    def action_download_xlsx_accounts_coverage_report(self):
+        """
+        Generate an XLSX file that can be used to debug the
+        report by issuing the following warnings if applicable:
+        - an account exists in the Chart of Accounts but is not mentioned in any line of the report (red)
+        - an account is reported in multiple lines of the report (orange)
+        - an account is reported in a line of the report but does not exist in the Chart of Accounts (yellow)
+        """
+        self.ensure_one()
+        output = io.BytesIO()
+        workbook = xlsxwriter.Workbook(output, {'in_memory': True})
+        worksheet = workbook.add_worksheet(_('Accounts coverage'))
+        worksheet.set_column(0, 0, 15)
+        worksheet.set_column(1, 1, 75)
+        worksheet.set_column(2, 2, 80)
+        worksheet.freeze_panes(1, 0)
+
+        headers = [_("Account Code"), _("Error message"), _("Report lines mentioning the account code"), '#FFFFFF']
+        lines = [headers] + self._generate_accounts_coverage_report_xlsx_lines()
+        for i, line in enumerate(lines):
+            worksheet.write_row(i, 0, line[:-1], workbook.add_format({'bg_color': line[-1]}))
+
+        workbook.close()
+        attachment_id = self.env['ir.attachment'].create({
+            'name': f"{self.display_name} - {_('Accounts Coverage Report')}",
+            'datas': base64.encodebytes(output.getvalue())
+        })
+        return {
+            "type": "ir.actions.act_url",
+            "url": f"/web/content/{attachment_id.id}",
+            "target": "self",
+        }
+
+    def _generate_accounts_coverage_report_xlsx_lines(self):
+        """
+        Generate the lines of the XLSX file that can be used to debug the
+        report by issuing the following warnings if applicable:
+        - an account exists in the Chart of Accounts but is not mentioned in any line of the report (red)
+        - an account is reported in multiple lines of the report (orange)
+        - an account is reported in a line of the report but does not exist in the Chart of Accounts (yellow)
+        """
+        self.ensure_one()
+
+        if self.env.company.account_fiscal_country_id != self.country_id:
+            raise UserError(_("The company's country does not match the report's country."))
+
+        all_reported_accounts = self.env["account.account"]  # All accounts mentioned in the report (including those reported without using the account code)
+        accounts_by_expressions = {}    # {expression_id: account.account objects}
+        reported_account_codes = []     # [{'prefix': ..., 'balance': ..., 'exclude': ..., 'line': ...}, ...]
+        non_reported_codes = set()      # codes that exist in the CoA but are not reported in the report
+        non_existing_codes = defaultdict(lambda: self.env["account.report.line"])  # {non_existing_account_code: {lines_with_that_code,}}
+        candidate_duplicate_codes = defaultdict(lambda: self.env["account.report.line"])  # {candidate_duplicate_account_code: {lines_with_that_code,}}
+        duplicate_codes = defaultdict(lambda: self.env["account.report.line"])  # {verified duplicate_account_code: {lines_with_that_code,}}
+        common_account_domain = [('company_id', '=', self.env.company.id), ('deprecated', '=', False)]
+
+        expressions = self.line_ids.expression_ids._expand_aggregations()
+        for i, expr in enumerate(expressions):
+            reported_accounts = self.env["account.account"]
+            if expr.engine == "domain":
+                domain = literal_eval(expr.formula.strip())
+                for j, operand in enumerate(domain):
+                    if isinstance(operand, tuple):
+                        operand = list(operand)
+                        if not operand[0].startswith('account_id.'):
+                            continue
+                        operand[0] = operand[0].replace('account_id.', '')
+                        # Check that the code exists in the CoA
+                        if operand[0] == 'code' and not self.env["account.account"].search([operand]):
+                            non_existing_codes[operand[2]] |= expr.report_line_id
+                    domain[j] = operand
+                reported_accounts = self.env['account.account'].search(domain)
+            elif expr.engine == "account_codes":
+                account_codes = []
+                for token in ACCOUNT_CODES_ENGINE_SPLIT_REGEX.split(expr.formula.replace(' ', '')):
+                    if not token:
+                        continue
+                    token_match = ACCOUNT_CODES_ENGINE_TERM_REGEX.match(token)
+                    if not token_match:
+                        continue
+                    parsed_token = token_match.groupdict()
+                    account_codes.append({
+                        'prefix': parsed_token['prefix'],
+                        'balance': parsed_token['balance_character'],
+                        'exclude': parsed_token['excluded_prefixes'].split(',') if parsed_token['excluded_prefixes'] else [],
+                        'line': expr.report_line_id,
+                    })
+                for account_code in account_codes:
+                    reported_account_codes.append(account_code)
+                    reported_accounts |= self.env["account.account"].search([
+                        *common_account_domain,
+                        ("code", "=like", account_code['prefix'] + "%"),
+                        *[("code", "not like", excl) for excl in account_code['exclude']],
+                    ])
+                    # Check that the code exists in the CoA
+                    if not self.env["account.account"].search([
+                        *common_account_domain,
+                        ('code', '=like', account_code['prefix'] + '%')
+                    ]):
+                        non_existing_codes[account_code['prefix']] |= account_code['line']
+                    for account_code_exclude in account_code['exclude']:
+                        if not self.env["account.account"].search([
+                            *common_account_domain,
+                            ('code', '=like', account_code_exclude + '%')
+                        ]):
+                            non_existing_codes[account_code_exclude] |= account_code['line']
+            all_reported_accounts |= reported_accounts
+            accounts_by_expressions[expr.id] = reported_accounts
+
+            # Check if the account is reported in multiple lines of the report
+            for expr2 in expressions[:i + 1]:
+                reported_accounts2 = accounts_by_expressions[expr2.id]
+                for duplicate_account in (reported_accounts & reported_accounts2):
+                    if len(expr.report_line_id | expr2.report_line_id) > 1:
+                        candidate_duplicate_codes[duplicate_account.code] |= expr.report_line_id | expr2.report_line_id
+
+        # Check that the duplicates are not false positives because of the balance character
+        for candidate_duplicate_code, candidate_duplicate_lines in candidate_duplicate_codes.items():
+            seen_balance_chars = []
+            for reported_account_code in reported_account_codes:
+                if candidate_duplicate_code.startswith(reported_account_code['prefix']) and reported_account_code['balance']:
+                    seen_balance_chars.append(reported_account_code['balance'])
+            if not seen_balance_chars or seen_balance_chars.count("C") > 1 or seen_balance_chars.count("D") > 1:
+                duplicate_codes[candidate_duplicate_code] |= candidate_duplicate_lines
+
+        # Check that all codes in CoA are correctly reported
+        accounts_in_coa = []
+        if self.root_report_id and self.root_report_id == self.env.ref('account_reports.profit_and_loss'):
+            accounts_in_coa = self.env["account.account"].search([
+                *common_account_domain,
+                ('account_type', 'in', ("income", "income_other", "expense", "expense_depreciation", "expense_direct_cost")),
+                ('account_type', '!=', "off_balance"),
+            ])
+        elif self.root_report_id and self.root_report_id == self.env.ref('account_reports.balance_sheet'):
+            accounts_in_coa = self.env["account.account"].search([
+                *common_account_domain,
+                ('account_type', 'not in', ("off_balance", "income", "income_other", "expense", "expense_depreciation", "expense_direct_cost"))
+            ])
+        else:
+            accounts_in_coa = self.env["account.account"].search([common_account_domain])
+        for account_in_coa in accounts_in_coa:
+            if account_in_coa not in all_reported_accounts:
+                non_reported_codes.add(account_in_coa.code)
+
+        # Create the lines that will be displayed in the xlsx
+        all_reported_codes = sorted(set(all_reported_accounts.mapped("code")) | non_reported_codes | non_existing_codes.keys())
+        errors_trie = self._get_accounts_coverage_report_errors_trie(all_reported_codes, non_reported_codes, duplicate_codes, non_existing_codes)
+        errors_trie = self._regroup_accounts_coverage_report_errors_trie(errors_trie)
+        return self._get_accounts_coverage_report_coverage_lines("", errors_trie)
+
+    def _get_accounts_coverage_report_errors_trie(self, all_reported_codes, non_reported_codes, duplicate_codes, non_existing_codes):
+        """
+        Create the trie that will be used to regroup the same errors on the same subcodes.
+        This trie will be in the form of:
+        {
+            "children": {
+                "1": {
+                    "children": {
+                        "10": { ... },
+                        "11": { ... },
+                    },
+                    "lines": {
+                        "Line1",
+                        "Line2",
+                    },
+                    "errors": {
+                        "DUPLICATE"
+                    }
+                },
+            "lines": {
+                "",
+            },
+            "errors": {
+                None    # Avoid that all codes are merged into the root with the code "" in case all of the errors are the same
+            },
+        }
+        """
+        errors_trie = {"children": {}, "lines": {}, "errors": {None}}
+        for reported_code in all_reported_codes:
+            current_trie = errors_trie
+            lines = self.env["account.report.line"]
+            errors = set()
+            if reported_code in non_reported_codes:
+                errors.add("NON_REPORTED")
+            elif reported_code in duplicate_codes:
+                lines |= duplicate_codes[reported_code]
+                errors.add("DUPLICATE")
+            elif reported_code in non_existing_codes:
+                lines |= non_existing_codes[reported_code]
+                errors.add("NON_EXISTING")
+            for j in range(1, len(reported_code) + 1):
+                current_trie = current_trie["children"].setdefault(reported_code[:j], {
+                    "children": {},
+                    "lines": lines,
+                    "errors": errors
+                })
+        return errors_trie
+
+    def _regroup_accounts_coverage_report_errors_trie(self, trie):
+        """
+        Regroup the codes that have the same error under the same common subcode/prefix.
+        This is done in-place on the given trie.
+        """
+        if trie.get("children"):
+            children_errors = set()
+            children_lines = self.env["account.report.line"]
+            if trie.get("errors"):  # Add own error
+                children_errors |= set(trie.get("errors"))
+            for child in trie["children"].values():
+                regroup = self._regroup_accounts_coverage_report_errors_trie(child)
+                children_lines |= regroup["lines"]
+                children_errors |= set(regroup["errors"])
+            if len(children_errors) == 1:
+                trie["children"] = {}
+                trie["lines"] = children_lines
+                trie["errors"] = children_errors
+        return trie
+
+    def _get_accounts_coverage_report_coverage_lines(self, subcode, trie, coverage_lines=None):
+        """
+        Create the coverage lines from the grouped trie. Each line has
+        - the account code
+        - the error message
+        - the lines on which the account code is used
+        - the color of the error message for the xlsx
+        """
+        # Dictionnary of the three possible errors, their message and the corresponding color for the xlsx file
+        ERRORS = {
+            "NON_REPORTED": {
+                "msg": _("This account exists in the Chart of Accounts but is not mentioned in any line of the report"),
+                "color": "#FF0000"
+            },
+            "DUPLICATE": {
+                "msg": _("This account is reported in multiple lines of the report"),
+                "color": "#FF8916"
+            },
+            "NON_EXISTING": {
+                "msg": _("This account is reported in a line of the report but does not exist in the Chart of Accounts"),
+                "color": "#FFBF00"
+            },
+        }
+        if coverage_lines is None:
+            coverage_lines = []
+        if trie.get("children"):
+            for child in trie.get("children"):
+                self._get_accounts_coverage_report_coverage_lines(child, trie["children"][child], coverage_lines)
+        else:
+            error = list(trie["errors"])[0] if trie["errors"] else False
+            if error:
+                coverage_lines.append([
+                    subcode,
+                    ERRORS[error]["msg"],
+                    " + ".join(trie["lines"].sorted().mapped("name")),
+                    ERRORS[error]["color"]
+                ])
+        return coverage_lines
+
+    # ============ Accounts Coverage Debugging Tool - END ================
 
 
 class AccountReportLine(models.Model):

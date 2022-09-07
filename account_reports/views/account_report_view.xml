@@ -51,6 +51,10 @@
             <field name="model">account.report</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+                        <button class="btn btn-secondary float-end" attrs="{'invisible': [('country_id', '=', False)]}"
+                                name="action_download_xlsx_accounts_coverage_report" type="object" string="Accounts Coverage Report"/>
+                    </header>
                     <sheet>
                         <div class="oe_title">
                             <h1>

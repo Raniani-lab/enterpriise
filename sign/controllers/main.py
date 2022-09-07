@@ -103,6 +103,20 @@ class Sign(http.Controller):
     # -------------
     #  HTTP Routes
     # -------------
+
+    @http.route(['/sign/<share_link>'], type='http', auth='public')
+    def share_link(self, share_link, **post):
+        """
+        This controller is used for retro-compatibility of old shared links. share_link was a token saved on the
+        template. We map them to the shared sign request created during upgrade and redirect to the correct URL.
+        :param share_link: share
+        :return: redirect to the sign_document_from_mail controller
+        """
+        sign_request_item = request.env['sign.request.item'].sudo().search([('access_token', '=', share_link)], limit=1)
+        if not sign_request_item or sign_request_item.sign_request_id.state != 'shared':
+            return request.not_found()
+        return request.redirect('/sign/document/mail/%s/%s' % (sign_request_item.sign_request_id.id, sign_request_item.access_token))
+
     @http.route(["/sign/document/mail/<int:id>/<token>"], type='http', auth='public')
     def sign_document_from_mail(self, id, token):
         sign_request = request.env['sign.request'].sudo().browse(id)

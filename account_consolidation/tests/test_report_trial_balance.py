@@ -109,7 +109,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         ]
         self.assertListEqual(expected_matrix, matrix, 'Report amounts are not all corrects')
         for line in lines:
-            line_id = report._parse_line_id(line['id'])[0][0]
+            line_id = report._parse_line_id(line['id'])[-1][0]
             parent_id = line.get('parent_id', None)
             if str(line_id).startswith('section'):
                 section = self.env['consolidation.group'].browse(int(line_id.split('_')[1]))
@@ -130,7 +130,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
                 else:
                     self.assertIsNone(line.get('parent_id', None), 'Account line "alone in the dark" should not have a parent_id but does (%s)' % line)
 
-        levels = [row['level'] for row in lines]
+        levels = [row['level'] for row in lines if report._parse_line_id(row['id'])[-1][0] != 'total']
         expected_levels = [1, 1, 1, 2, 3, 2, 3, 3, 1]
         self.assertListEqual(expected_levels, levels, 'Levels are not all corrects')
 
@@ -168,7 +168,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         ]
         self.assertListEqual(expected_matrix, matrix, 'Report amounts are not all corrects')
         for line in lines:
-            line_id = report._parse_line_id(line['id'])[0][0]
+            line_id = report._parse_line_id(line['id'])[-1][0]
             parent_id = line.get('parent_id', None)
             if str(line_id).startswith('section'):
                 section = self.env['consolidation.group'].browse(int(line_id.split('_')[1]))
@@ -189,7 +189,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
                 else:
                     self.assertIsNone(line.get('parent_id', None), 'Account line "alone in the dark" should not have a parent_id but does (%s)' % line)
 
-        levels = [row['level'] for row in lines]
+        levels = [row['level'] for row in lines if report._parse_line_id(row['id'])[-1][0] != 'total']
         expected_levels = [1, 1, 1, 2, 3, 2, 3, 3, 1]
         self.assertListEqual(expected_levels, levels, 'Levels are not all corrects')
 
@@ -197,8 +197,9 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
     def _report_lines_to_matrix(self, lines):
         matrix = []
         for line in lines:
-            matrix_line = [line['name']] + [col['no_format'] for col in line['columns']]
-            matrix.append(matrix_line)
+            if self.env['account.report']._parse_line_id(line['id'])[-1][0] != 'total':
+                matrix_line = [line['name']] + [col['no_format'] for col in line['columns']]
+                matrix.append(matrix_line)
         return matrix
 
     def _generate_default_periods_and_journals(self, chart):

@@ -39,7 +39,7 @@ class View(models.Model):
         'web.external_layout_standard',
     ]
 
-    def _postprocess_access_rights(self, tree, models):
+    def _postprocess_access_rights(self, tree):
         # apply_group only returns the view groups ids.
         # As we need also need their name and display in Studio to edit these groups
         # (many2many widget), they have been added to node (only in Studio). Also,
@@ -56,7 +56,7 @@ class View(models.Model):
             if tree.tag == 'pivot':
                 self.set_studio_pivot_measure_fields(tree.get('model_access_rights'), tree)
 
-        return super(View, self)._postprocess_access_rights(tree, models)
+        return super(View, self)._postprocess_access_rights(tree)
 
     @api.model
     def set_studio_groups(self, node):

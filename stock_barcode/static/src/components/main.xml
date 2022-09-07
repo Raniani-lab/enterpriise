@@ -53,7 +53,7 @@
                 <LineComponent t-else="" line="line" displayUOM="groups.group_uom"/>
             </t>
             <t t-foreach="packageLines" t-as="line" t-key="line.virtual_id">
-                <PackageLineComponent line="line" displayUOM="groups.group_uom"/>
+                <PackageLineComponent line="line" displayUOM="false"/>
             </t>
         </div>
         <div t-if="displayProductPage"> <!-- Barcode Line Edit Form View -->

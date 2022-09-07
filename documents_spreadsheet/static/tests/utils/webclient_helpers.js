@@ -1,6 +1,8 @@
 /** @odoo-module */
 
 import { busService } from '@bus/services/bus_service';
+import { multiTabService } from "@bus/multi_tab_service";
+
 import { InsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_owl";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { loadJS } from "@web/core/assets";
@@ -29,6 +31,7 @@ export async function prepareWebClientForSpreadsheet() {
     serviceRegistry.add("view", viewService, { force: true }); // #action-serv-leg-compat-js-class
     serviceRegistry.add("orm", ormService, { force: true }); // #action-serv-leg-compat-js-class
     serviceRegistry.add("bus_service", busService);
+    serviceRegistry.add('multi_tab', multiTabService);
     registry.category("favoriteMenu").add(
         "insert-list-spreadsheet-menu",
         {

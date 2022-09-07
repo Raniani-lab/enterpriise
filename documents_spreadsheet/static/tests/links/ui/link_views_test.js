@@ -1,6 +1,8 @@
 /** @odoo-module */
 
 import { busService } from "@bus/services/bus_service";
+import { multiTabService } from "@bus/multi_tab_service";
+
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import {
     click,
@@ -27,7 +29,6 @@ import { registry } from "@web/core/registry";
 import * as LegacyFavoriteMenu from "web.FavoriteMenu";
 import { InsertViewSpreadsheet } from "@spreadsheet_edition/assets/insert_action_link_menu/insert_action_link_menu_owl";
 import { InsertViewSpreadsheet as LegacyInsertViewSpreadsheet } from "@spreadsheet_edition/assets/insert_action_link_menu/insert_action_link_menu_legacy";
-import { browser } from "@web/core/browser/browser";
 import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 
 import { loadJS } from "@web/core/assets";
@@ -154,6 +155,7 @@ QUnit.module(
                     return true;
                 },
             };
+            registry.category('services').add('multi_tab', multiTabService);
             registry.category('services').add('bus_service', busService);
         },
     },
@@ -324,13 +326,13 @@ QUnit.module(
             async function (assert) {
                 serviceRegistry.add("user", makeFakeUserService());
 
-                patchWithCleanup(browser, { setTimeout: (fn) => fn() });
                 const webClient = await openView("dashboard");
                 await click(target, ".fa-pie-chart");
 
                 // custom group by
                 await toggleGroupByMenu(target);
-                await toggleAddCustomGroup(target);
+                const { afterNextRender } = owl.App;
+                await afterNextRender(async () => await toggleAddCustomGroup(target));
                 await selectGroup(target, "bar");
                 await applyGroup(target);
 

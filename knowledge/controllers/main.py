@@ -72,8 +72,9 @@ class KnowledgeController(http.Controller):
         ))
 
     def _redirect_to_portal_view(self, article, hide_side_bar=False):
+        # exclude private articles as they are not used in the side panel.
         root_articles_count = request.env["knowledge.article"].search_count(
-            [("parent_id", "=", False)],
+            [("parent_id", "=", False), ("category", "!=", "private")],
             limit=1,
         )
 

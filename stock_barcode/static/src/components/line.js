@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { bus } from 'web.core';
-import LineTitleComponent from '@stock_barcode/components/line_title';
 const { Component } = owl;
 
 export default class LineComponent extends Component {
@@ -119,6 +118,3 @@ export default class LineComponent extends Component {
     }
 }
 LineComponent.template = 'stock_barcode.LineComponent';
-LineComponent.components = {
-    LineTitleComponent,
-};

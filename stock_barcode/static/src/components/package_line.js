@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
 import { bus } from 'web.core';
-const { Component } = owl;
+import LineComponent from './line';
 
-export default class PackageLineComponent extends Component {
+export default class PackageLineComponent extends LineComponent {
     get componentClasses() {
         return [
             this.qtyDone == 1 ? 'o_line_completed' : 'o_line_not_completed',
@@ -15,8 +15,8 @@ export default class PackageLineComponent extends Component {
         return this.line.package_id.id === this.env.model.lastScanned.packageId;
     }
 
-    get line() {
-        return this.props.line;
+    get qtyDemand() {
+        return this.props.line.reservedPackage ? 1 : false;
     }
 
     get qtyDone() {

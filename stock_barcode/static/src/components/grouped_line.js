@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import LineComponent from "@stock_barcode/components/line";
-import LineTitleComponent from '@stock_barcode/components/line_title';
 
 export default class GroupedLineComponent extends LineComponent {
 
@@ -18,8 +17,5 @@ export default class GroupedLineComponent extends LineComponent {
         this.env.model.toggleSublines(this.line);
     }
 }
-GroupedLineComponent.components = {
-    LineComponent,
-    LineTitleComponent,
- };
+GroupedLineComponent.components = { LineComponent };
 GroupedLineComponent.template = 'stock_barcode.GroupedLineComponent';

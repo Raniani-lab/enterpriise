@@ -899,12 +899,12 @@ class HrContractSalary(http.Controller):
         sign_request_sudo.toggle_favorited()
 
         # Prefill the sign boxes
-        items = request.env['sign.item'].sudo().search([
+        sign_items = request.env['sign.item'].sudo().search([
             ('template_id', '=', sign_template.id),
             ('name', '!=', '')
         ])
         responsible2signature = {}
-        for responsible, items in groupby(items, lambda it: it.responsible_id):
+        for responsible, items in groupby(sign_items, lambda it: it.responsible_id):
             signature = {}
             for item in items:
                 try:

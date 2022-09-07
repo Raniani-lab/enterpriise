@@ -185,12 +185,14 @@ class IntrastatReportCustomHandler(models.AbstractModel):
             })
 
         errors = (
-            ('expired_trans', 'invoice_id'),
-            ('premature_trans', 'invoice_id'),
+            ('expired_trans', 'move_line_id'),
+            ('premature_trans', 'move_line_id'),
+            ('missing_trans', 'move_line_id'),
             ('expired_comm', 'product_id'),
             ('premature_comm', 'product_id'),
-            ('expired_categ_comm', 'template_categ'),
-            ('premature_categ_comm', 'template_categ'),
+            ('missing_comm', 'product_id'),
+            ('missing_unit', 'product_id'),
+            ('missing_weight', 'product_id'),
         )
         for column_group in options['column_groups']:
             for error, val_key in errors:
@@ -271,6 +273,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 account_move_line.product_uom_id AS uom_id,
                 inv_line_uom.category_id AS uom_category_id,
                 account_move.id AS invoice_id,
+                account_move_line.id as move_line_id,
                 account_move.currency_id AS invoice_currency_id,
                 account_move.name,
                 COALESCE(account_move.date, account_move.invoice_date) AS invoice_date,
@@ -294,7 +297,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                     THEN inv_line_uom.factor ELSE 1 END
                 ) AS quantity,
                 CASE WHEN code.supplementary_unit IS NOT NULL and prod.intrastat_supplementary_unit_amount != 0
-                    THEN  prod.intrastat_supplementary_unit_amount * (
+                    THEN prod.intrastat_supplementary_unit_amount * (
                         quantity / (
                             CASE WHEN inv_line_uom.category_id IS NULL OR inv_line_uom.category_id = prod_uom.category_id
                             THEN inv_line_uom.factor ELSE 1 END
@@ -310,8 +313,12 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 END AS partner_vat,
                 transaction.expiry_date <= account_move.invoice_date AS expired_trans,
                 transaction.start_date > account_move.invoice_date AS premature_trans,
+                transaction.id IS NULL AS missing_trans,
                 code.expiry_date <= account_move.invoice_date AS expired_comm,
                 code.start_date > account_move.invoice_date AS premature_comm,
+                code.id IS NULL as missing_comm,
+                COALESCE(prod.intrastat_supplementary_unit_amount, 0) = 0 AND code.supplementary_unit IS NOT NULL as missing_unit,
+                COALESCE(prod.weight, 0) = 0 AND code.supplementary_unit IS NULL AS missing_weight,
                 prod.id AS product_id,
                 prodt.categ_id AS template_categ
         """
@@ -398,10 +405,17 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         return {
             'type': 'ir.actions.act_window',
             'name': _('Invalid transaction intrastat code entries.'),
-            'res_model': 'account.move',
-            'views': [(False, 'list'), (False, 'form')],
-            'domain': [('id', 'in', options['warnings'][params['option_key']])],
-            'context': {'create': False, 'delete': False},
+            'res_model': 'account.move.line',
+            'views': [(
+                self.env.ref('account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes').id,
+                'list',
+            ), (False, 'form')],
+            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'context': {
+                'create': False,
+                'delete': False,
+                'expand': True,
+            },
         }
 
     def action_invalid_code_products(self, options, params):
@@ -410,10 +424,10 @@ class IntrastatReportCustomHandler(models.AbstractModel):
             'name': _('Invalid commodity intrastat code products.'),
             'res_model': 'product.product',
             'views': [(
-                self.env.ref('account_intrasta.product_product_tree_view_account_intrastat').id,
+                self.env.ref('account_intrastat.product_product_tree_view_account_intrastat').id,
                 'list',
             ), (False, 'form')],
-            'domain': [('id', 'in', options['warnings'][params['option_key']])],
+            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
             'context': {
                 'create': False,
                 'delete': False,
@@ -421,20 +435,36 @@ class IntrastatReportCustomHandler(models.AbstractModel):
             },
         }
 
-    def action_invalid_code_product_categories(self, options, params):
+    def action_undefined_units_products(self, options, params):
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Invalid commodity intrastat code product categories.'),
-            'res_model': 'product.category',
+            'name': _('Invalid commodity intrastat code products.'),
+            'res_model': 'product.product',
             'views': [(
-                self.env.ref('account_intrastat.product_category_tree_view_account_intrastat').id,
+                self.env.ref('account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit').id,
                 'list',
             ), (False, 'form')],
-            'domain': [('id', 'in', options['warnings'][params['option_key']])],
+            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
             'context': {
                 'create': False,
                 'delete': False,
-                'search_default_group_by_intrastat_id': True,
+                'expand': True,
+            },
+        }
+
+    def action_undefined_weight_products(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Invalid commodity intrastat code products.'),
+            'res_model': 'product.product',
+            'views': [(
+                self.env.ref('account_intrastat.product_product_tree_view_account_intrastat_weight').id,
+                'list',
+            ), (False, 'form')],
+            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'context': {
+                'create': False,
+                'delete': False,
                 'expand': True,
             },
         }

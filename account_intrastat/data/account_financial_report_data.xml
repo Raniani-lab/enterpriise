@@ -79,6 +79,7 @@
             <field name="filter_journals" eval="True"/>
             <field name="custom_handler_model_id" ref="model_account_intrastat_report_handler"/>
             <field name="search_template">account_intrastat.search_template_intrastat</field>
+            <field name="main_template">account_intrastat.account_intrastat_main_template</field>
             <field name="load_more_limit" eval="80"/>
             <field name="column_ids">
                 <record id="intrastat_report_column_system" model="account.report.column">

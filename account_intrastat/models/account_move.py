@@ -44,13 +44,25 @@ class AccountMoveLine(models.Model):
             create_column(self.env.cr, "account_move_line", "intrastat_product_origin_country_id", "int4")
         return super()._auto_init()
 
-    intrastat_transaction_id = fields.Many2one('account.intrastat.code', string='Intrastat', domain="[('type', '=', 'transaction')]")
+    intrastat_transaction_id = fields.Many2one('account.intrastat.code', string='Intrastat', domain="[('type', '=', 'transaction')]", compute='_compute_intrastat_transaction_id', store=True, readonly=False)
     intrastat_product_origin_country_id = fields.Many2one('res.country', string='Product Country', compute='_compute_origin_country', store=True, readonly=False)
 
     @api.depends('product_id')
     def _compute_origin_country(self):
         for line in self:
             line.intrastat_product_origin_country_id = line.product_id.product_tmpl_id.intrastat_origin_country_id
+
+    @api.depends('move_id.move_type', 'move_id.journal_id')
+    def _compute_intrastat_transaction_id(self):
+        for line in self:
+            if line.move_id.intrastat_country_id:
+                if line.move_id.move_type in ('in_invoice', 'out_invoice'):
+                    line.intrastat_transaction_id = line.move_id.company_id.intrastat_default_invoice_transaction_code_id
+                    continue
+                elif line.move_id.move_type in ('in_refund', 'out_refund'):
+                    line.intrastat_transaction_id = line.move_id.company_id.intrastat_default_refund_transaction_code_id
+                    continue
+            line.intrastat_transaction_id = None
 
     # EXTENDS account
     def _get_lock_date_protected_fields(self):

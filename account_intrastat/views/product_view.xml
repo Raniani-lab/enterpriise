@@ -17,7 +17,7 @@
                         </div>
                         <label for="weight" attrs="{'invisible': ['|',('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '!=', False)]}"/>
                         <div class="o_row" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '!=', False)]}">
-                        <field name="weight"/>
+                            <field name="weight"/>
                             <span class="oe_inline"></span>
                             <field name="weight_uom_name"/>
                         </div>
@@ -47,7 +47,7 @@
                             </div>
                             <label for="weight" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '!=', False)]}"/>
                             <div class="o_row" attrs="{'invisible': ['|', ('intrastat_code_id', '=', False), ('intrastat_supplementary_unit', '!=', False)]}">
-                            <field name="weight"/>
+                                <field name="weight"/>
                                 <span class="oe_inline"></span>
                                 <field name="weight_uom_name"/>
                             </div>
@@ -87,7 +87,7 @@
                     <field name="default_code" readonly="1"/>
                     <field name="name" readonly="1"/>
                     <field name="intrastat_code_id" string="Commodity Code" readonly="1"/>
-                    <field name="intrastat_supplementary_unit"/>
+                    <field name="intrastat_supplementary_unit" readonly="1"/>
                     <field name="intrastat_supplementary_unit_amount" string="Supplementary Units per Product"/>
                 </tree>
             </field>

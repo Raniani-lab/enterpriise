@@ -20,10 +20,6 @@ It also provides new tools to analyse your data.
             'website_sale_dashboard/static/src/js/website_sale_dashboard_view.js',
             'website_sale_dashboard/static/src/xml/website_sale_dashboard.xml',
         ],
-        'web.assets_backend_legacy_lazy': [
-            'website_sale_dashboard/static/src/js/website_sale_dashboard_legacy.js',
-            'website_sale_dashboard/static/src/js/website_sale_dashboard_controller.js',
-        ],
         'web.qunit_suite_tests': [
             'website_sale_dashboard/static/tests/**/*',
         ],

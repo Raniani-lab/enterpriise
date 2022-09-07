@@ -15,8 +15,6 @@
     'assets': {
         'web.assets_backend': [
             'web_map/static/src/**/*',
-            ('remove', 'web_map/static/src/legacy/**/*'),
-            'web_map/static/src/**/*.xml',
         ],
         'web.qunit_suite_tests': [
             'web_map/static/lib/**/*',
@@ -26,9 +24,6 @@
         'web.qunit_mobile_suite_tests': [
             'web_map/static/tests/map_view/map_view_mobile_tests.js',
             'web_map/static/lib/**/*',
-        ],
-        'web.assets_backend_legacy_lazy': [
-            'web_map/static/src/legacy/**/*',
         ],
     }
 }

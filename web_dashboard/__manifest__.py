@@ -17,10 +17,6 @@ can embed graph and/or pivot views, and displays aggregate values.
     'assets': {
         'web.assets_backend': [
             'web_dashboard/static/src/**/*',
-            ("remove", "web_dashboard/static/src/legacy/**/*"),
-        ],
-        "web.assets_backend_legacy_lazy": [
-            "web_dashboard/static/src/legacy/**/*",
         ],
         'web.qunit_suite_tests': [
             'web_dashboard/static/tests/**/*.js',

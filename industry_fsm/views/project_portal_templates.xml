@@ -2,7 +2,7 @@
 <odoo>
 
     <template id="portal_task_sign_button" name="Sign Button With Dialog">
-        <a t-if="task.has_to_be_signed()" role="button" class="btn btn-primary btn-block mb8" data-bs-toggle="modal" data-bs-target="#modalaccept" href="#">
+        <a t-if="task.has_to_be_signed()" role="button" class="btn btn-primary btn-block me-1" data-bs-toggle="modal" data-bs-target="#modalaccept" href="#">
             <i class="fa fa-check me-1"/>Sign
         </a>
         <!-- modal relative to the sign action -->

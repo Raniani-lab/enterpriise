@@ -17,6 +17,6 @@ tour.tours.industry_fsm_tour.steps.splice(signReportStepIndex, 0, {
 }, {
     trigger: 'div[name="worksheet_map"] div[class*="row"] div:not(:empty)',
     extra_trigger: '.o_project_portal_sidebar',
-    content: ('At leas a field is rendered'),
+    content: ('At least a field is rendered'),
     auto: true,
 });

@@ -71,8 +71,9 @@ tour.register('account_reports_widgets', {
             trigger: ".dropdown-item.js_foldable_trigger[data-filter='previous_period']"
         },
         {
-            content: "change comparison filter",
+            content: "wait for Apply button and click on it",
             trigger: ".js_account_report_date_cmp_filter[data-filter='previous_period']",
+            extra_trigger: ".js_account_report_date_cmp_filter[data-filter='previous_period']",
             run: 'click',
         },
         {

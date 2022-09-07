@@ -2,7 +2,7 @@
  **********************************************************/
 @mixin o_appointment_type_backend_helper {
     .o_view_nocontent {
-        top: 20vh;
+        top: 10vh;
         .o_view_no_content_appointment_type:before {
             @extend %o-nocontent-init-image;
             background: transparent url(/appointment/static/src/img/appointment-type-helper.svg) no-repeat center;

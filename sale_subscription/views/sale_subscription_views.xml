@@ -763,6 +763,7 @@
 
     <menuitem id="menu_sale_subscription_config" name="Configuration" sequence="10" parent="menu_sale_subscription_root"/>
     <menuitem action="sale_subscription_close_reason_action" id="menu_sale_subscription_close_reason_action" parent="menu_sale_subscription_config" sequence="10" groups="sales_team.group_sale_manager"/>
+    <menuitem action="sale_temporal.sale_temporal_recurrence_action" name="Recurrence periods" id="menu_sale_subscription_periods" parent="menu_sale_subscription_config" sequence="20" groups="sales_team.group_sale_manager"/>
     <menuitem action="sale_subscription_template_action" id="menu_template_of_subscription" parent="menu_sale_subscription_config" sequence="4" groups="sales_team.group_sale_manager"/>
     <menuitem id="menu_sale_subscription_stage" name="Subscription Stages" parent="menu_sale_subscription_config" action="sale_subscription_stage_action" sequence="5" groups="sales_team.group_sale_manager"/>
     <menuitem id="menu_sale_subscription_alert" name="Alerts" parent="menu_sale_subscription_config" action="sale_subscription_alert_action" sequence="8"/>

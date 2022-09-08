@@ -111,7 +111,7 @@ class SaleOrder(models.Model):
     def _constraint_subscription_recurrence(self):
         recurring_product_orders = self.order_line.filtered(lambda l: l.product_id.recurring_invoice).order_id
         for so in self:
-            if so.state == 'draft' or so.subscription_management == 'upsell':
+            if so.state in ['draft', 'cancel'] or so.subscription_management == 'upsell':
                 continue
             if so in recurring_product_orders and not so.recurrence_id:
                 raise UserError(_('You cannot save a sale order with recurring product and no recurrence.'))

@@ -525,7 +525,7 @@ class SaleOrder(models.Model):
 
     def _action_cancel(self):
         for order in self:
-            if order.subscription_management:
+            if order.subscription_management and order.subscription_id:
                 if order.subscription_management == 'upsell':
                     cancel_message_body = _("The upsell %s has been canceled.", order._get_html_link())
                 elif order.subscription_management == 'renew':

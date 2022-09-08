@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.tests import Form, tagged
-from odoo.addons.stock_barcode.tests.test_barcode_client_action import clean_access_rights, TestBarcodeClientAction
+from odoo.addons.stock_barcode.tests.test_barcode_client_action import TestBarcodeClientAction
 
 
 @tagged('post_install', '-at_install')
@@ -20,7 +20,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         convert to expiration date according to the setting on the product. When
         both dates are scanned, only the expiration date will be used.
         """
-        clean_access_rights(self.env)
+        self.clean_access_rights()
         self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
 
         picking_form = Form(self.env['stock.picking'])

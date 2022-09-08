@@ -35,9 +35,6 @@
         <field name="model">mrp.workorder</field>
         <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
         <field name="arch" type="xml">
-            <tree position="attributes">
-                <attribute name="js_class">tablet_list_view</attribute>
-            </tree>
             <xpath expr="//field[@name='state']" position="after">
                 <field name="production_state" invisible="1"/>
             </xpath>

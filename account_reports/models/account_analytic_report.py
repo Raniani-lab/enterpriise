@@ -26,8 +26,8 @@ class AccountReport(models.AbstractModel):
         if not enable_analytic_accounts:
             return
 
-        options['analytic_groupby'] = True
-        options['analytic_plan_groupby'] = True
+        options['display_analytic_groupby'] = True
+        options['display_analytic_plan_groupby'] = True
 
         options['include_analytic_without_aml'] = (previous_options or {}).get('include_analytic_without_aml', False)
         previous_analytic_accounts = (previous_options or {}).get('analytic_accounts_groupby', [])

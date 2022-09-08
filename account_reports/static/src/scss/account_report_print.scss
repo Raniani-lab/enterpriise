@@ -8,12 +8,14 @@
     background-color: white !important;
     color: black !important;
     font-size: 12px !important;
+
     .o_account_reports_header {
+        display: block;
         padding: 10px;
         background-color: #eee;
     }
 
-    .o_account_report_name_ellipsis_partner_ledger {
+    .acc_rep_name_ellipsis_partner_ledger {
         min-width: 160px !important;
         max-width: 160px !important;
     }
@@ -35,16 +37,37 @@
         }
     }
 
-    .o_account_reports_level1 {
+    .o_account_reports_table.o_general_ledger {
+        .acc_rep_searchable {
+            > td > .acc_rep_line_name,
+            > td > .acc_rep_column_value > table > tr > .number{
+                font-weight: normal !important;
+            }
+        }
+
+        .acc_rep_default_style > td > .acc_rep_column_value > table > tr > .number{
+            font-weight: normal !important;
+        }
+
+        .acc_rep_default_style > td > .acc_rep_column_value > table > tr > td {
+            text-align: left !important;
+        }
+
+        .o_account_reports_initial_balance{
+            border: none;
+        }
+    }
+
+    .acc_rep_level1 {
         border-bottom: 2px solid #{$o-gray-400};
     }
 
-    .o_account_reports_level2 {
+    .acc_rep_level2 {
         border-bottom: 1px solid #{$o-gray-300};
     }
 
     @for $i from 3 through 13 {
-        .o_account_reports_level#{$i} {
+        .acc_rep_level#{$i} {
             border-bottom: 0.5px solid #{$o-gray-200};
             .number{
                 color: #474646;
@@ -105,22 +128,22 @@ a {
         font-weight: normal;
     }
 
-    .o_account_report_line {
+    .acc_rep_line {
         font-size: 14px !important;
     }
 
-    .o_account_report_line_ellipsis, .o_account_report_name_ellipsis{
+    .acc_rep_line_ellipsis, .acc_rep_name_ellipsis{
         position: relative;
         span {
             position: absolute;
         }
-        span.js_account_report_line_footnote {
+        span.acc_rep_footnote {
             /* fix footnote alignment in rtl direction */
             position: relative;
         }
-        > span[class="account_report_line_name"],
-        > span[class="o_account_report_column_value"],
-        span[class^="o_account_reports_domain_line_"] {
+        > span[class="acc_rep_line_name"],
+        > span[class="acc_rep_column_value"],
+        span[class^="acc_rep_domain_line_"] {
             white-space: normal;
             overflow: visible;
             text-overflow: initial;
@@ -128,8 +151,4 @@ a {
         }
     }
 
-    .number{
-        font-weight: 700;
-    }
 }
-

@@ -296,9 +296,14 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
             })]
         })
         options = {'unfold_all': True}
+
+        section_1_id = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.id)
+        section_2_id = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.child_ids[0].id, parent_line_id=section_1_id)
+        account_line_id = self.env['account.report']._get_generic_line_id(None, None, section.child_ids[0].account_ids[0].id, parent_line_id=section_2_id)
+
         expected = [
             {
-                'id': self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.id),
+                'id': section_1_id,
                 'name': section.name,
                 'level': level,
                 'unfoldable': True,
@@ -315,12 +320,12 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 ]
             },
             {
-                'id': self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.child_ids[0].id),
+                'id': section_2_id,
                 'name': section.child_ids[0].name,
                 'level': level + 1,
                 'unfoldable': True,
                 'unfolded': True,
-                'parent_id': self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.id),
+                'parent_id': section_1_id,
                 'columns': [
                     {
                         'name': f'1,000.00{NON_BREAKING_SPACE}€',
@@ -333,7 +338,7 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 ]
             },
             {
-                'id': self.env['account.report']._get_generic_line_id(None, None, section.child_ids[0].account_ids[0].id),
+                'id': account_line_id,
                 'name': '%s' % section.child_ids[0].account_ids[0].name_get()[0][1],
                 'title_hover': '%s (Closing Rate Currency Conversion Method)' %
                                section.child_ids[0].account_ids[0].name_get()[0][1],
@@ -350,7 +355,7 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                     }
                 ],
                 'level': level + 2,
-                'parent_id': self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.child_ids[0].id),
+                'parent_id': section_2_id,
                 'unfolded': True
             }
         ]
@@ -515,13 +520,14 @@ class TestDefaultBuilder(AccountConsolidationTestCase):
     def test__format_account_line(self):
         level = 2
         totals = [12.0, 13.14]
-        line = self.builder._format_account_line(self.consolidation_account, level, totals, {})
+        line = self.builder._format_account_line(self.consolidation_account, None, level, totals, {})
         account_name = self.consolidation_account.name
         account_currency_name = self.consolidation_account.get_display_currency_mode()
         expected = {
             'id': self.env['account.report']._get_generic_line_id(None, None, self.consolidation_account.id),
             'level': level,
             'name': account_name,
+            'unfolded': False,
             'title_hover': "%s (%s Currency Conversion Method)" % (account_name, account_currency_name),
             'columns': [{
                 'name': self.builder.value_formatter(t),

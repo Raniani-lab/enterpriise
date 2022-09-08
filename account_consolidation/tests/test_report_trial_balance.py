@@ -68,11 +68,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
             if line.get('class', None) != 'total':
                 account = self.env['consolidation.account'].browse(int(line_id))
                 self.assertEqual(len(account), 1)
-                if int(line_id) != self.consolidation_accounts['alone in the dark'].id:
-                    self.assertIsNotNone(line.get('parent_id', None), 'Account line should have a parent_id but does not (%s)' % line)
-                    self.assertEqual(parent_id, self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % account.group_id.id))
-                else:
-                    self.assertIsNone(line.get('parent_id', None), 'Account line "alone in the dark" should not have a parent_id but does (%s)' % line)
+                self.assertIsNone(line.get('parent_id', None), 'Account line "alone in the dark" should not have a parent_id but does (%s)' % line)
 
         levels = [row['level'] for row in lines]
         expected_levels = [3, 3, 3, 3, 1]
@@ -121,7 +117,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
                 self.assertTrue(line['unfoldable'], 'Section line should be unfoldable')
                 self.assertTrue(line['unfolded'], 'Section line should be unfolded')
                 if section.parent_id:
-                    self.assertEqual(parent_id, self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.parent_id.id))
+                    self.assertEqual(parent_id, self._get_conso_groug_section_id(section.parent_id))
                 else:
                     self.assertIsNone(parent_id)
             elif line.get('class', None) != 'total':
@@ -130,7 +126,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
                 self.assertEqual(len(account), 1)
                 if int(line_id) != self.consolidation_accounts['alone in the dark'].id:
                     self.assertIsNotNone(line.get('parent_id', None), 'Account line should have a parent_id but does not (%s)' % line)
-                    self.assertEqual(parent_id, self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % account.group_id.id))
+                    self.assertEqual(parent_id, self._get_conso_groug_section_id(account.group_id))
                 else:
                     self.assertIsNone(line.get('parent_id', None), 'Account line "alone in the dark" should not have a parent_id but does (%s)' % line)
 
@@ -191,7 +187,7 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
                 self.assertEqual(len(account), 1)
                 if int(line_id) != self.consolidation_accounts['alone in the dark'].id:
                     self.assertIsNotNone(line.get('parent_id', None), 'Account line should have a parent_id but does not (%s)' % line)
-                    self.assertEqual(parent_id, self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % account.group_id.id))
+                    self.assertEqual(parent_id, self._get_conso_groug_section_id(account.group_id))
                 else:
                     self.assertIsNone(line.get('parent_id', None), 'Account line "alone in the dark" should not have a parent_id but does (%s)' % line)
 

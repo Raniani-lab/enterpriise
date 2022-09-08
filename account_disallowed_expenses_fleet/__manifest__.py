@@ -12,6 +12,11 @@
         'views/account_disallowed_expenses_category_views.xml',
         'views/fleet_vehicle_views.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'account_disallowed_expenses_fleet/static/src/components/**/*',
+        ],
+    },
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

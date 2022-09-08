@@ -35,6 +35,11 @@ Official Documentation AFIP
         'security/ir.model.access.csv',
         'security/security.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'l10n_ar_reports/static/src/components/**/*',
+        ],
+    },
     'auto_install': ['l10n_ar', 'account_reports'],
     'installable': True,
     'license': 'OEEL-1',

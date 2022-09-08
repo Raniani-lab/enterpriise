@@ -17,6 +17,13 @@ class AccountTaxReportHandler(models.AbstractModel):
     # This model is needed for the Closing Entry button to be available for all reports, including the generic one
     # With this, custom tax reports don't need to inherit from the generic tax report
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReport': 'account_reports.GenericTaxReport',
+            },
+        }
+
     def _custom_options_initializer(self, report, options, previous_options=None):
         options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 80})
 
@@ -44,24 +51,29 @@ class AccountTaxReportHandler(models.AbstractModel):
         # Return action to open form view of newly created entry
         report = self.env.ref('account.generic_tax_report')
         moves = self.env['account.move']
+
         # Get all companies impacting the report.
         end_date = fields.Date.from_string(options['date']['date_to'])
         options_company_ids = [company_opt['id'] for company_opt in options.get('multi_company', [])]
         companies = self.env['res.company'].browse(options_company_ids) if options_company_ids else self.env.company
+
         # Get the moves separately for companies with a lock date on the concerned period, and those without.
         tax_locked_companies = companies.filtered(lambda c: c.tax_lock_date and c.tax_lock_date >= end_date)
         moves += self._get_tax_closing_entries_for_closed_period(report, options, tax_locked_companies)
 
         non_tax_locked_companies = companies - tax_locked_companies
         moves += self._generate_tax_closing_entries(report, options, companies=non_tax_locked_companies)
+
         # Make the action for the retrieved move and return it.
         action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_journal_line")
         action = clean_action(action, env=self.env)
+
         if len(moves) == 1:
             action['views'] = [(self.env.ref('account.view_move_form').id, 'form')]
             action['res_id'] = moves.id
         else:
             action['domain'] = [('id', 'in', moves.ids)]
+
         return action
 
     def _generate_tax_closing_entries(self, report, options, closing_moves=None, companies=None):
@@ -374,7 +386,7 @@ class AccountTaxReportHandler(models.AbstractModel):
         for this company, with the provided options.
 
         :return: (include_domestic, fiscal_positions), where fiscal positions is a recordset
-                 and include_domestic is a boolean telling whehter or not the domestic closing
+                 and include_domestic is a boolean telling whether or not the domestic closing
                  (i.e. the one without any fiscal position) must also be performed
         """
         if options['fiscal_position'] == 'domestic':

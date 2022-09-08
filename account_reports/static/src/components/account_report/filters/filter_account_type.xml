@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportFilterAccountType" owl="1">
+        <Dropdown togglerClass="'btn btn-secondary'">
+            <t t-set-slot="toggler">
+                <span class="fa fa-user me-1"/>Account: <t t-esc="controller.options.account_display_name"/>
+            </t>
+
+            <t t-foreach="controller.options.account_type" t-as="accountType" t-key="accountType_index">
+                <DropdownItem
+                    class="{ 'selected': accountType.selected }"
+                    onSelected="() => this.toggleFilter('account_type.' + accountType_index + '.selected')"
+                >
+                    <t t-esc="accountType.name"/>
+                </DropdownItem>
+            </t>
+        </Dropdown>
+    </t>
+</templates>

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="pdf_export_main">
+        <html>
+            <head>
+                <base t-att-href="base_url"/>
+                <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+                <t t-call-assets="account_reports.assets_pdf_export" t-js="False"/>
+            </head>
+            <body class="o_account_reports_body_print">
+                <div class='o_account_reports_body'>
+                    <div class="o_account_reports_page">
+                        <div class="o_account_reports_header">
+                           <div>
+                                <h2>
+                                    <strong>
+                                        <t t-if="report.filter_show_draft and options['all_entries']">[Draft]</t>
+                                        <t t-out="report_title"/>
+                                    </strong>
+                                </h2>
+                           </div>
+                           <t t-call="{{custom_templates.get('pdf_export_filters', 'account_reports.pdf_export_filters')}}"/>
+                        </div>
+                        <div class="o_account_reports_summary"/>
+                        <div>
+                            <table class="o_account_reports_table table-bold-unfold o_general_ledger">
+                                <t t-call="{{custom_templates.get('pdf_export_main_table_header', 'account_reports.pdf_export_main_table_header')}}"/>
+                                <tbody>
+                                    <t t-if="lines">
+                                        <t t-call="{{custom_templates.get('pdf_export_line', 'account_reports.pdf_export_line')}}"/>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Display footnotes -->
+                        <t t-foreach="footnotes" t-as="footnote">
+                            <p class="footnote" t-att-id="'footnote' + str(footnote.get('number'))" t-att-data-id="footnote.get('id')">
+                                <span class='text'><t t-out="str(footnote.get('number')) + '. ' + str(footnote.get('text'))"/></span>
+                                <span class='o_account_reports_footnote_icons'><i class="fa fa-fw fa-trash-o" role="img" aria-label="Delete" title="Delete"></i></span>
+                            </p>
+                        </t>
+                    </div>
+                </div>
+            </body>
+        </html>
+    </template>
+
+    <template id="pdf_export_filters">
+        <div class="row" style='margin-top: 20px; margin-bottom: 10px;'>
+            <div class="col-4">
+                <t t-if="options.get('date') and options['date'].get('string')"><t t-out="options['date']['string']"/></t>
+                <t t-if="not options.get('multi_company')">
+                    <br/><t t-out="report_company_name"/>
+                </t>
+                <t t-if="options.get('multi_company')">
+                    <br/>Companies:
+                    <t t-set="company_value">All</t>
+                    <t t-foreach="options['multi_company']" t-as="c">
+                        <t t-set="company_value" t-value="''"/>
+                        <t t-out="c.get('name')"/>
+                    </t>
+                    <t t-out="company_value"/>
+                </t>
+            </div>
+            <div class="col-4">
+                <div class="col-12" name="filter_info_template_journals">
+                    <t t-if="options.get('journals')">
+                        Journals:
+                        <t t-set="journal_value">All</t>
+                        <t t-foreach="options['journals']" t-as="j">
+                            <t t-if="j.get('selected') == True">
+                                <t t-set="journal_value" t-value="''"/>
+                                <t t-out="j.get('code')"/>
+                            </t>
+                        </t>
+                        <t t-out="journal_value"/>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-if="options.get('analytic_accounts') != None">
+                        Analytic Accounts:
+                        <t t-set="analytic_account_value">All</t>
+                        <t t-foreach="options['selected_analytic_account_names']" t-as="analytic_account_name">
+                            <t t-set="analytic_account_value" t-value="''"/>
+                            <t t-out="analytic_account_name"/>
+                        </t>
+                        <t t-out="analytic_account_value"/>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-if="options.get('analytic_accounts_groupby') != None">
+                        Analytic Accounts:
+                        <t t-set="analytic_account_groupby_value">All</t>
+                        <t t-foreach="options['selected_analytic_account_groupby_names']" t-as="analytic_account_groupby_name">
+                            <t t-set="analytic_account_groupby_value" t-value="''"/>
+                            <t t-out="analytic_account_groupby_name"/>
+                        </t>
+                        <t t-out="analytic_account_groupby_value"/>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-if="options.get('analytic_plan_groupby') != None">
+                        Analytic Plans:
+                        <t t-set="analytic_plan_groupby_value">All</t>
+                        <t t-foreach="options['selected_analytic_plan_groupby_names']" t-as="analytic_plan_groupby_name">
+                            <t t-set="analytic_plan_groupby_value" t-value="''"/>
+                            <t t-out="analytic_plan_groupby_name"/>
+                        </t>
+                        <t t-out="analytic_plan_groupby_value"/>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-if="options.get('partner_ids') != None">
+                        Partners:
+                        <t t-set="res_partner_value">All</t>
+                        <t t-foreach="options['selected_partner_ids']" t-as="partner_name">
+                            <t t-set="res_partner_value" t-value="''"/>
+                            <t t-out="partner_name"/>
+                        </t>
+                        <t t-out="res_partner_value"/>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-if="options.get('partner_categories') != None">
+                        Partner Categories:
+                        <t t-set="res_partner_category_value">All</t>
+                        <t t-foreach="options['selected_partner_categories']" t-as="partner_category_name">
+                            <t t-set="res_partner_category_value" t-value="''"/>
+                            <t t-out="partner_category_name"/>
+                        </t>
+                        <t t-out="res_partner_category_value"/>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-if="options.get('ir_filters') != None">
+                        Filter:
+                        <t t-set="selected_filter_name">None</t>
+                        <t t-foreach="options['ir_filters']" t-as="current_filter">
+                            <t t-if="current_filter['selected']">
+                                <t t-set="selected_filter_name" t-value="current_filter['name']"/>
+                            </t>
+                        </t>
+                        <t t-out="selected_filter_name"/>
+                    </t>
+                </div>
+                <div class="col-12">
+                    <t t-if="options.get('groupby_fields') and any(opt['selected'] for opt in options['groupby_fields'])">
+                        Groupby:
+                        <t t-out="' '.join(opt['name'] for opt in options['groupby_fields'] if opt['selected'])"/>
+                    </t>
+                </div>
+                <div class='col-12'>
+                    <t t-if="options.get('company_currency')">
+                        Company Currency: <t t-out="options['company_currency']['currency_name']"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="pdf_export_main_table_header">
+        <thead class="o_account_reports_header_hierarchy">
+            <t t-foreach="enumerate(options['column_headers'])" t-as="headers_val">
+                <t t-set="header_level_index" t-value="headers_val[0]"/>
+                <t t-set="header_level" t-value="headers_val[1]"/>
+                <tr>
+                    <t id="populate_headers_loop_id"
+                        t-foreach="[{'style': 'width: 100%;', 'colspan': 1}]
+                                   + header_level * column_headers_render_data['level_repetitions'][header_level_index]"
+                        t-as="header">
+                        <t t-set="header_name" t-value="header.get('name')"/>
+                        <th t-att-class="acc_rep_column_header"
+                            t-att-colspan="header.get('colspan', column_headers_render_data['level_colspan'][header_level_index])"
+                            t-att-style="header.get('style', 'text-align: center;')">
+                            <t t-out="header_name"/>
+                        </th>
+                    </t>
+
+                    <th t-if="options.get('show_growth_comparison')" class="acc_rep_column_header" colspan="1" style="text-align: center">
+                        <span class="fa fa-percent"/>
+                    </th>
+                </tr>
+            </t>
+
+            <tr t-if="column_headers_render_data['custom_subheaders']">
+                <t t-foreach="[{'style': 'width: 100%;', 'colspan': 1}] + column_headers_render_data['custom_subheaders']" t-as="subheader">
+                    <th t-att-class="acc_rep_column_header"
+                        t-att-colspan="subheader.get('colspan', 1)"
+                        t-att-style="subheader.get('style', 'text-align: center;')">
+
+                        <t t-out="subheader.get('name')"/>
+                    </th>
+                </t>
+            </tr>
+
+            <t t-foreach="enumerate([{'style': 'width: 100%'}] + options['columns'])" t-as="index_cell">
+                <t t-set="index" t-value="index_cell[0]"/> <!--So, indexing of options['columns'] starts here at one, which is consistent with options['order_column']-->
+                <t t-set="cell" t-value="index_cell[1]"/>
+
+                <t t-set="sortable_column_classes" t-value="'' if not cell.get('sortable') else 'sortable %s' % ('' if not options['order_column'] or options['order_column']['expression_label'] != cell['expression_label'] else options['order_column']['direction'] == 'ASC' and ' up' or ' down')"/>
+                <th t-att-class="'acc_rep_column_header ' + sortable_column_classes"
+                    colspan="cell.get('colspan', 1)"
+                    t-att-style="cell.get('style', 'text-align: right;')">
+                    <t t-call="{{custom_templates.get('pdf_export_cell', 'account_reports.pdf_export_cell')}}"/>
+                </th>
+            </t>
+        </thead>
+    </template>
+
+    <template id="pdf_export_line">
+        <t t-foreach="lines" t-as="line">
+            <t t-set="trclass" t-value="'acc_rep_default_style'"/>
+            <t t-set="domainClass" t-value="'acc_rep_domain_line_2 acc_rep_line_name'"/>
+            <t t-if="line.get('level') != None">
+                <t t-set="trclass" t-value="'acc_rep_searchable acc_rep_level'+str(line['level'])"/>
+            </t>
+
+            <t t-if="line.get('page_break')">
+                <!-- End current table -->
+                <t t-out="table_end"/>
+
+                <!-- Append table header -->
+                <t t-call="{{custom_templates.get('pdf_export_main_table_header', 'account_reports.pdf_export_main_table_header')}}"/>
+
+                <!-- Start new table -->
+                <t t-out="table_start"/>
+            </t>
+
+            <tr t-attf-class="#{trclass} #{line.get('class', '')} #{'acc_rep_parent_unfolded' if line.get('unfolded', False) else ''}"
+                tabindex="0"
+                t-att-style="line.get('style', '')">
+                <td
+                    t-att-class="'acc_rep_name_ellipsis acc_rep_line acc_rep_line_indent ' + (line.get('unfoldable') and 'js_account_report_foldable o_foldable_total' or '') + ' ' + line.get('name_class', '')"
+                    t-att-colspan="line.get('colspan', '1')"
+                >
+                    <span class="acc_rep_line_name">
+                        <t t-out="line.get('name')"/>
+                        <span class="acc_rep_footnote">
+                            <sup t-if="line.get('footnote')"><b class="o_account_reports_footnote_sup" t-out="line['footnote']"/></sup>
+                        </span>
+                    </span>
+                </td>
+
+                <t t-foreach="line.get('columns')" t-as="cell">
+                    <td>
+                        <div class="acc_rep_column_value">
+                            <t t-call="{{custom_templates.get('pdf_export_cell', 'account_reports.pdf_export_cell')}}">
+                                <t t-set="style" t-value="cell.get('style')"/>
+                                <t t-set="title" t-value="cell.get('title')"/>
+                            </t>
+                        </div>
+                    </td>
+                </t>
+
+                <td t-if="options.get('show_growth_comparison')" style="width: 1%; text-align: right;">
+                    <t t-call="account_reports.pdf_export_cell_growth_comparison"/>
+                </td>
+            </tr>
+        </t>
+    </template>
+
+    <template id="pdf_export_cell">
+        <span class="acc_rep_column_value" t-out="cell.get('name')"/>
+    </template>
+
+    <template id="pdf_export_cell_growth_comparison">
+        <span t-if="line.get('growth_comparison_data')"
+              t-out="line['growth_comparison_data'].get('name')"
+              t-att-class="line['growth_comparison_data'].get('class') + ' acc_rep_column_value'"
+              style="white-space:nowrap;"/>
+    </template>
+
+</odoo>

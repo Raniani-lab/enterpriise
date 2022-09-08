@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportHeader" owl="1">
+        <t t-call="{{ env.template('AccountReportHeader') }}"/>
+    </t>
+
+    <t t-name="account_reports.AccountReportHeaderCustomizable" owl="1">
+        <thead class="o_account_reports_header_hierarchy">
+            <!-- Headers -->
+            <t t-foreach="columnHeaders" t-as="columnHeader" t-key="columnHeader_index">
+                <tr>
+                    <!-- First empty column -->
+                    <th class="w-100"/>
+
+                    <!-- Other columns -->
+                    <t t-foreach="columnHeader" t-as="header" t-key="header_index">
+                        <th
+                            t-att-class="acc_rep_column_header"
+                            t-att-colspan="header.colspan || controller.columnHeadersRenderData.level_colspan[columnHeader_index]"
+                            t-att-style="header.style || 'text-align: right'"
+                        >
+                            <t t-out="header.name"/>
+                        </th>
+                    </t>
+
+                    <!-- Growth comparison column -->
+                    <t t-if="controller.hasComparisonColumn">
+                        <!-- We only want to display it once on the first row -->
+                        <t t-if="columnHeader_first">
+                            <th class="acc_rep_column_header text-center">
+                                <i class="fa fa-percent"/>
+                            </th>
+                        </t>
+                    </t>
+
+                    <!-- Debug column -->
+                    <t t-if="controller.hasDebugColumn">
+                        <!-- We only want to display it once on the first row -->
+                        <t t-if="columnHeader_first">
+                            <th class="acc_rep_column_header text-center">
+                                <i class="fa fa-bug"/>
+                            </th>
+                        </t>
+                    </t>
+                </tr>
+            </t>
+
+            <!-- Custom subheaders -->
+            <t t-if="controller.hasCustomSubheaders">
+                <tr>
+                    <!-- First empty column -->
+                    <th class="w-100"/>
+
+                    <!-- Other columns -->
+                    <t t-foreach="customSubheaders" t-as="customSubheader" t-key="customSubheader_index">
+                        <th
+                            t-att-class="acc_rep_column_header"
+                            t-att-colspan="customSubheader.colspan || 1"
+                            t-att-style="customSubheader.style || 'text-align: right'"
+                        >
+                            <t t-out="customSubheader.name"/>
+                        </th>
+                    </t>
+
+                    <!-- Debug column -->
+                    <t t-if="controller.hasDebugColumn">
+                        <!-- Empty to prevent a gap beneath the debug label -->
+                        <th class="acc_rep_column_header text-end" style="width: 1%;"/>
+                    </t>
+                </tr>
+            </t>
+
+            <!-- Subheaders -->
+            <tr>
+                <!-- First empty column -->
+                <th class="w-100"/>
+
+                <!-- Other columns -->
+                <t t-foreach="controller.options.columns" t-as="subheader" t-key="subheader_index">
+                    <th
+                        t-att-class="`acc_rep_column_header ${ sortableClasses(subheader_index, subheader) }`"
+                        t-att-colspan="subheader.colspan || 1"
+                        t-att-style="subheader.style || 'text-align: right'"
+                        t-on-click="() => this.sortLinesByColumn(subheader_index, subheader)"
+                    >
+                        <t t-if="subheader.template">
+                            <t t-call="{{ subheader.template }}"/>
+                        </t>
+                        <t t-else="">
+                            <t t-component="env.component('AccountReportLineCell')" t-props="{ cell: subheader }"/>
+                        </t>
+                    </th>
+                </t>
+
+                <!-- Debug column -->
+                <t t-if="controller.hasDebugColumn">
+                    <!-- Empty to prevent a gap beneath the debug label -->
+                    <th class="acc_rep_column_header text-end" style="width: 1%;"/>
+                </t>
+            </tr>
+        </thead>
+    </t>
+</templates>

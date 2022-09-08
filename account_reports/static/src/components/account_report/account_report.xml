@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReport" owl="1">
+        <t t-call="{{ env.template('AccountReport') }}"/>
+    </t>
+
+    <t t-name="account_reports.AccountReportCustomizable" owl="1">
+        <div class="o_action">
+            <ControlPanel>
+                <!-- Export buttons -->
+                <t t-set-slot="control-panel-create-button">
+                    <t t-foreach="controller.buttons" t-as="button" t-key="button_index">
+                        <div>
+                            <button
+                                t-att-class="button_index == 0 ? 'btn btn-primary' : 'btn btn-secondary'"
+                                t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param)"
+                            >
+                                <t t-out="button.name"/>
+                            </button>
+                        </div>
+                    </t>
+                </t>
+
+                <!-- Search bar -->
+                <t t-set-slot="layout-actions">
+                    <t t-if="controller.options.search_bar">
+                        <AccountReportSearchBar/>
+                    </t>
+                </t>
+
+                <!-- Filters -->
+                <t t-set-slot="control-panel-selection-actions">
+                    <t t-component="env.component('AccountReportFilters')"/>
+                </t>
+            </ControlPanel>
+
+            <div class="o_content">
+                <div class="o_account_reports_body" t-ref="accountReportBody">
+                    <!-- Warnings -->
+                    <div id="warnings_div">
+                        <t t-if="controller.filters.show_draft &amp;&amp; !controller.options.all_entries &amp;&amp; controller.options.unposted_in_period">
+                            <div class="alert alert-info text-center mb-0" >
+                                <span>
+                                    There are
+                                    <a type="button" t-on-click="(ev) => controller.reportAction(ev, 'open_unposted_moves', {})">unposted Journal Entries</a>
+                                    prior or included in this period.
+                                </span>
+                            </div>
+                        </t>
+                    </div>
+
+                    <div class="o_account_reports_page o_account_reports_no_print">
+                        <div class="table-responsive">
+                            <table class="o_account_reports_table table-hover">
+                                <t t-component="env.component('AccountReportHeader')"/>
+
+                                <t t-if="controller.lines">
+                                    <tbody>
+                                        <t t-foreach="controller.lines" t-as="line" t-key="line.id">
+                                            <t t-if="controller.areLinesOrdered()">
+                                                <t t-set="orderedIndex" t-value="controller.linesOrder[line_index]"/>
+                                                <t t-set="orderedLine" t-value="controller.lines[orderedIndex]"/>
+
+                                                <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: orderedIndex, line: orderedLine }"/>
+                                            </t>
+                                            <t t-else="">
+                                                <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: line_index, line: line }"/>
+                                            </t>
+                                        </t>
+                                    </tbody>
+                                </t>
+                            </table>
+                        </div>
+
+                        <!-- Footnotes -->
+                        <t t-if="controller.hasVisibleFootnotes">
+                            <ol class="footnotes">
+                                <t t-foreach="controller.visibleFootnotes" t-as="footnote" t-key="footnote.id">
+                                    <li class="footnote" t-att-id="footnote.href">
+                                        <t t-out="footnote.text"/>
+
+                                        <a t-on-click="() => controller.deleteFootnote(footnote)">
+                                            <i class="fa fa-fw fa-trash-o"/>
+                                        </a>
+                                    </li>
+                                </t>
+                            </ol>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

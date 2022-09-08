@@ -34,7 +34,7 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
         for report in self.reports:
             with self.subTest(report=report.name, country=report.country_id.name):
                 # 'report_id' key is forced so that we don't open a variant when calling a root report
-                report.get_report_informations({'report_id': report.id, 'unfold_all': True})
+                report.get_report_information({'report_id': report.id, 'unfold_all': True})
 
     def test_generate_all_export_files(self):
         # Test values for the fields that become mandatory when doing exports on the reports, depending on the country

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_consolidation.ConsolidationReportHeader" t-inherit="account_reports.AccountReportHeaderCustomizable" owl="1">
+        <xpath expr="//thead" position="replace">
+            <thead class="o_account_reports_header_hierarchy">
+                <tr>
+                    <th class="acc_rep_column_header" style="width:40%;"/>
+                    <t t-foreach="columnHeaders" t-as="columnHeader" t-key="columnHeader_index">
+                        <t t-foreach="columnHeader" t-as="header" t-key="header_index">
+                            <th
+                                t-att-class="`acc_rep_column_header ${ header.class }`"
+                                t-att-colspan="header.colspan"
+                                t-att-style="header.style"
+                                t-att-title="header.title"
+                            >
+                                <t t-component="env.component('AccountReportLineCell')" t-props="{ cell: header, type: 'header' }"/>
+                            </th>
+                        </t>
+                    </t>
+                </tr>
+            </thead>
+        </xpath>
+    </t>
+</templates>

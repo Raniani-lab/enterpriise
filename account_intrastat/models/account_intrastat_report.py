@@ -32,6 +32,16 @@ class IntrastatReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Intrastat Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'components': {
+                'AccountReportFilters': 'account_intrastat.IntrastatReportFilters',
+            },
+            'templates': {
+                'AccountReport': 'account_intrastat.IntrastatReport',
+            }
+        }
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         # dict of the form {move_id: {column_group_key: {expression_label: value}}}
         move_info_dict = {}

@@ -39,9 +39,9 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
             ARRAY_AGG(vehicle.name) vehicle_name,
             SUM(aml.balance * (
                 CASE WHEN fleet_rate.rate IS NOT NULL
-                THEN 
+                THEN
                     CASE WHEN rate.rate IS NOT NULL
-                    THEN 
+                    THEN
                         CASE WHEN fleet_rate.rate < rate.rate
                         THEN fleet_rate.rate
                         ELSE rate.rate
@@ -118,7 +118,7 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
         # OVERRIDES account_disallowed_expenses.
 
         report = self.env['account.report']
-        parent_line_id = ''
+        parent_line_id = None
         line_id = report._get_generic_line_id('account.disallowed.expenses.category', current['category_id'])
         if current.get('vehicle_id') and options.get('vehicle_split'):
             parent_line_id = line_id

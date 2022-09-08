@@ -89,6 +89,16 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
     _inherit = 'account.tax.report.handler'
     _description = 'Belgian Tax Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReport': 'l10n_be_reports.TaxReport',
+            },
+            'pdf_export': {
+                'pdf_export_filters': 'l10n_be_reports.pdf_export_filters',
+            },
+        }
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         # Add the control lines in the report, with a high sequence to ensure they appear at the end.
         control_lines = self._dynamic_check_lines(options, all_column_groups_expression_totals)
@@ -130,13 +140,14 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
         sender_company = report._get_sender_company_for_export(options)
         default_address = sender_company.partner_id.address_get()
         address = self.env['res.partner'].browse(default_address.get("default")) or sender_company.partner_id
+
         if not address.email:
             raise UserError(_('No email address associated with company %s.', sender_company.name))
+
         if not address.phone:
             raise UserError(_('No phone associated with company %s.', sender_company.name))
 
         # Compute xml
-
         issued_by = vat_no
         dt_from = options['date'].get('date_from')
         dt_to = options['date'].get('date_to')
@@ -209,6 +220,7 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
         lines_grids_map[self.env.ref('l10n_be.tax_report_line_71').id] = '71'
         lines_grids_map[self.env.ref('l10n_be.tax_report_line_72').id] = '72'
         colname_to_idx = {col['expression_label']: idx for idx, col in enumerate(options.get('columns', []))}
+
         # Iterate on the report lines, using this mapping
         for line in lines:
             model, line_id = report._parse_line_id(line['id'])[-1][1:]

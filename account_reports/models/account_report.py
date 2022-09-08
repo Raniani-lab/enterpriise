@@ -38,43 +38,22 @@ ACCOUNT_CODES_ENGINE_TERM_REGEX = re.compile(
 )
 
 
-class AccountReportManager(models.Model):
-    _name = 'account.report.manager'
-    _description = 'Manage Summary and Footnotes of Reports'
-
-    # must work with multi-company, in case of multi company, no company_id defined
-    report_name = fields.Char(required=True, help='name of the model of the report')
-    summary = fields.Char()
-    footnotes_ids = fields.One2many('account.report.footnote', 'manager_id')
-    company_id = fields.Many2one('res.company')
-    report_id = fields.Many2one(comodel_name='account.report')
-
-    def add_footnote(self, text, line):
-        return self.env['account.report.footnote'].create({'line': line, 'text': text, 'manager_id': self.id})
-
 class AccountReportFootnote(models.Model):
     _name = 'account.report.footnote'
     _description = 'Account Report Footnote'
 
+    report_id = fields.Many2one('account.report')
+    line_id = fields.Char(index=True)
     text = fields.Char()
-    line = fields.Char(index=True)
-    manager_id = fields.Many2one('account.report.manager')
+
 
 class AccountReport(models.Model):
     _inherit = 'account.report'
 
-    # Templates
-    # Those fields aren't relational, so that their values can be used in t-call in the xml templates
-    main_template = fields.Char(string="Main Template", required=True, default='account_reports.main_template')
-    main_table_header_template = fields.Char(string="Main Table Header Template", required=True, default='account_reports.main_table_header')
-    line_template = fields.Char(string="Line Template", required=True, default='account_reports.line_template')
-    footnotes_template = fields.Char(string="Footnotes Template", required=True, default='account_reports.footnotes_template')
-    search_template = fields.Char(string="Search Template", required=True, default='account_reports.search_template')
     horizontal_group_ids = fields.Many2many(string="Horizontal Groups", comodel_name='account.report.horizontal.group')
+    footnotes_ids = fields.One2many(string="Footnotes", comodel_name='account.report.footnote', inverse_name='report_id')
 
-    #  CUSTOM REPORTS ================================================================================================================================
     # Those fields allow case-by-case fine-tuning of the engine, for custom reports.
-
     custom_handler_model_id = fields.Many2one(string='Custom Handler Model', comodel_name='ir.model')
     custom_handler_model_name = fields.Char(string='Custom Handler Model Name', related='custom_handler_model_id.model')
 
@@ -92,14 +71,6 @@ class AccountReport(models.Model):
                         "Field 'Custom Handler Model' can only reference records inheriting from [%s].",
                         custom_handler_model._name
                     ))
-
-    @api.constrains('main_template', 'main_table_header_template', 'line_template', 'footnotes_template', 'search_template')
-    def _validate_templates(self):
-        for record in self:
-            for template_field in ['main_template', 'main_table_header_template', 'line_template', 'footnotes_template', 'search_template']:
-                template_xmlid = record[template_field]
-                if not self.env.ref(template_xmlid, raise_if_not_found=False):
-                    raise ValidationError(_("Could not find template %s, used as %s of %s.", template_xmlid, template_field, record.name))
 
     ####################################################
     # MENU MANAGEMENT
@@ -459,6 +430,7 @@ class AccountReport(models.Model):
 
         if period_type == 'month':
             date_from, date_to = date_utils.get_month(date_to)
+
         return self._get_dates_period(date_from, date_to, mode, period_type=period_type)
 
     def _init_options_date(self, options, previous_options=None):
@@ -479,17 +451,14 @@ class AccountReport(models.Model):
 
         if previous_mode == 'single' and options_mode == 'range':
             # 'single' date mode to 'range'.
-
             if previous_filter:
                 date_to = fields.Date.from_string(previous_date_to or previous_date_from)
                 date_from = self.env.company.compute_fiscalyear_dates(date_to)['date_from']
                 options_filter = 'custom'
             else:
                 options_filter = default_filter
-
         elif previous_mode == 'range' and options_mode == 'single':
             # 'range' date mode to 'single'.
-
             if previous_filter == 'custom':
                 date_to = fields.Date.from_string(previous_date_to or previous_date_from)
                 date_from = date_utils.get_month(date_to)[0]
@@ -498,10 +467,8 @@ class AccountReport(models.Model):
                 options_filter = previous_filter
             else:
                 options_filter = default_filter
-
         elif (previous_mode is None or previous_mode == options_mode) and previous_date:
             # Same date mode.
-
             if previous_filter == 'custom':
                 if options_mode == 'range':
                     date_from = fields.Date.from_string(previous_date_from)
@@ -509,10 +476,10 @@ class AccountReport(models.Model):
                 else:
                     date_to = fields.Date.from_string(previous_date_to or previous_date_from)
                     date_from = date_utils.get_month(date_to)[0]
+
                 options_filter = 'custom'
             else:
                 options_filter = previous_filter
-
         else:
             # Default.
             options_filter = default_filter
@@ -540,8 +507,10 @@ class AccountReport(models.Model):
             options_mode,
             period_type=period_type,
         )
+
         if 'last' in options_filter:
             options['date'] = self._get_dates_previous_period(options, options['date'])
+
         options['date']['filter'] = options_filter
 
     def _init_options_comparison(self, options, previous_options=None):
@@ -666,16 +635,13 @@ class AccountReport(models.Model):
         if not self.filter_analytic:
             return
 
-        options['analytic'] = True  # Used in js, so we can't only rely on self.filter_analytic
 
-        enable_analytic_accounts = self.user_has_groups('analytic.group_analytic_accounting')
-        if not enable_analytic_accounts:
-            return
-
-        if enable_analytic_accounts:
+        if self.user_has_groups('analytic.group_analytic_accounting'):
             previous_analytic_accounts = (previous_options or {}).get('analytic_accounts', [])
             analytic_account_ids = [int(x) for x in previous_analytic_accounts]
             selected_analytic_accounts = self.env['account.analytic.account'].search([('id', 'in', analytic_account_ids)])
+
+            options['display_analytic'] = True
             options['analytic_accounts'] = selected_analytic_accounts.ids
             options['selected_analytic_account_names'] = selected_analytic_accounts.mapped('name')
 
@@ -1278,7 +1244,7 @@ class AccountReport(models.Model):
                     'sortable': report_column.sortable,
                     'figure_type': report_column.figure_type,
                     'blank_if_zero': report_column.blank_if_zero,
-                    'style': "text-align: center; white-space: nowrap;",
+                    'style': "text-align: right; white-space: nowrap;",
                 })
 
         return columns, column_groups
@@ -1598,9 +1564,28 @@ class AccountReport(models.Model):
 
         For example, parsing ~account.move~1|~res.partner~2|~account.move~3 with target_model_name='account.move' will return 3.
         """
+        dict_result = self._get_res_ids_from_line_id(line_id, [target_model_name])
+        return dict_result[target_model_name] if dict_result else None
+
+
+    @api.model
+    def _get_res_ids_from_line_id(self, line_id, target_model_names):
+        """ Parses the provided generic line id and returns the most local (i.e. the furthest on the right) record ids it contains which
+        correspond to the provided model names, in the form {model_name: res_id}. If a model is not present in line_id, its model will be absent
+        from the resulting dict.
+
+        For example, parsing ~account.move~1|~res.partner~2|~account.move~3 with target_model_names=['account.move', 'res.partner'] will return
+        {'account.move': 3, 'res.partner': 2}.
+        """
+        result = {}
+        models_to_find = set(target_model_names)
         for dummy, model, value in reversed(self._parse_line_id(line_id)):
-            if target_model_name == model:
-                return value
+            if model in models_to_find:
+                result[model] = value
+                models_to_find.remove(model)
+
+        return result
+
     @api.model
     def _get_markup(self, line_id):
         """ Directly returns the markup associated with the provided line_id.
@@ -3531,8 +3516,8 @@ class AccountReport(models.Model):
 
         # json_friendly_column_group_totals contains ids instead of expressions (because it comes from js) ; we need to convert them back to records
         all_column_groups_expression_totals = {}
-        for column_group_key, expression_totals in json_friendly_column_group_totals.items():
 
+        for column_group_key, expression_totals in json_friendly_column_group_totals.items():
             all_column_groups_expression_totals[column_group_key] = {}
             for expr_id, expr_totals in expression_totals.items():
                 expression = self.env['account.report.expression'].browse(int(expr_id))  # Should already be in cache, so acceptable
@@ -3541,15 +3526,14 @@ class AccountReport(models.Model):
 
         recomputed_expression_totals = self._compute_expression_totals_for_each_column_group(
             expressions_to_recompute, options, forced_all_column_groups_expression_totals=all_column_groups_expression_totals)
-        lines = self._get_lines(options, all_column_groups_expression_totals=recomputed_expression_totals)
 
         return {
-            'new_main_html': self.get_html(options, lines),
-            'new_report_column_groups_totals': self._get_json_friendly_column_group_totals(recomputed_expression_totals),
+            'lines': self._get_lines(options, all_column_groups_expression_totals=recomputed_expression_totals),
+            'column_groups_totals': self._get_json_friendly_column_group_totals(recomputed_expression_totals),
         }
 
     @api.model
-    def _sort_lines(self, lines, options):
+    def sort_lines(self, lines, options, result_as_index=False):
         ''' Sort report lines based on the 'order_column' key inside the options.
         The value of options['order_column'] is an integer, positive or negative, indicating on which column
         to sort and also if it must be an ascending sort (positive value) or a descending sort (negative value).
@@ -3593,12 +3577,13 @@ class AccountReport(models.Model):
 
         :param lines:   The report lines.
         :param options: The report options.
+        :param lolipop:
         :return:        Lines sorted by the selected column.
         '''
         def needs_to_be_at_bottom(line_elem):
             return self._get_markup(line_elem.get('id')) in ('total', 'load_more')
 
-        def compare_values(a_line_dict, b_line_dict):
+        def compare_values(a_line, b_line):
             type_seq = {
                 type(None): 0,
                 bool: 1,
@@ -3608,8 +3593,12 @@ class AccountReport(models.Model):
                 datetime.date: 4,
                 datetime.datetime: 5,
             }
+
+            a_line_dict = lines[a_line] if result_as_index else a_line
+            b_line_dict = lines[b_line] if result_as_index else b_line
             a_total = needs_to_be_at_bottom(a_line_dict)
             b_total = needs_to_be_at_bottom(b_line_dict)
+
             if a_total:
                 if b_total:  # a_total & b_total
                     return 0
@@ -3621,6 +3610,7 @@ class AccountReport(models.Model):
             a_val = a_line_dict['columns'][column_index].get('no_format')
             b_val = b_line_dict['columns'][column_index].get('no_format')
             type_a, type_b = type_seq[type(a_val)], type_seq[type(b_val)]
+
             if type_a == type_b:
                 return 0 if a_val == b_val else 1 if a_val > b_val else -1
             else:
@@ -3629,13 +3619,16 @@ class AccountReport(models.Model):
         def merge_tree(tree_elem, ls):
             nonlocal descending  # The direction of the sort is needed to compare total lines
             ls.append(tree_elem)
-            for tree_subelem in sorted(tree[tree_elem['id']], key=comp_key, reverse=descending):
+
+            elem = tree[lines[tree_elem]['id']] if result_as_index else tree[tree_elem['id']]
+
+            for tree_subelem in sorted(elem, key=comp_key, reverse=descending):
                 merge_tree(tree_subelem, ls)
 
         descending = options['order_column']['direction'] == 'DESC' # To keep total lines at the end, used in compare_values & merge_tree scopes
 
         for index, col in enumerate(options['columns']):
-            if (options['order_column']['expression_label'] == col['expression_label']):
+            if options['order_column']['expression_label'] == col['expression_label']:
                 column_index = index # To know from which column to sort, used in merge_tree scope
                 break
 
@@ -3643,11 +3636,17 @@ class AccountReport(models.Model):
         sorted_list = []
         tree = defaultdict(list)
         non_total_parents = set()
-        for line in lines:
+
+        for index, line in enumerate(lines):
             line_parent = line.get('parent_id') or None
-            tree[line_parent].append(line)
+
+            if result_as_index:
+                tree[line_parent].append(index)
+            else:
+                tree[line_parent].append(line)
 
             line_markup = self._get_markup(line['id'])
+
             if line_markup != 'total':
                 non_total_parents.add(line_parent)
 
@@ -3659,11 +3658,22 @@ class AccountReport(models.Model):
 
         for line in sorted(tree[sorting_root], key=comp_key, reverse=descending):
             merge_tree(line, sorted_list)
+
         return sorted_list
 
-    def get_report_informations(self, previous_options):
+    def get_footnotes(self, options):
+        self.ensure_one()
+
+        footnotes = {}
+
+        for footnote in self.env['account.report.footnote'].search_read([('report_id', '=', options['report_id'])]):
+            footnotes[footnote['line_id']] = footnote
+
+        return footnotes
+
+    def get_report_information(self, previous_options):
         """
-        return a dictionary of information that will be consumed by the js widget, manager_id, footnotes, html of report and searchview, ...
+        return a dictionary of information that will be consumed by the AccountReport component.
         """
         self.ensure_one()
 
@@ -3674,12 +3684,9 @@ class AccountReport(models.Model):
 
         if not self.root_report_id:
             # This report has no root, so it IS a root. We might want to load a variant instead.
-
             if options['report_id'] != self.id:
                 # Load the variant instead of the root report
-                return self.env['account.report'].browse(options['report_id']).get_report_informations({**previous_options, 'report_id': options['report_id']})
-
-        searchview_dict = {'options': options, 'context': self.env.context, 'report': self}
+                return self.env['account.report'].browse(options['report_id']).get_report_information({**previous_options, 'report_id': options['report_id']})
 
         # Check whether there are unposted entries for the selected period or not (if the report allows it)
         if options.get('date') and options.get('all_entries') is not None:
@@ -3690,20 +3697,42 @@ class AccountReport(models.Model):
         all_column_groups_expression_totals = self._compute_expression_totals_for_each_column_group(self.line_ids.expression_ids, options)
         lines = self._get_lines(options, all_column_groups_expression_totals)
 
-        report_html = self.get_html(options, lines)
-
         # Convert all_column_groups_expression_totals to a json-friendly form (its keys are records)
         json_friendly_column_group_totals = self._get_json_friendly_column_group_totals(all_column_groups_expression_totals)
 
-        report_manager = self._get_report_manager(options)
         info = {
-            'options': options,
+            'caret_options': self._get_caret_options(),
+
+            'column_headers_render_data': self._get_column_headers_render_data(options),
             'column_groups_totals': json_friendly_column_group_totals,
             'context': self.env.context,
-            'report_manager_id': report_manager.id,
-            'footnotes': [{'id': f.id, 'line': f.line, 'text': f.text} for f in report_manager.footnotes_ids],
-            'main_html': report_html,
-            'searchview_html': self.env['ir.ui.view']._render_template(self.search_template, values=searchview_dict),
+            'custom_display': self.env[self.custom_handler_model_name]._get_custom_display_config() if self.custom_handler_model_name else {},
+            'filters': {
+                'show_all': self.filter_unfold_all,
+                'show_analytic': options.get('display_analytic', False),
+                'show_analytic_groupby': options.get('display_analytic_groupby', False),
+                'show_analytic_plan_groupby': options.get('display_analytic_plan_groupby', False),
+                'show_draft': self.filter_show_draft,
+                'show_hierarchy': options.get('display_hierarchy_filter', False),
+                'show_period_comparison': self.filter_period_comparison,
+                'show_totals': self.env.company.totals_below_sections and not options.get('ignore_totals_below_sections'),
+                'show_unreconciled': self.filter_unreconciled,
+            },
+            'footnotes': self.get_footnotes(options),
+            'groups': {
+                'analytic_accounting': self.user_has_groups('analytic.group_analytic_accounting'),
+                'account_readonly': self.user_has_groups('account.group_account_readonly'),
+                'account_user': self.user_has_groups('account.group_account_user'),
+            },
+            # todo (rugo) _format_blabla_ellipsis and not in print mode since OCO ='(
+            'lines': self._format_lines_for_ellipsis(lines, options),
+            'options': options,
+            'report': {
+                'company_name': self.env.company.name,
+                'company_country_code': self.env.company.country_code,
+                'name': self.name,
+                'root_report_id': self.root_report_id,
+            }
         }
 
         return info
@@ -3745,24 +3774,6 @@ class AccountReport(models.Model):
             return {self.chart_template} == set(companies.mapped('chart_template'))
 
         return True
-
-    def _get_html_render_values(self, options, report_manager):
-        return {
-            'report': self,
-            'report_summary': report_manager.summary,
-            'report_company_name': self.env.company.name,
-            'report_title': self.name,
-            'options': options,
-            'context': self.env.context,
-            'model': self,
-            'table_start': markupsafe.Markup('<tbody>'),
-            'table_end': markupsafe.Markup('''
-                </tbody></table>
-                <div style="page-break-after: always"></div>
-                <table class="o_account_reports_table table-hover">
-            '''),
-            'column_headers_render_data': self._get_column_headers_render_data(options),
-        }
 
     def _get_column_headers_render_data(self, options):
         column_headers_render_data = {}
@@ -3862,63 +3873,14 @@ class AccountReport(models.Model):
 
         return lines
 
-    def get_html(self, options, lines, additional_context=None, template=None):
-        template = self.main_template if template is None else template
-        report_manager = self._get_report_manager(options)
-
-        render_values = self._get_html_render_values(options, report_manager)
-        if additional_context:
-            render_values.update(additional_context)
-
-        if options.get('order_column'):
-            lines = self._sort_lines(lines, options)
-
-        lines = self._format_lines_for_display(lines, options)
-        lines = self._format_lines_for_ellipsis(lines, options)
-
-        # Catch negative numbers when present
-        for line in lines:
-            for col in line['columns']:
-                if (
-                    isinstance(col.get('no_format'), float)
-                    and float_compare(col['no_format'], 0.0, precision_digits=self.env.company.currency_id.decimal_places) == -1
-                ):
-                    col['class'] = (col.get('class') and ' ' or '') + 'number color-red'
-
-        render_values['lines'] = lines
-
-        # Manage footnotes.
-        footnotes_to_render = []
-        if self.env.context.get('print_mode', False):
-            # we are in print mode, so compute footnote number and include them in lines values, otherwise, let the js compute the number correctly as
-            # we don't know all the visible lines.
-            footnotes = dict([(str(f.line), f) for f in report_manager.footnotes_ids])
-            number = 0
-            for line in lines:
-                f = footnotes.get(str(line.get('id')))
-                if f:
-                    number += 1
-                    line['footnote'] = str(number)
-                    footnotes_to_render.append({'id': f.id, 'number': number, 'text': f.text})
-
-        # Render.
-        html = self.env['ir.qweb']._render(template, render_values)
-        if self.env.context.get('print_mode', False):
-            for k,v in self._replace_class().items():
-                html = html.replace(k, v)
-            # append footnote as well
-            html = html.replace(markupsafe.Markup('<div class="js_account_report_footnotes"></div>'), self.get_html_footnotes(footnotes_to_render))
-        return html
-
-    def get_expanded_line_html(self, options, line_dict_id, groupby, expand_function_name, progress, offset):
-        """ Returns the html to be injected into the report when unfolding a line with an expand_function for the first time.
-        """
+    def get_expanded_lines(self, options, line_dict_id, groupby, expand_function_name, progress, offset):
         lines = self._expand_unfoldable_line(expand_function_name, line_dict_id, groupby, options, progress, offset)
         lines = self._fully_unfold_lines_if_needed(lines, options)
+
         if self.custom_handler_model_id:
             lines = self.env[self.custom_handler_model_name]._custom_line_postprocessor(self, options, lines)
-        return self.get_html(options, lines, template=self.line_template)
 
+        return lines
     def _expand_unfoldable_line(self, expand_function_name, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         if not expand_function_name:
             raise UserError(_("Trying to expand a line without an expansion function."))
@@ -4196,28 +4158,6 @@ class AccountReport(models.Model):
 
         return matched_prefix
 
-    def get_html_footnotes(self, footnotes):
-        rcontext = {'footnotes': footnotes, 'context': self.env.context}
-        html = self.env['ir.ui.view']._render_template(self.footnotes_template, values=rcontext)
-        return html
-
-    def _get_report_manager(self, options):
-        domain = [('report_name', '=', self._name)]
-        domain = (domain + [('report_id', '=', self.id)]) if 'id' in dir(self) else domain
-        multi_company_report = options.get('multi_company', False)
-        if not multi_company_report:
-            domain += [('company_id', '=', self.env.company.id)]
-        else:
-            domain += [('company_id', '=', False)]
-        existing_manager = self.env['account.report.manager'].search(domain, limit=1)
-        if not existing_manager:
-            existing_manager = self.env['account.report.manager'].create({
-                'report_name': self._name,
-                'company_id': self.env.company.id if not multi_company_report else False,
-                'report_id': self.id if 'id' in dir(self) else False,
-            })
-        return existing_manager
-
     @api.model
     def format_value(self, value, currency=False, blank_if_zero=True, figure_type=None, digits=1):
         """ Formats a value for display in a report (not especially numerical). figure_type provides the type of formatting we want.
@@ -4299,25 +4239,18 @@ class AccountReport(models.Model):
 
     def export_file(self, options, file_generator):
         self.ensure_one()
+
         return {
             'type': 'ir_actions_account_report_download',
             'data': {
-                 'options': json.dumps(options),
-                 'file_generator': file_generator,
-             }
-        }
-
-    def _replace_class(self):
-        """When printing pdf, we sometime want to remove/add/replace class for the report to look a bit different on paper
-        this method is used for this, it will replace occurence of value key by the dict value in the generated pdf
-        """
-        return {
-            'o_account_reports_no_print': '',
-            'table-responsive': '',
+                'options': json.dumps(options),
+                'file_generator': file_generator,
+            }
         }
 
     def export_to_pdf(self, options):
         self.ensure_one()
+
         # As the assets are generated during the same transaction as the rendering of the
         # templates calling them, there is a scenario where the assets are unreachable: when
         # you make a request to read the assets while the transaction creating them is not done.
@@ -4338,17 +4271,16 @@ class AccountReport(models.Model):
 
         print_mode_self = self.with_context(print_mode=True)
         print_options = print_mode_self._get_options(previous_options=options)
-        body_html = print_mode_self.get_html(print_options, self._filter_out_folded_children(print_mode_self._get_lines(print_options)))
-        body = self.env['ir.ui.view']._render_template(
-            "account_reports.print_template",
-            values=dict(rcontext, body_html=body_html),
+        body = print_mode_self._get_pdf_export_html(
+            print_options,
+            self._filter_out_folded_children(print_mode_self._get_lines(print_options)),
+            additional_context={'base_url': base_url}
         )
+
         footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
         footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=markupsafe.Markup(footer.decode())))
 
-        landscape = False
-        if len(print_options['columns']) * len(print_options['column_groups']) > 5:
-            landscape = True
+        landscape = (len(options['columns']) * len(options['column_groups'])) > 5
 
         file_content = self.env['ir.actions.report']._run_wkhtmltopdf(
             [body],
@@ -4365,6 +4297,52 @@ class AccountReport(models.Model):
             'file_content': file_content,
             'file_type': 'pdf',
         }
+
+    def _get_pdf_export_html(self, options, lines, additional_context=None, template=None):
+        report_info = self.get_report_information(options)
+
+        custom_print_templates = report_info['custom_display'].get('pdf_export', {})
+        template = custom_print_templates.get('pdf_export_main', 'account_reports.pdf_export_main')
+
+        render_values = {
+            'report': self,
+            'report_company_name': self.env.company.name,
+            'report_title': self.name,
+            'options': options,
+            'table_start': markupsafe.Markup('<tbody>'),
+            'table_end': markupsafe.Markup('''
+                </tbody></table>
+                <div style="page-break-after: always"></div>
+                <table class="o_account_reports_table table-hover">
+            '''),
+            'column_headers_render_data': self._get_column_headers_render_data(options),
+            'custom_templates': custom_print_templates,
+        }
+        if additional_context:
+            render_values.update(additional_context)
+
+        if options.get('order_column'):
+            lines = self.sort_lines(lines, options)
+
+        lines = self._format_lines_for_display(lines, options)
+        lines = self._format_lines_for_ellipsis(lines, options)
+
+        render_values['lines'] = lines
+
+        # Manage footnotes.
+        footnotes_to_render = []
+        number = 0
+        for line in lines:
+            footnote_data = report_info['footnotes'].get(str(line.get('id')))
+            if footnote_data:
+                number += 1
+                line['footnote'] = str(number)
+                footnotes_to_render.append({'id': footnote_data['id'], 'number': number, 'text': footnote_data['text']})
+
+        render_values['footnotes'] = footnotes_to_render
+
+        # Render.
+        return self.env['ir.qweb']._render(template, render_values)
 
     def _filter_out_folded_children(self, lines):
         """ Returns a list containing all the lines of the provided list that need to be displayed when printing,
@@ -4444,7 +4422,7 @@ class AccountReport(models.Model):
         y_offset += 1
 
         if print_options.get('order_column'):
-            lines = self._sort_lines(lines, print_options)
+            lines = self.sort_lines(lines, print_options)
 
         # Add lines.
         for y in range(0, len(lines)):
@@ -5230,3 +5208,23 @@ class AccountReportCustomHandler(models.AbstractModel):
         and returns a dictionary where all results are cached, for use in expansion functions.
         """
         return None
+
+    def _get_custom_display_config(self):
+        """ To be overridden in order to change the templates used by Javascript to render this report (keeping the same
+        OWL components), and/or replace some of the default OWL components by custom-made ones.
+
+        This function returns a dict (possibly empty, if there is no custom display config):
+
+        {
+            'components': {
+
+            },
+            'pdf_export': {
+
+            }
+            'templates': {
+
+            },
+        },
+        """
+        return {}

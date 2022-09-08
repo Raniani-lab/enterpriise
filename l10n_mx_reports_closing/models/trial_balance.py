@@ -6,6 +6,13 @@ from odoo import models, fields, _
 class L10nMXTrialBalanceCustomHandler(models.AbstractModel):
     _inherit = 'account.trial.balance.report.handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReportFilters': 'l10n_mx_reports_closing.TrialBalanceFilters',
+            },
+        }
+
     def _l10n_mx_set_options_month_13(self, options):
         ''' Configure the options dict if the 'Month 13' option is active.
 

@@ -19,7 +19,6 @@ Intrastat Reports
         'views/res_country_view.xml',
         'views/res_config_settings_view.xml',
         'views/account_invoice_view.xml',
-        'data/account_financial_report_main_template_data.xml',
         'data/account_financial_report_data.xml',
         'views/report_invoice.xml',
         'views/account_move_view.xml',
@@ -29,4 +28,9 @@ Intrastat Reports
     ],
     'installable': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'account_intrastat/static/src/components/**/*',
+        ],
+    },
 }

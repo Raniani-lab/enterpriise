@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportFilterDate" owl="1">
+        <Dropdown togglerClass="'btn btn-secondary'">
+            <t t-set-slot="toggler">
+                <span class="fa fa-calendar me-1"/>
+
+                <t t-if="controller.options.date.filter === 'custom'">
+                    <t t-if="controller.options.date.mode === 'single'">
+                        <t t-esc="`Date: ${ localeDateTo('date') }`"/>
+                    </t>
+
+                    <t t-if="controller.options.date.mode === 'range'">
+                        <t t-esc="`From: ${ localeDateFrom('date') } to: ${ localeDateTo('date') }`"/>
+                    </t>
+                </t>
+                <t t-else="">
+                    <t t-if="controller.options.date.string">
+                        <t t-esc="controller.options.date.string"/>
+                    </t>
+                </t>
+            </t>
+
+            <t t-if="controller.options.date.mode === 'single'">
+                <DropdownItem
+                    class="{ 'filter_date_single_today_hook': true, 'selected': (controller.options.date.filter == 'today') }"
+                    onSelected="() => this.updateFilter('date.filter', 'today')"
+                >
+                    Today
+                </DropdownItem>
+
+                <DropdownItem
+                    class="{ 'filter_date_single_last_month_hook': true, 'selected': (controller.options.date.filter == 'last_month') }"
+                    onSelected="() => this.updateFilter('date.filter', 'last_month')"
+                >
+                    End of Last Month
+                </DropdownItem>
+
+                <DropdownItem
+                    class="{ 'filter_date_single_last_quarter_hook': true, 'selected': (controller.options.date.filter == 'last_quarter') }"
+                    onSelected="() => this.updateFilter('date.filter', 'last_quarter')"
+                >
+                    End of Last Quarter
+                </DropdownItem>
+
+                <DropdownItem
+                    class="{ 'filter_date_single_last_year_hook': true, 'selected': (controller.options.date.filter == 'last_year') }"
+                    onSelected="() => this.updateFilter('date.filter', 'last_year')"
+                >
+                    End of Last Financial Year
+                </DropdownItem>
+            </t>
+
+            <t t-if="controller.options.date.mode === 'range'">
+                <DropdownItem
+                    class="{ 'filter_date_this_month_hook': true, 'selected': (controller.options.date.filter == 'this_month') }"
+                    onSelected="() => this.updateFilter('date.filter', 'this_month')"
+                >
+                    This Month
+                </DropdownItem>
+
+                <DropdownItem
+                    class="{ 'filter_date_this_quarter_hook': true, 'selected': (controller.options.date.filter == 'this_quarter') }"
+                    onSelected="() => this.updateFilter('date.filter', 'this_quarter')"
+                >
+                    This Quarter
+                </DropdownItem>
+
+                <DropdownItem
+                    class="{ 'filter_date_this_year_hook': true, 'selected': (controller.options.date.filter == 'this_year') }"
+                    onSelected="() => this.updateFilter('date.filter', 'this_year')"
+                >
+                    This Financial Year
+                </DropdownItem>
+
+                <div class="dropdown-divider"/>
+
+                <DropdownItem
+                    class="{ 'filter_date_range_last_month_hook': true, 'selected': (controller.options.date.filter == 'last_month') }"
+                    onSelected="() => this.updateFilter('date.filter', 'last_month')"
+                >
+                    Last Month
+                </DropdownItem>
+
+                <DropdownItem
+                    class="{ 'filter_date_range_last_quarter_hook': true, 'selected': (controller.options.date.filter == 'last_quarter') }"
+                    onSelected="() => this.updateFilter('date.filter', 'last_quarter')"
+                >
+                    Last Quarter
+                </DropdownItem>
+
+                <DropdownItem
+                    class="{ 'filter_date_range_last_year_hook': true, 'selected': (controller.options.date.filter == 'last_year') }"
+                    onSelected="() => this.updateFilter('date.filter', 'last_year')"
+                >
+                    Last Financial Year
+                </DropdownItem>
+            </t>
+
+            <div class="dropdown-divider"/>
+
+            <a class="dropdown-item">Custom</a>
+            <div class="acc_rep_search o_filter_date">
+                <t t-if="controller.options.date.mode === 'range'">
+                    <label>Start Date :</label>
+                    <DateTimeInput
+                        type="'date'"
+                        value="dateFrom('date')"
+                        onChange="(dateFrom) => this.setDateFrom('date', dateFrom)"
+                    />
+
+                    <label>End Date :</label>
+                    <DateTimeInput
+                        type="'date'"
+                        value="dateTo('date')"
+                        onChange="(dateTo) => this.setDateTo('date', dateTo)"
+                    />
+                </t>
+
+                <t t-if="controller.options.date.mode === 'single'">
+                    <label>Date :</label>
+                    <DateTimeInput
+                        type="'date'"
+                        value="dateTo('date')"
+                        onChange="(dateTo) => this.setDateTo('date', dateTo)"
+                    />
+                </t>
+
+                <button
+                    class="btn btn-primary"
+                    type="button"
+                    t-on-click="() => this.updateFilter('date.filter', 'custom')"
+                >
+                    Apply
+                </button>
+            </div>
+        </Dropdown>
+    </t>
+</templates>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportLineName" owl="1">
+        <t t-call="{{ env.template('AccountReportLineName') }}"/>
+    </t>
+
+    <t t-name="account_reports.AccountReportLineNameCustomizable" owl="1">
+        <td
+            t-att-class="getClasses()"
+            t-att-colspan="props.line.colspan || 1"
+            t-on-click="() => this.toggleFoldable()"
+        >
+            <t t-if="props.line.unfoldable">
+                <span class="o_account_reports_caret_icon">
+                    <i t-att-class="props.line.unfolded ? 'fa fa-caret-down' : 'fa fa-caret-right'"/>
+                </span>
+            </t>
+
+            <t t-if="props.line.caret_options">
+                <div class="dropdown dropend">
+                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                        <span t-att-class="getDomainClasses()" t-att-title="props.line.title_hover">
+                            <t t-out="props.line.name"/>
+                            <i class="fa fa-caret-down ms-2"/>
+                        </span>
+                    </a>
+
+                    <!-- Visible footnotes -->
+                    <t t-if="hasVisibleFootnote">
+                        <sup>
+                            <b class="o_account_reports_footnote_sup">
+                                <a t-att-href="props.line.visible_footnote.href">
+                                    <t t-out="props.line.visible_footnote.number"/>
+                                </a>
+                            </b>
+                        </sup>
+                    </t>
+
+                    <!-- Caret options -->
+                    <div class="dropdown-menu o_account_reports_domain_dropdown">
+                        <t t-if="hasCaretOptions">
+                            <t t-foreach="caretOptions" t-as="caretOption" t-key="caretOption_index">
+                                <a class="dropdown-item" t-on-click="() => this.caretAction(caretOption)">
+                                    <t t-out="caretOption.name"/>
+                                </a>
+                            </t>
+                        </t>
+
+                        <a class="dropdown-item" t-on-click="() => controller.addFootnote(props.line.id)">
+                            Annotate
+                        </a>
+                    </div>
+                </div>
+            </t>
+            <t t-else="">
+                <span class="acc_rep_line_name" t-att-title="props.line.title_hover">
+                    <t t-if="props.line.action_id">
+                        <a t-on-click="() => this.triggerAction()">
+                            <t t-out="props.line.name"/>
+                        </a>
+                    </t>
+                    <t t-elif="controller.isLoadMoreLine(props.lineIndex)">
+                        <a t-on-click="() => this.loadMore()">
+                            <t t-out="props.line.name"/>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <t t-out="props.line.name"/>
+                    </t>
+                </span>
+            </t>
+        </td>
+    </t>
+</templates>

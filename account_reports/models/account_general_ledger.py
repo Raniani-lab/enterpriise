@@ -16,6 +16,18 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'General Ledger Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReport': 'account_reports.GeneralLedger',
+                'AccountReportLineName': 'account_reports.GeneralLedgerLineName',
+            },
+
+            'pdf_export': {
+                'pdf_export_main': 'account_reports.general_ledger_pdf_export_main',
+            },
+        }
+
     def _custom_options_initializer(self, report, options, previous_options=None):
         # Remove multi-currency columns if needed
         super()._custom_options_initializer(report, options, previous_options=previous_options)
@@ -564,7 +576,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         return {
             'id': line_id,
             'name': f'{account.code} {account.name}',
-            'search_key': account.code,
             'columns': line_columns,
             'level': 1,
             'unfoldable': has_lines,
@@ -598,7 +609,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     col_value += init_bal_by_col_group[column['column_group_key']]
                     formatted_value = report.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=False)
                 elif col_expr_label == 'communication' or col_expr_label == 'partner_name':
-                    col_class = 'o_account_report_line_ellipsis'
+                    col_class = 'acc_rep_line_ellipsis'
                     formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
                 else:
                     formatted_value = report.format_value(col_value, figure_type=column['figure_type'])

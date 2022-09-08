@@ -138,7 +138,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
             'direction': 'ASC',
         }
 
-        sorted_report_lines = self.report._sort_lines(report_lines, options)
+        sorted_report_lines = self.report.sort_lines(report_lines, options)
         self.assertLinesValues(
             # pylint: disable=C0326
             sorted_report_lines,
@@ -170,7 +170,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             # pylint: disable=C0326
-            self.report._sort_lines(sorted_report_lines, options),
+            self.report.sort_lines(sorted_report_lines, options),
             #   Name                   Expected Date   Not Due On      1 - 30     31 - 60     61 - 90    91 - 120       Older         Total
             [   0,                                 3,           4,          5,          6,          7,          8,          9,          10],
             [
@@ -199,7 +199,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             # pylint: disable=C0326
-            self.report._sort_lines(sorted_report_lines, options),
+            self.report.sort_lines(sorted_report_lines, options),
             #   Name                    Expected Date    Not Due On      1 - 30     31 - 60      61 - 90    91 - 120       Older        Total
             [   0,                                 3,            4,          5,          6,           7,          8,          9,          10],
             [
@@ -233,7 +233,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
         report_lines = self.report._get_lines(options)
         self.assertLinesValues(
             # pylint: disable=C0326
-            self.report._sort_lines(report_lines, options),
+            self.report.sort_lines(report_lines, options),
             #   Name                    Expected Date   Not Due On   1 - 30     31 - 60     61 - 90    91 - 120       Older         Total
             [   0,                                 3,       4,          5,          6,          7,          8,          9,          10],
             [
@@ -347,7 +347,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
             options,
         )
 
-    def test_aged_payable_sort_lines_by_date(self):
+    def test_aged_payablesort_lines_by_date(self):
         """ Test the sort_lines function using date as sort key. """
         options = self._generate_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
         partner_a_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_a.id, markup=f'{self.prefix_line_id}groupby:partner_id')
@@ -364,7 +364,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             # pylint: disable=C0326
-            self.report._sort_lines(report_lines, options),
+            self.report.sort_lines(report_lines, options),
             #   Name                   Expected Date   Not Due On   1 - 30     31 - 60     61 - 90    91 - 120        Older        Total
             [   0,                                 3,       4,          5,          6,          7,          8,          9,          10],
             [
@@ -402,7 +402,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             # pylint: disable=C0326
-            self.report._sort_lines(report_lines, options),
+            self.report.sort_lines(report_lines, options),
             #   Name                   Expected Date     Not Due On     1 - 30     31 - 60     61 - 90    91 - 120       Older         Total
             [   0,                                 3,            4,          5,          6,          7,          8,          9,          10],
             [
@@ -432,7 +432,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
             options,
         )
 
-    def test_aged_payable_sort_lines_by_numeric_value(self):
+    def test_aged_payablesort_lines_by_numeric_value(self):
         """ Test the sort_lines function using float as sort key. """
         options = self._generate_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
         partner_a_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_a.id, markup=f'{self.prefix_line_id}groupby:partner_id')
@@ -449,7 +449,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             # pylint: disable=C0326
-            self.report._sort_lines(report_lines, options),
+            self.report.sort_lines(report_lines, options),
             #   Name                    Expected Date     Not Due On     1 - 30     31 - 60     61 - 90    91 - 120       Older         Total
             [   0,                                 3,             4,          5,          6,          7,          8,          9,          10],
             [
@@ -487,7 +487,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             # pylint: disable=C0326
-            self.report._sort_lines(report_lines, options),
+            self.report.sort_lines(report_lines, options),
             #   Name                   Expected Date     Not Due On     1 - 30     31 - 60     61 - 90    91 - 120       Older         Total
             [   0,                                 3,           4,          5,          6,          7,          8,          9,          10],
             [

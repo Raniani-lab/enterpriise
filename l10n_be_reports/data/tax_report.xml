@@ -4,5 +4,26 @@
         <record id="l10n_be.tax_report_vat" model="account.report">
             <field name="custom_handler_model_id" ref="model_l10n_be_tax_report_handler"/>
         </record>
+
+        <template id="pdf_export_filters" inherit_id="account_reports.pdf_export_filters" primary="True">
+            <xpath expr="//div[hasclass('row')]" position="inside">
+                <t t-if="env.company.country_code=='BE' and options.get('closing_entry')">
+                    <div class="col-4">
+                        <div t-if="'ask_restitution' in options" style="text-align:right">Ask restitution:
+                            <t t-if="options.get('ask_restitution')">Yes</t>
+                            <t t-else="">No</t>
+                        </div>
+                        <div t-if="'ask_payment' in options" style="text-align:right">Ask payment:
+                            <t t-if="options.get('ask_payment')">Yes</t>
+                            <t t-else="">No</t>
+                        </div>
+                        <div t-if="'client_nihil' in options" style="text-align:right">Client nihil:
+                            <t t-if="options.get('client_nihil')">Yes</t>
+                            <t t-else="">No</t>
+                        </div>
+                    </div>
+                </t>
+            </xpath>
+        </template>
     </data>
 </odoo>

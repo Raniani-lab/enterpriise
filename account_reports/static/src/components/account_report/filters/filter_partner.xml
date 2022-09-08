@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportFilterPartner" owl="1">
+        <Dropdown togglerClass="'btn btn-secondary'">
+            <t t-set-slot="toggler">
+                <span class="fa fa-folder-open me-1"/>Partners
+            </t>
+
+            <div class="acc_rep_search">
+                <label>Partners</label>
+
+                <Record t-props="recordProps('Partners', 'res.partner', 'partner_ids')" t-slot-scope="data">
+                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
+                </Record>
+            </div>
+
+            <div class="acc_rep_search">
+                <label>Tags</label>
+
+                <Record t-props="recordProps('Tags', 'res.partner.category', 'partner_categories')" t-slot-scope="data">
+                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
+                </Record>
+            </div>
+        </Dropdown>
+    </t>
+</templates>

@@ -1,35 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <template id="aged_report_line_template" inherit_id="account_reports.line_template" primary="True">
-       <xpath expr="//span[hasclass('account_report_line_name')]" position="inside">
-          <t t-if="line.get('trust')">
-              &amp;nbsp;<a t-att-data-line_id="line['id']" action="caret_option_open_record_form" class="no_print oe_link_reports">Open</a>
-              &amp;nbsp;<a t-att-data-line_id="line['id']" t-att-data-name="line['name']" action="open_journal_items" class="no_print oe_link_reports">⇒ Journal Items</a>
-          </t>
-       </xpath>
-       <xpath expr="//span[hasclass('o_account_reports_caret_icon')]" position="before">
-           <t t-if="line.get('trust') == 'good'">
-               <span class="fa fa-circle color-green trust-partner" role="img" aria-label="Balance is good" title="Balance is good"></span>
-           </t>
-           <t t-if="line.get('trust') == 'bad'">
-               <span class="fa fa-circle color-red trust-partner" role="img" aria-label="Balance is bad" title="Balance is bad"></span>
-           </t>
-           <t t-if="line.get('trust') == 'normal'">
-               <span class="fa fa-circle color-transparent trust-partner" role="img" aria-label="Balance is normal" title="Balance is normal"></span>
-           </t>
-       </xpath>
-       <xpath expr="//*[hasclass('dropdown-menu')]" position="inside">
-           <a role="menuitem" tabindex="-1" t-att-data-id="line['id']" t-att-parent-id="line['parent_id']" class="o_change_expected_date dropdown-item" groups="account.group_account_user">Change expected payment date</a>
-       </xpath>
-    </template>
-
-    <template id="aged_report_main_template" inherit_id="account_reports.main_template" primary="True">
-        <xpath expr="//table" position="attributes">
-            <attribute name="class">o_account_reports_table table-striped table-hover table-bold-unfold</attribute>
-        </xpath>
-    </template>
-
     <record id="aged_receivable_report" model="account.report">
         <field name="name">Aged Receivable</field>
         <field name="filter_date_range" eval="False"/>
@@ -41,8 +11,6 @@
         <field name="filter_multi_company">selector</field>
         <field name="default_opening_date_filter">today</field>
         <field name="custom_handler_model_id" ref="model_account_aged_receivable_report_handler"/>
-        <field name="line_template">account_reports.aged_report_line_template</field>
-        <field name="main_template">account_reports.aged_report_main_template</field>
         <field name="column_ids">
             <record id="aged_receivable_report_invoice_date" model="account.report.column">
                 <field name="name">Invoice Date</field>
@@ -212,8 +180,6 @@
         <field name="filter_multi_company">selector</field>
         <field name="default_opening_date_filter">today</field>
         <field name="custom_handler_model_id" ref="model_account_aged_payable_report_handler"/>
-        <field name="line_template">account_reports.aged_report_line_template</field>
-        <field name="main_template">account_reports.aged_report_main_template</field>
         <field name="column_ids">
             <record id="aged_payable_report_invoice_date" model="account.report.column">
                 <field name="name">Invoice Date</field>
@@ -371,5 +337,4 @@
             </record>
         </field>
     </record>
-
 </odoo>

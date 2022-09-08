@@ -10,6 +10,13 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Disallowed Expenses Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReport': 'account_disallowed_expenses.DisallowedExpensesReport',
+            }
+        }
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         results = self._get_query_results(options, primary_fields=['category_id'])
         lines = []
@@ -170,7 +177,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
 
     def _build_line_id(self, options, current, level, parent=False, markup=None):
         report = self.env['account.report']
-        parent_line_id = ''
+        parent_line_id = None
         line_id = report._get_generic_line_id('account.disallowed.expenses.category', current['category_id'])
         if current.get('account_id'):
             parent_line_id = line_id

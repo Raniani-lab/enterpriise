@@ -83,8 +83,8 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             'action_param': 'vat_book_export_files_to_zip',
             'file_export_type': _('ZIP'),
         }
-        options['buttons'].append(zip_export_button)
 
+        options['buttons'].append(zip_export_button)
         options['ar_vat_book_tax_types_available'] = {
             'sale': _('Sales'),
             'purchase': _('Purchases'),
@@ -104,6 +104,7 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             columns_to_remove.append('vat_25')
         if not self.env['account.tax'].search([('type_tax_use', 'in', tax_types), ('tax_group_id.l10n_ar_vat_afip_code', '=', '8')]):
             columns_to_remove.append('vat_5')
+
         options['columns'] = [col for col in options['columns'] if col['expression_label'] not in columns_to_remove]
 
     ####################################################

@@ -43,8 +43,8 @@ class DefaultBuilder(AbstractBuilder):
         totals.append(line_total)
         return totals
 
-    def _format_account_line(self, account, level: int, totals: list, options: dict, **kwargs) -> dict:
-        line = super()._format_account_line(account, level, totals, options, **kwargs)
+    def _format_account_line(self, account, parent_id, level: int, totals: list, options: dict, **kwargs) -> dict:
+        line = super()._format_account_line(account, parent_id, level, totals, options, **kwargs)
         for col, journal in zip(line['columns'], self.journals):
             domain = [('account_id', '=', account.id), ('journal_id', '=', journal.id)]
             journal_lines_amount = self.env['consolidation.journal.line'].search_count(domain)

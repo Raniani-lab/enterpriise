@@ -89,3 +89,17 @@ class AccountConsolidationTestCase(common.TransactionCase):
         company = company or self.default_company
         return self.env['account.journal'].create({'name': name, 'code': code, 'type': 'bank',
                                                    'bank_acc_number': '123456', 'company_id': company.id})
+
+    def _get_conso_groug_section_id(self, group):
+        groups_hierarchy_in_order = self.env['consolidation.group']
+
+        current = group
+        while current:
+            groups_hierarchy_in_order = current + groups_hierarchy_in_order
+            current = current.parent_id
+
+        current_id = None
+        for ordered_group in groups_hierarchy_in_order:
+            current_id = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % ordered_group.id, parent_line_id=current_id)
+
+        return current_id

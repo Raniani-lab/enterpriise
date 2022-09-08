@@ -11,6 +11,16 @@ class ECSalesReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'EC Sales Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'components': {
+                'AccountReportFilters': 'account_reports.SalesReportFilters',
+            },
+            'templates': {
+                'AccountReport': 'account_reports.SalesReport',
+            }
+        }
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         """
         Generate the dynamic lines for the report in a vertical style (one line per tax per partner).
@@ -337,7 +347,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
 
     def get_warning_act_window(self, options, params):
         act_window = {'type': 'ir.actions.act_window', 'context': {}}
-        if params.get('type') == 'no_vat':
+        if params['type'] == 'no_vat':
             aml_domains = [
                 ('partner_id.vat', '=', None),
                 ('partner_id.country_id.code', 'in', tuple(self._get_ec_country_codes(options))),
@@ -346,18 +356,20 @@ class ECSalesReportCustomHandler(models.AbstractModel):
                 'name': _("Entries with partners with no VAT"),
                 'context': {'search_default_group_by_partner': 1, 'expand': 1}
             })
-        elif params.get('type') == 'non_ec_country':
+        elif params['type'] == 'non_ec_country':
             aml_domains = [('partner_id.country_id.code', 'not in', tuple(self._get_ec_country_codes(options)))]
             act_window['name'] = _("EC tax on non EC countries")
         else:
             aml_domains = [('partner_id.country_id.code', '=', options.get('same_country_warning'))]
             act_window['name'] = _("EC tax on same country")
+
         amls = self.env['account.move.line'].search([
             *aml_domains,
             *self.env['account.report']._get_options_date_domain(options, 'strict_range'),
             ('tax_tag_ids.id', 'in', tuple(self._get_tag_ids_filtered(options)))
         ])
-        if params.get('model') == 'move':
+
+        if params['model'] == 'move':
             act_window.update({
                 'views': [[self.env.ref('account.view_move_tree').id, 'list'], (False, 'form')],
                 'res_model': 'account.move',

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.PartnerLedgerLineName" t-inherit="account_reports.AccountReportLineNameCustomizable" owl="1">
+        <xpath expr="//span[hasclass('o_account_reports_caret_icon')]" position="before">
+            <t t-if="props.line.trust === 'good'">
+                <span class="fa fa-circle color-green trust-partner" title="Partner ledger is good"/>
+            </t>
+            <t t-elif="props.line.trust === 'normal'">
+                <span class="fa fa-circle color-transparent trust-partner" title="Partner ledger is normal"/>
+            </t>
+            <t t-elif="props.line.trust === 'bad'">
+                <span class="fa fa-circle color-red trust-partner" title="Partner ledger is bad"/>
+            </t>
+            <t t-else="">
+                <span class="fa fa-circle color-transparent trust-partner"/>
+            </t>
+        </xpath>
+
+        <xpath expr="//span[hasclass('acc_rep_line_name')]" position="inside">
+            <t t-if="props.line.unfoldable">
+                <a
+                    class="oe_link_reports"
+                    t-on-click="(ev) => controller.reportAction(ev, 'action_open_partner', { id: props.line.id })"
+                >
+                    Open
+                </a>
+
+                <a
+                    class="oe_link_reports"
+                    t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', {
+                        line_id: props.line.id,
+                        view_ref: 'account.view_move_line_tree_grouped_partner',
+                    })"
+                >
+                    ⇒ Journal Items
+                </a>
+
+                <a
+                    class="oe_link_reports"
+                    t-on-click="(ev) => controller.reportAction(ev, 'action_partner_reconcile', { line_id: props.line.id })"
+                >
+                    Reconcile
+                </a>
+            </t>
+        </xpath>
+    </t>
+</templates>

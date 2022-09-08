@@ -15,6 +15,25 @@ class JournalReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Journal Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'components': {
+                'AccountReportLine': 'account_reports.JournalReportLine',
+            },
+            'templates': {
+                'AccountReportFilters': 'account_reports.JournalReportFilters',
+                'AccountReportHeader': 'account_reports.JournalReportHeader',
+                'AccountReportLineCell': 'account_reports.JournalReportLineCell',
+                'AccountReportLineName': 'account_reports.JournalReportLineName',
+            },
+            'pdf_export': {
+                'pdf_export_line': 'account_reports.journal_report_pdf_export_line',
+                'pdf_export_cell': 'account_reports.journal_report_pdf_export_cell',
+                'pdf_export_main_table_header': 'account_reports.journal_report_pdf_export_main_table_header',
+                'pdf_export_filters': 'account_reports.journal_report_pdf_export_filters',
+            },
+        }
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         """ Returns the first level of the report, journal lines. """
         journal_query_res = self._query_journal(options)
@@ -33,7 +52,7 @@ class JournalReportCustomHandler(models.AbstractModel):
         # Set the column wide classes.
         for column in options['columns']:
             if column['expression_label'] in ['name', 'account', 'label']:
-                column['class'] = 'o_account_report_line_ellipsis'
+                column['class'] = 'acc_rep_line_ellipsis'
             elif column['expression_label'] == 'additional_col_2':
                 column['class'] = 'text-end'
         # Initialise the custom options for this report.
@@ -250,9 +269,9 @@ class JournalReportCustomHandler(models.AbstractModel):
         has_multicurrency = self.user_has_groups('base.group_multi_currency')
         for dummy in options['column_groups']:
             columns.extend([
-                {'name': _('Name'), 'class': 'o_account_report_line_ellipsis', 'style': 'text-align: left;'},
-                {'name': _('Account'), 'class': 'o_account_report_line_ellipsis', 'style': 'text-align: left;'},
-                {'name': _('Label'), 'class': 'o_account_report_line_ellipsis', 'style': 'text-align: left;'},
+                {'name': _('Name'), 'class': 'acc_rep_line_ellipsis', 'style': 'text-align: left;'},
+                {'name': _('Account'), 'class': 'acc_rep_line_ellipsis', 'style': 'text-align: left;'},
+                {'name': _('Label'), 'class': 'acc_rep_line_ellipsis', 'style': 'text-align: left;'},
                 {'name': _('Debit'), 'class': 'number'},
                 {'name': _('Credit'), 'class': 'number'},
             ])
@@ -417,12 +436,14 @@ class JournalReportCustomHandler(models.AbstractModel):
         :param options: dictionary containing the options for the current report
         :param parent_key: the key of the parent line, either the journal or the month
         :param balance: the starting/ending balance of the journal
-        :param is_starting_balance: whether the balance is the starting or ending balance. Used for formating.
+        :param is_starting_balance: whether the balance is the starting or ending balance. Used for formatting.
         """
         line_columns = []
         report = self.env['account.report']
+
         for column in options['columns']:
             col_value = eval_dict[column['column_group_key']]
+
             if column['expression_label'] == 'credit':  # Add a text in the credit column
                 line_columns.append({'name': _('Starting Balance:') if is_starting_balance else _('Ending Balance:')})
             elif column['expression_label'] == 'additional_col_1':
@@ -463,8 +484,8 @@ class JournalReportCustomHandler(models.AbstractModel):
             balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
             not_receivable_with_partner = values['partner_name'] and values['account_type'] not in ('asset_receivable', 'liability_payable')
             columns.extend([
-                {'name': '%s %s' % (values['account_code'], '' if values['partner_name'] else values['account_name']), 'name_right': values['partner_name'], 'class': 'o_account_report_line_ellipsis' + (' color-blue' if not_receivable_with_partner else ''), 'template': 'account_reports.cell_template_journal_audit_report', 'style': 'text-align:left;'},
-                {'name': values['name'], 'class': 'o_account_report_line_ellipsis', 'style': 'text-align:left;'},
+                {'name': '%s %s' % (values['account_code'], '' if values['partner_name'] else values['account_name']), 'partner_name': values['partner_name'], 'class': 'acc_rep_line_ellipsis' + (' color-blue' if not_receivable_with_partner else ''), 'template': 'account_reports.cell_template_journal_audit_report', 'style': 'text-align:left;'},
+                {'name': values['name'], 'class': 'acc_rep_line_ellipsis', 'style': 'text-align:left;'},
                 {'name': report.format_value(values['debit'], figure_type='monetary_without_symbol'), 'no_format': values['debit'], 'class': 'number'},
                 {'name': report.format_value(values['credit'], figure_type='monetary_without_symbol'), 'no_format': values['credit'], 'class': 'number'},
             ] + self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment))
@@ -500,15 +521,15 @@ class JournalReportCustomHandler(models.AbstractModel):
             if values['journal_type'] == 'bank':  # For additional lines still showing in the bank journal, make sure to use the partner on the account if available.
                 not_receivable_with_partner = values['partner_name'] and values['account_type'] not in ('asset_receivable', 'liability_payable')
                 account_name = '%s %s' % (values['account_code'], '' if values['partner_name'] else values['account_name'])
-                account_name_col = {'name': account_name, 'class': 'o_account_report_line_ellipsis' + (' color-blue' if not_receivable_with_partner else ''), 'name_right': values.get('partner_name'), 'style': 'text-align:left;', 'template': 'account_reports.cell_template_journal_audit_report'}
+                account_name_col = {'name': account_name, 'class': 'acc_rep_line_ellipsis' + (' color-blue' if not_receivable_with_partner else ''), 'partner_name': values.get('partner_name'), 'style': 'text-align:left;', 'template': 'account_reports.cell_template_journal_audit_report'}
             else:
                 account_name = '%s %s' % (values['account_code'], values['account_name'])
-                account_name_col = {'name': account_name, 'class': 'o_account_report_line_ellipsis', 'style': 'text-align:left;'}
+                account_name_col = {'name': account_name, 'class': 'acc_rep_line_ellipsis', 'style': 'text-align:left;'}
 
             balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
             columns.extend([
                account_name_col,
-               {'name': values['name'], 'class': 'o_account_report_line_ellipsis', 'style': 'text-align:left;'},
+               {'name': values['name'], 'class': 'acc_rep_line_ellipsis', 'style': 'text-align:left;'},
                {'name': report.format_value(values['debit'], figure_type='monetary_without_symbol'), 'no_format': values['debit'], 'class': 'number'},
                {'name': report.format_value(values['credit'], figure_type='monetary_without_symbol'), 'no_format': values['credit'], 'class': 'number'},
             ] + self._get_move_line_additional_col(column_group_options, balance, values, is_unreconciled_payment))

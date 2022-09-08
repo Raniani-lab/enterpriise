@@ -15,8 +15,6 @@
             <field name="filter_journals" eval="False"/>
             <field name="search_bar" eval="True"/>
             <field name="custom_handler_model_id" ref="model_l10n_lu_ec_sales_report_handler"/>
-            <field name="main_template">account_reports.sales_report_main_template</field>
-            <field name="search_template">account_reports.ec_sales_with_tax_filter_search_template</field>
             <field name="column_ids">
                 <record id="account_financial_report_ec_sales_country" model="account.report.column">
                     <field name="name">Country Code</field>

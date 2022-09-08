@@ -18,9 +18,7 @@
         'views/l10n_be_vat_statement_views.xml',
         'views/l10n_be_wizard_xml_export_options_views.xml',
         'views/l10n_be_vendor_partner_views.xml',
-        'views/report_views.xml',
         'views/res_partner_views.xml',
-        'views/report_financial.xml',
         'data/account_financial_html_report_data.xml',
         'data/account_tag_data.xml',
         'data/account_report_ec_sales_list_report.xml',
@@ -36,4 +34,10 @@
     'auto_install': ['l10n_be', 'account_reports'],
     'website': 'https://www.odoo.com/app/accounting',
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'l10n_be_reports/static/src/components/sales_report/**/*',
+            'l10n_be_reports/static/src/components/tax_report/**/*',
+        ],
+    },
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportSearchBar" owl="1">
+        <div class="o_cp_searchview">
+            <div class="o_searchview">
+                <div class="o_searchview_input_container">
+                    <input
+                        class="o_searchview_input"
+                        placeholder="Search line"
+                        t-ref="search_bar_input"
+                        t-on-input="() => this.search()"
+                    />
+                </div>
+
+                <i class="o_searchview_icon oi oi-search"/>
+            </div>
+        </div>
+    </t>
+</templates>

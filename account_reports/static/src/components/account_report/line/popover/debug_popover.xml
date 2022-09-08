@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportDebugPopover" owl="1">
+        <table>
+            <t t-foreach="props.expressions_detail" t-as="expressionEngineAndTotals" t-key="expressionEngineAndTotals_index">
+                <t t-set="expressionEngine" t-value="expressionEngineAndTotals[0]"/>
+                <t t-set="expressionTotals" t-value="expressionEngineAndTotals[1]"/>
+
+                <tr>
+                    <td>
+                        <strong>
+                            <t t-out="expressionEngine"/>
+                        </strong>
+                    </td>
+                </tr>
+
+                <t t-foreach="expressionTotals" t-as="labelAndInfo" t-key="labelAndInfo_index">
+                    <t t-set="expressionLabel" t-value="labelAndInfo[0]"/>
+                    <t t-set="expressionInfo" t-value="labelAndInfo[1]"/>
+
+                    <tr>
+                        <td>
+                            <span>
+                                <t t-out="expressionLabel"/>
+                            </span>
+                        </td>
+                        <td>
+                            <span>
+                                <t t-out="` = ${expressionInfo.formula}`"/>
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr t-if="expressionInfo.subformula">
+                        <td/>
+                        <td>
+                            <span>
+                                <t t-out="`[${expressionInfo.subformula}]`"/>
+                            </span>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td/>
+                        <td>
+                            <span>
+                                <strong t-out="`= ${expressionInfo.value}`"/>
+                            </span>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+
+            <t t-if="!props.expressions_detail.length">
+                <tr>
+                    <td colspan="2">
+                        <span>Line without formula</span>
+                    </td>
+                </tr>
+            </t>
+        </table>
+    </t>
+</templates>

@@ -12,9 +12,14 @@
         'l10n_us', 'account_reports'
     ],
     'data': [
-        'data/account_financial_report_data.xml',
+        'data/check_register.xml',
     ],
     'installable': True,
     'auto_install': ['l10n_us', 'account_reports'],
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'l10n_us_reports/static/src/components/check_register/**/*',
+        ],
+    }
 }

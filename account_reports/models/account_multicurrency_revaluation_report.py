@@ -22,6 +22,17 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Multicurrency Revaluation Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'components': {
+                'AccountReportFilters': 'account_reports.MulticurrencyRevaluationReportFilters',
+            },
+            'templates': {
+                'AccountReport': 'account_reports.MulticurrencyRevaluationReport',
+                'AccountReportLineName': 'account_reports.MulticurrencyRevaluationReportLineName',
+            },
+        }
+
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         rates = self.env['res.currency'].search([('active', '=', True)])._get_rates(self.env.company, options.get('date').get('date_to'))
@@ -64,6 +75,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
             ):
                 # 'To Adjust' and 'Excluded' lines need to be hidden if they have no child
                 continue
+
             elif res_model_name == 'res.currency':
                 # Include the rate in the currency_id group lines
                 line['name'] = '{for_cur} (1 {comp_cur} = {rate:.6} {for_cur})'.format(
@@ -71,6 +83,13 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
                     comp_cur=self.env.company.currency_id.display_name,
                     rate=float(options['currency_rates'][str(res_id)]['rate']),
                 )
+
+            elif res_model_name == 'account.account':
+                # Mark the included/excluded lines, so that the custom component templates knows what label to put on them
+                line['is_included_line'] = report._get_res_id_from_line_id(line['id'], 'account.account') == line_to_adjust_id
+
+            # Inject the related model into the line dict in order to use it on the custom component template on js side to display buttons
+            line['cur_revaluation_line_model'] = res_model_name
 
             rslt.append(line)
 
@@ -99,7 +118,8 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
 
     # ACTIONS
     def action_multi_currency_revaluation_open_general_ledger(self, options, params):
-        account_line_id = self.env['account.report']._get_generic_line_id('account.account', params.get('id'))
+        account_id = self.env['account.report']._get_res_id_from_line_id(params['line_id'], 'account.account')
+        account_line_id = self.env['account.report']._get_generic_line_id('account.account', account_id)
         general_ledger_options = self.env.ref('account_reports.general_ledger_report')._get_options(options)
         general_ledger_options['unfolded_lines'] = [account_line_id]
 
@@ -113,8 +133,9 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
 
     def action_multi_currency_revaluation_toggle_provision(self, options, params):
         """ Include/exclude an account from the provision. """
-        account = self.env['account.account'].browse(params.get('account_id'))
-        currency = self.env['res.currency'].browse(params.get('currency_id'))
+        res_ids_map = self.env['account.report']._get_res_ids_from_line_id(params['line_id'], ['res.currency', 'account.account'])
+        account = self.env['account.account'].browse(res_ids_map['account.account'])
+        currency = self.env['res.currency'].browse(res_ids_map['res.currency'])
         if currency in account.exclude_provision_currency_ids:
             account.exclude_provision_currency_ids -= currency
         else:
@@ -126,7 +147,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
 
     def action_multi_currency_revaluation_open_currency_rates(self, options, params=None):
         """ Open the currency rate list. """
-        currency_id = params.get('id')
+        currency_id = self.env['account.report']._get_res_id_from_line_id(params['line_id'], 'res.currency')
         return {
             'type': 'ir.actions.act_window',
             'name': _('Currency Rates (%s)', self.env['res.currency'].browse(currency_id).display_name),

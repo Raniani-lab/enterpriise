@@ -40,8 +40,8 @@ class ComparisonBuilder(AbstractBuilder):
     def _get_default_line_totals(self, options: dict, **kwargs) -> list:
         return kwargs.get('cols_amount', len(kwargs.get('period_ids', []))) * [0.0]
 
-    def _format_account_line(self, account, level: int, totals: list, options: dict, **kwargs) -> dict:
-        account_line = super()._format_account_line(account, level, totals, options, **kwargs)
+    def _format_account_line(self, account, parent_id, level: int, totals: list, options: dict, **kwargs) -> dict:
+        account_line = super()._format_account_line(account, parent_id, level, totals, options, **kwargs)
         if kwargs.get('include_percentage', False) and totals and account_line:
             account_line['columns'].append(self._build_percentage_column(*totals))
         return account_line

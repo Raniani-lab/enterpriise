@@ -13,6 +13,14 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Bank Reconciliation Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReport': 'account_reports.BankReconciliationReport',
+                'AccountReportLineCell': 'account_reports.BankReconciliationReportLineCell',
+            }
+        }
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         print_mode = self._context.get('print_mode')
         journal_id = options.get('bank_reconciliation_report_journal_id')
@@ -63,8 +71,6 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                 reference_cells[column_group_key] = {
                     'last_statement_name': last_statement.display_name,
                     'last_statement_id': last_statement.id,
-                    'template': 'account_reports.bank_reconciliation_report_cell_template_link_last_statement',
-                    'style': 'white-space: nowrap;',
                 }
             else:
                 reference_cells[column_group_key] = {}
@@ -83,8 +89,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
 
                 if not report_currency.is_zero(difference):
                     balance_cells[column_group_key].update({
-                        'template': 'account_reports.bank_reconciliation_report_cell_template_unexplained_difference',
-                        'style': 'color:orange; white-space: nowrap;',
+                        'general_ledger_not_matching': True,
                         'title': _(
                             "The current balance in the General Ledger %s doesn't match the balance of your last bank statement %s leading "
                             "to an unexplained difference of %s.",
@@ -377,10 +382,6 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                 parent_line_id=st_report_line['parent_id']
             )
 
-            is_parent_unfolded = unfold_all or st_report_line['parent_id'] in options['unfolded_lines']
-            if not is_parent_unfolded:
-                st_report_line['style'] = 'display: none;'
-
         return (
             self._build_section_report_lines(report, options, journal, plus_report_lines, plus_totals,
                 _("Including Unreconciled Bank Statement Receipts"),
@@ -564,10 +565,6 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                 model, payment_id or move_id,
                 parent_line_id=pay_report_line['parent_id']
             )
-
-            is_parent_unfolded = unfold_all or pay_report_line['parent_id'] in options['unfolded_lines']
-            if not is_parent_unfolded:
-                pay_report_line['style'] = 'display: none;'
 
         return (
             self._build_section_report_lines(report, options, journal, plus_report_lines, plus_totals,

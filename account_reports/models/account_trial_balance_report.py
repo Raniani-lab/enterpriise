@@ -11,6 +11,13 @@ class TrialBalanceCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Trial Balance Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReport': 'account_reports.TrialBalance',
+            }
+        }
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         def _update_column(line, column_key, new_value, blank_if_zero=True):
             figure_type = options['columns'][column_key].get('figure_type')
@@ -56,7 +63,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
             line.update({
                 'unfoldable': False,
                 'unfolded': False,
-                'class': 'o_account_searchable_line o_account_coa_column_contrast',
+                'class': 'acc_rep_searchable o_account_coa_column_contrast',
             })
 
             res_model = report._get_model_info_from_id(line['id'])[0]

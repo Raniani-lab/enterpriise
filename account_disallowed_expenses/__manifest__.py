@@ -17,4 +17,9 @@
     ],
     'installable': True,
     'license': 'OEEL-1',
+    'assets': {
+        'web.assets_backend': [
+            'account_disallowed_expenses/static/src/components/**/*',
+        ],
+    },
 }

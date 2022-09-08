@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportLine" owl="1">
+        <t t-call="{{ env.template('AccountReportLine') }}"/>
+    </t>
+
+    <t t-name="account_reports.AccountReportLineCustomizable" owl="1">
+        <tr t-att-class="lineClasses" t-att-style="props.line.style" tabindex="0">
+            <!-- Name column -->
+            <t t-component="env.component('AccountReportLineName')" t-props="{ lineIndex: props.lineIndex, line: props.line }"/>
+
+            <!-- Value columns -->
+            <t t-foreach="props.line.columns" t-as="cell" t-key="cell_index">
+                <td>
+                    <t t-component="env.component('AccountReportLineCell')" t-props="{ line: props.line, cell: cell }"/>
+                </td>
+            </t>
+
+            <!-- Growth comparison column -->
+            <t t-if="controller.hasComparisonColumn">
+                <td class="text-end" style="width: 1%;">
+                    <t t-if="controller.lineHasComparisonData(props.lineIndex)">
+                        <span t-att-class="comparisonClasses">
+                            <t t-out="props.line.growth_comparison_data.name"/>
+                        </span>
+                    </t>
+                </td>
+            </t>
+
+            <!-- Debug column -->
+            <t t-if="controller.hasDebugColumn">
+                <td class="text-end" style="width: 1%;">
+                    <span class="acc_rep_column_value text-nowrap">
+                        <t t-if="props.line.code">
+                            <span>
+                                <t t-out="props.line.code"/>
+                            </span>
+                        </t>
+
+                        <t t-if="controller.lineHasDebugData(props.lineIndex)">
+                            <a
+                                class="acc_rep_popup fa fa-info-circle"
+                                t-on-click="(ev) => this.showDebugPopover(ev)"
+                            />
+                        </t>
+                    </span>
+                </td>
+            </t>
+        </tr>
+    </t>
+</templates>

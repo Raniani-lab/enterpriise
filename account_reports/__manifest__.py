@@ -11,7 +11,7 @@ Accounting Reports
     'depends': ['account_accountant'],
     'data': [
         'security/ir.model.access.csv',
-        'views/report_templates.xml',
+        'data/pdf_export_templates.xml',
         'data/balance_sheet.xml',
         'data/cash_flow_report.xml',
         'data/executive_summary.xml',
@@ -47,7 +47,7 @@ Accounting Reports
     'license': 'OEEL-1',
     'post_init_hook': 'set_periodicity_journal_on_companies',
     'assets': {
-        'account_reports.assets_financial_report': [
+        'account_reports.assets_pdf_export': [
             ('include', 'web._assets_helpers'),
             'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
@@ -57,22 +57,15 @@ Accounting Reports
             'account_reports/static/src/scss/account_report_print.scss',
         ],
         'web.assets_backend': [
-            # TODO: remove when refactoring 'accountReportsWidget'
-            'web/static/src/legacy/scss/tempusdominus_overridden.scss',
-            'web/static/lib/tempusdominus/tempusdominus.scss',
-
-            'account_reports/static/src/js/account_reports.js',
-            'account_reports/static/src/js/action_manager_account_report_dl.js',
+            'account_reports/static/src/components/**/*',
+            'account_reports/static/src/js/**/*',
             'account_reports/static/src/scss/account_financial_report.scss',
-            'account_reports/static/src/components/**/*.js',
-            'account_reports/static/src/xml/**/*',
         ],
         'web.dark_mode_assets_backend': [
             'account_reports/static/src/scss/*.dark.scss',
         ],
         'web.qunit_suite_tests': [
             'account_reports/static/tests/action_manager_account_report_dl_tests.js',
-            'account_reports/static/tests/account_reports_tests.js',
         ],
         'web.assets_tests': [
             'account_reports/static/tests/tours/**/*',

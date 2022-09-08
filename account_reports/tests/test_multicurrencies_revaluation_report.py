@@ -246,13 +246,12 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
         # Test the report in 2017.
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
         options['unfold_all'] = True
-        self.env['account.multicurrency.revaluation.report.handler'].action_multi_currency_revaluation_toggle_provision(
-            options,
-            {
-                'account_id': self.receivable_account_1.id,
-                'currency_id': self.currency_data['currency'].id
-            }
-        )
+
+        oldest_line_id = self.report._get_generic_line_id('account.report.line', self.env.ref('account_reports.multicurrency_revaluation_to_adjust').id)
+        old_line_id = self.report._get_generic_line_id('res.currency', self.currency_data['currency'].id, markup='groupby:currency_id', parent_line_id=oldest_line_id)
+        line_id = self.report._get_generic_line_id('account.account', self.receivable_account_1.id, markup='groupby:account_id', parent_line_id=old_line_id)
+
+        self.env['account.multicurrency.revaluation.report.handler'].action_multi_currency_revaluation_toggle_provision(options, {'line_id': line_id})
 
         self.assertLinesValues(
             # pylint: disable=C0326

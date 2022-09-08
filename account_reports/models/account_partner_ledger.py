@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
 
-from odoo import models, _, fields
+from odoo import api, models, _, fields
 from odoo.exceptions import UserError
 from odoo.osv import expression
 from odoo.tools.misc import format_date, get_lang
@@ -15,6 +15,13 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
     _name = 'account.partner.ledger.report.handler'
     _inherit = 'account.report.custom.handler'
     _description = 'Partner Ledger Custom Handler'
+
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReportLineName': 'account_reports.PartnerLedgerLineName',
+            }
+        }
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         if self.env.context.get('print_mode') and options.get('filter_search_bar'):
@@ -142,6 +149,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             'aml_values': self._get_aml_values(options, partner_ids_to_expand) if partner_ids_to_expand else {},
         }
 
+    @api.model
     def action_open_partner(self, options, params):
         dummy, record_id = self.env['account.report']._get_model_info_from_id(params['id'])
 
@@ -642,7 +650,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     formatted_value = report.format_value(col_value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
                 else:
                     if col_expr_label == 'ref':
-                        col_class = 'o_account_report_line_ellipsis'
+                        col_class = 'acc_rep_line_ellipsis'
                     elif col_expr_label not in ('debit', 'credit'):
                         col_class = ''
                     formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
@@ -689,6 +697,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             'columns': column_values,
         }
 
+    @api.model
     def open_journal_items(self, options, params):
         params['view_ref'] = 'account.view_move_line_tree_grouped_partner'
         action = self.env['account.report'].open_journal_items(options=options, params=params)

@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, _
+from odoo.tools.misc import format_date
 
 from dateutil.relativedelta import relativedelta
 from itertools import chain
@@ -11,6 +12,16 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
     _name = 'account.aged.partner.balance.report.handler'
     _inherit = 'account.report.custom.handler'
     _description = 'Aged Partner Balance Custom Handler'
+
+    def _get_custom_display_config(self):
+        return {
+            'components': {
+                'AccountReportLineName': 'account_reports.AgedPartnerBalanceLineName',
+            },
+            'templates': {
+                'AccountReport': 'account_reports.AgedPartnerBalanceReport',
+            },
+        }
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
@@ -317,6 +328,19 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                                 )
 
         return rslt
+
+    def change_expected_date(self, options, params=None):
+        aml_id = self.env['account.report']._get_res_id_from_line_id(params['line_id'], 'account.move.line')
+        aml = self.env['account.move.line'].browse(aml_id)
+
+        old_date = format_date(self.env, aml.expected_pay_date) if aml.expected_pay_date else _('any')
+        aml.write({'expected_pay_date': params['expected_pay_date']})
+
+        if aml.move_id.move_type == 'out_invoice':
+            new_date = format_date(self.env, aml.expected_pay_date) if aml.expected_pay_date else _('any')
+            move_msg = _('Expected payment date for journal item "%s" has been changed from %s to %s on journal entry "%s"') % (aml.name, old_date, new_date, aml.move_id.name)
+            aml.partner_id._message_log(body=move_msg)
+            aml.move_id._message_log(body=move_msg)
 
 
 class AgedPayableCustomHandler(models.AbstractModel):

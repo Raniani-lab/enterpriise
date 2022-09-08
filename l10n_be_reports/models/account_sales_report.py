@@ -14,6 +14,12 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
     _inherit = 'account.ec.sales.report.handler'
     _description = 'Belgian EC Sales Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        # EXTENDS account_reports
+        rslt = super()._get_custom_display_config()
+        rslt['templates']['AccountReport'] = 'l10n_be_reports.SalesReport'
+        return rslt
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         """
         This method is used to get the dynamic lines of the report and adds a comparative test linked to the tax report.
@@ -201,7 +207,7 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
             'year': date_from.year,
             'month': month,
             'quarter': quarter,
-            'comments': report._get_report_manager(options).summary or '',
+            'comments': '',
             'issued_by': issued_by,
             'dnum': dnum,
             'representative_node': _get_xml_export_representative_node(report),

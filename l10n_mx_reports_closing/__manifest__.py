@@ -17,8 +17,12 @@
     ],
     "data": [
         "views/account_move_views.xml",
-        "views/account_report_views.xml",
     ],
+    'assets': {
+        'web.assets_backend': [
+            'l10n_mx_reports_closing/static/src/components/**/*',
+        ],
+    },
     "installable": True,
     "auto_install": True,
 }

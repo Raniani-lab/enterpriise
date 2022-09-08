@@ -357,7 +357,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             'phone': phone,
             'SenderId': SenderId,
             'period': options['date'].get('date_from')[0:4],
-            'comments': report._get_report_manager(options).summary or '',
+            'comments': '',
             'seq': str(seq),
             'dnum': dnum,
             'sum_turnover': sum_turnover,

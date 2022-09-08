@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.AccountReportFootnoteDialog" owl="1">
+        <t t-call="account_reports.AccountReportFootnoteDialogCustomizable"/>
+    </t>
+
+    <t t-name="account_reports.AccountReportFootnoteDialogCustomizable" owl="1">
+        <Dialog title="title">
+            <form role="form">
+                <textarea placeholder="Insert foot note here" rows='4' t-ref="text">
+                    <t t-out="props.text"/>
+                </textarea>
+            </form>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_save">
+                    Save
+                </button>
+                <button class="btn btn-secondary" t-on-click="_cancel">
+                    Cancel
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

@@ -11,13 +11,21 @@ class AccountReport(models.Model):
         help="Display the option to switch to cash basis mode."
     )
 
+    # OVERRIDE
+    def get_report_information(self, previous_options):
+        info = super().get_report_information(previous_options)
+
+        info['filters']['show_cash_basis'] = self.filter_cash_basis
+
+        return info
+
     def _init_options_cash_basis(self, options, previous_options=None):
         if self.filter_cash_basis:
             options['report_cash_basis'] = (previous_options or {}).get('report_cash_basis', False)
 
     @api.model
     def _prepare_lines_for_cash_basis(self):
-        """Prepare the cash_basis_temp_account_move_line substitue.
+        """Prepare the cash_basis_temp_account_move_line substitute.
 
         This method should be used once before all the SQL queries using the
         table account_move_line for reports in cash basis.

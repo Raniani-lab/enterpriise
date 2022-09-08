@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.MulticurrencyRevaluationReportLineName" t-inherit="account_reports.AccountReportLineNameCustomizable" owl="1">
+        <xpath expr="//span[hasclass('acc_rep_line_name')]" position="inside">
+            <t t-if="props.line.cur_revaluation_line_model === 'res.currency'">
+                <a
+                    class="oe_link_reports ms-2"
+                    t-on-click="(ev) => controller.reportAction(ev, 'action_multi_currency_revaluation_open_currency_rates', { line_id: props.line.id })"
+                >
+                    &nbsp; ⇒ Rates
+                </a>
+            </t>
+
+            <t t-if="props.line.cur_revaluation_line_model === 'account.account'">
+                <a
+                    class="oe_link_reports ms-2"
+                    t-on-click="(ev) => controller.reportAction(ev, 'action_multi_currency_revaluation_open_general_ledger', { line_id: props.line.id })"
+                >
+                    &nbsp; ⇒ General Ledger
+                </a>
+
+                <a
+                    class="oe_link_reports ms-2"
+                    t-on-click="(ev) => controller.reportAction(ev, 'action_multi_currency_revaluation_toggle_provision', { line_id: props.line.id })"
+                    t-att-title="props.line.is_included_line ? 'Exclude from adjustment/provisions entries' : 'Include in adjustment/provisions entries'"
+                >
+                    &nbsp; <t t-esc="props.line.is_included_line ? 'Exclude' : 'Include'"/>
+                </a>
+            </t>
+        </xpath>
+    </t>
+</templates>

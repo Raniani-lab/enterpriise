@@ -22,9 +22,12 @@ class VoipQueueMixin(models.AbstractModel):
             rec.has_call_in_queue = call_per_id.get(rec.id, False)
 
     def _linked_phone_call_domain(self):
+        related_activities = self.env['mail.activity']._search([
+            ('res_id', 'in', self.ids),
+            ('res_model', '=', self._name)
+        ], order='res_id')  # In some cases, avoid PostgreSQL to sort output because of the res_id index.
         return [
-            ('activity_id.res_id', 'in', self.ids),
-            ('activity_id.res_model_id', '=', self.env['ir.model']._get(self._name).id),
+            ('activity_id', 'in', related_activities),
             ('date_deadline', '<=', fields.Date.today(self)),  # TODO check if correct
             ('in_queue', '=', True),
             ('state', '!=', 'done'),

@@ -39,12 +39,12 @@ class AppointmentCalendarController(CalendarController):
                 'view_type': 'form',
                 'model': attendee.event_id._name,
             })
-            return request.redirect('/web?db=%s#%s' % (request.env.cr.dbname, url_params))
+            return request.redirect(f'/web?db={request.env.cr.dbname}#{url_params}')
 
         request.session['timezone'] = attendee.partner_id.tz
         if not attendee.event_id.access_token:
             attendee.event_id._generate_access_token()
-        return request.redirect('/calendar/view/%s?partner_id=%s' % (attendee.event_id.access_token, attendee.partner_id.id))
+        return request.redirect(f'/calendar/view/{attendee.event_id.access_token}?partner_id={attendee.partner_id.id}')
 
     @route(['/calendar/view/<string:access_token>'], type='http', auth="public", website=True)
     def appointment_view(self, access_token, partner_id, state=False, **kwargs):
@@ -79,13 +79,13 @@ class AppointmentCalendarController(CalendarController):
 
         locale = get_lang(request.env).code
         day_name = format_func(date_start, 'EEE', locale=locale)
-        date_start = day_name + ' ' + format_func(date_start, locale=locale) + date_start_suffix
+        date_start = f'{day_name} {format_func(date_start, locale=locale)}{date_start_suffix}'
         # convert_online_event_desc_to_text method for correct data formatting in external calendars
         details = event.appointment_type_id and event.appointment_type_id.message_confirmation or event.convert_online_event_desc_to_text(event.description) or ''
         params = {
             'action': 'TEMPLATE',
             'text': event.name,
-            'dates': url_date_start + '/' + url_date_stop,
+            'dates': f'{url_date_start}/{url_date_stop}',
             'details': html2plaintext(details.encode('utf-8'))
         }
         if event.location:
@@ -115,12 +115,12 @@ class AppointmentCalendarController(CalendarController):
         if not event:
             return request.not_found()
         if fields.Datetime.from_string(event.allday and event.start_date or event.start) < datetime.now() + timedelta(hours=event.appointment_type_id.min_cancellation_hours):
-            return request.redirect('/calendar/view/' + access_token + '?state=no-cancel&partner_id=%s' % partner_id)
+            return request.redirect(f'/calendar/view/{access_token}?state=no-cancel&partner_id={partner_id}')
         event.sudo().action_cancel_meeting([int(partner_id)])
         if appointment_invite:
-            redirect_url = "%s&state=cancel" % appointment_invite.redirect_url
+            redirect_url = appointment_invite.redirect_url + '&state=cancel'
         else:
-            redirect_url = '/appointment/%s?%s' % (appointment_type.id, keep_query('*', state="cancel"))
+            redirect_url = f'/appointment/{appointment_type.id}?{keep_query("*", state="cancel")}'
         return request.redirect(redirect_url)
 
     @route(['/calendar/ics/<string:access_token>.ics'], type='http', auth="public", website=True)

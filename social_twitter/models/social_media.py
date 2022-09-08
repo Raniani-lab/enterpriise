@@ -65,7 +65,7 @@ class SocialMediaTwitter(models.Model):
         return {
             'name': 'Add Account',
             'type': 'ir.actions.act_url',
-            'url': twitter_authorize_url + '?oauth_token=' + response_values['oauth_token'],
+            'url': f'{twitter_authorize_url}?oauth_token={response_values["oauth_token"]}',
             'target': 'self'
         }
 

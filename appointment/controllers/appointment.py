@@ -384,7 +384,7 @@ class AppointmentController(http.Controller):
             ),
             'main_object': appointment_type,
             'datetime': date_time,
-            'date_locale': day_name + ' ' + date_formated,
+            'date_locale': f'{day_name} {date_formated}',
             'time_locale': time_locale,
             'datetime_str': date_time,
             'duration_str': duration,
@@ -480,26 +480,26 @@ class AppointmentController(http.Controller):
                 question_answer_inputs.extend([
                     dict(base_answer_input_vals, question_id=question.id, value_answer_id=answer.id) for answer in answers
                 ])
-                description_bits.append('%s: %s' % (question.name, ', '.join(answers.mapped('name'))))
+                description_bits.append(f'{question.name}: {", ".join(answers.mapped("name"))}')
             elif question.question_type in ['select', 'radio']:
                 question_answer_inputs.append(
                     dict(base_answer_input_vals, question_id=question.id, value_answer_id=int(partner_inputs[question.id]))
                 )
                 selected_answer = question.answer_ids.filtered(lambda answer: answer.id == int(partner_inputs[question.id]))
-                description_bits.append('%s: %s' % (question.name, selected_answer.name))
+                description_bits.append(f'{question.name}: {selected_answer.name}')
             elif question.question_type == 'char':
                 question_answer_inputs.append(
                     dict(base_answer_input_vals, question_id=question.id, value_text_box=partner_inputs[question.id].strip())
                 )
-                description_bits.append('%s: %s' % (question.name, partner_inputs[question.id].strip()))
+                description_bits.append(f'{question.name}: {partner_inputs[question.id].strip()}')
             elif question.question_type == 'text':
                 question_answer_inputs.append(
                     dict(base_answer_input_vals, question_id=question.id, value_text_box=partner_inputs[question.id].strip())
                 )
-                description_bits.append('%s:<br/>%s' % (question.name, plaintext2html(partner_inputs[question.id].strip())))
+                description_bits.append(f'{question.name}:<br/>{plaintext2html(partner_inputs[question.id].strip())}')
 
         if description_bits:
-            description = '<ul>' + ''.join(['<li>%s</li>' % bit for bit in description_bits]) + '</ul>'
+            description = f"<ul>{''.join(f'<li>{bit}</li>' for bit in description_bits)}</ul>"
 
         # FIXME AWA/TDE double check this and/or write some tests to ensure behavior
         # The 'mail_notify_author' is only placed here and not in 'calendar.attendee#_send_mail_to_attendees'

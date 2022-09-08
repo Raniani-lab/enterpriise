@@ -361,7 +361,7 @@ class SocialPost(models.Model):
         if state:
             state_description_values = {elem[0]: elem[1] for elem in self._fields['state']._description_selection(self.env)}
             state_translated = state_description_values.get(state)
-            name += ' (' + state_translated + ')'
+            name += f' ({state_translated})'
 
         return name
 

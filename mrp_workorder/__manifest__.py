@@ -37,7 +37,6 @@
             'mrp_workorder/static/src/**/*.scss',
             'mrp_workorder/static/src/**/*.js',
             'mrp_workorder/static/src/**/*.xml',
-            'mrp_workorder/static/src/xml/**/*',
         ],
         'web.assets_tests': [
             'mrp_workorder/static/tests/tours/**/*',

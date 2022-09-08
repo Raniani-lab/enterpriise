@@ -103,12 +103,6 @@ class Tablet extends Component {
         this.state.selectedStepId = 0;
     }
 
-    async exit(ev) {
-        await new Promise((resolve) => this.workorderBus.trigger("force_save", { resolve }));
-        this._buttonClick('button_pending');
-        this.env.config.historyBack();
-    }
-
     async _buttonClick(method) {
         const res = await this.orm.call('mrp.workorder', method, [this.workorderId]);
         await this.getState();

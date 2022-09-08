@@ -76,10 +76,11 @@ class MrpWorkorder(models.Model):
         })
         return data
 
-    def do_finish(self):
-        action = super().do_finish()
+    def action_back(self):
+        action = super().action_back()
         if self.employee_id:
             action['context']['employee_id'] = self.employee_id.id
+            action['context']['employee_name'] = self.employee_id.name
         return action
 
     def _should_start_timer(self):

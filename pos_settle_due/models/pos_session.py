@@ -9,5 +9,6 @@ class PosSession(models.Model):
 
     def _loader_params_res_partner(self):
         result = super()._loader_params_res_partner()
-        result['search_params']['fields'].append('total_due')
+        if self.user_has_groups('account.group_account_readonly'):
+            result['search_params']['fields'].append('total_due')
         return result

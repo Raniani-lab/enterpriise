@@ -933,7 +933,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(invoice_end_periods, [datetime.date(2021, 2, 28), datetime.date(2021, 2, 28)], "both lines are invoiced")
             sub._create_recurring_invoice(automatic=False)
             self.assertEqual("2021-04-01", sub.next_invoice_date.strftime("%Y-%m-%d"))
-            inv = sub.invoice_ids.sorted('date')[-1]
+            inv = sub.invoice_ids.sorted('id')[-1]
             invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
             invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
             self.assertEqual(invoice_start_periods, [datetime.date(2021, 3, 1), datetime.date(2021, 3, 1)], "monthly is updated everytime in manual action")
@@ -1657,6 +1657,11 @@ class TestSubscription(TestSubscriptionCommon):
         subscription.action_confirm()
         subscription._create_recurring_invoice(automatic=True)
         self.assertEqual(subscription.order_line.qty_invoiced, 3, "The 3 products should be invoiced")
+        # _get_invoiced need info saved on the DB
+        invoice = subscription.order_line.invoice_lines.move_id
+        invoice.flush_recordset()
+        subscription.flush_recordset()
+        subscription._get_invoiced()
         inv = subscription.invoice_ids
         inv.payment_state = 'paid'
         # We refund the invoice

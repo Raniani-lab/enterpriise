@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 from psycopg2.extensions import TransactionRollbackError
 from psycopg2 import sql
 from ast import literal_eval
+from collections import defaultdict
 
 from odoo import fields, models, _, api, Command, SUPERUSER_ID
 from odoo.exceptions import UserError, ValidationError
@@ -220,6 +221,47 @@ class SaleOrder(models.Model):
                 so.start_date = False
             elif not so.start_date:
                 so.start_date = fields.Date.today()
+
+    @api.depends('subscription_child_ids', 'origin_order_id')
+    def _get_invoiced(self):
+        so_with_origin = self.filtered('origin_order_id')
+        res = super(SaleOrder, self - so_with_origin)._get_invoiced()
+        if not so_with_origin:
+            return res
+        # Ensure that we give value to everyone
+        so_with_origin.update({
+            'invoice_ids': [],
+            'invoice_count': 0
+        })
+        so_by_origin = defaultdict(lambda: self.env['sale.order'])
+        for so in so_with_origin:
+            # We only search for existing origin
+            if so.origin_order_id.id:
+                so_by_origin[so.origin_order_id.id] += so
+
+        if not so_by_origin:
+            return res
+
+        sql = """
+            SELECT so.origin_order_id, array_agg(DISTINCT am.id)
+            
+            FROM sale_order so
+            JOIN sale_order_line sol ON sol.order_id = so.id
+            JOIN sale_order_line_invoice_rel solam ON sol.id = solam.order_line_id
+            JOIN account_move_line aml ON aml.id = solam.invoice_line_id
+            JOIN account_move am ON am.id = aml.move_id
+            
+            WHERE so.origin_order_id IN %s
+            AND am.move_type IN ('out_invoice', 'out_refund')
+            GROUP BY so.origin_order_id
+        """
+        self.env.cr.execute(sql, [tuple(origin for origin in so_by_origin)])
+        for origin_id, invoices_ids in self.env.cr.fetchall():
+            so_by_origin[origin_id].update({
+                'invoice_ids': invoices_ids,
+                'invoice_count': len(invoices_ids)
+            })
+        return res
 
     @api.depends('start_date', 'subscription_child_ids', 'recurring_monthly')
     def _compute_recurring_live(self):
@@ -587,7 +629,8 @@ class SaleOrder(models.Model):
         When confirming an upsell order, the recurring product lines must be updated
         """
         for so in self:
-            if so.subscription_id.invoice_count == 0:
+            # We check the subscription direct invoice and not the one related to the whole SO
+            if len(so.subscription_id.order_line.invoice_lines) == 0:
                 raise ValidationError(_("You can not upsell a subscription that has not been invoiced yet. "
                                         "Please, update directly the %s contract or invoice it first.", so.name))
         existing_line_ids = self.subscription_id.order_line

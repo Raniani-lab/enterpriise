@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { GroupMenu } from "./group_menu"
+import { GroupMenu } from "./group_menu";
 import { download } from "@web/core/network/download";
 import { useService } from "@web/core/utils/hooks";
 import { ActionMenus } from "@web/search/action_menus/action_menus";
@@ -28,19 +28,21 @@ export class MrpMpsControlPanel extends ControlPanel {
     }
 
     getActionMenuItems() {
-        return Object.assign({}, { other: [{
-            key: "export",
-            description: this.env._t("Export"),
-            callback: () => this.onExportData(),
-        }, {
-            key: "delete",
-            description: this.env._t("Delete"),
-            callback: () => this.unlinkSelectedRecord(),
-        }, {
-            key: "replenish",
-            description: this.env._t("Replenish"),
-            callback: () => this.replenishSelectedRecords(),
-        }]});
+        return Object.assign({}, {
+            other: [{
+                key: "export",
+                description: this.env._t("Export"),
+                callback: () => this.onExportData(),
+            }, {
+                key: "delete",
+                description: this.env._t("Delete"),
+                callback: () => this.unlinkSelectedRecord(),
+            }, {
+                key: "replenish",
+                description: this.env._t("Replenish"),
+                callback: () => this.replenishSelectedRecords(),
+            }]
+        });
     }
 
     /**
@@ -55,13 +57,11 @@ export class MrpMpsControlPanel extends ControlPanel {
     }
 
     _onMouseOverReplenish(ev) {
-        const table = $('tr');
-        table.find('.o_mrp_mps_to_replenish').addClass('o_mrp_mps_hover');
+        this.model.mouseOverReplenish()
     }
 
     _onMouseOutReplenish(ev) {
-        const table = $('tr');
-        table.find('.o_mrp_mps_hover').removeClass('o_mrp_mps_hover');
+        this.model.mouseOutReplenish()
     }
 
     _onClickCreate(ev) {

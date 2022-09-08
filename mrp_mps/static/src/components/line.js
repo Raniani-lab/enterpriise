@@ -4,7 +4,7 @@ import { CheckBox } from "@web/core/checkbox/checkbox";
 import { useService } from "@web/core/utils/hooks";
 import fieldUtils from 'web.field_utils';
 
-const { Component, useRef, onPatched } = owl;
+const { Component, useRef, onPatched, onWillStart } = owl;
 
 export default class MpsLineComponent extends Component {
 
@@ -28,6 +28,11 @@ export default class MpsLineComponent extends Component {
                 }
             }
         });
+
+        onWillStart(async () => {
+            this.model.on('mouse-over', this, () => this._onMouseOverReplenish());
+            this.model.on('mouse-out', this, () => this._onMouseOutReplenish());
+        });
     }
 
     get productionSchedule() {
@@ -49,9 +54,8 @@ export default class MpsLineComponent extends Component {
     /**
      * Handles the click on replenish button. It will call action_replenish with
      * all the Ids present in the view.
-     *
      * @private
-     * @param {Object} [id] mrp.production.schedule Id.
+     * @param {Integer} id mrp.production.schedule Id.
      */
     _onClickReplenish(id) {
         this.model._actionReplenish([id]);
@@ -59,8 +63,8 @@ export default class MpsLineComponent extends Component {
 
     /**
      * Handles the click on product name. It will open the product form view
-     *
      * @private
+     * @param {MouseEvent} ev
      */
     _onClickRecordLink(ev) {
         this.actionService.doAction({
@@ -79,6 +83,7 @@ export default class MpsLineComponent extends Component {
      *
      * @private
      * @param {MouseEvent} ev
+     * @param {Integer} id mrp.production.schedule Id.
      */
     _onClickEdit(ev, id) {
         this.model._editProduct(id);
@@ -87,9 +92,8 @@ export default class MpsLineComponent extends Component {
     /**
      * Handles the click on unlink button. A dialog ask for a confirmation and
      * it will unlink the product.
-     *
      * @private
-     * @param {Object} [id] mrp.production.schedule Id.
+     * @param {Object} id mrp.production.schedule Id.
      */
     _onClickUnlink(id) {
         this.model._unlinkProduct([id]);
@@ -98,7 +102,7 @@ export default class MpsLineComponent extends Component {
     _onClickOpenDetails(ev) {
         const dateStart = ev.target.dataset.date_start;
         const dateStop = ev.target.dataset.date_stop;
-        const dateStr = this.env.manufacturingPeriods[ev.target.dataset.date_index];
+        const dateStr = this.model.data.dates[ev.target.dataset.date_index];
         const action = ev.target.dataset.action;
         const productionScheduleId = Number(ev.target.closest('.o_mps_content').dataset.id);
         this.model._actionOpenDetails(productionScheduleId, action, dateStr, dateStart, dateStop);
@@ -106,53 +110,49 @@ export default class MpsLineComponent extends Component {
 
     /**
      * Handles the change on a forecast cell.
-     *
      * @private
-     * @param {jQuery.Event} ev
-     * @param {Object} [productionScheduleId] mrp.production.schedule Id.
+     * @param {Event} ev
+     * @param {Object} productionScheduleId mrp.production.schedule Id.
      */
     _onChangeForecast(ev, productionScheduleId) {
-        const self = this;
         const dateIndex = parseInt(ev.target.dataset.date_index);
         const forecastQty = ev.target.value;
-        if (forecastQty === "" || isNaN(forecastQty)){
+        if (forecastQty === "" || isNaN(forecastQty)) {
             ev.target.value = this.model._getOriginValue(productionScheduleId, dateIndex, 'forecast_qty');
-        } else {;
-            this.model._saveForecast(productionScheduleId, dateIndex, forecastQty).then(function () {
+        } else {
+            this.model._saveForecast(productionScheduleId, dateIndex, forecastQty).then(() => {
                 const inputSelector = 'input[data-date_index="' + (dateIndex + 1) + '"]';
-                const nextInput = self.forecastRow.el.querySelector(inputSelector);
+                const nextInput = this.forecastRow.el.querySelector(inputSelector);
                 if (nextInput) {
                     nextInput.select();
                 }
-            }, function () {
+            }, () => {
                 ev.target.value = this.model._getOriginValue(productionScheduleId, dateIndex, 'forecast_qty');
-            })
+            });
         }
     }
 
     /**
      * Handles the quantity To Replenish change on a forecast cell.
-     *
      * @private
-     * @param {jQuery.Event} ev
-     * @param {Object} [id] mrp.production.schedule Id.
+     * @param {Event} ev
+     * @param {Object} productionScheduleId mrp.production.schedule Id.
      */
-    async _onChangeToReplenish(ev, productionScheduleId) {
-        const self = this;
+    _onChangeToReplenish(ev, productionScheduleId) {
         const dateIndex = parseInt(ev.target.dataset.date_index);
         const replenishQty = ev.target.value;
-        if (replenishQty === "" || isNaN(replenishQty)){
-            ev.target.value = self.model._getOriginValue(productionScheduleId, dateIndex, 'replenish_qty');
+        if (replenishQty === "" || isNaN(replenishQty)) {
+            ev.target.value = this.model._getOriginValue(productionScheduleId, dateIndex, 'replenish_qty');
         } else {
-            self.model._saveToReplenish(productionScheduleId, dateIndex, replenishQty).then(function () {
+            this.model._saveToReplenish(productionScheduleId, dateIndex, replenishQty).then(() => {
                 const inputSelector = 'input[data-date_index="' + (dateIndex + 1) + '"]';
-                const nextInput = self.replenishRow.el.querySelector(inputSelector);
+                const nextInput = this.replenishRow.el.querySelector(inputSelector);
                 if (nextInput) {
                     nextInput.select();
                 }
-            }, function () {
-                ev.target.value = self.model._getOriginValue(productionScheduleId, dateIndex, 'replenish_qty');
-            })
+            }, () => {
+                ev.target.value = this.model._getOriginValue(productionScheduleId, dateIndex, 'replenish_qty');
+            });
         }
     }
 
@@ -180,14 +180,14 @@ export default class MpsLineComponent extends Component {
     }
 
     _onMouseOverReplenish(ev) {
-        const el = ev.currentTarget.closest('tbody').getElementsByClassName('o_mrp_mps_forced_replenish')[0];
+        const el = this.replenishRow.el.getElementsByClassName('o_mrp_mps_forced_replenish')[0];
         if (el) {
             el.classList.add('o_mrp_mps_hover');
         }
     }
 
     _onMouseOutReplenish(ev) {
-        const el = ev.currentTarget.closest('tbody').getElementsByClassName('o_mrp_mps_hover')[0];
+        const el = this.replenishRow.el.getElementsByClassName('o_mrp_mps_hover')[0];
         if (el) {
             el.classList.remove('o_mrp_mps_hover');
         }
@@ -202,4 +202,4 @@ export default class MpsLineComponent extends Component {
 MpsLineComponent.template = 'mrp_mps.MpsLineComponent';
 MpsLineComponent.components = {
     CheckBox,
-}
+};

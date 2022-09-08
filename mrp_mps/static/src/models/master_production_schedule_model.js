@@ -30,33 +30,32 @@ export class MasterProductionScheduleModel extends EventBus {
         if (limit !== undefined) {
             this.limit = limit;
         }
-        this.data = await this.orm.call( 'mrp.production.schedule', 'get_mps_view_state', [this.domain, this.offset, this.limit]);
+        this.data = await this.orm.call('mrp.production.schedule', 'get_mps_view_state', [this.domain, this.offset, this.limit]);
         this.notify();
     }
 
     async reload(productionScheduleId) {
-        const self = this;
-        return await self.orm.call(
+        return await this.orm.call(
             'mrp.production.schedule',
             'get_impacted_schedule',
-            [productionScheduleId, self.domain],
-        ).then(function (productionScheduleIds) {
+            [productionScheduleId, this.domain],
+        ).then((productionScheduleIds) => {
             productionScheduleIds.push(productionScheduleId);
-            return self.orm.call(
+            return this.orm.call(
                 'mrp.production.schedule',
                 'get_production_schedule_view_state',
                 [productionScheduleIds],
-            )
-        }).then(function (production_schedule_ids){
+            );
+        }).then((production_schedule_ids) => {
             for (var i = 0; i < production_schedule_ids.length; i++) {
-                const index = self.data.production_schedule_ids.findIndex(ps => ps.id === production_schedule_ids[i].id);
+                const index = this.data.production_schedule_ids.findIndex(ps => ps.id === production_schedule_ids[i].id);
                 if (index >= 0) {
-                    self.data.production_schedule_ids.splice(index, 1, production_schedule_ids[i]);
+                    this.data.production_schedule_ids.splice(index, 1, production_schedule_ids[i]);
                 } else {
-                    self.data.production_schedule_ids.push(production_schedule_ids[i]);
+                    this.data.production_schedule_ids.push(production_schedule_ids[i]);
                 }
             }
-            self.notify();
+            this.notify();
         });
     }
 
@@ -70,24 +69,22 @@ export class MasterProductionScheduleModel extends EventBus {
      * If the procurementIds list is empty, it replenish all the schedules under
      * the current domain. Reload the content after the replenish in order to
      * display the new forecast cells to run.
-     *
      * @private
-     * @param {Array} [productionScheduleIds] mrp.production.schedule ids to
+     * @param {Integer[]} productionScheduleIds mrp.production.schedule ids to
      * replenish.
      * @return {Promise}
      */
     _actionReplenish(productionScheduleIds, basedOnLeadTime = false) {
-        const self = this;
-        this.mutex.exec(function () {
-            return self.orm.call(
+        this.mutex.exec(() => {
+            return this.orm.call(
                 'mrp.production.schedule',
                 'action_replenish',
                 [productionScheduleIds, basedOnLeadTime],
-            ).then(function (){
+            ).then(() => {
                 if (productionScheduleIds.length === 1) {
-                    self.reload(productionScheduleIds[0]);
+                    this.reload(productionScheduleIds[0]);
                 } else {
-                    self.load();
+                    this.load();
                 }
             });
         });
@@ -108,22 +105,20 @@ export class MasterProductionScheduleModel extends EventBus {
      * to update its To Replenish quantity and its safety stock (current and
      * future period). Also update the other schedules linked by BoM in order
      * to update them depending the indirect demand.
-     *
      * @private
-     * @param {Object} [productionScheduleId] mrp.production.schedule Id.
-     * @param {Integer} [dateIndex] period to save (column number)
-     * @param {Float} [forecastQty] The new forecasted quantity
+     * @param {Integer} productionScheduleId mrp.production.schedule Id.
+     * @param {Integer} dateIndex period to save (column number)
+     * @param {Float} forecastQty The new forecasted quantity
      * @return {Promise}
      */
     _saveForecast(productionScheduleId, dateIndex, forecastQty) {
-        const self = this;
-        return this.mutex.exec(function() {
-            self.orm.call(
+        return this.mutex.exec(() => {
+            this.orm.call(
                 'mrp.production.schedule',
                 'set_forecast_qty',
                 [productionScheduleId, dateIndex, forecastQty],
-            ).then(function () {
-                return self.reload(productionScheduleId);
+            ).then(() => {
+                return this.reload(productionScheduleId);
             });
         });
     }
@@ -131,15 +126,13 @@ export class MasterProductionScheduleModel extends EventBus {
     /**
      * Open the mrp.production.schedule form view in order to create the record.
      * Once the record is created get its state and render it.
-     *
      * @private
      * @return {Promise}
      */
     _createProduct() {
-        const self = this;
-        this.mutex.exec(function () {
-            self.action.doAction('mrp_mps.action_mrp_mps_form_view',{
-                onClose: () => self.load(),
+        this.mutex.exec(() => {
+            this.action.doAction('mrp_mps.action_mrp_mps_form_view', {
+                onClose: () => this.load(),
             });
         });
     }
@@ -147,14 +140,12 @@ export class MasterProductionScheduleModel extends EventBus {
     /**
      * Open the mrp.production.schedule form view in order to edit the record.
      * Once the record is edited get its state and render it.
-     *
      * @private
-     * @param {Object} [productionScheduleId] mrp.production.schedule Id.
+     * @param {Integer} productionScheduleId mrp.production.schedule Id.
      */
     _editProduct(productionScheduleId) {
-        const self = this;
-        this.mutex.exec(function () {
-            self.action.doAction({
+        this.mutex.exec(() => {
+            this.action.doAction({
                 name: 'Edit Production Schedule',
                 type: 'ir.actions.act_window',
                 res_model: 'mrp.production.schedule',
@@ -162,7 +153,7 @@ export class MasterProductionScheduleModel extends EventBus {
                 target: 'new',
                 res_id: productionScheduleId,
             }, {
-                onClose: () => self.reload(productionScheduleId),
+                onClose: () => this.reload(productionScheduleId),
             });
         });
     }
@@ -170,24 +161,22 @@ export class MasterProductionScheduleModel extends EventBus {
     /**
      * Unlink the production schedule and remove it from the DOM. Use a
      * confirmation dialog in order to avoid a mistake from the user.
-     *
      * @private
-     * @param {Array} [productionScheduleIds] mrp.production.schedule Ids.
+     * @param {Integer[]} productionScheduleIds mrp.production.schedule Ids.
      * @return {Promise}
      */
     _unlinkProduct(productionScheduleIds) {
-        const self = this;
         function doIt() {
-            self.mutex.exec(function () {
-                return Promise.all(productionScheduleIds.map((id) => self.orm.unlink(
+            this.mutex.exec(async () => {
+                return Promise.all(productionScheduleIds.map((id) => this.orm.unlink(
                     'mrp.production.schedule',
                     [id]
-                ))).then(function () {
+                ))).then(() => {
                     for (const productionScheduleId of productionScheduleIds) {
-                        const index = self.data.production_schedule_ids.findIndex(ps => ps.id === productionScheduleId);
-                        self.data.production_schedule_ids.splice(index, 1);
+                        const index = this.data.production_schedule_ids.findIndex(ps => ps.id === productionScheduleId);
+                        this.data.production_schedule_ids.splice(index, 1);
                     }
-                    self.notify();
+                    this.notify();
                 });
             });
         }
@@ -197,7 +186,7 @@ export class MasterProductionScheduleModel extends EventBus {
         this.dialog.add(ConfirmationDialog, {
             body: body,
             title: _t("Confirmation"),
-            confirm: () => doIt(),
+            confirm: doIt.bind(this),
         });
     }
 
@@ -205,15 +194,23 @@ export class MasterProductionScheduleModel extends EventBus {
         return this._unlinkProduct(Array.from(this.selectedRecords));
     }
 
-    _actionOpenDetails(procurementId, action, dateStr, dateStart, dateStop) {
-        const self = this;
-        this.mutex.exec(function () {
-            return self.orm.call(
+    /**
+     *
+     * @param {Integer} productionScheduleId mrp.production.schedule Id
+     * @param {String} action name of the action to be undertaken
+     * @param {String} dateStr name of the period
+     * @param {String} dateStart start date of the period
+     * @param {String} dateStop end date of the period
+     * @return {Promise}
+     */
+    _actionOpenDetails(productionScheduleId, action, dateStr, dateStart, dateStop) {
+        this.mutex.exec(() => {
+            return this.orm.call(
                 'mrp.production.schedule',
                 action,
-                [procurementId, dateStr, dateStart, dateStop]
-            ).then(function (action){
-                return self.action.doAction(action);
+                [productionScheduleId, dateStr, dateStart, dateStop]
+            ).then((action) => {
+                return this.action.doAction(action);
             });
         });
     }
@@ -223,35 +220,39 @@ export class MasterProductionScheduleModel extends EventBus {
      * to update it's safety stock and quantity in future period. Also mark
      * the cell with a blue background in order to show that it was manually
      * updated.
-     *
      * @private
-     * @param {Object} [productionScheduleId] mrp.production.schedule Id.
-     * @param {Integer} [dateIndex] period to save (column number)
-     * @param {Float} [replenishQty] The new quantity To Replenish
+     * @param {Integer} productionScheduleId mrp.production.schedule Id.
+     * @param {Integer} dateIndex period to save (column number)
+     * @param {Float} replenishQty The new quantity To Replenish
      * @return {Promise}
      */
     _saveToReplenish(productionScheduleId, dateIndex, replenishQty) {
-        const self = this;
-        return this.mutex.exec(function () {
-            self.orm.call(
+        return this.mutex.exec(() => {
+            this.orm.call(
                 'mrp.production.schedule',
                 'set_replenish_qty',
                 [productionScheduleId, dateIndex, replenishQty],
-            ).then(function () {
-                return self.reload(productionScheduleId);
+            ).then(() => {
+                return this.reload(productionScheduleId);
             });
         });
     }
 
+    /**
+     * Remove the manual change of replenishQty and load the suggested value.
+     * @private
+     * @param {Integer} productionScheduleId mrp.production.schedule Id.
+     * @param {Integer} dateIndex period to save (column number)
+     * @return {Promise}
+     */
     _removeQtyToReplenish(productionScheduleId, dateIndex) {
-        const self = this;
-        return this.mutex.exec(function () {
-            self.orm.call(
+        return this.mutex.exec(() => {
+            this.orm.call(
                 'mrp.production.schedule',
                 'remove_replenish_qty',
                 [productionScheduleId, dateIndex]
-            ).then(function () {
-                return self.reload(productionScheduleId);
+            ).then(() => {
+                return this.reload(productionScheduleId);
             });
         });
     }
@@ -262,27 +263,32 @@ export class MasterProductionScheduleModel extends EventBus {
 
     /**
      * Save the company settings and hide or display the rows.
-     *
      * @private
-     * @param {Object} [values] {field_name: field_value}
+     * @param {Object} values {field_name: field_value}
      */
     _saveCompanySettings(values) {
-        const self = this;
-        this.mutex.exec(function () {
-            self.orm.write(
+        this.mutex.exec(() => {
+            this.orm.write(
                 'res.company',
-                [self.data.company_id],
+                [this.data.company_id],
                 values,
-            ).then(function () {
-                self.load();
+            ).then(() => {
+                this.load();
             });
         });
     }
 
+    mouseOverReplenish() {
+        this.trigger('mouse-over');
+    }
+
+    mouseOutReplenish() {
+        this.trigger('mouse-out');
+    }
+
     selectAll() {
-        const self = this;
         this.data.production_schedule_ids.map(
-            ({ id }) => self.selectedRecords.add(id)
+            ({ id }) => this.selectedRecords.add(id)
         );
     }
 
@@ -309,5 +315,3 @@ export class MasterProductionScheduleModel extends EventBus {
     }
 
 }
-
-MasterProductionScheduleModel.services = ["action", "dialog"];

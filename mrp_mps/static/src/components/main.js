@@ -13,8 +13,6 @@ import { CallbackRecorder, useSetupAction } from "@web/webclient/actions/action_
 
 const { Component, onWillStart, useSubEnv, useChildSubEnv } = owl;
 
-const defaultPagerSize = 5;
-
 class MainComponent extends Component {
     //--------------------------------------------------------------------------
     // Lifecycle
@@ -36,10 +34,10 @@ class MainComponent extends Component {
             config: {
                 ...getDefaultConfig(),
                 offset: 0,
-                limit: defaultPagerSize,
+                limit: 20,
                 mpsImportRecords: true,
             },
-        })
+        });
 
         useSetupAction({
             getContext: () => {
@@ -58,7 +56,7 @@ class MainComponent extends Component {
 
         useBus(this.SearchModel, "update", () => {
             this.env.config.offset = 0;
-            this.env.config.limit = defaultPagerSize;
+            this.env.config.limit = 20;
             this.model.load(this.SearchModel.domain, this.env.config.offset, this.env.config.limit);
         });
 
@@ -87,18 +85,17 @@ class MainComponent extends Component {
         });
 
         usePager(() => {
-            const self = this;
             return {
-                offset: self.env.config.offset,
-                limit: self.env.config.limit,
-                total: self.model.data.count,
+                offset: this.env.config.offset,
+                limit: this.env.config.limit,
+                total: this.model.data.count,
                 onUpdate: async ({ offset, limit }) => {
-                    self.env.config.offset = offset;
-                    self.env.config.limit = limit;
-                    self.model.load(self.SearchModel.domain, offset, limit);
-                    self.render(true);
+                    this.env.config.offset = offset;
+                    this.env.config.limit = limit;
+                    this.model.load(this.SearchModel.domain, offset, limit);
+                    this.render(true);
                 },
-            }
+            };
         });
     }
 

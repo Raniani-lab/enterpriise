@@ -2,4 +2,5 @@
 
 from . import test_barcode
 from . import test_barcode_client_action
-from . import test_barcode_picking_type_config
+from . import test_barcode_client_action_inventory
+from . import test_barcode_client_action_picking

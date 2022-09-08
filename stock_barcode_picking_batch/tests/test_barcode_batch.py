@@ -3,7 +3,7 @@
 
 from odoo.tests import tagged
 from odoo.tests.common import Form
-from odoo.addons.stock_barcode.tests.test_barcode_client_action import clean_access_rights, TestBarcodeClientAction
+from odoo.addons.stock_barcode.tests.test_barcode_client_action import TestBarcodeClientAction
 
 
 @tagged('post_install', '-at_install')
@@ -11,7 +11,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
     def setUp(self):
         super().setUp()
 
-        clean_access_rights(self.env)
+        self.clean_access_rights()
         grp_lot = self.env.ref('stock.group_production_lot')
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         grp_pack = self.env.ref('stock.group_tracking_lot')
@@ -412,7 +412,7 @@ class TestBarcodeBatchClientAction(TestBarcodeClientAction):
         Put first picking line in a package and the second one in another package,
         then change the location page and scan the suggested packaged for each picking lines.
         """
-        clean_access_rights(self.env)
+        self.clean_access_rights()
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
         self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0)]})
         grp_pack = self.env.ref('stock.group_tracking_lot')

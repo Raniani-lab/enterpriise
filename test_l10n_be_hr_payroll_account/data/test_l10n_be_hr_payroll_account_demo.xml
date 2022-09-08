@@ -1816,7 +1816,6 @@
         <field name="employee_requests">yes</field>
         <field name="leave_validation_type">both</field>
         <field name="request_unit">hour</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1828,7 +1827,6 @@
         <field name="name">Unpaid</field>
         <field name="requires_allocation">no</field>
         <field name="leave_validation_type">both</field>
-        <field name="color_name">brown</field>
         <field name="request_unit">hour</field>
         <field name="unpaid" eval="True"/>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_unpaid"/>
@@ -1842,7 +1840,6 @@
         <field name="requires_allocation">yes</field>
         <field name="employee_requests">no</field>
         <field name="allocation_validation_type">officer</field>
-        <field name="color_name">brown</field>
         <field name="leave_validation_type">both</field>
         <field name="responsible_id" ref="base.user_admin"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1854,7 +1851,6 @@
         <field name="name">Public Holiday</field>
         <field name="requires_allocation">no</field>
         <field name="leave_validation_type">both</field>
-        <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1865,7 +1861,6 @@
         <field name="name">Public Holiday Compensation</field>
         <field name="requires_allocation">no</field>
         <field name="leave_validation_type">both</field>
-        <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -1876,7 +1871,6 @@
         <field name="name">Small Unemployment (Brief Holiday)</field>
         <field name="requires_allocation">no</field>
         <field name="leave_validation_type">both</field>
-        <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
@@ -2355,7 +2349,6 @@
         <field name="employee_requests">no</field>
         <field name="allocation_validation_type">officer</field>
         <field name="leave_validation_type">both</field>
-        <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
         <field name="responsible_id" ref="base.user_admin"/>
@@ -2369,7 +2362,6 @@
         <field name="employee_requests">no</field>
         <field name="allocation_validation_type">officer</field>
         <field name="leave_validation_type">both</field>
-        <field name="color_name">black</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
         <field name="responsible_id" ref="base.user_admin"/>

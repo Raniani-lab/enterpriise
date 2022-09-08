@@ -5,7 +5,6 @@
         <field name="requires_allocation">yes</field>
         <field name="employee_requests">yes</field>
         <field name="request_unit">half_day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_small_unemployment"></field>
         <field name="company_id" eval="False"/>
@@ -16,7 +15,6 @@
         <field name="requires_allocation">no</field>
         <field name="leave_validation_type">no_validation</field>
         <field name="request_unit">half_day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_maternity"></field>
         <field name="company_id" eval="False"/>
@@ -26,7 +24,6 @@
         <field name="name">Unpredictable Reason</field>
         <field name="requires_allocation">no</field>
         <field name="request_unit">half_day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_unpredictable"></field>
         <field name="company_id" eval="False"/>
@@ -37,7 +34,6 @@
         <field name="requires_allocation">yes</field>
         <field name="employee_requests">yes</field>
         <field name="request_unit">half_day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_training_time_off"></field>
         <field name="company_id" eval="False"/>
@@ -52,7 +48,6 @@
         <field name="requires_allocation">yes</field>
         <field name="employee_requests">yes</field>
         <field name="request_unit">half_day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_extra_legal"></field>
         <field name="company_id" eval="False"/>
@@ -63,7 +58,6 @@
         <field name="requires_allocation">yes</field>
         <field name="employee_requests">yes</field>
         <field name="request_unit">day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_recovery"></field>
         <field name="company_id" eval="False"/>
@@ -74,7 +68,6 @@
         <field name="requires_allocation">yes</field>
         <field name="employee_requests">yes</field>
         <field name="request_unit">half_day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_european"></field>
         <field name="company_id" eval="False"/>
@@ -84,7 +77,6 @@
         <field name="name">Credit Time</field>
         <field name="requires_allocation">no</field>
         <field name="request_unit">half_day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" eval="ref('hr_holidays.mt_leave')"/>
         <field name="work_entry_type_id" ref="work_entry_type_credit_time"></field>
         <field name="company_id" eval="False"/>
@@ -93,7 +85,6 @@
     <record id="holiday_status_work_accident" model="hr.leave.type">
         <field name="name">Work Accident Time Off</field>
         <field name="requires_allocation">no</field>
-        <field name="color_name">red</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_work_accident"/>
         <field name="company_id" eval="False"/>
@@ -103,7 +94,6 @@
         <field name="name">Strike</field>
         <field name="requires_allocation">no</field>
         <field name="request_unit">half_day</field>
-        <field name="color_name">lavender</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="work_entry_type_id" ref="work_entry_type_strike"></field>
         <field name="company_id" eval="False"/>

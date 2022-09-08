@@ -12,7 +12,7 @@ class ArticleMember(models.Model):
 
     article_id = fields.Many2one(
         'knowledge.article', 'Article',
-        index=True, ondelete='cascade', required=True)
+        ondelete='cascade', required=True)
     partner_id = fields.Many2one(
         'res.partner', 'Partner',
         index=True, ondelete='cascade', required=True)
@@ -85,9 +85,6 @@ class ArticleMember(models.Model):
                       user_name=member.partner_id.display_name,
                       article_name=member.article_id.display_name
                       ))
-
-    def init(self):
-        self._cr.execute("CREATE INDEX IF NOT EXISTS knowledge_article_member_article_partner_idx ON knowledge_article_member (article_id, partner_id)")
 
     def write(self, vals):
         """ Whatever rights, avoid any attempt at privilege escalation. """

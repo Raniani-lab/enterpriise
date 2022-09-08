@@ -126,7 +126,7 @@
                                             </tr>
                                             <tr>
                                                 <th class="text-end pb-0">Reference:</th>
-                                                <td class="w-100 pb-0"><span t-field="subscription.client_order_ref"/></td>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="subscription.client_order_ref"/></td>
                                             </tr>
                                             <tr t-if="subscription.end_date">
                                                 <th class="text-end pb-0">Valid Until:</th>

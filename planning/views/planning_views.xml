@@ -46,7 +46,7 @@
 
                     <button name="action_self_unassign" class="btn btn-secondary" type="object" string="I Am Unavailable"
                         attrs="{'invisible': ['|', '|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False),
-                        ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True), ('resource_type', '=', 'material')]}"/>
+                        ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True), ('resource_type', '=', 'material')]}" invisible="not context.get('search_default_my_shifts')"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
                         attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="v" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish"
@@ -301,8 +301,8 @@
                 <filter name="shift_planned" invisible="1" string="Shifts Planned" groups="planning.group_planning_user" context="{'highlight_planned': 1}"/>
                 <filter name="conflict_shifts" string="Shifts in Conflict" groups="planning.group_planning_user" context="{'highlight_conflicting': 1}"/>
                 <separator/>
-                <filter string="Human" name="human" domain="[('resource_type','=', 'user')]" groups="planning.group_planning_user"/>
-                <filter string="Material" name="material" domain="[('resource_type','=', 'material')]" groups="planning.group_planning_user"/>
+                <filter string="Employees" name="employees" domain="[('resource_type','=', 'user')]" groups="planning.group_planning_user"/>
+                <filter string="Materials" name="materials" domain="[('resource_type','=', 'material')]" groups="planning.group_planning_user"/>
                 <separator/>
                 <filter name="unpublished_shifts" string="Draft" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
                 <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
@@ -502,8 +502,8 @@
         <field name="arch" type="xml">
             <tree string="Planning Role List" editable="bottom" multi_edit="1">
                 <field name="sequence" widget="handle"/>
-                <field name="name"/>
-                <field name="resource_ids" widget="many2many_avatar_resource" optional="show" context="{'form_view_ref': 'planning.resource_resource_form_tags_view_inherit', 'show_job_title': True, 'from_planning': True}"/>
+                <field name="name" placeholder="e.g. Cleaner"/>
+                <field name="resource_ids" widget="many2many_avatar_resource" optional="show" context="{'form_view_ref': 'planning.resource_resource_form_tags_view_inherit', 'show_job_title': True, 'from_planning': True}" placeholder="e.g. John Doe"/>
                 <field name="color" widget="color_picker" optional="show"/>
             </tree>
         </field>
@@ -580,6 +580,9 @@
                 <filter name="my_team" string="My Team" domain="[('resource_ids.employee_id.parent_id.user_id', '=', uid)]"/>
                 <filter name="my_department" string="My Department" domain="[('resource_ids.employee_id.member_of_department', '=', True)]"/>
                 <separator/>
+                <filter name="role_for_employee" string="Employees" domain="[('resource_ids.resource_type', '=', 'user')]"/>
+                <filter name="role_for_material" string="Materials" domain="[('resource_ids.resource_type', '=', 'material')]"/>
+                <separator/>
                 <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group string="Group By">
                     <filter name="group_by_resource" string="Resources" context="{'group_by': 'resource_ids'}"/>
@@ -606,7 +609,7 @@
     <record id="planning_action_my_calendar" model="ir.actions.act_window">
         <field name="name">My Planning</field>
         <field name="res_model">planning.slot</field>
-        <field name="view_mode">calendar,gantt,tree,form,kanban,pivot,graph</field>
+        <field name="view_mode">calendar,gantt,tree,form,kanban</field>
         <field name="context">{'search_default_my_shifts': 1, 'search_default_open_shifts': 1, 'search_default_unwanted_shifts': 1, 'planning_expand_resource': 1, 'planning_expand_role': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -641,20 +644,6 @@
             <field name="sequence" eval="30"/>
             <field name="view_mode">kanban</field>
             <field name="view_id" ref="planning.planning_view_kanban"/>
-            <field name="act_window_id" ref="planning_action_my_calendar"/>
-        </record>
-
-        <record id="planning_action_my_planning_view_pivot" model="ir.actions.act_window.view">
-            <field name="sequence" eval="40"/>
-            <field name="view_mode">pivot</field>
-            <field name="view_id" ref="planning_view_pivot"/>
-            <field name="act_window_id" ref="planning_action_my_calendar"/>
-        </record>
-
-        <record id="planning_action_my_planning_view_graph" model="ir.actions.act_window.view">
-            <field name="sequence" eval="50"/>
-            <field name="view_mode">graph</field>
-            <field name="view_id" ref="planning_view_graph"/>
             <field name="act_window_id" ref="planning_action_my_calendar"/>
         </record>
 

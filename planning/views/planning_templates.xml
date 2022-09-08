@@ -146,7 +146,7 @@
                                             <form t-attf-action="/planning/#{planning_planning_id.access_token}/#{employee.employee_token}/assign/#{shift.id}" method="post">
                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                                 <input type="hidden" name="message" value="assign"/>
-                                                <button type="submit" class="btn btn-primary">ASSIGN TO ME</button>
+                                                <button type="submit" class="btn btn-primary">I Take It</button>
                                             </form>
                                         </div>
                                     </td>

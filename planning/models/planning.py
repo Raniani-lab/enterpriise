@@ -1632,6 +1632,13 @@ class Planning(models.Model):
                 continue
             values['start_datetime'] = slot._add_delta_with_dst(values['start_datetime'], delta)
             values['end_datetime'] = slot._add_delta_with_dst(values['end_datetime'], delta)
+            if any(
+                new_slot['resource_id'] == values['resource_id'] and
+                new_slot['start_datetime'] <= values['end_datetime'] and
+                new_slot['end_datetime'] >= values['start_datetime']
+                for new_slot in new_slot_values
+            ):
+                values['resource_id'] = False
             interval = Intervals([(
                 pytz.utc.localize(values.get('start_datetime')),
                 pytz.utc.localize(values.get('end_datetime')),

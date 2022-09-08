@@ -488,7 +488,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
 
             # initial company's recurrency should have created 9 slots since it's span is two month
             # other company's recurrency should have create 5 slots since it's span is one month
-            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 18, 'initial company\'s span is two month, so 2 * 9 slots')
+            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 10, 'There will be a 10 slots because becuase other companys slot will become open slots')
             self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 5, 'other company\'s span is one month, so only 5 slots')
 
             self.assertEqual(slot1.company_id, slot1.recurrency_id.company_id, "Recurrence and slots (1) must have the same company")
@@ -657,3 +657,25 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
         })
         self.assertEqual(slot.name, 'cuicui', 'This slot should not be modified')
         self.assertTrue(all(slot.name == 'coucou' for slot in other_slots), 'Other slots should be modified')
+
+    def test_recurrence_with_already_planned_shift(self):
+        with self._patch_now('2020-01-01 08:00:00'):
+            PlanningSlot = self.env['planning.slot']
+            dummy, slot = PlanningSlot.create([{
+                'start_datetime': datetime(2020, 1, 8, 8, 0),
+                'end_datetime': datetime(2020, 1, 8, 17, 0),
+                'resource_id': self.resource_bert.id,
+            }, {
+                'start_datetime': datetime(2020, 1, 6, 8, 0),
+                'end_datetime': datetime(2020, 1, 6, 17, 0),
+                'resource_id': self.resource_bert.id,
+                'repeat': True,
+                'repeat_unit': 'day',
+                'repeat_type': 'until',
+                'repeat_until': datetime(2020, 1, 10, 15, 0),
+                'repeat_interval': 1,
+            }])
+
+            open_shift_count = PlanningSlot.search_count([('resource_id', '=', False), ('recurrency_id', '=', slot.recurrency_id.id)])
+            self.assertEqual(open_shift_count, 1, 'Open shift should be created instead of recurring shift if resource already has a shift planned')
+            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 5, 'There should be 5 shifts: 1 already planned shift and 4 recurring shifts')

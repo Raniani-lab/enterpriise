@@ -88,8 +88,15 @@ class PlanningRecurrency(models.Model):
                 range_limit = min([dt for dt in [recurrence_end_dt, stop_datetime] if dt])
 
                 # generate recurring slots
+                resource = recurrency.slot_ids.resource_id[-1:]
                 recurrency_delta = get_timedelta(recurrency.repeat_interval, recurrency.repeat_unit)
                 next_start = PlanningSlot._add_delta_with_dst(slot.start_datetime, recurrency_delta)
+                occurring_slots = PlanningSlot.search_read([
+                    ('resource_id', '=', resource.id),
+                    ('company_id', '=', resource.company_id.id),
+                    ('start_datetime', '>=', next_start),
+                    ('end_datetime', '<=', range_limit)
+                ], ['start_datetime', 'end_datetime'])
 
                 slot_values_list = []
                 while next_start < range_limit:
@@ -101,6 +108,12 @@ class PlanningRecurrency(models.Model):
                         'repeat': True,
                         'state': 'draft'
                     })[0]
+                    if any(
+                        slot_values['start_datetime'] <= occurring_slot['end_datetime'] and
+                        slot_values['end_datetime'] >= occurring_slot['start_datetime']
+                        for occurring_slot in occurring_slots
+                    ):
+                        slot_values['resource_id'] = False
                     slot_values_list.append(slot_values)
                     next_start = PlanningSlot._add_delta_with_dst(next_start, recurrency_delta)
 

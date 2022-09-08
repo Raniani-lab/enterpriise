@@ -17,7 +17,7 @@
         </xpath>
         <xpath expr="//td[@name='role_id']" position="after">
             <td t-if="open_slot_has_sale_line" class="align-middle" name="sale_line_id">
-                <t t-esc="shift.sale_line_id.order_id.name"/> - <t t-esc="shift.sale_line_id.name"/>
+                <t t-esc="shift.sale_line_id.order_id.name"/><t t-if="shift.sale_line_id"> - </t><t t-esc="shift.sale_line_id.name"/>
             </td>
         </xpath>
     </template>

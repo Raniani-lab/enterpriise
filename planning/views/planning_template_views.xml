@@ -11,7 +11,7 @@
                         <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                         <group>
                             <group>
-                                <label for="start_time" widget="float_time"/>
+                                <label for="start_time" string="Start &amp; End Hours" widget="float_time"/>
                                 <div class="d-flex flex-column flex-shrink-1">
                                     <div class="d-flex">
                                         <field name="start_time" widget="float_time" class="oe_inline"/>

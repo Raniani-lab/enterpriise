@@ -8,21 +8,17 @@ class ResPartner(models.Model):
     _name = 'res.partner'
     _inherit = 'res.partner'
 
-    def _execute_followup_partner(self):
-        for partner in self:
-            if partner.followup_status == 'in_need_of_action':
-                followup_line = partner.followup_level
-                if followup_line.send_letter:
-                    letter = self.env['snailmail.letter'].create({
-                        'state': 'pending',
-                        'partner_id': partner.id,
-                        'model': 'res.partner',
-                        'res_id': partner.id,
-                        'user_id': self.env.user.id,
-                        'report_template': self.env.ref('account_followup.action_report_followup').id,
-                        # we will only process partners that are linked to the user current company
-                        # TO BE CHECKED
-                        'company_id': self.env.company.id,
-                    })
-                    letter._snailmail_print()
-        return super(ResPartner, self)._execute_followup_partner()
+    def send_followup_snailmail(self, options):
+        """
+        Send a follow-up report by post to customers in self
+        """
+        for record in self:
+            options['partner_id'] = record.id
+            self.env['account.followup.report']._send_snailmail(options)
+
+    def _send_followup_to_followup_partners(self, options):
+        # OVERRIDE account_followup/models/res_partner.py
+        super()._send_followup_to_followup_partners(options)
+        followup_line = options.get('followup_line')
+        if options.get('snailmail', followup_line.send_email):
+            self.send_followup_snailmail(options)

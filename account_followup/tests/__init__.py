@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-# import tests
-
-from . import test_ui
-from . import test_followup
+from . import test_account_followup
+from . import test_followup_report

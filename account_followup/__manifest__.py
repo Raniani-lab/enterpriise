@@ -17,7 +17,7 @@ Once it is defined, you can automatically print recalls every day through simply
 ------------------------------------------------------------------------------------------------------
     Payment Follow-Up / Send Email and letters
 
-It will generate a PDF / send emails / set manual actions according to the different levels
+It will generate a PDF / send emails / set activities according to the different levels
 of recall defined. You can define different policies for different companies.
 
 """,
@@ -29,7 +29,9 @@ of recall defined. You can define different policies for different companies.
         'security/sms_security.xml',
         'data/account_followup_data.xml',
         'data/cron.xml',
+        'wizard/followup_manual_reminder_views.xml',
         'views/account_followup_views.xml',
+        'views/account_followup_line_views.xml',
         'views/partner_view.xml',
         'views/report_followup.xml',
         'views/account_journal_dashboard_view.xml',
@@ -47,18 +49,11 @@ of recall defined. You can define different policies for different companies.
             'web/static/lib/bootstrap/scss/_variables.scss',
             ('include', 'web._assets_bootstrap'),
             'web/static/fonts/fonts.scss',
-            'account_followup/static/src/scss/account_followup_letter.scss',
         ],
         'web.assets_backend': [
-            'account_followup/static/src/js/followup_form_view.js',
-            'account_followup/static/src/js/followup_form_model.js',
-            'account_followup/static/src/js/followup_form_renderer.js',
-            'account_followup/static/src/js/followup_form_controller.js',
-            'account_followup/static/src/scss/account_followup_report.scss',
-            'account_followup/static/src/xml/**/*',
-        ],
-        'web.assets_tests': [
-            'account_followup/static/tests/tours/**/*',
+            'account_followup/static/src/components/**/*.js',
+            'account_followup/static/src/components/**/*.scss',
+            'account_followup/static/src/components/**/*.xml',
         ],
     }
 }

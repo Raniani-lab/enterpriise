@@ -160,6 +160,10 @@ class TestSubscriptionDashboard(HttpCase):
         self.subscription.order_line.price_unit = 50 # price_unit is computed from the pricing.price value. We override it
         self.subscription.action_confirm()
         self.subscription._create_recurring_invoice()
+        # _get_invoiced need info saved on the DB
+        invoice = self.subscription.order_line.invoice_lines.move_id
+        invoice.flush_recordset()
+        self.subscription._get_invoiced()
         invoice = self.subscription.invoice_ids
         invoice._post()
 

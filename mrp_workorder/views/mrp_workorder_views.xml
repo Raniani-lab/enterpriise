@@ -111,7 +111,7 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                 <field name="current_quality_check_id" invisible="1"/>
                 <div class="o_workorder_bar">
                     <div class="o_workorder_bar_left o_workorder_bar_content">
-                        <button name="exit" type="workorder_event" class="btn btn-secondary o_exit fa fa-arrow-left o_unblock" title="back"/>
+                        <button name="action_back" type="object" class="btn btn-secondary o_exit fa fa-arrow-left o_unblock" title="back"/>
                         <div class="o_workorder_field">
                             <field name="production_id" options="{'no_open': True}" readonly="1"/> - <field name="name" readonly="1"/>
                         </div>

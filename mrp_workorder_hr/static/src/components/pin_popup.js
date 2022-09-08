@@ -19,12 +19,12 @@ export class PinPopup extends Component {
 
     sendInput(key) {
         if (INPUT_KEYS.has(key)) {
-            if (key == 'Delete') {
+            if (key === 'Delete') {
                 this.state.buffer = '';
-            } else if (key == 'Backspace') {
+            } else if (key === 'Backspace') {
                 this.state.buffer = this.state.buffer.slice(0, -1);
             } else {
-                this.state.buffer = this.state.buffer + key
+                this.state.buffer = this.state.buffer + key;
             }
         }
     }
@@ -40,10 +40,10 @@ export class PinPopup extends Component {
 
     _onKeyUp(ev) {
         if (INPUT_KEYS.has(ev.key)) {
-            this.sendInput(ev.key)
-        } else if (ev.key == 'Enter') {
+            this.sendInput(ev.key);
+        } else if (ev.key === 'Enter') {
             this.confirm();
-        } else if (ev.key == 'Escape') {
+        } else if (ev.key === 'Escape') {
             this.cancel();
         }
     }

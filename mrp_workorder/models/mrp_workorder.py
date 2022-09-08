@@ -105,6 +105,29 @@ class MrpProductionWorkcenterLine(models.Model):
         self.ensure_one()
         if self.is_user_working and self.working_state != 'blocked':
             self.button_pending()
+        domain = [('state', 'not in', ['done', 'cancel', 'pending'])]
+        if self.env.context.get('from_production_order'):
+            action = self.env["ir.actions.actions"]._for_xml_id("mrp.action_mrp_workorder_production_specific")
+            action['domain'] = domain
+            action['target'] = 'main'
+            action['view_id'] = 'mrp.mrp_production_workorder_tree_editable_view'
+            action['context'] = {
+                'no_breadcrumbs': True,
+            }
+            if self.env.context.get('from_manufacturing_order'):
+                action['context'].update({
+                    'search_default_production_id': self.production_id.id
+                })
+        else:
+            # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
+            action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.mrp_workorder_action_tablet")
+            action['domain'] = domain
+            action['context'] = {
+                'no_breadcrumbs': True,
+                'search_default_workcenter_id': self.workcenter_id.id
+            }
+
+        return clean_action(action, self.env)
 
     def action_cancel(self):
         self.mapped('check_ids').filtered(lambda c: c.quality_state == 'none').sudo().unlink()
@@ -483,33 +506,10 @@ class MrpProductionWorkcenterLine(models.Model):
         action = True
         if self.state != 'done':
             action = self.record_production()
-        domain = [('state', 'not in', ['done', 'cancel', 'pending'])]
         if action is not True:
             return action
         # workorder tree view action should redirect to the same view instead of workorder kanban view when WO mark as done.
-        if self.env.context.get('from_production_order'):
-            action = self.env["ir.actions.actions"]._for_xml_id("mrp.action_mrp_workorder_production_specific")
-            action['domain'] = domain
-            action['target'] = 'main'
-            action['view_id'] = 'mrp.mrp_production_workorder_tree_editable_view'
-            action['context'] = {
-                'no_breadcrumbs': True,
-            }
-            if self.env.context.get('from_manufacturing_order'):
-                action['context'].update({
-                    'search_default_production_id': self.production_id.id
-                })
-        else:
-            # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
-            action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.mrp_workorder_action_tablet")
-            action['domain'] = domain
-            action['context'] = {
-                'no_breadcrumbs': True,
-                'search_default_workcenter_id': self.workcenter_id.id
-            }
-        if 'list' in action.get('binding_view_types', ''):
-            action['binding_view_types'].replace("list", "tree")
-        return clean_action(action, self.env)
+        return self.action_back()
 
     def get_workorder_data(self):
         # order quality check chain
@@ -557,7 +557,6 @@ class MrpProductionWorkcenterLine(models.Model):
             'quality_score': score,
             'show_rainbow': show_rainbow,
         }
-
 
     def _action_confirm(self):
         res = super()._action_confirm()

@@ -149,18 +149,6 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
             await this.getState();
         }
     },
-
-    async _getActionBack() {
-        const action = await this._super();
-        if (this.employee) {
-            action.context.employee_id = this.employee.id;
-        }
-        this.state.tabletEmployeeIds.map(e => {
-            this.stopEmployee(e, false, true);
-        });
-        return action;
-    }
-
 });
 
 Tablet.components.SelectionPopup = SelectionPopup;

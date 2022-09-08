@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<templates id="template" xml:space="preserve">
-    <t t-name="mrp_workorder_hr.overviewButtons">
-        <button class="btn btn-secondary o_lock_employee"><span>Log In</span><span class="ml16 text-dark o_employee_name"></span></button>
-    </t>
-</templates>

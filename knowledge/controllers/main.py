@@ -214,6 +214,7 @@ class KnowledgeController(http.Controller):
             "favorites_sudo": favorites_sudo,
             "active_article_id": active_article_id,
             "all_visible_articles": all_visible_articles,
+            "portal_readonly_mode": not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
             "user_write_access_by_article": {
                 article.id: article.user_can_write
                 for article in all_visible_articles

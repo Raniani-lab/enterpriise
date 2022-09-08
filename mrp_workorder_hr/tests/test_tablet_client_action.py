@@ -6,7 +6,7 @@ from odoo import Command
 from odoo.addons.mrp.tests.common import TestMrpCommon
 
 
-@tagged('-post_install', '-at_install')
+@tagged('post_install', '-at_install')
 class TestTabletWorkorderHr(TestMrpCommon, HttpCase):
     def _get_client_action_url(self, workorder_id):
         action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.tablet_client_action")

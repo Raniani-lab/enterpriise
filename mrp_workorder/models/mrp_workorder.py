@@ -7,6 +7,7 @@ from datetime import datetime
 from pytz import utc
 
 from odoo import api, fields, models, _
+from odoo.addons.web.controllers.utils import clean_action
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero, relativedelta
 from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
@@ -508,7 +509,7 @@ class MrpProductionWorkcenterLine(models.Model):
             }
         if 'list' in action.get('binding_view_types', ''):
             action['binding_view_types'].replace("list", "tree")
-        return action
+        return clean_action(action, self.env)
 
     def get_workorder_data(self):
         # order quality check chain

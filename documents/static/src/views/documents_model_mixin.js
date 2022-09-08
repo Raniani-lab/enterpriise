@@ -75,7 +75,7 @@ export const DocumentsDataPointMixin = (component) => class extends component {
     exportState() {
         return {
             ...super.exportState(...arguments),
-            selection: this.selection.map((rec) => rec.resId),
+            selection: (this.selection || []).map((rec) => rec.resId),
         };
     }
 

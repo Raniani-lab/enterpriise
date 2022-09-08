@@ -5,7 +5,7 @@
         <field name="name">account.asset.form</field>
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
-            <form string="Asset" js_class="asset_form">
+            <form string="Asset">
                 <field name="company_id" invisible="1"/>
                 <field name="account_type" invisible="1"/>
                 <field name="display_account_asset_id" invisible="1"/>
@@ -49,7 +49,7 @@
                         <field name="asset_type" invisible="1"/>
                         <field name="active" invisible="1"/>
                         <group string="Asset Values" attrs="{'invisible': [('state', '=', 'model')]}">
-                            <span colspan="2" attrs="{'invisible': ['|', ('original_move_line_ids', '!=', []), ('original_value', '!=', 0)]}" class="oe_edit_only text-muted">Set manually the original values or <button name="btn_choose_aml" class="btn btn-link oe_inline align-baseline p-0 add_original_move_line" string="select the related purchases"/></span>
+                            <span colspan="2" attrs="{'invisible': ['|', ('original_move_line_ids', '!=', []), ('original_value', '!=', 0)]}" class="oe_edit_only text-muted d-inline-flex">Set manually the original values or <widget name="choose_aml" wclass="btn-link ps-1" string="select the related purchases" field="original_move_line_ids"/></span>
                             <field name="original_value" attrs="{'invisible': [('state', '=', 'model')], 'readonly': [('state','!=','draft')]}"/>
                             <field name="gross_increase_value" widget="monetary" attrs="{'invisible': ['|', ('state', '=', 'model'), ('gross_increase_value', '=', 0)]}" options="{'currency_field': 'currency_id'}"/>
                             <field name="acquisition_date" attrs="{'invisible': [('state', '=', 'model')], 'readonly': ['|', ('state','!=','draft'), ('original_move_line_ids', '!=', [])], 'readonly': [('state', '!=', 'draft')]}"/>

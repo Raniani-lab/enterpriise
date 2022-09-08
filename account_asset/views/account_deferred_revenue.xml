@@ -77,7 +77,7 @@
             <field name="name" position="attributes">
                 <attribute name="placeholder">e.g. Annual Subscription</attribute>
             </field>
-            <xpath expr="//button[@name='btn_choose_aml']" position="attributes">
+            <xpath expr="//widget[@name='choose_aml']" position="attributes">
                 <attribute name="string">select the related income</attribute>
             </xpath>
             <field name="first_depreciation_date" position="attributes">

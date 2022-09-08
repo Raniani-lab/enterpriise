@@ -74,7 +74,7 @@
             <field name="name" position="attributes">
                 <attribute name="placeholder">e.g. Annually Paid Insurance</attribute>
             </field>
-            <xpath expr="//button[@name='btn_choose_aml']" position="attributes">
+            <xpath expr="//widget[@name='choose_aml']" position="attributes">
                 <attribute name="string">select the related expense</attribute>
             </xpath>
             <field name="account_depreciation_expense_id" position="attributes">

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="account_asset.x2mSelector" owl="1">
+        <span t-att-class="props.class" t-on-click="() => this.selectRelatedRecords()"><t t-out="props.string"/></span>
+    </t>
+
+</templates>

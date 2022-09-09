@@ -8,12 +8,9 @@ class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
     def _action_done(self):
-        results = []
-        for rec in self:
-            result = super(StockPicking, self)._action_done()
-            rec._ebay_update_carrier(transfered=True)
-            results.append(result)
-        return results
+        result = super()._action_done()
+        self._ebay_update_carrier(transfered=True)
+        return result
 
     def _ebay_update_carrier(self, transfered=False):
         for picking in self:

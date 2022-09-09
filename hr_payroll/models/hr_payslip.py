@@ -1266,14 +1266,12 @@ class HrPayslip(models.Model):
                 start = slip.date_from
                 end = today
                 idx = -((end.year - start.year) * 12 + (end.month - start.month) - 2)
-                period_str = format_date(self.env, start, date_format=date_formats['monthly'])
                 amount = employer_cost['data']['monthly'][code_desc][idx].get('value', 0.0)
-                rounded_amount = round(amount + line_values[code][slip.id]['total'], 2)
-                employer_cost['data']['monthly'][code_desc][idx].update({
-                    'value': rounded_amount,
-                    'label': period_str,
-                    'formatted_value': format_amount(self.env, rounded_amount, self.env.company.currency_id),
-                })
+                amount += line_values[code][slip.id]['total']
+                employer_cost['data']['monthly'][code_desc][idx]['value'] = amount
+                if not employer_cost['data']['monthly'][code_desc][idx].get('label'):
+                    period_str = format_date(self.env, start, date_format=date_formats['monthly'])
+                    employer_cost['data']['monthly'][code_desc][idx]['label'] = period_str
         # Retrieve employer costs over the last 3 years
         last_payslips = self.env['hr.payslip'].search([
             ('state', '!=', 'cancel'),
@@ -1286,31 +1284,34 @@ class HrPayslip(models.Model):
                 start = slip.date_from
                 end = today
                 idx = -(end.year - start.year - 2)
-                period_str = format_date(self.env, start, date_format=date_formats['yearly'])
                 amount = employer_cost['data']['yearly'][code_desc][idx].get('value', 0.0)
-                rounded_amount = round(amount + line_values[code][slip.id]['total'], 2)
-                employer_cost['data']['yearly'][code_desc][idx].update({
-                    'value': rounded_amount,
-                    'label': period_str,
-                    'formatted_value': format_amount(self.env, rounded_amount, self.env.company.currency_id),
-                })
+                amount += line_values[code][slip.id]['total']
+                employer_cost['data']['yearly'][code_desc][idx]['value'] = amount
+                if not employer_cost['data']['yearly'][code_desc][idx].get('label'):
+                    period_str = format_date(self.env, start, date_format=date_formats['yearly'])
+                    employer_cost['data']['yearly'][code_desc][idx]['label'] = period_str
         # Nullify empty sections
         for i in range(3):
             for code, code_desc in cost_codes.items():
                 if not employer_cost['data']['monthly'][code_desc][i]:
                     value = 0 if not employer_cost['is_sample'] else random.randint(1000, 1500)
-                    employer_cost['data']['monthly'][code_desc][i].update({
-                        'value': value,
-                        'label': format_date(self.env, today + relativedelta(months=i-2), date_format=date_formats['monthly']),
-                        'formatted_value': format_amount(self.env, value, self.env.company.currency_id),
-                    })
+                    employer_cost['data']['monthly'][code_desc][i]['value'] = value
+                    if not employer_cost['data']['monthly'][code_desc][i].get('label'):
+                        label = format_date(self.env, today + relativedelta(months=i-2), date_format=date_formats['monthly'])
+                        employer_cost['data']['monthly'][code_desc][i]['label'] = label
                 if not employer_cost['data']['yearly'][code_desc][i]:
                     value = 0 if not employer_cost['is_sample'] else random.randint(10000, 15000)
-                    employer_cost['data']['yearly'][code_desc][i].update({
-                        'value': value,
-                        'label': format_date(self.env, today + relativedelta(years=i-2), date_format=date_formats['yearly']),
-                        'formatted_value': format_amount(self.env, value, self.env.company.currency_id),
-                    })
+                    employer_cost['data']['yearly'][code_desc][i]['value'] = value
+                    if not employer_cost['data']['yearly'][code_desc][i].get('label'):
+                        label = format_date(self.env, today + relativedelta(years=i-2), date_format=date_formats['yearly'])
+                        employer_cost['data']['yearly'][code_desc][i]['label'] = label
+        # Format/Round at the end as the method cost is heavy
+        for dummy, data_by_code in employer_cost['data'].items():
+            for code, data_by_type in data_by_code.items():
+                for data_dict in data_by_type:
+                    value = round(data_dict['value'], 2)
+                    data_dict['value'] = value
+                    data_dict['formatted_value'] = format_amount(self.env, value, self.env.company.currency_id)
         return employer_cost
 
     @api.model

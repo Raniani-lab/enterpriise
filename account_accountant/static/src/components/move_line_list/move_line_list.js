@@ -18,20 +18,20 @@ class AccountMoveListController extends ListController {
         this.messaging = useService("messaging");
         this.ui = useService("ui");
         this.attachmentPreviewState = useState({
-            isBigUI: this.ui.size >= SIZES.XXL,
+            previewEnabled: !this.env.searchModel.context.disable_preview && this.ui.size >= SIZES.XXL,
             displayAttachment: true,
             selectedRecord: false,
             thread: null,
         });
-        useBus(this.ui.bus, "resize", this.evaluateIsBigUI);
+        useBus(this.ui.bus, "resize", this.evaluatePreviewEnabled);
     }
 
     togglePreview() {
         this.attachmentPreviewState.displayAttachment = !this.attachmentPreviewState.displayAttachment;
     }
 
-    evaluateIsBigUI() {
-        this.attachmentPreviewState.isBigUI = this.ui.size >= SIZES.XXL;
+    evaluatePreviewEnabled() {
+        this.attachmentPreviewState.previewEnabled = !this.env.searchModel.context.disable_preview && this.ui.size >= SIZES.XXL;
     }
 
     setSelectedRecord(accountMoveLineData) {

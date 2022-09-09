@@ -151,7 +151,8 @@
                                     ('company_id', '=', company_id),
                                     ('account_id.account_type', 'in', ('asset_fixed', 'asset_non_current')),
                                 ]"
-                                class="original_move_line_ids_field">
+                                class="original_move_line_ids_field"
+                                context="{'disable_preview': 1}">
                                 <tree create="0">
                                     <field name="date"/>
                                     <field name="account_id"/>

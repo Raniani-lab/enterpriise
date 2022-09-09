@@ -9,11 +9,10 @@ export class Digipad extends Component {
     setup() {
         this.orm = useService('orm');
         const user = useService('user');
-        this.quantityField = this.props.node.attrs.quantity_field;
         this.buttons = [7, 8, 9, 4, 5, 6, 1, 2, 3, '.', '0', 'erase'].map((value, index) => {
             return { index, value };
         });
-        this.value = String(this.props.record.data[this.quantityField]);
+        this.value = String(this.props.record.data[this.props.quantityField]);
         onWillStart(async () => {
             this.displayUOM = await user.hasGroup('uom.group_uom');
             await this._fetchPackagingButtons();
@@ -30,7 +29,7 @@ export class Digipad extends Component {
      * @private
      */
     _checkInputValue() {
-        const input = document.querySelector(`div[name="${this.quantityField}"] input`);
+        const input = document.querySelector(`div[name="${this.props.quantityField}"] input`);
         const inputValue = input.value;
         if (Number(this.value) != Number(inputValue)) {
             console.warn(`-- Change widget value: ${this.value} -> ${inputValue}`);
@@ -55,7 +54,7 @@ export class Digipad extends Component {
      * @private
      */
     async _notifyChanges() {
-        const changes = { [this.quantityField]: Number(this.value) };
+        const changes = { [this.props.quantityField]: Number(this.value) };
         await this.props.record.update(changes);
     }
 
@@ -104,4 +103,9 @@ export class Digipad extends Component {
 }
 
 Digipad.template = 'stock_barcode.DigipadTemplate';
+Digipad.extractProps = ({ attrs }) => {
+    return {
+        quantityField: attrs.quantity_field,
+    };
+};
 registry.category('view_widgets').add('digipad', Digipad);

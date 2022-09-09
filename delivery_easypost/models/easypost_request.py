@@ -18,6 +18,7 @@ class EasypostRequest():
     def __init__(self, api_key, debug_logger):
         self.api_key = api_key
         self.debug_logger = debug_logger
+        self.is_domestic_shipping = None
 
     def _make_api_request(self, endpoint, request_type='get', data=None):
         """make an api call, return response"""
@@ -190,6 +191,10 @@ class EasypostRequest():
         - Total weight in ounces.
         - Original country code(warehouse)
         """
+        # Customs information should be given only for international deliveries
+        if self.is_domestic_shipping:
+            return {}
+
         customs_info = {}
         for customs_item_id, commodity in enumerate(commodities):
             customs_info.update({
@@ -247,6 +252,9 @@ class EasypostRequest():
         order_payload.update(self._prepare_address('from_address', shipper))
         if carrier.easypost_default_service_id._require_residential_address():
             order_payload['order[to_address][residential]'] = True
+
+        # The request differ depending on if it is a domestic shipping or an international one
+        self.is_domestic_shipping = order_payload["order[from_address][country]"] == order_payload["order[to_address][country]"]
 
         # if picking then count total_weight of picking move lines, else count on order
         # easypost always takes weight in ounces(oz)

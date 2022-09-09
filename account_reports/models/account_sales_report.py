@@ -3,6 +3,7 @@
 from collections import defaultdict
 
 from odoo import _, api, fields, models
+from odoo.tools import get_lang
 
 
 class ECSalesReportCustomHandler(models.AbstractModel):
@@ -255,12 +256,18 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         # In the case of the generic report, we don't have a country defined. So no reliable tax report whose
         # tag_ids can be used. So we have a fallback to tax_ids.
 
+        lang = self.env.user.lang or get_lang(self.env).code
         if options.get('sales_report_taxes', {}).get('use_taxes_instead_of_tags'):
             tax_elem_table = 'account_tax'
             aml_rel_table = 'account_move_line_account_tax_rel'
+            tax_elem_table_name = f"COALESCE(account_tax.name->>'{lang}', account_tax.name->>'en_US')" if \
+                self.pool['account.tax'].name.translate else 'account_tax.name'
         else:
             tax_elem_table = 'account_account_tag'
             aml_rel_table = 'account_account_tag_account_move_line_rel'
+            tax_elem_table_name = f"COALESCE(account_account_tag.name->>'{lang}', account_account_tag.name->>'en_US')" if \
+                self.pool['account.account.tag'].name.translate else 'account_account_tag.name'
+
 
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             tables, where_clause, where_params = report._query_get(column_group_options, 'normal')
@@ -276,7 +283,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
                     res_partner.vat                 AS vat_number,
                     res_country.code                AS country_code,
                     -SUM(account_move_line.balance) AS balance,
-                    {tax_elem_table}.name           AS sales_type_code,
+                    {tax_elem_table_name}           AS sales_type_code,
                     {tax_elem_table}.id             AS tax_element_id
                 FROM {tables}
                 JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id

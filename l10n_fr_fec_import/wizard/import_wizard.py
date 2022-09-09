@@ -11,7 +11,7 @@ import logging
 
 from odoo import _, fields, models
 from odoo.exceptions import UserError, RedirectWarning
-from odoo.tools import float_repr, float_is_zero
+from odoo.tools import float_repr, float_is_zero, get_lang
 
 _logger = logging.getLogger(__name__)
 
@@ -583,10 +583,15 @@ class FecImportWizard(models.TransientModel):
         # The sum_move_lines_per_move query determines the type of the account of the lines
         # The sum_moves_per_journal query counts the account types on the lines for each move
         # The main query compares the sums with the threshold and determines the type
-        sql = """
+        if self.pool['account.journal'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            aj_name = f"COALESCE(aj.name->>'{lang}', aj.name->>'en_US')"
+        else:
+            aj_name = 'aj.name'
+        sql = f"""
             WITH sum_move_lines_per_move as (
                 SELECT aml.journal_id as journal_id,
-                       aj.name as journal_name,
+                       {aj_name} as journal_name,
                        aml.move_id,
                        SUM(CASE WHEN aa.account_type IN ('asset_cash','liability_credit_card') THEN 1 ELSE 0 END) as bank,
                        SUM(CASE aa.account_type WHEN 'asset_receivable' THEN 1 ELSE 0 END) as sale,

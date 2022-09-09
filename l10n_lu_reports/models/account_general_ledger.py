@@ -7,6 +7,7 @@ import io
 
 from odoo import api, models, tools, _
 from odoo.exceptions import UserError
+from odoo.tools import get_lang
 
 
 class AccountGeneralLedger(models.AbstractModel):
@@ -85,15 +86,19 @@ class AccountGeneralLedger(models.AbstractModel):
         res['uoms'] = uoms
 
         # Fill 'product_vals_list'.
-        self._cr.execute('''
+        lang = self.env.user.lang or get_lang(self.env).code
+        product_template_name = f"COALESCE(product_template.name->>'{lang}', product_template.name->>'en_US')"
+        uom_name = f"COALESCE(uom.name->>'{lang}', uom.name->>'en_US')"
+        base_uom_name = f"COALESCE(base_uom.name->>'{lang}', base_uom.name->>'en_US')"
+        self._cr.execute(f'''
             SELECT
                 product.id,
                 product.barcode,
-                product_template.name,
+                {product_template_name}             AS name,
                 product.product_tmpl_id,
                 product.default_code,
                 product_category.name               AS product_category,
-                uom.name                            AS standard_uom,
+                {uom_name}                          AS standard_uom,
                 uom.uom_type                        AS uom_type,
                 TRUNC(uom.factor, 8)                AS uom_ratio,
                 CASE
@@ -101,7 +106,7 @@ class AccountGeneralLedger(models.AbstractModel):
                     THEN TRUNC((1.0 / uom.factor), 8)
                     ELSE 0
                 END                                 AS ratio,
-                base_uom.name                       AS base_uom
+                {base_uom_name}                     AS base_uom
             FROM product_product product
                 LEFT JOIN product_template          ON product_template.id = product.product_tmpl_id
                 LEFT JOIN product_category          ON product_category.id = product_template.categ_id

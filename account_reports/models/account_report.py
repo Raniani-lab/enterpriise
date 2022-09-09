@@ -2411,9 +2411,14 @@ class AccountReport(models.Model):
         groupby_sql = f'account_move_line.{current_groupby}' if current_groupby else None
         tables, where_clause, where_params = self._query_get(options, date_scope)
         tail_query, tail_params = self._get_engine_query_tail(offset, limit)
+        if self.pool['account.account.tag'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            acc_tag_name = f"COALESCE(acc_tag.name->>'{lang}', acc_tag.name->>'en_US')"
+        else:
+            acc_tag_name = 'acc_tag.name'
         sql = f"""
             SELECT
-                SUBSTRING(acc_tag.name, 2, LENGTH(acc_tag.name) - 1) AS formula,
+                SUBSTRING({acc_tag_name}, 2, LENGTH({acc_tag_name}) - 1) AS formula,
                 SUM(ROUND(COALESCE(account_move_line.balance, 0) * currency_table.rate, currency_table.precision)
                     * CASE WHEN acc_tag.tax_negate THEN -1 ELSE 1 END
                     * CASE WHEN account_move_line.tax_tag_invert THEN -1 ELSE 1 END
@@ -2433,7 +2438,7 @@ class AccountReport(models.Model):
 
             WHERE {where_clause}
 
-            GROUP BY SUBSTRING(acc_tag.name, 2, LENGTH(acc_tag.name) - 1)
+            GROUP BY SUBSTRING({acc_tag_name}, 2, LENGTH({acc_tag_name}) - 1)
                 {f', {groupby_sql}' if groupby_sql else ''}
 
             {tail_query}

@@ -11,7 +11,7 @@ from unicodedata import normalize
 
 from odoo import _, fields, models
 from odoo.exceptions import RedirectWarning, UserError
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, get_lang
 
 _logger = logging.getLogger(__name__)
 
@@ -58,8 +58,9 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
         tag_ret = self.env.ref('l10n_mx.tag_diot_ret')
 
         raw_results_select_list = []
+        lang = self.env.user.lang or get_lang(self.env).code
         if current_groupby == 'partner_id':
-            raw_results_select_list.append('''
+            raw_results_select_list.append(f'''
                 CASE
                    WHEN country.code = 'MX' THEN '04'
                    ELSE '05'
@@ -67,7 +68,7 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
                 partner.l10n_mx_type_of_operation AS operation_type_code,
                 partner.vat AS partner_vat_number,
                 country.code AS country_code,
-                country.demonym AS partner_nationality,
+                COALESCE(country.demonym->>'{lang}', country.demonym->>'en_US') AS partner_nationality,
            ''')
         else:
             raw_results_select_list.append('''

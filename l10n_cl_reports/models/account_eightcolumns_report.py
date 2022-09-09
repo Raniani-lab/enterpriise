@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, fields, models, _
+from odoo.tools import get_lang
 
 from collections import OrderedDict
 from datetime import timedelta
@@ -84,9 +85,14 @@ class ChileanReportCustomHandler(models.AbstractModel):
     def _prepare_query(self, report, options, column_group_key):
         tables, where_clause, where_params = report._query_get(options, 'normal')
 
-        sql_query = """
+        if self.pool['account.account'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            aa_name = f"COALESCE(aa.name->>'{lang}', aa.name->>'en_US')"
+        else:
+            aa_name = 'aa.name'
+        sql_query = f"""
             SELECT %s AS column_group_key,
-                   aa.id, aa.code, aa.name,
+                   aa.id, aa.code, {aa_name} AS name,
                    SUM(account_move_line.debit) AS debit,
                    SUM(account_move_line.credit) AS credit,
                    GREATEST(SUM(account_move_line.balance), 0) AS debitor,
@@ -99,10 +105,10 @@ class ChileanReportCustomHandler(models.AbstractModel):
                       THEN GREATEST(SUM(account_move_line.balance), 0) ELSE 0 END AS loss,
                    CASE WHEN aa.internal_group IN ('expense', 'income')
                       THEN GREATEST(SUM(-account_move_line.balance), 0) ELSE 0 END AS gain
-            FROM account_account AS aa, """ + tables + """
-            WHERE """ + where_clause + """
+            FROM account_account AS aa, {tables}
+            WHERE {where_clause}
             AND aa.id = account_move_line.account_id
-            GROUP BY aa.id, aa.code, aa.name
+            GROUP BY aa.id, aa.code, {aa_name}
             ORDER BY aa.code
         """
         return sql_query, [column_group_key, *where_params]

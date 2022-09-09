@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from collections import defaultdict
 
-from odoo.tools import float_repr
+from odoo.tools import float_repr, get_lang
 from odoo import api, fields, models, release, _
 from odoo.exceptions import UserError
 
@@ -44,7 +44,13 @@ class AccountGeneralLedger(models.AbstractModel):
             })
         # Fill 'total_debit_in_period', 'total_credit_in_period', 'move_vals_list'.
         tables, where_clause, where_params = self._query_get(options, 'strict_range')
-        query = '''
+        lang = self.env.user.lang or get_lang(self.env).code
+        tax_name = f"COALESCE(tax.name->>'{lang}', tax.name->>'en_US')" if \
+            self.pool['account.tax'].name.translate else 'tax.name'
+        journal_name = f"COALESCE(journal.name->>'{lang}', journal.name->>'en_US')" if \
+            self.pool['account.journal'].name.translate else 'journal.name'
+        uom_name = f"""COALESCE(uom.name->>'{lang}', uom.name->>'en_US')"""
+        query = f'''
             SELECT
                 account_move_line.id,
                 account_move_line.display_type,
@@ -69,17 +75,17 @@ class AccountGeneralLedger(models.AbstractModel):
                 account_move.invoice_date                   AS move_invoice_date,
                 account_move.invoice_origin                 AS move_invoice_origin,
                 tax.id                                      AS tax_id,
-                tax.name                                    AS tax_name,
+                {tax_name}                                  AS tax_name,
                 tax.amount                                  AS tax_amount,
                 tax.amount_type                             AS tax_amount_type,
                 journal.id                                  AS journal_id,
                 journal.code                                AS journal_code,
-                journal.name                                AS journal_name,
+                {journal_name}                              AS journal_name,
                 journal.type                                AS journal_type,
                 account.account_type                        AS account_type,
                 currency.name                               AS currency_code,
                 product.default_code                        AS product_default_code,
-                uom.name                                    AS product_uom_name
+                {uom_name}                                  AS product_uom_name
             FROM ''' + tables + '''
             JOIN account_move ON account_move.id = account_move_line.move_id
             JOIN account_journal journal ON journal.id = account_move_line.journal_id
@@ -147,13 +153,19 @@ class AccountGeneralLedger(models.AbstractModel):
 
         tables, where_clause, where_params = self._query_get(options, 'strict_range')
         tax_details_query, tax_details_params = self.env['account.move.line']._get_query_tax_details(tables, where_clause, where_params)
+        if self.pool['account.tax'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            tax_name = f"COALESCE(tax.name->>'{lang}', tax.name->>'en_US')"
+        else:
+            tax_name = 'tax.name'
+        tax_details_query, tax_details_params = self.env['account.move.line']._get_query_tax_details(tables, where_clause, where_params)
         self._cr.execute(f'''
             SELECT
                 tax_detail.base_line_id,
                 tax_line.currency_id,
                 tax.id AS tax_id,
                 tax.amount_type AS tax_amount_type,
-                tax.name AS tax_name,
+                {tax_name} AS tax_name,
                 tax.amount AS tax_amount,
                 SUM(tax_detail.tax_amount) AS amount,
                 SUM(tax_detail.tax_amount) AS amount_currency

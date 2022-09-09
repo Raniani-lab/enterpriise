@@ -4,7 +4,7 @@ import json
 
 from odoo import models, _, fields
 from odoo.exceptions import UserError
-from odoo.tools.misc import format_date
+from odoo.tools.misc import format_date, get_lang
 
 from datetime import timedelta
 from collections import defaultdict
@@ -347,6 +347,11 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         ct_query = self.env['res.currency']._get_query_currency_table(options)
         queries = []
         all_params = []
+        lang = self.env.lang or get_lang(self.env).code
+        journal_name = f"COALESCE(journal.name->>'{lang}', journal.name->>'en_US')" if \
+            self.pool['account.journal'].name.translate else 'journal.name'
+        account_name = f"COALESCE(account.name->>'{lang}', account.name->>'en_US')" if \
+            self.pool['account.account'].name.translate else 'account.name'
         report = self.env.ref('account_reports.partner_ledger_report')
         for column_group_key, group_options in report._split_options_per_column_group(options).items():
             tables, where_clause, where_params = report._query_get(group_options, 'strict_range')
@@ -383,9 +388,9 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     account_move.name                                                                AS move_name,
                     account_move.move_type                                                           AS move_type,
                     account.code                                                                     AS account_code,
-                    account.name                                                                     AS account_name,
+                    {account_name}                                                                   AS account_name,
                     journal.code                                                                     AS journal_code,
-                    journal.name                                                                     AS journal_name,
+                    {journal_name}                                                                   AS journal_name,
                     %s                                                                               AS column_group_key,
                     'directly_linked_aml'                                                            AS key
                 FROM {tables}
@@ -420,9 +425,9 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     account_move.name                                                                   AS move_name,
                     account_move.move_type                                                              AS move_type,
                     account.code                                                                        AS account_code,
-                    account.name                                                                        AS account_name,
+                    {account_name}                                                                      AS account_name,
                     journal.code                                                                        AS journal_code,
-                    journal.name                                                                        AS journal_name,
+                    {journal_name}                                                                      AS journal_name,
                     %s                                                                                  AS column_group_key,
                     'indirectly_linked_aml'                                                             AS key
                 FROM {tables},

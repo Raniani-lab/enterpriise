@@ -65,6 +65,12 @@ class JournalReportCustomHandler(models.AbstractModel):
         params = []
         queries = []
         report = self.env.ref('account_reports.journal_report')
+        if self.pool['account.journal'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            j_name = f"COALESCE(j.name->>'{lang}', j.name->>'en_US')"
+        else:
+            j_name = "j.name"
+
         for column_group_key, options_group in report._split_options_per_column_group(options).items():
             tables, where_clause, where_params = report._query_get(options_group, 'strict_range')
             params.append(column_group_key)
@@ -73,7 +79,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 SELECT
                     %s as column_group_key,
                     j.id,
-                    j.name,
+                    {j_name} as name,
                     j.code,
                     j.type,
                     j.currency_id,
@@ -620,6 +626,15 @@ class JournalReportCustomHandler(models.AbstractModel):
     def _query_aml(self, options, offset=0, journal=False):
         params = []
         queries = []
+        lang = self.env.user.lang or get_lang(self.env).code
+        acc_name = f"COALESCE(acc.name->>'{lang}', acc.name->>'en_US')" if \
+            self.pool['account.account'].name.translate else 'acc.name'
+        j_name = f"COALESCE(j.name->>'{lang}', j.name->>'en_US')" if \
+            self.pool['account.journal'].name.translate else 'j.name'
+        tax_name = f"COALESCE(tax.name->>'{lang}', tax.name->>'en_US')" if \
+            self.pool['account.tax'].name.translate else 'tax.name'
+        tag_name = f"COALESCE(tag.name->>'{lang}', tag.name->>'en_US')" if \
+            self.pool['account.account.tag'].name.translate else 'tag.name'
         report = self.env.ref('account_reports.journal_report')
         for column_group_key, options_group in report._split_options_per_column_group(options).items():
             # Override any forced options: We want the ones given in the options
@@ -647,20 +662,20 @@ class JournalReportCustomHandler(models.AbstractModel):
                     am.currency_id != cp.currency_id as is_multicurrency,
                     p.name as partner_name,
                     acc.code as account_code,
-                    acc.name as account_name,
+                    {acc_name} as account_name,
                     acc.account_type as account_type,
                     COALESCE("account_move_line".debit, 0) as debit,
                     COALESCE("account_move_line".credit, 0) as credit,
                     COALESCE("account_move_line".balance, 0) as balance,
-                    j.name as journal_name,
+                    {j_name} as journal_name,
                     j.code as journal_code,
                     j.type as journal_type,
                     j.currency_id as journal_currency,
                     journal_curr.name as journal_currency_name,
                     cp.currency_id as company_currency,
                     CASE WHEN j.type = 'sale' THEN am.payment_reference WHEN j.type = 'purchase' THEN am.ref ELSE '' END as reference,
-                    array_remove(array_agg(DISTINCT tax.name), NULL) as taxes,
-                    array_remove(array_agg(DISTINCT tag.name), NULL) as tax_grids
+                    array_remove(array_agg(DISTINCT {tax_name}), NULL) as taxes,
+                    array_remove(array_agg(DISTINCT {tag_name}), NULL) as tax_grids
                 FROM {tables}
                 JOIN account_move am ON am.id = "account_move_line".move_id
                 JOIN account_account acc ON acc.id = "account_move_line".account_id
@@ -754,12 +769,16 @@ class JournalReportCustomHandler(models.AbstractModel):
         # grid information
         tax_report_options = self._get_generic_tax_report_options(options, data)
         tables, where_clause, where_params = report._query_get(tax_report_options, 'strict_range')
-        query = """
+        lang = self.env.user.lang or get_lang(self.env).code
+        country_name = f"COALESCE(country.name->>'{lang}', country.name->>'en_US')"
+        tag_name = f"COALESCE(tag.name->>'{lang}', tag.name->>'en_US')" if \
+            self.pool['account.account.tag'].name.translate else 'tag.name'
+        query = f"""
             WITH tag_info (country_name, tag_id, tag_name, tag_sign, balance) as (
                 SELECT
-                    COALESCE(NULLIF(ir_translation.value, ''), country.name) country_name,
+                    {country_name} AS country_name,
                     tag.id,
-                    tag.name,
+                    {tag_name} AS name,
                     CASE WHEN tag.tax_negate IS TRUE THEN '-' ELSE '+' END,
                     SUM(COALESCE("account_move_line".balance, 0)
                         * CASE WHEN "account_move_line".tax_tag_invert THEN -1 ELSE 1 END
@@ -767,9 +786,8 @@ class JournalReportCustomHandler(models.AbstractModel):
                 FROM account_account_tag tag
                 JOIN account_account_tag_account_move_line_rel rel ON tag.id = rel.account_account_tag_id
                 JOIN res_country country on country.id = tag.country_id
-                LEFT JOIN ir_translation ON ir_translation.name = 'res.country,name' AND ir_translation.res_id = country.id AND ir_translation.type = 'model' AND ir_translation.lang = %s
-                , """ + tables + """
-                WHERE  """ + where_clause + """
+                , {tables}
+                WHERE {where_clause}
                   AND applicability = 'taxes'
                   AND "account_move_line".id = rel.account_move_line_id
                 GROUP BY country_name, tag.id
@@ -783,8 +801,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             FROM tag_info
             ORDER BY country_name, name
         """
-        lang = self.env.user.lang or get_lang(self.env).code
-        self._cr.execute(query, [lang] + where_params)
+        self._cr.execute(query, where_params)
         query_res = self.env.cr.fetchall()
 
         res = defaultdict(lambda: defaultdict(dict))

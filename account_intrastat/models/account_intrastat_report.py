@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, models, _
+from odoo.tools import get_lang
 
 from datetime import datetime
 from collections import defaultdict
@@ -256,13 +257,13 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         unknown_country_code = _unknown_country_code.get(self.env.company.country_id.code, 'QV')
         weight_category_id = self.env['ir.model.data']._xmlid_to_res_id('uom.product_uom_categ_kgm')
 
-        select = """
+        select = f"""
             SELECT
                 %s AS column_group_key,
                 row_number() over () AS sequence,
                 CASE WHEN account_move.move_type IN ('in_invoice', 'out_refund') THEN %s ELSE %s END AS system,
                 country.code AS country_code,
-                country.name AS country_name,
+                COALESCE(country.name->>'{self.env.user.lang or get_lang(self.env).code}', country.name->>'en_US') AS country_name,
                 company_country.code AS comp_country_code,
                 transaction.code AS transaction_code,
                 company_region.code AS region_code,

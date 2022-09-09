@@ -4,6 +4,7 @@ import json
 
 from odoo import models, fields, api, _
 from odoo.tools.misc import format_date
+from odoo.tools import get_lang
 from odoo.exceptions import UserError
 
 from datetime import timedelta
@@ -351,6 +352,11 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         additional_domain = [('account_id', 'in', expanded_account_ids)] if expanded_account_ids is not None else None
         queries = []
         all_params = []
+        lang = self.env.user.lang or get_lang(self.env).code
+        journal_name = f"COALESCE(journal.name->>'{lang}', journal.name->>'en_US')" if \
+            self.pool['account.journal'].name.translate else 'journal.name'
+        account_name = f"COALESCE(account.name->>'{lang}', account.name->>'en_US')" if \
+            self.pool['account.account'].name.translate else 'account.name'
         for column_group_key, group_options in report._split_options_per_column_group(options).items():
             # Get sums for the account move lines.
             # period: [('date' <= options['date_to']), ('date', '>=', options['date_from'])]
@@ -377,9 +383,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     partner.name                            AS partner_name,
                     move.move_type                          AS move_type,
                     account.code                            AS account_code,
-                    account.name                            AS account_name,
+                    {account_name}                          AS account_name,
                     journal.code                            AS journal_code,
-                    journal.name                            AS journal_name,
+                    {journal_name}                          AS journal_name,
                     full_rec.name                           AS full_rec_name,
                     %s                                      AS column_group_key
                 FROM {tables}

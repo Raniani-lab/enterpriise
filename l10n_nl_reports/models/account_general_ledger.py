@@ -7,6 +7,7 @@ from dateutil.rrule import rrule, MONTHLY
 
 from odoo import models, fields, release, _
 from odoo.exceptions import UserError
+from odoo.tools import get_lang
 from odoo.tools.misc import street_split
 
 
@@ -78,11 +79,18 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             # Create a list to store the query results during the batching
             res_list = []
 
+            lang = self.env.user.lang or get_lang(self.env).code
+            journal_name = f"COALESCE(journal.name->>'{lang}', journal.name->>'en_US')" if \
+                self.pool['account.journal'].name.translate else 'journal.name'
+            account_name = f"COALESCE(account.name->>'{lang}', account.name->>'en_US')" if \
+                self.pool['account.account'].name.translate else 'account.name'
+            tax_name = f"COALESCE(tax.name->>'{lang}', tax.name->>'en_US')" if \
+                self.pool['account.tax'].name.translate else 'tax.name'
             for offset in range(0, count, batch_size):
                 self._cr.execute(f"""
                     SELECT DISTINCT ON (account_move_line.id)
                            journal.id AS journal_id,
-                           journal.name AS journal_name,
+                           {journal_name} AS journal_name,
                            journal.code AS journal_code,
                            journal.type AS journal_type,
                            account_move.id AS move_id,
@@ -104,7 +112,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                            account_move_line.move_name AS line_move_name,
                            account_move_line.amount_currency AS line_amount_currency,
                            account.id AS account_id,
-                           account.name AS account_name,
+                           {account_name} AS account_name,
                            account.code AS account_code,
                            account.write_uid AS account_write_uid,
                            account.write_date AS account_write_date,
@@ -139,7 +147,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                            partner.supplier_rank AS partner_supplier_rank,
                            country.code AS partner_country_code,
                            tax.id AS tax_id,
-                           tax.name AS tax_name
+                           {tax_name} AS tax_name
                       FROM {tables}
                       JOIN account_move ON account_move.id = account_move_line.move_id
                       JOIN account_journal journal ON account_move_line.journal_id = journal.id

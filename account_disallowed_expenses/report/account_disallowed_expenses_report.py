@@ -42,14 +42,20 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             **current,
         }
 
-        select = """
+        if self.pool['account.account'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            account_name = f"COALESCE(account.name->>'{lang}', account.name->>'en_US')"
+        else:
+            account_name = 'account.name'
+
+        select = f"""
             SELECT
                 %(column_group_key)s AS column_group_key,
                 SUM(aml.balance) AS total_amount,
-                ARRAY_AGG(COALESCE(NULLIF(account_tr.value, ''), account.name)) account_name,
+                ARRAY_AGG({account_name}) account_name,
                 ARRAY_AGG(account.code) account_code,
                 ARRAY_AGG(category.id) category_id,
-                ARRAY_AGG(COALESCE(NULLIF(category_tr.value, ''), category.name)) category_name,
+                ARRAY_AGG(COALESCE(category.name->>'{lang}', category.name->>'en_US')) category_name,
                 ARRAY_AGG(category.code) category_code,
                 ARRAY_AGG(account.company_id) company_id,
                 ARRAY_AGG(aml.account_id) account_id,
@@ -67,15 +73,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
                 WHERE r2.date_from <= aml.date
                   AND c2.id = category.id
                 ORDER BY r2.date_from DESC LIMIT 1
-            )
-            LEFT JOIN ir_translation account_tr ON account_tr.name = 'account.account,name'
-                AND account_tr.res_id = account.id
-                AND account_tr.type = 'model'
-                AND account_tr.lang = %(lang)s
-            LEFT JOIN ir_translation category_tr ON category_tr.name = 'account.disallowed.expenses.category,name'
-                AND category_tr.res_id = category.id
-                AND category_tr.type = 'model'
-                AND category_tr.lang = %(lang)s"""
+            )"""
         where = """
             WHERE aml.company_id in %(company_ids)s
               AND aml.date >= %(date_from)s AND aml.date <= %(date_to)s

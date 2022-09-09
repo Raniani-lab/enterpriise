@@ -220,6 +220,11 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         '''
         queries = []
         params = []
+        if self.pool['account.account'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            account_name = f"COALESCE(account_account.name->>'{lang}', account_account.name->>'en_US')"
+        else:
+            account_name = 'account_account.name'
 
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             tables, where_clause, where_params = report._query_get(column_group_options, date_scope, domain=[('account_id', 'in', payment_account_ids)])
@@ -229,23 +234,18 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     %s AS column_group_key,
                     account_move_line.account_id,
                     account_account.code AS account_code,
-                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    {account_name} AS account_name,
                     SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
                 FROM {tables}
                 JOIN account_account
                     ON account_account.id = account_move_line.account_id
-                LEFT JOIN ir_translation
-                    ON ir_translation.name = 'account.account,name'
-                    AND ir_translation.res_id = account_account.id
-                    AND ir_translation.type = 'model'
-                    AND ir_translation.lang = %s
                 LEFT JOIN {currency_table_query}
                     ON currency_table.company_id = account_move_line.company_id
                 WHERE {where_clause}
                 GROUP BY account_move_line.account_id, account_account.code, account_name
             ''')
 
-            params += [column_group_key, self.env.user.lang or get_lang(self.env).code, *where_params]
+            params += [column_group_key, *where_params]
 
         self._cr.execute(' UNION ALL '.join(queries), params)
 
@@ -268,6 +268,11 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         queries = []
         params = []
+        if self.pool['account.account'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            account_name = f"COALESCE(account_account.name->>'{lang}', account_account.name->>'en_US')"
+        else:
+            account_name = 'account_account.name'
 
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             queries.append(f'''
@@ -276,7 +281,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     %s AS column_group_key,
                     account_move_line.account_id,
                     account_account.code AS account_code,
-                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    {account_name} AS account_name,
                     account_account.account_type AS account_account_type,
                     account_account_account_tag.account_account_tag_id AS account_tag_id,
                     SUM(ROUND(account_partial_reconcile.amount * currency_table.rate, currency_table.precision)) AS balance
@@ -289,11 +294,6 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_account.id = account_move_line.account_id
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
-                LEFT JOIN ir_translation
-                    ON ir_translation.name = 'account.account,name'
-                    AND ir_translation.res_id = account_account.id
-                    AND ir_translation.type = 'model'
-                    AND ir_translation.lang = %s
                 WHERE account_move_line.move_id IN %s
                     AND account_move_line.account_id NOT IN %s
                     AND account_partial_reconcile.max_date BETWEEN %s AND %s
@@ -306,7 +306,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     %s AS column_group_key,
                     account_move_line.account_id,
                     account_account.code AS account_code,
-                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    {account_name} AS account_name,
                     account_account.account_type AS account_account_type,
                     account_account_account_tag.account_account_tag_id AS account_tag_id,
                     -SUM(ROUND(account_partial_reconcile.amount * currency_table.rate, currency_table.precision)) AS balance
@@ -319,11 +319,6 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_account.id = account_move_line.account_id
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
-                LEFT JOIN ir_translation
-                    ON ir_translation.name = 'account.account,name'
-                    AND ir_translation.res_id = account_account.id
-                    AND ir_translation.type = 'model'
-                    AND ir_translation.lang = %s
                 WHERE account_move_line.move_id IN %s
                     AND account_move_line.account_id NOT IN %s
                     AND account_partial_reconcile.max_date BETWEEN %s AND %s
@@ -336,7 +331,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     %s AS column_group_key,
                     account_move_line.account_id AS account_id,
                     account_account.code AS account_code,
-                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    {account_name} AS account_name,
                     account_account.account_type AS account_account_type,
                     account_account_account_tag.account_account_tag_id AS account_tag_id,
                     SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
@@ -347,25 +342,19 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_account.id = account_move_line.account_id
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
-                LEFT JOIN ir_translation
-                    ON ir_translation.name = 'account.account,name'
-                    AND ir_translation.res_id = account_account.id
-                    AND ir_translation.type = 'model'
-                    AND ir_translation.lang = %s
                 WHERE account_move_line.move_id IN %s
                     AND account_move_line.account_id NOT IN %s
                 GROUP BY account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
             ''')
 
-            lang = self.env.user.lang or get_lang(self.env).code
             date_from = column_group_options['date']['date_from']
             date_to = column_group_options['date']['date_to']
 
             column_group_payment_move_ids = tuple(payment_move_ids.get(column_group_key, [None]))
             params += [
-                column_group_key, lang, column_group_payment_move_ids, payment_account_ids, date_from, date_to,
-                column_group_key, lang, column_group_payment_move_ids, payment_account_ids, date_from, date_to,
-                column_group_key, lang, column_group_payment_move_ids, payment_account_ids
+                column_group_key, column_group_payment_move_ids, payment_account_ids, date_from, date_to,
+                column_group_key, column_group_payment_move_ids, payment_account_ids, date_from, date_to,
+                column_group_key, column_group_payment_move_ids, payment_account_ids
             ]
 
         self._cr.execute(' UNION ALL '.join(queries), params)
@@ -500,6 +489,11 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         queries = []
         params = []
+        if self.pool['account.account'].name.translate:
+            lang = self.env.user.lang or get_lang(self.env).code
+            account_name = f"COALESCE(account_account.name->>'{lang}', account_account.name->>'en_US')"
+        else:
+            account_name = 'account_account.name'
 
         for column in options['columns']:
             queries.append(f'''
@@ -508,7 +502,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     account_move_line.move_id,
                     account_move_line.account_id,
                     account_account.code AS account_code,
-                    COALESCE(NULLIF(ir_translation.value, ''), account_account.name) AS account_name,
+                    {account_name} AS account_name,
                     account_account.account_type AS account_account_type,
                     account_account_account_tag.account_account_tag_id AS account_tag_id,
                     SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision)) AS balance
@@ -519,11 +513,6 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_account.id = account_move_line.account_id
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
-                LEFT JOIN ir_translation
-                    ON ir_translation.name = 'account.account,name'
-                    AND ir_translation.res_id = account_account.id
-                    AND ir_translation.type = 'model'
-                    AND ir_translation.lang = '{self.env.user.lang or get_lang(self.env).code}'
                 WHERE account_move_line.move_id IN %s
                 GROUP BY account_move_line.move_id, account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
             ''')

@@ -6,15 +6,15 @@
                 <t t-set="approver_id" t-value="log.approver_id"/>
                 <li t-att-data-approver-id="approver_id" t-attf-class="list-group-item o_log_activity d-flex #{log_last ? 'border-bottom' : ''}" role="menuitem">
                     <div class="o_activity_title">
-                        <div t-attf-class="o_activity_title_entry {{ log.chaining_type === 'suggest' ? 'align-items-center' : 'mb-1'}}">
+                        <div t-attf-class="o_activity_title_entry d-flex align-items-baseline {{ log.chaining_type === 'suggest' ? 'align-items-center' : 'mb-1'}}">
                             <span t-attf-class="fa #{log.icon ? log.icon : 'fa-bell' } fa-fw me-2 text-center text-muted" role="img" aria-label="Log" title="Log"/>
                             <strong class="text-dark"><t t-esc="log.title_action or log.activity_type_id[1]"/></strong>
                         </div>
-                        <div class="o_activity_title_entry mt-1" t-if="log.state != 'today'">
+                        <div class="o_activity_title_entry d-flex align-items-baseline mt-1" t-if="log.state != 'today'">
                             <span class="fa fa-clock-o fa-fw me-2 text-center text-muted" role="img" aria-label="Deadline" title="Deadline"/>
                             <small t-att-title="log.date_deadline"><t t-esc="log.label_delay" /></small>
                         </div>
-                        <div t-if="log.user_id[0] != uid and log.mail_template_ids" class="o_activity_title_entry">
+                        <div t-if="log.user_id[0] != uid and log.mail_template_ids" class="o_activity_title_entry d-flex align-items-baseline">
                             <span class="fa fa-user fa-fw me-2 text-center text-muted" role="img" aria-label="User" title="User"/>
                             <span><t t-esc="log.user_id[1]" /></span>
                         </div>
@@ -23,10 +23,10 @@
                         <t t-if="log.user_id[0] === uid">
                             <a t-if="log.approver_status === 'pending'">
                                 <a t-att-data-approver-id="approver_id"
-                                    class="o_activity_action_approve o_activity_link o_activity_link_kanban fa fa-check-circle text-success"
+                                    class="o_activity_action_approve o_activity_link_kanban fa fa-check-circle text-success"
                                     title="Approve" role="button" aria-label="Approve"/>
                                 <a t-att-data-approver-id="approver_id"
-                                    class="o_activity_action_refuse o_activity_link o_activity_link_kanban fa fa-times-circle text-danger"
+                                    class="o_activity_action_refuse o_activity_link_kanban fa fa-times-circle text-danger"
                                     title="Refuse" role="button" aria-label="Refuse"/>
                             </a>
                         </t>

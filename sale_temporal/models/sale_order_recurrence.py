@@ -10,6 +10,7 @@ class SaleOrderRecurrence(models.Model):
     _description = 'Sale temporal Recurrence'
     _order = 'unit,duration'
 
+    active = fields.Boolean(default=True)
     name = fields.Char(compute='_compute_name', store=True, readonly=False)
     duration = fields.Integer(string="Duration", required=True, default=1,
                               help="Minimum duration before this rule is applied. If set to 0, it represents a fixed temporal price.")

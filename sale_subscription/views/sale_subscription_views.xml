@@ -707,7 +707,9 @@
             </group>
             <group name="sale_info" position="after">
                 <group name="sale_info2">
-                    <field name="recurrence_id" placeholder="None" options="{'no_create': True}"/>
+                    <field name="recurrence_id" placeholder="None"
+                           domain="[('unit', 'not in', ['hour', 'day'])]"
+                           options="{'no_create': True}"/>
                     <field name="recurring_rule_boundary" widget="radio" options="{'horizontal': true}"
                            attrs="{'invisible': [('recurrence_id','=', False)]}"/>
                     <label for="recurring_rule_count"

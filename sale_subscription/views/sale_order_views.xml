@@ -128,7 +128,9 @@
             <field name="show_update_pricelist" position='before'>
                 <label for="recurrence_id"/>
                 <div class="o_row" >
-                    <field name="recurrence_id" attrs="{'readonly': [('subscription_management', '=', 'upsell')]}" options="{'no_create': True}"/>
+                    <field name="recurrence_id" attrs="{'readonly': [('subscription_management', '=', 'upsell')]}"
+                           domain="[('unit', 'not in', ['hour', 'day'])]"
+                           options="{'no_create': True}"/>
                     <span attrs="{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_management', '=', 'upsell')]}">until</span>
                     <field name="end_date" attrs="{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_management', '=', 'upsell')]}"/>
                 </div>

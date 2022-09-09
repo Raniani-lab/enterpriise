@@ -45,7 +45,7 @@
         opacity: 0;
         transition: visibility 0.3s, opacity 0.3s linear;
     }
-    .o_knowledge_body:hover .o_knowledge_icon_cover_buttons > a,
+    .o_knowledge_icon_cover_buttons:hover > a,
     .o_knowledge_cover:hover .o_knowledge_edit_cover_buttons > a {
         visibility: visible;
         opacity: 1;
@@ -384,7 +384,7 @@
             margin-bottom: -70px;
             .o_article_emoji {
                 position:relative;
-                top:-70px;
+                top:-80px;
             }
         }
         .o_knowledge_icon {

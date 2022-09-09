@@ -14,7 +14,7 @@ class ResPartner(models.Model):
         res = super().write(vals)
         if 'active' in vals and not vals.get('active'):
             Subscription = self.env['sale.order']
-            order_ids = Subscription.search([
+            order_ids = Subscription.sudo().search([
                 ('stage_category', '=', 'progress'),
                 '|',
                 ('partner_shipping_id', 'in', self.ids),

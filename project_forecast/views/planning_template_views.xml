@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="planning.planning_slot_template_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
-                <field name="project_id" optional="show"/>
+                <field name="project_id" optional="show" options="{'no_open': 1}"/>
             </xpath>
         </field>
     </record>

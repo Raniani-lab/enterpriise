@@ -8,8 +8,7 @@
         <field name="inherit_id" ref="planning.planning_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
-                <field groups="!project.group_project_user" name="project_id" optional="show" options="{'no_open': True}"/>
-                <field groups="project.group_project_user" name="project_id" optional="show"/>
+                <field name="project_id" optional="show" options="{'no_open': True}"/>
             </xpath>
         </field>
     </record>

@@ -10,7 +10,7 @@
                 <field name="child_text" invisible="1"/>
                 <field name="priority" widget="priority" optional="hide" nolabel="1"/>
                 <field name="name" widget="name_with_subtask_count"/>
-                <field name="project_id" readonly="1" optional="show"/>
+                <field name="project_id" readonly="1" optional="show" options="{'no_open': 1}"/>
                 <field name="partner_id" optional="show" required="True"/>
                 <field name="user_ids" widget="many2many_avatar_user" optional="show" invisible="context.get('user_invisible', False)" domain="[('share', '=', False), ('active', '=', True)]"/>
                 <field name="company_id" optional="show" groups="base.group_multi_company" readonly="1"/>

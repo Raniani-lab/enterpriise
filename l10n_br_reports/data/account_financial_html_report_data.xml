@@ -247,6 +247,7 @@
     </record>
     <record id="account_financial_report_pnl_br" model="account.report">
         <field name="name">Demonstração dos Resultados</field>
+        <field name="root_report_id" ref="account_reports.profit_and_loss"/>
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_journals" eval="True"/>
         <field name="country_id" ref="base.br"/>

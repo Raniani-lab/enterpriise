@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import { Domain } from "@web/core/domain";
+import { deserializeDate, deserializeDateTime } from "@web/core/l10n/dates";
 import { evaluateExpr } from "@web/core/py_js/py";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { computeVariation } from "@web/core/utils/numbers";
@@ -210,6 +211,17 @@ export class DashboardModel extends Model {
     // Protected
     //--------------------------------------------------------------------------
 
+    _parseData(meta, data) {
+        for (const agg of meta.aggregates) {
+            const { fieldType, name } = agg;
+            if (data[name] && ["date", "datetime"].includes(fieldType)) {
+                const deserialize = fieldType === "date" ? deserializeDate : deserializeDateTime;
+                data[name].values = data[name].values.map((value) =>
+                    value ? deserialize(value) : value
+                );
+            }
+        }
+    }
     /**
      * @protected
      * @param {Object} meta
@@ -308,6 +320,7 @@ export class DashboardModel extends Model {
         }
         await Promise.all(proms);
 
+        this._parseData(meta, data);
         this._evalFormulae(meta, data);
         this._computeVariations(meta, data);
 

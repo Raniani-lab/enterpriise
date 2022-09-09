@@ -827,7 +827,6 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test("graph tag and date aggregate", async function (assert) {
-        assert.expect(2);
         serverData.views["test_time_range,some_xmlid,graph"] = `<graph/>`;
 
         await makeView({
@@ -839,14 +838,18 @@ QUnit.module("Views", (hooks) => {
                     <view type="graph" ref="some_xmlid"/>
                     <group>
                         <aggregate name="date_agg" group_operator="max" field="date"/>
+                        <aggregate name="date_agg_null" group_operator="max" field="date"/>
                     </group>
                 </dashboard>`,
+            searchViewArch: `<search><filter name="date" date="date" /></search>`,
             mockRPC: function (route, args) {
                 if (args.method === "read_group") {
+                    const { domain } = args.kwargs;
                     return Promise.resolve([
                         {
                             __count: 1,
                             date: "1983-07-15",
+                            date_agg: domain.length ? domain[1][2] : "1983-07-15",
                         },
                     ]);
                 }
@@ -864,6 +867,28 @@ QUnit.module("Views", (hooks) => {
             '.o_menu_item:contains("Date")',
             "the Date field should not be available as a graph measure"
         );
+        assert.strictEqual(
+            target.querySelector("[name='date_agg'] .o_value").textContent,
+            "07/15/1983"
+        );
+        assert.strictEqual(
+            target.querySelector("[name='date_agg_null'] .o_value").textContent,
+            " - "
+        );
+
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, 0);
+        await toggleMenuItemOption(target, "date", "July");
+
+        // Apply range with today and comparison with previous period
+        await toggleComparisonMenu(target);
+        await toggleMenuItem(target, "date: Previous period");
+
+        assert.strictEqual(
+            target.querySelector("[name='date_agg'] .o_comparison").textContent,
+            "07/01/2022 vs 06/01/2022"
+        );
+        assert.containsNone(target, "[name='date_agg_null'] .o_comparison");
     });
 
     QUnit.test("basic rendering of a pivot tag", async function (assert) {

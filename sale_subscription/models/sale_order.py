@@ -196,7 +196,7 @@ class SaleOrder(models.Model):
         """
         today = fields.Date.today()
         for order in self:
-            if order.is_subscription and order.stage_category == 'progress' and \
+            if order.is_subscription and order.stage_category in ['progress', 'paused'] and \
                     order.state in ['sale', 'done'] and order.start_date and order.start_date <= today:
                 order.recurring_monthly = sum(order.order_line.mapped('recurring_monthly'))
             else:
@@ -755,7 +755,6 @@ class SaleOrder(models.Model):
         """
         create_values, update_values = [], []
         for order in self:
-            order.subscription_management = 'upsell'
             # We don't propagate the line description from the upsell order to the subscription
             create_values, update_values = order.order_line.filtered(lambda sol: not sol.display_type)._subscription_update_line_data(order.subscription_id)
             order.subscription_id.with_context(skip_next_invoice_update=True).write({'order_line': create_values + update_values})

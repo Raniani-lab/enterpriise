@@ -133,6 +133,7 @@
                     <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'end_date'}" />
                     <filter string="Next Invoice Date" name="next_invoice_date" domain="[]" context="{'group_by' : 'next_invoice_date'}" />
                     <filter string="Recurrence" name="recurrence" domain="[]" context="{'group_by' : 'recurrence_id'}" />
+                    <filter string="Pricelist" name="pricelist_id" domain="[]" context="{'group_by' : 'pricelist_id'}" />
                 </group>
             </search>
         </field>
@@ -665,7 +666,7 @@
         <field name="inherit_id" ref="sale_management.sale_order_template_view_tree"/>
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <field name="recurrence_id"/>
+                <field name="recurrence_id" options="{'no_create': True}"/>
             </field>
         </field>
     </record>
@@ -706,7 +707,7 @@
             </group>
             <group name="sale_info" position="after">
                 <group name="sale_info2">
-                    <field name="recurrence_id" placeholder="None"/>
+                    <field name="recurrence_id" placeholder="None" options="{'no_create': True}"/>
                     <field name="recurring_rule_boundary" widget="radio" options="{'horizontal': true}"
                            attrs="{'invisible': [('recurrence_id','=', False)]}"/>
                     <label for="recurring_rule_count"

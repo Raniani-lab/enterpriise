@@ -16,7 +16,7 @@
         <field name="unit">month</field>
     </record>
     <record id="recurrence_quarterly" model="sale.temporal.recurrence">
-        <field name="name">Quaterly</field>
+        <field name="name">Quarterly</field>
         <field name="duration">3</field>
         <field name="unit">month</field>
     </record>

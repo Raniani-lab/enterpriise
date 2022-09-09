@@ -58,7 +58,7 @@ export const documentsFileUploadService = {
             }
             if (context) {
                 for (const key of ["default_owner_id", "default_partner_id", "default_res_id", "default_res_model"]) {
-                    if (context[key] !== undefined) {
+                    if (context[key]) {
                         formData.append(key.replace("default_", ""), context[key]);
                     }
                 }

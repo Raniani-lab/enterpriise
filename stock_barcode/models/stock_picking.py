@@ -275,25 +275,16 @@ class StockPickingType(models.Model):
         help="Does the picker have to scan the destination? If yes, at which rate?",
         default='optional', required=True)
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        picking_types = super().create(vals_list)
-        picking_types._check_picking_type_config()
-        return picking_types
-
-    def write(self, vals):
-        super().write(vals)
-        self._check_picking_type_config()
-
-    def get_action_picking_tree_ready_kanban(self):
-        return self._get_action('stock_barcode.stock_picking_action_kanban')
-
-    def _check_picking_type_config(self):
+    @api.constrains('restrict_scan_source_location', 'restrict_scan_dest_location')
+    def _check_restrinct_scan_locations(self):
         for picking_type in self:
             if picking_type.code == 'internal' and\
                picking_type.restrict_scan_dest_location == 'optional' and\
                picking_type.restrict_scan_source_location == 'mandatory':
                 raise UserError(_("If the source location must be scanned for each product, the destination location must be either scanned after each line too, either not scanned at all."))
+
+    def get_action_picking_tree_ready_kanban(self):
+        return self._get_action('stock_barcode.stock_picking_action_kanban')
 
     def _get_barcode_config(self):
         self.ensure_one()

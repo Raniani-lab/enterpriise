@@ -164,7 +164,7 @@
             </group>
             <group name="sale_info" position='inside'>
                 <field name="commercial_partner_id" invisible="1"/>
-                <field name="payment_token_id" groups="base.group_no_one"/>
+                <field name="payment_token_id" groups="base.group_no_one" options="{'no_create': 'True'}"/>
                 <field name="payment_exception" groups="base.group_no_one"/>
             </group>
         </field>

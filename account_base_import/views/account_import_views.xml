@@ -4,7 +4,7 @@
     <record id="action_open_import_guide" model="ir.actions.client">
         <field name="name">Accounting Import Guide</field>
         <field name="tag">account_import_guide</field>
-        <field name="target">main</field>
+        <field name="target">current</field>
     </record>
 
     <record id="action_open_coa_setup" model="ir.actions.act_window">

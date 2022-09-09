@@ -11,6 +11,11 @@
     </t>
 
     <t t-name="account_base_import.accountImportTemplate" owl="1">
+        <ControlPanel display="{
+            'top-right': false,
+            'bottom-left': false,
+            'bottom-right': false,
+        }"/>
         <div class="container text-justify my-5 pt-4" style="max-width: 50%;">
             <div>
                 <div class="title">

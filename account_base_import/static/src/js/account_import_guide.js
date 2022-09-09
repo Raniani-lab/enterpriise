@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
@@ -38,5 +39,6 @@ export class AccountImportGuide extends Component {
     }
 };
 AccountImportGuide.template = "account_base_import.accountImportTemplate";
+AccountImportGuide.components = { ControlPanel };
 
 registry.category("actions").add("account_import_guide", AccountImportGuide);

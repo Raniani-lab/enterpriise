@@ -41,10 +41,6 @@
             <field name="model">account.payment</field>
             <field name="inherit_id" ref="account.view_account_payment_search"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='company_id']" position="after">
-                    <separator/>
-                    <filter name="sdd_to_collect" string="SDD Payments to Collect" domain="[('payment_method_code', '=', 'sdd'), ('state', '=', 'posted'), ('is_move_sent', '=', False), ('is_matched', '=', False)]"/>
-                </xpath>
                 <xpath expr="//filter[@name='company']" position="after">
                     <separator/>
                     <filter name="revoked_mandate" string="Revoked SDD Mandate" domain="[('sdd_mandate_id.state', '=', 'revoked')]"/>

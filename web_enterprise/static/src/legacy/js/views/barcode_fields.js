@@ -6,7 +6,7 @@ require('web._field_registry');
 var relational_fields = require('web.relational_fields');
 
 const { _t } = require('web.core');
-const BarcodeScanner = require('@web_enterprise/webclient/barcode/barcode_scanner');
+const BarcodeScanner = require('@web/webclient/barcode/barcode_scanner');
 
 /**
  * Override the Many2One to open a dialog in mobile.
@@ -14,7 +14,7 @@ const BarcodeScanner = require('@web_enterprise/webclient/barcode/barcode_scanne
 var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
     template: "FieldMany2OneBarcode",
     events: _.extend({}, relational_fields.FieldMany2One.prototype.events, {
-        'click .o_barcode_mobile': '_onBarcodeButtonClick',
+        'click .o_barcode': '_onBarcodeButtonClick',
     }),
 
     /**
@@ -64,7 +64,7 @@ var FieldMany2OneBarcode = relational_fields.FieldMany2One.extend({
      * @private
      */
     _startBarcode: function () {
-        this.$barcode_button = this.$('.o_barcode_mobile');
+        this.$barcode_button = this.$('.o_barcode');
         // Hide button if a record is set
         this.$barcode_button.toggle(!this.isSet());
     },

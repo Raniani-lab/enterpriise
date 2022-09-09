@@ -12,7 +12,7 @@ import LocationButton from '@stock_barcode/components/location_button';
 import PackageLineComponent from '@stock_barcode/components/package_line';
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
+import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { View } from "@web/views/view";
 

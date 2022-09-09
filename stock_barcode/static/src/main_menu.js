@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import * as BarcodeScanner from '@web_enterprise/webclient/barcode/barcode_scanner';
+import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
 import { bus } from 'web.core';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";

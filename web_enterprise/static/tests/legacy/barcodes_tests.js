@@ -7,7 +7,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
     const { createView, dom, mock } = require('web.test_utils');
 
     const FieldMany2OneBarcode = require('web_mobile.barcode_fields');
-    const BarcodeScanner = require('@web_enterprise/webclient/barcode/barcode_scanner');
+    const BarcodeScanner = require('@web/webclient/barcode/barcode_scanner');
 
     const NAME_SEARCH = "name_search";
     const PRODUCT_PRODUCT = 'product.product';
@@ -92,7 +92,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
                 mockRPC,
             });
 
-            const $scanButton = form.$('.o_barcode_mobile');
+            const $scanButton = form.$('.o_barcode');
 
             assert.containsOnce(form, $scanButton, "has scanner button");
 
@@ -129,7 +129,7 @@ odoo.define('web_mobile.barcode.tests', function (require) {
                 mockRPC,
             });
 
-            const $scanButton = form.$('.o_barcode_mobile');
+            const $scanButton = form.$('.o_barcode');
 
             assert.containsOnce(form, $scanButton, "has scanner button");
 

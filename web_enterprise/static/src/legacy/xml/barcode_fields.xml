@@ -5,7 +5,7 @@
         <t t-jquery="button.o_external_button " t-operation="after">
             <button
                     type="button"
-                    class="btn o_barcode_mobile"
+                    class="btn o_barcode"
                     tabindex="-1"
                     draggable="false"
                     aria-label="Scan barcode"

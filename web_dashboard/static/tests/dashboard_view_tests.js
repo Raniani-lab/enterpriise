@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import AbstractView from "web.AbstractView";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import {
@@ -37,17 +36,27 @@ import { browser } from "@web/core/browser/browser";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
+import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { graphView } from "@web/views/graph/graph_view";
 import { actionService } from "@web/webclient/actions/action_service";
 import { companyService } from "@web/webclient/company_service";
 import { DashboardModel } from "@web_dashboard/dashboard_model";
+import AbstractView from "web.AbstractView";
 import legacyViewRegistry from "web.view_registry";
-import PieChart from "web.PieChart";
 import Widget from "web.Widget";
 import widgetRegistry from "web.widget_registry";
 
 const { Component, markup, xml } = owl;
 const serviceRegistry = registry.category("services");
+
+function checkLegend(assert, chart, expectedLegendLabels) {
+    expectedLegendLabels =
+        expectedLegendLabels instanceof Array ? expectedLegendLabels : [expectedLegendLabels];
+    const actualLegendLabels = chart.config.options.legend.labels
+        .generateLabels(chart)
+        .map((o) => o.text);
+    assert.deepEqual(actualLegendLabels, expectedLegendLabels);
+}
 
 QUnit.module("Views", (hooks) => {
     let serverData;
@@ -277,12 +286,11 @@ QUnit.module("Views", (hooks) => {
         // concurrency.delay is a fragile way that we use to wait until the
         // graph is rendered.
         // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
-        assert.expect(7);
 
-        let pieChart = null;
-        patchWithCleanup(PieChart.prototype, {
-            init() {
-                pieChart = this;
+        let graphRenderer = null;
+        patchWithCleanup(GraphRenderer.prototype, {
+            setup() {
+                graphRenderer = this;
                 this._super(...arguments);
             },
         });
@@ -297,11 +305,12 @@ QUnit.module("Views", (hooks) => {
                 </dashboard>
             `,
             mockRPC(route, args) {
-                if (route === "/web/dataset/call_kw/test_report/read_group") {
+                const { method, model, kwargs } = args;
+                if (method === "web_read_group") {
+                    assert.step(method);
                     assert.deepEqual(args.args, []);
-                    assert.deepEqual(args.model, "test_report");
-                    assert.deepEqual(args.method, "read_group");
-                    assert.deepEqual(args.kwargs, {
+                    assert.strictEqual(model, "test_report");
+                    assert.deepEqual(kwargs, {
                         context: {
                             allowed_company_ids: [1],
                             fill_temporal: true,
@@ -310,26 +319,24 @@ QUnit.module("Views", (hooks) => {
                             uid: 7,
                         },
                         domain: [],
-                        fields: ["categ_id", "sold"],
+                        fields: ["__count", "sold:sum"],
                         groupby: ["categ_id"],
                         lazy: false,
                     });
                 }
             },
-            legacyParams: { withLegacyMockServer: true },
         });
 
-        assert.containsOnce(target, ".o_pie_chart");
-        const chartTitle = target.querySelector(".o_pie_chart .o_legacy_graph_renderer label")
-            .textContent;
+        assert.containsOnce(target, ".o_widget_pie_chart");
+        const chartTitle = target.querySelector(".o_widget_pie_chart label").textContent;
         assert.strictEqual(
             chartTitle,
             "Products sold",
             "the title of the graph should be displayed"
         );
-        const chart = pieChart.controller.renderer.componentRef.comp.chart;
-        const legendText = $(chart.generateLegend()).text().trim();
-        assert.strictEqual(legendText, "FirstSecond", "there should be two legend items");
+        checkLegend(assert, graphRenderer.chart, ["First", "Second"]);
+
+        assert.verifySteps(["web_read_group"]);
     });
 
     QUnit.test("basic rendering of empty pie chart widget", async function (assert) {
@@ -340,10 +347,10 @@ QUnit.module("Views", (hooks) => {
         serverData.models.test_time_range.records = [];
         serverData.models.test_report.records = [];
 
-        let pieChart = null;
-        patchWithCleanup(PieChart.prototype, {
-            init() {
-                pieChart = this;
+        let graphRenderer = null;
+        patchWithCleanup(GraphRenderer.prototype, {
+            setup() {
+                graphRenderer = this;
                 this._super(...arguments);
             },
         });
@@ -357,11 +364,8 @@ QUnit.module("Views", (hooks) => {
                     <widget name="pie_chart" attrs="{'measure': 'sold', 'groupby': 'categ_id'}"/>
                 </dashboard>
             `,
-            legacyParams: { withLegacyMockServer: true },
         });
-        const chart = pieChart.controller.renderer.componentRef.comp.chart;
-        const legendText = $(chart.generateLegend()).text().trim();
-        assert.strictEqual(legendText, "No data", "the legend should contain the item 'No data'");
+        checkLegend(assert, graphRenderer.chart, ["No data"]);
     });
 
     QUnit.test(
@@ -371,12 +375,10 @@ QUnit.module("Views", (hooks) => {
             // concurrency.delay is a fragile way that we use to wait until the
             // graph is rendered.
             // Roughly: 2 concurrency.delay = 2 levels of inner async calls.
-            assert.expect(7);
-
-            let pieChart = null;
-            patchWithCleanup(PieChart.prototype, {
-                init() {
-                    pieChart = this;
+            let graphRenderer = null;
+            patchWithCleanup(GraphRenderer.prototype, {
+                setup() {
+                    graphRenderer = this;
                     this._super(...arguments);
                 },
             });
@@ -396,11 +398,12 @@ QUnit.module("Views", (hooks) => {
                     </dashboard>
                 `,
                 mockRPC(route, args) {
-                    if (route === "/web/dataset/call_kw/test_report/read_group") {
+                    const { method, model, kwargs } = args;
+                    if (method === "web_read_group") {
+                        assert.step(method);
                         assert.deepEqual(args.args, []);
-                        assert.deepEqual(args.model, "test_report");
-                        assert.deepEqual(args.method, "read_group");
-                        assert.deepEqual(args.kwargs, {
+                        assert.strictEqual(model, "test_report");
+                        assert.deepEqual(kwargs, {
                             context: {
                                 allowed_company_ids: [1],
                                 fill_temporal: true,
@@ -409,23 +412,22 @@ QUnit.module("Views", (hooks) => {
                                 uid: 7,
                             },
                             domain: [],
-                            fields: ["categ_id", "sold"],
+                            fields: ["__count", "sold:sum"],
                             groupby: ["categ_id"],
                             lazy: false,
                         });
                     }
                 },
-                legacyParams: { withLegacyMockServer: true },
             });
-            assert.containsOnce(target, ".o_pie_chart");
+            assert.containsOnce(target, ".o_widget_pie_chart");
             assert.strictEqual(
-                target.querySelector(".o_pie_chart .o_legacy_graph_renderer label").innerText,
+                target.querySelector(".o_widget_pie_chart label").innerText,
                 "Products sold"
             );
 
-            const chart = pieChart.controller.renderer.componentRef.comp.chart;
-            const legendText = $(chart.generateLegend()).text().trim();
-            assert.strictEqual(legendText, "FirstSecond", "there should be two legend items");
+            checkLegend(assert, graphRenderer.chart, ["First", "Second"]);
+
+            assert.verifySteps(["web_read_group"]);
         }
     );
 
@@ -448,9 +450,10 @@ QUnit.module("Views", (hooks) => {
         ];
 
         const mockRPC = async (route, args) => {
-            if (args.method === "read_group") {
-                assert.step(args.method);
-                assert.deepEqual(args.kwargs.domain, readGroupDomains.shift());
+            const { method, kwargs } = args;
+            if (method === "web_read_group") {
+                assert.step(method);
+                assert.deepEqual(kwargs.domain, readGroupDomains.shift());
             }
         };
 
@@ -467,21 +470,21 @@ QUnit.module("Views", (hooks) => {
             `,
         });
 
-        assert.verifySteps(["read_group"]);
+        assert.verifySteps(["web_read_group"]);
 
         await toggleFilterMenu(target);
         await toggleMenuItem(target, "date");
         await toggleMenuItemOption(target, "date", "March");
-        assert.verifySteps(["read_group"]);
+        assert.verifySteps(["web_read_group"]);
         await toggleFilterMenu(target); // Close the filter menu
 
         // Apply range with today and comparison with previous period
         await toggleComparisonMenu(target);
         await toggleMenuItem(target, "date: Previous period");
-        assert.verifySteps(["read_group", "read_group"]);
+        assert.verifySteps(["web_read_group", "web_read_group"]);
 
-        assert.containsOnce(target, ".o_pie_chart");
-        const chartTitle = $(".o_pie_chart .o_legacy_graph_renderer label").text();
+        assert.containsOnce(target, ".o_widget_pie_chart");
+        const chartTitle = $(".o_widget_pie_chart label").text();
         assert.strictEqual(
             chartTitle,
             "Products sold",
@@ -1975,7 +1978,6 @@ QUnit.module("Views", (hooks) => {
 
         const webClient = await createWebClient({
             serverData,
-            legacyParams: { withLegacyMockServer: true },
             mockRPC(route, args) {
                 if (args.method === "get_cohort_data") {
                     if (args.kwargs.domain[0]) {
@@ -4491,10 +4493,9 @@ QUnit.module("Views", (hooks) => {
                     </group>
                 </dashboard>
             `,
-            legacyParams: { withLegacyMockServer: true },
         });
 
-        assert.containsOnce(target, ".o_pie_chart");
+        assert.containsOnce(target, ".o_widget_pie_chart");
     });
 
     QUnit.test("rendering of a pie chart widget and formula", async function (assert) {
@@ -4506,13 +4507,14 @@ QUnit.module("Views", (hooks) => {
                 <dashboard>
                     <widget name="pie_chart" title="Products sold" attrs="{'measure': 'sold', 'groupby': 'categ_id'}"/>
                     <group>
-                        <formula name="sold" value="record.sold * record.untaxed"/>
+                        <aggregate name="sold" field="sold" invisible="1"/>
+                        <aggregate name="untaxed" field="untaxed" invisible="1"/>
+                        <formula name="new_sold" value="record.sold * record.untaxed"/>
                     </group>
                 </dashboard>
             `,
-            legacyParams: { withLegacyMockServer: true },
         });
 
-        assert.containsOnce(target, ".o_pie_chart");
+        assert.containsOnce(target, ".o_widget_pie_chart");
     });
 });

@@ -55,7 +55,7 @@ class TestForecastCreationAndEditing(TestCommonForecast):
         self.assertEqual(self.slot.allocated_hours, 40, 'resource hours should be a full week\'s available hours')
 
     def test_creating_a_planning_shift_with_flexible_hours_allocated_hours_are_correct(self):
-        self.employee_bert.resource_id.flexible_hours = True
+        self.employee_bert.resource_id.calendar_id = False
         self.assertEqual(self.slot.allocated_hours, 8.0, 'resource hours should be a full workday')
 
         self.slot.write({'allocated_percentage': 50})

@@ -241,10 +241,10 @@ class Planning(models.Model):
         start_utc = pytz.utc.localize(min(slots.mapped('start_datetime')))
         end_utc = pytz.utc.localize(max(slots.mapped('end_datetime')))
         resource_work_intervals, calendar_work_intervals = slots.resource_id \
-            .filtered(lambda r: not r.flexible_hours) \
+            .filtered('calendar_id') \
             ._get_valid_work_intervals(start_utc, end_utc, calendars=slots.company_id.resource_calendar_id)
         for slot in slots:
-            if not slot.resource_id and slot.allocation_type == 'planning' or slot.resource_id.flexible_hours:
+            if not slot.resource_id and slot.allocation_type == 'planning' or not slot.resource_id.calendar_id:
                 slot.allocated_percentage = 100 * slot.allocated_hours / slot._calculate_slot_duration()
             else:
                 work_hours = slot._get_working_hours_over_period(start_utc, end_utc, resource_work_intervals, calendar_work_intervals)
@@ -252,7 +252,7 @@ class Planning(models.Model):
 
     @api.depends(
         'start_datetime', 'end_datetime', 'resource_id.calendar_id',
-        'company_id.resource_calendar_id', 'allocated_percentage', 'resource_id.flexible_hours')
+        'company_id.resource_calendar_id', 'allocated_percentage')
     def _compute_allocated_hours(self):
         percentage_field = self._fields['allocated_percentage']
         self.env.remove_to_compute(percentage_field, self)
@@ -260,7 +260,7 @@ class Planning(models.Model):
             lambda s:
                 (s.allocation_type == 'planning' or not s.company_id)
                 and not s.resource_id
-                or s.resource_id.flexible_hours
+                or not s.resource_id.calendar_id
         )
         slots_with_calendar = self - planning_slots
         for slot in planning_slots:
@@ -300,11 +300,12 @@ class Planning(models.Model):
             if not slot.employee_id:
                 slot.working_days_count = 0
                 continue
-            slots_per_calendar[slot.resource_id.calendar_id].add(slot.id)
-            datetime_begin, datetime_end = planned_dates_per_calendar_id[slot.resource_id.calendar_id.id]
+            calendar = slot.resource_id.calendar_id or slot.resource_id.company_id.resource_calendar_id
+            slots_per_calendar[calendar].add(slot.id)
+            datetime_begin, datetime_end = planned_dates_per_calendar_id[calendar.id]
             datetime_begin = min(datetime_begin, slot.start_datetime)
             datetime_end = max(datetime_end, slot.end_datetime)
-            planned_dates_per_calendar_id[slot.resource_id.calendar_id.id] = datetime_begin, datetime_end
+            planned_dates_per_calendar_id[calendar.id] = datetime_begin, datetime_end
         for calendar, slot_ids in slots_per_calendar.items():
             slots = self.env['planning.slot'].browse(list(slot_ids))
             if not calendar:
@@ -580,7 +581,7 @@ class Planning(models.Model):
             current_start = convert_datetime_timezone(start_datetime, user_tz)
             current_end = convert_datetime_timezone(end_datetime, user_tz)
             # Look at the work intervals to examine whether the current start/end_datetimes are inside working hours
-            calendar_id = resource.calendar_id if resource else company.resource_calendar_id
+            calendar_id = resource.calendar_id or company.resource_calendar_id
             work_interval = calendar_id._work_intervals_batch(current_start, current_end)[False]
             intervals = [(date_start, date_stop) for date_start, date_stop, attendance in work_interval]
             if not intervals:
@@ -969,9 +970,7 @@ class Planning(models.Model):
                         tag_resource_rows(row.get('rows'))
 
         tag_resource_rows(rows)
-        resources = self.env['resource.resource'] \
-            .browse(resource_ids) \
-            .filtered(lambda r: not r.flexible_hours)
+        resources = self.env['resource.resource'].browse(resource_ids).filtered('calendar_id')
         leaves_mapping = resources._get_unavailable_intervals(start_datetime, end_datetime)
         company_leaves = self.env.company.resource_calendar_id._unavailable_intervals(start_datetime.replace(tzinfo=pytz.utc), end_datetime.replace(tzinfo=pytz.utc))
 
@@ -994,7 +993,7 @@ class Planning(models.Model):
             if row.get('resource_id'):
                 resource_id = self.env['resource.resource'].browse(row.get('resource_id'))
                 if resource_id:
-                    if resource_id.flexible_hours:
+                    if not resource_id.calendar_id:
                         return new_row
                     calendar = leaves_mapping[resource_id.id]
 
@@ -1154,6 +1153,8 @@ class Planning(models.Model):
 
     def _calculate_slot_duration(self):
         self.ensure_one()
+        if not self.start_datetime:
+            return 0.0
         period = self.end_datetime - self.start_datetime
         slot_duration = period.total_seconds() / 3600
         max_duration = (period.days + 1) * self.company_id.resource_calendar_id.hours_per_day

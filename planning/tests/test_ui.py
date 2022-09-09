@@ -16,7 +16,7 @@ class TestUi(HttpCase):
             'work_email': 'thibault@a.be',
             'tz': 'UTC',
             'employee_type': 'freelance',
-            'flexible_hours': True,
+            'resource_calendar_id': False,
         })
 
     def test_01_ui(self):

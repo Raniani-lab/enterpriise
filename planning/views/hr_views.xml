@@ -15,12 +15,6 @@
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button string="Planning" class="oe_stat_button" icon="fa-tasks" name="action_view_planning" type="object"/>
             </xpath>
-            <xpath expr="//field[@name='resource_calendar_id']" position="before">
-                <field name="flexible_hours" />
-            </xpath>
-            <xpath expr="//field[@name='resource_calendar_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('flexible_hours', '=', True)]}</attribute>
-            </xpath>
         </field>
     </record>
 
@@ -30,8 +24,8 @@
         <field name="inherit_id" ref="hr.view_employee_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='inactive']" position="before">
-                <filter name="fixed_hours" string="Fixed Hours" domain="[('flexible_hours', '=', False)]" />
-                <filter name="flexible_hours" string="Flexible Hours" domain="[('flexible_hours', '=', True)]" />
+                <filter name="fixed_hours" string="Fixed Hours" domain="[('resource_calendar_id', '!=', False)]" />
+                <filter name="flexible_hours" string="Flexible Hours" domain="[('resource_calendar_id', '=', False)]" />
                 <separator/>
             </xpath>
         </field>

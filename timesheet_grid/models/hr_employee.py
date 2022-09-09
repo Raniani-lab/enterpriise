@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from datetime import datetime, time, timedelta
 from pytz import UTC
 
 from odoo import api, fields, models
 from odoo.tools import float_round
-from odoo.addons.resource.models.utils import sum_intervals
+from odoo.addons.resource.models.utils import sum_intervals, HOURS_PER_DAY
 
 
 class Employee(models.Model):
@@ -98,7 +97,8 @@ class Employee(models.Model):
         datetime_min = datetime.combine(date_start_date, time.min).replace(tzinfo=UTC)
         datetime_max = datetime.combine(date_stop_date, time.max).replace(tzinfo=UTC)
         # Collect the number of hours that an employee should work according to their schedule
-        employee_work_days_data = current_employee.resource_calendar_id._work_intervals_batch(
+        calendar = current_employee.resource_calendar_id or current_employee.company_id.resource_calendar_id
+        employee_work_days_data = calendar._work_intervals_batch(
             datetime_min, datetime_max,
             resources=current_employee.resource_id, compute_leaves=False
         )
@@ -106,17 +106,19 @@ class Employee(models.Model):
 
         for day_count in range(delta.days + 1):
             date = date_start_date + timedelta(days=day_count)
-            value = sum(
-                (stop - start).total_seconds() / 3600
-                for start, stop, meta in working_hours
-                if start.date() == date
-            )
+            if current_employee.resource_calendar_id:
+                value = sum(
+                    (stop - start).total_seconds() / 3600
+                    for start, stop, meta in working_hours
+                    if start.date() == date
+                )
+            else:
+                value = current_employee.company_id.resource_calendar_id.hours_per_day or HOURS_PER_DAY
 
             result[day_count] = {
                 'date': fields.Date.to_string(date),
                 'total_hours': value,
             }
-
         return result
 
     def _get_timesheets_and_working_hours_query(self):
@@ -154,7 +156,8 @@ class Employee(models.Model):
 
             # Adjustments if we work with a different unit of measure
             if uom == 'days':
-                hours_per_day_per_employee[employee.id] = employee.resource_calendar_id.hours_per_day
+                calendar = employee.resource_calendar_id or employee.company_id.resource_calendar_id
+                hours_per_day_per_employee[employee.id] = calendar.hours_per_day
                 units_to_work = units_to_work / hours_per_day_per_employee[employee.id]
                 rounding = len(str(self.env.company.timesheet_encode_uom_id.rounding).split('.')[1])
                 units_to_work = round(units_to_work, rounding)

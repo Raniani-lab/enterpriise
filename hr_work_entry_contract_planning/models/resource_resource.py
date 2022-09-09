@@ -7,10 +7,13 @@ from odoo import api, fields, models
 class ResourceResource(models.Model):
     _inherit = 'resource.resource'
 
-    flexible_hours = fields.Boolean(compute='_compute_flexible_hours', compute_sudo=True, readonly=False, store=True)
+    # FIXME: [XBO] perhaps this compute will no longer be useful if we have a logic saying
+    #            if the work_entry_source is different to calendar then the calendar of the
+    #            contract and the resource will be False? :thinking:
+    calendar_id = fields.Many2one(compute='_compute_calendar_id', compute_sudo=True, readonly=False, store=True)
 
     @api.depends('employee_id.contract_id.work_entry_source')
-    def _compute_flexible_hours(self):
+    def _compute_calendar_id(self):
         contract_read_group = self.env['hr.contract']._read_group(
             [
                 ('employee_id', 'in', self.employee_id.ids),
@@ -22,4 +25,5 @@ class ResourceResource(models.Model):
         )
         running_contract_count_per_employee_id = {res['employee_id'][0]: res['employee_id_count'] for res in contract_read_group}
         for resource in self:
-            resource.flexible_hours = bool(running_contract_count_per_employee_id.get(resource.employee_id.id, 0))
+            if running_contract_count_per_employee_id.get(resource.employee_id.id, 0):
+                resource.calendar_id = False

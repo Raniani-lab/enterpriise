@@ -239,7 +239,7 @@ class TestPlanning(TestCommonPlanning, MockEmail):
             3) Check if the start and end dates are on two days and not one.
             4) Check if the allocating hours is equal to the duration in the template.
         """
-        self.resource_bert.flexible_hours = True
+        self.resource_bert.calendar_id = False
         template_slot = self.env['planning.slot.template'].create({
             'start_time': 23,
             'duration': 3,

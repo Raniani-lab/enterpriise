@@ -19,7 +19,7 @@
                                 <input type="text" class="form-control knowledge_search_bar" placeholder="Search an Article..."/>
                             </div>
                             <!-- File explorer -->
-                            <div class="flex-grow-1 position-relative">
+                            <div class="flex-grow-1 position-relative border-bottom">
                                 <div class="o_scroll_view px-3">
                                     <div class="o_knowledge_tree" t-att-data-portal-readonly-mode="portal_readonly_mode">
                                         <div class="p-5 text-center">
@@ -29,11 +29,11 @@
                                 </div>
                             </div>
                             <!-- Portal virality -->
-                            <div class="text-center pt-3 pb-2 border-top" groups="base.group_portal">
-                                You are currently visiting as a Guest User.<br/>
+                            <div class="text-start m-auto py-3 small" groups="base.group_portal">
+                                You are currently visiting as a Guest User
                                 <a href="https://www.odoo.com/trial?selected_app=knowledge&amp;utm_source=db&amp;utm_medium=knowledge"
-                                    class="nav-link fw-bold fs-5">
-                                    Create my own Workspace
+                                    class="nav-link fw-bold p-0 pt-1 fs-6" target="_blank">
+                                    Create my own Workspace <i class="fa fa-book"/>
                                 </a>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                                     <div class="d-flex" groups="base.group_public">
                                         <span class="border my-3"/>
                                         <a href="https://www.odoo.com/trial?selected_app=knowledge&amp;utm_source=db&amp;utm_medium=knowledge"
-                                            class="text-decoration-none text-black d-flex align-items-center gap-2 px-3" role="button">
+                                            class="text-decoration-none text-black d-flex align-items-center gap-2 px-3" role="button" target="_blank">
                                             <img width="24" src="/mail/static/src/img/odoo_o.png"/>
                                             Try Odoo
                                         </a>

@@ -29,6 +29,23 @@ var utils = require('web_studio.utils');
 var ViewEditorSidebar = require('web_studio.ViewEditorSidebar');
 const { isComponent } = require('web.utils');
 
+const { computeReportMeasures } = require("@web/views/utils");
+const { evaluateExpr } = require("@web/core/py_js/py");
+const { registry } = require("@web/core/registry");
+const { SearchModel } = require("@web/search/search_model");
+const { StudioView } = require("@web_studio/client_action/studio_view");
+
+const editorsRegistry = registry.category("studio_editors");
+const viewRegistry = registry.category("views");
+
+const CONVERTED_VIEWS = [
+    "cohort",
+    "dashboard",
+    "graph",
+    "map",
+    "pivot",
+];
+
 var _t = core._t;
 var QWeb = core.qweb;
 
@@ -57,6 +74,19 @@ class EditorWrapper extends ComponentWrapper {
         return this.componentRef.comp &&
             this.componentRef.comp.unselectedElements(...arguments);
     }
+}
+
+class WowlEditor extends EditorWrapper {
+    get state() {
+        return {
+            getFieldNames() {
+                return [];
+            }
+        }
+    }
+    getLocalState() {}
+    setLocalState() {}
+    unselectedElements() {}
 }
 
 var ViewEditorManager = AbstractEditorManager.extend({
@@ -94,11 +124,17 @@ var ViewEditorManager = AbstractEditorManager.extend({
      */
     init: function (parent, params) {
         this._super.apply(this, arguments);
+        this.wowlEnv = params.wowlEnv;
+        this.viewDescriptions = params.viewDescriptions;
+
+        const { resId, resIds } = params.controllerState || {};
+        this.resId = resId;
+        this.resIds = resIds; 
 
         this.action = params.action;
 
         this.fields_view = params.fields_view;
-        this.fields = this._processFields(this.fields_view.fields);
+        this.fields = this._processFields(this.viewDescriptions.fields);
 
         this.model_name = this.fields_view.model;
         this.view_type = params.viewType;
@@ -659,7 +695,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
         var self = this;
         var prom = Promise.resolve();
 
-        if (!result.fields_views) {
+        const { models, studio_view_id, views } = result;
+
+        if (!views) {
             // the operation can't be applied
             this.trigger_up('studio_error', {error: 'wrong_xpath'});
             return this._undo(opID, true).then(function () {
@@ -667,23 +705,37 @@ var ViewEditorManager = AbstractEditorManager.extend({
             });
         }
 
+
         // the studio_view could have been created at the first edition so
         // studio_view_id must be updated (but /web_studio/edit_view_arch
         // doesn't return the view id)
-        if (result.studio_view_id) {
-            this.studio_view_id = result.studio_view_id;
+        if (studio_view_id) {
+            this.studio_view_id = studio_view_id;
         }
+
+        const viewType = this.mainViewType;
+        const view = views[viewType];
+        const { arch, viewFields } = processArch(view.arch, viewType, this.model_name, models);
 
         // NOTE: fields & fields_view are from the base model here.
         // fields will be updated accordingly if editing a x2m (see
         // @_setX2mParameters).
-        this.fields = this._processFields(result.fields);
-        this.fields_view = result.fields_views[this.mainViewType];
+        this.fields = this._processFields(models[this.model_name]);
+        this.viewDescriptions.views[viewType].arch = view.arch;
+
+        this.fields_view = {
+            arch,
+            fields: viewFields,
+            model: view.model,
+            type: viewType,
+            view_id: view.id, 
+        };
+
         // TODO: this processing is normally done in data_manager so we need
         // to duplicate it here ; it should be moved in init of
         // abstract_view to avoid the duplication
         this.fields_view.viewFields = this.fields_view.fields;
-        this.fields_view.fields = result.fields;
+        this.fields_view.fields = models[this.model_name];
 
         if (this.isEditingX2m) {
             this.fields_view = this._getX2mFieldsView(this.fields_view);
@@ -831,7 +883,7 @@ var ViewEditorManager = AbstractEditorManager.extend({
      */
     _editView: async function (view_id, studio_view_arch, operations) {
         core.bus.trigger('clear_cache');
-        const { models, studio_view_id, views } = await this._rpc({
+        return this._rpc({
             route: '/web_studio/edit_view',
             params: {
                 view_id: view_id,
@@ -843,32 +895,13 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 context: _.extend({}, session.user_context, {lang: false}),
             },
         });
-        if (!views) {
-            return {};
-        }
-        const viewType = this.mainViewType;
-        const view = views[viewType];
-        const { arch, viewFields } = processArch(view.arch, viewType, this.model_name, models);
-        return {
-            fields: models[this.model_name],
-            fields_views: {
-                [viewType]: {
-                    arch,
-                    fields: viewFields,
-                    model: view.model,
-                    type: viewType,
-                    view_id: view.id,
-                }
-            },
-            studio_view_id,
-        };
     },
     /**
      * @override
      */
     _editViewArch: async function (view_id, view_arch) {
         core.bus.trigger('clear_cache');
-        const result = await this._rpc({
+        return this._rpc({
             route: '/web_studio/edit_view_arch',
             params: {
                 view_id: view_id,
@@ -878,25 +911,6 @@ var ViewEditorManager = AbstractEditorManager.extend({
                 context: _.extend({}, session.user_context, {lang: false}),
             },
         });
-        if (!result) {
-            return result;
-        }
-        const { models, views } = result;
-        const viewType = this.mainViewType;
-        const view = views[viewType];
-        const { arch, viewFields } = processArch(view.arch, viewType, this.model_name, models);
-        return {
-            fields: models[this.model_name],
-            fields_views: {
-                [viewType]: {
-                    arch,
-                    fields: viewFields,
-                    model: view.model,
-                    type: viewType,
-                    view_id: view.view_id,
-                }
-            },
-        };
     },
     /**
      * @private
@@ -1089,6 +1103,88 @@ var ViewEditorManager = AbstractEditorManager.extend({
         }
         return fields_view;
     },
+
+    async instantiateWowlController(viewParams) {
+        
+        if (this.wowlEditor) {
+            this.wowlEditor.destroy();
+        }
+
+        const resModel = viewParams.action.res_model;
+        const type = this.view_type;
+
+        // determine view and controller classes
+
+        const view = editorsRegistry.contains(type)
+            ? editorsRegistry.get(type)
+            : viewRegistry.get(type);
+
+        const { arch, custom_view_id } = this.viewDescriptions.views[type];
+
+        let controllerProps = {
+            info: {},
+            arch,
+            fields: this.viewDescriptions.fields,
+            relatedModels: this.viewDescriptions.relatedModels,
+            resModel,
+            useSampleModel: false,
+            searchMenuTypes: [],
+            className: `o_view_controller o_${type}_view`,
+            resId: this.resId,
+            resIds: this.resIds,
+        };
+        if (custom_view_id) {
+            // for dashboard
+            controllerProps.info.customViewId = custom_view_id;
+        }
+
+        const config = {
+            views: [],
+            getDisplayName: () => {},
+        };
+
+        controllerProps = view.props ? view.props(controllerProps, view, config) : controllerProps;
+
+        const Controller = view.Controller;
+        const SearchModelClass = view.SearchModel || SearchModel;
+
+        const descrs = Object.getOwnPropertyDescriptors(this.wowlEnv);
+        const env = Object.create(Object.getPrototypeOf(this.wowlEnv), descrs);
+
+        const studioViewProps = {
+            Controller,
+            SearchModelClass,
+            context: viewParams.context,
+            domain: viewParams.domain || [], // bug in cohort domain = false???
+            env, // deleted by ComponentWrapper (see owl_compatibility)
+            controllerProps,
+            setOverlay: true,
+        };
+
+        this.wowlEditor = new WowlEditor(this, StudioView, studioViewProps);
+        
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(controllerProps.arch, "text/xml");
+        const rootNode = xml.documentElement;
+
+        const attrs = {};
+        for (const { name, value } of rootNode.attributes) {
+            attrs[name] = value;
+        }
+        if (attrs.sample) {
+            controllerProps.useSampleModel = Boolean(evaluateExpr(attrs.sample));
+        }
+
+        this.view = {
+            arch: {
+                attrs,
+                mode: "view",
+            },
+            controllerProps,
+        };
+
+        return this.wowlEditor;
+    },
     /**
      * @override
      * @returns {Promise<Widget>}
@@ -1121,6 +1217,9 @@ var ViewEditorManager = AbstractEditorManager.extend({
             }
             def = Promise.resolve(this.view);
         } else {
+            if (CONVERTED_VIEWS.includes(this.view_type)) {
+                return this.instantiateWowlController(viewParams);
+            }
             var View = view_registry.get(this.view_type);
             this.view = new View(fields_view, _.extend({}, viewParams));
             if (this.mode === 'edition') {
@@ -1206,12 +1305,22 @@ var ViewEditorManager = AbstractEditorManager.extend({
             params.fields_not_in_view = this.fields;
             params.fields_in_view = [];
         } else if (this.view_type === 'pivot') {
-            params.colGroupBys = this.view.loadParams.colGroupBys;
-            params.rowGroupBys = this.view.loadParams.rowGroupBys;
-            params.measures = this.view.controllerParams.measures;
+            const { controllerProps } = this.view;
+            const {
+                colGroupBys,
+                rowGroupBys,
+                activeMeasures,
+                fieldAttrs,
+            } = controllerProps.modelParams.metaData;
+            params.fieldsInfo = false // useless for pivot search for fields_in_view
+            params.colGroupBys = colGroupBys;
+            params.rowGroupBys = rowGroupBys;
+            params.measures = computeReportMeasures(this.fields, fieldAttrs, activeMeasures);
         } else if (this.view_type === 'graph') {
-            params.groupBys = this.view.loadParams.groupBys;
-            params.measure = this.view.loadParams.measure;
+            const { controllerProps } = this.view;
+            const { groupBy, measure } = controllerProps.modelParams;
+            params.groupBys = groupBy;
+            params.measure = measure;
         }
 
         return new ViewEditorSidebar(this, params);

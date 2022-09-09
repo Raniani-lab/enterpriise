@@ -142,7 +142,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/partner", // get_views with studio in context (from legacy code)
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ],
             "should have opened the action in Studio"
@@ -301,7 +301,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/partner", // get_views with studio in context
+                "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/search_read",
             ],
             "should have opened the action in Studio"
@@ -331,7 +331,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/action/load",
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/pony", // get_views with studio in context
+                "/web/dataset/call_kw/pony/get_views",
                 "/web/dataset/search_read",
             ],
             "should have opened the navigated action in Studio"

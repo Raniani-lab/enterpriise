@@ -407,7 +407,7 @@ tour.register('web_studio_tests_tour', {
     // add a graph view
     trigger: '.o_web_studio_view_category .o_web_studio_view_type.o_web_studio_inactive[data-type="graph"] .o_web_studio_thumbnail',
 }, {
-    extra_trigger: '.o_legacy_graph_renderer',
+    extra_trigger: '.o_graph_renderer',
     trigger: '.o_web_studio_menu .o_menu_sections li a:contains("Views")',
 }, {
     extra_trigger: '.o_web_studio_views',
@@ -561,11 +561,11 @@ tour.register('web_studio_model_option_value_tour', {
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     // wait for the graph editor to be rendered and also check for sample data
-    extra_trigger: '.o_view_sample_data .o_legacy_graph_renderer .o_view_nocontent_empty_folder',
+    extra_trigger: '.o_view_sample_data .o_graph_renderer',
     trigger: '.o_web_studio_menu .o_web_studio_views_icons a[title="Pivot"]',
 }, {
     // wait for the pivot editor to be rendered and also check for sample data
-    extra_trigger: '.o_view_sample_data .o_legacy_pivot .o_view_nocontent_empty_folder',
+    extra_trigger: '.o_pivot_view .o_view_sample_data .o_view_nocontent_empty_folder',
     trigger: '.o_web_studio_leave > a.btn',
 }]);
 

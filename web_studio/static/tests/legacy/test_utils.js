@@ -19,6 +19,8 @@ var ViewEditorManager = require('web_studio.ViewEditorManager');
 
 var weTestUtils = require('web_editor.test_utils');
 
+const { registerCleanup } = require("@web/../tests/helpers/cleanup");
+
 /**
  * Create a ReportEditorManager widget.
  *
@@ -178,7 +180,7 @@ async function createViewEditorManager(params) {
         Component: StudioEnvironmentComponent,
         props: { Component: StudioEnvironment },
     });
-    await start({
+    const { env: wowlEnv } = await start({
         ...params,
         legacyParams: { withLegacyMockServer: true },
     });
@@ -187,6 +189,23 @@ async function createViewEditorManager(params) {
     if (params.viewID) {
         fieldsView.view_id = params.viewID;
     }
+    const type = fieldsView.type;
+
+    const viewDescriptions = {
+        fields: fieldsView.fields,
+        models: {
+            [params.model]: fieldsView.fields,
+        },
+        views: {
+            [type]: {
+                arch: fieldsView.arch,
+                id: fieldsView.view_id || false,
+                custom_view_id: null,
+            },
+        }
+    }
+
+
     const vem = new ViewEditorManager(parent, {
         action: {
             context: params.context || {},
@@ -201,13 +220,14 @@ async function createViewEditorManager(params) {
         viewType: fieldsView.type,
         studio_view_id: params.studioViewID,
         chatter_allowed: params.chatter_allowed,
+        wowlEnv,
+        viewDescriptions,
     });
 
-    const originalDestroy = ViewEditorManager.prototype.destroy;
-    vem.destroy = function () {
-        vem.destroy = originalDestroy;
+    registerCleanup(() => {
+        vem.destroy();
         weTestUtils.unpatch();
-    };
+    });
 
     const fragment = document.createDocumentFragment();
     await parent.prependTo(testUtils.prepareTarget(params.debug));

@@ -285,13 +285,13 @@ return Widget.extend(StandaloneFieldManagerMixin, {
 
         }
         if (this.state.mode === 'view' && this.view_type === 'pivot') {
-            this.state.attrs.colGroupBys = params.colGroupBys;
-            this.state.attrs.rowGroupBys = params.rowGroupBys;
+            this.state.attrs.colGroupBys = params.colGroupBys.map((gb) => gb.split(":")[0]);
+            this.state.attrs.rowGroupBys = params.rowGroupBys.map((gb) => gb.split(":")[0]);
             this.measures = params.measures;
         }
         if (this.state.mode === 'view' && this.view_type === 'graph') {
-            this.state.attrs.groupBys = params.groupBys;
-            this.state.attrs.measure = params.measure;
+            this.state.attrs.groupBys = params.groupBys.map((gb) => gb.split(":")[0]);
+            this.state.attrs.measure = params.measure === "__count" ? "__count__" : params.measure;
         }
     },
     /**

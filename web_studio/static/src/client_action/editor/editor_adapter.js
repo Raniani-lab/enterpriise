@@ -32,6 +32,7 @@ export class EditorAdapter extends ComponentAdapter {
         this.dialog = useService("dialog");
         this.viewService = useService("view");
         this.rpc = useService("rpc");
+        this.wowlEnv = this.env;
         this.env = Component.env; // use the legacy env
     }
 
@@ -238,6 +239,7 @@ export class EditorAdapter extends ComponentAdapter {
                     viewType: editedViewType,
                     controllerState: editedControllerState,
                     x2mEditorPath: x2mEditorPath,
+                    wowlEnv: this.wowlEnv,
                 },
             ];
         }

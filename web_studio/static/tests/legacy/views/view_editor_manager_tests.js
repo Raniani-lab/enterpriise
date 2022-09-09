@@ -26,6 +26,8 @@ const { createEnterpriseWebClient } = require("@web_enterprise/../tests/helpers"
 const { MockServer } = require("@web/../tests/helpers/mock_server");
 const LegacyMockServer = require('web.MockServer');
 
+const { MapRenderer } = require("@web_map/map_view/map_renderer");
+
 const { xml } = owl;
 
 function getCurrentMockServer() {
@@ -137,7 +139,6 @@ QUnit.module('ViewEditorManager', {
         assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'disabled',
             "the Properties tab should now be disabled");
 
-        vem.destroy();
     });
 
     QUnit.test('search existing fields into sidebar', async function (assert) {
@@ -185,7 +186,6 @@ QUnit.module('ViewEditorManager', {
 
         odoo.debug = odooCurrentDebugValue;
 
-        vem.destroy();
     });
 
     QUnit.test('empty list editor', async function (assert) {
@@ -208,7 +208,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar .o_web_studio_existing_fields').children().length, nbFields,
             "all fields should be available");
 
-        vem.destroy();
     });
 
     QUnit.test('list editor', async function (assert) {
@@ -227,7 +226,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('.o_web_studio_existing_fields').children().length, nbFields,
             "fields that are not already in the view should be available");
 
-        vem.destroy();
     });
 
     QUnit.test('disable optional field dropdown icon', async function (assert) {
@@ -243,7 +241,6 @@ QUnit.module('ViewEditorManager', {
         assert.hasClass(vem.$('i.o_optional_columns_dropdown_toggle'), 'text-muted',
             'optional field dropdown icon must be muted');
 
-        vem.destroy();
     });
 
     QUnit.test('modification of field appearing multiple times in view', async function (assert) {
@@ -298,7 +295,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($labelInput.val(), "Display Name", "the name in the sidebar should be set");
         await testUtils.fields.editAndTrigger($labelInput, "Foo", ['change']);
 
-        vem.destroy();
     });
 
     QUnit.test('optional field in list editor', async function (assert) {
@@ -315,7 +311,6 @@ QUnit.module('ViewEditorManager', {
             '.o_web_studio_sidebar_optional_select',
             "there should be an optional field");
 
-        vem.destroy();
     });
 
     QUnit.test('new field should come with show as default value of optional', async function (assert) {
@@ -336,7 +331,6 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), $('.o_web_studio_hook'));
 
-        vem.destroy();
     });
 
     QUnit.test('new field before a button_group', async function (assert) {
@@ -378,7 +372,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'),
             $('.o_web_studio_hook')[0]);
 
-        vem.destroy();
     });
 
     QUnit.test('new field after a button_group', async function (assert) {
@@ -420,7 +413,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'),
             $('.o_web_studio_hook')[2]);
 
-        vem.destroy();
     });
 
     QUnit.test('invisible field in list editor', async function (assert) {
@@ -440,7 +432,6 @@ QUnit.module('ViewEditorManager', {
 
         assert.ok(vem.$el[0].querySelector('#invisible').checked);
 
-        vem.destroy();
     });
 
     QUnit.test('invisible toggle field in list editor', async function (assert) {
@@ -497,7 +488,6 @@ QUnit.module('ViewEditorManager', {
 
         assert.notOk(vem.$el[0].querySelector('#invisible').checked);
 
-        vem.destroy();
     });
 
     QUnit.test('widgets with and without description property in sidebar in debug and non-debug mode', async function (assert) {
@@ -534,7 +524,6 @@ QUnit.module('ViewEditorManager', {
         odoo.debug = originalOdooDebug;
         delete fieldRegistry.map.widgetWithDescription;
         delete fieldRegistry.map.widgetWithoutDescription;
-        vem.destroy();
     });
 
     QUnit.test('visible studio hooks in listview', async function (assert) {
@@ -565,7 +554,6 @@ QUnit.module('ViewEditorManager', {
             vem.$('th.o_web_studio_hook')[0].offsetWidth,
             "studio hooks should be visible in editable 'bottom' listview");
 
-        vem.destroy();
     });
 
     QUnit.test('sortby and orderby field in sidebar', async function (assert) {
@@ -633,7 +621,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.fields.editSelect(vem.$('select#sort_field'), '');
         assert.hasClass(vem.$('#sort_order_div'), 'd-none', 'Orderby field must be invisible.');
 
-        vem.destroy();
     });
 
     QUnit.test('widget dropdown in list editor sidebar', async function (assert) {
@@ -692,7 +679,6 @@ QUnit.module('ViewEditorManager', {
             "Widget should have technical name i.e. label_selection as it does not have description");
 
         odoo.debug = originalOdooDebug;
-        vem.destroy();
     });
 
     QUnit.test('widget without description property in sidebar should be shown a technical name of widget when selected in normal mode', async function (assert) {
@@ -712,7 +698,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsOnce(vem, '#widget option[value="widgetWithoutDescription"]', "widget without description should be there");
         assert.strictEqual(vem.$('#widget option:selected').text().trim(), "widgetWithoutDescription", "Widget should have technical name i.e. widgetWithoutDescription as it does not have description");
         delete fieldRegistry.map.widgetWithoutDescription;
-        vem.destroy();
     });
 
     QUnit.test('editing selection field of list of form view', async function(assert) {
@@ -819,7 +804,6 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.click($('.modal:eq(1) button:contains(Ok)'));
 
-        vem.destroy();
     });
 
     QUnit.test('invisible list editor', async function(assert) {
@@ -844,7 +828,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsN(vem, 'table thead th.o_web_studio_hook', 2,
             "there should be two hooks (before & after the field)");
 
-        vem.destroy();
     });
 
     QUnit.test('list editor with header and invisible element', async function(assert){
@@ -869,13 +852,12 @@ QUnit.module('ViewEditorManager', {
         assert.isVisible(vem.$("td.my_super_name_class"), "The name field should still be visible");
         assert.isVisible(vem.$("td.my_super_description_class"), "The description field should be visible");
 
-        vem.destroy();
     })
 
     QUnit.test('list editor with invisible element checkbox', async function(assert){
         assert.expect(2)
 
-        const vem = await studioTestUtils.createViewEditorManager({
+        await studioTestUtils.createViewEditorManager({
             model: "mail.activity",
             arch: `<tree string='List'>
                     <field name='name' class="my_super_name_class" />
@@ -890,7 +872,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(document.querySelector('.o_web_studio_sidebar .o_web_studio_new'));
         await testUtils.dom.click(document.querySelector('.o_web_studio_sidebar .o_web_studio_view'));
         assert.hasAttrValue(document.querySelector('input#show_invisible'), 'checked', 'checked', "show invisible checkbox should be checked");
-        vem.destroy();
     });
 
     QUnit.test('list editor with control node tag', async function(assert) {
@@ -911,7 +892,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
             "there should be no nodes (the control is filtered)");
 
-        vem.destroy();
     });
 
     QUnit.test('list editor invisible to visible on field', async function (assert) {
@@ -952,7 +932,6 @@ QUnit.module('ViewEditorManager', {
         // disable invisible
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
 
-        vem.destroy();
     });
 
     QUnit.test('list editor invisible to visible on field readonly', async function (assert) {
@@ -984,7 +963,6 @@ QUnit.module('ViewEditorManager', {
         // disable invisible
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
 
-        vem.destroy();
     });
 
     QUnit.test('list editor field', async function (assert) {
@@ -1010,7 +988,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
             "the widget in sidebar should be set by default");
 
-        vem.destroy();
     });
 
     QUnit.test('add group to field', async function (assert) {
@@ -1064,7 +1041,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsN(vem, '.o_field_many2manytags[name="groups"] .badge.o_tag_color_0', 1,
         "the groups should be present");
 
-        vem.destroy();
     });
 
     QUnit.test('sorting rows is disabled in Studio', async function (assert) {
@@ -1092,7 +1068,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_data_cell').text(), "xpadxpod",
             "the records should not have been moved (sortable should be disabled in Studio)");
 
-        vem.destroy();
     });
 
     QUnit.test('List grouped should not be grouped', async function (assert) {
@@ -1112,7 +1087,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem, '.o_web_studio_list_view_editor .o_list_table_grouped',
             "The list should not be grouped");
 
-        vem.destroy();
     });
 
     QUnit.test('move a field in list', async function (assert) {
@@ -1171,7 +1145,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_list_view_editor th').text(), "M2ODisplay NameA char",
             "the moved field should be the first column");
 
-        vem.destroy();
     });
 
     QUnit.test('list editor field with aggregate function', async function (assert) {
@@ -1239,7 +1212,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), '', ['change']);
         assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "", "Total should be ''");
 
-        vem.destroy();
     });
 
     QUnit.module('Form');
@@ -1261,7 +1233,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem, '.o_web_studio_form_view_editor .o_web_studio_hook',
             "there should be no hook");
 
-        vem.destroy();
     });
 
     QUnit.test('form editor', async function (assert) {
@@ -1292,7 +1263,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
             "the widget in sidebar should be set by default");
 
-        vem.destroy();
     });
 
     QUnit.test('optional field not in form editor', async function (assert) {
@@ -1313,7 +1283,6 @@ QUnit.module('ViewEditorManager', {
             '.o_web_studio_sidebar_optional_select',
             "there shouldn't be an optional field");
 
-        vem.destroy();
     });
 
     QUnit.test('many2one field edition', async function (assert) {
@@ -1352,7 +1321,6 @@ QUnit.module('ViewEditorManager', {
             "the widget in selection should not be supported in m2o");
         assert.hasClass(vem.$('.o_web_studio_form_view_editor [data-node-id]'),'o_web_studio_clicked',
             "the column should have the clicked style");
-        vem.destroy();
     });
 
     QUnit.test('image field edition (change size)', async function (assert) {
@@ -1415,7 +1383,6 @@ QUnit.module('ViewEditorManager', {
         assert.verifySteps(['image'], "the image should have been fetched again");
         assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_size option:selected').val(), "[0,270]",
             "the image size should be correctly selected");
-        vem.destroy();
         document.body.removeEventListener("load", imageLoadHandler, { capture: true });
     });
 
@@ -1515,7 +1482,6 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select#option_full_name option:selected').val(), "m2o",
             "the auto complete field should be correctly selected");
-        vem.destroy();
     });
 
     QUnit.test('change widget binary to image (check default size)', async function (assert) {
@@ -1558,7 +1524,6 @@ QUnit.module('ViewEditorManager', {
 
         // change widget to image
         await testUtils.fields.editSelect(vem.$('.o_web_studio_sidebar_content.o_display_field select#widget'), 'image');
-        vem.destroy();
     });
 
     QUnit.test('integer field should come with 0 as default value', async function(assert) {
@@ -1579,7 +1544,6 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_integer'), $('.o_web_studio_hook'));
         await testUtils.nextTick();
-        vem.destroy();
     });
 
     QUnit.test('invisible form editor', async function (assert) {
@@ -1615,7 +1579,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsN(vem, '.o_web_studio_form_view_editor .o_web_studio_hook', 3,
             "there should be three hooks");
 
-        vem.destroy();
     });
 
     QUnit.test('form editor - chatter edition', async function (assert) {
@@ -1651,7 +1614,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="email_alias"]').val(), "coucou",
             "the email alias in sidebar should be fetched");
 
-        vem.destroy();
     });
 
     QUnit.test('fields without value and label (outside of groups) are shown in form', async function (assert) {
@@ -1687,7 +1649,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor [name="char_field"]').text(), "A char",
             "empty field without label should have its string as label");
 
-        vem.destroy();
     });
 
     QUnit.test('invisible group in form sheet', async function (assert) {
@@ -1739,7 +1700,6 @@ QUnit.module('ViewEditorManager', {
         const $groupInput = vem.$('.o_web_studio_sidebar_content.o_display_group input[name="string"]');
         assert.strictEqual($groupInput.val(), "Kikou2", "the group name in sidebar should be set");
 
-        vem.destroy();
     });
 
     QUnit.test('correctly display hook in form sheet', async function (assert) {
@@ -1773,7 +1733,6 @@ QUnit.module('ViewEditorManager', {
         assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(5)'),'o_web_studio_hook',
             "last div should be a hook");
 
-        vem.destroy();
     });
 
     QUnit.test('correctly display hook below group title', async function (assert) {
@@ -1834,7 +1793,6 @@ QUnit.module('ViewEditorManager', {
         assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_inner_group:eq(3) tr:eq(3)'),'o_web_studio_hook',
             "the last row should be a hook");
 
-        vem.destroy();
     });
 
     QUnit.test('correctly display hook at the end of tabs -- empty group', async function(assert) {
@@ -1859,7 +1817,6 @@ QUnit.module('ViewEditorManager', {
             'When the page contains only an empty group, last child is a studio hook.'
         );
 
-        vem.destroy();
     });
 
     QUnit.test('correctly display hook at the end of tabs -- multiple groups with content and an empty group', async function(assert) {
@@ -1890,7 +1847,6 @@ QUnit.module('ViewEditorManager', {
             'When the page contains multiple groups with content and an empty group, last child is still a studio hook.'
         );
 
-        vem.destroy();
     });
 
     QUnit.test('notebook edition', async function (assert) {
@@ -1943,7 +1899,6 @@ QUnit.module('ViewEditorManager', {
         // add a new page
         await testUtils.dom.click(vem.$('.o_notebook li:eq(1) > a'));
 
-        vem.destroy();
     });
 
     QUnit.test('invisible notebook page in form', async function (assert) {
@@ -2004,7 +1959,6 @@ QUnit.module('ViewEditorManager', {
         const $pageInput = vem.$('.o_web_studio_sidebar_content.o_display_page input[name="string"]');
         assert.strictEqual($pageInput.val(), "Kikou2", "the page name in sidebar should be set");
 
-        vem.destroy();
     });
 
     QUnit.test('label edition', async function (assert) {
@@ -2076,7 +2030,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
 
-        vem.destroy();
     });
 
     QUnit.test('add a statusbar', async function (assert) {
@@ -2117,7 +2070,6 @@ QUnit.module('ViewEditorManager', {
             "there should be 3 pre-filled values for the selection field");
         await testUtils.dom.click($('.modal-footer .btn-primary:first'));
 
-        vem.destroy();
     });
 
     QUnit.test('move a field in form', async function (assert) {
@@ -2192,7 +2144,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_form_view_editor .o_form_sheet').text(), "M2ODisplay NameA char",
             "the moved field should be the first column");
 
-        vem.destroy();
     });
 
     QUnit.test('form editor add avatar image', async function (assert) {
@@ -2320,7 +2271,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem, '.oe_avatar.o_web_studio_avatar',
             "there should be the hook for avatar image");
 
-        vem.destroy();
     });
 
     QUnit.test('sidebar for a related field', async function (assert) {
@@ -2343,7 +2293,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.el.querySelector("[name='related']"));
         assert.containsOnce(vem.el, ".o_web_studio_sidebar .o_web_studio_properties.active");
         assert.strictEqual(vem.el.querySelector("input[name='string']").value, "myRelatedField");
-        vem.destroy();
     });
 
     QUnit.module('Kanban');
@@ -2367,7 +2316,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be no hook");
 
-        vem.destroy();
     });
 
     QUnit.test('kanban editor', async function (assert) {
@@ -2423,7 +2371,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('input[name="string"]').val(), "Display Name",
             "the field should have the label Display Name in the sidebar");
 
-        vem.destroy();
     });
 
     QUnit.test('kanban editor with async widget', async function (assert) {
@@ -2465,7 +2412,6 @@ QUnit.module('ViewEditorManager', {
             "the sidebar should now display the field properties");
             assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'), 'o_web_studio_clicked');
 
-            vem.destroy();
             done();
         });
     });
@@ -2509,7 +2455,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem.$('.o_web_studio_widget_empty [data-node-id]'),'o_web_studio_clicked',
             "the field should not have the clicked style");
 
-        vem.destroy();
     });
 
     QUnit.test('kanban editor show invisible elements', async function(assert) {
@@ -2543,7 +2488,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsN(vem, '.o_web_studio_kanban_view_editor .o_web_studio_show_invisible[data-node-id]', 3,
             "the 3 fields should have the correct class for background");
 
-        vem.destroy();
     });
 
     QUnit.test('kanban editor add priority', async function (assert) {
@@ -2599,7 +2543,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem, '.o_kanban_record .o_web_studio_add_priority',
             "there should be no priority hook if priority widget exists on kanban");
 
-        vem.destroy();
     });
 
     QUnit.test('kanban editor no avatar button if already in arch', async function (assert) {
@@ -2627,7 +2570,6 @@ QUnit.module('ViewEditorManager', {
         });
         assert.containsNone(vem, '.o_web_studio_add_kanban_image',
             "there should be no option to add an avatart");
-        vem.destroy();
     });
 
     QUnit.test('kanban editor add and remove image', async function (assert) {
@@ -2721,7 +2663,6 @@ QUnit.module('ViewEditorManager', {
             "should display the correct message");
         await testUtils.dom.click($('.modal-footer .btn-primary'));
 
-        vem.destroy();
     });
 
     QUnit.test('kanban editor with widget', async function (assert) {
@@ -2752,7 +2693,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('input[name="string"]').val(), "Display Name",
             "the field should have the label Display Name in the sidebar");
 
-        vem.destroy();
     });
 
     QUnit.test('grouped kanban editor', async function (assert) {
@@ -2780,7 +2720,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
 
-        vem.destroy();
     });
 
     QUnit.test('grouped kanban editor with record', async function (assert) {
@@ -2813,7 +2752,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
 
-        vem.destroy();
     });
 
     QUnit.test('Remove a drop-down menu using kanban editor', async function (assert) {
@@ -2864,7 +2802,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this div from the view?",
             "should display the correct message");
         await testUtils.dom.click($('.modal .btn-primary'));
-        vem.destroy();
     });
 
     QUnit.test('kanban editor remove "Set Cover Image" from dropdown menu', async function (assert) {
@@ -2913,7 +2850,6 @@ QUnit.module('ViewEditorManager', {
         // used to generate fields view in mockRPC
         await testUtils.dom.click(vem.$(".o_kanban_record .o_dropdown_kanban"));
         await testUtils.dom.click(vem.$(".o_display_div .o_web_studio_sidebar_checkbox input"));
-        vem.destroy();
     });
 
     QUnit.test('kanban editor add "Set Cover Image" option in dropdown menu', async function (assert) {
@@ -2958,7 +2894,6 @@ QUnit.module('ViewEditorManager', {
         // Click the confirm button
         await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
 
-        vem.destroy();
     });
 
     QUnit.module('Search');
@@ -2983,7 +2918,6 @@ QUnit.module('ViewEditorManager', {
             "there should be one hook in the group by");
         assert.containsNone(vem, '.o_web_studio_search_view_editor [data-node-id]',
             "there should be no node");
-        vem.destroy();
     });
 
     QUnit.test('search editor', async function (assert) {
@@ -3054,7 +2988,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('input[name="string"]').val(), "Display Name",
             "the field should have the label Display Name in the sidebar");
 
-        vem.destroy();
     });
 
     QUnit.test('delete a field', async function (assert) {
@@ -3099,7 +3032,6 @@ QUnit.module('ViewEditorManager', {
 
         assert.containsNone(vem, '[data-node-id]', "there should be no node anymore");
 
-        vem.destroy();
     });
 
     QUnit.test('indicate that regular stored field(except date/datetime) can not be dropped in "Filters" section', async function (assert) {
@@ -3138,7 +3070,6 @@ QUnit.module('ViewEditorManager', {
         assert.doesNotHaveClass(vem.$('.o_web_studio_search_autocompletion_fields'), 'text-muted',
             "autocompletion_fields section should not be muted");
 
-        vem.destroy();
     });
 
     QUnit.test('indicate that ungroupable field can not be dropped in "Filters" and "Group by" sections', async function (assert) {
@@ -3175,7 +3106,6 @@ QUnit.module('ViewEditorManager', {
         assert.doesNotHaveClass(vem.$('.o_web_studio_search_autocompletion_fields'), 'text-muted',
             "autocompletion_fields section should be muted");
 
-        vem.destroy();
     });
 
     QUnit.test('many2many field can be dropped in "Group by" sections', async function (assert) {
@@ -3225,7 +3155,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_group_by [data-node-id]', 2,
             'should have 2 group inside groupby dropdown');
 
-        vem.destroy();
     });
 
     QUnit.test('indicate that separators can not be dropped in "Automcompletion Fields" and "Group by" sections', async function (assert) {
@@ -3262,7 +3191,6 @@ QUnit.module('ViewEditorManager', {
         assert.doesNotHaveClass(vem.$('.o_web_studio_search_filters'), 'text-muted',
             "filter section should not be muted");
 
-        vem.destroy();
     });
 
     QUnit.test('indicate that filter can not be dropped in "Automcompletion Fields" and "Group by" sections', async function (assert) {
@@ -3299,7 +3227,6 @@ QUnit.module('ViewEditorManager', {
         assert.doesNotHaveClass(vem.$('.o_web_studio_search_filters'), 'text-muted',
             "filter section should not be muted");
 
-        vem.destroy();
     });
 
     QUnit.test('move a date/datetime field in search filter dropdown', async function (assert) {
@@ -3360,14 +3287,12 @@ QUnit.module('ViewEditorManager', {
         assert.containsN(vem, '.o_web_studio_search_sub_item .o_web_studio_search_filters [data-node-id]', 3,
             'should have three filters inside filters dropdown');
 
-        vem.destroy();
     });
 
     QUnit.module('Pivot');
 
     QUnit.test('empty pivot editor', async function (assert) {
         assert.expect(3);
-
         this.data.coucou.records = [{
             id: 1,
             display_name: 'coucou',
@@ -3380,14 +3305,12 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(vem.view_type, 'pivot',
             "view type should be pivot");
-        assert.containsOnce(vem, '.o_web_studio_view_renderer .o_legacy_pivot',
+        assert.containsOnce(vem, '.o_pivot',
             "there should be a pivot renderer");
-        assert.containsOnce(vem, '.o_web_studio_view_renderer > .o_legacy_pivot > table',
+        assert.containsOnce(vem, '.o_pivot > table',
             "the table should be the direct child of pivot");
 
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar_header [name="view"]'));
-
-        vem.destroy();
     });
 
     QUnit.test('switching column and row groupby fields in pivot editor', async function (assert) {
@@ -3462,9 +3385,9 @@ QUnit.module('ViewEditorManager', {
                 "the first row field should contain correct value");
             assert.strictEqual(pivot.$('select#second_row_groupby option:selected').val(), 'toughness',
                 "the second row field should contain correct value");
-            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "TotalUndefinedjacques",
+            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "TotalNonejacques",
                 "the col headers should be as expected");
-            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalUndefinedUndefined",
+            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalNoneNone",
                 "the row headers should be as expected");
 
             // change the column field value to Display Name
@@ -3477,7 +3400,7 @@ QUnit.module('ViewEditorManager', {
                 "the second row field should contain correct value");
             assert.strictEqual(pivot.$('th').slice(0, 5).text(), "Totalxpadxpod",
                 "the col headers should be as expected");
-            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalUndefinedUndefined",
+            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalNoneNone",
                 "the row headers should be as expected");
 
             // change the Row-First level field value to M2O
@@ -3490,10 +3413,8 @@ QUnit.module('ViewEditorManager', {
                 "the second row field should contain correct value");
             assert.strictEqual(pivot.$('th').slice(0, 5).text(), "Totalxpadxpod",
                 "the col headers should be as expected");
-            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalUndefinedjacques",
+            assert.strictEqual(pivot.$('th').slice(8).text(), "TotalNonejacques",
                 "the row headers should be as expected");
-
-            pivot.destroy();
             done();
         });
     });
@@ -3517,10 +3438,9 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.view_type, 'graph',
             "view type should be graph");
         return concurrency.delay(0).then(function () {
-            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_legacy_graph_renderer');
-            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_legacy_graph_renderer .o_graph_canvas_container canvas',
+            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer');
+            assert.containsOnce(vem, '.o_web_studio_view_renderer .o_graph_renderer .o_graph_canvas_container canvas',
                 "the graph should be a child of its container");
-            vem.destroy();
             done();
         });
     });
@@ -3579,17 +3499,16 @@ QUnit.module('ViewEditorManager', {
 
             // change the type field value to line chart
             await testUtils.fields.editSelect(vem.$('select#type'), 'line');
-            assert.strictEqual(vem.view.loadParams.mode, 'line',
+            assert.strictEqual(vem.view.controllerProps.modelParams.mode, 'line',
                 "the default type field should contain line chart");
             assert.isNotVisible(vem.el.querySelector('#stacked'), "the stacked graph checkbox should not be visible in line chart");
 
             // change the type field value to pie chart
             await testUtils.fields.editSelect(vem.$('select#type'), 'pie');
-            assert.strictEqual(vem.view.loadParams.mode, 'pie',
+            assert.strictEqual(vem.view.controllerProps.modelParams.mode, 'pie',
                 "the default type field should contain pie chart");
             assert.isNotVisible(vem.el.querySelector('#stacked'), "the stacked graph checkbox should not be visible in pie chart");
 
-            vem.destroy();
             done();
         });
     });
@@ -3624,13 +3543,20 @@ QUnit.module('ViewEditorManager', {
         vem.$('.o_web_studio_sidebar_content.o_display_view select[name="precision_day"] option[value="hour:quarter"]').prop('selected', true).trigger('change');
         await testUtils.nextTick();
 
-        vem.destroy();
     });
 
     QUnit.module('Map');
 
     QUnit.test('marker popup fields in editor sidebar', async function (assert) {
+        // WOWL TODO
         assert.expect(12);
+        let mapRenderer = null;
+        patchWithCleanup(MapRenderer.prototype, {
+            setup() {
+                mapRenderer = this;
+                this._super(...arguments);
+            },
+        });
 
         const partnerIds = pyEnv['res.partner'].search([['display_name', '=', 'Dustin']]);
         pyEnv['res.partner'].write(partnerIds, {
@@ -3659,8 +3585,6 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-
-        // Marker popup field in sidebar
         assert.containsOnce(vem, '.o_web_studio_sidebar .o_map_popup_fields',
             'Should have marker popup fields');
         assert.containsN(vem, '.o_web_studio_sidebar .o_map_popup_fields .badge', 2,
@@ -3669,7 +3593,7 @@ QUnit.module('ViewEditorManager', {
         // Map rendered correctly
         assert.strictEqual(vem.view_type, 'map',
             'view type should be map');
-        assert.strictEqual(vem.editor.props.records.length, 1,
+        assert.strictEqual(mapRenderer.props.model.data.records.length, 1,
             'There should be one records');
         assert.containsOnce(vem.editor.el, 'div.leaflet-marker-icon',
             'There should be one marker on the map');
@@ -3677,13 +3601,13 @@ QUnit.module('ViewEditorManager', {
         // Marker popup have correct field
         await testUtils.dom.click($(vem.editor.el).find('div.leaflet-marker-icon'));
 
-        assert.strictEqual($(vem.editor.el).find('.o_map_popup_table tbody tr:first .contentName').text().trim(),
+        assert.strictEqual($(vem.editor.el).find('.o-map-renderer--popup-table tbody tr:first .o-map-renderer--popup-table-content-name').text().trim(),
             'Name', 'Marker popup have should have a name field');
-        assert.strictEqual($(vem.editor.el).find('.o_map_popup_table tbody tr:first .contentString').text().trim(),
+        assert.strictEqual($(vem.editor.el).find('.o-map-renderer--popup-table tbody tr:first .o-map-renderer--popup-table-content-value').text().trim(),
             'Chhagan', 'Marker popup have should have a name Chhagan');
-        assert.strictEqual($(vem.editor.el).find('.o_map_popup_table tbody tr:last .contentName').text().trim(),
+        assert.strictEqual($(vem.editor.el).find('.o-map-renderer--popup-table tbody tr:last .o-map-renderer--popup-table-content-name').text().trim(),
             'Description', 'Marker popup have should have a Description field');
-        assert.strictEqual($(vem.editor.el).find('.o_map_popup_table tbody tr:last .contentString').text().trim(),
+        assert.strictEqual($(vem.editor.el).find('.o-map-renderer--popup-table tbody tr:last .o-map-renderer--popup-table-content-value').text().trim(),
             'shaktiman', 'Marker popup have should have a description shaktiman');
 
         // Remove field and check marker popup fields
@@ -3692,10 +3616,8 @@ QUnit.module('ViewEditorManager', {
             'Should have only one selected fields in marker popup fields');
 
         await testUtils.dom.click($(vem.editor.el).find('div.leaflet-marker-icon'));
-        assert.containsOnce(vem.editor.el, '.o_map_popup_table tbody tr',
+        assert.containsOnce(vem.editor.el, '.o-map-renderer--popup-table tbody tr',
             'Marker popup have should have only Description field');
-
-        vem.destroy();
     });
 
     QUnit.module('Others');
@@ -3746,7 +3668,6 @@ QUnit.module('ViewEditorManager', {
 
         ListRenderer.prototype._renderView = oldRenderView;
 
-        vem.destroy();
     });
 
     QUnit.test('error in view edition: undo', async function (assert) {
@@ -3787,7 +3708,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_view',
             "the sidebar should have reset to its default mode");
 
-        vem.destroy();
     });
 
     QUnit.test('add a monetary field without currency_id', async function (assert) {
@@ -3834,7 +3754,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal-body:eq(1)').text(), currencyCreationText, "this should trigger an alert");
         await testUtils.dom.click($('.modal-footer:eq(1) .btn:contains(Ok)'));
 
-        vem.destroy();
     });
 
     QUnit.test('add a monetary field with currency_id', async function (assert) {
@@ -3883,7 +3802,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click($('.modal-footer .btn-primary:first'));
         assert.strictEqual(nbEdit, 2, "the view should have been updated");
 
-        vem.destroy();
     });
 
     QUnit.test('add a related field', async function (assert) {
@@ -4004,7 +3922,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(nbEdit, 4, "should have edited the view");
         assert.verifySteps([], "should have triggered only one warning");
 
-        vem.destroy();
     });
 
     QUnit.test('add a one2many field', async function (assert) {
@@ -4052,7 +3969,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal').length, 0, "the modal should be closed");
         assert.verifySteps(['edit'], "should have created the field");
 
-        vem.destroy();
     });
 
     QUnit.test('add a one2many field without many2one', async function (assert) {
@@ -4077,7 +3993,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click($('.modal button:contains("Ok")'));
         assert.containsNone($, '.modal', "the modal should be closed");
 
-        vem.destroy();
     });
 
     QUnit.test('add a one2many lines field', async function (assert) {
@@ -4105,7 +4020,6 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_lines'), $('.o_web_studio_hook'));
 
-        vem.destroy();
     });
 
     QUnit.test('add a many2many field', async function(assert) {
@@ -4149,7 +4063,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal').length, 0, "the modal should be closed");
         assert.verifySteps(['edit'], "should have created the field");
 
-        vem.destroy();
     });
 
     QUnit.test('add a many2one field', async function (assert) {
@@ -4193,7 +4106,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal').length, 0, "the modal should be closed");
         assert.verifySteps(['edit'], "should have created the field");
 
-        vem.destroy();
     });
 
     QUnit.test('switch mode after element removal', async function (assert) {
@@ -4231,7 +4143,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsNone(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should have switched mode");
 
-        vem.destroy();
     });
 
     QUnit.test('open XML editor in read-only', async function (assert) {
@@ -4294,7 +4205,6 @@ QUnit.module('ViewEditorManager', {
             odoo.debug = initialDebugMode;
             testUtils.mock.unpatch(ace);
 
-            vem.destroy();
             done();
         });
     });
@@ -4381,7 +4291,6 @@ QUnit.module('ViewEditorManager', {
             odoo.debug = initialDebugMode;
             testUtils.mock.unpatch(ace);
 
-            vem.destroy();
             done();
         });
     });
@@ -4408,7 +4317,6 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual($('.modal:visible').length, 1, "should not display the create modal");
 
-        vem.destroy();
     });
 
     QUnit.test('element removal', async function (assert) {
@@ -4479,7 +4387,6 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual(editViewCount, 4,
             "should have edit the view 4 times");
-        vem.destroy();
     });
 
     QUnit.test('update sidebar after edition', async function (assert) {
@@ -4518,7 +4425,6 @@ QUnit.module('ViewEditorManager', {
         assert.verifySteps(['field', 'field'],
             "should have clicked again on the node after edition to reload the sidebar");
 
-        vem.destroy();
     });
 
     QUnit.test('default value in sidebar', async function (assert) {
@@ -4552,7 +4458,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_web_studio_sidebar_content.o_display_field select[data-type="default_value"]').val(), "1",
             "the sidebar should now display the field properties");
 
-        vem.destroy();
     });
 
     QUnit.test('default value for new field name', async function (assert) {
@@ -4587,7 +4492,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_group .o_web_studio_hook:first'));
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_float'), vem.$('.o_group .o_web_studio_hook:first'));
 
-        vem.destroy();
     });
 
     QUnit.test('remove starting underscore from new field value', async function (assert) {
@@ -4629,7 +4533,6 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.el.querySelector('.input-group input').value, 'new', "value should not contain starting underscore in new field");
 
         odoo.debug = initialDebugMode;
-        vem.destroy();
     });
 
     QUnit.test('notebook and group not drag and drop in a group', async function (assert) {
@@ -4659,7 +4562,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_columns'), $('.o_group .o_web_studio_hook'));
         assert.strictEqual(editViewCount, 0,
             "the group cannot be dropped inside a group");
-        vem.destroy();
     });
 
     QUnit.test('drop monetary field outside of group', async function (assert) {
@@ -4673,7 +4575,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_monetary'), $('.o_web_studio_hook'), {disableDrop: true});
         assert.containsNone(vem, '.o_web_studio_nearest_hook', "There should be no highlighted hook");
 
-        vem.destroy();
     });
 
     QUnit.test('add a selection field in non debug', async function (assert) {
@@ -4728,7 +4629,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click($('.modal button:contains("Confirm")'));
 
         odoo.debug = initialDebugMode;
-        vem.destroy();
     });
 
     QUnit.test('add a selection field in debug', async function (assert) {
@@ -4802,7 +4702,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click($('.modal button:contains(Confirm)'));
 
         odoo.debug = initialDebugMode;
-        vem.destroy();
     });
 
     QUnit.test('add a selection field with widget priority', async function (assert) {
@@ -4834,7 +4733,6 @@ QUnit.module('ViewEditorManager', {
 
         assert.strictEqual($('.modal').length, 0, "there should be no modal");
 
-        vem.destroy();
     });
 
     QUnit.test('blockUI not removed just after rename', async function (assert) {
@@ -4900,7 +4798,6 @@ QUnit.module('ViewEditorManager', {
             'unblock UI',
         ]);
 
-        vem.destroy();
 
         framework.blockUI = blockUI;
         framework.unblockUI = unblockUI;
@@ -4951,7 +4848,6 @@ QUnit.module('ViewEditorManager', {
             'unblock UI',
         ]);
 
-        vem.destroy();
 
         framework.blockUI = blockUI;
         framework.unblockUI = unblockUI;
@@ -4972,7 +4868,6 @@ QUnit.module('ViewEditorManager', {
         assert.equal(node.tag, 'field', "It shoudl have found the node");
         node = vem.editor.findNode(vem.view.arch, {tag: 'field', attrs: {class: 'not-in-dom'}});
         assert.notOk(node, "It should not have found anything")
-        vem.destroy();
     });
 
     QUnit.test('Find with other class', async function (assert) {
@@ -4988,7 +4883,6 @@ QUnit.module('ViewEditorManager', {
         });
         let node = vem.editor.findNode(vem.view.arch, {tag: 'field', class: 'my-class'});
         assert.equal(node.tag, 'field', "It shoudl have found the node");
-        vem.destroy();
     });
 
     QUnit.test('Find tag and attr in simple view', async function (assert) {
@@ -5007,7 +4901,6 @@ QUnit.module('ViewEditorManager', {
         assert.equal(node.attrs.class, 'my-class', "It should have found the node");
         node = vem.editor.findNode(vem.view.arch, {tag: 'field', class: 'other-class'});
         assert.notOk(node, "It should not have found anything")
-        vem.destroy();
     });
 
     QUnit.test('Find first tag', async function (assert) {
@@ -5023,7 +4916,6 @@ QUnit.module('ViewEditorManager', {
         });
         const node = vem.editor.findNode(vem.view.arch, {tag: 'form'});
         assert.equal(node.tag, 'form', "It should have found the node");
-        vem.destroy();
     });
 
     QUnit.test('Find first neigbours', async function (assert) {
@@ -5041,7 +4933,6 @@ QUnit.module('ViewEditorManager', {
         const node = vem.editor.findNode(vem.view.arch, {tag: 'field'});
         assert.equal(node.tag, 'field', "It should have found the node");
         assert.equal(node.attrs.class, 'first', "It should have found the first node");
-        vem.destroy();
     });
 
     QUnit.test('Find nested node', async function (assert) {
@@ -5065,7 +4956,6 @@ QUnit.module('ViewEditorManager', {
         const node = vem.editor.findNode(vem.view.arch, {tag: 'field'});
         assert.equal(node.tag, 'field', "It should have found the node");
         assert.equal(node.attrs.class, 'not-nested', "It should have found the first node");
-        vem.destroy();
     });
 
     QUnit.test('Find invisble', async function (assert) {
@@ -5083,7 +4973,6 @@ QUnit.module('ViewEditorManager', {
         const node = vem.editor.findNode(vem.view.arch, {tag: 'field', invisible: "1"});
         assert.equal(node.tag, 'field', "It should have found the node");
         assert.equal(node.attrs.name, 'start', "It should have found the invisible node");
-        vem.destroy();
     });
 
     QUnit.test('Find node with attr only', async function (assert) {
@@ -5099,7 +4988,6 @@ QUnit.module('ViewEditorManager', {
         });
         const node = vem.editor.findNode(vem.view.arch, {name: 'display_name'});
         assert.equal(node.tag, 'field', "It should have found the node");
-        vem.destroy();
     });
 
     QUnit.test('Find node with multiple attrs', async function (assert) {
@@ -5123,7 +5011,6 @@ QUnit.module('ViewEditorManager', {
             name: 'display_name',
         });
         assert.equal(node.tag, 'field', "It should have matched the node");
-        vem.destroy();
     });
 
     QUnit.test("Sidebar should display all field's widgets", async function (assert) {
@@ -5157,7 +5044,6 @@ QUnit.module('ViewEditorManager', {
             assert.ok(displayedWidgetNames.includes(name));
         }
 
-        vem.destroy();
     });
 
     QUnit.test("Sidebar should display component field's widgets", async function (assert) {
@@ -5191,7 +5077,6 @@ QUnit.module('ViewEditorManager', {
 
         delete fieldRegistryOwl.map.comp_field;
 
-        vem.destroy();
     });
 
     QUnit.test('click on the "More" Button', async function (assert) {
@@ -5355,7 +5240,6 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar #option_no_create'));
 
-        vem.destroy();
     });
 
     QUnit.test('disable creation(no_create options) in many2many_avatar_user and many2many_avatar_employee widget', async function (assert) {
@@ -5865,7 +5749,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_field_type_container .o_web_studio_field_columns'),
             $afterGroupHook, {disableDrop: true});
         assert.containsOnce(vem, '.o_web_studio_nearest_hook', "There should be 1 highlighted hook");
-        vem.destroy();
     });
 
     QUnit.test('One2Many list editor column_invisible in attrs ', async function (assert) {
@@ -6005,7 +5888,6 @@ QUnit.module('ViewEditorManager', {
             'By default the boolean should be true');
 
         await testUtils.dom.click(vem.$('input[name="enable_sms"]'));
-        vem.destroy();
     });
 
     QUnit.test('folds/unfolds the existing fields into sidebar', async function (assert) {
@@ -6067,7 +5949,6 @@ QUnit.module('ViewEditorManager', {
         assert.isNotVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
             "the existing fields section should not be visible");
 
-        vem.destroy();
     });
 
     QUnit.test('open xml editor of component view', async function (assert) {
@@ -6125,7 +6006,6 @@ QUnit.module('ViewEditorManager', {
         odoo.debug = initialDebugMode;
         testUtils.mock.unpatch(ace);
 
-        vem.destroy();
     });
 
     QUnit.test('existing field section should be unfolded by default in kanban', async function (assert) {
@@ -6150,7 +6030,6 @@ QUnit.module('ViewEditorManager', {
         assert.isVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
             "the existing fields section should be visible");
 
-        vem.destroy();
     });
 
     QUnit.test('existing field section should be unfolded by default in search', async function (assert) {
@@ -6168,7 +6047,6 @@ QUnit.module('ViewEditorManager', {
         assert.isVisible(vem.el.querySelector('.o_web_studio_existing_fields_section'),
             "the existing fields section should be visible");
 
-        vem.destroy();
     });
 
     QUnit.test('open xml editor of graph component view and close it', async function (assert) {
@@ -6229,12 +6107,11 @@ QUnit.module('ViewEditorManager', {
         await testUtils.owlCompatibilityExtraNextTick();
         assert.containsNone(vem, '.o_ace_view_editor');
         assert.containsOnce(vem, '.o_web_studio_sidebar');
-        assert.containsOnce(vem, '.o_legacy_graph_renderer');
+        assert.containsOnce(vem, '.o_graph_renderer');
 
         odoo.debug = initialDebugMode;
         testUtils.mock.unpatch(ace);
 
-        vem.destroy();
     });
 });
 });

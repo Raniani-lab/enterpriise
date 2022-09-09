@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+import datetime
 from datetime import date
 from freezegun import freeze_time
 from unittest.mock import patch
-from uuid import uuid4
-import json
 
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
 from odoo.addons.payment.tests.common import PaymentCommon
 from odoo.addons.payment.tests.http_common import PaymentHttpCommon
-from odoo.tests.common import HttpCase, new_test_user, tagged
+from odoo.tests.common import new_test_user, tagged
 from odoo import Command
 from odoo import http
 
@@ -199,11 +197,15 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'payment_option_id': self.dummy_provider.id,
                 'partner_id': subscription.partner_id.id}
         url = self._build_url("/my/orders/%s/transaction" % subscription.id)
-        self._make_json_rpc_request(url, data)
+        res = self._make_json_rpc_request(url, data)
+        self.assertEqual(res.status_code, 200)
         subscription.transaction_ids.provider_id.support_manual_capture = True
         subscription.transaction_ids._set_authorized()
         subscription.transaction_ids.token_id = self.payment_method.id
+        self.assertEqual(subscription.next_invoice_date, datetime.date.today())
+        self.assertEqual(subscription.state, 'sale')
         subscription.transaction_ids._reconcile_after_done()  # Create the payment
         self.assertEqual(subscription.invoice_count, 1, "Only one invoice should be created")
+        self.assertTrue(subscription.next_invoice_date > datetime.date.today(), "the next invoice date should be updated")
         subscription._cron_recurring_create_invoice()
         self.assertEqual(subscription.invoice_count, 1, "Only one invoice should be created")

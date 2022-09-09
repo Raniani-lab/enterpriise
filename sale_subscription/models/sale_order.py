@@ -644,6 +644,9 @@ class SaleOrder(models.Model):
         if last_token:
             self.payment_token_id = last_token
 
+
+
+
     def action_invoice_subscription(self):
         account_move = self._create_recurring_invoice()
         if account_move:

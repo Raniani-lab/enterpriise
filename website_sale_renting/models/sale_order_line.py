@@ -39,3 +39,8 @@ class SaleOrderLine(models.Model):
 
     def _get_tz(self):
         return request and request.httprequest.cookies.get('tz') or super()._get_tz()
+
+    def _is_reorder_allowed(self):
+        if self.temporal_type == 'rental':
+            return False
+        return super(SaleOrderLine, self)._is_reorder_allowed()

@@ -1016,6 +1016,23 @@ class HrPayslip(models.Model):
                 'action': self._dashboard_default_action(employees_default_title, 'hr.employee', employees_without_contracts.ids),
             })
 
+        # Retrieve employees whose company on contract is different than employee's company
+        employee_with_different_company_on_contract = self.env['hr.employee']
+        contracts = self.sudo().env['hr.contract'].search([
+            ('state', 'in', ['draft', 'open']),
+            ('employee_id', 'in', all_employees.ids),
+        ])
+
+        for contract in contracts:
+            if contract.employee_id.company_id != contract.company_id:
+                employee_with_different_company_on_contract |= contract.employee_id
+        if employee_with_different_company_on_contract:
+            result.append({
+                'string': _('Employee whose contracts and company are differents'),
+                'count': len(employee_with_different_company_on_contract),
+                'action': self._dashboard_default_action(employees_default_title, 'hr.employee', employee_with_different_company_on_contract.ids),
+            })
+
         # Retrieves last batches (this month, or last month)
         batch_group_read = self.env['hr.payslip.run'].with_context(lang='en_US')._read_group(
             [('date_start', '>=', fields.Date.today() - relativedelta(months=1, day=1))],

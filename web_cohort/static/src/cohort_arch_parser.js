@@ -2,7 +2,6 @@
 
 import { XMLParser } from "@web/core/utils/xml";
 import { _t } from "@web/core/l10n/translation";
-import { evaluateExpr } from "@web/core/py_js/py";
 import { INTERVALS, MODES, TIMELINES } from "./cohort_model";
 import { sprintf } from "@web/core/utils/strings";
 
@@ -72,18 +71,16 @@ export class CohortArchParser extends XMLParser {
                     break;
                 }
                 case "field": {
-                    let fieldName = node.getAttribute("name"); // exists (rng validation)
+                    const fieldName = node.getAttribute("name"); // exists (rng validation)
 
                     archInfo.fieldAttrs[fieldName] = {};
                     if (node.hasAttribute("string")) {
                         archInfo.fieldAttrs[fieldName].string = node.getAttribute("string");
                     }
-                    if (node.hasAttribute("invisible")) {
-                        const isInvisible = Boolean(evaluateExpr(node.getAttribute("invisible")));
-                        if (isInvisible) {
-                            archInfo.fieldAttrs[fieldName].isInvisible = true;
-                            break;
-                        }
+                    const modifiers = JSON.parse(node.getAttribute("modifiers") || "{}");
+                    if (modifiers.invisible === true) {
+                        archInfo.fieldAttrs[fieldName].isInvisible = true;
+                        break;
                     }
                 }
             }

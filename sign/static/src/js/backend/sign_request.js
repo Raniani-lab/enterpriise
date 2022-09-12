@@ -34,7 +34,7 @@ const EditableDocumentAction = DocumentAction.extend({
       const $signButton = $("<button/>", {
         html: _t("Sign Document"),
         type: "button",
-        class: "btn btn-primary me-2",
+        class: "btn btn-primary me-2 o_sign_sign_directly",
       });
       $signButton.on("click", () => {
         this._rpc({

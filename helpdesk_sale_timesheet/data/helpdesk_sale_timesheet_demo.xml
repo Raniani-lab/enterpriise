@@ -7,6 +7,16 @@
 
     <record id="product.product_product_1" model="product.product">
         <field name="project_id" model="product.product" eval="obj().env.ref('helpdesk.helpdesk_team3').project_id.id"/>
+        <field name="sla_id" ref="helpdesk.helpdesk_sla_3"/>
+    </record>
+    <record id="product.product_product_2" model="product.product">
+        <field name="sla_id" ref="helpdesk.helpdesk_sla_2"/>
+    </record>
+    <record id="sale_timesheet.product_service_order_timesheet" model="product.product">
+        <field name="sla_id" ref="helpdesk.helpdesk_sla_2"/>
+    </record>
+    <record id="sale_timesheet.product_service_deliver_timesheet_1" model="product.product">
+        <field name="sla_id" ref="helpdesk.helpdesk_sla_3"/>
     </record>
 
     <!-- timesheet on ticket -->

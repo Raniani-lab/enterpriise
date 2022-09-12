@@ -17,7 +17,7 @@
                 <field name="use_product_repairs" invisible="1"/>
                 <field name="suitable_product_ids" invisible="1"/>
                 <field name="product_id"
-                    attrs="{'invisible': ['|', ('partner_id', '=', False), '&amp;', ('use_credit_notes', '=', False), ('use_product_returns', '=', False), ('use_product_repairs', '=', False)]}"
+                    attrs="{'invisible': ['|', ('partner_id', '=', False), '&amp;', '&amp;', ('use_credit_notes', '=', False), ('use_product_returns', '=', False), ('use_product_repairs', '=', False)]}"
                     options="{'no_create': True, 'no_create_edit': True}"/>
                 <field name="tracking" invisible="1"/>
                 <field name="lot_id" invisible="1"/>

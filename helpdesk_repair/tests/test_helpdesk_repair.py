@@ -52,7 +52,6 @@ class TestRepair(HelpdeskCommon):
         repair_order.action_repair_end()
 
         last_message = str(ticket.message_ids[0].body)
-        repair_text = self.env.ref("helpdesk.mt_ticket_repair_done").name
 
-        self.assertTrue(repair_order.display_name in last_message and repair_text in last_message,
+        self.assertTrue(repair_order.display_name in last_message and 'Repair' in last_message,
             'Repair validation should be logged on the ticket')

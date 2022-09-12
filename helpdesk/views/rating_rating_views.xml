@@ -137,8 +137,14 @@
             <field name="resource_ref" position="attributes">
                 <attribute name="string">Ticket</attribute>
             </field>
+            <field name="parent_ref" position="after">
+                <field name="resource_ref" position="move"/>
+            </field>
             <field name="parent_ref" position="attributes">
-                <attribute name="string">Helpdesk Team</attribute>
+                <attribute name="string">Team</attribute>
+            </field>
+            <field name="parent_ref" position="before">
+                <field name="rated_partner_id" position="move"/>
             </field>
             <field name="rated_partner_id" position="attributes">
                 <attribute name="string">Assigned to</attribute>
@@ -153,10 +159,13 @@
             <field name="feedback" position="attributes">
                 <attribute name="readonly">1</attribute>
             </field>
+            <field name="create_date" position="after">
+                <field name="is_internal" position="move"/>
+            </field>
             <div name="rating_image_container" position="replace">
                 <label for="rating_text"/>
                 <div name="rating_image_container">
-                    <field name="rating_text" decoration-danger="rating_text == 'ko'" decoration-warning="rating_text == 'ok'" decoration-success="rating_text == 'top'" class="fw-bold"/>
+                    <field name="rating_text" decoration-danger="rating_text == 'ko'" decoration-warning="rating_text == 'ok'" decoration-success="rating_text == 'top'" widget="badge"/>
                 </div>
             </div>
         </field>

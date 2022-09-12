@@ -826,12 +826,9 @@ class HelpdeskTicket(models.Model):
         res = super()._mail_get_message_subtypes()
         if len(self) == 1 and self.team_id:
             team = self.team_id
-            optional_subtypes = [('use_credit_notes', self.env.ref('helpdesk.mt_ticket_refund_posted')),
-                                 ('use_credit_notes', self.env.ref('helpdesk.mt_ticket_refund_cancel')),
-                                 ('use_product_returns', self.env.ref('helpdesk.mt_ticket_return_done')),
-                                 ('use_product_returns', self.env.ref('helpdesk.mt_ticket_return_cancel')),
-                                 ('use_product_repairs', self.env.ref('helpdesk.mt_ticket_repair_done')),
-                                 ('use_product_repairs', self.env.ref('helpdesk.mt_ticket_repair_cancel')),]
+            optional_subtypes = [('use_credit_notes', self.env.ref('helpdesk.mt_ticket_refund_status')),
+                                 ('use_product_returns', self.env.ref('helpdesk.mt_ticket_return_status')),
+                                 ('use_product_repairs', self.env.ref('helpdesk.mt_ticket_repair_status'))]
             for field, subtype in optional_subtypes:
                 if not team[field] and subtype in res:
                     res -= subtype

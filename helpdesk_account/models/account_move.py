@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from markupsafe import Markup
-from odoo import models
+from odoo import models, _
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -23,11 +23,12 @@ class AccountMove(models.Model):
                 for ticket, invoices in mapped_data.items():
                     if not invoices:
                         continue
-                    subtype_id = self.env.ref('helpdesk.mt_ticket_refund_' + invoices[0].state, raise_if_not_found=False)
+                    subtype_id = self.env.ref('helpdesk.mt_ticket_refund_status', raise_if_not_found=False)
                     if not subtype_id:
                         continue
+                    state_desc = dict(self._fields['state']._description_selection(self.env))[invoices[0].state].lower()
                     body = Markup('<br/>').join(
-                        (invoice._get_html_link() + f" {subtype_id.name}")
+                        invoice._get_html_link() + _('Refund %(status)s', status=state_desc)
                         for invoice in invoices
                     )
                     ticket.message_post(subtype_id=subtype_id.id, body=body)

@@ -57,7 +57,7 @@
             <form string="Stage Search" delete="0">
                 <field name="active" invisible="1" />
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
+                    <div class="oe_button_box" name="button_box" invisible="not context.get('display_stat_button', False)">
                         <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': [('ticket_count', '=', 0)]}">
                             <field name="ticket_count" widget="statinfo" string="Tickets"/>
                         </button>
@@ -129,6 +129,7 @@
         <field name="res_model">helpdesk.stage</field>
         <field name="view_mode">tree,form,kanban</field>
         <field name="search_view_id" ref="helpdesk_stage_view_search"/>
+        <field name="context">{'display_stat_button': True}</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
             No stages found. Let's create one!

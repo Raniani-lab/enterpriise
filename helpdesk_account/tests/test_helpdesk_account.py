@@ -63,9 +63,8 @@ class TestHelpdeskAccount(common.HelpdeskCommon):
 
         refund.action_post()
         last_message = str(ticket.message_ids[0].body)
-        refund_text = self.env.ref("helpdesk.mt_ticket_refund_posted").name
 
-        self.assertTrue(refund.display_name in last_message and refund_text in last_message,
+        self.assertTrue(refund.display_name in last_message and 'Refund' in last_message,
             'Refund Post should be logged on the ticket')
 
     def test_create_multiple_credit_notes_in_ticket(self):

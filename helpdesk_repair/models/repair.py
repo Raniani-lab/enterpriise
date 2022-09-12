@@ -18,10 +18,11 @@ class Repair(models.Model):
             tracked_repairs = self.filtered(
                 lambda r: r.ticket_id.use_product_repairs and r.state in ('done', 'cancel') and previous_states[r] != r.state)
             for repair in tracked_repairs:
-                subtype = self.env.ref('helpdesk.mt_ticket_repair_' + repair.state, raise_if_not_found=False)
+                subtype = self.env.ref('helpdesk.mt_ticket_repair_status', raise_if_not_found=False)
                 if not subtype:
                     continue
-                body = repair._get_html_link() + f" {subtype.name}"
+                state_desc = dict(self._fields['state']._description_selection(self.env))[repair.state].lower()
+                body = repair._get_html_link() + f" {_('Repair')} {state_desc}"
                 repair.ticket_id.sudo().message_post(subtype_id=subtype.id, body=body)
         return res
 

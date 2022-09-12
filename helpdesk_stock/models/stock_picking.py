@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from markupsafe import Markup
-from odoo import models
+from odoo import models, _
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -23,11 +23,12 @@ class StockPicking(models.Model):
             for ticket, pickings in mapped_data.items():
                 if not pickings:
                     continue
-                subtype = self.env.ref('helpdesk.mt_ticket_return_' + pickings[0].state, raise_if_not_found=False)
+                subtype = self.env.ref('helpdesk.mt_ticket_return_status', raise_if_not_found=False)
                 if not subtype:
                     continue
+                state_desc = dict(self._fields['state']._description_selection(self.env))[pickings[0].state].lower()
                 body = Markup('<br/>').join(
-                    (picking._get_html_link() + f" {subtype.name}")
+                    picking._get_html_link() + _('Return %(status)s', status=state_desc)
                     for picking in pickings
                 )
                 ticket.message_post(subtype_id=subtype.id, body=body)

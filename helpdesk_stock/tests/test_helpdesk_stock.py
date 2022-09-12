@@ -74,9 +74,8 @@ class TestHelpdeskStock(common.HelpdeskCommon):
         return_picking.state
 
         last_message = str(ticket.message_ids[0].body)
-        return_text = self.env.ref("helpdesk.mt_ticket_return_done").name
 
-        self.assertTrue(return_picking.display_name in last_message and return_text in last_message,
+        self.assertTrue(return_picking.display_name in last_message and 'Return' in last_message,
             'Return validation should be logged on the ticket')
 
     def test_helpdesk_stock_return(self):

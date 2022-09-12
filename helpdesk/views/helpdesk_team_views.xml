@@ -81,8 +81,11 @@
                     <field name="company_id" groups="base.group_multi_company" required="1" nolabel="1" context="{'create': False}"/>
                     <h2>Visibility &amp; Assignment </h2>
                     <div class="row mt16 o_settings_container" id="productivity">
-                        <setting help="People to whom this team and its tickets will be visible">
-                            <field name="privacy_visibility" class="mt16 o_light_label w-100" widget="radio"/>
+                        <setting
+                            help="People to whom this team and its tickets will be visible"
+                            documentation="/applications/services/helpdesk/overview/getting_started.html#teams-productivity-and-visibility"
+                        >
+                            <field name="privacy_visibility" class="mt16 o_light_label" widget="radio"/>
                             <div>
                                 <span class="text-muted o_row ps-1" attrs="{'invisible':[('access_instruction_message', '=', '')]}">
                                     <i class="fa fa-lightbulb-o"/>&amp;nbsp;<field class="align-top d-inline ms-2" name="access_instruction_message" nolabel="1"/>
@@ -120,7 +123,8 @@
                     </div>
                     <h2>Channels</h2>
                     <div class="row mt16 o_settings_container" id="channels">
-                        <setting id="alias_channels" help="Create tickets by sending an email to an alias">
+                        <setting id="alias_channels" help="Create tickets by sending an email to an alias"
+                            documentation="/applications/services/helpdesk/overview/receiving_tickets.html">
                             <field name="use_alias"/>
                             <div attrs="{'invisible': [('use_alias','=',False)]}" class="mt16">
                                 <div class="oe_edit_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
@@ -158,13 +162,13 @@
                         <setting help="Get tickets through an online form">
                             <field name="use_website_helpdesk_form"/>
                         </setting>
-                        <setting help="Centralize, manage, share and grow your knowledge library">
+                        <setting help="Centralize, manage, share and grow your knowledge library" documentation="/applications/services/helpdesk/overview/ratings.html">
                             <field name="use_website_helpdesk_knowledge"/>
                         </setting>
-                        <setting help="Let your customers answer each other's questions on a forum">
+                        <setting help="Let your customers answer each other's questions on a forum" documentation="/applications/services/helpdesk/overview/forum_and_elearning.html">
                             <field name="use_website_helpdesk_forum"/>
                         </setting>
-                        <setting help="Share presentations and videos, and organize them into courses">
+                        <setting help="Share presentations and videos, and organize them into courses" documentation="/applications/services/helpdesk/overview/forum_and_elearning.html#elearning">
                             <field name="use_website_helpdesk_slides"/>
                         </setting>
                     </div>
@@ -185,14 +189,15 @@
                     <div class="row mt16 o_settings_container">
                         <setting id="sla"
                                   help="Make sure tickets are handled on time"
-                                  documentation="/applications/services/helpdesk/overview/getting_started.html">
+                                  documentation="/applications/services/helpdesk/overview/sla.html">
                             <field name="use_sla"/>
                             <div class="mt16" attrs="{'invisible': [('use_sla', '=', False)]}">
                                 <label for="resource_calendar_id"/>
                                 <field name="resource_calendar_id" attrs="{'required': [('use_sla', '=', True)]}"/>
                             </div>
                         </setting>
-                        <setting id="rating" help="Track customer satisfaction on tickets">
+                        <setting id="rating" help="Track customer satisfaction on tickets"
+                            documentation="/applications/services/helpdesk/overview/ratings.html">
                             <field name="use_rating"/>
                             <div id="use_rating" attrs="{'invisible': [('use_rating', '=', False)]}">
                                 <field name="portal_show_rating" class="oe_inline"/>

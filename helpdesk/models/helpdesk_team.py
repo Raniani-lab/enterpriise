@@ -1002,20 +1002,3 @@ class HelpdeskTeam(models.Model):
             [('res_id', 'in', list(ticket_ids))],
         ])
         return action
-    # ---------------------------------------------------
-    # Mail gateway
-    # ---------------------------------------------------
-
-    def _mail_get_message_subtypes(self):
-        res = super()._mail_get_message_subtypes()
-        if len(self) == 1:
-            optional_subtypes = [('use_credit_notes', self.env.ref('helpdesk.mt_team_ticket_refund_posted')),
-                                 ('use_credit_notes', self.env.ref('helpdesk.mt_team_ticket_refund_cancel')),
-                                 ('use_product_returns', self.env.ref('helpdesk.mt_team_ticket_return_done')),
-                                 ('use_product_returns', self.env.ref('helpdesk.mt_team_ticket_return_cancel')),
-                                 ('use_product_repairs', self.env.ref('helpdesk.mt_team_ticket_repair_done')),
-                                 ('use_product_repairs', self.env.ref('helpdesk.mt_team_ticket_repair_cancel')),]
-            for field, subtype in optional_subtypes:
-                if not self[field] and subtype in res:
-                    res -= subtype
-        return res

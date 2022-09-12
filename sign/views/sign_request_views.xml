@@ -216,12 +216,12 @@
         <field name="search_view_id" ref="sign_request_view_search"/>
         <field name="context" eval="{'search_default_my_docs': 1, 'search_default_my_sign_request': 1}"/>
         <field name="help" type="html">
-            <p class="o_view_nocontent_empty_folder">
-                No documents to sign
+            <p class="o_view_nocontent_smiling_face">
+                No document yet
             </p><p>
-                Request a signature to upload a template (or use an existing one)
-                to automate your signature process.
+                You're one click away from automating your signature process!
             </p>
+            <p>Upload a PDF file or use an existing template to begin.</p>
         </field>
     </record>
 
@@ -232,6 +232,13 @@
         <field name="search_view_id" ref="sign_request_view_search"/>
         <field name="domain">[('request_item_ids.partner_id.user_ids', 'in', uid)]</field>
         <field name="context" eval="{'search_default_waiting_for_me': 1}"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Nothing to sign at the moment!
+            </p><p>
+                You will find documents waiting for your signature here.
+            </p>
+        </field>
     </record>
 
     <record id="sign_request_my_requests_action" model="ir.actions.act_window">
@@ -240,6 +247,13 @@
         <field name="view_mode">kanban,tree,form,activity</field>
         <field name="search_view_id" ref="sign_request_view_search"/>
         <field name="domain">['|', ('create_uid', '=', uid), ('request_item_ids.partner_id.user_ids', 'in', uid)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Nothing yet!
+            </p><p>
+                You will find all documents that you participate in here, either as a signatory or as the person who requested the signature.
+            </p>
+        </field>
     </record>
 
     <record id="sign_request_share_view_form" model="ir.ui.view">

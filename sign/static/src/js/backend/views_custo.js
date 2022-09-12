@@ -133,6 +133,7 @@ function makeCusto(selector_button) {
       this.$buttons
         .find(selector_button)
         .text(_t("UPLOAD A PDF TO SIGN"))
+        .prop("title", _t("Upload a pdf that you want to sign directly."))
         .off("click")
         .on("click", (e) => {
           e.preventDefault();
@@ -153,6 +154,7 @@ function makeCusto(selector_button) {
                 _t("UPLOAD A PDF TEMPLATE") +
                 "</button>"
             )
+              .prop("title", _t("Upload a PDF file to use as a template."))
               .off("click")
               .on("click", (e) => {
                 e.preventDefault();
@@ -168,6 +170,7 @@ function makeCusto(selector_button) {
       this.$buttons
         .find(selector_button)
         .text(_t("UPLOAD A PDF TO SIGN"))
+        .prop("title", _t("Upload a PDF that you want to sign directly."))
         .off("click")
         .on("click", (e) => {
           e.preventDefault();

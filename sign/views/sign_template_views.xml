@@ -193,9 +193,13 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No template yet
-            </p><p>
-                <a type="action" name="%(sign.sign_template_tour_action)d" class="btn btn-primary text-white">start with our sample template</a>
             </p>
+            <p>
+                You're one click away from automating your signature process!
+            </p>
+            <p>Upload a PDF file to create your first template</p>
+            <p>- or -</p>
+            <a type="action" name="%(sign.sign_template_tour_action)d" class="btn btn-primary text-white o_sign_sample">Try our sample document</a>
         </field>
     </record>
 

@@ -71,7 +71,7 @@
                                 <th class="o_list_number_th text-end" t-esc="column[1]"/>
                             </t>
                             <t t-elif="column[0] === '__trash'">
-                                <th class="o_list_record_remove_header"/>
+                                <th class="o_list_actions_header"/>
                             </t>
                             <t t-else="">
                                 <th t-esc="column[1]"/>

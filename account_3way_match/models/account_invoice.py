@@ -11,6 +11,14 @@ _release_to_pay_status_list = [('yes', 'Yes'), ('no', 'No'), ('exception', 'Exce
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    def _auto_init(self):
+        if not column_exists(self.env.cr, "account_move", "release_to_pay"):
+            # Create column manually to set default value to 'exception' on postgres level.
+            # This way we avoid heavy computation on module installation.
+            self.env.cr.execute("ALTER TABLE account_move ADD COLUMN release_to_pay VARCHAR DEFAULT 'exception'")
+
+        return super()._auto_init()
+
     release_to_pay = fields.Selection(
         _release_to_pay_status_list,
         compute='_compute_release_to_pay',
@@ -78,12 +86,9 @@ class AccountMoveLine(models.Model):
 
     def _auto_init(self):
         if not column_exists(self.env.cr, "account_move_line", "can_be_paid"):
-            # set status Exception to avoid heavy computation on module installation
-            create_column(self.env.cr, "account_move_line", "can_be_paid", "VARCHAR")
-            self.env.cr.execute("""
-                UPDATE account_move_line
-                SET can_be_paid = 'exception'
-            """)
+            # Create column manually to set default value to 'exception' on postgres level.
+            # This way we avoid heavy computation on module installation.
+            self.env.cr.execute("ALTER TABLE account_move_line ADD COLUMN can_be_paid VARCHAR DEFAULT 'exception'")
 
         return super()._auto_init()
 

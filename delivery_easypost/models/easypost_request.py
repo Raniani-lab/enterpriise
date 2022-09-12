@@ -351,7 +351,7 @@ class EasypostRequest():
             raise UserError('\n'.join([x['carrier'] + ': ' + x['type'] + ' -- ' + x['message'] for x in response['messages']]))
 
         # get tracking code and lable file url
-        result['track_shipments_url'] = {res['tracking_code']: res['tracker']['public_url'] for res in response['shipments']}
+        result['track_shipments_url'] = {res['tracking_code']: res['tracker']['public_url'] for res in response['shipments'] if res['tracker']}
         result['track_label_data'] = {res['tracking_code']: res['postage_label']['label_url'] for res in response['shipments']}
 
         # get commercial invoice + other forms

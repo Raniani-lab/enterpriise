@@ -440,11 +440,10 @@ class AccountEdiFormat(models.Model):
         def divide_tax_details(env, invoice, tax_details, amount_paid):
             percentage_paid = amount_paid / invoice.amount_total
             precision = invoice.currency_id.decimal_places
-            sign = -1 if invoice.is_inbound() else 1
             for detail in tax_details['tax_details'].values():
                 tax = detail['tax']
                 tax_amount = abs(tax.amount) / 100.0 if tax.amount_type != 'fixed' else abs(detail['tax_amount_currency'] / detail['base_amount_currency'])
-                base_val_proportion = float_round(detail['base_amount_currency'] * percentage_paid * sign, precision)
+                base_val_proportion = float_round(detail['base_amount_currency'] * percentage_paid, precision)
                 tax_val_proportion = float_round(base_val_proportion * tax_amount, precision)
                 detail.update({
                     'base_val_prop_amt_curr': base_val_proportion,

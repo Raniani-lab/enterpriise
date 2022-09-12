@@ -195,7 +195,7 @@
         display: flex;
         flex: 1 0 auto;
 
-        div.o_field_pdfviewer, span.o_embed_url_viewer {
+        div.o_field_pdfviewer, div.o_field_pdf_viewer, span.o_embed_url_viewer {
             margin: 0;
             @include media-breakpoint-up(md) {
                 height: auto;

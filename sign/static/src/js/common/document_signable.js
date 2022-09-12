@@ -1600,10 +1600,19 @@ export const SignableDocument = Document.extend({
         if (resp > 0 && resp !== this.iframeWidget.role) {
           continue;
         }
-        let value =
-          $elem.val() && $elem.val().trim()
-            ? $elem.val()
-            : $elem.find("input").val() || false;
+        let value;
+        /*open inputs*/
+        if ($elem.prop('nodeName').toLowerCase() === 'input' || $elem.find("input").length) {
+            value =
+              $elem.val() && $elem.val().trim()
+                ? $elem.val()
+                : $elem.find("input").val() || false;            
+        } else {
+        /*Already prefilled*/
+            value =
+              $elem.text() && $elem.text().trim() ? $elem.text() : false;            
+        }
+
         if ($elem.data("signature")) {
           value = $elem.data("signature");
         }
@@ -1619,7 +1628,7 @@ export const SignableDocument = Document.extend({
         }
         if (!value) {
           if ($elem.data("required")) {
-            return [];
+            return [{}, {}];
           }
           continue;
         }

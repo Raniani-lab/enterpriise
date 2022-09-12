@@ -220,16 +220,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         # 1) Get sums for all accounts.
         # ============================================
         for column_group_key, options_group in options_by_column_group.items():
-            # The period domain is expressed as:
-            # [
-            #   ('date' <= options['date_to']),
-            #   '|',
-            #   ('date' >= fiscalyear['date_from']),
-            #   ('account_id.include_initial_balance', '=', True),
-            # ]
-
-            new_options = self._get_options_sum_balance(options_group)
-
             # Sum is computed including the initial balance of the accounts configured to do so, unless a special option key is used
             # (this is required for trial balance, which is based on general ledger)
             sum_date_scope = 'strict_range' if options_group.get('general_ledger_strict_range') else 'normal'
@@ -242,7 +232,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             if options_group.get('include_current_year_in_unaff_earnings'):
                 query_domain += [('account_id.include_initial_balance', '=', True)]
 
-            tables, where_clause, where_params = report._query_get(new_options, sum_date_scope, domain=query_domain)
+            tables, where_clause, where_params = report._query_get(options_group, sum_date_scope, domain=query_domain)
             params.append(column_group_key)
             params += where_params
             queries.append(f"""
@@ -294,31 +284,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 """)
 
         return ' UNION ALL '.join(queries), params
-
-    def _get_options_sum_balance(self, options):
-        ''' Create options used to compute the aggregated sums on accounts.
-        The resulting dates domain will be:
-        [
-            ('date' <= options['date_to']),
-            '|',
-            ('date' >= fiscalyear['date_from']),
-            ('account_id.include_initial_balance', '=', True)
-        ]
-        :param options: The report options.
-        :return:        A copy of the options.
-        '''
-        new_options = options.copy()
-
-        if not options.get('general_ledger_strict_range'):
-            reference_date = options['date']['date_from'] or options['date']['date_to'] # date_from is None when computing trial balance
-            fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(reference_date))
-            new_options['date'] = {
-                'mode': 'range',
-                'date_from': fields.Date.to_string(fiscalyear_dates['date_from']),
-                'date_to': options['date']['date_to'],
-            }
-
-        return new_options
 
     def _get_options_unaffected_earnings(self, options):
         ''' Create options used to compute the unaffected earnings.

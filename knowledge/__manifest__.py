@@ -53,6 +53,7 @@
             'knowledge/static/src/js/knowledge_renderers.js',
             'knowledge/static/src/js/knowledge_views.js',
             'knowledge/static/src/webclient/commands/*.js',
+            'knowledge/static/src/models/*.js',
             'knowledge/static/src/models/*/*.js',
             'knowledge/static/src/js/form_controller.js',
             'knowledge/static/src/js/form_renderer.js',

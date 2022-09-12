@@ -31,7 +31,7 @@ tour.register('knowledge_pick_emoji_tour', {
     trigger: '.o_knowledge_body .o_article_emoji',
     run: 'click',
 }, {
-    trigger: '.o_article_emoji_dropdown_panel span[data-unicode="😃"]',
+    trigger: '.o_EmojiView[data-codepoints="😃"]',
     run: 'click',
 }, {
     // check that the emoji has been properly changed in the article body

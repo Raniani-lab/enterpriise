@@ -53,7 +53,6 @@
         <t t-if="not portal_readonly_mode">
             <div class="o_article_emoji_dropdown" t-att-data-article-id="article.id">
                 <a t-attf-class="o_article_emoji p-1 {{'o_article_emoji_active text-900' if isActive else ''}}" type="button"
-                    data-bs-toggle="dropdown"
                     t-if="not readonly and not article.is_locked">
                     <t t-if="article.icon" t-out="article.icon"/>
                     <t t-else="">📄</t>

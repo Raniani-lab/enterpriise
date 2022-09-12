@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import EmojiPicker from '@knowledge/components/emoji_picker/emoji_picker';
 import emojis from '@mail/js/emojis';
 import { FormRenderer } from '@web/views/form/form_renderer';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
@@ -14,7 +13,7 @@ import { useService } from "@web/core/utils/hooks";
 
 const disallowedEmojis = ['💩', '👎', '💔', '😭', '😢', '😐', '😕', '😞', '😢', '💀'];
 const emojisRandomPickerSource = emojis.filter(emoji => !disallowedEmojis.includes(emoji.unicode));
-const { onMounted, useRef, useState } = owl;
+const { onMounted, onWillUnmount, useRef } = owl;
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -26,15 +25,20 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
         this.actionService = useService("action");
         this.dialog = useService("dialog");
+        this.messagingService = useService("messaging");
         this.orm = useService("orm");
         this.rpc = useService("rpc");
-
-        this.emojiPickerData = useState({});
+        
         this.root = useRef('root');
         this.tree = useRef('tree');
-
+        
+        this.messagingService.get().then(messaging => this.messaging = messaging);
+        this._onAddEmoji = this._onAddEmoji.bind(this);
+        this._onRemoveEmoji = this._onRemoveEmoji.bind(this);
         // ADSC: Remove when tree component
         onMounted(() => {
+            this.messaging.messagingBus.addEventListener('knowledge_add_emoji', this._onAddEmoji);
+            this.messaging.messagingBus.addEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
             this._renderTree(this.resId, '/knowledge/tree_panel');
             this._setEmojiPickerListener();
 
@@ -44,6 +48,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             if (body) {
                 body.focus();
             }
+        });
+        onWillUnmount(() => {
+            this.messaging.messagingBus.removeEventListener('knowledge_add_emoji', this._onAddEmoji);
+            this.messaging.messagingBus.removeEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
         });
     }
 
@@ -247,10 +255,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         );
     }
 
-    _hideEmojiPicker() {
-        this.root.el.querySelector('.o_knowledge_emoji_picker_container').classList.remove('show');
-    }
-
     /**
      * @param {Object} data
      * @param {integer} data.article_id
@@ -291,6 +295,27 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 cancel: data.onReject
             });
         }
+    }
+
+    /**
+     * @private
+     * @param {CustomEvent} ev
+     * @param {Object} ev.detail
+     * @param {KnowledgeArticle} param0.detail.article
+     * @param {Emoji} param0.detail.emoji
+     */
+    _onAddEmoji(ev) {
+        this._renderEmoji(ev.detail.emoji.codepoints, ev.detail.article.id);
+    }
+
+    /**
+     * @private
+     * @param {CustomEvent} ev
+     * @param {Object} ev.detail
+     * @param {KnowledgeArticle} param0.detail.article
+     */
+    _onRemoveEmoji(ev) {
+        this._renderEmoji(false, ev.detail.article.id);
     }
 
     /**
@@ -400,16 +425,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Setup the emoji picker listener(s) to open it when clicking on an emoji
      */
     _setEmojiPickerListener() {
-        // Cannot add "t-on-show.bs.dropdown" in template
-        // Maybe can be removed when tree component
-        this.root.el.addEventListener('show.bs.dropdown', (ev) => {
-            if (ev.target.classList.contains('o_article_emoji')) {
+        this.root.el.addEventListener('click', (ev) => {
+            if (ev.target.closest('.o_article_emoji')) {
                 this._showEmojiPicker(ev);
-            }
-        });
-        this.root.el.addEventListener('hide.bs.dropdown', (ev) => {
-            if (ev.target.classList.contains('o_article_emoji')) {
-                this._hideEmojiPicker();
             }
         });
     }
@@ -652,13 +670,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @private
      */
     _showEmojiPicker(ev) {
-        const dropdown = globalThis.Dropdown.getInstance(ev.target);
-        // the show class on the container allows to display the page blocker
         this.root.el.querySelector('.o_knowledge_emoji_picker_container').classList.add('show');
-        this.emojiPickerData.articleId = parseInt(ev.target.closest('.o_article_emoji_dropdown').dataset.articleId) || this.resId;
-        if (!dropdown._menu) {
-            dropdown._menu = this.root.el.querySelector('.o_knowledge_emoji_picker_container .dropdown-menu');
-        }
+        const articleId = Number(ev.target.closest('.o_article_emoji_dropdown').dataset.articleId) || this.resId;
+        this.messaging.knowledge.update({
+            currentArticle: { id: articleId },
+            emojiPickerPopoverAnchorRef: { el: ev.target.closest('.o_article_emoji_dropdown .o_article_emoji') },
+            emojiPickerPopoverView: {},
+        });
     }
 }
 
@@ -666,7 +684,6 @@ patch(KnowledgeArticleFormRenderer.prototype, "knowledge_article_form_renderer",
 KnowledgeArticleFormRenderer.components = {
     ...FormRenderer.components,
     PermissionPanel,
-    EmojiPicker
 };
 KnowledgeArticleFormRenderer.defaultProps = {
 };

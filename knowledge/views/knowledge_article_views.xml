@@ -70,7 +70,6 @@
                                                     <div class="o_article_emoji_dropdown">
                                                         <a class="o_article_emoji o-no-caret"
                                                             href="#"
-                                                            data-bs-toggle="dropdown"
                                                             attrs="{'invisible': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)]}">
                                                             <field name="icon" attrs="{'readonly': True }"/>
                                                         </a>
@@ -246,7 +245,6 @@
                                                     <div class="o_knowledge_icon o_large" attrs="{'invisible': [('icon', '=', False)]}">
                                                         <div class="o_article_emoji_dropdown">
                                                             <a class="o_article_emoji o-no-caret"
-                                                               data-bs-toggle="dropdown"
                                                                attrs="{'invisible': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)]}">
                                                                <field name="icon" attrs="{'readonly': True }"/>
                                                            </a>
@@ -299,9 +297,7 @@
                         </div>
                     </div>
                     <field name="icon" invisible="1" attrs="{'readonly': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)] }"/>
-                    <div class="o_knowledge_emoji_picker_container">
-                        <EmojiPicker notifyChangedEmoji.bind="_renderEmoji" data="this.emojiPickerData"/>
-                    </div>
+                    <div class="o_knowledge_emoji_picker_container"/>
                 </div>
             </form>
         </field>

@@ -149,7 +149,7 @@ tour.register('knowledge_main_flow_tour', {
     trigger: '.o_knowledge_share_panel .btn:contains("Invite")',
 }, {
     // Type the invited person's name
-    trigger: '.o_field_many2one[name="partner_ids"] input',
+    trigger: '.o_field_many2many_tags_email[name=partner_ids] input',
     run: 'text micheline@knowledge.com',
 }, {
     // Create the partner

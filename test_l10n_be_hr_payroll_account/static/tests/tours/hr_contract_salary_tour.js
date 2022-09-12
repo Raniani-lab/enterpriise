@@ -104,7 +104,7 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Confirm Partner Creation",
-            trigger: ".modal-dialog .btn-primary span:contains('Save')",
+            trigger: ".modal-dialog .btn-secondary:contains('Discard')",
             run: 'click'
         },
         {

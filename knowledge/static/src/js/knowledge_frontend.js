@@ -101,7 +101,11 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
     _renderTree: async function (active_article_id, route) {
         const container = this.el.querySelector('.o_knowledge_tree');
         let unfoldedArticles = localStorage.getItem('unfoldedArticles');
-        unfoldedArticles = unfoldedArticles ? unfoldedArticles.split(";").map(Number) : false;
+        unfoldedArticles = unfoldedArticles ? unfoldedArticles.split(";").map(Number) : [];
+        const params = new URLSearchParams(document.location.search);
+        if (Boolean(params.get('auto_unfold'))) {
+            unfoldedArticles.push(active_article_id);
+        }
         try {
             const htmlTree = await this._rpc({
                 route: route,

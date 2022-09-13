@@ -62,6 +62,7 @@
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",1)"
                 },
                 "A22": {
+                    "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",2)"
                 },
                 "A23": {
@@ -69,6 +70,7 @@
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",3)"
                 },
                 "A24": {
+                    "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",4)"
                 },
                 "A25": {
@@ -76,6 +78,7 @@
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",5)"
                 },
                 "A26": {
+                    "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",6)"
                 },
                 "A27": {
@@ -83,6 +86,7 @@
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",7)"
                 },
                 "A28": {
+                    "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",8)"
                 },
                 "A29": {
@@ -90,83 +94,84 @@
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",9)"
                 },
                 "A30": {
+                    "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(1,\"#department_id\",10)"
                 },
                 "B20": {
-                    "style": 4,
+                    "style": 5,
                     "content": "Hires",
                     "border": 2
                 },
                 "B21": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",1)"
                 },
                 "B22": {
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",2)"
                 },
                 "B23": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",3)"
                 },
                 "B24": {
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",4)"
                 },
                 "B25": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",5)"
                 },
                 "B26": {
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",6)"
                 },
                 "B27": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",7)"
                 },
                 "B28": {
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",8)"
                 },
                 "B29": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",9)"
                 },
                 "B30": {
                     "content": "=ODOO.PIVOT(1,\"count_new_employee\",\"#department_id\",10)"
                 },
                 "C20": {
-                    "style": 4,
+                    "style": 5,
                     "content": "Employees",
                     "border": 2
                 },
                 "C21": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",1)"
                 },
                 "C22": {
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",2)"
                 },
                 "C23": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",3)"
                 },
                 "C24": {
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",4)"
                 },
                 "C25": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",5)"
                 },
                 "C26": {
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",6)"
                 },
                 "C27": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",7)"
                 },
                 "C28": {
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",8)"
                 },
                 "C29": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(1,\"employee_id\",\"#department_id\",9)"
                 },
                 "C30": {
@@ -183,47 +188,47 @@
                     "border": 2
                 },
                 "E21": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",1)"
                 },
                 "E22": {
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",2)"
                 },
                 "E23": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",3)"
                 },
                 "E24": {
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",4)"
                 },
                 "E25": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",5)"
                 },
                 "E26": {
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",6)"
                 },
                 "E27": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",7)"
                 },
                 "E28": {
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",8)"
                 },
                 "E29": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",9)"
                 },
                 "E30": {
                     "content": "=ODOO.PIVOT.HEADER(2,\"#job_id\",10)"
                 },
                 "F20": {
-                    "style": 4,
+                    "style": 5,
                     "content": "Contracts",
                     "border": 2
                 },
                 "F21": {
-                    "style": 3,
+                    "style": 6,
                     "format": 1,
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",1)"
                 },
@@ -232,7 +237,7 @@
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",2)"
                 },
                 "F23": {
-                    "style": 3,
+                    "style": 6,
                     "format": 1,
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",3)"
                 },
@@ -241,7 +246,7 @@
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",4)"
                 },
                 "F25": {
-                    "style": 3,
+                    "style": 6,
                     "format": 1,
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",5)"
                 },
@@ -250,7 +255,7 @@
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",6)"
                 },
                 "F27": {
-                    "style": 3,
+                    "style": 6,
                     "format": 1,
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",7)"
                 },
@@ -259,7 +264,7 @@
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",8)"
                 },
                 "F29": {
-                    "style": 3,
+                    "style": 6,
                     "format": 1,
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",9)"
                 },
@@ -268,43 +273,53 @@
                     "content": "=ODOO.PIVOT(2,\"__count\",\"#job_id\",10)"
                 },
                 "G20": {
-                    "style": 4,
-                    "content": "Avg. Wage",
+                    "style": 5,
+                    "content": "Avg. Salary",
                     "border": 2
                 },
                 "G21": {
-                    "style": 3,
+                    "style": 6,
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",1)"
                 },
                 "G22": {
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",2)"
                 },
                 "G23": {
-                    "style": 3,
+                    "style": 6,
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",3)"
                 },
                 "G24": {
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",4)"
                 },
                 "G25": {
-                    "style": 3,
+                    "style": 6,
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",5)"
                 },
                 "G26": {
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",6)"
                 },
                 "G27": {
-                    "style": 3,
+                    "style": 6,
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",7)"
                 },
                 "G28": {
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",8)"
                 },
                 "G29": {
-                    "style": 3,
+                    "style": 6,
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",9)"
                 },
                 "G30": {
+                    "format": 2,
                     "content": "=ODOO.PIVOT(2,\"wage\",\"#job_id\",10)"
                 },
                 "A8": {
@@ -364,9 +379,9 @@
                 {
                     "id": "f2791b10-860a-49c4-a95b-c58fc4619ff2",
                     "x": 0,
-                    "y": 180,
-                    "width": 662,
-                    "height": 223,
+                    "y": 178,
+                    "width": 1000,
+                    "height": 230,
                     "tag": "chart",
                     "data": {
                         "title": "",
@@ -399,8 +414,8 @@
                     "id": "e58ddf24-719e-44c2-9042-cd327e0fb7e0",
                     "x": 0,
                     "y": 0,
-                    "width": 228,
-                    "height": 136,
+                    "width": 200,
+                    "height": 120,
                     "tag": "chart",
                     "data": {
                         "baselineColorDown": "#DC6965",
@@ -423,18 +438,101 @@
             "rowNumber": 100,
             "rows": {},
             "cols": {},
-            "merges": [],
+            "merges": [
+                "B5:C5"
+            ],
             "cells": {
                 "A1": {
                     "content": "Employees"
                 },
+                "A5": {
+                    "style": 7
+                },
+                "A6": {
+                    "style": 8
+                },
+                "A7": {
+                    "style": 7,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"job_id\",3)"
+                },
+                "A8": {
+                    "style": 7,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"job_id\",6)"
+                },
+                "A9": {
+                    "style": 7,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"job_id\",5)"
+                },
+                "A10": {
+                    "style": 7,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"job_id\",4)"
+                },
+                "A11": {
+                    "style": 7,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"job_id\",2)"
+                },
+                "A12": {
+                    "style": 7,
+                    "content": "=ODOO.PIVOT.HEADER(2)"
+                },
                 "B1": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=ODOO.PIVOT(3,\"__count\")"
                 },
+                "B5": {
+                    "style": 7,
+                    "content": "=ODOO.PIVOT.HEADER(2)"
+                },
+                "B6": {
+                    "style": 8,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"measure\",\"__count\")"
+                },
+                "B7": {
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"job_id\",3)"
+                },
+                "B8": {
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"job_id\",6)"
+                },
+                "B9": {
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"job_id\",5)"
+                },
+                "B10": {
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"job_id\",4)"
+                },
+                "B11": {
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"job_id\",2)"
+                },
+                "B12": {
+                    "content": "=ODOO.PIVOT(2,\"__count\")"
+                },
                 "C1": {
-                    "style": 3,
+                    "style": 6,
                     "content": "=FORMAT.LARGE.NUMBER(B1)"
+                },
+                "C5": {
+                    "style": 7
+                },
+                "C6": {
+                    "style": 8,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"measure\",\"wage\")"
+                },
+                "C7": {
+                    "content": "=ODOO.PIVOT(2,\"wage\",\"job_id\",3)"
+                },
+                "C8": {
+                    "content": "=ODOO.PIVOT(2,\"wage\",\"job_id\",6)"
+                },
+                "C9": {
+                    "content": "=ODOO.PIVOT(2,\"wage\",\"job_id\",5)"
+                },
+                "C10": {
+                    "content": "=ODOO.PIVOT(2,\"wage\",\"job_id\",4)"
+                },
+                "C11": {
+                    "content": "=ODOO.PIVOT(2,\"wage\",\"job_id\",2)"
+                },
+                "C12": {
+                    "content": "=ODOO.PIVOT(2,\"wage\")"
                 }
             },
             "conditionalFormats": [],
@@ -454,15 +552,31 @@
             "bold": true
         },
         "3": {
-            "fillColor": "#f2f2f2"
+            "fillColor": "#f2f2f2",
+            "textColor": "#741b47"
         },
         "4": {
+            "textColor": "#741b47"
+        },
+        "5": {
             "bold": true,
             "align": "right"
+        },
+        "6": {
+            "fillColor": "#f2f2f2"
+        },
+        "7": {
+            "bold": true,
+            "fillColor": "#f2f2f2"
+        },
+        "8": {
+            "fillColor": "#f2f2f2",
+            "textColor": "#756f6f"
         }
     },
     "formats": {
-        "1": "0"
+        "1": "0",
+        "2": "[$$]#,##0"
     },
     "borders": {
         "1": {
@@ -600,6 +714,37 @@
                     "field": "date",
                     "type": "date",
                     "offset": 0
+                }
+            }
+        },
+        {
+            "id": "c565eee4-374b-4779-8c12-f59634a490bf",
+            "type": "relation",
+            "label": "Department",
+            "modelName": "hr.department",
+            "defaultValue": [],
+            "defaultValueDisplayNames": [],
+            "rangeType": "year",
+            "defaultsToCurrentPeriod": false,
+            "pivotFields": {
+                "1": {
+                    "field": "department_id",
+                    "type": "many2one"
+                },
+                "2": {
+                    "field": "department_id",
+                    "type": "many2one"
+                },
+                "3": {
+                    "field": "department_id",
+                    "type": "many2one"
+                }
+            },
+            "listFields": {},
+            "graphFields": {
+                "f2791b10-860a-49c4-a95b-c58fc4619ff2": {
+                    "field": "department_id",
+                    "type": "many2one"
                 }
             }
         }

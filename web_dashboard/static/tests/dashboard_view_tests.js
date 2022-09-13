@@ -723,11 +723,7 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_subview .o_graph_view .o_control_panel .o_cp_top_left");
         assert.containsNone(target, ".o_subview .o_graph_view .o_control_panel .o_cp_top_right");
         assert.containsOnce(target, ".o_subview .o_graph_view .o_control_panel .o_cp_bottom_left");
-        assert.strictEqual(
-            target.querySelector(".o_subview .o_graph_view .o_control_panel .o_cp_bottom_right")
-                .innerHTML,
-            ""
-        );
+        assert.containsNone(target, ".o_subview .o_graph_view .o_control_panel .o_cp_bottom_right");
         assert.containsOnce(
             target,
             ".o-web-dashboard-view-wrapper--switch-button",

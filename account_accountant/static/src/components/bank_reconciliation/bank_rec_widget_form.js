@@ -26,6 +26,10 @@ export class BankRecWidgetFormController extends FormController {
         await this.model.root.update({todo_command: `button_clicked,${clickParams.name}`});
         this.env.kanbanDoAction(this.model.root.data.next_action_todo);
     }
+
+    beforeUnload() {
+        return;
+    }
 }
 BankRecWidgetFormController.props = {
     ...FormController.props,

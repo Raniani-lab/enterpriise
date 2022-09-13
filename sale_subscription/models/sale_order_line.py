@@ -180,7 +180,7 @@ class SaleOrderLine(models.Model):
     def _compute_parent_line_id(self):
         parent_line_ids = self.order_id.subscription_id.order_line
         for line in self:
-            if not line.order_id.subscription_id or not line.temporal_type == 'subscription':
+            if not line.order_id.subscription_id or not line.product_id.recurring_invoice:
                 continue
             matching_line_ids = parent_line_ids.filtered(
                 lambda l:

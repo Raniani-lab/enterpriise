@@ -205,15 +205,15 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         :return: whether the xml is valid. If the XSD files are not found returns True
         """
         validation_types = {
-            'doc': 'DTE_v10.xsd',
-            'env': 'EnvioDTE_v10.xsd',
-            'bol': 'EnvioBOLETA_v11.xsd',
-            'recep': 'Recibos_v10.xsd',
-            'env_recep': 'EnvioRecibos_v10.xsd',
-            'env_resp': 'RespuestaEnvioDTE_v10.xsd',
-            'sig': 'xmldsignature_v10.xsd',
-            'book': 'LibroCV_v10.xsd',
-            'consu': 'ConsumoFolio_v10.xsd',
+            'doc': 'l10n_cl_edi.DTE_v10.xsd',
+            'env': 'l10n_cl_edi.EnvioDTE_v10.xsd',
+            'bol': 'l10n_cl_edi.EnvioBOLETA_v11.xsd',
+            'recep': 'l10n_cl_edi.Recibos_v10.xsd',
+            'env_recep': 'l10n_cl_edi.EnvioRecibos_v10.xsd',
+            'env_resp': 'l10n_cl_edi.RespuestaEnvioDTE_v10.xsd',
+            'sig': 'l10n_cl_edi.xmldsignature_v10.xsd',
+            'book': 'l10n_cl_edi.LibroCV_v10.xsd',
+            'consu': 'l10n_cl_edi.ConsumoFolio_v10.xsd',
         }
         # Token document doesn't required validation and the "Boleta" document is not validated since the DescuentoPct
         # tag doesn't work properly
@@ -221,7 +221,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
             return True
         xsd_fname = validation_types[validation_type]
         try:
-            return tools.validate_xml_from_attachment(self.env, xml_to_validate, xsd_fname, self.env['ir.attachment']._l10n_cl_edi_load_xsd_files)
+            return tools.validate_xml_from_attachment(self.env, xml_to_validate, xsd_fname, self.env['ir.attachment']._l10n_cl_edi_load_xsd_files, prefix='l10n_cl_edi')
         except FileNotFoundError:
             _logger.warning(
                 _('The XSD validation files from SII have not been found'))

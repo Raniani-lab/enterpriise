@@ -11,7 +11,7 @@ from odoo.tools import misc, os, relativedelta
 _logger = logging.getLogger(__name__)
 
 
-def _check_with_xsd_patch(xml_to_validate, xsd_fname, env):
+def _check_with_xsd_patch(xml_to_validate, xsd_fname, env, prefix=None):
     return True
 
 

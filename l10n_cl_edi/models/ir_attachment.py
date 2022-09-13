@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from lxml import etree, objectify
+
 from odoo import api, models, tools
 
 
@@ -82,5 +84,6 @@ class IrAttachment(models.Model):
             file_url = values['file_url']
             url = f'{main_xsd_download_url}/{file_url}'
             tools.load_xsd_files_from_url(self.env, url, values['file_name'], force_reload=force_reload,
-                                          xsd_name_prefix='l10n_cl_edi', xsd_names_filter=values['file_name'])
+                                          xsd_name_prefix='l10n_cl_edi', xsd_names_filter=values['file_name'],
+                                          modify_xsd_content=lambda content: etree.tostring(objectify.fromstring(content), encoding='utf-8', pretty_print=True))
         return

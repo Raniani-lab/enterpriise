@@ -48,4 +48,16 @@ export const patchGraphSpreadsheet = {
     },
 };
 
+/**
+ * This patch is a little trick, which require a little explanation:
+ *
+ * In this patch, we add some dependencies to the graph view (menu service,
+ * router service, ...).
+ * To test it, we add these dependencies in our tests, but these dependencies
+ * are not added in the tests of the base graph view (in web/). The same thing
+ * occurs for the button "Insert in spreadsheet".
+ * As we do not want to modify tests in web/ in order to integrate a behavior
+ * defined in another module, we disable this patch in a file that is only
+ * loaded in test assets (disable_patch.js), and re-active it in our tests.
+ */
 patch(GraphController.prototype, "graph_spreadsheet", patchGraphSpreadsheet);

@@ -23,6 +23,5 @@ addFields('ActivityView', {
     approvalView: one('ApprovalView', {
         compute: '_computeApprovalView',
         inverse: 'activityViewOwner',
-        isCausal: true,
     }),
 });

@@ -13,7 +13,6 @@ addFields('NotificationGroupView', {
     swiperView: one('SwiperView', {
         compute: '_computeSwiperView',
         inverse: 'notificationGroupViewOwner',
-        isCausal: true,
     }),
 });
 

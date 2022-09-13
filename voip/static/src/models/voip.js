@@ -134,11 +134,9 @@ registerModel({
         ringtoneRegistry: one("RingtoneRegistry", {
             default: {},
             inverse: "voip",
-            isCausal: true,
         }),
         userAgent: one("UserAgent", {
             inverse: "voip",
-            isCausal: true,
         }),
         /**
          * The WebSocket URL of the signaling server that will be used to

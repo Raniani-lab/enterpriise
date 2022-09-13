@@ -13,7 +13,6 @@ addFields('ChannelPreviewView', {
     swiperView: one('SwiperView', {
         compute: '_computeSwiperView',
         inverse: 'channelPreviewViewOwner',
-        isCausal: true,
     }),
 });
 

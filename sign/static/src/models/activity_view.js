@@ -23,6 +23,5 @@ addFields('ActivityView', {
     signRequestView: one('SignRequestView', {
         compute: '_computeSignRequestView',
         inverse: 'activityViewOwner',
-        isCausal: true,
     }),
 });

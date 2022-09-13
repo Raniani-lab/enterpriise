@@ -9,7 +9,6 @@ registerModel({
         legacyUserAgent: attr(),
         registerer: one("Registerer", {
             inverse: "userAgent",
-            isCausal: true,
         }),
         voip: one("Voip", {
             identifying: true,

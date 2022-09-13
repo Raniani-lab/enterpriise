@@ -14,7 +14,6 @@ addFields('MessageView', {
     swiperView: one('SwiperView', {
         compute: '_computeSwiperView',
         inverse: 'messageViewOwner',
-        isCausal: true,
     }),
 });
 

@@ -13,7 +13,6 @@ addFields('ThreadNeedactionPreviewView', {
     swiperView: one('SwiperView', {
         compute: '_computeSwiperView',
         inverse: 'threadNeedactionPreviewViewOwner',
-        isCausal: true,
     }),
 });
 

@@ -33,7 +33,6 @@ registerModel({
     },
     fields: {
         attachmentViewer: one("AttachmentViewer", {
-            isCausal: true,
             inverse: "documentListOwner",
         }),
         documents: many("Document"),

@@ -7,17 +7,6 @@ $o-wo-tablet-bg-dark: #333333;
 $o-wo-tablet-border-bg: #c9ccd2;
 $o-wo-tablet-text: color-contrast($o-wo-tablet-bg, $body-color, #FFF);
 
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: $o-wo-tablet-border-bg;
-}
-
-::-webkit-scrollbar-track {
-    background: gray;
-}
 .o_tablet_client_action {
     display: flex;
     flex-flow: column;
@@ -25,6 +14,17 @@ $o-wo-tablet-text: color-contrast($o-wo-tablet-bg, $body-color, #FFF);
     background-color: $o-wo-tablet-bg;
     color: $o-wo-tablet-text;
     height: 100%;
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: $o-wo-tablet-border-bg;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: gray;
+    }
 
     // font-size: $o-navbar-entry-font-size;
 

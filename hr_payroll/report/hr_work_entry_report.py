@@ -63,9 +63,9 @@ class HrWorkEntryReport(models.Model):
         LEFT JOIN (
             SELECT
                 contract.id AS contract_id,
-                resource_calendar_id,
-                hours_per_day,
-                work_entry_source
+                contract.resource_calendar_id,
+                calendar.hours_per_day,
+                contract.work_entry_source
             FROM
                 hr_contract contract
             LEFT JOIN (

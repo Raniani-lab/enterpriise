@@ -65,8 +65,9 @@ class CrmLeadConvert2Ticket(models.TransientModel):
             mail_create_nosubscribe=True, mail_create_nolog=True
         ).sudo().create(vals)
         ticket_sudo.message_post_with_view(
-            'mail.message_origin_link', values={'self': ticket_sudo, 'origin': lead},
-            subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id
+            'mail.message_origin_link',
+            values={'self': ticket_sudo, 'origin': lead},
+            subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
         )
 
         # move the mail thread

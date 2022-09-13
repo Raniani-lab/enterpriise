@@ -348,10 +348,10 @@ Best Regards,
                     body=body_html,
                     email_from=email,
                     subject=self._get_email_subject(options),
-                    subtype_id=self.env.ref('mail.mt_note').id,
                     model_description=_('payment reminder'),
                     email_layout_xmlid='mail.mail_notification_light',
                     attachment_ids=attachment_ids,
+                    subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
                 )
                 sent_at_least_once = True
         if not sent_at_least_once:

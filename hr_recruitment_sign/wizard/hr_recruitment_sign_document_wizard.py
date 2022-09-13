@@ -146,7 +146,8 @@ class HrRecruitmentSignDocumentWizard(models.TransientModel):
                 'user_name': self.env.user.display_name,
                 'document_names': self.sign_template_ids.mapped('name'),
                 'signatories_text': signatories_text
-            }
+            },
+            subtype_xmlid='mail.mt_comment',
         )
 
         if len(sign_requests) == 1 and self.env.user.id == self.responsible_id.id:

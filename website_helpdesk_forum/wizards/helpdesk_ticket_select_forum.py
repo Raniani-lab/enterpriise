@@ -62,7 +62,11 @@ class HelpdeskTicketSelectForumWizard(models.TransientModel):
         })
 
         for post in forum_post:
-            post.message_post_with_view('helpdesk.ticket_creation', values={'self': post, 'ticket': self.ticket_id}, subtype_id=self.env.ref('mail.mt_note').id)
+            post.message_post_with_view(
+                'helpdesk.ticket_creation',
+                values={'self': post, 'ticket': self.ticket_id},
+                subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
+            )
 
         return forum_post
 

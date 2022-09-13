@@ -799,7 +799,9 @@ class HrContractSalary(http.Controller):
         res_id = kw.get('applicant_id') or new_contract_id or kw.get('employee_contract_id')
         request.env[model].sudo().browse(res_id).message_post_with_view(
             template,
-            values=values)
+            values=values,
+            subtype_id=request.env['ir.model.data']._xmlid_to_res_id('mail.mt_comment'),
+        )
 
     def send_email(self, contract, **kw):
         self._send_mail_message(

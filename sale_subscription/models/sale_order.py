@@ -1524,7 +1524,10 @@ class SaleOrder(models.Model):
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
         # ARJ TODO master: take the invoice template in the settings
         invoice.with_context(email_context).message_post_with_template(
-                self.sale_order_template_id.invoice_mail_template_id.id, auto_commit=not (config['test_enable'] and modules.module.current_test))
+            self.sale_order_template_id.invoice_mail_template_id.id,
+            auto_commit=not (config['test_enable'] and modules.module.current_test),
+            subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_comment'),
+        )
         invoice.is_move_sent = True
 
     def _send_subscription_rating_mail(self, force_send=False):
@@ -1597,9 +1600,9 @@ class SaleOrder(models.Model):
                 invoice.message_post_with_view(
                     'mail.message_origin_link',
                     values={'self': invoice, 'origin': self},
-                    subtype_id=self.env.ref('mail.mt_note').id
+                    subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note')
                 )
-                tx.invoice_ids = invoice.id,
+                tx.invoice_ids = invoice.id
             self.set_open()
             return True
         return False

@@ -18,8 +18,9 @@ class HrExpenseSheet(models.Model):
             record.message_post(
                 body=_("Your expense (%s) will be added to your next payslip.") % (record.name),
                 partner_ids=record.employee_id.user_id.partner_id.ids,
-                subtype_id=self.env.ref('mail.mt_note').id,
-                email_layout_xmlid='mail.mail_notification_light')
+                email_layout_xmlid='mail.mail_notification_light',
+                subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
+            )
 
     def reset_expense_sheets(self):
         res = super().reset_expense_sheets()

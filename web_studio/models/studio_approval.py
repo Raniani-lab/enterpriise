@@ -539,15 +539,14 @@ class StudioApprovalEntry(models.Model):
             if not entry.rule_id.model_id.is_mail_thread:
                 continue
             record = self.env[entry.model].browse(entry.res_id)
-            template = 'web_studio.notify_approval'
-            record.message_post_with_view(template,
+            record.message_post_with_view(
+                'web_studio.notify_approval',
                 values={
                     'user_name': entry.user_id.display_name,
                     'group_name': entry.group_id.display_name,
                     'approved': entry.approved,
                     },
-                subtype_id=self.env.ref("mail.mt_note").id,
-                author_id=self.env.user.partner_id.id
+                subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
             )
 
 

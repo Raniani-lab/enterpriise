@@ -121,7 +121,6 @@ class RequestAppraisal(models.TransientModel):
             email(s), rendering any template patterns on the fly if needed """
         self.ensure_one()
         appraisal = self.appraisal_id
-        appraisal.message_subscribe(partner_ids=self.recipient_ids.ids)
 
         ctx = {
             'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id),
@@ -130,13 +129,15 @@ class RequestAppraisal(models.TransientModel):
         subject = context_self._render_field('subject', appraisal.ids)[appraisal.id]
         body = context_self._render_field('body', appraisal.ids)[appraisal.id]
 
-        appraisal.message_post(
-            subject=subject,
+        appraisal.with_context(mail_post_autofollow=True).message_post(
+            author_id=self.author_id.id,
             body=body,
-            message_type='comment',
             email_from=self.author_id.email,
             email_layout_xmlid='mail.mail_notification_light',
-            partner_ids=self.recipient_ids.ids)
+            message_type='comment',
+            partner_ids=self.recipient_ids.ids,
+            subject=subject,
+        )
 
         return {
             'view_mode': 'form',

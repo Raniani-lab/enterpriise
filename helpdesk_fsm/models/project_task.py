@@ -46,12 +46,18 @@ class Task(models.Model):
             subtype = self.env.ref('helpdesk_fsm.mt_ticket_task_done')
             for task in tracked_tasks:
                 task.helpdesk_ticket_id.sudo().message_post(
-                    subtype_id=subtype.id, body=task._get_html_link())
+                    body=task._get_html_link(),
+                    subtype_id=subtype.id,
+                )
         return res
 
     @api.model_create_multi
     def create(self, vals_list):
         tasks = super().create(vals_list)
         for task in tasks.filtered('helpdesk_ticket_id'):
-            task.message_post_with_view('helpdesk.ticket_creation', values={'self': task, 'ticket': task.helpdesk_ticket_id}, subtype_id=self.env.ref('mail.mt_note').id)
+            task.message_post_with_view(
+                'helpdesk.ticket_creation',
+                values={'self': task, 'ticket': task.helpdesk_ticket_id},
+                subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
+            )
         return tasks

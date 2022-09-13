@@ -54,7 +54,7 @@ class StockMove(models.Model):
     def _action_cancel(self):
         res = super()._action_cancel()
 
-        to_unlink = self.env['quality.check']
+        to_unlink = self.env['quality.check'].sudo()
         is_product_canceled = defaultdict(lambda: True)
         for qc in self.picking_id.sudo().check_ids:
             if qc.quality_state != 'none':

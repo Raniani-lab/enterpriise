@@ -37,7 +37,7 @@ class StockMoveLine(models.Model):
         return super().write(vals)
 
     def unlink(self):
-        self._unlink_quality_check()
+        self.sudo()._unlink_quality_check()
         return super(StockMoveLine, self).unlink()
 
     def action_open_quality_check_wizard(self):

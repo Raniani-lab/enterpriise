@@ -4,7 +4,7 @@
 from odoo.exceptions import UserError
 from odoo.tests import tagged, HttpCase
 
-@tagged('post_install')
+@tagged('post_install', '-at_install')
 class TestHrRecruitmentSign(HttpCase):
 
     @classmethod

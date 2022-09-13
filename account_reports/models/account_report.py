@@ -3558,14 +3558,19 @@ class AccountReport(models.Model):
                 new_columns = []
                 # See Note 1
                 key = f"{line.get('level')}_{'child' if 'parent_id' in line else 'root'}"
+                max_colspan = max_colspan_by_level.get(key)
 
-                # We remove empty leading columns
-                for index, column in enumerate(line.get('columns'), start=1):
-                    if max_colspan_by_level.get(key) and index >= max_colspan_by_level[key]:
-                        new_columns.append(column)
+                if max_colspan is not None:
+                    # We remove empty leading columns
+                    for index, column in enumerate(line.get('columns'), start=1):
+                        if index >= max_colspan:
+                            new_columns.append(column)
 
-                line['colspan'] = max_colspan_by_level.get(key) or line.get('colspan', 1)
-                line['columns'] = new_columns
+                    line['columns'] = new_columns
+                    line['colspan'] = max_colspan or line.get('colspan', 1)
+                else:
+                    line['colspan'] = len(line['columns']) + 1
+                    line['columns'] = []
 
         return lines
 

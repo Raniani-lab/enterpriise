@@ -2118,5 +2118,39 @@ QUnit.module('LegacyViews', {
         grid.destroy();
     });
 
+    QUnit.test('ensure the "None" is displayed in multi-level groupby', async function (assert) {
+        this.data['analytic.line'].fields = Object.assign({}, this.data['analytic.line'].fields, {
+            employee_id: {string: "Employee", type: "many2one", relation: "employee"}
+        });
+        this.data['analytic.line'].records = [{ id: 1, project_id: 31, date: "2017-01-24", unit_amount: 2.5 }];
+        this.data['employee'] = {
+            fields : {
+                name: {string: "Task Name", type: "char"}
+            },
+        };
+
+        const grid = await createView({
+            View: GridView,
+            model: 'analytic.line',
+            data: this.data,
+            arch: '<grid string="Timesheet By Project">' +
+                    '<field name="project_id" type="row" section="1"/>' +
+                    '<field name="task_id" type="row"/>' +
+                    '<field name="date" type="col">' +
+                        '<range name="week" string="Week" span="week" step="day"/>' +
+                    '</field>'+
+                    '<field name="unit_amount" type="measure" widget="float_time"/>' +
+                '</grid>',
+            groupBy: ["task_id", "employee_id"],
+            currentDate: "2017-01-25",
+        });
+
+        assert.strictEqual(grid.$('tr:eq(1) th').text(), 'None',
+            "'None' should be shown in multi-level groupby"
+        );
+
+        grid.destroy();
+    });
+
 });
 });

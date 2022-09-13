@@ -21,6 +21,29 @@ class SpreadsheetTemplate(models.Model):
         default = dict(default or {}, name=new_name)
         return super().copy(default)
 
+    def action_edit_template(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.client",
+            "tag": "action_open_template",
+            "params": {
+                "spreadsheet_id": self.id,
+                "showFormulas": True,
+            },
+        }
+
+    def action_create_spreadsheet(self):
+        self.ensure_one()
+        return {
+            "type": "ir.actions.client",
+            "tag": "action_open_spreadsheet",
+            "params": {
+                "alwaysCreate": True,
+                "createFromTemplateId": self.id,
+                "createFromTemplateName": self.name,
+            },
+        }
+
     def fetch_template_data(self):
         """ Method called on template load
         Returns the following data:

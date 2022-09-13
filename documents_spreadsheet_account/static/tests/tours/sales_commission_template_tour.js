@@ -41,7 +41,7 @@ odoo.define('documents_spreadsheet_account.spreadsheet_template_sales_commission
             run: 'click',
         },
         {
-            trigger: `tr.o_data_row:first-child td[title="${TEMPLATE_NAME}"]`,
+            trigger: `tr.o_data_row:first-child td[data-tooltip="${TEMPLATE_NAME}"]`,
             content: 'Wait search to complete',
         },
         {

@@ -41,7 +41,7 @@ tour.register('spreadsheet_template_MRR_NRR_pipeline_revenue', {
         run: 'click',
     },
     {
-        trigger: `tr.o_data_row:first-child td[title="${TEMPLATE_NAME}"]`,
+        trigger: `tr.o_data_row:first-child td[data-tooltip="${TEMPLATE_NAME}"]`,
         content: 'Wait search to complete',
     },
     {

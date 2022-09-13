@@ -73,7 +73,7 @@
         <field name="name">spreadsheet.template</field>
         <field name="model">spreadsheet.template</field>
         <field name="arch" type="xml">
-            <tree create="0" editable="top" js_class="spreadsheet_template_list">
+            <tree create="0" editable="top">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="create_uid" optional="show"/>
@@ -81,8 +81,8 @@
                 <field name="data" widget="binary" optional="show"/>
                 <field name="thumbnail" widget="image" options="{'size':[0,90]}" optional="hide"/>
                 <button string="Make a copy" class="float-end" name="copy" type="object" icon="fa-clone"/>
-                <button string="Edit" class="float-end" name="edit_template" icon="fa-pencil"/>
-                <button string="New spreadsheet" class="o-new-spreadsheet float-end" name="create_spreadsheet" icon="fa-plus"/>
+                <button string="Edit" class="float-end" name="action_edit_template" type="object" icon="fa-pencil"/>
+                <button string="New spreadsheet" class="o-new-spreadsheet float-end" name="action_create_spreadsheet" type="object" icon="fa-plus"/>
             </tree>
         </field>
     </record>

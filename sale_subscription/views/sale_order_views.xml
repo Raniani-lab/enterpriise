@@ -137,7 +137,7 @@
                 </div>
                 <field name="next_invoice_date"
                        attrs="{
-                        'invisible': ['|', ('stage_category', '!=', 'progress') , ('recurrence_id', '=', False)],
+                        'invisible': ['|', ('stage_category', 'not in', ['progress', 'paused']) , ('recurrence_id', '=', False)],
                         'required': [('recurrence_id', '!=', False), ('state', 'in', ['sale', 'done'])],
                         }"/>
             </field>

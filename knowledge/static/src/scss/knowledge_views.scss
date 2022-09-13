@@ -97,17 +97,6 @@
         display: block;
     }
 
-    .o_article_emoji {
-        height: 100%;
-        display: inline-block;
-        &:hover {
-            background-color: rgba($knowledge-bg--active, 0.2);
-        }
-        &:active {
-            background-color: rgba($knowledge-bg--active, 0.3);
-        }
-    }
-
     .ui-sortable-handle:not(.dropdown-menu) {
         display: block;
     }
@@ -126,6 +115,17 @@
 
         .o_knowledge_tree {
             user-select: none;
+        }
+
+        .o_article_emoji {
+            height: 100%;
+            display: inline-block;
+            &:hover {
+                background-color: rgba($knowledge-bg--active, 0.2);
+            }
+            &:active {
+                background-color: rgba($knowledge-bg--active, 0.3);
+            }
         }
 
         .o_article:not(.ui-sortable-helper) > div {
@@ -381,10 +381,10 @@
             overflow-x: hidden;
         }
         .o_overlap_cover {
-            margin-bottom: -70px;
+            margin-bottom: -90px;
             .o_article_emoji {
                 position:relative;
-                top:-80px;
+                top:-70px;
             }
         }
         .o_knowledge_icon {

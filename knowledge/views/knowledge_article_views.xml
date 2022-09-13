@@ -79,12 +79,12 @@
                                                         <a class="o_article_emoji o-no-caret"
                                                             href="#"
                                                             attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
-                                                            <field name="icon" attrs="{'readonly': True }"/>
+                                                            <field name="icon" attrs="{'readonly': True }" class="mb-0"/>
                                                         </a>
                                                     </div>
                                                     <span class="o_article_emoji o-no-caret"
                                                         attrs="{'invisible': [('is_locked', '=', False), ('user_can_write', '=', True), ('active', '=', True)]}">
-                                                        <field name="icon" attrs="{'readonly': True }"/>
+                                                        <field name="icon" attrs="{'readonly': True }" class="mb-0"/>
                                                     </span>
                                                 </div>
                                                 <div t-on-input="ev => ev.target.setAttribute('size', ev.target.value.length)"
@@ -254,7 +254,7 @@
                                                           attrs="{'invisible': [('full_width', '=', True)]}"/>
 
                                                     <!-- Icon and Cover buttons -->
-                                                    <div class="o_knowledge_icon_cover_buttons text-muted bg-white d-print-none py-3"
+                                                    <div class="o_knowledge_icon_cover_buttons text-muted bg-white d-print-none py-1"
                                                          attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
                                                         <a role="button" t-on-click="addIcon"
                                                            attrs="{'invisible': [('icon', '!=', False)]}"
@@ -280,7 +280,7 @@
                                                             <a class="o_article_emoji o-no-caret"
                                                                role="button"
                                                                attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
-                                                               <field name="icon" attrs="{'readonly': True }"/>
+                                                               <field name="icon" attrs="{'readonly': True }" class="d-inline"/>
                                                            </a>
                                                             <p class="o_article_emoji o-no-caret"
                                                                attrs="{'invisible': [('is_locked', '=', False), ('user_can_write', '=', True), ('active', '=', True)]}">

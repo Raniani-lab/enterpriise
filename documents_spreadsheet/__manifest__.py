@@ -36,6 +36,7 @@
             'documents_spreadsheet/static/src/**/*.xml',
         ],
         'web.assets_tests': [
+            'documents_spreadsheet/static/tests/utils/tour.js',
             'documents_spreadsheet/static/tests/tours/*',
         ],
         'web.qunit_suite_tests': [

@@ -11,8 +11,8 @@ from odoo.tests.common import HttpCase
 @tagged('post_install', '-at_install')
 class TestSpreadsheetTemplate(HttpCase):
 
-    def test_spreadsheet_template_montly_budget(self):
-        self.start_tour('/web', 'spreadsheet_template_montly_budget', login='admin')
+    def test_spreadsheet_template_monthly_budget(self):
+        self.start_tour('/web', 'spreadsheet_template_monthly_budget', login='admin')
 
     def test_spreadsheet_template_quarterly_budget(self):
         self.start_tour('/web', 'spreadsheet_template_quarterly_budget', login='admin')

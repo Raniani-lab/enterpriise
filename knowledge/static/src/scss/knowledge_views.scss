@@ -108,7 +108,7 @@
         transition: width 0.15s linear;
 
         .o_scroll_view {
-            max-height: calc(100% - 50px);
+            max-height: 100%;
         }
 
         .o_knowledge_tree {
@@ -215,8 +215,11 @@
             color: inherit;
         }
         .o_knowledge_management_tools {
+            button {
+                font-weight: 400;
+            }
             bottom: 0px;
-            left: 1rem;
+            margin-left: 0.2rem;
         }
     }
 
@@ -381,6 +384,10 @@
     .o_knowledge_form_view {
         .o_knowledge_aside {
             width: 100%;
+        }
+        .o_knowledge_add_icon, .o_knowledge_add_cover {
+            visibility: visible;
+            opacity: 1;
         }
     }
 }

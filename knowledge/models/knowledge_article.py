@@ -24,6 +24,8 @@ class Article(models.Model):
     _mail_post_access = 'read'
     _parent_store = True
 
+    DEFAULT_ARTICLE_TRASH_LIMIT_DAYS = 30
+
     active = fields.Boolean(default=True)
     name = fields.Char(string="Title", default=lambda self: _('Untitled'), required=True, tracking=20)
     body = fields.Html(string="Body")
@@ -517,12 +519,15 @@ class Article(models.Model):
         trashed_articles = self.filtered(lambda article: article.to_delete)
         (self - trashed_articles).deletion_date = False
         if trashed_articles:
-            days = int(self.env["ir.config_parameter"].sudo().get_param(
-                "knowledge.knowledge_article_trash_limit_days",
-                '30',
-            ))
+            limit_days = self.env["ir.config_parameter"].sudo().get_param(
+                "knowledge.knowledge_article_trash_limit_days"
+            )
+            try:
+                limit_days = int(limit_days)
+            except ValueError:
+                limit_days = self.DEFAULT_ARTICLE_TRASH_LIMIT_DAYS
             for article in trashed_articles:
-                article.deletion_date = article.write_date + timedelta(days=days)
+                article.deletion_date = article.write_date + timedelta(days=limit_days)
 
     # ------------------------------------------------------------
     # CRUD
@@ -756,11 +761,14 @@ class Article(models.Model):
 
     @api.autovacuum
     def _gc_trashed_articles(self):
-        days = int(self.env["ir.config_parameter"].sudo().get_param(
-            "knowledge.knowledge_article_trash_limit_days",
-            '30',
-        ))
-        timeout_ago = datetime.utcnow() - timedelta(days=days)
+        limit_days = self.env["ir.config_parameter"].sudo().get_param(
+            "knowledge.knowledge_article_trash_limit_days"
+        )
+        try:
+            limit_days = int(limit_days)
+        except ValueError:
+            limit_days = self.DEFAULT_ARTICLE_TRASH_LIMIT_DAYS
+        timeout_ago = datetime.utcnow() - timedelta(days=limit_days)
         domain = [("write_date", "<", timeout_ago), ("to_delete", "=", True)]
         return self.search(domain).unlink()
 
@@ -1956,3 +1964,27 @@ class Article(models.Model):
     def _get_descendants(self):
         """ Returns the descendants recordset of the current article. """
         return self.env['knowledge.article'].search([('id', 'not in', self.ids), ('parent_id', 'child_of', self.ids)])
+
+    @api.model
+    def get_empty_list_help(self, help_message):
+        # Meant to target knowledge_article_action_trashed action only.
+        # -> Use the specific context key of that action to target it.
+        if not "search_default_filter_trashed" in self.env.context:
+            return help_message
+        get_param = self.env['ir.config_parameter'].sudo().get_param
+        limit_days = get_param('knowledge.knowledge_article_trash_limit_days')
+        try:
+            limit_days = int(limit_days)
+        except ValueError:
+            limit_days = self.DEFAULT_ARTICLE_TRASH_LIMIT_DAYS
+        title = _("No Article in Trash")
+        description = _("""
+            Deleted articles are stored in Trash an extra
+            <b>%(threshold)s</b> days
+            before being permanently removed for your database""",
+            threshold=limit_days
+        )
+
+        return '''<p class="o_view_nocontent_smiling_face">%s</p><p>%s</p>''' % (
+            title, description
+        )

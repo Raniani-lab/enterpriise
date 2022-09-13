@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, api, models
+from odoo import fields, api, models, _
 from odoo.tools import html2plaintext, is_html_empty
+from odoo.tools.misc import get_lang
 
 
 class HrAppraisalGoal(models.Model):
@@ -45,6 +46,17 @@ class HrAppraisalGoal(models.Model):
     def _compute_manager_id(self):
         for goal in self:
             goal.manager_id = goal.employee_id.parent_id
+
+    def _notify_by_email_prepare_rendering_context(self, message, msg_vals=False, model_description=False,
+                                                   force_email_company=False, force_email_lang=False):
+        render_context = super()._notify_by_email_prepare_rendering_context(
+            message, msg_vals, model_description=model_description,
+            force_email_company=force_email_company, force_email_lang=force_email_lang
+        )
+        if self.deadline:
+            render_context['subtitles'].append(
+                _('Deadline: %s', self.deadline.strftime(get_lang(self.env).date_format)))
+        return render_context
 
     def action_confirm(self):
         self.write({'progression': '100'})

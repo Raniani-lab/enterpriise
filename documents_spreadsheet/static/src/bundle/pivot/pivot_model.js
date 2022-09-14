@@ -51,7 +51,7 @@ patch(SpreadsheetPivotModel.prototype, "documents_spreadsheet_templates_pivot_mo
             this._fieldsValue[this.metaData.fullRowGroupBys[i]] = vals;
         }
         for (let i = 0; i < this.metaData.fullColGroupBys.length; i++) {
-            let vals;
+            let vals = [];
             if (i !== 0) {
                 vals = await this._orderValues(vals, this.metaData.fullColGroupBys[i]);
             } else {

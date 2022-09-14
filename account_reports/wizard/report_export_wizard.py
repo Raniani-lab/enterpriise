@@ -69,7 +69,7 @@ class ReportExportWizard(models.TransientModel):
         return to_create_attachments
 
 
-class ReportExortWizardOption(models.TransientModel):
+class ReportExportWizardOption(models.TransientModel):
     _name = 'account_reports.export.wizard.format'
     _description = "Export format for accounting's reports"
 

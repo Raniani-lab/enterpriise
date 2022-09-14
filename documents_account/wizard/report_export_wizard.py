@@ -40,9 +40,13 @@ class ReportExportWizard(models.TransientModel):
             'view_id': self.env.ref('documents.document_view_kanban').id,
         }
 
+
+class ReportExportWizardOption(models.TransientModel):
+    _inherit = 'account_reports.export.wizard.format'
+
     def get_attachment_vals(self, file_name, file_content, mimetype, log_options_dict):
-        rslt = super(ReportExportWizard, self).get_attachment_vals(file_name, file_content, mimetype, log_options_dict)
+        rslt = super(ReportExportWizardOption, self).get_attachment_vals(file_name, file_content, mimetype, log_options_dict)
         # Setting the folder_id of the attachment will make it appear in Documents
-        rslt['folder_id'] = self.folder_id.id
-        rslt['tag_ids'] = [(6, 0, self.tag_ids.ids)]
+        rslt['folder_id'] = self.export_wizard_id.folder_id.id
+        rslt['tag_ids'] = [(6, 0, self.export_wizard_id.tag_ids.ids)]
         return rslt

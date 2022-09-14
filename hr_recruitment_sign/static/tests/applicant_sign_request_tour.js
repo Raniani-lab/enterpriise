@@ -46,7 +46,6 @@ odoo.define('hr_recruitment_sign.tour', function (require) {
                 content: "Select the document to sign",
                 trigger: "a.dropdown-item:contains('Non-Disclosure Agreement.pdf')",
                 run: 'click',
-                in_modal: false,
             },
             {
                 content: "Send the request",

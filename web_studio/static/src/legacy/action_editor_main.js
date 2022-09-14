@@ -91,7 +91,7 @@ export const ActionEditorMain = Widget.extend({
             // add class when activating a pivot/graph view through studio
             const model = self.view_editor && self.view_editor.view.model;
             if (model && model._isInSampleMode) {
-                self.el.classList.add("o_view_sample_data");
+                self.el.classList.add("o_legacy_view_sample_data");
             }
         });
     },

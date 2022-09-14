@@ -839,7 +839,7 @@ QUnit.module('LegacyViews', {
             domain: Domain.FALSE_DOMAIN,
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         const content = gantt.$el.text();
@@ -864,7 +864,7 @@ QUnit.module('LegacyViews', {
             domain: Domain.FALSE_DOMAIN,
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         const content = gantt.$el.text();
@@ -872,7 +872,7 @@ QUnit.module('LegacyViews', {
         // trigger a reload via the search bar
         await testUtils.controlPanel.validateSearch(gantt);
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         assert.strictEqual(gantt.$el.text(), content);
 
@@ -900,7 +900,7 @@ QUnit.module('LegacyViews', {
         });
 
         // the gantt view should be in sample mode
-        assert.hasClass($(target).find('.o_view_controller'), 'o_view_sample_data');
+        assert.hasClass($(target).find('.o_view_controller'), 'o_legacy_view_sample_data');
         assert.ok($(target).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         const content = $(target).find('.o_view_controller').text();
 
@@ -917,7 +917,7 @@ QUnit.module('LegacyViews', {
         assert.containsOnce(target, '.o_gantt_view');
 
         // the gantt view should be still in sample mode
-        assert.hasClass($(target).find('.o_view_controller'), 'o_view_sample_data');
+        assert.hasClass($(target).find('.o_view_controller'), 'o_legacy_view_sample_data');
         assert.ok($(target).find('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         assert.strictEqual($(target).find('.o_view_controller').text(), content);
     });
@@ -936,7 +936,7 @@ QUnit.module('LegacyViews', {
             domain: Domain.FALSE_DOMAIN,
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         const content = gantt.$el.text();
@@ -961,13 +961,13 @@ QUnit.module('LegacyViews', {
             domain: Domain.FALSE_DOMAIN,
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.containsOnce(gantt, '.o_gantt_row_container .o_gantt_row');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         await gantt.reload({ domain: [['id', '<', 0]] });
 
-        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
         assert.containsOnce(gantt, '.o_gantt_row_container');
         assert.containsNone(gantt, '.o_gantt_pill_wrapper');
 
@@ -985,12 +985,12 @@ QUnit.module('LegacyViews', {
             viewOptions: { initialDate },
         });
 
-        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
         assert.containsOnce(gantt, '.o_gantt_row_container');
         assert.containsN(gantt, '.o_gantt_pill_wrapper', 7);
 
         await gantt.reload({ domain: Domain.FALSE_DOMAIN });
-        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
         assert.containsNone(gantt, '.o_gantt_pill_wrapper');
         assert.containsOnce(gantt, '.o_gantt_row_container');
 
@@ -1009,12 +1009,12 @@ QUnit.module('LegacyViews', {
             groupBy: ['project_id'],
         });
 
-        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
         assert.containsN(gantt, '.o_gantt_row_container .o_gantt_row', 2);
         assert.containsN(gantt, '.o_gantt_pill_wrapper', 7);
 
         await gantt.reload({ domain: Domain.FALSE_DOMAIN });
-        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
         assert.containsOnce(gantt, '.o_gantt_row_container');
         assert.containsNone(gantt, '.o_gantt_pill_wrapper');
 
@@ -1050,12 +1050,12 @@ QUnit.module('LegacyViews', {
             groupBy: ['project_id'],
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         await testUtils.dom.click(gantt.$('.o_gantt_button_add'));
         await testUtils.modal.clickButton('Save & Close');
 
-        assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+        assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
         assert.containsOnce(gantt, '.o_gantt_row');
         assert.containsOnce(gantt, '.o_gantt_pill');
 
@@ -1091,7 +1091,7 @@ QUnit.module('LegacyViews', {
             groupBy: ['project_id'],
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         const content = gantt.$el.text();
         await testUtils.dom.click(gantt.$('.o_gantt_button_add'));
@@ -1119,27 +1119,27 @@ QUnit.module('LegacyViews', {
             }
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         const content = gantt.$el.text();
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'));
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         assert.strictEqual(gantt.$el.text(), content,
             "when we return to the default scale, the content should be the same as before");
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         gantt.destroy();
@@ -1161,13 +1161,13 @@ QUnit.module('LegacyViews', {
             }
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
         const content = gantt.$el.text();
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_today'));
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         assert.strictEqual(gantt.$el.text(), content,
             "when we return to the default scale, the content should be the same as before");
@@ -1191,16 +1191,16 @@ QUnit.module('LegacyViews', {
             }
         });
 
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         const content = gantt.$el.text();
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.containsOnce(gantt, '.o_gantt_row_container');
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_next'));
-        assert.hasClass(gantt, 'o_view_sample_data');
+        assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         assert.strictEqual(gantt.$el.text(), content);
 

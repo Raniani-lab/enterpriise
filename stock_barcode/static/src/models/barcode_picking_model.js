@@ -41,6 +41,10 @@ export default class BarcodePickingModel extends BarcodeModel {
         return super.getDisplayIncrementBtn(...arguments);
     }
 
+    getDisplayIncrementBtnForSerial(line) {
+        return !this.config.restrict_scan_tracking_number && super.getDisplayIncrementBtnForSerial(...arguments);
+    }
+
     getIncrementQuantity(line) {
         return Math.max(this.getQtyDemand(line) - this.getQtyDone(line), 1);
     }

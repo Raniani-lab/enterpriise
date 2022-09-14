@@ -68,8 +68,15 @@ export default class BarcodeModel extends EventBus {
     }
 
     getDisplayIncrementBtn(line) {
-        return line.product_id.tracking !== 'serial' &&
-            (!this.getQtyDemand(line) || this.getQtyDemand(line) > this.getQtyDone(line));
+        if (line.product_id.tracking === "serial") {
+            return this.getDisplayIncrementBtnForSerial(line);
+        } else {
+            return (!this.getQtyDemand(line) || this.getQtyDemand(line) > this.getQtyDone(line));
+        }
+    }
+
+    getDisplayIncrementBtnForSerial(line) {
+        return line.lot_id && this.getQtyDone(line) === 0;
     }
 
     getDisplayDecrementBtn(line) {

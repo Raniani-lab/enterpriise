@@ -12,13 +12,13 @@
                 <field name="l10n_mx_edi_external_trade_type" attrs="{'invisible': [('country_code', '!=', 'MX')]}"/>
             </field>
                 <field name="l10n_mx_edi_cer_source" position="attributes">
-                <attribute name="attrs">{'invisible': [('l10n_mx_edi_external_trade_type', '=', '01')]}</attribute>
+                <attribute name="attrs">{'invisible': [('l10n_mx_edi_external_trade_type', 'not in', ['02', '03'])]}</attribute>
             </field>
             <field name="l10n_mx_edi_qty_umt" position="attributes">
-                <attribute name="attrs">{'column_invisible': [('parent.l10n_mx_edi_external_trade_type', '=', '01')]}</attribute>
+                <attribute name="attrs">{'column_invisible': [('parent.l10n_mx_edi_external_trade_type', 'not in', ['02', '03'])]}</attribute>
             </field>
             <field name="l10n_mx_edi_umt_aduana_id" position="attributes">
-                <attribute name="attrs">{'column_invisible': [('parent.l10n_mx_edi_external_trade_type', '=', '01')]}</attribute>
+                <attribute name="attrs">{'column_invisible': [('parent.l10n_mx_edi_external_trade_type', 'not in', ['02', '03'])]}</attribute>
             </field>
         </field>
     </record>

@@ -8,7 +8,6 @@ import {
     isComponentNode,
 } from "@web/views/view_compiler";
 import {
-    appendAttr,
     appendTo,
     applyInvisibleModifier,
     getModifier,
@@ -60,7 +59,7 @@ function compileGroup({ compileNode, outerGroupCol }, { node, compilationContext
 
     compilationContext = Object.create(compilationContext);
     compilationContext.groupLevel = (compilationContext.groupLevel || 1) + 1;
-    for (let child of node.children) {
+    for (const child of node.children) {
         if (child.tagName === "newline") {
             appendTo(group, createElement("br"));
             continue;
@@ -104,10 +103,6 @@ function compileWidget(el) {
     props.node = encodeObjectForTemplate({ attrs });
     const widget = createElement("Widget", props);
     return assignOwlDirectives(widget, el);
-}
-
-function setSampleDisable(node) {
-    appendAttr(node, "class", "o_sample_data_disabled: model.useSampleModel");
 }
 
 export class DashboardCompiler {
@@ -175,7 +170,6 @@ export class DashboardCompiler {
         if (node.children.length && node.children[0].tagName === "widget") {
             group.classList.add("o_has_widget");
         }
-        setSampleDisable(group);
         return group;
     }
 

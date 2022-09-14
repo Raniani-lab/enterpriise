@@ -16,7 +16,7 @@
                     </table>
                 </div>
                 <div t-if="data.rows.length" class="table-responsive">
-                    <table class="table table-bordered text-center mb-0" t-att-class="{ o_sample_data_disabled: model.useSampleModel }">
+                    <table class="o_data_table table table-bordered text-center mb-0">
                         <thead>
                             <tr>
                                 <th rowspan="2" class="text-center align-middle">

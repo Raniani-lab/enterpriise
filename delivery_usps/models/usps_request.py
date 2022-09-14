@@ -126,7 +126,7 @@ class USPSRequest():
 
     def usps_rate_request(self, order, carrier):
         request_detail = self._usps_request_data(carrier, order)
-        request_text = carrier.env['ir.qweb']._render('delivery_usps.usps_price_request', request_detail)
+        request_text = carrier.env['ir.qweb']._render('delivery_usps.usps_price_request', request_detail, inherit_branding=False)
         dict_response = {'price': 0.0, 'currency_code': "USD"}
         api = 'RateV4' if carrier.usps_delivery_nature == 'domestic' else 'IntlRateV2'
 

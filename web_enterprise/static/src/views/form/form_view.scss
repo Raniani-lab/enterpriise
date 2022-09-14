@@ -39,7 +39,7 @@
             @include media-breakpoint-up(sm) {
                 border: 1px solid $border-color;
             }
-            
+
             // Selection
             > .o_selection {
                 float: right;
@@ -180,10 +180,6 @@
 
                     // These elements will appear attached to the tabs
                     &.o_field_html {
-                        @include o-form-sheet-negative-margin;
-                        margin-top: -$o-horizontal-padding;
-                        border: none;
-
                         .note-editor.panel {
                             border: none;
                         }
@@ -250,9 +246,6 @@
         }
         > .tab-content > .tab-pane > :first-child {
             // These elements will appear attached to the tabs
-            &.o_field_html {
-                @include o-form-nosheet-negative-margin;
-            }
             &.o_field_x2many.o_field_x2many_list {
                 @include o-form-nosheet-negative-margin;
             }

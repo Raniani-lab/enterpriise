@@ -516,7 +516,7 @@ class MrpProductionWorkcenterLine(models.Model):
         ele = self.check_ids.filtered(lambda check: not check.previous_check_id)
         sorted_check_list = []
         while ele:
-            sorted_check_list.append(ele.id)
+            sorted_check_list += ele.ids
             ele = ele.next_check_id
         data = {
             'mrp.workorder': self.read(self._get_fields_for_tablet(), load=False)[0],

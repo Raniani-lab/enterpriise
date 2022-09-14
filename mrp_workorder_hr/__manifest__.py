@@ -11,7 +11,7 @@ This module allows Employees (and not users) to log in to a workorder using a ba
 The actual till still requires one user but an unlimited number of employees can log on to that till and complete manufacturing tasks.
     """,
 
-    'depends': ['mrp_workorder', 'hr_hourly_cost'],
+    'depends': ['mrp_workorder', 'hr_hourly_cost', 'hr'],
 
     'data': [
         'views/hr_employee_views.xml',
@@ -20,7 +20,7 @@ The actual till still requires one user but an unlimited number of employees can
         'views/mrp_operation_views.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['mrp_workorder', 'hr'],
     'assets': {
         'web.assets_backend': [
             'mrp_workorder_hr/static/src/**/*.js',

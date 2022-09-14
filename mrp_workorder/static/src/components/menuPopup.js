@@ -42,14 +42,16 @@ class MenuPopup extends Component {
         this.props.onClosePopup('menu');
     }
 
-    async proposeChange(changeType, title) {
+    async proposeChange(changeType, title, message) {
         const action = await this.orm.call(
             'mrp.workorder',
             'action_propose_change',
             [[this.props.popupData.workorderId], changeType, title],
         );
         this.props.onClosePopup('menu');
-        this.action.doAction(action, { onClose: this.props.onClose });
+        this.action.doAction(action, { onClose: () => {
+            this.props.onClose(message);
+        }});
     }
 }
 

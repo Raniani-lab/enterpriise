@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
+
 from odoo import models
 
 
@@ -43,6 +45,7 @@ class ProposeChange(models.TransientModel):
 
     def _do_update_step(self):
         eco = self._get_eco()
+        self.step_id.note = self.note
         # get the step on the new bom related to the one we want to update
         new_step = eco.new_bom_id.operation_ids.quality_point_ids.filtered(lambda p: p._get_comparison_values() == self.step_id.point_id._get_comparison_values())
         new_step.note = self.note
@@ -52,11 +55,11 @@ class ProposeChange(models.TransientModel):
         # get the step on the new bom related to the one we want to delete
         new_step = eco.new_bom_id.operation_ids.quality_point_ids.filtered(lambda p: p._get_comparison_values() == self.step_id.point_id._get_comparison_values())
         new_step.unlink()
-        self.step_id.do_fail()
 
     def _do_set_picture(self):
         eco = self._get_eco()
+        self.step_id.worksheet_document = self.picture
         # get the step on the new bom related to the one we want to delete
         new_step = eco.new_bom_id.operation_ids.quality_point_ids.filtered(lambda p: p._get_comparison_values() == self.step_id.point_id._get_comparison_values())
-        new_step.worksheet_document = self.picture
+        new_step.note = Markup("<img class='img-fluid' src=%s/>") % self.image_url(self, 'picture')
         new_step.source_document = 'step'

@@ -10,7 +10,7 @@ class QualityCheck(models.Model):
 
     def action_worksheet_check(self):
         self.ensure_one()
-        self.action_worksheet_check()
+        self.super().action_worksheet_check()
         return self._next()
 
     def action_fill_sheet(self):

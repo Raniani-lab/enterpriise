@@ -195,6 +195,7 @@ class StockPicking(models.Model):
                         barcode_type = result['rule'].type
                         break
 
+        active_id = self.env.context.get('active_id')
         picking_type = self.env['stock.picking.type'].browse(self.env.context.get('active_id'))
         base_domain = [
             ('picking_type_id', '=', picking_type.id),
@@ -202,20 +203,20 @@ class StockPicking(models.Model):
         ]
 
         picking_nums = 0
-        additional_context = {}
+        additional_context = {'active_id': active_id}
         if barcode_type == 'product' or not barcode_type:
             product = self.env['product.product'].search_read([('barcode', '=', barcode)], ['id'], limit=1)
             if product:
                 product_id = product[0]['id']
                 picking_nums = self.search_count(base_domain + [('product_id', '=', product_id)])
-                additional_context = {'search_default_product_id': product_id}
+                additional_context['search_default_product_id'] = product_id
         if self.env.user.has_group('stock.group_tracking_lot') and (barcode_type == 'package' or (not barcode_type and not picking_nums)):
             package = self.env['stock.quant.package'].search_read([('name', '=', barcode)], ['id'], limit=1)
             if package:
                 package_id = package[0]['id']
                 pack_domain = ['|', ('move_line_ids.package_id', '=', package_id), ('move_line_ids.result_package_id', '=', package_id)]
                 picking_nums = self.search_count(base_domain + pack_domain)
-                additional_context = {'search_default_move_line_ids': barcode}
+                additional_context['search_default_move_line_ids'] = barcode
 
         if not picking_nums:
             if barcode_type:
@@ -231,8 +232,7 @@ class StockPicking(models.Model):
                 }
             }
 
-        action = self.env['ir.actions.actions']._for_xml_id('stock_barcode.stock_picking_action_kanban')
-        action['context'] = dict(self.env.context)
+        action = picking_type._get_action('stock_barcode.stock_picking_action_kanban')
         action['context'].update(additional_context)
         return {'action': action}
 

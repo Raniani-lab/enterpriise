@@ -283,14 +283,22 @@ class HrAppraisal(models.Model):
                     'last_appraisal_id': appraisal.id,
                     'last_appraisal_date': current_date})
         if 'state' in vals and vals['state'] == 'pending':
-            self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
-            self.send_appraisal()
+            for appraisal in self:
+                if appraisal.state != 'done':
+                    appraisal.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
+                    appraisal.send_appraisal()
         if 'state' in vals and vals['state'] == 'done':
             vals['employee_feedback_published'] = True
             vals['manager_feedback_published'] = True
             self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
             vals['date_close'] = current_date
             self._appraisal_plan_post()
+            body = _("The appraisal's status has been set to Done by %s", self.env.user.name)
+            self.env['mail.thread'].message_notify(
+                subject=_("Appraisal reopened"),
+                body=body,
+                partner_ids=appraisal.message_partner_ids.ids)
+            appraisal.message_post(body=body)
         if 'state' in vals and vals['state'] == 'cancel':
             self.meeting_ids.unlink()
             self.activity_unlink(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])

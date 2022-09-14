@@ -24,6 +24,9 @@ Intrastat Reports
         'views/report_invoice.xml',
         'views/account_move_view.xml',
     ],
+    'demo': [
+        'demo/product_demo.xml',
+    ],
     'installable': True,
     'license': 'OEEL-1',
 }

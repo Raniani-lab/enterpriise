@@ -10,6 +10,7 @@ export class StockBarcodeKanbanController extends KanbanController {
         super.setup(...arguments);
         onMounted(() => {
             bus.on('barcode_scanned', this, this._onBarcodeScannedHandler);
+            document.activeElement.blur();
         });
         onWillUnmount(() => {
             bus.off('barcode_scanned', this, this._onBarcodeScannedHandler);

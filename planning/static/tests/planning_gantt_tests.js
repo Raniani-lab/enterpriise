@@ -93,7 +93,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                 }
             }, true);
 
-            assert.hasClass(gantt, "o_view_sample_data");
+            assert.hasClass(gantt, "o_legacy_view_sample_data");
             assert.ok(gantt.$(".o_gantt_row").length > 2,
                 'should contain at least two rows (the generic one, and at least one for sample data)');
 
@@ -127,7 +127,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                 groupBy: ['resource_id'],
             });
 
-            assert.hasClass(gantt, 'o_view_sample_data');
+            assert.hasClass(gantt, 'o_legacy_view_sample_data');
             assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
             const firstRow = gantt.$(".o_gantt_row:first")[0];
             assert.strictEqual(firstRow.innerText, "Open Shifts");
@@ -141,7 +141,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
             await testUtils.fields.editInput($('.modal .modal-body input[name=name]'), 'new task');
             await testUtils.modal.clickButton('Save & Close');
 
-            assert.doesNotHaveClass(gantt, 'o_view_sample_data');
+            assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
             assert.containsOnce(gantt, '.o_gantt_row');
             assert.containsOnce(gantt, '.o_gantt_pill_wrapper');
 

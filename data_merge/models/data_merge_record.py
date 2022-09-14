@@ -50,7 +50,7 @@ class DataMergeRecord(models.Model):
     ### Searchs
     #############
     def _search_company_id(self, operator, value):
-        records = self.search([])
+        records = self.with_context(active_test=False).search([])
         if operator == 'in':
             records = records.filtered(lambda r: r.company_id.id in value)
         elif operator == '=':

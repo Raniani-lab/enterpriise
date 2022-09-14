@@ -35,6 +35,7 @@ This module allows to changing UI color schemes.
 
         "web.assets_backend": [
             'color_scheme/static/src/mode_dark/**/**/*.scss',
+            'color_scheme/static/src/mode_dark/js/*.js',
         ],
     },
     'license': 'OEEL-1',

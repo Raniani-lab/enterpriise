@@ -161,11 +161,11 @@
                                                         attrs="{'invisible': [('active', '=', False)]}">
                                                     <i class="fa fa-fw fa-archive"/> Delete
                                                 </button>
-                                                <button class="dropdown-item" type="object" name="action_unarchive"
+                                                <button class="dropdown-item" type="object" name="action_unarchive_article"
                                                         attrs="{'invisible': ['|',  ('to_delete', '=', False), ('user_can_write', '=', False)]}">
                                                     <i class="fa fa-fw fa-trash-o"/> Remove from Trash
                                                 </button>
-                                                <button class="dropdown-item" type="object" name="action_unarchive"
+                                                <button class="dropdown-item" type="object" name="action_unarchive_article"
                                                         attrs="{'invisible': ['|', ('active', '=', True), ('to_delete', '=', True)]}">
                                                     <i class="fa fa-fw fa-archive"/> Unarchive
                                                 </button>
@@ -208,7 +208,7 @@
                             <!-- Trashed Article Warning Banner-->
                             <div class="alert alert-warning text-center mb-0 py-1" role="alert" attrs="{'invisible': [('to_delete', '=', False)]}">
                                 This Article is in Trash and will be deleted on the <field name="deletion_date"/>.
-                                <button type="object" name="action_unarchive"
+                                <button type="object" name="action_unarchive_article"
                                         class="oe_link alert-link"
                                         attrs="{'invisible': [('user_can_write', '=', False)]}" >
                                     Remove from Trash

@@ -871,7 +871,7 @@ class Article(models.Model):
         if send_to_trash:
             (self + writable_descendants).to_delete = True
             (self + writable_descendants)._send_trash_notifications()
-            self.with_context(res_id=False).action_home_page()
+            return self.env['knowledge.article'].with_context(res_id=False).action_home_page()
         return True
 
     def action_unarchive_article(self):

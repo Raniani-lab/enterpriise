@@ -15,6 +15,11 @@
         <field name="model">iot.box</field>
         <field name="arch" type="xml">
             <form create="false">
+                <header groups="base.group_no_one">
+                    <widget name="iot_download_logs"/>
+                    <widget name="iot_restart_odoo_or_reboot" btn_name="Restart Odoo" action="restart_odoo"/>
+                    <widget name="iot_restart_odoo_or_reboot" btn_name="Reboot IoT Box" action="reboot_iot_box"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
@@ -29,7 +34,6 @@
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                             <field name="version"/>
                             <field name="drivers_auto_update"/>
-                            <widget name="iot_download_logs" groups="base.group_no_one"/>
                         </group>
                     </group>
                     <notebook>

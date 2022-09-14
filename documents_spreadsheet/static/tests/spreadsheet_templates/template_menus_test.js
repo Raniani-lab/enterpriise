@@ -7,7 +7,7 @@ import { dom, fields } from "web.test_utils";
 import { actionService } from "@web/webclient/actions/action_service";
 import { createSpreadsheet, createSpreadsheetTemplate } from "../spreadsheet_test_utils";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { base64ToJson } from "@spreadsheet/helpers/helpers";
+import { base64ToJson } from "@documents_spreadsheet/bundle/helpers";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";

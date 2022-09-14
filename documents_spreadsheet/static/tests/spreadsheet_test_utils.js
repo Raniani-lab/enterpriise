@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { jsonToBase64 } from "@spreadsheet/helpers/helpers";
+import { jsonToBase64 } from "@documents_spreadsheet/bundle/helpers";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";

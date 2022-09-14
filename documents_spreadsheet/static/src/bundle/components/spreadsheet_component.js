@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { jsonToBase64 } from "@spreadsheet/helpers/helpers";
+import { jsonToBase64 } from "@documents_spreadsheet/bundle/helpers";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { _t } from "@web/core/l10n/translation";

@@ -3,7 +3,7 @@ import { registry } from "@web/core/registry";
 import { _t } from "web.core";
 
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
-import { base64ToJson, jsonToBase64 } from "@spreadsheet/helpers/helpers";
+import { base64ToJson, jsonToBase64 } from "@documents_spreadsheet/bundle/helpers";
 import { useService } from "@web/core/utils/hooks";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "@documents_spreadsheet/bundle/components/control_panel/spreadsheet_control_panel";

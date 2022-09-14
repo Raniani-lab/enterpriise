@@ -9,7 +9,7 @@ import { SpreadsheetName } from "@spreadsheet_edition/bundle/actions/control_pan
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { getDataFromTemplate } from "@spreadsheet/helpers/helpers";
+import { getDataFromTemplate } from "@documents_spreadsheet/bundle/helpers";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "../components/control_panel/spreadsheet_control_panel";
 

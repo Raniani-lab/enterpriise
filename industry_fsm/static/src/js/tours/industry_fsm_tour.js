@@ -34,7 +34,7 @@ tour.register('industry_fsm_tour', {
         actions.text("Brandon Freeman", this.$anchor.find("input"));
     },
 }, {
-    trigger: ".ui-autocomplete > li > a",
+    trigger: ".ui-autocomplete > li > a:not(:has(i.fa))",
     auto: true,
 }, {
     trigger: 'button[name="action_timer_start"]',

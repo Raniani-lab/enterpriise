@@ -29,15 +29,13 @@ This module modifies the web addon to provide Enterprise design and responsivene
             ('before', 'web/static/src/legacy/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/legacy/scss/bootstrap_overridden.scss'),
         ],
         'web.assets_common': [
-            ('replace', 'web/static/src/legacy/scss/ui_extra.scss', 'web_enterprise/static/src/legacy/scss/ui.scss'),
-
             'web_enterprise/static/fonts/fonts.scss',
+            'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss',
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],
         'web.assets_frontend': [
-            ('replace', 'web/static/src/legacy/scss/ui_extra.scss', 'web_enterprise/static/src/legacy/scss/ui.scss'),
-
             'web_enterprise/static/fonts/fonts.scss',
+            'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss',
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],
         'web.assets_backend': [
@@ -56,6 +54,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/promote_studio.scss',
             'web_enterprise/static/src/legacy/scss/web_calendar_mobile.scss',
             'web_enterprise/static/src/webclient/**/*.scss',
+            ('remove', 'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss'), # already in _assets_common_styles
             ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
             'web_enterprise/static/src/views/**/*.scss',
 

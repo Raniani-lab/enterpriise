@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import SUPERUSER_ID, fields, models, _
 from markupsafe import Markup
+
+from odoo import SUPERUSER_ID, api, fields, models, _
 
 
 class ProposeChange(models.TransientModel):
@@ -36,11 +37,7 @@ class ProposeChange(models.TransientModel):
         self.ensure_one()
         self.step_id.note = self.note
         if self.workorder_id.production_id.bom_id:
-            message = _("<b>New Instruction suggested by %s</b><br/>"
-                 "%s<br/>", self._workorder_name(), self.note)
-            if self.comment:
-                message += _("<b>Reason: %s</b>", self.comment)
-            body = Markup(message)
+            body = Markup(_("<b>New Instruction suggested by %s</b><br/>%s<br/><b>Reason: %s</b>")) % (self._workorder_name(), self.note, self.comment)
             self.env['mail.activity'].sudo().create({
                 'res_model_id': self.env.ref('mrp.model_mrp_bom').id,
                 'res_id': self.workorder_id.production_id.bom_id.id,
@@ -54,7 +51,7 @@ class ProposeChange(models.TransientModel):
         self.ensure_one()
         bom = self.step_id.workorder_id.production_id.bom_id
         if bom:
-            body = Markup(_("<b>%s suggests to delete this instruction</b>", self._workorder_name()))
+            body = Markup(_("<b>%s suggests to delete this instruction</b>")) % self._workorder_name()
             self.env['mail.activity'].sudo().create({
                 'res_model_id': self.env.ref('mrp.model_mrp_bom').id,
                 'res_id': bom.id,
@@ -63,14 +60,19 @@ class ProposeChange(models.TransientModel):
                 'summary': _('BoM feedback %s (%s)', self.step_id.title, self.workorder_id.production_id.name),
                 'note': body,
             })
-        self.step_id.do_fail()
+
+    @api.model
+    def image_url(self, record, field):
+        """ Returns a local url that points to the image field of a given browse record. """
+        return '/web/image/%s/%s/%s' % (record._name, record.id, field)
 
     def _do_set_picture(self):
         self.ensure_one()
         self.step_id.worksheet_document = self.picture
         bom = self.step_id.workorder_id.production_id.bom_id
         if bom:
-            body = Markup(_("<b>%s suggests to use this document as instruction</b>", self._workorder_name()))
+            body = Markup(_("<b>%s suggests to use this document as instruction</b><br/><img style='max-width: 75%%' class='img-fluid' src=%s/>"))\
+                % (self._workorder_name(), self.image_url(self, 'picture'))
             self.env['mail.activity'].sudo().create({
                 'res_model_id': self.env.ref('mrp.model_mrp_bom').id,
                 'res_id': bom.id,
@@ -79,10 +81,3 @@ class ProposeChange(models.TransientModel):
                 'summary': _('BoM feedback %s (%s)', self.step_id.title, self.workorder_id.production_id.name),
                 'note': body,
             })
-        self.env['ir.attachment'].create({
-            'name': 'coucou',
-            'res_id': bom.id,
-            'res_model': bom._name,
-            'datas': self.picture,
-            'type': 'binary',
-        })

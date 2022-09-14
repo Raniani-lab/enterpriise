@@ -23,6 +23,7 @@ class Tablet extends Component {
     setup() {
         this.rpc = useService('rpc');
         this.orm = useService('orm');
+        this.notification = useService('notification');
         this.state = useState({
             selectedStepId: 0,
             workingState: "",
@@ -210,7 +211,10 @@ class Tablet extends Component {
         this.popup[popupId].isShown = false;
     }
 
-    async onCloseRerender() {
+    async onCloseRerender(message) {
+        if (message) {
+            this.notification.add(this.env._t(message), {type: 'success'});
+        }
         await this.getState();
         this.render();
     }

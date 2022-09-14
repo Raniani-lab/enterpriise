@@ -23,8 +23,7 @@ class QualityCheck(models.Model):
 
     def do_fail(self):
         self.ensure_one()
-        super().do_fail()
-        return self.workorder_id._change_quality_check(position='next')
+        return super().do_fail()
 
     def do_measure(self):
         self.ensure_one()

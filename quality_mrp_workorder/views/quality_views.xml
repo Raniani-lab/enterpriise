@@ -98,7 +98,7 @@
                 <button name="action_next" type="object" class="btn-success" attrs="{'invisible': [('test_type', '!=', 'passfail')]}" barcode_trigger="pass" string="Pass"/>
                 <button name="do_measure" type="object" class="btn-primary" string="Validate" attrs="{'invisible': [('test_type', '!=', 'measure')]}" barcode_trigger="next"/>
             </xpath>
-            <xpath expr="//div[hasclass('workorder_picture')]" position="before">
+            <xpath expr="//field[@name='note']" position="before">
                 <div attrs="{'invisible': [('test_type', '!=', 'measure')]}" class="o_workorder_bar_left o_workorder_bar_content">
                     <label for="measure" string="Measure:" />
                     <field name="measure" class="oe_inline"/>

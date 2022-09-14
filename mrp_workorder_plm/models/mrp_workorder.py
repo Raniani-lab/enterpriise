@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models
+from odoo import models, Command
 
 
 class QualityCheck(models.Model):
@@ -42,6 +42,8 @@ class QualityCheck(models.Model):
             'team_id': self.team_id.id,
             'company_id': self.company_id.id,
             'test_type_id': self.env.ref('quality.test_type_instructions', raise_if_not_found=False).id,
+            'picking_type_ids': [Command.link(self.workorder_id.production_id.picking_type_id.id)],
+            'note': self.note,
         }
         point = self.env['quality.point'].create(quality_point_data)
         self.point_id = point

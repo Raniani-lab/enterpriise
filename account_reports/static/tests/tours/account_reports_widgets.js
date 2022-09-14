@@ -17,30 +17,36 @@ tour.register('account_reports_widgets', {
         {
             content: "unfold line",
             trigger: '.js_account_report_foldable:first',
+            extra_trigger: '.js_account_report_foldable:first',
             run: 'click',
         },
         {
             content: "check that line has been unfolded",
             trigger: '[data-parent-id]',
+            extra_trigger: '[data-parent-id]',
         },
         {
             content: 'Open dropdown menu of one of the unfolded line',
             trigger: '[data-parent-id] .o_account_report_line .dropdown a span',
+            extra_trigger: '[data-parent-id] .o_account_report_line .dropdown a span',
             run: 'click',
         },
         {
             content: 'click on the annotate action',
             trigger: '[data-parent-id] .o_account_report_line .dropdown .o_account_reports_domain_dropdown .js_account_reports_add_footnote',
+            extra_trigger: '[data-parent-id] .o_account_report_line .dropdown .o_account_reports_domain_dropdown .js_account_reports_add_footnote',
             run: 'click',
         },
         {
             content: 'insert footnote text',
             trigger: '.js_account_reports_footnote_note',
+            extra_trigger: '.js_account_reports_footnote_note',
             run: 'text My awesome footnote!'
         },
         {
             content: 'save footnote',
             trigger: '.modal-footer .btn-primary',
+            extra_trigger: '.modal-footer .btn-primary',
             run: 'click'
         },
         {
@@ -51,10 +57,12 @@ tour.register('account_reports_widgets', {
         {
             content: "change date filter",
             trigger: ".o_account_reports_filter_date > button",
+            extra_trigger: ".o_account_reports_filter_date > button",
         },
         {
             content: "change date filter",
             trigger: ".dropdown-item.js_account_report_date_filter[data-filter='last_year']",
+            extra_trigger: ".dropdown-item.js_account_report_date_filter[data-filter='last_year']",
             run: 'click'
         },
         {
@@ -64,11 +72,13 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "change comparison filter",
-            trigger: ".o_account_reports_filter_date_cmp > button"
+            trigger: ".o_account_reports_filter_date_cmp > button",
+            extra_trigger: ".o_account_reports_filter_date_cmp > button",
         },
         {
             content: "change comparison filter",
-            trigger: ".dropdown-item.js_foldable_trigger[data-filter='previous_period']"
+            trigger: ".dropdown-item.js_foldable_trigger[data-filter='previous_period']",
+            extra_trigger: ".dropdown-item.js_foldable_trigger[data-filter='previous_period']",
         },
         {
             content: "wait for Apply button and click on it",
@@ -78,15 +88,18 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "wait refresh, report should have 4 columns",
-            trigger: "th + th + th + th"
+            trigger: "th + th + th + th",
+            extra_trigger: "th + th + th + th",
         },
         {
             content: "change boolean filter",
             trigger: ".o_account_reports_filter_bool > button",
+            extra_trigger: ".o_account_reports_filter_bool > button",
         },
         {
             title: "export xlsx",
             trigger: 'button[action_param="export_to_xlsx"]',
+            extra_trigger: 'button[action_param="export_to_xlsx"]',
             run: 'click'
         },
     ]

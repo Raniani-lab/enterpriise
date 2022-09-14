@@ -436,9 +436,8 @@ if (!device.isMobile) {
         filtersGroup: "documents.SearchPanel.FiltersGroup",
     };
 } else {
-    DocumentsSearchPanel.template = "documents.SearchPanelEnterprise.Mobile";
     DocumentsSearchPanel.subTemplates = {
-        category: "documents.SearchPanel.Category.Mobile",
-        filtersGroup: "documents.SearchPanel.FiltersGroup.Mobile",
+        category: "documents.SearchPanel.Category.Small",
+        filtersGroup: "documents.SearchPanel.FiltersGroup.Small",
     };
 }

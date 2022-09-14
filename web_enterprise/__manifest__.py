@@ -46,14 +46,11 @@ This module modifies the web addon to provide Enterprise design and responsivene
             ('replace', 'web/static/src/legacy/scss/fields_extra.scss', 'web_enterprise/static/src/legacy/scss/fields.scss'),
             ('replace', 'web/static/src/legacy/scss/form_view_extra.scss', 'web_enterprise/static/src/legacy/scss/form_view.scss'),
             ('replace', 'web/static/src/legacy/scss/list_view_extra.scss', 'web_enterprise/static/src/legacy/scss/list_view.scss'),
-            ('replace', 'web/static/src/search/search_panel/search_view_extra.scss', 'web_enterprise/static/src/legacy/scss/search_view.scss'),
             ('replace', 'web/static/src/views/form/form_view_extra.scss', 'web_enterprise/static/src/views/form/form_view.scss'),
             ('replace', 'web/static/src/views/list/list_view_extra.scss', 'web_enterprise/static/src/views/list/list_view.scss'),
 
             'web_enterprise/static/src/legacy/scss/dropdown.scss',
             'web_enterprise/static/src/legacy/scss/base_settings_mobile.scss',
-            'web_enterprise/static/src/legacy/scss/search_panel_mobile.scss',
-            'web_enterprise/static/src/legacy/scss/control_panel_layout.scss',
             'web_enterprise/static/src/legacy/scss/control_panel_mobile.scss',
             'web_enterprise/static/src/legacy/scss/kanban_view.scss',
             'web_enterprise/static/src/legacy/scss/touch_device.scss',
@@ -61,7 +58,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/modal_mobile.scss',
             'web_enterprise/static/src/legacy/scss/promote_studio.scss',
             'web_enterprise/static/src/legacy/scss/web_calendar_mobile.scss',
-            'web_enterprise/static/src/search/**/*.scss',
             'web_enterprise/static/src/webclient/**/*.scss',
             ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
             'web_enterprise/static/src/views/**/*.scss',
@@ -73,8 +69,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/js/apps.js',
 
             'web_enterprise/static/src/core/**/*',
-            'web_enterprise/static/src/search/**/*.js',
-            'web_enterprise/static/src/search/**/*.xml',
             'web_enterprise/static/src/webclient/**/*.js',
             'web_enterprise/static/src/webclient/**/*.xml',
             'web_enterprise/static/src/views/**/*.js',

@@ -367,8 +367,10 @@ class EasypostRequest():
 
         # buy insurance after successful order purchase
         for shp_id in result.get('shipment_ids'):
-            endpoint = "shipments/%s/insure" % shp_id
-            response = self._make_api_request(endpoint, 'post', data={'amount': result.get('insured_amount')})
+            insured_amount = result.get('insured_amount')
+            if not float_is_zero(insured_amount, precision_rounding=2):
+                endpoint = "shipments/%s/insure" % shp_id
+                response = self._make_api_request(endpoint, 'post', data={'amount': insured_amount})
         return result
 
     def get_tracking_link(self, order_id):

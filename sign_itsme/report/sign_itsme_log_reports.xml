@@ -4,7 +4,7 @@
         <xpath expr="//th[@id='participants_phone']" position="after">
             <t t-set='has_itsme_validation' t-value="o.sudo().request_item_ids.filtered(lambda i: i.itsme_validation_hash)"/>
             <th t-if="has_itsme_validation" class="text-start">
-                itsme®
+                Name
             </th>
         </xpath>
         <xpath expr="//td[hasclass('participant_sms_validation')]" position="after">
@@ -21,7 +21,7 @@
         </xpath>
         <xpath expr="//div[hasclass('sms_footnote')]" position="after">
             <div class="text-muted" t-if="has_itsme_validation">
-                <small>itsme®: The signatory has provided this identity through itsme</small>
+                <small>Name: The signatory has provided this identity through itsme®</small>
             </div>
         </xpath>
     </template>

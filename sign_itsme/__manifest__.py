@@ -4,8 +4,8 @@
     'name': 'Sign itsme',
     'version': '1.0',
     'category': 'Sales/Sign',
-    'summary': "Sign documents with itsme identification",
-    'description': "Add support for itsme identification when signing documents (Belgium and Netherlands only)",
+    'summary': "Sign documents with itsme® identification",
+    'description': "Add support for itsme® identification when signing documents (Belgium and Netherlands only)",
     'depends': ['sign', 'iap'],
     'data': [
         'data/sign_itsme_data.xml',

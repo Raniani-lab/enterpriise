@@ -51,7 +51,7 @@
                              <div class="o_setting_right_pane">
                                 <label for="module_sign_itsme"/>
                                 <div class="text-muted">
-                                    Allow signatories to confirm their identity using itsme® (available in Belgium and the Netherlands).
+                                    Allow signatories to provide their identity using itsme® (available in Belgium and the Netherlands).
                                 </div>
                                 <widget name="iap_buy_more_credits" service_name="itsme_proxy" hide_service="1"/>
                             </div>

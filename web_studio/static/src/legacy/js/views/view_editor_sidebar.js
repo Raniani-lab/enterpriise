@@ -1,25 +1,24 @@
-odoo.define('web_studio.ViewEditorSidebar', function (require) {
-"use strict";
+/** @odoo-module */
 
-var config = require('web.config');
-var core = require('web.core');
-var Dialog = require('web.Dialog');
-var DomainSelectorDialog = require("web.DomainSelectorDialog");
-var Domain = require("web.Domain");
-var field_registry = require('web.field_registry');
-var fieldRegistryOwl = require('web.field_registry_owl');
-var pyUtils = require('web.py_utils');
-var relational_fields = require('web.relational_fields');
-var session = require("web.session");
-var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
-var utils = require('web.utils');
-var view_components = require('web_studio.view_components');
-var Widget = require('web.Widget');
+import config from "web.config";
+import core from "web.core";
+import Dialog from "web.Dialog";
+import DomainSelectorDialog from "web.DomainSelectorDialog";
+import Domain from "web.Domain";
+import field_registry from "web.field_registry";
+import fieldRegistryOwl from "web.field_registry_owl";
+import pyUtils from "web.py_utils";
+import relational_fields from "web.relational_fields";
+import session from "web.session";
+import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
+import utils from "web.utils";
+import view_components from "web_studio.view_components";
+import Widget from "web.Widget";
 
-var form_component_widget_registry = view_components.registry;
-var _lt = core._lt;
-var _t = core._t;
-var Many2ManyTags = relational_fields.FieldMany2ManyTags;
+const form_component_widget_registry = view_components.registry;
+const _lt = core._lt;
+const _t = core._t;
+const Many2ManyTags = relational_fields.FieldMany2ManyTags;
 const Many2One = relational_fields.FieldMany2One;
 
 
@@ -37,7 +36,7 @@ const Many2One = relational_fields.FieldMany2One;
  *
  * @type {Object}
  */
-var OPTIONS_BY_WIDGET = {
+export const OPTIONS_BY_WIDGET = {
     image: [
         {name: 'size', type: 'selection', string: _lt("Size"), selection: [
             [[0, 90], _lt("Small")], [[0, 180], _lt("Medium")], [[0, 270], _lt("Large")],
@@ -72,7 +71,7 @@ var OPTIONS_BY_WIDGET = {
         {name: 'related_end_date', type: 'selection', string: _lt("Related End Date"), selection: [[]]},
     ],
     phone: [
-        {name: 'enable_sms', type: 'boolean', string: _lt("Enable SMS")},
+        {name: 'enable_sms', type: 'boolean', string: _lt("Enable SMS"), default: true},
     ],
 };
 
@@ -80,7 +79,7 @@ const UNSUPPORTED_WIDGETS_BY_VIEW = {
     list: ['many2many_checkboxes'],
 };
 
-return Widget.extend(StandaloneFieldManagerMixin, {
+export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
     template: 'web_studio.ViewEditorSidebar',
     events: {
         'click .o_web_studio_new:not(.inactive)':            '_onTab',
@@ -1505,6 +1504,4 @@ return Widget.extend(StandaloneFieldManagerMixin, {
     _onXMLEditor: function () {
         this.trigger_up('open_xml_editor');
     },
-});
-
 });

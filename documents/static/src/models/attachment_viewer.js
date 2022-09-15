@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { addFields, addRecordMethods, patchRecordMethods } from "@mail/model/model_core";
+import { addFields, addRecordMethods, patchFields, patchRecordMethods } from "@mail/model/model_core";
 import { attr, one } from "@mail/model/model_field";
 
 addRecordMethods("AttachmentViewer", {
@@ -13,46 +13,30 @@ addRecordMethods("AttachmentViewer", {
             this.close();
         }
     },
-    /**
-     * If the initial record selection is a single record, and the current record is a pdf, return true.
-     * If the initial record selection is a list, return true if every record is a pdf.
-     *
-     * @private
-     */
-    _computeWithPdfSplit() { 
-        if (!this.documentListOwner) {
-            return false;
-        }
-        if (this.documentListOwner.initialRecordSelectionLength === 1) {
-            return this.attachmentViewerViewable.isPdf;
-        }
-        return this.attachmentViewerViewables.every(viewable => viewable.isPdf);
+});
+
+patchFields("AttachmentViewer", {
+    attachmentViewerViewable: {
+        compute() {
+            if (this.documentListOwner) {
+                return this.documentListOwner.selectedDocument.attachmentViewerViewable;
+            }
+            return this._super();
+        },
+    },
+    attachmentViewerViewables: {
+        compute() {
+            if (this.documentListOwner) {
+                return this.documentListOwner.documents.map(doc => {
+                    return { documentOwner: doc };
+                });
+            }
+            return this._super();
+        },
     },
 });
 
 patchRecordMethods("AttachmentViewer", {
-    /**
-     * @override
-     * @private
-     */
-    _computeAttachmentViewerViewable() {
-        if (this.documentListOwner) {
-            return this.documentListOwner.selectedDocument.attachmentViewerViewable;
-        }
-        return this._super();
-    },
-    /**
-     * @override
-     * @private
-     */
-    _computeAttachmentViewerViewables() {
-        if (this.documentListOwner) {
-            return this.documentListOwner.documents.map(doc => {
-                return { documentOwner: doc };
-            });
-        }
-        return this._super();
-    },
     /**
      * @override
      * @private
@@ -87,6 +71,18 @@ addFields("AttachmentViewer", {
         default: false,
     }),
     withPdfSplit: attr({
-        compute: "_computeWithPdfSplit",
+        /**
+         * If the initial record selection is a single record, and the current record is a pdf, return true.
+         * If the initial record selection is a list, return true if every record is a pdf.
+         */
+        compute() {
+            if (!this.documentListOwner) {
+                return false;
+            }
+            if (this.documentListOwner.initialRecordSelectionLength === 1) {
+                return this.attachmentViewerViewable.isPdf;
+            }
+            return this.attachmentViewerViewables.every(viewable => viewable.isPdf);
+        },
     }),
 });

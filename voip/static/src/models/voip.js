@@ -34,59 +34,6 @@ registerModel({
                 message,
             });
         },
-        /**
-         * @returns {boolean|FieldCommand}
-         */
-        _computeAreCredentialsSet() {
-            if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
-                return clear();
-            }
-            return Boolean(
-                this.messaging.currentUser.res_users_settings_id.voip_username &&
-                this.messaging.currentUser.res_users_settings_id.voip_secret
-            );
-        },
-        /**
-         * @returns {string|FieldCommand}
-         */
-        _computeAuthorizationUsername() {
-            if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
-                return clear();
-            }
-            return this.messaging.currentUser.res_users_settings_id.voip_username;
-        },
-        /**
-         * @returns {string|FieldCommand}
-         */
-        _computeCleanedExternalDeviceNumber() {
-            if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
-                return clear();
-            }
-            if (!this.messaging.currentUser.res_users_settings_id.external_device_number) {
-                return clear();
-            }
-            return this.cleanPhoneNumber(
-                this.messaging.currentUser.res_users_settings_id.external_device_number
-            );
-        },
-        /**
-         * @returns {boolean}
-         */
-        _computeIsServerConfigured() {
-            return Boolean(this.pbxAddress && this.webSocketUrl);
-        },
-        /**
-         * @returns {boolean|FieldCommand}
-         */
-        _computeWillCallFromAnotherDevice() {
-            if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
-                return clear();
-            }
-            return (
-                this.messaging.currentUser.res_users_settings_id.should_call_from_another_device &&
-                this.cleanedExternalDeviceNumber !== ""
-            );
-        },
     },
     fields: {
         /**
@@ -94,7 +41,15 @@ registerModel({
          * for the current user.
          */
         areCredentialsSet: attr({
-            compute: "_computeAreCredentialsSet",
+            compute() {
+                if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
+                    return clear();
+                }
+                return Boolean(
+                    this.messaging.currentUser.res_users_settings_id.voip_username &&
+                    this.messaging.currentUser.res_users_settings_id.voip_secret
+                );
+            },
             default: false,
         }),
         /**
@@ -102,7 +57,12 @@ registerModel({
          * register with the PBX server) differs from the username.
          */
         authorizationUsername: attr({
-            compute: "_computeAuthorizationUsername",
+            compute() {
+                if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
+                    return clear();
+                }
+                return this.messaging.currentUser.res_users_settings_id.voip_username;
+            },
             default: "",
         }),
         /**
@@ -110,14 +70,26 @@ registerModel({
          * the server.
          */
         cleanedExternalDeviceNumber: attr({
-            compute: "_computeCleanedExternalDeviceNumber",
+            compute() {
+                if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
+                    return clear();
+                }
+                if (!this.messaging.currentUser.res_users_settings_id.external_device_number) {
+                    return clear();
+                }
+                return this.cleanPhoneNumber(
+                    this.messaging.currentUser.res_users_settings_id.external_device_number
+                );
+            },
             default: "",
         }),
         /**
          * Determines if `pbxAddress` and `webSocketUrl` are defined.
          */
         isServerConfigured: attr({
-            compute: "_computeIsServerConfigured",
+            compute() {
+                return Boolean(this.pbxAddress && this.webSocketUrl);
+            },
             default: false,
         }),
         /**
@@ -148,7 +120,15 @@ registerModel({
          * and if an `external_device_number` has been provided.
          */
         willCallFromAnotherDevice: attr({
-            compute: "_computeWillCallFromAnotherDevice",
+            compute() {
+                if (!this.messaging.currentUser || !this.messaging.currentUser.res_users_settings_id) {
+                    return clear();
+                }
+                return (
+                    this.messaging.currentUser.res_users_settings_id.should_call_from_another_device &&
+                    this.cleanedExternalDeviceNumber !== ""
+                );
+            },
             default: false,
         }),
     },

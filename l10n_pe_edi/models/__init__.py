@@ -10,7 +10,7 @@ from . import res_config_settings
 from . import account_tax
 from . import account_tax_group
 from . import uom_uom
+from . import account_edi_document
 from . import account_edi_format
 from . import account_journal
 from . import product_template
-from . import mail_template

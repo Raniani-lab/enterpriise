@@ -13,7 +13,7 @@
 
             <xpath expr="//div[@id='l10n_cl_section']" position="inside">
 
-                <div class="row mt16 o_settings_container" attrs="{'invisible': [('country_code', '!=', 'CL')]}">
+                <div class="row mt16" attrs="{'invisible': [('country_code', '!=', 'CL')]}">
                     <div class="col-12 col-lg-6 o_setting_box" id="l10n_cl_tasa_ppm_settings">
                         <div class="o_setting_left_pane"/>
                         <div class="o_setting_right_pane">

@@ -1236,13 +1236,14 @@ def compute_termination_n_basic_double(payslip, categories, worked_days, inputs)
     result_rate = 6.8
     result = inputs.GROSS_REF.amount if inputs.GROSS_REF else 0
     date_from = payslip.dict.date_from
-    existing_double_pay = payslip.dict.env['hr.payslip'].search([
-        ('employee_id', '=', payslip.employee_id),
-        ('state', 'in', ['done', 'paid']),
-        ('struct_id', '=', payslip.dict.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id),
-        ('date_from', '>=', date(date_from.year, 1, 1)),
-        ('date_to', '<=', date(date_from.year, 12, 31)),
-    ])
-    if existing_double_pay:
-        result = 0
+    if payslip.struct_id.code == "CP200HOLN1":
+        existing_double_pay = payslip.dict.env['hr.payslip'].search([
+            ('employee_id', '=', payslip.employee_id),
+            ('state', 'in', ['done', 'paid']),
+            ('struct_id', '=', payslip.dict.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday').id),
+            ('date_from', '>=', date(date_from.year, 1, 1)),
+            ('date_to', '<=', date(date_from.year, 12, 31)),
+        ])
+        if existing_double_pay:
+            result = 0
     return (result_qty, result_rate, result)

@@ -7466,17 +7466,17 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         payslip_results = {
             'PAY_SIMPLE': 1137.92,
-            'DOUBLE_BASIC': 0.0,
-            'PAY DOUBLE': 0.0,
-            'PAY DOUBLE COMPLEMENTARY': 0.0,
-            'BASIC': 1137.92,
+            'DOUBLE_BASIC': 1008.85,
+            'PAY DOUBLE': 1008.85,
+            'PAY DOUBLE COMPLEMENTARY': 129.07,
+            'BASIC': 2275.84,
             'ONSS1': -148.73,
-            'ONSS2': 0.0,
-            'ONSSTOTAL': 148.73,
-            'GROSS': 989.19,
-            'PROF_TAX': -359.47,
-            'PPTOTAL': 359.47,
-            'NET': 629.72,
+            'ONSS2': -131.86,
+            'ONSSTOTAL': 280.58,
+            'GROSS': 1995.26,
+            'PROF_TAX': -725.08,
+            'PPTOTAL': 725.08,
+            'NET': 1270.18,
             'ONSSEMPLOYERBASIC': 284.71,
             'ONSSEMPLOYERCPAE': 2.62,
             'ONSSEMPLOYERFFE': 1.48,
@@ -7486,6 +7486,46 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYER': 310.31,
         }
         self._validate_payslip(holiday_pay_2020, payslip_results)
+
+        struct_n1_id = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_departure_n1_holidays')
+
+        holiday_pay_2019 = holiday_pays.filtered(lambda p: p.struct_id == struct_n1_id)
+        holiday_pay_2019.write({
+            'date_from': datetime.date(2020, 4, 1),
+            'date_to': datetime.date(2020, 4, 30),
+        })
+        holiday_pay_2019.compute_sheet()
+
+        payslip_results = {
+            'BASIC_PAY_SIMPLE': 2508.58,
+            'SIMPLE_PAY_DECEMBER': 0,
+            'PAY_SIMPLE': 2508.58,
+            'DOUBLE_BASIC': 0,
+            'EUROPEAN': 0,
+            'DHALREADYPAID': 0,
+            'DOUBLE_PAY_DECEMBER': 0,
+            'PAY DOUBLE': 0,
+            'CDHBASIC': 0,
+            'CDHALREADYPAID': 0,
+            'COMP_DOUBLE_PAY_DECEMBER': 0,
+            'PAY DOUBLE COMPLEMENTARY': 0,
+            'BASIC': 2508.58,
+            'ONSS1': -327.87,
+            'ONSS2': 0,
+            'ONSSTOTAL': 327.87,
+            'GROSS': 2180.7,
+            'PROF_TAX': -792.47,
+            'PPTOTAL': 792.47,
+            'NET': 1388.24,
+            'ONSSEMPLOYERBASIC': 627.65,
+            'ONSSEMPLOYERCPAE': 5.77,
+            'ONSSEMPLOYERFFE': 3.26,
+            'ONSSEMPLOYERMFFE': 2.51,
+            'ONSSEMPLOYERRESTREINT': 42.4,
+            'ONSSEMPLOYERUNEMP': 2.51,
+            'ONSSEMPLOYER': 684.09,
+        }
+        self._validate_payslip(holiday_pay_2019, payslip_results)
 
     def test_double_remuneration_refunds_partial_contracts(self):
         # 1 full time parental time off at the start of the month

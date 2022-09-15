@@ -158,8 +158,9 @@
 
 .o_appraisal_goal_form {
     .o_selection_badge.active {
-        background: $o-navbar-background!important;
-        color: $white!important;
+        background: $o-brand-odoo !important;
+        color: $o-white !important;
+        border-color: $o-brand-odoo !important;
     }
 }
 

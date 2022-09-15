@@ -59,6 +59,11 @@
 }
 
 .o_gantt_view {
+     // Allows to use color variables in js
+    --Gant__Day-background-color: #{$o-view-background-color};
+    --Gant__DayOff-background-color: #e9ecef;
+    --Gant__DayOffToday-background-color: #fffaeb;
+
     box-shadow: 0 5px 20px -15px rgba(black, .3);
     user-select: none;
     @include media-breakpoint-down(md) {
@@ -168,26 +173,6 @@
             .o_gantt_progressbar, .o_gantt_text_mobile {
                 top: 50%;
                 height: 50%;
-            }
-        }
-        .o_gantt_progressbar {
-            &.o_gantt_group_success {
-                background-color: rgba($green, 0.3);
-            }
-            &.o_gantt_group_danger {
-                background-color: rgba($red, 0.3);
-            }
-        }
-        .o_gantt_text_hoverable {
-            z-index: 1;
-            &.o_gantt_group_success {
-                background-color: #bfe5c7;
-            }
-            &.o_gantt_group_danger {
-                background-color: #f5c2c7;
-            }
-            &.o_gantt_group_none {
-                background-color: $white;
             }
         }
         .o_gantt_group_hours {
@@ -546,7 +531,7 @@
     .o_gantt_row_group, .o_gantt_total {
         .o_gantt_consolidated_pill_title {
             z-index: 2;
-            background-color: white;
+            background-color: $o-view-background-color;
             color: $body-color;
         }
     }

@@ -24,8 +24,8 @@
                 <field name="user_permission" invisible="1"/>
                 <field name="to_delete" invisible="1"/>
                 <field name="cover_image_id" invisible="1"/>
-                <div class="o_knowledge_form_view d-sm-flex h-100 bg-white" t-ref="root" t-att-style="sidebarSize ? `--knowledge-article-sidebar-size: ${sidebarSize}px` : ''">
-                    <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0">
+                <div class="o_knowledge_form_view d-sm-flex h-100" t-ref="root" t-att-style="sidebarSize ? `--knowledge-article-sidebar-size: ${sidebarSize}px` : ''">
+                    <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0 bg-view">
                         <div class="d-flex flex-column h-100">
                             <!-- Search bar -->
                             <div id="knowledge_search_bar" data-hotkey="f"
@@ -57,7 +57,7 @@
                     <div class="flex-grow-1 position-relative min-w-0">
                         <div class="d-flex flex-column h-100">
                             <!-- Article header -->
-                            <div class="o_knowledge_header d-sm-flex border-bottom justify-content-between d-print-none">
+                            <div class="o_knowledge_header d-sm-flex border-bottom justify-content-between d-print-none bg-view">
                                 <div class="d-flex align-items-center min-w-0">
                                     <!-- Breadcrumbs -->
                                     <ol class="breadcrumb align-items-center p-3 min-w-0" role="navigation">
@@ -269,7 +269,7 @@
                                                           attrs="{'invisible': [('full_width', '=', True)]}"/>
 
                                                     <!-- Icon and Cover buttons -->
-                                                    <div class="o_knowledge_icon_cover_buttons text-muted bg-white d-print-none py-1"
+                                                    <div class="o_knowledge_icon_cover_buttons text-muted d-print-none py-1"
                                                          attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
                                                         <a role="button" t-on-click="addIcon"
                                                            attrs="{'invisible': [('icon', '!=', False)]}"

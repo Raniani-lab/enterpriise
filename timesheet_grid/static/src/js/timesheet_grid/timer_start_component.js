@@ -23,10 +23,12 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
                 classNames = ['d-flex', 'align-items-center', 'justify-content-center', 'fa', 'fa-play', 'text-bg-primary']
             } else if (this.props.index >= 26 || this.env.device.isMobile) {
                 if (this.props.addTimeMode) {
-                    classNames = ['fa', 'fa-plus'];
+                    classNames = ['fa', 'fa-plus', 'bg-transparent'];
                 } else {
-                    classNames = ['fa', 'fa-play'];
+                    classNames = ['fa', 'fa-play', 'bg-transparent'];
                 }
+            } else {
+                classNames.push('bg-transparent');
             }
             if (this.props.hovered && !this.env.device.isMobile) {
                 if (this.props.runningIndex === this.props.index) {

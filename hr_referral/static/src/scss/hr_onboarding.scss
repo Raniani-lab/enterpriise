@@ -33,6 +33,7 @@
         }
 
         .carousel-item_text {
+            color: #FFFFFF;
             font-size: $font-size-lg;
             font-family: $subHeaderFont;
             min-height: 130px;
@@ -86,6 +87,7 @@
                 width: 10px;
                 height: 10px;
                 border-radius: 50%;
+                background-color: #FFFFFF;
             }
         }
     }

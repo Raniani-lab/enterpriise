@@ -35,12 +35,12 @@
     </t>
 
     <t t-name="web_map.MapRenderer.PinListContainer" owl="1">
-        <div class="o-map-renderer--pin-list-container d-none d-lg-block col-2 cursor-default">
+        <div class="o-map-renderer--pin-list-container d-none d-lg-block col-2 bg-view border-start cursor-default">
             <t t-if="!props.model.metaData.hideTitle">
                 <div class="o-map-renderer--pin-list-header o_pin_list_header">
                     <header>
                         <i class="fa fa-list text-odoo"/>
-                        <span t-esc="props.model.metaData.panelTitle"/>
+                        <span class="fs-6 fw-bold" t-out="props.model.metaData.panelTitle"/>
                     </header>
                 </div>
             </t>

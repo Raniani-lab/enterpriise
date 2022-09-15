@@ -1,8 +1,6 @@
 /** @odoo-module **/
 import { click, getFixture, legacyExtraNextTick } from "@web/../tests/helpers/utils";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
-import { registry } from "@web/core/registry";
-import { companyService } from "@web/webclient/company_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { openStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
 
@@ -17,8 +15,6 @@ QUnit.module("Website Studio", (hooks) => {
         target = getFixture();
         serverData = getActionManagerServerData();
         registerStudioDependencies();
-        const serviceRegistry = registry.category("services");
-        serviceRegistry.add("company", companyService);
 
         serverData.menus = {
             root: { id: "root", children: [1], name: "root", appID: "root" },

@@ -2,6 +2,7 @@ $knowledge-bg--active: #1ba1e4;
 .o_knowledge_form_view {
     --knowledge-article-sidebar-size: 300px;
 
+    background-color: var(--knowledge-view-bg, $o-white);
     .o_knowledge_aside {
         width: clamp(200px, var(--knowledge-article-sidebar-size), 576px);;
         transition: width 0.15s linear;

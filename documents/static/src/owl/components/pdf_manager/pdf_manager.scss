@@ -1,6 +1,6 @@
-$o-pdf-manager-background-color: #f1f1f1;
-$o-pdf-manager-separator-color: #F0AD4E;
-$o-pdf-manager-border-color: #b7b7b7;
+$o-pdf-manager-background-color: $o-gray-100;
+$o-pdf-manager-separator-color: $warning;
+$o-pdf-manager-border-color: $o-gray-300;
 
 .o_documents_pdf_manager {
     background-color: $o-pdf-manager-background-color;
@@ -13,7 +13,7 @@ $o-pdf-manager-border-color: #b7b7b7;
 }
 
 .o_documents_pdf_manager_top_bar {
-    background-color: white;
+    background-color: $o-view-background-color;
     width: 100%;
     border-bottom: solid 1px $o-pdf-manager-border-color;
     padding: 10px;
@@ -88,7 +88,7 @@ $o-pdf-manager-border-color: #b7b7b7;
             border: 1px solid $o-pdf-manager-separator-color;
         }
         .o_pdf_scissors {
-            color: black;
+            color: $o-black;
         }
     }
 

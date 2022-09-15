@@ -27,21 +27,21 @@ $font-family-sans-serif;
     cursor: pointer
 }
 
-.o_hr_referral_title {
-    color: $white;
+.o_hr_referral_title {    
+    color: #FFFFFF;
+
     h1 {
         font-family: $headerFont;
         text-transform: uppercase;
-        color: $white;
         font-size: 2rem;
         margin: 0;
+
         @include media-breakpoint-up(md) {
             font-size: 3rem;
         }
     }
     p {
         font-size: 1rem;
-        color: $white;
 
         @include media-breakpoint-up(md) {
             font-size: 2rem;
@@ -53,15 +53,16 @@ $font-family-sans-serif;
     border-radius: 2px;
     font-weight: bolder;
     letter-spacing: .05rem;
-	&.side-btn{
-		background: transparent;
-    	border-color: $white;
-		color: $white;
-		text-transform: uppercase;
-		&:hover{
-			background: #ffffff45;
-		}
-	}
+    &.side-btn{
+        background: transparent;
+        border-color: #FFFFFF;
+        color: #FFFFFF;
+        text-transform: uppercase;
+        &:hover{
+            background: $o-gray-100;
+            color: $black;
+        }
+    }
     &.center {
         @include centerer(true, false);
         bottom: 1rem;
@@ -90,10 +91,12 @@ $font-family-sans-serif;
 
 }
 .o_hr_referral_wrapper {
+    --hrReferral__user-color: #{$o-main-text-color};
+
     min-height: 100%;
     position: relative;
     font-family: "Montserrat", #{$font-family-sans-serif};
-    color: $white;
+    color: #FFFFFF;
 }
 
 .o_hr_referral {
@@ -110,6 +113,7 @@ $font-family-sans-serif;
         height: 100%;
         max-height: 50vh;
         position: relative;
+        color: #FFFFFF;
         .superheroes {
             position: absolute;
             height: 100%;
@@ -242,8 +246,7 @@ $font-family-sans-serif;
             align-items: center;
             min-width: 350px;
             height: 60%;
-            background: $white;
-            color: $gray-900;
+            color: var(--hrReferral__user-color);
             border-radius: 2px;
             padding: 0 2rem;
         }
@@ -347,7 +350,7 @@ $font-family-sans-serif;
             @include centerer(true, false);
             bottom: -150%;
             min-width: 200px;
-            color: $white;
+            color: #FFFFFF;
             font-size: 1.5rem;
             font-family: $headerFont;
             animation: appear .5s both;
@@ -362,7 +365,7 @@ $font-family-sans-serif;
 
         p {
             min-width: 200px;
-            color: $white;
+            color: #FFFFFF;
             font-size: 1.5rem;
             font-family: $headerFont;
             margin-bottom: 0;
@@ -402,7 +405,7 @@ $font-family-sans-serif;
         }
 
         .activity_text {
-            color: $white;
+            color: #FFFFFF;
         }
     }
     div:first-child.space_restart {

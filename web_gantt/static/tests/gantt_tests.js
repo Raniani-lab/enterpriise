@@ -3825,7 +3825,7 @@ document.createElement("a").classList.contains
         assert.deepEqual([...todayCells].map(c => c.getAttribute('style')), [
             null,
             "height: 0px;", // a css rule fix a minimal height
-            "height: 35px; background: linear-gradient(90deg, #e9ecef 49%, #fffaeb 50%);"
+            "height: 35px; background: linear-gradient(90deg, var(--Gant__DayOff-background-color) 49%, var(--Gant__DayOffToday-background-color) 50%);"
         ]);
         assert.strictEqual(window.getComputedStyle(todayCells[1]).getPropertyValue('background-color'), "rgba(0, 0, 0, 0)");
 
@@ -3918,17 +3918,17 @@ document.createElement("a").classList.contains
 
         const cell5 = cells[4];
         assert.hasClass(cell5, 'o_gantt_today');
-        assert.hasAttrValue(cell5, 'style', 'height: 105px; background: linear-gradient(90deg, #fffaeb 49%, #e9ecef 50%);');
+        assert.hasAttrValue(cell5, 'style', 'height: 105px; background: linear-gradient(90deg, var(--Gant__DayOffToday-background-color) 49%, var(--Gant__DayOff-background-color) 50%);');
         const cell6 = cells[5];
-        assert.hasAttrValue(cell6, 'style', 'height: 105px; background: #e9ecef');
+        assert.hasAttrValue(cell6, 'style', 'height: 105px; background: var(--Gant__DayOff-background-color)');
         const cell7 = cells[6];
         assert.hasAttrValue(cell7, 'style', 'height: 105px;');
         const cell16 = cells[15];
-        assert.hasAttrValue(cell16,'style',  'height: 105px; background: linear-gradient(90deg, #ffffff 49%, #e9ecef 50%);');
+        assert.hasAttrValue(cell16,'style',  'height: 105px; background: linear-gradient(90deg, var(--Gant__Day-background-color) 49%, var(--Gant__DayOff-background-color) 50%);');
         const cell17 = cells[16];
-        assert.hasAttrValue(cell17,'style', 'height: 105px; background: #e9ecef');
+        assert.hasAttrValue(cell17,'style', 'height: 105px; background: var(--Gant__DayOff-background-color)');
         const cell18 = cells[17];
-        assert.hasAttrValue(cell18,'style',  'height: 105px; background: linear-gradient(90deg, #e9ecef 49%, #ffffff 50%);');
+        assert.hasAttrValue(cell18,'style',  'height: 105px; background: linear-gradient(90deg, var(--Gant__DayOff-background-color) 49%, var(--Gant__Day-background-color) 50%);');
 
         unpatchDate();
         gantt.destroy();
@@ -3978,15 +3978,15 @@ document.createElement("a").classList.contains
         const cells = gantt.el.querySelectorAll('.o_gantt_row_container .o_gantt_cell');
 
         const cell9 = cells[8];
-        assert.hasAttrValue(cell9, 'style', 'height: 0px; background: linear-gradient(90deg, #ffffff 24%, #e9ecef 25%, #e9ecef 49%, #ffffff 50%, #ffffff 74%, #ffffff 75%);');
+        assert.hasAttrValue(cell9, 'style', 'height: 0px; background: linear-gradient(90deg, var(--Gant__Day-background-color) 24%, var(--Gant__DayOff-background-color) 25%, var(--Gant__DayOff-background-color) 49%, var(--Gant__Day-background-color) 50%, var(--Gant__Day-background-color) 74%, var(--Gant__Day-background-color) 75%);');
         const cell11 = cells[10];
-        assert.hasAttrValue(cell11, 'style', 'height: 0px; background: linear-gradient(90deg, #ffffff 24%, #ffffff 25%, #ffffff 49%, #ffffff 50%, #ffffff 74%, #e9ecef 75%);');
+        assert.hasAttrValue(cell11, 'style', 'height: 0px; background: linear-gradient(90deg, var(--Gant__Day-background-color) 24%, var(--Gant__Day-background-color) 25%, var(--Gant__Day-background-color) 49%, var(--Gant__Day-background-color) 50%, var(--Gant__Day-background-color) 74%, var(--Gant__DayOff-background-color) 75%);');
         const cell12 = cells[11];
-        assert.hasAttrValue(cell12, 'style', 'height: 0px; background: #e9ecef');
+        assert.hasAttrValue(cell12, 'style', 'height: 0px; background: var(--Gant__DayOff-background-color)');
         const cell13 = cells[12];
-        assert.hasAttrValue(cell13, 'style', 'height: 0px; background: linear-gradient(90deg, #e9ecef 24%, #ffffff 25%, #ffffff 49%, #ffffff 50%, #ffffff 74%, #ffffff 75%);');
+        assert.hasAttrValue(cell13, 'style', 'height: 0px; background: linear-gradient(90deg, var(--Gant__DayOff-background-color) 24%, var(--Gant__Day-background-color) 25%, var(--Gant__Day-background-color) 49%, var(--Gant__Day-background-color) 50%, var(--Gant__Day-background-color) 74%, var(--Gant__Day-background-color) 75%);');
         const cell21 = cells[20];
-        assert.hasAttrValue(cell21, 'style', 'height: 0px; background: linear-gradient(90deg, #ffffff 24%, #e9ecef 25%, #e9ecef 49%, #e9ecef 50%, #e9ecef 74%, #ffffff 75%);');
+        assert.hasAttrValue(cell21, 'style', 'height: 0px; background: linear-gradient(90deg, var(--Gant__Day-background-color) 24%, var(--Gant__DayOff-background-color) 25%, var(--Gant__DayOff-background-color) 49%, var(--Gant__DayOff-background-color) 50%, var(--Gant__DayOff-background-color) 74%, var(--Gant__Day-background-color) 75%);');
 
         unpatchDate();
         gantt.destroy();
@@ -4035,17 +4035,17 @@ document.createElement("a").classList.contains
 
         const cell5 = cells[4];
         assert.hasClass(cell5, 'o_gantt_today');
-        assert.hasAttrValue(cell5, 'style', 'height: 105px; background: linear-gradient(90deg, #fffaeb 49%, #e9ecef 50%);');
+        assert.hasAttrValue(cell5, 'style', 'height: 105px; background: linear-gradient(90deg, var(--Gant__DayOffToday-background-color) 49%, var(--Gant__DayOff-background-color) 50%);');
         const cell6 = cells[5];
-        assert.hasAttrValue(cell6, 'style', 'height: 105px; background: #e9ecef');
+        assert.hasAttrValue(cell6, 'style', 'height: 105px; background: var(--Gant__DayOff-background-color)');
         const cell7 = cells[6];
         assert.hasAttrValue(cell7, 'style', 'height: 105px;');
         const cell16 = cells[15];;
-        assert.hasAttrValue(cell16,'style',  'height: 105px; background: linear-gradient(90deg, #ffffff 49%, #e9ecef 50%);');
+        assert.hasAttrValue(cell16,'style',  'height: 105px; background: linear-gradient(90deg, var(--Gant__Day-background-color) 49%, var(--Gant__DayOff-background-color) 50%);');
         const cell17 = cells[16];;
-        assert.hasAttrValue(cell17,'style', 'height: 105px; background: #e9ecef');
+        assert.hasAttrValue(cell17,'style', 'height: 105px; background: var(--Gant__DayOff-background-color)');
         const cell18 = cells[17];;
-        assert.hasAttrValue(cell18,'style',  'height: 105px; background: linear-gradient(90deg, #e9ecef 49%, #ffffff 50%);');
+        assert.hasAttrValue(cell18,'style',  'height: 105px; background: linear-gradient(90deg, var(--Gant__DayOff-background-color) 49%, var(--Gant__Day-background-color) 50%);');
 
         unpatchDate();
         gantt.destroy();

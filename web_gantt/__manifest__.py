@@ -12,6 +12,9 @@ Odoo Web Gantt chart view.
     'version': '2.0',
     'depends': ['web'],
     'assets': {
+        'web._assets_primary_variables': [
+            'web_gantt/static/src/scss/web_gantt.variables.scss',
+        ],
         'web.assets_backend': [
             'web_gantt/static/src/**/*',
             'web_gantt/static/src/xml/**/*',

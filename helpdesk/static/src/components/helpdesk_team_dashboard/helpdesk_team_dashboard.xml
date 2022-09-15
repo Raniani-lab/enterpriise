@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="helpdesk.HelpdeskTeamDashboard" owl="1">
-        <div t-if="state.dashboardValues" class="o_helpdesk_banner align-items-start flex-column flex-lg-row flex-shrink-0 d-flex py-4 border-bottom bg-white">
+        <div t-if="state.dashboardValues" class="o_helpdesk_banner align-items-start flex-column flex-lg-row flex-shrink-0 d-flex py-4 border-bottom bg-view">
             <div class="w-100">
                 <!-- Fake Data for Demo-->
                 <t t-if="showDemo">
@@ -25,7 +25,7 @@
                                    t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{state.dashboardValues.my_all.count > 0 ? 'btn-primary': 'btn-light bg-100'}} {{showDemo ? 'o_cursor_default' : ''}}"
                                 >
                                     <div class="p-2">
-                                        <h2 class="mb-0" t-out="state.dashboardValues.my_all.count"/>
+                                        <h2 class="mb-0 text-reset" t-out="state.dashboardValues.my_all.count"/>
                                         Tickets
                                     </div>
                                 </a>
@@ -38,7 +38,7 @@
                                    t-attf-class="position-relative btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{state.dashboardValues.my_high.count > 0 ? 'btn-primary': 'btn-light bg-100'}} {{showDemo ? 'o_cursor_default' : ''}}"
                                 >
                                     <div class="p-2">
-                                        <h2 class="mb-0" t-out="state.dashboardValues.my_high.count"/>
+                                        <h2 class="mb-0 text-reset" t-out="state.dashboardValues.my_high.count"/>
                                         High Priority
                                         <small
                                             class="position-absolute top-0 end-0 justify-content-end flex-lg-column flex-xl-row d-none d-sm-flex p-2"
@@ -61,7 +61,7 @@
                                    data-hotkey="u"
                                 >
                                     <div class="p-2">
-                                        <h2 class="mb-0" t-out="state.dashboardValues.my_urgent.count"/>
+                                        <h2 class="mb-0 text-reset" t-out="state.dashboardValues.my_urgent.count"/>
                                         Urgent
                                         <small
                                             class="position-absolute top-0 end-0 justify-content-end flex-lg-column flex-xl-row d-none d-sm-flex p-2 small"
@@ -166,7 +166,7 @@
                                    data-hotkey="i"
                                 >
                                     <div class="p-2">
-                                        <h2 class="mb-0" t-out="state.dashboardValues.today.count"/>
+                                        <h2 class="mb-0 text-reset" t-out="state.dashboardValues.today.count"/>
                                         Closed Tickets
                                     </div>
                                 </a>
@@ -180,7 +180,7 @@
                                    data-hotkey="k"
                                 >
                                     <div class="p-2">
-                                        <h2 class="mb-0" t-out="`${formatFloat(state.dashboardValues.today.success)} %`"/>
+                                        <h2 class="mb-0 text-reset" t-out="`${formatFloat(state.dashboardValues.today.success)} %`"/>
                                         Success Rate
                                     </div>
                                 </a>
@@ -194,7 +194,7 @@
                                    data-hotkey="j"
                                 >
                                     <div class="p-2">
-                                        <h2 class="mb-0" t-out="`${formatFloat(state.dashboardValues.today.rating)} %`"/>
+                                        <h2 class="mb-0 text-reset" t-out="`${formatFloat(state.dashboardValues.today.rating)} %`"/>
                                         Average Rating
                                     </div>
                                 </a>

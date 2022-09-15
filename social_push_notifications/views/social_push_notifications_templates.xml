@@ -8,7 +8,7 @@
                     t-attf-src="data:image/png;base64, #{icon}" />
                 <img t-elif="icon_url" t-attf-class="o_social_push_notification_preview_image"
                     t-att-src="icon_url" />
-                <div t-else="" class="bg-white p-1 rounded-circle">
+                <div t-else="" class="p-1 rounded-circle" style="background-color: #FFF">
                     <img src="/mail/static/src/img/odoobot_transparent.png" />
                 </div>
                 <div class="o_social_push_notification_preview_content_body ps-4">

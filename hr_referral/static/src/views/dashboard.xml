@@ -95,7 +95,7 @@
                             </div>
                             <img class="img img-fluid rounded-circle o_employee_image" t-attf-src="/web/image?model=res.users&amp;field=avatar_256&amp;id=#{dashboardData.id}" t-att-title="dashboardData.name" t-att-alt="dashboardData.name"/>
                         </div>
-                        <div class="user_info">
+                        <div class="user_info bg-view">
                             <p class="m-0 user_total">
                                 <b>Total</b><br/>
                                 <span class="pe-2" t-esc="dashboardData.point_received"/>

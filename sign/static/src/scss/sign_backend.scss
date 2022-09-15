@@ -94,18 +94,18 @@
                     }
                 }
                 width: 150px !important;
-                color:#212529 !important;
+                color: $o-gray-900 !important;
                 font-weight: 500;
                 padding-left: 0px;
                 cursor: default !important;
                 border: none;
             }
             tbody > tr > td:not(:nth-child(1)){
-                color: #212529 !important;
+                color: $o-gray-900 !important;
                 padding-left: 0px;
                 cursor: default !important;
                 border: none;
-                border-bottom: 1px solid #212529;
+                border-bottom: 1px solid $o-gray-800;
                 &:focus-within {
                     border-color: #017e84 !important;
                 }

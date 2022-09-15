@@ -6,18 +6,19 @@
         <div class="o_hr_payroll_dashboard_block o_hr_payroll_dashboard_todo card h-100 g-0 d-flex flex-column ms-md-1 ms-lg-0 me-3 me-lg-4 position-relative">
             <div class="card-header d-flex bg-white border-bottom-0 p-0">
                 <ul class="o_hr_payroll_todo_tabs nav nav-tabs flex-nowrap overflow-x-auto w-100 border-bottom-0 border-start-0 bg-white">
-                    <t t-foreach="props.notes" t-as="noteData" t-key="noteData.id">
+                    <t t-foreach="model.root.records" t-as="rec" t-key="rec.id">
+                        <t t-set="isActiveNote" t-value="rec.resId === state.activeNoteId"/>
                         <li class="o_hr_payroll_todo_tab nav-item flex-shrink-0 border-end bg-white  cursor-pointer"
-                            t-att-class="' oe_kanban_color_' + noteData.color + ((noteData.id == state.activeNoteId) ? '' : ' border-bottom ')"
-                            t-on-click="() => this.onClickNoteTab(noteData.id)"
-                            t-on-dblclick="() => this.onDoubleClickNoteTab(noteData.id)">
-                            <a t-attf-class="mb-0 nav-link bg-white text-dark {{ (noteData.id == state.activeNoteId) ? 'd-flex align-items-center justify-content-between gap-2 active border-0 border-odoo border-top ' : '' }}">
-                                <t t-if="state.isActiveNoteEditable &amp;&amp; noteData.id == state.activeNoteId">
+                            t-att-class="' oe_kanban_color_' + rec.data.color + ((isActiveNote) ? '' : ' border-bottom ')"
+                            t-on-click="() => this.onClickNoteTab(rec)"
+                            t-on-dblclick="() => this.startNameEdition(rec)">
+                            <a t-attf-class="mb-0 nav-link bg-white text-dark {{ (isActiveNote) ? 'd-flex align-items-center justify-content-between gap-2 active border-0 border-odoo border-top ' : '' }}">
+                                <t t-if="state.isEditingNoteName &amp;&amp; isActiveNote">
                                     <input type="text" t-ref="autofocus" t-att-value="this.bufferedText" t-on-input="onInputNoteNameInput" t-on-keydown="onKeyDownNoteNameInput" t-on-blur="handleBlur"/>
                                 </t>
                                 <t t-else="">
-                                    <t t-esc="(noteData.name || 'untitled').substring(0, 30)"/>
-                                    <button type="button" class="btn p-0" aria-label="Close" t-if="noteData.user_id[0] == this.userId &amp;&amp; noteData.id == state.activeNoteId" t-on-click="onNoteDelete">
+                                    <t t-esc="(rec.data.name || 'untitled').substring(0, 30)"/>
+                                    <button type="button" class="btn p-0" aria-label="Close" t-if="rec.data.user_id[0] == this.userId &amp;&amp; isActiveNote" t-on-click="onNoteDelete">
                                         <i class="oi oi-close"/>
                                     </button>
                                 </t>
@@ -32,13 +33,9 @@
             </div>
             
             <div class="card-body content overflow-hidden">
-                <div class="o_hr_payroll_todo_value overflow-auto p-4 h-100" t-on-click="onClickEdit">
-                    <!-- widgets are not supposed to have their mode switched. this if/else block guarantees that a new widget will be created if the mode changes -->
-                    <t t-if="state.mode === 'readonly' &amp;&amp; state.activeNoteId > 0">
-                        <PayrollDashboardTodoAdapter Component="FieldHtml" setWidget.bind="setFieldHtmlWidget" widgetArgs="noteWidgetArgs"/>
-                    </t>
-                    <t t-elif="state.mode === 'edit' &amp;&amp; state.activeNoteId > 0">
-                        <PayrollDashboardTodoAdapter Component="FieldHtml" setWidget.bind="setFieldHtmlWidget" widgetArgs="noteWidgetArgs"/>
+                <div class="o_hr_payroll_todo_value overflow-auto h-100" t-on-click="switchToEdit">
+                    <t t-foreach="model.root.records" t-as="rec" t-key="rec.id">
+                        <HtmlField t-if="rec.resId === this.state.activeNoteId" t-props="getFieldProps(rec)"/>
                     </t>
                 </div>
             </div>

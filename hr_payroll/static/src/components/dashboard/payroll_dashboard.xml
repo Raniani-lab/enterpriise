@@ -20,8 +20,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-5 h-100 m-0 pt-2 pt-md-3 pe-md-3 ps-0" >
-                    <PayrollDashboardTodo tagId="dashboardData.notes.tag_id" notes="dashboardData.notes.notes"
-                        reloadNotes.bind="reloadNotes" updateNoteMemo.bind="updateNoteMemo"/>
+                    <PayrollDashboardTodo tagId="dashboardData.notes.tag_id" domain="[['tag_ids', 'in', dashboardData.notes.tag_id]]" orderBy="[{name: 'id', asc: true}]"/>
                 </div>
             </div>
         </div>

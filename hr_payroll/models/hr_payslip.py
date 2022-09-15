@@ -1497,10 +1497,6 @@ class HrPayslip(models.Model):
                 # For note creation
                 result['notes'].update({
                     'tag_id': dashboard_note_tag.id,
-                    'notes': self.env['note.note'].search_read(
-                        [('tag_ids', 'in', dashboard_note_tag.id)],
-                        fields=['id', 'name', 'memo', 'color', 'user_id'],
-                        order="id asc")
                 })
         if 'stats' in sections:
             result['stats'] = self._get_dashboard_stats()

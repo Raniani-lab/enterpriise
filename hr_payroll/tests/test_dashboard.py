@@ -106,29 +106,11 @@ class TestDashboard(TransactionCase):
             self.assertEqual(set(read['id'] for read in dashboard['batches']), set(batches_to_return.ids))
 
     def test_dashboard_notes(self):
-        #Test that we only get readable notes with the payroll note tag
+        #Test that we get the payroll note tag
         dashboard_note_tag = self.env.ref('hr_payroll.payroll_note_tag')
-        Note = self.env['note.note']
-        tagged_notes = Note.create([
-            {
-                'memo': 'Tagged - 1',
-                'tag_ids': dashboard_note_tag,
-            },
-            {
-                'memo': 'Tagged - 2',
-                'tag_ids': dashboard_note_tag,
-            },
-        ])
-        followed_note = tagged_notes[0]
-        followed_note.message_subscribe(partner_ids=[self.user.partner_id.id])
-        Note.with_user(self.user).create({
-            'memo': 'Untagged',
-        })
-
         dashboard = self.env['hr.payslip'].with_user(self.user).get_payroll_dashboard_data(sections=['notes'])
         self.assertTrue('notes' in dashboard)
-        self.assertEqual(len(dashboard['notes']['notes']), 1)
-        self.assertEqual(dashboard['notes']['notes'][0]['id'], followed_note.id)
+        self.assertEqual(dashboard['notes']['tag_id'], dashboard_note_tag.id)
 
     def test_dashboard_empty_stats(self):
         # Tests that when stats are empty they are tagged as sample

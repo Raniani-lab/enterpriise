@@ -10,6 +10,23 @@ class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     fsm_quantity = fields.Float('Material Quantity', compute="_compute_fsm_quantity", inverse="_inverse_fsm_quantity", search="_search_fsm_quantity")
+    fsm_partner_price = fields.Float('Partner Price', compute="_compute_fsm_partner_price")
+    fsm_partner_price_currency_id = fields.Many2one('res.currency', compute="_compute_fsm_partner_price")
+
+    @api.depends_context('fsm_task_id')
+    @api.depends('fsm_quantity')
+    def _compute_fsm_partner_price(self):
+        task = self._get_contextual_fsm_task()
+        price_per_product = {}
+        if task.pricelist_id:
+            product_per_quantity = defaultdict(lambda: self.env['product.product'])
+            for product in self:
+                product_per_quantity[product.fsm_quantity] |= product
+            for quantity, products in product_per_quantity.items():
+                price_per_product = {**price_per_product, **task.pricelist_id._get_products_price(products, quantity)}
+        for product in self:
+            product.fsm_partner_price = price_per_product.get(product.id, product.list_price)
+            product.fsm_partner_price_currency_id = task.currency_id or product.currency_id
 
     @api.depends_context('fsm_task_id')
     def _compute_fsm_quantity(self):

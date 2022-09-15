@@ -17,13 +17,14 @@ class Task(models.Model):
     quotation_count = fields.Integer(compute='_compute_quotation_count')
     material_line_product_count = fields.Integer(compute='_compute_material_line_totals')
     material_line_total_price = fields.Float(compute='_compute_material_line_totals')
-    currency_id = fields.Many2one('res.currency', related='company_id.currency_id', readonly=True)
+    currency_id = fields.Many2one('res.currency', compute='_compute_currency_id')
     display_create_invoice_primary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     display_create_invoice_secondary = fields.Boolean(compute='_compute_display_create_invoice_buttons')
     invoice_status = fields.Selection(related='sale_order_id.invoice_status')
     warning_message = fields.Char('Warning Message', compute='_compute_warning_message')
     invoice_count = fields.Integer("Number of invoices", related='sale_order_id.invoice_count')
     is_task_phone_update = fields.Boolean(compute='_compute_is_task_phone_update')
+    pricelist_id = fields.Many2one('product.pricelist', compute="_compute_pricelist_id")
 
     # Project Sharing fields
     portal_quotation_count = fields.Integer(compute='_compute_portal_quotation_count')
@@ -42,6 +43,18 @@ class Task(models.Model):
                                               'currency_id',
                                               'portal_invoice_count',
                                               'warning_message'}
+
+    @api.depends('sale_order_id.pricelist_id', 'partner_id.property_product_pricelist')
+    def _compute_pricelist_id(self):
+        pricelist_active = self.user_has_groups('product.group_product_pricelist')
+        for task in self:
+            task.pricelist_id = pricelist_active and \
+                                (task.sale_order_id.pricelist_id or task.partner_id.property_product_pricelist)
+
+    @api.depends('pricelist_id', 'company_id')
+    def _compute_currency_id(self):
+        for task in self:
+            task.currency_id = task.pricelist_id.currency_id or task.company_id.currency_id
 
     @api.depends('allow_material', 'material_line_product_count')
     def _compute_display_conditions_count(self):

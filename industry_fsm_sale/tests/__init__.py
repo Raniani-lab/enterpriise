@@ -10,3 +10,4 @@ from . import test_industry_fsm_project
 from . import test_industry_fsm_employee_rate
 from . import test_project_profitability
 from . import test_so_line_determined_in_timesheet
+from . import test_industry_fsm_sale_products

@@ -15,6 +15,8 @@
             <field name="id"/>
             <field name="name"/>
             <field name="product_template_attribute_value_ids"/>
+            <field name="fsm_partner_price"/>
+            <field name="fsm_partner_price_currency_id"/>
             <templates>
                 <t t-name="kanban-box">
                     <div class="o_fsm_industry_product d-flex flex-column justify-content-between" style="min-height: 100px">
@@ -42,7 +44,7 @@
                                     <div class="d-flex w-100 justify-content-between">
                                         <ul>
                                             <li><t t-if="record.default_code.value">[<field name="default_code"/>]</t></li>
-                                            <li>Price: <field name="list_price" widget="monetary" options="{'currency_field': 'currency_id'}"></field></li>
+                                            <li>Price: <field name="fsm_partner_price" widget="monetary" options="{'currency_field': 'fsm_partner_price_currency_id'}"></field></li>
                                             <field name="currency_id" invisible="True"/>
                                         </ul>
                                     </div>

@@ -22,7 +22,7 @@ class TestSignController(SignRequestCommon):
         with MockRequest(sign_request.env):
             values = self.SignController.get_document_qweb_context(sign_request.id, token=token_a)
             sign_type = list(filter(lambda sign_type: sign_type["name"] == "Text", values["sign_item_types"]))[0]
-            latitude = sign_type["auto_field"]
+            latitude = sign_type["auto_value"]
             self.assertEqual(latitude, 0)
 
     # test auto_field with wrong partner field
@@ -43,5 +43,5 @@ class TestSignController(SignRequestCommon):
         with MockRequest(sign_request.env):
             values = self.SignController.get_document_qweb_context(sign_request.id, token=token_a)
             sign_type = list(filter(lambda sign_type: sign_type["name"] == "Text", values["sign_item_types"]))[0]
-            country = sign_type["auto_field"]
+            country = sign_type["auto_value"]
             self.assertEqual(country, "Belgium")

@@ -97,8 +97,11 @@ class AppointmentCalendarView(http.Controller):
             ('category', '=', 'anytime'),
             ('staff_user_ids', 'in', request.env.user.ids)])
         if not appointment_type:
+            # Ignore the default_name in the context when creating an anytime appointment type from the calendar view
+            context = request.env.context.copy()
+            context.pop('default_name', None)
             appt_type_vals = self._prepare_appointment_type_anytime_values()
-            appointment_type = request.env['appointment.type'].sudo().create(appt_type_vals)
+            appointment_type = request.env['appointment.type'].with_context(context).sudo().create(appt_type_vals)
         return self._get_staff_user_appointment_invite_info(appointment_type)
 
     # Utility Methods
@@ -112,10 +115,8 @@ class AppointmentCalendarView(http.Controller):
         }
 
     def _get_staff_user_appointment_invite_info(self, appointment_type):
-        appointment_invitation = request.env['appointment.invite'].search([
-            ('appointment_type_ids', '=', appointment_type.id),
-            ('staff_user_ids', '=', request.env.user.id),
-        ], limit=1)
+        appointment_invitation_domain = self._get_staff_user_appointment_invite_domain(appointment_type)
+        appointment_invitation = request.env['appointment.invite'].search(appointment_invitation_domain, limit=1)
         if not appointment_invitation:
             appointment_invitation = request.env['appointment.invite'].create({
                 'appointment_type_ids': appointment_type.ids,
@@ -125,3 +126,9 @@ class AppointmentCalendarView(http.Controller):
             'appointment_type_id': appointment_type.id,
             'invite_url': appointment_invitation.book_url,
         }
+
+    def _get_staff_user_appointment_invite_domain(self, appointment_type):
+        return [
+            ('appointment_type_ids', '=', appointment_type.id),
+            ('staff_user_ids', '=', request.env.user.id),
+        ]

@@ -63,7 +63,7 @@ patch(AttendeeCalendarController.prototype, "appointment_calendar_controller", {
                 "/appointment/appointment_type/create_custom",
                 {
                     slots: slots,
-                    context: this.props.context,
+                    context: this.props.context, // This allows to propagate keys like default_opportunity_id / default_applicant_id
                 },
             );
             if (customAppointment.appointment_type_id) {
@@ -95,7 +95,9 @@ patch(AttendeeCalendarController.prototype, "appointment_calendar_controller", {
     },
 
     async onClickSearchCreateAnytimeAppointment() {
-        const anytimeAppointment = await this.rpc("/appointment/appointment_type/search_create_anytime");
+        const anytimeAppointment = await this.rpc("/appointment/appointment_type/search_create_anytime", {
+            context: this.props.context,
+        });
         if (anytimeAppointment.appointment_type_id) {
             this.appointmentState.lastAppointmentUrl = anytimeAppointment.invite_url;
             this._writeUrlToClipboard();
@@ -105,6 +107,7 @@ patch(AttendeeCalendarController.prototype, "appointment_calendar_controller", {
     async onClickGetAppointmentUrl(appointmentTypeId) {
         const appointment = await this.rpc("/appointment/appointment_type/get_book_url", {
             appointment_type_id: appointmentTypeId,
+            context: this.props.context,
         });
         this.appointmentState.lastAppointmentUrl = appointment.invite_url;
         this._writeUrlToClipboard();

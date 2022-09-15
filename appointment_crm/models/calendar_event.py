@@ -9,11 +9,11 @@ class CalendarEventCrm(models.Model):
 
     opportunity_id = fields.Many2one(compute="_compute_opportunity_id", readonly=False, store=True)
 
-    @api.depends('appointment_type_id')
+    @api.depends('appointment_invite_id')
     def _compute_opportunity_id(self):
         for event in self:
-            if event.appointment_type_id.opportunity_id:
-                event.opportunity_id = event.appointment_type_id.opportunity_id
+            if event.appointment_invite_id.opportunity_id:
+                event.opportunity_id = event.appointment_invite_id.opportunity_id
 
     @api.model_create_multi
     def create(self, vals_list):

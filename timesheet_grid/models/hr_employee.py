@@ -177,6 +177,11 @@ class Employee(models.Model):
     def _get_user_m2o_to_empty_on_archived_employees(self):
         return super()._get_user_m2o_to_empty_on_archived_employees() + ['timesheet_manager_id']
 
+    def action_timesheet_from_employee(self):
+        action = super().action_timesheet_from_employee()
+        action['context']['group_expand'] = True
+        return action
+
 
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'

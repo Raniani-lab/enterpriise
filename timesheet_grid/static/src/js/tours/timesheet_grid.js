@@ -27,7 +27,7 @@ tour.register('timesheet_tour', {
 }, {
     trigger: '.timer_project_id .o_field_many2one',
     content: Markup(_t('Select the <b>project</b> on which you are working.')),
-    position: 'bottom',
+    position: 'right',
 }, {
     trigger: '.btn_stop_timer',
     content: Markup(_t('Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> in the description to automatically log your activity.</i>')),

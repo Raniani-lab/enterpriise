@@ -35,6 +35,6 @@
     },
     'post_init_hook': '_initialize_homeworking_locations',
     'installable': True,
-    'application': True,
+    'application': False,
     'license': 'OEEL-1',
 }

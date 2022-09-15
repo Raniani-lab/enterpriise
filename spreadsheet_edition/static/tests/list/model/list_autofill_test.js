@@ -2,10 +2,7 @@
 
 import { nextTick } from "@web/../tests/helpers/utils";
 
-import {
-    getCellFormula,
-    getCellValue,
-} from "@spreadsheet/../tests/utils/getters";
+import { getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { autofill } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithList } from "@spreadsheet/../tests/utils/list";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
@@ -121,9 +118,7 @@ QUnit.module("spreadsheet > list autofill", {}, () => {
         assert.strictEqual(getListAutofillValue(model, "A3", { direction: "right", steps: 6 }), "");
     });
 
-    QUnit.skip("Autofill list correctly update the cache", async function (assert) {
-        // TODOPRO: addList does not takes linesNumber into account in the plugin
-        // It worked before because we create a ListDataSource with the correct limit
+    QUnit.test("Autofill list correctly update the cache", async function (assert) {
         const { model } = await createSpreadsheetWithList({ linesNumber: 1 });
         autofill(model, "A2", "A3");
         assert.strictEqual(getCellValue(model, "A3"), "Loading...");

@@ -746,7 +746,7 @@ Are you sure you want to remove the selection values of those records?""") % len
             # by studio will be only '/tree' but this is useless since the
             # subview xpath already specify this element. So in this case,
             # we don't add the expr computed by studio.
-            elif len(xpath) - len(expr) != xpath.find(expr):
+            elif not xpath.endswith(expr):
                 expr = xpath + expr
         return expr
 

@@ -207,7 +207,8 @@ class KnowledgeController(http.Controller):
         ])
 
         all_visible_articles = request.env['knowledge.article'].search([
-            ('id', 'in', favorites_sudo.article_id.ids)
+            '&', ('is_article_item', '=', False),
+            '|', ('id', 'in', favorites_sudo.article_id.ids), ('parent_id', 'child_of', favorites_sudo.article_id.ids)
         ])
 
         return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_favorites', {

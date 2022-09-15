@@ -16,7 +16,7 @@
     'installable': True,
     'uninstall_hook': 'uninstall_hook',
     'assets': {
-        'web._assets_common_scripts': [
+        'web.assets_common': [
             'payment_sepa_direct_debit/static/src/xml/signature_form.xml',
         ],
         'web.assets_frontend': [

@@ -28,7 +28,7 @@ This module modifies the web addon to provide Enterprise design and responsivene
         'web._assets_backend_helpers': [
             ('before', 'web/static/src/legacy/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/legacy/scss/bootstrap_overridden.scss'),
         ],
-        'web._assets_common_styles': [
+        'web.assets_common': [
             ('replace', 'web/static/src/legacy/scss/ui_extra.scss', 'web_enterprise/static/src/legacy/scss/ui.scss'),
 
             'web_enterprise/static/fonts/fonts.scss',

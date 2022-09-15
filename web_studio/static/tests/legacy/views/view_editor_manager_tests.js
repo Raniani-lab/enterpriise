@@ -3421,6 +3421,90 @@ QUnit.module('ViewEditorManager', {
         });
     });
 
+    QUnit.test('column and row date groupbys in pivot editor', async function (assert) {
+        const done = assert.async();
+        assert.expect(14);
+
+        let editViewCount = 0;
+
+        this.data.coucou.fields.start.store = true;
+        this.data.coucou.fields.stop.store = true;
+        this.data.coucou.fields.m2o.store = true;
+        this.data.coucou.fields.char_field.store = true;
+
+        this.data.coucou.records = [{
+            id: 1,
+            char_field: 'Hi',
+            m2o: 1,
+            start: "2016-05-01",
+            stop: "2016-05-16",
+        }, {
+            id: 2,
+            char_field: 'Hello',
+            m2o: 2,
+            start: "2022-09-01",
+            stop: "2022-09-16",
+        }];
+
+        const arch = `
+            <pivot>
+                <field name="start" interval="day" type="row"/>
+                <field name="stop" interval="year" type="col"/>
+            </pivot>
+        `;
+
+        const pivot = await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch,
+            mockRPC(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    editViewCount++;
+                    let newArch = arch;
+                    if (editViewCount === 1) {
+                        assert.strictEqual(args.operations[0].target.field_names[0], "m2o");
+                        newArch = `
+                            <pivot>
+                                <field name='m2o' type='row'/>
+                                <field name='stop' type='col'/>
+                            </pivot>`;
+                    } else if (editViewCount === 2) {
+                        assert.strictEqual(args.operations[1].target.field_names[0], "char_field");
+                        newArch = `
+                            <pivot>
+                                <field name='m2o' type='row'/>
+                                <field name='char_field' type='col'/>
+                            </pivot>`;
+                    }
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
+                }
+            },
+        });
+
+        return concurrency.delay(100).then(async () => {
+            assert.strictEqual(pivot.$('select#first_row_groupby option:selected').val(), 'start');
+            assert.strictEqual(pivot.$('select#column_groupby option:selected').val(), 'stop');
+
+            // change the Row-First level field value to M2O
+            await testUtils.fields.editSelect(pivot.$('select#first_row_groupby'), 'm2o');
+            assert.strictEqual(pivot.$('select#first_row_groupby option:selected').val(), 'm2o');
+            assert.strictEqual(pivot.$('select#second_row_groupby option:selected').val(), '');
+            assert.strictEqual(pivot.$('select#column_groupby option:selected').val(), 'stop');
+            assert.strictEqual(pivot.$('th').slice(8).text(), "Totalxpadxpod");
+            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "TotalMay 2016September 2022");
+
+            // change the column field value to A char
+            await testUtils.fields.editSelect(pivot.$('select#column_groupby'), 'char_field');
+            assert.strictEqual(pivot.$('select#first_row_groupby option:selected').val(), 'm2o');
+            assert.strictEqual(pivot.$('select#second_row_groupby option:selected').val(), '');
+            assert.strictEqual(pivot.$('select#column_groupby option:selected').val(), 'char_field');
+            assert.strictEqual(pivot.$('th').slice(8).text(), "Totalxpadxpod");
+            assert.strictEqual(pivot.$('th').slice(0, 5).text(), "TotalHelloHi");
+
+            pivot.destroy();
+            done();
+        });
+    });
+
     QUnit.module('Graph');
 
     QUnit.test('empty graph editor', async function (assert) {
@@ -3511,6 +3595,82 @@ QUnit.module('ViewEditorManager', {
                 "the default type field should contain pie chart");
             assert.isNotVisible(vem.el.querySelector('#stacked'), "the stacked graph checkbox should not be visible in pie chart");
 
+            done();
+        });
+    });
+
+    QUnit.test('date groupbys in graph editor', async function (assert) {
+        const done = assert.async();
+        assert.expect(8);
+
+        let editViewCount = 0;
+
+        this.data.coucou.fields.start.store = true;
+        this.data.coucou.fields.stop.store = true;
+        this.data.coucou.fields.m2o.store = true;
+        this.data.coucou.fields.char_field.store = true;
+
+        this.data.coucou.records = [{
+            id: 1,
+            char_field: 'Hi',
+            m2o: 1,
+            start: "2016-05-01",
+            stop: "2016-05-16",
+        }, {
+            id: 2,
+            char_field: 'Hello',
+            m2o: 2,
+            start: "2022-09-01",
+            stop: "2022-09-16",
+        }];
+
+        const arch = `
+            <graph>
+                <field name="start" interval="day"/>
+                <field name="stop" interval="year"/>
+            </graph>
+        `;
+
+        const graph = await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch,
+            mockRPC(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    editViewCount++;
+                    let newArch = arch;
+                    if (editViewCount === 1) {
+                        assert.strictEqual(args.operations[0].target.field_names[0], "m2o");
+                        newArch = `
+                            <graph>
+                                <field name="m2o"/>
+                                <field name="stop" interval="year"/>
+                            </graph>`;
+                    } else if (editViewCount === 2) {
+                        assert.strictEqual(args.operations[1].target.field_names[0], "char_field");
+                        newArch = `
+                            <graph>
+                                <field name="m2o"/>
+                                <field name="char_field"/>
+                            </graph>`;
+                    }
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
+                }
+            },
+        });
+
+        return concurrency.delay(100).then(async () => {
+            assert.strictEqual(graph.$('select#first_groupby option:selected').val(), 'start');
+            assert.strictEqual(graph.$('select#second_groupby option:selected').val(), 'stop');
+
+            await testUtils.fields.editSelect(graph.$('select#first_groupby'), 'm2o');
+            assert.strictEqual(graph.$('select#first_groupby option:selected').val(), 'm2o');
+            assert.strictEqual(graph.$('select#second_groupby option:selected').val(), 'stop');
+
+            await testUtils.fields.editSelect(graph.$('select#second_groupby'), 'char_field');
+            assert.strictEqual(graph.$('select#first_groupby option:selected').val(), 'm2o');
+            assert.strictEqual(graph.$('select#second_groupby option:selected').val(), 'char_field');
+
+            graph.destroy();
             done();
         });
     });

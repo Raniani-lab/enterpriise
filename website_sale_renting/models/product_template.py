@@ -96,7 +96,7 @@ class ProductTemplate(models.Model):
 
         ratio = ceil(current_duration) / pricing.recurrence_id.duration
         if current_unit != pricing.recurrence_id.unit:
-            ratio *= PERIOD_RATIO[current_unit] / PERIOD_RATIO[pricing.unit]
+            ratio *= PERIOD_RATIO[current_unit] / PERIOD_RATIO[pricing.recurrence_id.unit]
 
         if website:
             #compute taxes

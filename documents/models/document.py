@@ -278,7 +278,6 @@ class Document(models.Model):
             self = self.with_context(no_document=True)
         return super(Document, self).message_post(message_type=message_type, **kwargs)
 
-    @api.model
     def _message_post_after_hook(self, message, msg_vals):
         """
         If the res model was an attachment and a mail, adds all the custom values of the share link

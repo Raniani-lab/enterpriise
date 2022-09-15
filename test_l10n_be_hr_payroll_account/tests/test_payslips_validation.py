@@ -7154,6 +7154,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'transport_mode_private_car': True,
             'transport_mode_train': True,
             'train_transport_employee_amount': 50,
+            'l10n_be_canteen_cost': 42,
         })
 
         contract_2 = contract_1.copy({
@@ -7210,7 +7211,8 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'REP.FEES': 87.69,
             'IP': 387.31,
             'IP.DED': -29.05,
-            'NET': 1449.2,
+            'CANTEEN': -42.00,
+            'NET': 1407.2,
             'REMUNERATION': 1161.92,
             'ONSSEMPLOYERBASIC': 390.02,
             'ONSSEMPLOYERFFE': 1.09,
@@ -7245,6 +7247,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'REP.FEES': 73.85,
             'IP': 326.16,
             'IP.DED': -24.46,
+            'CANTEEN': 0.00,
             'NET': 1209.37,
             'REMUNERATION': 978.47,
             'ONSSEMPLOYERBASIC': 326.55,

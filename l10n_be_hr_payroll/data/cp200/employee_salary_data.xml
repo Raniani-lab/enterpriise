@@ -609,6 +609,11 @@ result = min(amount_max, amount_per_km * contract.employee_id.km_home_work * 2)
         <field name="condition_python">result = contract.l10n_be_canteen_cost</field>
         <field name="amount_python_compute">
 result = -contract.l10n_be_canteen_cost if result_rules['BASIC']['total'] else 0
+salary_simulation = payslip.dict.env.context.get('salary_simulation')
+if not salary_simulation:
+    first_period_contract_ids = payslip.dict._get_period_contracts()
+    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.l10n_be_canteen_cost)[0]
+    result = result if payslip.contract_id == first_period_contract else 0
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>

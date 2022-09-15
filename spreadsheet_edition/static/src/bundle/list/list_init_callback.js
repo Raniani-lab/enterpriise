@@ -11,7 +11,7 @@ const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
  *
  * @private
  *
- * @param {import("@spreadsheet/list/plugins/list_plugin").SpreadsheetList} list
+ * @param {import("@spreadsheet/list/plugins/list_core_plugin").SpreadsheetList} list
  * @param {object} param
  * @param {number} param.threshold
  * @param {object} param.fields fields coming from list_model

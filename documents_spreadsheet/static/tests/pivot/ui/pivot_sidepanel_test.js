@@ -11,7 +11,7 @@ import {
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";
-import PivotPlugin from "@spreadsheet/pivot/plugins/pivot_plugin";
+import PivotPlugin from "@spreadsheet/pivot/plugins/pivot_core_plugin";
 import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
 
 const { cellMenuRegistry } = spreadsheet.registries;

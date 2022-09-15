@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { jsonToBase64 } from "@documents_spreadsheet/bundle/helpers";
+import { jsonToBase64 } from "@spreadsheet_edition/bundle/helpers";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { registry } from "@web/core/registry";
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";

@@ -3,7 +3,7 @@
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
-import { jsonToBase64, base64ToJson } from "@documents_spreadsheet/bundle/helpers";
+import { jsonToBase64, base64ToJson } from "@spreadsheet_edition/bundle/helpers";
 import { createSpreadsheetTemplate } from "../spreadsheet_test_utils";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";

@@ -29,7 +29,6 @@
         'data/workflow_data.xml',
         'data/files_data.xml',
         'data/mail_template_data.xml',
-        'views/assets.xml',
         'views/res_config_settings_views.xml',
         'views/res_partner_views.xml',
         'views/documents_document_views.xml',
@@ -82,6 +81,9 @@
             ('include', 'web._assets_bootstrap'),
             'documents/static/src/scss/documents_public_pages.scss',
             'documents/static/src/js/documents_public_pages.js',
+        ],
+        'documents.pdf_js_assets': [
+            ('include', 'web.pdf_js_lib'),
         ],
         'web.tests_assets': [
             'documents/static/tests/helpers/*',

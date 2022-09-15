@@ -21,7 +21,6 @@
         'report/helpdesk_ticket_analysis_views.xml',
         'report/helpdesk_sla_report_analysis_views.xml',
         'report/report_timesheet_templates.xml',
-        'report/timesheets_analysis_report.xml',
     ],
     'demo': ['data/helpdesk_timesheet_demo.xml'],
     'license': 'OEEL-1',

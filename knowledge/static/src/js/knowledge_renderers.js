@@ -109,6 +109,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @param {integer} - resId: id of the article to open
      */
     async openArticle(resId) {
+        // disable sortable trees drag and drop.
+        const $sortable = $('.o_tree_favorite,.o_tree');
+        $sortable.sortable('disable');
         // Focus out of name input to prevent showing an error when opening an
         // article while the name input is focused and empty
         if (document.activeElement.id === "name" && document.activeElement.value === "") {

@@ -7,7 +7,7 @@ var Dialog = require('web.Dialog');
 var _t = core._t;
 
 var FieldSelectorDialog = Dialog.extend({
-    template: 'web_studio.FieldSelectorDialog',
+    template: 'web_studio.Legacy.FieldSelectorDialog',
     /**
      * @constructor
      * @param {Widget} parent

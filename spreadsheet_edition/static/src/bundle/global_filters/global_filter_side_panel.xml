@@ -103,10 +103,10 @@
                 type="text"
                 class="o_input o_global_filter_default_value"
                 t-model="state.text.defaultValue"/>
-            <X2ManyTagSelector
+            <RecordsSelector
                 t-if="state.type === 'relation' and state.relation.relatedModel.technical"
-                relatedModel="state.relation.relatedModel.technical"
-                selectedValues="state.relation.defaultValue"
+                resModel="state.relation.relatedModel.technical"
+                resIds="state.relation.defaultValue"
                 t-key="state.relation.relatedModel.technical"
                 onValueChanged.bind="onValuesSelected"
             />

@@ -60,7 +60,9 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                     );
                     assert(
                         Boolean(
-                            pivot.querySelector('div.o_field_many2manytags div.badge[data-id="14"]')
+                            pivot.querySelector(
+                                'div.o_field_many2many_tags span.badge[title="Azure Interior"]'
+                            )
                         ),
                         true,
                         "Wrong default filter value"
@@ -72,11 +74,11 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                 trigger: ".o_spreadsheet_filter_editor_side_panel",
                 content: "Check filter values",
                 run: function () {
-                    const modelWidgetInputs = document.querySelectorAll(
-                        "div.o_field_widget.o_field_many2one.o_quick_editable"
+                    const defaultFilterValue = document.querySelectorAll(
+                        'div.o_field_many2many_tags span.badge[title="Azure Interior"]'
                     );
                     assert(
-                        modelWidgetInputs.length,
+                        defaultFilterValue.length,
                         1,
                         "There should be a default value in the filter..."
                     );

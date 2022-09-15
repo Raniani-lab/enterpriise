@@ -1065,7 +1065,7 @@ QUnit.module(
         });
 
         QUnit.test("Readonly user can update relation filter values", async function (assert) {
-            const tagSelector = ".o_field_many2manytags .badge";
+            const tagSelector = ".o_field_many2many_tags .badge";
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, {
                 filter: {
@@ -1100,7 +1100,7 @@ QUnit.module(
             );
 
             await testUtils.dom.click(
-                pivot.querySelector(".pivot_filter_input input.ui-autocomplete-input")
+                pivot.querySelector(".pivot_filter_input input.o-autocomplete--input")
             );
             await testUtils.dom.click(document.querySelector("ul.ui-autocomplete li:first-child"));
 
@@ -1184,7 +1184,7 @@ QUnit.module(
         });
 
         QUnit.test("Can clear a relation filter values", async function (assert) {
-            const tagSelector = ".o_field_many2manytags .badge";
+            const tagSelector = ".o_field_many2many_tags .badge";
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, {
                 filter: {
@@ -1217,7 +1217,7 @@ QUnit.module(
             );
 
             await testUtils.dom.click(
-                pivot.querySelector(".pivot_filter_input input.ui-autocomplete-input")
+                pivot.querySelector(".pivot_filter_input input.o-autocomplete--input")
             );
             await testUtils.dom.click(document.querySelector("ul.ui-autocomplete li:first-child"));
 

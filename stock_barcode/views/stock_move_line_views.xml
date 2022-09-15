@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-6 my-2 d-flex align-items-baseline">
+                <div class="col-12 my-2 d-flex align-items-baseline">
                     <i class="fa fa-fw fa-lg fa-cube me-3" title="Quantity"/>
                     <field name="is_completed" invisible="1"/>
                     <field name="qty_done" class="w-100 w-md-50 text-end o_qty_done_field_completed" attrs="{'invisible': [('is_completed', '=', False)]}" options="{'type': 'number'}" placeholder="Quantity"/>

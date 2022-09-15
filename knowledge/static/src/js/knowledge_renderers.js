@@ -338,7 +338,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         }
         // ADSC: Remove when tree component
         // Updates the name in the sidebar
-        this.tree.el.querySelector(`.o_article[data-article-id="${id}"] > .o_article_handle > .o_article_name`).textContent = name;
+        const selector = `.o_article[data-article-id="${id}"] > .o_article_handle > .o_article_name`;
+        this.tree.el.querySelectorAll(selector).forEach(function(articleName) {
+          articleName.textContent = name;
+        });
     }
 
     /**

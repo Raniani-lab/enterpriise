@@ -21,12 +21,13 @@ export default {
         $sortable.sortable({
             axis: 'y',
             handle: '.o_article_handle',
-            items: 'li',
+            items: 'li:not(.o_article_tree_child)',
             opacity: 0.6,
             placeholder: 'ui-sortable-placeholder',
             tolerance: 'intersect',
             helper: 'clone',
             cursor: 'grabbing',
+            cancel: '.o_article_tree_child',
             scrollSpeed: 6,
             delay: 150,
             distance: 10,
@@ -35,7 +36,7 @@ export default {
              * @param {Object} ui
              */
             stop: async (event, ui) => {
-                const favoriteIds = $sortable.find('.o_article').map(function () {
+                const favoriteIds = $sortable.find('.o_article:not(.o_article_tree_child)').map(function () {
                     return $(this).data('favorite-article-id');
                 }).get();
                 $sortable.sortable('disable');

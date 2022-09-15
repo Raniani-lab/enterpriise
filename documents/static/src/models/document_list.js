@@ -23,9 +23,6 @@ registerModel({
             this.update({ selectedDocument: this.viewableDocuments[prevIndex] });
             this.onSelectDocument(this.selectedDocument.record);
         },
-        _computeViewableDocuments() {
-            return this.documents.filter((doc) => doc.isViewable);
-        },
         openPdfManager() {
             const documents = this.initialRecordSelectionLength === 1 ? [this.selectedDocument.record] : this.viewableDocuments.map(doc => doc.record);
             return this.pdfManagerOpenCallback(documents);
@@ -50,7 +47,9 @@ registerModel({
         }),
         selectedDocument: one("Document"),
         viewableDocuments: many("Document", {
-            compute: "_computeViewableDocuments",
+            compute() {
+                return this.documents.filter((doc) => doc.isViewable);
+            },
         }),
     },
 });

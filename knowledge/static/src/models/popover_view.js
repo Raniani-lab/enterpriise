@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { addFields, patchRecordMethods } from '@mail/model/model_core';
+import { addFields, patchFields } from '@mail/model/model_core';
 import { one } from '@mail/model/model_field';
 // ensure that the model definition is loaded before the patch
 import '@mail/models/popover_view';
@@ -19,32 +19,29 @@ addFields('PopoverView', {
  * Determines the properties of the popover view of knowledge emoji picker in context,
  * such as anchor, content (emoji picker), and desirable position.
  */
-patchRecordMethods('PopoverView', {
-    /**
-     * @override
-     */
-    _computeAnchorRef() {
-        if (this.knowledgeOwnerAsEmojiPicker) {
-            return this.knowledgeOwnerAsEmojiPicker.emojiPickerPopoverAnchorRef;
-        }
-        return this._super();
+patchFields('PopoverView', {
+    anchorRef: {
+        compute() {
+            if (this.knowledgeOwnerAsEmojiPicker) {
+                return this.knowledgeOwnerAsEmojiPicker.emojiPickerPopoverAnchorRef;
+            }
+            return this._super();
+        },
     },
-    /**
-     * @override
-     */
-    _computeEmojiPickerView() {
-        if (this.knowledgeOwnerAsEmojiPicker) {
-            return {};
-        }
-        return this._super();
+    emojiPickerView: {
+        compute() {
+            if (this.knowledgeOwnerAsEmojiPicker) {
+                return {};
+            }
+            return this._super();
+        },
     },
-    /**
-     * @override
-     */
-    _computePosition() {
-        if (this.knowledgeOwnerAsEmojiPicker) {
-            return 'bottom';
-        }
-        return this._super();
+    position: {
+        compute() {
+            if (this.knowledgeOwnerAsEmojiPicker) {
+                return 'bottom';
+            }
+            return this._super();
+        },
     },
 });

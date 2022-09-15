@@ -40,134 +40,6 @@ registerModel({
                 ]);
             }
         },
-        /**
-         * @private
-         * @returns {string|FieldCommand}
-         */
-        _computeComponentName() {
-            if (this.channelPreviewViewOwner) {
-                return 'ChannelPreviewView';
-            }
-            if (this.messageViewOwner) {
-                return 'Message';
-            }
-            if (this.notificationGroupViewOwner) {
-                return 'NotificationGroup';
-            }
-            if (this.threadNeedactionPreviewViewOwner) {
-                return 'ThreadNeedactionPreview';
-            }
-            return clear();
-        },
-        /**
-         * @private
-         * @returns {boolean}
-         */
-        _computeHasLeftSwipe() {
-            if (this.channelPreviewViewOwner) {
-                return (
-                    this.channelPreviewViewOwner.thread.isChatChannel &&
-                    this.channelPreviewViewOwner.thread.isPinned
-                );
-            }
-            return false;
-        },
-        /**
-         * @private
-         * @returns {boolean}
-         */
-        _computeHasRightSwipe() {
-            if (this.channelPreviewViewOwner) {
-                return this.channelPreviewViewOwner.channel.localMessageUnreadCounter > 0;
-            }
-            if (this.messageViewOwner) {
-                return true;
-            }
-            if (this.notificationGroupViewOwner) {
-                return true;
-            }
-            if (this.threadNeedactionPreviewViewOwner) {
-                return true;
-            }
-            return false;
-        },
-        /**
-         * @private
-         * @returns {string|FieldCommand}
-         */
-        _computeLeftSwipeBackgroundColor() {
-            if (this.channelPreviewViewOwner) {
-                return 'bg-danger';
-            }
-            return clear();
-        },
-        /**
-         * @private
-         * @returns {string|FieldCommand}
-         */
-        _computeLeftSwipeIcon() {
-            if (this.channelPreviewViewOwner) {
-                return 'fa-times-circle';
-            }
-            return clear();
-        },
-        /**
-         * @private
-         * @returns {FieldCommand}
-         */
-        _computeRecord() {
-            if (this.channelPreviewViewOwner) {
-                return this.channelPreviewViewOwner;
-            }
-            if (this.messageViewOwner) {
-                return this.messageViewOwner;
-            }
-            if (this.notificationGroupViewOwner) {
-                return this.notificationGroupViewOwner;
-            }
-            if (this.threadNeedactionPreviewViewOwner) {
-                return this.threadNeedactionPreviewViewOwner;
-            }
-            return clear();
-        },
-        /**
-         * @private
-         * @returns {string|FieldCommand}
-         */
-        _computeRightSwipeBackgroundColor() {
-            if (this.channelPreviewViewOwner) {
-                return 'bg-success';
-            }
-            if (this.messageViewOwner) {
-                return 'bg-success';
-            }
-            if (this.notificationGroupViewOwner) {
-                return 'bg-warning';
-            }
-            if (this.threadNeedactionPreviewViewOwner) {
-                return 'bg-success';
-            }
-            return clear();
-        },
-        /**
-         * @private
-         * @returns {string|FieldCommand}
-         */
-        _computeRightSwipeIcon() {
-            if (this.channelPreviewViewOwner) {
-                return 'fa-check-circle';
-            }
-            if (this.messageViewOwner) {
-                return 'fa-check-circle';
-            }
-            if (this.notificationGroupViewOwner) {
-                return 'fa-times-circle';
-            }
-            if (this.threadNeedactionPreviewViewOwner) {
-                return 'fa-check-circle';
-            }
-            return clear();
-        },
     },
     fields: {
         channelPreviewViewOwner: one('ChannelPreviewView', {
@@ -175,22 +47,68 @@ registerModel({
             inverse: 'swiperView',
         }),
         componentName: attr({
-            compute: '_computeComponentName',
+            compute() {
+                if (this.channelPreviewViewOwner) {
+                    return 'ChannelPreviewView';
+                }
+                if (this.messageViewOwner) {
+                    return 'Message';
+                }
+                if (this.notificationGroupViewOwner) {
+                    return 'NotificationGroup';
+                }
+                if (this.threadNeedactionPreviewViewOwner) {
+                    return 'ThreadNeedactionPreview';
+                }
+                return clear();
+            },
             required: true,
         }),
         hasLeftSwipe: attr({
-            compute: '_computeHasLeftSwipe',
+            compute() {
+                if (this.channelPreviewViewOwner) {
+                    return (
+                        this.channelPreviewViewOwner.thread.isChatChannel &&
+                        this.channelPreviewViewOwner.thread.isPinned
+                    );
+                }
+                return false;
+            },
             required: true,
         }),
         hasRightSwipe: attr({
-            compute: '_computeHasRightSwipe',
+            compute() {
+                if (this.channelPreviewViewOwner) {
+                    return this.channelPreviewViewOwner.channel.localMessageUnreadCounter > 0;
+                }
+                if (this.messageViewOwner) {
+                    return true;
+                }
+                if (this.notificationGroupViewOwner) {
+                    return true;
+                }
+                if (this.threadNeedactionPreviewViewOwner) {
+                    return true;
+                }
+                return false;
+            },
             required: true,
         }),
         leftSwipeBackgroundColor: attr({
-            compute: '_computeLeftSwipeBackgroundColor',
+            compute() {
+                if (this.channelPreviewViewOwner) {
+                    return 'bg-danger';
+                }
+                return clear();
+            },
         }),
         leftSwipeIcon: attr({
-            compute: '_computeLeftSwipeIcon',
+            compute() {
+                if (this.channelPreviewViewOwner) {
+                    return 'fa-times-circle';
+                }
+                return clear();
+            },
         }),
         messageViewOwner: one('MessageView', {
             identifying: true,
@@ -201,14 +119,56 @@ registerModel({
             inverse: 'swiperView',
         }),
         record: one('Record', {
-            compute: '_computeRecord',
+            compute() {
+                if (this.channelPreviewViewOwner) {
+                    return this.channelPreviewViewOwner;
+                }
+                if (this.messageViewOwner) {
+                    return this.messageViewOwner;
+                }
+                if (this.notificationGroupViewOwner) {
+                    return this.notificationGroupViewOwner;
+                }
+                if (this.threadNeedactionPreviewViewOwner) {
+                    return this.threadNeedactionPreviewViewOwner;
+                }
+                return clear();
+            },
             required: true,
         }),
         rightSwipeBackgroundColor: attr({
-            compute: '_computeRightSwipeBackgroundColor',
+            compute() {
+                if (this.channelPreviewViewOwner) {
+                    return 'bg-success';
+                }
+                if (this.messageViewOwner) {
+                    return 'bg-success';
+                }
+                if (this.notificationGroupViewOwner) {
+                    return 'bg-warning';
+                }
+                if (this.threadNeedactionPreviewViewOwner) {
+                    return 'bg-success';
+                }
+                return clear();
+            },
         }),
         rightSwipeIcon: attr({
-            compute: '_computeRightSwipeIcon',
+            compute() {
+                if (this.channelPreviewViewOwner) {
+                    return 'fa-check-circle';
+                }
+                if (this.messageViewOwner) {
+                    return 'fa-check-circle';
+                }
+                if (this.notificationGroupViewOwner) {
+                    return 'fa-times-circle';
+                }
+                if (this.threadNeedactionPreviewViewOwner) {
+                    return 'fa-check-circle';
+                }
+                return clear();
+            },
         }),
         threadNeedactionPreviewViewOwner: one('ThreadNeedactionPreviewView', {
             identifying: true,

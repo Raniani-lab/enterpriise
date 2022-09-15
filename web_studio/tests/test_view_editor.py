@@ -362,3 +362,83 @@ class TestEditView(TestStudioController):
             self.assertTrue(code.get('studio_groups'))
             for node in (state, code):
                 self.assertEqual(json.loads(node.get('studio_groups'))[0]['name'], 'Technical Features')
+
+    def test_edit_field_present_in_multiple_views(self):
+        """ a use case where the hack before this fix doesn't work.
+        We try to edit a field that is present in two views, and studio
+        must modify the field in the correct view and do not confuse it
+        with the other one.
+        """
+        IrModelFields = self.env["ir.model.fields"].with_context(studio=True)
+        source_model = self.env["ir.model"].search([("model", "=", "res.partner")])
+        destination_model = self.env["ir.model"].search(
+            [("model", "=", "res.currency")]
+        )
+        IrModelFields.create(
+            {
+                "ttype": "many2many",
+                "model_id": source_model.id,
+                "relation": destination_model.model,
+                "name": "x_test_field_x",
+                "relation_table": IrModelFields._get_next_relation(
+                    source_model.model, destination_model.model
+                ),
+            }
+        )
+        arch = """ <form>
+            <field name="user_ids">
+                <form>
+                    <field name="x_test_field_x"/>
+                </form>
+                <tree>
+                    <field name="x_test_field_x"/>
+                </tree>
+            </field>
+        </form>"""
+
+        base_view = self.env['ir.ui.view'].create({
+            'name': 'TestForm',
+            'type': 'form',
+            'model': 'res.partner',
+            'arch': arch
+        })
+
+        operation = {
+            'type': 'attributes',
+            'target': {
+                'tag': 'field',
+                    'attrs': {
+                        'name': 'x_test_field_x'
+                    },
+                    'xpath_info': [
+                        {'tag': 'tree', 'indice': 1},
+                        {'tag': 'field', 'indice': 1}
+                    ],
+                    'subview_xpath': "//field[@name='user_ids']/tree"
+                },
+                'position': 'attributes',
+                'node': {
+                    'tag': 'field',
+                    'attrs': {
+                        'name': 'x_test_field_x',
+                        'id': 'x_test_field_x'
+                    },
+                },
+                'new_attrs': {
+                    'options': "{\"no_create\": true}"
+                }
+            }
+
+        self.edit_view(base_view, operations=[operation])
+
+        expected_arch = """ <form>
+            <field name="user_ids">
+                <form>
+                    <field name="x_test_field_x"/>
+                </form>
+                <tree>
+                    <field name="x_test_field_x" options="{&quot;no_create&quot;: true}"/>
+                </tree>
+            </field>
+        </form>"""
+        self.assertViewArchEqual(base_view.get_combined_arch(), expected_arch)

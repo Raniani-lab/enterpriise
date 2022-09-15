@@ -17,6 +17,10 @@
             'sign_itsme/static/src/js/*',
             'sign_itsme/static/src/xml/*',
         ],
+        'web.assets_frontend': [
+            'sign_itsme/static/src/js/*',
+            'sign_itsme/static/src/xml/*',
+        ],
     },
     'installable': True,
     'license': 'OEEL-1',

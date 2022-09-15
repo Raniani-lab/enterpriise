@@ -77,6 +77,8 @@
             'knowledge/static/src/scss/knowledge_common.scss',
             'knowledge/static/src/scss/knowledge_frontend.scss',
             'knowledge/static/src/scss/knowledge_blocks.scss',
+            'knowledge/static/src/js/tools/knowledge_tools.js',
+            'knowledge/static/src/js/tools/tree_panel_mixin.js',
             'knowledge/static/src/js/knowledge_frontend.js',
         ],
         'web.assets_common': [

@@ -22,6 +22,7 @@
         'web.assets_frontend': [
             'payment_sepa_direct_debit/static/src/js/payment_form.js',
             'payment_sepa_direct_debit/static/src/js/signature_form.js',
+            'payment_sepa_direct_debit/static/src/xml/signature_form.xml'
         ],
     },
     'license': 'OEEL-1',

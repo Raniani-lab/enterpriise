@@ -51,13 +51,11 @@
         <t t-call="web.layout">
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-                <t t-call-assets="web.assets_common" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
                 <script type="text/javascript">
                     odoo.__session_info__ = <t t-out="json.dumps(request.env['ir.http'].get_frontend_session_info_sign())"/>;
                 </script>
-                <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
                 <t t-call="web.conditional_assets_tests"/>
 
@@ -159,10 +157,8 @@
         <t t-call="web.layout">
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-                <t t-call-assets="web.assets_common" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
-                <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
             <div class="container text-center">
@@ -188,10 +184,8 @@
         <t t-call="web.frontend_layout">
             <t t-set="head">
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-                <t t-call-assets="web.assets_common" t-js="false"/>
                 <t t-call-assets="web.assets_frontend" t-js="false"/>
                 <link rel="stylesheet" type="text/scss" href="/web_enterprise/static/src/scss/modal_mobile.scss"/>
-                <t t-call-assets="web.assets_common" t-css="false"/>
                 <t t-call-assets="web.assets_frontend" t-css="false"/>
             </t>
             <div class="oe_structure oe_empty">

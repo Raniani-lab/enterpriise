@@ -34,6 +34,12 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/fonts/fonts.scss',
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],
+        'web.assets_frontend': [
+            ('replace', 'web/static/src/legacy/scss/ui_extra.scss', 'web_enterprise/static/src/legacy/scss/ui.scss'),
+
+            'web_enterprise/static/fonts/fonts.scss',
+            'web_enterprise/static/src/webclient/navbar/navbar.scss',
+        ],
         'web.assets_backend': [
             ('replace', 'web/static/src/webclient/webclient_extra.scss', 'web_enterprise/static/src/webclient/webclient.scss'),
 

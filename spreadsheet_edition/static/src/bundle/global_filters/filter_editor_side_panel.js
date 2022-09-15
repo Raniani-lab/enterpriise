@@ -7,7 +7,7 @@ import {
     FieldSelectorWidget,
     FieldSelectorAdapter,
 } from "spreadsheet_edition.field_selector_widget";
-import { RecordsSelector } from "@spreadsheet/global_filters/components/tag_selector_widget";
+import { RecordsSelector } from "@spreadsheet/global_filters/components/records_selector/records_selector";
 import { useService } from "@web/core/utils/hooks";
 import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ModelSelector } from "@web/core/model_selector/model_selector";

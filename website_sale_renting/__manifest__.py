@@ -15,6 +15,8 @@ appropriate views and selling choices.
         'views/product_views.xml',
         'views/res_config_settings_views.xml',
         'views/templates.xml',
+        'views/snippets/snippets.xml',
+        'views/snippets/s_rental_search.xml',
     ],
     'demo': [
         'data/demo.xml',
@@ -26,6 +28,9 @@ appropriate views and selling choices.
         ],
         'web.assets_tests': [
             'website_sale_renting/static/tests/tours/**/*',
+        ],
+        'website.assets_wysiwyg': [
+            'website_sale_renting/static/src/snippets/s_rental_search/options.js',
         ],
     },
     'auto_install': True,

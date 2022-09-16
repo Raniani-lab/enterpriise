@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { WebsiteSale } from 'website_sale.website_sale';
-import RentingMixin from '@website_sale_renting/js/renting_mixin';
+import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 import '@website_sale_renting/js/variant_mixin';
 
 WebsiteSale.include(RentingMixin);
@@ -10,6 +10,7 @@ WebsiteSale.include({
         'renting_constraints_changed': '_onRentingConstraintsChanged',
         'toggle_disable': '_onToggleDisable',
         'change .js_main_product .o_website_sale_daterange_picker input.daterange-input': 'onChangeVariant',
+        'apply.daterangepicker': '_onDatePickerApply',
     }),
 
 
@@ -130,5 +131,20 @@ WebsiteSale.include({
         const result = this._super.apply(this, arguments);
         this._verifyValidRentingPeriod($parent);
         return result;
-    }
+    },
+
+    _onDatePickerApply: function (ev) {
+        const datepickerEl = ev.target.closest('.o_website_sale_shop_daterange_picker');
+        if (datepickerEl) {
+            const rawInput = datepickerEl.querySelector('.daterange-input').value;
+            // get current URL parameters
+            const searchParams = new URLSearchParams(window.location.search);
+            const [startDate, endDate] = rawInput.split(' - ');
+            if (startDate && endDate) {
+                searchParams.set('start_date', `${new Date(startDate).toISOString()}`);
+                searchParams.set('end_date', `${new Date(endDate).toISOString()}`);
+            }
+            window.location = `/shop?${searchParams.toString()}`;
+        }
+    },
 });

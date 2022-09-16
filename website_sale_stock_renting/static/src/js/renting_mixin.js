@@ -3,7 +3,7 @@
 import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
 import time from 'web.time';
-import RentingMixin from '@website_sale_renting/js/renting_mixin';
+import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 
 const oldGetInvalidMessage = RentingMixin._getInvalidMessage;
 /**

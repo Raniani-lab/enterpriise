@@ -30,18 +30,20 @@
 
     <template id="rental_product" inherit_id="website_sale.product" name="Select pickup Date and Return Date">
         <xpath expr="//div[hasclass('js_main_product')]/t[@t-placeholder='select']" position="after">
-            <div t-if="combination_info['is_rental']" class="css_editable_mode_hidden">
+            <div t-if="combination_info['is_rental']" class="o_not_editable">
                 <div class="mb-3 align-middle input-group-lg o_website_sale_daterange_picker variant_attribute">
-                    <input type="hidden" name="default_start_date" t-att-value="combination_info['default_start_date']"/>
+                    <input type="hidden" name="default_start_date"
+                           t-att-value="combination_info['default_start_date']"/>
                     <input type="hidden" name="default_end_date" t-att-value="combination_info['default_end_date']"/>
-                    <input type="hidden" name="rental_duration_unit" t-att-value="combination_info['rental_duration_unit']"/>
+                    <input type="hidden" name="rental_duration_unit"
+                           t-att-value="combination_info['rental_duration_unit']"/>
                     <strong class="attribute_name">Rental Period</strong>
                     <div class="oe_unremovable w-100">
                         <div class="s_website_form_datetime input-group date col-md-8 ps-0"
-                                data-target-input="nearest"
-                                id="rentingDates">
+                             data-target-input="nearest"
+                             id="rentingDates">
                             <input type="text" name="renting_dates"
-                                    class="form-control daterange-input"/>
+                                   class="form-control daterange-input"/>
                             <div class="input-group-text" data-target="#rentingDates"
                                  data-toggle="daterange">
                                 <i class="fa fa-calendar"></i>
@@ -53,7 +55,8 @@
                     <div>
                         <strong>
                             <span class="o_renting_duration" t-esc="combination_info['current_rental_duration']"/>
-                            <span class="o_renting_unit" t-esc="combination_info['current_rental_unit']" style="text-transform:lowercase;"/>
+                            <span class="o_renting_unit" t-esc="combination_info['current_rental_unit']"
+                                  style="text-transform:lowercase;"/>
                         </strong>
                     </div>
                     <div>
@@ -79,10 +82,12 @@
         <xpath expr="//option/t[@t-call='sale.badge_extra_price']" position="attributes">
             <attribute name="t-if">not product.rent_ok</attribute>
         </xpath>
-        <xpath expr="//label/div/div[hasclass('radio_input_value')]/t[@t-call='sale.badge_extra_price']" position="attributes">
+        <xpath expr="//label/div/div[hasclass('radio_input_value')]/t[@t-call='sale.badge_extra_price']"
+               position="attributes">
             <attribute name="t-if">not product.rent_ok</attribute>
         </xpath>
-        <xpath expr="//div[hasclass('o_variant_pills_input_value')]/t[@t-call='sale.badge_extra_price']" position="attributes">
+        <xpath expr="//div[hasclass('o_variant_pills_input_value')]/t[@t-call='sale.badge_extra_price']"
+               position="attributes">
             <attribute name="t-if">not product.rent_ok</attribute>
         </xpath>
     </template>
@@ -110,7 +115,7 @@
     </template>
 
     <template id="cart_summary_inherit_website_sale_renting"
-            inherit_id="website_sale.cart_summary">
+              inherit_id="website_sale.cart_summary">
         <xpath expr="//td[hasclass('td-product_name')]/div/strong" position="after">
             <div t-if="line.is_rental" class="text-muted d-none d-md-block small"
                  t-esc="line._get_rental_order_line_description()"/>
@@ -139,4 +144,75 @@
         </xpath>
     </template>
 
+    <template id="website_sale_renting.shop_rental_datepicker_opt" active="True"/>
+
+    <template id="website_sale_renting.datepicker">
+        <div class="o_website_sale_daterange_picker col-auto flex-grow-1 o_not_editable o_website_sale_shop_daterange_picker">
+            <input type="hidden" name="rental_duration_unit" value="hour"/>
+            <div class="s_website_form_datetime input-group date col-md-8 ps-0"
+                 data-target-input="nearest" id="shopRentingDates">
+                <input type="text" id="s_rental_search_date_input"
+                       class="form-control daterange-input"/>
+                <div class="input-group-text" data-target="#shopRentingDates"
+                     data-toggle="daterange">
+                    <i class="fa fa-calendar"/>
+                </div>
+            </div>
+            <div class="o_renting_warning d-none">
+                <span class="text-warning">
+                    <i class="fa fa-warning"/>
+                    <span name="renting_warning_message"/>
+                </span>
+            </div>
+        </div>
+    </template>
+
+    <template id="website_sale_renting.o_wsale_offcanvas" name="Datepicker" inherit_id="website_sale.o_wsale_offcanvas">
+        <xpath expr="//div[@id='o_wsale_offcanvas_content']//div[1]" position="before">
+            <t t-if="is_view_active('website_sale_renting.shop_rental_datepicker_opt')">
+                <div class="accordion-item">
+                    <h2 id="o_wsale_offcanvas_orderby_header" class="accordion-header mb-0">
+                        <button class="o_wsale_offcanvas_title accordion-button border-top rounded-0 collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#o_wsale_offcanvas_rental_datepicker"
+                                aria-expanded="false"
+                                aria-controls="o_wsale_offcanvas_rental_datepicker">
+                            <b>Rental Period</b>
+                        </button>
+                    </h2>
+                    <div id="o_wsale_offcanvas_rental_datepicker"
+                         class="accordion-collapse collapse"
+                         aria-labelledby="o_wsale_offcanvas_orderby_header">
+                        <div class="accordion-body pt-0">
+                            <t t-call="website_sale_renting.datepicker"/>
+                        </div>
+                    </div>
+
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="website_sale_renting.products" name="Datepicker" inherit_id="website_sale.products">
+        <!-- Allow rental datepicker by itself in left side bar-->
+        <xpath expr="//t[@t-set='hasLeftColumn']" position="after">
+            <t t-set="hasLeftColumn">hasLeftColumn or is_view_active('website_sale_renting.shop_rental_datepicker_opt')</t>
+        </xpath>
+        <!-- Add rental datepicker to left bar -->
+        <xpath expr="//aside[@id='products_grid_before']//div//div[1]" position="before">
+            <t t-if="is_view_active('website_sale_renting.shop_rental_datepicker_opt')">
+                <div class="accordion-item nav-item mb-1">
+                    <h6 class="mb-3">
+                        <b>Rental Period</b>
+                    </h6>
+                    <t t-call="website_sale_renting.datepicker"/>
+                </div>
+            </t>
+        </xpath>
+        <!-- Allow rental datepicker by itself in offcanvas -->
+        <xpath expr="//button[@data-bs-target='#o_wsale_offcanvas']" position="attributes">
+            <attribute name="t-if" add=" or is_view_active('website_sale_renting.shop_rental_datepicker_opt')" separator=" "/>
+        </xpath>
+    </template>
 </odoo>

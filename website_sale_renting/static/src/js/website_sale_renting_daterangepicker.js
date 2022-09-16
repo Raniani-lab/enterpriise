@@ -3,7 +3,7 @@
 import { _t } from 'web.core';
 import time from 'web.time';
 import publicWidget from 'web.public.widget';
-import RentingMixin from '@website_sale_renting/js/renting_mixin';
+import { msecPerUnit, RentingMixin } from '@website_sale_renting/js/renting_mixin';
 
 publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(RentingMixin, {
     selector: '.o_website_sale_daterange_picker',
@@ -32,17 +32,14 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
      *
      * @override
      */
-    start() {
-        return this._super.apply(this, arguments).then(() => {
-            // stat / end datetimes widgets
-            this.startDate = this._getDefaultRentingDate('start_date');
-            this.endDate = this._getDefaultRentingDate('end_date');
-            const self = this;
-            this.$('input.daterange-input').each(function () {
-                self._initSaleRentingDateRangePicker(this);
-            });
-            this._verifyValidPeriod();
+    async start() {
+        await this._super(...arguments);
+        this.startDate = this._getDefaultRentingDate('start_date');
+        this.endDate = this._getDefaultRentingDate('end_date');
+        this.el.querySelectorAll('input.daterange-input').forEach(daterangeInput => {
+            this._initSaleRentingDateRangePicker(daterangeInput);
         });
+        this._verifyValidPeriod();
     },
 
     /**
@@ -74,7 +71,7 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
      * @param {HTMLElement} dateInput
      * @private
      */
-    _initSaleRentingDateRangePicker: async function (dateInput) {
+    _initSaleRentingDateRangePicker(dateInput) {
         const $dateInput = this.$(dateInput);
         $dateInput.daterangepicker({
             // dates
@@ -134,12 +131,36 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
      * @private
      */
     _getDefaultRentingDate(inputName) {
-        const defaultDate = this.el.querySelector('input[name="default_' + inputName + '"]');
-        if (defaultDate && defaultDate.value) {
-            const utcDate = moment(defaultDate.value);
-            utcDate.add(this.getSession().getTZOffset(utcDate), 'minutes');
-            return utcDate;
+        let defaultDate = this._getSearchDefaultRentingDate(inputName);
+        if (defaultDate) {
+            return moment(defaultDate);
         }
+        // that means that the date is not in the url
+        const defaultDateEl = this.el.querySelector(`input[name="default_${inputName}"]`);
+        if (defaultDateEl) {
+            return moment(defaultDateEl.value);
+        }
+        if (this.startDate) {
+            // that means that the start date is already set
+            const rentingDurationMs = this.rentingMinimalTime.duration * msecPerUnit[this.rentingMinimalTime.unit];
+            const defaultRentingDurationMs = msecPerUnit['day']; // default duration is 1 day
+            let endDate = this.startDate.clone().add(Math.max(rentingDurationMs, defaultRentingDurationMs), 'ms');
+            return this._getFirstAvailableDate(endDate);
+        }
+        // that means that the date is not in the url and not in the hidden input
+        // get the first available date based on this.rentingUnavailabilityDays
+        let date = moment().add(1, 'd');
+        return moment(this._getFirstAvailableDate(date));
+    },
+
+    /**
+     * Get the default renting date for the given input from the search params.
+     *
+     * @param {String} inputName - The name of the input tag that contains pickup or return date
+     * @private
+     */
+    _getSearchDefaultRentingDate(inputName) {
+        return new URLSearchParams(window.location.search).get(inputName);
     },
 
     /**
@@ -181,6 +202,7 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
         } else {
             this.el.parentElement.querySelector('.o_renting_warning').classList.add('d-none');
         }
+        this.el.dispatchEvent(new CustomEvent('toggle_search_btn', { bubbles: true, detail: message }));
         return !message;
     },
 
@@ -189,6 +211,18 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
     _getParentElement() {
         return this.el.closest('form');
     },
+    /**
+     * Get the first available date based on this.rentingUnavailabilityDays.
+     * @private
+     */
+    _getFirstAvailableDate(date) {
+        let counter = 0;
+        while (this._isInvalidDate(date) && counter < 1000) {
+            date = date.add(1, 'd');
+            counter++;
+        }
+        return date;
+    }
 });
 
 export default publicWidget.registry.WebsiteSaleDaterangePicker;

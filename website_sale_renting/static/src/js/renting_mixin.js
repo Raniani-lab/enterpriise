@@ -3,20 +3,20 @@
 import { _t, _lt } from 'web.core';
 import { sprintf } from "@web/core/utils/strings";
 
-const msecPerUnit = {
+export const msecPerUnit = {
     hour: 3600 * 1000,
     day: 3600 * 1000 * 24,
     week: 3600 * 1000 * 24 * 7,
     month: 3600 * 1000 * 24 * 30,
 };
-const unitMessages = {
+export const unitMessages = {
     hour: _lt("(%s hours)."),
     day: _lt("(%s days)."),
     week: _lt("(%s weeks)."),
     month: _lt("(%s months)."),
 };
 
-const RentingMixin = {
+export const RentingMixin = {
 
     /**
      * Get the message to display if the renting has invalid dates.
@@ -25,7 +25,7 @@ const RentingMixin = {
      * @param {moment} endDate
      * @private
      */
-    _getInvalidMessage(startDate, endDate, productId) {
+    _getInvalidMessage(startDate, endDate, productId=false) {
         let message;
         if (!this.rentingUnavailabilityDays || !this.rentingMinimalTime) {
             return message;
@@ -39,7 +39,7 @@ const RentingMixin = {
                 const rentingDuration = endDate - startDate;
                 if (rentingDuration < 0) {
                     message = _t("The return date should be after the pickup date.");
-                } else if (startDate < moment()) {
+                } else if (startDate.isBefore(moment())) {
                     message = _t("The pickup date cannot be in the past.");
                 } else if (['hour', 'day', 'week', 'month'].includes(this.rentingMinimalTime.unit)) {
                     const unit = this.rentingMinimalTime.unit;
@@ -51,6 +51,8 @@ const RentingMixin = {
                     }
                 }
             }
+        } else {
+            message = _t("Please select a rental period.");
         }
         return message;
     },
@@ -98,5 +100,3 @@ const RentingMixin = {
     },
 
 };
-
-export default RentingMixin;

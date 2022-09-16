@@ -15,7 +15,7 @@
             </t>
         </xpath>
         <xpath expr="//div[hasclass('product_summary')]/form/*[1]" position="before">
-            <div t-if="combination_info['is_rental']">
+            <div t-if="combination_info['is_rental']" class="o_not_editable">
                 <div class="me-2 my-3 align-middle input-group-lg o_website_sale_daterange_picker o_comparison_daterangepicker variant_attribute">
                     <input type="hidden" name="is_rental" t-att-value="combination_info['is_rental']"/>
                     <input type="hidden" name="default_start_date" t-att-value="combination_info['default_start_date']"/>

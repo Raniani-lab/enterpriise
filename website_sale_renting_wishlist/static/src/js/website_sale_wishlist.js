@@ -2,7 +2,7 @@
 
 import publicWidget from 'web.public.widget';
 import 'website_sale_wishlist.wishlist';
-import RentingMixin from '@website_sale_renting/js/renting_mixin';
+import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 
 publicWidget.registry.ProductWishlist.include(RentingMixin);
 publicWidget.registry.ProductWishlist.include({

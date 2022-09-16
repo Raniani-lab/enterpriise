@@ -2,7 +2,7 @@
 
 import publicWidget from 'web.public.widget';
 import 'website_sale_comparison.comparison';
-import RentingMixin from '@website_sale_renting/js/renting_mixin';
+import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 
 publicWidget.registry.ProductComparison.include(RentingMixin);
 publicWidget.registry.ProductComparison.include({

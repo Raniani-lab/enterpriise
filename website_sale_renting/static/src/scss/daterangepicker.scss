@@ -31,3 +31,14 @@
         }
     }
 }
+
+.editor_enable {
+    .o_website_sale_daterange_picker .s_website_form_datetime {
+        input {
+            pointer-events: none;
+        }
+    }
+    .s_rental_search_select {
+        pointer-events: none;
+    }
+}

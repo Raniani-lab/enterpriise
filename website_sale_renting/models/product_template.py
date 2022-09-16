@@ -214,3 +214,9 @@ class ProductTemplate(models.Model):
     def _website_show_quick_add(self):
         self.ensure_one()
         return not self.rent_ok and super()._website_show_quick_add()
+
+    def _search_get_detail(self, website, order, options):
+        search_details = super()._search_get_detail(website, order, options)
+        if options.get('rent_only') or (options.get('from_date') and options.get('to_date')):
+            search_details['base_domain'].append([('rent_ok', '=', True)])
+        return search_details

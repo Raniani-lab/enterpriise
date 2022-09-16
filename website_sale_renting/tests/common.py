@@ -20,7 +20,7 @@ class TestWebsiteSaleRentingCommon(TransactionCase):
             'rent_ok': True,
         })
         recurrence_hour = cls.env['sale.temporal.recurrence'].sudo().create({'duration': 1, 'unit': 'hour'})
-        recurrence_5_hour = cls.env['sale.temporal.recurrence'].sudo().create({'duration': 1, 'unit': 'hour'})
+        recurrence_5_hour = cls.env['sale.temporal.recurrence'].sudo().create({'duration': 5, 'unit': 'hour'})
         cls.env['product.pricing'].create([
             {
                 'recurrence_id': recurrence_hour.id,

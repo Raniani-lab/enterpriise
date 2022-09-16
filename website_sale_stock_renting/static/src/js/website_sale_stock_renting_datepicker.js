@@ -84,6 +84,9 @@ WebsiteSaleDaterangePicker.include({
         const result = this._super.apply(this, arguments);
         if (!result) {
             const productId = this._getProductId();
+            if (!productId) {
+                return false;
+            }
             const dateStart = date.startOf('day');
             for (const interval of this.rentingAvailabilities[productId]) {
                 if (interval.start.startOf('day') > dateStart) {
@@ -108,6 +111,9 @@ WebsiteSaleDaterangePicker.include({
     _isCustomDate(date) {
         const result = this._super.apply(this, arguments);
         const productId = this._getProductId();
+        if (!productId) {
+            return;
+        }
         const dateStart = date.startOf('day');
         for (const interval of this.rentingAvailabilities[productId]) {
             if (interval.start.startOf('day') > dateStart) {

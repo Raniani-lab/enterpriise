@@ -401,18 +401,17 @@ class HrContract(models.Model):
     @api.model
     def update_state(self):
         # Called by a cron
-        # It schedules an activity before the expiration of a credit time contract
-        date_today = fields.Date.from_string(fields.Date.today())
-        outdated_days = fields.Date.to_string(date_today + relativedelta(days=+14))
-        nearly_expired_contracts = self.search([('state', '=', 'open'), ('time_credit', '=', True), ('date_end', '<', outdated_days)])
+        # It sets the contract in red before the expiration of a credit time contract
+        date_today = fields.Date.today()
+        outdated_days = date_today + relativedelta(days=14)
+        nearly_expired_contracts = self.search([
+            ('state', '=', 'open'),
+            ('kanban_state', '!=', 'blocked'),
+            ('time_credit', '=', True),
+            ('date_end', '<', outdated_days),
+        ])
         nearly_expired_contracts.write({'kanban_state': 'blocked'})
-
-        for contract in nearly_expired_contracts.filtered(lambda contract: contract.hr_responsible_id):
-            contract.with_context(mail_activity_quick_update=True).activity_schedule(
-                'mail.mail_activity_data_todo', contract.date_end,
-                user_id=contract.hr_responsible_id.id)
-
-        return super(HrContract, self).update_state()
+        return super().update_state()
 
     def _preprocess_work_hours_data_split_half(self, work_data, date_from, date_to):
         """

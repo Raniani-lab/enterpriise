@@ -15,4 +15,5 @@ AbstractBehavior.props = {
     readonly: { type: Boolean },
     anchor: { type: Element },
     wysiwyg: { type: Object, optional: true},
+    record: { type: Object },
 };

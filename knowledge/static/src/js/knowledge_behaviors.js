@@ -65,46 +65,6 @@ const KnowledgeBehavior = Class.extend({
     },
 });
 
-/**
- * A behavior to set a block as uneditable. Such a block can have children
- * marked as @see o_knowledge_content which are set as editable
- */
-const ContentsContainerBehavior = KnowledgeBehavior.extend({
-    /**
-     * @override
-     */
-    applyAttributes: function () {
-        this._super.apply(this, arguments);
-        if (this.mode === 'edit') {
-            this.anchor.querySelectorAll('.o_knowledge_content').forEach(element => {
-                element.setAttribute('contenteditable', 'true');
-            });
-            this.anchor.setAttribute('contenteditable', 'false');
-        }
-    },
-
-    //--------------------------------------------------------------------------
-    // Proxies
-    //--------------------------------------------------------------------------
-
-    /**
-     * Since 'ContentsContainerBehavior' extends 'Class' and not Widget, we need to go through
-     * our handler to proxy the do_action calls. As the handler properly extends Widget.
-     */
-    do_action: async function () {
-        return this.handler.do_action.apply(this.handler, arguments);
-    },
-
-    /**
-     * Since 'ContentsContainerBehavior' extends 'Class' and not Widget, we need to go through
-     * our handler to proxy the _rpc calls. As the handler properly extends Widget.
-     */
-    _rpc: async function () {
-        return this.handler._rpc.apply(this.handler, arguments);
-    },
-});
-
 export {
-    KnowledgeBehavior,
-    ContentsContainerBehavior
+    KnowledgeBehavior
 };

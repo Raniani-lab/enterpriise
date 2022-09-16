@@ -354,5 +354,11 @@
             </div>
         </section>
     </template>
+
+    <template id="website_tickets_followup" name="Helpdesk tickets website" inherit_id="helpdesk.tickets_followup">
+        <xpath expr="//t[@t-set='title']" position="replace">
+            <t t-set="additional_title" t-value="ticket.name"/>
+        </xpath>
+    </template>
 </data>
 </odoo>

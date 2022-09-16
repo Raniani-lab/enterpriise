@@ -18,6 +18,7 @@
         'security/website_helpdesk_security.xml',
         'views/snippets.xml',
     ],
+    'auto_install': True,
     'license': 'OEEL-1',
     'post_init_hook': '_configure_teams',
     'assets': {

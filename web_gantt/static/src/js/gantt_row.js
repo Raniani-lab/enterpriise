@@ -307,6 +307,14 @@ var GanttRow = Widget.extend({
         return pill.startDate < intervalStop && pill.stopDate > intervalStart;
     },
     /**
+     * Allows aggregate grouped pills to span slots/intervals
+     *
+     * @returns {boolean}
+     */
+    _allowToSpan() {
+        return true;
+    },
+    /**
      * Aggregate overlapping pills in group rows
      *
      * @private
@@ -328,12 +336,13 @@ var GanttRow = Widget.extend({
             return intervals;
         }, []);
 
+        var _allowToSpan = this._allowToSpan();
         this.pills = _.reduce(intervals, function (pills, intervalStart) {
             var intervalStop = intervalStart.clone().add(cellTime, timeToken);
             var pillsInThisInterval = _.filter(self.pills, pill => self._isPillsInInterval(pill, intervalStart, intervalStop));
             if (pillsInThisInterval.length) {
                 var previousPill = pills[pills.length - 1];
-                var isContinuous = previousPill &&
+                var isContinuous = _allowToSpan && previousPill &&
                     _.intersection(previousPill.aggregatedPills, pillsInThisInterval).length;
 
                 if (isContinuous && previousPill.count === pillsInThisInterval.length) {

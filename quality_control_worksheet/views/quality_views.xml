@@ -65,7 +65,7 @@
             <xpath expr="//field[@name='test_type_id']" position="after">
                 <field name="worksheet_template_id" attrs="{'invisible': [('test_type', '!=', 'worksheet')], 'required': [('test_type', '=', 'worksheet')]}" options="{'no_create': True, 'no_create_edit':True}"/>
                 <field name="worksheet_model_name" invisible="1"/>
-                <field name="worksheet_success_conditions" widget="quality_field_domain" options="{'model': 'worksheet_model_name'}" attrs="{'invisible': [('test_type', '!=', 'worksheet')], 'required': [('test_type', '=', 'worksheet')]}"/>
+                <field name="worksheet_success_conditions" widget="quality_domain_field" options="{'model': 'worksheet_model_name'}" attrs="{'invisible': [('test_type', '!=', 'worksheet')], 'required': [('test_type', '=', 'worksheet')]}"/>
             </xpath>
         </field>
     </record>

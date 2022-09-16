@@ -51,6 +51,7 @@ class EasypostTestCommon(TransactionCase):
         self.server = self.env["product.product"].create(
             {
                 "name": "server",
+                "hs_code": "8471.49.00.00",
                 "type": "consu",
                 "weight": 3.0,
                 "volume": 4.0,
@@ -59,6 +60,7 @@ class EasypostTestCommon(TransactionCase):
         self.miniServer = self.env["product.product"].create(
             {
                 "name": "mini server",
+                "hs_code": "8471.49.00.00",
                 "type": "consu",
                 "weight": 2.0,
                 "volume": 0.35,

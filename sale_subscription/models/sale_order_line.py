@@ -224,7 +224,9 @@ class SaleOrderLine(models.Model):
     def _prepare_invoice_line(self, **optional_values):
         self.ensure_one()
         res = super()._prepare_invoice_line(**optional_values)
-        if not self.display_type and (self.temporal_type == 'subscription' or self.order_id.subscription_management == 'upsell'):
+        if self.display_type:
+            return res
+        elif self.temporal_type == 'subscription' or self.order_id.subscription_management == 'upsell':
             product_desc = self.product_id.get_product_multiline_description_sale() + self._get_sale_order_line_multiline_description_variants()
             description = _("%(product)s - %(duration)d %(unit)s",
                             product=product_desc,
@@ -262,6 +264,11 @@ class SaleOrderLine(models.Model):
                 'subscription_start_date': new_period_start,
                 'subscription_end_date': subscription_end_date,
                 'subscription_id': parent_order_id,
+            })
+        elif self.order_id.is_subscription:
+            # This is needed in case we only need to invoice this line
+            res.update({
+                'subscription_id': self.order_id.id,
             })
         return res
 

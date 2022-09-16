@@ -48,7 +48,7 @@ class SaleOrder(models.Model):
     next_invoice_date = fields.Date(
         string='Date of Next Invoice',
         compute='_compute_next_invoice_date',
-        store=True,
+        store=True, copy=False,
         readonly=False,
         help="The next invoice will be created on this date then the period will be extended.")
     start_date = fields.Date(string='Start Date',
@@ -970,6 +970,12 @@ class SaleOrder(models.Model):
             At quotation confirmation, last_invoice_date is false, next_invoice is start date and start_date is today
             by default. The next_invoice_date should be bumped up each time an invoice is created except for the
             first period.
+
+            The next invoice date should be updated according to these rules :
+            -> If the trigger is manuel : We should always increment the next_invoice_date
+            -> If the trigger is automatic & date_next_invoice < today :
+                    -> If there is a payment_token : We should increment at the payment reconciliation
+                    -> If there is no token : We always increment the next_invoice_date even if there is nothing to invoice
             """
         for order in self:
             if not order.is_subscription:
@@ -1039,6 +1045,7 @@ class SaleOrder(models.Model):
         automatic = bool(automatic)
         auto_commit = automatic and not bool(config['test_enable'] or not config['test_file'])
         Mail = self.env['mail.mail']
+        today = fields.Date.today()
         stages_in_progress = self.env['sale.order.stage'].search([('category', '=', 'progress')])
         if len(self) > 0:
             all_subscriptions = self.filtered(lambda so: so.is_subscription and so.subscription_management != 'upsell' and not so.payment_exception)
@@ -1081,8 +1088,10 @@ class SaleOrder(models.Model):
                 if auto_commit:
                     self.env.cr.commit() # To avoid a rollback in case something is wrong, we create the invoices one by one
                 invoiceable_lines = all_invoiceable_lines.filtered(lambda l: l.order_id.id == subscription.id)
-                if not invoiceable_lines and automatic:
-                    # We avoid raising UserError(self._nothing_to_invoice_error_message()) in a cron
+                if not invoiceable_lines:
+                    # We still update the next_invoice_date if there is any recurring line
+                    if not automatic or subscription.next_invoice_date < today:
+                        subscription._update_next_invoice_date()
                     continue
                 try:
                     invoice = subscription.with_context(recurring_automatic=automatic)._create_invoices()

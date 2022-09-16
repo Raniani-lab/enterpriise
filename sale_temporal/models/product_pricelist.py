@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError
 
 class Pricelist(models.Model):
     _inherit = "product.pricelist"
 
     product_pricing_ids = fields.One2many('product.pricing', 'pricelist_id', string="Recurring Price Rules")
+
+    @api.constrains('product_pricing_ids')
+    def _check_pricing_product_temporal(self):
+        for pricing in self.product_pricing_ids:
+            if not pricing.product_template_id.is_temporal:
+                raise UserError(_('You can not have a time-based rule for products that are not recurring or rentable.'))
 
     def _compute_price_rule(
         self, products, qty, uom=None, date=False, start_date=None, end_date=None, duration=None,

@@ -647,7 +647,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(inv.date, datetime.date(2022, 1, 1))
 
         with freeze_time("2022-02-05"):
-            self.env['sale.order']._cron_recurring_create_invoice()
+            self.subscription._cron_recurring_create_invoice()
             inv = self.subscription.invoice_ids.sorted('date')
             self.assertEqual(inv[-1].date, datetime.date(2022, 2, 5))
 

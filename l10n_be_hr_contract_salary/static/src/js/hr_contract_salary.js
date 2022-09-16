@@ -9,6 +9,7 @@ hrContractSalary.include({
         "change input[name='fold_company_car_total_depreciated_cost']": "onchangeCompanyCar",
         "change input[name='fold_private_car_reimbursed_amount']": "onchangePrivateCar",
         "change input[name='l10n_be_has_ambulatory_insurance_radio']": "onchangeAmbulatory",
+        "change input[name='children']": "onchangeChildren",
     }),
 
     getAdvantages() {
@@ -53,6 +54,7 @@ hrContractSalary.include({
 
     start: async function () {
         const res = await this._super(...arguments);
+        this.onchangeChildren();
         this.onchangeHospital();
         // YTI TODO: There is probably a way to remove this crap
         $("input[name='insured_relative_children']").parent().addClass('d-none');
@@ -131,6 +133,23 @@ hrContractSalary.include({
             $("label[for='l10n_be_ambulatory_insured_adults']").parent().addClass('d-none');
             $("label[for='l10n_be_ambulatory_insured_spouse']").parent().addClass('d-none');
             $("label[for='l10n_be_ambulatory_insurance_notes']").parent().addClass('d-none');
+        }
+    },
+
+    onchangeChildren(event) {
+        const disabledChildren = $("input[name='disabled_children_bool']");
+        const disabledChildrenNumber = $("input[name='disabled_children_number']");
+        const childCount = parseInt(event && event.currentTarget && event.currentTarget.value);
+
+        if (isNaN(childCount) || childCount === 0) {
+            disabledChildrenNumber.val(0);
+
+            if (disabledChildren.prop('checked')) {
+                disabledChildren.click();
+            }
+            disabledChildren.parent().addClass('d-none');
+        } else {
+            disabledChildren.parent().removeClass('d-none');
         }
     },
 });

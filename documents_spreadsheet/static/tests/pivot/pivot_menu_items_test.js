@@ -184,11 +184,12 @@ QUnit.module(
                     id: "42",
                     type: "relation",
                     label: "Filter",
-                    pivotFields: {
-                        1: {
-                            field: "product_id",
-                            type: "many2one",
-                        },
+                },
+            },{
+                pivot: {
+                    1: {
+                        chain: "product_id",
+                        type: "many2one",
                     },
                 },
             });

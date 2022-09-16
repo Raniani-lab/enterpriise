@@ -30,7 +30,6 @@ QUnit.module("spreadsheet_edition > menu", {}, () => {
                     type: "relation",
                     label: "41",
                     defaultValue: [41],
-                    pivotFields: { 1: { field: "product_id", type: "many2one" } },
                 },
             });
             selectCell(model, "A6");

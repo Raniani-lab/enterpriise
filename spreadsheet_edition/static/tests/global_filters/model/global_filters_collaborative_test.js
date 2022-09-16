@@ -31,7 +31,6 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             type: "relation",
             label: "41",
             defaultValue: [41],
-            pivotFields: { 1: { field: "product_id", type: "many2one" } },
             modelName: undefined,
             rangeType: undefined,
         };
@@ -43,7 +42,11 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             (user) => getCellValue(user, "D4"),
             10
         );
-        await addGlobalFilter(alice, { filter });
+        await addGlobalFilter(
+            alice,
+            { filter },
+            { pivot: { 1: { chain: "product_id", type: "many2one" } } }
+        );
         await waitForDataSourcesLoaded(alice);
         await waitForDataSourcesLoaded(bob);
         await waitForDataSourcesLoaded(charlie);
@@ -68,7 +71,6 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             type: "relation",
             label: "41",
             defaultValue: [41],
-            pivotFields: { 1: { field: "product_id", type: "many2one" } },
             modelID: undefined,
             modelName: undefined,
             rangeType: undefined,
@@ -80,7 +82,11 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             (user) => getCellValue(user, "B4"),
             11
         );
-        await addGlobalFilter(alice, { filter });
+        await addGlobalFilter(
+            alice,
+            { filter },
+            { pivot: { 1: { chain: "product_id", type: "many2one" } } }
+        );
         await waitForDataSourcesLoaded(alice);
         await waitForDataSourcesLoaded(bob);
         await waitForDataSourcesLoaded(charlie);
@@ -110,7 +116,6 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             type: "relation",
             label: "41",
             defaultValue: [41],
-            pivotFields: { 1: { field: "product_id", type: "many2one" } },
             modelID: undefined,
             modelName: undefined,
             rangeType: undefined,
@@ -138,7 +143,6 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             type: "relation",
             label: "41",
             defaultValue: [41],
-            pivotFields: { 1: { field: "product_id", type: "many2one" } },
             modelID: undefined,
             modelName: undefined,
             rangeType: undefined,
@@ -166,7 +170,6 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             type: "relation",
             label: "41",
             defaultValue: [41],
-            pivotFields: { 1: { field: "product_id", type: "many2one" } },
             modelID: undefined,
             modelName: undefined,
             rangeType: undefined,
@@ -176,7 +179,6 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             type: "relation",
             label: "37",
             defaultValue: [37],
-            pivotFields: { 1: { field: "product_id", type: "many2one" } },
             modelID: undefined,
             modelName: undefined,
             rangeType: undefined,
@@ -205,7 +207,6 @@ QUnit.module("spreadsheet_edition > collaborative global filters", { beforeEach 
             id: "41",
             type: "relation",
             label: "a relational filter",
-            pivotFields: { 1: { field: "product_id", type: "many2one" } },
         };
         await addGlobalFilter(alice, { filter });
         await setGlobalFilterValue(bob, {

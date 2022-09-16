@@ -47,12 +47,14 @@
 
     <t t-name="stock_barcode.LineSourceLocation" owl="1">
         <div name="source_location" t-if="displaySourceLocation" title="Source Location"
-             t-att-class="line.location_id.usage != 'internal' ? 'text-danger' : ''">
+             t-attf-class="{{line.location_id.usage != 'internal' ? 'text-danger' : ''}} {{highlightLocation ? 'o_highlight' : ''}}">
             <i class="fa fa-fw fa-sign-out"/>
             <span class="o_line_source_location fst-italic text-muted">
                 <t t-esc="sourceLocationPath"/>
-                <span class="text-black" t-esc="line.location_id.name"
-                      t-att-class="env.model.lastScanned.sourceLocation &amp;&amp; env.model.lastScanned.sourceLocation.id == line.location_id.id ? 'fw-bold' : ''"/>
+                <span t-esc="line.location_id.name"
+                      t-attf-class="
+                        {{highlightLocation ? 'fw-bold' : ''}}
+                        {{line.location_id.usage != 'internal' ? 'text-danger' : 'text-black'}}"/>
             </span>
         </div>
     </t>
@@ -63,8 +65,10 @@
             <i class="fa fa-fw fa-sign-in"/>
             <span class="o_line_destination_location fst-italic text-muted">
                 <t t-esc="destinationLocationPath"/>
-                <span class="text-black" t-esc="line.location_dest_id.name"
-                      t-att-class="env.model.lastScanned.destLocation &amp;&amp; env.model.lastScanned.destLocation.id == line.location_dest_id.id ? 'fw-bold' : ''"/>
+                <span t-esc="line.location_dest_id.name"
+                      t-attf-class="
+                        {{env.model.lastScanned.destLocation &amp;&amp; env.model.lastScanned.destLocation.id == line.location_dest_id.id ? 'fw-bold' : ''}}
+                        {{line.location_dest_id.usage != 'internal' ? 'text-danger' : 'text-black'}}"/>
             </span>
         </div>
     </t>

@@ -1,3 +1,5 @@
+$o-barcode-completed-color: #befdcc;
+
 .o_barcode_client_action .o_barcode_lines .o_barcode_line {
     flex: 0 0 auto;
     border-width: 1px 0;
@@ -44,7 +46,7 @@
     }
 
     &.o_line_completed, &.o_line_completed > .o_barcode_line_summary {
-        background: #befdcc;
+        background: $o-barcode-completed-color;
     }
 
     &.o_line_not_completed, &.o_line_not_completed > .o_barcode_line_summary {
@@ -117,5 +119,10 @@
     .o_next_expected {
         color: #00A09D;
         opacity: 1 !important;
+    }
+
+    [name=source_location].o_highlight {
+        background-color: $o-barcode-completed-color;
+        & .fa { opacity: 1; }
     }
 }

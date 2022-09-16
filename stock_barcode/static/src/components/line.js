@@ -20,6 +20,11 @@ export default class LineComponent extends Component {
         return !this.props.subline && this.env.model.displaySourceLocation;
     }
 
+    get highlightLocation() {
+        return this.env.model.lastScanned.sourceLocation &&
+               this.env.model.lastScanned.sourceLocation.id == this.line.location_id.id;
+    }
+
     get isComplete() {
         if (!this.qtyDemand || this.qtyDemand != this.qtyDone) {
             return false;

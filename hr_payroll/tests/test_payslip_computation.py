@@ -321,6 +321,7 @@ class TestPayslipComputation(TestPayslipContractBase):
         payslip = self.env['hr.payslip'].create({
             'name': 'Payslip of Richard',
             'employee_id': self.richard_emp.id,
+            'contract_id': self.contract_cdi.id,
             'date_from': date(2016, 1, 1),
             'date_to': date(2016, 1, 31)
         })

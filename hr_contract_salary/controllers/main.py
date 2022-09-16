@@ -289,7 +289,6 @@ class HrContractSalary(http.Controller):
             'bank_account': contract.employee_id.bank_account_id,
         }
 
-
         # PERSONAL INFOS
         personal_infos = request.env['hr.contract.salary.personal.info'].sudo().search([
             '|',
@@ -650,7 +649,6 @@ class HrContractSalary(http.Controller):
                     contract_field_name = contract_fields[field].string or field
                     contract_diff.append((contract_field_name, current_value, new_value))
 
-
         if 'original_link' in kw:
             start_date = parse_qs(urlparse(kw['original_link']).query).get('contract_start_date', False)
             if start_date:
@@ -864,7 +862,7 @@ class HrContractSalary(http.Controller):
 
         new_contract, contract_diff = new_contract
 
-        #write on new contract differences with current one
+        # write on new contract differences with current one
         current_contract = request.env['hr.contract'].sudo().search([
             ('active', '=', True),
             ('employee_id', '=', new_contract.employee_id.id),
@@ -874,7 +872,6 @@ class HrContractSalary(http.Controller):
             self.send_diff_email(contract_diff, new_contract.id, **kw)
 
         self.send_email(new_contract, **kw)
-
 
         applicant = request.env['hr.applicant'].sudo().browse(kw.get('applicant_id')).exists()
         if applicant and kw.get('token', False):

@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import time
 import datetime
 
 from odoo.tests.common import tagged
@@ -1300,7 +1299,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-
     def test_end_of_contract_no_public_leave_right(self):
         # Check that only 1 day is taken into account (not 3) + Check it becomes 0 if another
         # contract is following
@@ -1976,7 +1974,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CO2FEE': 20.92,
         }
         self._validate_payslip(payslip, payslip_results)
-
 
     def test_half_time(self):
         self.contract.write({
@@ -4869,7 +4866,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-
     def test_commissions_with_low_salary_no_employment_bonus(self):
         self.contract.write({
             'wage_on_signature': 2300,
@@ -4925,7 +4921,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-
     def test_private_car_capping_part_time(self):
         # Private car reimbursement should be 10 intead of 50 for employees working 1 day per week
         self.employee.km_home_work = 25
@@ -4938,7 +4933,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
 
         payslip = self._generate_payslip(datetime.date(2021, 1, 1), datetime.date(2021, 1, 31))
-
 
         self.assertEqual(len(payslip.worked_days_line_ids), 1)
         self.assertEqual(len(payslip.input_line_ids), 0)
@@ -5081,7 +5075,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('LEAVE500'), 7.6, places=2)
         self.assertAlmostEqual(payslip._get_worked_days_line_number_of_hours('WORK100'), 152.0, places=2)
-
 
     def test_extra_legal_representation_fees(self):
         self.env['resource.calendar.leaves'].create([{
@@ -5298,7 +5291,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         self.holiday_pay_2019 = holiday_pays.filtered(lambda p: p.struct_id == struct_n1_id)
         self.holiday_pay_2020 = holiday_pays.filtered(lambda p: p.struct_id == struct_n_id)
-
 
         self.assertEqual(len(self.termination_fees.worked_days_line_ids), 0)
         self.assertEqual(len(self.termination_fees.input_line_ids), 16)
@@ -5529,7 +5521,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(self.termination_fees, payslip_results)
 
-
         self.assertEqual(len(self.holiday_pay_2020.worked_days_line_ids), 0)
         self.assertEqual(len(self.holiday_pay_2020.input_line_ids), 6)
         self.assertEqual(len(self.holiday_pay_2020.line_ids), 19)
@@ -5589,7 +5580,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYER': 684.09,
         }
         self._validate_payslip(self.holiday_pay_2019, payslip_results)
-
 
     def test_work_incapacity_due_to_illness(self):
         self.contract.write({
@@ -8138,7 +8128,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         attendance = self.env.ref('hr_work_entry.work_entry_type_attendance')
         sick_work_entry_type = self.env.ref('hr_work_entry_contract.work_entry_type_sick_leave')
         partial_sick_work_entry_type = self.env.ref('l10n_be_hr_payroll.work_entry_type_part_sick')
-
 
         self.env['resource.calendar.leaves'].create([{
             'name': "Easter Monday",

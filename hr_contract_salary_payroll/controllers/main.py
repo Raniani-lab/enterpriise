@@ -26,7 +26,6 @@ class HrContractSalary(main.HrContractSalary):
             'struct_id': new_contract.structure_type_id.default_struct_id.id,
             'company_id': new_contract.employee_id.company_id.id,
             'name': 'Payslip Simulation',
-            'date_from': request.env['hr.payslip'].default_get(['date_from'])['date_from'],
         })
 
     def _get_payslip_line_values(self, payslip, codes):

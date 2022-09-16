@@ -329,7 +329,6 @@ class HrContractSalary(main.HrContractSalary):
             dropdown_options['company_bike_depreciated_cost'] = \
                 generate_dropdown_data(available_bikes, can_be_requested_models, False, True, 'Bike')
 
-
         if force_car_id:
             initial_values['select_company_car_total_depreciated_cost'] = 'old-%s' % force_car_id.id
             initial_values['fold_company_car_total_depreciated_cost'] = True

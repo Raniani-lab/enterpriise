@@ -167,7 +167,7 @@
                         <div t-attf-class="o_social_comment_add_image o_social_subtle_btn px-3 py-1 #{widget.canAddImage() ? '' : 'invisible'}">
                             <i class="fa fa-image" title="Add an image"/>
                         </div>
-                        <t t-call="mail.EmojisDropdown"/>
+                        <!-- <EmojisDropdown/> --> <!-- TODO: restore when converted to OWL -->
                     </div>
                 </div>
                 <div t-attf-class="o_social_comment_image_preview py-4 #{existingAttachmentId &amp;&amp; existingAttachmentSrc ? '' : 'd-none'}">

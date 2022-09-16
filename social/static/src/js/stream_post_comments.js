@@ -597,7 +597,7 @@ var StreamPostComments = Dialog.extend(MailEmojisMixin, SocialStreamPostFormatte
     },
 
     _getTargetTextElement($emoji) {
-        return $emoji.closest('.o_social_write_reply').find('textarea');
+        return $emoji.closest('.o_social_write_reply').find('textarea').get(0);
     }
 });
 

@@ -14,12 +14,5 @@
     'installable': True,
     'auto_install': ['account_accountant'],
     'license': 'OEEL-1',
-    'assets': {
-        'spreadsheet_dashboard.o_spreadsheet': [],
-        'web.assets_backend': [],
-        'web.assets_tests': [
-            'spreadsheet_dashboard_account_accountant/static/tests/**/*',
-        ],
-        'web.qunit_suite_tests': []
-    }
+    'assets': {}
 }

@@ -151,7 +151,7 @@ const StreamPostTwitterQuote = Dialog.extend(MailEmojisMixin, SocialPostFormatte
     },
 
     _getTargetTextElement: function ($emoji) {
-        return $emoji.closest('.o_social_write_reply').find('textarea');
+        return $emoji.closest('.o_social_write_reply').find('textarea').get(0);
     },
 });
 

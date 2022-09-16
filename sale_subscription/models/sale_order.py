@@ -908,22 +908,42 @@ class SaleOrder(models.Model):
         res = res.filtered(lambda l: l.temporal_type != 'subscription')
         automatic_invoice = self.env.context.get('recurring_automatic')
 
-        def filter_sub_lines(line):
+        invoiceable_line_ids = []
+        downpayment_line_ids = []
+        pending_section = None
+
+        for line in self.order_line:
+            if line.display_type == 'line_section':
+                # Only add section if one of its lines is invoiceable
+                pending_section = line
+                continue
+
             time_condition = line.order_id.next_invoice_date and line.order_id.next_invoice_date <= date_from and line.order_id.start_date and line.order_id.start_date <= date_from
             line_condition = time_condition or not automatic_invoice # automatic mode force the invoice when line are not null
-            if line.display_type or line.temporal_type != 'subscription':
+            line_to_invoice = False
+            if line in res:
+                # Line was already marked as to be invoice
+                line_to_invoice = True
+            elif line.display_type or line.temporal_type != 'subscription':
                 # Avoid invoicing section/notes or lines starting in the future or not starting at all
-                return False
+                line_to_invoice = False
             elif line_condition and line.product_id.invoice_policy == 'order' and line.order_id.state == 'sale':
                 # Invoice due lines
-                return True
+                line_to_invoice = True
             elif line_condition and line.product_id.invoice_policy == 'delivery' and (not float_is_zero(line.qty_delivered, precision_rounding=line.product_id.uom_id.rounding)):
-                return True
-            else:
-                return False
+                line_to_invoice = True
 
-        subscription_lines = self.order_line.filtered(filter_sub_lines)
-        return res | subscription_lines
+            if line_to_invoice:
+                if line.is_downpayment:
+                    # downpayment line must be kept at the end in its dedicated section
+                    downpayment_line_ids.append(line.id)
+                    continue
+                if pending_section:
+                    invoiceable_line_ids.append(pending_section.id)
+                    pending_section = False
+                invoiceable_line_ids.append(line.id)
+
+        return self.env["sale.order.line"].browse(invoiceable_line_ids + downpayment_line_ids)
 
     def _subscription_post_success_payment(self, invoice, transaction):
         """ Action done after the successful payment has been performed """

@@ -14,12 +14,5 @@
     'installable': True,
     'auto_install': ['hr_contract_reports'],
     'license': 'OEEL-1',
-    'assets': {
-        'spreadsheet_dashboard.o_spreadsheet': [],
-        'web.assets_backend': [],
-        'web.qunit_suite_tests': [],
-        'web.assets_tests': [
-            'spreadsheet_dashboard_hr_contract/static/tests/**/*',
-        ],
-    }
+    'assets': {}
 }

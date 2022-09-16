@@ -31,13 +31,8 @@
         </form>
     </t>
     <t t-name="knowledge.articles_structure_wrapper">
-        <div
-            t-attf-class="o_knowledge_articles_structure_wrapper o_knowledge_toolbars_container
-                o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure
-                #{childrenOnly ? 'o_knowledge_articles_structure_children_only' : ''}">
-            <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_articles_structure"/>
-            <div class="o_knowledge_articles_structure_content w-100 m-0"/>
-        </div>
+        <div t-attf-class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure
+            #{childrenOnly ? 'o_knowledge_articles_structure_children_only' : ''}"/>
     </t>
     <t t-name="knowledge.articles_structure">
         <i t-if="!articles or articles.length === 0">Nest articles under this one to generate a structure</i>

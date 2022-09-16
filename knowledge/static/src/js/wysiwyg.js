@@ -186,6 +186,7 @@ Wysiwyg.include({
     /**
      * Insert a /structure block.
      * It will list all the articles that are direct children of this one.
+     * @param {boolean} childrenOnly
      */
      _insertArticlesStructure: function (childrenOnly) {
         const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper', {

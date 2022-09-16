@@ -55,8 +55,6 @@
             'knowledge/static/src/models/**/*.js',
             'knowledge/static/src/js/form_controller.js',
             'knowledge/static/src/js/form_renderer.js',
-            'knowledge/static/src/js/knowledge_article_structure_mixin.js',
-            'knowledge/static/src/js/knowledge_articles_structure.js',
             'knowledge/static/src/js/knowledge_macros.js',
             'knowledge/static/src/js/knowledge_behaviors.js',
             'knowledge/static/src/js/knowledge_toolbars.js',
@@ -95,6 +93,7 @@
         ],
         'web.qunit_suite_tests': [
             'knowledge/static/tests/knowledge_command_toc.js',
+            'knowledge/static/tests/knowledge_command_structure.js',
         ],
         'web.tests_assets': [
             'knowledge/static/tests/knowledge_service_mock.js',

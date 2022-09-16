@@ -28,6 +28,14 @@ class TestKnowledgeEditorCommands(HttpCase):
         """Test the /file command in the editor"""
         self.start_tour('/web', 'knowledge_file_command_tour', login='admin', step_delay=100)
 
+    def knowledge_index_command_tour(self):
+        """Test the /index command in the editor"""
+        self.start_tour('/web', 'knowledge_index_command_tour', login='admin', step_delay=100)
+
+    def knowledge_outline_command_tour(self):
+        """Test the /outline command in the editor"""
+        self.start_tour('/web', 'knowledge_outline_command_tour', login='admin', step_delay=100)
+
     def knowledge_table_of_content_command_tour(self):
         """Test the /toc command in the editor"""
         self.start_tour('/web', 'knowledge_table_of_content_command_tour', login='admin', step_delay=100)

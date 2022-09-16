@@ -30,14 +30,4 @@
             </div>
         </div>
     </t>
-    <t t-name="knowledge.articles_structure_toolbar">
-        <div class="o_knowledge_toolbar" contenteditable="false">
-            <div class="btn-group">
-                <button t-if="widget.mode === 'edit'" data-call="update_articles_structure" title="Update"
-                    class="btn btn-link btn-sm border-0">
-                    <i class="fa fa-refresh" contenteditable="false"/> <span class="o_knowledge_toolbar_button_text">Refresh</span>
-                </button>
-            </div>
-        </div>
-    </t>
 </templates>

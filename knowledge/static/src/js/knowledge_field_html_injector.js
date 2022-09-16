@@ -3,8 +3,6 @@ import Widget from 'web.Widget';
 import { ComponentWrapper, WidgetAdapterMixin } from 'web.OwlCompatibility';
 import { useService } from "@web/core/utils/hooks";
 import { TemplateToolbar, FileToolbar } from './knowledge_toolbars';
-import { ContentsContainerBehavior } from './knowledge_behaviors';
-import { ArticlesStructureBehavior, ArticlesStructureToolbar } from './knowledge_articles_structure';
 const { Component } = owl;
 
 /**
@@ -42,22 +40,12 @@ const FieldHtmlInjector = Widget.extend(WidgetAdapterMixin, {
             template: 'knowledge.file_toolbar',
             Toolbar: FileToolbar,
         },
-        o_knowledge_toolbar_type_articles_structure: {
-            template: 'knowledge.articles_structure_toolbar',
-            Toolbar: ArticlesStructureToolbar,
-        },
     },
     /**
      * Map classes used in @see OdooEditor blocks to their corresponding
      * @see KnowledgeBehavior
      */
     behavior_types: {
-        o_knowledge_behavior_type_contents_container: {
-            Behavior: ContentsContainerBehavior,
-        },
-        o_knowledge_behavior_type_articles_structure: {
-            Behavior: ArticlesStructureBehavior,
-        },
     },
     /**
      * @override

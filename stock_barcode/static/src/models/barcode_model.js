@@ -461,6 +461,9 @@ export default class BarcodeModel extends EventBus {
     toggleSublines(line) {
         const lineKey = this.groupKey(line);
         this.unfoldLineKey = this.unfoldLineKey === lineKey ? false : lineKey;
+        if (this.unfoldLineKey === lineKey) {
+            this.selectLine(line);
+        }
         this.trigger('update');
     }
 
@@ -1237,8 +1240,6 @@ export default class BarcodeModel extends EventBus {
         }
         this.selectedLineVirtualId = virtualId;
         this.scannedLinesVirtualId.push(virtualId);
-        // Unfolds the group where the line is, folds other lines' group.
-        this.unfoldLineKey = this.groupKey(line);
         this.lastScanned.destLocation = false;
     }
 

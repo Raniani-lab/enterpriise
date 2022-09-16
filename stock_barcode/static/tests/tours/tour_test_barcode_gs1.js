@@ -96,8 +96,11 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan 010011115555571710LOT-AAB',
     },
+    // Unfolds the group and clicks on the right line to select it.
+    { trigger: '.o_toggle_sublines .fa-caret-down' },
+    { trigger: '.o_sublines .o_barcode_line:contains("AAB")' },
     {
-        trigger: '.o_barcode_line:contains("AAB")',
+        trigger: '.o_sublines .o_barcode_line.o_selected:contains("AAB")',
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
@@ -190,6 +193,8 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan 011522222222221921Serial1',
     },
+    // Folds the previous line.
+    { trigger: '.o_toggle_sublines .fa-caret-up' },
     {
         trigger: '.o_barcode_line:contains("Serial1")',
         run: function () {
@@ -208,6 +213,9 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan 011522222222221921Serial2',
     },
+    // Unfolds the group and clicks on the right line to select it.
+    { trigger: '.o_barcode_line.o_selected .o_toggle_sublines .fa-caret-down' },
+    { trigger: '.o_sublines .o_barcode_line:contains("Serial2")' },
     {
         trigger: '.o_barcode_line:contains("Serial2")',
         run: function () {
@@ -797,6 +805,7 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan 010000007654321010b1-b002\x1D3000000004',
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
     {
         trigger: '.o_barcode_line:contains("b1-b002")',
         run: function () {
@@ -808,8 +817,8 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
             helper.assertLineQty($parentLine, '12');
             helper.assertLineQty($line1, '8');
             helper.assertLineQty($line2, '4');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, true);
+            helper.assertLineIsHighlighted($line1, true);
+            helper.assertLineIsHighlighted($line2, false);
         }
     },
     {

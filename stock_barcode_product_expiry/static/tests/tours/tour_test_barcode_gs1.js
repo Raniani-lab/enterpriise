@@ -44,6 +44,7 @@ tour.register('test_gs1_receipt_expiration_date', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan 010000007654321010b1-b002\x1D300000000415220520',
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
     {
         trigger: '.o_barcode_line:contains("b1-b002")',
         run: function () {
@@ -55,8 +56,8 @@ tour.register('test_gs1_receipt_expiration_date', {test: true}, [
             helper.assertLineQty($parentLine, '12');
             helper.assertLineQty($line1, '8');
             helper.assertLineQty($line2, '4');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, true);
+            helper.assertLineIsHighlighted($line1, true);
+            helper.assertLineIsHighlighted($line2, false);
             const lot_with_date_1 = $line1.find('div[name="lot"]').text().trim();
             const lot_with_date_2 = $line2.find('div[name="lot"]').text().trim();
             const date1 = new Date('2022-05-20').toLocaleDateString();

@@ -297,8 +297,10 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
     {
         trigger: '.o_save',
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
+    { trigger: '.o_sublines .o_barcode_line:nth-child(2)' },
     {
-        trigger: '.o_sublines .o_barcode_line:nth-child(2)',
+        trigger: '.o_sublines .o_barcode_line:nth-child(2).o_selected',
         run: function() {
             checkState(currentViewState);
             const groupLines =  document.querySelectorAll('.o_barcode_lines > [data-barcode=productlot1]');
@@ -352,7 +354,6 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
         }
     },
     // Selects the subline with the lot0002 and scans it again, it should increment the selected line.
-    { trigger: '.o_barcode_line:contains("productlot1") .o_toggle_sublines' },
     { trigger: '.o_sublines .o_barcode_line:contains("lot0002")' },
     {
         trigger: '.o_sublines .o_selected:contains("lot0002")',

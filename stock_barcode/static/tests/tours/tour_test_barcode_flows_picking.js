@@ -504,7 +504,7 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
         run: function() {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
-            helper.assertScanMessage('scan_product');
+            helper.assertScanMessage('scan_serial');
             const $line1 = helper.getSubline(':eq(0)');
             const $line2 = helper.getSubline(':eq(1)');
             helper.assert($line1.find('.o_line_lot_name').text(), 'sn1');
@@ -931,6 +931,7 @@ tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
         trigger: '.o_scan_message.o_scan_validate',
         run: 'scan productserial1'
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
 
     {
         trigger: '.o_barcode_line:nth-child(2)',
@@ -964,6 +965,7 @@ tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
         trigger: '.qty-done:contains(2)',
         run: 'scan lot2',
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
 
     {
         trigger: '.o_barcode_line:nth-child(2)',
@@ -1081,6 +1083,7 @@ tour.register('test_delivery_from_scratch_with_lots_1', {test: true}, [
         run: 'scan lot2',
     },
     // Open the form view to trigger a save
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
     {
         trigger: '.o_add_line',
         extra_trigger: '.o_barcode_line:nth-child(2)',
@@ -1469,6 +1472,7 @@ tour.register('test_delivery_duplicate_serial_number', {test: true}, [
         trigger: '.o_scan_message.o_scan_validate',
         run: 'scan productserial1',
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
 
     {
         trigger: '.o_barcode_line:nth-child(2)',
@@ -1965,6 +1969,7 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_internal', {test: 
         trigger: '.o_barcode_line[data-barcode="productlot1"].o_selected',
         run: 'scan lot-001'
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
     {
         trigger: '.o_sublines .o_barcode_line.o_selected',
         run: 'scan lot-001'
@@ -2115,6 +2120,7 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
         run: 'scan productlot1'
     },
     // Checks we can't edit a line for a tracked product until the tracking number was scan.
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
     {
         trigger: '.o_barcode_line.o_selected .o_sublines',
         run: function() {

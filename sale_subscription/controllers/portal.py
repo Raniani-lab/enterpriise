@@ -135,11 +135,9 @@ class CustomerPortal(payment_portal.PaymentPortal):
         ]) if logged_in else request.env['payment.token']
 
         # Make sure that the partner's company matches the subscription's company.
-        if not payment_portal.PaymentPortal._can_partner_pay_in_company(
-                order_sudo.partner_id, order_sudo.company_id
-        ):
-            providers_sudo = request.env['payment.provider'].sudo()
-            tokens = request.env['payment.token']
+        company_mismatch = not payment_portal.PaymentPortal._can_partner_pay_in_company(
+            order_sudo.partner_id, order_sudo.company_id
+        )
 
         fees_by_provider = {
             provider: provider._compute_fees(
@@ -173,6 +171,8 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'message_class': message_class,
             'pricelist': order_sudo.pricelist_id.sudo(),
             'renew_url': f'/my/subscription/{order_sudo.id}/renew?access_token={order_sudo.access_token}',
+            'company_mismatch': company_mismatch,
+            'expected_company': order_sudo.company_id,
         }
         payment_values = {
             'providers': providers_sudo,

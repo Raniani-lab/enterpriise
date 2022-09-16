@@ -281,7 +281,10 @@
                                         <t t-if="missing_periods == 1">If you wish to reopen it, you can pay your invoice for the current invoicing period.</t>
                                         <t t-if="missing_periods &gt; 1">If you wish to reopen it, the <t t-esc="missing_periods"/> missing payments (from <span t-field="subscription.next_invoice_date"/> to this day) will be automatically processed.</t>
                                     </p>
-                                    <div class="clearfix" t-if="(providers or tokens) and subscription.amount_total> 0">
+                                    <div t-if="company_mismatch">
+                                        <t t-call="payment.company_mismatch_warning"/>
+                                    </div>
+                                    <div class="clearfix" t-elif="(providers or tokens) and subscription.amount_total> 0">
                                         <h5 class="mb-1">Pay Recurrently With</h5>
                                         <hr class="my-0"/>
                                         <t t-call="payment.checkout">

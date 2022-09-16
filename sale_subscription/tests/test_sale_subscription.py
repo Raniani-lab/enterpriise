@@ -122,6 +122,132 @@ class TestSubscription(TestSubscriptionCommon):
         temp._onchange_sale_order_template_id()
         self.assertEqual(temp.note, Markup('<p>This is the template description</p>'), 'Override the subscription note')
 
+    def test_invoincing_with_section(self):
+        """ Test invoicing when order has section/note."""
+        context_no_mail = {'no_reset_password': True, 'mail_create_nosubscribe': True, 'mail_create_nolog': True, }
+
+        # create specific test products
+        sub_product1_tmpl = self.env['product.template'].with_context(context_no_mail).create({
+            'name': 'Subscription #A',
+            'type': 'service',
+            'recurring_invoice': True,
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+        })
+        sub_product1 = sub_product1_tmpl.product_variant_id
+        sub_product2_tmpl = self.env['product.template'].with_context(context_no_mail).create({
+            'name': 'Subscription #B',
+            'type': 'service',
+            'recurring_invoice': True,
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+        })
+        sub_product2 = sub_product2_tmpl.product_variant_id
+        sub_product_onetime_discount_tmpl = self.env['product.template'].with_context(context_no_mail).create({
+            'name': 'Initial discount',
+            'type': 'service',
+            'recurring_invoice': False,
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+        })
+        sub_product_onetime_discount = sub_product_onetime_discount_tmpl.product_variant_id
+
+        with freeze_time("2021-01-03"):
+            sub = self.env["sale.order"].with_context(**context_no_mail).create({
+                'name': 'TestSubscription',
+                'is_subscription': True,
+                'recurrence_id': self.recurrence_month.id,
+                'note': "original subscription description",
+                'partner_id': self.user_portal.partner_id.id,
+                'pricelist_id': self.company_data['default_pricelist'].id,
+                'sale_order_template_id': self.subscription_tmpl.id,
+            })
+            sub._onchange_sale_order_template_id()
+            sub.write({
+                'start_date': False,
+                'end_date': False,
+                'next_invoice_date': False,
+            })
+            sub.order_line = [
+                Command.clear(),
+                Command.create({
+                    'display_type': 'line_section',
+                    'name': 'Products',
+                }),
+                Command.create({
+                    'product_id': sub_product1.id,
+                    'name': "Subscription #A",
+                    'price_unit': 42,
+                    'product_uom_qty': 2,
+                    'pricing_id': self.pricing_month.id,
+                }),
+                Command.create({
+                    'product_id': sub_product2.id,
+                    'name': "Subscription #B",
+                    'price_unit': 42,
+                    'product_uom_qty': 2,
+                    'pricing_id': self.pricing_month.id,
+                }),
+                Command.create({
+                    'product_id': sub_product_onetime_discount.id,
+                    'name': 'New subscription discount (one-time)',
+                    'price_unit': -10.0,
+                    'product_uom_qty': 2,
+                }),
+                Command.create({
+                    'display_type': 'line_section',
+                    'name': 'Information',
+                }),
+                Command.create({
+                    'display_type': 'line_note',
+                    'name': '...',
+                }),
+            ]
+            sub.action_confirm()
+            sub._create_recurring_invoice()
+
+        # first invoice, it should include one-time discount
+        self.assertEqual(len(sub.invoice_ids), 1)
+        invoice = sub.invoice_ids[-1]
+        self.assertEqual(invoice.amount_untaxed, 148.0)
+        self.assertEqual(len(invoice.invoice_line_ids), 6)
+        self.assertRecordValues(invoice.invoice_line_ids, [
+            {'display_type': 'line_section', 'name': 'Products', 'product_id': False},
+            {
+                'display_type': 'product', 'product_id': sub_product1.id,
+                'name': 'Subscription #A - 1 month\n01/03/2021 to 02/02/2021',
+            },
+            {
+                'display_type': 'product', 'product_id': sub_product2.id,
+                'name': 'Subscription #B - 1 month\n01/03/2021 to 02/02/2021',
+            },
+            {
+                'display_type': 'product', 'product_id': sub_product_onetime_discount.id,
+                'name': 'New subscription discount (one-time)',
+            },
+            {'display_type': 'line_section', 'name': 'Information', 'product_id': False},
+            {'display_type': 'line_note', 'name': '...', 'product_id': False},
+        ])
+
+        with freeze_time("2021-02-03"):
+            sub._create_recurring_invoice()
+
+        # second invoice, should NOT include one-time discount
+        self.assertEqual(len(sub.invoice_ids), 2)
+        invoice = sub.invoice_ids[-1]
+        self.assertEqual(invoice.amount_untaxed, 168.0)
+        self.assertEqual(len(invoice.invoice_line_ids), 5)
+        self.assertRecordValues(invoice.invoice_line_ids, [
+            {'display_type': 'line_section', 'name': 'Products', 'product_id': False},
+            {
+             'display_type': 'product', 'product_id': sub_product1.id,
+             'name': 'Subscription #A - 1 month\n02/03/2021 to 03/02/2021',
+            },
+            {
+             'display_type': 'product', 'product_id': sub_product2.id,
+             'name': 'Subscription #B - 1 month\n02/03/2021 to 03/02/2021',
+            },
+            {'display_type': 'line_section', 'name': 'Information', 'product_id': False},
+            {'display_type': 'line_note', 'name': '...', 'product_id': False},
+        ])
+
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.models')
     def test_unlimited_sale_order(self):
         """ Test behaviour of on_change_template """

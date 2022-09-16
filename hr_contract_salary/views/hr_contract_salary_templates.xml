@@ -137,7 +137,7 @@
                                     </t>
                                     <t t-if="advantage.display_type == 'dropdown'">
                                         <select
-                                            class="form-select form-select form-select-primary mt16 mb8 advantage_input"
+                                            class="form-control form-select form-select-primary mt16 mb8 advantage_input"
                                             applies-on="contract"
                                             t-att-name="'select_' + advantage.field">
                                             <t t-set="options" t-value="dropdown_options[advantage.field]"/>
@@ -148,7 +148,7 @@
                                     </t>
                                     <t t-if="advantage.display_type == 'dropdown-group'">
                                         <select
-                                            class="form-select form-select form-select-primary mt16 mb8 advantage_input"
+                                            class="form-control form-select form-select-primary mt16 mb8 advantage_input"
                                             applies-on="contract"
                                             t-att-name="'select_' + advantage.field">
                                             <t t-set="groups" t-value="dropdown_group_options[advantage.field]"/>
@@ -335,7 +335,7 @@
             <select
                 t-att-name="personal_info.field"
                 t-att-applies-on="personal_info.applies_on"
-                t-att-class="'form-select form-select personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
+                t-att-class="'form-control form-select personal_info' + (' advantage_input' if personal_info.impacts_net_salary else '')"
                 t-att-data-placeholder="personal_info.placeholder"
                 t-att-required="personal_info.is_required and not hidden_children">
                 <option/>

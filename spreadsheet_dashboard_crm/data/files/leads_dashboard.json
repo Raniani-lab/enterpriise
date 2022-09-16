@@ -739,7 +739,7 @@
                 },
                 "E32": {
                     "style": 1,
-                    "content": "[Top Medium](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[\"&\",\"|\",[\"active\",\"=\",true],[\"active\",\"=\",false],[\"medium_id\",\"!=\",false]],\"context\":{\"group_by\":[\"medium_id\"],\"pivot_measures\":[\"__count\",\"prorated_revenue\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"medium_id\"]},\"modelName\":\"crm.lead\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"calendar\"],[false,\"pivot\"],[false,\"graph\"],[false,\"map\"],[false,\"form\"],[false,\"activity\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Pipeline\"})",
+                    "content": "[Top Mediums](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[\"&\",\"|\",[\"active\",\"=\",true],[\"active\",\"=\",false],[\"medium_id\",\"!=\",false]],\"context\":{\"group_by\":[\"medium_id\"],\"pivot_measures\":[\"__count\",\"prorated_revenue\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"medium_id\"]},\"modelName\":\"crm.lead\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"calendar\"],[false,\"pivot\"],[false,\"graph\"],[false,\"map\"],[false,\"form\"],[false,\"activity\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Pipeline\"})",
                     "border": 1
                 },
                 "E33": {
@@ -1451,12 +1451,12 @@
                     "data": {
                         "baselineColorDown": "#DC6965",
                         "baselineColorUp": "#00A04A",
-                        "baselineMode": "text",
+                        "baselineMode": "percentage",
                         "title": "Average Deal Size",
                         "type": "scorecard",
                         "background": "",
                         "baseline": "Data!E5",
-                        "baselineDescr": "last period",
+                        "baselineDescr": "since last period",
                         "keyValue": "Data!D5"
                     }
                 },
@@ -1475,7 +1475,7 @@
                         "type": "scorecard",
                         "background": "",
                         "baseline": "Data!E6",
-                        "baselineDescr": "growth",
+                        "baselineDescr": "since last period",
                         "keyValue": "Data!D6"
                     }
                 },

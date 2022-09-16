@@ -1380,7 +1380,7 @@
                         "type": "scorecard",
                         "background": "",
                         "baseline": "Data!E4",
-                        "baselineDescr": "last period",
+                        "baselineDescr": "since last period",
                         "keyValue": "Data!D4"
                     }
                 },
@@ -1398,8 +1398,8 @@
                         "title": "Closed",
                         "type": "scorecard",
                         "background": "",
-                        "baseline": "Data!E6",
-                        "baselineDescr": "last period",
+                        "baseline": "Data!E5",
+                        "baselineDescr": "since last period",
                         "keyValue": "Data!D5"
                     }
                 },

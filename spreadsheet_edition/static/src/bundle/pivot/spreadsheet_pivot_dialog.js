@@ -270,7 +270,7 @@ export class PivotDialog extends Component {
     /**
      * Create the columns headers of the Pivot
      *
-     * @param {number} id Pivot Id
+     * @param {string} id Pivot Id
      * @param {SpreadsheetPivotTable} table
      *
      * @private
@@ -307,7 +307,7 @@ export class PivotDialog extends Component {
     /**
      * Create the row of the pivot table
      *
-     * @param {number} id Pivot Id
+     * @param {string} id Pivot Id
      * @param {SpreadsheetPivotTable} table
      *
      * @private
@@ -337,7 +337,7 @@ export class PivotDialog extends Component {
     /**
      * Build the values of the pivot table
      *
-     * @param {number} id Pivot Id
+     * @param {string} id Pivot Id
      * @param {SpreadsheetPivotTable} table
      *
      * @private

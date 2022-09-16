@@ -968,12 +968,6 @@
             "label": "MyFilter1",
             "type": "relation",
             "rangeType": "year",
-            "fields": {
-                "1": {
-                    "field": "parent_id",
-                    "type": "many2one"
-                }
-            },
             "listFields": {
                 "1": {
                     "field": "parent_id",

@@ -83,7 +83,7 @@ patch(MockServer.prototype, "web_studio.MockServer", {
             options: {},
         });
         const models = {};
-        for (const modelName of view.models) {
+        for (const modelName of Object.keys(view.models)) {
             models[modelName] = this.mockFieldsGet(modelName);
         }
         return {

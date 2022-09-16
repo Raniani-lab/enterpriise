@@ -99,8 +99,8 @@ export class DashboardController extends Component {
     }
 
     async onWillStart() {
-        let loadViewProms = [];
-        let additionalMeasures = this.aggregates
+        const loadViewProms = [];
+        const additionalMeasures = this.aggregates
             .filter((a) => {
                 const { type } = this.props.fields[a.field];
                 return type === "many2one";
@@ -156,7 +156,7 @@ export class DashboardController extends Component {
                             subView.props = {
                                 viewId: viewInfo.id,
                                 arch: viewInfo.arch,
-                                fields,
+                                fields: this.props.fields,
                                 additionalMeasures,
                                 context,
                                 type,

@@ -54,6 +54,16 @@ tour.register('test_add_component', {test: true}, [
         trigger: '.ui-menu-item > a:contains("lot1")',
         in_modal: false,
         auto: true,
+    }, {
+        trigger: '.o_tablet_client_action',
+        run: () => {
+            helper.assertCheckLength(3);
+            helper.assertValidatedCheckLength(0);
+            helper.assertQtyToProduce(1, 1);
+            helper.assertCurrentCheck('Register Consumed Materials "extra"');
+            helper.assertComponent('extra', 'editable', 3, 3);
+            helper.assert($('div.o_field_widget[name="lot_id"] input').val(), 'lot1');
+        }
     },
     // go to Elon Musk step (second one since 'extra')
     {trigger: '.o_tablet_step:nth-child(2)'},

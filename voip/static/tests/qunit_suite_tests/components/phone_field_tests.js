@@ -62,11 +62,11 @@ QUnit.module('voip', (hooks) => {
 
         // switch to edit mode and check the result
         await click(target.querySelector(".o_form_button_edit"));
-        assert.containsOnce(target, 'input[type="phone"]');
-        assert.strictEqual(target.querySelector('input[type="phone"]').value, "yop");
+        assert.containsOnce(target, 'input[type="tel"]');
+        assert.strictEqual(target.querySelector('input[type="tel"]').value, "yop");
 
         // change value in edit mode
-        await editInput(target, "input[type='phone']", "new");
+        await editInput(target, "input[type='tel']", "new");
 
         // save
         await click(target.querySelector(".o_form_button_save"));

@@ -3552,7 +3552,8 @@ class AccountReport(models.Model):
 
                 # We look for the first column with a name value
                 for index, column in enumerate(line.get('columns'), start=1):
-                    if column.get('name') and (index) < max_colspan_by_level.get(key, math.inf):
+                    if (column.get('name') or column.get('info_popup_data') or column.get('edit_popup_data')) \
+                       and (index) < max_colspan_by_level.get(key, math.inf):
                         max_colspan_by_level[key] = index
 
                         # No need to keep checking columns after this

@@ -228,6 +228,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan serial2',
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
 
     {
         trigger: '.o_barcode_line:contains("serial2")',
@@ -286,8 +287,9 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
         trigger: '.o_barcode_line.o_selected:contains("productlot1")',
         run: 'scan lot2',
     },
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
     {
-        trigger: '.o_barcode_line .o_barcode_line.o_selected:contains("lot2")',
+        trigger: '.o_barcode_line .o_barcode_line:contains("lot2")',
         run: 'scan lot3',
     },
 

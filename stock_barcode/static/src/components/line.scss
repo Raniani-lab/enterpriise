@@ -43,11 +43,11 @@
         }
     }
 
-    &.o_line_completed {
+    &.o_line_completed, &.o_line_completed > .o_barcode_line_summary {
         background: #befdcc;
     }
 
-    &.o_line_not_completed {
+    &.o_line_not_completed, &.o_line_not_completed > .o_barcode_line_summary {
         background: #fcf9f2;
     }
 

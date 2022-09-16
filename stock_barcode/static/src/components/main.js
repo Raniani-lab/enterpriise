@@ -294,6 +294,7 @@ class MainComponent extends Component {
             return;
         }
         let selectedLine = document.querySelector('.o_sublines .o_barcode_line.o_highlight');
+        const isSubline = Boolean(selectedLine);
         if (!selectedLine) {
             selectedLine = document.querySelector('.o_barcode_line.o_highlight');
         }
@@ -312,11 +313,17 @@ class MainComponent extends Component {
             const page = document.querySelector('.o_barcode_lines');
             // Computes the real header's height (the navbar is present if the page was refreshed).
             const headerHeight = navbar ? navbar.offsetHeight + header.offsetHeight : header.offsetHeight;
-            if (lineRect.top < headerHeight || lineRect.bottom > headerHeight + (lineRect.bottom - lineRect.top)) {
-                const top = lineRect.top - headerHeight + page.scrollTop;
+            if (lineRect.top < headerHeight || lineRect.bottom > (headerHeight + lineRect.height)) {
+                let top = lineRect.top - headerHeight + page.scrollTop;
+                if (isSubline) {
+                    const parentLine = selectedLine.closest('.o_barcode_lines > .o_barcode_line');
+                    const parentSummary = parentLine.querySelector('.o_barcode_line_summary');
+                    top -= parentSummary.getBoundingClientRect().height;
+                }
                 page.scroll({ left: 0, top, behavior: this._scrollBehavior });
                 this._scrollBehavior = 'smooth';
             }
+
         }
     }
 

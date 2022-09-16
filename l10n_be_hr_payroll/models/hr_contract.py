@@ -635,7 +635,14 @@ class HrContract(models.Model):
         return super()._get_bypassing_work_entry_type_codes() + [
             'LEAVE280', # Long term sick
             'LEAVE281', # Partial Incapacity
-            'LEAVE110', # Sick Leave
+            # 'LEAVE110', # Sick Leave - Actually Sick Leave < Public Time Off
+                          # If the employee does not have to work on a public
+                          # holiday but falls ill when he could have benefited
+                          # from a well-deserved day off, he is not entitled to
+                          # a guaranteed salary but to remuneration in accordance
+                          # with the days holidays. In fact, the employee is
+                          # entitled to remuneration for each public holiday falling
+                          # within 30 calendar days of the onset of his illness.
         ]
 
     def _is_same_occupation(self, contract):

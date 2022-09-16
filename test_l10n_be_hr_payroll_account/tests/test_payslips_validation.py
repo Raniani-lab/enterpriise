@@ -8145,7 +8145,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             (23, 5): sick_work_entry_type,
             (24, 5): sick_work_entry_type,
             (25, 5): sick_work_entry_type,
-            (26, 5): sick_work_entry_type,
+            (26, 5): bank_holiday,
             (27, 5): partial_sick_work_entry_type,
 
             (30, 5): partial_sick_work_entry_type,
@@ -8229,7 +8229,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         may_payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
 
-        self.assertEqual(len(may_payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(may_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(may_payslip.input_line_ids), 0)
         self.assertEqual(len(may_payslip.line_ids), 32)
 
@@ -8271,7 +8271,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         june_payslip = self._generate_payslip(datetime.date(2022, 5, 1), datetime.date(2022, 5, 31))
 
-        self.assertEqual(len(june_payslip.worked_days_line_ids), 2)
+        self.assertEqual(len(june_payslip.worked_days_line_ids), 3)
         self.assertEqual(len(june_payslip.input_line_ids), 0)
         self.assertEqual(len(june_payslip.line_ids), 32)
 

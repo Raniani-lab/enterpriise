@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
+from odoo import Command
 from odoo.addons.industry_fsm_sale.tests.common import TestFsmFlowCommon
 
 
@@ -130,20 +131,60 @@ class TestFsmSaleWithMaterial(TestFsmFlowCommon):
         self.assertFalse(self.task.sale_order_id)
         self.assertFalse(self.task.sale_line_id)
         self.assertFalse(self.task.task_to_invoice)
-        self.service_product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).set_fsm_quantity(9)
+        self.service_product_ordered.with_user(self.project_user).with_context({'fsm_task_id': self.task.id}).set_fsm_quantity(1.0)
         self.assertEqual(self.task.sale_order_id.state, 'draft')
         self.assertEqual(len(self.task.sale_order_id.order_line), 1)
 
         first_order_line = self.task.sale_order_id.order_line
-        self.assertEqual(first_order_line.product_uom_qty, 9)
+        self.assertEqual(first_order_line.product_uom_qty, 1.0)
         self.assertFalse(self.task.task_to_invoice)
         self.assertFalse(self.task.display_create_invoice_primary)
         self.assertFalse(self.task.sale_line_id)
 
+        self.task.sale_order_id.write({
+            'order_line': [
+                Command.create({
+                    'product_id': self.service_timesheet.id,
+                    'product_uom_qty': 1.0,
+                    'name': '/',
+                }),
+            ]
+        })
+
+        self.task.sale_order_id.action_confirm()
+        self.assertEqual(len(self.task.sale_order_id.order_line), 2)
+        service_timesheet_order_line = self.task.sale_order_id.order_line.filtered(lambda order_line: order_line.product_id == self.service_timesheet)
+        self.task.write({
+            'timesheet_ids': [
+                Command.create({
+                    'name': '/',
+                    'unit_amount': 0.5,
+                    'employee_id': self.employee_user2.id,
+                    'project_id': self.task.project_id.id,
+                }),
+                Command.create({
+                    'name': '/',
+                    'unit_amount': 0.5,
+                    'employee_id': self.employee_user2.id,
+                    'project_id': self.task.project_id.id,
+                }),
+                Command.create({
+                    'name': '/',
+                    'unit_amount': 1.0,
+                    'so_line': service_timesheet_order_line.id,
+                    'is_so_line_edited': True,
+                    'employee_id': self.employee_user2.id,
+                    'project_id': self.task.project_id.id,
+                }),
+            ]
+        })
+
         self.task.action_fsm_validate()
+        self.assertEqual(len(self.task.timesheet_ids.so_line), 2)
+        self.assertEqual(self.task.sale_order_id.order_line.mapped('qty_delivered'), [1.0] * 3)
         self.assertEqual(self.task.sale_line_id.product_id, self.service_product_delivered)
         self.assertEqual(self.task.sale_order_id.state, 'sale')
-        self.assertEqual(len(self.task.sale_order_id.order_line), 2)
+        self.assertEqual(len(self.task.sale_order_id.order_line), 3)
         second_order_line = self.task.sale_line_id
         self.assertEqual(second_order_line.project_id, self.fsm_project)
         self.assertEqual(second_order_line.task_id, self.task)

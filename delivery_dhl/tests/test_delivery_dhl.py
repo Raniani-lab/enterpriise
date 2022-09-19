@@ -64,7 +64,7 @@ class TestDeliveryDHL(TransactionCase):
         # I add free delivery cost in Sales order
         delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
             'default_order_id': sale_order.id,
-            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_dom').id
+            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_eu_dom').id
         }))
         choose_delivery_carrier = delivery_wizard.save()
         choose_delivery_carrier.update_price()
@@ -99,14 +99,14 @@ class TestDeliveryDHL(TransactionCase):
                     'price_unit': self.iPadMini.lst_price}
 
         so_vals = {'partner_id': self.delta_pc.id,
-                   'carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_intl').id,
+                   'carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_eu_intl').id,
                    'order_line': [(0, None, sol_vals)]}
 
         sale_order = SaleOrder.create(so_vals)
         # I add free delivery cost in Sales order
         delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
             'default_order_id': sale_order.id,
-            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_intl').id
+            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_eu_intl').id
         }))
         choose_delivery_carrier = delivery_wizard.save()
         choose_delivery_carrier.update_price()
@@ -146,14 +146,14 @@ class TestDeliveryDHL(TransactionCase):
                       'price_unit': self.large_desk.lst_price}
 
         so_vals = {'partner_id': self.delta_pc.id,
-                   'carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_intl').id,
+                   'carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_eu_intl').id,
                    'order_line': [(0, None, sol_1_vals), (0, None, sol_2_vals)]}
 
         sale_order = SaleOrder.create(so_vals)
         # I add free delivery cost in Sales order
         delivery_wizard = Form(self.env['choose.delivery.carrier'].with_context({
             'default_order_id': sale_order.id,
-            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_intl').id
+            'default_carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_eu_intl').id
         }))
         choose_delivery_carrier = delivery_wizard.save()
         choose_delivery_carrier.update_price()
@@ -196,7 +196,7 @@ class TestDeliveryDHL(TransactionCase):
                     'location_dest_id': self.customer_location.id}
 
         do_vals = {'partner_id': self.delta_pc.id,
-                   'carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_intl').id,
+                   'carrier_id': self.env.ref('delivery_dhl.delivery_carrier_dhl_eu_intl').id,
                    'location_id': self.stock_location.id,
                    'location_dest_id': self.customer_location.id,
                    'picking_type_id': self.env.ref('stock.picking_type_out').id,

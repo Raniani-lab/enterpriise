@@ -237,7 +237,7 @@ class AccountAvatax(models.AbstractModel):
                 tax_cache[key] = self.env['account.tax'].search([
                     ('name', '=', tax_name),
                     ('company_id', '=', doc.company_id.id),
-                ]) or self.env['account.tax'].with_company(doc.company_id).create({
+                ]) or self.env['account.tax'].sudo().with_company(doc.company_id).create({
                     'name': tax_name,
                     'amount': detail['rate'] * 100,
                     'amount_type': 'percent',

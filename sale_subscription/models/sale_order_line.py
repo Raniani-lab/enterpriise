@@ -84,9 +84,15 @@ class SaleOrderLine(models.Model):
                     line.discount = (1 - (1 - line.discount / 100) * (1 - line.parent_line_id.discount / 100)) * 100
         return super(SaleOrderLine, other_lines)._compute_discount()
 
-    @api.depends('order_id.recurrence_id')
+    @api.depends('order_id.recurrence_id', 'parent_line_id')
     def _compute_price_unit(self):
-        super()._compute_price_unit()
+        line_to_recompute = self.env['sale.order.line']
+        for line in self:
+            if not line.parent_line_id:
+                line_to_recompute |= line
+                continue
+            line.price_unit = line.parent_line_id.price_unit
+        super(SaleOrderLine, line_to_recompute)._compute_price_unit()
 
     @api.depends('product_id', 'order_id.recurrence_id')
     def _compute_pricing(self):

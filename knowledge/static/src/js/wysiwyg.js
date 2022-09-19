@@ -134,26 +134,6 @@ Wysiwyg.include({
         return {...options, commands, categories};
     },
     /**
-     * Notify @see FieldHtmlInjector that toolbars need to be injected
-     * @see KnowledgeToolbar
-     *
-     * @param {Element} container
-     */
-    _notifyNewToolbars(container) {
-        const toolbarsData = [];
-        container.querySelectorAll('.o_knowledge_toolbar_anchor').forEach(function (container, anchor) {
-            const type = Array.from(anchor.classList).find(className => className.startsWith('o_knowledge_toolbar_type_'));
-            if (type) {
-                toolbarsData.push({
-                    container: container,
-                    anchor: anchor,
-                    type: type,
-                });
-            }
-        }.bind(this, container));
-        this.$editable.trigger('refresh_toolbars', { toolbarsData: toolbarsData });
-    },
-    /**
      * Notify @see FieldHtmlInjector that behaviors need to be injected
      * @see KnowledgeBehavior
      *
@@ -188,12 +168,11 @@ Wysiwyg.include({
      * It will list all the articles that are direct children of this one.
      * @param {boolean} childrenOnly
      */
-     _insertArticlesStructure: function (childrenOnly) {
+    _insertArticlesStructure: function (childrenOnly) {
         const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper', {
             childrenOnly: childrenOnly
         }))[0];
         const [container] = this.odooEditor.execCommand('insert', articlesStructureBlock);
-        this._notifyNewToolbars(container);
         this._notifyNewBehavior(container);
     },
     /**

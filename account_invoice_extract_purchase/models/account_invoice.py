@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import re
 import time
 
 from odoo import models, _
@@ -33,8 +34,8 @@ class AccountMove(models.Model):
         po_sequence = self.env['ir.sequence'].search([('code', '=', 'purchase.order'), ('company_id', 'in', [self.company_id.id, False])], order='company_id', limit=1)
         if po_sequence:
             po_regex_prefix, po_regex_suffix = po_sequence._get_prefix_suffix()
-            po_regex_prefix = transform_numbers_to_regex(po_regex_prefix)
-            po_regex_suffix = transform_numbers_to_regex(po_regex_suffix)
+            po_regex_prefix = transform_numbers_to_regex(re.escape(po_regex_prefix))
+            po_regex_suffix = transform_numbers_to_regex(re.escape(po_regex_suffix))
             po_regex_sequence = r'\d{{{}}}'.format(po_sequence.padding)
             user_infos['purchase_order_regex'] = '^' + po_regex_prefix + po_regex_sequence + po_regex_suffix + '$'
         return user_infos

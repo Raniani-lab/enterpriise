@@ -80,7 +80,7 @@ class AccountMoveReversal(models.TransientModel):
         if self.helpdesk_ticket_id:
             self.helpdesk_ticket_id.invoice_ids |= self.new_move_ids
             message = _('Refund created')
-            subtype_id = self.env.ref('mail.mt_note').id
+            subtype_id = self.env['ir.model.data']._xmlid_to_res_id('helpdesk_account.mt_ticket_refund_created')
             for move_id in self.new_move_ids:
                 move_id.message_post_with_view('helpdesk.ticket_creation', values={'self': move_id, 'ticket': self.helpdesk_ticket_id}, subtype_id=subtype_id)
                 self.helpdesk_ticket_id.message_post_with_view(

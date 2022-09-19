@@ -21,14 +21,18 @@ class TestBankRecWidget(TestBankRecWidgetCommon, HttpCase):
 
         # INV/2019/00001:
         self._create_invoice_line(
-            1000.0, self.partner_a, 'out_invoice',
-            inv_date='2019-01-01',
+            'out_invoice',
+            partner_id=self.partner_a,
+            invoice_date='2019-01-01',
+            invoice_line_ids=[{'price_unit': 1000.0}],
         )
 
         # INV/2019/00002:
         self._create_invoice_line(
-            1000.0, self.partner_a, 'out_invoice',
-            inv_date='2019-01-01',
+            'out_invoice',
+            partner_id=self.partner_a,
+            invoice_date='2019-01-01',
+            invoice_line_ids=[{'price_unit': 1000.0}],
         )
 
         self.start_tour('/web', 'account_accountant_bank_rec_widget', login=self.env.user.login)

@@ -360,7 +360,7 @@ class AccountJournal(models.Model):
         Nm = etree.SubElement(Cdtr, "Nm")
         Nm.text = sanitize_communication((
             partner_bank.acc_holder_name or partner.name or partner.commercial_partner_id.name or '/'
-        )[:70])
+        )[:70]).strip() or '/'
         if partner.country_id.code and (partner.city or pain_version == "pain.001.001.03.se"):  # For Sweden, country is enough
             Cdtr.append(self._get_PstlAdr(partner))
 

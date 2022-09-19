@@ -268,8 +268,9 @@ class SendCloud:
         addresses = self.get_addresses()
         res_id = None
         for addr in addresses:
-            addr_name = addr.get('contact_name', '').lower().replace(' ', '')
-            if addr_name == warehouse_name:
+            label = addr.get('label', '').lower().replace(' ', '')
+            contact_name = addr.get('contact_name', '').lower().replace(' ', '')
+            if label == warehouse_name or contact_name == warehouse_name:
                 res_id = addr['id']
                 break
         if not res_id:

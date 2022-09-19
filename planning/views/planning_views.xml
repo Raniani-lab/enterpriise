@@ -107,14 +107,14 @@
                                 <div attrs="{'invisible': [('repeat', '=', False)]}" class="d-flex flex-column flex-grow-1">
                                     <div class="d-flex">
                                         <label for="repeat_interval" string="Every"/>
-                                        <field name="repeat_interval" class="flex-shrink-1"/>
-                                        <field name="repeat_unit" class="col-2 col-lg-1 mx-2"/>
+                                        <field name="repeat_interval" class="flex-shrink-1" style="max-width: 4rem;"/>
+                                        <field name="repeat_unit" class="ms-2"/>
                                     </div>
                                     <div class="d-flex">
                                         <field name="repeat_type" nolabel="1" attrs="{'required': [('repeat', '=', True)]}" class="flex-shrink-1" />
-                                        <span class="ms-2 d-flex flex-shrink-1">
-                                            <field name="repeat_until" class="flex-shrink-1" nolabel="1" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until'), ('repeat', '=', True)]}"/>
-                                            <field name="repeat_number" class="flex-shrink-1" attrs="{'invisible': [('repeat_type', '!=', 'x_times')], 'required': [('repeat_type', '=', 'x_times'), ('repeat', '=', True)]}"/>
+                                        <span class="d-flex flex-shrink-1">
+                                            <field name="repeat_until" class="flex-shrink-1 ms-2" nolabel="1" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until'), ('repeat', '=', True)]}"/>
+                                            <field name="repeat_number" class="flex-shrink-1 ms-2" attrs="{'invisible': [('repeat_type', '!=', 'x_times')], 'required': [('repeat_type', '=', 'x_times'), ('repeat', '=', True)]}" style="max-width: 4rem;"/>
                                         </span>
                                     </div>
                                 </div>

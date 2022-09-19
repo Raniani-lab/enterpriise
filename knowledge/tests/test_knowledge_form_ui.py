@@ -9,9 +9,10 @@ from PIL import Image
 from unittest import skipIf
 from odoo import fields
 from odoo.tests.common import tagged, HttpCase
+from odoo.addons.mail.tests.common import MailCommon
 
 
-class TestKnowledgeUICommon(HttpCase):
+class TestKnowledgeUICommon(HttpCase, MailCommon):
     allow_end_on_form = True
     @classmethod
     def setUpClass(cls):
@@ -76,7 +77,8 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             'parent_id': False,
             'is_article_visible_by_everyone': True,
         })
-        self.start_tour('/web', 'knowledge_main_flow_tour', login='admin', step_delay=100)
+        with self.mock_mail_gateway(), self.mock_mail_app():
+            self.start_tour('/web', 'knowledge_main_flow_tour', login='admin', step_delay=100)
 
         # check our articles were correctly created
         # with appropriate default values (section / internal_permission)
@@ -116,7 +118,7 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         self.assertEqual(len(invitation_message), 1)
         self.assertIn(
             workspace_article._get_invite_url(invited_partner),
-            invitation_message.body
+            self._new_mails.body_html
         )
 
         # as we re-ordered our favorites, private article should come first

@@ -1178,7 +1178,7 @@ class TestKnowledgeShare(KnowledgeCommonWData):
         self.assertEqual(len(self._new_msgs), 1)
         self.assertIn(
             knowledge_article_sudo._get_invite_url(self.partner_portal),
-            self._new_msgs.body
+            self._new_mails.body_html
         )
 
         with self.with_user('portal_test'):

@@ -16,9 +16,10 @@ class KnowledgeInvite(models.TransientModel):
         ('read', 'Can read'),
         ('none', 'No access')
     ], required=True, default='write')
+    message = fields.Html(string="Message")
 
     def action_invite_members(self):
-        self.article_id.invite_members(self.partner_ids, self.permission)
+        self.article_id.invite_members(self.partner_ids, self.permission, self.message)
 
     @api.depends('partner_ids')
     def _compute_have_share_partners(self):

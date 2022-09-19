@@ -1382,7 +1382,7 @@ class Article(models.Model):
             'is_desynchronized': False
         })
 
-    def invite_members(self, partners, permission):
+    def invite_members(self, partners, permission, message=None):
         """ Invite the given partners to the current article. Inviting to remove
         access is straightforward (just set permission). Inviting with rights
         requires to check for privilege escalation in descendants.
@@ -1404,7 +1404,8 @@ class Article(models.Model):
             members_command = self._add_members_command(share_partner_ids, 'read')
             members_command += self._add_members_command(partners - share_partner_ids, permission)
             self.sudo().write({'article_member_ids': members_command})
-            self._send_invite_mail(partners)
+            self._send_invite_mail(share_partner_ids, 'read', message)
+            self._send_invite_mail(partners - share_partner_ids, permission, message)
 
         return True
 
@@ -2089,35 +2090,61 @@ class Article(models.Model):
             self._track_set_log_message("<p>%s</p>" % message_body)
         return changes, tracking_value_ids
 
-    def _send_invite_mail(self, partners):
+    def _send_invite_mail(self, partners, permission, message=None):
         self.ensure_one()
 
         partner_to_bodies = {}
         for partner in partners:
-            member = self.article_member_ids.filtered(lambda member: member.partner_id == partner)
-            invite_url = url_join(
-                self.get_base_url(),
-                f"/knowledge/article/invite/{member.id}/{member._get_invitation_hash()}"
-            )
             partner_to_bodies[partner] = self.env['ir.qweb'].with_context(lang=partner.lang)._render(
                 'knowledge.knowledge_article_mail_invite',
                 {
                     'record': self,
                     'user': self.env.user,
-                    'recipient': partner,
-                    'link': invite_url,
+                    'permission': permission,
+                    'message': message,
                 }
             )
 
-        subject = _("Invitation to access %s", self.name) if self.name else \
-            _("Invitation to access an article")
+        if self.display_name:
+            subject = _('Article shared with you: %s', self.display_name)
+        else:
+            subject = _('Invitation to access an article')
+
+        if permission == 'read':
+            permission_label = _('Read')
+        else:
+            permission_label = _('Write')
+
         for partner, body in partner_to_bodies.items():
             self.with_context(lang=partner.lang).message_notify(
                 body=body,
-                email_layout_xmlid='mail.mail_notification_light',
+                email_layout_xmlid='mail.mail_notification_layout',
                 partner_ids=partner.ids,
                 subject=subject,
+                subtitles=[self.display_name, _('Your Access: %s', permission_label)],
             )
+
+    def _notify_get_recipients_groups(self, message, model_description, msg_vals=None):
+        groups = super()._notify_get_recipients_groups(message, model_description, msg_vals=msg_vals)
+        if not self or not msg_vals.get('partner_ids'):
+            return groups
+        new_group = []
+        for member in self.article_member_ids.filtered(
+            lambda member: member.partner_id.id in msg_vals['partner_ids'] and member.partner_id.partner_share
+        ):
+            url = url_join(
+                self.get_base_url(),
+                f"/knowledge/article/invite/{member.id}/{member._get_invitation_hash()}"
+            )
+            new_group.append(
+                (f'group_knowledge_member_{member.id}', lambda pdata: pdata['id'] == member.partner_id.id, {
+                    'has_button_access': True,
+                    'button_access': {
+                        'url': url,
+                    },
+                })
+            )
+        return new_group + groups
 
     def _send_trash_notifications(self):
         """ This method searches all the partners that should be notified about

@@ -45,6 +45,7 @@
             'planning/static/src/js/planning_gantt_view.js',
             'planning/static/src/js/planning_form_view.js',
             'planning/static/src/js/widgets/*',
+            'planning/static/src/views/**',
             'planning/static/src/scss/planning_gantt.scss',
             'planning/static/src/js/tours/planning.js',
             'planning/static/src/xml/**/*',

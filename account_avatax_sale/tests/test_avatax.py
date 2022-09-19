@@ -22,6 +22,14 @@ class TestSaleAvalara(TestAccountAvataxCommon):
             'amount_type': 'percent',
         })
 
+        cls.sales_user = cls.env['res.users'].create({
+            'name': 'Sales user',
+            'login': 'sales',
+            'groups_id': [(6, 0, [cls.env.ref('base.group_user').id, cls.env.ref('sales_team.group_sale_salesman').id])],
+        })
+        cls.env = cls.env(user=cls.sales_user)
+        cls.cr = cls.env.cr
+
         return res
 
     def assertOrder(self, order, mocked_response=None):
@@ -52,6 +60,7 @@ class TestSaleAvalara(TestAccountAvataxCommon):
 
     def _create_sale_order(self):
         return self.env['sale.order'].create({
+            'user_id': self.sales_user.id,
             'partner_id': self.partner.id,
             'fiscal_position_id': self.fp_avatax.id,
             'date_order': '2021-01-01',

@@ -46,10 +46,43 @@ class MrpProductionSchedule(models.Model):
     max_to_replenish_qty = fields.Float(
         'Maximum to Replenish', default=1000,
         help="The maximum replenishment you would like to launch for each period in the MPS. Note that if the demand is higher than that amount, the remaining quantity will be transferred to the next period automatically.")
+    replenish_state = fields.Selection([
+        ('to_replenish', 'To Replenish'),
+        ('under_replenishment', 'Under Replenishment'),
+        ('excessive_replenishment', 'Excessive Replenishment')], store=False, search='_search_replenish_state',
+        help="Technical field to support filtering by replenish state")
 
     _sql_constraints = [
         ('warehouse_product_ref_uniq', 'unique (warehouse_id, product_id)', 'The combination of warehouse and product must be unique !'),
     ]
+
+    def _search_replenish_state(self, operator, value):
+        productions_schedules = self.search([])
+        productions_schedules_states = productions_schedules.get_production_schedule_view_state()
+
+        def filter_function(f):
+            if not value:
+                return not (f['state'] == 'to_launch' and f['to_replenish'] or \
+                    f['state'] == 'to_relaunch' or f['state'] == 'to_correct')
+            return value == "to_replenish" and f['state'] == 'to_launch' and f['to_replenish'] or \
+                value == "under_replenishment" and f['state'] == 'to_relaunch' or \
+                value == "excessive_replenishment" and f['state'] == 'to_correct'
+
+        ids = []
+        for state in productions_schedules_states:
+            if value:
+                if any(map(filter_function, state['forecast_ids'])):
+                    ids.append(state['id'])
+            else:
+                if all(map(filter_function, state['forecast_ids'])):
+                    ids.append(state['id'])
+
+        if operator == '=':
+            operator = 'in'
+        else:
+            operator = 'not in'
+
+        return [('id', operator, ids)]
 
     def action_open_actual_demand_details(self, date_str, date_start_str, date_stop_str):
         """ Open the picking list view for the actual demand for the current

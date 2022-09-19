@@ -42,11 +42,17 @@
         <field name="name">mrp.production.schedule.search.view</field>
         <field name="model">mrp.production.schedule</field>
         <field name="arch" type="xml">
-          <search>
-              <field name="product_id"/>
-              <field name="warehouse_id"/>
-              <field name="bom_id"/>
-          </search>
+            <search>
+                <field name="product_id"/>
+                <field name="warehouse_id"/>
+                <field name="bom_id"/>
+                <filter string="To Replenish" name="to_replenish"
+                        domain="[('replenish_state', '=', 'to_replenish')]"/>
+                <filter string="Replenishment Too Low" name="under_replenishment"
+                        domain="[('replenish_state', '=', 'under_replenishment')]"/>
+                <filter string="Replenishment Too High" name="excessive_replenishment"
+                        domain="[('replenish_state', '=', 'excessive_replenishment')]"/>
+            </search>
         </field>
     </record>
 

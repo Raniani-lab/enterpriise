@@ -45,11 +45,15 @@ class SaleOrderLine(models.Model):
 
     @api.depends('order_id.is_subscription', 'temporal_type')
     def _compute_invoice_status(self):
+        skip_line_status_compute = self.env.context.get('skip_line_status_compute')
+        if skip_line_status_compute:
+            return
         super(SaleOrderLine, self)._compute_invoice_status()
         today = fields.Date.today()
         for line in self:
             if not line.order_id.is_subscription or line.temporal_type != 'subscription':
                 continue
+            # Subscriptions and upsells
             to_invoice_check = line.order_id.next_invoice_date and line.state in ('sale', 'done') and line.order_id.next_invoice_date >= today
             if line.order_id.end_date:
                 to_invoice_check = to_invoice_check and line.order_id.end_date > today
@@ -155,9 +159,11 @@ class SaleOrderLine(models.Model):
             start_date = last_invoice_date or last_period_start
             end_date = next_invoice_date or line.order_id.next_invoice_date
             day_before_end_date = end_date and end_date - relativedelta(days=1)
+            if not start_date or not day_before_end_date:
+                continue
             related_invoice_lines = line.invoice_lines.filtered(
-                lambda l: l.move_id.state != 'cancel' and \
-                          l.subscription_start_date == start_date and
+                lambda l: l.move_id.state != 'cancel' and
+                          start_date <= l.subscription_start_date <= day_before_end_date and
                           l.subscription_end_date == day_before_end_date)
             for invoice_line in related_invoice_lines:
                 qty_invoiced += invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom)
@@ -271,16 +277,12 @@ class SaleOrderLine(models.Model):
             partner_lang = line.order_id.partner_id.lang
             line = line.with_context(lang=partner_lang) if partner_lang else line
             product = line.product_id
-            if subscription_management == 'upsell':
-                quantity = 0
-            else:
-                quantity = line.product_uom_qty
             order_lines.append((0, 0, {
                 'parent_line_id': line.id,
                 'temporal_type': 'subscription',
                 'product_id': product.id,
                 'product_uom': line.product_uom.id,
-                'product_uom_qty': quantity,
+                'product_uom_qty': 0 if subscription_management == 'upsell' else line.product_uom_qty,
                 'price_unit': line.price_unit,
             }))
             description_needed = True

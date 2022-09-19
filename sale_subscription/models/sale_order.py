@@ -585,21 +585,18 @@ class SaleOrder(models.Model):
         """
         When confirming an upsell order, the recurring product lines must be updated
         """
-        new_lines = self.order_line.filtered(lambda l: not l.parent_line_id)
+        existing_line_ids = self.subscription_id.order_line.ids
         dummy, update_values = self.update_existing_subscriptions()
-        updated_line_ids = [val[1] for val in update_values]
+        updated_line_ids = {val[1] for val in update_values}
+        new_lines_ids = set(self.subscription_id.order_line.ids) - set(existing_line_ids)
         # Example: with a new yearly line starting in june when the expected next invoice date is december,
         # discount is 50% and the default next_invoice_date will be in june too.
         # We need to get the default next_invoice_date that was saved on the upsell because the compute has no way
         # to differentiate new line created by an upsell and new line created by the user.
         for upsell in self:
             upsell.subscription_id.message_post(body=_("The upsell  %s has been confirmed.", upsell._get_html_link()))
-        for line in self.subscription_id.order_line:
-            if line.id in updated_line_ids:
-                # Existing lines have already the right values
-                continue
-            upsell_line = new_lines.filtered(lambda l: not l.parent_line_id)
-            if upsell_line and line.pricing_id:
+        for line in self.subscription_id.order_line.with_context(skip_line_status_compute=True):
+            if line.id in (updated_line_ids | new_lines_ids):
                 # The upsell invoice will take care of the invoicing for this period
                 line.qty_to_invoice = 0
                 line.qty_invoiced = line.product_uom_qty
@@ -844,7 +841,7 @@ class SaleOrder(models.Model):
             'company_id': subscription.company_id.id,
             'sale_order_template_id': self.sale_order_template_id.id,
             'sale_order_option_ids': option_lines_data,
-            'payment_token_id': subscription_management == 'renew' and self.payment_token_id.id,
+            'payment_token_id': False,
             'start_date': start_date,
             'next_invoice_date': next_invoice_date,
             'recurrence_id': subscription.recurrence_id.id,

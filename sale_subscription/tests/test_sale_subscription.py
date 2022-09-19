@@ -1561,7 +1561,6 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(upsell_so.order_line.parent_line_id, parent_line_id, "The parent line is the one from the subscription")
             first_line_id = upsell_so.order_line[0] # line 0 is the upsell line
             first_line_id.product_id = self.product2
-            first_line_id.with_context(arj=True)._compute_parent_line_id()
             self.assertFalse(first_line_id.parent_line_id, "The new line should not have a parent line")
             first_line_id.product_id = self.product
             self.assertEqual(upsell_so.order_line[0].parent_line_id, parent_line_id, "The parent line is the one from the subscription")
@@ -1578,9 +1577,12 @@ class TestSubscription(TestSubscriptionCommon):
                 'product_uom': self.product.uom_id.id,
             }]
             self.env['sale.order.line'].create(so_line_vals)
-            self.assertFalse(upsell_so.order_line[2].parent_line_id, "The new line should now have any parent line")
-            upsell_so.order_line[2].product_id = self.product
+            self.assertFalse(upsell_so.order_line[2].parent_line_id, "The new line should not have any parent line")
+            upsell_so.order_line[2].product_id = self.product3
+            upsell_so.order_line[2].product_id = self.product # it should recreate a link
             upsell_so.order_line[0].product_uom_qty = 2
+            self.assertEqual(upsell_so.order_line.parent_line_id, parent_line_id,
+                             "The parent line is the one from the subscription")
             upsell_so.action_confirm()
             self.assertEqual(self.subscription.order_line[0].product_uom_qty, 4, "The original line qty should be 4 (1 + 3 upsell line 1)")
             self.assertEqual(self.subscription.order_line[1].product_uom_qty, 2, "The new line qty should be 2 (upsell line 0)")
@@ -1628,3 +1630,24 @@ class TestSubscription(TestSubscriptionCommon):
             subscription.action_confirm()
             self.assertEqual(subscription.next_invoice_date, datetime.date(2022, 2, 10))
             self.assertEqual(subscription.start_date, datetime.date(2022, 2, 10))
+
+    def test_discount_parent_line(self):
+        with freeze_time("2022-01-01"):
+            self.subscription.start_date = False
+            self.subscription.next_invoice_date = False
+            self.subscription.write({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_year.id,
+            })
+            self.subscription.order_line.discount = 10
+            self.subscription.action_confirm()
+            self.env['sale.order']._cron_recurring_create_invoice()
+        with freeze_time("2022-10-31"):
+            self.env['sale.order']._cron_recurring_create_invoice()
+            action = self.subscription.prepare_upsell_order()
+            upsell_so = self.env['sale.order'].browse(action['res_id'])
+            # Discount is 55.61: 83% for pro rata temporis and 10% coming from the parent order
+            # price_unit must be multiplied by (1-0.831) * 0,9
+            # 100 * [1 - ((1 - 0.831) * 0.9)] = ~84%
+            discount = [round(v, 2) for v in upsell_so.order_line.mapped('discount')]
+            self.assertAlmostEqual(discount, [84.71, 84.71, 0])

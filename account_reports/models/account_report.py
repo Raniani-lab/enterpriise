@@ -1834,7 +1834,7 @@ class AccountReport(models.Model):
             'id': line_id,
             'name': line.name,
             'groupby': line.groupby,
-            'unfoldable': line.foldable and (any(col['has_sublines'] for col in columns) or line.children_ids),
+            'unfoldable': line.foldable and (any(col['has_sublines'] for col in columns) or bool(line.children_ids)),
             'unfolded': bool((not line.foldable and (line.children_ids or line.groupby)) or line_id in options.get('unfolded_lines', {})) or options.get('unfold_all'),
             'columns': columns,
             'level': line.hierarchy_level,

@@ -1085,7 +1085,16 @@ var accountReportsWidget = AbstractAction.extend({
         self.report_options.unfolded_lines.push(line_id);
         var $lines_in_dom = this.$el.find('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
         let $total_lines = $lines_in_dom.filter('.total');
-        if ($lines_in_dom.length - $total_lines.length > 0) {
+        let $report_lines_in_dom = $lines_in_dom.not($total_lines);
+        if ($report_lines_in_dom.length > 0) {
+            $($report_lines_in_dom).each(function() {
+                let current_line = $(this).children()[0];
+                let has_children = self.$el.find('tr[data-parent-id="'+$.escapeSelector(String($(current_line).data('id')))+'"]').length > 0;
+                let is_unfoldable = $(current_line).hasClass('js_account_report_foldable');
+                if (has_children && !is_unfoldable) {
+                    self.unfold($(current_line));
+                }
+            });
             $lines_in_dom.find('.js_account_report_line_footnote').removeClass('folded');
             $lines_in_dom.show();
             line.find('.o_account_reports_caret_icon .fa-caret-right').toggleClass('fa-caret-right fa-caret-down');

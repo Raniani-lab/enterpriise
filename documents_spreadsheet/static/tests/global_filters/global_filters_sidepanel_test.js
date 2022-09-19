@@ -6,7 +6,7 @@ import {
     getBasicPivotArch,
     getBasicServerData,
 } from "@spreadsheet/../tests/utils/data";
-import { click, getFixture, nextTick, patchDate } from "@web/../tests/helpers/utils";
+import { click, editInput, getFixture, nextTick, patchDate } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
@@ -35,6 +35,46 @@ const THIS_YEAR_FILTER = {
     },
 };
 
+const FILTER_CREATION_SELECTORS = {
+    text: ".o_global_filter_new_text",
+    date: ".o_global_filter_new_time",
+    relation: ".o_global_filter_new_relation",
+};
+
+async function openGlobalFilterSidePanel() {
+    await click(target, ".o_topbar_filter_icon");
+}
+
+/**
+ * @param {"text" | "date" | "relation"} type
+ */
+async function clickCreateFilter(type) {
+    await click(target, FILTER_CREATION_SELECTORS[type]);
+}
+
+async function selectModelForRelation(relation) {
+    await click(target, ".o_side_panel_related_model input");
+    await click(target, `.o_model_selector_${relation}`);
+}
+
+async function selectFieldMatching(fieldName, fieldMatching = target) {
+    await click(fieldMatching, ".o_field_selector");
+    // We use `target` here because the popover is not in fieldMatching
+    await click(target, `.o_field_selector_item[data-name='${fieldName}']`);
+}
+
+async function saveGlobalFilter() {
+    await click(target, ".o_global_filter_save");
+}
+
+async function editGlobalFilterLabel(label) {
+    await editInput(target, ".o_global_filter_label", label);
+}
+
+async function editGlobalFilterDefaultValue(defaultValue) {
+    await editInput(target, ".o_global_filter_default_value", defaultValue);
+}
+
 async function selectYear(yearString) {
     const input = target.querySelector("input.o_datepicker_input.o_input.datetimepicker-input");
     // open the YearPicker
@@ -53,25 +93,22 @@ QUnit.module(
     },
     () => {
         QUnit.test("Simple display", async function (assert) {
-            assert.expect(6);
-
             await createSpreadsheetFromPivotView();
-            assert.notOk($(target).find(".o_spreadsheet_global_filters_side_panel")[0]);
-            const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
-            await testUtils.dom.click(searchIcon);
-            assert.ok($(target).find(".o_spreadsheet_global_filters_side_panel")[0]);
-            const items = $(target).find(
+            assert.containsNone(target, ".o_spreadsheet_global_filters_side_panel");
+
+            await openGlobalFilterSidePanel();
+            assert.containsOnce(target, ".o_spreadsheet_global_filters_side_panel");
+
+            const buttons = target.querySelectorAll(
                 ".o_spreadsheet_global_filters_side_panel .o-sidePanelButton"
             );
-            assert.equal(items.length, 3);
-            assert.ok(items[0].classList.contains("o_global_filter_new_time"));
-            assert.ok(items[1].classList.contains("o_global_filter_new_relation"));
-            assert.ok(items[2].classList.contains("o_global_filter_new_text"));
+            assert.strictEqual(buttons.length, 3);
+            assert.hasClass(buttons[0], "o_global_filter_new_time");
+            assert.hasClass(buttons[1], "o_global_filter_new_relation");
+            assert.hasClass(buttons[2], "o_global_filter_new_text");
         });
 
         QUnit.test("Display with an existing 'Date' global filter", async function (assert) {
-            assert.expect(4);
-
             const { model } = await createSpreadsheetFromPivotView();
             const label = "This year";
             await addGlobalFilter(model, {
@@ -84,17 +121,17 @@ QUnit.module(
                     defaultValue: {},
                 },
             });
-            const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
-            await testUtils.dom.click(searchIcon);
-            const items = $(target).find(
+            await openGlobalFilterSidePanel();
+            const sections = target.querySelectorAll(
                 ".o_spreadsheet_global_filters_side_panel .o_side_panel_section"
             );
-            assert.equal(items.length, 2);
-            const labelElement = items[0].querySelector(".o_side_panel_filter_label");
+            assert.equal(sections.length, 2);
+            const labelElement = sections[0].querySelector(".o_side_panel_filter_label");
             assert.equal(labelElement.innerText, label);
-            await testUtils.dom.click(items[0].querySelector(".o_side_panel_filter_icon.fa-cog"));
-            assert.ok($(target).find(".o_spreadsheet_filter_editor_side_panel"));
-            assert.equal($(target).find(".o_global_filter_label")[0].value, label);
+
+            await click(sections[0], ".o_side_panel_filter_icon.fa-cog");
+            assert.containsOnce(target, ".o_spreadsheet_filter_editor_side_panel");
+            assert.equal(target.querySelector(".o_global_filter_label").value, label);
         });
 
         QUnit.test("Pivot display name is displayed in field matching", async function (assert) {
@@ -112,7 +149,7 @@ QUnit.module(
                 },
             });
 
-            await click(target, ".o_topbar_filter_icon");
+            await openGlobalFilterSidePanel();
             await click(target, ".o_side_panel_filter_icon.fa-cog");
             const name = target.querySelector(".o_pivot_field_matching .fw-medium").innerText;
             assert.strictEqual(name, "Hello");
@@ -133,7 +170,7 @@ QUnit.module(
                 },
             });
 
-            await click(target, ".o_topbar_filter_icon");
+            await openGlobalFilterSidePanel();
             await click(target, ".o_side_panel_filter_icon.fa-cog");
             const name = target.querySelector(".o_pivot_field_matching .fw-medium").innerText;
             assert.strictEqual(name, "Hello");
@@ -141,28 +178,17 @@ QUnit.module(
 
         QUnit.test("Create a new global filter", async function (assert) {
             const { model } = await createSpreadsheetFromPivotView();
-            const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
-            await testUtils.dom.click(searchIcon);
-            const newText = $(target).find(".o_global_filter_new_text")[0];
-            await testUtils.dom.click(newText);
-            assert.equal($(target).find(".o-sidePanel").length, 1);
-            const input = $(target).find(".o_global_filter_label")[0];
-            await testUtils.fields.editInput(input, "My Label");
-            const value = $(target).find(".o_global_filter_default_value")[0];
-            await testUtils.fields.editInput(value, "Default Value");
-            // Can't make it work with the DOM API :(
-            // await testUtils.dom.triggerEvent($(target).find(".o_field_selector_value"), "focusin");
-            $($(target).find(".o_field_selector_value")).focusin();
-            await testUtils.dom.click(
-                $(target).find(".o_field_selector_select_button[data-name='display_name']")
-            );
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("text");
+            await editGlobalFilterLabel("My Label");
+            await editGlobalFilterDefaultValue("Default Value");
+            await selectFieldMatching("name");
             assert.containsNone(target, ".o_filter_field_offset", "No offset for text filter");
-            const save = $(target).find(
-                ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-            )[0];
-            await testUtils.dom.click(save);
-            assert.equal($(target).find(".o_spreadsheet_global_filters_side_panel").length, 1);
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            await saveGlobalFilter();
+
+            assert.containsOnce(target, ".o_spreadsheet_global_filters_side_panel");
+
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "My Label");
             assert.equal(globalFilter.defaultValue, "Default Value");
         });
@@ -182,25 +208,17 @@ QUnit.module(
                     },
                 },
             });
-            const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
-            await testUtils.dom.click(searchIcon);
-            const newRelation = $(target).find(".o_global_filter_new_relation")[0];
-            await testUtils.dom.click(newRelation);
-            const selector = `.o_side_panel_related_model input`;
-            await testUtils.dom.click($(target).find(selector)[0]);
-            const item = target.querySelector(".o_model_selector_product");
-            await click(item);
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("relation");
+            await selectModelForRelation("product");
             assert.containsNone(
                 target,
                 ".o_filter_field_offset",
                 "No offset for relational filter"
             );
-            const save = $(target).find(
-                ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-            )[0];
-            await testUtils.dom.click(save);
-            assert.equal($(target).find(".o_spreadsheet_global_filters_side_panel").length, 1);
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            await saveGlobalFilter();
+            assert.containsOnce(target, ".o_spreadsheet_global_filters_side_panel");
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
             assert.deepEqual(globalFilter.pivotFields[1], {
@@ -219,6 +237,7 @@ QUnit.module(
                 relation: "vehicle",
                 string: "Vehicle",
                 type: "many2many",
+                searchable: true,
             };
             serverData.models["ir.model"].records.push({
                 id: 34,
@@ -226,16 +245,17 @@ QUnit.module(
                 model: "vehicle",
             });
             const { model } = await createSpreadsheetFromPivotView({ serverData });
-            await click(target, ".o_topbar_filter_icon");
-            await click(target, ".o_global_filter_new_relation");
-            await click(target, ".o_side_panel_related_model input");
-            await click(target, ".o_model_selector_vehicle");
+
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("relation");
+            await selectModelForRelation("vehicle");
             assert.strictEqual(
                 target.querySelector(".o_field_selector_value").innerText,
                 "Vehicle"
             );
-            await click(target, ".o_global_filter_save");
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            await saveGlobalFilter();
+
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.strictEqual(globalFilter.label, "Vehicle");
             assert.deepEqual(globalFilter.defaultValue, []);
             assert.deepEqual(globalFilter.pivotFields[1], {
@@ -251,7 +271,7 @@ QUnit.module(
 
         QUnit.test("Cannot create a relation filter without data source", async function (assert) {
             await createSpreadsheet();
-            await click(target, ".o_topbar_filter_icon");
+            await openGlobalFilterSidePanel();
             assert.containsOnce(target, ".o_global_filter_new_time");
             assert.containsNone(target, ".o_global_filter_new_relation");
             assert.containsOnce(target, ".o_global_filter_new_text");
@@ -261,7 +281,7 @@ QUnit.module(
             "Can create a relation filter with at least a data source",
             async function (assert) {
                 await createSpreadsheetFromPivotView();
-                await click(target, ".o_topbar_filter_icon");
+                await openGlobalFilterSidePanel();
                 assert.containsOnce(target, ".o_global_filter_new_time");
                 assert.containsOnce(target, ".o_global_filter_new_relation");
                 assert.containsOnce(target, ".o_global_filter_new_text");
@@ -272,8 +292,8 @@ QUnit.module(
             "Creating a date filter without a data source does not display Field Matching",
             async function (assert) {
                 await createSpreadsheet();
-                await click(target, ".o_topbar_filter_icon");
-                await click(target, ".o_global_filter_new_time");
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("date");
                 assert.containsNone(target, ".o_field_matching_title");
             }
         );
@@ -316,24 +336,16 @@ QUnit.module(
                     serverData,
                     spreadsheetId: 45,
                 });
-                const searchIcon = target.querySelector(".o_topbar_filter_icon");
-                await click(searchIcon);
-                const newRelation = target.querySelector(".o_global_filter_new_relation");
-                await click(newRelation);
-                const selector = `.o_side_panel_related_model input`;
-                await testUtils.dom.click($(target).find(selector)[0]);
-                const item = target.querySelector(".o_model_selector_product");
-                await click(item);
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("relation");
+                await selectModelForRelation("product");
                 const fieldMatching = target.querySelector(".o_pivot_field_matching div");
                 assert.equal(
                     fieldMatching.innerText,
                     "partner (Pivot #1)",
                     "model display name is loaded"
                 );
-                const save = target.querySelector(
-                    ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-                );
-                await click(save);
+                await saveGlobalFilter();
                 model.dispatch("ACTIVATE_SHEET", { sheetIdFrom: "sheet1", sheetIdTo: "sheet2" });
                 await nextTick();
                 assert.equal(getCellValue(model, "A1"), 131);
@@ -363,15 +375,11 @@ QUnit.module(
                         }
                     },
                 });
-                await testUtils.dom.click(".o_topbar_filter_icon");
-                await testUtils.dom.click(".o_global_filter_new_relation");
-                const relatedModelSelector = `.o_side_panel_related_model input`;
-                const fieldMatchingSelector = `.o_pivot_field_matching`;
-                assert.containsNone(target, fieldMatchingSelector);
-                await testUtils.dom.click(target.querySelector(relatedModelSelector));
-                const item = target.querySelector(".o_model_selector_product");
-                await click(item);
-                assert.containsOnce(target, fieldMatchingSelector);
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("relation");
+                assert.containsNone(target, ".o_pivot_field_matching");
+                await selectModelForRelation("product");
+                assert.containsOnce(target, ".o_pivot_field_matching");
             }
         );
 
@@ -393,15 +401,16 @@ QUnit.module(
                 defaultValue: [],
             };
             await addGlobalFilter(model, { filter });
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await testUtils.dom.click(searchIcon);
-            const items = target.querySelectorAll(
+            await openGlobalFilterSidePanel();
+            const sections = target.querySelectorAll(
                 ".o_spreadsheet_global_filters_side_panel .o_side_panel_section"
             );
-            assert.equal(items.length, 2);
-            const labelElement = items[0].querySelector(".o_side_panel_filter_label");
+            assert.equal(sections.length, 2);
+            const labelElement = sections[0].querySelector(".o_side_panel_filter_label");
             assert.equal(labelElement.innerText, label);
-            await testUtils.dom.click(items[0].querySelector(".o_side_panel_filter_icon.fa-cog"));
+            await testUtils.dom.click(
+                sections[0].querySelector(".o_side_panel_filter_icon.fa-cog")
+            );
             assert.ok(target.querySelectorAll(".o_spreadsheet_filter_editor_side_panel"));
             assert.equal(target.querySelector(".o_global_filter_label").value, label);
             assert.equal(
@@ -469,12 +478,9 @@ QUnit.module(
                     },
                 },
             });
-            const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
-            await testUtils.dom.click(searchIcon);
-            const newRelation = $(target).find(".o_global_filter_new_relation")[0];
-            await testUtils.dom.click(newRelation);
-            const selector = `.o_side_panel_related_model input`;
-            await testUtils.dom.click($(target).find(selector)[0]);
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("relation");
+            await click(target, ".o_side_panel_related_model input");
             const [model1, model2, model3, model4] = target.querySelectorAll(
                 ".o-autocomplete--dropdown-item a"
             );
@@ -491,25 +497,18 @@ QUnit.module(
             await addGlobalFilter(model, {
                 filter: { id: "42", type: "text", label, defaultValue, pivotFields: {} },
             });
-            const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
-            await testUtils.dom.click(searchIcon);
-            const editFilter = $(target).find(".o_side_panel_filter_icon.fa-cog");
-            await testUtils.dom.click(editFilter);
-            assert.equal($(target).find(".o-sidePanel").length, 1);
-            const input = $(target).find(".o_global_filter_label")[0];
-            assert.equal(input.value, label);
-            const value = $(target).find(".o_global_filter_default_value")[0];
-            assert.equal(value.value, defaultValue);
-            await testUtils.fields.editInput(input, "New Label");
-            $($(target).find(".o_field_selector_value")).focusin();
-            await testUtils.dom.click(
-                $(target).find(".o_field_selector_select_button[data-name='display_name']")
+            await openGlobalFilterSidePanel();
+            await click(target, ".o_side_panel_filter_icon.fa-cog");
+            assert.containsOnce(target, ".o-sidePanel");
+            assert.equal(target.querySelector(".o_global_filter_label").value, label);
+            assert.equal(
+                target.querySelector(".o_global_filter_default_value").value,
+                defaultValue
             );
-            const save = $(target).find(
-                ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-            )[0];
-            await testUtils.dom.click(save);
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            await editGlobalFilterLabel("New Label");
+            await selectFieldMatching("name");
+            await saveGlobalFilter();
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "New Label");
         });
 
@@ -555,23 +554,13 @@ QUnit.module(
                         },
                     },
                 });
-                const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
-                await testUtils.dom.click(searchIcon);
-                const newText = $(target).find(".o_global_filter_new_text")[0];
-                await testUtils.dom.click(newText);
-                assert.equal($(target).find(".o-sidePanel").length, 1);
-                const input = $(target).find(".o_global_filter_label")[0];
-                await testUtils.fields.editInput(input, uniqueFilterName);
-                const value = $(target).find(".o_global_filter_default_value")[0];
-                await testUtils.fields.editInput(value, "Default Value");
-                // Can't make it work with the DOM API :(
-                // await testUtils.dom.triggerEvent($(target).find(".o_field_selector_value"), "focusin");
-                $($(target).find(".o_field_selector_value")).focusin();
-                await testUtils.dom.click($(target).find(".o_field_selector_select_button")[0]);
-                const save = $(target).find(
-                    ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-                )[0];
-                await testUtils.dom.click(save);
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("text");
+                assert.containsOnce(target, ".o-sidePanel");
+                await editGlobalFilterLabel(uniqueFilterName);
+                await editGlobalFilterDefaultValue("Default Value");
+                await selectFieldMatching("name");
+                await saveGlobalFilter();
                 assert.verifySteps([
                     "create (New spreadsheet created in Documents)",
                     "create (Duplicated Label)",
@@ -604,24 +593,15 @@ QUnit.module(
                 serverData,
                 spreadsheetId: 45,
             });
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await click(searchIcon);
-            const newRelation = target.querySelector(".o_global_filter_new_relation");
-            await click(newRelation);
-            const selector = `.o_side_panel_related_model input`;
-            await testUtils.dom.click($(target).find(selector)[0]);
-            const item = target.querySelector(".o_model_selector_product");
-            await click(item);
-
-            const save = target.querySelector(
-                ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-            );
-            await click(save);
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("relation");
+            await selectModelForRelation("product");
+            await saveGlobalFilter();
             assert.equal(
                 target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
                 1
             );
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
             assert.deepEqual(globalFilter.pivotFields[1], {
@@ -634,25 +614,12 @@ QUnit.module(
             const { model } = await createSpreadsheet();
             insertGraphInSpreadsheet(model);
             await nextTick();
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await click(searchIcon);
-            const newRelation = target.querySelector(".o_global_filter_new_relation");
-            await click(newRelation);
-            const selector = `.o_side_panel_related_model input`;
-            await testUtils.dom.click($(target).find(selector)[0]);
-            const item = target.querySelector(".o_model_selector_product");
-            await click(item);
-
-            const save = target.querySelector(
-                ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-            );
-            await click(save);
-            assert.equal(
-                target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
-                1
-            );
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("relation");
+            await selectModelForRelation("product");
+            await saveGlobalFilter();
             const [graphId] = model.getters.getOdooChartIds();
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "Product");
             assert.deepEqual(globalFilter.defaultValue, []);
             assert.deepEqual(globalFilter.graphFields[graphId], {
@@ -687,24 +654,15 @@ QUnit.module(
                     serverData,
                     spreadsheetId: 45,
                 });
-                const searchIcon = target.querySelector(".o_topbar_filter_icon");
-                await click(searchIcon);
-                const newRelation = target.querySelector(".o_global_filter_new_relation");
-                await click(newRelation);
-                const selector = `.o_side_panel_related_model input`;
-                await testUtils.dom.click($(target).find(selector)[0]);
-                const item = target.querySelector(".o_model_selector_product");
-                await click(item);
-
-                const save = target.querySelector(
-                    ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-                );
-                await click(save);
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("relation");
+                await selectModelForRelation("product");
+                await saveGlobalFilter();
                 assert.equal(
                     target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
                     1
                 );
-                const globalFilter = model.getters.getGlobalFilters()[0];
+                const [globalFilter] = model.getters.getGlobalFilters();
                 assert.equal(globalFilter.label, "Product");
                 assert.deepEqual(globalFilter.defaultValue, []);
                 assert.deepEqual(globalFilter.listFields["1"], {
@@ -723,46 +681,27 @@ QUnit.module(
             });
             insertGraphInSpreadsheet(model);
             await nextTick();
-            await click(target.querySelector(".o_topbar_filter_icon"));
-            await click(target.querySelector(".o_global_filter_new_time"));
-            assert.equal(target.querySelectorAll(".o-sidePanel").length, 1);
-
-            const label = $(target).find(".o_global_filter_label")[0];
-            await testUtils.fields.editInput(label, "My Label");
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("date");
+            assert.containsOnce(target, ".o-sidePanel");
+            await editGlobalFilterLabel("My Label");
 
             const range = $(target).find(".o_input:nth-child(2)")[0];
             await testUtils.fields.editAndTrigger(range, "month", ["change"]);
 
-            await click(target.querySelector("input#date_automatic_filter"));
+            await click(target, "input#date_automatic_filter");
 
-            // pivot
-            $($(target).find(".o_field_selector_value")[0]).focusin();
-            await click(target.querySelector(".o_field_selector_select_button[data-name='date']"));
+            const pivotFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[0];
+            const listFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[1];
+            const graphFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[2];
 
-            //list
-            $($(target).find(".o_field_selector_value")[1]).focusin();
-            await click(
-                target.querySelector(
-                    ".o_field_selector_popover:not(.d-none) .o_field_selector_select_button[data-name='date']"
-                )
-            );
+            await selectFieldMatching("date", pivotFieldMatching);
+            await selectFieldMatching("date", listFieldMatching);
+            await selectFieldMatching("date", graphFieldMatching);
 
-            // graph
-            const graphField = target.querySelectorAll(".o_pivot_field_matching ")[2];
-            $($(graphField).find(".o_field_selector_value")).focusin();
-            await click(graphField, ".o_field_selector_select_button[data-name='date']");
+            await saveGlobalFilter();
 
-            await click(
-                target.querySelector(
-                    ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-                )
-            );
-            assert.equal(
-                target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
-                1
-            );
-
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "My Label");
             assert.equal(globalFilter.rangeType, "month");
             assert.equal(globalFilter.type, "date");
@@ -787,53 +726,41 @@ QUnit.module(
             });
             insertGraphInSpreadsheet(model);
             await nextTick();
-            await click(target.querySelector(".o_topbar_filter_icon"));
-            await click(target.querySelector(".o_global_filter_new_time"));
-            assert.equal(target.querySelectorAll(".o-sidePanel").length, 1);
-
-            const label = $(target).find(".o_global_filter_label")[0];
-            await testUtils.fields.editInput(label, "My Label");
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("date");
+            await editGlobalFilterLabel("My Label");
 
             const range = $(target).find(".o_input:nth-child(2)")[0];
             await testUtils.fields.editAndTrigger(range, "month", ["change"]);
 
-            await click(target.querySelector("input#date_automatic_filter"));
+            await click(target, "input#date_automatic_filter");
+
+            const pivotFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[0];
+            const listFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[1];
+            const graphFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[2];
 
             // pivot
-            const pivotField = target.querySelectorAll(".o_pivot_field_matching ")[0];
-            $($(pivotField).find(".o_field_selector_value")).focusin();
-            await click(target.querySelector(".o_field_selector_select_button[data-name='date']"));
-            await testUtils.fields.editAndTrigger(pivotField.querySelector("select"), "-1", [
-                "change",
-            ]);
+            await selectFieldMatching("date", pivotFieldMatching);
+            await testUtils.fields.editAndTrigger(
+                pivotFieldMatching.querySelector("select"),
+                "-1",
+                ["change"]
+            );
 
             //list
-            $($(target).find(".o_field_selector_value")[1]).focusin();
-            await click(
-                target.querySelector(
-                    ".o_field_selector_popover:not(.d-none) .o_field_selector_select_button[data-name='date']"
-                )
-            );
+            await selectFieldMatching("date", listFieldMatching);
 
             // graph
-            const graphField = target.querySelectorAll(".o_pivot_field_matching ")[2];
-            $($(graphField).find(".o_field_selector_value")).focusin();
-            await click(graphField, ".o_field_selector_select_button[data-name='date']");
-            await testUtils.fields.editAndTrigger(graphField.querySelector("select"), "-2", [
-                "change",
-            ]);
-
-            await click(
-                target.querySelector(
-                    ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save"
-                )
-            );
-            assert.equal(
-                target.querySelectorAll(".o_spreadsheet_global_filters_side_panel").length,
-                1
+            await selectFieldMatching("date", graphFieldMatching);
+            await testUtils.fields.editAndTrigger(
+                graphFieldMatching.querySelector("select"),
+                "-2",
+                ["change"]
             );
 
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            await saveGlobalFilter();
+
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "My Label");
             assert.equal(globalFilter.rangeType, "month");
             assert.equal(globalFilter.type, "date");
@@ -858,11 +785,9 @@ QUnit.module(
             });
             insertGraphInSpreadsheet(model);
             await nextTick();
-            await click(target, ".o_topbar_filter_icon");
-            await click(target, ".o_global_filter_new_time");
-
-            const label = target.querySelector(".o_global_filter_label");
-            await testUtils.fields.editInput(label, "My Label");
+            await openGlobalFilterSidePanel();
+            await clickCreateFilter("date");
+            await editGlobalFilterLabel("My Label");
 
             const range = target.querySelector(".o_input:nth-child(2)");
             await testUtils.fields.editAndTrigger(range, "relative", ["change"]);
@@ -875,28 +800,23 @@ QUnit.module(
             );
             await testUtils.fields.editAndTrigger(relativeSelection, "last_month", ["change"]);
 
-            // pivot
-            $($(target).find(".o_field_selector_value")[0]).focusin();
-            await click(target.querySelector(".o_field_selector_select_button[data-name='date']"));
+            const pivotFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[0];
+            const listFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[1];
+            const graphFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[2];
 
-            //list
-            $($(target).find(".o_field_selector_value")[1]).focusin();
-            await click(
-                target,
-                ".o_field_selector_popover:not(.d-none) .o_field_selector_select_button[data-name='date']"
+            await selectFieldMatching("date", pivotFieldMatching);
+            await selectFieldMatching("date", listFieldMatching);
+            await selectFieldMatching("date", graphFieldMatching);
+
+            await testUtils.fields.editAndTrigger(
+                graphFieldMatching.querySelector("select"),
+                "-2",
+                ["change"]
             );
 
-            // graph
-            const graphField = target.querySelectorAll(".o_pivot_field_matching ")[2];
-            $($(graphField).find(".o_field_selector_value")).focusin();
-            await click(graphField, ".o_field_selector_select_button[data-name='date']");
-            await testUtils.fields.editAndTrigger(graphField.querySelector("select"), "-2", [
-                "change",
-            ]);
+            await saveGlobalFilter();
 
-            await click(target, ".o_spreadsheet_filter_editor_side_panel .o_global_filter_save");
-
-            const globalFilter = model.getters.getGlobalFilters()[0];
+            const [globalFilter] = model.getters.getGlobalFilters();
             assert.equal(globalFilter.label, "My Label");
             assert.equal(globalFilter.defaultValue, "last_month");
             assert.equal(globalFilter.rangeType, "relative");
@@ -921,7 +841,7 @@ QUnit.module(
                 },
             });
             await nextTick();
-            await click(target, ".o_topbar_filter_icon");
+            await openGlobalFilterSidePanel();
             await nextTick();
             const select = target.querySelector(".o-sidePanel select");
             assert.deepEqual(
@@ -940,9 +860,7 @@ QUnit.module(
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(model, THIS_YEAR_FILTER);
 
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await testUtils.dom.click(searchIcon);
-            await nextTick();
+            await openGlobalFilterSidePanel();
 
             const pivots = target.querySelectorAll(".pivot_filter_section");
             assert.containsOnce(target, ".pivot_filter_section");
@@ -990,8 +908,7 @@ QUnit.module(
             model.updateMode("readonly");
             await nextTick();
 
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await testUtils.dom.click(searchIcon);
+            await openGlobalFilterSidePanel();
 
             const pivots = target.querySelectorAll(".pivot_filter_section");
             assert.containsOnce(target, ".pivot_filter_section");
@@ -1027,9 +944,7 @@ QUnit.module(
             model.updateMode("readonly");
             await nextTick();
 
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await testUtils.dom.click(searchIcon);
-            await nextTick();
+            await openGlobalFilterSidePanel();
 
             const pivots = target.querySelectorAll(".pivot_filter_section");
             assert.containsOnce(target, ".pivot_filter_section");
@@ -1082,8 +997,7 @@ QUnit.module(
             model.updateMode("readonly");
             await nextTick();
 
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await testUtils.dom.click(searchIcon);
+            await openGlobalFilterSidePanel();
 
             const pivot = target.querySelector(".pivot_filter_section");
             assert.containsOnce(target, ".pivot_filter_section");
@@ -1099,10 +1013,8 @@ QUnit.module(
                 ["xpad"]
             );
 
-            await testUtils.dom.click(
-                pivot.querySelector(".pivot_filter_input input.o-autocomplete--input")
-            );
-            await testUtils.dom.click(document.querySelector("ul.ui-autocomplete li:first-child"));
+            await click(pivot, ".pivot_filter_input input.o-autocomplete--input");
+            await click(document, "ul.ui-autocomplete li:first-child");
 
             assert.containsN(pivot, tagSelector, 2);
             assert.deepEqual(
@@ -1124,8 +1036,7 @@ QUnit.module(
                     listFields: {},
                 },
             });
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await click(searchIcon);
+            await openGlobalFilterSidePanel();
 
             const pivots = target.querySelectorAll(".pivot_filter_section");
             const input = pivots[0].querySelector(".pivot_filter_input input");
@@ -1155,8 +1066,7 @@ QUnit.module(
                     listFields: {},
                 },
             });
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await click(searchIcon);
+            await openGlobalFilterSidePanel();
             const pivots = target.querySelectorAll(".pivot_filter_section");
             const quarter = pivots[0].querySelector(
                 ".pivot_filter_input div.date_filter_values select"
@@ -1199,8 +1109,7 @@ QUnit.module(
             });
             assert.equal(model.getters.getGlobalFilters().length, 1);
 
-            const searchIcon = target.querySelector(".o_topbar_filter_icon");
-            await testUtils.dom.click(searchIcon);
+            await openGlobalFilterSidePanel();
 
             const pivot = target.querySelector(".pivot_filter_section");
             assert.containsOnce(target, ".pivot_filter_section");
@@ -1216,10 +1125,8 @@ QUnit.module(
                 []
             );
 
-            await testUtils.dom.click(
-                pivot.querySelector(".pivot_filter_input input.o-autocomplete--input")
-            );
-            await testUtils.dom.click(document.querySelector("ul.ui-autocomplete li:first-child"));
+            await click(pivot, ".pivot_filter_input input.o-autocomplete--input");
+            await click(document, "ul.ui-autocomplete li:first-child");
 
             assert.containsOnce(pivot, tagSelector);
             assert.deepEqual(
@@ -1258,16 +1165,13 @@ QUnit.module(
                         },
                     },
                 });
-                const searchIcon = $(target).find(".o_topbar_filter_icon")[0];
-                await testUtils.dom.click(searchIcon);
-                const editFilter = $(target).find(".o_side_panel_filter_icon.fa-cog");
-                await testUtils.dom.click(editFilter);
-                const options = $(target).find(
+                await openGlobalFilterSidePanel();
+                await click(target, ".o_side_panel_filter_icon.fa-cog");
+                const options = target.querySelectorAll(
                     ".o_spreadsheet_filter_editor_side_panel .o_side_panel_section"
                 )[1];
                 await testUtils.fields.editSelect(options.querySelector("select"), "year");
-                await testUtils.dom.click($(target).find(".o_global_filter_save")[0]);
-                await nextTick();
+                await saveGlobalFilter();
                 assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue, {});
             }
         );
@@ -1288,8 +1192,7 @@ QUnit.module(
                         },
                     },
                 });
-                const searchIcon = target.querySelector(".o_topbar_filter_icon");
-                await click(searchIcon);
+                await openGlobalFilterSidePanel();
 
                 // Edit filter value in filters list
                 const optionInFilterList = target.querySelector(".pivot_filter select");
@@ -1308,8 +1211,7 @@ QUnit.module(
                 const selectField = timeRangeOption.querySelector("select");
                 await testUtils.fields.editSelect(selectField, "quarter");
                 await click(target, "input#date_automatic_filter");
-                await click(target.querySelector(".o_global_filter_save"));
-                await nextTick();
+                await saveGlobalFilter();
 
                 assert.deepEqual(model.getters.getGlobalFilterValue(42), {
                     period: "third_quarter",
@@ -1334,10 +1236,10 @@ QUnit.module(
                         },
                     },
                 });
-                await click(target, ".o_topbar_filter_icon");
+                await openGlobalFilterSidePanel();
                 await click(target, ".o_side_panel_filter_icon.fa-cog");
                 await click(target, "input#date_automatic_filter");
-                await click(target, ".o_global_filter_save");
+                await saveGlobalFilter();
                 await nextTick();
                 assert.ok(model.getters.getGlobalFilter("42").defaultsToCurrentPeriod);
                 assert.deepEqual(model.getters.getGlobalFilterValue("42"), {
@@ -1346,7 +1248,7 @@ QUnit.module(
                 });
                 await click(target, ".o_side_panel_filter_icon.fa-cog");
                 await click(target, "input#date_automatic_filter");
-                await click(target, ".o_global_filter_save");
+                await saveGlobalFilter();
                 await nextTick();
                 assert.notOk(model.getters.getGlobalFilter("42").defaultsToCurrentPeriod);
                 assert.equal(model.getters.getGlobalFilterValue("42"), undefined);
@@ -1378,7 +1280,7 @@ QUnit.module(
                         },
                     },
                 });
-                await click(target, ".o_topbar_filter_icon");
+                await openGlobalFilterSidePanel();
                 await click(target, ".o-sidePanel .fa-cog");
 
                 const panel = target.querySelector(".o-sidePanel");
@@ -1408,7 +1310,7 @@ QUnit.module(
                     pivotFields: {},
                 },
             });
-            await click(target, ".o_topbar_filter_icon");
+            await openGlobalFilterSidePanel();
             await click(target, "i.o_side_panel_filter_icon.fa-cog");
             assert.hasClass(target.querySelector(".o_pivot_field_matching"), "o_missing_field");
         });
@@ -1424,9 +1326,9 @@ QUnit.module(
                     pivotFields: {},
                 },
             });
-            await click(target, ".o_topbar_filter_icon");
+            await openGlobalFilterSidePanel();
             await click(target, "i.o_side_panel_filter_icon.fa-cog");
-            await click(target, ".o_global_filter_save");
+            await saveGlobalFilter();
             assert.equal(model.getters.getGlobalFilters()[0].pivotFields[1], undefined);
         });
     }

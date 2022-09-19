@@ -126,16 +126,13 @@
                     <div class="d-flex justify-content-between">
                         <div class="d-flex flex-column justify-content-end w-50 flex-grow-1">
                             <span class="text-muted" t-if="state.type === 'date'">Date field</span>
-                            <FieldSelectorAdapter
-                                Component="FieldSelectorWidget"
-                                model="getters.getPivotDefinition(pivotId).model"
-                                fields="pivotDataSource.getFields()"
-                                type="state.type"
-                                relatedModel="state.relation.relatedModel.technical"
-                                selected="getModelField(state.pivotFields[pivotId])"
-                                t-key="pivotId + (state.relation.relatedModel.technical or 'not_defined')"
-                                onFieldChainChanged="chain => this.selectedPivotField(pivotId, chain[0])"
-                            />
+                            <ModelFieldSelector
+                                fieldName="getModelField(state.pivotFields[pivotId])"
+                                resModel="getters.getPivotDefinition(pivotId).model"
+                                readonly="false"
+                                update="(chain) => this.selectedPivotField(pivotId, chain)"
+                                filter.bind="filterModelFieldSelectorField"
+                                t-key="pivotId + (state.relation.relatedModel.technical or 'not_defined')"/>
                         </div>
                         <FilterFieldOffset
                             t-if="state.type === 'date'"
@@ -153,16 +150,13 @@
                 <div class="d-flex justify-content-between">
                     <div class="d-flex flex-column justify-content-end w-50 flex-grow-1">
                         <span class="text-muted" t-if="state.type === 'date'">Date field</span>
-                        <FieldSelectorAdapter
-                            Component="FieldSelectorWidget"
-                            model="getters.getListDefinition(listId).model"
-                            fields="getters.getListDataSource(listId).getFields()"
-                            type="state.type"
-                            relatedModel="state.relation.relatedModel.technical"
-                            selected="getModelField(state.listFields[listId])"
-                            t-key="listId + (state.relation.relatedModel.technical or 'not_defined')"
-                            onFieldChainChanged="chain => this.selectedListField(listId, chain[0])"
-                        />
+                        <ModelFieldSelector
+                            fieldName="getModelField(state.listFields[listId])"
+                            resModel="getters.getListDefinition(listId).model"
+                            readonly="false"
+                            update="(chain) => this.selectedListField(listId, chain)"
+                            filter.bind="filterModelFieldSelectorField"
+                            t-key="listId + (state.relation.relatedModel.technical or 'not_defined')"/>
                     </div>
                     <FilterFieldOffset
                         t-if="state.type === 'date'"
@@ -179,16 +173,13 @@
                 <div class="d-flex justify-content-between">
                     <div class="d-flex flex-column justify-content-end w-50 flex-grow-1">
                         <span class="text-muted" t-if="state.type === 'date'">Date field</span>
-                        <FieldSelectorAdapter
-                            Component="FieldSelectorWidget"
-                            model="getters.getChartDefinition(graphId).metaData.resModel"
-                            fields="getters.getGraphDataSource(graphId).getFields()"
-                            type="state.type"
-                            relatedModel="state.relation.relatedModelName"
-                            selected="getModelField(state.graphFields[graphId])"
-                            t-key="graphId + (state.relation.relatedModelName or 'not_defined')"
-                            onFieldChainChanged="chain => this.selectedGraphField(graphId, chain[0])"
-                            />
+                        <ModelFieldSelector
+                            fieldName="getModelField(state.graphFields[graphId])"
+                            resModel="getters.getChartDefinition(graphId).metaData.resModel"
+                            readonly="false"
+                            update="(chain) => this.selectedGraphField(graphId, chain)"
+                            filter.bind="filterModelFieldSelectorField"
+                            t-key="graphId + (state.relation.relatedModel.technical or 'not_defined')"/>
                     </div>
                     <FilterFieldOffset
                         t-if="state.type === 'date'"

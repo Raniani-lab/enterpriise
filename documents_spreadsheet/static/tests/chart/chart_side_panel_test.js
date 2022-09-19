@@ -70,10 +70,41 @@ QUnit.module("documents_spreadsheet > chart side panel", { beforeEach, afterEach
         await triggerEvent(select, null, "change");
         assert.strictEqual(model.getters.getChart(chartId).type, "odoo_line");
         assert.strictEqual(model.getters.getChart(chartId).verticalAxisPosition, "left");
+        assert.strictEqual(model.getters.getChart(chartId).stacked, false);
         select.value = "odoo_bar";
         await triggerEvent(select, null, "change");
         assert.strictEqual(model.getters.getChart(chartId).type, "odoo_bar");
         assert.strictEqual(model.getters.getChart(chartId).stacked, false);
+    });
+
+    QUnit.test("stacked line chart", async (assert) => {
+        const { model, env } = await createSpreadsheetFromGraphView();
+        const sheetId = model.getters.getActiveSheetId();
+        const chartId = model.getters.getChartIds(sheetId)[0];
+        await openChartSidePanel(model, env);
+        const target = getFixture();
+        /** @type {HTMLSelectElement} */
+        const select = target.querySelector(".o-type-selector");
+        select.value = "odoo_line";
+        await triggerEvent(select, null, "change");
+
+        // checked by default
+        assert.strictEqual(model.getters.getChart(chartId).stacked, true);
+        assert.containsOnce(target, ".o_checkbox input:checked", "checkbox should be checked");
+
+        // uncheck
+        await click(target, ".o_checkbox input:checked");
+        assert.strictEqual(model.getters.getChart(chartId).stacked, false);
+        assert.containsNone(
+            target,
+            ".o_checkbox input:checked",
+            "checkbox should no longer be checked"
+        );
+
+        // check
+        await click(target, ".o_checkbox input");
+        assert.strictEqual(model.getters.getChart(chartId).stacked, true);
+        assert.containsOnce(target, ".o_checkbox input:checked", "checkbox should be checked");
     });
 
     QUnit.test("Change the title of a chart", async (assert) => {

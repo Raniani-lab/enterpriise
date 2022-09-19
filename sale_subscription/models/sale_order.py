@@ -236,13 +236,13 @@ class SaleOrder(models.Model):
             else:
                 order.recurring_live = False
 
-    @api.depends('start_date', 'subscription_management')
+    @api.depends('is_subscription', 'state', 'start_date', 'subscription_management')
     def _compute_next_invoice_date(self):
         for so in self:
             if not so.is_subscription and not so.subscription_management == 'upsell':
                 so.next_invoice_date = False
                 continue
-            elif not so.next_invoice_date:
+            elif not so.next_invoice_date and so.state not in ('sent', 'draft'):
                 # Define a default next invoice date.
                 # It is increased manually by _update_next_invoice_date when necessary
                 so.next_invoice_date = so.start_date or fields.Date.today()
@@ -527,10 +527,7 @@ class SaleOrder(models.Model):
         them in batch.
         :return: dict of values
         """
-        values = {
-            'state': 'sale',
-            'date_order': fields.Datetime.now()
-        }
+        values = super()._prepare_confirmation_values()
         is_subscription = all(self.mapped('is_subscription'))
         if is_subscription:
             stages_in_progress = self.env['sale.order.stage'].search([('category', '=', 'progress')])

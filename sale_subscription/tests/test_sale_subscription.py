@@ -1479,3 +1479,26 @@ class TestSubscription(TestSubscriptionCommon):
         renewal_so_2 = self.env['sale.order'].browse(action['res_id'])
         renewal_so_1.action_confirm()
         self.assertEqual(renewal_so_2.state, 'cancel', 'The other quotation should be canceled')
+
+    def test_next_invoice_date(self):
+        with freeze_time("2022-01-20"):
+            subscription = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'sale_order_template_id': self.subscription_tmpl.id,
+                'recurrence_id': self.recurrence_month.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 1.0,
+                        'product_uom': self.product.uom_id.id,
+                        'price_unit': 12,
+                    })],
+            })
+            self.assertFalse(subscription.next_invoice_date)
+            self.assertFalse(subscription.start_date)
+
+        with freeze_time("2022-02-10"):
+            subscription.action_confirm()
+            self.assertEqual(subscription.next_invoice_date, datetime.date(2022, 2, 10))
+            self.assertEqual(subscription.start_date, datetime.date(2022, 2, 10))

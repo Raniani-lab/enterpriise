@@ -3,10 +3,6 @@
 import { _t, _lt } from "@web/core/l10n/translation";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
-import {
-    FieldSelectorWidget,
-    FieldSelectorAdapter,
-} from "spreadsheet_edition.field_selector_widget";
 import { RecordsSelector } from "@spreadsheet/global_filters/components/records_selector/records_selector";
 import { useService } from "@web/core/utils/hooks";
 import { LegacyComponent } from "@web/legacy/legacy_component";
@@ -15,6 +11,7 @@ import { sprintf } from "@web/core/utils/strings";
 import { FilterFieldOffset } from "./components/filter_field_offset";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 import { DateFilterValue } from "@spreadsheet/global_filters/components/filter_date_value/filter_date_value";
+import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
 
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -25,6 +22,12 @@ const RANGE_TYPES = [
     { type: "month", description: _lt("Month") },
     { type: "relative", description: _lt("Relative Period") },
 ];
+
+const ALLOWED_FIELD_TYPES = {
+    text: ["many2one", "text", "char"],
+    date: ["datetime", "date"],
+    relation: ["many2one", "many2many", "one2many"],
+};
 
 /**
  * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
@@ -88,8 +91,6 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.listIds = this.getters.getListIds();
         this.graphIds = this.getters.getOdooChartIds();
         this.loadValues();
-        // Widgets
-        this.FieldSelectorWidget = FieldSelectorWidget;
         this.orm = useService("orm");
         this.notification = useService("notification");
 
@@ -231,7 +232,8 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      */
     _findRelation(fields) {
         const field = Object.values(fields).find(
-            (field) => field.relation === this.state.relation.relatedModel.technical
+            (field) =>
+                field.searchable && field.relation === this.state.relation.relatedModel.technical
         );
         return field.name;
     }
@@ -279,14 +281,31 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     }
 
     /**
-     * @param {string} pivotId
-     * @param {string|undefined} fieldName
+     * Function that will be called by ModelFieldSelector on each fields, to
+     * filter the ones that should be displayed
+     * @returns {boolean}
      */
-    selectedPivotField(pivotId, fieldName) {
-        if (!fieldName) {
+    filterModelFieldSelectorField(field) {
+        const type = this.state.type;
+        if (ALLOWED_FIELD_TYPES[type].includes(field.type)) {
+            const relatedModel = this.state.relation.relatedModel.technical;
+            if (!relatedModel || field.relation === relatedModel) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param {string} pivotId
+     * @param {string|undefined} chain
+     */
+    selectedPivotField(pivotId, chain) {
+        if (!chain) {
             delete this.state.pivotFields[pivotId];
             return;
         }
+        const fieldName = chain.split(".")[0];
         const field = this.getters.getPivotDataSource(pivotId, fieldName).getField(fieldName);
         if (field) {
             this.state.pivotFields[pivotId] = {
@@ -342,13 +361,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     }
 
     getModelField(field) {
-        if (!field || !field.field || !field.type) {
-            return undefined;
+        if (!field || !field.field) {
+            return "";
         }
-        return {
-            field: field.field,
-            type: field.type,
-        };
+        return field.field;
     }
 
     onSetPivotFieldOffset(id, offset) {
@@ -430,7 +446,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 }
 FilterEditorSidePanel.template = "spreadsheet_edition.FilterEditorSidePanel";
 FilterEditorSidePanel.components = {
-    FieldSelectorAdapter,
+    ModelFieldSelector,
     ModelSelector,
     RecordsSelector,
     DateFilterValue,

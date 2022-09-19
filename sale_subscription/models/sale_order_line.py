@@ -76,6 +76,12 @@ class SaleOrderLine(models.Model):
                 ratio = 1.00  # Something went wrong in the dates
             if line.order_id.subscription_management == 'upsell' and line.product_id.recurring_invoice and line.order_id.next_invoice_date:
                 line.discount = (1 - ratio) * 100
+                if line.parent_line_id:
+                    # If the parent line had a discount, we reapply it to keep the same conditions. E.G. base price is 200€
+                    # parent line has a 10% discount and upsell has a 25% discount.
+                    # We want to apply a final price equal to 200 * 0.75 (prorata) * 0.9 (discount) = 135 or 200*0,675
+                    # We save 32.5 in the discount
+                    line.discount = (1 - (1 - line.discount / 100) * (1 - line.parent_line_id.discount / 100)) * 100
         return super(SaleOrderLine, other_lines)._compute_discount()
 
     @api.depends('order_id.recurrence_id')

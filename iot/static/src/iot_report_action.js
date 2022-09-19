@@ -1,9 +1,6 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry";
-import DeviceProxy from "iot.DeviceProxy";
-import { ComponentAdapter } from "web.OwlCompatibility";
-
-const { Component } = owl;
+import { DeviceController } from "@iot/device_controller";
 
 
 function onIoTActionResult(data, env) {
@@ -31,12 +28,11 @@ async function iotReportActionHandler(action, options, env) {
         action.data["device_id"] = action.device_id;
         const args = [action.id, action.context.active_ids, action.data];
         const [ip, identifier, document] = await orm.call("ir.actions.report", "iot_render", args);
-        const adapterParent = new ComponentAdapter(null, { Component }); // For trigger_up and service calls
-        const iotDevice = new DeviceProxy(adapterParent, { iot_ip: ip, identifier });
-        iotDevice.add_listener(data => onValueChange(data, env));
+        const iotDevice = new DeviceController(env.services.iot_longpolling, { iot_ip: ip, identifier });
+        iotDevice.addListener(data => onValueChange(data, env));
         iotDevice.action({ document })
             .then(data => onIoTActionResult(data, env))
-            .guardedCatch(() => iotDevice.call("iot_longpolling", "_doWarnFail", ip));
+            .guardedCatch(() => iotDevice.iotLongpolling._doWarnFail(ip));
         return true;
     }
 }

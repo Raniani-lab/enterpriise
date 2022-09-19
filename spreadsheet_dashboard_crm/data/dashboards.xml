@@ -3,7 +3,7 @@
 
     <record id="spreadsheet_dashboard_group_crm" model="spreadsheet.dashboard.group">
         <field name="name">CRM</field>
-        <field name="sequence">20</field>
+        <field name="sequence">200</field>
     </record>
 
     <record id="dashboard_leads" model="spreadsheet.dashboard">

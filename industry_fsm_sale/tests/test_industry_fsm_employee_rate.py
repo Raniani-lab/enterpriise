@@ -58,16 +58,44 @@ class TestIndustryFsmEmployeeRate(TestFsmFlowSaleCommon):
                     'employee_id': self.employee_manager.id,
                     'unit_amount': 1.0,
                     'project_id': self.fsm_project_employee_rate.id,
-                })
+                }),
             ]
         })
         self.assertEqual(len(task.timesheet_ids), 3, 'The task should have 3 timesheets.')
         self.assertFalse(task.sale_line_id, 'The task should have no SOL.')
 
+        self.consu_product_ordered.with_user(self.project_user).with_context({'fsm_task_id': task.id}).set_fsm_quantity(1.0)
+        task.sale_order_id.write({
+            'order_line': [
+                Command.create({
+                    'product_id': self.service_timesheet.id,
+                    'product_uom_qty': 2.0,
+                    'name': '/',
+                }),
+            ]
+        })
+        task.sale_order_id.action_confirm()
+        self.assertEqual(len(task.sale_order_id.order_line), 2)
+        service_timesheet_order_line = task.sale_order_id.order_line.filtered(lambda order_line: order_line.product_id == self.service_timesheet)
+
+        task.write({
+            'timesheet_ids': [
+                Command.create({
+                    'name': '/',
+                    'employee_id': self.employee_manager.id,
+                    'unit_amount': 1.0,
+                    'so_line': service_timesheet_order_line.id,
+                    'is_so_line_edited': True,
+                    'project_id': self.fsm_project_employee_rate.id,
+                }),
+            ]
+        })
+        self.assertEqual(len(task.timesheet_ids), 4)
+
         # 2) Validate the task and check if the SOL in each timesheet is correct with the correct product.
         task.action_fsm_validate()
-        self.assertEqual(len(task.timesheet_ids.so_line), 3, 'Each timesheet should have a different SOL.')
-        self.assertEqual(task.sale_order_id.order_line.mapped('qty_delivered'), [1.0] * 3, 'The generated SO should has 3 SOLs in which the quantity delivered should be equal to 1 hour.')
+        self.assertEqual(len(task.timesheet_ids.so_line), 4, 'Each timesheet should have a different SOL.')
+        self.assertEqual(task.sale_order_id.order_line.mapped('qty_delivered'), [1.0] * 5, 'The generated SO should have 4 SOLs in which the quantity delivered should be equal to 1 hour.')
         self.assertEqual(task.sale_line_id.product_id, self.fsm_project_employee_rate.timesheet_product_id, 'The SOL linked to the task should have the default service product of the product.')
 
         # 3) Create task with a timesheet containing no employee in employee mappings.

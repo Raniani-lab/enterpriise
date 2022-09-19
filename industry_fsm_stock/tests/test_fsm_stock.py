@@ -131,8 +131,8 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
 
     def test_fsm_flow_with_default_warehouses(self):
         '''
-            When the multi warehouses feature is activated, a default warehouse can be set 
-            on users. 
+            When the multi warehouses feature is activated, a default warehouse can be set
+            on users.
             The user set on a task should be propagated from the task to the sales order
             and his default warehouse set as the warehouse of the SO.
             If the customer has a salesperson assigned to him, the creation of a SO
@@ -148,7 +148,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
 
         self.assertEqual(self.project_user.property_warehouse_id.id, self.task.sale_order_id.warehouse_id.id)
         self.assertEqual(self.project_user.id, self.task.sale_order_id.user_id.id)
-        
+
 
     def test_fsm_stock_already_validated_picking(self):
         '''
@@ -484,9 +484,7 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             returns the same result as industry_fsm_sale/Product.set_fsm_quantity()
         """
         self.task.write({'partner_id': self.partner_1.id})
-        product = self.service_product_ordered.with_context({'fsm_task_id': self.task.id})
-
-        product.type = 'consu'
+        product = self.consu_product_ordered.with_context({'fsm_task_id': self.task.id})
         self.assertEqual(product.set_fsm_quantity(-1), None)
         self.assertEqual(product.set_fsm_quantity(6), True)
         self.assertEqual(product.set_fsm_quantity(5), True)

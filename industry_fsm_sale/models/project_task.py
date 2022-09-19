@@ -422,7 +422,7 @@ class Task(models.Model):
         """
         self.ensure_one()
         # Get all timesheets in the current task (step 1)
-        not_billed_timesheets = self.env['account.analytic.line'].sudo().search([('task_id', '=', self.id), ('project_id', '!=', False)]).filtered(lambda t: t._is_not_billed())
+        not_billed_timesheets = self.env['account.analytic.line'].sudo().search([('task_id', '=', self.id), ('project_id', '!=', False), ('is_so_line_edited', '=', False)]).filtered(lambda t: t._is_not_billed())
         if self.pricing_type == 'employee_rate':
             # classify these timesheets by employee (step 2)
             timesheets_by_employee_dict = defaultdict(lambda: self.env['account.analytic.line'])  # key: employee_id, value: timesheets
@@ -484,7 +484,7 @@ class Task(models.Model):
                     })
 
                 # Link the SOL to the timesheets
-                update_timesheet_commands.extend([fields.Command.update(timesheet_id, {'so_line': sol.id}) for timesheet_id in timesheets.ids])
+                update_timesheet_commands.extend([fields.Command.update(timesheet.id, {'so_line': sol.id}) for timesheet in timesheets if not timesheet.is_so_line_edited])
                 if not sol_in_task and (not product or (product.id == timesheet_product_id and product.lst_price == price_unit)):
                     # If there is no sol in task and the product variable is empty then we give the first sol in this loop to the task
                     # However, if the product is not empty then we search the sol with the same product and unit price to give to the current task
@@ -505,12 +505,12 @@ class Task(models.Model):
                     # The project and the task are given to prevent the SOL to create a new project or task based on the config of the product.
                     'project_id': self.project_id.id,
                     'task_id': self.id,
-                    'product_uom_qty': self.total_hours_spent,
+                    'product_uom_qty': sum(timesheet_id.unit_amount for timesheet_id in not_billed_timesheets),
                 })
             self.sudo().write({  # We need to sudo in case the user cannot see all timesheets in the current task.
                 'sale_line_id': sale_order_line.id,
                 # assign SOL to timesheets
-                'timesheet_ids': [fields.Command.update(timesheet_id, {'so_line': sale_order_line.id}) for timesheet_id in not_billed_timesheets.ids]
+                'timesheet_ids': [fields.Command.update(timesheet.id, {'so_line': sale_order_line.id}) for timesheet in not_billed_timesheets if not timesheet.is_so_line_edited]
             })
 
     def _prepare_materials_delivery(self):

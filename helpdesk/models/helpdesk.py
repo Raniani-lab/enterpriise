@@ -1084,7 +1084,7 @@ class HelpdeskSLA(models.Model):
         help="The time spent in these stages won't be taken into account in the calculation of the SLA.")
     priority = fields.Selection(
         TICKET_PRIORITY, string='Priority',
-        default='1', required=True)
+        default='0', required=True)
     partner_ids = fields.Many2many(
         'res.partner', string="Customers")
     company_id = fields.Many2one('res.company', 'Company', related='team_id.company_id', readonly=True, store=True)

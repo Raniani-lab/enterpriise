@@ -55,11 +55,11 @@
                 <a t-attf-class="o_article_emoji p-1 {{'o_article_emoji_active text-900' if isActive else ''}}" type="button"
                     t-if="not readonly and not article.is_locked">
                     <t t-if="article.icon" t-out="article.icon"/>
-                    <t t-else="">📄</t>
+                    <t t-else="" t-out="article._get_no_icon_placeholder()"></t>
                 </a>
                 <a t-else="" class="p-1">
                     <t t-if="article.icon" t-out="article.icon"/>
-                    <t t-else="">📄</t>
+                    <t t-else="" t-out="article._get_no_icon_placeholder()"></t>
                 </a>
             </div>
             <div class="o_article_name p-1 flex-grow-1 text-truncate cursor-pointer" t-out="article.name"/>

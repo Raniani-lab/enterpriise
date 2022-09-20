@@ -778,6 +778,16 @@ class Article(models.Model):
     def name_get(self):
         return [(rec.id, "%s %s" % (rec.icon or "📄", rec.name)) for rec in self]
 
+    def _get_no_icon_placeholder(self):
+        """ Emoji used in templates as a placeholder when icon is False. It's
+        here as a method because some lxml builds on macOS can not parse emoji
+        characters, and a user using such a device would not be able to install
+        the Knowledge module without an error.
+        This method should be removed as soon as a solution is found allowing
+        emojis to be parsed directly from a template on those devices.
+        """
+        return "📄"
+
     # ------------------------------------------------------------
     # ACTIONS
     # ------------------------------------------------------------

@@ -35,7 +35,7 @@ class RentalWizard(models.TransientModel):
     pricing_id = fields.Many2one(
         'product.pricing', compute="_compute_pricing",
         string="Pricing", help="Best Pricing Rule based on duration")
-    currency_id = fields.Many2one('res.currency', string="Currency", compute='_compute_displayed_currency')
+    currency_id = fields.Many2one('res.currency', string="Currency", compute='_compute_currency_id')
 
     duration = fields.Integer(
         string="Duration", compute="_compute_duration",
@@ -55,18 +55,19 @@ class RentalWizard(models.TransientModel):
         self.pricing_id = False
         for wizard in self:
             if wizard.product_id:
+                company = wizard.company_id or wizard.env.company
                 wizard.pricing_id = wizard.product_id._get_best_pricing_rule(
                     start_date=wizard.pickup_date,
                     end_date=wizard.return_date,
                     pricelist=wizard.pricelist_id,
-                    company=wizard.company_id or wizard.env.company,
-                    currency=wizard.currency_id
+                    company=company,
+                    currency=wizard.currency_id or company.currency_id,
                 )
 
-    @api.depends('pricelist_id', 'pricing_id')
-    def _compute_displayed_currency(self):
+    @api.depends('pricelist_id')
+    def _compute_currency_id(self):
         for wizard in self:
-            wizard.currency_id = wizard.pricelist_id.currency_id or wizard.pricing_id.currency_id
+            wizard.currency_id = wizard.pricelist_id.currency_id or wizard.env.company.currency_id
 
     @api.depends('pricing_id', 'pickup_date', 'return_date')
     def _compute_duration(self):
@@ -113,8 +114,8 @@ class RentalWizard(models.TransientModel):
             product_taxes = wizard.product_id.taxes_id.filtered(lambda tax: tax.company_id.id == wizard.company_id.id)
             if wizard.rental_order_line_id:
                 product_taxes_after_fp = wizard.rental_order_line_id.tax_id
-            elif 'default_tax_ids' in self.env.context:
-                product_taxes_after_fp = self.env['account.tax'].browse(self.env.context['default_tax_ids'] or [])
+            elif 'sale_order_line_tax_ids' in self.env.context:
+                product_taxes_after_fp = self.env['account.tax'].browse(self.env.context['sale_order_line_tax_ids'] or [])
             else:
                 product_taxes_after_fp = product_taxes
 

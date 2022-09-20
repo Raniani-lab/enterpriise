@@ -9,3 +9,7 @@ class SaleSubscription(models.Model):
         # Already compute taxes for unvalidated documents as they can already be paid
         invoices.filtered(lambda m: m.state == 'draft').button_update_avatax()
         return invoices
+
+    def _do_payment(self, payment_token, invoice):
+        invoice.button_update_avatax()
+        return super()._do_payment(payment_token, invoice)

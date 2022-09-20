@@ -95,7 +95,7 @@
                                             <span class="s_website_form_mark"> *</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input type="text" class="form-control s_website_form_input" name="partner_name" required="1" data-fill-with="name" id="helpdesk1" t-att-value="partner and partner.name"/>
+                                            <input type="text" class="form-control s_website_form_input" name="partner_name" required="1" data-fill-with="name" id="helpdesk1"/>
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +106,7 @@
                                             <span class="s_website_form_mark"> *</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input type="email" class="form-control s_website_form_input" name="partner_email" required="1" data-fill-with="email" id="helpdesk2" t-att-value="partner and partner.email"/>
+                                            <input type="email" class="form-control s_website_form_input" name="partner_email" required="1" data-fill-with="email" id="helpdesk2"/>
                                         </div>
                                     </div>
                                 </div>

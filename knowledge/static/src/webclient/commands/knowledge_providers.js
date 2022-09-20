@@ -104,7 +104,7 @@ commandProviderRegistry.add("knowledge", {
                 isFavorite: article.is_user_favorite,
                 subjectName: article.root_article_id[0] != article.id ? article.root_article_id[1] : false,
                 splitSubjectName: splitCommandName(article.root_article_id[1], options.searchValue),
-                icon_string: article.icon,
+                icon_string: article.icon || '📄',
             },
         }));
         // add the "advanced search" command

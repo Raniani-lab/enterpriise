@@ -3,7 +3,7 @@
     <data noupdate="1">
         <record id="knowledge_article_item_hr" model="knowledge.article" forcecreate="False">
             <field name="name">HR Sub Subject</field>
-            <field name="icon">📚</field>
+            <field name="icon" eval="False"/>
             <field name="body" type="html">
                 <h1>
                     <span style="font-weight: bolder;">

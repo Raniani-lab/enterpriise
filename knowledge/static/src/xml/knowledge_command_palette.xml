@@ -3,7 +3,6 @@
     <t t-name="KnowledgeCommandTemplate" owl="1">
         <div class="o_command_default d-flex align-items-center px-4 py-2">
             <span class="pe-2" t-if="props.icon_string" t-out="props.icon_string" />
-            <span class="pe-2" t-else="">📄</span>
             <span class="pe-2 text-ellipsis">
                 <t t-slot="name" />
             </span>

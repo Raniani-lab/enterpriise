@@ -168,10 +168,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         await this.props.record.update({is_user_favorite: !this.props.record.data.is_user_favorite});
         // ADSC: move when tree component
         await this.props.record.save({stayInEdition: true});
+        let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
+        unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : [];
         const template = await this.rpc(
             '/knowledge/tree_panel/favorites',
             {
                 active_article_id: this.resId,
+                unfolded_favorite_articles_ids: unfoldedFavoriteArticlesIds,
             }
         );
         this.tree.el.querySelector('.o_favorite_container').innerHTML = template;
@@ -373,13 +376,16 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @param {String} route
      */
     async _renderTree(activeArticleId, route) {
-        let unfoldedArticles = localStorage.getItem('unfoldedArticles');
-        unfoldedArticles = unfoldedArticles ? unfoldedArticles.split(";").map(Number) : false;
+        let unfoldedArticlesIds = localStorage.getItem('knowledge.unfolded.ids');
+        unfoldedArticlesIds = unfoldedArticlesIds ? unfoldedArticlesIds.split(";").map(Number) : false;
+        let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
+        unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : false;
         try {
             const htmlTree = await this.rpc(route,
                 {
                     active_article_id: activeArticleId,
-                    unfolded_articles: unfoldedArticles,
+                    unfolded_articles_ids: unfoldedArticlesIds,
+                    unfolded_favorite_articles_ids: unfoldedFavoriteArticlesIds,
                 }
             );
             this.tree.el.innerHTML = htmlTree;
@@ -396,14 +402,20 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                     if (!button) {
                         return;
                     }
+                    const section = button.closest('section');
+                    const isFavoriteSection = section.classList.contains('o_favorite_container');
                     if (button.classList.contains('o_section_create')) {
-                        this.createArticle(button.closest('.o_section').dataset.section);
+                        this.createArticle(section.dataset.section);
                     } else if (button.classList.contains('o_article_create')) {
                         const parentId = parseInt(button.closest('.o_article').dataset.articleId);
                         this.createArticle(undefined, parentId);
-                        this._addUnfolded(parentId.toString());
+                        this._addUnfolded(parentId.toString(), false);
+                        // If create from favorite tree, force unfold the parent
+                        if (isFavoriteSection) {
+                            this._addUnfolded(parentId.toString(), true);
+                        }
                     } else if (button.classList.contains('o_article_caret')) {
-                        this._fold($(button));
+                        this._fold($(button), isFavoriteSection);
                     }
                 }
             });

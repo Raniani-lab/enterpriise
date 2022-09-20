@@ -9,6 +9,7 @@ class DocumentsToDashboardWizard(models.TransientModel):
     _description = "Create a dashboard from a spreadsheet document"
 
     name = fields.Char(
+        "Dashboard Name",
         required=True,
         compute="_compute_name",
         store=True,
@@ -21,9 +22,9 @@ class DocumentsToDashboardWizard(models.TransientModel):
         required=True,
         domain=[("handler", "=", "spreadsheet")],
     )
-    dashboard_group_id = fields.Many2one("spreadsheet.dashboard.group", required=True)
+    dashboard_group_id = fields.Many2one("spreadsheet.dashboard.group", string="Dashboard Section", required=True)
     group_ids = fields.Many2many(
-        "res.groups", default=lambda self: self._default_group_ids()
+        "res.groups", default=lambda self: self._default_group_ids(), string="Access Groups"
     )
 
     def _default_group_ids(self):

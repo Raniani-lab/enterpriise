@@ -10,6 +10,7 @@
     "data": [
         "security/ir.model.access.csv",
         "wizard/documents_to_dashboard_views.xml",
+        "views/spreadsheet_dashboard_views.xml",
     ],
     "installable": True,
     "auto_install": True,

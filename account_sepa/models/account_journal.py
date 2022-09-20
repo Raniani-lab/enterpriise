@@ -40,7 +40,7 @@ class AccountJournal(models.Model):
         [
             ('pain.001.001.03', 'Generic'),
             ('pain.001.001.03.austrian.004', 'Austrian'),
-            ('pain.001.003.03', 'German'),
+            ('pain.001.001.03.de', 'German'),
             ('pain.001.001.03.se', 'Swedish'),
             ('pain.001.001.03.ch.02', 'Swiss'),
         ],
@@ -59,7 +59,7 @@ class AccountJournal(models.Model):
         """ Set default value for the field sepa_pain_version"""
 
         pains_by_country = {
-            'DE': 'pain.001.003.03',
+            'DE': 'pain.001.001.03.de',
             'CH': 'pain.001.001.03.ch.02',
             'SE': 'pain.001.001.03.se',
             'AT': 'pain.001.001.03.austrian.004',
@@ -197,16 +197,6 @@ class AccountJournal(models.Model):
         Document = etree.Element("Document", nsmap={
             None: "http://www.six-interbank-clearing.com/de/pain.001.001.03.ch.02.xsd",
             'xsi': "http://www.w3.org/2001/XMLSchema-instance"})
-        return Document
-
-    def _create_pain_001_003_03_document(self):
-        """ This funtion is now deprecated since pain.001.003.03 cannot be used anymore.
-            Create a sepa credit transfer file that follows the German specific guidelines, as established
-            by the German Bank Association (Deutsche Kreditwirtschaft) (pain.001.003.03)
-
-            :param doc_payments: recordset of account.payment to be exported in the XML document returned
-        """
-        Document = self._create_iso20022_document('pain.001.003.03')
         return Document
 
     def _create_iso20022_document(self, pain_version):

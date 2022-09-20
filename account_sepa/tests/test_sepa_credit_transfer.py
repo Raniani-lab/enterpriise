@@ -142,7 +142,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
 
         # Change IBAN prefix to Germany and check that the pain version is updated accordingly
         self.bank_journal.bank_acc_number = 'DE48363523682327'
-        self.assertEqual(self.bank_journal.sepa_pain_version, 'pain.001.003.03')
+        self.assertEqual(self.bank_journal.sepa_pain_version, 'pain.001.001.03.de')
 
         # Provide an invalid IBAN to see if the pain version falls back to the company's fiscal country
         self.bank_journal.bank_acc_number = 'DEL48363523682327'

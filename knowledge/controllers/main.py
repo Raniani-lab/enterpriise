@@ -87,22 +87,23 @@ class KnowledgeController(http.Controller):
     # Articles tree generation
     # ------------------------
 
-    def _prepare_articles_tree_html(self, template, active_article_id, unfolded_articles=False):
+    def _prepare_articles_tree_html(self, template, active_article_id, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
         """ Prepares all the info needed to render the article tree view side panel
         and returns the rendered given template with those values.
 
         :param int active_article_id: used to highlight the given article_id in the template;
-        :param list unfolded_articles: List of IDs used to display the children
+        :param list unfolded_articles_ids: List of IDs used to display the children
           of the given article ids. Unfolded articles are saved into local storage.
           When reloading/opening the article page, previously unfolded articles
           nodes must be opened;
+        :param list unfolded_favorite_articles_ids: same as ``unfolded_articles_ids``
+          but specific for 'Favorites' tree.
         """
-        unfolded_articles = set() if not unfolded_articles else set(unfolded_articles)
-        if unfolded_articles:
-            # we might get IDs from the localstorage that are not real records anymore (unlink, ...)
-            # the 'child_of' operator using parent_path does not like that (will throw MissingRecord errors)
-            # -> make sure we filter out children of existing articles
-            unfolded_articles = set(request.env['knowledge.article'].sudo().browse(unfolded_articles).exists().ids)
+        unfolded_articles_ids = unfolded_articles_ids or []
+        unfolded_favorite_articles_ids = unfolded_favorite_articles_ids or []
+        existing_ids = self._article_ids_exists(unfolded_articles_ids + unfolded_favorite_articles_ids)
+        unfolded_articles_ids = {article_id for article_id in unfolded_articles_ids if article_id in existing_ids}
+        unfolded_favorite_articles_ids = {article_id for article_id in unfolded_favorite_articles_ids if article_id in existing_ids}
 
         if active_article_id:
             # determine the hierarchy to unfold based on parent_path and as sudo
@@ -112,9 +113,9 @@ class KnowledgeController(http.Controller):
             # e.g of parent_path for article id 8 with parent 4 that has itself a parent 2: '2/4/8/'
             # the python split will make it [2,4,8,''], so we want everything but the last 2 items
             active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
-            ancestors_ids = set([int(ancestor_id) for ancestor_id in active_article.parent_path.split('/')[:-2]])
+            ancestors_ids = {int(ancestor_id) for ancestor_id in active_article.parent_path.split('/')[:-2]}
             if ancestors_ids:
-                unfolded_articles |= set(ancestors_ids)
+                unfolded_articles_ids |= ancestors_ids
 
         # fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
         # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
@@ -131,7 +132,7 @@ class KnowledgeController(http.Controller):
         # This allows to benefit from batch computation (ACLs, computes, ...).
         # We filter within the template based on the "parent_id" field to get the article children.
         all_visible_articles = request.env['knowledge.article']
-        all_visible_articles_ids = unfolded_articles | set(root_article_ids)
+        all_visible_articles_ids = unfolded_articles_ids | unfolded_favorite_articles_ids | set(root_article_ids)
         visible_favorite_article_ids = favorites_sudo.article_id.ids
         all_visible_article_domains = expression.OR([
             [
@@ -160,7 +161,8 @@ class KnowledgeController(http.Controller):
             "shared_articles": root_articles.filtered(lambda article: article.category == 'shared'),
             "private_articles": root_articles.filtered(
                 lambda article: article.category == "private" and article.user_has_write_access),
-            "unfolded_articles": unfolded_articles,
+            "unfolded_articles_ids": unfolded_articles_ids,
+            "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
             'portal_readonly_mode': not request.env.user.has_group('base.group_user'),
             "favorites_sudo": favorites_sudo,
         }
@@ -168,20 +170,22 @@ class KnowledgeController(http.Controller):
         return request.env['ir.qweb']._render(template, values)
 
     @http.route('/knowledge/tree_panel', type='json', auth='user')
-    def get_tree_panel_all(self, active_article_id=False, unfolded_articles=False):
+    def get_tree_panel_all(self, active_article_id=False, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
         return self._prepare_articles_tree_html(
             'knowledge.knowledge_article_tree',
             active_article_id,
-            unfolded_articles=unfolded_articles
+            unfolded_articles_ids=unfolded_articles_ids,
+            unfolded_favorite_articles_ids=unfolded_favorite_articles_ids,
         )
 
     @http.route('/knowledge/tree_panel/portal', type='json', auth='public')
-    def get_tree_panel_portal(self, active_article_id=False, unfolded_articles=False):
+    def get_tree_panel_portal(self, active_article_id=False, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
         """ Frontend access for left panel. """
         return self._prepare_articles_tree_html(
             'knowledge.knowledge_article_tree_frontend',
             active_article_id,
-            unfolded_articles=unfolded_articles
+            unfolded_articles_ids=unfolded_articles_ids,
+            unfolded_favorite_articles_ids=unfolded_favorite_articles_ids
         )
 
     @http.route('/knowledge/tree_panel/children', type='json', auth='user')
@@ -198,10 +202,13 @@ class KnowledgeController(http.Controller):
                 article.id: article.user_can_write
                 for article in articles
             },
+            "is_child": True
         })
 
     @http.route('/knowledge/tree_panel/favorites', type='json', auth='user')
-    def get_tree_panel_favorites(self, active_article_id=False):
+    def get_tree_panel_favorites(self, active_article_id=False, unfolded_favorite_articles_ids=False):
+        unfolded_favorite_articles_ids = self._article_ids_exists(unfolded_favorite_articles_ids)
+
         favorites_sudo = request.env['knowledge.article.favorite'].sudo().search([
             ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
         ])
@@ -215,12 +222,21 @@ class KnowledgeController(http.Controller):
             "favorites_sudo": favorites_sudo,
             "active_article_id": active_article_id,
             "all_visible_articles": all_visible_articles,
+            "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
             "portal_readonly_mode": not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
             "user_write_access_by_article": {
                 article.id: article.user_can_write
                 for article in all_visible_articles
             },
         })
+
+    def _article_ids_exists(self, articles_ids):
+        if not articles_ids:
+            return set()
+        # we might get IDs from the localstorage that are not real records anymore (unlink, ...)
+        # the 'child_of' operator using parent_path does not like that (will throw MissingRecord errors)
+        # -> make sure we filter out children of existing articles
+        return set(request.env['knowledge.article'].sudo().browse(articles_ids).exists().ids)
 
     # ------------------------
     # Article permission panel

@@ -60,9 +60,11 @@ export default {
      */
     _onFold: async function (event) {
         event.stopPropagation();
-        this._fold($(event.currentTarget));
+        const $button = $(event.currentTarget);
+        const isFavoriteTree = $button.closest('section').hasClass('o_favorite_container');
+        this._fold($button, isFavoriteTree);
     },
-    _fold: async function ($button) {
+    _fold: async function ($button, isFavoriteTree) {
        const $icon = $button.find('i');
        const $li = $button.closest('li');
        const articleId = $li.data('articleId').toString();
@@ -71,7 +73,7 @@ export default {
            // inside sibling to not lose its content
            const $ul = $li.find('> ul');
            $li.find('> div').append($ul.detach().hide());
-           this._removeUnfolded(articleId);
+           this._removeUnfolded(articleId, isFavoriteTree);
            $icon.removeClass('fa-caret-down');
            $icon.addClass('fa-caret-right');
        } else {
@@ -84,7 +86,7 @@ export default {
                const $newUl = $('<ul/>').append(children);
                $li.append($newUl);
            }
-           this._addUnfolded(articleId);
+           this._addUnfolded(articleId, isFavoriteTree);
            $icon.removeClass('fa-caret-right');
            $icon.addClass('fa-caret-down');  
        } 
@@ -94,24 +96,26 @@ export default {
      * Add an article id to the list of unfolded articles ids in the cache
      * @param {string} articleId - Id of the article to add
      */
-    _addUnfolded: function (articleId) {
-        let unfoldedArticles = localStorage.getItem('unfoldedArticles');
-        unfoldedArticles = unfoldedArticles ? unfoldedArticles.split(";") : [];
-        if (unfoldedArticles.indexOf(articleId) === -1) {
-            unfoldedArticles.push(articleId);
-            localStorage.setItem('unfoldedArticles', unfoldedArticles.join(";"));
+    _addUnfolded: function (articleId, isFavoriteTree) {
+        const storageKey = isFavoriteTree ? 'knowledge.unfolded.favorite.ids' : 'knowledge.unfolded.ids';
+        let unfoldedArticlesIds = localStorage.getItem(storageKey);
+        unfoldedArticlesIds = unfoldedArticlesIds ? unfoldedArticlesIds.split(";") : [];
+        if (unfoldedArticlesIds.indexOf(articleId) === -1) {
+            unfoldedArticlesIds.push(articleId);
+            localStorage.setItem(storageKey, unfoldedArticlesIds.join(";"));
         }
     },
     /**
      * Remove an article id from the list of unfolded articles ids in the cache
      * @param {string} articleId - Id of the article to remove
      */
-     _removeUnfolded: function (articleId) {
-         let unfoldedArticles = localStorage.getItem('unfoldedArticles');
-         unfoldedArticles = unfoldedArticles ? unfoldedArticles.split(";") : [];
-         if (unfoldedArticles.indexOf(articleId) !== -1) {
-             unfoldedArticles.splice(unfoldedArticles.indexOf(articleId), 1);
-             localStorage.setItem('unfoldedArticles', unfoldedArticles.join(";"));
+     _removeUnfolded: function (articleId, isFavoriteTree) {
+         const storageKey = isFavoriteTree ? 'knowledge.unfolded.favorite.ids' : 'knowledge.unfolded.ids';
+         let unfoldedArticlesIds = localStorage.getItem(storageKey);
+         unfoldedArticlesIds = unfoldedArticlesIds ? unfoldedArticlesIds.split(";") : [];
+         if (unfoldedArticlesIds.indexOf(articleId) !== -1) {
+             unfoldedArticlesIds.splice(unfoldedArticlesIds.indexOf(articleId), 1);
+             localStorage.setItem(storageKey, unfoldedArticlesIds.join(";"));
          }
      }
 };

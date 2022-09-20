@@ -77,11 +77,14 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
         const icon = star.querySelector('i');
         icon.classList.toggle('fa-star', result);
         icon.classList.toggle('fa-star-o', !result);
+        let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
+        unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : [];
         // Add/Remove the article to/from the favorite in the sidebar
         const template = await this._rpc({
             route: '/knowledge/tree_panel/favorites',
             params: {
                 active_article_id: id,
+                unfolded_favorite_articles_ids: unfoldedFavoriteArticlesIds,
             }
         });
         document.querySelector('.o_favorite_container').innerHTML = template;
@@ -100,18 +103,22 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
      */
     _renderTree: async function (active_article_id, route) {
         const container = this.el.querySelector('.o_knowledge_tree');
-        let unfoldedArticles = localStorage.getItem('unfoldedArticles');
-        unfoldedArticles = unfoldedArticles ? unfoldedArticles.split(";").map(Number) : [];
+        let unfoldedArticlesIds = localStorage.getItem('knowledge.unfolded.ids');
+        unfoldedArticlesIds = unfoldedArticlesIds ? unfoldedArticlesIds.split(";").map(Number) : [];
+        let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
+        unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : [];
         const params = new URLSearchParams(document.location.search);
         if (Boolean(params.get('auto_unfold'))) {
-            unfoldedArticles.push(active_article_id);
+            unfoldedArticlesIds.push(active_article_id);
+            unfoldedFavoriteArticlesIds.push(active_article_id);
         }
         try {
             const htmlTree = await this._rpc({
                 route: route,
                 params: {
                     active_article_id: active_article_id,
-                    unfolded_articles: unfoldedArticles,
+                    unfolded_articles_ids: unfoldedArticlesIds,
+                    unfolded_favorite_articles_ids: unfoldedFavoriteArticlesIds
                 }
             });
             container.innerHTML = htmlTree;

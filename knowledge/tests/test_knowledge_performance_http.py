@@ -27,7 +27,7 @@ class KnowledgePerformanceHttpCase(KnowledgeCommonWData, HttpCase):
         with self.assertQueryCount(employee=16):
             data = self._prepare_json_rpc_data(
                 active_article_id=self.wkspace_grand_children[0].id,
-                unfolded_articles=[self.article_shared.id],
+                unfolded_articles_ids=[self.article_shared.id],
             )
 
             self.url_open(
@@ -49,7 +49,7 @@ class KnowledgePerformanceHttpCase(KnowledgeCommonWData, HttpCase):
         with self.assertQueryCount(employee=17):
             data = self._prepare_json_rpc_data(
                 active_article_id=self.wkspace_grand_children[0].id,
-                unfolded_articles=[self.article_shared.id],
+                unfolded_articles_ids=[self.article_shared.id],
             )
             self.url_open(
                 "/knowledge/tree_panel",
@@ -57,12 +57,17 @@ class KnowledgePerformanceHttpCase(KnowledgeCommonWData, HttpCase):
                 headers={"Content-Type": "application/json"},
             )
 
-    def _prepare_json_rpc_data(self, active_article_id=False, unfolded_articles=False):
+    def _prepare_json_rpc_data(self,
+                               active_article_id=False,
+                               unfolded_articles_ids=False,
+                               unfolded_favorite_articles_ids=False):
         params = {}
         if active_article_id:
             params['active_article_id'] = active_article_id
-        if unfolded_articles:
-            params['unfolded_articles'] = unfolded_articles
+        if unfolded_articles_ids:
+            params['unfolded_articles_ids'] = unfolded_articles_ids
+        if unfolded_favorite_articles_ids:
+            params['unfolded_favorite_articles_ids'] = unfolded_favorite_articles_ids
 
         return {
             "id": 0,

@@ -1254,7 +1254,7 @@ class SaleOrder(models.Model):
         next_date = self.next_invoice_date or current_date
         # if no recurring next date, have next invoice be today + interval
         if not self.next_invoice_date:
-            invoicing_periods = [next_date + get_timedelta(pricing_id.duration, pricing_id.unit) for pricing_id in self.order_line.pricing_id]
+            invoicing_periods = [next_date + pricing_id.recurrence_id.get_recurrence_timedelta() for pricing_id in self.order_line.pricing_id]
             next_date = invoicing_periods and min(invoicing_periods) or current_date
         email_context = {**self.env.context.copy(),
                          **{'payment_token': self.payment_token_id.payment_details,

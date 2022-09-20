@@ -3,7 +3,7 @@
 import { addFields } from '@mail/model/model_core';
 import { one } from '@mail/model/model_field';
 // ensure that the model definition is loaded before the patch
-import '@mail/models/messaging';
+import '@mail/core_models/messaging';
 
 /**
  * Registers the system singleton 'knowledge' in global messaging singleton.

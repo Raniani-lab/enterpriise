@@ -19,14 +19,14 @@ This module modifies the web addon to provide Enterprise design and responsivene
     ],
     'assets': {
         'web._assets_primary_variables': [
-            ('after', 'web/static/src/legacy/scss/primary_variables.scss', 'web_enterprise/static/src/**/**/*.variables.scss'),
-            ('before', 'web/static/src/legacy/scss/primary_variables.scss', 'web_enterprise/static/src/legacy/scss/primary_variables.scss'),
+            ('after', 'web/static/src/scss/primary_variables.scss', 'web_enterprise/static/src/**/**/*.variables.scss'),
+            ('before', 'web/static/src/scss/primary_variables.scss', 'web_enterprise/static/src/scss/primary_variables.scss'),
         ],
         'web._assets_secondary_variables': [
-            ('before', 'web/static/src/legacy/scss/secondary_variables.scss', 'web_enterprise/static/src/legacy/scss/secondary_variables.scss'),
+            ('before', 'web/static/src/scss/secondary_variables.scss', 'web_enterprise/static/src/scss/secondary_variables.scss'),
         ],
         'web._assets_backend_helpers': [
-            ('before', 'web/static/src/legacy/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/legacy/scss/bootstrap_overridden.scss'),
+            ('before', 'web/static/src/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/scss/bootstrap_overridden.scss'),
         ],
         'web.assets_common': [
             'web_enterprise/static/fonts/fonts.scss',

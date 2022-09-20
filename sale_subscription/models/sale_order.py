@@ -997,7 +997,9 @@ class SaleOrder(models.Model):
                           self.partner_id.email, self.id)
             msg_body = 'Automatic payment failed after multiple attempts. Contract closed automatically.'
             self.message_post(body=msg_body)
-            subscription_values = {'state': 'close', 'end_date': current_date, 'payment_exception': False}
+            subscription_values = {'end_date': current_date, 'payment_exception': False}
+            # close the contract as needed
+            self.set_close()
         else:
             msg_body = 'Automatic payment failed. Contract set to "To Renew". No email sent this time. Error: %s' % (
                     transaction and transaction.state_message or 'No valid Payment Method')

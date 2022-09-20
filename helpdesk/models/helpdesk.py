@@ -723,7 +723,7 @@ class HelpdeskTeam(models.Model):
 
     def action_view_customer_satisfaction(self):
         action = self._action_view_rating(period='seven_days')
-        action['context'] = {**self.env.context, **action['context'], 'search_default_my_ratings': True}
+        action['context'] = {**self.env.context, **action['context'], 'search_default_my_ratings': False}
         return action
 
     def action_view_open_ticket(self):

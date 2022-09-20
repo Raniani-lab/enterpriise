@@ -34,11 +34,11 @@
                 </t>
                 <cfdi:Emisor
                     t-att-Rfc="supplier.vat"
-                    t-att-Nombre="format_string(supplier.name, 254).upper()"
+                    t-att-Nombre="format_string(supplier_name, 254)"
                     t-att-RegimenFiscal="record.company_id.l10n_mx_edi_fiscal_regime"/>
                 <cfdi:Receptor
                     t-att-Rfc="customer_rfc"
-                    t-att-Nombre="format_string(customer.commercial_partner_id.name, 254).upper()"
+                    t-att-Nombre="format_string(customer_name, 254)"
                     t-att-ResidenciaFiscal="customer_fiscal_residence"
                     t-att-DomicilioFiscalReceptor="customer.zip if customer.country_id.code == 'MX' else issued_address.zip or supplier.zip"
                     t-att-RegimenFiscalReceptor="fiscal_regime"

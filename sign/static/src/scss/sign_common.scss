@@ -193,7 +193,7 @@
             content: attr(hash);
             font-size: 16px;
             color: #017E84;
-            font-family: "Roboto Mono",Mono,monospace;
+            font-family: $o-font-family-monospace;
             width: 250px;
             display: inline-block;
             position: absolute;

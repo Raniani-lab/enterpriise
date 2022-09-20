@@ -20,7 +20,7 @@
         p {
             color: white !important;
             font-size: $font-size-lg !important;
-            font-family: ToonTime, Roboto, Arial, sans-serif;
+            font-family: ToonTime, $o-font-family-sans-serif;
         }
     }
 }

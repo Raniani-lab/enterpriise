@@ -8,7 +8,7 @@
 }
 .o_mrp_report_page {
     color: #212529;
-    font-family: o-add-unicode-support-font(('Roboto', sans-serif));
+    font-family: $o-font-family-sans-serif;
 }
 .o_mrp_report_table {
     font-size: 0.88333333rem;

@@ -40,7 +40,6 @@
     'post_init_hook': '_init_private_article_per_user',
     'assets': {
         'web.assets_backend': [
-            'web/static/fonts/fonts.scss',
             'knowledge/static/src/scss/knowledge_common.scss',
             'knowledge/static/src/components/*/*.scss',
             'knowledge/static/src/components/*/*.js',

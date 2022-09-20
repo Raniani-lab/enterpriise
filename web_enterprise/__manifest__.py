@@ -29,12 +29,10 @@ This module modifies the web addon to provide Enterprise design and responsivene
             ('before', 'web/static/src/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/scss/bootstrap_overridden.scss'),
         ],
         'web.assets_common': [
-            'web_enterprise/static/fonts/fonts.scss',
             'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss',
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],
         'web.assets_frontend': [
-            'web_enterprise/static/fonts/fonts.scss',
             'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss',
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],

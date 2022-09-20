@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:11+0000\n"
-"PO-Revision-Date: 2022-06-09 14:11+0000\n"
+"POT-Creation-Date: 2022-09-20 09:50+0000\n"
+"PO-Revision-Date: 2022-09-20 09:50+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -96,6 +96,17 @@ msgid "(%s weeks)."
 msgstr ""
 
 #. module: website_sale_renting
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
+msgid ", .s_rental_search"
+msgstr ""
+
+#. module: website_sale_renting
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.o_wsale_offcanvas
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.products
+msgid "<b>Rental Period</b>"
+msgstr ""
+
+#. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_search_result_price
 msgid "<small>from</small>"
 msgstr ""
@@ -134,9 +145,21 @@ msgstr ""
 
 #. module: website_sale_renting
 #. openerp-web
+#: code:addons/website_sale_renting/static/src/snippets/s_rental_search/options.js:0
+#, python-format
+msgid "All"
+msgstr ""
+
+#. module: website_sale_renting
+#. openerp-web
 #: code:addons/website_sale_renting/static/src/js/website_sale_renting_daterangepicker.js:0
 #, python-format
 msgid "Apply"
+msgstr ""
+
+#. module: website_sale_renting
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
+msgid "Attribute Filter"
 msgstr ""
 
 #. module: website_sale_renting
@@ -164,7 +187,13 @@ msgid "Custom Range"
 msgstr ""
 
 #. module: website_sale_renting
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.snippet_options
+msgid "Datepicker"
+msgstr ""
+
+#. module: website_sale_renting
 #: code:addons/website_sale_renting/models/product_pricing.py:0
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
 #, python-format
 msgid "Day"
 msgstr ""
@@ -192,6 +221,7 @@ msgstr ""
 
 #. module: website_sale_renting
 #: code:addons/website_sale_renting/models/product_pricing.py:0
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
 #, python-format
 msgid "Hour"
 msgstr ""
@@ -236,6 +266,13 @@ msgid "Months"
 msgstr ""
 
 #. module: website_sale_renting
+#. openerp-web
+#: code:addons/website_sale_renting/static/src/js/renting_mixin.js:0
+#, python-format
+msgid "Please select a rental period."
+msgstr ""
+
+#. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_product_pricelist
 msgid "Pricelist"
 msgstr ""
@@ -246,13 +283,13 @@ msgid "Pricing rule of temporal products"
 msgstr ""
 
 #. module: website_sale_renting
-#: model:ir.model,name:website_sale_renting.model_product_product
+#: model:ir.model,name:website_sale_renting.model_product_template
 msgid "Product"
 msgstr ""
 
 #. module: website_sale_renting
-#: model:ir.model,name:website_sale_renting.model_product_template
-msgid "Product Template"
+#: model:ir.model,name:website_sale_renting.model_product_product
+msgid "Product Variant"
 msgstr ""
 
 #. module: website_sale_renting
@@ -307,6 +344,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_thu
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_config_settings__renting_forbidden_thu
 msgid "Thursday"
+msgstr ""
+
+#. module: website_sale_renting
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
+msgid "Timing"
 msgstr ""
 
 #. module: website_sale_renting
@@ -366,4 +408,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.products_item
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.suggested_products_list
 msgid "from"
+msgstr ""
+
+#. module: website_sale_renting
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.products
+msgid ""
+"hasLeftColumn or "
+"is_view_active('website_sale_renting.shop_rental_datepicker_opt')"
 msgstr ""

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-16 09:58+0000\n"
-"PO-Revision-Date: 2022-06-16 09:58+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -70,10 +70,12 @@ msgid ""
 "        <td align=\"center\" style=\"min-width: 590px;\">\n"
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                    <t t-set=\"timesheet_hours\" t-value=\"ctx.get('timesheet_hours', 0)\"/>\n"
+"                    <t t-set=\"working_hours\" t-value=\"ctx.get('working_hours', 0)\"/>\n"
 "                    <div>\n"
 "                        Hello <t t-out=\"object.name or ''\">Abigail Peterson</t>,<br/><br/>\n"
-"                        This is a friendly reminder to log your hours for the following period : <t t-out=\"ctx.get('date_start') or ''\">05/05/2021</t> - <t t-out=\"ctx.get('date_stop') or ''\">05/06/2021</t>.\n"
-"                        For the time being, you only logged <t t-out=\"round(ctx.get('timesheet_hours', 0), 2) or ''\">2</t> hours on the <t t-out=\"ctx.get('working_hours') or ''\">8</t> requested.<br/>\n"
+"                        This is a friendly reminder to log your hours for the following period: <t t-out=\"ctx.get('date_start') or ''\">05/05/2021</t> <i class=\"fa fa-long-arrow-right\"/> <t t-out=\"ctx.get('date_stop') or ''\">05/06/2021</t>.\n"
+"                        For the time being, you <t t-if=\"timesheet_hours != 0\">only</t> logged <t t-out=\"'%d' %int(timesheet_hours)\">2</t><t t-if=\"timesheet_hours % 1 != 0\" t-out=\"':%02d' % (round(timesheet_hours % 1 * 60))\">:30</t> hours on the <t t-out=\"'%d' %int(working_hours)\">8</t><t t-if=\"working_hours % 1 != 0\" t-out=\"':%02d' % (round(working_hours % 1 * 60))\">:30</t> requested.<br/>\n"
 "                        <div t-if=\"ctx.get('action_url')\" style=\"margin: 16px 0px 16px 0px;\">\n"
 "                            <a t-att-href=\"ctx.get('action_url')\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">Fill in your timesheet</a>\n"
 "                        </div>\n"
@@ -232,7 +234,7 @@ msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_account_analytic_line
-msgid "Analytic Line"
+msgid "Analytic Account"
 msgstr ""
 
 #. module: timesheet_grid
@@ -245,11 +247,6 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Block encoding of timesheets after a certain date"
-msgstr ""
-
-#. module: timesheet_grid
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
-msgid "Block timesheets older than"
 msgstr ""
 
 #. module: timesheet_grid
@@ -388,6 +385,24 @@ msgstr ""
 
 #. module: timesheet_grid
 #. openerp-web
+#: code:addons/timesheet_grid/static/src/js/widgets/timesheets_m2o_project.js:0
+#, python-format
+msgid ""
+"Difference between the number of %s allocated to the project and the number "
+"of %s recorded."
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/js/widgets/timesheets_m2o_task.js:0
+#, python-format
+msgid ""
+"Difference between the number of %s allocated to the task and the number of "
+"%s recorded."
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
 #: code:addons/timesheet_grid/static/src/js/widgets/timesheets_m2o_avatar_employee.js:0
 #, python-format
 msgid ""
@@ -402,6 +417,13 @@ msgstr ""
 msgid ""
 "Difference between the number of hours recorded and the number of hours the "
 "employee was supposed to work according to his contract."
+msgstr ""
+
+#. module: timesheet_grid
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/js/widgets/timesheets_m2o_widget.js:0
+#, python-format
+msgid "Difference between the time allocated and the time recorded."
 msgstr ""
 
 #. module: timesheet_grid
@@ -452,14 +474,6 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timesheet_timer
 msgid "Display Timesheet Time"
-msgstr ""
-
-#. module: timesheet_grid
-#. openerp-web
-#: code:addons/timesheet_grid/static/src/js/timesheet_config_mixin.js:0
-#: code:addons/timesheet_grid/static/src/js/timesheet_pivot/timesheet_pivot_view.js:0
-#, python-format
-msgid "Download our App"
 msgstr ""
 
 #. module: timesheet_grid
@@ -619,6 +633,11 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: timesheet_grid
+#: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__last_validated_timesheet_date
+msgid "Last Validated Timesheet Date"
+msgstr ""
+
+#. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_week
 msgid "Last Week"
 msgstr ""
@@ -670,12 +689,16 @@ msgid "Merge"
 msgstr ""
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
+msgid "Merge Timesheet"
+msgstr ""
+
+#. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #: model:ir.actions.server,name:timesheet_grid.merge_timesheet_action
 #: model:ir.model,name:timesheet_grid.model_hr_timesheet_merge_wizard
-#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 #, python-format
-msgid "Merge Timesheet Entries"
+msgid "Merge Timesheets"
 msgstr ""
 
 #. module: timesheet_grid
@@ -694,6 +717,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Month"
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
+msgid "My Department"
 msgstr ""
 
 #. module: timesheet_grid
@@ -957,19 +986,21 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.model.constraint,message:timesheet_grid.constraint_res_company_check_encoding_limit
-msgid "The time limit for encoding timesheets must be positive."
-msgstr ""
-
-#. module: timesheet_grid
-#: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
+#. openerp-web
+#: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js:0
 #, python-format
-msgid "The timesheet entries have successfully been merged."
+msgid "The timesheet entry has successfully been created."
 msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.constraint,message:timesheet_grid.constraint_project_task_create_timesheet_time_positive
 msgid "The timesheet's time must be positive"
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
+#, python-format
+msgid "The timesheets have successfully been merged."
 msgstr ""
 
 #. module: timesheet_grid
@@ -987,14 +1018,14 @@ msgstr ""
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "There are no timesheet entries to merge."
+msgid "There are no timesheets to merge."
 msgstr ""
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"There are no timesheet entries to reset to draft or they have already been "
+"There are no timesheets to reset to draft or they have already been "
 "invoiced."
 msgstr ""
 
@@ -1037,6 +1068,11 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.view_employee_tree_inherit_timesheet
 msgid "Timesheet Approver"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model,name:timesheet_grid.model_timesheet_grid_mixin
+msgid "Timesheet Grid mixin"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1094,9 +1130,11 @@ msgid "Timesheets Analysis Report"
 msgstr ""
 
 #. module: timesheet_grid
-#: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheets_past_days_encoding_limit
-#: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheets_past_days_encoding_limit
-msgid "Timesheets Encoding Limit in Days"
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid ""
+"Timesheets before the %s (included) have been validated, and can no longer "
+"be %s."
 msgstr ""
 
 #. module: timesheet_grid
@@ -1128,10 +1166,8 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
-#. openerp-web
-#: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
-#, python-format
-msgid "Undefined"
+#: model:ir.model,name:timesheet_grid.model_res_users
+msgid "User"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1153,11 +1189,6 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
-msgstr ""
-
-#. module: timesheet_grid
-#: model:ir.model,name:timesheet_grid.model_res_users
-msgid "Users"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1239,12 +1270,6 @@ msgstr ""
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
-msgid "You cannot %s timesheets older than %d days."
-msgstr ""
-
-#. module: timesheet_grid
-#: code:addons/timesheet_grid/models/analytic.py:0
-#, python-format
 msgid "You cannot access timesheets that are not yours."
 msgstr ""
 
@@ -1300,6 +1325,12 @@ msgid "days"
 msgstr ""
 
 #. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid "deleted"
+msgstr ""
+
+#. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
@@ -1316,6 +1347,12 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "minutes"
+msgstr ""
+
+#. module: timesheet_grid
+#: code:addons/timesheet_grid/models/analytic.py:0
+#, python-format
+msgid "modified"
 msgstr ""
 
 #. module: timesheet_grid
@@ -1372,5 +1409,5 @@ msgstr ""
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
-msgid "{{showEmployeeAvatar ? '' : 'ml-3'}}"
+msgid "{{showEmployeeAvatar ? '' : 'ms-3'}}"
 msgstr ""

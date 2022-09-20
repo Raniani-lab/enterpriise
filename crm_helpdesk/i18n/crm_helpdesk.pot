@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:56+0000\n"
-"PO-Revision-Date: 2021-07-12 07:56+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,14 +27,13 @@ msgid "Convert"
 msgstr ""
 
 #. module: crm_helpdesk
-#: model:ir.actions.act_window,name:crm_helpdesk.helpdesk_ticket_to_lead_action
 #: model:ir.model,name:crm_helpdesk.model_helpdesk_ticket_to_lead
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.helpdesk_ticket_to_lead_view_form
 msgid "Convert Ticket to Lead"
 msgstr ""
 
 #. module: crm_helpdesk
-#: model_terms:ir.ui.view,arch_db:crm_helpdesk.helpdesk_ticket_view_form
+#: model:ir.actions.act_window,name:crm_helpdesk.helpdesk_ticket_to_lead_action
 msgid "Convert to Lead"
 msgstr ""
 
@@ -131,6 +130,12 @@ msgid "Lead convert to Ticket"
 msgstr ""
 
 #. module: crm_helpdesk
+#: code:addons/crm_helpdesk/wizard/helpdesk_ticket_to_lead.py:0
+#, python-format
+msgid "Lead created"
+msgstr ""
+
+#. module: crm_helpdesk
 #: model:ir.model.fields.selection,name:crm_helpdesk.selection__helpdesk_ticket_to_lead__action__exist
 msgid "Link to an existing customer"
 msgstr ""
@@ -154,6 +159,18 @@ msgstr ""
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__team_id
 msgid "Team"
+msgstr ""
+
+#. module: crm_helpdesk
+#: code:addons/crm_helpdesk/wizard/helpdesk_ticket_to_lead.py:0
+#, python-format
+msgid "The archived ticket can not converted as lead."
+msgstr ""
+
+#. module: crm_helpdesk
+#: code:addons/crm_helpdesk/wizard/helpdesk_ticket_to_lead.py:0
+#, python-format
+msgid "This lead has been created from ticket: %s"
 msgstr ""
 
 #. module: crm_helpdesk

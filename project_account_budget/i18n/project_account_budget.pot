@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:02+0000\n"
-"PO-Revision-Date: 2022-04-19 14:02+0000\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-20 09:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,22 +16,22 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: project_account_budget
-#: model_terms:ir.ui.view,arch_db:project_account_budget.project_project_form_view_inherited
-msgid "<span class=\"o_stat_text\">Budget</span>"
-msgstr ""
-
-#. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Add Budget"
 msgstr ""
 
 #. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Allocated"
+msgstr ""
+
+#. module: project_account_budget
+#: model:ir.model.fields,field_description:project_account_budget.field_crossovered_budget_lines__analytic_account_id
+msgid "Analytic Account"
 msgstr ""
 
 #. module: project_account_budget
@@ -46,15 +46,20 @@ msgid "Budget Items"
 msgstr ""
 
 #. module: project_account_budget
+#: model:ir.model,name:project_account_budget.model_crossovered_budget_lines
+msgid "Budget Line"
+msgstr ""
+
+#. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Budgetary Positions"
 msgstr ""
 
 #. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Budgets"
 msgstr ""
@@ -66,14 +71,14 @@ msgstr ""
 
 #. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.js:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.js:0
 #, python-format
 msgid "New Budget"
 msgstr ""
 
 #. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "No Budgetary Position"
 msgstr ""
@@ -85,28 +90,21 @@ msgstr ""
 
 #. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Remaining"
 msgstr ""
 
 #. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.js:0
-#, python-format
-msgid "Save & Confirm"
-msgstr ""
-
-#. module: project_account_budget
-#. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Spent"
 msgstr ""
 
 #. module: project_account_budget
 #. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
+#: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Total"
 msgstr ""
@@ -114,11 +112,4 @@ msgstr ""
 #. module: project_account_budget
 #: model:ir.model.fields,field_description:project_account_budget.field_project_project__total_planned_amount
 msgid "Total Planned Amount"
-msgstr ""
-
-#. module: project_account_budget
-#. openerp-web
-#: code:addons/project_account_budget/static/src/right_panel/project_right_panel.xml:0
-#, python-format
-msgid "_onClickSection"
 msgstr ""

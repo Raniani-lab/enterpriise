@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:10+0000\n"
-"PO-Revision-Date: 2022-06-09 14:10+0000\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-20 09:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_project_kanban_inherit_industry_fsm_report
 msgid ""
-"<span class=\"fa fa-pencil mr-1\" aria-label=\"Worksheet Template\" "
+"<span class=\"fa fa-pencil me-1\" aria-label=\"Worksheet Template\" "
 "title=\"Worksheet Template\"/>"
 msgstr ""
 
@@ -126,6 +126,7 @@ msgid "Task Worksheet Custom Report"
 msgstr ""
 
 #. module: industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_task
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.worksheet_custom_page
 msgid "Worksheet"
 msgstr ""
@@ -136,15 +137,11 @@ msgid "Worksheet Count"
 msgstr ""
 
 #. module: industry_fsm_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_worksheet
-msgid "Worksheet Report"
-msgstr ""
-
-#. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_worksheet_template
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_template_id
 #: model:ir.model.fields,field_description:industry_fsm_report.field_report_project_task_user_fsm__worksheet_template_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_form_inherit_industry_fsm_report
+#: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_view_tree
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_map_view_inherit_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_view_search_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_project_task_user_fsm_view_search

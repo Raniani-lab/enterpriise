@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,12 +27,12 @@ msgstr ""
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
-msgid "<span class=\"badge badge-secondary\">Disconnected</span>"
+msgid "<span class=\"badge text-bg-secondary\">Disconnected</span>"
 msgstr ""
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
-msgid "<span class=\"badge badge-success\">Connected</span>"
+msgid "<span class=\"badge text-bg-success\">Connected</span>"
 msgstr ""
 
 #. module: iot
@@ -73,7 +73,8 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_box_controllers.js:0
+#: code:addons/iot/static/src/views/box_kanban_view.xml:0
+#: code:addons/iot/static/src/views/box_list_view.xml:0
 #, python-format
 msgid "CONNECT"
 msgstr ""
@@ -85,35 +86,35 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_device_controllers.js:0
+#: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Check if the device is still connected"
 msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_report_action.js:0
+#: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Check if the printer is still connected"
 msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Click here to open your IoT Homepage"
 msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
 msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid ""
 "Click on Proceed to .../Add Exception/Visit this website/Go on to the "
@@ -127,7 +128,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 #, python-format
 msgid "Close"
@@ -135,7 +136,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Close this window and try again"
 msgstr ""
@@ -144,6 +145,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_box__company_id
 #: model:ir.model.fields,field_description:iot.field_iot_device__company_id
 msgid "Company"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/views/box_kanban_view.xml:0
+#: code:addons/iot/static/src/views/box_list_view.xml:0
+#, python-format
+msgid "Connect"
 msgstr ""
 
 #. module: iot
@@ -160,22 +169,21 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.js:0
 #, python-format
 msgid "Connection to IoT Box failed"
 msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_device_controllers.js:0
-#: code:addons/iot/static/src/js/iot_widgets.js:0
+#: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Connection to device failed"
 msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_report_action.js:0
+#: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Connection to printer failed"
 msgstr ""
@@ -252,14 +260,21 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_widgets.js:0
+#: code:addons/iot/static/src/view_widgets/iot_download_logs.xml:0
 #, python-format
 msgid "Download Logs"
 msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/view_widgets/iot_download_logs.xml:0
+#, python-format
+msgid "Download logs"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
 msgstr ""
@@ -309,7 +324,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid ""
 "If you are on a secure server (HTTPS) check if you accepted the certificate:"
@@ -438,7 +453,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Odoo cannot reach the IoT Box."
 msgstr ""
@@ -460,7 +475,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid ""
 "Please accept the certificate of your IoT Box (procedure depends on your "
@@ -469,16 +484,9 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_mixins.js:0
+#: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Please check if the IoT Box is still connected."
-msgstr ""
-
-#. module: iot
-#. openerp-web
-#: code:addons/iot/static/src/js/iot_widgets.js:0
-#, python-format
-msgid "Please check if the device is still connected."
 msgstr ""
 
 #. module: iot
@@ -488,7 +496,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_report_action.js:0
+#: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Printer "
 msgstr ""
@@ -535,7 +543,7 @@ msgstr ""
 
 #. module: iot
 #. openerp-web
-#: code:addons/iot/static/src/js/iot_report_action.js:0
+#: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Successfully sent to printer!"
 msgstr ""

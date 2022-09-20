@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-20 09:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,8 +21,8 @@ msgid "Fiscal Country"
 msgstr ""
 
 #. module: stock_intrastat
-#: model:ir.model,name:stock_intrastat.model_account_intrastat_report
-msgid "Intrastat Report"
+#: model:ir.model,name:stock_intrastat.model_stock_intrastat_report_handler
+msgid "Intrastat Report Custom Handler (Stock)"
 msgstr ""
 
 #. module: stock_intrastat

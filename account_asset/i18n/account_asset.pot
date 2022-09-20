@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -108,12 +108,7 @@ msgid "Account"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model,name:account_asset.model_account_assets_report
-msgid "Account Assets Report"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_asset__user_type_id
+#: model:ir.model.fields,help:account_asset.field_account_asset__account_type
 msgid ""
 "Account Type is used for information purpose, to generate country-specific "
 "legal reports, and set the rules to close a fiscal year and generate opening"
@@ -188,10 +183,14 @@ msgid "Accounting"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
+#: model:ir.model,name:account_asset.model_account_report
+msgid "Accounting Report"
+msgstr ""
+
+#. module: account_asset
+#: model:account.report.column,name:account_asset.assets_report_acquisition_date
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__acquisition_date
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
-#, python-format
 msgid "Acquisition Date"
 msgstr ""
 
@@ -340,11 +339,6 @@ msgid "Asset Ids Display Name"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
-msgid "Asset Linked"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_manually_modified
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_manually_modified
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_manually_modified
@@ -385,6 +379,11 @@ msgid "Asset Options"
 msgstr ""
 
 #. module: account_asset
+#: model:ir.model,name:account_asset.model_account_asset_report_handler
+msgid "Asset Report Custom Handler"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_asset_type
@@ -409,11 +408,6 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset created"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_move_line__asset_ids
-msgid "Asset created from this Journal Item"
 msgstr ""
 
 #. module: account_asset
@@ -447,14 +441,12 @@ msgid "Asset/Revenue Recognition"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_form
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_ids
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_ids
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
-#, python-format
 msgid "Assets"
 msgstr ""
 
@@ -499,9 +491,7 @@ msgid "Automation"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__book_value
-#, python-format
 msgid "Book Value"
 msgstr ""
 
@@ -528,12 +518,6 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Category of asset"
-msgstr ""
-
-#. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
-#, python-format
-msgid "Characteristics"
 msgstr ""
 
 #. module: account_asset
@@ -591,7 +575,6 @@ msgstr ""
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__create_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_tree
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_tree_grouped_inherit
 msgid "Create Asset"
 msgstr ""
 
@@ -884,9 +867,7 @@ msgid "Depreciated Amount"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-#, python-format
 msgid "Depreciation"
 msgstr ""
 
@@ -924,15 +905,10 @@ msgid "Depreciation Number Import"
 msgstr ""
 
 #. module: account_asset
+#: model:account.report,name:account_asset.assets_report
 #: model:ir.actions.client,name:account_asset.action_account_report_assets
 #: model:ir.ui.menu,name:account_asset.menu_action_account_report_assets
 msgid "Depreciation Schedule"
-msgstr ""
-
-#. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
-#, python-format
-msgid "Depreciation Table Report"
 msgstr ""
 
 #. module: account_asset
@@ -1016,8 +992,7 @@ msgid "Duration"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
-#, python-format
+#: model:account.report.column,name:account_asset.assets_report_duration_rate
 msgid "Duration / Rate"
 msgstr ""
 
@@ -1075,8 +1050,7 @@ msgid "Expense Recognition"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
-#, python-format
+#: model:account.report.column,name:account_asset.assets_report_first_depreciation
 msgid "First Depreciation"
 msgstr ""
 
@@ -1166,6 +1140,11 @@ msgid "Gross Increase Value"
 msgstr ""
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.assets_search_template_extra_options
+msgid "Group By Account"
+msgstr ""
+
+#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
@@ -1245,14 +1224,6 @@ msgid ""
 "In case of an import from another software, you might need to use this field"
 " to have the right depreciation table report. This is the value that was "
 "already depreciated with entries not computed from this model"
-msgstr ""
-
-#. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
-#, python-format
-msgid ""
-"In percent.<br>For a linear method, the depreciation rate is computed per "
-"year.<br>For a declining method, it is the declining factor"
 msgstr ""
 
 #. module: account_asset
@@ -1375,9 +1346,8 @@ msgid "Messages"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
+#: model:account.report.column,name:account_asset.assets_report_first_method
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method
-#, python-format
 msgid "Method"
 msgstr ""
 
@@ -1501,12 +1471,6 @@ msgid "No"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/report/account_assets_report.py:0
-#, python-format
-msgid "No asset account"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__non_deductible_tax_value
 msgid "Non Deductible Tax Value"
@@ -1593,7 +1557,8 @@ msgid "On Hold"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.line_caret_options
+#: code:addons/account_asset/report/account_assets_report.py:0
+#, python-format
 msgid "Open Asset"
 msgstr ""
 
@@ -1649,6 +1614,11 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__name
 msgid "Reason"
+msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
+msgid "Related Assets"
 msgstr ""
 
 #. module: account_asset
@@ -1861,27 +1831,6 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_account__can_create_asset
-msgid ""
-"Technical field specifying if the account can generate asset depending on "
-"it's type. It is used in the account form view."
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_asset_modify__gain_or_loss
-msgid ""
-"Technical field to know if there was a profit or a loss in the selling of "
-"the asset"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_asset_modify__gain_value
-msgid ""
-"Technical field to know if we should display the fields for the creation of "
-"gross increase asset"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method_period
 #: model:ir.model.fields,help:account_asset.field_asset_modify__method_period
 msgid "The amount of time between two depreciations"
@@ -1929,27 +1878,8 @@ msgid "There are multiple lines that could be the related to this asset"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_bank_statement_line__asset_value_change
-#: model:ir.model.fields,help:account_asset.field_account_move__asset_value_change
-#: model:ir.model.fields,help:account_asset.field_account_payment__asset_value_change
-msgid ""
-"This is a technical field set to true when this move is the result of the "
-"changing of value of an asset"
-msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_bank_statement_line__asset_manually_modified
-#: model:ir.model.fields,help:account_asset.field_account_move__asset_manually_modified
-#: model:ir.model.fields,help:account_asset.field_account_payment__asset_manually_modified
-msgid ""
-"This is a technical field stating that a depreciation line has been manually"
-" modified. It is used to recompute the depreciation table of an "
-"asset/deferred revenue."
-msgstr ""
-
-#. module: account_asset
 #. openerp-web
-#: code:addons/account_asset/static/src/js/account_asset_reversed_widget.js:0
+#: code:addons/account_asset/static/src/components/move_reversed/move_reversed.xml:0
 #, python-format
 msgid "This move has been reversed"
 msgstr ""
@@ -1990,7 +1920,7 @@ msgid "Turn as an asset"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__user_type_id
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__account_type
 msgid "Type of the account"
 msgstr ""
 
@@ -2094,6 +2024,23 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
+msgstr ""
+
+#. module: account_asset
+#: model:account.report.column,name:account_asset.assets_report_balance
+msgid "book_value"
+msgstr ""
+
+#. module: account_asset
+#: model:account.report.column,name:account_asset.assets_report_date_from
+#: model:account.report.column,name:account_asset.assets_report_depre_date_from
+msgid "date from"
+msgstr ""
+
+#. module: account_asset
+#: model:account.report.column,name:account_asset.assets_report_assets_date_to
+#: model:account.report.column,name:account_asset.assets_report_depre_date_to
+msgid "date to"
 msgstr ""
 
 #. module: account_asset

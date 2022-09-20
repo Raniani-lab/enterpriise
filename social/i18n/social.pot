@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,12 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__accounts_count
 msgid "# Accounts"
+msgstr ""
+
+#. module: social
+#: code:addons/social/models/social_post.py:0
+#, python-format
+msgid "%s (max %s chars)"
 msgstr ""
 
 #. module: social
@@ -88,6 +94,11 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add"
+msgstr ""
+
+#. module: social
+#: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
+msgid "Add Post"
 msgstr ""
 
 #. module: social
@@ -298,6 +309,13 @@ msgid "Connecting Problem"
 msgstr ""
 
 #. module: social
+#: model:ir.model.fields,help:social.field_social_account__social_account_handle
+msgid ""
+"Contains the social media handle of the person that created this account. "
+"E.g: '@odoo.official' for the 'Odoo' Twitter account"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__message
 msgid ""
 "Content of the social post message that is post-processed (links are "
@@ -419,6 +437,14 @@ msgid "Draft"
 msgstr ""
 
 #. module: social
+#: code:addons/social/models/social_post.py:0
+#, python-format
+msgid ""
+"Due to length restrictions, the following posts cannot be posted:\n"
+" %s"
+msgstr ""
+
+#. module: social
 #. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
@@ -434,7 +460,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
 msgid ""
 "Enable this option and load demo data to test the social module.<br/>\n"
-"                                    This must never be used on a production database!"
+"                                        This must never be used on a production database!"
 msgstr ""
 
 #. module: social
@@ -535,6 +561,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
 #: model_terms:ir.ui.view,arch_db:social.social_stream_view_search
 msgid "Group By"
+msgstr ""
+
+#. module: social
+#: model:ir.model.fields,field_description:social.field_social_account__social_account_handle
+msgid "Handle / Short Name"
 msgstr ""
 
 #. module: social
@@ -653,13 +684,6 @@ msgstr ""
 #: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #, python-format
 msgid "It will appear in the Feed once it has posts to display."
-msgstr ""
-
-#. module: social
-#: model:ir.model.fields,help:social.field_social_stream_post__stream_post_image_urls
-msgid ""
-"JSON array capturing the URLs of the images to make it easy to display them "
-"in the kanban view"
 msgstr ""
 
 #. module: social
@@ -836,6 +860,11 @@ msgid "Main Attachment"
 msgstr ""
 
 #. module: social
+#: model:ir.model.fields,field_description:social.field_social_media__max_post_length
+msgid "Max Post Length"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__media_ids
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "Media"
@@ -859,6 +888,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_has_error
 #: model:ir.model.fields,field_description:social.field_social_post__message_has_error
 msgid "Message Delivery error"
+msgstr ""
+
+#. module: social
+#: model:ir.model.fields,field_description:social.field_social_post__message_length
+#: model:ir.model.fields,field_description:social.field_social_post_template__message_length
+msgid "Message Length"
 msgstr ""
 
 #. module: social
@@ -1011,11 +1046,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_engagement
 msgid ""
 "Number of interactions (likes, shares, comments ...) with the social posts"
-msgstr ""
-
-#. module: social
-#: model:ir.model.fields,help:social.field_social_post__stream_posts_count
-msgid "Number of linked Feed Posts"
 msgstr ""
 
 #. module: social
@@ -1293,11 +1323,6 @@ msgid "Selected accounts (%s) do not match the selected company (%s)"
 msgstr ""
 
 #. module: social
-#: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
-msgid "Send Social Post"
-msgstr ""
-
-#. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__post_method__now
 msgid "Send now"
 msgstr ""
@@ -1310,6 +1335,12 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream__sequence
 msgid "Sequence used to order streams (mainly for the 'Feed' kanban view)"
+msgstr ""
+
+#. module: social
+#: model:ir.model.fields,help:social.field_social_media__max_post_length
+msgid ""
+"Set a maximum number of characters can be posted in post. 0 for no limit."
 msgstr ""
 
 #. module: social
@@ -1538,19 +1569,6 @@ msgid "Synchronize"
 msgstr ""
 
 #. module: social
-#: model:ir.model.fields,help:social.field_social_post__image_urls
-#: model:ir.model.fields,help:social.field_social_post_template__image_urls
-msgid ""
-"Technical JSON array capturing the URLs of the images to make it easy to "
-"display them in the kanban view."
-msgstr ""
-
-#. module: social
-#: model:ir.model.fields,help:social.field_social_post__calendar_date
-msgid "Technical field for the calendar view."
-msgstr ""
-
-#. module: social
 #: code:addons/social/models/social_post_template.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
@@ -1664,7 +1682,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
 msgid ""
 "Use your own Developer Accounts on our Social app.\n"
-"                        Those credentials are provided in the developer section of your professional social media account."
+"                            Those credentials are provided in the developer section of your professional social media account."
 msgstr ""
 
 #. module: social

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:10+0000\n"
-"PO-Revision-Date: 2022-06-09 14:10+0000\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-20 09:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,10 +16,38 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#, python-format
+msgid "!state.readonly"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "%s - %s"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#, python-format
+msgid "() => this.setReadonly(false)"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#, python-format
+msgid "() => this.setReadonly(true)"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#, python-format
+msgid "999999999"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -34,10 +62,13 @@ msgstr ""
 #, python-format
 msgid ""
 "<p class=\"o_view_nocontent_smiling_face\">\n"
-"                            Create a new product\n"
+"                            No products found. Let's create one!\n"
 "                        </p><p>\n"
-"                            You must define a product for everything you sell or purchase,\n"
-"                            whether it's a storable product, a consumable or a service.\n"
+"                            Keep track of the products you are using to complete your tasks, and invoice your customers for the goods.\n"
+"                            Tip: using kits, you can add multiple products at once.\n"
+"                        </p><p>\n"
+"                            When your task is marked as done, your stock will be updated automatically. Simply choose a warehouse\n"
+"                            in your profile from where to draw stock.\n"
 "                        </p>"
 msgstr ""
 
@@ -48,6 +79,36 @@ msgid ""
 "title=\"By saving this change, the customer phone number will also be "
 "updated.\" attrs=\"{'invisible': ['|', ('partner_id', '=', False), "
 "('is_task_phone_update', '=', False)]}\"/>"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "<span>Disc.%</span>"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
+msgid "<span>Products</span>"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "<strong class=\"mr16\">Subtotal</strong>"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "<strong>Taxes</strong>"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "<strong>Total</strong>"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "<strong>Untaxed amount</strong>"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -63,6 +124,11 @@ msgid "Added Products"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "Amount"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
 msgid "An FSM project must be billed at task rate or employee rate."
 msgstr ""
@@ -75,7 +141,7 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
-msgid "Analytic Line"
+msgid "Analytic Account"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -154,6 +220,26 @@ msgid "Currency"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_subtotal
+msgid "Delivered Subtotal"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_total
+msgid "Delivered Total"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_tax
+msgid "Delivered Total Tax"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "Description"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_primary
 msgid "Display Create Invoice Primary"
 msgstr ""
@@ -180,13 +266,6 @@ msgid "Extra Quotations"
 msgstr ""
 
 #. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/fsm_product_quantity.js:0
-#, python-format
-msgid "FSM Product Quantity"
-msgstr ""
-
-#. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_report_project_task_user_fsm
 msgid "FSM Tasks Analysis"
 msgstr ""
@@ -200,6 +279,11 @@ msgstr ""
 #: model:product.product,name:industry_fsm_sale.field_service_product
 #: model:product.template,name:industry_fsm_sale.field_service_product_product_template
 msgid "Field Service"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price_currency_id
+msgid "Fsm Partner Price Currency"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -319,6 +403,11 @@ msgid "Number of invoices"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price
+msgid "Partner Price"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_quotation_count
 msgid "Portal Quotation Count"
 msgstr ""
@@ -329,7 +418,12 @@ msgid "Price:"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model,name:industry_fsm_sale.model_product_product
+#: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__pricelist_id
+msgid "Pricelist"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model,name:industry_fsm_sale.model_product_template
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Product"
@@ -341,7 +435,6 @@ msgid "Product Category"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model,name:industry_fsm_sale.model_product_template
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Product Template"
 msgstr ""
@@ -349,6 +442,11 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Product Type"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model:ir.model,name:industry_fsm_sale.model_product_product
+msgid "Product Variant"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -379,6 +477,17 @@ msgid "Project Sales line, employee mapping"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "Quantity"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: code:addons/industry_fsm_sale/controllers/portal.py:0
+#, python-format
+msgid "Quotation"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__quotation_count
 msgid "Quotation Count"
 msgstr ""
@@ -390,8 +499,10 @@ msgid "Quotation created: %s"
 msgstr ""
 
 #. module: industry_fsm_sale
+#: code:addons/industry_fsm_sale/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_form_quotation
+#, python-format
 msgid "Quotations"
 msgstr ""
 
@@ -485,7 +596,7 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id
-msgid "Task from which quotation have been created"
+msgid "Task from which this quotation have been created"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -495,15 +606,13 @@ msgid "Tasks in Overtime"
 msgstr ""
 
 #. module: industry_fsm_sale
-#: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_material_imply_billable
-msgid "The material can be allowed only when the task can be billed."
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "Taxes"
 msgstr ""
 
 #. module: industry_fsm_sale
-#. openerp-web
-#: code:addons/industry_fsm_sale/static/src/js/fsm_product_quantity.js:0
-#, python-format
-msgid "The set quantity is invalid"
+#: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_material_imply_billable
+msgid "The material can be allowed only when the task can be billed."
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -514,6 +623,11 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.portal_my_task
+msgid "Time &amp; Material"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.project_task_action_to_invoice_fsm
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__to_invoice
 #: model:ir.ui.menu,name:industry_fsm_sale.fsm_menu_all_tasks_invoice
@@ -521,6 +635,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.report_project_task_user_fsm_view_search_inherit_sale
 msgid "To Invoice"
+msgstr ""
+
+#. module: industry_fsm_sale
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
+msgid "Total Price"
 msgstr ""
 
 #. module: industry_fsm_sale
@@ -535,6 +654,7 @@ msgstr ""
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__price_unit
+#: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Unit Price"
 msgstr ""
 
@@ -558,6 +678,42 @@ msgid "Use the breadcrumbs to return to your <b>task</b>."
 msgstr ""
 
 #. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
+#, python-format
+msgid "Wait for the invoice to show up"
+msgstr ""
+
+#. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__warning_message
 msgid "Warning Message"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#, python-format
+msgid "onInput"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#, python-format
+msgid "onKeyDown"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#, python-format
+msgid "state.addSmallClass ? 'small' : ''"
+msgstr ""
+
+#. module: industry_fsm_sale
+#. openerp-web
+#: code:addons/industry_fsm_sale/static/src/components/fsm_product_quantity/fsm_product_quantity.xml:0
+#, python-format
+msgid "state.readonly"
 msgstr ""

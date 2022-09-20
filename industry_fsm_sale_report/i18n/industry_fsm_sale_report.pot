@@ -4,66 +4,16 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.1+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-07 10:57+0000\n"
-"PO-Revision-Date: 2021-12-07 10:57+0000\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-20 09:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "<span>Disc.%</span>"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "<strong class=\"mr16\">Subtotal</strong>"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "<strong>Taxes</strong>"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "<strong>Total</strong>"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "<strong>Untaxed amount</strong>"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "Amount"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model:ir.model.fields,field_description:industry_fsm_sale_report.field_sale_order_line__delivered_price_subtotal
-msgid "Delivered Subtotal"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model:ir.model.fields,field_description:industry_fsm_sale_report.field_sale_order_line__delivered_price_total
-msgid "Delivered Total"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model:ir.model.fields,field_description:industry_fsm_sale_report.field_sale_order_line__delivered_price_tax
-msgid "Delivered Total Tax"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "Description"
-msgstr ""
 
 #. module: industry_fsm_sale_report
 #: model:ir.model.fields,help:industry_fsm_sale_report.field_product_product__allow_worksheets
@@ -73,12 +23,7 @@ msgstr ""
 
 #. module: industry_fsm_sale_report
 #: model:ir.model,name:industry_fsm_sale_report.model_product_template
-msgid "Product Template"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "Quantity"
+msgid "Product"
 msgstr ""
 
 #. module: industry_fsm_sale_report
@@ -93,22 +38,7 @@ msgstr ""
 
 #. module: industry_fsm_sale_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "Taxes"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
 msgid "Time &amp; Material"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "Total Price"
-msgstr ""
-
-#. module: industry_fsm_sale_report
-#: model_terms:ir.ui.view,arch_db:industry_fsm_sale_report.worksheet_custom_page
-msgid "Unit Price"
 msgstr ""
 
 #. module: industry_fsm_sale_report

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~14.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 07:57+0000\n"
-"PO-Revision-Date: 2021-07-12 07:57+0000\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-20 09:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -155,11 +155,6 @@ msgid "Last Modified on"
 msgstr ""
 
 #. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
-msgid "Month"
-msgstr ""
-
-#. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
 msgid "New"
 msgstr ""
@@ -167,13 +162,6 @@ msgstr ""
 #. module: stock_enterprise
 #: model_terms:ir.actions.act_window,help:stock_enterprise.stock_report_dashboard_action
 msgid "No data yet!"
-msgstr ""
-
-#. module: stock_enterprise
-#. openerp-web
-#: code:addons/stock_enterprise/static/src/js/report_grid_controller.js:0
-#, python-format
-msgid "Only grouping by product is supported"
 msgstr ""
 
 #. module: stock_enterprise
@@ -189,6 +177,11 @@ msgstr ""
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__partner_id
 msgid "Partner"
+msgstr ""
+
+#. module: stock_enterprise
+#: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
+msgid "Performance"
 msgstr ""
 
 #. module: stock_enterprise
@@ -213,7 +206,6 @@ msgstr ""
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
 msgid "Quantity"
 msgstr ""
 
@@ -251,11 +243,6 @@ msgstr ""
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
-msgstr ""
-
-#. module: stock_enterprise
-#: model:ir.model,name:stock_enterprise.model_report_stock_quantity
-msgid "Stock Quantity Report"
 msgstr ""
 
 #. module: stock_enterprise
@@ -309,13 +296,7 @@ msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
-#: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
 msgid "Warehouse Analysis"
-msgstr ""
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
-msgid "Week"
 msgstr ""
 
 #. module: stock_enterprise

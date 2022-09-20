@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -23,58 +23,6 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
 msgid "360 Feedback"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:survey.question,description:hr_appraisal_survey.appraisal_1
-msgid ""
-"<?xml version=\"1.0\"?>\n"
-"<data><h2>Overall Purpose Of Employee Appraisal</h2>\n"
-"            <ul>\n"
-"                <li>To initiate a clear and open communication of performance expectations</li>\n"
-"                <li>To assist employees in their professional growth, through the identification of strengths and opportunities for development</li>\n"
-"            </ul>\n"
-"\n"
-"            <h2>At the outset of the appraisal time period</h2>\n"
-"            <ul>\n"
-"                <li>It is the joint responsibility of the employee and the supervisor (appraiser) to establish a feasible work plan for the coming year, including major employee responsibilities and corresponding benchmarks against which results will be evaluated.</li>\n"
-"                <li>Critical or key elements of performance and professional development needs (if any), should also be noted at this time</li>\n"
-"            </ul>\n"
-"\n"
-"            <h2>At the conclusion of the appraisal time period</h2>\n"
-"            <ul>\n"
-"                <li>The employee will be responsible for completing a draft of the Appraisal Form as a tool for self-appraisal and a starting point for the supervisor’s evaluation. The employee can add examples of achievements for each criterion. Once the form had been filled, the employee send it to their supervisor.</li>\n"
-"                <li>It is the primary responsibility of the supervisor to gather the necessary input from the appropriate sources of feedback (internal and/or external customers, peers).</li>\n"
-"                <li>The supervisor synthesizes and integrates all input into the completed appraisal. The motivation of the evaluation is explained in the ad hoc fields.</li>\n"
-"                <li>The employee may choose to offer comments or explanation regarding the completed review.</li>\n"
-"            </ul>\n"
-"        </data>"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:survey.question,description:hr_appraisal_survey.appraisal_360_1
-#: model:survey.question,description:hr_appraisal_survey.appraisal_360_4
-#: model:survey.question,description:hr_appraisal_survey.appraisal_360_9
-msgid ""
-"<?xml version=\"1.0\"?>\n"
-"<p> </p>"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:survey.survey,description:hr_appraisal_survey.appraisal_360_feedback_template
-msgid ""
-"<?xml version=\"1.0\"?>\n"
-"<p>360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
-"            This typically includes the employee's manager, peers, and direct reports.</p>\n"
-"        "
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:survey.survey,description:hr_appraisal_survey.appraisal_feedback_template
-msgid ""
-"<?xml version=\"1.0\"?>\n"
-"<p>This survey allows you to give a feedback about your collaboration with an employee. Filling it helps us improving the appraisal process.</p>\n"
-"        "
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -115,6 +63,58 @@ msgid ""
 "                    </p>\n"
 "                </div>\n"
 "            "
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model:survey.question,description:hr_appraisal_survey.appraisal_1
+msgid ""
+"<h2>Overall Purpose Of Employee Appraisal</h2>\n"
+"            <ul>\n"
+"                <li>To initiate a clear and open communication of performance expectations</li>\n"
+"                <li>To assist employees in their professional growth, through the identification of strengths and opportunities for development</li>\n"
+"            </ul>\n"
+"\n"
+"            <h2>At the outset of the appraisal time period</h2>\n"
+"            <ul>\n"
+"                <li>It is the joint responsibility of the employee and the supervisor (appraiser) to establish a feasible work plan for the coming year, including major employee responsibilities and corresponding benchmarks against which results will be evaluated.</li>\n"
+"                <li>Critical or key elements of performance and professional development needs (if any), should also be noted at this time</li>\n"
+"            </ul>\n"
+"\n"
+"            <h2>At the conclusion of the appraisal time period</h2>\n"
+"            <ul>\n"
+"                <li>The employee will be responsible for completing a draft of the Appraisal Form as a tool for self-appraisal and a starting point for the supervisor’s evaluation. The employee can add examples of achievements for each criterion. Once the form had been filled, the employee send it to their supervisor.</li>\n"
+"                <li>It is the primary responsibility of the supervisor to gather the necessary input from the appropriate sources of feedback (internal and/or external customers, peers).</li>\n"
+"                <li>The supervisor synthesizes and integrates all input into the completed appraisal. The motivation of the evaluation is explained in the ad hoc fields.</li>\n"
+"                <li>The employee may choose to offer comments or explanation regarding the completed review.</li>\n"
+"            </ul>\n"
+"        "
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
+msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Edit Survey"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model:survey.question,description:hr_appraisal_survey.appraisal_360_1
+#: model:survey.question,description:hr_appraisal_survey.appraisal_360_4
+#: model:survey.question,description:hr_appraisal_survey.appraisal_360_9
+msgid "<p> </p>"
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model:survey.survey,description:hr_appraisal_survey.appraisal_360_feedback_template
+msgid ""
+"<p>360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
+"            This typically includes the employee's manager, peers, and direct reports.</p>\n"
+"        "
+msgstr ""
+
+#. module: hr_appraisal_survey
+#: model:survey.survey,description:hr_appraisal_survey.appraisal_feedback_template
+msgid ""
+"<p>This survey allows you to give a feedback about your collaboration with an employee. Filling it helps us improving the appraisal process.</p>\n"
+"        "
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -236,11 +236,6 @@ msgid "Author"
 msgstr ""
 
 #. module: hr_appraisal_survey
-#: model:ir.model.fields,help:hr_appraisal_survey.field_appraisal_ask_feedback__author_id
-msgid "Author of the message."
-msgstr ""
-
-#. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
 msgid "Back to the appraisal"
 msgstr ""
@@ -316,11 +311,6 @@ msgid "Default Template"
 msgstr ""
 
 #. module: hr_appraisal_survey
-#: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__null_value
-msgid "Default Value"
-msgstr ""
-
-#. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_department
 msgid "Department"
 msgstr ""
@@ -336,16 +326,6 @@ msgid "Do you have any comment to tell me and help me improve?"
 msgstr ""
 
 #. module: hr_appraisal_survey
-#: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
-msgid "Edit Survey"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.model.fields,help:hr_appraisal_survey.field_appraisal_ask_feedback__email_from
-msgid "Email address of the sender"
-msgstr ""
-
-#. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_appraisal
 msgid "Employee Appraisal"
 msgstr ""
@@ -356,21 +336,9 @@ msgid "Employee Appraisal Form"
 msgstr ""
 
 #. module: hr_appraisal_survey
-#: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__model_object_field
-msgid "Field"
-msgstr ""
-
-#. module: hr_appraisal_survey
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
 #, python-format
 msgid "Fill the feedback form on survey"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.model.fields,help:hr_appraisal_survey.field_appraisal_ask_feedback__copyvalue
-msgid ""
-"Final placeholder expression, to be copy-pasted in the desired template "
-"field."
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -406,26 +374,6 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__id
 msgid "ID"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_1
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_1_1
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_1_2
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_1_3
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_1_4
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_1_5
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_1
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_10
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_2
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_3
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_4
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_5
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_6
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_7
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_8
-#: model:survey.question,comments_message:hr_appraisal_survey.appraisal_360_9
-msgid "If other, please specify:"
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -499,16 +447,6 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal_survey
-#: model:ir.model.fields,help:hr_appraisal_survey.field_appraisal_ask_feedback__null_value
-msgid "Optional value to use if the target field is empty"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__copyvalue
-msgid "Placeholder Expression"
-msgstr ""
-
-#. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_2
 msgid "Position Title"
 msgstr ""
@@ -544,13 +482,6 @@ msgid "Seek to understand the problem before working on a solution"
 msgstr ""
 
 #. module: hr_appraisal_survey
-#: model:ir.model.fields,help:hr_appraisal_survey.field_appraisal_ask_feedback__model_object_field
-msgid ""
-"Select target field from the related document model.\n"
-"If it is a relationship field you will be able to select a target field at the destination of the relationship."
-msgstr ""
-
-#. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 msgid "Send"
 msgstr ""
@@ -568,16 +499,6 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_3
 msgid "Sometimes"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__sub_model_object_field
-msgid "Sub-field"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__sub_object
-msgid "Sub-model"
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -632,26 +553,6 @@ msgid "Take part in {{ object.employee_id.name or 'this' }} appraisal"
 msgstr ""
 
 #. module: hr_appraisal_survey
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_1
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_1_1
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_1_2
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_1_3
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_1_4
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_1_5
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_1
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_10
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_2
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_3
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_4
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_5
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_6
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_7
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_8
-#: model:survey.question,validation_error_msg:hr_appraisal_survey.appraisal_360_9
-msgid "The answer you entered is not valid."
-msgstr ""
-
-#. module: hr_appraisal_survey
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
 #, python-format
 msgid ""
@@ -669,27 +570,7 @@ msgstr ""
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
-msgid "This is a test survey."
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_1
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_1_1
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_1_2
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_1_3
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_1_4
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_1_5
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_1
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_10
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_2
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_3
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_4
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_5
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_6
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_7
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_8
-#: model:survey.question,constr_error_msg:hr_appraisal_survey.appraisal_360_9
-msgid "This question requires an answer."
+msgid "This is a Test Survey."
 msgstr ""
 
 #. module: hr_appraisal_survey
@@ -741,20 +622,6 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_2
 msgid "What's your name?"
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.model.fields,help:hr_appraisal_survey.field_appraisal_ask_feedback__sub_model_object_field
-msgid ""
-"When a relationship field is selected as first field, this field lets you "
-"select the target field within the destination document model (sub-model)."
-msgstr ""
-
-#. module: hr_appraisal_survey
-#: model:ir.model.fields,help:hr_appraisal_survey.field_appraisal_ask_feedback__sub_object
-msgid ""
-"When a relationship field is selected as first field, this field shows the "
-"document model the relationship goes to."
 msgstr ""
 
 #. module: hr_appraisal_survey

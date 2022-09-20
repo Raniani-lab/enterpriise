@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:10+0000\n"
-"PO-Revision-Date: 2022-06-09 14:10+0000\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-20 09:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,20 +18,12 @@ msgstr ""
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/models/project.py:0
 #, python-format
-msgid "%s (%s remaining hours)"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.project_project_view_form
-msgid ""
-"<span class=\"o_stat_text\">\n"
-"                        Timesheets and Planning\n"
-"                    </span>"
+msgid "%(name)s's Timesheets and Planning Analysis"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_account_analytic_line
-msgid "Analytic Line"
+msgid "Analytic Account"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
@@ -75,35 +67,7 @@ msgid "Project Update"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale
-#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_timesheet_forecast_report_analysis__sale_order_id
-msgid "Sale Order"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_timesheet_forecast_report_analysis__sale_line_id
-msgid "Sale Order Line"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.project_timesheet_forecast_sale_report_view_search
-msgid "Sales Order"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.project_timesheet_forecast_sale_report_view_search
-msgid "Sales Order Item"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_slot__order_line_id
-msgid ""
-"Sales Order Item to which the time spent on this task will be added, in "
-"order to be invoiced to your customer."
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line
-#: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_planning_slot__order_line_id
 msgid "Sales Order Line"
 msgstr ""
 
@@ -120,16 +84,6 @@ msgstr ""
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__non_billable_allocated_hours
 msgid "Sum of hours allocated to shifts not linked to a SOL."
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model:ir.model,name:project_timesheet_forecast_sale.model_project_task
-msgid "Task"
-msgstr ""
-
-#. module: project_timesheet_forecast_sale
-#: model:ir.model,name:project_timesheet_forecast_sale.model_project_timesheet_forecast_report_analysis
-msgid "Timesheet & Planning Statistics"
 msgstr ""
 
 #. module: project_timesheet_forecast_sale

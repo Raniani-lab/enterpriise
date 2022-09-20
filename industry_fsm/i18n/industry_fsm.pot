@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -66,23 +66,8 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
-msgid "<i class=\"fa fa-check mr-1\"/>Sign"
-msgstr ""
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task
-msgid "<i class=\"fa fa-check mr-1\"/>View Worksheet"
-msgstr ""
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
-msgid "<i class=\"fa fa-check mr-2\"/>Sign"
-msgstr ""
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
-msgid "<i class=\"fa fa-download\"/> Download"
+#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
+msgid "<i class=\"fa fa-check me-1\"/>Sign"
 msgstr ""
 
 #. module: industry_fsm
@@ -93,16 +78,11 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
-msgid "<i class=\"fa fa-print\"/> Print"
-msgstr ""
-
-#. module: industry_fsm
 #: model:mail.template,body_html:industry_fsm.mail_template_data_task_report
 msgid ""
 "<p>\n"
 "                Dear <t t-out=\"object.partner_id.name or 'Customer'\">Customer</t>,<br/><br/>\n"
-"                Please find attached the worksheet of our onsite operation. <br/><br/>\n"
+"                Please find attached the worksheet for our onsite operation. <br/><br/>\n"
 "                Feel free to contact us if you have any questions.<br/><br/>\n"
 "                Best regards,<br/><br/>\n"
 "            </p>\n"
@@ -119,12 +99,17 @@ msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
-msgid "<strong class=\"mr-2\">Total</strong>"
+msgid "<strong class=\"me-2\">Total</strong>"
 msgstr ""
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "<strong>Customer: </strong>"
+msgstr ""
+
+#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task
+msgid "<strong>Planned Date:</strong>"
 msgstr ""
 
 #. module: industry_fsm
@@ -158,6 +143,13 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
 msgid ""
 "Analyze the progress of your tasks and the performance of your workers."
+msgstr ""
+
+#. module: industry_fsm
+#: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__ancestor_id
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
+msgid "Ancestor Task"
 msgstr ""
 
 #. module: industry_fsm
@@ -204,6 +196,7 @@ msgid "By User"
 msgstr ""
 
 #. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.view_partner_address_form_industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_stop_timer_wizard_form
 msgid "Cancel"
 msgstr ""
@@ -214,7 +207,7 @@ msgid "Cancelled"
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
+#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
 msgid "Close"
 msgstr ""
 
@@ -280,6 +273,11 @@ msgid ""
 msgstr ""
 
 #. module: industry_fsm
+#: model:ir.model,name:industry_fsm.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_project_view_form_simplified_footer_fsm
 msgid "Create"
 msgstr ""
@@ -339,10 +337,12 @@ msgid "Custom Worksheets"
 msgstr ""
 
 #. module: industry_fsm
+#: code:addons/industry_fsm/models/project_task.py:0
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__partner_id
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__partner_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
+#, python-format
 msgid "Customer"
 msgstr ""
 
@@ -448,7 +448,7 @@ msgid "Dissatisfied"
 msgstr ""
 
 #. module: industry_fsm
-#: code:addons/industry_fsm/models/project.py:0
+#: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Do you want to stop the running timers?"
 msgstr ""
@@ -456,11 +456,6 @@ msgstr ""
 #. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_3
 msgid "Done"
-msgstr ""
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
-msgid "Download"
 msgstr ""
 
 #. module: industry_fsm
@@ -496,12 +491,13 @@ msgid "FSM Tasks Analysis"
 msgstr ""
 
 #. module: industry_fsm
-#: code:addons/industry_fsm/models/project.py:0
+#: code:addons/industry_fsm/models/project_project.py:0
 #: code:addons/industry_fsm/models/res_company.py:0
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__is_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__is_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_root
 #: model:project.project,name:industry_fsm.fsm_project
+#: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
 #, python-format
 msgid "Field Service"
@@ -561,11 +557,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Group By"
-msgstr ""
-
-#. module: industry_fsm
-#: model:ir.model.fields,field_description:industry_fsm.field_project_task__has_complete_partner_address
-msgid "Has Complete Partner Address"
 msgstr ""
 
 #. module: industry_fsm
@@ -781,11 +772,7 @@ msgid "My Team's Tasks"
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,help:industry_fsm.field_project_task__worksheet_signed_by
-msgid "Name of the person that signed the task."
-msgstr ""
-
-#. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.view_partner_address_form_industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Navigate To"
 msgstr ""
@@ -834,29 +821,18 @@ msgid "Not Starred"
 msgstr ""
 
 #. module: industry_fsm
-#: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_days_close
-msgid "Number of Working Days to close the task"
-msgstr ""
-
-#. module: industry_fsm
-#: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_days_open
-msgid "Number of Working Days to open the task"
-msgstr ""
-
-#. module: industry_fsm
-#: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_hours_close
-msgid "Number of Working Hours to close the task"
-msgstr ""
-
-#. module: industry_fsm
-#: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__working_hours_open
-msgid "Number of Working Hours to open the task"
-msgstr ""
-
-#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Okay"
+msgstr ""
+
+#. module: industry_fsm
+#. openerp-web
+#: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
+#, python-format
+msgid ""
+"Open your <b>worksheet</b> in order to fill it in with the details of your "
+"intervention."
 msgstr ""
 
 #. module: industry_fsm
@@ -913,11 +889,6 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_fsm_planning_groupby_user
 msgid "Planning by User"
-msgstr ""
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
-msgid "Print"
 msgstr ""
 
 #. module: industry_fsm
@@ -1038,7 +1009,7 @@ msgid "Send Report"
 msgstr ""
 
 #. module: industry_fsm
-#: code:addons/industry_fsm/models/project.py:0
+#: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Send report"
 msgstr ""
@@ -1050,7 +1021,7 @@ msgid "Settings"
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
+#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
 msgid "Sign"
 msgstr ""
 
@@ -1060,12 +1031,13 @@ msgid "Sign Report"
 msgstr ""
 
 #. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
+#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
 msgid "Sign Task"
 msgstr ""
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__worksheet_signature
+#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Signature"
 msgstr ""
@@ -1074,11 +1046,6 @@ msgstr ""
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "Signature is missing."
-msgstr ""
-
-#. module: industry_fsm
-#: model:ir.model.fields,help:industry_fsm.field_project_task__worksheet_signature
-msgid "Signature received through the portal."
 msgstr ""
 
 #. module: industry_fsm
@@ -1165,13 +1132,9 @@ msgid "Task Done"
 msgstr ""
 
 #. module: industry_fsm
+#: model:ir.actions.report,name:industry_fsm.task_custom_report
 #: model:mail.template,name:industry_fsm.mail_template_data_task_report
 msgid "Task Report"
-msgstr ""
-
-#. module: industry_fsm
-#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_worksheet
-msgid "Task Report:"
 msgstr ""
 
 #. module: industry_fsm
@@ -1239,13 +1202,13 @@ msgid "The worksheet is not in a state requiring customer signature."
 msgstr ""
 
 #. module: industry_fsm
-#: code:addons/industry_fsm/models/project.py:0
+#: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "There are no reports to send."
 msgstr ""
 
 #. module: industry_fsm
-#: code:addons/industry_fsm/models/project.py:0
+#: code:addons/industry_fsm/models/project_task.py:0
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #, python-format
 msgid "Time"
@@ -1379,6 +1342,7 @@ msgid "Working Hours to Close"
 msgstr ""
 
 #. module: industry_fsm
+#: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Worksheet"
@@ -1387,11 +1351,6 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Worksheet Complete"
-msgstr ""
-
-#. module: industry_fsm
-#: model:ir.actions.report,name:industry_fsm.task_custom_report
-msgid "Worksheet Report (PDF)"
 msgstr ""
 
 #. module: industry_fsm

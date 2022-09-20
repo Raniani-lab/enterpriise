@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgstr ""
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
-msgid "<i class=\"fa fa-check mr-2\" title=\"Hired\"/>"
+msgid "<i class=\"fa fa-check me-2\" title=\"Hired\"/>"
 msgstr ""
 
 #. module: hr_referral
@@ -71,7 +71,7 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_reward_kanban
 msgid ""
-"<span title=\"Buy\"><i class=\"fa fa-shopping-basket mr-3\" role=\"img\" "
+"<span title=\"Buy\"><i class=\"fa fa-shopping-basket me-3\" role=\"img\" "
 "aria-label=\"Buy\"/>Buy</span>"
 msgstr ""
 
@@ -245,14 +245,14 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Choose an avatar for your new friend!"
 msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Click to level up!"
 msgstr ""
@@ -324,10 +324,9 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/js/hr_referral_dashboard.js:0
-#: code:addons/hr_referral/static/src/js/hr_referral_welcome.js:0
-#: code:addons/hr_referral/static/src/js/hr_referral_welcome.js:0
-#: code:addons/hr_referral/static/src/js/hr_referral_welcome.js:0
+#: code:addons/hr_referral/static/src/views/dashboard.js:0
+#: code:addons/hr_referral/static/src/views/dashboard.js:0
+#: code:addons/hr_referral/static/src/views/dashboard.js:0
 #: model:ir.actions.client,name:hr_referral.action_hr_referral_welcome_screen
 #: model:ir.ui.menu,name:hr_referral.menu_hr_applicant_employee_referral_dashboard
 #, python-format
@@ -430,7 +429,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Email a friend"
 msgstr ""
@@ -533,14 +532,14 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Gather your team"
 msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Gather your team!"
 msgstr ""
@@ -553,11 +552,6 @@ msgstr ""
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Gifts"
-msgstr ""
-
-#. module: hr_referral
-#: model:ir.model.fields,help:hr_referral.field_hr_referral_points__sequence_stage
-msgid "Gives the sequence order when displaying a list of stages."
 msgstr ""
 
 #. module: hr_referral
@@ -699,7 +693,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Job Referral Program"
 msgstr ""
@@ -776,7 +770,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Level"
 msgstr ""
@@ -868,7 +862,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Next"
 msgstr ""
@@ -943,7 +937,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Ongoing"
 msgstr ""
@@ -1044,7 +1038,6 @@ msgid "Referer"
 msgstr ""
 
 #. module: hr_referral
-#: model_terms:ir.ui.view,arch_db:hr_referral.res_config_settings_view__form
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_referral_points_filter
 msgid "Referral"
 msgstr ""
@@ -1110,8 +1103,9 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_root
+#: model_terms:ir.ui.view,arch_db:hr_referral.res_config_settings_view__form
 #, python-format
 msgid "Referrals"
 msgstr ""
@@ -1153,7 +1147,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Restart Onboarding"
 msgstr ""
@@ -1165,7 +1159,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Reward"
 msgstr ""
@@ -1177,7 +1171,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #: model:ir.actions.act_window,name:hr_referral.action_hr_referral_reward
 #: model:ir.actions.act_window,name:hr_referral.action_hr_referral_reward_configuration
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_reward_configuration
@@ -1241,7 +1235,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Share"
 msgstr ""
@@ -1273,14 +1267,14 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Skip"
 msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Skip and Start"
 msgstr ""
@@ -1302,16 +1296,16 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Start"
 msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Start Now"
 msgstr ""
@@ -1338,7 +1332,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Successful"
 msgstr ""
@@ -1346,6 +1340,13 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_onboarding__text
 msgid "Text"
+msgstr ""
+
+#. module: hr_referral
+#: model_terms:ir.ui.view,arch_db:hr_referral.hr_recruitment_report_view_dashboard_inherit
+msgid ""
+"The % is based on the total of applicant that have been referred by someone "
+"else divided by the total of applicant."
 msgstr ""
 
 #. module: hr_referral
@@ -1390,14 +1391,14 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "To Spend"
 msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Total"
 msgstr ""
@@ -1438,6 +1439,7 @@ msgid "Url"
 msgstr ""
 
 #. module: hr_referral
+#: model:ir.model,name:hr_referral.model_res_users
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_alert_mail_wizard__user_ids
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_points__ref_user_id
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_report__ref_user_id
@@ -1456,18 +1458,13 @@ msgid "User responsible of this gift."
 msgstr ""
 
 #. module: hr_referral
-#: model:ir.model,name:hr_referral.model_res_users
-msgid "Users"
-msgstr ""
-
-#. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
 msgid "Users Referrer"
 msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "View Jobs"
 msgstr ""
@@ -1552,7 +1549,7 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "has been hired!"
 msgstr ""
@@ -1564,14 +1561,14 @@ msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "reward"
 msgstr ""
 
 #. module: hr_referral
 #. openerp-web
-#: code:addons/hr_referral/static/src/xml/hr_referral_templates.xml:0
+#: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "share"
 msgstr ""

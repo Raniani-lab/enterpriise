@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.2+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-11 15:06+0000\n"
-"PO-Revision-Date: 2022-02-11 15:06+0000\n"
+"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"PO-Revision-Date: 2022-09-20 09:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_disallowed_expenses
-#: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.main_template_de
+#: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.disallowed_expenses_main_template
 msgid ""
 "<span>There are multiple disallowed expenses rates in this period</span>"
 msgstr ""
@@ -82,16 +82,13 @@ msgid "Disallowed %"
 msgstr ""
 
 #. module: account_disallowed_expenses
-#: code:addons/account_disallowed_expenses/report/account_disallowed_expenses_report.py:0
-#, python-format
+#: model:account.report.column,name:account_disallowed_expenses.disallowed_expenses_report_disallowed_amount
 msgid "Disallowed Amount"
 msgstr ""
 
 #. module: account_disallowed_expenses
-#: code:addons/account_disallowed_expenses/report/account_disallowed_expenses_report.py:0
 #: model:ir.ui.menu,name:account_disallowed_expenses.menu_action_account_report_de
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_form
-#, python-format
 msgid "Disallowed Expenses"
 msgstr ""
 
@@ -108,13 +105,18 @@ msgid "Disallowed Expenses Category"
 msgstr ""
 
 #. module: account_disallowed_expenses
+#: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_report_handler
+msgid "Disallowed Expenses Custom Handler"
+msgstr ""
+
+#. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_rate
 msgid "Disallowed Expenses Rate"
 msgstr ""
 
 #. module: account_disallowed_expenses
+#: model:account.report,name:account_disallowed_expenses.disallowed_expenses_report
 #: model:ir.actions.client,name:account_disallowed_expenses.action_account_report_de
-#: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_report
 msgid "Disallowed Expenses Report"
 msgstr ""
 
@@ -165,9 +167,8 @@ msgid "No Rate"
 msgstr ""
 
 #. module: account_disallowed_expenses
-#: code:addons/account_disallowed_expenses/report/account_disallowed_expenses_report.py:0
+#: model:account.report.column,name:account_disallowed_expenses.disallowed_expenses_report_rate
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category__rate_ids
-#, python-format
 msgid "Rate"
 msgstr ""
 
@@ -198,8 +199,7 @@ msgid "Start Date"
 msgstr ""
 
 #. module: account_disallowed_expenses
-#: code:addons/account_disallowed_expenses/report/account_disallowed_expenses_report.py:0
-#, python-format
+#: model:account.report.column,name:account_disallowed_expenses.disallowed_expenses_report_total_amount
 msgid "Total Amount"
 msgstr ""
 

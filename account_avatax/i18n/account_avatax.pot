@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"PO-Revision-Date: 2022-09-20 09:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -91,14 +91,6 @@ msgstr ""
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Address Validation"
-msgstr ""
-
-#. module: account_avatax
-#: code:addons/account_avatax/wizard/avatax_validate_address.py:0
-#, python-format
-msgid ""
-"Address validation is currently disabled, please enable it in the Accounting"
-" settings."
 msgstr ""
 
 #. module: account_avatax
@@ -462,7 +454,7 @@ msgid "Please add your AvaTax credentials"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model,name:account_avatax.model_product_product
+#: model:ir.model,name:account_avatax.model_product_template
 msgid "Product"
 msgstr ""
 
@@ -472,8 +464,8 @@ msgid "Product Category"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model,name:account_avatax.model_product_template
-msgid "Product Template"
+#: model:ir.model,name:account_avatax.model_product_product
+msgid "Product Variant"
 msgstr ""
 
 #. module: account_avatax
@@ -530,28 +522,6 @@ msgstr ""
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Synchronize the exemption codes from Avatax"
-msgstr ""
-
-#. module: account_avatax
-#: model:ir.model.fields,help:account_avatax.field_avatax_validate_address__is_already_valid
-msgid ""
-"Technical field to determine whether to allow updating the address or not."
-msgstr ""
-
-#. module: account_avatax
-#: model:ir.model.fields,help:account_avatax.field_account_avatax__is_avatax
-#: model:ir.model.fields,help:account_avatax.field_account_bank_statement_line__is_avatax
-#: model:ir.model.fields,help:account_avatax.field_account_move__is_avatax
-#: model:ir.model.fields,help:account_avatax.field_account_payment__is_avatax
-msgid "Technical field used for the visibility of fields and buttons."
-msgstr ""
-
-#. module: account_avatax
-#: model:ir.model.fields,help:account_avatax.field_res_partner__avalara_show_address_validation
-#: model:ir.model.fields,help:account_avatax.field_res_users__avalara_show_address_validation
-msgid ""
-"Technical field used to hide the address validation button when the partner "
-"is not in the US or Canada."
 msgstr ""
 
 #. module: account_avatax
@@ -614,7 +584,7 @@ msgstr ""
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_partner_form_inherit
-msgid "Validate address"
+msgid "Validate"
 msgstr ""
 
 #. module: account_avatax

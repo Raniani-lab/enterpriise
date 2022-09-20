@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-05 11:16+0000\n"
-"PO-Revision-Date: 2021-10-05 11:16+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -540,7 +540,7 @@ msgid "Private Listing"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_product_product
+#: model:ir.model,name:sale_ebay.model_product_template
 msgid "Product"
 msgstr ""
 
@@ -550,8 +550,8 @@ msgid "Product Categories"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_product_template
-msgid "Product Template"
+#: model:ir.model,name:sale_ebay.model_product_product
+msgid "Product Variant"
 msgstr ""
 
 #. module: sale_ebay
@@ -754,12 +754,6 @@ msgid ""
 "System Parameter record with the key \"ebay_last_sync\" and the value set to"
 " the date of the oldest order you wish to synchronize in the format \"YYYY-"
 "MM-DD\"."
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
-#: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_template_id
-msgid "This field contains the template that will be used."
 msgstr ""
 
 #. module: sale_ebay

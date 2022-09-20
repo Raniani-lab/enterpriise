@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:02+0000\n"
-"PO-Revision-Date: 2022-04-19 14:02+0000\n"
+"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"PO-Revision-Date: 2022-09-20 09:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -122,12 +122,12 @@ msgstr ""
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__auto_send
-msgid "Digitalize automatically"
+msgid "Digitize automatically"
 msgstr ""
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__manual_send
-msgid "Digitalize on demand only"
+msgid "Digitize on demand only"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -139,7 +139,7 @@ msgstr ""
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__no_send
-msgid "Do not digitalize"
+msgid "Do not digitize"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -155,10 +155,24 @@ msgid "Expense"
 msgstr ""
 
 #. module: hr_expense_extract
+#: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
+#: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_parse
+#: model:ir.cron,name:hr_expense_extract.ir_cron_ocr_parse
+msgid "Expense OCR: Parse Expenses"
+msgstr ""
+
+#. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_update_ocr_status
 #: model:ir.cron,name:hr_expense_extract.ir_cron_update_ocr_status
 msgid "Expense OCR: Update All Status"
+msgstr ""
+
+#. module: hr_expense_extract
+#: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_validate_ir_actions_server
+#: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_validate
+#: model:ir.cron,name:hr_expense_extract.ir_cron_ocr_validate
+msgid "Expense OCR: Validate Expenses"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -167,14 +181,9 @@ msgid "Expense Report"
 msgstr ""
 
 #. module: hr_expense_extract
-#: model:ir.model.fields,help:hr_expense_extract.field_hr_expense__extract_remote_id
-msgid "Expense extract id"
-msgstr ""
-
-#. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
-msgid "Expense is being Digitalized"
+msgid "Expense is being Digitized"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -273,7 +282,7 @@ msgstr ""
 #: model:ir.model.fields,help:hr_expense_extract.field_expense_sample_register__payment_method_line_id
 msgid ""
 "Manual: Pay or Get paid by any method outside of Odoo.\n"
-"Payment Acquirers: Each payment acquirer has its own Payment Method. Request a transaction on/to a card thanks to a payment token saved by the partner when buying or subscribing online.\n"
+"Payment Providers: Each payment provider has its own Payment Method. Request a transaction on/to a card thanks to a payment token saved by the partner when buying or subscribing online.\n"
 "Check: Pay bills by check and print it from Odoo.\n"
 "Batch Deposit: Collect several customer checks at once generating and submitting a batch deposit to your bank. Module account_batch_payment is necessary.\n"
 "SEPA Credit Transfer: Pay in the SEPA zone by submitting a SEPA Credit Transfer file to your bank. Module account_sepa is necessary.\n"
@@ -304,12 +313,6 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__not_enough_credit
 msgid "Not enough credit"
-msgstr ""
-
-#. module: hr_expense_extract
-#: code:addons/hr_expense_extract/models/hr_expense.py:0
-#, python-format
-msgid "Not enough credits for Bill Digitalization"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -351,7 +354,7 @@ msgstr ""
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
-msgid "Resend For Digitalization"
+msgid "Resend For Digitization"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -367,13 +370,9 @@ msgid "Sample Receipt: %s"
 msgstr ""
 
 #. module: hr_expense_extract
-#: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
-msgid "Send For Digitalization"
-msgstr ""
-
-#. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
-msgid "Send for digitalization"
+#: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
+msgid "Send For Digitization"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -407,7 +406,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
-"between 5 and 60 seconds."
+"between 5 and 10 seconds."
 msgstr ""
 
 #. module: hr_expense_extract
@@ -420,7 +419,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
-"and 60 seconds."
+"and 10 seconds."
+msgstr ""
+
+#. module: hr_expense_extract
+#: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__to_validate
+msgid "To validate"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -455,6 +459,11 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_extraction
 msgid "Waiting extraction"
+msgstr ""
+
+#. module: hr_expense_extract
+#: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_upload
+msgid "Waiting upload"
 msgstr ""
 
 #. module: hr_expense_extract
@@ -502,11 +511,6 @@ msgstr ""
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Your manager will have to approve (or refuse) your expense reports."
-msgstr ""
-
-#. module: hr_expense_extract
-#: model:ir.model.fields,help:hr_expense_extract.field_hr_expense_extract_words__expense_id
-msgid "expense id"
 msgstr ""
 
 #. module: hr_expense_extract

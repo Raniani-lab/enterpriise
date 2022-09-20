@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-16 12:03+0000\n"
-"PO-Revision-Date: 2022-06-16 12:03+0000\n"
+"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"PO-Revision-Date: 2022-09-20 09:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -124,14 +124,6 @@ msgid "Activity Type"
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__wage_with_holidays
-msgid ""
-"Adapted salary, according to the sacrifices defined on the contract "
-"(Example: Extra-legal time off, a percentage of the salary invested in a "
-"group insurance, etc...)"
-msgstr ""
-
-#. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "Add a line"
 msgstr ""
@@ -139,6 +131,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "Add a section"
+msgstr ""
+
+#. module: hr_contract_salary
+#: code:addons/hr_contract_salary/models/hr_contract_salary_advantage.py:0
+#, python-format
+msgid "Advanges that are not linked to a field should always be displayed."
 msgstr ""
 
 #. module: hr_contract_salary
@@ -550,6 +548,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__display_type
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__display_type
 msgid "Display Type"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__display_warning_message
+msgid "Display Warning Message"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1024,7 +1027,6 @@ msgstr ""
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/models/hr_contract.py:0
-#: code:addons/hr_contract_salary/wizard/generate_simulation_link.py:0
 #, python-format
 msgid "No private address defined on the employee!"
 msgstr ""
@@ -1495,6 +1497,14 @@ msgid "This contract has been updated, please request an updated link.."
 msgstr ""
 
 #. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
+msgid ""
+"This job position does not have any contract template related and the "
+"advantages will be related to the current employee contract instead of the "
+"new job position."
+msgstr ""
+
+#. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
@@ -1543,11 +1553,6 @@ msgid "Wage"
 msgstr ""
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_with_holidays
-msgid "Wage With Sacrifices"
-msgstr ""
-
-#. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_on_signature
 msgid "Wage on Payroll"
 msgstr ""
@@ -1560,6 +1565,11 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__reference_monthly_wage
 msgid "Wage update with holidays retenues"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_with_holidays
+msgid "Wage with Holidays"
 msgstr ""
 
 #. module: hr_contract_salary

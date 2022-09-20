@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:01+0000\n"
-"PO-Revision-Date: 2022-04-19 14:01+0000\n"
+"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"PO-Revision-Date: 2022-09-20 09:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -126,6 +126,11 @@ msgid "Forum Posts"
 msgstr ""
 
 #. module: website_helpdesk_forum
+#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__website_forum_ids
+msgid "Forums"
+msgstr ""
+
+#. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
 msgid "Help Center Active"
 msgstr ""
@@ -149,6 +154,13 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__id
 msgid "ID"
+msgstr ""
+
+#. module: website_helpdesk_forum
+#: model:ir.model.fields,help:website_helpdesk_forum.field_helpdesk_team__website_forum_ids
+msgid ""
+"In the help center, customers will only be able to see posts from the "
+"selected forums."
 msgstr ""
 
 #. module: website_helpdesk_forum
@@ -185,6 +197,11 @@ msgid "Share on Forum"
 msgstr ""
 
 #. module: website_helpdesk_forum
+#: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__show_knowledge_base_forum
+msgid "Show Knowledge Base Forum"
+msgstr ""
+
+#. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_forum_post__show_ticket
 msgid "Show Ticket"
 msgstr ""
@@ -203,12 +220,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_forum_post__ticket_id
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__ticket_id
 msgid "Ticket"
-msgstr ""
-
-#. module: website_helpdesk_forum
-#: code:addons/website_helpdesk_forum/wizards/helpdesk_ticket_select_forum.py:0
-#, python-format
-msgid "Ticket has been shared on the %s forum."
 msgstr ""
 
 #. module: website_helpdesk_forum

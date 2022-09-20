@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,11 +28,6 @@ msgid "<span class=\"o_stat_text\">Recorded</span>"
 msgstr ""
 
 #. module: project_timesheet_forecast
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.planning_view_gantt
-msgid "<strong>Effective Hours — </strong>"
-msgstr ""
-
-#. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_analysis_report__allocated_hours_cost
 msgid "Allocated Hours Cost"
 msgstr ""
@@ -49,7 +44,7 @@ msgstr ""
 
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_account_analytic_line
-msgid "Analytic Line"
+msgid "Analytic Account"
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -132,12 +127,6 @@ msgid "Menu"
 msgstr ""
 
 #. module: project_timesheet_forecast
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__milestone_id
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "Milestone"
-msgstr ""
-
-#. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "My Department"
 msgstr ""
@@ -145,11 +134,6 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "My Projects"
-msgstr ""
-
-#. module: project_timesheet_forecast
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "My Tasks"
 msgstr ""
 
 #. module: project_timesheet_forecast
@@ -252,12 +236,6 @@ msgid "Sum of Planned Hours"
 msgstr ""
 
 #. module: project_timesheet_forecast
-#: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__task_id
-#: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
-msgid "Task"
-msgstr ""
-
-#. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "The timesheet entries have successfully been generated."
@@ -295,11 +273,6 @@ msgid "Timesheet and Planning Analysis"
 msgstr ""
 
 #. module: project_timesheet_forecast
-#: model:ir.filters,name:project_timesheet_forecast.ir_filter_project_timesheet_forecast
-msgid "Timesheet vs Planning"
-msgstr ""
-
-#. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "Timesheets"
@@ -322,7 +295,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
 msgid ""
 "Track the progress of your projects by comparing the hours initially planned"
-" with the effective hours recorded on your tasks"
+" with the effective hours recorded"
 msgstr ""
 
 #. module: project_timesheet_forecast

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -168,6 +168,7 @@ msgid "Access records from graph"
 msgstr ""
 
 #. module: web_studio
+#: model:ir.model.fields,field_description:web_studio.field_mail_activity_type__category
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__action_id
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__action_id
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
@@ -187,6 +188,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Action to approve:"
@@ -197,6 +199,13 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/action_editor_sidebar.xml:0
 #, python-format
 msgid "Action's title"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model.fields,help:web_studio.field_mail_activity_type__category
+msgid ""
+"Actions may trigger specific behavior like opening calendar view or "
+"automatically mark as done when a document is uploaded"
 msgstr ""
 
 #. module: web_studio
@@ -219,8 +228,14 @@ msgstr ""
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
+#: model:ir.model,name:web_studio.model_mail_activity
 #, python-format
 msgid "Activity"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model,name:web_studio.model_mail_activity_type
+msgid "Activity Type"
 msgstr ""
 
 #. module: web_studio
@@ -388,6 +403,13 @@ msgid "Amount untaxed"
 msgstr ""
 
 #. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
+#, python-format
+msgid "Approval"
+msgstr ""
+
+#. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "Approval Entries"
 msgstr ""
@@ -401,6 +423,7 @@ msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__rule_id
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__rule_id
 msgid "Approval Rule"
 msgstr ""
 
@@ -425,6 +448,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Approve"
@@ -443,6 +467,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Approved on"
@@ -593,6 +618,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Awaiting approval"
@@ -822,6 +848,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/studio_approval.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Click to see all approval rules."
@@ -829,6 +856,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/client_action/navbar/navbar.xml:0
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
@@ -1089,12 +1117,14 @@ msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__create_uid
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__create_uid
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__create_date
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__create_date
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__create_date
 msgid "Created on"
 msgstr ""
@@ -1351,8 +1381,10 @@ msgid "Descending"
 msgstr ""
 
 #. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_model.py:0
+#: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Description"
 msgstr ""
@@ -1399,6 +1431,7 @@ msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__display_name
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__display_name
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__display_name
 msgid "Display Name"
 msgstr ""
@@ -1875,6 +1908,14 @@ msgid "Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."
 msgstr ""
 
 #. module: web_studio
+#: code:addons/web_studio/models/studio_approval.py:0
+#: model:ir.model.fields.selection,name:web_studio.selection__mail_activity_type__category__grant_approval
+#: model:mail.activity.type,name:web_studio.mail_activity_data_approve
+#, python-format
+msgid "Grant Approval"
+msgstr ""
+
+#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
@@ -2090,6 +2131,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__id
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__id
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__id
 #, python-format
 msgid "ID"
@@ -2264,18 +2306,21 @@ msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry____last_update
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request____last_update
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__write_uid
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__write_uid
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__write_date
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__write_date
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__write_date
 msgid "Last Updated on"
 msgstr ""
@@ -2317,6 +2362,11 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Lines"
+msgstr ""
+
+#. module: web_studio
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__mail_activity_id
+msgid "Linked Activity"
 msgstr ""
 
 #. module: web_studio
@@ -3023,6 +3073,7 @@ msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__res_id
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__res_id
 msgid "Record ID"
 msgstr ""
 
@@ -3040,6 +3091,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Reject"
@@ -3057,6 +3109,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Rejected on"
@@ -3176,8 +3229,11 @@ msgid "Reset Image"
 msgstr ""
 
 #. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/models/ir_model.py:0
 #: code:addons/web_studio/models/ir_ui_view.py:0
+#: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
+#: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__responsible_id
 #, python-format
 msgid "Responsible"
 msgstr ""
@@ -3206,6 +3262,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Revoke"
@@ -3567,6 +3624,11 @@ msgid "Studio Approval Entry"
 msgstr ""
 
 #. module: web_studio
+#: model:ir.model,name:web_studio.model_studio_approval_request
+msgid "Studio Approval Request"
+msgstr ""
+
+#. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_rule
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 msgid "Studio Approval Rule"
@@ -3595,13 +3657,6 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_mixin
 msgid "Studio Mixin"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/client_action/studio_action_loader.js:0
-#, python-format
-msgid "Studio couldn't be loaded"
 msgstr ""
 
 #. module: web_studio
@@ -3725,6 +3780,15 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid ""
+"The description will be shown to users to understand why they must ask for "
+"approval."
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "The fastest way to create a web application."
@@ -3741,6 +3805,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_hook.js:0
 #: code:addons/web_studio/static/src/legacy/js/views/controllers/form_controller.js:0
 #, python-format
 msgid "The following approvals are missing:"
@@ -3914,9 +3979,17 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/approval_infos.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "This rule limits this user to a single approval for this action."
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
+#, python-format
+msgid "This user will be assigned a next activity when approval is requested."
 msgstr ""
 
 #. module: web_studio
@@ -3984,19 +4057,6 @@ msgid "Total"
 msgstr ""
 
 #. module: web_studio
-#: code:addons/web_studio/controllers/main.py:0
-#, python-format
-msgid "Translate view"
-msgstr ""
-
-#. module: web_studio
-#. openerp-web
-#: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
-#, python-format
-msgid "Translations"
-msgstr ""
-
-#. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
@@ -4051,6 +4111,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/studio_approval.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "User avatar placeholder"
@@ -4105,6 +4166,7 @@ msgstr ""
 
 #. module: web_studio
 #. openerp-web
+#: code:addons/web_studio/static/src/approval/studio_approval.xml:0
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Waiting for approval"
@@ -4438,4 +4500,11 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "year"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
+#: code:addons/web_studio/static/src/approval/view_button_approval.xml:0
+#, python-format
+msgid "{{ approval ? true : undefined }}"
 msgstr ""

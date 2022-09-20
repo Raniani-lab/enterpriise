@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
-"PO-Revision-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-20 09:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -73,7 +73,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid ""
-"<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Select time\" "
+"<i class=\"fa fa-clock-o pe-1\" role=\"img\" aria-label=\"Select time\" "
 "title=\"Select time\"/>"
 msgstr ""
 
@@ -123,14 +123,6 @@ msgid "<i class=\"fa fa-reply\"/> Replied after"
 msgstr ""
 
 #. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid ""
-"<i data-trigger-type=\"activity\" class=\"fa fa-code-fork fa-rotate-180 fa-"
-"flip-vertical o_ma_text_processed o_add_child_activity\" title=\"Add Another"
-" Activity\" role=\"img\" aria-label=\"Add Another Activity\"/>"
-msgstr ""
-
-#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "<span class=\"col-2 px-0 pt-1\">after</span>"
 msgstr ""
@@ -138,15 +130,6 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "<span class=\"o_form_label\">Record</span>"
-msgstr ""
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid ""
-"<span data-mode=\"graph\" class=\"active\" role=\"img\" title=\"Graph\" "
-"aria-label=\"Graph\"><i class=\"fa fa-pie-chart\"/></span><span data-"
-"mode=\"filter\" title=\"Filter\" role=\"img\" aria-label=\"Filter\"><i "
-"class=\"fa fa-filter\"/></span>"
 msgstr ""
 
 #. module: marketing_automation
@@ -224,6 +207,11 @@ msgstr ""
 msgid ""
 "Activity will only be performed if record satisfies this domain, obtained "
 "from the combination of the activity filter and its inherited filter"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Add Another Activity"
 msgstr ""
 
 #. module: marketing_automation
@@ -460,26 +448,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
 #, python-format
-msgid "Delete Activity"
-msgstr ""
-
-#. module: marketing_automation
-#. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
-#, python-format
-msgid "Delete All"
+msgid ""
+"Deleting this activity will delete ALL its children activities. Are you "
+"sure?"
 msgstr ""
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
 msgid "Direct child traces"
-msgstr ""
-
-#. module: marketing_automation
-#. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
-#, python-format
-msgid "Discard"
 msgstr ""
 
 #. module: marketing_automation
@@ -609,6 +585,11 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Generate participants"
+msgstr ""
+
+#. module: marketing_automation
+#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
+msgid "Graph"
 msgstr ""
 
 #. module: marketing_automation
@@ -1388,11 +1369,6 @@ msgid "Target Model"
 msgstr ""
 
 #. module: marketing_automation
-#: model:ir.model.fields,help:marketing_automation.field_marketing_activity__mass_mailing_id_mailing_type
-msgid "Technical field doing the mapping of activity type and mailing type."
-msgstr ""
-
-#. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Templates"
 msgstr ""
@@ -1423,15 +1399,6 @@ msgstr ""
 msgid ""
 "The saved filter targets different model and is incompatible with this "
 "campaign."
-msgstr ""
-
-#. module: marketing_automation
-#. openerp-web
-#: code:addons/marketing_automation/static/src/js/marketing_automation_one2many.js:0
-#, python-format
-msgid ""
-"This Activity has a dependant child activity. 'DELETE ALL' will delete all "
-"child activities."
 msgstr ""
 
 #. module: marketing_automation

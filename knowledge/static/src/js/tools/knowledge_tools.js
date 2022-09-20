@@ -16,9 +16,9 @@ const HEADINGS = [
  * - Headers only containing the 'ZeroWidthSpace' element ('\u200B')
  * - Headers contained into templates
  *
- * @param {DOMElement} element
+ * @param {Element} element
  */
- const fetchValidHeadings = (element) => {
+const fetchValidHeadings = (element) => {
     const templateHeadings = Array.from(element.querySelectorAll(
         HEADINGS.map((heading) => `.o_knowledge_behavior_type_template ${heading}`).join(',')
     ));

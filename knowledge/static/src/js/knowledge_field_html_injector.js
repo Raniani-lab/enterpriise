@@ -4,7 +4,6 @@ import { ComponentWrapper, WidgetAdapterMixin } from 'web.OwlCompatibility';
 import { useService } from "@web/core/utils/hooks";
 import { TemplateToolbar, FileToolbar } from './knowledge_toolbars';
 import { ArticleBehavior, ContentsContainerBehavior } from './knowledge_behaviors';
-import { TableOfContentsBehavior } from './knowledge_behavior_table_of_content';
 import { ArticlesStructureBehavior, ArticlesStructureToolbar } from './knowledge_articles_structure';
 const { Component } = owl;
 
@@ -58,9 +57,6 @@ const FieldHtmlInjector = Widget.extend(WidgetAdapterMixin, {
         },
         o_knowledge_behavior_type_article: {
             Behavior: ArticleBehavior,
-        },
-        o_knowledge_behavior_type_toc: {
-            Behavior: TableOfContentsBehavior,
         },
         o_knowledge_behavior_type_articles_structure: {
             Behavior: ArticlesStructureBehavior,

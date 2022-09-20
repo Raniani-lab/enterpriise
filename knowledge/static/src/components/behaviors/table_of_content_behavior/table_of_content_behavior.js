@@ -1,41 +1,83 @@
 /** @odoo-module */
 
-import core from 'web.core';
-import { ContentsContainerBehavior } from './knowledge_behaviors.js';
-import { HEADINGS, fetchValidHeadings } from './tools/knowledge_tools.js';
+import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
+import { HEADINGS, fetchValidHeadings } from "@knowledge/js/tools/knowledge_tools";
 
-const qweb = core.qweb;
+const {
+    onPatched,
+    onWillPatch,
+    onWillStart,
+    useEffect,
+    useState } = owl;
 
-/**
- * A behavior for the /toc command @see Wysiwyg . This behavior uses a
- * mutationObserver to listen to changes on <h1> -> <h6> nodes, and updates
- * an associated table of contents.
- * It is an extension of @see ContentsContainerBehavior
- */
-const TableOfContentsBehavior = ContentsContainerBehavior.extend({
-    //--------------------------------------------------------------------------
-    // 'ContentsContainerBehavior' overrides
-    //--------------------------------------------------------------------------
+let observerId = 0;
+
+export class TableOfContentBehavior extends AbstractBehavior {
+    setup () {
+        super.setup();
+        this.observerId = observerId++;
+        this.state = useState({
+            toc: []
+        });
+        if (!this.props.readonly) {
+            useEffect(() => {
+                /**
+                 * When the user drags a link from the table of content and drop
+                 * it on the table of content, the editor was duplicating the link.
+                 * To prevent that behavior, we will stop the propagation of the
+                 * drop event.
+                 * @param {Event} event
+                 */
+                const onDrop = event => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                };
+                const observer = this.setMutationObserver();
+                this.props.anchor.addEventListener('drop', onDrop);
+                return () => {
+                    observer.disconnect();
+                    this.props.anchor.removeEventListener('drop', onDrop);
+                };
+            });
+        }
+
+        onWillPatch(() => {
+            this.editor.observerUnactive(`knowledge_toc_update_id_${this.observerId}`);
+        });
+        onPatched(() => {
+            this.editor.idSet(this.props.anchor);
+            this.editor.observerActive(`knowledge_toc_update_id_${this.observerId}`);
+        });
+
+        onWillStart(() => {
+            this._updateTableOfContents();
+        });
+    }
 
     /**
-     * Initialize the editor content observer.
-     * It listens to changes on H1 through H6 tags and updates a Table of Content accordingly.
-     *
-     * @override
+     * @returns {OdooEditor}
      */
-    init: function () {
-        this.observer = new MutationObserver((mutationList) => {
+    get editor () {
+        return this.props.wysiwyg.odooEditor;
+    }
+
+    /**
+     * Observes the changes made to the titles of the editor.
+     * @returns {MutationObserver}
+     */
+    setMutationObserver () {
+        const observer = new MutationObserver(mutationList => {
             const update = mutationList.find(mutation => {
-                if (Array.from(mutation.addedNodes).find((node) => HEADINGS.includes(node.tagName)) ||
-                    Array.from(mutation.removedNodes).find((node) => HEADINGS.includes(node.tagName))) {
+                if (Array.from(mutation.addedNodes).find(node => HEADINGS.includes(node.tagName)) ||
+                    Array.from(mutation.removedNodes).find(node => HEADINGS.includes(node.tagName))) {
                     // We just added/removed a header node -> update the ToC
                     return true;
                 }
 
                 // Powerbox is open -> do not attempt to update the ToC
-                if (this.handler.editor.powerbox.isOpen) {
+                if (this.editor.powerbox.isOpen) {
                     if (this.updateTimeout) {
-                        clearTimeout(this.updateTimeout);
+                        window.clearTimeout(this.updateTimeout);
                     }
                     return false;
                 }
@@ -44,62 +86,20 @@ const TableOfContentsBehavior = ContentsContainerBehavior.extend({
                 const target = mutation.target;
                 const headerNode = this._findClosestHeader(target);
 
-                return headerNode && headerNode.parentElement === this.handler.field;
+                return headerNode && headerNode.parentElement === this.editor.editable;
             });
-
             if (update) {
                 this.delayedUpdateTableOfContents();
             }
         });
-
-        this._super.apply(this, arguments);
-    },
-
-    /**
-     * Re-apply contenteditable="false" that is turned on automatically by the base editor code.
-     * This avoids having our custom links opening the editor toolbar on click.
-     *
-     * @override
-     */
-    applyAttributes: function () {
-        this._super.apply(this, arguments);
-        if (this.mode === 'edit') {
-            this.anchor.querySelectorAll('.o_knowledge_toc_link').forEach(element => {
-                element.setAttribute('contenteditable', 'false');
-            });
-        }
-    },
-
-    /**
-     * Adds the ToC click listener to scroll towards to associated heading tag.
-     * Also adds the listener that will update the ToC as the user is typing.
-     *
-     * @override
-     */
-    applyListeners: function () {
-        this._super.apply(this, arguments);
-        $(this.anchor).on('click', '.o_knowledge_toc_link', this._onTocLinkClick.bind(this));
-        if (this.mode === 'edit') {
-            this.observer.observe(this.handler.field, {
-                childList: true,
-                attributes: false,
-                subtree: true,
-                characterData: true,
-            });
-
-            this._updateTableOfContents();
-        }
-    },
-
-    /**
-     * @override
-     */
-    disableListeners: function () {
-        $(this.anchor).off('click', '.o_knowledge_toc_link');
-        if (this.mode === 'edit') {
-            this.observer.disconnect();
-        }
-    },
+        observer.observe(this.editor.editable, {
+            childList: true,
+            attributes: false,
+            subtree: true,
+            characterData: true,
+        });
+        return observer;
+    }
 
     //--------------------------------------------------------------------------
     // Table of content - BUSINESS LOGIC
@@ -111,10 +111,10 @@ const TableOfContentsBehavior = ContentsContainerBehavior.extend({
      */
     delayedUpdateTableOfContents() {
         if (this.updateTimeout) {
-            clearTimeout(this.updateTimeout);
+            window.clearTimeout(this.updateTimeout);
         }
-        this.updateTimeout = setTimeout(this._updateTableOfContents.bind(this), 500);
-    },
+        this.updateTimeout = window.setTimeout(this._updateTableOfContents.bind(this), 500);
+    }
 
     /**
      * Helper methods that fetches the closest Header Element based on a target Node.
@@ -141,7 +141,7 @@ const TableOfContentsBehavior = ContentsContainerBehavior.extend({
         }
 
         return undefined;
-    },
+    }
 
     /**
      * Updates the Table of Content to match the document headings.
@@ -170,16 +170,14 @@ const TableOfContentsBehavior = ContentsContainerBehavior.extend({
      *
      * Some examples of non-trivial header hierarchy can be found in the QUnit tests of this method.
      */
-    _updateTableOfContents: function () {
-        this.handler.editor.observerUnactive('knowledge_toc_update');
-
-        const allHeadings = fetchValidHeadings(this.handler.field);
+    _updateTableOfContents () {
 
         let currentDepthByTag = {};
         let previousTag = undefined;
         let previousDepth = -1;
         let index = 0;
-        const headingStructure = allHeadings.map((heading) => {
+
+        this.state.toc = fetchValidHeadings(this.editor.editable).map(heading => {
             let depth = HEADINGS.indexOf(heading.tagName);
             if (depth !== previousDepth && heading.tagName === previousTag) {
                 depth = previousDepth;
@@ -211,17 +209,7 @@ const TableOfContentsBehavior = ContentsContainerBehavior.extend({
                 tagName: heading.tagName,
             };
         });
-
-        const updatedToc = qweb.render('knowledge.knowledge_table_of_content', {
-            'headings': headingStructure
-        });
-        const knowledgeToCElement = this.anchor.getElementsByClassName('o_knowledge_toc_content');
-        if (knowledgeToCElement.length !== 0) {
-            knowledgeToCElement[0].innerHTML = updatedToc;
-        }
-
-        this.handler.editor.observerActive('knowledge_toc_update');
-    },
+    }
 
     //--------------------------------------------------------------------------
     // Table of content - HANDLERS
@@ -233,22 +221,23 @@ const TableOfContentsBehavior = ContentsContainerBehavior.extend({
      *
      * @param {Event} event
      */
-    _onTocLinkClick: function (event) {
+    _onTocLinkClick (event) {
         event.preventDefault();
         const headingIndex = parseInt(event.target.getAttribute('data-oe-nodeid'));
-        const targetHeading = fetchValidHeadings(this.handler.field)[headingIndex];
+        const targetHeading = fetchValidHeadings(this.editor.editable)[headingIndex];
         if (targetHeading){
             targetHeading.scrollIntoView({
                 behavior: 'smooth',
             });
             targetHeading.classList.add('o_knowledge_header_highlight');
-            setTimeout(() => {
+            window.setTimeout(() => {
                 targetHeading.classList.remove('o_knowledge_header_highlight');
             }, 2000);
         } else {
             this._updateTableOfContents();
         }
-    },
-});
+    }
+}
 
-export { TableOfContentsBehavior };
+TableOfContentBehavior.template = "knowledge.TableOfContentBehavior";
+TableOfContentBehavior.components = {};

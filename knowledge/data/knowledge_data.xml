@@ -11,7 +11,7 @@
                     </span>
                 </h1>
                 <hr />
-                <div class="o_knowledge_toc o_knowledge_behavior_anchor o_knowledge_behavior_type_toc" contenteditable="false">
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_toc">
                     <div class="o_knowledge_toc_content">
                         <a data-oe-nodeid="0" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_0">HR FAQ</a>
                         <a data-oe-nodeid="1" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_1">Expense Policy</a>

@@ -10,6 +10,8 @@ import { useService } from "@web/core/utils/hooks";
 
 import { FileBehavior } from "@knowledge/components/behaviors/file_behavior/file_behavior";
 import { TemplateBehavior } from "@knowledge/components/behaviors/template_behavior/template_behavior";
+import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
+
 
 const {
     App,
@@ -25,6 +27,9 @@ const behaviorTypes = {
     },
     o_knowledge_behavior_type_template: {
         Behavior: TemplateBehavior,
+    },
+    o_knowledge_behavior_type_toc: {
+        Behavior: TableOfContentBehavior,
     },
 };
 

@@ -59,7 +59,6 @@
             'knowledge/static/src/js/knowledge_articles_structure.js',
             'knowledge/static/src/js/knowledge_macros.js',
             'knowledge/static/src/js/knowledge_behaviors.js',
-            'knowledge/static/src/js/knowledge_behavior_table_of_content.js',
             'knowledge/static/src/js/knowledge_toolbars.js',
             'knowledge/static/src/js/knowledge_field_html_injector.js',
             'knowledge/static/src/js/knowledge_plugin.js',
@@ -95,8 +94,7 @@
             'knowledge/static/tests/tours/**/*.js',
         ],
         'web.qunit_suite_tests': [
-            'knowledge/static/tests/knowledge_article_command_structure.js',
-            'knowledge/static/tests/knowledge_article_command_toc.js',
+            'knowledge/static/tests/knowledge_command_toc.js',
         ],
         'web.tests_assets': [
             'knowledge/static/tests/knowledge_service_mock.js',

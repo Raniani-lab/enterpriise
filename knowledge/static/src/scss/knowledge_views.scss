@@ -321,13 +321,6 @@
     .o_knowledge_form_view {
         .o_scroll_view {
             @include o-position-absolute(0, 0, 0, 0);
-            h1, h2, h3, h4, h5, h6 {
-                transition: background-color 0.5s ease;
-                &.o_knowledge_header_highlight {
-                    border-radius: 0.25rem;
-                    background-color: rgba($knowledge-bg--active, 0.2);
-                }
-            }
             overflow-y: auto;
             overflow-x: hidden;
         }

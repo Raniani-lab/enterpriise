@@ -34,7 +34,6 @@ Allows to make call from next activities or with click-to-dial.
         ],
         'web.assets_backend': [
             'voip/static/lib/sip.js',
-            'voip/static/src/js/call_center_field.js',
             'voip/static/src/js/dialing_panel.js',
             'voip/static/src/js/phone_call.js',
             'voip/static/src/js/phone_call_activities_tab.js',
@@ -47,11 +46,9 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/src/js/voip_systray_item.js',
             'voip/static/src/js/legacy_compatibility.js',
             'voip/static/src/js/user_agent.js',
-            'voip/static/src/scss/call_center_field.scss',
             'voip/static/src/scss/voip.scss',
             'voip/static/src/voip_service.js',
-            'voip/static/src/components/phone_field/phone_field.js',
-            'voip/static/src/components/*/*.xml',
+            'voip/static/src/components/*/*',
             'voip/static/src/xml/*.xml',
         ],
         'web.assets_backend_prod_only': [

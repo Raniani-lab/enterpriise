@@ -7,7 +7,7 @@
       <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
       <field name="arch" type="xml">
         <xpath expr="//field[@widget='kanban_activity']" position="after">
-          <field name="has_call_in_queue" widget="call_center"/>
+          <field name="has_call_in_queue" widget="call_queue_switch"/>
         </xpath>
       </field>
     </record>

@@ -7,6 +7,11 @@ import { ListController } from '@web/views/list/list_controller';
 
 
 export class KnowledgeArticleController extends ListController {
+    setup() {
+        super.setup();
+        // Hide create button (creation cannot be deactivated to allow imports)
+        this.activeActions['create'] = false;
+    }
 
     /**
      * Add the "duplicate" action in the additional actions of the list view.

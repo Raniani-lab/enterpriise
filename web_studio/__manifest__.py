@@ -100,7 +100,7 @@ Note: Only the admin user is allowed to make those customizations.
 
             ('include', 'web._assets_helpers'),
             'web_studio/static/src/scss/bootstrap_overridden.scss',
-            'web/static/src/libs/bootstrap/pre_variables.scss',
+            'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
             'web_studio/static/src/client_action/variables.scss',
             'web_studio/static/src/client_action/mixins.scss',
@@ -129,7 +129,7 @@ Note: Only the admin user is allowed to make those customizations.
         ],
         'web_studio.report_assets': [
             ('include', 'web._assets_helpers'),
-            'web/static/src/libs/bootstrap/pre_variables.scss',
+            'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
             'web_studio/static/src/legacy/scss/report_iframe.scss',
         ],

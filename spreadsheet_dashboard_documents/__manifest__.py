@@ -19,8 +19,12 @@
             (
                 "after",
                 "spreadsheet/static/src/o_spreadsheet/o_spreadsheet.js",
-                "spreadsheet_dashboard_documents/static/src/**/*.js",
+                "spreadsheet_dashboard_documents/static/src/bundle/**/*.js",
             ),
+        ],
+        'web.assets_backend': [
+            'spreadsheet_dashboard_documents/static/src/assets/**/*.js',
+            'spreadsheet_dashboard_documents/static/src/**/*.xml',
         ],
         "web.qunit_suite_tests": [
             "spreadsheet_dashboard_documents/static/tests/**/*.js",

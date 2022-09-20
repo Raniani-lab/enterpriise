@@ -28,32 +28,6 @@ odoo.define('hr_recruitment_sign.tour', function (require) {
                 run: 'click',
             },
             {
-                content: "Open a Sign Request Wizard",
-                trigger: '.o_cp_action_menus .btn.dropdown-toggle',
-                run: 'click',
-            },
-            {
-                content: "Open a Sign Request Wizard",
-                trigger: ".dropdown-item:contains('Request Signature')",
-                run: 'click',
-            },
-            {
-                content: "Select the document to sign",
-                trigger: 'input#sign_template_ids',
-                run: 'text Non-Disclosure Agreement.pdf',
-            },
-            {
-                content: "Select the document to sign",
-                trigger: "a.dropdown-item:contains('Non-Disclosure Agreement.pdf')",
-                run: 'click',
-            },
-            {
-                content: "Send the request",
-                trigger: '.btn[name="validate_signature"]',
-                run: 'click',
-                in_modal: true,
-            },
-            {
                 content: "Create an employee",
                 trigger: '.btn[name="create_employee_from_applicant"]',
                 run: 'click',
@@ -61,6 +35,12 @@ odoo.define('hr_recruitment_sign.tour', function (require) {
             {
                 content: "Validate the creation",
                 trigger: '.btn.o_form_button_save',
+                run: 'click',
+            },
+            {
+                content: "Validate the creation",
+                trigger: '.o_menu_brand',
+                extra_trigger: '.btn.o_form_button_edit',
                 run: 'click',
             },
         ]

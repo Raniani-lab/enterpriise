@@ -116,7 +116,7 @@
                         <field name="full_url" widget="CopyClipboardChar" readonly="1"/>
                     </group>
                     <group attrs="{'invisible': [('type', '!=', 'ids')]}">
-                        <field name="document_ids" widget="many2many_tags" readonly="1"/>
+                        <field name="document_ids" widget="many2many_tags" readonly="1" options="{'no_edit_color': True}"/>
                     </group>
                     <group attrs="{'invisible': [('type', '!=', 'domain')]}">
                         <group>
@@ -125,7 +125,7 @@
                                 <i class="fa fa fa-folder text-odoo me-2" title="Workspace"/>
                                 <field name="folder_id" readonly="1" options="{'no_open': True}" class="w-100"/>
                                 <i class="fa fa-tag o_documents_tag_color ms-2" attrs="{'invisible': [('tag_ids', '=', [])]}" title="Tags"/>
-                                <field name="tag_ids" readonly="1" widget="many2many_tags"/>
+                                <field name="tag_ids" readonly="1" widget="many2many_tags" options="{'no_edit_color': True}"/>
                             </div>
                         </group>
                         <group>

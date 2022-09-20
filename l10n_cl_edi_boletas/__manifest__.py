@@ -41,5 +41,6 @@ Here are the differences:
 Highlights from this SII Guide:
     https://www.sii.cl/factura_electronica/factura_mercado/Instructivo_Emision_Boleta_Elect.pdf
     """,
+    'auto_install': True,
     'license': 'OEEL-1',
 }

@@ -614,7 +614,7 @@ class AccountMove(models.Model):
         self._l10n_cl_edi_validate_boletas()
 
     def _l10n_cl_edi_validate_boletas(self):
-        if self.l10n_latam_document_type_id.code == '39':
+        if self.l10n_latam_document_type_id.code in ['39', '41']:
             raise UserError(_('Ticket is not allowed, please contact your administrator to install the '
                             'l10n_cl_edi_boletas module'))
 

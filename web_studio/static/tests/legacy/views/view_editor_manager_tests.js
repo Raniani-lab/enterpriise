@@ -28,6 +28,8 @@ const LegacyMockServer = require('web.MockServer');
 
 const { MapRenderer } = require("@web_map/map_view/map_renderer");
 
+const { registry } = require("@web/core/registry");
+
 const { xml } = owl;
 
 function getCurrentMockServer() {
@@ -5273,7 +5275,20 @@ QUnit.module('ViewEditorManager', {
                     'no_create options should send with true value');
             }
         }
-
+        // Required by widget.
+        registry.category("services").add("messaging", {
+            start() {
+                return {
+                    get: async() => {return {}},
+                    modelManager: {
+                        startListening: () => {},
+                        stopListening: () => {},
+                        removeListener: () => {},
+                        messagingCreatedPromise: testUtils.makeTestPromise(),
+                    },
+                };
+            }
+        });
         const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
         await doAction(webClient, "studio.coucou_action");
         await openStudio(target);

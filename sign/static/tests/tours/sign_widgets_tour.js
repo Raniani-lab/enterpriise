@@ -54,22 +54,22 @@ odoo.define('sign_widgets_tour', function (require) {
             },
             {
                 content: "Click on style button",
-                trigger: 'div.o_web_sign_auto_select_style > a',
+                trigger: '.o_web_sign_auto_select_style > button',
                 run: 'click',
             },
             {
                 content: "Select a style",
-                trigger: 'div.o_web_sign_auto_font_list > a:nth-child(3)',
+                trigger: '.o_web_sign_auto_select_style .dropdown-item:nth-child(3)',
                 run: 'click',
             },
             {
                 content: "Click on style button",
-                trigger: 'div.o_web_sign_auto_select_style > a',
+                trigger: '.o_web_sign_auto_select_style > button',
                 run: 'click',
             },
             {
                 content: "Select a style",
-                trigger: 'div.o_web_sign_auto_font_list > a:nth-child(2)',
+                trigger: '.o_web_sign_auto_select_style .dropdown-item:nth-child(2)',
                 run: 'click',
             },
             {

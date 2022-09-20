@@ -214,9 +214,11 @@ Wysiwyg.include({
         dialog.on('save', this, article => {
             if (article) {
                 const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
-                    display_name: article.display_name,
                     href: '/knowledge/article/' + article.id,
-                    article_id: article.id,
+                    data: JSON.stringify({
+                        article_id: article.id,
+                        display_name: article.display_name,
+                    }),
                 }))[0];
                 dialog.close();
                 restoreSelection();

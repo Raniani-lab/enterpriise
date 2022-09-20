@@ -20,6 +20,10 @@ class TestKnowledgeEditorCommands(HttpCase):
             'body': Markup('<p><br></p>')
         })
 
+    def knowledge_article_command_tour(self):
+        """Test the /article command in the editor"""
+        self.start_tour('/web', 'knowledge_article_command_tour', login='admin', step_delay=100)
+
     def knowledge_file_command_tour(self):
         """Test the /file command in the editor"""
         self.start_tour('/web', 'knowledge_file_command_tour', login='admin', step_delay=100)

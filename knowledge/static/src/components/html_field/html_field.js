@@ -8,6 +8,7 @@ import { useService } from "@web/core/utils/hooks";
 
 // Behaviors:
 
+import { ArticleBehavior } from "@knowledge/components/behaviors/article_behavior/article_behavior";
 import { FileBehavior } from "@knowledge/components/behaviors/file_behavior/file_behavior";
 import { TemplateBehavior } from "@knowledge/components/behaviors/template_behavior/template_behavior";
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
@@ -22,6 +23,9 @@ const {
 } = owl;
 
 const behaviorTypes = {
+    o_knowledge_behavior_type_article: {
+        Behavior: ArticleBehavior,
+    },
     o_knowledge_behavior_type_file: {
         Behavior: FileBehavior,
     },

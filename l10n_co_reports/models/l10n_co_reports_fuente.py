@@ -12,7 +12,7 @@ class FuenteReportCustomHandler(models.AbstractModel):
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         domain = self._get_domain(report, options)
         query_results = self._get_query_results(report, options, domain)
-        return super()._get_partner_values(report, options, query_results, 'expand_function')
+        return super()._get_partner_values(report, options, query_results, '_expand_unfoldable_line_fuente')
 
     def _get_query_results(self, report, options, domain, account=False):
         queries = []
@@ -52,7 +52,7 @@ class FuenteReportCustomHandler(models.AbstractModel):
         domain += [('account_id.code', '=like', '2365%'), ('account_id.code', '!=', '236505')]
         return domain
 
-    def expand_function(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+    def _expand_unfoldable_line_fuente(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         report = self.env['account.report'].browse(options['report_id'])
         domain = self._get_domain(report, options, line_dict_id=line_dict_id)
         query_results = self._get_query_results(report, options, domain, account=True)

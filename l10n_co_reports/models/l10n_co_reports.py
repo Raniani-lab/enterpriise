@@ -58,6 +58,7 @@ class ColumbianReportCustomHandler(models.AbstractModel):
                 })
 
         return column_values
+
     def _get_partner_values(self, report, options, query_results, expand_function):
         grouped_results = {}
         for results in query_results:

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import re
 
 from odoo import models
 
@@ -9,11 +10,19 @@ _logger = logging.getLogger(__name__)
 class AccountEdiFormat(models.Model):
     _inherit = 'account.edi.format'
 
+    def _l10n_mx_edi_clean_to_legal_name(self, name):
+        """ We remove the SA de CV / SL de CV / S de RL de CV as they are never in the official name in the XML"""
+        res = re.sub(r"(?i:\s+(s\.?[al]\.?|s\.? de r\.?l\.?)"
+                     r"( de c\.?v\.?|))\s*$", "", name).upper()
+        return res
+
     def _l10n_mx_edi_get_40_values(self, move):
         customer = move.partner_id if move.partner_id.type == 'invoice' else move.partner_id.commercial_partner_id
         vals = {
             'fiscal_regime': customer.l10n_mx_edi_fiscal_regime,
-            'tax_objected': move._l10n_mx_edi_get_tax_objected()
+            'tax_objected': move._l10n_mx_edi_get_tax_objected(),
+            'supplier_name': self._l10n_mx_edi_clean_to_legal_name(move.company_id.name),
+            'customer_name': self._l10n_mx_edi_clean_to_legal_name(move.commercial_partner_id.name),
         }
         if customer.country_code not in [False, 'MX'] and not vals['fiscal_regime']:
             vals['fiscal_regime'] = '616'

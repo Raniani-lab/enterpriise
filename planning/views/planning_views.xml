@@ -6,12 +6,12 @@
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <tree string="Shift List" multi_edit="1" sample="1" editable="top">
-                <field name="company_id" invisible="1"/>
                 <field name="resource_id" groups="planning.group_planning_user" widget="many2one_avatar_resource" optional="show"
                     attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'show_job_title': True}"/>
                 <field name="resource_type" invisible="1"/>
                 <field name="role_id" optional="show" attrs="{'invisible': [('resource_type', '=', 'material')]}" placeholder="e.g. Bartender"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
+                <field name="company_id" invisible="1"/>
                 <field name="start_datetime" widget="daterange" options="{'related_end_date': 'end_datetime'}"/>
                 <field name="end_datetime" widget="daterange" options="{'related_start_date': 'start_datetime'}"/>
                 <field name="allocated_hours" widget="float_time" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
@@ -44,7 +44,6 @@
                         attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="q"/>
                     <field name="state" widget="statusbar" groups="planning.group_planning_manager"/>
                 </header>
-                <field name="company_id" invisible="1"/>
                 <field name="is_past" invisible="1"/>
                 <field name="is_unassign_deadline_passed" invisible="1"/>
                 <field name="work_email" invisible="1" />
@@ -81,6 +80,7 @@
                                 attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" widget="many2one_avatar_resource"/>
                             <field name="role_id" placeholder="e.g. Bartender"/>
                             <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="company_id" invisible="1"/>
                         </group>
                         <!-- slot_info_right group is used in another module -->
                         <group name="slot_info_right">

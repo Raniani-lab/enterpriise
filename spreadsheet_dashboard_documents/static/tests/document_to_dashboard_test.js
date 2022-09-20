@@ -36,7 +36,7 @@ QUnit.test("open wizard action", async (assert) => {
                     if (actionRequest.res_model === "spreadsheet.document.to.dashboard") {
                         assert.step("open_wizard_action");
                         assert.deepEqual(actionRequest, {
-                            name: "Create a new dashboard from the spreadsheet document",
+                            name: "Name your dashboard and select its section",
                             type: "ir.actions.act_window",
                             view_mode: "form",
                             views: [[false, "form"]],
@@ -46,6 +46,7 @@ QUnit.test("open wizard action", async (assert) => {
                         assert.deepEqual(options, {
                             additionalContext: {
                                 default_document_id: 2,
+                                default_name: "",
                             },
                         });
                     }

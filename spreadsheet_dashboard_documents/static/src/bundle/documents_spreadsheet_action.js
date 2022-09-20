@@ -31,12 +31,13 @@ patch(SpreadsheetAction.prototype, "spreadsheet_dashboard_documents.SpreadsheetA
      */
     _createDashboardFromDocument(model) {
         const resId = this.resId;
+        const name = this.state.spreadsheetName;
         this.env.services.orm.write("documents.document", [resId], {
             raw: JSON.stringify(model.exportData()),
         });
         this.env.services.action.doAction(
             {
-                name: this.env._t("Create a new dashboard from the spreadsheet document"),
+                name: this.env._t("Name your dashboard and select its section"),
                 type: "ir.actions.act_window",
                 view_mode: "form",
                 views: [[false, "form"]],
@@ -46,6 +47,7 @@ patch(SpreadsheetAction.prototype, "spreadsheet_dashboard_documents.SpreadsheetA
             {
                 additionalContext: {
                     default_document_id: resId,
+                    default_name: name
                 },
             }
         );

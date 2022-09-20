@@ -491,6 +491,17 @@ class SaleOrder(models.Model):
             subscriptions_to_confirm.action_confirm()
         return res
 
+    def copy_data(self, default=None):
+        if default is None:
+            default = {}
+        if self.subscription_management == "upsell":
+            default.update({
+                "client_order_ref": self.client_order_ref,
+                "subscription_id": self.subscription_id.id,
+                "origin_order_id": self.origin_order_id.id
+            })
+        return super().copy_data(default)
+
     ###########
     # Actions #
     ###########

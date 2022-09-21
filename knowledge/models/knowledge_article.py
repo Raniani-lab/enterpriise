@@ -130,6 +130,9 @@ class Article(models.Model):
                 parameter can be used to modify the number of days. 
                 (default is 30)""")
     deletion_date = fields.Date(string="Deletion Date", compute="_compute_deletion_date")
+    # Property fields
+    article_properties_definition = fields.PropertiesDefinition('Article Item Properties')
+    article_properties = fields.Properties('Properties', definition="parent_id.article_properties_definition")
 
     _sql_constraints = [
         ('check_permission_on_root',

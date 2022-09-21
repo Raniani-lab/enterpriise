@@ -15,9 +15,11 @@
             <form class="h-100 o_knowledge_form_view" js_class="knowledge_article_view_form" disable_autofocus="1">
                 <field name="active" invisible="1"/>
                 <field name="category" invisible="1"/>
+                <field name="is_article_item" invisible="1"/>
                 <field name="is_locked" invisible="1" readonly="1"/>
                 <field name="is_user_favorite" invisible="1"/>
                 <field name="user_can_write" invisible="1"/>
+                <field name="parent_id" invisible="1"/>
                 <field name="user_permission" invisible="1"/>
                 <field name="to_delete" invisible="1"/>
                 <div class="d-sm-flex h-100 bg-white" t-ref="root">
@@ -276,6 +278,8 @@
                                                     </div>
                                                     <!-- Article body -->
                                                     <div class="o_knowledge_editor">
+                                                        <field name="article_properties" nolabel="1" class="d-block"
+                                                            attrs="{'invisible': ['|', ('parent_id', '=', False), ('is_article_item', '=', False)]}"/>
                                                         <field name="body" widget="html" no_label="1"
                                                             options="{'resizable': False, 'knowledge_commands': true}"
                                                             attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>

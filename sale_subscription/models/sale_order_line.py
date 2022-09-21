@@ -144,7 +144,7 @@ class SaleOrderLine(models.Model):
         result = {}
         qty_invoiced = self._get_subscription_qty_invoiced(last_invoice_date, next_invoice_date)
         for line in self:
-            if line.temporal_type != 'subscription' or line.state not in ['sale', 'done']:
+            if line.state not in ['sale', 'done']:
                 continue
             if line.product_id.invoice_policy == 'order':
                 result[line.id] = line.product_uom_qty - qty_invoiced.get(line.id, 0.0)
@@ -215,7 +215,7 @@ class SaleOrderLine(models.Model):
     def _prepare_invoice_line(self, **optional_values):
         self.ensure_one()
         res = super()._prepare_invoice_line(**optional_values)
-        if self.temporal_type == 'subscription':
+        if not self.display_type and (self.temporal_type == 'subscription' or self.order_id.subscription_management == 'upsell'):
             product_desc = self.product_id.get_product_multiline_description_sale() + self._get_sale_order_line_multiline_description_variants()
             description = _("%(product)s - %(duration)d %(unit)s",
                             product=product_desc,
@@ -229,15 +229,20 @@ class SaleOrderLine(models.Model):
                 # First invoice for a given period. This period may start today
                 new_period_start = self.order_id.start_date or fields.Datetime.today()
             format_start = format_date(self.env, new_period_start, lang_code=lang_code)
-            default_next_invoice_date = new_period_start + get_timedelta(self.order_id.recurrence_id.duration, self.order_id.recurrence_id.unit)
+            parent_order_id = self.order_id.id
             if self.order_id.subscription_management == 'upsell':
                 # remove 1 day as normal people thinks in terms of inclusive ranges.
                 next_invoice_date = self.order_id.next_invoice_date - relativedelta(days=1)
+                parent_order_id = self.order_id.subscription_id.id
             else:
+                default_next_invoice_date = new_period_start + get_timedelta(self.order_id.recurrence_id.duration,
+                                                                             self.order_id.recurrence_id.unit)
                 # remove 1 day as normal people thinks in terms of inclusive ranges.
                 next_invoice_date = default_next_invoice_date - relativedelta(days=1)
-                format_invoice = format_date(self.env, next_invoice_date, lang_code=lang_code)
-                description += _("\n%s to %s", format_start, format_invoice)
+
+            format_invoice = format_date(self.env, next_invoice_date, lang_code=lang_code)
+            description += _("\n%s to %s", format_start, format_invoice)
+
             qty_to_invoice = self._get_subscription_qty_to_invoice(last_invoice_date=new_period_start,
                                                                    next_invoice_date=next_invoice_date)
             subscription_end_date = next_invoice_date
@@ -247,7 +252,7 @@ class SaleOrderLine(models.Model):
                 'name': description,
                 'subscription_start_date': new_period_start,
                 'subscription_end_date': subscription_end_date,
-                'subscription_id': self.order_id.id
+                'subscription_id': parent_order_id,
             })
         return res
 

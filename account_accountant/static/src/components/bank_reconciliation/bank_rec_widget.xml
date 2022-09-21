@@ -163,7 +163,7 @@
                                                               t-on-click="() => this.showMove(line.source_aml_move_id.id)"/>
                                                         <span class="mr4">:</span>
                                                     </t>
-                                                    <span t-esc="line.name.value"/>
+                                                    <span t-esc="line.name.value" field="name"/>
                                                 </div>
                                             </td>
                                         </t>
@@ -171,9 +171,7 @@
                                             <td class="o_data_cell o_field_cell o_list_char"
                                                 field="name"
                                                 t-att-title="line.name.value">
-                                                <div class="o_bank_rec_widget_lines_widget_label">
-                                                    <span field="name" t-esc="line.name.value"/>
-                                                </div>
+                                                <div class="o_bank_rec_widget_lines_widget_label" field="name" t-esc="line.name.value"/>
                                             </td>
                                         </t>
                                     </t>
@@ -251,8 +249,7 @@
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="credit"
                                                 style="justify-content: right;"
-                                                t-esc="line.credit.is_zero ? '' : line.credit.display"
-                                                t-on-click="(ev) => this.mountLine(ev, line.index.value, column[0])"/>
+                                                t-esc="line.credit.is_zero ? '' : line.credit.display"/>
                                         </t>
                                     </t>
                                     <t t-if="column[0] === '__trash'">

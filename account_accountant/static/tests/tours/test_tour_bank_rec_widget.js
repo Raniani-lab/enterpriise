@@ -69,9 +69,14 @@ tour.register('account_accountant_bank_rec_widget',
             trigger: "tr.o_bank_rec_auto_balance_line td[field='credit']",
         },
         {
+            content: "Wait to avoid non-deterministic errors on the next step",
+            trigger: "tr.o_bank_rec_auto_balance_line td[field='credit']",
+            run: function() {},
+        },
+        {
             content: "The 'form_balance' field should be focus now",
-            extra_trigger: "div.tab-pane.active div[name='form_balance'] input:focus",
-            trigger: "div.tab-pane.active div[name='form_balance'] input:focus",
+            extra_trigger: "div.tab-pane.active input[id='form_balance']:focus",
+            trigger: "div.tab-pane.active input[id='form_balance']:focus",
             run: function() {},
         },
 

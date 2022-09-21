@@ -1395,7 +1395,7 @@ class BankRecWidget(models.Model):
         self.form_amount_currency = balance_sign * line.amount_currency
         self.form_balance = balance_sign * line.balance
         if field_clicked:
-            self.next_action_todo = {'type': 'focus', 'field': field_clicked}
+            self.next_action_todo = {'type': 'focus', 'field': field_clicked[0]}
 
     def _action_remove_line(self, line_index):
         self.ensure_one()

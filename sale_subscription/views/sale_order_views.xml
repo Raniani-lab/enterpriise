@@ -37,7 +37,7 @@
                             '|',
                             ('is_subscription', '=', False),
                             ('stage_category', '!=', 'progress'),
-                            ('state', 'not in', ['sale', 'done']),
+                            ('state', '!=', 'sale'),
                             ]}" data-hotkey="z"/>
                     <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
                         attrs="{'invisible': [

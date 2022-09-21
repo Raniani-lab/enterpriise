@@ -76,7 +76,10 @@ class SaleOrderLine(models.Model):
                 ratio = float(time_to_invoice.days) / float((period_end - previous_period_start).days)
             else:
                 ratio = 1
-            if ratio < 0 or ratio > 1:
+            # Warning: we allow here ratio > 1 to be able to have negative discount.
+            # Negative discount are useful when we want to upsell a renewal order that not started yet.
+            # In that case, the upsell will also impact the renewed contract for a prorata temporis of the previous period
+            if ratio < 0:
                 ratio = 1.00  # Something went wrong in the dates
             if line.order_id.subscription_management == 'upsell' and line.product_id.recurring_invoice and line.order_id.next_invoice_date:
                 line.discount = (1 - ratio) * 100
@@ -296,9 +299,7 @@ class SaleOrderLine(models.Model):
                 {
                     'display_type': 'line_note',
                     'sequence': 999,
-                    'name': _('Recurring product are discounted according to the prorated period from %s to %s',
-                              format_start, format_next_invoice)
-
+                    'name': _('Recurring product are discounted according to the prorated period from %s to %s', format_start, format_next_invoice)
                 }
             ))
 

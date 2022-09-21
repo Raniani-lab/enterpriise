@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="mrp_mps.MrpMpsControlPanel" t-inherit="web.ControlPanel" t-inherit-mode="primary" owl="1">
+    <t t-name="mrp_mps.MrpMpsControlPanel.Regular" t-inherit="web.ControlPanel.Regular" t-inherit-mode="primary" owl="1">
         <xpath expr="//t[@t-slot='control-panel-bottom-left']" position="replace">
             <div>
                 <button
@@ -25,6 +25,12 @@
         </xpath>
         <xpath expr="//t[@t-foreach='searchMenus']" position="before">
             <GroupMenu items="groups"/>
+        </xpath>
+    </t>
+
+    <t t-name="mrp_mps.MrpMpsControlPanel" t-inherit="web.ControlPanel" t-inherit-mode="primary" owl="1">
+        <xpath expr="//t[@t-call='web.ControlPanel.Regular']" position="replace">
+            <t t-call="mrp_mps.MrpMpsControlPanel.Regular"/>
         </xpath>
     </t>
 

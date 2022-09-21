@@ -3,9 +3,6 @@
 /// They are available in every asset bundle.
 ///
 
-// Font sizes
-$o-font-size-base-touch: 15px !default;
-
 // Colors
 $o-gray-100: #f6f7fa !default;
 $o-gray-200: #E0E2E6 !default;
@@ -31,10 +28,6 @@ $o-list-footer-color: $o-gray-900 !default;
 $o-list-footer-bg-color: white !default;
 $o-list-footer-font-weight: 500 !default;
 
-$o-btn-secondary-bg: white !default;
-$o-btn-secondary-hover-bg: $o-gray-100 !default;
-$o-btn-secondary-hover-border: $o-gray-200 !default;
-
 $o-dropdown-box-shadow: 0 12px 14px -10px rgba(black, 0.25) !default;
 
 // o-inputs
@@ -45,6 +38,3 @@ $o-input-border-required: $o-gray-900 !default;
 
 // Badges
 $o-badge-min-width: 2.7ch !default !default;
-
-// touch
-$o-touch-btn-padding: 7px 14px !default;

@@ -1,4 +1,4 @@
-odoo.define("web.SearchPanelMobile", function (require) {
+odoo.define("web.SearchPanel.Small", function (require) {
     "use strict";
 
     const SearchPanel = require("web.searchPanel");

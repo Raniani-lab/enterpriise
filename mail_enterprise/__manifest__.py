@@ -19,7 +19,6 @@ screen devices.
             'mail_enterprise/static/src/models/*.js',
         ],
         'mail.assets_discuss_public': [
-            'web_enterprise/static/src/webclient/webclient.scss',
             'mail_enterprise/static/src/components/*/*',
             'web_enterprise/static/src/core/action_swiper/*',
             'web_mobile/static/src/js/core/mixins.js',

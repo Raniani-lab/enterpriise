@@ -34,7 +34,7 @@ export class KnowledgePlugin {
             if (anchor.nodeType === Node.TEXT_NODE) {
                 anchor = anchor.parentNode;
             }
-            if (anchor.closest('.o_knowledge_embedded_view')) {
+            if (anchor.closest('.o_knowledge_behavior_type_embedded_view')) {
                 throw 'STOP_HANDLING_SELECTION';
             }
         }

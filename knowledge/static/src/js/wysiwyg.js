@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { ComponentWrapper } from 'web.OwlCompatibility';
 import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
 import { KnowledgeArticleLinkModal } from './wysiwyg/knowledge_article_link.js';
@@ -111,6 +112,44 @@ Wysiwyg.include({
                 fontawesome: 'fa-bookmark',
                 callback: () => {
                     this._insertTableOfContent();
+                },
+            }, {
+                category: 'Knowledge',
+                name: _t('Kanban view'),
+                priority: 40,
+                description: _t('Insert Kanban View'),
+                fontawesome: 'fa-th-large',
+                callback: () => {
+                    const restoreSelection = preserveCursor(this.odooEditor.document);
+                    const viewType = 'kanban';
+                    this._openEmbeddedViewDialog(viewType, name => {
+                        restoreSelection();
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, {
+                            active_id: this.options.recordInfo.res_id,
+                            default_parent_id: this.options.recordInfo.res_id,
+                            default_icon: '📄',
+                            default_is_article_item: true,
+                        });
+                    });
+                }
+            }, {
+                category: 'Knowledge',
+                name: _t('List view'),
+                priority: 50,
+                description: _t('Insert List View'),
+                fontawesome: 'fa-th-list',
+                callback: () => {
+                    const restoreSelection = preserveCursor(this.odooEditor.document);
+                    const viewType = 'list';
+                    this._openEmbeddedViewDialog(viewType, name => {
+                        restoreSelection();
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, {
+                            active_id: this.options.recordInfo.res_id,
+                            default_parent_id: this.options.recordInfo.res_id,
+                            default_icon: '📄',
+                            default_is_article_item: true,
+                        });
+                    });
                 }
             }, {
                 category: 'Knowledge',
@@ -211,6 +250,25 @@ Wysiwyg.include({
             restoreSelection();
         });
         dialog.open();
+    },
+    /**
+     * Inserts a view in the editor
+     * @param {String} actWindowId - Act window id of the action
+     * @param {String} viewType - View type
+     * @param {String} name - Name
+     * @param {Object} context - Context
+     */
+    _insertEmbeddedView: async function (actWindowId, viewType, name, context={}) {
+        const restoreSelection = preserveCursor(this.odooEditor.document);
+        restoreSelection();
+        context.knowledge_embedded_view_framework = 'owl';
+        const embeddedViewBlock = $(await this._rpc({
+            model: 'knowledge.article',
+            method: 'render_embedded_view',
+            args: [[this.options.recordInfo.res_id], actWindowId, viewType, name, context],
+        }))[0];
+        const [container] = this.odooEditor.execCommand('insert', embeddedViewBlock);
+        this._notifyNewBehavior(container);
     },
     /**
      * Notify the @see FieldHtmlInjector when a /file block is inserted from a

@@ -1074,7 +1074,7 @@ class Article(models.Model):
 
     @api.model
     @api.returns('knowledge.article', lambda article: article.id)
-    def article_create(self, title=False, parent_id=False, is_private=False):
+    def article_create(self, title=False, parent_id=False, is_private=False, is_article_item=False):
         """ Helper to create articles, allowing to pre-compute some configuration
         values.
 
@@ -1082,9 +1082,13 @@ class Article(models.Model):
         :param int parent_id: id of an existing article who will be the parent
           of the newly created articled. Must be writable;
         :param bool is_private: set current user as sole owner of the new article;
+        :param bool is_article_item: set the created article as an article item;
         """
         parent = self.browse(parent_id) if parent_id else self.env['knowledge.article']
-        values = {'parent_id': parent.id}
+        values = {
+            'is_article_item': is_article_item,
+            'parent_id': parent.id
+        }
         if title:
             values.update({
                 'body': Markup('<h1>%s</h1>') % title,
@@ -1113,6 +1117,7 @@ class Article(models.Model):
                     'partner_id': self.env.user.partner_id.id,
                     'permission': 'write'
                 })]
+
         return self.create(values)
 
     def get_user_sorted_articles(self, search_query, limit=40):

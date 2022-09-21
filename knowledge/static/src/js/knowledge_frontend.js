@@ -36,7 +36,9 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
                 url: `/knowledge/article/${id}`,
                 isLoggedIn: session.user_id !== false
             }));
-            $placeholder.appendTo($('.o_knowledge_embedded_view'));
+            const $container = $('.o_knowledge_behavior_type_embedded_view');
+            $container.empty();
+            $container.append($placeholder);
         });
     },
 

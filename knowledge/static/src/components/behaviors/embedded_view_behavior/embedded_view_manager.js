@@ -90,15 +90,29 @@ export class EmbeddedViewManager extends Component {
                         ctx[key] = context[key];
                     }
                 }
-                const [formViewId] = this.action.views.find((view) => {
-                    return view[1] === 'form';
-                }) || [false];
-                this.actionService.doAction({
-                    type: 'ir.actions.act_window',
-                    res_model: action.res_model,
-                    views: [[false, 'form']],
-                    context: ctx,
-                });
+                if (action.res_model === 'knowledge.article') {
+                    const articleId = await this.orm.call('knowledge.article', 'article_create', [
+                        false,             // title
+                        ctx.active_id,     // parent_id
+                        false,             // is_private
+                        true               // is_article_item
+                    ]);
+                    this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
+                        additionalContext: {
+                            res_id: articleId
+                        }
+                    });
+                } else {
+                    const [formViewId] = this.action.views.find((view) => {
+                        return view[1] === 'form';
+                    }) || [false];
+                    this.actionService.doAction({
+                        type: 'ir.actions.act_window',
+                        res_model: action.res_model,
+                        views: [[formViewId, 'form']],
+                        context: ctx,
+                    });
+                }
             },
         };
         if (action.search_view_id) {

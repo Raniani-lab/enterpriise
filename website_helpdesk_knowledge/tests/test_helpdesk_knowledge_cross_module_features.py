@@ -40,6 +40,18 @@ class TestHelpdeskKnowledgeCrossModuleFeatures(HttpCase):
             """)
         })
 
+    # Embedded view block:
+
+    def helpdesk_insert_graph_view_in_knowledge(self):
+        """This tour will check that the user can insert a graph view in an article."""
+        self.start_tour('/web#action=helpdesk.helpdesk_ticket_analysis_action',
+            'helpdesk_insert_graph_view_in_knowledge', login='admin', step_delay=100)
+
+    def helpdesk_insert_kanban_view_link_in_knowledge(self):
+        """This tour will check that the user can insert a view link in an article."""
+        self.start_tour('/web#action=helpdesk.helpdesk_ticket_action_main_tree',
+            'helpdesk_insert_kanban_view_link_in_knowledge', login='admin', step_delay=100)
+
     # File block:
 
     def helpdesk_pick_file_as_attachment_from_knowledge(self):

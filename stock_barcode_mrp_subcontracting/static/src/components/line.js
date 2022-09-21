@@ -9,7 +9,7 @@ patch(LineComponent.prototype, 'stock_barcode_mrp_subcontracting', {
         const {action, options} = await this.env.model._getActionSubcontractingDetails(this.line);
         options.on_close = function (ev) {
             if (ev === undefined) {
-                this._onRefreshState.call(this, this.props.id);
+                this._onRefreshState.call(this, { lineId: this.props.id });
             }
         };
         await bus.trigger('do-action', {action, options});

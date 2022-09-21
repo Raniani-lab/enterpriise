@@ -311,9 +311,10 @@ class MainComponent extends Component {
         this.env.model._putInPack();
     }
 
-    saveFormView(record) {
-        const recordId = (record && record.data.id) || (this._editedLineParams && this._editedLineParams.currentId);
-        this._onRefreshState(recordId);
+    saveFormView(lineRecord) {
+        const lineId = (lineRecord && lineRecord.data.id) || (this._editedLineParams && this._editedLineParams.currentId);
+        const recordId = (lineRecord.resModel === this.props.model) ? lineId : undefined
+        this._onRefreshState({ recordId, lineId });
     }
 
     toggleBarcodeActions(ev) {
@@ -321,9 +322,9 @@ class MainComponent extends Component {
         this.env.model.displayBarcodeActions();
     }
 
-    toggleBarcodeLines(recordId) {
+    async toggleBarcodeLines(lineId) {
         this._editedLineParams = undefined;
-        this.env.model.displayBarcodeLines(recordId);
+        await this.env.model.displayBarcodeLines(lineId);
     }
 
     async toggleInformation() {
@@ -448,11 +449,12 @@ class MainComponent extends Component {
         this.env.model.displayPackagePage();
     }
 
-    async _onRefreshState(recordId) {
+    async _onRefreshState(paramsRefresh) {
+        const { recordId, lineId } = paramsRefresh || {}
         const { route, params } = this.env.model.getActionRefresh(recordId);
         const result = await this.rpc(route, params);
         await this.env.model.refreshCache(result.data.records);
-        this.toggleBarcodeLines(recordId);
+        await this.toggleBarcodeLines(lineId);
     }
 
     /**

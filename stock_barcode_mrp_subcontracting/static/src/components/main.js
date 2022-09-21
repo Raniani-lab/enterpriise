@@ -9,7 +9,7 @@ patch(MainComponent.prototype, 'stock_barcode_mrp_subcontracting', {
         const {action, options} = await this.env.model._getActionRecordComponents();
         options.on_close = (ev) => {
             if (ev === undefined) {
-                this._onRefreshState.call(this, this.props.id);
+                this._onRefreshState.call(this, { recordId: this.props.id });
             }
         };
         await bus.trigger('do-action', {action, options});

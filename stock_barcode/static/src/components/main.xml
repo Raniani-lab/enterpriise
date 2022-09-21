@@ -115,7 +115,7 @@
                 display="{ controlPanel: false }"
                 resModel="props.model"
                 resId="props.id"
-                onSave="() => this._onRefreshState(this._editedLineParams &amp;&amp; this._editedLineParams.currentId)"
+                onSave="() => this._onRefreshState({ lineId: this._editedLineParams &amp;&amp; this._editedLineParams.currentId })"
                 onDiscard="() => this.toggleBarcodeLines()"/>
             <ChatterContainer threadModel="props.model" threadId="props.id"/>
         </div>

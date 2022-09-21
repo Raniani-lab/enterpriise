@@ -5,8 +5,8 @@ import { registry } from "@web/core/registry";
 import { formView } from "@web/views/form/form_view";
 import { FormController } from "@web/views/form/form_controller";
 import { FormViewDialog } from '@web/views/view_dialogs/form_view_dialog';
-import Wysiwyg from 'web_editor.wysiwyg'
-import { parseHTML } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
+import Wysiwyg from 'web_editor.wysiwyg';
+import { parseHTML, preserveCursor } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 
 const { Component } = owl;
 
@@ -23,6 +23,7 @@ Wysiwyg.include({
                 description: 'Add a specific appointment.',
                 fontawesome: 'fa-calendar',
                 callback: async () => {
+                    const restoreSelection = preserveCursor(this.odooEditor.document);
                     Component.env.services.dialog.add(AppointmentFormViewDialog, {
                         resModel: 'appointment.invite',
                         context: {
@@ -35,6 +36,7 @@ Wysiwyg.include({
                         insertLink: (url) => {
                             const link = `<a href="${url}">Schedule an Appointment</a>`;
                             this.focus();
+                            restoreSelection();
                             this.odooEditor.execCommand('insert', parseHTML(link));
                         },
                     });

@@ -4,7 +4,7 @@ import FormView from 'web.FormView';
 import KanbanView from 'web.KanbanView';
 import { createView } from 'web.test_utils';
 
-QUnit.module("M2OResourceWidgetTests", {
+QUnit.module("M2OResourceWidgetTestsLegacy", {
     beforeEach() {
         this.data = {
             planning: {
@@ -51,7 +51,7 @@ QUnit.module("M2OResourceWidgetTests", {
             model: 'planning',
             data: this.data,
             arch:
-                `<form string="Partners">
+                `<form js_class="form_legacy" string="Partners">
                     <field name="display_name"/>
                     <field name="resource_id" widget="many2one_avatar_resource"/>
                 </form>`,
@@ -72,7 +72,7 @@ QUnit.module("M2OResourceWidgetTests", {
             View: KanbanView,
             model: 'planning',
             data: this.data,
-            arch: `<kanban>
+            arch: `<kanban js_class="kanban_legacy">
                     <templates>
                         <t t-name="kanban-box">
                             <div><field name="resource_id" widget="many2one_avatar_resource" options="{'hide_label': true}"/></div>

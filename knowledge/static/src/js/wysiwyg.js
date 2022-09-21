@@ -3,6 +3,7 @@
 import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
 import { KnowledgeArticleLinkModal } from './wysiwyg/knowledge_article_link.js';
+import { PromptEmbeddedViewNameDialogWrapper } from '../components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js';
 import { preserveCursor } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 
 Wysiwyg.include({
@@ -237,5 +238,19 @@ Wysiwyg.include({
         } else {
             return this._super(...arguments);
         }
+    },
+    /**
+     * Inserts the dialog allowing the user to specify name for the embedded view.
+     * @param {String} viewType
+     * @param {Function} save
+     */
+    _openEmbeddedViewDialog: function (viewType, save) {
+        // TODO: remove the wrapper when the wysiwyg is converted to owl.
+        const dialog = new ComponentWrapper(this, PromptEmbeddedViewNameDialogWrapper, {
+            isNew: true,
+            viewType: viewType,
+            save: save
+        });
+        dialog.mount(document.body);
     },
 });

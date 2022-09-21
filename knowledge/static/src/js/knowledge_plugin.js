@@ -5,6 +5,9 @@
  * not destined to be stored in the field_html
  */
 export class KnowledgePlugin {
+    constructor ({ editor }) {
+        this.editor = editor;
+    }
     /**
      * @param {Element} editable
      */
@@ -18,6 +21,21 @@ export class KnowledgePlugin {
             const nodesToRemove = node.querySelectorAll('.o_knowledge_clean_for_save');
             for (const node of nodesToRemove) {
                 node.remove();
+            }
+        }
+    }
+
+    /**
+     * @param {Selection} selection
+     */
+    onSelectionChange(selection) {
+        if (selection.anchorNode) {
+            let anchor = selection.anchorNode;
+            if (anchor.nodeType === Node.TEXT_NODE) {
+                anchor = anchor.parentNode;
+            }
+            if (anchor.closest('.o_knowledge_embedded_view')) {
+                throw 'STOP_HANDLING_SELECTION';
             }
         }
     }

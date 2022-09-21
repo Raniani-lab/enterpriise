@@ -40,6 +40,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
 
         this.boxLayerApps = [];
         this.activeField = undefined;
+        this.activeFieldEl = undefined;
         this.boxes = [];
         this.selectedBoxes = {};
 
@@ -197,12 +198,6 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
      * Determines the DOM element on which the boxes must be rendered, then render them.
      */
     showBoxesForField(fieldName) {
-        if (fieldName === undefined) {
-            this.resetActiveField();
-            return;
-        }
-        this.activeField = fieldName;
-
         // Case pdf (iframe)
         const iframe = document.querySelector('.o_attachment_preview iframe');
         if (iframe) {
@@ -231,6 +226,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
             boxesForPage.length = 0;
         });
         this.activeField = undefined;
+        this.activeFieldEl = undefined;
     }
 
     destroyBoxLayers() {
@@ -307,6 +303,15 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
      */
     onFocusFieldWidget(field_widget) {
         const fieldName = this._fieldsMapping[field_widget.getAttribute('name')];
+
+        if (fieldName === undefined) {
+            this.resetActiveField();
+            return;
+        }
+
+        this.activeField = fieldName;
+        this.activeFieldEl = field_widget;
+
         this.showBoxesForField(fieldName);
     }
 
@@ -340,5 +345,13 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
 
         // Update the field's value
         this.handleFieldChanged(fieldName, newFieldValue, box.text);
+
+        if (['date', 'due_date'].includes(box.feature)) {
+            // For the date fields, we want to hide the calendar tooltip
+            // This is achieved by simulating an 'ESC' keypress
+            this.activeFieldEl.querySelector('input').dispatchEvent(new KeyboardEvent('keydown', {
+                key: 'Escape',
+            }));
+        }
     }
 };

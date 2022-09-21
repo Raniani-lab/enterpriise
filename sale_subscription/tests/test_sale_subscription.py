@@ -1001,7 +1001,7 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-04-01"):
             # We create a renewal order in april for the new year
             self.env['sale.order']._cron_recurring_create_invoice()
-            action = sub.with_context(tracking_disable=False, arj=True).prepare_renewal_order()
+            action = sub.with_context(tracking_disable=False).prepare_renewal_order()
             renewal_so = self.env['sale.order'].browse(action['res_id'])
             renewal_so = renewal_so.with_context(tracking_disable=False)
             renewal_so.order_line.product_uom_qty = 2
@@ -1255,7 +1255,7 @@ class TestSubscription(TestSubscriptionCommon):
                          "Invoice address should have been set manually on the subscription.")
         self.assertEqual(self.partner_a_shipping, self.subscription.partner_shipping_id,
                          "Delivery address should have been set manually on the subscription.")
-        invoice = self.subscription._create_recurring_invoice()
+        invoice = self.subscription._create_recurring_invoice(automatic=True)
         self.assertEqual(self.partner_a_invoice, invoice.partner_id,
                          "On the invoice, invoice address should be the same as on the subscription.")
         self.assertEqual(self.partner_a_shipping, invoice.partner_shipping_id,
@@ -1292,7 +1292,7 @@ class TestSubscription(TestSubscriptionCommon):
         })
         subscription.action_confirm()
 
-        invoice_id = subscription._create_recurring_invoice()
+        invoice_id = subscription._create_recurring_invoice(automatic=True)
         addr = subscription.partner_id.address_get(['delivery', 'invoice'])
         self.assertEqual(invoice_id.partner_shipping_id.id, addr['invoice'])
         self.assertEqual(invoice_id.partner_id.id, addr['delivery'])
@@ -1301,8 +1301,7 @@ class TestSubscription(TestSubscriptionCommon):
             'partner_id': partner.id,
             'partner_shipping_id': partner2.id,
         })
-
-        invoice_id = subscription._create_recurring_invoice()
+        invoice_id = subscription._create_recurring_invoice(automatic=False) # force a new invoice with all lines
         self.assertEqual(invoice_id.partner_shipping_id.id, partner2.id)
         self.assertEqual(invoice_id.partner_id.id, partner.id)
 

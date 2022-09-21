@@ -1098,8 +1098,11 @@ class SaleOrder(models.Model):
                 if auto_commit:
                     self.env.cr.commit()
                 # Handle automatic payment or invoice posting
-                existing_invoices = subscription._handle_automatic_invoices(auto_commit, invoice)
-                account_moves |= existing_invoices
+                if automatic:
+                    existing_invoices = subscription._handle_automatic_invoices(auto_commit, invoice)
+                    account_moves |= existing_invoices
+                else:
+                    account_moves |= invoice
                 subscription.with_context(mail_notrack=True).write({'payment_exception': False})
             except Exception as error:
                 _logger.exception("Error during renewal of contract %s", subscription.client_order_ref or subscription.name)
@@ -1110,7 +1113,6 @@ class SaleOrder(models.Model):
             else:
                 if auto_commit:
                     self.env.cr.commit()
-
         lines_to_reset_qty._reset_subscription_quantity_post_invoice()
         all_subscriptions._process_invoices_to_send(account_moves, auto_commit)
         # There is still some subscriptions to process. Then, make sure the CRON will be triggered again asap.

@@ -17,7 +17,7 @@ from odoo.addons.portal.controllers import portal
 from odoo.addons.portal.controllers.portal import pager as portal_pager
 
 
-class CustomerPortal(portal.CustomerPortal):
+class CustomerPortal(payment_portal.PaymentPortal):
 
     def _get_subscription_domain(self, partner):
         return [
@@ -38,11 +38,19 @@ class CustomerPortal(portal.CustomerPortal):
         return values
 
     def _get_subscription(self, access_token, order_id):
+        logged_in = not request.env.user.sudo()._is_public()
+        order_sudo = request.env['sale.order']
         try:
             order_sudo = self._document_check_access('sale.order', order_id, access_token)
-        except (AccessError, MissingError):
-            raise werkzeug.exceptions.NotFound()
-        return order_sudo
+        except AccessError:
+            if not logged_in:
+                subscription_url = '/my/subscription/%d' % order_id
+                return order_sudo, werkzeug.utils.redirect('/web/login?redirect=%s' % werkzeug.urls.url_quote(subscription_url))
+            else:
+                raise werkzeug.exceptions.NotFound()
+        except MissingError:
+            return order_sudo, request.redirect('/my')
+        return order_sudo, None
 
     @http.route(['/my/subscription', '/my/subscription/page/<int:page>'], type='http', auth="user", website=True)
     def my_subscription(self, page=1, date_begin=None, date_end=None, sortby=None, filterby=None, **kw):
@@ -103,11 +111,9 @@ class CustomerPortal(portal.CustomerPortal):
     @http.route(['/my/subscription/<int:order_id>', '/my/subscription/<int:order_id>/<access_token>'],
                 type='http', auth='public', website=True)
     def subscription(self, order_id, access_token=None, message='', message_class='', report_type=None, download=False, **kw):
-        logged_in = not request.env.user.sudo()._is_public()
-        try:
-            order_sudo = self._get_subscription(access_token, order_id)
-        except (AccessError, MissingError):
-            return request.redirect('/my')
+        order_sudo, redirection = self._get_subscription(access_token, order_id)
+        if redirection:
+            return redirection
         if report_type in ('html', 'pdf', 'text'):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
 
@@ -121,6 +127,7 @@ class CustomerPortal(portal.CustomerPortal):
         # The tokens are filtered based on the partner hierarchy to allow managing tokens of any
         # sibling partners. As a result, a partner can manage any token belonging to partners of its
         # own company from a subscription.
+        logged_in = not request.env.user.sudo()._is_public()
         tokens = request.env['payment.token'].search([
             ('provider_id', 'in', providers_sudo.ids),
             ('partner_id', 'child_of', order_sudo.partner_id.commercial_partner_id.id),
@@ -190,11 +197,9 @@ class CustomerPortal(portal.CustomerPortal):
 
     @http.route(['/my/subscription/<int:order_id>/close'], type='http', methods=["POST"], auth="public", website=True)
     def close_account(self, order_id, access_token=None, **kw):
-        try:
-            order_sudo = self._get_subscription(access_token, order_id)
-        except (AccessError, MissingError):
-            return request.redirect('/my')
-
+        order_sudo, redirection = self._get_subscription(access_token, order_id)
+        if redirection:
+            return redirection
         if order_sudo.sale_order_template_id.user_closable:
             close_reason = request.env['sale.order.close.reason'].browse(int(kw.get('close_reason_id')))
             order_sudo.close_reason_id = close_reason
@@ -206,10 +211,9 @@ class CustomerPortal(portal.CustomerPortal):
 
     @http.route(['/my/subscription/<int:order_id>/renew'], type='http', methods=["GET"], auth="public", website=True)
     def renew_subscription(self, order_id, access_token=None, **kw):
-        try:
-            order_sudo = self._get_subscription(access_token, order_id)
-        except (AccessError, MissingError):
-            return request.redirect('/my')
+        order_sudo, redirection = self._get_subscription(access_token, order_id)
+        if redirection:
+            return redirection
         message = ""
         if not order_sudo.to_renew or not order_sudo.end_date or order_sudo.sale_order_template_id.recurring_rule_boundary == 'unlimited':
             message = _("This Subscription is already running. There is no need to renew it.")
@@ -240,11 +244,9 @@ class PaymentPortal(payment_portal.PaymentPortal):
         :rtype: dict
         :raise: ValidationError if the subscription id or the access token is invalid
         """
-
-        try:
-            order_sudo = self._get_subscription(access_token, order_id)
-        except (AccessError, MissingError):
-            return request.redirect('/my')
+        order_sudo, redirection = self._get_subscription(access_token, order_id)
+        if redirection:
+            return redirection
         kwargs.update(partner_id=order_sudo.partner_id.id)
         kwargs.pop('custom_create_values', None)  # Don't allow passing arbitrary create values
         common_callback_values = {
@@ -291,8 +293,9 @@ class PaymentPortal(payment_portal.PaymentPortal):
         :param str access_token: the order portal access token
         :return: None
         """
-        order_sudo = self._get_subscription(access_token, order_id)
-
+        order_sudo, redirection = self._get_subscription(access_token, order_id)
+        if redirection:
+            return redirection
         new_token = request.env['payment.token'].browse(int(token_id)).exists()
         if not new_token:
             raise werkzeug.exceptions.NotFound()

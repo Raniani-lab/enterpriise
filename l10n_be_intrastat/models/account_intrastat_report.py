@@ -53,7 +53,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         query, params = self._prepare_query(options)
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
-        query_res = self._build_query(query_res)
+        query_res = self._fill_missing_values(query_res)
 
         # create in_vals (resp. out_vals) corresponding to invoices with cash-in (resp. cash-out)
         in_vals = []

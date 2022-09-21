@@ -102,12 +102,11 @@ class OSSTaxReportCustomHandlerOss(models.AbstractModel):
                 'name': _('XML'),
                 'sequence': 3,
                 'action': 'export_file',
-                'action_param': 'eu_oss_export_to_xml',
+                'action_param': 'export_to_xml',
                 'file_export_type': _('XML'),
             })
 
-    @api.model
-    def eu_oss_export_to_xml(self, options):
+    def export_to_xml(self, options):
         report = self.env['account.report'].browse(options['report_id'])
         oss_import_report = self.env.ref('l10n_eu_oss_reports.oss_imports_report')
         eu_countries = self.env.ref('base.europe').country_ids

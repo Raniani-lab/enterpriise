@@ -20,7 +20,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
             'name': _('CBS'),
             'sequence': 30,
             'action': 'export_file',
-            'action_param': '_l10n_nl_export_to_csv',
+            'action_param': 'l10n_nl_export_to_csv',
             'file_export_type': _('CBS'),
         }
         options['buttons'].append(cbs_button)
@@ -33,7 +33,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         return super()._show_region_code()
 
     @api.model
-    def _l10n_nl_export_to_csv(self, options):
+    def l10n_nl_export_to_csv(self, options):
         """ Export the Centraal Bureau voor de Statistiek (CBS) file.
 
         Documentation found in:
@@ -56,7 +56,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
 
         self._cr.execute(query, params)
         query_res = self._cr.dictfetchall()
-        query_res = self._build_query(query_res)
+        query_res = self._fill_missing_values(query_res)
         line_map = dict((l.id, l) for l in self.env['account.move.line'].browse(res['id'] for res in query_res))
 
         # Create csv file content.
